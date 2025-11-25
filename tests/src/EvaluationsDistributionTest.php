@@ -832,4 +832,208 @@ class EvaluationsDistributionTest extends TestCase
             $this->assertEquals($expected_total_per_committe, $committee_total, "[Avaliador repetido] Garantindo que a soma das inscrições pendentes dos resumos dos avaliadores da comissão $committee_name está correta");
         }
     }
+
+    function testDistributionConfigurationHourly()
+    {
+        $admin = $this->userDirector->createUser('admin');
+        $this->login($admin);
+
+        $opportunity = $this->opportunityBuilder
+            ->reset(owner: $admin->profile, owner_entity: $admin->profile)
+            ->fillRequiredProperties()
+            ->firstPhase()
+                ->setRegistrationPeriod(new Open)
+                ->done()
+            ->save()
+            ->addEvaluationPhase(EvaluationMethods::simple)
+                ->setEvaluationPeriod(new ConcurrentEndingAfter)
+                ->setCommitteeValuersPerRegistration('committee 1', 1)
+                ->save()
+                ->addValuers(2, 'committee 1')
+                ->done()
+            ->getInstance();
+
+        $this->registrationDirector->createDraftRegistrations(
+            $opportunity,
+            number_of_registrations: 10
+        );
+
+        $this->registrationDirector->createSentRegistrations(
+            $opportunity,
+            number_of_registrations: 10
+        );
+
+        /** @var EvaluationMethodConfiguration $emc */
+        $emc = $opportunity->evaluationMethodConfiguration->refreshed();
+
+        // Define a configuração de distribuição como 'hourly'
+        $emc->distributionConfiguration = 'hourly';
+        $emc->save(true);
+
+        // Gera o ID do job
+        $job_type = $this->app->getRegisteredJobType('RedistribRegs');
+        $job_id = $job_type->generateId(
+            ['evaluationMethodConfiguration' => $emc],
+            'now',
+            '1 hour',
+            1
+        );
+        
+        /** @var \MapasCulturais\Entities\Job */
+        $job = $this->app->repo('Job')->findOneBy(['id' => $job_id]);
+        
+        $this->assertNotNull($job, 'Garantindo que o job de redistribuição foi agendado');
+        $this->assertEquals('1 hour', $job->intervalString, 'Garantindo que o job foi agendado com intervalo de 1 hora');
+
+       
+        $emc->redistributeCommitteeRegistrations();
+
+        $emc = $emc->refreshed();
+
+        $valuer1_summary = $emc->agentRelations[0]->metadata['summary'];
+        $valuer2_summary = $emc->agentRelations[1]->metadata['summary'];
+
+        $this->assertEquals(5, $valuer1_summary['pending'], 'Garantindo que o avaliador 1 tem 5 avaliações pendentes');
+        $this->assertEquals(5, $valuer2_summary['pending'], 'Garantindo que o avaliador 2 tem 5 avaliações pendentes');
+
+        /** @var Connection */
+        $conn = $this->app->em->getConnection();
+        $number_of_evaluations = $conn->fetchScalar("SELECT COUNT(*) FROM evaluations");
+
+        $this->assertEquals(10, $number_of_evaluations, 'Garantindo que tenha 10 avaliações');
+    }
+
+    function testDistributionConfigurationDaily()
+    {
+        $admin = $this->userDirector->createUser('admin');
+        $this->login($admin);
+
+        $opportunity = $this->opportunityBuilder
+            ->reset(owner: $admin->profile, owner_entity: $admin->profile)
+            ->fillRequiredProperties()
+            ->firstPhase()
+                ->setRegistrationPeriod(new Open)
+                ->done()
+            ->save()
+            ->addEvaluationPhase(EvaluationMethods::simple)
+                ->setEvaluationPeriod(new ConcurrentEndingAfter)
+                ->setCommitteeValuersPerRegistration('committee 1', 1)
+                ->save()
+                ->addValuers(2, 'committee 1')
+                ->done()
+            ->getInstance();
+
+        $this->registrationDirector->createDraftRegistrations(
+            $opportunity,
+            number_of_registrations: 10
+        );
+
+        $this->registrationDirector->createSentRegistrations(
+            $opportunity,
+            number_of_registrations: 10
+        );
+
+        /** @var EvaluationMethodConfiguration $emc */
+        $emc = $opportunity->evaluationMethodConfiguration->refreshed();
+
+        // Define a configuração de distribuição como 'hourly'
+        $emc->distributionConfiguration = 'daily';
+        $emc->save(true);
+
+        // Gera o ID do job
+        $job_type = $this->app->getRegisteredJobType('RedistribRegs');
+        $job_id = $job_type->generateId(
+            ['evaluationMethodConfiguration' => $emc],
+            'now',
+            '1 day',
+            1
+        );
+        
+        /** @var \MapasCulturais\Entities\Job */
+        $job = $this->app->repo('Job')->findOneBy(['id' => $job_id]);
+        
+        $this->assertNotNull($job, 'Garantindo que o job de redistribuição foi agendado');
+        $this->assertEquals('1 day', $job->intervalString, 'Garantindo que o job foi agendado com intervalo de 1 dia');
+
+       
+        $emc->redistributeCommitteeRegistrations();
+
+        $emc = $emc->refreshed();
+
+        $valuer1_summary = $emc->agentRelations[0]->metadata['summary'];
+        $valuer2_summary = $emc->agentRelations[1]->metadata['summary'];
+
+        $this->assertEquals(5, $valuer1_summary['pending'], 'Garantindo que o avaliador 1 tem 5 avaliações pendentes');
+        $this->assertEquals(5, $valuer2_summary['pending'], 'Garantindo que o avaliador 2 tem 5 avaliações pendentes');
+
+        /** @var Connection */
+        $conn = $this->app->em->getConnection();
+        $number_of_evaluations = $conn->fetchScalar("SELECT COUNT(*) FROM evaluations");
+
+        $this->assertEquals(10, $number_of_evaluations, 'Garantindo que tenha 10 avaliações');
+    }
+
+    function testDistributionConfigurationDeactivate()
+    {
+        $admin = $this->userDirector->createUser('admin');
+        $this->login($admin);
+
+        $opportunity = $this->opportunityBuilder
+            ->reset(owner: $admin->profile, owner_entity: $admin->profile)
+            ->fillRequiredProperties()
+            ->firstPhase()
+                ->setRegistrationPeriod(new Open)
+                ->done()
+            ->save()
+            ->addEvaluationPhase(EvaluationMethods::simple)
+                ->setEvaluationPeriod(new ConcurrentEndingAfter)
+                ->setCommitteeValuersPerRegistration('committee 1', 1)
+                ->save()
+                ->addValuers(2, 'committee 1')
+                ->done()
+            ->getInstance();
+
+        $this->registrationDirector->createDraftRegistrations(
+            $opportunity,
+            number_of_registrations: 10
+        );
+
+        $this->registrationDirector->createSentRegistrations(
+            $opportunity,
+            number_of_registrations: 10
+        );
+
+        /** @var EvaluationMethodConfiguration $emc */
+        $emc = $opportunity->evaluationMethodConfiguration->refreshed();
+
+        $emc->distributionConfiguration = 'deactivate';
+        $emc->save(true);
+
+        $job_type = $this->app->getRegisteredJobType('RedistribRegs');
+        $job_id = $job_type->generateId(
+            ['evaluationMethodConfiguration' => $emc],
+            'now',
+            '1 hour',
+            1
+        );
+        
+        /** @var \MapasCulturais\Entities\Job */
+        $job = $this->app->repo('Job')->findOneBy(['id' => $job_id]);
+        
+        $this->assertNull($job, 'Garantindo que o job de redistribuição foi removido ou não foi enfileirado');
+
+        $emc = $emc->refreshed();
+
+        $valuer1_summary = $emc->agentRelations[0]->metadata['summary'];
+        $valuer2_summary = $emc->agentRelations[1]->metadata['summary'];
+
+        $this->assertEquals(0, $valuer1_summary['pending'], 'Garantindo que o avaliador 1 não tem avaliações pendentes');
+        $this->assertEquals(0, $valuer2_summary['pending'], 'Garantindo que o avaliador 2 não tem avaliações pendentes');
+
+        /** @var Connection */
+        $conn = $this->app->em->getConnection();
+        $number_of_evaluations = $conn->fetchScalar("SELECT COUNT(*) FROM evaluations");
+
+        $this->assertEquals(0, $number_of_evaluations, 'Garantindo que não tenha avaliações');
+    }
 }
