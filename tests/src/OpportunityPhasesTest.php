@@ -53,9 +53,54 @@ class OpportunityPhasesTest extends TestCase
         $opportunity = $opportunity->refreshed();
 
         $phases = $opportunity->phases;
-        $evaluation_method_configuration_id = $phases[1]->id;
 
         $this->assertEquals($opportunity->id, $phases[1]->opportunity->id, "Garantindo que uma segunda fase de avaliação, após a exclusão da primeira fase de avaliação, esteja vinculada a primeira fase de coletada de dados");
+    
+    }
+
+    function testSecondEvaluationPhaseDeletion() {
+        $app = $this->app;
+
+        $admin = $this->userDirector->createUser('admin');
+        $this->login($admin);
+
+        $builder = $this->opportunityBuilder;
+        
+        /** @var Opportunity */
+        $opportunity = $builder->reset(owner: $admin->profile, owner_entity: $admin->profile)
+                                ->fillRequiredProperties()
+                                ->firstPhase()
+                                    ->setRegistrationPeriod(new Open)
+                                    ->done()
+                                ->save()
+                                ->getInstance();
+
+        $eval_phase1 = $builder->addEvaluationPhase(EvaluationMethods::simple)
+                                ->setEvaluationPeriod(new ConcurrentEndingAfter)
+                                ->save()
+                                ->getInstance();
+
+        $eval_phase2 = $builder->addEvaluationPhase(EvaluationMethods::simple)
+                                ->setEvaluationPeriod(new ConcurrentEndingAfter)
+                                ->save()
+                                ->getInstance();
+
+        $eval_phase3 = $builder->addEvaluationPhase(EvaluationMethods::simple)
+                                ->setEvaluationPeriod(new ConcurrentEndingAfter)
+                                ->save()
+                                ->getInstance();
+        
+
+
+        $this->assertFalse((bool) $eval_phase2->opportunity->isDataCollection, 'Garantindo que a  Opportunity vinculada a uma fase de avaliação que segue outra fase de avaliação não é uma coleta de dados');
+
+        $hidden_opportunity_id = $eval_phase2->opportunity->id;
+        
+        $eval_phase2->delete(flush: true);
+
+        $hidden_opportunity = $app->repo('Opportunity')->find($hidden_opportunity_id);
+
+        $this->assertNull($hidden_opportunity, 'Garantindo que a exclusão de uma fase de avaliação exclua a Opportunity vinculada quando essa não é uma coleta de dados');
     
     }
 }
