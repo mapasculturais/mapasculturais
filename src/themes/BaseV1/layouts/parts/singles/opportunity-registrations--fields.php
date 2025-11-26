@@ -75,6 +75,31 @@ $app->applyHookBoundTo($this, 'opportunity.blockedFields', [$entity]);
             <div ng-init="field = data.newFileConfiguration">
                 <?php $this->part('singles/opportunity-registrations--fields--field-require'); ?>
             </div>
+            <p>
+                <small><?php i::_e("Tipos de arquivo permitidos (deixe em branco para permitir todos)"); ?>:</small><br>
+                <label class="checkbox-label"><input type="checkbox" checklist-model="data.newFileConfiguration.allowedFileTypes" checklist-value="'application/pdf'"> <?php i::_e("PDF (.pdf)"); ?> </label>
+                <label class="checkbox-label"><input type="checkbox" checklist-model="data.newFileConfiguration.allowedFileTypes" checklist-value="'image/jpeg'"> <?php i::_e("JPEG (.jpg, .jpeg)"); ?> </label>
+                <label class="checkbox-label"><input type="checkbox" checklist-model="data.newFileConfiguration.allowedFileTypes" checklist-value="'image/png'"> <?php i::_e("PNG (.png)"); ?> </label>
+                <label class="checkbox-label"><input type="checkbox" checklist-model="data.newFileConfiguration.allowedFileTypes" checklist-value="'image/gif'"> <?php i::_e("GIF (.gif)"); ?> </label>
+                <label class="checkbox-label"><input type="checkbox" checklist-model="data.newFileConfiguration.allowedFileTypes" checklist-value="'application/msword'"> <?php i::_e("Word (.doc)"); ?> </label>
+                <label class="checkbox-label"><input type="checkbox" checklist-model="data.newFileConfiguration.allowedFileTypes" checklist-value="'application/vnd.openxmlformats-officedocument.wordprocessingml.document'"> <?php i::_e("Word (.docx)"); ?> </label>
+                <label class="checkbox-label"><input type="checkbox" checklist-model="data.newFileConfiguration.allowedFileTypes" checklist-value="'application/vnd.oasis.opendocument.text'"> <?php i::_e("OpenDocument Text (.odt)"); ?> </label>
+                <label class="checkbox-label"><input type="checkbox" checklist-model="data.newFileConfiguration.allowedFileTypes" checklist-value="'application/vnd.ms-excel'"> <?php i::_e("Excel (.xls)"); ?> </label>
+                <label class="checkbox-label"><input type="checkbox" checklist-model="data.newFileConfiguration.allowedFileTypes" checklist-value="'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'"> <?php i::_e("Excel (.xlsx)"); ?> </label>
+                <label class="checkbox-label"><input type="checkbox" checklist-model="data.newFileConfiguration.allowedFileTypes" checklist-value="'application/vnd.oasis.opendocument.spreadsheet'"> <?php i::_e("OpenDocument Spreadsheet (.ods)"); ?> </label>
+                <label class="checkbox-label"><input type="checkbox" checklist-model="data.newFileConfiguration.allowedFileTypes" checklist-value="'text/csv'"> <?php i::_e("CSV (.csv)"); ?> </label>
+                <label class="checkbox-label"><input type="checkbox" checklist-model="data.newFileConfiguration.allowedFileTypes" checklist-value="'application/vnd.ms-powerpoint'"> <?php i::_e("PowerPoint (.ppt)"); ?> </label>
+                <label class="checkbox-label"><input type="checkbox" checklist-model="data.newFileConfiguration.allowedFileTypes" checklist-value="'application/vnd.openxmlformats-officedocument.presentationml.presentation'"> <?php i::_e("PowerPoint (.pptx)"); ?> </label>
+                <label class="checkbox-label"><input type="checkbox" checklist-model="data.newFileConfiguration.allowedFileTypes" checklist-value="'application/vnd.oasis.opendocument.presentation'"> <?php i::_e("OpenDocument Presentation (.odp)"); ?> </label>
+                <label class="checkbox-label"><input type="checkbox" checklist-model="data.newFileConfiguration.allowedFileTypes" checklist-value="'application/zip'"> <?php i::_e("ZIP (.zip)"); ?> </label>
+                <label class="checkbox-label"><input type="checkbox" checklist-model="data.newFileConfiguration.allowedFileTypes" checklist-value="'application/x-rar-compressed'"> <?php i::_e("RAR (.rar)"); ?> </label>
+                <label class="checkbox-label"><input type="checkbox" checklist-model="data.newFileConfiguration.allowedFileTypes" checklist-value="'video/mp4'"> <?php i::_e("Vídeo MP4 (.mp4)"); ?> </label>
+                <label class="checkbox-label"><input type="checkbox" checklist-model="data.newFileConfiguration.allowedFileTypes" checklist-value="'video/x-msvideo'"> <?php i::_e("Vídeo AVI (.avi)"); ?> </label>
+                <label class="checkbox-label"><input type="checkbox" checklist-model="data.newFileConfiguration.allowedFileTypes" checklist-value="'video/quicktime'"> <?php i::_e("Vídeo MOV (.mov)"); ?> </label>
+                <label class="checkbox-label"><input type="checkbox" checklist-model="data.newFileConfiguration.allowedFileTypes" checklist-value="'audio/mpeg'"> <?php i::_e("Áudio MP3 (.mp3)"); ?> </label>
+                <label class="checkbox-label"><input type="checkbox" checklist-model="data.newFileConfiguration.allowedFileTypes" checklist-value="'audio/wav'"> <?php i::_e("Áudio WAV (.wav)"); ?> </label>
+                <label class="checkbox-label"><input type="checkbox" checklist-model="data.newFileConfiguration.allowedFileTypes" checklist-value="'text/plain'"> <?php i::_e("Texto (.txt)"); ?> </label>
+            </p>
             <p ng-if="data.categories.length > 1">
                 <small><?php i::_e("Selecione em quais categorias este anexo é utilizado"); ?>:</small><br>
                 <label class="checkbox-label"><input type="checkbox" onclick="if (!this.checked) return false" ng-click="data.newFileConfiguration.categories = []" ng-checked="allCategories(data.newFileConfiguration)"> <?php i::_e("Todas"); ?> </label>
@@ -227,6 +252,31 @@ $app->applyHookBoundTo($this, 'opportunity.blockedFields', [$entity]);
                             <?php i::_e('Etapa') ?><br>
                             <select ng-model="field.step" ng-options="step as step.name for step in steps track by step.id" ng-change="changeFileStep(field)"></select>
                         </label>
+                        <p>
+                            <small><?php i::_e("Tipos de arquivo permitidos (deixe em branco para permitir todos)"); ?>:</small><br>
+                            <label class="checkbox-label"><input type="checkbox" checklist-model="field.allowedFileTypes" checklist-value="'application/pdf'"> <?php i::_e("PDF (.pdf)"); ?> </label>
+                            <label class="checkbox-label"><input type="checkbox" checklist-model="field.allowedFileTypes" checklist-value="'image/jpeg'"> <?php i::_e("JPEG (.jpg, .jpeg)"); ?> </label>
+                            <label class="checkbox-label"><input type="checkbox" checklist-model="field.allowedFileTypes" checklist-value="'image/png'"> <?php i::_e("PNG (.png)"); ?> </label>
+                            <label class="checkbox-label"><input type="checkbox" checklist-model="field.allowedFileTypes" checklist-value="'image/gif'"> <?php i::_e("GIF (.gif)"); ?> </label>
+                            <label class="checkbox-label"><input type="checkbox" checklist-model="field.allowedFileTypes" checklist-value="'application/msword'"> <?php i::_e("Word (.doc)"); ?> </label>
+                            <label class="checkbox-label"><input type="checkbox" checklist-model="field.allowedFileTypes" checklist-value="'application/vnd.openxmlformats-officedocument.wordprocessingml.document'"> <?php i::_e("Word (.docx)"); ?> </label>
+                            <label class="checkbox-label"><input type="checkbox" checklist-model="field.allowedFileTypes" checklist-value="'application/vnd.oasis.opendocument.text'"> <?php i::_e("OpenDocument Text (.odt)"); ?> </label>
+                            <label class="checkbox-label"><input type="checkbox" checklist-model="field.allowedFileTypes" checklist-value="'application/vnd.ms-excel'"> <?php i::_e("Excel (.xls)"); ?> </label>
+                            <label class="checkbox-label"><input type="checkbox" checklist-model="field.allowedFileTypes" checklist-value="'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'"> <?php i::_e("Excel (.xlsx)"); ?> </label>
+                            <label class="checkbox-label"><input type="checkbox" checklist-model="field.allowedFileTypes" checklist-value="'application/vnd.oasis.opendocument.spreadsheet'"> <?php i::_e("OpenDocument Spreadsheet (.ods)"); ?> </label>
+                            <label class="checkbox-label"><input type="checkbox" checklist-model="field.allowedFileTypes" checklist-value="'text/csv'"> <?php i::_e("CSV (.csv)"); ?> </label>
+                            <label class="checkbox-label"><input type="checkbox" checklist-model="field.allowedFileTypes" checklist-value="'application/vnd.ms-powerpoint'"> <?php i::_e("PowerPoint (.ppt)"); ?> </label>
+                            <label class="checkbox-label"><input type="checkbox" checklist-model="field.allowedFileTypes" checklist-value="'application/vnd.openxmlformats-officedocument.presentationml.presentation'"> <?php i::_e("PowerPoint (.pptx)"); ?> </label>
+                            <label class="checkbox-label"><input type="checkbox" checklist-model="field.allowedFileTypes" checklist-value="'application/vnd.oasis.opendocument.presentation'"> <?php i::_e("OpenDocument Presentation (.odp)"); ?> </label>
+                            <label class="checkbox-label"><input type="checkbox" checklist-model="field.allowedFileTypes" checklist-value="'application/zip'"> <?php i::_e("ZIP (.zip)"); ?> </label>
+                            <label class="checkbox-label"><input type="checkbox" checklist-model="field.allowedFileTypes" checklist-value="'application/x-rar-compressed'"> <?php i::_e("RAR (.rar)"); ?> </label>
+                            <label class="checkbox-label"><input type="checkbox" checklist-model="field.allowedFileTypes" checklist-value="'video/mp4'"> <?php i::_e("Vídeo MP4 (.mp4)"); ?> </label>
+                            <label class="checkbox-label"><input type="checkbox" checklist-model="field.allowedFileTypes" checklist-value="'video/x-msvideo'"> <?php i::_e("Vídeo AVI (.avi)"); ?> </label>
+                            <label class="checkbox-label"><input type="checkbox" checklist-model="field.allowedFileTypes" checklist-value="'video/quicktime'"> <?php i::_e("Vídeo MOV (.mov)"); ?> </label>
+                            <label class="checkbox-label"><input type="checkbox" checklist-model="field.allowedFileTypes" checklist-value="'audio/mpeg'"> <?php i::_e("Áudio MP3 (.mp3)"); ?> </label>
+                            <label class="checkbox-label"><input type="checkbox" checklist-model="field.allowedFileTypes" checklist-value="'audio/wav'"> <?php i::_e("Áudio WAV (.wav)"); ?> </label>
+                            <label class="checkbox-label"><input type="checkbox" checklist-model="field.allowedFileTypes" checklist-value="'text/plain'"> <?php i::_e("Texto (.txt)"); ?> </label>
+                        </p>
                         <p ng-if="data.categories.length > 1">
                             <small><?php i::_e("Selecione em quais categorias este anexo é utilizado"); ?>:</small><br>
                             <label class="checkbox-label"><input type="checkbox" onclick="if (!this.checked) return false" ng-click="field.categories = []" ng-checked="allCategories(field)"> <?php i::_e("Todas"); ?> </label>

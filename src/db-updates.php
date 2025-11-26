@@ -3111,6 +3111,12 @@ $$
                      USING registration_step rs
                      WHERE rs.id = rfc.step_id
                        AND rs.opportunity_id != rfc.opportunity_id;");
+    },
+
+    "Adiciona coluna allowed_file_types na tabela registration_file_configuration para restringir tipos de arquivo" => function() {
+        if(!__column_exists('registration_file_configuration', 'allowed_file_types')) {
+            __exec("ALTER TABLE registration_file_configuration ADD COLUMN allowed_file_types JSON DEFAULT NULL");
+        }
     }
     
 ] + $updates ;   

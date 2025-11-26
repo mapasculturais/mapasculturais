@@ -84,8 +84,13 @@ class Registration extends EntityController {
             ];
             $registration = $this->requestedEntity;
             foreach($registration->opportunity->registrationFileConfigurations as $rfc){
+                // Se o campo tem tipos de arquivo definidos, usa eles; senão usa os tipos padrão
+                $allowed_mime_types = $mime_types;
+                if(!empty($rfc->allowedFileTypes) && is_array($rfc->allowedFileTypes)) {
+                    $allowed_mime_types = $rfc->allowedFileTypes;
+                }
 
-                $fileGroup = new Definitions\FileGroup($rfc->fileGroupName, $mime_types, \MapasCulturais\i::__('O arquivo enviado não é um documento válido.'), true, null, true);
+                $fileGroup = new Definitions\FileGroup($rfc->fileGroupName, $allowed_mime_types, \MapasCulturais\i::__('O arquivo enviado não é um documento válido.'), true, null, true);
                 $app->registerFileGroup('registration', $fileGroup);
             }
         });
