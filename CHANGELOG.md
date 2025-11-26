@@ -8,6 +8,7 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 ## [7.6.25] - UNRELEASED
 ### Melhorias
 - Implementa validação dos campos no momento do salvamento de entidades 
+- Melhoria na legenda da galeria de imagens
 
 ## [7.6.24] - 2025-11-14
 ### Melhorias
