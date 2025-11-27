@@ -184,6 +184,29 @@ app.component('registration-evaluation-tab', {
             this.entity.valuersIncludeList = this.valuersIncludeList;
             this.entity.valuersExcludeList = this.valuersExcludeList;
             this.entity.save();
+        },
+
+        async deleteEvaluation(evaluationId, userId) {
+            if (!evaluationId) {
+                return;
+            }
+
+            const evaluationData = this.evaluations[userId]?.evaluation;
+            if (!evaluationData) {
+                return;
+            }
+
+            try {
+                const evaluationApi = new API('registrationevaluation');
+                const evaluation = evaluationApi.getEntityInstance(evaluationId);
+                evaluation.populate(evaluationData, true);
+                
+                await evaluation.delete();
+                
+                window.location.reload();
+            } catch (error) {
+                console.error(__('Erro ao excluir avaliação', 'registration-evaluation-tab'), error);
+            }
         }
     },
 });
