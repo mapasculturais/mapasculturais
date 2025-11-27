@@ -262,6 +262,24 @@ app.component('opportunity-evaluations-table', {
                 this.selectedStatus = null;
                 delete this.query['status'];
             }
+        },
+
+        async deleteEvaluation(entity, refresh) {
+            if (!entity.evaluation || !entity.evaluation.id) {
+                return;
+            }
+
+            try {
+                const evaluationApi = new API('registrationevaluation');
+                const evaluation = evaluationApi.getEntityInstance(entity.evaluation.id);
+                evaluation.populate(entity.evaluation, true);
+                
+                await evaluation.delete();
+                
+                refresh();
+            } catch (error) {
+                console.error(__('Erro ao excluir avaliação', 'opportunity-evaluations-table'), error);
+            }
         }
     }
 });

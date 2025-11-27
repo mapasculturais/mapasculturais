@@ -150,6 +150,7 @@ $headers = [
     [ 'text' => i::__('Tipo de proponente', 'opportunity-evaluations-table'), 'value' => 'proponentType', 'slug' => 'proponentType'],
     [ 'text' => i::__('Categoria', 'opportunity-evaluations-table'), 'value' => 'category', 'slug' => 'category'],
     [ 'text' => i::__('Faixa', 'opportunity-evaluations-table'), 'value' => 'range', 'slug' => 'range'],
+    [ 'text' => i::__('Ações', 'opportunity-evaluations-table'), 'value' => '', 'slug' => 'delete', 'visible' => true, 'width' => '100px'],
 ];
 
 $default_headers = array_merge($default_headers, $headers);
