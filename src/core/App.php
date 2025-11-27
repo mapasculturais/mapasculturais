@@ -305,13 +305,13 @@ class App {
      * Objeto da requisição atual
      * @var Request
      */
-    public Request $request;
+    public ?Request $request = null;
 
     /**
      * Objeto que será a resposta final do gerenciador de rotas
      * @var ResponseInterface
      */
-    public ResponseInterface $response;
+    public ?ResponseInterface $response = null;
 
     /**
      * Microtime do momento do instanciamento da aplicação
