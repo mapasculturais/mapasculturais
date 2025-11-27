@@ -68,8 +68,6 @@ class RegistrationDirector extends Director
                 ->getInstance();
             
             $this->setRegistrationData($registration, $data);
-
-            $registration->send();
             
             $registrations[] = $registration;
         }
