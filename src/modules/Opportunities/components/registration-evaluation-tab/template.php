@@ -6,6 +6,10 @@
 
 use MapasCulturais\i;
 
+$this->import('
+    mc-confirm-button
+    mc-icon
+');
 ?>
 <div class="registration-evaluation-tab grid-12">
     <div class="registration-evaluation-tab__distribution field col-12">
@@ -31,6 +35,21 @@ use MapasCulturais\i;
                                 {{ evaluations[valuer.userId].resultString }}
                             </span>
                         </span>
+                        <mc-confirm-button 
+                            v-if="evaluations[valuer.userId]?.id && (evaluations[valuer.userId].statusNumber === 0 || evaluations[valuer.userId].statusNumber === 1 || evaluations[valuer.userId].statusNumber === 2)"
+                            @confirm="deleteEvaluation(evaluations[valuer.userId].id, valuer.userId)">
+                            <template #button="modal">
+                                <button 
+                                    @click="modal.open()"
+                                    class="button button--icon button--text-danger button--sm"
+                                    v-tooltip="'<?= i::__('Excluir avaliação') ?>'">
+                                    <mc-icon name="trash"></mc-icon>
+                                </button>
+                            </template>
+                            <template #message="message">
+                                <?= i::__('Tem certeza que deseja excluir esta avaliação?') ?>
+                            </template>
+                        </mc-confirm-button>
                     </div>
                 </li>
             </ul>
