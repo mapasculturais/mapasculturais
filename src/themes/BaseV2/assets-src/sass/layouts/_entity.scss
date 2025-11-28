@@ -21,6 +21,12 @@
         }
     }
 
+    .entity-sections {
+        display: flex;
+        flex-direction: column;
+        gap: size(32);
+    }
+
     .divider {
         width: 100%;
         border-bottom: size(1) solid var(--mc-high-700);
