@@ -364,6 +364,7 @@ module.controller('RegistrationConfigurationsController', ['$scope', '$rootScope
         conditionalValue : null,
         registrationRanges : [],
         proponentTypes : [],
+        allowedFileTypes: [],
         step: MapasCulturais.step?.id ?? null,
     };
 
@@ -781,6 +782,7 @@ module.controller('RegistrationConfigurationsController', ['$scope', '$rootScope
                 conditionalValue: model.conditionalValue,
                 registrationRanges: model.registrationRanges.length ? model.registrationRanges : '',
                 proponentTypes: model.proponentTypes.length ? model.proponentTypes : '',
+                allowedFileTypes: model.allowedFileTypes && model.allowedFileTypes.length ? model.allowedFileTypes : '',
             };
 
             if(data.fieldType == "section"){
