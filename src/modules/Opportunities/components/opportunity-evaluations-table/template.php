@@ -13,6 +13,7 @@ $this->import('
     mc-export-spreadsheet
     mc-status
     entity-table
+    mc-confirm-button
 ')
 ?>
 <div :class="['opportunity-evaluations-table', 'grid-12', classes]">
@@ -120,6 +121,24 @@ $this->import('
 
                 <template #goalStatuses="{entity}">
                     <a v-if="entity.goalStatuses" :href="entity.singleUrl + '#ficha'" class="entity-table__goals">{{entity.goalStatuses['10']}}/{{entity.goalStatuses.numGoals}} <?= i::__('concluídas') ?></a>
+                </template>
+
+                <template #delete="{entity, refresh}">
+                    <mc-confirm-button 
+                        v-if="hasControl && entity.evaluation && (entity.evaluation.status === 0 || entity.evaluation.status === 1 || entity.evaluation.status === 2)"
+                        @confirm="deleteEvaluation(entity, refresh)">
+                        <template #button="modal">
+                            <button 
+                                @click="modal.open()"
+                                class="button button--icon button--text-danger button--sm"
+                                v-tooltip="'<?= i::__('Excluir avaliação') ?>'">
+                                <mc-icon name="trash"></mc-icon>
+                            </button>
+                        </template>
+                        <template #message="message">
+                            <?= i::__('Tem certeza que deseja excluir esta avaliação?') ?>
+                        </template>
+                    </mc-confirm-button>
                 </template>
 
                 <template #icon-text="popover">
