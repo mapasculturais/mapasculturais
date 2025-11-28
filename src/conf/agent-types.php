@@ -611,6 +611,10 @@ return array(
             ),
             'available_for_opportunities' => true
         ),
+        'descricaosite' => array(
+            'label' => \MapasCulturais\i::__('Descrição do Link'),
+            'available_for_opportunities' => true
+        ),
         'facebook' => array(
             'type' => "socialMedia",
             'label' => \MapasCulturais\i::__('Facebook'),
