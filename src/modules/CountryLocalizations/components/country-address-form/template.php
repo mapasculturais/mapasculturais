@@ -16,7 +16,10 @@ $this->import('
 ?>
 
 <div class="country-address-form grid-12">
+    <?php $this->applyTemplateHook('country-address-form','begin'); ?>
+
     <div v-if="countryFieldEnabled" class="field col-12">
+        <?php $this->applyTemplateHook('country-address-form-country-field','before'); ?>
         <label><?= i::__("País") ?></label>
         <mc-select 
             :options="countries" 
@@ -25,11 +28,13 @@ $this->import('
             placeholder="<?= i::__("País") ?>" 
             show-filter>
         </mc-select>
+        <?php $this->applyTemplateHook('country-address-form-country-field','after'); ?>
     </div>
 
     <mc-loading :condition="processing" class="col-12"> <?= i::__('Carregando') ?></mc-loading>
 
     <div v-if="!processing && country" class="col-12 grid-12">
+        <?php $this->applyTemplateHook('country-address-form','before'); ?>
         <brasil-address-form
             v-if="country == 'BR'"
             :entity="entity"
@@ -37,6 +42,8 @@ $this->import('
             class="col-12"
             editable >
         </brasil-address-form>
+
+        <?php $this->applyTemplateHook('country-address-form','forms'); ?>
 
         <international-address-form
             v-else
@@ -46,5 +53,9 @@ $this->import('
             class="col-12"
             editable >
         </international-address-form>
+
+        <?php $this->applyTemplateHook('country-address-form','after'); ?>
     </div>
+
+    <?php $this->applyTemplateHook('country-address-form','end'); ?>
 </div>
