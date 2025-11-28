@@ -36,6 +36,11 @@ app.component('create-opportunity', {
                     } 
                        
                 } else {
+                    // Desmarca publicityOnly se marcar continuousFlow
+                    if (this.entity.publicityOnly) {
+                        this.entity.publicityOnly = false;
+                    }
+                    
                     const myDate = new McDate(new Date(this.continuousFlowDate));
                     
                     this.entity.continuousFlow = myDate.sql('full');
@@ -45,6 +50,29 @@ app.component('create-opportunity', {
                     if(!this.entity.registrationFrom){
                         let actualDate = new Date();
                         this.entity.registrationFrom = Vue.reactive(new McDate(actualDate));
+                    }
+                }
+            }
+        },
+
+        'entity.publicityOnly'(newVal, oldValue) {
+            if(Boolean(newVal) != Boolean(oldValue)){
+                if (newVal) {
+                    // Desmarca fluxo contínuo se marcar publicityOnly
+                    if (this.entity.isContinuousFlow) {
+                        this.entity.isContinuousFlow = false;
+                        this.entity.hasEndDate = false;
+                        this.entity.continuousFlow = null;
+                    }
+                    
+                    // Garante que as datas sejam obrigatórias
+                    if(!this.entity.registrationFrom){
+                        let actualDate = new Date();
+                        this.entity.registrationFrom = Vue.reactive(new McDate(actualDate));
+                    }
+                    
+                    if (this.entity.registrationFrom && !this.entity.registrationTo) {
+                        this.incrementRegistrationTo();
                     }
                 }
             }
