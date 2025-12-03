@@ -20,6 +20,7 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Adiciona suporte a autenticação JWT nas requisições para API [(1)](#snp)
 - Melhoria na exibição das mensagens de erro para capturar e exibir mensagens específicas
 - Melhora a comunicação da interface para deixar claro que a alteração de critérios ou sessões só deve ser feita por administradores quando já existirem avaliações técnicas enviadas.
+- Remove espaços múltiplos e espaços no início/fim do nome e nome completo das entidades
 
 ### Correções
 - Corrige warnigs no navegador devido a problemas com o componente entity-field
