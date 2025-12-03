@@ -10,10 +10,15 @@ use MapasCulturais\i;
 $this->import('
     mc-confirm-button
     mc-icon
+    mc-alert
 ');
 ?>
 
 <div class="technical-assessment-section">
+    <mc-alert v-if="hasEvaluationsStarted" type="warning">
+        <?= i::__('Já existem avaliações enviadas ou concluídas. Por isso, fale com um administrador antes de alterar ou incluir qualquer critério ou seção de critérios de avaliação.') ?>
+    </mc-alert>
+     <br>
     <div v-if="entity.sections && entity.sections.length > 0">
         <div v-for="(section, index) in entity.sections" :key="index" class="technical-assessment-section__card">
             <div class="technical-assessment-section__header">

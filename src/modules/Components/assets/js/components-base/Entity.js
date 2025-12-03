@@ -200,7 +200,17 @@ class Entity {
     }
 
     catchErrors(res, data) {
-        const message = data.data?.message;
+        let message = null;
+        
+        if (typeof data.data === 'string') {
+            message = data.data;
+        } else if (data.data && typeof data.data === 'object' && data.data.message !== undefined) {
+            if (Array.isArray(data.data.message)) {
+                message = data.data.message[0] || data.data.message.join(', ');
+            } else {
+                message = data.data.message;
+            }
+        }
         
         if (res.status >= 500 && res.status <= 599) {
             this.sendMessage(message || this.text('erro inesperado'), 'error');

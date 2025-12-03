@@ -2,16 +2,17 @@
 
 namespace EvaluationMethodTechnical;
 
-use MapasCulturais\API;
-use MapasCulturais\ApiQuery;
 use MapasCulturais\i;
+use MapasCulturais\API;
 use MapasCulturais\App;
-use MapasCulturais\Controller;
-use MapasCulturais\Controllers\Opportunity as ControllersOpportunity;
+use MapasCulturais\ApiQuery;
 use MapasCulturais\Entities;
-use MapasCulturais\Entities\EvaluationMethodConfiguration;
+use MapasCulturais\Controller;
 use MapasCulturais\Entities\Opportunity;
 use MapasCulturais\Entities\Registration;
+use MapasCulturais\Exceptions\PermissionDenied;
+use MapasCulturais\Entities\EvaluationMethodConfiguration;
+use MapasCulturais\Controllers\Opportunity as ControllersOpportunity;
 
 class Module extends \MapasCulturais\EvaluationMethod
 {
@@ -303,6 +304,21 @@ class Module extends \MapasCulturais\EvaluationMethod
 
         $self = $this;
 
+        // impede que o usuario altere critérios ou sessões de critérios de avaliação se já existem avaliações enviadas
+        $app->hook('entity(EvaluationMethodConfiguration).set(<<criteria|sections>>)', function() use($app){
+            $errors = [];
+            if($committee = $this->getCommittee()) {
+                foreach($committee as $relation) {  
+                    if($relation->metadata['summary']['sent'] > 0) {
+                        $errors['criteria'] = i::__('Já existem avaliações enviadas. Por isso, não é mais possível alterar critérios ou sessões. Se for necessário adicionar ou alterar algo, solicite a um administrador');
+                    }
+                }
+
+                if($errors && !$app->user->is('admin')) {
+                    throw new PermissionDenied($app->user, message: $errors['criteria']);
+                }
+            }
+        });
 
         // Define o valor da coluna eligible
         $app->hook('entity(Registration).<<save|send>>:before', function() use($app){
