@@ -3,17 +3,19 @@
 namespace Tests\Builders;
 
 use Exception;
+use Tests\Traits\Faker;
+use Tests\Abstract\Builder;
+use Tests\Traits\UserDirector;
+use Tests\Enums\ProponentTypes;
 use MapasCulturais\Entities\Agent;
 use MapasCulturais\Entities\Event;
-use MapasCulturais\Entities\Opportunity;
-use MapasCulturais\Entities\Project;
-use MapasCulturais\Entities\RegistrationFieldConfiguration;
 use MapasCulturais\Entities\Space;
-use Tests\Abstract\Builder;
 use Tests\Enums\EvaluationMethods;
-use Tests\Enums\ProponentTypes;
-use Tests\Traits\Faker;
-use Tests\Traits\UserDirector;
+use MapasCulturais\Entities\Project;
+use Tests\Traits\RegistrationDirector;
+use MapasCulturais\Entities\Opportunity;
+use MapasCulturais\Entities\Registration;
+use MapasCulturais\Entities\RegistrationFieldConfiguration;
 
 class OpportunityBuilder extends Builder
 {
@@ -24,7 +26,7 @@ class OpportunityBuilder extends Builder
         Traits\SealRelations,
         Traits\Taxonomies,
         Traits\EntityName,
-
+        RegistrationDirector,
         UserDirector;
 
     protected Opportunity $instance;
@@ -259,5 +261,26 @@ class OpportunityBuilder extends Builder
         $field = $this->getField($identifier, $opportunity);
 
         return $field ? $field->fieldName : null;
+    }
+
+    public function createDraftRegistrations(int $number_of_registrations = 10, ?string $category = null, ?string $proponent_type = null, ?string $range = null, array $data = [], bool $fill_requered_properties = true, bool $save = true, bool $flush = true): static
+    {
+        $this->registrationDirector->createDraftRegistrations($this->instance, $number_of_registrations, $category, $proponent_type, $range, $data, $fill_requered_properties, $save, $flush);
+
+        return $this;
+    }
+
+    public function createSentRegistrations(int $number_of_registrations = 10, ?string $category = null, ?string $proponent_type = null, ?string $range = null, array $data = []): static
+    {
+        $this->registrationDirector->createSentRegistrations($this->instance, $number_of_registrations, $category, $proponent_type, $range, $data);
+
+        return $this;
+    }
+
+    public function createSentRegistration(array $data): static
+    {
+        $this->registrationDirector->createSentRegistration($this->instance, $data);
+
+        return $this;
     }
 }

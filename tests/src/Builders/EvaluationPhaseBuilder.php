@@ -2,15 +2,16 @@
 
 namespace Tests\Builders;
 
-use MapasCulturais\Entities\Agent;
-use MapasCulturais\Entities\EvaluationMethodConfiguration;
-use MapasCulturais\Entities\Opportunity;
-use Tests\Abstract\Builder;
-use Tests\Abstract\EvaluationMethodConfigurationBuilder;
-use Tests\Enums\EvaluationMethods;
-use Tests\Interfaces\EvaluationPeriodInterface;
 use Tests\Traits\Faker;
+use Tests\Abstract\Builder;
 use Tests\Traits\UserDirector;
+use MapasCulturais\Entities\Agent;
+use Tests\Enums\EvaluationMethods;
+use MapasCulturais\Entities\Opportunity;
+use Tests\Interfaces\EvaluationPeriodInterface;
+use MapasCulturais\Entities\RegistrationEvaluation;
+use Tests\Abstract\EvaluationMethodConfigurationBuilder;
+use MapasCulturais\Entities\EvaluationMethodConfiguration;
 
 class EvaluationPhaseBuilder extends Builder
 {
@@ -103,6 +104,13 @@ class EvaluationPhaseBuilder extends Builder
 
         return $this;
     }
+
+    public function redistributeCommitteeRegistrations(): static
+    {
+        $this->instance->redistributeCommitteeRegistrations();
+
+        return $this;
+    }  
 
     public function setCommitteeValuersPerRegistration(string $committee, int $number_of_valuers_per_registration): self
     {
