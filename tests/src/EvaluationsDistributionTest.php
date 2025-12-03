@@ -1036,4 +1036,77 @@ class EvaluationsDistributionTest extends TestCase
 
         $this->assertEquals(0, $number_of_evaluations, 'Garantindo que não tenha avaliações');
     }
+
+    function testMaxRegistrationsPerCommitteeLimit()
+    {
+        $admin = $this->userDirector->createUser('admin');
+        $this->login($admin);
+
+        $opportunity = $this->opportunityBuilder
+            ->reset(owner: $admin->profile, owner_entity: $admin->profile)
+            ->fillRequiredProperties()
+            ->firstPhase()
+                ->setRegistrationPeriod(new Open)
+                ->done()
+            ->save()
+            ->addEvaluationPhase(EvaluationMethods::simple)
+                ->setEvaluationPeriod(new ConcurrentEndingAfter)
+                ->setCommitteeValuersPerRegistration('committee 1', 1)
+                ->save()
+                ->addValuers(2, 'committee 1')
+                ->done()
+            ->getInstance();
+
+        $this->registrationDirector->createSentRegistrations(
+            $opportunity,
+            number_of_registrations: 20
+        );
+
+        /** @var EvaluationMethodConfiguration $emc */
+        $emc = $opportunity->evaluationMethodConfiguration->refreshed();
+
+        $valuer1_relation = $emc->agentRelations[0];
+        $max_valuer1_registrations = 5;
+        $valuer1_relation->setMaxRegistrationsPerCommittee($max_valuer1_registrations);
+        $valuer1_relation->save(true);
+
+        $valuer2_relation = $emc->agentRelations[1];
+        $max_valuer2_registrations = 10;
+        $valuer2_relation->setMaxRegistrationsPerCommittee($max_valuer2_registrations);
+        $valuer2_relation->save(true);
+
+        $emc->redistributeCommitteeRegistrations();
+
+        $emc = $emc->refreshed();
+
+        /** @var Connection */
+        $conn = $this->app->em->getConnection();
+
+        // Verifica se o primeiro avaliador recebeu no máximo 5 inscrições
+        $valuer1_id = $emc->agentRelations[0]->agent->id;
+        $valuer1_evaluations = $conn->fetchScalar(
+            "SELECT COUNT(*) FROM evaluations WHERE valuer_agent_id = :valuer_id",
+            ['valuer_id' => $valuer1_id]
+        );
+        $this->assertLessThanOrEqual($max_valuer1_registrations, $valuer1_evaluations, 'Garantindo que o avaliador 1 recebeu no máximo 5 inscrições');
+
+        // Verifica se o segundo avaliador recebeu no máximo 10 inscrições
+        $valuer2_id = $emc->agentRelations[1]->agent->id;
+        $valuer2_evaluations = $conn->fetchScalar(  
+            "SELECT COUNT(*) FROM evaluations WHERE valuer_agent_id = :valuer_id",
+            ['valuer_id' => $valuer2_id]
+        );
+        $this->assertLessThanOrEqual($max_valuer2_registrations, $valuer2_evaluations, 'Garantindo que o avaliador 2 recebeu no máximo 10 inscrições');
+
+        // Verifica se o total de avaliações é 20 (todas as inscrições foram distribuídas)
+        $total_evaluations = $conn->fetchScalar("SELECT COUNT(*) FROM evaluations");
+        $this->assertEquals(20, $total_evaluations, 'Garantindo que todas as 20 inscrições foram distribuídas');
+
+        // Verifica se os getters funcionam corretamente
+        $valuer1_relation = $emc->agentRelations[0]->refreshed();
+        $valuer2_relation = $emc->agentRelations[1]->refreshed();
+        
+        $this->assertEquals($max_valuer1_registrations, $valuer1_relation->getMaxRegistrationsPerCommittee(), 'Garantindo que o getter retorna o valor correto para o avaliador 1');
+        $this->assertEquals($max_valuer2_registrations, $valuer2_relation->getMaxRegistrationsPerCommittee(), 'Garantindo que o getter retorna o valor correto para o avaliador 2');
+    }
 }
