@@ -165,4 +165,23 @@ class EvaluationMethodConfigurationAgentRelation extends AgentRelation {
     {
         return $this->owner->canUser('manageEvaluationCommittee', $user);
     }
+
+    public function getMaxRegistrationsPerCommittee(): ?int
+    {
+        $metadata = is_object($this->metadata) ? $this->metadata : (object) [];
+        return $metadata->maxRegistrationsPerCommittee ?? null;
+    }
+
+    public function setMaxRegistrationsPerCommittee(?int $max): void
+    {
+        $metadata = is_object($this->metadata) ? $this->metadata : (object) [];
+
+        if(is_null($max)) {
+            unset($metadata->maxRegistrationsPerCommittee);
+        } else {
+            $metadata->maxRegistrationsPerCommittee = $max;
+        }
+
+        $this->metadata = $metadata;
+    }
 }
