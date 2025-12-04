@@ -1715,7 +1715,7 @@ class Module extends \MapasCulturais\Module{
             $app->hook('entity(EvaluationMethodConfiguration).save:finish', function($flush) use ($app) {
                 /** @var EvaluationMethodConfiguration $this */
                 $opportunity = $this->opportunity;
-                if (!$opportunity->isDataCollection) {
+                if (!$opportunity->isDataCollection && ($opportunity->registrationFrom != $this->evaluationFrom || $opportunity->registrationTo != $this->evaluationTo)) {
                     $opportunity->registrationFrom = $this->evaluationFrom;
                     $opportunity->registrationTo = $this->evaluationTo;
                     $opportunity->save($flush);
