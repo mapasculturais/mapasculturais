@@ -599,6 +599,20 @@ abstract class EvaluationMethod extends Module implements \JsonSerializable{
 
         $ignore_started_evaluations = $evaluation_config->ignoreStartedEvaluations;
 
+        /** 
+         * Limimte de inscrições por avaliador nas comissões 
+         * @var int[][]
+         **/
+        $registrations_per_valuer = [];
+
+        foreach($evaluation_config->getAgentRelationsGrouped() as $committee => $agent_relations) {
+            $registrations_per_valuer[$committee] = $registrations_per_valuer[$committee] ?? [];
+            foreach($agent_relations as $agent_relation) {
+                $registrations_per_valuer[$committee][$agent_relation->agent->user->id] = $agent_relation->maxRegistrations;
+            }
+        }
+
+
         /** Limite de avaliadores por inscrição
          * @var array */
         $valuers_per_registration = $evaluation_config->valuersPerRegistration;
@@ -827,6 +841,11 @@ abstract class EvaluationMethod extends Module implements \JsonSerializable{
                 // adiciona os avaliadores da comissão na inscrição
                 foreach($users as $user) {
                     $checks_count++;
+
+                    // se o usuário já alcançou o limite de inscrições configurado para ele na comissão, pula
+                    if($registrations_per_valuer[$committee][$user->id] && ($valuers_committee_registrations_count[$committee_name][$user->id] ?? 0) >= $registrations_per_valuer[$committee][$user->id]) {
+                        continue;
+                    }
 
                     if($max_valuers && $registration_valuers_count[$registration->id][$committee_name] >= $max_valuers) {
                         continue;
