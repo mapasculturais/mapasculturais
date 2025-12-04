@@ -14,6 +14,10 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Aba de eventos na single de projetos com listagem de eventos vinculados e suas ocorrências
 - Fediverso como rede social nos metadados das entidades
 
+### Melhorias nas avaliação
+- Possibilidade de configuração de limite de inscrições para os avaliadores
+- Botão de excluir avaliação
+
 ### Melhorias
 - Redireciona usuario para o perfil quando o mesmo esta em rascunho ou com dados obrigatórios não preechidos
 - Implementa novos hooks na edit de espaço e no componente entity-field
@@ -29,7 +33,7 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Corrige função replaces da classe i
 - Corrige nome do hook entity().archive:after
 - Corrige busca pela chave primária da tabela Job
-- impede que o usuarios que não são admnistradores altere critérios ou sessões de critérios de avaliação técnica se já existem avaliações enviadas
+- Impede que o usuarios que não são admnistradores altere critérios ou sessões de critérios de avaliação técnica se já existem avaliações enviadas
 
 ### Melhorias não funcionais
 - LifecycleCallbacks na Entities\SealRelation
