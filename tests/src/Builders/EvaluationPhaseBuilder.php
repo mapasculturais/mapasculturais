@@ -2,6 +2,7 @@
 
 namespace Tests\Builders;
 
+use MapasCulturais\App;
 use Tests\Traits\Faker;
 use Tests\Abstract\Builder;
 use Tests\Traits\UserDirector;
@@ -143,6 +144,42 @@ class EvaluationPhaseBuilder extends Builder
     public function redistributeCommitteeRegistrations(): static
     {
         $this->instance->redistributeCommitteeRegistrations();
+
+        return $this;
+    }
+
+    public function createEvaluations(string $committee, int $number_of_evaluations, array $evaluation_data = [], int $status = RegistrationEvaluation::STATUS_DRAFT, ?int $valuer_index = null ): static
+    {
+        $app = App::i();
+        // Commite de avaliação
+        $valuers = $valuer_index ? [$this->instance->agentRelations[$valuer_index]] : $this->instance->agentRelations;
+        $registratons = $app->repo('Registration')->findBy(['opportunity' => $this->instance->opportunity]);
+        
+        foreach($registratons as $registration) {
+            foreach($valuers as $valuer) {
+                for ($i = 0; $i < $number_of_evaluations; $i++) {
+                    $evaluation = new RegistrationEvaluation();
+                    $evaluation->registration = $registration;
+                    $evaluation->user = $valuer;
+                    $evaluation->status = $status;
+                    eval(\psy\sh());
+                    $evaluation->save(true);
+                }
+            }
+        }
+
+        
+        foreach($valuers as $valuer) {
+            for ($i = 0; $i < $number_of_evaluations; $i++) {
+                $evaluation = new RegistrationEvaluation();
+                $evaluation->committee = $committee;
+                $evaluation->user = $valuer->agent->owner->user;
+                $evaluation->status = $status;
+                $evaluation->opportunity = $this->instance->opportunity;
+                $evaluation->save(true);
+            }
+        }
+       
 
         return $this;
     }
