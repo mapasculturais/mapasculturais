@@ -178,6 +178,47 @@ $this->breadcrumb = [
             </mc-container>
             <?php $this->applyTemplateHook('entity-info-validation','end') ?>
         </mc-tab>
+        
+        <mc-tab label="<?= i::_e('PortFólio') ?>" slug="port">
+            <mc-container>
+                <main>
+                    <mc-tabs class="tabs" sync-hash>
+                        <mc-tab label="<?= i::_e('Arquivos') ?>" slug="arquivos">
+                            <mc-card>
+                                <template #content>
+                                    <p><?php i::_e('Insira arquivos de até ' . $app->getMaxUploadSize() .'. Os arquivos serão exibidos publicamente e poderão ser baixados por qualquer pessoa.') ?></p>
+                                    <entity-files-list :entity="entity" classes="col-12" group="downloads" title="<?php i::_e('Insira arquivos de até ' . $app->getMaxUploadSize() . '. Os arquivos serão exibidos publicamente e poderão ser baixados por qualquer pessoa.') ?>" editable></entity-files-list>
+                                </template>
+                            </mc-card>
+                        </mc-tab>
+                        <mc-tab label="<?= i::_e('Links') ?>" slug="links">
+                            <mc-card>
+                                <template #content>
+                                    <p><?php i::_e("Os links serão exibidos publicamente e poderão ser acessados por qualquer pessoa."); ?></p>
+                                    <entity-links :entity="entity" classes="col-12" title="<?php i::esc_attr_e('Links'); ?>" editable></entity-links>
+                                </template>
+                            </mc-card>
+                        </mc-tab>
+                        <mc-tab label="<?= i::_e('Videos') ?>" slug="videos">
+                            <mc-card>
+                                <template #content>
+                                     <p><?php i::_e("Faça upload do seu vídeo em alguma plataforma de hospedagem de vídeos e insira na plataforma Mapas através da URL. Os vídeos serão exibidos publicamente e poderão ser acessados por qualquer pessoa."); ?></p>
+                                    <entity-gallery-video :entity="entity" classes="col-12" title="<?php i::_e('Vídeos') ?>" editable></entity-gallery-video>
+                                </template>
+                            </mc-card>
+                        </mc-tab>
+                        <mc-tab label="<?= i::_e('Imagens') ?>" slug="imagens">
+                            <mc-card>
+                                <template #content>
+                                    <p><?php i::_e('Insira imagens de até ' . $app->getMaxUploadSize() . '. As imagens serão exibidas publicamente e poderão ser baixadas por qualquer pessoa.') ?></p>
+                                    <entity-gallery :entity="entity" classes="col-12" title="<?php i::_e('Fotos') ?>" editable></entity-gallery>
+                                </template>
+                            </mc-card>
+                        </mc-tab>
+                    </mc-tabs>
+                </main>
+            </mc-container>
+        </mc-tab>
         <?php $this->applyTemplateHook('tabs','end') ?>
     </mc-tabs>
     
