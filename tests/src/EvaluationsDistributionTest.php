@@ -1116,4 +1116,41 @@ class EvaluationsDistributionTest extends TestCase
         $this->assertEquals($fulano_max_registrations, $fulano->maxRegistrations, 'Garantindo que o getter retorna o valor correto para o primeiro avaliador com limite');
         $this->assertEquals($beltrano_max_registrations, $beltrano->maxRegistrations, 'Garantindo que o getter retorna o valor correto para o segundo avaliador com limite');
     }
+
+    function testReplaceEvaluatorTransfersEvaluations() {
+
+        $admin = $this->userDirector->createUser('admin');
+        $this->login($admin);
+
+        //1) criar uma oportunidade com 2 avaliadores
+        $opportunity = $this->opportunityBuilder
+        ->reset(owner: $admin->profile, owner_entity: $admin->profile)
+        ->fillRequiredProperties()
+        ->firstPhase()
+            ->setRegistrationPeriod(new Open)
+            ->done()
+        ->save()
+        ->createSentRegistrations(number_of_registrations: 8)
+        ->addEvaluationPhase(EvaluationMethods::simple)
+            ->setEvaluationPeriod(new ConcurrentEndingAfter)
+            ->setCommitteeValuersPerRegistration('committee 1', 2)
+            ->save()
+            ->addValuer('committee 1', name: 'fulano')
+                ->done()
+            ->addValuer('committee 1', name: 'ciclano')
+                ->done()
+            ->redistributeCommitteeRegistrations()
+            ->withValuer('committee 1', 'fulano')
+                ->createDraftEvaluation();
+                ->createSentEvaluation()
+                ->done()
+            ->withValuer('committee 1', 'ciclano')
+                ->createDraftEvaluation()
+                ->createSentEvaluation()
+                ->done()
+            ->done()
+        ->getInstance();
+
+
+    }
 }
