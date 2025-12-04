@@ -127,18 +127,19 @@ $this->import('
                     useDistributionField />
 
                 <div class="opportunity-evaluation-committee__card-footer">
-                    <mc-confirm-button v-if="infoReviewer.metadata?.summary.sent > 0" @confirm="reopenEvaluations(infoReviewer.agentUserId)">
-                        <template #button="{open}">
-                            <button class="button button--primary" :class="{'disabled' : infoReviewer.metadata.summary.sent <= 0}" @click="open()">
-                                <?php i::_e('Reabrir avaliações') ?>
-                            </button>
-                        </template>
-                        <template #message="message">
-                            <?php i::_e('Você tem certeza que deseja reabrir as avaliações para este avaliador?') ?>
-                        </template>
-                    </mc-confirm-button>
-
                     <div class="opportunity-evaluation-committee__card-footer-actions" v-if="infoReviewer.status !== -5">
+                        <mc-confirm-button v-if="infoReviewer.metadata?.summary.sent > 0" @confirm="reopenEvaluations(infoReviewer.agentUserId)">
+                            <template #button="{open}">
+                                <button class="opportunity-evaluation-committee__card-footer-button danger__border button button--icon button--sm" :class="{'disabled' : infoReviewer.metadata.summary.sent <= 0}" @click="open()">
+                                    <mc-icon name="lock-open" class="danger__color" ></mc-icon>
+                                    <?php i::_e('Reabrir avaliações') ?>
+                                </button>
+                            </template>
+                            <template #message="message">
+                                <?php i::_e('Você tem certeza que deseja reabrir as avaliações para este avaliador?') ?>
+                            </template>
+                        </mc-confirm-button>
+
                         <button class="opportunity-evaluation-committee__card-footer-button button button--disable button--icon button--sm" @click="disableOrEnableReviewer(infoReviewer)">
                             <mc-icon name="close"></mc-icon> {{buttonText(infoReviewer.status)}}
                         </button>
@@ -162,6 +163,16 @@ $this->import('
                             </template>
                         </mc-confirm-button>
                     </div>
+
+                    <label>
+                        <?= i::__('Limite de inscrições:') ?>
+                        <div class='field opportunity-evaluation-committee__max-registrations'>
+                            <input 
+                                v-model="infoReviewer.metadata.maxRegistrations" 
+                                @change="saveMaxRegistrations(infoReviewer)" 
+                                type="number">
+                        </div>
+                    </label>
                 </div>
             </div>
         </div>

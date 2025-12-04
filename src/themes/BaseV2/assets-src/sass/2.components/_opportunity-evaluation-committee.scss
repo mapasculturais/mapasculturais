@@ -166,4 +166,10 @@
             gap: size(16);
         }
     }
+
+    &__max-registrations {
+        input {
+            padding: .4em;
+        }
+    }
 }
