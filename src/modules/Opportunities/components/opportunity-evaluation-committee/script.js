@@ -355,6 +355,18 @@ app.component('opportunity-evaluation-committee', {
             }
         },
 
+        saveMaxRegistrations(infoReviewer){
+            const timeoutName = "saveMaxRegistrations" + infoReviewer.id;
+            const messages = useMessages();
+
+            clearTimeout(this[timeoutName]);
+            this[timeoutName] = setTimeout(async () => {
+                this.entity.enableM
+                await this.entity.invoke('setValuerMaxRegistrations',{relationId: infoReviewer.id, maxRegistrations: infoReviewer.metadata.maxRegistrations});
+                messages.success(this.text('modificações salvas'));
+            }, 3000)
+        },
+
         toggleContent(reviewerId) {
             const reviewer = this.infosReviewers.find(r => r.id === reviewerId);
             if (reviewer) {
