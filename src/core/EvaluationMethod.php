@@ -843,7 +843,8 @@ abstract class EvaluationMethod extends Module implements \JsonSerializable{
                     $checks_count++;
 
                     // se o usuário já alcançou o limite de inscrições configurado para ele na comissão, pula
-                    if($registrations_per_valuer[$committee][$user->id] && ($valuers_committee_registrations_count[$committee_name][$user->id] ?? 0) >= $registrations_per_valuer[$committee][$user->id]) {
+                    $max_user_registrations = $registrations_per_valuer[$committee][$user->id] ?? null;
+                    if($max_user_registrations && ($valuers_committee_registrations_count[$committee_name][$user->id] ?? 0) >= $max_user_registrations) {
                         continue;
                     }
 
