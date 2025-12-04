@@ -43,8 +43,8 @@ class EvaluationBuilder extends Builder
         }
 
         $this->instance = new RegistrationEvaluation();
-        $this->instance->registration = $registration;
-        $this->instance->user = $user;
+        $this->instance->registration = $registration->refreshed();
+        $this->instance->user = $user->refreshed();
 
         return $this;
     }
@@ -56,6 +56,11 @@ class EvaluationBuilder extends Builder
 
     public function fillRequiredProperties(): static
     {
+        switch($this->instance->evaluationMethod->slug) {
+            case 'simple':
+                $this->setEvaluationData(['status' => null]);
+                break;
+        }
         return $this;
     }
 
@@ -71,7 +76,10 @@ class EvaluationBuilder extends Builder
         $this->instance->status = RegistrationEvaluation::STATUS_EVALUATED;
 
         if($save) {
+            $app = App::i();
+            $app->disableAccessControl();
             $this->instance->save($flush);
+            $app->enableAccessControl();
         }
 
         return $this;
@@ -79,8 +87,10 @@ class EvaluationBuilder extends Builder
 
     public function send(bool $flush = true): static
     {
+        $app = App::i();
+        $app->disableAccessControl();
         $this->instance->send($flush);
-
+        $app->enableAccessControl();
         return $this;
     }
    
