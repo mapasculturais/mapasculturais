@@ -342,8 +342,8 @@ class EvaluationsDistributionTest extends TestCase
                 ->addValuers($valuers_per_committe - 1, 'committee 1')
                 ->addValuers($valuers_per_committe - 1, 'committee 2')
                 ->addValuers($valuers_per_committe, 'committee 3')
-                ->addValuer('committee 1', $valuer->profile)->done()
-                ->addValuer('committee 2', $valuer->profile)->done()
+                ->addValuer('committee 1', 'fulano', $valuer->profile)->done()
+                ->addValuer('committee 2', 'ciclano', $valuer->profile)->done()
                 ->done()
             ->getInstance();
 
@@ -484,8 +484,8 @@ class EvaluationsDistributionTest extends TestCase
                 ->addValuers($valuers_per_committe - 1, 'committee 1')
                 ->addValuers($valuers_per_committe - 1, 'committee 2')
                 ->addValuers($valuers_per_committe, 'committee 3')
-                ->addValuer('committee 1', $valuer->profile)->done()
-                ->addValuer('committee 2', $valuer->profile)->done()
+                ->addValuer('committee 1', 'fulano', $valuer->profile)->done()
+                ->addValuer('committee 2', 'ciclano', $valuer->profile)->done()
                 ->done()
 
             ->refresh()
@@ -627,8 +627,8 @@ class EvaluationsDistributionTest extends TestCase
                 ->addValuers($valuers_per_committe - 1, 'committee 1')
                 ->addValuers($valuers_per_committe - 1, 'committee 2')
                 ->addValuers($valuers_per_committe, 'committee 3')
-                ->addValuer('committee 1', $valuer->profile)->done()
-                ->addValuer('committee 2', $valuer->profile)->done()
+                ->addValuer('committee 1', 'fulano', $valuer->profile)->done()
+                ->addValuer('committee 2', 'ciclano', $valuer->profile)->done()
                 ->done()
             ->getInstance();
 
@@ -767,8 +767,8 @@ class EvaluationsDistributionTest extends TestCase
                 ->addValuers($valuers_per_committe - 1, 'committee 1')
                 ->addValuers($valuers_per_committe - 1, 'committee 2')
                 ->addValuers($valuers_per_committe, 'committee 3')
-                ->addValuer('committee 1', $valuer->profile)->done()
-                ->addValuer('committee 2', $valuer->profile)->done()
+                ->addValuer('committee 1', 'fulano', $valuer->profile)->done()
+                ->addValuer('committee 2', 'ciclano', $valuer->profile)->done()
                 ->done()
             ->getInstance();
 
