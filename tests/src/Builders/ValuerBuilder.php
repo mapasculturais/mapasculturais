@@ -36,7 +36,10 @@ class ValuerBuilder extends Builder
 
     public function done(): EvaluationPhaseBuilder
     {
-        $this->instance->save(true);
+        $this->instance->agent = $this->instance->agent->refreshed();
+        $this->instance->owner = $this->instance->owner->refreshed();
+
+        $this->save(true);
         return $this->evaluationPhaseBuilder;
     }
 
@@ -62,7 +65,7 @@ class ValuerBuilder extends Builder
         }
 
         $this->instance = $this->evaluationPhaseBuilder->getInstance()->createAgentRelation(
-            agent: $valuer,
+            agent: $valuer->refreshed(),
             group: $committee_name,
             has_control: true
         );
@@ -90,7 +93,7 @@ class ValuerBuilder extends Builder
                 opportunity: $this->instance->owner->opportunity
             );
         }
-
+        $this->evaluationBuilder->fillRequiredProperties();
         $this->evaluationBuilder->save();
 
         return $this;
@@ -98,17 +101,7 @@ class ValuerBuilder extends Builder
 
     public function createConcludedEvaluation(?Registration $registration = null): static
     {
-        if ($registration) {
-            $this->evaluationBuilder->reset(
-                user: $this->instance->agent->user,
-                registration: $registration
-            );
-        } else {
-            $this->evaluationBuilder->reset(
-                user: $this->instance->agent->user,
-                opportunity: $this->instance->owner->opportunity
-            );
-        }
+        $this->createDraftEvaluation($registration);
 
         $this->evaluationBuilder->conclude();
 
@@ -117,17 +110,7 @@ class ValuerBuilder extends Builder
 
     public function createSentEvaluation(?Registration $registration = null): static
     {
-        if ($registration) {
-            $this->evaluationBuilder->reset(
-                user: $this->instance->agent->user,
-                registration: $registration
-            );
-        } else {
-            $this->evaluationBuilder->reset(
-                user: $this->instance->agent->user,
-                opportunity: $this->instance->owner->opportunity
-            );
-        }
+        $this->createDraftEvaluation($registration);
 
         $this->evaluationBuilder->send();
 
