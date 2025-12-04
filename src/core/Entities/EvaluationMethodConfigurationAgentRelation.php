@@ -14,6 +14,7 @@ use MapasCulturais\JobTypes\ReopenEvaluations;
  * 
  * @property \MapasCulturais\Entities\EvaluationMethodConfiguration $owner
  * @property \MapasCulturais\Entities\Agent $agent
+ * @property ?int $maxRegistrations Número máximo de inscrições que o avaliador pode receber dentro da comissão
  * 
  * @ORM\Entity
  * @ORM\entity(repositoryClass="MapasCulturais\Repository")
@@ -33,18 +34,11 @@ class EvaluationMethodConfigurationAgentRelation extends AgentRelation {
      */
     protected $owner;
 
-
     public function __construct()
     {
-        $this->metadata =  [
-            "summary" => [
-                "pending" => 0, 
-                "started" => 0, 
-                "completed" => 0,
-                "sent" => 0
-            ]
-        ];
         parent::__construct();
+
+        $this->initializeMetadata();
     }
     
     function save($flush = false)
@@ -116,6 +110,22 @@ class EvaluationMethodConfigurationAgentRelation extends AgentRelation {
         $app->applyHookBoundTo($this,"{$this->hookPrefix}.enable:after");
     }
 
+    protected function initializeMetadata(): object
+    {
+        $this->metadata = is_object($this->metadata) ? $this->metadata : (object) [];
+
+        $this->metadata->summary = $this->metadata->summary ?? [
+            "pending" => 0, 
+            "started" => 0, 
+            "completed" => 0,
+            "sent" => 0
+        ];
+
+        $this->metadata->maxRegistrations = $this->metadata->maxRegistrations ?? null;
+
+        return $this->metadata;
+    }
+
     /**
      * Atualiza o resumo de avaliações do avaliador.
      *
@@ -142,11 +152,7 @@ class EvaluationMethodConfigurationAgentRelation extends AgentRelation {
             $app->log->debug("SUMMARY: Atualizando o resumo de avaliações do avaliador {$this->agent->name}");
         }
 
-        if(is_object($this->metadata)) {
-            $metadata = $this->metadata;
-        } else {
-            $metadata = (object) [];
-        }
+        $metadata = $this->initializeMetadata();
 
         $user = $this->agent->user;
         $evaluation_method_configuration = $this->owner;
@@ -154,6 +160,18 @@ class EvaluationMethodConfigurationAgentRelation extends AgentRelation {
 
         $conn = $app->em->getConnection();
         $conn->update('agent_relation', ['metadata' => json_encode($metadata)], ['id' => $this->id]);
+    }
+
+    public function getMaxRegistrations(): ?int
+    {
+        $this->initializeMetadata();
+        return $this->metadata->maxRegistrations;
+    }
+
+    public function setMaxRegistrations(?int $max_registrations): void
+    {
+        $this->initializeMetadata();
+        $this->metadata->maxRegistrations = $max_registrations;
     }
 
     protected function canUserRemove($user): bool
@@ -164,24 +182,5 @@ class EvaluationMethodConfigurationAgentRelation extends AgentRelation {
     protected function canUserModify($user): bool
     {
         return $this->owner->canUser('manageEvaluationCommittee', $user);
-    }
-
-    public function getMaxRegistrationsPerCommittee(): ?int
-    {
-        $metadata = is_object($this->metadata) ? $this->metadata : (object) [];
-        return $metadata->maxRegistrationsPerCommittee ?? null;
-    }
-
-    public function setMaxRegistrationsPerCommittee(?int $max): void
-    {
-        $metadata = is_object($this->metadata) ? $this->metadata : (object) [];
-
-        if(is_null($max)) {
-            unset($metadata->maxRegistrationsPerCommittee);
-        } else {
-            $metadata->maxRegistrationsPerCommittee = $max;
-        }
-
-        $this->metadata = $metadata;
     }
 }
