@@ -5,6 +5,7 @@ namespace Test;
 use MapasCulturais\App;
 use MapasCulturais\Connection;
 use MapasCulturais\Entities\EvaluationMethodConfiguration;
+use MapasCulturais\Entities\EvaluationMethodConfigurationAgentRelation;
 use MapasCulturais\Entities\Opportunity;
 use Tests\Abstract\TestCase;
 use Tests\Builders\PhasePeriods\After;
@@ -341,8 +342,8 @@ class EvaluationsDistributionTest extends TestCase
                 ->addValuers($valuers_per_committe - 1, 'committee 1')
                 ->addValuers($valuers_per_committe - 1, 'committee 2')
                 ->addValuers($valuers_per_committe, 'committee 3')
-                ->addValuer('committee 1', $valuer->profile)
-                ->addValuer('committee 2', $valuer->profile)
+                ->addValuer('committee 1', $valuer->profile)->done()
+                ->addValuer('committee 2', $valuer->profile)->done()
                 ->done()
             ->getInstance();
 
@@ -483,8 +484,8 @@ class EvaluationsDistributionTest extends TestCase
                 ->addValuers($valuers_per_committe - 1, 'committee 1')
                 ->addValuers($valuers_per_committe - 1, 'committee 2')
                 ->addValuers($valuers_per_committe, 'committee 3')
-                ->addValuer('committee 1', $valuer->profile)
-                ->addValuer('committee 2', $valuer->profile)
+                ->addValuer('committee 1', $valuer->profile)->done()
+                ->addValuer('committee 2', $valuer->profile)->done()
                 ->done()
 
             ->refresh()
@@ -626,8 +627,8 @@ class EvaluationsDistributionTest extends TestCase
                 ->addValuers($valuers_per_committe - 1, 'committee 1')
                 ->addValuers($valuers_per_committe - 1, 'committee 2')
                 ->addValuers($valuers_per_committe, 'committee 3')
-                ->addValuer('committee 1', $valuer->profile)
-                ->addValuer('committee 2', $valuer->profile)
+                ->addValuer('committee 1', $valuer->profile)->done()
+                ->addValuer('committee 2', $valuer->profile)->done()
                 ->done()
             ->getInstance();
 
@@ -766,8 +767,8 @@ class EvaluationsDistributionTest extends TestCase
                 ->addValuers($valuers_per_committe - 1, 'committee 1')
                 ->addValuers($valuers_per_committe - 1, 'committee 2')
                 ->addValuers($valuers_per_committe, 'committee 3')
-                ->addValuer('committee 1', $valuer->profile)
-                ->addValuer('committee 2', $valuer->profile)
+                ->addValuer('committee 1', $valuer->profile)->done()
+                ->addValuer('committee 2', $valuer->profile)->done()
                 ->done()
             ->getInstance();
 
