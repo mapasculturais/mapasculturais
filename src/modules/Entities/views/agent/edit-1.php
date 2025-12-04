@@ -30,6 +30,7 @@ $this->import('
     mc-tabs
     mc-tab
     entity-file
+    entity-registration
 ');
 
 $label = $this->isRequestedEntityMine() ? i::__('Meus agentes') : i::__('Agentes');
@@ -44,10 +45,9 @@ $this->breadcrumb = [
     <entity-renew-lock :entity="entity"></entity-renew-lock>
     <mc-breadcrumb></mc-breadcrumb>
     <entity-header :entity="entity" editable></entity-header>
-    
     <mc-tabs class="tabs" sync-hash>
         <?php $this->applyTemplateHook('tabs','begin') ?>
-        <mc-tab label="<?= i::_e('Informações') ?>" slug="info">
+        <mc-tab label="<?= i::_e('Perfil') ?>" slug="info">
             <?php $this->applyTemplateHook('entity-info-validation','begin') ?>
             <mc-container>
                 <entity-status :entity="entity"></entity-status>
@@ -167,40 +167,13 @@ $this->breadcrumb = [
                         </template>
                     </mc-card>
                     <mc-card>
-                        <template #title>
-                            <label><?php i::_e("Portifólio"); ?></label>
-                        </template>
                         <template #content>
-                            <div class="grid-12">
-                                <entity-files-list :entity="entity" classes="col-12" group="downloads" title="<?php i::_e('Arquivo'); ?>" editable></entity-files-list>
-                                <entity-links :entity="entity" classes="col-12" title="<?php i::_e('Links'); ?>" editable></entity-links>
-                                <entity-gallery-video :entity="entity" classes="col-12" title="<?php i::_e('Vídeos') ?>" editable></entity-gallery-video>
-                                <entity-gallery :entity="entity" classes="col-12" title="<?php i::_e('Fotos') ?>" editable></entity-gallery>
-                            </div>
+                            <entity-social-media :entity="entity" editable classes="col-12"></entity-social-media>
                         </template>
                     </mc-card>
                 </main>
                 <aside>
-                    <mc-card>
-                        <template #content>
-                            <div class="grid-12">
-                                <?php $this->applyTemplateHook('tab-entity-info', 'before'); ?>
-                                <entity-admins :entity="entity" classes="col-12" editable></entity-admins>
-                                <entity-related-agents :entity="entity" classes="col-12" editable></entity-related-agents>
-                                <entity-owner :entity="entity" classes="col-12" title="Publicado por" editable></entity-owner>
-                                <?php $this->applyTemplateHook('tab-entity-info', 'after'); ?>
-                            </div>
-                        </template>
-                    </mc-card>
-                    <mc-card class="section-divider">
-                            <template #content>
-                                <div class="right">
-                                    <div class="grid-12">
-                                        <entity-social-media :entity="entity" editable classes="col-12"></entity-social-media>
-                                    </div>
-                                </div>
-                            </template>
-                        </mc-card>
+                    <entity-registration :entity="entity"></entity-registration>
                 </aside>
             </mc-container>
             <?php $this->applyTemplateHook('entity-info-validation','end') ?>
