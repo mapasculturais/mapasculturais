@@ -130,10 +130,10 @@ abstract class Entity implements \JsonSerializable{
         return $this->getClassName() . ':' . $this->$pk;
     }
 
-    function getPKPropertyName(): string
+    static function getPKPropertyName(): string
     {
         $app = App::i();
-        $metadata = $app->em->getClassMetadata($this->getClassName());
+        $metadata = $app->em->getClassMetadata(static::class);
         return $metadata->identifier[0];
     }
 
@@ -1301,7 +1301,6 @@ abstract class Entity implements \JsonSerializable{
         $app = App::i();
 
         $uow = $app->em->getUnitOfWork();
-        $metadata = $app->em->getClassMetadata($this->getClassName());
         $uow->computeChangeSets();
         $this->_changes = $uow->getEntityChangeSet($this);
     }
