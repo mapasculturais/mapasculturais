@@ -1038,10 +1038,14 @@ class EvaluationsDistributionTest extends TestCase
         $this->assertEquals(0, $number_of_evaluations, 'Garantindo que não tenha avaliações');
     }
 
-    function testMaxRegistrationsPerCommitteeLimit()
+    function testMaxRegistrationsPerValuerLimit()
     {
         $admin = $this->userDirector->createUser('admin');
         $this->login($admin);
+
+        $number_of_registrations = 20;
+        $fulano_max_registrations = 3;
+        $beltrano_max_registrations = 5;
 
         $opportunity = $this->opportunityBuilder
             ->reset(owner: $admin->profile, owner_entity: $admin->profile)
@@ -1050,64 +1054,66 @@ class EvaluationsDistributionTest extends TestCase
                 ->setRegistrationPeriod(new Open)
                 ->done()
             ->save()
+            ->createSentRegistrations($number_of_registrations)
             ->addEvaluationPhase(EvaluationMethods::simple)
                 ->setEvaluationPeriod(new ConcurrentEndingAfter)
                 ->setCommitteeValuersPerRegistration('committee 1', 1)
                 ->save()
-                ->addValuers(2, 'committee 1')
+                ->addValuer('committee 1', name: 'fulano')
+                    ->maxRegistrations($fulano_max_registrations)
+                    ->done()
+                ->addValuer('committee 1', name: 'ciclano')
+                    ->done()
+                ->addValuer('committee 1', name: 'beltrano')
+                    ->maxRegistrations($beltrano_max_registrations)
+                    ->done()
+                ->redistributeCommitteeRegistrations()
                 ->done()
             ->getInstance();
 
-        $this->registrationDirector->createSentRegistrations(
-            $opportunity,
-            number_of_registrations: 20
-        );
 
-        /** @var EvaluationMethodConfiguration $emc */
-        $emc = $opportunity->evaluationMethodConfiguration->refreshed();
+        /** @var EvaluationMethodConfigurationAgentRelation[] */
+        $valuers = $opportunity->evaluationMethodConfiguration->agentRelations;
 
-        $valuer1_relation = $emc->agentRelations[0];
-        $max_valuer1_registrations = 5;
-        $valuer1_relation->setMaxRegistrationsPerCommittee($max_valuer1_registrations);
-        $valuer1_relation->save(true);
-
-        $valuer2_relation = $emc->agentRelations[1];
-        $max_valuer2_registrations = 10;
-        $valuer2_relation->setMaxRegistrationsPerCommittee($max_valuer2_registrations);
-        $valuer2_relation->save(true);
-
-        $emc->redistributeCommitteeRegistrations();
-
-        $emc = $emc->refreshed();
+        $fulano = $valuers[0];
+        $ciclano = $valuers[1];
+        $beltrano = $valuers[2];
 
         /** @var Connection */
         $conn = $this->app->em->getConnection();
 
-        // Verifica se o primeiro avaliador recebeu no máximo 5 inscrições
-        $valuer1_id = $emc->agentRelations[0]->agent->id;
-        $valuer1_evaluations = $conn->fetchScalar(
+        // Verifica se o fulano recebeu o número correto de avaliações 
+        
+        $fulano_evaluations = $conn->fetchScalar(
             "SELECT COUNT(*) FROM evaluations WHERE valuer_agent_id = :valuer_id",
-            ['valuer_id' => $valuer1_id]
+            ['valuer_id' => $fulano->agent->id]
         );
-        $this->assertLessThanOrEqual($max_valuer1_registrations, $valuer1_evaluations, 'Garantindo que o avaliador 1 recebeu no máximo 5 inscrições');
+        $this->assertEquals($fulano_max_registrations, $fulano_evaluations, 'Garantindo que o primeiro avaliador com limite de inscrições na comissão recebeu o número correto de inscrições');
 
-        // Verifica se o segundo avaliador recebeu no máximo 10 inscrições
-        $valuer2_id = $emc->agentRelations[1]->agent->id;
-        $valuer2_evaluations = $conn->fetchScalar(  
+        // Verifica se o beltrano recebeu no máximo 10 inscrições
+        $beltrano_evaluations = $conn->fetchScalar(  
             "SELECT COUNT(*) FROM evaluations WHERE valuer_agent_id = :valuer_id",
-            ['valuer_id' => $valuer2_id]
+            ['valuer_id' => $beltrano->agent->id]
         );
-        $this->assertLessThanOrEqual($max_valuer2_registrations, $valuer2_evaluations, 'Garantindo que o avaliador 2 recebeu no máximo 10 inscrições');
+        $this->assertEquals($beltrano_max_registrations, $beltrano_evaluations, 'Garantindo que o segundo avaliador com limite de inscrições na comissão recebeu o número correto de inscrições');
+
+        // Verifica se o ciclano recebeu as demais avaliações (Total de inscrições - avaliações do fulano - avaliações do beltrano)
+        $ciclano_evaluations = $conn->fetchScalar(  
+            "SELECT COUNT(*) FROM evaluations WHERE valuer_agent_id = :valuer_id",
+            ['valuer_id' => $ciclano->agent->id]
+        );
+
+        $this->assertEquals(
+            expected: $number_of_registrations - $fulano_evaluations - $beltrano_evaluations, 
+            actual: $ciclano_evaluations, 
+            message: 'Garantindo que o avaliador SEM limite de inscrições na comissão recebeu as demais inscrições'
+        );
 
         // Verifica se o total de avaliações é 20 (todas as inscrições foram distribuídas)
         $total_evaluations = $conn->fetchScalar("SELECT COUNT(*) FROM evaluations");
-        $this->assertEquals(20, $total_evaluations, 'Garantindo que todas as 20 inscrições foram distribuídas');
-
-        // Verifica se os getters funcionam corretamente
-        $valuer1_relation = $emc->agentRelations[0]->refreshed();
-        $valuer2_relation = $emc->agentRelations[1]->refreshed();
+        $this->assertEquals($number_of_registrations, $total_evaluations, 'Garantindo que todas as inscrições foram distribuídas');
         
-        $this->assertEquals($max_valuer1_registrations, $valuer1_relation->getMaxRegistrationsPerCommittee(), 'Garantindo que o getter retorna o valor correto para o avaliador 1');
-        $this->assertEquals($max_valuer2_registrations, $valuer2_relation->getMaxRegistrationsPerCommittee(), 'Garantindo que o getter retorna o valor correto para o avaliador 2');
+        $this->assertEquals($fulano_max_registrations, $fulano->maxRegistrations, 'Garantindo que o getter retorna o valor correto para o primeiro avaliador com limite');
+        $this->assertEquals($beltrano_max_registrations, $beltrano->maxRegistrations, 'Garantindo que o getter retorna o valor correto para o segundo avaliador com limite');
     }
 }
