@@ -1330,6 +1330,10 @@ abstract class EvaluationMethod extends Module implements \JsonSerializable{
         return "$slug--configuration-form";
     }
 
+    function replaceEvaluator() {
+       return true;
+    }
+
     function register(){
         $app = App::i();
 
