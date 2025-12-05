@@ -14,7 +14,11 @@ return array(
             'validations' => array(
                 //'required' => \MapasCulturais\i::__('Seu nome completo ou jurídico deve ser informado.')
             ),
-            'available_for_opportunities' => true
+            'available_for_opportunities' => true,
+            'serialize' => function($value, $entity = null) {
+                $value = trim(preg_replace('/\s+/', ' ', $value));
+                return $value;
+            }
         ),
 
         'nomeSocial' => array(
