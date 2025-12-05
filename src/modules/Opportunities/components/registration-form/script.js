@@ -177,6 +177,11 @@ app.component('registration-form', {
         isDisabled(field) {
             let fieldName = field.fieldName || field.groupName;
 
+            // Bloquear edição do CPF do agente responsável
+            if (field.fieldType == 'agent-owner-field' && field.config?.entityField == 'cpf') {
+                return true;
+            }
+
             if (this.editableFields.length > 0) {
                 if (this.disableFields && this.disableFields.includes(fieldName)) {
                     return true;

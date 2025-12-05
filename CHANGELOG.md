@@ -5,6 +5,10 @@ Todas as mudanças notáveis no projeto serão documentadas neste arquivo.
 O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/)
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [7.6.26] - UNRELEASED
+### Melhorias
+- Desabilita a edição do campo de CPF no formulário de inscrição
+
 ## [7.6.25] - 2025-11-27
 ### Melhorias
 - Implementa validação dos campos no momento do salvamento de entidades 
