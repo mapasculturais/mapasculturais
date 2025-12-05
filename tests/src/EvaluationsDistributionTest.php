@@ -1141,7 +1141,7 @@ class EvaluationsDistributionTest extends TestCase
                 ->done()
             ->redistributeCommitteeRegistrations()
             ->withValuer('committee 1', 'fulano')
-                ->createDraftEvaluation();
+                ->createDraftEvaluation()
                 ->createSentEvaluation()
                 ->done()
             ->withValuer('committee 1', 'ciclano')
@@ -1151,6 +1151,14 @@ class EvaluationsDistributionTest extends TestCase
             ->done()
         ->getInstance();
 
+        $emc = $opportunity->evaluationMethodConfiguration->refreshed();
+
+
+        $fulano = $emc->agentRelations[0];
+        $ciclano = $emc->agentRelations[1];
+
+        $this->assertEquals(1, $fulano->metadata['summary']['pending'], 'Garantindo que o fulano tem 1 avaliação pendente');
+        $this->assertEquals(1, $ciclano->metadata['summary']['pending'], 'Garantindo que o ciclano tem 1 avaliação pendente');
 
     }
 }
