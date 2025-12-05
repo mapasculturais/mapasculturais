@@ -1,0 +1,22 @@
+@use '../0.settings/mixins' as *;
+
+.collapsible-content {
+    &__header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        cursor: pointer;
+        
+        &-content {
+            flex: 1;
+        }
+        
+        &-icon {
+            margin-left: auto;
+            display: flex;
+            align-items: center;
+        }
+    }
+    
+}
+
