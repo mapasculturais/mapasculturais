@@ -33,9 +33,10 @@
             gap: size(40);
         }
 
-        & > .tabs-component {
-            position: relative;
-            margin-top: size(-43);
+        .tabs-component {
+            &__header {
+                margin-top: size(-34);
+            }
         }
     }
 
