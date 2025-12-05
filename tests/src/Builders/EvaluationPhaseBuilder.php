@@ -196,8 +196,9 @@ class EvaluationPhaseBuilder extends Builder
     public function setCommitteeFilterCategory(string $committee, array $categories): self
     {
         $fetch_fields = $this->instance->fetchFields ?: (object)[];
+        $fetch_fields->$committee = $fetch_fields->$committee ?? [];
 
-        $fetch_fields->$committee = empty($categories) ? [] : ['category' => $categories];
+        $fetch_fields->$committee['category'] = $categories;
 
         $this->instance->fetchFields = $fetch_fields;
 
@@ -213,8 +214,9 @@ class EvaluationPhaseBuilder extends Builder
     public function setCommitteeFilterProponentType(string $committee, array $proponent_types): self
     {
         $fetch_fields = $this->instance->fetchFields ?: (object)[];
+        $fetch_fields->$committee = $fetch_fields->$committee ?? [];
 
-        $fetch_fields->$committee = empty($proponent_types) ? [] : ['proponentType' => $proponent_types];
+        $fetch_fields->$committee['proponentType'] = $proponent_types;
 
         $this->instance->fetchFields = $fetch_fields;
 
@@ -224,8 +226,9 @@ class EvaluationPhaseBuilder extends Builder
     public function setCommitteeFilterRange(string $committee, array $ranges): self
     {
         $fetch_fields = $this->instance->fetchFields ?: (object)[];
+        $fetch_fields->$committee = $fetch_fields->$committee ?? [];
 
-        $fetch_fields->$committee = empty($ranges) ? [] : ['range' => $ranges];
+        $fetch_fields->$committee['range'] = $ranges;
 
         $this->instance->fetchFields = $fetch_fields;
 
@@ -235,9 +238,11 @@ class EvaluationPhaseBuilder extends Builder
     public function setCommitteeFilterField(string $committee, string $field_identifier, array $answers): self
     {
         $fetch_fields = $this->instance->fetchFields ?: (object)[];
+        $fetch_fields->$committee = $fetch_fields->$committee ?? [];
+
         $field = $this->opportunityBuilder->getFieldName($field_identifier);
 
-        $fetch_fields->$committee = empty($answers) ? [] : [$field => $answers];
+        $fetch_fields->$committee[$field] = $answers;
 
         $this->instance->fetchFields = $fetch_fields;
 
