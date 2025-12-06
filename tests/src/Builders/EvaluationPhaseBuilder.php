@@ -249,6 +249,18 @@ class EvaluationPhaseBuilder extends Builder
         return $this;
     }
 
+    public function setCommitteeFilterBySentTimestamp(string $committee, ?string $from_datetime = null, ?string $to_datetime = null): self
+    {
+        $fetch_fields = $this->instance->fetchFields ?: (object)[];
+        $fetch_fields->$committee = $fetch_fields->$committee ?? [];
+
+        $fetch_fields->$committee['sentTimestamp'] = (object) ['from' => $from_datetime, 'to' => $to_datetime];
+
+        $this->instance->fetchFields = $fetch_fields;
+
+        return $this;
+    }
+
     public function config(): EvaluationMethodConfigurationBuilder|EvaluationMethodTechnicalBuilder
     {
         $builder = $this->evaluationMethod->builder($this, $this->opportunityBuilder);
