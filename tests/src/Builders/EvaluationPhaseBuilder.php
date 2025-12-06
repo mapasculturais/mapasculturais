@@ -2,6 +2,7 @@
 
 namespace Tests\Builders;
 
+use DateTime;
 use MapasCulturais\App;
 use Tests\Traits\Faker;
 use Tests\Abstract\Builder;
@@ -254,7 +255,16 @@ class EvaluationPhaseBuilder extends Builder
         $fetch_fields = $this->instance->fetchFields ?: (object)[];
         $fetch_fields->$committee = $fetch_fields->$committee ?? [];
 
-        $fetch_fields->$committee['sentTimestamp'] = (object) ['from' => $from_datetime, 'to' => $to_datetime];
+        $fetch_fields->$committee['sentTimestamp'] =  [];
+
+        if($from_datetime) {
+            $from_datetime = (new DateTime($from_datetime))->format('Y-m-d H:i:s');
+            $fetch_fields->$committee['sentTimestamp']['from'] = $from_datetime;
+        }
+        if($to_datetime) {
+            $to_datetime = (new DateTime($to_datetime))->format('Y-m-d H:i:s');
+            $fetch_fields->$committee['sentTimestamp']['to'] = $to_datetime;
+        }
 
         $this->instance->fetchFields = $fetch_fields;
 
