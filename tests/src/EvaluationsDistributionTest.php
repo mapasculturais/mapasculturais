@@ -1025,8 +1025,8 @@ class EvaluationsDistributionTest extends TestCase
 
         $emc = $emc->refreshed();
 
-        $valuer1_summary = $emc->agentRelations[0]->metadata['summary'];
-        $valuer2_summary = $emc->agentRelations[1]->metadata['summary'];
+        $valuer1_summary = $emc->agentRelations[0]->metadata->summary;
+        $valuer2_summary = $emc->agentRelations[1]->metadata->summary;
 
         $this->assertEquals(0, $valuer1_summary['pending'], 'Garantindo que o avaliador 1 não tem avaliações pendentes');
         $this->assertEquals(0, $valuer2_summary['pending'], 'Garantindo que o avaliador 2 não tem avaliações pendentes');
