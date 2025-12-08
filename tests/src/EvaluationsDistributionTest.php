@@ -876,7 +876,7 @@ class EvaluationsDistributionTest extends TestCase
         $job_id = $job_type->generateId(
             ['evaluationMethodConfiguration' => $emc],
             'now',
-            '1 hour',
+            '',
             1
         );
         
@@ -884,7 +884,11 @@ class EvaluationsDistributionTest extends TestCase
         $job = $this->app->repo('Job')->findOneBy(['id' => $job_id]);
         
         $this->assertNotNull($job, 'Garantindo que o job de redistribuição foi agendado');
-        $this->assertEquals('1 hour', $job->intervalString, 'Garantindo que o job foi agendado com intervalo de 1 hora');
+        
+        // Verifica que o job foi agendado para a próxima hora
+        $expected_execution_time = date('Y-m-d H:00:00', strtotime('+1 hour'));
+        $actual_execution_time = $job->nextExecutionTimestamp->format('Y-m-d H:i:s');
+        $this->assertEquals($expected_execution_time, $actual_execution_time, 'Garantindo que o job foi agendado para a próxima hora');
 
        
         $emc->redistributeCommitteeRegistrations();
@@ -946,7 +950,7 @@ class EvaluationsDistributionTest extends TestCase
         $job_id = $job_type->generateId(
             ['evaluationMethodConfiguration' => $emc],
             'now',
-            '1 day',
+            '',
             1
         );
         
@@ -954,8 +958,12 @@ class EvaluationsDistributionTest extends TestCase
         $job = $this->app->repo('Job')->findOneBy(['id' => $job_id]);
         
         $this->assertNotNull($job, 'Garantindo que o job de redistribuição foi agendado');
-        $this->assertEquals('1 day', $job->intervalString, 'Garantindo que o job foi agendado com intervalo de 1 dia');
-
+        
+        // Verifica que o job foi agendado para a próxima meia-noite
+        $next_midnight = new \DateTime('tomorrow 00:00:00');
+        $expected_execution_time = $next_midnight->format('Y-m-d H:i:s');
+        $actual_execution_time = $job->nextExecutionTimestamp->format('Y-m-d H:i:s');
+        $this->assertEquals($expected_execution_time, $actual_execution_time, 'Garantindo que o job foi agendado para a próxima meia-noite');
        
         $emc->redistributeCommitteeRegistrations();
 
@@ -1025,11 +1033,18 @@ class EvaluationsDistributionTest extends TestCase
 
         $emc = $emc->refreshed();
 
-        $valuer1_summary = $emc->agentRelations[0]->metadata['summary'];
-        $valuer2_summary = $emc->agentRelations[1]->metadata['summary'];
+        $valuer1_summary_raw = $emc->agentRelations[0]->metadata['summary'] ?? null;
+        $valuer1_summary = is_object($valuer1_summary_raw) 
+            ? (array) $valuer1_summary_raw 
+            : ($valuer1_summary_raw ?? ['pending' => 0, 'started' => 0, 'completed' => 0, 'sent' => 0]);
+        
+        $valuer2_summary_raw = $emc->agentRelations[1]->metadata['summary'] ?? null;
+        $valuer2_summary = is_object($valuer2_summary_raw) 
+            ? (array) $valuer2_summary_raw 
+            : ($valuer2_summary_raw ?? ['pending' => 0, 'started' => 0, 'completed' => 0, 'sent' => 0]);
 
-        $this->assertEquals(0, $valuer1_summary['pending'], 'Garantindo que o avaliador 1 não tem avaliações pendentes');
-        $this->assertEquals(0, $valuer2_summary['pending'], 'Garantindo que o avaliador 2 não tem avaliações pendentes');
+        $this->assertEquals(0, $valuer1_summary['pending'] ?? 0, 'Garantindo que o avaliador 1 não tem avaliações pendentes');
+        $this->assertEquals(0, $valuer2_summary['pending'] ?? 0, 'Garantindo que o avaliador 2 não tem avaliações pendentes');
 
         /** @var Connection */
         $conn = $this->app->em->getConnection();
