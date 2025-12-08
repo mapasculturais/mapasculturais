@@ -3,20 +3,21 @@
 namespace Test;
 
 use MapasCulturais\App;
-use MapasCulturais\Connection;
-use MapasCulturais\Entities\EvaluationMethodConfiguration;
-use MapasCulturais\Entities\EvaluationMethodConfigurationAgentRelation;
-use MapasCulturais\Entities\Opportunity;
 use Tests\Abstract\TestCase;
-use Tests\Builders\PhasePeriods\After;
-use Tests\Builders\PhasePeriods\ConcurrentEndingAfter;
+use MapasCulturais\Connection;
+use Tests\Traits\UserDirector;
+use Tests\Enums\ProponentTypes;
+use Tests\Enums\EvaluationMethods;
+use Tests\Traits\OpportunityBuilder;
 use Tests\Builders\PhasePeriods\Open;
 use Tests\Builders\PhasePeriods\Past;
-use Tests\Enums\EvaluationMethods;
-use Tests\Enums\ProponentTypes;
-use Tests\Traits\OpportunityBuilder;
+use Tests\Builders\PhasePeriods\After;
 use Tests\Traits\RegistrationDirector;
-use Tests\Traits\UserDirector;
+use MapasCulturais\Entities\Opportunity;
+use MapasCulturais\Entities\RegistrationEvaluation;
+use Tests\Builders\PhasePeriods\ConcurrentEndingAfter;
+use MapasCulturais\Entities\EvaluationMethodConfiguration;
+use MapasCulturais\Entities\EvaluationMethodConfigurationAgentRelation;
 
 class EvaluationsDistributionTest extends TestCase
 {
