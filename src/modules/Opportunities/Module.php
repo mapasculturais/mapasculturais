@@ -175,7 +175,7 @@ class Module extends \MapasCulturais\Module{
                 }
 
                 $execution_time = $distribute_execution_time($distribution_config);
-                $app->enqueueJob(Jobs\RedistributeCommitteeRegistrations::SLUG, ['evaluationMethodConfiguration' => $this], $execution_time);
+                $app->enqueueOrReplaceJob(Jobs\RedistributeCommitteeRegistrations::SLUG, ['evaluationMethodConfiguration' => $this], $execution_time);
             }
         });
 
