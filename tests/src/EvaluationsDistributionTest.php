@@ -1118,47 +1118,114 @@ class EvaluationsDistributionTest extends TestCase
     }
 
     function testReplaceEvaluatorTransfersEvaluations() {
-
+        $app = App::i();
+        
         $admin = $this->userDirector->createUser('admin');
         $this->login($admin);
-
-        //1) criar uma oportunidade com 2 avaliadores
+    
+        // Criar oportunidade com 2 avaliadores e diferentes tipos de avaliações
         $opportunity = $this->opportunityBuilder
-        ->reset(owner: $admin->profile, owner_entity: $admin->profile)
-        ->fillRequiredProperties()
-        ->firstPhase()
-            ->setRegistrationPeriod(new Open)
-            ->done()
-        ->save()
-        ->createSentRegistrations(number_of_registrations: 8)
-        ->addEvaluationPhase(EvaluationMethods::simple)
-            ->setEvaluationPeriod(new ConcurrentEndingAfter)
-            ->setCommitteeValuersPerRegistration('committee 1', 2)
+            ->reset(owner: $admin->profile, owner_entity: $admin->profile)
+            ->fillRequiredProperties()
+            ->firstPhase()
+                ->setRegistrationPeriod(new Open)
+                ->done()
             ->save()
-            ->addValuer('committee 1', name: 'fulano')
+            ->createSentRegistrations(number_of_registrations: 8)
+            ->addEvaluationPhase(EvaluationMethods::simple)
+                ->setEvaluationPeriod(new ConcurrentEndingAfter)
+                ->setCommitteeValuersPerRegistration('committee 1', 2)
+                ->save()
+                ->addValuer('committee 1', name: 'fulano')
+                    ->done()
+                ->addValuer('committee 1', name: 'ciclano')
+                    ->done()
+                ->redistributeCommitteeRegistrations()
+                ->withValuer('committee 1', 'fulano')
+                    ->createDraftEvaluation()
+                    ->createDraftEvaluation()
+                    ->createSentEvaluation()
+                    ->createSentEvaluation()
+                    ->createConcludedEvaluation()
+                    ->done()
+                ->withValuer('committee 1', 'ciclano')
+                    ->createDraftEvaluation()
+                    ->createDraftEvaluation()
+                    ->createSentEvaluation()
+                    ->createSentEvaluation()
+                    ->done()
                 ->done()
-            ->addValuer('committee 1', name: 'ciclano')
-                ->done()
-            ->redistributeCommitteeRegistrations()
-            ->withValuer('committee 1', 'fulano')
-                ->createDraftEvaluation()
-                ->createSentEvaluation()
-                ->done()
-            ->withValuer('committee 1', 'ciclano')
-                ->createDraftEvaluation()
-                ->createSentEvaluation()
-                ->done()
-            ->done()
-        ->getInstance();
-
+            ->getInstance();
+    
         $emc = $opportunity->evaluationMethodConfiguration->refreshed();
+        $old_evaluator_relation = $emc->agentRelations[0];
+        $old_evaluator_user_id = $old_evaluator_relation->agent->user->id;
+        $opportunityId = $opportunity->id;
+    
+        // Query SQL para buscar inscrições com avaliações pendentes/iniciadas/enviadas/concluídas
+        $base_query = "
+            SELECT registration_id 
+            FROM evaluations 
+            WHERE 
+                opportunity_id = :opportunityId AND
+                valuer_user_id = :valuer_user_id";
+        
+        $params = [
+            'valuer_user_id' => $old_evaluator_user_id,
+            'opportunityId' => $opportunityId,
+            'status' => EvaluationMethodConfigurationAgentRelation::STATUS_ACTIVE
+        ];
+        
+        $query_pending_evaluations_before = $base_query . " AND (evaluation_status IS NULL OR evaluation_status < :status)";
+        $pending_registration_before = $app->conn->fetchColumn($query_pending_evaluations_before, $params);
 
+        $query_started_or_sent_evaluations_before = $base_query . " AND evaluation_status >= :status";
+        $started_or_sent_registrations_before = $app->conn->fetchColumn($query_started_or_sent_evaluations_before, $params);
+    
+        $newEvaluator = $this->userDirector->createUser();
 
-        $fulano = $emc->agentRelations[0];
-        $ciclano = $emc->agentRelations[1];
+        $new_evaluatior_relation = $old_evaluator_relation->replaceEvaluator($newEvaluator);
+        
+        // 1. Verificar se o avaliador antigo foi desabilitado
+        $this->assertEquals(
+            EvaluationMethodConfigurationAgentRelation::STATUS_DISABLED,
+            $old_evaluator_relation->status,
+            'Garantindo que o antigo avaliador foi desabilitado'
+        );
 
-        $this->assertEquals(1, $fulano->metadata['summary']['pending'], 'Garantindo que o fulano tem 1 avaliação pendente');
-        $this->assertEquals(1, $ciclano->metadata['summary']['pending'], 'Garantindo que o ciclano tem 1 avaliação pendente');
+        // 2. Verificar que as avaliações concluídas/enviadas do avaliador antigo ainda estão com ele (não foram transferidas)
+        $params['valuer_user_id'] = $old_evaluator_user_id;
+        $query_started_or_sent_evaluations_old_after = $base_query . " AND evaluation_status >= :status";
+        $started_or_sent_registrations_old_after = $app->conn->fetchColumn($query_started_or_sent_evaluations_old_after, $params);
 
+        $this->assertEquals(
+            $started_or_sent_registrations_before,
+            $started_or_sent_registrations_old_after,
+            'Garantindo que as inscrições com avaliações concluídas/enviadas do avaliador antigo permanecem com ele (não foram transferidas)'
+        );
+
+        // 3. Verificar que o novo avaliador não tem essas avaliações concluídas/enviadas
+        $params['valuer_user_id'] = $new_evaluatior_relation->agent->user->id;
+        $registration_ids = implode(',', $started_or_sent_registrations_before);
+        
+        $query_started_or_sent_evaluations_new = $base_query . " AND evaluation_status >= :status AND registration_id IN ({$registration_ids})";
+        $started_or_sent_registrations_new = $app->conn->fetchColumn($query_started_or_sent_evaluations_new, $params);
+
+        $this->assertEquals(
+            [],
+            $started_or_sent_registrations_new,
+            'Garantindo que o novo avaliador não recebeu as avaliações concluídas/enviadas do avaliador antigo'
+        );
+
+        // 4. Garantindo que as inscrições com avaliações pendentes/iniciadas do avaliador antigo foram transferidas para o novo avaliador
+        $params['valuer_user_id'] = $new_evaluatior_relation->agent->user->id;
+        $query_pending_evaluations_after = $base_query . " AND (evaluation_status IS NULL OR evaluation_status < :status)";
+        $pending_registration_after = $app->conn->fetchColumn($query_pending_evaluations_after, $params);
+        
+        $this->assertEquals(
+            $pending_registration_before,
+            $pending_registration_after,
+            'Garantindo que as inscrições com avaliações pendentes/iniciadas do avaliador antigo foram transferidas para o novo avaliador'
+        );
     }
 }
