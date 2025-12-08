@@ -8,6 +8,7 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 ## [7.6.26] - UNRELEASED
 ### Correções
 - Corrige permissão de edição de campos bloqueados no formulário de inscrição
+- Adiciona todos os campos da lista de pessoas na ficha de inscrição e na exportação da lista de inscrição
 
 ## [7.6.25] - 2025-11-27
 ### Melhorias
