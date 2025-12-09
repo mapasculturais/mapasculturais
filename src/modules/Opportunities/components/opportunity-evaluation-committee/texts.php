@@ -13,5 +13,7 @@ return [
     'addProponentType' => i::__('Tipo de proponente adicionado com sucesso.'),
     'removeProponentType' => i::__('Tipo de proponente removido com sucesso.'),
     'sem avaliações' => i::__('sem avaliações'),
-    'modificações salvas' => i::__('Modificações salvas')
+    'modificações salvas' => i::__('Modificações salvas'),
+    'reviewerReplaced' => i::__('Avaliador substituído com sucesso.'),
+    'reviewerNotReplaced' => i::__('Erro ao substituir avaliador.')
 ];
