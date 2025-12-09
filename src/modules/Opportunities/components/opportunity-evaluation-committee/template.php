@@ -28,6 +28,13 @@ $this->import('
                     <?php i::_e('Adicionar pessoa avaliadora') ?>
                 </button>
             </template>
+
+            <template #entityInfo="{entity}">
+                <span class="icon">
+                    <mc-avatar :entity="entity" size="xsmall"></mc-avatar>
+                </span>
+                <span class="label"> #{{entity.id}} - {{entity.name}}</span>
+            </template>
         </select-entity>
         <?php $this->applyComponentHook('select-entity', 'end'); ?>
 
@@ -127,18 +134,19 @@ $this->import('
                     useDistributionField />
 
                 <div class="opportunity-evaluation-committee__card-footer">
-                    <mc-confirm-button v-if="infoReviewer.metadata?.summary.sent > 0" @confirm="reopenEvaluations(infoReviewer.agentUserId)">
-                        <template #button="{open}">
-                            <button class="button button--primary" :class="{'disabled' : infoReviewer.metadata.summary.sent <= 0}" @click="open()">
-                                <?php i::_e('Reabrir avaliações') ?>
-                            </button>
-                        </template>
-                        <template #message="message">
-                            <?php i::_e('Você tem certeza que deseja reabrir as avaliações para este avaliador?') ?>
-                        </template>
-                    </mc-confirm-button>
-
                     <div class="opportunity-evaluation-committee__card-footer-actions" v-if="infoReviewer.status !== -5">
+                        <mc-confirm-button v-if="infoReviewer.metadata?.summary.sent > 0" @confirm="reopenEvaluations(infoReviewer.agentUserId)">
+                            <template #button="{open}">
+                                <button class="opportunity-evaluation-committee__card-footer-button danger__border button button--icon button--sm" :class="{'disabled' : infoReviewer.metadata.summary.sent <= 0}" @click="open()">
+                                    <mc-icon name="lock-open" class="danger__color" ></mc-icon>
+                                    <?php i::_e('Reabrir avaliações') ?>
+                                </button>
+                            </template>
+                            <template #message="message">
+                                <?php i::_e('Você tem certeza que deseja reabrir as avaliações para este avaliador?') ?>
+                            </template>
+                        </mc-confirm-button>
+
                         <button class="opportunity-evaluation-committee__card-footer-button button button--disable button--icon button--sm" @click="disableOrEnableReviewer(infoReviewer)">
                             <mc-icon name="close"></mc-icon> {{buttonText(infoReviewer.status)}}
                         </button>
@@ -161,7 +169,33 @@ $this->import('
                                 </p>
                             </template>
                         </mc-confirm-button>
+
+                        <select-entity v-if="!showDisabled" type="agent" :select="queryString" :query="query" @select="replaceReviewer($event, infoReviewer)" openside="down-right" permissions="">
+                            <template #button="{ toggle }">
+                                <button class="opportunity-evaluation-committee__card-footer-button button button--disable button--icon button--sm" @click="toggle()">
+                                    <mc-icon name="change"></mc-icon>
+                                    <?php i::_e('Alterar avaliador') ?>
+                                </button>
+                            </template>
+
+                            <template #entityInfo="{entity}">
+                                <span class="icon">
+                                    <mc-avatar :entity="entity" size="xsmall"></mc-avatar>
+                                </span>
+                                <span class="label"> #{{entity.id}} - {{entity.name}}</span>
+                            </template>
+                        </select-entity>
                     </div>
+
+                    <label>
+                        <?= i::__('Limite de inscrições:') ?>
+                        <div class='field opportunity-evaluation-committee__max-registrations'>
+                            <input 
+                                v-model="infoReviewer.metadata.maxRegistrations" 
+                                @change="saveMaxRegistrations(infoReviewer)" 
+                                type="number">
+                        </div>
+                    </label>
                 </div>
             </div>
         </div>

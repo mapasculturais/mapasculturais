@@ -133,6 +133,23 @@ app.component('opportunity-evaluation-committee', {
             return false;
         },
         
+        replaceReviewer(agent, relation) {
+            const api = new API();
+            let url = Utils.createUrl('evaluationMethodConfiguration', 'replaceValuer', {id: this.entity.id});
+            
+            let evaluatorData = {
+                newValuerAgentId: agent.id,
+                relation: relation.id,
+            };
+
+            api.POST(url, evaluatorData).then(res => res.json()).then(data => {
+                this.messages.success(this.text('reviewerReplaced'));
+                this.loadReviewers();
+                this.loadFetchs();
+                
+            });
+        },
+        
         selectAgent(agent) {
             const api = new API();
             let url = Utils.createUrl('evaluationMethodConfiguration', 'createAgentRelation', {id: this.entity.id});
@@ -353,6 +370,18 @@ app.component('opportunity-evaluation-committee', {
                     info.default = (this.entity.fetch[info.agentUserId] || this.entity.fetchCategories[info.agentUserId].length > 0 || this.entity.fetchRanges[info.agentUserId].length > 0 || this.entity.fetchProponentTypes[info.agentUserId].length > 0) ? false : true;
                 });
             }
+        },
+
+        saveMaxRegistrations(infoReviewer){
+            const timeoutName = "saveMaxRegistrations" + infoReviewer.id;
+            const messages = useMessages();
+
+            clearTimeout(this[timeoutName]);
+            this[timeoutName] = setTimeout(async () => {
+                this.entity.enableM
+                await this.entity.invoke('setValuerMaxRegistrations',{relationId: infoReviewer.id, maxRegistrations: infoReviewer.metadata.maxRegistrations});
+                messages.success(this.text('modificações salvas'));
+            }, 3000)
         },
 
         toggleContent(reviewerId) {

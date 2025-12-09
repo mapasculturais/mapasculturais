@@ -5,6 +5,7 @@ namespace MapasCulturais\Controllers;
 use MapasCulturais\App;
 use MapasCulturais\Controller;
 use MapasCulturais\Entities\EvaluationMethodConfiguration as EvaluationMethodConfigurationEntity;
+use MapasCulturais\Entities\EvaluationMethodConfigurationAgentRelation;
 use MapasCulturais\Traits;
 use Opportunities\Jobs\RedistributeCommitteeRegistrations;
 
@@ -41,7 +42,7 @@ class EvaluationMethodConfiguration extends Controller {
         $this->_POST_index();
     }
 
-    protected function _getValuerAgentRelation() {
+    protected function _getValuerAgentRelation(): EvaluationMethodConfigurationAgentRelation {
         $this->requireAuthentication();
 
         $app = App::i();
@@ -191,7 +192,7 @@ class EvaluationMethodConfiguration extends Controller {
 
     function POST_registributeEvaluations() {
         $app = App::i();
-
+        
         $this->requireAuthentication();
 
         $emc = $this->requestedEntity;
@@ -204,5 +205,41 @@ class EvaluationMethodConfiguration extends Controller {
         $app->enqueueOrReplaceJob(RedistributeCommitteeRegistrations::SLUG, ['evaluationMethodConfiguration' => $emc], 'now');
         
         $this->json(true);
+    }
+
+    function POST_setValuerMaxRegistrations()
+    {
+        $relation = $this->_getValuerAgentRelation();
+
+        $max_registrations = $this->data['maxRegistrations'] ?? null;
+
+        $relation->maxRegistrations = $max_registrations;
+
+        $relation->save(true);
+        $this->json(true);
+    }
+
+    /**
+     * Substitui um avaliador por outro
+     * 
+     * @return void
+     */
+    function POST_replaceValuer(): void
+    {
+        $app = App::i();    
+
+        $this->requireAuthentication();
+
+        $emc = $this->requestedEntity;
+        
+        $emc->checkPermission('replaceEvaluator');
+
+        if($relation = $app->repo('EvaluationMethodConfigurationAgentRelation')->find($this->data['relation'])){
+            $newValuer = $app->repo('Agent')->find($this->data['newValuerAgentId']);
+            $new_valuer = $relation->replaceEvaluator($newValuer->user);
+            $this->json($new_valuer);
+        } else {
+            $this->json(false);
+        }
     }
 }
