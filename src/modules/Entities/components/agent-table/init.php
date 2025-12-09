@@ -52,11 +52,6 @@ $defaultHeaders = [
         'slug' => 'tag',
     ],
     [
-        'text' => i::__('Segmento', 'agent-table'),
-        'value' => 'terms?.segmento?.join(\', \')',
-        'slug' => 'segmento',
-    ],
-    [
         'text' => i::__('Função', 'agent-table'),
         'value' => 'terms?.funcao?.join(\', \')',
         'slug' => 'funcao',
