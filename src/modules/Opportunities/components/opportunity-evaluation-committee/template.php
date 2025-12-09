@@ -28,6 +28,13 @@ $this->import('
                     <?php i::_e('Adicionar pessoa avaliadora') ?>
                 </button>
             </template>
+
+            <template #entityInfo="{entity}">
+                <span class="icon">
+                    <mc-avatar :entity="entity" size="xsmall"></mc-avatar>
+                </span>
+                <span class="label"> #{{entity.id}} - {{entity.name}}</span>
+            </template>
         </select-entity>
         <?php $this->applyComponentHook('select-entity', 'end'); ?>
 
