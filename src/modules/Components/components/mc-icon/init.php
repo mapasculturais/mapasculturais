@@ -58,6 +58,7 @@ $iconset = [
     'brPhone' => 'mdi:phone',
     'check' => 'material-symbols:check-circle',
     'checkbox' => 'tabler:checkbox',
+    'change' => 'basil:exchange-outline',
     'circle' => 'material-symbols:circle',
     'circle-checked' => 'material-symbols:check-circle-rounded',
     'clock' => 'fluent:clipboard-clock-20-filled',
