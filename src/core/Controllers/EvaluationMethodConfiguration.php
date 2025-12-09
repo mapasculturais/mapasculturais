@@ -218,4 +218,28 @@ class EvaluationMethodConfiguration extends Controller {
         $relation->save(true);
         $this->json(true);
     }
+
+    /**
+     * Substitui um avaliador por outro
+     * 
+     * @return void
+     */
+    function POST_replaceValuer(): void
+    {
+        $app = App::i();    
+
+        $this->requireAuthentication();
+
+        $emc = $this->requestedEntity;
+        
+        $emc->checkPermission('replaceEvaluator');
+
+        if($relation = $app->repo('EvaluationMethodConfigurationAgentRelation')->find($this->data['relation'])){
+            $newValuer = $app->repo('Agent')->find($this->data['newValuerAgentId']);
+            $new_valuer = $relation->replaceEvaluator($newValuer->user);
+            $this->json($new_valuer);
+        } else {
+            $this->json(false);
+        }
+    }
 }
