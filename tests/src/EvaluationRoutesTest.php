@@ -2,14 +2,15 @@
 
 namespace Tests;
 
-use Tests\Builders\PhasePeriods\ConcurrentEndingAfter;
-use Tests\Builders\PhasePeriods\Open;
-use Tests\Enums\EvaluationMethods;
+use MapasCulturais\App;
 use Tests\Traits\Faker;
-use Tests\Traits\OpportunityBuilder;
-use Tests\Traits\RegistrationDirector;
-use Tests\Traits\RequestFactory;
 use Tests\Traits\UserDirector;
+use Tests\Traits\RequestFactory;
+use Tests\Enums\EvaluationMethods;
+use Tests\Traits\OpportunityBuilder;
+use Tests\Builders\PhasePeriods\Open;
+use Tests\Traits\RegistrationDirector;
+use Tests\Builders\PhasePeriods\ConcurrentEndingAfter;
 
 class EvaluationRoutesTest extends Abstract\TestCase
 {
