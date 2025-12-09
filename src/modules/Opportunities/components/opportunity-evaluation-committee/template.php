@@ -162,6 +162,22 @@ $this->import('
                                 </p>
                             </template>
                         </mc-confirm-button>
+
+                        <select-entity v-if="!showDisabled" type="agent" :select="queryString" :query="query" @select="replaceReviewer($event, infoReviewer)" openside="down-right" permissions="">
+                            <template #button="{ toggle }">
+                                <button class="opportunity-evaluation-committee__card-footer-button button button--disable button--icon button--sm" @click="toggle()">
+                                    <mc-icon name="change"></mc-icon>
+                                    <?php i::_e('Alterar avaliador') ?>
+                                </button>
+                            </template>
+
+                            <template #entityInfo="{entity}">
+                                <span class="icon">
+                                    <mc-avatar :entity="entity" size="xsmall"></mc-avatar>
+                                </span>
+                                <span class="label"> #{{entity.id}} - {{entity.name}}</span>
+                            </template>
+                        </select-entity>
                     </div>
 
                     <label>
