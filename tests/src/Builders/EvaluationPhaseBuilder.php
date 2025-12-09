@@ -63,9 +63,17 @@ class EvaluationPhaseBuilder extends Builder
         return $this->instance;
     }
 
+    public function save(bool $flush = true): static
+    {
+        parent::save($flush);
+
+        $this->instance->opportunity->evaluationMethodConfiguration = $this->instance;
+        
+        return $this;
+    }
+
     public function done(): OpportunityBuilder
     {
-        $this->instance->opportunity->evaluationMethodConfiguration = $this->instance;
         return $this->opportunityBuilder;
     }
 
