@@ -5,14 +5,18 @@ namespace Test;
 use MapasCulturais\API;
 use MapasCulturais\ApiQuery;
 use MapasCulturais\Entities\Agent;
+use MapasCulturais\Entities\Space;
+use MapasCulturais\Entities\User;
 use Tests\Abstract\TestCase;
 use Tests\Traits\OpportunityBuilder;
 use Tests\Traits\RegistrationDirector;
+use Tests\Traits\SpaceDirector;
 use Tests\Traits\UserDirector;
 
 class ApiTest extends TestCase
 {
-    use UserDirector;
+    use UserDirector,
+        SpaceDirector;
 
     function testInMultiselectMetadata()
     {
@@ -129,5 +133,68 @@ class ApiTest extends TestCase
         $this->assertEquals(1, count($result), 'Certificando que a busca na api por palavra-chave com aspas simples retorna o número correto de resultados.');
 
         $this->app->enableAccessControl();
+    }
+
+    function testAgentApiReturnsUserMetadata()
+    {
+        for ($i = 0; $i < 2; $i++) {
+            $user = $this->userDirector->createUser();
+            $this->spaceDirector->createSpace($user->profile, disable_access_control: true);
+        }
+
+        $queries = [
+            Agent::class => (object) [
+                'api_name' => 'agentes',
+                'user_cb' => function ($result) {return $result['user']; },
+                'queries' => [
+                    'name,user.*',
+                    'name,user.{authUid,email,deleteAccountToken,profile,currentUserPermissions,status}'
+                ]
+            ],
+            Space::class => (object) [
+                'api_name' => 'espaços',
+                'user_cb' => function ($result) {return $result['owner']['user']; },
+                'queries' => [
+                    'name,owner.user.*',
+                    'name,owner.user.{authUid,email,deleteAccountToken,profile,currentUserPermissions,status}'
+                ]
+            ],
+        ];
+
+        $allowed_user_properties = User::getPublicApiFields();
+
+        foreach($queries as $entity_class => $def) {
+            $cb = $def->user_cb;
+
+            foreach($def->queries as $query_select) {
+                $query = new ApiQuery($entity_class, [
+                    '@select' => $query_select
+                ]);
+        
+                $result = $query->find();
+                
+                $user = $cb($result[1]);
+
+                $returned_allowed_metadata = [];
+                $returned_not_allowed_metadata = [];
+        
+                foreach($user as $key => $value) {
+                    if($key == "@entityType") {
+                        continue;
+                    }
+
+                    if(in_array($key, $allowed_user_properties)) {
+                        $returned_allowed_metadata[$key] = $value;
+                    } else {
+                        $returned_not_allowed_metadata[$key] = $value;
+                    }
+                }
+                $api_name = $def->api_name;
+
+                $this->assertCount(count($allowed_user_properties), $returned_allowed_metadata, "Certificando que a api de {$api_name} retornar TODOS os metadados permitidos");
+        
+                $this->assertEmpty($returned_not_allowed_metadata, "Certificando que a api de {$api_name} NÃO retorna os metadados não permitidos");
+            }
+        }
     }
 }
