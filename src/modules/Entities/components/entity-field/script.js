@@ -38,7 +38,7 @@ app.component('entity-field', {
             var typeOptions = {};
             var optionsOrder = [];
             Object.keys(description.options).forEach(function(item, index){
-                if(description.options[item] != "Individual"){
+                if(item != 1){
                     typeOptions[index] = description.options[item];
                     optionsOrder.push(parseInt(index));
                 }
@@ -387,12 +387,25 @@ app.component('entity-field', {
             const userPermission = this.entity.currentUserPermissions?.modifyReadonlyData;
             const lockedFieldSeals = this.entity.__lockedFieldSeals;
 
-            if(this.description.readonly) {
-                if(userPermission || !this.value) {
-                    this.readonly = false;
-                } else {
-                    this.readonly = true;
+            if(this.entity.__objectType == "registration" && this.description.registrationFieldConfiguration) {
+                const registrationConfig = this.description.registrationFieldConfiguration;
+                
+                if(registrationConfig.fieldType == 'agent-owner-field' && registrationConfig.config?.entityField) {
+                    const agentFieldName = registrationConfig.config.entityField;
+                    
+                    if($DESCRIPTIONS.agent && $DESCRIPTIONS.agent[agentFieldName]) {
+                        const agentDescription = $DESCRIPTIONS.agent[agentFieldName];
+                        
+                        if(agentDescription.readonly) {
+                            this.readonly = !(userPermission || !this.value);
+                            return this.readonly;
+                        }
+                    }
                 }
+            }
+
+            if(this.description.readonly) {
+                this.readonly = !(userPermission || !this.value);
             }
 
             if(lockedFieldSeals && lockedFieldSeals[this.prop]) {

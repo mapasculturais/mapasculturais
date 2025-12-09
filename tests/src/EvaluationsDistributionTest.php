@@ -3,19 +3,21 @@
 namespace Test;
 
 use MapasCulturais\App;
-use MapasCulturais\Connection;
-use MapasCulturais\Entities\EvaluationMethodConfiguration;
-use MapasCulturais\Entities\Opportunity;
 use Tests\Abstract\TestCase;
-use Tests\Builders\PhasePeriods\After;
-use Tests\Builders\PhasePeriods\ConcurrentEndingAfter;
+use MapasCulturais\Connection;
+use Tests\Traits\UserDirector;
+use Tests\Enums\ProponentTypes;
+use Tests\Enums\EvaluationMethods;
+use Tests\Traits\OpportunityBuilder;
 use Tests\Builders\PhasePeriods\Open;
 use Tests\Builders\PhasePeriods\Past;
-use Tests\Enums\EvaluationMethods;
-use Tests\Enums\ProponentTypes;
-use Tests\Traits\OpportunityBuilder;
+use Tests\Builders\PhasePeriods\After;
 use Tests\Traits\RegistrationDirector;
-use Tests\Traits\UserDirector;
+use MapasCulturais\Entities\Opportunity;
+use MapasCulturais\Entities\RegistrationEvaluation;
+use Tests\Builders\PhasePeriods\ConcurrentEndingAfter;
+use MapasCulturais\Entities\EvaluationMethodConfiguration;
+use MapasCulturais\Entities\EvaluationMethodConfigurationAgentRelation;
 
 class EvaluationsDistributionTest extends TestCase
 {
@@ -341,8 +343,8 @@ class EvaluationsDistributionTest extends TestCase
                 ->addValuers($valuers_per_committe - 1, 'committee 1')
                 ->addValuers($valuers_per_committe - 1, 'committee 2')
                 ->addValuers($valuers_per_committe, 'committee 3')
-                ->addValuer('committee 1', $valuer->profile)
-                ->addValuer('committee 2', $valuer->profile)
+                ->addValuer('committee 1', 'fulano', $valuer->profile)->done()
+                ->addValuer('committee 2', 'ciclano', $valuer->profile)->done()
                 ->done()
             ->getInstance();
 
@@ -483,8 +485,8 @@ class EvaluationsDistributionTest extends TestCase
                 ->addValuers($valuers_per_committe - 1, 'committee 1')
                 ->addValuers($valuers_per_committe - 1, 'committee 2')
                 ->addValuers($valuers_per_committe, 'committee 3')
-                ->addValuer('committee 1', $valuer->profile)
-                ->addValuer('committee 2', $valuer->profile)
+                ->addValuer('committee 1', 'fulano', $valuer->profile)->done()
+                ->addValuer('committee 2', 'ciclano', $valuer->profile)->done()
                 ->done()
 
             ->refresh()
@@ -626,8 +628,8 @@ class EvaluationsDistributionTest extends TestCase
                 ->addValuers($valuers_per_committe - 1, 'committee 1')
                 ->addValuers($valuers_per_committe - 1, 'committee 2')
                 ->addValuers($valuers_per_committe, 'committee 3')
-                ->addValuer('committee 1', $valuer->profile)
-                ->addValuer('committee 2', $valuer->profile)
+                ->addValuer('committee 1', 'fulano', $valuer->profile)->done()
+                ->addValuer('committee 2', 'ciclano', $valuer->profile)->done()
                 ->done()
             ->getInstance();
 
@@ -766,8 +768,8 @@ class EvaluationsDistributionTest extends TestCase
                 ->addValuers($valuers_per_committe - 1, 'committee 1')
                 ->addValuers($valuers_per_committe - 1, 'committee 2')
                 ->addValuers($valuers_per_committe, 'committee 3')
-                ->addValuer('committee 1', $valuer->profile)
-                ->addValuer('committee 2', $valuer->profile)
+                ->addValuer('committee 1', 'fulano', $valuer->profile)->done()
+                ->addValuer('committee 2', 'ciclano', $valuer->profile)->done()
                 ->done()
             ->getInstance();
 
@@ -831,5 +833,400 @@ class EvaluationsDistributionTest extends TestCase
 
             $this->assertEquals($expected_total_per_committe, $committee_total, "[Avaliador repetido] Garantindo que a soma das inscrições pendentes dos resumos dos avaliadores da comissão $committee_name está correta");
         }
+    }
+
+    function testDistributionConfigurationHourly()
+    {
+        $admin = $this->userDirector->createUser('admin');
+        $this->login($admin);
+
+        $opportunity = $this->opportunityBuilder
+            ->reset(owner: $admin->profile, owner_entity: $admin->profile)
+            ->fillRequiredProperties()
+            ->firstPhase()
+                ->setRegistrationPeriod(new Open)
+                ->done()
+            ->save()
+            ->addEvaluationPhase(EvaluationMethods::simple)
+                ->setEvaluationPeriod(new ConcurrentEndingAfter)
+                ->setCommitteeValuersPerRegistration('committee 1', 1)
+                ->save()
+                ->addValuers(2, 'committee 1')
+                ->done()
+            ->getInstance();
+
+        $this->registrationDirector->createDraftRegistrations(
+            $opportunity,
+            number_of_registrations: 10
+        );
+
+        $this->registrationDirector->createSentRegistrations(
+            $opportunity,
+            number_of_registrations: 10
+        );
+
+        /** @var EvaluationMethodConfiguration $emc */
+        $emc = $opportunity->evaluationMethodConfiguration->refreshed();
+
+        // Define a configuração de distribuição como 'hourly'
+        $emc->distributionConfiguration = 'hourly';
+        $emc->save(true);
+
+        // Gera o ID do job
+        $job_type = $this->app->getRegisteredJobType('RedistribRegs');
+        $job_id = $job_type->generateId(
+            ['evaluationMethodConfiguration' => $emc],
+            'now',
+            '1 hour',
+            1
+        );
+        
+        /** @var \MapasCulturais\Entities\Job */
+        $job = $this->app->repo('Job')->findOneBy(['id' => $job_id]);
+        
+        $this->assertNotNull($job, 'Garantindo que o job de redistribuição foi agendado');
+        $this->assertEquals('1 hour', $job->intervalString, 'Garantindo que o job foi agendado com intervalo de 1 hora');
+
+       
+        $emc->redistributeCommitteeRegistrations();
+
+        $emc = $emc->refreshed();
+
+        $valuer1_summary = $emc->agentRelations[0]->metadata['summary'];
+        $valuer2_summary = $emc->agentRelations[1]->metadata['summary'];
+
+        $this->assertEquals(5, $valuer1_summary['pending'], 'Garantindo que o avaliador 1 tem 5 avaliações pendentes');
+        $this->assertEquals(5, $valuer2_summary['pending'], 'Garantindo que o avaliador 2 tem 5 avaliações pendentes');
+
+        /** @var Connection */
+        $conn = $this->app->em->getConnection();
+        $number_of_evaluations = $conn->fetchScalar("SELECT COUNT(*) FROM evaluations");
+
+        $this->assertEquals(10, $number_of_evaluations, 'Garantindo que tenha 10 avaliações');
+    }
+
+    function testDistributionConfigurationDaily()
+    {
+        $admin = $this->userDirector->createUser('admin');
+        $this->login($admin);
+
+        $opportunity = $this->opportunityBuilder
+            ->reset(owner: $admin->profile, owner_entity: $admin->profile)
+            ->fillRequiredProperties()
+            ->firstPhase()
+                ->setRegistrationPeriod(new Open)
+                ->done()
+            ->save()
+            ->addEvaluationPhase(EvaluationMethods::simple)
+                ->setEvaluationPeriod(new ConcurrentEndingAfter)
+                ->setCommitteeValuersPerRegistration('committee 1', 1)
+                ->save()
+                ->addValuers(2, 'committee 1')
+                ->done()
+            ->getInstance();
+
+        $this->registrationDirector->createDraftRegistrations(
+            $opportunity,
+            number_of_registrations: 10
+        );
+
+        $this->registrationDirector->createSentRegistrations(
+            $opportunity,
+            number_of_registrations: 10
+        );
+
+        /** @var EvaluationMethodConfiguration $emc */
+        $emc = $opportunity->evaluationMethodConfiguration->refreshed();
+
+        // Define a configuração de distribuição como 'hourly'
+        $emc->distributionConfiguration = 'daily';
+        $emc->save(true);
+
+        // Gera o ID do job
+        $job_type = $this->app->getRegisteredJobType('RedistribRegs');
+        $job_id = $job_type->generateId(
+            ['evaluationMethodConfiguration' => $emc],
+            'now',
+            '1 day',
+            1
+        );
+        
+        /** @var \MapasCulturais\Entities\Job */
+        $job = $this->app->repo('Job')->findOneBy(['id' => $job_id]);
+        
+        $this->assertNotNull($job, 'Garantindo que o job de redistribuição foi agendado');
+        $this->assertEquals('1 day', $job->intervalString, 'Garantindo que o job foi agendado com intervalo de 1 dia');
+
+       
+        $emc->redistributeCommitteeRegistrations();
+
+        $emc = $emc->refreshed();
+
+        $valuer1_summary = $emc->agentRelations[0]->metadata['summary'];
+        $valuer2_summary = $emc->agentRelations[1]->metadata['summary'];
+
+        $this->assertEquals(5, $valuer1_summary['pending'], 'Garantindo que o avaliador 1 tem 5 avaliações pendentes');
+        $this->assertEquals(5, $valuer2_summary['pending'], 'Garantindo que o avaliador 2 tem 5 avaliações pendentes');
+
+        /** @var Connection */
+        $conn = $this->app->em->getConnection();
+        $number_of_evaluations = $conn->fetchScalar("SELECT COUNT(*) FROM evaluations");
+
+        $this->assertEquals(10, $number_of_evaluations, 'Garantindo que tenha 10 avaliações');
+    }
+
+    function testDistributionConfigurationDeactivate()
+    {
+        $admin = $this->userDirector->createUser('admin');
+        $this->login($admin);
+
+        $opportunity = $this->opportunityBuilder
+            ->reset(owner: $admin->profile, owner_entity: $admin->profile)
+            ->fillRequiredProperties()
+            ->firstPhase()
+                ->setRegistrationPeriod(new Open)
+                ->done()
+            ->save()
+            ->addEvaluationPhase(EvaluationMethods::simple)
+                ->setEvaluationPeriod(new ConcurrentEndingAfter)
+                ->setCommitteeValuersPerRegistration('committee 1', 1)
+                ->save()
+                ->addValuers(2, 'committee 1')
+                ->done()
+            ->getInstance();
+
+        $this->registrationDirector->createDraftRegistrations(
+            $opportunity,
+            number_of_registrations: 10
+        );
+
+        $this->registrationDirector->createSentRegistrations(
+            $opportunity,
+            number_of_registrations: 10
+        );
+
+        /** @var EvaluationMethodConfiguration $emc */
+        $emc = $opportunity->evaluationMethodConfiguration->refreshed();
+
+        $emc->distributionConfiguration = 'deactivate';
+        $emc->save(true);
+
+        $job_type = $this->app->getRegisteredJobType('RedistribRegs');
+        $job_id = $job_type->generateId(
+            ['evaluationMethodConfiguration' => $emc],
+            'now',
+            '1 hour',
+            1
+        );
+        
+        /** @var \MapasCulturais\Entities\Job */
+        $job = $this->app->repo('Job')->findOneBy(['id' => $job_id]);
+        
+        $this->assertNull($job, 'Garantindo que o job de redistribuição foi removido ou não foi enfileirado');
+
+        $emc = $emc->refreshed();
+
+        $valuer1_summary = $emc->agentRelations[0]->metadata['summary'];
+        $valuer2_summary = $emc->agentRelations[1]->metadata['summary'];
+
+        $this->assertEquals(0, $valuer1_summary['pending'], 'Garantindo que o avaliador 1 não tem avaliações pendentes');
+        $this->assertEquals(0, $valuer2_summary['pending'], 'Garantindo que o avaliador 2 não tem avaliações pendentes');
+
+        /** @var Connection */
+        $conn = $this->app->em->getConnection();
+        $number_of_evaluations = $conn->fetchScalar("SELECT COUNT(*) FROM evaluations");
+
+        $this->assertEquals(0, $number_of_evaluations, 'Garantindo que não tenha avaliações');
+    }
+
+    function testMaxRegistrationsPerValuerLimit()
+    {
+        $admin = $this->userDirector->createUser('admin');
+        $this->login($admin);
+
+        $number_of_registrations = 20;
+        $fulano_max_registrations = 3;
+        $beltrano_max_registrations = 5;
+
+        $opportunity = $this->opportunityBuilder
+            ->reset(owner: $admin->profile, owner_entity: $admin->profile)
+            ->fillRequiredProperties()
+            ->firstPhase()
+                ->setRegistrationPeriod(new Open)
+                ->done()
+            ->save()
+            ->createSentRegistrations($number_of_registrations)
+            ->addEvaluationPhase(EvaluationMethods::simple)
+                ->setEvaluationPeriod(new ConcurrentEndingAfter)
+                ->setCommitteeValuersPerRegistration('committee 1', 1)
+                ->save()
+                ->addValuer('committee 1', name: 'fulano')
+                    ->maxRegistrations($fulano_max_registrations)
+                    ->done()
+                ->addValuer('committee 1', name: 'ciclano')
+                    ->done()
+                ->addValuer('committee 1', name: 'beltrano')
+                    ->maxRegistrations($beltrano_max_registrations)
+                    ->done()
+                ->redistributeCommitteeRegistrations()
+                ->done()
+            ->getInstance();
+
+
+        /** @var EvaluationMethodConfigurationAgentRelation[] */
+        $valuers = $opportunity->evaluationMethodConfiguration->agentRelations;
+
+        $fulano = $valuers[0];
+        $ciclano = $valuers[1];
+        $beltrano = $valuers[2];
+
+        /** @var Connection */
+        $conn = $this->app->em->getConnection();
+
+        // Verifica se o fulano recebeu o número correto de avaliações 
+        
+        $fulano_evaluations = $conn->fetchScalar(
+            "SELECT COUNT(*) FROM evaluations WHERE valuer_agent_id = :valuer_id",
+            ['valuer_id' => $fulano->agent->id]
+        );
+        $this->assertEquals($fulano_max_registrations, $fulano_evaluations, 'Garantindo que o primeiro avaliador com limite de inscrições na comissão recebeu o número correto de inscrições');
+
+        // Verifica se o beltrano recebeu no máximo 10 inscrições
+        $beltrano_evaluations = $conn->fetchScalar(  
+            "SELECT COUNT(*) FROM evaluations WHERE valuer_agent_id = :valuer_id",
+            ['valuer_id' => $beltrano->agent->id]
+        );
+        $this->assertEquals($beltrano_max_registrations, $beltrano_evaluations, 'Garantindo que o segundo avaliador com limite de inscrições na comissão recebeu o número correto de inscrições');
+
+        // Verifica se o ciclano recebeu as demais avaliações (Total de inscrições - avaliações do fulano - avaliações do beltrano)
+        $ciclano_evaluations = $conn->fetchScalar(  
+            "SELECT COUNT(*) FROM evaluations WHERE valuer_agent_id = :valuer_id",
+            ['valuer_id' => $ciclano->agent->id]
+        );
+
+        $this->assertEquals(
+            expected: $number_of_registrations - $fulano_evaluations - $beltrano_evaluations, 
+            actual: $ciclano_evaluations, 
+            message: 'Garantindo que o avaliador SEM limite de inscrições na comissão recebeu as demais inscrições'
+        );
+
+        // Verifica se o total de avaliações é 20 (todas as inscrições foram distribuídas)
+        $total_evaluations = $conn->fetchScalar("SELECT COUNT(*) FROM evaluations");
+        $this->assertEquals($number_of_registrations, $total_evaluations, 'Garantindo que todas as inscrições foram distribuídas');
+        
+        $this->assertEquals($fulano_max_registrations, $fulano->maxRegistrations, 'Garantindo que o getter retorna o valor correto para o primeiro avaliador com limite');
+        $this->assertEquals($beltrano_max_registrations, $beltrano->maxRegistrations, 'Garantindo que o getter retorna o valor correto para o segundo avaliador com limite');
+    }
+
+    function testReplaceEvaluatorTransfersEvaluations() {
+        $app = App::i();
+        
+        $admin = $this->userDirector->createUser('admin');
+        $this->login($admin);
+    
+        // Criar oportunidade com 2 avaliadores e diferentes tipos de avaliações
+        $opportunity = $this->opportunityBuilder
+            ->reset(owner: $admin->profile, owner_entity: $admin->profile)
+            ->fillRequiredProperties()
+            ->firstPhase()
+                ->setRegistrationPeriod(new Open)
+                ->done()
+            ->save()
+            ->createSentRegistrations(number_of_registrations: 8)
+            ->addEvaluationPhase(EvaluationMethods::simple)
+                ->setEvaluationPeriod(new ConcurrentEndingAfter)
+                ->setCommitteeValuersPerRegistration('committee 1', 2)
+                ->save()
+                ->addValuer('committee 1', name: 'fulano')
+                    ->done()
+                ->addValuer('committee 1', name: 'ciclano')
+                    ->done()
+                ->redistributeCommitteeRegistrations()
+                ->withValuer('committee 1', 'fulano')
+                    ->createDraftEvaluation()
+                    ->createDraftEvaluation()
+                    ->createSentEvaluation()
+                    ->createSentEvaluation()
+                    ->createConcludedEvaluation()
+                    ->done()
+                ->withValuer('committee 1', 'ciclano')
+                    ->createDraftEvaluation()
+                    ->createDraftEvaluation()
+                    ->createSentEvaluation()
+                    ->createSentEvaluation()
+                    ->done()
+                ->done()
+            ->getInstance();
+    
+        $emc = $opportunity->evaluationMethodConfiguration->refreshed();
+        $old_evaluator_relation = $emc->agentRelations[0];
+        $old_evaluator_user_id = $old_evaluator_relation->agent->user->id;
+        $opportunityId = $opportunity->id;
+    
+        // Query SQL para buscar inscrições com avaliações pendentes/iniciadas/enviadas/concluídas
+        $base_query = "
+            SELECT registration_id 
+            FROM evaluations 
+            WHERE 
+                opportunity_id = :opportunityId AND
+                valuer_user_id = :valuer_user_id";
+        
+        $params = [
+            'valuer_user_id' => $old_evaluator_user_id,
+            'opportunityId' => $opportunityId,
+            'status' => EvaluationMethodConfigurationAgentRelation::STATUS_ACTIVE
+        ];
+        
+        $query_pending_evaluations_before = $base_query . " AND (evaluation_status IS NULL OR evaluation_status < :status)";
+        $pending_registration_before = $app->conn->fetchColumn($query_pending_evaluations_before, $params);
+
+        $query_started_or_sent_evaluations_before = $base_query . " AND evaluation_status >= :status";
+        $started_or_sent_registrations_before = $app->conn->fetchColumn($query_started_or_sent_evaluations_before, $params);
+    
+        $newEvaluator = $this->userDirector->createUser();
+
+        $new_evaluatior_relation = $old_evaluator_relation->replaceEvaluator($newEvaluator);
+        
+        // 1. Verificar se o avaliador antigo foi desabilitado
+        $this->assertEquals(
+            EvaluationMethodConfigurationAgentRelation::STATUS_DISABLED,
+            $old_evaluator_relation->status,
+            'Garantindo que o antigo avaliador foi desabilitado'
+        );
+
+        // 2. Verificar que as avaliações concluídas/enviadas do avaliador antigo ainda estão com ele (não foram transferidas)
+        $params['valuer_user_id'] = $old_evaluator_user_id;
+        $query_started_or_sent_evaluations_old_after = $base_query . " AND evaluation_status >= :status";
+        $started_or_sent_registrations_old_after = $app->conn->fetchColumn($query_started_or_sent_evaluations_old_after, $params);
+
+        $this->assertEquals(
+            $started_or_sent_registrations_before,
+            $started_or_sent_registrations_old_after,
+            'Garantindo que as inscrições com avaliações concluídas/enviadas do avaliador antigo permanecem com ele (não foram transferidas)'
+        );
+
+        // 3. Verificar que o novo avaliador não tem essas avaliações concluídas/enviadas
+        $params['valuer_user_id'] = $new_evaluatior_relation->agent->user->id;
+        $registration_ids = implode(',', $started_or_sent_registrations_before);
+        
+        $query_started_or_sent_evaluations_new = $base_query . " AND evaluation_status >= :status AND registration_id IN ({$registration_ids})";
+        $started_or_sent_registrations_new = $app->conn->fetchColumn($query_started_or_sent_evaluations_new, $params);
+
+        $this->assertEquals(
+            [],
+            $started_or_sent_registrations_new,
+            'Garantindo que o novo avaliador não recebeu as avaliações concluídas/enviadas do avaliador antigo'
+        );
+
+        // 4. Garantindo que as inscrições com avaliações pendentes/iniciadas do avaliador antigo foram transferidas para o novo avaliador
+        $params['valuer_user_id'] = $new_evaluatior_relation->agent->user->id;
+        $query_pending_evaluations_after = $base_query . " AND (evaluation_status IS NULL OR evaluation_status < :status)";
+        $pending_registration_after = $app->conn->fetchColumn($query_pending_evaluations_after, $params);
+        
+        $this->assertEquals(
+            $pending_registration_before,
+            $pending_registration_after,
+            'Garantindo que as inscrições com avaliações pendentes/iniciadas do avaliador antigo foram transferidas para o novo avaliador'
+        );
     }
 }
