@@ -142,6 +142,14 @@ class User extends \MapasCulturais\Entity implements \MapasCulturais\UserInterfa
 
     protected $_isDeleting = false;
 
+    static function getPublicApiFields(): array 
+    {
+        $public_fields = ['id','profile','currentUserPermissions','status'];
+
+        return $public_fields;
+    }
+
+
     static function getValidations() {
         $app = App::i();
         $validations = [
