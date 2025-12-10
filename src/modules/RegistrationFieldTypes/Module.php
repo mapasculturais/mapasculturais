@@ -202,6 +202,20 @@ class Module extends \MapasCulturais\Module
 
             $agent_field_name = $field->config['entityField'];
 
+            // Tratamento especial para campos de galeria/vídeos/downloads
+            if($agent_field_name == '@gallery') {
+                $registration_field_config['type'] = 'gallery';
+                return;
+            }
+            if($agent_field_name == '@videos') {
+                $registration_field_config['type'] = 'videos';
+                return;
+            }
+            if($agent_field_name == '@downloads') {
+                $registration_field_config['type'] = 'downloads';
+                return;
+            }
+
             if(!isset($agent_fields[$agent_field_name])){
                 return;
             }
@@ -272,7 +286,7 @@ class Module extends \MapasCulturais\Module
     {
         $app = App::i();
 
-        $agent_fields = ['name', 'shortDescription', 'longDescription', '@location', '@links', '@bankFields'];
+        $agent_fields = ['name', 'shortDescription', 'longDescription', '@location', '@links', '@gallery', '@videos', '@downloads', '@bankFields'];
         
         $taxonomies_fields = $this->taxonomiesOpportunityFields(true);
 
@@ -853,6 +867,80 @@ class Module extends \MapasCulturais\Module
                 $entity->payment_bank_account_number = $value['account_number'];
                 $entity->payment_bank_dv_account_number = $value['dv_account_number'];
                 $entity->save(true);
+            } else if($entity_field == '@gallery' && $value) {
+                // Galeria de FOTOS (Files)
+                $existingGallery = $entity->getFiles('gallery');
+                
+                if(is_array($existingGallery)) {
+                    $existing_ids = array_map(fn($f) => $f->id, $existingGallery);
+                    $new_ids = is_array($value) ? array_map(fn($v) => isset($v['id']) ? $v['id'] : null, $value) : [];
+                    
+                    // Remover fotos que não estão mais no array
+                    foreach($existingGallery as $existingFile) {
+                        if(!in_array($existingFile->id, $new_ids)) {
+                            $existingFile->delete(true);
+                        }
+                    }
+                }
+            } else if($entity_field == '@videos' && $value) {
+                // Galeria de VÍDEOS (MetaList)
+                $savedMetaList = $entity->getMetaLists();
+                
+                foreach ($savedMetaList as $savedMetaListGroup) {
+                    foreach ($savedMetaListGroup as $savedMetaListObject) {
+                        $matchedItem = false;
+                        if(is_array($value)){
+                            foreach ($value as $key => $itemValue) {
+                                if(is_array($itemValue) && empty($itemValue['value'])){
+                                    continue;
+                                }
+                                $itemValueToCompare = is_array($itemValue) ? $itemValue['value'] : (isset($itemValue->value) ? $itemValue->value : null);
+                                if($savedMetaListObject->value == $itemValueToCompare){
+                                    $matchedItem = true;
+                                    unset($value[$key]);
+                                    $itemTitle = is_array($itemValue) ? ($itemValue['title'] ?? '') : (isset($itemValue->title) ? $itemValue->title : '');
+                                    $savedMetaListObject->title = $itemTitle;
+                                    $savedMetaListObject->save(true);
+                                }   
+                            }
+                        }
+                        if ($matchedItem == false && $savedMetaListObject->group == 'videos'){
+                            $savedMetaListObject->delete(true);
+                        }                    
+                    }
+                }
+                
+                if(!is_array($value)) {
+                    $value = (array) $value;
+                }
+                
+                foreach ($value as $itemArray) {
+                    $itemValueData = is_array($itemArray) ? ($itemArray['value'] ?? null) : (isset($itemArray->value) ? $itemArray->value : null);
+                    if (isset($itemValueData) && $url = $itemValueData){
+                        $metaList = new \MapasCulturais\Entities\MetaList;
+                        $metaList->owner = $entity;
+                        $metaList->group = 'videos';
+                        $itemTitle = is_array($itemArray) ? ($itemArray['title'] ?? '') : (isset($itemArray->title) ? $itemArray->title : '');
+                        $metaList->title = $itemTitle;
+                        $metaList->value = $url;
+                        $metaList->save(true);
+                    }
+                }
+            } else if($entity_field == '@downloads' && $value) {
+                // Downloads/Anexos (Files)
+                $existingDownloads = $entity->getFiles('downloads');
+                
+                if(is_array($existingDownloads)) {
+                    $existing_ids = array_map(fn($f) => $f->id, $existingDownloads);
+                    $new_ids = is_array($value) ? array_map(fn($v) => isset($v['id']) ? $v['id'] : null, $value) : [];
+                    
+                    // Remover downloads que não estão mais no array
+                    foreach($existingDownloads as $existingFile) {
+                        if(!in_array($existingFile->id, $new_ids)) {
+                            $existingFile->delete(true);
+                        }
+                    }
+                }
             } else if($value) {
                 $entity->$entity_field = $value;
             }
@@ -921,7 +1009,58 @@ class Module extends \MapasCulturais\Module
                     'account_number' => (int) $entity->payment_bank_account_number,
                     'dv_account_number' => $entity->payment_bank_dv_account_number,
                 ];
-
+            } else if($entity_field == '@gallery') {
+                // Buscar fotos da galeria
+                $gallery = $entity->getFiles('gallery');
+                $result = [];
+                
+                if(is_array($gallery)) {
+                    foreach($gallery as $file) {
+                        $result[] = [
+                            'id' => $file->id,
+                            'name' => $file->name,
+                            'url' => $file->url,
+                            'description' => $file->description
+                        ];
+                    }
+                }
+                
+                $value = $result;
+            } else if($entity_field == '@videos') {
+                // Buscar vídeos (MetaList)
+                $videos = $entity->getMetaLists('videos');
+                $result = [];
+                
+                if(is_array($videos)) {
+                    foreach($videos as $video) {
+                        $result[] = [
+                            'id' => $video->id,
+                            'title' => $video->title,
+                            'value' => $video->value,
+                            'group' => $video->group
+                        ];
+                    }
+                }
+                
+                $value = $result;
+            } else if($entity_field == '@downloads') {
+                // Buscar downloads/anexos
+                $downloads = $entity->getFiles('downloads');
+                $result = [];
+                
+                if(is_array($downloads)) {
+                    foreach($downloads as $file) {
+                        $result[] = [
+                            'id' => $file->id,
+                            'name' => $file->name,
+                            'url' => $file->url,
+                            'description' => $file->description,
+                            'mimeType' => $file->mimeType
+                        ];
+                    }
+                }
+                
+                $value = $result;
             }
              else {
                 $value = $entity->$entity_field;
