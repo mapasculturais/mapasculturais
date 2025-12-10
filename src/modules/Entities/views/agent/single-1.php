@@ -41,10 +41,12 @@ $this->breadcrumb = [
 <div class="main-app single-1">
     <mc-breadcrumb></mc-breadcrumb>
     <entity-header :entity="entity"></entity-header>
-    <mc-tabs class="tabs" sync-hash>
+    <div class="single-1__main-tabs">
+        <mc-tabs class="tabs" sync-hash>
         <mc-tab icon="exclamation" label="<?= i::_e('Perfil') ?>" slug="info">
             <mc-container>
-                <mc-tabs class="tabs" sync-hash>
+                <div class="single-1__inner-tabs">
+                    <mc-tabs class="tabs" sync-hash>
                     <mc-tab label="<?= i::_e('Público') ?>" slug="publico">
                         <div class="single-1__presentation-card">
                             <p><?php i::_e('Apresentação'); ?></p>
@@ -194,6 +196,7 @@ $this->breadcrumb = [
                         </mc-card>
                     </mc-tab>
                 </mc-tabs>
+                </div>
 
                 <aside>
                     <div class="grid-12">
@@ -209,7 +212,8 @@ $this->breadcrumb = [
         <mc-tab label="<?= i::esc_attr_e('PortFólio') ?>" slug="port">
             <mc-container>
                 <main>
-                    <mc-tabs class="tabs" sync-hash>
+                    <div class="single-1__inner-tabs">
+                        <mc-tabs class="tabs" sync-hash>
                         <mc-tab label="<?= i::esc_attr_e('Arquivos') ?>" slug="arquivos">
                             <mc-card>
                                 <template #content>
@@ -239,9 +243,11 @@ $this->breadcrumb = [
                             </mc-card>
                         </mc-tab>
                     </mc-tabs>
+                    </div>
                 </main>
             </mc-container>
         </mc-tab>
     </mc-tabs>
+    </div>
     <entity-actions :entity="entity"></entity-actions>
 </div>
