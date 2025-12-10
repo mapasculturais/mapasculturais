@@ -15,7 +15,7 @@ $this->import('
 <?php $this->applyTemplateHook('entity-gallery-video','before'); ?>
 <div :class="classes" v-if="editable || entity.metalists?.videos" class="entity-gallery">
     <?php $this->applyTemplateHook('entity-gallery-video','begin'); ?>
-    <label class="entity-gallery__title"> {{title}} </label>
+    <label v-if="!hideTitle" class="entity-gallery__title"> {{title}} </label>
 
     <div v-if="entity.metalists?.videos" class="entity-gallery__list">   
         <div v-for="(metalist, index) in videos" class="entity-gallery__list--video">

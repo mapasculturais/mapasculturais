@@ -15,7 +15,7 @@ $this->import('
 <?php $this->applyTemplateHook('entity-gallery','before'); ?>
 <div :class="classes" v-if="editable || images" class="entity-gallery">
     <?php $this->applyTemplateHook('entity-gallery','begin'); ?>
-    <label class="entity-gallery__title"> {{title}} </label>
+    <label v-if="!hideTitle" class="entity-gallery__title"> {{title}} </label>
 
     <div v-if="images" class="entity-gallery__list">   
         <div class="entity-gallery__list--image" v-for="(img, index) in images">

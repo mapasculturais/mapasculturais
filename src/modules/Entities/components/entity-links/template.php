@@ -12,7 +12,7 @@ $this->import('
 ');
 ?>
 <div v-if="entity.metalists.links || editable" :class="['entity-links', classes]">
-    <label class="entity-links__title"> {{title}} </label>
+    <label v-if="!hideTitle" class="entity-links__title"> {{title}} </label>
 
     <ul v-if="entity.metalists.links" class="entity-links__links">
         <li class="entity-links__links--item" v-for="metalist in entity.metalists.links">

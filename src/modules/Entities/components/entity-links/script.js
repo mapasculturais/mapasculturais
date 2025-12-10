@@ -25,6 +25,10 @@ app.component('entity-links', {
             type: String,
             default: '',
         },
+        hideTitle: {
+            type: Boolean,
+            default: false
+        },
     },
 
     data() {

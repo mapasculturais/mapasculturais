@@ -47,6 +47,10 @@ app.component('entity-gallery-video', {
             type: [String, Array, Object],
             required: false
         },
+        hideTitle: {
+            type: Boolean,
+            default: false 
+        } 
 
     },
 

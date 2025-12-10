@@ -45,7 +45,10 @@ app.component('entity-gallery', {
             type: [String, Array, Object],
             required: false
         },
-
+        hideTitle: {
+            type: Boolean,
+            default: false
+        },
     },
     
     methods: {
