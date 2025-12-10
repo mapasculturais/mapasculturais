@@ -13,6 +13,9 @@ app.component('entity-files-list', {
 
     },
 
+    mounted() {
+    },
+
     computed: {
         
     },
