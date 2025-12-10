@@ -50,6 +50,123 @@ class Module extends \MapasCulturais\Module
             $module->entities = [];
         });
 
+        // Hook para modificar o resultado do jsonSerialize e incluir files/metalists do owner
+        $app->hook("entity(Registration).jsonSerialize", function(&$result) use($app) {
+            /** @var Registration $this */
+            if ($this->owner && isset($result['owner'])) {
+                // Verifica se algum campo precisa de files ou metalists do owner
+                $fields = $this->opportunity->registrationFieldConfigurations ?? [];
+                $needs_files = false;
+                $needs_metalists = false;
+                
+                foreach($fields as $field) {
+                    // Verifica tanto por fieldType quanto por entityField
+                    if(in_array($field->fieldType, ['gallery', 'downloads']) || in_array($field->config['entityField'] ?? '', ['@gallery', '@downloads'])) {
+                        $needs_files = true;
+                    }
+                    if($field->fieldType == 'videos' || ($field->config['entityField'] ?? '') == '@videos') {
+                        $needs_metalists = true;
+                    }
+                }
+                
+                // Se precisa, inclui files e/ou metalists no owner serializado
+                if($needs_files || $needs_metalists) {
+                    // Força carregamento dos files e metalists do owner
+                    $owner_files = $this->owner->files; // Acessa para forçar lazy loading
+                    $owner_metalists = $this->owner->metalists; // Acessa para forçar lazy loading
+                    
+                    if($needs_files) {
+                        $files_data = [];
+                        
+                        // Gallery
+                        if(isset($owner_files['gallery'])) {
+                            try {
+                                $files_data['gallery'] = [];
+                                $gallery = $owner_files['gallery'];
+                                
+                                // Se for um único arquivo, transforma em array
+                                if(!is_array($gallery) && !is_iterable($gallery)) {
+                                    $gallery = [$gallery];
+                                }
+                                
+                                foreach($gallery as $file) {
+                                    $files_data['gallery'][] = [
+                                        'id' => $file->id,
+                                        'url' => $file->url,
+                                        'name' => $file->name,
+                                        'description' => $file->description,
+                                        'deleteUrl' => $file->deleteUrl,
+                                        'transformations' => $file->getFiles()
+                                    ];
+                                }
+                            } catch (\Exception $e) {
+                                $app->log->error("RegistrationFieldTypes: Error processing gallery: " . $e->getMessage());
+                            }
+                        }
+                        
+                        // Downloads
+                        if(isset($owner_files['downloads'])) {
+                            try {
+                                $files_data['downloads'] = [];
+                                $downloads = $owner_files['downloads'];
+                                
+                                // Se for um único arquivo, transforma em array
+                                if(!is_array($downloads) && !is_iterable($downloads)) {
+                                    $downloads = [$downloads];
+                                }
+                                
+                                foreach($downloads as $file) {
+                                    $simplified = $file->simplify('id,url,name,description,deleteUrl');
+                                    $files_data['downloads'][] = (array) $simplified;
+                                }
+                            } catch (\Exception $e) {
+                                $app->log->error("RegistrationFieldTypes: Error processing downloads: " . $e->getMessage());
+                            }
+                        }
+                        
+                        if(!empty($files_data)) {
+                            // Converte owner para array se for stdClass
+                            if(is_object($result['owner'])) {
+                                $result['owner'] = (array) $result['owner'];
+                            }
+                            $result['owner']['files'] = $files_data;
+                        }
+                    }
+                    
+                    if($needs_metalists) {
+                        if(isset($owner_metalists['videos'])) {
+                            try {
+                                $videos_data = [];
+                                $videos = $owner_metalists['videos'];
+                                
+                                // Se for um único vídeo, transforma em array
+                                if(!is_array($videos) && !is_iterable($videos)) {
+                                    $videos = [$videos];
+                                }
+                                
+                                foreach($videos as $video) {
+                                    $videos_data[] = [
+                                        'id' => $video->id,
+                                        'title' => $video->title,
+                                        'value' => $video->value,
+                                        'group' => $video->group,
+                                        'description' => $video->description ?? ''
+                                    ];
+                                }
+                                // Converte owner para array se for stdClass
+                                if(is_object($result['owner'])) {
+                                    $result['owner'] = (array) $result['owner'];
+                                }
+                                $result['owner']['metalists'] = ['videos' => $videos_data];
+                            } catch (\Exception $e) {
+                                $app->log->error("RegistrationFieldTypes: Error processing videos: " . $e->getMessage() . " at line " . $e->getLine());
+                            }
+                        }
+                    }
+                }
+            }
+        });
+
         $app->hook("entity(Registration).validationErrors", function(&$errors) use($module, $app) {
             /** @var Registration $this */
 
@@ -97,6 +214,12 @@ class Module extends \MapasCulturais\Module
                 if($field->fieldType == 'agent-owner-field') {
                     $entity = $this->owner;
 
+                    $fix_field($entity, $field);
+                }
+
+                // Campos de galeria, vídeos e downloads também vêm do agente
+                if(in_array($field->fieldType, ['gallery', 'videos', 'downloads'])) {
+                    $entity = $this->owner;
                     $fix_field($entity, $field);
                 }
 
