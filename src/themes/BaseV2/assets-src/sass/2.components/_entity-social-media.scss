@@ -34,33 +34,56 @@
 
     }
 
+    &__description {
+        margin-bottom: 17px;
+    }
+
     &__edit {
-        display: flex;
-        flex-direction: column;
-        gap: size(8);
-
         &--link {
-            align-items: center;
-            display: grid;
-            gap: size(15);
-            grid-template-columns: 1fr 8fr;
-            justify-items: center;
-
-            .iconify {
-                color: var(--mc-gray-700);
-                font-size: size(25);
-            }
-
             .field {
                 margin: 0;
+                width: 100%;
 
-                label {
-                    display: none;
+                &__title {
+                    font-weight: 700;
+                    margin-bottom: size(8);
                 }
 
+                &__input {
+                    display: block ;
+                    width: 100%;
+
+                    > .entity-social-media__input-wrapper {
+                        width: 100% ;
+                        flex: none;
+                        margin-top: -33px;
+                    }
+                }
             }
-
         }
+    }
 
+    &__input-wrapper {
+        position: relative;
+        width: 100%;
+        display: block;
+        flex: none ;
+
+        input {
+            padding-left: size(45) ;
+            padding-right: size(14);
+            width: 100%;
+            position: relative;
+            box-sizing: border-box;
+            display: block;
+        }
+         
+        svg {
+            color: var(--mc-gray-500);
+            position: relative;
+            margin-inline-start: size(16);
+            margin-bottom: size(-38);
+            z-index: 2;
+        }
     }
 }
