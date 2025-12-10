@@ -854,7 +854,35 @@ abstract class EvaluationMethod extends Module implements \JsonSerializable{
                     }
                 }
 
-                usort($users, fn($u1, $u2) => $valuers_total_registrations_count[$u1->id] <=> $valuers_total_registrations_count[$u2->id]);
+                usort($users, function($u1, $u2) use ($registration, $registration_lists_per_valuer, $registration_list_exclusive_per_valuer, $committee, $valuers_total_registrations_count) {
+                    $registration_number = $registration->number;
+
+                    $list1 = $registration_lists_per_valuer[$committee][$u1->id] ?? [];
+                    $list2 = $registration_lists_per_valuer[$committee][$u2->id] ?? [];
+
+                    $exclusive1 = $registration_list_exclusive_per_valuer[$committee][$u1->id] ?? false;
+                    $exclusive2 = $registration_list_exclusive_per_valuer[$committee][$u2->id] ?? false;
+
+                    $priority1 = 0;
+                    $priority2 = 0;
+
+                    // Se o avaliador 1 tem a inscrição na lista, ele ganha prioridade (ainda maior se marcado como exclusivo).
+                    if($list1 && in_array($registration_number, $list1)) {
+                        $priority1 = 1 + ($exclusive1 ? 2 : 0);
+                    }
+
+                    // Se o avaliador 2 tem a inscrição na lista, ele ganha prioridade (ainda maior se marcado como exclusivo).
+                    if($list2 && in_array($registration_number, $list2)) {
+                        $priority2 = 1 + ($exclusive2 ? 2 : 0);
+                    }
+
+                    // Quem tiver prioridade maior vem antes; em empate, segue o balanceamento.
+                    if($priority1 !== $priority2) {
+                        return $priority2 <=> $priority1;
+                    }
+
+                    return $valuers_total_registrations_count[$u1->id] <=> $valuers_total_registrations_count[$u2->id];
+                });
                 
                 // adiciona os avaliadores da comissão na inscrição
                 foreach($users as $user) {
