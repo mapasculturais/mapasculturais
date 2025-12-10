@@ -1247,4 +1247,107 @@ class EvaluationsDistributionTest extends TestCase
             message: 'Garantindo que o avaliador sem lista de inscrições na comissão recebeu as demais inscrições'
         );
     }
+
+    function testValuerRegistrationListExclusive()
+    {
+        $admin = $this->userDirector->createUser('admin');
+        $this->login($admin);
+
+        $number_of_registrations = 20;
+
+        $this->opportunityBuilder
+            ->reset(owner: $admin->profile, owner_entity: $admin->profile)
+            ->fillRequiredProperties()
+            ->firstPhase()
+                ->setRegistrationPeriod(new Open)
+                ->done()
+            ->save()
+            ->createSentRegistrations($number_of_registrations);
+
+        // pega listas de inscrições já enviadas
+        $sent_registrations = $this->opportunityBuilder->getInstance()->getSentRegistrations();
+        $fulano_registration_numbers = array_slice(array_map(fn($reg) => $reg->number, $sent_registrations), 0, 5);
+        $beltrano_registration_numbers = array_slice(array_map(fn($reg) => $reg->number, $sent_registrations), 5, 5);
+
+        // adiciona fase e avaliadores com listas exclusivas configuradas
+        $opportunity = $this->opportunityBuilder
+            ->addEvaluationPhase(EvaluationMethods::simple)
+                ->setEvaluationPeriod(new ConcurrentEndingAfter)
+                ->setCommitteeValuersPerRegistration('committee 1', 1)
+                ->save()
+                ->addValuer('committee 1', name: 'fulano')
+                    ->registrationList($fulano_registration_numbers, true)
+                    ->done()
+                ->addValuer('committee 1', name: 'ciclano')
+                    ->done()
+                ->addValuer('committee 1', name: 'beltrano')
+                    ->registrationList($beltrano_registration_numbers, true)
+                    ->done()
+                ->redistributeCommitteeRegistrations()
+                ->done()
+            ->getInstance();
+
+        /** @var EvaluationMethodConfigurationAgentRelation[] */
+        $valuers = $opportunity->evaluationMethodConfiguration->agentRelations;
+
+        $fulano = array_values(array_filter($valuers, fn($relation) => $relation->agent->name == 'fulano'))[0];
+        $ciclano = array_values(array_filter($valuers, fn($relation) => $relation->agent->name == 'ciclano'))[0];
+        $beltrano = array_values(array_filter($valuers, fn($relation) => $relation->agent->name == 'beltrano'))[0];
+
+        /** @var Connection */
+        $conn = $this->app->em->getConnection();
+
+        // Fulano deve receber exatamente as 5 inscrições da lista (exclusivo)
+        $fulano_evaluations = $conn->fetchAll(
+            "SELECT registration_id FROM evaluations WHERE valuer_agent_id = :valuer_id",
+            ['valuer_id' => $fulano->agent->id]
+        );
+        $fulano_registration_ids = array_column($fulano_evaluations, 'registration_id');
+        $fulano_list_registration_ids = array_map(
+            fn($number) => $this->app->repo('Registration')->findOneBy(['number' => $number])->id,
+            $fulano_registration_numbers
+        );
+        foreach ($fulano_list_registration_ids as $registration_id) {
+            $this->assertContains(
+                $registration_id,
+                $fulano_registration_ids,
+                'Garantindo que todas as inscrições da lista foram atribuídas ao avaliador fulano (exclusivo)'
+            );
+        }
+        $this->assertCount(5, $fulano_registration_ids, 'Fulano deve receber exatamente as inscrições da lista (exclusivo)');
+
+        // Beltrano deve receber exatamente as 5 inscrições da lista (exclusivo)
+        $beltrano_evaluations = $conn->fetchAll(
+            "SELECT registration_id FROM evaluations WHERE valuer_agent_id = :valuer_id",
+            ['valuer_id' => $beltrano->agent->id]
+        );
+        $beltrano_registration_ids = array_column($beltrano_evaluations, 'registration_id');
+        $beltrano_list_registration_ids = array_map(
+            fn($number) => $this->app->repo('Registration')->findOneBy(['number' => $number])->id,
+            $beltrano_registration_numbers
+        );
+        foreach ($beltrano_list_registration_ids as $registration_id) {
+            $this->assertContains(
+                $registration_id,
+                $beltrano_registration_ids,
+                'Garantindo que todas as inscrições da lista foram atribuídas ao avaliador beltrano (exclusivo)'
+            );
+        }
+        $this->assertCount(5, $beltrano_registration_ids, 'Beltrano deve receber exatamente as inscrições da lista (exclusivo)');
+
+        // Ciclano recebe as demais 10
+        $ciclano_evaluations = $conn->fetchScalar(
+            "SELECT COUNT(*) FROM evaluations WHERE valuer_agent_id = :valuer_id",
+            ['valuer_id' => $ciclano->agent->id]
+        );
+        $this->assertEquals(
+            10,
+            $ciclano_evaluations,
+            'Garantindo que o avaliador sem lista recebeu as demais inscrições'
+        );
+
+        // Total distribuído deve ser 20
+        $total_evaluations = $conn->fetchScalar("SELECT COUNT(*) FROM evaluations");
+        $this->assertEquals($number_of_registrations, $total_evaluations, 'Garantindo que todas as inscrições foram distribuídas');
+    }
 }
