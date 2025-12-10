@@ -37,6 +37,10 @@ $this->import('
             {{getAddress(propertyData)}}
         </div>
         
+        <div v-else-if="isUrlProperty()" class="entity-data__value">
+            <a :href="formatUrl(propertyData)" target="_blank" rel="noopener noreferrer">{{removeProtocol(propertyData)}}</a>
+        </div>
+        
         <div v-else class="entity-data__value">
             {{propertyData}}
         </div>
