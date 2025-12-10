@@ -29,5 +29,13 @@
     &__value {
         font-size: var(--mc-font-size-xs);
         font-weight: 700;
+
+        a {
+            text-decoration: none;
+            
+            &:hover {
+                text-decoration: none;
+            }
+        }
     }
 }
