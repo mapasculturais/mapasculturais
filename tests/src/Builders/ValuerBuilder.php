@@ -3,15 +3,18 @@
 namespace Tests\Builders;
 
 use Exception;
-use MapasCulturais\Entities\Agent;
-use MapasCulturais\Entities\EvaluationMethodConfigurationAgentRelation;
 use Tests\Abstract\Builder;
-use Tests\Traits\AgentDirector;
 use Tests\Traits\UserDirector;
+use Tests\Traits\AgentDirector;
+use MapasCulturais\Entities\Agent;
+use Tests\Traits\EvaluationBuilder;
+use MapasCulturais\Entities\Registration;
+use MapasCulturais\Entities\EvaluationMethodConfigurationAgentRelation;
 
 class ValuerBuilder extends Builder
 {
     use AgentDirector,
+        EvaluationBuilder,
         UserDirector;
 
     protected EvaluationMethodConfigurationAgentRelation $instance;
@@ -33,7 +36,10 @@ class ValuerBuilder extends Builder
 
     public function done(): EvaluationPhaseBuilder
     {
-        $this->instance->save(true);
+        $this->instance->agent = $this->instance->agent->refreshed();
+        $this->instance->owner = $this->instance->owner->refreshed();
+
+        $this->save(true);
         return $this->evaluationPhaseBuilder;
     }
 
@@ -59,7 +65,7 @@ class ValuerBuilder extends Builder
         }
 
         $this->instance = $this->evaluationPhaseBuilder->getInstance()->createAgentRelation(
-            agent: $valuer,
+            agent: $valuer->refreshed(),
             group: $committee_name,
             has_control: true
         );
@@ -70,6 +76,70 @@ class ValuerBuilder extends Builder
     public function maxRegistrations(?int $max_registrations): static
     {
         $this->instance->maxRegistrations = $max_registrations;
+
+        return $this;
+    }
+
+    public function createDraftEvaluation(?Registration $registration = null): static
+    {
+        if ($registration) {
+            $this->evaluationBuilder->reset(
+                user: $this->instance->agent->user,
+                registration: $registration
+            );
+        } else {
+            $this->evaluationBuilder->reset(
+                user: $this->instance->agent->user,
+                opportunity: $this->instance->owner->opportunity
+            );
+        }
+        $this->evaluationBuilder->fillRequiredProperties();
+        $this->evaluationBuilder->save();
+
+        return $this;
+    }
+
+    public function createConcludedEvaluation(?Registration $registration = null): static
+    {
+        $this->createDraftEvaluation($registration);
+
+        $this->evaluationBuilder->conclude();
+
+        return $this;
+    }
+
+    public function createSentEvaluation(?Registration $registration = null): static
+    {
+        $this->createDraftEvaluation($registration);
+
+        $this->evaluationBuilder->send();
+
+        return $this;
+    }
+
+    public function createDraftRegistrations(int $number_of_registrations): static
+    {
+        for ($i = 0; $i < $number_of_registrations; $i++) {
+            $this->createDraftEvaluation();
+        }
+
+        return $this;
+    }
+
+    public function createConcludedRegistrations(int $number_of_registrations): static
+    {
+        for ($i = 0; $i < $number_of_registrations; $i++) {
+            $this->createConcludedEvaluation();
+        }
+
+        return $this;
+    }
+
+    public function createSentRegistrations(int $number_of_registrations): static
+    {
+        for ($i = 0; $i < $number_of_registrations; $i++) {
+            $this->createSentEvaluation();
+        }
 
         return $this;
     }

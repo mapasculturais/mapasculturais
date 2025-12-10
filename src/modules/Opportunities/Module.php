@@ -149,6 +149,11 @@ class Module extends \MapasCulturais\Module{
          */
         $app->hook('entity(EvaluationMethodConfigurationAgentRelation).<<insert|update|delete>>:finish', function() use($app, $distribute_execution_time) {
             /** @var EvaluationMethodConfigurationAgentRelation $this */
+
+            if($this->__skipRedistribution) {
+                return;
+            }
+            
             $distribution_config = $this->owner->distributionConfiguration ?? 'deactivate';
             
             if($this->owner && $distribution_config != 'deactivate') {
