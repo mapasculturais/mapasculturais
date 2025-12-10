@@ -218,4 +218,28 @@ class EvaluationMethodConfiguration extends Controller {
         $relation->save(true);
         $this->json(true);
     }
+
+    function POST_setValuerRegistrationList()
+    {
+        $relation = $this->_getValuerAgentRelation();
+
+        $registration_list = $this->data['registrationList'] ?? null;
+
+        $relation->setRegistrationList($registration_list);
+
+        $relation->save(true);
+        $this->json(true);
+    }
+
+    function POST_setValuerRegistrationListExclusive()
+    {
+        $relation = $this->_getValuerAgentRelation();
+
+        $exclusive = $this->data['exclusive'] ?? false;
+
+        $relation->setRegistrationListExclusive($exclusive);
+
+        $relation->save(true);
+        $this->json(true);
+    }
 }
