@@ -73,4 +73,12 @@ class ValuerBuilder extends Builder
 
         return $this;
     }
+
+    public function registrationList(array $registration_numbers, bool $exclusive = false): static
+    {
+        $this->instance->metadata->registrationList = $registration_numbers;
+        $this->instance->metadata->registrationListExclusive = $exclusive;
+
+        return $this;
+    }
 }
