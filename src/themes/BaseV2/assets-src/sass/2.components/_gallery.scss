@@ -30,6 +30,7 @@ body.galleryOpen {
         flex-wrap: wrap;
         gap: size(24);
         margin-bottom: size(24);
+        margin-top: 20px;
 
         &--image, &--video {
             align-items: center;
