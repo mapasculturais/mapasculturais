@@ -174,6 +174,30 @@ class EvaluationMethodConfigurationAgentRelation extends AgentRelation {
         $this->metadata->maxRegistrations = $max_registrations;
     }
 
+    public function getRegistrationList(): ?array
+    {
+        $this->initializeMetadata();
+        return $this->metadata->registrationList ?? null;
+    }
+
+    public function setRegistrationList(?array $registration_numbers): void
+    {
+        $this->initializeMetadata();
+        $this->metadata->registrationList = $registration_numbers;
+    }
+
+    public function getRegistrationListExclusive(): bool
+    {
+        $this->initializeMetadata();
+        return $this->metadata->registrationListExclusive ?? false;
+    }
+
+    public function setRegistrationListExclusive(bool $exclusive): void
+    {
+        $this->initializeMetadata();
+        $this->metadata->registrationListExclusive = $exclusive;
+    }
+
     protected function canUserRemove($user): bool
     {
         return $this->owner->canUser('manageEvaluationCommittee', $user);
