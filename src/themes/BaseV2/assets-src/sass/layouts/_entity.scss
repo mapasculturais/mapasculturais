@@ -33,14 +33,14 @@
             gap: size(40);
         }
 
-        .tabs-component {
-            &__header {
-                margin-top: size(-34);
-            }
+        .tabs-component__header {
+            margin-top: size(-34);
         }
     }
 
     &.action-single {
+        background-color: var(--mc-gray-100);
+
         .tabs-component {
             &__header {
                 border-bottom: 1px solid;
@@ -59,10 +59,8 @@
                 }
             }
 
-            &__panels {
-                .property-list {
-                    padding-bottom: size(16);
-                }
+            &__panels .property-list {
+                padding-bottom: size(16);
             }
         }
     }
