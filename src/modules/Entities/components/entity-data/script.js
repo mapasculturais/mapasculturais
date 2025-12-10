@@ -48,6 +48,20 @@ app.component('entity-data', {
     },
 
     methods: {
+        formatUrl(url) {
+            if (!url) return '';
+            if (url.startsWith('http://') || url.startsWith('https://')) {
+                return url;
+            }
+            return 'https://' + url;
+        },
+        removeProtocol(url) {
+            if (!url) return '';
+            return url.replace(/^https?:\/\//, '');
+        },
+        isUrlProperty() {
+            return this.propertyType === 'url' || this.prop === 'site';
+        },
         getAddress(address) {
             if (typeof address === 'string') {
                 address = JSON.parse(address);
