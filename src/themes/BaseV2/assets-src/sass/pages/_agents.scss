@@ -1,7 +1,518 @@
 @use '../0.settings/mixins' as *;
 
 .single-1 {
+    [class*="col-"] {
+        float: none;
+    }
+
+    .container {
+        display: block;
+        grid-template-columns: none;
+    }
+
+    // Placeholders reutilizáveis
+    %reset-spacing {
+        margin: 0;
+        padding: 0;
+    }
+
+    %text-word-wrap {
+        word-wrap: break-word;
+        overflow-wrap: break-word;
+        word-break: normal;
+        white-space: normal;
+    }
+
+    %link-color {
+        color: #117C83;
+        text-decoration: none;
+
+        &:hover {
+            opacity: 0.8;
+        }
+    }
+
+    %full-width {
+        width: 100%;
+        max-width: 100%;
+    }
+
+    %hidden {
+        display: none;
+        visibility: hidden;
+        height: 0;
+        opacity: 0;
+        pointer-events: none;
+    }
+
+    %white-card {
+        background-color: var(--mc-white);
+        padding: size(24);
+        margin-bottom: size(24);
+        border-radius: var(--mc-border-radius-sm);
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    }
+
+    %collapsible-header {
+        width: 100%;
+        min-height: auto;
+
+        &-icon {
+            flex-shrink: 0;
+            min-width: size(24);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            .iconify {
+                font-size: size(24);
+                width: size(24);
+                height: size(24);
+            }
+        }
+
+        &-content {
+            flex: 1;
+            min-width: 0;
+        }
+    }
+
+    %tag-styles {
+        .entity-terms__content .mc-tag-list {
+            display: inline;
+            flex-direction: row;
+            gap: 0;
+
+            &__tagList {
+                display: inline;
+                flex-wrap: wrap;
+                gap: 0;
+                list-style: none;
+                @extend %reset-spacing;
+
+                > li {
+                    display: inline;
+                    list-style: none;
+                }
+            }
+
+            &__tag {
+                display: inline;
+                background: transparent;
+                border: none;
+                min-height: auto;
+                border-radius: 0;
+                color: #D99D03;
+                font-weight: 600;
+                text-transform: uppercase;
+                font-size: inherit;
+                line-height: inherit;
+                grid-template-columns: 1fr;
+                gap: 0;
+                @extend %reset-spacing;
+
+                &:not(:last-child)::after {
+                    content: ', ';
+                    color: #D99D03;
+                    margin-left: size(4);
+                }
+            }
+        }
+    }
+
+    // Tabs principais
+    .single-1__main-tabs .tabs-component__header,
+    > .tabs-component .tabs-component__header {
+        background-color: var(--mc-white);
+        border-bottom: none;
+        padding-left: 1rem;
+        padding-right: 0;
+        overflow: visible;
+        margin-bottom: 0;
+
+        &--left {
+            margin-top: 52px;
+        }
+    }
+
+    .single-1__main-tabs .tabs-component__header {
+        margin-top: -122px;
+    }
+
+    > .tabs-component {
+        margin-top: 0;
+        position: relative;
+        z-index: 1;
+
+        &__header {
+            padding-bottom: size(8);
+            margin-top: -115px;
+        }
+
+        &__panels {
+            overflow: visible;
+            padding-top: size(20);
+        }
+
+        &__buttons {
+            overflow: visible;
+            margin-top: 78px;
+        }
+    }
+
+    // Tabs internas
+    .single-1__inner-tabs .tabs-component__header,
+    .mc-container .tabs-component .tabs-component__header {
+        background-color: var(--mc-gray-100);
+        margin-top: 0;
+    }
+
+    .single-1__inner-tabs .tabs-component__header {
+        margin-bottom: 16px;
+    }
+
+    .single-1__inner-tabs .tabs-component__buttons {
+        margin: 6rem 0 0;
+    }
+
+    > .tabs-component .tabs-component__panels .tab-component .mc-container {
+        margin-top: size(20);
+    }
+
+    .tabs-component__button--active::after {
+        background-color: var(--mc-primary-500);
+    }
+
+    // Entity Header
+    .entity-header {
+        margin: size(-120) 0 0;
+        background-color: var(--mc-white);
+        padding-bottom: size(100);
+
+        &__single--content {
+            padding: size(0) size(16) size(20) size(0);
+            gap: size(16);
+            margin-bottom: -76px;
+
+            .leftSide {
+                display: flex;
+                flex-direction: row;
+                flex-wrap: wrap;
+                align-items: flex-start;
+                align-content: flex-start;
+                justify-content: flex-start;
+                position: relative;
+                flex-shrink: 0;
+                gap: 0;
+                row-gap: 0;
+                column-gap: size(16);
+                margin-top: size(-84);
+
+                .avatar {
+                    position: relative;
+                    flex-shrink: 0;
+                    order: 1;
+                    z-index: 1;
+                    margin-top: size(-20);
+
+                    @include mobile {
+                        margin-top: size(-10);
+                    }
+                }
+
+                .data {
+                    flex: 1 1 auto;
+                    width: auto;
+                    min-width: 0;
+                    position: relative;
+                    text-align: left;
+                    align-self: flex-start;
+                    order: 2;
+                    z-index: 10;
+                    margin: size(84) 0 0;
+                    padding: 0;
+
+                    @include mobile {
+                        margin-top: size(57);
+                    }
+
+                    .entity-header__title {
+                        display: none;
+                    }
+
+                    .metadata {
+                        display: flex;
+                        flex-direction: column;
+                        align-items: flex-start;
+                        text-align: left;
+                        gap: size(8);
+                    }
+                }
+
+                .description {
+                    flex: 0 0 100%;
+                    min-width: 100%;
+                    position: relative;
+                    align-self: flex-start;
+                    order: 3;
+                    z-index: 2;
+                    overflow: visible;
+                    max-height: none;
+                    @extend %full-width;
+                    @extend %text-word-wrap;
+                    line-height: 1.2;
+                    margin: size(-5) 0 0;
+                    padding: size(10) 0 0;
+
+                    @include mobile {
+                        margin-top: size(103);
+                    }
+
+                    p {
+                        display: block;
+                        overflow: visible;
+                        max-height: none;
+                        line-height: 1.4;
+                        @extend %text-word-wrap;
+                        @extend %reset-spacing;
+                    }
+                }
+            }
+
+            .rightSide {
+                @extend %full-width;
+                flex: 1 1 auto;
+                min-width: 0;
+                overflow: visible;
+                padding: size(0) 0 size(20) 0;
+
+                > .site,
+                .site {
+                    @extend %hidden;
+
+                    a {
+                        @extend %hidden;
+                    }
+                }
+            }
+
+            .entity-data__value {
+                overflow: visible;
+                @extend %text-word-wrap;
+
+                a {
+                    display: inline;
+                    @extend %full-width;
+                    @extend %text-word-wrap;
+                }
+            }
+
+            .metadata {
+                margin-top: size(8);
+            }
+        }
+
+        &--no-image &__single {
+            &--content {
+                padding-bottom: size(30);
+
+                .leftSide {
+                    @media (max-width: size(900)) {
+                        margin: 0 auto;
+                    }
+
+                    .avatar {
+                        margin: 0;
+
+                        .iconify {
+                            height: size(75);
+                            width: size(75);
+                        }
+
+                        @media (max-width: size(900)) {
+                            height: size(113);
+                            width: size(113);
+
+                            .mc-avatar--big {
+                                min-width: unset;
+                                min-height: unset;
+                                @extend %full-width;
+                                height: 100%;
+                            }
+
+                            .iconify {
+                                height: size(58);
+                                width: size(58);
+                            }
+                        }
+                    }
+                }
+
+                .rightSide {
+                    @media (min-width: size(901)) {
+                        padding-top: size(10);
+                    }
+                }
+            }
+
+            &--cover {
+                aspect-ratio: unset;
+                background: none;
+                height: size(60);
+            }
+        }
+    }
+
     &__description {
         padding-bottom: size(16);
+    }
+
+    // Presentation Card
+    &__presentation-card {
+        @extend %white-card;
+        @extend %tag-styles;
+
+        > p:first-of-type {
+            margin: 0 0 size(24);
+            font-weight: 700;
+            font-size: size(20);
+            line-height: size(24);
+        }
+    }
+
+    &__presentation-content {
+        @extend %tag-styles;
+    }
+
+    &__presentation-item {
+        background-color: var(--mc-white);
+        margin-bottom: size(24);
+        @extend %tag-styles;
+
+        .entity-data {
+            display: flex;
+            flex-direction: column;
+            gap: size(4);
+
+            &__label {
+                font-weight: 700;
+                font-size: size(14);
+                line-height: size(19);
+                color: var(--mc-gray-700);
+                margin: 0;
+            }
+
+            &__data {
+                background-color: transparent;
+                border-radius: 0;
+                padding: 0;
+                min-height: auto;
+                display: block;
+            }
+
+            &__value {
+                font-size: size(14);
+                line-height: size(19);
+                font-weight: 400;
+                color: var(--mc-low-500);
+
+                a {
+                    @extend %link-color;
+                }
+            }
+        }
+
+        .entity-terms {
+            margin-bottom: 0;
+        }
+    }
+
+    // Connections
+    &__connections {
+        @extend %full-width;
+        margin: 0 0 size(24);
+
+        .mc-card {
+            @extend %full-width;
+            margin-bottom: 0;
+            padding: size(24);
+            @extend %white-card;
+        }
+
+        .grid-12 {
+            display: block;
+        }
+
+        &-item {
+            @extend %full-width;
+            margin-bottom: size(16);
+
+            &:last-child {
+                margin-bottom: 0;
+            }
+
+            .collapsible-content__header {
+                @extend %collapsible-header;
+            }
+
+            .collapsible-content__body {
+                @extend %full-width;
+                padding-top: size(12);
+            }
+
+            .entity-list {
+                margin-bottom: 0;
+                padding-bottom: 0;
+                border-bottom: none;
+
+                &__title {
+                    display: none;
+                }
+            }
+        }
+    }
+
+    // Social Media
+    &__social-media {
+        @extend %full-width;
+        margin: 0 0 size(24);
+
+        .mc-card {
+            @extend %full-width;
+            margin-bottom: 0;
+            padding: 0;
+            @extend %white-card;
+        }
+
+        .collapsible-content__header {
+            @extend %collapsible-header;
+        }
+
+        .entity-social-media__edit.grid-12 {
+            gap: size(20) size(24);
+        }
+
+        .entity-social-media__edit--link .field {
+            @extend %full-width;
+            margin-bottom: 0;
+        }
+
+        .entity-social-media__links {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: size(20);
+
+            @media (max-width: 768px) {
+                grid-template-columns: 1fr;
+            }
+
+            &--link {
+                grid-template-columns: size(24) 1fr;
+
+                a {
+                    @extend %link-color;
+                }
+            }
+        }
     }
 }
