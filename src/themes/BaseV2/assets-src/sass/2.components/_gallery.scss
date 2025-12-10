@@ -100,14 +100,15 @@ body.galleryOpen {
         position: fixed;
         top: 0;
         width: 100vw;
-        z-index: 99;
+        z-index: 250;
 
         &.active {
             display: flex;
         }
 
         &--overlay {
-            background: rgba(0,0,0,0.7);
+            background: rgba(black, 0.7);
+            background: color(from var(--mc-black) srgb r g b / 0.7);
             height: 100vh;
             left: 0;
             position: fixed;
@@ -131,23 +132,25 @@ body.galleryOpen {
             width: auto;
 
             .description {
+                background-color: rgba(black, 0.5);
+                background: color(from var(--mc-black) srgb r g b / 0.5);
                 bottom: 0;
                 color: var(--mc-high-500);
                 max-width: size(1170);
-                position: absolute;
-                padding: size(10);
+                position: relative;
+                padding: size(16);
                 width: 100%;
 
                 &:before {
                     content: '';
                     width: 100vw;
-                    background: green;
                     height: 100%;
                     position: absolute;
                     top: 0;
                     left: 0;
                     margin: 0 calc(50% - 50vw);
-                    background: rgba(0, 0, 0, 0.7);
+                    background: rgba(black, 0.7);
+                    background: color(from var(--mc-black) srgb r g b / 0.7);
                     z-index: -1;
                 }
             }
@@ -160,7 +163,8 @@ body.galleryOpen {
             .btnNext,
             .btnClose {
                 align-items: center;
-                background: rgba(0,0,0,0.2);
+                background: rgba(black, 0.2);
+                background: color(from var(--mc-black) srgb r g b / 0.2);
                 border-radius: var(--mc-border-radius-xs);
                 color: white;
                 cursor: pointer;
@@ -173,7 +177,8 @@ body.galleryOpen {
                 opacity: .4;
 
                 &:hover, &:active {
-                    background: rgba(0,0,0,0.4);
+                    background: rgba(black, 0.4);
+                    background: color(from var(--mc-black) srgb r g b / 0.4);
                     opacity: 1;
                 }
             }

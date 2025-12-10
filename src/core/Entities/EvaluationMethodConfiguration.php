@@ -638,6 +638,17 @@ class EvaluationMethodConfiguration extends \MapasCulturais\Entity {
             return parent::canUser_control($user);
         }
     }
+
+    /**
+     * Verifica se o usuário pode substituir um avaliador
+     * 
+     * @param User $user
+     * @return bool
+     */
+    protected function canUserReplaceEvaluator(User $user): bool
+    {
+        return $this->opportunity->canUser('@control', $user);
+    }
     
     function getExtraEntitiesToRecreatePermissionCache(){
         return [$this->opportunity->parent ?: $this->opportunity];

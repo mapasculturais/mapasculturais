@@ -34,6 +34,8 @@ class EvaluationMethodConfigurationAgentRelation extends AgentRelation {
      */
     protected $owner;
 
+    public bool $__skipRedistribution = false;
+
     public function __construct()
     {
         parent::__construct();
@@ -207,5 +209,66 @@ class EvaluationMethodConfigurationAgentRelation extends AgentRelation {
     protected function canUserModify($user): bool
     {
         return $this->owner->canUser('manageEvaluationCommittee', $user);
+    }
+
+    /**
+     * Faz a subistituição de um avaliador por outro
+     * 
+     * @param \MapasCulturais\Entities\User $new_evaluator
+     * @return \MapasCulturais\Entities\EvaluationMethodConfigurationAgentRelation
+     */
+    function replaceEvaluator(User $new_evaluator): static
+    {
+        $app = App::i();
+        $this->owner->checkPermission('replaceEvaluator');
+
+        $app->conn->beginTransaction();
+
+        $app->conn->executeQuery("
+            DELETE FROM registration_evaluation 
+            WHERE 
+                user_id = :userId AND 
+                registration_id IN (SELECT id FROM registration WHERE opportunity_id = :opportunityId) AND 
+                status = 0 AND
+                committee = :committee", [
+            'userId' => $this->agent->user->id,
+            'opportunityId' =>  $this->owner->opportunity->id,
+            'committee' => $this->group
+        ]);
+
+        $app->conn->executeQuery("
+                UPDATE registration 
+                SET valuers = replace(valuers::VARCHAR,:replaceFrom,:replaceTo)::JSONB 
+                WHERE id IN (
+                    SELECT registration_id 
+                    FROM evaluations
+                    WHERE 
+                        valuer_user_id = :userId AND 
+                        valuer_committee = :committee AND 
+                        opportunity_id = :opportunityId AND 
+                        evaluation_status IS NULL
+                )", [
+            'userId' => $this->agent->user->id,
+            'committee' => $this->group,
+            'opportunityId' => $this->owner->opportunity->id,
+            'replaceFrom' => "\"{$this->agent->user->id}\":",
+            'replaceTo' => "\"{$new_evaluator->id}\":",
+        ]);
+
+        $this->__skipRedistribution = true;
+        $this->disable(true);
+
+        
+        $relation = new self;
+        $relation->agent = $new_evaluator->profile;
+        $relation->owner = $this->owner;
+        $relation->group = $this->group;
+        $relation->hasControl = true;
+        $relation->__skipRedistribution = true;
+        $relation->save(true);
+
+        $app->conn->commit();
+
+        return $relation;
     }
 }

@@ -133,6 +133,23 @@ app.component('opportunity-evaluation-committee', {
             return false;
         },
         
+        replaceReviewer(agent, relation) {
+            const api = new API();
+            let url = Utils.createUrl('evaluationMethodConfiguration', 'replaceValuer', {id: this.entity.id});
+            
+            let evaluatorData = {
+                newValuerAgentId: agent.id,
+                relation: relation.id,
+            };
+
+            api.POST(url, evaluatorData).then(res => res.json()).then(data => {
+                this.messages.success(this.text('reviewerReplaced'));
+                this.loadReviewers();
+                this.loadFetchs();
+                
+            });
+        },
+        
         selectAgent(agent) {
             const api = new API();
             let url = Utils.createUrl('evaluationMethodConfiguration', 'createAgentRelation', {id: this.entity.id});
