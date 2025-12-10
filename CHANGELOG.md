@@ -5,13 +5,14 @@ Todas as mudanças notáveis no projeto serão documentadas neste arquivo.
 O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/)
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [7.6.26] - 2025-11-28
+## [7.6.26] - 2025-12-10
 ### Correções
 - Corrige permissão de edição de campos bloqueados no formulário de inscrição
 - Adiciona todos os campos da lista de pessoas na ficha de inscrição e na exportação da lista de inscrição
 - Corrige seleção de campos na API
 - Remove codigo que insere o sergmento cultural da tabela de agentes
-- Ajusta verificação de permissões para permitir que gestores da oportunidade visualizem todos os campos do formulário de inscrição, mesmo sem serem administradores do sistema.
+- Ajusta verificação de permissões para permitir que gestores da oportunidade visualizem todos os campos do formulário de inscrição, mesmo sem serem administradores do sistema
+- Corrige erro que impedia a exibição do botão de editar campos do formulário quando liberado período de edição para o usuário
 
 ## [7.6.25] - 2025-11-27
 ### Melhorias
