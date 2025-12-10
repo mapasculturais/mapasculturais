@@ -605,10 +605,28 @@ abstract class EvaluationMethod extends Module implements \JsonSerializable{
          **/
         $registrations_per_valuer = [];
 
+        /** 
+         * Lista de inscrições por avaliador nas comissões 
+         * @var array[][]
+         **/
+        $registration_lists_per_valuer = [];
+
+        /** 
+         * Flag exclusivo da lista de inscrições por avaliador nas comissões 
+         * @var bool[][]
+         **/
+        $registration_list_exclusive_per_valuer = [];
+
         foreach($evaluation_config->getAgentRelationsGrouped() as $committee => $agent_relations) {
             $registrations_per_valuer[$committee] = $registrations_per_valuer[$committee] ?? [];
+            $registration_lists_per_valuer[$committee] = $registration_lists_per_valuer[$committee] ?? [];
+            $registration_list_exclusive_per_valuer[$committee] = $registration_list_exclusive_per_valuer[$committee] ?? [];
+            
             foreach($agent_relations as $agent_relation) {
-                $registrations_per_valuer[$committee][$agent_relation->agent->user->id] = $agent_relation->maxRegistrations;
+                $user_id = $agent_relation->agent->user->id;
+                $registrations_per_valuer[$committee][$user_id] = $agent_relation->maxRegistrations;
+                $registration_lists_per_valuer[$committee][$user_id] = $agent_relation->registrationList;
+                $registration_list_exclusive_per_valuer[$committee][$user_id] = $agent_relation->registrationListExclusive;
             }
         }
 
@@ -846,6 +864,20 @@ abstract class EvaluationMethod extends Module implements \JsonSerializable{
                     $max_user_registrations = $registrations_per_valuer[$committee][$user->id] ?? null;
                     if($max_user_registrations && ($valuers_committee_registrations_count[$committee_name][$user->id] ?? 0) >= $max_user_registrations) {
                         continue;
+                    }
+
+                    // verifica se a inscrição está na lista de inscrições do avaliador
+                    $user_registration_list = $registration_lists_per_valuer[$committee][$user->id] ?? null;
+                    $is_list_exclusive = $registration_list_exclusive_per_valuer[$committee][$user->id] ?? false;
+                    
+                    if($user_registration_list && is_array($user_registration_list) && count($user_registration_list) > 0) {
+                        $registration_number = $registration->number;
+                        $is_in_list = in_array($registration_number, $user_registration_list);
+                        
+                        // na lista exclusiva, só pode receber as inscrições da lista
+                        if($is_list_exclusive && !$is_in_list) {
+                            continue;
+                        }
                     }
 
                     if($max_valuers && $registration_valuers_count[$registration->id][$committee_name] >= $max_valuers) {
