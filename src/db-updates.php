@@ -1214,6 +1214,13 @@ return [
             __exec("ALTER TABLE opportunity ADD COLUMN continuous_flow TIMESTAMP NULL");
         }
     },
+    
+    "Cria coluna publicity_only na tabela opportunity" => function() use ($conn) {
+        if (!__column_exists('opportunity', 'publicity_only')) {
+            __exec("ALTER TABLE opportunity ADD COLUMN publicity_only BOOLEAN DEFAULT FALSE NOT NULL");
+        }
+    },
+    
     'Cria a tabela da entidade RegistrationStep' => function () {
         $app = App::i();
         $em = $app->em;

@@ -1122,6 +1122,12 @@ class Module extends \MapasCulturais\Module{
             'default' => false,
         ]);
 
+        $this->registerOpportunityMetadata('publicityOnly', [
+            'label' => i::__('Oportunidade apenas para divulgação'),
+            'type' => 'boolean',
+            'default' => false,
+        ]);
+
         $this->registerOpportunityMetadata('proponentAgentRelation', [
             'label' => i::__('Vinculação de Agente coletivo para tipos de proponente'),
             'type' => 'object',
