@@ -64,7 +64,7 @@ $this->import('
 
         <template #actions="modal">
             <button class="button button--text button--text-del" @click="modal.close(); this.selectedField = '';"><?= i::__('Cancelar') ?></button>
-            <button class="button button--primary" @click="addConfig(modal)"><?= i::__('Confirmar') ?></button>
+            <button class="button button--primary" :disabled="!canConfirm" @click="addConfig(modal)"><?= i::__('Confirmar') ?></button>
         </template>
 
         <template #button="modal">
