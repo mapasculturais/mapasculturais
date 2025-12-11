@@ -114,8 +114,8 @@ class EvaluationMethodConfigurationAgentRelation extends AgentRelation {
 
     protected function initializeMetadata(): object
     {
-        $this->metadata = is_object($this->metadata) ? $this->metadata : (object) [];
-
+        $this->metadata = (object) ($this->metadata ?: []);
+        
         $this->metadata->summary = $this->metadata->summary ?? [
             "pending" => 0, 
             "started" => 0, 
@@ -124,6 +124,8 @@ class EvaluationMethodConfigurationAgentRelation extends AgentRelation {
         ];
 
         $this->metadata->maxRegistrations = $this->metadata->maxRegistrations ?? null;
+        $this->metadata->registrationList = $this->metadata->registrationList ?? null;
+        $this->metadata->registrationListExclusive = $this->metadata->registrationListExclusive ?? false;
 
         return $this->metadata;
     }
@@ -174,6 +176,30 @@ class EvaluationMethodConfigurationAgentRelation extends AgentRelation {
     {
         $this->initializeMetadata();
         $this->metadata->maxRegistrations = $max_registrations;
+    }
+
+    public function getRegistrationList(): ?array
+    {
+        $this->initializeMetadata();
+        return $this->metadata->registrationList ?? null;
+    }
+
+    public function setRegistrationList(?array $registration_numbers): void
+    {
+        $this->initializeMetadata();
+        $this->metadata->registrationList = $registration_numbers;
+    }
+
+    public function getRegistrationListExclusive(): bool
+    {
+        $this->initializeMetadata();
+        return $this->metadata->registrationListExclusive ?? false;
+    }
+
+    public function setRegistrationListExclusive(bool $exclusive): void
+    {
+        $this->initializeMetadata();
+        $this->metadata->registrationListExclusive = $exclusive;
     }
 
     protected function canUserRemove($user): bool
