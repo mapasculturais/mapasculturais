@@ -122,10 +122,46 @@ app.component('opportunity-registration-filter-configuration', {
             if (this.selectedField === 'sentTimestamp') {
                 const hasInitialDate = !!this.selectedConfigs?.from;
                 const hasFinalDate = !!this.selectedConfigs?.to;
-                return hasInitialDate || hasFinalDate;
+                
+                // Precisa ter pelo menos uma data
+                if (!hasInitialDate && !hasFinalDate) {
+                    return false;
+                }
+                
+                // Se ambas as datas estiverem preenchidas, a data final deve ser maior ou igual à inicial
+                if (hasInitialDate && hasFinalDate) {
+                    const fromDate = new Date(this.selectedConfigs.from);
+                    const toDate = new Date(this.selectedConfigs.to);
+                    return toDate >= fromDate;
+                }
+                
+                return true;
             }
 
             return true;
+        },
+
+        sentTimestampErrors() {
+            if (this.selectedField !== 'sentTimestamp') {
+                return { from: '', to: '' };
+            }
+
+            const hasInitialDate = !!this.selectedConfigs?.from;
+            const hasFinalDate = !!this.selectedConfigs?.to;
+
+            if (hasInitialDate && hasFinalDate) {
+                const fromDate = new Date(this.selectedConfigs.from);
+                const toDate = new Date(this.selectedConfigs.to);
+                
+                if (fromDate > toDate) {
+                    return {
+                        from: this.text('A data inicial não pode ser maior que a data final'),
+                        to: ''
+                    };
+                }
+            }
+
+            return { from: '', to: '' };
         },
 
         fillTagsList() {
@@ -316,6 +352,15 @@ app.component('opportunity-registration-filter-configuration', {
 
                 if (!hasInitialDate && !hasFinalDate) {
                     return;
+                }
+
+                // Valida se a data final não é menor que a data inicial
+                if (hasInitialDate && hasFinalDate) {
+                    const fromDate = new Date(this.selectedConfigs.from);
+                    const toDate = new Date(this.selectedConfigs.to);
+                    if (toDate < fromDate) {
+                        return;
+                    }
                 }
             }
 
