@@ -13,6 +13,7 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Aba de eventos na single de espaços com listagem de eventos programados no local
 - Aba de eventos na single de projetos com listagem de eventos vinculados e suas ocorrências
 - Fediverso como rede social nos metadados das entidades
+- Adiciona restrição de tipos de arquivo permitidos em campos anexo do formulário
 - Oportunidade apenas para divulgação - permite criar oportunidades informativas onde as inscrições não são feitas pela plataforma
 
 ### Melhorias nas avaliação
