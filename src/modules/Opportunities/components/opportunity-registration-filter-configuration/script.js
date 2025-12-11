@@ -202,10 +202,14 @@ app.component('opportunity-registration-filter-configuration', {
             let prop = event.target.value;
             let _defaultValue = this.loadCheckedOptions();
 
-            if(prop in _defaultValue) {
-                for(item of _defaultValue[prop]) {
-                    selected.push(item);
-                }  
+            if (this.selectedField == 'sentTimestamp') {
+                selected = {to: null, from: null};
+            } else {
+                if(prop in _defaultValue) {
+                    for(item of _defaultValue[prop]) {
+                        selected.push(item);
+                    }  
+                }
             }
         
             this.selectedConfigs = selected
@@ -264,6 +268,7 @@ app.component('opportunity-registration-filter-configuration', {
                 'range': this.text('Faixa/Linha'),
                 'ranges': this.text('Faixas/Linhas'),
                 'distribution': this.text('Distribuição'),
+                'sentTimestamp': this.text('Data de envio')
             };
 
             if (reverse) {
