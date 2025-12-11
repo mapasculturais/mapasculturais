@@ -14,5 +14,7 @@
     'Faixa/Linha' => i::__('Faixa/Linha'),
     'Faixas/Linhas' => i::__('Faixas/Linhas'),
     'Distribuição' => i::__('Distribuição'),
-    'Data de envio' => i::__('Data de envio')
+    'Data de envio' => i::__('Data de envio'),
+    'de' => i::__('de'),
+    'até' => i::__('até')
  ];
