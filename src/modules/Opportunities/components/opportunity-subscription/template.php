@@ -23,7 +23,18 @@ $this->import('
 			<div class="content__description" v-html="infoRegistration"></div>
 		</div>
 	</div>
-	<div v-if="isOpen && !isPublished && !registrationLimit && !registrationLimitPerOwner" class="col-12 opportunity-subscription__subscription">
+	<!-- Mensagem para oportunidades de divulgação -->
+	<div v-if="entity.publicityOnly" class="col-12 opportunity-subscription__publicity-notice alert helper">
+		<div class="alert__message">
+			<mc-icon name="info-full"></mc-icon>
+			<div class="text">
+				<strong><?= i::__("Oportunidade apenas para divulgação") ?></strong>
+				<p><?= i::__("As inscrições para esta oportunidade não são feitas pela plataforma.") ?></p>
+			</div>
+		</div>
+	</div>
+
+	<div v-if="!entity.publicityOnly && isOpen && !isPublished && !registrationLimit && !registrationLimitPerOwner" class="col-12 opportunity-subscription__subscription">
 		<p class="title"> <?= i::__("Inscreva-se") ?> </p>
 
 		<div v-if="global.auth.isLoggedIn" class="logged">

@@ -125,9 +125,16 @@ abstract class Entity implements \JsonSerializable{
 
     }
 
-
     function __toString() {
-        return $this->getClassName() . ':' . $this->id;
+        $pk = $this->getPKPropertyName();
+        return $this->getClassName() . ':' . $this->$pk;
+    }
+
+    static function getPKPropertyName(): string
+    {
+        $app = App::i();
+        $metadata = $app->em->getClassMetadata(static::class);
+        return $metadata->identifier[0];
     }
 
     static function isPrivateEntity(){
@@ -153,11 +160,15 @@ abstract class Entity implements \JsonSerializable{
         }
 
         $this->refresh();
-        return $this->repo()->find($this->id);
+        
+        $pk = $this->getPKPropertyName();
+
+        return $this->repo()->find($this->$pk);
     }
 
     function equals($entity){
-        return is_object($entity) && $entity instanceof Entity && $entity->getClassName() === $this->getClassName() && $entity->id === $this->id;
+        $pk = $this->getPKPropertyName();
+        return is_object($entity) && $entity instanceof Entity && $entity->getClassName() === $this->getClassName() && $entity->$pk === $this->$pk;
     }
 
     function isNew(){
@@ -827,15 +838,18 @@ abstract class Entity implements \JsonSerializable{
     }
 
     public function getSingleUrl(){
-        return App::i()->createUrl($this->controllerId, 'single', [$this->id]);
+        $pk = $this->getPKPropertyName();
+        return App::i()->createUrl($this->controllerId, 'single', [$this->$pk]);
     }
 
     public function getEditUrl(){
-        return App::i()->createUrl($this->controllerId, 'edit', [$this->id]);
+        $pk = $this->getPKPropertyName();
+        return App::i()->createUrl($this->controllerId, 'edit', [$this->$pk]);
     }
 
     public function getDeleteUrl(){
-        return App::i()->createUrl($this->controllerId, 'delete', [$this->id]);
+        $pk = $this->getPKPropertyName();
+        return App::i()->createUrl($this->controllerId, 'delete', [$this->$pk]);
     }
 
     static function getControllerClassName() {
@@ -1141,9 +1155,10 @@ abstract class Entity implements \JsonSerializable{
         $class = get_called_class();
         $dql = "SELECT COUNT(e.$property_name) FROM $class e WHERE e.$property_name = :val";
         $params = ['val' => $this->$property_name];
-        if($this->id){
-            $dql .= ' AND e.id != :id';
-            $params['id'] = $this->id;
+        $pk = $this->getPKPropertyName();
+        if($this->$pk){
+            $dql .= ' AND e.$pk != :id';
+            $params['id'] = $this->$pk;
         }
 
         $ok = App::i()->em->createQuery($dql)->setParameters($params)->getSingleScalarResult() == 0;
@@ -1286,7 +1301,6 @@ abstract class Entity implements \JsonSerializable{
         $app = App::i();
 
         $uow = $app->em->getUnitOfWork();
-        $metadata = $app->em->getClassMetadata($this->getClassName());
         $uow->computeChangeSets();
         $this->_changes = $uow->getEntityChangeSet($this);
     }

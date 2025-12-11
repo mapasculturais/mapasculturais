@@ -14,11 +14,19 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Aba de eventos na single de projetos com listagem de eventos vinculados e suas ocorrências
 - Fediverso como rede social nos metadados das entidades
 - Adiciona restrição de tipos de arquivo permitidos em campos anexo do formulário
+- Oportunidade apenas para divulgação - permite criar oportunidades informativas onde as inscrições não são feitas pela plataforma
+
+### Melhorias nas avaliação
+- Possibilidade de configuração de limite de inscrições para os avaliadores
+- Botão de excluir avaliação
 
 ### Melhorias
 - Redireciona usuario para o perfil quando o mesmo esta em rascunho ou com dados obrigatórios não preechidos
 - Implementa novos hooks na edit de espaço e no componente entity-field
 - Adiciona suporte a autenticação JWT nas requisições para API [(1)](#snp)
+- Melhoria na exibição das mensagens de erro para capturar e exibir mensagens específicas
+- Melhora a comunicação da interface para deixar claro que a alteração de critérios ou sessões só deve ser feita por administradores quando já existirem avaliações técnicas enviadas.
+- Remove espaços múltiplos e espaços no início/fim do nome e nome completo das entidades
 
 ### Correções
 - Corrige warnigs no navegador devido a problemas com o componente entity-field
@@ -27,6 +35,7 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Corrige função replaces da classe i
 - Corrige nome do hook entity().archive:after
 - Corrige busca pela chave primária da tabela Job
+- Impede que o usuarios que não são admnistradores altere critérios ou sessões de critérios de avaliação técnica se já existem avaliações enviadas
 
 ### Melhorias não funcionais
 - LifecycleCallbacks na Entities\SealRelation
@@ -35,6 +44,33 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 ### Créditos
 <a name="snp"></a>
 1. <small>Melhoria desenvolvida pelo Ministério das Cidades, através da Secretaria Nacional de Periferias, para o Prêmio Periferia Viva</small>
+
+## [7.6.26] - 2025-11-28
+### Correções
+- Corrige permissão de edição de campos bloqueados no formulário de inscrição
+- Adiciona todos os campos da lista de pessoas na ficha de inscrição e na exportação da lista de inscrição
+- Corrige seleção de campos na API
+
+## [7.6.25] - 2025-11-27
+### Melhorias
+- Implementa validação dos campos no momento do salvamento de entidades 
+- Melhoria na legenda da galeria de imagens
+
+### Correções
+- Correção nos testes
+
+## [7.6.24] - 2025-11-14
+### Melhorias
+- Redireciona usuario para o perfil quando o mesmo esta em rascunho ou com dados obrigatórios não preechidos
+- Implementa novos hooks na edit de espaço e no componente entity-field
+
+### Correções
+- Corrige warnigs no navegador devido a problemas com o componente entity-field
+- Implementa verificações para evitar warnings indesejados referente ao componente de localização
+- Ajusta ApiQuery para evitar que _addFilterByMetadata crie JOIN's duplicados
+- Corrige função replaces da classe i
+- Corrige label do campo nome do modal
+- Ajusta a verificação de exibição do tipo no modal de criação de agente, garantindo o funcionamento correto mesmo quando houver replacements
 
 ## [7.6.23] - 2025-10-31
 ### Melhorias e correções não funcionais

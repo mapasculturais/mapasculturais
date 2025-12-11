@@ -2,15 +2,18 @@
 
 namespace Tests\Builders;
 
-use MapasCulturais\Entities\Agent;
-use MapasCulturais\Entities\EvaluationMethodConfiguration;
-use MapasCulturais\Entities\Opportunity;
-use Tests\Abstract\Builder;
-use Tests\Abstract\EvaluationMethodConfigurationBuilder;
-use Tests\Enums\EvaluationMethods;
-use Tests\Interfaces\EvaluationPeriodInterface;
+use MapasCulturais\App;
 use Tests\Traits\Faker;
+use Tests\Abstract\Builder;
 use Tests\Traits\UserDirector;
+use MapasCulturais\Entities\Agent;
+use Tests\Enums\EvaluationMethods;
+use MapasCulturais\Entities\Opportunity;
+use Tests\Interfaces\EvaluationPeriodInterface;
+use MapasCulturais\Entities\RegistrationEvaluation;
+use Tests\Abstract\EvaluationMethodConfigurationBuilder;
+use MapasCulturais\Entities\EvaluationMethodConfiguration;
+use MapasCulturais\Entities\EvaluationMethodConfigurationAgentRelation;
 
 class EvaluationPhaseBuilder extends Builder
 {
@@ -25,9 +28,22 @@ class EvaluationPhaseBuilder extends Builder
 
     protected EvaluationMethodConfiguration $instance;
     protected EvaluationMethods $evaluationMethod;
+    protected ValuerBuilder $valuerBuilder;
+
+    /**
+     * @var EvaluationMethodConfigurationAgentRelation[][]
+     */
+    protected array $valuersRelations = [];
+
+
+    /**
+     * @var Agent[]
+     */
+    protected array $valuers = [];
 
     function __construct(protected OpportunityBuilder $opportunityBuilder)
     {
+        $this->valuerBuilder = new ValuerBuilder($this);
         parent::__construct();
     }
 
@@ -47,9 +63,17 @@ class EvaluationPhaseBuilder extends Builder
         return $this->instance;
     }
 
+    public function save(bool $flush = true): static
+    {
+        parent::save($flush);
+
+        $this->instance->opportunity->evaluationMethodConfiguration = $this->instance;
+        
+        return $this;
+    }
+
     public function done(): OpportunityBuilder
     {
-        $this->instance->opportunity->evaluationMethodConfiguration = $this->instance;
         return $this->opportunityBuilder;
     }
 
@@ -86,20 +110,84 @@ class EvaluationPhaseBuilder extends Builder
 
     public function addValuers(int $number_of_valuers, string $committee): self
     {
-        for ($i = 0; $i < $number_of_valuers; $i++) {
-            $this->addValuer($committee);
+        for ($i = 1; $i <= $number_of_valuers; $i++) {
+            $this->addValuer($committee, "{$committee} - valuer {$i}");
         }
 
         return $this;
     }
 
-    public function addValuer(string $committe, ?Agent $valuer = null): self
+    public function addValuer(string $committe, string $name, ?Agent $valuer = null): ValuerBuilder
     {
-        if (!$valuer) {
-            $valuer = $this->userDirector->createUser()->profile;
+        if ($valuer && isset($this->valuers[$name]) && !$valuer->equals($this->valuers[$name]->agent)) {
+            throw new \Exception("o avaliador informado não é o mesmo já utilizado com o mesmo nome");
         }
 
-        $this->addRelatedAgent($committe, $valuer, has_control: true);
+        if (isset($this->valuers[$name])) {
+            $valuer = $this->valuers[$name]->agent;
+        }
+
+        $this->valuerBuilder->reset(committee_name: $committe, valuer: $valuer, agent_name: $name);
+
+        $valuer_relation = $this->valuerBuilder->getInstance();
+
+        $this->valuersRelations[$committe] = $this->valuersRelations[$committe] ?? [];
+        $this->valuersRelations[$committe][$name] = $valuer_relation;
+        $this->valuers[$name] = $valuer_relation;
+
+        return $this->valuerBuilder;
+    }
+
+    public function withValuer(string $committe, string $name): ValuerBuilder
+    {
+        if (!isset($this->valuersRelations[$committe][$name])) {
+            throw new \Exception("Avaliador {$name} não encontrado na comissão {$committe}");
+        }
+
+        $this->valuerBuilder->reset($this->valuersRelations[$committe][$name]);
+
+        return $this->valuerBuilder;
+    }
+
+    public function redistributeCommitteeRegistrations(): static
+    {
+        $this->instance->redistributeCommitteeRegistrations();
+
+        return $this;
+    }
+
+    public function createEvaluations(string $committee, int $number_of_evaluations, array $evaluation_data = [], int $status = RegistrationEvaluation::STATUS_DRAFT, ?int $valuer_index = null ): static
+    {
+        $app = App::i();
+        // Commite de avaliação
+        $valuers = $valuer_index ? [$this->instance->agentRelations[$valuer_index]] : $this->instance->agentRelations;
+        $registratons = $app->repo('Registration')->findBy(['opportunity' => $this->instance->opportunity]);
+        
+        foreach($registratons as $registration) {
+            foreach($valuers as $valuer) {
+                for ($i = 0; $i < $number_of_evaluations; $i++) {
+                    $evaluation = new RegistrationEvaluation();
+                    $evaluation->registration = $registration;
+                    $evaluation->user = $valuer;
+                    $evaluation->status = $status;
+                    eval(\psy\sh());
+                    $evaluation->save(true);
+                }
+            }
+        }
+
+        
+        foreach($valuers as $valuer) {
+            for ($i = 0; $i < $number_of_evaluations; $i++) {
+                $evaluation = new RegistrationEvaluation();
+                $evaluation->committee = $committee;
+                $evaluation->user = $valuer->agent->owner->user;
+                $evaluation->status = $status;
+                $evaluation->opportunity = $this->instance->opportunity;
+                $evaluation->save(true);
+            }
+        }
+       
 
         return $this;
     }
@@ -123,7 +211,7 @@ class EvaluationPhaseBuilder extends Builder
 
         return $this;
     }
-    
+
     /**
      * 
      * @param string $committee 

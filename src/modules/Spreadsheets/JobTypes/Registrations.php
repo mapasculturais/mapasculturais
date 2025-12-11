@@ -210,15 +210,166 @@ class Registrations extends SpreadsheetJob
                         if ($entity_type_field['ft'] === 'persons' && !empty($entity[$field->fieldName])) {
                             $persons = json_decode(json_encode($entity[$field->fieldName]),true);
                             $_persons = [];
+                            $field_config = $field->config ?? [];
 
                             foreach($persons as $person){
-                                if((isset($person['name']) && $person['name']) || isset($person['cpf']) && $person['cpf']){
-                                    $_name = isset($person['name']) ? $person['name'] : i::__('Nome não informado');
-                                    $_cpf = isset($person['cpf']) ? $person['cpf'] : i::__('CPF não informado');
-                                    $_persons[] = $_name . " : " . $_cpf;
+                                $person_fields = [];
+                                
+                                // Nome
+                                if (isset($field_config['name']) && $field_config['name'] === 'true') {
+                                    $person_fields[] = isset($person['name']) && $person['name'] 
+                                        ? i::__('Nome') . ': ' . $person['name'] 
+                                        : i::__('Nome') . ': ' . i::__('Não informado');
+                                }
+                                
+                                // Nome completo
+                                if (isset($field_config['fullName']) && $field_config['fullName'] === 'true') {
+                                    $person_fields[] = isset($person['fullName']) && $person['fullName'] 
+                                        ? i::__('Nome completo') . ': ' . $person['fullName'] 
+                                        : i::__('Nome completo') . ': ' . i::__('Não informado');
+                                }
+                                
+                                // Nome social
+                                if (isset($field_config['socialName']) && $field_config['socialName'] === 'true') {
+                                    $person_fields[] = isset($person['socialName']) && $person['socialName'] 
+                                        ? i::__('Nome social') . ': ' . $person['socialName'] 
+                                        : i::__('Nome social') . ': ' . i::__('Não informado');
+                                }
+                                
+                                // CPF
+                                if (isset($field_config['cpf']) && $field_config['cpf'] === 'true') {
+                                    $person_fields[] = isset($person['cpf']) && $person['cpf'] 
+                                        ? i::__('CPF') . ': ' . $person['cpf'] 
+                                        : i::__('CPF') . ': ' . i::__('Não informado');
+                                }
+                                
+                                // Renda
+                                if (isset($field_config['income']) && $field_config['income'] === 'true') {
+                                    $person_fields[] = isset($person['income']) && $person['income'] 
+                                        ? i::__('Renda') . ': ' . $person['income'] 
+                                        : i::__('Renda') . ': ' . i::__('Não informado');
+                                }
+                                
+                                // Escolaridade
+                                if (isset($field_config['education']) && $field_config['education'] === 'true') {
+                                    $person_fields[] = isset($person['education']) && $person['education'] 
+                                        ? i::__('Escolaridade') . ': ' . $person['education'] 
+                                        : i::__('Escolaridade') . ': ' . i::__('Não informado');
+                                }
+                                
+                                // Telefone
+                                if (isset($field_config['telephone']) && $field_config['telephone'] === 'true') {
+                                    $person_fields[] = isset($person['telephone']) && $person['telephone'] 
+                                        ? i::__('Telefone') . ': ' . $person['telephone'] 
+                                        : i::__('Telefone') . ': ' . i::__('Não informado');
+                                }
+                                
+                                // Email
+                                if (isset($field_config['email']) && $field_config['email'] === 'true') {
+                                    $person_fields[] = isset($person['email']) && $person['email'] 
+                                        ? i::__('Email') . ': ' . $person['email'] 
+                                        : i::__('Email') . ': ' . i::__('Não informado');
+                                }
+                                
+                                // Raça/Cor
+                                if (isset($field_config['race']) && $field_config['race'] === 'true') {
+                                    $person_fields[] = isset($person['race']) && $person['race'] 
+                                        ? i::__('Raça/Cor') . ': ' . $person['race'] 
+                                        : i::__('Raça/Cor') . ': ' . i::__('Não informado');
+                                }
+                                
+                                // Gênero
+                                if (isset($field_config['gender']) && $field_config['gender'] === 'true') {
+                                    $person_fields[] = isset($person['gender']) && $person['gender'] 
+                                        ? i::__('Gênero') . ': ' . $person['gender'] 
+                                        : i::__('Gênero') . ': ' . i::__('Não informado');
+                                }
+                                
+                                // Orientação sexual
+                                if (isset($field_config['sexualOrientation']) && $field_config['sexualOrientation'] === 'true') {
+                                    $person_fields[] = isset($person['sexualOrientation']) && $person['sexualOrientation'] 
+                                        ? i::__('Orientação sexual') . ': ' . $person['sexualOrientation'] 
+                                        : i::__('Orientação sexual') . ': ' . i::__('Não informado');
+                                }
+                                
+                                // Deficiências
+                                if (isset($field_config['deficiencies']) && $field_config['deficiencies'] === 'true') {
+                                    $deficiencies_str = '';
+                                    if (isset($person['deficiencies'])) {
+                                        if (is_array($person['deficiencies'])) {
+                                            $deficiencies_filtered = array_filter($person['deficiencies'], function($v) { return $v !== false && $v !== null && $v !== ''; });
+                                            $deficiencies_str = !empty($deficiencies_filtered) 
+                                                ? implode(', ', array_keys($deficiencies_filtered)) 
+                                                : i::__('Não informado');
+                                        } else {
+                                            $deficiencies_str = $person['deficiencies'] ?: i::__('Não informado');
+                                        }
+                                    } else {
+                                        $deficiencies_str = i::__('Não informado');
+                                    }
+                                    $person_fields[] = i::__('Deficiências') . ': ' . $deficiencies_str;
+                                }
+                                
+                                // Comunidade tradicional
+                                if (isset($field_config['comunty']) && $field_config['comunty'] === 'true') {
+                                    $person_fields[] = isset($person['comunty']) && $person['comunty'] 
+                                        ? i::__('Comunidade tradicional') . ': ' . $person['comunty'] 
+                                        : i::__('Comunidade tradicional') . ': ' . i::__('Não informado');
+                                }
+                                
+                                // Áreas de atuação
+                                if (isset($field_config['area']) && $field_config['area'] === 'true') {
+                                    $area_str = '';
+                                    if (isset($person['area']) && $person['area']) {
+                                        if (is_array($person['area'])) {
+                                            $area_str = implode(', ', array_filter($person['area']));
+                                        } else {
+                                            $area_str = $person['area'];
+                                        }
+                                    }
+                                    $person_fields[] = $area_str 
+                                        ? i::__('Áreas de atuação') . ': ' . $area_str 
+                                        : i::__('Áreas de atuação') . ': ' . i::__('Não informado');
+                                }
+                                
+                                // Funções/Profissões
+                                if (isset($field_config['funcao']) && $field_config['funcao'] === 'true') {
+                                    $funcao_str = '';
+                                    if (isset($person['funcao']) && $person['funcao']) {
+                                        if (is_array($person['funcao'])) {
+                                            $funcao_str = implode(', ', array_filter($person['funcao']));
+                                        } else {
+                                            $funcao_str = $person['funcao'];
+                                        }
+                                    }
+                                    $person_fields[] = $funcao_str 
+                                        ? i::__('Funções/Profissões') . ': ' . $funcao_str 
+                                        : i::__('Funções/Profissões') . ': ' . i::__('Não informado');
+                                }
+                                
+                                // Relação (sempre incluído se presente, independente de config)
+                                if (isset($person['relationship']) && $person['relationship']) {
+                                    $person_fields[] = i::__('Relação') . ': ' . $person['relationship'];
+                                }
+                                
+                                // Função (sempre incluído se presente, independente de config)
+                                if (isset($person['function']) && $person['function']) {
+                                    $person_fields[] = i::__('Função') . ': ' . $person['function'];
+                                }
+                                
+                                // Se não houver campos configurados, usa comportamento padrão (nome e CPF)
+                                if (empty($person_fields)) {
+                                    if ((isset($person['name']) && $person['name']) || (isset($person['cpf']) && $person['cpf'])) {
+                                        $_name = isset($person['name']) && $person['name'] ? $person['name'] : i::__('Nome não informado');
+                                        $_cpf = isset($person['cpf']) && $person['cpf'] ? $person['cpf'] : i::__('CPF não informado');
+                                        $_persons[] = $_name . " : " . $_cpf;
+                                    }
+                                } else {
+                                    // Se houver campos configurados, usa a formatação completa
+                                    $_persons[] = implode(' | ', $person_fields);
                                 }
                             }
-                            $entity[$field->fieldName] = implode(', ', $_persons );
+                            $entity[$field->fieldName] = implode(' || ', $_persons );
                         }
 
                         if($entity_type_field['ft'] == '@location') {
