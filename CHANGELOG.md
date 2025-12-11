@@ -43,6 +43,33 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 <a name="snp"></a>
 1. <small>Melhoria desenvolvida pelo Ministério das Cidades, através da Secretaria Nacional de Periferias, para o Prêmio Periferia Viva</small>
 
+## [7.6.26] - 2025-11-28
+### Correções
+- Corrige permissão de edição de campos bloqueados no formulário de inscrição
+- Adiciona todos os campos da lista de pessoas na ficha de inscrição e na exportação da lista de inscrição
+- Corrige seleção de campos na API
+
+## [7.6.25] - 2025-11-27
+### Melhorias
+- Implementa validação dos campos no momento do salvamento de entidades 
+- Melhoria na legenda da galeria de imagens
+
+### Correções
+- Correção nos testes
+
+## [7.6.24] - 2025-11-14
+### Melhorias
+- Redireciona usuario para o perfil quando o mesmo esta em rascunho ou com dados obrigatórios não preechidos
+- Implementa novos hooks na edit de espaço e no componente entity-field
+
+### Correções
+- Corrige warnigs no navegador devido a problemas com o componente entity-field
+- Implementa verificações para evitar warnings indesejados referente ao componente de localização
+- Ajusta ApiQuery para evitar que _addFilterByMetadata crie JOIN's duplicados
+- Corrige função replaces da classe i
+- Corrige label do campo nome do modal
+- Ajusta a verificação de exibição do tipo no modal de criação de agente, garantindo o funcionamento correto mesmo quando houver replacements
+
 ## [7.6.23] - 2025-10-31
 ### Melhorias e correções não funcionais
 - Implementa novos hooks na edit dos agentes

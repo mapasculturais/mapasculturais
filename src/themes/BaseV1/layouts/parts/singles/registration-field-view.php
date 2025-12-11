@@ -36,8 +36,34 @@
 </div>
 <div ng-if="field.fieldType === 'persons'">
     <label>{{field.required ? '*' : ''}} {{field.title}}: </label>
-    <div ng-repeat="(key, item) in entity[field.fieldName]" ng-if="item && key !== 'location' && key !== 'publicLocation' ">
-        <div><b ng-if="item.name">Nome: </b>{{item.name}}<b ng-if="item.cpf"> CPF: </b>{{item.cpf}} <b ng-if="item.relationship">Relação: </b>{{item.relationship}} <b ng-if="item.function">Função: </b>{{item.function}}</div>
+    <div ng-repeat="person in entity[field.fieldName]" ng-if="person">
+        <div style="margin-bottom: 15px; padding: 10px; border-left: 3px solid #ccc;">
+            <div ng-if="field.config.name && person.name"><strong><?php \MapasCulturais\i::_e("Nome"); ?>: </strong>{{person.name}}</div>
+            <div ng-if="field.config.fullName && person.fullName"><strong><?php \MapasCulturais\i::_e("Nome completo"); ?>: </strong>{{person.fullName}}</div>
+            <div ng-if="field.config.socialName && person.socialName"><strong><?php \MapasCulturais\i::_e("Nome social"); ?>: </strong>{{person.socialName}}</div>
+            <div ng-if="field.config.cpf && person.cpf"><strong><?php \MapasCulturais\i::_e("CPF"); ?>: </strong>{{person.cpf}}</div>
+            <div ng-if="field.config.income && person.income"><strong><?php \MapasCulturais\i::_e("Renda"); ?>: </strong>{{person.income}}</div>
+            <div ng-if="field.config.education && person.education"><strong><?php \MapasCulturais\i::_e("Escolaridade"); ?>: </strong>{{person.education}}</div>
+            <div ng-if="field.config.telephone && person.telephone"><strong><?php \MapasCulturais\i::_e("Telefone"); ?>: </strong>{{person.telephone}}</div>
+            <div ng-if="field.config.email && person.email"><strong><?php \MapasCulturais\i::_e("Email"); ?>: </strong>{{person.email}}</div>
+            <div ng-if="field.config.race && person.race"><strong><?php \MapasCulturais\i::_e("Raça/Cor"); ?>: </strong>{{person.race}}</div>
+            <div ng-if="field.config.gender && person.gender"><strong><?php \MapasCulturais\i::_e("Gênero"); ?>: </strong>{{person.gender}}</div>
+            <div ng-if="field.config.sexualOrientation && person.sexualOrientation"><strong><?php \MapasCulturais\i::_e("Orientação sexual"); ?>: </strong>{{person.sexualOrientation}}</div>
+            <div ng-if="field.config.deficiencies && person.deficiencies && (typeof person.deficiencies === 'object' ? Object.keys(person.deficiencies).filter(function(k) { return person.deficiencies[k]; }).length > 0 : person.deficiencies)">
+                <strong><?php \MapasCulturais\i::_e("Deficiências"); ?>: </strong>
+                <span ng-if="typeof person.deficiencies === 'object'">{{Object.keys(person.deficiencies).filter(function(k) { return person.deficiencies[k]; }).join(', ')}}</span>
+                <span ng-if="typeof person.deficiencies !== 'object'">{{person.deficiencies}}</span>
+            </div>
+            <div ng-if="field.config.comunty && person.comunty"><strong><?php \MapasCulturais\i::_e("Comunidade tradicional"); ?>: </strong>{{person.comunty}}</div>
+            <div ng-if="field.config.area && person.area && formatPersonArrayField(person.area)">
+                <strong><?php \MapasCulturais\i::_e("Áreas de atuação"); ?>: </strong>{{formatPersonArrayField(person.area)}}
+            </div>
+            <div ng-if="field.config.funcao && person.funcao && formatPersonArrayField(person.funcao)">
+                <strong><?php \MapasCulturais\i::_e("Funções/Profissões"); ?>: </strong>{{formatPersonArrayField(person.funcao)}}
+            </div>
+            <div ng-if="field.config.relationship && person.relationship"><strong><?php \MapasCulturais\i::_e("Relação"); ?>: </strong>{{person.relationship}}</div>
+            <div ng-if="field.config.function && person.function"><strong><?php \MapasCulturais\i::_e("Função"); ?>: </strong>{{person.function}}</div>
+        </div>
     </div>
 </div>
 <?php //@TODO pegar endereço do campo endereço (verificar porque não esta salvando corretamente, arquicos location.js e _location.php)
