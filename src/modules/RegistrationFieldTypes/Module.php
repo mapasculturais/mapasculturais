@@ -868,28 +868,19 @@ class Module extends \MapasCulturais\Module
             $taxonomies_fields = $this->taxonomiesOpportunityFields();
 
             if($entity_field == '@location'){
-
-                if($entity->En_Nome_Logradouro && $entity->En_Num && $entity->En_Municipio && $entity->En_Estado) {
-                    $result = [
-                        'endereco' => $entity->endereco,
-                        'En_CEP' => $entity->En_CEP,
-                        'En_Nome_Logradouro' => $entity->En_Nome_Logradouro,
-                        'En_Num' => $entity->En_Num,
-                        'En_Complemento' => $entity->En_Complemento,
-                        'En_Bairro' => $entity->En_Bairro,
-                        'En_Municipio' => $entity->En_Municipio,
-                        'En_Estado' => $entity->En_Estado,
-                        'location' => $entity->location,
-                        'publicLocation' => $entity->publicLocation
-                    ];
-                    if (isset($entity->En_Pais)) {
-                        $result["En_Pais"] = $entity->En_Pais;
-                    }
-                } else {
-                    $result = null;
-                }
-
-                $value = $result;
+                $value = [
+                    'endereco' => $entity->endereco,
+                    'En_CEP' => $entity->En_CEP,
+                    'En_Nome_Logradouro' => $entity->En_Nome_Logradouro,
+                    'En_Num' => $entity->En_Num,
+                    'En_Complemento' => $entity->En_Complemento,
+                    'En_Bairro' => $entity->En_Bairro,
+                    'En_Municipio' => $entity->En_Municipio,
+                    'En_Estado' => $entity->En_Estado,
+                    'En_Pais' => $entity->En_Pais,
+                    'location' => $entity->location,
+                    'publicLocation' => $entity->publicLocation
+                ];
 
             } else if($taxonomies_fields && in_array($entity_field, array_keys($taxonomies_fields))) {
                 $term = $taxonomies_fields[$entity_field];
