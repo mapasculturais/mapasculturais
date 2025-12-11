@@ -48,8 +48,14 @@ $this->import('
             </div>
 
             <div v-if="selectedField == 'sentTimestamp'" class="opportunity-registration-filter-configuration__related-input col-12 field">
-                <div><?= i::__('de') ?> <mc-datepicker v-model:modelValue="selectedConfigs.from" field-type="date"></mc-datepicker></div>
-                <div><?= i::__('até') ?> <mc-datepicker v-model:modelValue="selectedConfigs.to" field-type="date"></mc-datepicker></div>
+                <div>
+                    <?= i::__('de') ?> <mc-datepicker v-model:modelValue="selectedConfigs.from" field-type="date"></mc-datepicker>
+                    <div v-if="sentTimestampErrors.from" class="opportunity-registration-filter-configuration__error">{{ sentTimestampErrors.from }}</div>
+                </div>
+                <div>
+                    <?= i::__('até') ?> <mc-datepicker v-model:modelValue="selectedConfigs.to" field-type="date"></mc-datepicker>
+                    <div v-if="sentTimestampErrors.to" class="opportunity-registration-filter-configuration__error">{{ sentTimestampErrors.to }}</div>
+                </div>
             </div>
 
             <div v-if="selectedField == 'distribution'" class="opportunity-registration-filter-configuration__related-input col-12 field">
