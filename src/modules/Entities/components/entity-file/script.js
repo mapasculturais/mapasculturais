@@ -78,6 +78,11 @@ app.component('entity-file', {
             required: false,
             default: 'Enviar'
         },
+        allowedFileTypes: {
+            type: Array,
+            required: false,
+            default: () => []
+        },
     },
 
     data() {
@@ -87,6 +92,51 @@ app.component('entity-file', {
             file: this.entity.files?.[this.groupName] || null,
             maxFileSize: $MAPAS.maxUploadSizeFormatted,
             loading: false
+        }
+    },
+
+    computed: {
+        acceptAttribute() {
+            if (this.allowedFileTypes && this.allowedFileTypes.length > 0) {
+                return this.allowedFileTypes.join(',');
+            }
+            return null;
+        },
+        allowedFileTypesLabel() {
+            if (!this.allowedFileTypes || this.allowedFileTypes.length === 0) {
+                return '';
+            }
+            
+            const mimeToExtension = {
+                'application/pdf': 'PDF',
+                'image/jpeg': 'JPEG',
+                'image/png': 'PNG',
+                'image/gif': 'GIF',
+                'application/msword': 'DOC',
+                'application/vnd.openxmlformats-officedocument.wordprocessingml.document': 'DOCX',
+                'application/vnd.oasis.opendocument.text': 'ODT',
+                'application/vnd.ms-excel': 'XLS',
+                'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet': 'XLSX',
+                'application/vnd.oasis.opendocument.spreadsheet': 'ODS',
+                'text/csv': 'CSV',
+                'application/vnd.ms-powerpoint': 'PPT',
+                'application/vnd.openxmlformats-officedocument.presentationml.presentation': 'PPTX',
+                'application/vnd.oasis.opendocument.presentation': 'ODP',
+                'application/zip': 'ZIP',
+                'application/x-rar-compressed': 'RAR',
+                'video/mp4': 'MP4',
+                'video/x-msvideo': 'AVI',
+                'video/quicktime': 'MOV',
+                'audio/mpeg': 'MP3',
+                'audio/wav': 'WAV',
+                'text/plain': 'TXT'
+            };
+            
+            const extensions = this.allowedFileTypes.map(mime => 
+                mimeToExtension[mime] || mime
+            );
+            
+            return extensions.join(', ');
         }
     },
 
