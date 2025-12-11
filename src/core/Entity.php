@@ -1157,8 +1157,8 @@ abstract class Entity implements \JsonSerializable{
         $params = ['val' => $this->$property_name];
         $pk = $this->getPKPropertyName();
         if($this->$pk){
-            $dql .= ' AND e.$pk != :id';
-            $params['id'] = $this->$pk;
+            $dql .= " AND e.{$pk} != :pk";
+            $params['pk'] = $this->$pk;
         }
 
         $ok = App::i()->em->createQuery($dql)->setParameters($params)->getSingleScalarResult() == 0;
