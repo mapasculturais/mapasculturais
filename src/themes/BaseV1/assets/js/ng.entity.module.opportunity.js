@@ -2068,6 +2068,36 @@ module.controller('RegistrationFieldsController', ['$scope', '$rootScope', '$int
         return result;
     }
 
+    $scope.formatPersonArrayField = function(value) {
+        if (!value) {
+            return '';
+        }
+
+        if (Array.isArray(value)) {
+            return value.join(', ');
+        }
+
+        if (typeof value === 'string' && value.trim().startsWith('[')) {
+            try {
+                const parsed = JSON.parse(value);
+                if (Array.isArray(parsed)) {
+                    return parsed.join(', ');
+                }
+            } catch (e) {
+                return value;
+            }
+        }
+
+        if (typeof value === 'object') {
+            const values = Object.keys(value).filter(k => value[k]);
+            if (values.length > 0) {
+                return values.join(', ');
+            }
+        }
+
+        return value;
+    }
+
 }]);
 
     module.controller('EvaluationMethodConfigurationController', ['$scope', '$rootScope', 'RelatedAgentsService', 'EvaluationMethodConfigurationService', 'EditBox', 'OpportunityApiService', function($scope, $rootScope, RelatedAgentsService, EvaluationMethodConfigurationService, EditBox, OpportunityApiService) {

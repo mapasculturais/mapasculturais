@@ -133,6 +133,23 @@ app.component('opportunity-evaluation-committee', {
             return false;
         },
         
+        replaceReviewer(agent, relation) {
+            const api = new API();
+            let url = Utils.createUrl('evaluationMethodConfiguration', 'replaceValuer', {id: this.entity.id});
+            
+            let evaluatorData = {
+                newValuerAgentId: agent.id,
+                relation: relation.id,
+            };
+
+            api.POST(url, evaluatorData).then(res => res.json()).then(data => {
+                this.messages.success(this.text('reviewerReplaced'));
+                this.loadReviewers();
+                this.loadFetchs();
+                
+            });
+        },
+        
         selectAgent(agent) {
             const api = new API();
             let url = Utils.createUrl('evaluationMethodConfiguration', 'createAgentRelation', {id: this.entity.id});
@@ -160,10 +177,23 @@ app.component('opportunity-evaluation-committee', {
             let url = api.createApiUrl('evaluationCommittee', args);
             
             api.GET(url).then(res => res.json()).then(data => {
-                this.infosReviewers = data.filter(reviewer => reviewer.group === this.group).map(reviewer => ({
-                    ...reviewer,
-                    isContentVisible: false,
-                }));
+                this.infosReviewers = data.filter(reviewer => reviewer.group === this.group).map(reviewer => {
+                    if (!reviewer.metadata) {
+                        reviewer.metadata = {};
+                    }
+                    
+                    if (reviewer.metadata.registrationListExclusive == undefined || reviewer.metadata.registrationListExclusive == null) {
+                        reviewer.metadata.registrationListExclusive = false;
+                    } else {
+                        reviewer.metadata.registrationListExclusive = Boolean(reviewer.metadata.registrationListExclusive);
+                    }
+                    
+                    return {
+                        ...reviewer,
+                        isContentVisible: false,
+                        registrationListText: this.formatRegistrationList(reviewer.metadata?.registrationList),
+                    };
+                });
 
                 const pendingReviews = this.infosReviewers.filter((reviewer) => reviewer.status === -5);
                 pendingReviews.sort((a, b) => {
@@ -353,6 +383,65 @@ app.component('opportunity-evaluation-committee', {
                     info.default = (this.entity.fetch[info.agentUserId] || this.entity.fetchCategories[info.agentUserId].length > 0 || this.entity.fetchRanges[info.agentUserId].length > 0 || this.entity.fetchProponentTypes[info.agentUserId].length > 0) ? false : true;
                 });
             }
+        },
+
+        saveMaxRegistrations(infoReviewer){
+            const timeoutName = "saveMaxRegistrations" + infoReviewer.id;
+            const messages = useMessages();
+
+            clearTimeout(this[timeoutName]);
+            this[timeoutName] = setTimeout(async () => {
+                this.entity.enableM
+                await this.entity.invoke('setValuerMaxRegistrations',{relationId: infoReviewer.id, maxRegistrations: infoReviewer.metadata.maxRegistrations});
+                messages.success(this.text('modificações salvas'));
+            }, 3000)
+        },
+
+        parseRegistrationList(text) {
+            if (!text || !text.trim()) {
+                return null;
+            }
+            
+            // Remove espaços extras e divide por vírgula, ponto e vírgula, espaço ou quebra de linha
+            const separators = /[,;\s\n\r]+/;
+            const numbers = text
+                .split(separators)
+                .map(num => num.trim())
+                .filter(num => num.length > 0);
+            
+            return numbers.length > 0 ? numbers : null;
+        },
+
+        formatRegistrationList(registrationList) {
+            if (!registrationList || !Array.isArray(registrationList) || registrationList.length == 0) {
+                return '';
+            }
+            return registrationList.join(', ');
+        },
+
+        saveRegistrationList(infoReviewer) {
+            const timeoutName = "saveRegistrationList" + infoReviewer.id;
+            const messages = useMessages();
+
+            clearTimeout(this[timeoutName]);
+            this[timeoutName] = setTimeout(async () => {
+                const registrationNumbers = this.parseRegistrationList(infoReviewer.registrationListText);
+                await this.entity.invoke('setValuerRegistrationList', {
+                    relationId: infoReviewer.id, 
+                    registrationList: registrationNumbers
+                });
+                messages.success(this.text('modificações salvas'));
+            }, 3000);
+        },
+
+        saveRegistrationListExclusive(infoReviewer) {
+            const messages = useMessages();
+            this.entity.invoke('setValuerRegistrationListExclusive', {
+                relationId: infoReviewer.id, 
+                exclusive: infoReviewer.metadata.registrationListExclusive
+            }).then(() => {
+                messages.success(this.text('modificações salvas'));
+            });
         },
 
         toggleContent(reviewerId) {
