@@ -10,6 +10,7 @@ use MapasCulturais\i;
 $this->import('
     mc-modal
     mc-tag-list
+    mc-datepicker
 ');
 ?>
 
@@ -23,6 +24,7 @@ $this->import('
                     <option v-if="showField('proponentType')" value="proponentType" :disabled="isFieldExcluded('proponentType')"><?php i::_e("Tipos do proponente") ?></option>
                     <option v-if="showField('range')" value="range" :disabled="isFieldExcluded('range')"><?php i::_e("Faixa/Linha") ?></option>
                     <option v-if="useDistributionField" value="distribution" :disabled="isGlobal"><?php i::_e("Distribuição") ?></option>
+                    <option value="sentTimestamp" :disabled="!isGlobal"><?php i::_e("Data de envio da inscrição") ?></option>
                     <option v-if="Object.keys(registrationSelectionFields).length > 0" v-for="(field, fieldName) in registrationSelectionFields" :key="fieldName" :value="fieldName" :disabled="isFieldExcluded(fieldName)">{{ field.title }}</option>
                 </select>
             </div>
@@ -43,6 +45,11 @@ $this->import('
                 <label class="input__label input__checkboxLabel input__multiselect" v-for="range in filteredFields.ranges">
                     <input :checked="selectedConfigs.includes(range)" type="checkbox" :value="range" v-model="selectedConfigs"> {{range}}
                 </label>
+            </div>
+
+            <div v-if="selectedField == 'sentTimestamp'" class="opportunity-registration-filter-configuration__related-input col-12 field">
+                <div><?= i::__('de') ?> <mc-datepicker v-model:modelValue="selectedConfigs.from" field-type="date"></mc-datepicker></div>
+                <div><?= i::__('até') ?> <mc-datepicker v-model:modelValue="selectedConfigs.to" field-type="date"></mc-datepicker></div>
             </div>
 
             <div v-if="selectedField == 'distribution'" class="opportunity-registration-filter-configuration__related-input col-12 field">
