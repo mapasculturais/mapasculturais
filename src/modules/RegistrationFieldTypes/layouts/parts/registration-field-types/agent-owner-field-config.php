@@ -10,6 +10,9 @@ $fields_labels = [
     '@location' => " " . i::__('Campos de endereço'),
     '@terms:area' => " " . i::__('Área de atuação'),
     '@links' => " " . i::__(' Links'),
+    '@gallery' => " " . i::__(' Galeria de Fotos'),
+    '@videos' => " " . i::__(' Galeria de Vídeos'),
+    '@downloads' => " " . i::__(' Downloads/Anexos'),
 ];
 
 $taxonomies_fields = [];
@@ -157,6 +160,63 @@ $this->jsObject['registered_terms'] = array_keys($taxonomie_options);
 
     <div ng-if="field.config.entityField == '@links'">
         <label><input type="checkbox" ng-model="field.config.title" ng-true-value="'true'" ng-false-value=""> <?php i::_e('Pedir de título') ?></label><br>
+    </div>
+
+    <!-- Configuração: Galeria de Fotos -->
+    <div ng-if="field.config.entityField == '@gallery'">
+        <p class="registration-help">
+            <?php i::_e('As fotos da galeria do perfil do agente responsável serão exibidas e editáveis no formulário de inscrição.') ?>
+        </p>
+        <label>
+            <input type="checkbox" ng-model="field.config.allowUpload" ng-true-value="'true'" ng-false-value="">
+            <?php i::_e('Permitir adicionar novas fotos?') ?>
+        </label><br>
+        <label>
+            <input type="checkbox" ng-model="field.config.allowDelete" ng-true-value="'true'" ng-false-value="">
+            <?php i::_e('Permitir remover fotos?') ?>
+        </label><br>
+        <label>
+            <?php i::_e('Número máximo de fotos') ?>
+            <input type="number" ng-model="field.config.maxFiles" placeholder="<?php i::esc_attr_e('Ilimitado') ?>">
+        </label>
+    </div>
+
+    <!-- Configuração: Galeria de Vídeos -->
+    <div ng-if="field.config.entityField == '@videos'">
+        <p class="registration-help">
+            <?php i::_e('Os vídeos (YouTube/Vimeo) do perfil do agente responsável serão exibidos e editáveis no formulário de inscrição.') ?>
+        </p>
+        <label>
+            <input type="checkbox" ng-model="field.config.allowAdd" ng-true-value="'true'" ng-false-value="">
+            <?php i::_e('Permitir adicionar novos vídeos?') ?>
+        </label><br>
+        <label>
+            <input type="checkbox" ng-model="field.config.allowDelete" ng-true-value="'true'" ng-false-value="">
+            <?php i::_e('Permitir remover vídeos?') ?>
+        </label><br>
+        <label>
+            <?php i::_e('Número máximo de vídeos') ?>
+            <input type="number" ng-model="field.config.maxVideos" placeholder="<?php i::esc_attr_e('Ilimitado') ?>">
+        </label>
+    </div>
+
+    <!-- Configuração: Downloads/Anexos -->
+    <div ng-if="field.config.entityField == '@downloads'">
+        <p class="registration-help">
+            <?php i::_e('Os arquivos de download do perfil do agente responsável serão exibidos e editáveis no formulário de inscrição.') ?>
+        </p>
+        <label>
+            <input type="checkbox" ng-model="field.config.allowUpload" ng-true-value="'true'" ng-false-value="">
+            <?php i::_e('Permitir adicionar novos arquivos?') ?>
+        </label><br>
+        <label>
+            <input type="checkbox" ng-model="field.config.allowDelete" ng-true-value="'true'" ng-false-value="">
+            <?php i::_e('Permitir remover arquivos?') ?>
+        </label><br>
+        <label>
+            <?php i::_e('Número máximo de arquivos') ?>
+            <input type="number" ng-model="field.config.maxFiles" placeholder="<?php i::esc_attr_e('Ilimitado') ?>">
+        </label>
     </div>
 
     

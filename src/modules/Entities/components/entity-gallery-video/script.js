@@ -50,6 +50,9 @@ app.component('entity-gallery-video', {
 
     },
 
+    mounted() {
+    },
+
     computed: {
         videos() {
             Object(this.entity.metalists.videos).forEach((content, index)=>{        
@@ -135,13 +138,13 @@ app.component('entity-gallery-video', {
         },
         // Salva modificações nos vídeos adicionados
         async save(metalist, popover) {
-            if(!metalist.newData.title || !metalist.newData.value) {
+            if(!metalist.newData.title) {
                 const messages = useMessages();
                 messages.error(this.text('preencha todos os campos'));
                 return;
             }
             metalist.title = metalist.newData.title;
-            metalist.value = metalist.newData.value;
+            // Mantém o value original, não permite editar
             
             await metalist.save();
             popover.close();

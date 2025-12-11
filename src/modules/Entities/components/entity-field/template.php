@@ -14,6 +14,9 @@ $this->import('
     entity-field-location-global
     entity-field-seals
     entity-file
+    entity-files-list
+    entity-gallery
+    entity-gallery-video
     mc-alert
     mc-currency-input
     mc-multiselect
@@ -89,6 +92,21 @@ $this->import('
 
             <template v-else-if="is('links')">
                 <entity-field-links :entity="entity" :prop="prop" :show-title="Boolean(description?.registrationFieldConfiguration?.config?.title)" @change="change($event, true)" :editable="!disabled"></entity-field-links>
+            </template>
+
+            <!-- Galeria de Fotos (FileGroup) -->
+            <template v-else-if="is('gallery')">
+                <entity-gallery :entity="entity.owner || entity" :editable="!readonly && !disabled" class="registration-gallery"></entity-gallery>
+            </template>
+
+            <!-- Galeria de Vídeos (MetaList) -->
+            <template v-else-if="is('videos')">
+                <entity-gallery-video :entity="entity.owner || entity" :editable="!readonly && !disabled" class="registration-videos"></entity-gallery-video>
+            </template>
+
+            <!-- Downloads/Anexos (FileGroup) -->
+            <template v-else-if="is('downloads')">
+                <entity-files-list :entity="entity.owner || entity" group="downloads" :title="fieldDescription || description.label" :editable="!readonly && !disabled" class="registration-downloads"></entity-files-list>
             </template>
 
             <template v-else-if="is('multiselect') || is('checklist')">

@@ -27,6 +27,7 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Melhoria na exibição das mensagens de erro para capturar e exibir mensagens específicas
 - Melhora a comunicação da interface para deixar claro que a alteração de critérios ou sessões só deve ser feita por administradores quando já existirem avaliações técnicas enviadas.
 - Remove espaços múltiplos e espaços no início/fim do nome e nome completo das entidades
+- Adiciona campos de Galeria de Fotos, Vídeos e Downloads como opções de campos do agente responsável em formulários de inscrição, permitindo que o gestor solicite portfólio visual, galeria de vídeos ou documentos anexos que sincronizam automaticamente com o perfil do agente [(2)](#funarte)
 
 ### Correções
 - Corrige warnigs no navegador devido a problemas com o componente entity-field
@@ -44,6 +45,7 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 ### Créditos
 <a name="snp"></a>
 1. <small>Melhoria desenvolvida pelo Ministério das Cidades, através da Secretaria Nacional de Periferias, para o Prêmio Periferia Viva</small>
+2. <small>Melhoria desenvolvida pela Funarte (Fundação Nacional de Artes) para a Rede das Artes</small>
 
 ## [7.6.26] - 2025-11-28
 ### Correções

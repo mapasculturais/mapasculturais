@@ -14,6 +14,9 @@ app.component('entity-gallery', {
         });
     },
 
+    mounted() {
+    },
+
     data() {
         return {
             galleryOpen: false,

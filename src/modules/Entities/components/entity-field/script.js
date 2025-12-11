@@ -53,6 +53,18 @@ app.component('entity-field', {
             fieldType = 'textarea';
         }
 
+        // Tratamento especial para campos de galeria/vídeos/downloads
+        if(description.registrationFieldConfiguration?.config?.entityField) {
+            const entityField = description.registrationFieldConfiguration.config.entityField;
+            if(entityField === '@gallery') {
+                fieldType = 'gallery';
+            } else if(entityField === '@videos') {
+                fieldType = 'videos';
+            } else if(entityField === '@downloads') {
+                fieldType = 'downloads';
+            }
+        }
+
         if (!description.min) {
             description.min = 0;
         }
@@ -234,6 +246,26 @@ app.component('entity-field', {
         entitiesFildTypes() {
             return ['agent-owner-field', 'agent-collective-field']
         },
+        fileGroupTypes() {
+            return ['@gallery', '@downloads']
+        },
+        metaListTypes() {
+            return ['@videos', '@links']
+        },
+        isFileGroup() {
+            let registrationFieldConfiguration = this.description.registrationFieldConfiguration;
+            if(registrationFieldConfiguration?.config?.entityField) {
+                return this.fileGroupTypes().includes(registrationFieldConfiguration.config.entityField);
+            }
+            return false;
+        },
+        isMetaList() {
+            let registrationFieldConfiguration = this.description.registrationFieldConfiguration;
+            if(registrationFieldConfiguration?.config?.entityField) {
+                return this.metaListTypes().includes(registrationFieldConfiguration.config.entityField);
+            }
+            return false;
+        },
     },
     
     methods: {
@@ -359,8 +391,20 @@ app.component('entity-field', {
 
         is(type) {
             if (type == 'location') {
-                let fieldConfig = this.description.registrationFieldConfiguration.config;
-                return fieldConfig.entityField == '@location';
+                let fieldConfig = this.description.registrationFieldConfiguration?.config;
+                return fieldConfig?.entityField == '@location';
+            }
+            if (type == 'gallery') {
+                let fieldConfig = this.description.registrationFieldConfiguration?.config;
+                return fieldConfig?.entityField == '@gallery';
+            }
+            if (type == 'videos') {
+                let fieldConfig = this.description.registrationFieldConfiguration?.config;
+                return fieldConfig?.entityField == '@videos';
+            }
+            if (type == 'downloads') {
+                let fieldConfig = this.description.registrationFieldConfiguration?.config;
+                return fieldConfig?.entityField == '@downloads';
             }
             return this.fieldType == type;
         },
