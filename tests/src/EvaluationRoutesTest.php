@@ -80,8 +80,6 @@ class EvaluationRoutesTest extends Abstract\TestCase
 
     public function testReplaceValuerRoute()
     {
-        $app = App::i();
-
         $admin = $this->userDirector->createUser('admin');
         $this->login($admin);
 
@@ -90,33 +88,34 @@ class EvaluationRoutesTest extends Abstract\TestCase
             ->reset(owner: $admin->profile, owner_entity: $admin->profile)
             ->fillRequiredProperties()
             ->firstPhase()
-            ->setRegistrationPeriod(new Open)
-            ->done()
+                ->setRegistrationPeriod(new Open)
+                ->done()
             ->save()
             ->createSentRegistrations(number_of_registrations: 8)
             ->addEvaluationPhase(EvaluationMethods::simple)
-            ->setEvaluationPeriod(new ConcurrentEndingAfter)
-            ->setCommitteeValuersPerRegistration('committee 1', 2)
-            ->save()
-            ->addValuer('committee 1', name: 'fulano')
-            ->done()
-            ->addValuer('committee 1', name: 'ciclano')
-            ->done()
-            ->redistributeCommitteeRegistrations()
-            ->withValuer('committee 1', 'fulano')
-            ->createDraftEvaluation()
-            ->createDraftEvaluation()
-            ->createSentEvaluation()
-            ->createSentEvaluation()
-            ->createConcludedEvaluation()
-            ->done()
-            ->withValuer('committee 1', 'ciclano')
-            ->createDraftEvaluation()
-            ->createDraftEvaluation()
-            ->createSentEvaluation()
-            ->createSentEvaluation()
-            ->done()
-            ->done()
+                ->setEvaluationPeriod(new ConcurrentEndingAfter)
+                ->setCommitteeValuersPerRegistration('committee 1', 2)
+                ->save()
+
+                ->addValuer('committee 1', name: 'fulano')->done()
+                ->addValuer('committee 1', name: 'ciclano')->done()
+
+                ->redistributeCommitteeRegistrations()
+
+                ->withValuer('committee 1', 'fulano')
+                    ->createDraftEvaluation()
+                    ->createDraftEvaluation()
+                    ->createSentEvaluation()
+                    ->createSentEvaluation()
+                    ->createConcludedEvaluation()
+                    ->done()
+                ->withValuer('committee 1', 'ciclano')
+                    ->createDraftEvaluation()
+                    ->createDraftEvaluation()
+                    ->createSentEvaluation()
+                    ->createSentEvaluation()
+                    ->done()
+                ->done()
             ->getInstance();
 
         $emc = $opportunity->evaluationMethodConfiguration->refreshed();
