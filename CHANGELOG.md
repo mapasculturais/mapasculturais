@@ -8,6 +8,7 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 ## [7.6.27] - UNRELEASED
 ### Correções
 - Corrige exibição do campo de endereço no formulário de inscrição
+- Corrige salvamento do CEP no campo de endereço no formulário de inscrição
 
 ## [7.6.26] - 2025-12-10
 ### Correções
