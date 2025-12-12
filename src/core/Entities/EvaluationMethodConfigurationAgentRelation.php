@@ -114,7 +114,8 @@ class EvaluationMethodConfigurationAgentRelation extends AgentRelation {
 
     protected function initializeMetadata(): object
     {
-        $this->metadata = is_object($this->metadata) ? $this->metadata : (is_array($this->metadata) ? (object) $this->metadata : (object) []);
+        $this->metadata = (object) ($this->metadata ?: []);
+        
         $this->metadata->summary = $this->metadata->summary ?? [
             "pending" => 0, 
             "started" => 0, 
