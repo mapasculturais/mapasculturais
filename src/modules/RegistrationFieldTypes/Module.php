@@ -780,21 +780,21 @@ class Module extends \MapasCulturais\Module
                     $entity->location = [$value["location"]["lng"], $value["location"]["lat"]];
 
                 }
+
+                if (isset($value["En_Pais"])) {
+                    $entity->En_Pais = $value["En_Pais"];
+                }
                 
-                $entity->address_postalCode = $value["address_postalCode"];
                 $entity->address_level0     = $value["address_level0"];
+                $entity->address_postalCode = $value["address_postalCode"];
                 $entity->address_level1     = $value["address_level1"];
                 $entity->address_level2     = $value["address_level2"];
                 $entity->address_level3     = $value["address_level3"];
                 $entity->address_level4     = $value["address_level4"];
                 $entity->address_level5     = $value["address_level5"];
                 $entity->address_level6     = $value["address_level6"];
-                $entity->address_line1      = $value["address_line1"];
+                $entity->address_line1      = $value["address_line1"];  
                 $entity->address_line2      = $value["address_line2"];
-                
-                if (isset($value["En_Pais"])) {
-                    $entity->En_Pais = $value["En_Pais"];
-                }
                 
                 $entity->endereco           = $value["endereco"] ?? $value["address"] ?? null;
                 $entity->publicLocation = !empty($value['publicLocation']);
