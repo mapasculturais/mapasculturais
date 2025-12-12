@@ -2,6 +2,7 @@
 
 namespace Tests\Builders;
 
+use DateTime;
 use MapasCulturais\App;
 use Tests\Traits\Faker;
 use Tests\Abstract\Builder;
@@ -204,8 +205,9 @@ class EvaluationPhaseBuilder extends Builder
     public function setCommitteeFilterCategory(string $committee, array $categories): self
     {
         $fetch_fields = $this->instance->fetchFields ?: (object)[];
+        $fetch_fields->$committee = $fetch_fields->$committee ?? [];
 
-        $fetch_fields->$committee = empty($categories) ? [] : ['category' => $categories];
+        $fetch_fields->$committee['category'] = $categories;
 
         $this->instance->fetchFields = $fetch_fields;
 
@@ -221,8 +223,9 @@ class EvaluationPhaseBuilder extends Builder
     public function setCommitteeFilterProponentType(string $committee, array $proponent_types): self
     {
         $fetch_fields = $this->instance->fetchFields ?: (object)[];
+        $fetch_fields->$committee = $fetch_fields->$committee ?? [];
 
-        $fetch_fields->$committee = empty($proponent_types) ? [] : ['proponentType' => $proponent_types];
+        $fetch_fields->$committee['proponentType'] = $proponent_types;
 
         $this->instance->fetchFields = $fetch_fields;
 
@@ -232,8 +235,9 @@ class EvaluationPhaseBuilder extends Builder
     public function setCommitteeFilterRange(string $committee, array $ranges): self
     {
         $fetch_fields = $this->instance->fetchFields ?: (object)[];
+        $fetch_fields->$committee = $fetch_fields->$committee ?? [];
 
-        $fetch_fields->$committee = empty($ranges) ? [] : ['range' => $ranges];
+        $fetch_fields->$committee['range'] = $ranges;
 
         $this->instance->fetchFields = $fetch_fields;
 
@@ -243,9 +247,32 @@ class EvaluationPhaseBuilder extends Builder
     public function setCommitteeFilterField(string $committee, string $field_identifier, array $answers): self
     {
         $fetch_fields = $this->instance->fetchFields ?: (object)[];
+        $fetch_fields->$committee = $fetch_fields->$committee ?? [];
+
         $field = $this->opportunityBuilder->getFieldName($field_identifier);
 
-        $fetch_fields->$committee = empty($answers) ? [] : [$field => $answers];
+        $fetch_fields->$committee[$field] = $answers;
+
+        $this->instance->fetchFields = $fetch_fields;
+
+        return $this;
+    }
+
+    public function setCommitteeFilterBySentTimestamp(string $committee, ?string $from_datetime = null, ?string $to_datetime = null): self
+    {
+        $fetch_fields = $this->instance->fetchFields ?: (object)[];
+        $fetch_fields->$committee = $fetch_fields->$committee ?? [];
+
+        $fetch_fields->$committee['sentTimestamp'] =  [];
+
+        if($from_datetime) {
+            $from_datetime = (new DateTime($from_datetime))->format('Y-m-d H:i:s');
+            $fetch_fields->$committee['sentTimestamp']['from'] = $from_datetime;
+        }
+        if($to_datetime) {
+            $to_datetime = (new DateTime($to_datetime))->format('Y-m-d H:i:s');
+            $fetch_fields->$committee['sentTimestamp']['to'] = $to_datetime;
+        }
 
         $this->instance->fetchFields = $fetch_fields;
 

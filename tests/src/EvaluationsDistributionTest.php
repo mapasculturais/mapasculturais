@@ -2,6 +2,7 @@
 
 namespace Test;
 
+use DateTime;
 use MapasCulturais\App;
 use Tests\Abstract\TestCase;
 use MapasCulturais\Connection;
@@ -1034,15 +1035,8 @@ class EvaluationsDistributionTest extends TestCase
 
         $emc = $emc->refreshed();
 
-        $valuer1_summary_raw = $emc->agentRelations[0]->metadata['summary'] ?? null;
-        $valuer1_summary = is_object($valuer1_summary_raw) 
-            ? (array) $valuer1_summary_raw 
-            : ($valuer1_summary_raw ?? ['pending' => 0, 'started' => 0, 'completed' => 0, 'sent' => 0]);
-        
-        $valuer2_summary_raw = $emc->agentRelations[1]->metadata['summary'] ?? null;
-        $valuer2_summary = is_object($valuer2_summary_raw) 
-            ? (array) $valuer2_summary_raw 
-            : ($valuer2_summary_raw ?? ['pending' => 0, 'started' => 0, 'completed' => 0, 'sent' => 0]);
+        $valuer1_summary = $emc->agentRelations[0]->metadata->summary;
+        $valuer2_summary = $emc->agentRelations[1]->metadata->summary;
 
         $this->assertEquals(0, $valuer1_summary['pending'] ?? 0, 'Garantindo que o avaliador 1 não tem avaliações pendentes');
         $this->assertEquals(0, $valuer2_summary['pending'] ?? 0, 'Garantindo que o avaliador 2 não tem avaliações pendentes');
@@ -1243,6 +1237,175 @@ class EvaluationsDistributionTest extends TestCase
             $pending_registration_after,
             'Garantindo que as inscrições com avaliações pendentes/iniciadas do avaliador antigo foram transferidas para o novo avaliador'
         );
+    }
+
+    function testCommitteeFilterByRegistrationSentTimestamp()
+    {
+        $admin = $this->userDirector->createUser('admin');
+        $this->login($admin);
+        
+        $day1_num_registrations = 2;
+        $day1_create = new DateTime('-5 days 12:00');
+        $day1_sent = new DateTime('-5 days 13:00');
+
+        $day2_num_registrations = 4;
+        $day2_create = new DateTime('-4 days 12:00');
+        $day2_sent = new DateTime('-4 days 13:00');
+
+        $day3_num_registrations = 3;
+        $day3_create = new DateTime('-3 days 12:00');
+        $day3_sent = new DateTime('-3 days 13:00');
+
+        $day4_num_registrations = 5;
+        $day4_create = new DateTime('-2 days 12:00');
+        $day4_sent = new DateTime('-2 days 13:00');
+
+        $day1 = '-5 days';
+        $day2 = '-4 days';
+        $day3 = '-3 days';
+        $day4 = '-2 days';
+        
+        $this->opportunityBuilder
+            ->reset(owner: $admin->profile, owner_entity: $admin->profile)
+            ->fillRequiredProperties()
+            ->firstPhase()
+                ->setRegistrationPeriod(new Past)
+                ->done()
+            ->save()
+            ->createSentRegistrations(
+                number_of_registrations: $day1_num_registrations,
+                data: ['createTimestamp' => $day1_create, 'sentTimestamp' => $day1_sent]
+            )
+            ->createSentRegistrations(
+                number_of_registrations: $day2_num_registrations,
+                data: ['createTimestamp' => $day2_create, 'sentTimestamp' => $day2_sent]
+            )
+            ->createSentRegistrations(
+                number_of_registrations: $day3_num_registrations,
+                data: ['createTimestamp' => $day3_create, 'sentTimestamp' => $day3_sent]
+            )
+            ->createSentRegistrations(
+                number_of_registrations: $day4_num_registrations,
+                data: ['createTimestamp' => $day4_create, 'sentTimestamp' => $day4_sent]
+            )
+            ->addEvaluationPhase(EvaluationMethods::simple)
+                ->setEvaluationPeriod(new ConcurrentEndingAfter)
+
+                // menbros dessa comissão avaliam somente inscrições do dia 1
+                ->setCommitteeValuersPerRegistration('day 1', 1)
+                ->setCommitteeFilterBySentTimestamp('day 1', from_datetime: "$day1 00:00:00", to_datetime: "$day1 23:59:59")
+
+                // menbros dessa comissão avaliam somente inscrições do dia 2
+                ->setCommitteeValuersPerRegistration('day 2', 1)
+                ->setCommitteeFilterBySentTimestamp('day 2', from_datetime: "$day2 00:00:00", to_datetime: "$day2 23:59:59")
+
+                // // menbros dessa comissão avaliam inscrições do dia 3 e do dia 4
+                ->setCommitteeValuersPerRegistration('from day 3', 1)
+                ->setCommitteeFilterBySentTimestamp('from day 3', from_datetime: "$day3 00:00:00")
+
+                // // menbros dessa comissão avaliam inscrições do dia 1 e do dia 2
+                ->setCommitteeValuersPerRegistration('until day 3', 1)
+                ->setCommitteeFilterBySentTimestamp('until day 3', to_datetime: "$day3 23:59:59")
+
+                // // menbros dessa comissão avaliam inscrições do dia 1 e do dia 2
+                ->setCommitteeValuersPerRegistration('until day 4', 2)
+                ->setCommitteeFilterBySentTimestamp('until day 4', to_datetime: "$day4 23:59:59")
+
+                ->save()
+
+                ->addValuer('day 1', name: 'valuer day 1')->done()
+                ->addValuer('day 2', name: 'valuer 1 - day 2')->done()
+                ->addValuer('day 2', name: 'valuer 2 - day 2')->done()
+                ->addValuer('from day 3', name: 'valuer from day 3')->done()
+                ->addValuer('until day 3', name: 'valuer 1 - until day 3')->done()
+                ->addValuer('until day 4', name: 'valuer 1 - until day 4')->done()
+                ->addValuer('until day 4', name: 'valuer 2 - until day 4')->done()
+
+                ->redistributeCommitteeRegistrations()
+
+                ->done();
+
+        $opportunity = $this->opportunityBuilder->getInstance();
+        $evaluation_phase = $opportunity->evaluationMethodConfiguration;
+
+        $conn = $this->app->conn;
+
+        // Verifica que a comissão day 1 tem o número correto de inscições
+        $day1_evaluations = $conn->fetchScalar(  
+            "SELECT COUNT(*) 
+            FROM evaluations 
+            WHERE 
+                opportunity_id = :opportunityId AND 
+                valuer_committee = :committee",
+            [
+                'opportunityId' => $opportunity->id,
+                'committee' => 'day 1'
+            ]
+        );
+        $this->assertEquals($day1_num_registrations, $day1_evaluations, "Garantindo que a comissão 'day 1' possui o número correto de avaliações");
+
+        
+        // Verifica que a comissão day 2 tem o número correto de inscições
+        $day2_evaluations = $conn->fetchScalar(  
+            "SELECT COUNT(*) 
+            FROM evaluations 
+            WHERE 
+                opportunity_id = :opportunityId AND 
+                valuer_committee = :committee",
+            [
+                'opportunityId' => $opportunity->id,
+                'committee' => 'day 2'
+            ]
+        );
+        $this->assertEquals($day2_num_registrations, $day2_evaluations, "Garantindo que a comissão 'day 2' possui o número correto de avaliações");
+
+
+        // Verifica que a comissão day 2 tem o número correto de inscições
+        $from_day3_evaluations = $conn->fetchScalar(  
+            "SELECT COUNT(*) 
+            FROM evaluations 
+            WHERE 
+                opportunity_id = :opportunityId AND 
+                valuer_committee = :committee",
+            [
+                'opportunityId' => $opportunity->id,
+                'committee' => 'from day 3'
+            ]
+        );
+        $expected = $day3_num_registrations + $day4_num_registrations;
+        $this->assertEquals($expected, $from_day3_evaluations, "Garantindo que a comissão 'from day 3' possui o número correto de avaliações");
+
+
+        // Verifica que a comissão day 2 tem o número correto de inscições
+        $until_day3_evaluations = $conn->fetchScalar(  
+            "SELECT COUNT(*) 
+            FROM evaluations 
+            WHERE 
+                opportunity_id = :opportunityId AND 
+                valuer_committee = :committee",
+            [
+                'opportunityId' => $opportunity->id,
+                'committee' => 'until day 3'
+            ]
+        );
+        $expected = $day1_num_registrations + $day2_num_registrations + $day3_num_registrations;
+        $this->assertEquals($expected, $until_day3_evaluations, "Garantindo que a comissão 'until day 3' possui o número correto de avaliações");
+
+
+        // Verifica que a comissão day 2 tem o número correto de inscições
+        $until_day4_evaluations = $conn->fetchScalar(  
+            "SELECT COUNT(*) 
+            FROM evaluations 
+            WHERE 
+                opportunity_id = :opportunityId AND 
+                valuer_committee = :committee",
+            [
+                'opportunityId' => $opportunity->id,
+                'committee' => 'until day 4'
+            ]
+        );
+        $expected = ($day1_num_registrations + $day2_num_registrations + $day3_num_registrations + $day4_num_registrations) * 2;
+        $this->assertEquals($expected, $until_day4_evaluations, "Garantindo que a comissão 'until day 4' possui o número correto de avaliações");
     }
 
     function testValuerRegistrationListInclusive()
