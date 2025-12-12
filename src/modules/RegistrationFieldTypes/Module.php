@@ -796,7 +796,7 @@ class Module extends \MapasCulturais\Module
                     $entity->En_Pais = $value["En_Pais"];
                 }
                 
-                $entity->endereco           = $value["endereco"] ?: $value["address"];
+                $entity->endereco           = $value["endereco"] ?? $value["address"] ?? null;
                 $entity->publicLocation = !empty($value['publicLocation']);
 
             } else if($taxonomies_fields && in_array($entity_field, array_keys($taxonomies_fields))) {
