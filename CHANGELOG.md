@@ -5,6 +5,10 @@ Todas as mudanças notáveis no projeto serão documentadas neste arquivo.
 O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/)
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [7.6.27] - UNRELEASED
+### Correções
+- Corrige exibição do campo de endereço no formulário de inscrição
+
 ## [7.6.26] - 2025-12-10
 ### Correções
 - Corrige permissão de edição de campos bloqueados no formulário de inscrição
