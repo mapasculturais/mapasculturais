@@ -18,7 +18,11 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ### Melhorias nas avaliação
 - Possibilidade de configuração de limite de inscrições para os avaliadores
-- Botão de excluir avaliação
+- Botão de excluir avaliação para os gestores da oportunidade
+- Mantém a avaliação como pendente enquanto não houver modificação, evitando que o simples acesso à página de avaliação marque a avaliação como iniciada
+- Novo filtro para comissão por data de envio da inscrição, possibilitando comissões que avaliem somente as inscrições enviadas em determinado período
+- Possibilidade de configurar uma lista de inscrições para os avaliadores das comissões
+- Substituição de avaliadores, passando todas as incrições que ainda não foram concluídas (pendentes e iniciadas) para um novo avaliador, sem redistribuir as avaliações
 
 ### Melhorias
 - Redireciona usuario para o perfil quando o mesmo esta em rascunho ou com dados obrigatórios não preechidos
