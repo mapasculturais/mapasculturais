@@ -45,6 +45,7 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 ### Melhorias não funcionais
 - LifecycleCallbacks na Entities\SealRelation
 - Função \query que faz uma consulta no banco e imprime o resultado como uma tabela ascii
+- Impede a inserção do mesmo selo mais de uma vez em uma entidade
 
 ### Créditos
 <a name="snp"></a>
