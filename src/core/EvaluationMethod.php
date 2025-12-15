@@ -605,10 +605,28 @@ abstract class EvaluationMethod extends Module implements \JsonSerializable{
          **/
         $registrations_per_valuer = [];
 
+        /** 
+         * Lista de inscrições por avaliador nas comissões 
+         * @var array[][]
+         **/
+        $registration_lists_per_valuer = [];
+
+        /** 
+         * Flag exclusivo da lista de inscrições por avaliador nas comissões 
+         * @var bool[][]
+         **/
+        $registration_list_exclusive_per_valuer = [];
+
         foreach($evaluation_config->getAgentRelationsGrouped() as $committee => $agent_relations) {
             $registrations_per_valuer[$committee] = $registrations_per_valuer[$committee] ?? [];
+            $registration_lists_per_valuer[$committee] = $registration_lists_per_valuer[$committee] ?? [];
+            $registration_list_exclusive_per_valuer[$committee] = $registration_list_exclusive_per_valuer[$committee] ?? [];
+            
             foreach($agent_relations as $agent_relation) {
-                $registrations_per_valuer[$committee][$agent_relation->agent->user->id] = $agent_relation->maxRegistrations;
+                $user_id = $agent_relation->agent->user->id;
+                $registrations_per_valuer[$committee][$user_id] = $agent_relation->maxRegistrations;
+                $registration_lists_per_valuer[$committee][$user_id] = $agent_relation->registrationList;
+                $registration_list_exclusive_per_valuer[$committee][$user_id] = $agent_relation->registrationListExclusive;
             }
         }
 
@@ -836,7 +854,35 @@ abstract class EvaluationMethod extends Module implements \JsonSerializable{
                     }
                 }
 
-                usort($users, fn($u1, $u2) => $valuers_total_registrations_count[$u1->id] <=> $valuers_total_registrations_count[$u2->id]);
+                usort($users, function($u1, $u2) use ($registration, $registration_lists_per_valuer, $registration_list_exclusive_per_valuer, $committee, $valuers_total_registrations_count) {
+                    $registration_number = $registration->number;
+
+                    $list1 = $registration_lists_per_valuer[$committee][$u1->id] ?? [];
+                    $list2 = $registration_lists_per_valuer[$committee][$u2->id] ?? [];
+
+                    $exclusive1 = $registration_list_exclusive_per_valuer[$committee][$u1->id] ?? false;
+                    $exclusive2 = $registration_list_exclusive_per_valuer[$committee][$u2->id] ?? false;
+
+                    $priority1 = 0;
+                    $priority2 = 0;
+
+                    // Se o avaliador 1 tem a inscrição na lista, ele ganha prioridade (ainda maior se marcado como exclusivo).
+                    if($list1 && in_array($registration_number, $list1)) {
+                        $priority1 = 1 + ($exclusive1 ? 2 : 0);
+                    }
+
+                    // Se o avaliador 2 tem a inscrição na lista, ele ganha prioridade (ainda maior se marcado como exclusivo).
+                    if($list2 && in_array($registration_number, $list2)) {
+                        $priority2 = 1 + ($exclusive2 ? 2 : 0);
+                    }
+
+                    // Quem tiver prioridade maior vem antes; em empate, segue o balanceamento.
+                    if($priority1 !== $priority2) {
+                        return $priority2 <=> $priority1;
+                    }
+
+                    return $valuers_total_registrations_count[$u1->id] <=> $valuers_total_registrations_count[$u2->id];
+                });
                 
                 // adiciona os avaliadores da comissão na inscrição
                 foreach($users as $user) {
@@ -846,6 +892,20 @@ abstract class EvaluationMethod extends Module implements \JsonSerializable{
                     $max_user_registrations = $registrations_per_valuer[$committee][$user->id] ?? null;
                     if($max_user_registrations && ($valuers_committee_registrations_count[$committee_name][$user->id] ?? 0) >= $max_user_registrations) {
                         continue;
+                    }
+
+                    // verifica se a inscrição está na lista de inscrições do avaliador
+                    $user_registration_list = $registration_lists_per_valuer[$committee][$user->id] ?? null;
+                    $is_list_exclusive = $registration_list_exclusive_per_valuer[$committee][$user->id] ?? false;
+                    
+                    if($user_registration_list && is_array($user_registration_list) && count($user_registration_list) > 0) {
+                        $registration_number = $registration->number;
+                        $is_in_list = in_array($registration_number, $user_registration_list);
+                        
+                        // na lista exclusiva, só pode receber as inscrições da lista
+                        if($is_list_exclusive && !$is_in_list) {
+                            continue;
+                        }
                     }
 
                     if($max_valuers && $registration_valuers_count[$registration->id][$committee_name] >= $max_valuers) {
@@ -1068,6 +1128,32 @@ abstract class EvaluationMethod extends Module implements \JsonSerializable{
         return $can;
     }
 
+    public function canEvaluateRegistrationSentTimestamp(Entities\Registration $registration, array $filter_configuration): bool {
+        $sent_timestamp = $registration->sentTimestamp->format('Y-m-d H:i:s');
+        if (isset($filter_configuration['from']) && isset($filter_configuration['to'])) {
+            if($sent_timestamp >= $filter_configuration['from'] && $sent_timestamp <= $filter_configuration['to']) {
+                return true;
+            } 
+            return false;
+        }
+
+        if (isset($filter_configuration['from'])) {
+            if($sent_timestamp >= $filter_configuration['from']) {
+                return true;
+            } 
+            return false;
+        }
+
+        if (isset($filter_configuration['to'])) {
+            if($sent_timestamp <= $filter_configuration['to']) {
+                return true;
+            } 
+            return false;
+        }
+
+        return true;
+    }
+
     public function canUserEvaluateRegistration(Entities\Registration $registration, User|GuestUser $user){
         if($user->is('guest')){
             return false;
@@ -1115,7 +1201,7 @@ abstract class EvaluationMethod extends Module implements \JsonSerializable{
 
         $config = $evaluation_config->fetchFields->{$committe_name} ?? (object) [];
         foreach($config as $values) {
-            if(count($values) > 0) {
+            if(!empty($values)) {
                 $has_filter = true;
             }
         }
@@ -1148,24 +1234,20 @@ abstract class EvaluationMethod extends Module implements \JsonSerializable{
         $config_ranges = (array) $evaluation_config->fetchRanges;
         $config_proponent_types = (array) $evaluation_config->fetchProponentTypes;
         $config_selection_fields = (array) $evaluation_config->fetchSelectionFields;
+        $config_sent_timestamp = [];
         $global_filter_configs = (array) $evaluation_config->fetchFields;
         
         if(is_array($global_filter_configs)) {
-            $global_config_categories = [];
-            $global_config_ranges = [];
-            $global_config_proponent_types = [];
-            $global_config_selection_fields = [];
-
             $committee_config = $global_filter_configs[$committe_name] ?? (object) [];
 
-            $global_config_categories = array_merge($global_config_categories, (array) ($committee_config->category ?? []));
+            $global_config_categories = (array) ($committee_config->category ?? []);
+            $global_config_ranges = (array) ($committee_config->range ?? []);
+            $global_config_proponent_types = (array) ($committee_config->proponentType ?? []);
+            $global_config_sent_timestamp = (array) ($committee_config->sentTimestamp ?? []);
 
-            $global_config_ranges = array_merge($global_config_ranges, (array) ($committee_config->range ?? []));
-
-            $global_config_proponent_types = array_merge($global_config_proponent_types, (array) ($committee_config->proponentType ?? []));
-
+            $global_config_selection_fields = [];
             foreach ($committee_config as $key => $value) {
-                if (!in_array($key, ['category', 'range', 'proponentType', 'distribution'])) {
+                if (!in_array($key, ['category', 'range', 'proponentType', 'sentTimestamp'])) {
                     $global_config_selection_fields[$key] = array_merge($global_config_selection_fields[$key] ?? [], (array) $value);
                 }
             }
@@ -1184,6 +1266,10 @@ abstract class EvaluationMethod extends Module implements \JsonSerializable{
 
             if(!empty($global_config_selection_fields)) {
                 $config_selection_fields = [$user->id => $global_config_selection_fields];
+            }
+
+            if(!empty($global_config_sent_timestamp)) {
+                $config_sent_timestamp = [$user->id => $global_config_sent_timestamp]; 
             }
         }
 
@@ -1258,6 +1344,13 @@ abstract class EvaluationMethod extends Module implements \JsonSerializable{
         if ($uselection_fields = $fetch_selection_fields[$user->id] ?? false){
             $has_filter = true;
             if($this->canEvaluateRegistrationFields($registration, $uselection_fields)){
+                $can = true;
+            }
+        }
+
+        if ($usent_timestamp = $config_sent_timestamp[$user->id] ?? false) {
+            $has_filter = true;
+            if($this->canEvaluateRegistrationSentTimestamp($registration, $usent_timestamp)){
                 $can = true;
             }
         }

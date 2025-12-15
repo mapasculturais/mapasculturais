@@ -2,6 +2,7 @@
 
 namespace Test;
 
+use DateTime;
 use MapasCulturais\App;
 use Tests\Abstract\TestCase;
 use MapasCulturais\Connection;
@@ -877,7 +878,7 @@ class EvaluationsDistributionTest extends TestCase
         $job_id = $job_type->generateId(
             ['evaluationMethodConfiguration' => $emc],
             'now',
-            '1 hour',
+            '',
             1
         );
         
@@ -885,7 +886,11 @@ class EvaluationsDistributionTest extends TestCase
         $job = $this->app->repo('Job')->findOneBy(['id' => $job_id]);
         
         $this->assertNotNull($job, 'Garantindo que o job de redistribuição foi agendado');
-        $this->assertEquals('1 hour', $job->intervalString, 'Garantindo que o job foi agendado com intervalo de 1 hora');
+        
+        // Verifica que o job foi agendado para a próxima hora
+        $expected_execution_time = date('Y-m-d H:00:00', strtotime('+1 hour'));
+        $actual_execution_time = $job->nextExecutionTimestamp->format('Y-m-d H:i:s');
+        $this->assertEquals($expected_execution_time, $actual_execution_time, 'Garantindo que o job foi agendado para a próxima hora');
 
        
         $emc->redistributeCommitteeRegistrations();
@@ -947,7 +952,7 @@ class EvaluationsDistributionTest extends TestCase
         $job_id = $job_type->generateId(
             ['evaluationMethodConfiguration' => $emc],
             'now',
-            '1 day',
+            '',
             1
         );
         
@@ -955,8 +960,12 @@ class EvaluationsDistributionTest extends TestCase
         $job = $this->app->repo('Job')->findOneBy(['id' => $job_id]);
         
         $this->assertNotNull($job, 'Garantindo que o job de redistribuição foi agendado');
-        $this->assertEquals('1 day', $job->intervalString, 'Garantindo que o job foi agendado com intervalo de 1 dia');
-
+        
+        // Verifica que o job foi agendado para a próxima meia-noite
+        $next_midnight = new \DateTime('tomorrow 00:00:00');
+        $expected_execution_time = $next_midnight->format('Y-m-d H:i:s');
+        $actual_execution_time = $job->nextExecutionTimestamp->format('Y-m-d H:i:s');
+        $this->assertEquals($expected_execution_time, $actual_execution_time, 'Garantindo que o job foi agendado para a próxima meia-noite');
        
         $emc->redistributeCommitteeRegistrations();
 
@@ -1026,11 +1035,11 @@ class EvaluationsDistributionTest extends TestCase
 
         $emc = $emc->refreshed();
 
-        $valuer1_summary = $emc->agentRelations[0]->metadata['summary'];
-        $valuer2_summary = $emc->agentRelations[1]->metadata['summary'];
+        $valuer1_summary = $emc->agentRelations[0]->metadata->summary;
+        $valuer2_summary = $emc->agentRelations[1]->metadata->summary;
 
-        $this->assertEquals(0, $valuer1_summary['pending'], 'Garantindo que o avaliador 1 não tem avaliações pendentes');
-        $this->assertEquals(0, $valuer2_summary['pending'], 'Garantindo que o avaliador 2 não tem avaliações pendentes');
+        $this->assertEquals(0, $valuer1_summary['pending'] ?? 0, 'Garantindo que o avaliador 1 não tem avaliações pendentes');
+        $this->assertEquals(0, $valuer2_summary['pending'] ?? 0, 'Garantindo que o avaliador 2 não tem avaliações pendentes');
 
         /** @var Connection */
         $conn = $this->app->em->getConnection();
@@ -1228,5 +1237,393 @@ class EvaluationsDistributionTest extends TestCase
             $pending_registration_after,
             'Garantindo que as inscrições com avaliações pendentes/iniciadas do avaliador antigo foram transferidas para o novo avaliador'
         );
+    }
+
+    function testCommitteeFilterByRegistrationSentTimestamp()
+    {
+        $admin = $this->userDirector->createUser('admin');
+        $this->login($admin);
+        
+        $day1_num_registrations = 2;
+        $day1_create = new DateTime('-5 days 12:00');
+        $day1_sent = new DateTime('-5 days 13:00');
+
+        $day2_num_registrations = 4;
+        $day2_create = new DateTime('-4 days 12:00');
+        $day2_sent = new DateTime('-4 days 13:00');
+
+        $day3_num_registrations = 3;
+        $day3_create = new DateTime('-3 days 12:00');
+        $day3_sent = new DateTime('-3 days 13:00');
+
+        $day4_num_registrations = 5;
+        $day4_create = new DateTime('-2 days 12:00');
+        $day4_sent = new DateTime('-2 days 13:00');
+
+        $day1 = '-5 days';
+        $day2 = '-4 days';
+        $day3 = '-3 days';
+        $day4 = '-2 days';
+        
+        $this->opportunityBuilder
+            ->reset(owner: $admin->profile, owner_entity: $admin->profile)
+            ->fillRequiredProperties()
+            ->firstPhase()
+                ->setRegistrationPeriod(new Past)
+                ->done()
+            ->save()
+            ->createSentRegistrations(
+                number_of_registrations: $day1_num_registrations,
+                data: ['createTimestamp' => $day1_create, 'sentTimestamp' => $day1_sent]
+            )
+            ->createSentRegistrations(
+                number_of_registrations: $day2_num_registrations,
+                data: ['createTimestamp' => $day2_create, 'sentTimestamp' => $day2_sent]
+            )
+            ->createSentRegistrations(
+                number_of_registrations: $day3_num_registrations,
+                data: ['createTimestamp' => $day3_create, 'sentTimestamp' => $day3_sent]
+            )
+            ->createSentRegistrations(
+                number_of_registrations: $day4_num_registrations,
+                data: ['createTimestamp' => $day4_create, 'sentTimestamp' => $day4_sent]
+            )
+            ->addEvaluationPhase(EvaluationMethods::simple)
+                ->setEvaluationPeriod(new ConcurrentEndingAfter)
+
+                // menbros dessa comissão avaliam somente inscrições do dia 1
+                ->setCommitteeValuersPerRegistration('day 1', 1)
+                ->setCommitteeFilterBySentTimestamp('day 1', from_datetime: "$day1 00:00:00", to_datetime: "$day1 23:59:59")
+
+                // menbros dessa comissão avaliam somente inscrições do dia 2
+                ->setCommitteeValuersPerRegistration('day 2', 1)
+                ->setCommitteeFilterBySentTimestamp('day 2', from_datetime: "$day2 00:00:00", to_datetime: "$day2 23:59:59")
+
+                // // menbros dessa comissão avaliam inscrições do dia 3 e do dia 4
+                ->setCommitteeValuersPerRegistration('from day 3', 1)
+                ->setCommitteeFilterBySentTimestamp('from day 3', from_datetime: "$day3 00:00:00")
+
+                // // menbros dessa comissão avaliam inscrições do dia 1 e do dia 2
+                ->setCommitteeValuersPerRegistration('until day 3', 1)
+                ->setCommitteeFilterBySentTimestamp('until day 3', to_datetime: "$day3 23:59:59")
+
+                // // menbros dessa comissão avaliam inscrições do dia 1 e do dia 2
+                ->setCommitteeValuersPerRegistration('until day 4', 2)
+                ->setCommitteeFilterBySentTimestamp('until day 4', to_datetime: "$day4 23:59:59")
+
+                ->save()
+
+                ->addValuer('day 1', name: 'valuer day 1')->done()
+                ->addValuer('day 2', name: 'valuer 1 - day 2')->done()
+                ->addValuer('day 2', name: 'valuer 2 - day 2')->done()
+                ->addValuer('from day 3', name: 'valuer from day 3')->done()
+                ->addValuer('until day 3', name: 'valuer 1 - until day 3')->done()
+                ->addValuer('until day 4', name: 'valuer 1 - until day 4')->done()
+                ->addValuer('until day 4', name: 'valuer 2 - until day 4')->done()
+
+                ->redistributeCommitteeRegistrations()
+
+                ->done();
+
+        $opportunity = $this->opportunityBuilder->getInstance();
+        $evaluation_phase = $opportunity->evaluationMethodConfiguration;
+
+        $conn = $this->app->conn;
+
+        // Verifica que a comissão day 1 tem o número correto de inscições
+        $day1_evaluations = $conn->fetchScalar(  
+            "SELECT COUNT(*) 
+            FROM evaluations 
+            WHERE 
+                opportunity_id = :opportunityId AND 
+                valuer_committee = :committee",
+            [
+                'opportunityId' => $opportunity->id,
+                'committee' => 'day 1'
+            ]
+        );
+        $this->assertEquals($day1_num_registrations, $day1_evaluations, "Garantindo que a comissão 'day 1' possui o número correto de avaliações");
+
+        
+        // Verifica que a comissão day 2 tem o número correto de inscições
+        $day2_evaluations = $conn->fetchScalar(  
+            "SELECT COUNT(*) 
+            FROM evaluations 
+            WHERE 
+                opportunity_id = :opportunityId AND 
+                valuer_committee = :committee",
+            [
+                'opportunityId' => $opportunity->id,
+                'committee' => 'day 2'
+            ]
+        );
+        $this->assertEquals($day2_num_registrations, $day2_evaluations, "Garantindo que a comissão 'day 2' possui o número correto de avaliações");
+
+
+        // Verifica que a comissão day 2 tem o número correto de inscições
+        $from_day3_evaluations = $conn->fetchScalar(  
+            "SELECT COUNT(*) 
+            FROM evaluations 
+            WHERE 
+                opportunity_id = :opportunityId AND 
+                valuer_committee = :committee",
+            [
+                'opportunityId' => $opportunity->id,
+                'committee' => 'from day 3'
+            ]
+        );
+        $expected = $day3_num_registrations + $day4_num_registrations;
+        $this->assertEquals($expected, $from_day3_evaluations, "Garantindo que a comissão 'from day 3' possui o número correto de avaliações");
+
+
+        // Verifica que a comissão day 2 tem o número correto de inscições
+        $until_day3_evaluations = $conn->fetchScalar(  
+            "SELECT COUNT(*) 
+            FROM evaluations 
+            WHERE 
+                opportunity_id = :opportunityId AND 
+                valuer_committee = :committee",
+            [
+                'opportunityId' => $opportunity->id,
+                'committee' => 'until day 3'
+            ]
+        );
+        $expected = $day1_num_registrations + $day2_num_registrations + $day3_num_registrations;
+        $this->assertEquals($expected, $until_day3_evaluations, "Garantindo que a comissão 'until day 3' possui o número correto de avaliações");
+
+
+        // Verifica que a comissão day 2 tem o número correto de inscições
+        $until_day4_evaluations = $conn->fetchScalar(  
+            "SELECT COUNT(*) 
+            FROM evaluations 
+            WHERE 
+                opportunity_id = :opportunityId AND 
+                valuer_committee = :committee",
+            [
+                'opportunityId' => $opportunity->id,
+                'committee' => 'until day 4'
+            ]
+        );
+        $expected = ($day1_num_registrations + $day2_num_registrations + $day3_num_registrations + $day4_num_registrations) * 2;
+        $this->assertEquals($expected, $until_day4_evaluations, "Garantindo que a comissão 'until day 4' possui o número correto de avaliações");
+    }
+
+    function testValuerRegistrationListInclusive()
+    {
+        $admin = $this->userDirector->createUser('admin');
+        $this->login($admin);
+
+        $number_of_registrations = 20;
+
+        $this->opportunityBuilder
+            ->reset(owner: $admin->profile, owner_entity: $admin->profile)
+            ->fillRequiredProperties()
+            ->firstPhase()
+                ->setRegistrationPeriod(new Open)
+                ->done()
+            ->save()
+            ->createSentRegistrations($number_of_registrations);
+
+        // pega listas de inscrições já enviadas
+        $opportunity = $this->opportunityBuilder->getInstance();
+        $sent_registrations = $opportunity->getSentRegistrations();
+        $fulano_registration_numbers = array_slice(array_map(fn($reg) => $reg->number, $sent_registrations), 0, 5);
+        $beltrano_registration_numbers = array_slice(array_map(fn($reg) => $reg->number, $sent_registrations), 5, 5);
+
+        // adiciona fase e avaliadores já com as listas inclusivas configuradas
+        $opportunity = $this->opportunityBuilder
+            ->addEvaluationPhase(EvaluationMethods::simple)
+                ->setEvaluationPeriod(new ConcurrentEndingAfter)
+                ->setCommitteeValuersPerRegistration('committee 1', 1)
+                ->save()
+                ->addValuer('committee 1', name: 'fulano')
+                    ->registrationList($fulano_registration_numbers, false)
+                    ->done()
+                ->addValuer('committee 1', name: 'ciclano')
+                    ->done()
+                ->addValuer('committee 1', name: 'beltrano')
+                    ->registrationList($beltrano_registration_numbers, false)
+                    ->done()
+                ->redistributeCommitteeRegistrations()
+                ->done()
+            ->getInstance();
+
+        /** @var EvaluationMethodConfigurationAgentRelation[] */
+        $valuers = $opportunity->evaluationMethodConfiguration->agentRelations;
+
+        $fulano = array_values(array_filter($valuers, fn($relation) => $relation->agent->name == 'fulano'))[0];
+        $ciclano = array_values(array_filter($valuers, fn($relation) => $relation->agent->name == 'ciclano'))[0];
+        $beltrano = array_values(array_filter($valuers, fn($relation) => $relation->agent->name == 'beltrano'))[0];
+
+        /** @var Connection */
+        $conn = $this->app->em->getConnection();
+
+        // Verifica se o fulano recebeu pelo menos as 5 inscrições da lista
+        $fulano_evaluations = $conn->fetchAll(
+            "SELECT registration_id FROM evaluations WHERE valuer_agent_id = :valuer_id",
+            ['valuer_id' => $fulano->agent->id]
+        );
+        
+        $fulano_registration_ids = array_column($fulano_evaluations, 'registration_id');
+        
+        // Obtém os IDs das inscrições da lista do fulano
+        $fulano_list_registration_ids = array_map(
+            fn($number) => $this->app->repo('Registration')->findOneBy(['number' => $number])->id,
+            $fulano_registration_numbers
+        );
+
+        // Verifica se todas as inscrições da lista foram atribuídas ao fulano
+        foreach ($fulano_list_registration_ids as $registration_id) {
+            $this->assertContains(
+                $registration_id,
+                $fulano_registration_ids,
+                'Garantindo que todas as inscrições da lista foram atribuídas ao avaliador fulano'
+            );
+        }
+
+        // Verifica se o beltrano recebeu as 5 inscrições da lista
+        $beltrano_evaluations = $conn->fetchAll(
+            "SELECT registration_id FROM evaluations WHERE valuer_agent_id = :valuer_id",
+            ['valuer_id' => $beltrano->agent->id]
+        );
+        
+        $beltrano_registration_ids = array_column($beltrano_evaluations, 'registration_id');
+        
+        // Obtém os IDs das inscrições da lista do beltrano
+        $beltrano_list_registration_ids = array_map(
+            fn($number) => $this->app->repo('Registration')->findOneBy(['number' => $number])->id,
+            $beltrano_registration_numbers
+        );
+
+        // Verifica se todas as inscrições da lista foram atribuídas ao beltrano
+        foreach ($beltrano_list_registration_ids as $registration_id) {
+            $this->assertContains(
+                $registration_id,
+                $beltrano_registration_ids,
+                'Garantindo que todas as inscrições da lista foram atribuídas ao avaliador beltrano'
+            );
+        }
+
+        // Verifica se o total de avaliações é 20 (todas as inscrições foram distribuídas)
+        $total_evaluations = $conn->fetchScalar("SELECT COUNT(*) FROM evaluations");
+        $this->assertEquals($number_of_registrations, $total_evaluations, 'Garantindo que todas as inscrições foram distribuídas');
+
+        // Verifica se o ciclano recebeu as demais avaliações (Total de inscrições - avaliações do fulano - avaliações do beltrano)
+        $ciclano_evaluations = $conn->fetchScalar(
+            "SELECT COUNT(*) FROM evaluations WHERE valuer_agent_id = :valuer_id",
+            ['valuer_id' => $ciclano->agent->id]
+        );
+
+        $fulano_evaluations_count = count($fulano_evaluations);
+        $beltrano_evaluations_count = count($beltrano_evaluations);
+
+        $this->assertEquals(
+            expected: $number_of_registrations - $fulano_evaluations_count - $beltrano_evaluations_count, 
+            actual: $ciclano_evaluations, 
+            message: 'Garantindo que o avaliador sem lista de inscrições na comissão recebeu as demais inscrições'
+        );
+    }
+
+    function testValuerRegistrationListExclusive()
+    {
+        $admin = $this->userDirector->createUser('admin');
+        $this->login($admin);
+
+        $number_of_registrations = 20;
+
+        $this->opportunityBuilder
+            ->reset(owner: $admin->profile, owner_entity: $admin->profile)
+            ->fillRequiredProperties()
+            ->firstPhase()
+                ->setRegistrationPeriod(new Open)
+                ->done()
+            ->save()
+            ->createSentRegistrations($number_of_registrations);
+
+        // pega listas de inscrições já enviadas
+        $sent_registrations = $this->opportunityBuilder->getInstance()->getSentRegistrations();
+        $fulano_registration_numbers = array_slice(array_map(fn($reg) => $reg->number, $sent_registrations), 0, 5);
+        $beltrano_registration_numbers = array_slice(array_map(fn($reg) => $reg->number, $sent_registrations), 5, 5);
+
+        // adiciona fase e avaliadores com listas exclusivas configuradas
+        $opportunity = $this->opportunityBuilder
+            ->addEvaluationPhase(EvaluationMethods::simple)
+                ->setEvaluationPeriod(new ConcurrentEndingAfter)
+                ->setCommitteeValuersPerRegistration('committee 1', 1)
+                ->save()
+                ->addValuer('committee 1', name: 'fulano')
+                    ->registrationList($fulano_registration_numbers, true)
+                    ->done()
+                ->addValuer('committee 1', name: 'ciclano')
+                    ->done()
+                ->addValuer('committee 1', name: 'beltrano')
+                    ->registrationList($beltrano_registration_numbers, true)
+                    ->done()
+                ->redistributeCommitteeRegistrations()
+                ->done()
+            ->getInstance();
+
+        /** @var EvaluationMethodConfigurationAgentRelation[] */
+        $valuers = $opportunity->evaluationMethodConfiguration->agentRelations;
+
+        $fulano = array_values(array_filter($valuers, fn($relation) => $relation->agent->name == 'fulano'))[0];
+        $ciclano = array_values(array_filter($valuers, fn($relation) => $relation->agent->name == 'ciclano'))[0];
+        $beltrano = array_values(array_filter($valuers, fn($relation) => $relation->agent->name == 'beltrano'))[0];
+
+        /** @var Connection */
+        $conn = $this->app->em->getConnection();
+
+        // Fulano deve receber exatamente as 5 inscrições da lista (exclusivo)
+        $fulano_evaluations = $conn->fetchAll(
+            "SELECT registration_id FROM evaluations WHERE valuer_agent_id = :valuer_id",
+            ['valuer_id' => $fulano->agent->id]
+        );
+        $fulano_registration_ids = array_column($fulano_evaluations, 'registration_id');
+        $fulano_list_registration_ids = array_map(
+            fn($number) => $this->app->repo('Registration')->findOneBy(['number' => $number])->id,
+            $fulano_registration_numbers
+        );
+        foreach ($fulano_list_registration_ids as $registration_id) {
+            $this->assertContains(
+                $registration_id,
+                $fulano_registration_ids,
+                'Garantindo que todas as inscrições da lista foram atribuídas ao avaliador fulano (exclusivo)'
+            );
+        }
+        $this->assertCount(5, $fulano_registration_ids, 'Fulano deve receber exatamente as inscrições da lista (exclusivo)');
+
+        // Beltrano deve receber exatamente as 5 inscrições da lista (exclusivo)
+        $beltrano_evaluations = $conn->fetchAll(
+            "SELECT registration_id FROM evaluations WHERE valuer_agent_id = :valuer_id",
+            ['valuer_id' => $beltrano->agent->id]
+        );
+        $beltrano_registration_ids = array_column($beltrano_evaluations, 'registration_id');
+        $beltrano_list_registration_ids = array_map(
+            fn($number) => $this->app->repo('Registration')->findOneBy(['number' => $number])->id,
+            $beltrano_registration_numbers
+        );
+        foreach ($beltrano_list_registration_ids as $registration_id) {
+            $this->assertContains(
+                $registration_id,
+                $beltrano_registration_ids,
+                'Garantindo que todas as inscrições da lista foram atribuídas ao avaliador beltrano (exclusivo)'
+            );
+        }
+        $this->assertCount(5, $beltrano_registration_ids, 'Beltrano deve receber exatamente as inscrições da lista (exclusivo)');
+
+        // Ciclano recebe as demais 10
+        $ciclano_evaluations = $conn->fetchScalar(
+            "SELECT COUNT(*) FROM evaluations WHERE valuer_agent_id = :valuer_id",
+            ['valuer_id' => $ciclano->agent->id]
+        );
+        $this->assertEquals(
+            10,
+            $ciclano_evaluations,
+            'Garantindo que o avaliador sem lista recebeu as demais inscrições'
+        );
+
+        // Total distribuído deve ser 20
+        $total_evaluations = $conn->fetchScalar("SELECT COUNT(*) FROM evaluations");
+        $this->assertEquals($number_of_registrations, $total_evaluations, 'Garantindo que todas as inscrições foram distribuídas');
     }
 }

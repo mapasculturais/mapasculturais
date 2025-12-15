@@ -160,6 +160,15 @@ abstract class Opportunity extends \MapasCulturais\Entity
 
     #[ORM\Column(name: "continuous_flow", type: "datetime", nullable: true)]
     protected $continuousFlow;
+
+    /**
+     * Indica se a oportunidade é apenas para divulgação (sem inscrições na plataforma)
+     * 
+     * @var boolean
+     *
+     * @ORM\Column(name="publicity_only", type="boolean", nullable=false, options={"default": false})
+     */
+    protected $publicityOnly = false;
     
     abstract function getSpecializedClassName();
 
@@ -256,6 +265,20 @@ abstract class Opportunity extends \MapasCulturais\Entity
         } else {
             $this->continuousFlow = null;
         }
+    }
+
+    /**
+     * @return boolean
+     */
+    function getPublicityOnly() {
+        return $this->publicityOnly;
+    }
+
+    /**
+     * @param boolean $value
+     */
+    function setPublicityOnly($value) {
+        $this->publicityOnly = (bool) $value;
     }
     
     function getEvaluationCommittee($return_relation = true){
@@ -607,6 +630,28 @@ abstract class Opportunity extends \MapasCulturais\Entity
     }
 
     function validateRegistrationDates() {
+        // Validação para oportunidades de divulgação
+        if ($this->publicityOnly) {
+            // Datas são obrigatórias
+            if (!$this->registrationFrom || !$this->registrationTo) {
+                return false;
+            }
+            
+            // Não pode ter fluxo contínuo
+            if ($this->isContinuousFlow || $this->continuousFlow) {
+                return false;
+            }
+            
+            // Data final não pode ser nula
+            if ($this->registrationTo === null) {
+                return false;
+            }
+            
+            // Data início deve ser menor que data fim
+            return $this->registrationFrom <= $this->registrationTo;
+        }
+        
+        // Validação normal
         if($this->registrationFrom && $this->registrationTo){
             $shouldValidateRegistrationTo = (!$this->isContinuousFlow) || ($this->isContinuousFlow && $this->hasEndDate);
             if ($shouldValidateRegistrationTo) {

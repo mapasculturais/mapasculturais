@@ -75,6 +75,9 @@ class RegistrationFileConfiguration extends \MapasCulturais\Entity {
     #[ORM\Column(name: "proponent_types", type: "json", nullable: true)]
     protected $proponentTypes = [];
 
+    #[ORM\Column(name: 'allowed_file_types', type: 'json', nullable: true)]
+    protected $allowedFileTypes = [];
+
     static function getValidations() {
         $app = App::i();
         $validations = [
@@ -135,6 +138,19 @@ class RegistrationFileConfiguration extends \MapasCulturais\Entity {
         $this->proponentTypes = $value;
     }
 
+    public function setAllowedFileTypes($value) {
+        if(!$value){
+            $value = [];
+        } else if (!is_array($value)){
+            $value = explode("\n", $value);
+        }
+        $this->allowedFileTypes = $value;
+    }
+
+    public function getAllowedFileTypes() {
+        return $this->allowedFileTypes ?: [];
+    }
+
     public function jsonSerialize(): array {
         $result = [
             'id' => $this->id,
@@ -151,6 +167,7 @@ class RegistrationFileConfiguration extends \MapasCulturais\Entity {
             'conditionalValue' => $this->conditionalValue,
             'registrationRanges' => $this->registrationRanges ?: [],
             'proponentTypes' => $this->proponentTypes ?: [],
+            'allowedFileTypes' => $this->allowedFileTypes ?: [],
             'step' => $this->step ?? null,
         ];
 
