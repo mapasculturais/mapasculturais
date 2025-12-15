@@ -9,22 +9,16 @@ use MapasCulturais\i;
 
 <div class="registration-print">
     <div class="registration-print__actions">
-        <button class="registration-print__button bold" @click="print()">
-            <div class="button button--primary button--icon button--sm">
-                <mc-icon name="print"></mc-icon> <?= i::__('Imprimir') ?>
-            </div>
+        <button class="button button--primary button--icon" @click="print()">
+            <mc-icon name="print"></mc-icon> <?= i::__('Imprimir') ?>
         </button>
         
-        <button class="registration-print__button bold" @click="exportPDF()">
-            <div class="button button--primary button--icon button--sm">
-                <mc-icon name="download"></mc-icon> <?= i::__('Exportar Ficha Completa (PDF)') ?>
-            </div>
+        <button class="button button--primary button--icon" @click="exportPDF()">
+            <mc-icon name="download"></mc-icon> <?= i::__('Exportar PDF') ?>
         </button>
         
-        <button class="registration-print__button bold" @click="downloadZip()">
-            <div class="button button--secondary button--icon button--sm">
-                <mc-icon name="download"></mc-icon> <?= i::__('Baixar Anexos (ZIP)') ?>
-            </div>
+        <button class="button button--primary button--icon" @click="downloadZip()">
+            <mc-icon name="archive"></mc-icon> <?= i::__('Baixar Anexos (ZIP)') ?>
         </button>
     </div>
 

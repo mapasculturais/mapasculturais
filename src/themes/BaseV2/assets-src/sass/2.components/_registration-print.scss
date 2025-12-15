@@ -6,31 +6,23 @@
     position: relative;
 
     &__actions {
-        position: absolute;
-        bottom: size(4);
-        right: 0;
+        position: fixed;
+        bottom: size(20);
+        right: size(20);
         display: flex;
         gap: size(12);
         flex-wrap: wrap;
+        z-index: 50;
         
         @include mobile {
-            bottom: size(36);
+            bottom: size(16);
+            right: size(16);
             flex-direction: column;
+            gap: size(8);
         }
-    }
 
-    &__button {
-        align-items: center;
-        background-color: transparent;
-        border: none;
-        color: var(--mc-low-500);
-        cursor: pointer;
-        display: flex;
-        font-size: var(--mc-font-size-xxs);
-        gap: size(8);
-
-        .iconify {
-            font-size: size(24);
+        @media print {
+            display: none;
         }
     }
 
