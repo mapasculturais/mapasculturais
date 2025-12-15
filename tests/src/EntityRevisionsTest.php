@@ -350,4 +350,87 @@ class EntityRevisionsTest extends TestCase
             $this->assertEquals('Link 2', $remaining_link['title'], "Garantindo que o link correto permaneceu na revisão da entidade {$class}");
         }
     }
+
+    function testRelatedAgentsRevision()
+    {
+        $user = $this->userDirector->createUser();
+
+        $this->login($user);
+
+        foreach ($this->entityClasses as $class) {
+            // Pula entidades que não usam agentes relacionados
+            if (!$class::usesAgentRelation()) {
+                continue;
+            }
+
+            $entity = $this->createEntity($class, $user);
+
+            // Cria agentes para relacionar
+            $agent1 = $this->agentDirector->createAgent($user);
+            $agent2 = $this->agentDirector->createAgent($user);
+            $agent3 = $this->agentDirector->createAgent($user);
+
+            // Adicionar agentes relacionados
+            $group = 'colaboradores';
+            $entity->createAgentRelation($agent1, $group, false, true, true);
+            $entity->createAgentRelation($agent2, $group, false, true, true);
+            $entity->save(true);
+
+            /** @var EntityRevision */
+            $last_revision = $entity->getLastRevision();
+            $this->assertEquals(EntityRevision::ACTION_MODIFIED, $last_revision->action ?? null, "Garantindo que a revisão foi criada ao adicionar agentes relacionados na entidade {$class}");
+
+            // Verifica se os agentes relacionados foram salvos na revisão
+            $revision_agents_value = $last_revision->revisionData['_agents']->value ?? null;
+            $this->assertEquals(true, $revision_agents_value !== null, "Garantindo que os agentes relacionados foram salvos na revisão da entidade {$class}");
+            
+            // Converte para array se for objeto
+            $revision_agents = is_object($revision_agents_value) ? (array)$revision_agents_value : $revision_agents_value;
+            
+            // Acessa o grupo dentro de _agents
+            $revision_agents_group_value = $revision_agents[$group] ?? null;
+            $revision_agents_group = is_object($revision_agents_group_value) ? (array)$revision_agents_group_value : ($revision_agents_group_value ?? []);
+            
+            $this->assertEquals(true, isset($revision_agents[$group]), "Garantindo que o grupo '{$group}' está presente na revisão da entidade {$class}");
+            $this->assertEquals(2, count($revision_agents_group), "Garantindo que 2 agentes foram adicionados na revisão da entidade {$class}");
+
+            // Adicionar mais um agente relacionado (modificação)
+            $entity->createAgentRelation($agent3, $group, false, true, true);
+            $entity->save(true);
+
+            $last_revision = $entity->getLastRevision();
+            $this->assertEquals(EntityRevision::ACTION_MODIFIED, $last_revision->action ?? null, "Garantindo que a revisão foi criada ao adicionar mais um agente relacionado na entidade {$class}");
+
+            $revision_agents_value = $last_revision->revisionData['_agents']->value ?? null;
+            $this->assertEquals(true, $revision_agents_value !== null, "Garantindo que os agentes modificados foram salvos na revisão da entidade {$class}");
+            
+            // Converte para array se for objeto
+            $revision_agents = is_object($revision_agents_value) ? (array)$revision_agents_value : $revision_agents_value;
+            
+            // Acessa o grupo dentro de _agents
+            $revision_agents_group_value = $revision_agents[$group] ?? null;
+            $revision_agents_group = is_object($revision_agents_group_value) ? (array)$revision_agents_group_value : ($revision_agents_group_value ?? []);
+            
+            $this->assertEquals(3, count($revision_agents_group), "Garantindo que 3 agentes estão presentes na revisão da entidade {$class}");
+
+            // Remover um agente relacionado
+            $entity->removeAgentRelation($agent1, $group, true);
+            $entity->save(true);
+
+            $last_revision = $entity->getLastRevision();
+            $this->assertEquals(EntityRevision::ACTION_MODIFIED, $last_revision->action ?? null, "Garantindo que a revisão foi criada ao remover agente relacionado na entidade {$class}");
+
+            $revision_agents_value = $last_revision->revisionData['_agents']->value ?? null;
+            $this->assertEquals(true, $revision_agents_value !== null, "Garantindo que os agentes removidos foram salvos na revisão da entidade {$class}");
+            
+            // Converte para array se for objeto
+            $revision_agents = is_object($revision_agents_value) ? (array)$revision_agents_value : $revision_agents_value;
+            
+            // Acessa o grupo dentro de _agents
+            $revision_agents_group_value = $revision_agents[$group] ?? null;
+            $revision_agents_group = is_object($revision_agents_group_value) ? (array)$revision_agents_group_value : ($revision_agents_group_value ?? []);
+            
+            $this->assertEquals(2, count($revision_agents_group), "Garantindo que apenas 2 agentes restaram na revisão da entidade {$class}");
+        }
+    }
 }
