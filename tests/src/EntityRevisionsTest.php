@@ -8,6 +8,7 @@ use MapasCulturais\Entities\Agent;
 use MapasCulturais\Entities\EntityRevision;
 use MapasCulturais\Entities\EvaluationMethodConfiguration;
 use MapasCulturais\Entities\Event;
+use MapasCulturais\Entities\MetaList;
 use MapasCulturais\Entities\Opportunity;
 use MapasCulturais\Entities\Project;
 use MapasCulturais\Entities\Seal;
@@ -253,6 +254,95 @@ class EntityRevisionsTest extends TestCase
             $revision_terms_tag = is_object($revision_terms['tag'] ?? null) ? (array)$revision_terms['tag'] : ($revision_terms['tag'] ?? null);
             
             $this->assertEquals([], $revision_terms_tag, "Garantindo que os termos foram removidos na revisão da entidade {$class}");
+        }
+    }
+
+    function testMetaListsRevision()
+    {
+        $user = $this->userDirector->createUser();
+
+        $this->login($user);
+
+        foreach ($this->entityClasses as $class) {
+            // Pula entidades que não usam metalists
+            if (!$class::usesMetaLists()) {
+                continue;
+            }
+
+            $entity = $this->createEntity($class, $user);
+
+            // Adicionar metalists (links)
+            $link1 = new MetaList();
+            $link1->owner = $entity;
+            $link1->group = 'links';
+            $link1->title = 'Link 1';
+            $link1->value = 'https://example.com/link1';
+            $link1->save(true);
+
+            $link2 = new MetaList();
+            $link2->owner = $entity;
+            $link2->group = 'links';
+            $link2->title = 'Link 2';
+            $link2->value = 'https://example.com/link2';
+            $link2->save(true);
+
+            // Salva a entidade para gerar revisão
+            $entity->save(true);
+
+            /** @var EntityRevision */
+            $last_revision = $entity->getLastRevision();
+            $this->assertEquals(EntityRevision::ACTION_MODIFIED, $last_revision->action ?? null, "Garantindo que a revisão foi criada ao adicionar metalists na entidade {$class}");
+
+            // Verifica se os metalists foram salvos na revisão
+            $revision_links_value = $last_revision->revisionData['links']->value ?? null;
+            $this->assertEquals(true, $revision_links_value !== null, "Garantindo que os metalists foram salvos na revisão da entidade {$class}");
+            
+            // Converte para array se for objeto
+            $revision_links = is_object($revision_links_value) ? (array)$revision_links_value : $revision_links_value;
+            
+            $this->assertEquals(true, isset($revision_links), "Garantindo que o grupo 'links' está presente na revisão da entidade {$class}");
+            $this->assertEquals(2, count($revision_links), "Garantindo que 2 links foram adicionados na revisão da entidade {$class}");
+            
+            // Verifica se os dados do primeiro link estão corretos
+            $first_link = is_object($revision_links[0] ?? null) ? (array)$revision_links[0] : ($revision_links[0] ?? null);
+            $this->assertEquals('Link 1', $first_link['title'], "Garantindo que o título do primeiro link está correto na revisão da entidade {$class}");
+            $this->assertEquals('https://example.com/link1', $first_link['value'], "Garantindo que o valor do primeiro link está correto na revisão da entidade {$class}");
+
+            // Modificar metalist
+            $link1->title = 'Link 1 Modificado';
+            $link1->save(true);
+            $entity->save(true);
+
+            $last_revision = $entity->getLastRevision();
+            $this->assertEquals(EntityRevision::ACTION_MODIFIED, $last_revision->action ?? null, "Garantindo que a revisão foi criada ao modificar metalist na entidade {$class}");
+
+            $revision_links_value = $last_revision->revisionData['links']->value ?? null;
+            $this->assertEquals(true, $revision_links_value !== null, "Garantindo que os metalists modificados foram salvos na revisão da entidade {$class}");
+            
+            // Converte para array se for objeto
+            $revision_links = is_object($revision_links_value) ? (array)$revision_links_value : $revision_links_value;
+            
+            $first_link = is_object($revision_links[0] ?? null) ? (array)$revision_links[0] : ($revision_links[0] ?? null);
+            $this->assertEquals('Link 1 Modificado', $first_link['title'], "Garantindo que o título modificado foi salvo na revisão da entidade {$class}");
+
+            // Remover metalist
+            $link1->delete(true);
+            $entity->save(true);
+
+            $last_revision = $entity->getLastRevision();
+            $this->assertEquals(EntityRevision::ACTION_MODIFIED, $last_revision->action ?? null, "Garantindo que a revisão foi criada ao remover metalist na entidade {$class}");
+
+            $revision_links_value = $last_revision->revisionData['links']->value ?? null;
+            $this->assertEquals(true, $revision_links_value !== null, "Garantindo que os metalists removidos foram salvos na revisão da entidade {$class}");
+            
+            // Converte para array se for objeto
+            $revision_links = is_object($revision_links_value) ? (array)$revision_links_value : $revision_links_value;
+            
+            $this->assertEquals(1, count($revision_links), "Garantindo que apenas 1 link restou na revisão da entidade {$class}");
+            
+            // Verifica se o link restante é o segundo
+            $remaining_link = is_object($revision_links[0] ?? null) ? (array)$revision_links[0] : ($revision_links[0] ?? null);
+            $this->assertEquals('Link 2', $remaining_link['title'], "Garantindo que o link correto permaneceu na revisão da entidade {$class}");
         }
     }
 }
