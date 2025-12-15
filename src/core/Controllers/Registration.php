@@ -876,6 +876,177 @@ class Registration extends EntityController {
         exit;
     }
 
+    function GET_exportPDF() {
+        $app = App::i();
+        $this->requireAuthentication();
+        
+        $entity = $this->requestedEntity;
+        $entity->checkPermission('view');
+        
+        if (!$entity) {
+            $app->pass(); 
+        }
+        
+        try {
+            // 1. Renderizar HTML da ficha
+            $html = $this->renderRegistrationHTML($entity);
+            
+            // 2. Converter HTML → PDF principal
+            $mainPdf = $this->generatePDFFromHTML($html, $entity);
+            
+            // 3. Coletar anexos PDF
+            $attachments = $this->collectPDFAttachments($entity);
+            
+            // 4. Mesclar PDFs
+            $finalPdf = $this->mergePDFs($mainPdf, $attachments);
+            
+            // 5. Retornar para download
+            $filename = $this->sanitizeFilename($entity->number) . '.pdf';
+            header('Content-Type: application/pdf');
+            header('Content-Disposition: attachment; filename="' . $filename . '"');
+            header('Content-Length: ' . strlen($finalPdf));
+            header('Pragma: public');
+            header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
+            header('Expires: 0');
+            
+            echo $finalPdf;
+            exit;
+            
+        } catch (\Exception $e) {
+            error_log("Erro ao gerar PDF da inscrição {$entity->id}: " . $e->getMessage());
+            $this->json([
+                'success' => false,
+                'message' => \MapasCulturais\i::__('Erro ao gerar PDF. Tente novamente.')
+            ], 500);
+        }
+    }
 
+    private function renderRegistrationHTML($registration) {
+        $app = App::i();
+        
+        // Renderizar view usando o sistema de views do Mapas
+        ob_start();
+        
+        // Salvar o requestedEntity atual
+        $oldEntity = $this->requestedEntity;
+        $this->requestedEntity = $registration;
+        
+        // Renderizar a view usando o método render (que já existe no Controller)
+        // Mas capturando a saída em buffer
+        try {
+            // Usar o sistema de render do próprio tema
+            $app->view->render('registration/registration-print', ['entity' => $registration]);
+            $html = ob_get_clean();
+        } catch (\Exception $e) {
+            ob_end_clean();
+            throw $e;
+        }
+        
+        // Restaurar requestedEntity
+        $this->requestedEntity = $oldEntity;
+        
+        // Adicionar estilos base para PDF
+        $styles = '<style>
+            @page { margin: 2cm; }
+            body { 
+                font-family: DejaVu Sans, sans-serif; 
+                font-size: 11pt; 
+                line-height: 1.4;
+                color: #333;
+            }
+            img { max-width: 100%; height: auto; }
+            table { width: 100%; border-collapse: collapse; margin: 10px 0; }
+            th, td { padding: 8px; border: 1px solid #ddd; text-align: left; }
+            th { background-color: #f5f5f5; font-weight: bold; }
+            .page-break { page-break-after: always; }
+            h1, h2, h3 { color: #222; margin-top: 20px; }
+        </style>';
+        
+        // Se já tem <head>, adiciona os estilos, senão cria estrutura HTML básica
+        if (strpos($html, '</head>') !== false) {
+            $html = str_replace('</head>', $styles . '</head>', $html);
+        } else {
+            $html = '<!DOCTYPE html><html><head><meta charset="UTF-8">' . $styles . '</head><body>' . $html . '</body></html>';
+        }
+        
+        return $html;
+    }
+
+    private function generatePDFFromHTML($html, $registration) {
+        $options = new \Dompdf\Options();
+        $options->set('isRemoteEnabled', true);
+        $options->set('isHtml5ParserEnabled', true);
+        $options->set('defaultFont', 'DejaVu Sans');
+        
+        $dompdf = new \Dompdf\Dompdf($options);
+        $dompdf->loadHtml($html);
+        $dompdf->setPaper('A4', 'portrait');
+        $dompdf->render();
+        
+        return $dompdf->output();
+    }
+
+    private function collectPDFAttachments($registration) {
+        $pdfs = [];
+        
+        foreach ($registration->files as $group => $files) {
+            if (!is_array($files)) {
+                $files = [$files];
+            }
+            
+            foreach ($files as $file) {
+                if ($file->mimeType === 'application/pdf' && file_exists($file->path)) {
+                    $pdfs[] = $file->path;
+                }
+            }
+        }
+        
+        return $pdfs;
+    }
+
+    private function mergePDFs($mainPdfContent, $attachmentPaths) {
+        $pdf = new \setasign\Fpdi\Fpdi();
+        
+        // 1. Adicionar PDF principal
+        $tmpMain = tempnam(sys_get_temp_dir(), 'main_');
+        file_put_contents($tmpMain, $mainPdfContent);
+        
+        try {
+            $pageCount = $pdf->setSourceFile($tmpMain);
+            for ($i = 1; $i <= $pageCount; $i++) {
+                $tplId = $pdf->importPage($i);
+                $size = $pdf->getTemplateSize($tplId);
+                $pdf->AddPage($size['orientation'], [$size['width'], $size['height']]);
+                $pdf->useTemplate($tplId);
+            }
+        } catch (\Exception $e) {
+            error_log("Erro ao adicionar PDF principal: " . $e->getMessage());
+        }
+        
+        unlink($tmpMain);
+        
+        // 2. Adicionar anexos
+        foreach ($attachmentPaths as $path) {
+            if (file_exists($path)) {
+                try {
+                    $pageCount = $pdf->setSourceFile($path);
+                    for ($i = 1; $i <= $pageCount; $i++) {
+                        $tplId = $pdf->importPage($i);
+                        $size = $pdf->getTemplateSize($tplId);
+                        $pdf->AddPage($size['orientation'], [$size['width'], $size['height']]);
+                        $pdf->useTemplate($tplId);
+                    }
+                } catch (\Exception $e) {
+                    error_log("Erro ao adicionar anexo {$path}: " . $e->getMessage());
+                }
+            }
+        }
+        
+        return $pdf->Output('S'); // Retorna como string
+    }
+
+    private function sanitizeFilename($str) {
+        return preg_replace('/[^a-zA-Z0-9_\-]/', '_', $str);
+    }
 
 }
