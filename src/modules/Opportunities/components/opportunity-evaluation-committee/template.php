@@ -196,6 +196,26 @@ $this->import('
                                 type="number">
                         </div>
                     </label>
+
+                    <div class="opportunity-evaluation-committee__registration-list">
+                        <label>
+                            <?= i::__('Lista de inscrições') ?>
+                            <div class='field opportunity-evaluation-committee__registration-list-textarea'>
+                                <textarea 
+                                    v-model="infoReviewer.registrationListText" 
+                                    @change="saveRegistrationList(infoReviewer)" 
+                                    :placeholder="'on-12312312312, on-332312312, on-3333, on-98987987'"
+                                    rows="4"></textarea>
+                            </div>
+                        </label>
+                        <label class="opportunity-evaluation-committee__registration-list-exclusive">
+                            <input 
+                                type="checkbox" 
+                                v-model="infoReviewer.metadata.registrationListExclusive" 
+                                @change="saveRegistrationListExclusive(infoReviewer)">
+                            <?= i::__('não distribuir outras inscrições desta comissão para este avaliador') ?>
+                        </label>
+                    </div>
                 </div>
             </div>
         </div>

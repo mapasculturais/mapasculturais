@@ -84,8 +84,13 @@ class Registration extends EntityController {
             ];
             $registration = $this->requestedEntity;
             foreach($registration->opportunity->registrationFileConfigurations as $rfc){
+                // Se o campo tem tipos de arquivo definidos, usa eles; senão usa os tipos padrão
+                $allowed_mime_types = $mime_types;
+                if(!empty($rfc->allowedFileTypes) && is_array($rfc->allowedFileTypes)) {
+                    $allowed_mime_types = $rfc->allowedFileTypes;
+                }
 
-                $fileGroup = new Definitions\FileGroup($rfc->fileGroupName, $mime_types, \MapasCulturais\i::__('O arquivo enviado não é um documento válido.'), true, null, true);
+                $fileGroup = new Definitions\FileGroup($rfc->fileGroupName, $allowed_mime_types, \MapasCulturais\i::__('O arquivo enviado não é um documento válido.'), true, null, true);
                 $app->registerFileGroup('registration', $fileGroup);
             }
         });
@@ -768,7 +773,6 @@ class Registration extends EntityController {
         $this->json(true);
     }
 
-
     function GET_evaluation() {
         $this->requireAuthentication();
 
@@ -783,19 +787,6 @@ class Registration extends EntityController {
         $entity->checkPermission('viewUserEvaluation');
 
         $valuer_user = $app->repo('User')->find($this->data['user'] ?? -1) ?: $app->user;
-        
-        $evaluation = $entity->getUserEvaluation($valuer_user);
-
-        if (!$evaluation) {
-            $entity->checkPermission('evaluate', $valuer_user);
-            
-            $evaluation = new RegistrationEvaluation();
-            $evaluation->registration = $entity;
-            $evaluation->user = $valuer_user;
-            $evaluation->status = RegistrationEvaluation::STATUS_DRAFT;
-            
-            $evaluation->save(true);
-        }
 
         $this->render('evaluation', ['entity' => $entity, 'valuer_user' => $valuer_user]);
     }

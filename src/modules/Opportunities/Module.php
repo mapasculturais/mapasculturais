@@ -180,7 +180,7 @@ class Module extends \MapasCulturais\Module{
                 }
 
                 $execution_time = $distribute_execution_time($distribution_config);
-                $app->enqueueJob(Jobs\RedistributeCommitteeRegistrations::SLUG, ['evaluationMethodConfiguration' => $this], $execution_time);
+                $app->enqueueOrReplaceJob(Jobs\RedistributeCommitteeRegistrations::SLUG, ['evaluationMethodConfiguration' => $this], $execution_time);
             }
         });
 
@@ -1118,6 +1118,12 @@ class Module extends \MapasCulturais\Module{
 
         $this->registerOpportunityMetadata('hasEndDate', [
             'label' => i::__('Definir data final para inscrições'),
+            'type' => 'boolean',
+            'default' => false,
+        ]);
+
+        $this->registerOpportunityMetadata('publicityOnly', [
+            'label' => i::__('Oportunidade apenas para divulgação'),
             'type' => 'boolean',
             'default' => false,
         ]);
