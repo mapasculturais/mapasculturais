@@ -924,32 +924,70 @@ class Registration extends EntityController {
     private function renderRegistrationHTML($registration) {
         $app = App::i();
         
+        // Obter logo da plataforma
+        $logoUrl = '';
+        $logoImage = $app->config['logo.image'] ?? '';
+        if ($logoImage) {
+            // Se houver logo customizada, usar o caminho completo
+            $logoPath = $app->view->resolveFilename('assets', $logoImage);
+            if (file_exists($logoPath)) {
+                $logoUrl = $logoPath;
+            }
+        }
+        
         // Construir HTML diretamente dos dados da inscrição
         $html = '<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="UTF-8">
-    <style>
-        @page { margin: 2cm; }
-        body { 
-            font-family: DejaVu Sans, sans-serif; 
-            font-size: 11pt; 
-            line-height: 1.5;
-            color: #333;
+            <html>
+            <head>
+                <meta charset="UTF-8">
+                <style>
+                    @page { margin: 2cm; }
+                    body { 
+                        font-family: DejaVu Sans, sans-serif; 
+                        font-size: 11pt; 
+                        line-height: 1.5;
+                        color: #333;
+                    }
+                    .logo-container { 
+                        text-align: center; 
+                        margin-bottom: 20px; 
+                    }
+                    .logo-container img { 
+                        max-width: 250px; 
+                        max-height: 80px; 
+                    }
+                    .logo-container .site-name { 
+                        font-size: 24pt; 
+                        font-weight: bold; 
+                        color: #222; 
+                        margin: 10px 0;
+                    }
+                    .header { margin-bottom: 30px; border-bottom: 2px solid #333; padding-bottom: 15px; }
+                    .header h1 { margin: 0; font-size: 18pt; color: #222; }
+                    .info-block { margin: 20px 0; }
+                    .info-block h2 { font-size: 14pt; color: #444; margin: 15px 0 10px; }
+                    .field { margin: 10px 0; padding: 10px; background: #f9f9f9; }
+                    .field-label { font-weight: bold; color: #555; display: block; margin-bottom: 5px; }
+                    .field-value { color: #333; }
+                    table { width: 100%; border-collapse: collapse; margin: 10px 0; }
+                    th, td { padding: 8px; border: 1px solid #ddd; text-align: left; }
+                    th { background-color: #e9e9e9; font-weight: bold; }
+                </style>
+            </head>
+            <body>';
+        
+        // Logo da plataforma
+        $html .= '<div class="logo-container">';
+        if ($logoUrl && file_exists($logoUrl)) {
+            $imageData = base64_encode(file_get_contents($logoUrl));
+            $mimeType = mime_content_type($logoUrl);
+            $html .= '<img src="data:' . $mimeType . ';base64,' . $imageData . '" alt="Logo">';
+        } else {
+            // Se não houver logo, mostrar nome do site
+            $siteName = $app->config['logo.title'] . ' ' . $app->config['logo.subtitle'];
+            $html .= '<div class="site-name">' . htmlspecialchars($siteName) . '</div>';
         }
-        .header { margin-bottom: 30px; border-bottom: 2px solid #333; padding-bottom: 15px; }
-        .header h1 { margin: 0; font-size: 18pt; color: #222; }
-        .info-block { margin: 20px 0; }
-        .info-block h2 { font-size: 14pt; color: #444; margin: 15px 0 10px; }
-        .field { margin: 10px 0; padding: 10px; background: #f9f9f9; }
-        .field-label { font-weight: bold; color: #555; display: block; margin-bottom: 5px; }
-        .field-value { color: #333; }
-        table { width: 100%; border-collapse: collapse; margin: 10px 0; }
-        th, td { padding: 8px; border: 1px solid #ddd; text-align: left; }
-        th { background-color: #e9e9e9; font-weight: bold; }
-    </style>
-</head>
-<body>';
+        $html .= '</div>';
         
         // Cabeçalho
         $html .= '<div class="header">';
@@ -959,9 +997,7 @@ class Registration extends EntityController {
         if ($registration->sentTimestamp) {
             $html .= '<p><strong>Data de envio:</strong> ' . $registration->sentTimestamp->format('d/m/Y H:i') . '</p>';
         }
-        $html .= '</div>';
-        
-        // Informações básicas
+        $html .= '</div>';        // Informações básicas
         $html .= '<div class="info-block">';
         $html .= '<h2>Informações Básicas</h2>';
         
