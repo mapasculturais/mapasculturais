@@ -17,7 +17,7 @@ $this->import('
     <div class="grid-12">
         <?php $this->applyTemplateHook('international-address-form','begin'); ?>
 
-        <entity-field class="col-6 sm:col-12" :entity="entity" prop="address_postalCode"></entity-field>
+        <entity-field classes="col-6 sm:col-12" :entity="entity" prop="address_postalCode"></entity-field>
     
         <template v-for="i in [0, 1, 2, 3, 4, 5]">
             <div v-if="getLevel(i) && showSubLevelSelect(getLevel(i), i)" class="field col-6 sm:col-12">
@@ -29,11 +29,11 @@ $this->import('
         </template>
     
         <template v-if="!levelHierarchy" v-for="(level, index) in activeLevels" :key="index">
-            <entity-field v-if="!getLevel(index)" :class="getColumnClass(index, Object.keys(activeLevels))" class="sm:col-12" :entity="entity" :prop="`address_level${index}`" @change="address()"></entity-field>
+            <entity-field v-if="!getLevel(index)" :classes="getColumnClass(index, Object.keys(activeLevels))" class="sm:col-12" :entity="entity" :prop="`address_level${index}`" @change="address()"></entity-field>
         </template>
     
-        <entity-field class="col-12" :entity="entity" prop="address_line1"></entity-field>
-        <entity-field class="col-12" :entity="entity" prop="address_line2"></entity-field>
+        <entity-field classes="col-12" :entity="entity" prop="address_line1"></entity-field>
+        <entity-field classes="col-12" :entity="entity" prop="address_line2"></entity-field>
 
         <div class="col-12" v-if="hasPublicLocation">
             <div class="col-6 sm:col-12 field public-location">
