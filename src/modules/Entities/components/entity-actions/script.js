@@ -57,6 +57,22 @@ app.component('entity-actions', {
     },
     
     methods: {
+        async publish() {
+            console.log('publish');
+            const event = new Event("entitySave");
+
+            const updateMethod = $MAPAS.config['entity-actions']['updateMethod'];
+
+            try {
+                await this.entity.save({updateMethod});
+                await this.entity.validate();
+                await this.entity.publish();
+            } catch (error) {
+                console.error(error);
+            }
+
+            
+        },
         save() {
             const event = new Event("entitySave");
 
