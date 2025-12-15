@@ -175,6 +175,11 @@ class EntityRevisionsTest extends TestCase
         $this->login($user);
 
         foreach ($this->entityClasses as $class) {
+            // Pula entidades que não usam soft delete ou não têm propriedade status
+            if (!$class::usesSoftDelete() || !property_exists($class, 'status')) {
+                continue;
+            }
+
             $entity = $this->createEntity($class, $user);
 
             $entity->delete(true);
