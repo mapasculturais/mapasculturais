@@ -5,25 +5,32 @@
     margin: 0 auto;
     position: relative;
 
+    &__actions {
+        position: absolute;
+        bottom: size(4);
+        right: 0;
+        display: flex;
+        gap: size(12);
+        flex-wrap: wrap;
+        
+        @include mobile {
+            bottom: size(36);
+            flex-direction: column;
+        }
+    }
+
     &__button {
         align-items: center;
         background-color: transparent;
         border: none;
-        bottom: size(4);
         color: var(--mc-low-500);
         cursor: pointer;
         display: flex;
         font-size: var(--mc-font-size-xxs);
         gap: size(8);
-        position: absolute;
-        right: 0;
 
         .iconify {
             font-size: size(24);
-        }
-
-        @include mobile {
-            bottom: size(36);
         }
     }
 
