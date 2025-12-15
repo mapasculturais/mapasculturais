@@ -3316,7 +3316,7 @@ class ApiQuery {
                 $and = $this->where ? 'AND' : '';
                 
                 // if the logged in user is an admin in some site
-                if($this->adminInSubsites){
+                if($this->adminInSubsites && $this->usesOriginSubsite){
                     $admin_where = [];
 
                     foreach($this->adminInSubsites as $subsite_id){
