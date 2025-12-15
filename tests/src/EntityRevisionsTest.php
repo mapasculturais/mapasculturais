@@ -166,4 +166,24 @@ class EntityRevisionsTest extends TestCase
 
         }
     }
+
+    function testSoftDeletedRevision()
+    {
+        $user = $this->userDirector->createUser();
+
+        $this->login($user);
+
+        foreach ($this->entityClasses as $class) {
+            $entity = $this->createEntity($class, $user);
+
+            $entity->delete(true);
+
+            /** @var EntityRevision */
+            $last_revision = $entity->getLastRevision();
+
+            $this->assertEquals(EntityRevision::ACTION_TRASHED, $last_revision->action ?? null, "Garantindo que a revisão de deleção (soft delete) da entidade {$class} foi criada");
+
+            $this->assertEquals(Entity::STATUS_TRASH, $last_revision->revisionData['status']->value, "Garantindo que o status TRASH foi salvo na última revisão da entidade {$class}");
+        }
+    }
 }
