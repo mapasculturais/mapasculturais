@@ -22,6 +22,7 @@ use Tests\Traits\OpportunityBuilder;
 use Tests\Traits\ProjectDirector;
 use Tests\Traits\EventDirector;
 use Tests\Traits\Faker;
+use Tests\Traits\SealDirector;
 use Tests\Traits\SpaceDirector;
 use Tests\Traits\UserDirector;
 use UserManagement\Entities\SystemRole;
@@ -34,6 +35,7 @@ class EntityRevisionsTest extends TestCase
         ProjectDirector,
         EventDirector,
         OpportunityBuilder,
+        SealDirector,
         Faker;
 
     protected $entityClasses = [
@@ -44,7 +46,7 @@ class EntityRevisionsTest extends TestCase
         Opportunity::class,
         EvaluationMethodConfiguration::class,
         // User::class,
-        // Seal::class,
+        Seal::class,
         // SystemRole::class,
     ];
 
@@ -91,8 +93,9 @@ class EntityRevisionsTest extends TestCase
             case User::class:
                 $entity = $this->userDirector->createUser();
                 break;
-            // case Seal::class:
-            //     break;
+            case Seal::class:
+                $entity = $this->sealDirector->createSeal($user->profile);
+                break;
             // case SystemRole::class:
             //     break;
 
