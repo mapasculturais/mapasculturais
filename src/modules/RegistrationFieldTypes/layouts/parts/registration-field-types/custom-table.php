@@ -23,7 +23,7 @@ use MapasCulturais\i;
                 <tr style="background-color: #f2f2f2;">
                     <th ng-repeat="column in ::field.config.columns" style="border: 1px solid #ddd; padding: 10px; text-align: left;">
                         {{::column.name}}
-                        <span ng-if="::column.required" style="color: red;">*</span>
+                        <span ng-if="::column.required === 'true'" style="color: red;">*</span>
                     </th>
                     <th style="border: 1px solid #ddd; padding: 10px; text-align: center; width: 100px;">
                         <?= i::__('Ações') ?>
@@ -39,7 +39,7 @@ use MapasCulturais\i;
                                type="text" 
                                ng-model="row['col' + $index]"
                                ng-blur="saveField(field, entity[fieldName])"
-                               ng-required="::column.required"
+                               ng-required="::column.required === 'true'"
                                style="width: 100%; padding: 5px; border: 1px solid #ccc; border-radius: 3px;">
                         
                         <!-- Campo de número -->
@@ -47,7 +47,7 @@ use MapasCulturais\i;
                                type="number" 
                                ng-model="row['col' + $index]"
                                ng-blur="saveField(field, entity[fieldName])"
-                               ng-required="::column.required"
+                               ng-required="::column.required === 'true'"
                                style="width: 100%; padding: 5px; border: 1px solid #ccc; border-radius: 3px;">
                         
                         <!-- Campo de e-mail -->
@@ -55,7 +55,7 @@ use MapasCulturais\i;
                                type="email" 
                                ng-model="row['col' + $index]"
                                ng-blur="saveField(field, entity[fieldName])"
-                               ng-required="::column.required"
+                               ng-required="::column.required === 'true'"
                                style="width: 100%; padding: 5px; border: 1px solid #ccc; border-radius: 3px;">
                         
                         <!-- Campo de CPF -->
@@ -63,7 +63,7 @@ use MapasCulturais\i;
                                type="text" 
                                ng-model="row['col' + $index]"
                                ng-blur="saveField(field, entity[fieldName])"
-                               ng-required="::column.required"
+                               ng-required="::column.required === 'true'"
                                js-mask="999.999.999-99" 
                                placeholder="___.___.___-__"
                                style="width: 100%; padding: 5px; border: 1px solid #ccc; border-radius: 3px;">
@@ -73,7 +73,7 @@ use MapasCulturais\i;
                                type="date" 
                                ng-model="row['col' + $index]"
                                ng-blur="saveField(field, entity[fieldName])"
-                               ng-required="::column.required"
+                               ng-required="::column.required === 'true'"
                                style="width: 100%; padding: 5px; border: 1px solid #ccc; border-radius: 3px;">
                         
                         <!-- Campo de seleção -->
@@ -81,7 +81,7 @@ use MapasCulturais\i;
                                 ng-model="row['col' + $index]"
                                 ng-change="saveField(field, entity[fieldName])"
                                 ng-blur="saveField(field, entity[fieldName])"
-                                ng-required="::column.required"
+                                ng-required="::column.required === 'true'"
                                 style="width: 100%; padding: 5px; border: 1px solid #ccc; border-radius: 3px;">
                             <option value=""><?= i::__('Selecione...') ?></option>
                             <option ng-repeat="option in ::column.options.split('\n') track by $index" 

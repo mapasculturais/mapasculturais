@@ -32,8 +32,8 @@ use MapasCulturais\i;
         </div>
         
         <div style="margin-bottom: 10px;">
-            <label style="display: inline-block;">
-                <input type="checkbox" ng-model="column.required" ng-change="$parent.$parent.save()" ng-init="column.required = column.required !== undefined ? column.required : false">
+            <label class="checkbox-label" style="display: inline-block;">
+                <input type="checkbox" ng-model="column.required" ng-true-value="'true'" ng-false-value="" ng-change="$parent.$parent.save()">
                 <?= i::__('Campo Obrigatório') ?>
             </label>
         </div>
