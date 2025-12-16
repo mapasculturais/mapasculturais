@@ -890,8 +890,12 @@ class Registration extends EntityController {
         $entity->checkPermission('view');
         
         try {
-            // 1. Renderizar HTML da ficha
-            $html = $this->renderRegistrationHTML($entity);
+            // 1. Renderizar HTML da ficha usando template
+            $html = $app->view->partialRender(
+                __template: 'registration/pdf', 
+                __data: ['registration' => $entity],
+                _is_part: false
+            );
             
             // 2. Converter HTML → PDF principal
             $mainPdf = $this->generatePDFFromHTML($html, $entity);
@@ -921,156 +925,6 @@ class Registration extends EntityController {
                 'message' => \MapasCulturais\i::__('Erro ao gerar PDF. Tente novamente.')
             ], 500);
         }
-    }
-
-    private function renderRegistrationHTML($registration) {
-        $app = App::i();
-        
-        // Obter logo da plataforma
-        $logoUrl = '';
-        $logoImage = $app->config['logo.image'] ?? '';
-        if ($logoImage) {
-            // Se houver logo customizada, usar o caminho completo
-            $logoPath = $app->view->resolveFilename('assets', $logoImage);
-            if (file_exists($logoPath)) {
-                $logoUrl = $logoPath;
-            }
-        }
-        
-        // Construir HTML diretamente dos dados da inscrição
-        $html = '<!DOCTYPE html>
-            <html>
-            <head>
-                <meta charset="UTF-8">
-                <style>
-                    @page { margin: 2cm; }
-                    body { 
-                        font-family: DejaVu Sans, sans-serif; 
-                        font-size: 11pt; 
-                        line-height: 1.5;
-                        color: #333;
-                    }
-                    .logo-container { 
-                        text-align: center; 
-                        margin-bottom: 20px; 
-                    }
-                    .logo-container img { 
-                        max-width: 250px; 
-                        max-height: 80px; 
-                    }
-                    .logo-container .site-name { 
-                        font-size: 24pt; 
-                        font-weight: bold; 
-                        color: #222; 
-                        margin: 10px 0;
-                    }
-                    .header { margin-bottom: 30px; border-bottom: 2px solid #333; padding-bottom: 15px; }
-                    .header h1 { margin: 0; font-size: 18pt; color: #222; }
-                    .info-block { margin: 20px 0; }
-                    .info-block h2 { font-size: 14pt; color: #444; margin: 15px 0 10px; }
-                    .field { margin: 10px 0; padding: 10px; background: #f9f9f9; }
-                    .field-label { font-weight: bold; color: #555; display: block; margin-bottom: 5px; }
-                    .field-value { color: #333; }
-                    table { width: 100%; border-collapse: collapse; margin: 10px 0; }
-                    th, td { padding: 8px; border: 1px solid #ddd; text-align: left; }
-                    th { background-color: #e9e9e9; font-weight: bold; }
-                </style>
-            </head>
-            <body>';
-        
-        // Logo da plataforma
-        $html .= '<div class="logo-container">';
-        if ($logoUrl && file_exists($logoUrl)) {
-            $imageData = base64_encode(file_get_contents($logoUrl));
-            $mimeType = mime_content_type($logoUrl);
-            $html .= '<img src="data:' . $mimeType . ';base64,' . $imageData . '" alt="Logo">';
-        } else {
-            // Se não houver logo, mostrar nome do site
-            $siteName = $app->config['logo.title'] . ' ' . $app->config['logo.subtitle'];
-            $html .= '<div class="site-name">' . htmlspecialchars($siteName) . '</div>';
-        }
-        $html .= '</div>';
-        
-        // Cabeçalho
-        $html .= '<div class="header">';
-        $html .= '<h1>Ficha de Inscrição #' . htmlspecialchars($registration->number) . '</h1>';
-        $html .= '<p><strong>Oportunidade:</strong> ' . htmlspecialchars($registration->opportunity->name) . '</p>';
-        $html .= '<p><strong>Responsável:</strong> ' . htmlspecialchars($registration->owner->name) . '</p>';
-        if ($registration->sentTimestamp) {
-            $html .= '<p><strong>Data de envio:</strong> ' . $registration->sentTimestamp->format('d/m/Y H:i') . '</p>';
-        }
-        $html .= '</div>';        // Informações básicas
-        $html .= '<div class="info-block">';
-        $html .= '<h2>Informações Básicas</h2>';
-        
-        if ($registration->category) {
-            $html .= '<div class="field">';
-            $html .= '<span class="field-label">Categoria:</span>';
-            $html .= '<span class="field-value">' . htmlspecialchars($registration->category) . '</span>';
-            $html .= '</div>';
-        }
-        
-        if ($registration->range) {
-            $html .= '<div class="field">';
-            $html .= '<span class="field-label">Faixa/Linha:</span>';
-            $html .= '<span class="field-value">' . htmlspecialchars($registration->range) . '</span>';
-            $html .= '</div>';
-        }
-        
-        $html .= '</div>';
-        
-        // Campos personalizados
-        $opportunity = $registration->opportunity;
-        $opportunity->registerRegistrationMetadata();
-        
-        $html .= '<div class="info-block">';
-        $html .= '<h2>Dados do Formulário</h2>';
-        
-        // Percorrer todos os campos personalizados
-        foreach ($opportunity->registrationFieldConfigurations as $field) {
-            $fieldName = $field->fieldName;
-            $value = $registration->$fieldName ?? null;
-            
-            if ($value !== null && $value !== '') {
-                $html .= '<div class="field">';
-                $html .= '<span class="field-label">' . htmlspecialchars($field->title) . ':</span>';
-                $html .= '<span class="field-value">';
-                
-                if (is_array($value)) {
-                    $html .= htmlspecialchars(implode(', ', $value));
-                } elseif (is_object($value)) {
-                    $html .= htmlspecialchars(json_encode($value, JSON_UNESCAPED_UNICODE));
-                } else {
-                    $html .= nl2br(htmlspecialchars($value));
-                }
-                
-                $html .= '</span>';
-                $html .= '</div>';
-            }
-        }
-        
-        $html .= '</div>';
-        
-        // Agentes relacionados
-        if (count($registration->relatedAgents) > 0) {
-            $html .= '<div class="info-block">';
-            $html .= '<h2>Agentes Relacionados</h2>';
-            
-            foreach ($registration->relatedAgents as $group => $agents) {
-                foreach ($agents as $agent) {
-                    $html .= '<div class="field">';
-                    $html .= '<span class="field-label">' . htmlspecialchars($group) . ':</span>';
-                    $html .= '<span class="field-value">' . htmlspecialchars($agent->name) . '</span>';
-                    $html .= '</div>';
-                }
-            }
-            
-            $html .= '</div>';
-        }
-        
-        $html .= '</body></html>';
-        
-        return $html;
     }
 
     private function generatePDFFromHTML($html, $registration) {
