@@ -21,6 +21,21 @@ app.component('entity-field', {
             }
         }
         
+        // Garantir que custom-table é sempre um array
+        if (description.registrationFieldConfiguration?.fieldType === 'custom-table') {
+            if (typeof value === 'string') {
+                try {
+                    value = JSON.parse(value);
+                } catch(e) {
+                    value = [];
+                }
+            }
+            if (!Array.isArray(value)) {
+                value = [];
+            }
+            this.entity[this.prop] = value;
+        }
+        
         let isAdmin = function() {
             let result = false;
             $MAPAS.currentUserRoles.forEach(function(item){
@@ -219,6 +234,17 @@ app.component('entity-field', {
             
             this.selectedOptions[this.prop] = [...this.entity[this.prop]];
         }
+
+        // Inicializar dados da tabela customizável
+        if (this.is('custom-table')) {
+            if (!this.entity[this.prop] || !Array.isArray(this.entity[this.prop])) {
+                const minRows = this.description.registrationFieldConfiguration?.config?.minRows || 0;
+                this.entity[this.prop] = [];
+                for (let i = 0; i < minRows; i++) {
+                    this.entity[this.prop].push({});
+                }
+            }
+        }
     },
 
     mounted() {
@@ -242,6 +268,12 @@ app.component('entity-field', {
         },
         value() {
             return this.entity[this.prop]?.id ?? this.entity[this.prop];
+        },
+        tableData() {
+            if (this.is('custom-table')) {
+                return this.entity[this.prop] || [];
+            }
+            return [];
         },
         entitiesFildTypes() {
             return ['agent-owner-field', 'agent-collective-field']
@@ -463,6 +495,46 @@ app.component('entity-field', {
             }
 
             return this.readonly;
+        },
+
+        addRow() {
+            if (this.is('custom-table')) {
+                // Garantir que é um array
+                if (!Array.isArray(this.entity[this.prop])) {
+                    this.entity[this.prop] = [];
+                }
+                
+                const maxRows = this.description.registrationFieldConfiguration?.config?.maxRows;
+                if (!maxRows || maxRows <= 0 || this.entity[this.prop].length < maxRows) {
+                    this.entity[this.prop].push({});
+                    // Salvar imediatamente
+                    this.entity.save();
+                }
+            }
+        },
+
+        removeRow(index) {
+            if (this.is('custom-table')) {
+                // Garantir que é um array
+                if (!Array.isArray(this.entity[this.prop])) {
+                    this.entity[this.prop] = [];
+                    return;
+                }
+                
+                const minRows = this.description.registrationFieldConfiguration?.config?.minRows || 0;
+                if (this.entity[this.prop].length > minRows) {
+                    this.entity[this.prop].splice(index, 1);
+                    // Salvar imediatamente
+                    this.entity.save();
+                }
+            }
+        },
+
+        updateTableData() {
+            if (this.is('custom-table')) {
+                // Salvar quando houver mudança nos dados
+                this.entity.save();
+            }
         }
     },
 });

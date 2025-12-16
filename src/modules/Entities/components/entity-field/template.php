@@ -19,6 +19,7 @@ $this->import('
     entity-gallery-video
     mc-alert
     mc-currency-input
+    mc-icon
     mc-multiselect
     mc-tag-list
     select-municipio
@@ -175,6 +176,103 @@ $this->import('
 
             <template v-else-if="is('municipio')">
                 <select-municipio :entity="entity" :prop="prop" @change="change($event)"></select-municipio>
+            </template>
+
+            <template v-else-if="is('custom-table')">
+                <div class="custom-table-field">
+                    <div style="overflow-x: auto; margin-top: 15px;">
+                        <table class="custom-table" style="width: 100%; border-collapse: collapse; border: 1px solid #ddd;">
+                            <thead>
+                                <tr style="background-color: #f2f2f2;">
+                                    <th v-for="(column, colIndex) in description.registrationFieldConfiguration.config.columns" :key="colIndex" style="border: 1px solid #ddd; padding: 10px; text-align: left;">
+                                        {{column.name}}
+                                        <span v-if="column.required === 'true'" style="color: red;">*</span>
+                                    </th>
+                                    <th style="border: 1px solid #ddd; padding: 10px; text-align: center; width: 100px;">
+                                        <?= i::__('Ações') ?>
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr v-for="(row, rowIndex) in tableData" :key="rowIndex">
+                                    <td v-for="(column, colIndex) in description.registrationFieldConfiguration.config.columns" :key="colIndex" style="border: 1px solid #ddd; padding: 8px;">
+                                        <!-- Campo de texto -->
+                                        <input v-if="column.type === 'text'" 
+                                               type="text" 
+                                               v-model="row['col' + colIndex]"
+                                               @blur="updateTableData"
+                                               :required="column.required === 'true'"
+                                               :disabled="readonly || disabled"
+                                               style="width: 100%; padding: 5px; border: 1px solid #ccc; border-radius: 3px;">
+                                        
+                                        <!-- Campo de número -->
+                                        <input v-else-if="column.type === 'number'" 
+                                               type="number" 
+                                               v-model="row['col' + colIndex]"
+                                               @blur="updateTableData"
+                                               :required="column.required === 'true'"
+                                               :disabled="readonly || disabled"
+                                               style="width: 100%; padding: 5px; border: 1px solid #ccc; border-radius: 3px;">
+                                        
+                                        <!-- Campo de e-mail -->
+                                        <input v-else-if="column.type === 'email'" 
+                                               type="email" 
+                                               v-model="row['col' + colIndex]"
+                                               @blur="updateTableData"
+                                               :required="column.required === 'true'"
+                                               :disabled="readonly || disabled"
+                                               style="width: 100%; padding: 5px; border: 1px solid #ccc; border-radius: 3px;">
+                                        
+                                        <!-- Campo de CPF -->
+                                        <input v-else-if="column.type === 'cpf'" 
+                                               type="text" 
+                                               v-model="row['col' + colIndex]"
+                                               @blur="updateTableData"
+                                               v-maska data-maska="###.###.###-##"
+                                               placeholder="___.___.___-__"
+                                               :required="column.required === 'true'"
+                                               :disabled="readonly || disabled"
+                                               style="width: 100%; padding: 5px; border: 1px solid #ccc; border-radius: 3px;">
+                                        
+                                        <!-- Campo de data -->
+                                        <input v-else-if="column.type === 'date'" 
+                                               type="date" 
+                                               v-model="row['col' + colIndex]"
+                                               @blur="updateTableData"
+                                               :required="column.required === 'true'"
+                                               :disabled="readonly || disabled"
+                                               style="width: 100%; padding: 5px; border: 1px solid #ccc; border-radius: 3px;">
+                                        
+                                        <!-- Campo de seleção -->
+                                        <select v-else-if="column.type === 'select'" 
+                                                v-model="row['col' + colIndex]"
+                                                @change="updateTableData"
+                                                :required="column.required === 'true'"
+                                                :disabled="readonly || disabled"
+                                                style="width: 100%; padding: 5px; border: 1px solid #ccc; border-radius: 3px;">
+                                            <option value=""><?= i::__('Selecione...') ?></option>
+                                            <option v-for="(option, optIndex) in column.options.split('\n').filter(o => o.trim())" :key="optIndex" :value="option.trim()">
+                                                {{option.trim()}}
+                                            </option>
+                                        </select>
+                                    </td>
+                                    <td style="border: 1px solid #ddd; padding: 8px; text-align: center;">
+                                        <button v-if="!readonly && !disabled" type="button" @click="removeRow(rowIndex)" class="button button--sm button--icon button--text-danger">
+                                            <mc-icon name="trash"></mc-icon> <?= i::__('Remover') ?>
+                                        </button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div v-if="!readonly && !disabled" style="margin-top: 10px;">
+                        <button type="button" @click="addRow" 
+                                :disabled="description.registrationFieldConfiguration.config.maxRows > 0 && tableData.length >= description.registrationFieldConfiguration.config.maxRows"
+                                class="button button--sm button--icon button--primary">
+                            <mc-icon name="add"></mc-icon> <?= i::__('Adicionar linha') ?>
+                        </button>
+                    </div>
+                </div>
             </template>
 
             <div v-if="maxLength && (is('string') || is('text') || is('textarea'))" class="field__length">{{ value ? value?.length : '0' }}/{{maxLength}}</div>
