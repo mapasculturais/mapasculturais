@@ -815,11 +815,12 @@ class Registration extends EntityController {
         $this->requireAuthentication();
 
         $entity = $this->requestedEntity;
-        $entity->checkPermission('view');
-
+        
         if (!$entity) {
             $app->pass(); 
         }
+        
+        $entity->checkPermission('view');
 
         if(!$entity->files) {
           $this->json([
@@ -881,11 +882,12 @@ class Registration extends EntityController {
         $this->requireAuthentication();
         
         $entity = $this->requestedEntity;
-        $entity->checkPermission('view');
         
         if (!$entity) {
             $app->pass(); 
         }
+        
+        $entity->checkPermission('view');
         
         try {
             // 1. Renderizar HTML da ficha
