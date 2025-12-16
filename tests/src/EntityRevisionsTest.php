@@ -42,7 +42,7 @@ class EntityRevisionsTest extends TestCase
         Project::class,
         Event::class,
         Opportunity::class,
-        // EvaluationMethodConfiguration::class,
+        EvaluationMethodConfiguration::class,
         // User::class,
         // Seal::class,
         // SystemRole::class,
