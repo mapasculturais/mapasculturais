@@ -6,17 +6,13 @@
     position: relative;
 
     &__actions {
-        position: fixed;
-        bottom: size(20);
-        right: size(20);
         display: flex;
         gap: size(12);
-        flex-wrap: wrap;
-        z-index: 50;
+        justify-content: flex-end;
+        margin-bottom: size(24);
+        margin-top: size(16);
         
         @include mobile {
-            bottom: size(16);
-            right: size(16);
             flex-direction: column;
             gap: size(8);
         }
