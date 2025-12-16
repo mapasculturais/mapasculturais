@@ -716,6 +716,42 @@ class Module extends \MapasCulturais\Module
                 }
             ],
             [
+                'slug' => 'custom-table',
+                'name' => \MapasCulturais\i::__('Tabela Customizável'),
+                'viewTemplate' => 'registration-field-types/custom-table',
+                'configTemplate' => 'registration-field-types/custom-table-config',
+                'serialize' => function($value) {
+                    if(is_array($value)){
+                        foreach($value as &$row){
+                            foreach($row as $key => $v){
+                                if(substr($key, 0, 2) == '$$'){
+                                    unset($row->$key);
+                                }
+                            }
+                        }
+                    }
+
+                    return json_encode($value);
+                },
+                'unserialize' => function($value) {
+                    $rows = json_decode($value ?: "");
+
+                    if(!is_array($rows)){
+                        $rows = [];
+                    }
+
+                    foreach($rows as &$row){
+                        foreach($row as $key => $value){
+                            if(substr($key, 0, 2) == '$$'){
+                                unset($row->$key);
+                            }
+                        }
+                    }
+
+                    return $rows;
+                }
+            ],
+            [
                 'slug' => 'municipio',
                 'name' => \MapasCulturais\i::__('Seleção de município'),
                 'viewTemplate' => 'registration-field-types/municipio',
