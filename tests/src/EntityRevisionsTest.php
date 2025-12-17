@@ -476,4 +476,27 @@ class EntityRevisionsTest extends TestCase
             $this->assertEquals(2, count($revision_agents_group), "Garantindo que apenas 2 agentes restaram na revisão da entidade {$class}");
         }
     }
+
+    function testUserRolesRevision()
+    {
+        $admin = $this->userDirector->createUser('saasSuperAdmin');
+        $this->login($admin);
+
+        $user = $this->userDirector->createUser();
+
+        $user->addRole('admin');
+
+        $last_revision = $user->lastRevision;
+
+        $this->assertEquals(EntityRevision::ACTION_MODIFIED, $last_revision->action, 'Garantindo que após adicionar um role, a última revisão do user é do tipo modified');
+
+        $this->assertEquals(['admin'],$last_revision->revisionData['roles']->value, 'Garantindo que após adicionar um role, a última revisão do user contém a lista de roles do usuário com a role adicionado');
+
+        $user->removeRole('admin');
+
+        $last_revision = $user->lastRevision;
+
+        $this->assertEquals([],$last_revision->revisionData['roles']->value, 'Garantindo que após remover um role, a última revisão do user contém a lista de roles do usuário sem o role removido');
+
+    }
 }
