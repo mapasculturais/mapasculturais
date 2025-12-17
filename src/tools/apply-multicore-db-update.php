@@ -22,8 +22,10 @@ class DB_UPDATE {
     static $exceptions = [];
     
     static function enqueue($entity_class, $where, $cb){
-        $entity_class = strpos($entity_class, 'MapasCulturais\Entities\\') === 0 ? $entity_class : 'MapasCulturais\Entities\\' . $entity_class;
-
+        if(!str_starts_with($entity_class, '\\') && !str_starts_with($entity_class, 'MapasCulturais\Entities\\')) {
+                 $entity_class = 'MapasCulturais\Entities\\' . $entity_class;
+        }
+        
         $app = App::i();
         
         $table = $app->em->getClassMetadata($entity_class)->getTableName();
