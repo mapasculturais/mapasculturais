@@ -1147,7 +1147,10 @@ return [
         __exec("ALTER TABLE subsite_meta ALTER column id SET DEFAULT nextval('subsite_meta_id_seq');");
         __exec("ALTER TABLE evaluationmethodconfiguration_meta ALTER column id SET DEFAULT nextval('evaluationmethodconfiguration_meta_id_seq');");
     },
-    
+    'define default para o id da tabela seal' => function() {
+        __exec("ALTER TABLE seal ALTER column id SET DEFAULT nextval('seal_id_seq');");
+    },
+
     'Criação da coluna update timestemp' => function() use($conn) {
 
         if(!__column_exists('registration', 'update_timestamp')){
