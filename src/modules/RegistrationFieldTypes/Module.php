@@ -723,9 +723,17 @@ class Module extends \MapasCulturais\Module
                 'serialize' => function($value) {
                     if(is_array($value)){
                         foreach($value as &$row){
-                            foreach($row as $key => $v){
-                                if(substr($key, 0, 2) == '$$'){
-                                    unset($row->$key);
+                            if(is_object($row)) {
+                                foreach($row as $key => $v){
+                                    if(substr($key, 0, 2) == '$$'){
+                                        unset($row->$key);
+                                    }
+                                }
+                            } elseif(is_array($row)) {
+                                foreach($row as $key => $v){
+                                    if(substr($key, 0, 2) == '$$'){
+                                        unset($row[$key]);
+                                    }
                                 }
                             }
                         }
@@ -734,18 +742,10 @@ class Module extends \MapasCulturais\Module
                     return json_encode($value);
                 },
                 'unserialize' => function($value) {
-                    $rows = json_decode($value ?: "");
+                    $rows = json_decode($value ?: "", true);
 
                     if(!is_array($rows)){
                         $rows = [];
-                    }
-
-                    foreach($rows as &$row){
-                        foreach($row as $key => $value){
-                            if(substr($key, 0, 2) == '$$'){
-                                unset($row->$key);
-                            }
-                        }
                     }
 
                     return $rows;

@@ -200,7 +200,7 @@ $this->import('
                                         <input v-if="column.type === 'text'" 
                                                type="text" 
                                                v-model="row['col' + colIndex]"
-                                               @blur="updateTableData"
+                                               @change="updateTableData"
                                                :required="column.required === 'true'"
                                                :disabled="readonly || disabled"
                                                style="width: 100%; padding: 5px; border: 1px solid #ccc; border-radius: 3px;">
@@ -209,7 +209,7 @@ $this->import('
                                         <input v-else-if="column.type === 'number'" 
                                                type="number" 
                                                v-model="row['col' + colIndex]"
-                                               @blur="updateTableData"
+                                               @change="updateTableData"
                                                :required="column.required === 'true'"
                                                :disabled="readonly || disabled"
                                                style="width: 100%; padding: 5px; border: 1px solid #ccc; border-radius: 3px;">
@@ -218,7 +218,7 @@ $this->import('
                                         <input v-else-if="column.type === 'email'" 
                                                type="email" 
                                                v-model="row['col' + colIndex]"
-                                               @blur="updateTableData"
+                                               @change="updateTableData"
                                                :required="column.required === 'true'"
                                                :disabled="readonly || disabled"
                                                style="width: 100%; padding: 5px; border: 1px solid #ccc; border-radius: 3px;">
@@ -227,7 +227,7 @@ $this->import('
                                         <input v-else-if="column.type === 'cpf'" 
                                                type="text" 
                                                v-model="row['col' + colIndex]"
-                                               @blur="updateTableData"
+                                               @change="updateTableData"
                                                v-maska data-maska="###.###.###-##"
                                                placeholder="___.___.___-__"
                                                :required="column.required === 'true'"
@@ -238,7 +238,7 @@ $this->import('
                                         <input v-else-if="column.type === 'date'" 
                                                type="date" 
                                                v-model="row['col' + colIndex]"
-                                               @blur="updateTableData"
+                                               @change="updateTableData"
                                                :required="column.required === 'true'"
                                                :disabled="readonly || disabled"
                                                style="width: 100%; padding: 5px; border: 1px solid #ccc; border-radius: 3px;">

@@ -237,9 +237,24 @@ app.component('entity-field', {
 
         // Inicializar dados da tabela customizável
         if (this.is('custom-table')) {
-            if (!this.entity[this.prop] || !Array.isArray(this.entity[this.prop])) {
-                const minRows = this.description.registrationFieldConfiguration?.config?.minRows || 0;
+            if (!this.entity[this.prop]) {
                 this.entity[this.prop] = [];
+            } else if (!Array.isArray(this.entity[this.prop])) {
+                // Se não for array, tentar fazer parse
+                if (typeof this.entity[this.prop] === 'string') {
+                    try {
+                        this.entity[this.prop] = JSON.parse(this.entity[this.prop]);
+                    } catch(e) {
+                        this.entity[this.prop] = [];
+                    }
+                } else {
+                    this.entity[this.prop] = [];
+                }
+            }
+            
+            // Adicionar linhas mínimas se necessário (apenas se estiver vazio)
+            const minRows = this.description.registrationFieldConfiguration?.config?.minRows || 0;
+            if (this.entity[this.prop].length === 0 && minRows > 0) {
                 for (let i = 0; i < minRows; i++) {
                     this.entity[this.prop].push({});
                 }
@@ -507,8 +522,7 @@ app.component('entity-field', {
                 const maxRows = this.description.registrationFieldConfiguration?.config?.maxRows;
                 if (!maxRows || maxRows <= 0 || this.entity[this.prop].length < maxRows) {
                     this.entity[this.prop].push({});
-                    // Salvar imediatamente
-                    this.entity.save();
+                    this.updateTableData();
                 }
             }
         },
@@ -524,15 +538,14 @@ app.component('entity-field', {
                 const minRows = this.description.registrationFieldConfiguration?.config?.minRows || 0;
                 if (this.entity[this.prop].length > minRows) {
                     this.entity[this.prop].splice(index, 1);
-                    // Salvar imediatamente
-                    this.entity.save();
+                    this.updateTableData();
                 }
             }
         },
 
         updateTableData() {
             if (this.is('custom-table')) {
-                // Salvar quando houver mudança nos dados
+                // Salvar diretamente como o componente persons faz
                 this.entity.save();
             }
         }
