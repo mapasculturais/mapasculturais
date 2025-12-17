@@ -1147,7 +1147,10 @@ return [
         __exec("ALTER TABLE subsite_meta ALTER column id SET DEFAULT nextval('subsite_meta_id_seq');");
         __exec("ALTER TABLE evaluationmethodconfiguration_meta ALTER column id SET DEFAULT nextval('evaluationmethodconfiguration_meta_id_seq');");
     },
-    
+    'define default para o id da tabela seal' => function() {
+        __exec("ALTER TABLE seal ALTER column id SET DEFAULT nextval('seal_id_seq');");
+    },
+
     'Criação da coluna update timestemp' => function() use($conn) {
 
         if(!__column_exists('registration', 'update_timestamp')){
@@ -3124,6 +3127,9 @@ $$
         if(!__column_exists('registration_file_configuration', 'allowed_file_types')) {
             __exec("ALTER TABLE registration_file_configuration ADD COLUMN allowed_file_types JSON DEFAULT NULL");
         }
+    },
+    "incrementa a sequencia do id dos selos para evitar erro na primeira tentativa de criar um selo pois já existe o id 1" => function () {
+        __exec("SELECT nextval('seal_id_seq')");
     }
     
 ] + $updates ;   
