@@ -227,17 +227,18 @@ trait EntityRevision{
         }
     }
 
-    public function _newDeletedRevision() {
+    public function _newDeletedRevision(bool $flush = true) {
         $revisionData = $this->_getRevisionData();
-        $action = Revision::ACTION_DELETED;
-        $message = i::__("Registro deletado.");
+        $message = i::__("Registro deletado permanentemente.");
         $revision = new Revision($revisionData,$this,Revision::ACTION_DELETED,$message);
-        $revision->save(true);
+        $revision->objectId = $this->id;
+        $revision->save($flush);
     }
 
     public function getLastRevision() {
         $app = App::i();
-        $revision = $app->repo('EntityRevision')->findLastRevision($this);
+        $pk = $this->getPKPropertyName();
+        $revision = $app->repo('EntityRevision')->findLastRevisionByObjectTypeAndId($this->className, $this->__pk ?: $this->$pk);
         return $revision;
     }
 
