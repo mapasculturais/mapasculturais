@@ -5,9 +5,12 @@ use MapasCulturais\App;
 use MapasCulturais\Definitions\FileGroup;
 use MapasCulturais\Utils;
 use MapasCulturais\Entities\Agent;
+use MapasCulturais\Entities\EvaluationMethodConfiguration;
 use MapasCulturais\Entities\Opportunity;
 use MapasCulturais\Entities\Registration;
 use MapasCulturais\Entities\EvaluationMethodConfigurationAgentRelation;
+use MapasCulturais\Entities\User;
+use UserManagement\Entities\SystemRole;
 
 return [
     'recreate pcache' => function () {
@@ -718,6 +721,76 @@ return [
             file_put_contents(LOGS_PATH . 'removed-zipArchives.log', "\n{$file->path}", FILE_APPEND);
             $file->delete(true);
         });
-    }
+    },
+    
+    'create entities history entries User, Seal, EvaluationMethodConfiguration, SystemRole' => function() {
+        $app = \MapasCulturais\App::i();
+
+        $role = $app->repo('Role')->findOneBy(['name' => 'saasSuperAdmin'], ['id' => 'desc']);
+        $role = $role ?: $app->repo('Role')->findOneBy(['name' => 'saasAdmin'], ['id' => 'desc']);
+        $role = $role ?: $app->repo('Role')->findOneBy(['name' => 'superAdmin'], ['id' => 'desc']);
+
+        $admin_user = $role->user;
+
+        foreach (['User', 'Seal', 'EvaluationMethodConfiguration', '\UserManagement\Entities\SystemRole'] as $class){
+            DB_UPDATE::enqueue($class, 'id > 0', function (MapasCulturais\Entity $entity) use ($app, $admin_user) {
+                if ($entity instanceof User) {
+                    $user = $entity;
+                } else if($entity instanceof SystemRole) {
+                    $user = $admin_user;
+                } else if($entity instanceof EvaluationMethodConfiguration) {
+                    $user = $entity->owner->owner->user;
+                } else {
+                    $user = $entity->owner->user;
+                }
+
+                if ($user->status != 1) {
+                    $user = $admin_user;
+                }
+
+                $app->user = $user;
+                $app->auth->authenticatedUser = $user;
+
+                $entity->_newCreatedRevision();
+            });
+        }
+        $app->auth->logout();
+    },
+
+    'create updated entities history entries User, Seal, EvaluationMethodConfiguration, SystemRole' => function() {
+        $app = \MapasCulturais\App::i();
+
+        $role = $app->repo('Role')->findOneBy(['name' => 'saasSuperAdmin'], ['id' => 'desc']);
+        $role = $role ?: $app->repo('Role')->findOneBy(['name' => 'saasAdmin'], ['id' => 'desc']);
+        $role = $role ?: $app->repo('Role')->findOneBy(['name' => 'superAdmin'], ['id' => 'desc']);
+
+        $admin_user = $role->user;
+
+        foreach (['User', 'Seal', 'EvaluationMethodConfiguration', '\UserManagement\Entities\SystemRole'] as $class){
+            DB_UPDATE::enqueue($class, 'id > 0', function (MapasCulturais\Entity $entity) use ($app, $admin_user) {
+                if ($entity instanceof User) {
+                    $user = $entity;
+                } else if($entity instanceof SystemRole) {
+                    $user = $admin_user;
+                } else if($entity instanceof EvaluationMethodConfiguration) {
+                    $user = $entity->owner->owner->user;
+                } else {
+                    $user = $entity->owner->user;
+                }
+                
+                if ($user->status != 1) {
+                    $user = $admin_user;
+                }
+
+                $app->user = $user;
+                $app->auth->authenticatedUser = $user;
+
+                $entity->controller->action = \MapasCulturais\Entities\EntityRevision::ACTION_MODIFIED;
+
+                $entity->_newModifiedRevision();
+            });
+        }
+        $app->auth->logout();
+    },
 
 ];
