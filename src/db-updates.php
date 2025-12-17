@@ -3127,6 +3127,9 @@ $$
         if(!__column_exists('registration_file_configuration', 'allowed_file_types')) {
             __exec("ALTER TABLE registration_file_configuration ADD COLUMN allowed_file_types JSON DEFAULT NULL");
         }
+    },
+    "incrementa a sequencia do id dos selos para evitar erro na primeira tentativa de criar um selo pois já existe o id 1" => function () {
+        __exec("SELECT nextval('seal_id_seq')");
     }
     
 ] + $updates ;   
