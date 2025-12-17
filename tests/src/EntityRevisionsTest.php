@@ -15,6 +15,7 @@ use MapasCulturais\Entities\Seal;
 use MapasCulturais\Entities\Space;
 use MapasCulturais\Entities\User;
 use MapasCulturais\Entity;
+use MapasCulturais\Repositories\EntityRevision as RepositoriesEntityRevision;
 use Tests\Abstract\TestCase;
 use Tests\Enums\EvaluationMethods;
 use Tests\Traits\AgentDirector;
@@ -24,6 +25,7 @@ use Tests\Traits\EventDirector;
 use Tests\Traits\Faker;
 use Tests\Traits\SealDirector;
 use Tests\Traits\SpaceDirector;
+use Tests\Traits\SystemRoleDirector;
 use Tests\Traits\UserDirector;
 use UserManagement\Entities\SystemRole;
 
@@ -36,7 +38,8 @@ class EntityRevisionsTest extends TestCase
         EventDirector,
         OpportunityBuilder,
         SealDirector,
-        Faker;
+        Faker,
+        SystemRoleDirector;
 
     protected $entityClasses = [
         Agent::class,
@@ -45,14 +48,22 @@ class EntityRevisionsTest extends TestCase
         Event::class,
         Opportunity::class,
         EvaluationMethodConfiguration::class,
-        // User::class,
+        User::class,
         Seal::class,
-        // SystemRole::class,
+        SystemRole::class,
     ];
+
+    protected function findLastRevision(string $entity_class, int $entity_id): ?EntityRevision
+    {
+        /** @var RepositoriesEntityRevision */
+        $repo = $this->app->repo('EntityRevision');
+        $last_revision = $repo->findOneBy(['objectType' => $entity_class, 'objectId' => $entity_id], ['id'=>'desc']);
+        return $last_revision;
+    }
 
     function createEntity(string $class, ?User $user = null): Entity
     {
-
+        $this->app->disableAccessControl();
         if (!$user) {
             if ($this->app->auth->isUserAuthenticated()) {
                 $user = $this->app->user;
@@ -96,14 +107,15 @@ class EntityRevisionsTest extends TestCase
             case Seal::class:
                 $entity = $this->sealDirector->createSeal($user->profile);
                 break;
-            // case SystemRole::class:
-            //     break;
+            case SystemRole::class:
+                $entity = $this->systemRoleDirector->createSpaceAdminRole();
+                break;
 
             default:
                 throw new Exception('classe não implementada');
         }
 
-
+        $this->app->enableAccessControl();
         return $entity;
     }
 
@@ -128,7 +140,9 @@ class EntityRevisionsTest extends TestCase
             
         $entity->{$result->key} = $result->value;
 
+        $this->app->disableAccessControl();
         $entity->save(true);
+        $this->app->enableAccessControl();
 
         return $result;
     }
@@ -152,7 +166,7 @@ class EntityRevisionsTest extends TestCase
 
     function testModifiedRevision()
     {
-        $user = $this->userDirector->createUser();
+        $user = $this->userDirector->createUser('saasSuperAdmin');
 
         $this->login($user);
 
@@ -173,7 +187,7 @@ class EntityRevisionsTest extends TestCase
 
     function testSoftDeletedRevision()
     {
-        $user = $this->userDirector->createUser();
+        $user = $this->userDirector->createUser('saasSuperAdmin');
 
         $this->login($user);
 
@@ -196,9 +210,35 @@ class EntityRevisionsTest extends TestCase
         }
     }
 
+    function testDestroyRevision()
+    {
+        foreach ($this->entityClasses as $class) {
+            $this->app->em->clear();
+            $user = $this->userDirector->createUser('saasSuperAdmin');
+            $this->login($user);
+            
+            // Pula entidades que não usam soft delete ou não têm propriedade status
+            $entity = $this->createEntity($class, $user);
+            $entity_id = $entity->id;
+            
+            $this->app->disableAccessControl();
+            if ($class::usesSoftDelete()) {
+                $entity->destroy(true);
+            } else {
+                $entity->delete(true);
+            }
+            $this->app->enableAccessControl();
+            
+            /** @var EntityRevision */
+            $last_revision = $this->findLastRevision($class, $entity_id);
+
+            $this->assertEquals(EntityRevision::ACTION_DELETED, $last_revision->action ?? null, "Garantindo que a revisão de deleção (soft delete) da entidade {$class} foi criada");
+        }
+    }
+
     function testTaxonomyTermsRevision()
     {
-        $user = $this->userDirector->createUser();
+        $user = $this->userDirector->createUser('saasSuperAdmin');
 
         $this->login($user);
 
@@ -267,7 +307,7 @@ class EntityRevisionsTest extends TestCase
 
     function testMetaListsRevision()
     {
-        $user = $this->userDirector->createUser();
+        $user = $this->userDirector->createUser('saasSuperAdmin');
 
         $this->login($user);
 
@@ -356,7 +396,7 @@ class EntityRevisionsTest extends TestCase
 
     function testRelatedAgentsRevision()
     {
-        $user = $this->userDirector->createUser();
+        $user = $this->userDirector->createUser('saasSuperAdmin');
 
         $this->login($user);
 
