@@ -36,10 +36,11 @@ use MapasCulturais\Traits;
  * @ORM\HasLifecycleCallbacks
  */
 class User extends \MapasCulturais\Entity implements \MapasCulturais\UserInterface{
-    use Traits\EntityMetadata,
-        Traits\EntitySoftDelete,
+    use Traits\EntityFiles,
+        Traits\EntityMetadata,
         Traits\EntityPermissionCache,
-        Traits\EntityFiles;
+        Traits\EntityRevision,
+        Traits\EntitySoftDelete;
 
     const STATUS_ENABLED = 1;
 
