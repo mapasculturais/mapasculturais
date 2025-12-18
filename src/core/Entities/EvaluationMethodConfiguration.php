@@ -40,6 +40,7 @@ class EvaluationMethodConfiguration extends \MapasCulturais\Entity {
     use Traits\EntityTypes,
         Traits\EntityMetadata,
         Traits\EntityAgentRelation,
+        Traits\EntityRevision,
         Traits\EntityPermissionCache{
             Traits\EntityTypes::setType as traitSetType;
         }
