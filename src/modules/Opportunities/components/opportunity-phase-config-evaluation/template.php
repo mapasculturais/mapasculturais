@@ -87,12 +87,13 @@ $evaluation_methods = $app->getRegisteredEvaluationMethods();
         <opportunity-phase-config-status :phase="phase.opportunity"></opportunity-phase-config-status>
 
         <opportunity-phase-publish-date-config :phase="phase.opportunity" :phases="phases" hide-button hide-description></opportunity-phase-publish-date-config>
-        
-        <seals-certifier :entity="firstPhase" :editable="seals.length > 0"></seals-certifier>
 
         <template v-if="phase.evaluateSelfApplication">
             <entity-field :entity="phase" type="checkbox" prop="autoApplicationAllowed" label="<?php i::esc_attr_e('Autoaplicação de resultados')?>" :autosave="300" classes="col-12 sm:col-12"></entity-field>
         </template>
+        
+        <seals-certifier :entity="firstPhase" :editable="seals.length > 0"></seals-certifier>
+
         
         <opportunity-appeal-phase-config v-if="!firstPhase?.isContinuousFlow" :phase="phase" :phases="phases" :tab="tab"></opportunity-appeal-phase-config>
         
