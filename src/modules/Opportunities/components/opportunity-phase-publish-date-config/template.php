@@ -14,7 +14,7 @@ $this->import('
 ?>
 <div class="col-12">
     <div class="grid-12 opportunity-phase-publish-date-config">
-        <h4 class="bold col-12">  <?= i::__("Publicação de Resultados") ?></h4>
+        <h3 class="bold col-12">  <?= i::__("Publicação de Resultados") ?></h3>
         <div v-if="phase.publishedRegistrations && !firstPhase?.isContinuousFlow" class="published">
             <div class="col-4">
                 <mc-confirm-button :message="text('despublicar')" @confirm="unpublishRegistration()">
