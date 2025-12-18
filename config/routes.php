@@ -79,6 +79,8 @@ return [
             'inscricao' => ['registration', 'edit'],
             'inscricao' => ['registration', 'single'],
             'inscricao' => ['registration', 'view'],
+            'inscricao' => ['registration', 'exportPDF'],
+            'inscricao' => ['registration', 'createZipFiles'],
 
             'visualizacao-de-formulario' => ['opportunity', 'formPreview'],
 

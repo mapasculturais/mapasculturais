@@ -15,6 +15,7 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Fediverso como rede social nos metadados das entidades
 - Adiciona restrição de tipos de arquivo permitidos em campos anexo do formulário
 - Oportunidade apenas para divulgação - permite criar oportunidades informativas onde as inscrições não são feitas pela plataforma
+- Exportação de ficha de inscrição em PDF com mesclagem automática de anexos PDF em um único arquivo
 
 ### Melhorias nas avaliação
 - Possibilidade de configuração de limite de inscrições para os avaliadores
@@ -32,6 +33,7 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Melhora a comunicação da interface para deixar claro que a alteração de critérios ou sessões só deve ser feita por administradores quando já existirem avaliações técnicas enviadas.
 - Remove espaços múltiplos e espaços no início/fim do nome e nome completo das entidades
 - Adiciona campos de Galeria de Fotos, Vídeos e Downloads como opções de campos do agente responsável em formulários de inscrição, permitindo que o gestor solicite portfólio visual, galeria de vídeos ou documentos anexos que sincronizam automaticamente com o perfil do agente [(2)](#funarte)
+- Download em lote de anexos da inscrição em formato ZIP
 - Habilita as revisões para usuários, fases de avaliação, selos e funções de usuário
 
 ### Correções

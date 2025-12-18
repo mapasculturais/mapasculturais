@@ -46,6 +46,16 @@ app.component('registration-print', {
             });
 
             iframe.src = Utils.createUrl('registration', 'registrationPrint', [this.registration.id]);
-        }        
+        },
+        
+        exportPDF() {
+            const url = Utils.createUrl('registration', 'exportPDF', [this.registration.id]);
+            window.open(url, '_blank');
+        },
+        
+        downloadZip() {
+            const url = Utils.createUrl('registration', 'createZipFiles', [this.registration.id]);
+            window.open(url, '_blank');
+        }
     },
 });
