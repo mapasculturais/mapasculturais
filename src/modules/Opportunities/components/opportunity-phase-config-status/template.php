@@ -13,7 +13,7 @@ $this->import('
 
 ?>
 <div class="opportunity-phase-config-status col-12 grid-12">
-    <h4 class="bold col-12"><?= i::__("Configuração de status") ?></h4>
+    <h3 class="bold col-12"><?= i::__("Configuração de status") ?></h3>
 
     <div v-for="(status, index) in statuses" :key="index" class="col-12 opportunity-phase-config-status__status">
         <div class="opportunity-phase-config-status__status-line">

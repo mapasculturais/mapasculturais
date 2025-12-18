@@ -153,6 +153,12 @@ trait EntitySealRelation {
         $seal->checkPermission('@control');
         
         $relation_class = $this->getSealRelationEntityClassName();
+
+        $existing_relation = $app->repo($relation_class)->findOneBy(['seal' => $seal, 'owner' => $this]);
+        if($existing_relation) {
+            return $existing_relation;
+        }
+
         $relation = new $relation_class;
         $relation->seal = $seal;
         $relation->owner = $this;

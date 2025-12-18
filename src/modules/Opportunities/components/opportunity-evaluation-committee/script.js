@@ -89,13 +89,24 @@ app.component('opportunity-evaluation-committee', {
             sendTimeOut: null,
             fetchConfigs: {},
             reviewersId: [],
-            fetchFields: this.entity.fetchFields
+            fetchFields: this.entity.fetchFields,
+            showRegistrationListFlag: {}
         }
     },
     
     methods: {   
         showSummary(summary) {
             return summary ? Object.values(summary).some(value => value > 0) : false;
+        },
+
+        showRegistrationList(infoReviewer) {
+            return this.showRegistrationListFlag[infoReviewer.id] || !!infoReviewer.registrationListText;
+        },
+
+        changeShowRegistrationListFlag($event, infoReviewer) {
+            if(!$event) {
+                infoReviewer.registrationListText = '';
+            }
         },
 
         hasEvaluationConfiguration(infoReviewer) {
@@ -194,6 +205,10 @@ app.component('opportunity-evaluation-committee', {
                         registrationListText: this.formatRegistrationList(reviewer.metadata?.registrationList),
                     };
                 });
+
+                for(let infoReviewer of this.infosReviewers) {
+                    this.showRegistrationListFlag[infoReviewer.id] = !!infoReviewer.registrationListText;
+                }
 
                 const pendingReviews = this.infosReviewers.filter((reviewer) => reviewer.status === -5);
                 pendingReviews.sort((a, b) => {
