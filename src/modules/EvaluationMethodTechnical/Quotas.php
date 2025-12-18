@@ -579,7 +579,7 @@ class Quotas {
         return false;
     }
 
-    public function setRegistrationAsQuota(object $registration, string $quota_slug, object $replaced_registration = null) {
+    public function setRegistrationAsQuota(object $registration, string $quota_slug, ?object $replaced_registration = null) {
         $registration->usingQuota = true;
         if ($replaced_registration) {
             $this->registrationFields[$registration->id]['usingQuota'] = $quota_slug . "\n" . sprintf(i::__("(substituindo %s)"), $replaced_registration->number);
