@@ -172,4 +172,18 @@
             padding: .4em;
         }
     }
+
+    &__registration-list {
+        padding: 1em;
+        border-bottom: size(1) solid var(--mc-gray-300);
+        
+        .mc-toggle {
+            margin: 1em 0;
+        }
+
+        &__exclusive {
+            margin: 1em 0;
+            display: block;
+        }
+    }
 }
