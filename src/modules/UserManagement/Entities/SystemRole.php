@@ -9,14 +9,22 @@ use MapasCulturais\App;
 
 /**
  * SystemRole
- *
- * @property-read \MapasCulturais\Definitions\Role $definition
+ * 
+ * @property int $id
+ * @property string $slug
+ * @property string $name
+ * @property bool $subsiteContext
+ * @property array $permissions
+ * @property DateTime $createTimestamp
+ * @property DateTime $updateTimestamp
+ * @property int $status
  */
 #[ORM\Table(name: "system_role")]
 #[ORM\Entity(repositoryClass: "MapasCulturais\Repository")]
 class SystemRole extends \MapasCulturais\Entity {
-    use Traits\EntitySoftDelete,
-        Traits\EntityDraft;
+    use Traits\EntityDraft,
+        Traits\EntityRevision,
+        Traits\EntitySoftDelete;
 
     #[ORM\Column(name: "id", type: "integer", nullable: false)]
     #[ORM\Id]

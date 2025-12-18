@@ -27,7 +27,7 @@ $this->import('
             <?php $this->applyTemplateHook('entity-actions--primary', 'begin') ?>
 
 
-            <mc-confirm-button v-if="usePrivate && entity.status == 1 && entity.currentUserPermissions?.makePrivate" @confirm="entity.makePrivate()">
+            <mc-confirm-button v-if="usePrivate && entity.status == 1 && entity.currentUserPermissions?.makePrivate" @confirm="makePrivate()">
                 <template #button="modal">
                     <button @click="modal.open()" class="button button--icon button--sm private">
                         <mc-icon name="private"></mc-icon>
@@ -109,11 +109,11 @@ $this->import('
 
                 <template #actions="modal">
                     <button @click="modal.close()" class="button button--text"><?php i::_e("Cancelar") ?></button>
-                    <button @click="entity.makePrivate().then(() => modal.close())" class="button button--icon button--sm button--outline button--secondary">
+                    <button @click="makePrivate(modal)" class="button button--icon button--sm button--outline button--secondary">
                         <mc-icon name='private'></mc-icon>
                         <?= i::__('Privada') ?>
                     </button>
-                    <button @click="entity.publish().then(() => modal.close())" class="button button--primary">
+                    <button @click="publish(modal)" class="button button--primary">
                         <?= i::__('Pública') ?>
                     </button>
                 </template>
@@ -125,7 +125,7 @@ $this->import('
                 </template>
             </mc-modal>
 
-            <mc-confirm-button v-if="(!usePrivate || entity.status == -100) && (entity.status == 0 || entity.status == -2 || entity.status == -100) && entity.currentUserPermissions?.publish" @confirm="entity.publish()">
+            <mc-confirm-button v-if="(!usePrivate || entity.status == -100) && (entity.status == 0 || entity.status == -2 || entity.status == -100) && entity.currentUserPermissions?.publish" @confirm="publish()">
                 <template #button="modal">
                     <button @click="modal.open()" class="button button--md publish publish-exit">
                         <?php i::_e("Salvar e publicar") ?>

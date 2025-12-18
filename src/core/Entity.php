@@ -1047,6 +1047,10 @@ abstract class Entity implements \JsonSerializable{
     public function delete($flush = false){
         $this->checkPermission('remove');
 
+        if($this->usesRevision()) {
+            $this->_newDeletedRevision(true);
+        }
+
         App::i()->em->remove($this);
         if($flush)
             App::i()->em->flush();
@@ -1397,10 +1401,6 @@ abstract class Entity implements \JsonSerializable{
         $hook_prefix = $this->getHookPrefix();
 
         $app->applyHookBoundTo($this, "{$hook_prefix}.remove:after");
-
-        if($this->usesRevision()) {
-            //$this->_newDeletedRevision();
-        }
 
         if($this->usesPermissionCache()){
             $this->deletePermissionsCache();

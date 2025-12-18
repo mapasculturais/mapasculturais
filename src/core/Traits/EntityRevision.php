@@ -184,34 +184,36 @@ trait EntityRevision{
 
         $last_revision_data = $last_revision->getRevisionData();
         
-        $old_status = $last_revision_data['status']->value;
-        $new_status = $this->status;
+        if(property_exists($this, 'status') && isset($last_revision_data['status'])) {
+            $old_status = $last_revision_data['status']->value;
+            $new_status = $this->status;
 
-        $compare_status = function (string $constant, $status) {
-            $class = static::class;
-            return defined("{$class}::STATUS_ENABLED") && $status == constant("{$class}::STATUS_ENABLED");
-        };
+            $compare_status = function (string $constant, $status) {
+                $class = static::class;
+                return defined("{$class}::{$constant}") && $status == constant("{$class}::{$constant}");
+            };
 
-        if ($old_status != $new_status) {
-            if ($compare_status('STATUS_ENABLED', $new_status)) {
-                $action = Revision::ACTION_PUBLISHED;
-            } else if ($compare_status('STATUS_ARCHIVED', $new_status)) {
-                $action = Revision::ACTION_ARCHIVED;
-            } else if ($compare_status('STATUS_PRIVATE', $new_status)) {
-                $action = Revision::ACTION_MAKE_PRIVATE;
-            } else if ($compare_status('STATUS_DRAFT', $new_status)) {
-                if ($compare_status('STATUS_TRASH', $old_status)) {
-                    $action = Revision::ACTION_UNTRASHED;
-                } else if ($compare_status('STATUS_ARCHIVED', $old_status)) {
-                    $action = Revision::ACTION_UNARCHIVED;
-                } else {
-                    $action = Revision::ACTION_UNPUBLISHED;
+            if ($old_status != $new_status) {
+                if ($compare_status('STATUS_ENABLED', $new_status)) {
+                    $action = Revision::ACTION_PUBLISHED;
+                } else if ($compare_status('STATUS_ARCHIVED', $new_status)) {
+                    $action = Revision::ACTION_ARCHIVED;
+                } else if ($compare_status('STATUS_PRIVATE', $new_status)) {
+                    $action = Revision::ACTION_MAKE_PRIVATE;
+                } else if ($compare_status('STATUS_DRAFT', $new_status)) {
+                    if($old_status == Revision::STATUS_TRASH){
+                        $action = Revision::ACTION_UNTRASHED;
+                    } else if( $old_status == Revision::STATUS_ARCHIVED){
+                        $action = Revision::ACTION_UNARCHIVED;
+                    } else {
+                        $action = Revision::ACTION_UNPUBLISHED;
+                    }
+                } else if ($compare_status('STATUS_TRASH', $new_status)) {
+                    $action = Revision::ACTION_TRASHED;
                 }
-            } else if ($compare_status('STATUS_DRAFT', $new_status)) {
-                $action = Revision::ACTION_TRASHED;
-            }
 
-            $message = EntitiesEntityRevision::defaultMessageForAction($action ?? '');
+                $message = EntitiesEntityRevision::defaultMessageForAction($action ?? '');
+            }
         }
 
         $revision = new Revision($revisionData, $this, $action, $message, flush: $flush);
@@ -220,17 +222,18 @@ trait EntityRevision{
         }
     }
 
-    public function _newDeletedRevision() {
+    public function _newDeletedRevision(bool $flush = true) {
         $revisionData = $this->_getRevisionData();
-        $action = Revision::ACTION_DELETED;
-        $message = i::__("Registro deletado.");
+        $message = i::__("Registro deletado permanentemente.");
         $revision = new Revision($revisionData, $this, Revision::ACTION_DELETED, $message);
-        $revision->save(true);
+        $revision->objectId = $this->id;
+        $revision->save($flush);
     }
 
     public function getLastRevision() {
         $app = App::i();
-        $revision = $app->repo('EntityRevision')->findLastRevision($this);
+        $pk = $this->getPKPropertyName();
+        $revision = $app->repo('EntityRevision')->findLastRevisionByObjectTypeAndId($this->className, $this->__pk ?: $this->$pk);
         return $revision;
     }
 
