@@ -34,6 +34,7 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Remove espaços múltiplos e espaços no início/fim do nome e nome completo das entidades
 - Adiciona campos de Galeria de Fotos, Vídeos e Downloads como opções de campos do agente responsável em formulários de inscrição, permitindo que o gestor solicite portfólio visual, galeria de vídeos ou documentos anexos que sincronizam automaticamente com o perfil do agente [(2)](#funarte)
 - Download em lote de anexos da inscrição em formato ZIP
+- Habilita as revisões para usuários, fases de avaliação, selos e funções de usuário
 
 ### Correções
 - Corrige warnigs no navegador devido a problemas com o componente entity-field
@@ -43,10 +44,13 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Corrige nome do hook entity().archive:after
 - Corrige busca pela chave primária da tabela Job
 - Impede que o usuarios que não são admnistradores altere critérios ou sessões de critérios de avaliação técnica se já existem avaliações enviadas
+- Corrige erro ao salvar e publicar a entidade, que interpretava mensagens de erro de forma incorreta
 
 ### Melhorias não funcionais
 - LifecycleCallbacks na Entities\SealRelation
 - Função \query que faz uma consulta no banco e imprime o resultado como uma tabela ascii
+- Impede a inserção do mesmo selo mais de uma vez em uma entidade
+- Possibilita a escrita de mc-updates para entidades fora do namespace MapasCulturais\Entities
 
 ### Créditos
 <a name="snp"></a>
