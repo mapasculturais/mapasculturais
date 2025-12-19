@@ -9,12 +9,12 @@ use \MapasCulturais\App;
  * File
  *
  * @property-read int $id MetaList Id
- * @property-read string $name MetaList name
- * @property-read string $group MetaList Group (link, video etc)
- * @property-read string $objectType MetaList Owner Class Name
- * @property-read id $objectId MetaList Owner Id
- * @property-read \DateTime $createTimestamp MetaList Create Timestamp
- * @property-read \MapasCulturais\Entity $owner The Owner of this MetaList
+ * @property string $name MetaList name
+ * @property string $group MetaList Group (link, video etc)
+ * @property string $objectType MetaList Owner Class Name
+ * @property id $objectId MetaList Owner Id
+ * @property \DateTime $createTimestamp MetaList Create Timestamp
+ * @property \MapasCulturais\Entity $owner The Owner of this MetaList
  *
  * @ORM\Table(name="MetaList")
  * @ORM\Entity

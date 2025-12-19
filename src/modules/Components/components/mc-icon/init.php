@@ -11,7 +11,7 @@ $iconset = [
     'agent' => 'fa-solid:user-friends',
     'agent-1' => 'fa-solid:user',
     'agent-2' => 'fa-solid:user-friends',
-  
+
     'space' => 'clarity:building-solid',
     'event' => 'bxs:calendar-event',
     'project' => 'ri:file-list-2-fill',
@@ -31,6 +31,7 @@ $iconset = [
     'whatsapp' => 'akar-icons:whatsapp-fill',
     'vimeo' => 'brandico:vimeo',
     'youtube' => 'akar-icons:youtube-fill',
+    'fediverso' => 'ri-fediverse-line',
 
 
     // IMPORTANTE: manter ordem alfabética
@@ -96,6 +97,8 @@ $iconset = [
     'link' => 'cil:link-alt',
     'list' => 'ci:list-ul',
     'loading' => 'eos-icons:three-dots-loading',
+    'lock-open' => 'flowbite:lock-solid',
+    'lock-closed' => 'flowbite:lock-open-solid',
     'login' => 'icon-park-outline:login',
     'logout' => 'ri:logout-box-line',
     'magnifier' => 'simple-line-icons:magnifier',
@@ -127,7 +130,7 @@ $iconset = [
     'sync' => 'material-symbols:sync',
     'table-view' => 'ic:outline-table-view',
     'text' => 'ic:sharp-text-fields',
-    'ticket' => 'mdi:ticket-confirmation-outline',  
+    'ticket' => 'mdi:ticket-confirmation-outline',
     'trash' => 'ooui:trash',
     'triangle-down' => 'entypo:triangle-down',
     'triangle-up' => 'entypo:triangle-up',

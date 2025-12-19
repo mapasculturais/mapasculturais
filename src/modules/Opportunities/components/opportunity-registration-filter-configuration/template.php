@@ -10,6 +10,7 @@ use MapasCulturais\i;
 $this->import('
     mc-modal
     mc-tag-list
+    mc-datepicker
 ');
 ?>
 
@@ -23,6 +24,7 @@ $this->import('
                     <option v-if="showField('proponentType')" value="proponentType" :disabled="isFieldExcluded('proponentType')"><?php i::_e("Tipos do proponente") ?></option>
                     <option v-if="showField('range')" value="range" :disabled="isFieldExcluded('range')"><?php i::_e("Faixa/Linha") ?></option>
                     <option v-if="useDistributionField" value="distribution" :disabled="isGlobal"><?php i::_e("Distribuição") ?></option>
+                    <option value="sentTimestamp" :disabled="!isGlobal"><?php i::_e("Data de envio da inscrição") ?></option>
                     <option v-if="Object.keys(registrationSelectionFields).length > 0" v-for="(field, fieldName) in registrationSelectionFields" :key="fieldName" :value="fieldName" :disabled="isFieldExcluded(fieldName)">{{ field.title }}</option>
                 </select>
             </div>
@@ -45,6 +47,17 @@ $this->import('
                 </label>
             </div>
 
+            <div v-if="selectedField == 'sentTimestamp'" class="opportunity-registration-filter-configuration__related-input col-12 field">
+                <div>
+                    <?= i::__('de') ?> <mc-datepicker v-model:modelValue="selectedConfigs.from" field-type="date"></mc-datepicker>
+                    <div v-if="sentTimestampErrors.from" class="opportunity-registration-filter-configuration__error">{{ sentTimestampErrors.from }}</div>
+                </div>
+                <div>
+                    <?= i::__('até') ?> <mc-datepicker v-model:modelValue="selectedConfigs.to" field-type="date"></mc-datepicker>
+                    <div v-if="sentTimestampErrors.to" class="opportunity-registration-filter-configuration__error">{{ sentTimestampErrors.to }}</div>
+                </div>
+            </div>
+
             <div v-if="selectedField == 'distribution'" class="opportunity-registration-filter-configuration__related-input col-12 field">
                 <input type="text" placeholder="00-99" maxlength="5" v-model="selectedDistribution" />
             </div>
@@ -57,7 +70,7 @@ $this->import('
 
         <template #actions="modal">
             <button class="button button--text button--text-del" @click="modal.close(); this.selectedField = '';"><?= i::__('Cancelar') ?></button>
-            <button class="button button--primary" @click="addConfig(modal)"><?= i::__('Confirmar') ?></button>
+            <button class="button button--primary" :disabled="!canConfirm" @click="addConfig(modal)"><?= i::__('Confirmar') ?></button>
         </template>
 
         <template #button="modal">

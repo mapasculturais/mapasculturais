@@ -78,6 +78,13 @@
                 justify-content: space-between;
             }
 
+            &-actions {
+                align-items: center;
+                display: flex;
+                flex-wrap: wrap;
+                gap: size(16);
+            }
+
             &-title {
                 display: flex;
                 justify-content: space-between;

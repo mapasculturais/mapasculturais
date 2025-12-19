@@ -50,6 +50,123 @@ class Module extends \MapasCulturais\Module
             $module->entities = [];
         });
 
+        // Hook para modificar o resultado do jsonSerialize e incluir files/metalists do owner
+        $app->hook("entity(Registration).jsonSerialize", function(&$result) use($app) {
+            /** @var Registration $this */
+            if ($this->owner && isset($result['owner'])) {
+                // Verifica se algum campo precisa de files ou metalists do owner
+                $fields = $this->opportunity->registrationFieldConfigurations ?? [];
+                $needs_files = false;
+                $needs_metalists = false;
+                
+                foreach($fields as $field) {
+                    // Verifica tanto por fieldType quanto por entityField
+                    if(in_array($field->fieldType, ['gallery', 'downloads']) || in_array($field->config['entityField'] ?? '', ['@gallery', '@downloads'])) {
+                        $needs_files = true;
+                    }
+                    if($field->fieldType == 'videos' || ($field->config['entityField'] ?? '') == '@videos') {
+                        $needs_metalists = true;
+                    }
+                }
+                
+                // Se precisa, inclui files e/ou metalists no owner serializado
+                if($needs_files || $needs_metalists) {
+                    // Força carregamento dos files e metalists do owner
+                    $owner_files = $this->owner->files; // Acessa para forçar lazy loading
+                    $owner_metalists = $this->owner->metalists; // Acessa para forçar lazy loading
+                    
+                    if($needs_files) {
+                        $files_data = [];
+                        
+                        // Gallery
+                        if(isset($owner_files['gallery'])) {
+                            try {
+                                $files_data['gallery'] = [];
+                                $gallery = $owner_files['gallery'];
+                                
+                                // Se for um único arquivo, transforma em array
+                                if(!is_array($gallery) && !is_iterable($gallery)) {
+                                    $gallery = [$gallery];
+                                }
+                                
+                                foreach($gallery as $file) {
+                                    $files_data['gallery'][] = [
+                                        'id' => $file->id,
+                                        'url' => $file->url,
+                                        'name' => $file->name,
+                                        'description' => $file->description,
+                                        'deleteUrl' => $file->deleteUrl,
+                                        'transformations' => $file->getFiles()
+                                    ];
+                                }
+                            } catch (\Exception $e) {
+                                $app->log->error("RegistrationFieldTypes: Error processing gallery: " . $e->getMessage());
+                            }
+                        }
+                        
+                        // Downloads
+                        if(isset($owner_files['downloads'])) {
+                            try {
+                                $files_data['downloads'] = [];
+                                $downloads = $owner_files['downloads'];
+                                
+                                // Se for um único arquivo, transforma em array
+                                if(!is_array($downloads) && !is_iterable($downloads)) {
+                                    $downloads = [$downloads];
+                                }
+                                
+                                foreach($downloads as $file) {
+                                    $simplified = $file->simplify('id,url,name,description,deleteUrl');
+                                    $files_data['downloads'][] = (array) $simplified;
+                                }
+                            } catch (\Exception $e) {
+                                $app->log->error("RegistrationFieldTypes: Error processing downloads: " . $e->getMessage());
+                            }
+                        }
+                        
+                        if(!empty($files_data)) {
+                            // Converte owner para array se for stdClass
+                            if(is_object($result['owner'])) {
+                                $result['owner'] = (array) $result['owner'];
+                            }
+                            $result['owner']['files'] = $files_data;
+                        }
+                    }
+                    
+                    if($needs_metalists) {
+                        if(isset($owner_metalists['videos'])) {
+                            try {
+                                $videos_data = [];
+                                $videos = $owner_metalists['videos'];
+                                
+                                // Se for um único vídeo, transforma em array
+                                if(!is_array($videos) && !is_iterable($videos)) {
+                                    $videos = [$videos];
+                                }
+                                
+                                foreach($videos as $video) {
+                                    $videos_data[] = [
+                                        'id' => $video->id,
+                                        'title' => $video->title,
+                                        'value' => $video->value,
+                                        'group' => $video->group,
+                                        'description' => $video->description ?? ''
+                                    ];
+                                }
+                                // Converte owner para array se for stdClass
+                                if(is_object($result['owner'])) {
+                                    $result['owner'] = (array) $result['owner'];
+                                }
+                                $result['owner']['metalists'] = ['videos' => $videos_data];
+                            } catch (\Exception $e) {
+                                $app->log->error("RegistrationFieldTypes: Error processing videos: " . $e->getMessage() . " at line " . $e->getLine());
+                            }
+                        }
+                    }
+                }
+            }
+        });
+
         $app->hook("entity(Registration).validationErrors", function(&$errors) use($module, $app) {
             /** @var Registration $this */
 
@@ -97,6 +214,12 @@ class Module extends \MapasCulturais\Module
                 if($field->fieldType == 'agent-owner-field') {
                     $entity = $this->owner;
 
+                    $fix_field($entity, $field);
+                }
+
+                // Campos de galeria, vídeos e downloads também vêm do agente
+                if(in_array($field->fieldType, ['gallery', 'videos', 'downloads'])) {
+                    $entity = $this->owner;
                     $fix_field($entity, $field);
                 }
 
@@ -202,6 +325,20 @@ class Module extends \MapasCulturais\Module
 
             $agent_field_name = $field->config['entityField'];
 
+            // Tratamento especial para campos de galeria/vídeos/downloads
+            if($agent_field_name == '@gallery') {
+                $registration_field_config['type'] = 'gallery';
+                return;
+            }
+            if($agent_field_name == '@videos') {
+                $registration_field_config['type'] = 'videos';
+                return;
+            }
+            if($agent_field_name == '@downloads') {
+                $registration_field_config['type'] = 'downloads';
+                return;
+            }
+
             if(!isset($agent_fields[$agent_field_name])){
                 return;
             }
@@ -272,7 +409,7 @@ class Module extends \MapasCulturais\Module
     {
         $app = App::i();
 
-        $agent_fields = ['name', 'shortDescription', 'longDescription', '@location', '@links', '@bankFields'];
+        $agent_fields = ['name', 'shortDescription', 'longDescription', '@location', '@links', '@gallery', '@videos', '@downloads', '@bankFields'];
         
         $taxonomies_fields = $this->taxonomiesOpportunityFields(true);
 
@@ -322,7 +459,7 @@ class Module extends \MapasCulturais\Module
                 'name' => \MapasCulturais\i::__('Campo de dados bancários'),
                 'viewTemplate' => 'registration-field-types/bankFields',
                 'configTemplate' => 'registration-field-types/bankFields-config',
-                'serialize' => function($value, Registration $registration = null, $metadata_definition = null) use ($module) {
+                'serialize' => function($value, ?Registration $registration = null, $metadata_definition = null) use ($module) {
                     $module->saveToEntity($registration->owner, $value, $registration, $metadata_definition);
                     return json_encode($value);
                 },
@@ -797,7 +934,7 @@ class Module extends \MapasCulturais\Module
                 $entity->address_line2      = $value["address_line2"];
                 
                 $entity->endereco           = $value["endereco"] ?? $value["address"] ?? null;
-                $entity->publicLocation = !empty($value['publicLocation']);
+                $entity->publicLocation     = !empty($value['publicLocation']);
 
             } else if($taxonomies_fields && in_array($entity_field, array_keys($taxonomies_fields))) {
                 $entity->terms[$taxonomies_fields[$entity_field]] = $value;
@@ -853,6 +990,80 @@ class Module extends \MapasCulturais\Module
                 $entity->payment_bank_account_number = $value['account_number'];
                 $entity->payment_bank_dv_account_number = $value['dv_account_number'];
                 $entity->save(true);
+            } else if($entity_field == '@gallery' && $value) {
+                // Galeria de FOTOS (Files)
+                $existingGallery = $entity->getFiles('gallery');
+                
+                if(is_array($existingGallery)) {
+                    $existing_ids = array_map(fn($f) => $f->id, $existingGallery);
+                    $new_ids = is_array($value) ? array_map(fn($v) => isset($v['id']) ? $v['id'] : null, $value) : [];
+                    
+                    // Remover fotos que não estão mais no array
+                    foreach($existingGallery as $existingFile) {
+                        if(!in_array($existingFile->id, $new_ids)) {
+                            $existingFile->delete(true);
+                        }
+                    }
+                }
+            } else if($entity_field == '@videos' && $value) {
+                // Galeria de VÍDEOS (MetaList)
+                $savedMetaList = $entity->getMetaLists();
+                
+                foreach ($savedMetaList as $savedMetaListGroup) {
+                    foreach ($savedMetaListGroup as $savedMetaListObject) {
+                        $matchedItem = false;
+                        if(is_array($value)){
+                            foreach ($value as $key => $itemValue) {
+                                if(is_array($itemValue) && empty($itemValue['value'])){
+                                    continue;
+                                }
+                                $itemValueToCompare = is_array($itemValue) ? $itemValue['value'] : (isset($itemValue->value) ? $itemValue->value : null);
+                                if($savedMetaListObject->value == $itemValueToCompare){
+                                    $matchedItem = true;
+                                    unset($value[$key]);
+                                    $itemTitle = is_array($itemValue) ? ($itemValue['title'] ?? '') : (isset($itemValue->title) ? $itemValue->title : '');
+                                    $savedMetaListObject->title = $itemTitle;
+                                    $savedMetaListObject->save(true);
+                                }   
+                            }
+                        }
+                        if ($matchedItem == false && $savedMetaListObject->group == 'videos'){
+                            $savedMetaListObject->delete(true);
+                        }                    
+                    }
+                }
+                
+                if(!is_array($value)) {
+                    $value = (array) $value;
+                }
+                
+                foreach ($value as $itemArray) {
+                    $itemValueData = is_array($itemArray) ? ($itemArray['value'] ?? null) : (isset($itemArray->value) ? $itemArray->value : null);
+                    if (isset($itemValueData) && $url = $itemValueData){
+                        $metaList = new \MapasCulturais\Entities\MetaList;
+                        $metaList->owner = $entity;
+                        $metaList->group = 'videos';
+                        $itemTitle = is_array($itemArray) ? ($itemArray['title'] ?? '') : (isset($itemArray->title) ? $itemArray->title : '');
+                        $metaList->title = $itemTitle;
+                        $metaList->value = $url;
+                        $metaList->save(true);
+                    }
+                }
+            } else if($entity_field == '@downloads' && $value) {
+                // Downloads/Anexos (Files)
+                $existingDownloads = $entity->getFiles('downloads');
+                
+                if(is_array($existingDownloads)) {
+                    $existing_ids = array_map(fn($f) => $f->id, $existingDownloads);
+                    $new_ids = is_array($value) ? array_map(fn($v) => isset($v['id']) ? $v['id'] : null, $value) : [];
+                    
+                    // Remover downloads que não estão mais no array
+                    foreach($existingDownloads as $existingFile) {
+                        if(!in_array($existingFile->id, $new_ids)) {
+                            $existingFile->delete(true);
+                        }
+                    }
+                }
             } else if($value) {
                 $entity->$entity_field = $value;
             }
@@ -921,7 +1132,58 @@ class Module extends \MapasCulturais\Module
                     'account_number' => (int) $entity->payment_bank_account_number,
                     'dv_account_number' => $entity->payment_bank_dv_account_number,
                 ];
-
+            } else if($entity_field == '@gallery') {
+                // Buscar fotos da galeria
+                $gallery = $entity->getFiles('gallery');
+                $result = [];
+                
+                if(is_array($gallery)) {
+                    foreach($gallery as $file) {
+                        $result[] = [
+                            'id' => $file->id,
+                            'name' => $file->name,
+                            'url' => $file->url,
+                            'description' => $file->description
+                        ];
+                    }
+                }
+                
+                $value = $result;
+            } else if($entity_field == '@videos') {
+                // Buscar vídeos (MetaList)
+                $videos = $entity->getMetaLists('videos');
+                $result = [];
+                
+                if(is_array($videos)) {
+                    foreach($videos as $video) {
+                        $result[] = [
+                            'id' => $video->id,
+                            'title' => $video->title,
+                            'value' => $video->value,
+                            'group' => $video->group
+                        ];
+                    }
+                }
+                
+                $value = $result;
+            } else if($entity_field == '@downloads') {
+                // Buscar downloads/anexos
+                $downloads = $entity->getFiles('downloads');
+                $result = [];
+                
+                if(is_array($downloads)) {
+                    foreach($downloads as $file) {
+                        $result[] = [
+                            'id' => $file->id,
+                            'name' => $file->name,
+                            'url' => $file->url,
+                            'description' => $file->description,
+                            'mimeType' => $file->mimeType
+                        ];
+                    }
+                }
+                
+                $value = $result;
             }
              else {
                 $value = $entity->$entity_field;

@@ -45,7 +45,7 @@ class RegistrationDirector extends Director
             }
 
             $registration = $this->registrationBuilder->getInstance();
-            $this->setRegistrationData($registration, $data);
+            $this->setRegistrationData($registration, data: $data, save: true);
 
             $registrations[] = $registration;
         }
@@ -67,7 +67,7 @@ class RegistrationDirector extends Director
                 ->send()
                 ->getInstance();
             
-            $this->setRegistrationData($registration, $data);
+            $this->setRegistrationData($registration, data: $data, save: true);
             
             $registrations[] = $registration;
         }
@@ -82,9 +82,10 @@ class RegistrationDirector extends Director
                 ->fillRequiredProperties()
                 ->getInstance();
 
-        $this->setRegistrationData($registration, $data);
-
+                
         $registration->send();
+
+        $this->setRegistrationData($registration, data: $data, save: true);
 
         return $registration->refreshed();
     }

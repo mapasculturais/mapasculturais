@@ -23,11 +23,12 @@
             
             &.rowBtn {
                 flex-direction: row;
+                flex-wrap: wrap;
+                justify-content: center;
             }
 
             .button {
                 cursor: pointer;
-                font-family: "Open Sans";
                 
                 &.publish {
                     background: var(--mc-high-500);

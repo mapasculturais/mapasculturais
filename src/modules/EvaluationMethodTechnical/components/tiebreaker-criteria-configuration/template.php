@@ -45,7 +45,7 @@ $this->import('
                     <div v-if="this.checkCriterionType(criterion, ['checkboxes', 'select'])" class="field">
                         <label><?= i::__('Dar preferência a:') ?></label>
                         <div class="field field--horizontal tiebreaker-criteria__group-field">
-                            <label v-for="option in criterion.selected.fieldOptions">
+                            <label v-for="option in fieldsMap[criterion.criterionType].fieldOptions">
                                 <input type="checkbox" :true-value="[]" v-model="criterion.preferences" :value="optionValue(option)" />
                                 <slot>{{optionLabel(option)}}</slot>
                             </label>

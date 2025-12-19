@@ -30,6 +30,9 @@ app.component('technical-assessment-section', {
     },
 
     computed: {
+        hasEvaluationsStarted() {
+            return $MAPAS.config.technicalAssessmentsection.hasEvaluationsStarted;
+        },
         maxScore() {
             let totalScore = 0;
 

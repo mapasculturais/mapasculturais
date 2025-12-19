@@ -21,7 +21,6 @@ $this->import('
     opportunity-registration-filter-configuration
 ');
 
-$next_execution_time = EvaluationMethod::getNextRedistributionDateTime();
 ?>
 
 <div class="opportunity-committee-groups">
@@ -158,10 +157,8 @@ $next_execution_time = EvaluationMethod::getNextRedistributionDateTime();
         </div>
 
         <template v-else>
-            <div class="opportunity-committee-groups__distribution-content">
-                <mc-alert type="warning" >
-                    <?= sprintf(i::__('As inscrições serão distribuidas para as comissões às %s'), $next_execution_time->format('H:i')); ?>
-                </mc-alert>
+            <div class="opportunity-committee-groups__distribution-config">
+                <entity-field :entity="entity" prop="distributionConfiguration":autosave="300"></entity-field>
             </div>
 
             <div class="opportunity-committee-groups__distribution-actions">

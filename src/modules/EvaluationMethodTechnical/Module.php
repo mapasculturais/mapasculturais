@@ -2,18 +2,59 @@
 
 namespace EvaluationMethodTechnical;
 
-use MapasCulturais\API;
-use MapasCulturais\ApiQuery;
 use MapasCulturais\i;
+use MapasCulturais\API;
 use MapasCulturais\App;
-use MapasCulturais\Controller;
-use MapasCulturais\Controllers\Opportunity as ControllersOpportunity;
+use MapasCulturais\ApiQuery;
 use MapasCulturais\Entities;
-use MapasCulturais\Entities\EvaluationMethodConfiguration;
+use MapasCulturais\Controller;
 use MapasCulturais\Entities\Opportunity;
 use MapasCulturais\Entities\Registration;
+use MapasCulturais\Exceptions\PermissionDenied;
+use MapasCulturais\Entities\EvaluationMethodConfiguration;
+use MapasCulturais\Controllers\Opportunity as ControllersOpportunity;
 
-class Module extends \MapasCulturais\EvaluationMethod {
+class Module extends \MapasCulturais\EvaluationMethod
+{
+    protected function _export(EvaluationMethodConfiguration $evaluation_method_configuration): array 
+    {
+        $result = [
+            'sections' => $evaluation_method_configuration->sections,
+            'criteria' => $evaluation_method_configuration->criteria,
+            'pointReward' => $evaluation_method_configuration->pointReward,
+            'isActivePointReward' => $evaluation_method_configuration->isActivePointReward,
+            'pointRewardRoof' => $evaluation_method_configuration->pointRewardRoof,
+            'quota' => $evaluation_method_configuration->quota,
+            'enableViability' => $evaluation_method_configuration->enableViability,
+            'geoQuotaConfiguration' => $evaluation_method_configuration->geoQuotaConfiguration,
+            'tiebreakerCriteriaConfiguration' => $evaluation_method_configuration->tiebreakerCriteriaConfiguration,
+            'quotaConfiguration' => $evaluation_method_configuration->quotaConfiguration,
+            'cutoffScore' => $evaluation_method_configuration->cutoffScore,
+            
+            'enableQuotasQuestion' => $evaluation_method_configuration->opportunity->firstPhase->enableQuotasQuestion,
+            'considerQuotasInGeneralList' => $evaluation_method_configuration->opportunity->firstPhase->considerQuotasInGeneralList,
+        ];
+        
+        return $result;
+    }
+
+    protected function _import(EvaluationMethodConfiguration $evaluation_method_configuration, array $data) 
+    { 
+        $evaluation_method_configuration->sections = $data['sections'];
+        $evaluation_method_configuration->criteria = $data['criteria'];
+        $evaluation_method_configuration->pointReward = $data['pointReward'];
+        $evaluation_method_configuration->isActivePointReward = $data['isActivePointReward'];
+        $evaluation_method_configuration->pointRewardRoof = $data['pointRewardRoof'];
+        $evaluation_method_configuration->quota = $data['quota'];
+        $evaluation_method_configuration->enableViability = $data['enableViability'];
+        $evaluation_method_configuration->geoQuotaConfiguration = $data['geoQuotaConfiguration'];
+        $evaluation_method_configuration->tiebreakerCriteriaConfiguration = $data['tiebreakerCriteriaConfiguration'];
+        $evaluation_method_configuration->quotaConfiguration = $data['quotaConfiguration'];
+        $evaluation_method_configuration->cutoffScore = $data['cutoffScore'];
+
+        $evaluation_method_configuration->opportunity->firstPhase->enableQuotasQuestion = $data['enableQuotasQuestion'];
+        $evaluation_method_configuration->opportunity->firstPhase->considerQuotasInGeneralList = $data['considerQuotasInGeneralList'];
+    }
 
     protected function _getDefaultStatuses(EvaluationMethodConfiguration $evaluation_method_configuration): array
     {
@@ -263,6 +304,21 @@ class Module extends \MapasCulturais\EvaluationMethod {
 
         $self = $this;
 
+        // impede que o usuario altere critérios ou sessões de critérios de avaliação se já existem avaliações enviadas
+        $app->hook('entity(EvaluationMethodConfiguration).set(<<criteria|sections>>)', function() use($app){
+            $errors = [];
+            if($committee = $this->getCommittee()) {
+                foreach($committee as $relation) {  
+                    if($relation->metadata['summary']['sent'] > 0) {
+                        $errors['criteria'] = i::__('Já existem avaliações enviadas. Por isso, não é mais possível alterar critérios ou sessões. Se for necessário adicionar ou alterar algo, solicite a um administrador');
+                    }
+                }
+
+                if($errors && !$app->user->is('admin')) {
+                    throw new PermissionDenied($app->user, message: $errors['criteria']);
+                }
+            }
+        });
 
         // Define o valor da coluna eligible
         $app->hook('entity(Registration).<<save|send>>:before', function() use($app){

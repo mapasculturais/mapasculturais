@@ -842,6 +842,10 @@ return [
         __exec("CREATE INDEX job_search_idx ON job (next_execution_timestamp, iterations_count, status);");
     },
 
+    'remove comment of table job' => function () {
+        __exec("COMMENT ON COLUMN job.metadata is ''");
+    },
+
     'alter job.metadata comment' => function () {
         __exec("COMMENT ON COLUMN job.metadata IS '(DC2Type:json)';");
     },
@@ -1143,7 +1147,10 @@ return [
         __exec("ALTER TABLE subsite_meta ALTER column id SET DEFAULT nextval('subsite_meta_id_seq');");
         __exec("ALTER TABLE evaluationmethodconfiguration_meta ALTER column id SET DEFAULT nextval('evaluationmethodconfiguration_meta_id_seq');");
     },
-    
+    'define default para o id da tabela seal' => function() {
+        __exec("ALTER TABLE seal ALTER column id SET DEFAULT nextval('seal_id_seq');");
+    },
+
     'Criação da coluna update timestemp' => function() use($conn) {
 
         if(!__column_exists('registration', 'update_timestamp')){
@@ -1210,6 +1217,13 @@ return [
             __exec("ALTER TABLE opportunity ADD COLUMN continuous_flow TIMESTAMP NULL");
         }
     },
+    
+    "Cria coluna publicity_only na tabela opportunity" => function() use ($conn) {
+        if (!__column_exists('opportunity', 'publicity_only')) {
+            __exec("ALTER TABLE opportunity ADD COLUMN publicity_only BOOLEAN DEFAULT FALSE NOT NULL");
+        }
+    },
+    
     'Cria a tabela da entidade RegistrationStep' => function () {
         $app = App::i();
         $em = $app->em;
@@ -1347,6 +1361,23 @@ return [
             $app->log->debug("Aplicado Índice Único na tabela auxiliar {$table}");
         }
     },
+
+    'adiciona coluna pk à tabela de job' => function () {
+        __exec('DROP SEQUENCE IF EXISTS job_pk_seq');
+        __exec("CREATE SEQUENCE job_pk_seq
+                                START WITH 1
+                                INCREMENT BY 1
+                                NO MINVALUE
+                                NO MAXVALUE
+                                CACHE 1;");
+                                
+        __exec("ALTER TABLE job ADD COLUMN pk bigint not null DEFAULT nextval('job_pk_seq'::regclass)");
+        
+        __exec("ALTER TABLE job DROP CONSTRAINT job_pkey");
+        __exec("ALTER TABLE job ADD CONSTRAINT job_pk PRIMARY KEY (pk);");
+
+    },
+
     /// MIGRATIONS - DATA CHANGES =========================================
 
     'migrate gender' => function() use ($conn) {
@@ -3090,6 +3121,15 @@ $$
                      USING registration_step rs
                      WHERE rs.id = rfc.step_id
                        AND rs.opportunity_id != rfc.opportunity_id;");
+    },
+
+    "Adiciona coluna allowed_file_types na tabela registration_file_configuration para restringir tipos de arquivo" => function() {
+        if(!__column_exists('registration_file_configuration', 'allowed_file_types')) {
+            __exec("ALTER TABLE registration_file_configuration ADD COLUMN allowed_file_types JSON DEFAULT NULL");
+        }
+    },
+    "incrementa a sequencia do id dos selos para evitar erro na primeira tentativa de criar um selo pois já existe o id 1" => function () {
+        __exec("SELECT nextval('seal_id_seq')");
     }
     
 ] + $updates ;   

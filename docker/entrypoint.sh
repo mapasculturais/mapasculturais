@@ -27,13 +27,13 @@ touch /var/www/var/logs/app.log
 
 chown -R www-data: /var/www/var/DoctrineProxies /var/www/var/logs
 
-/var/www/scripts/db-update.sh
-/var/www/scripts/mc-db-updates.sh
+sudo -E -u www-data /var/www/scripts/db-update.sh
+sudo -E -u www-data /var/www/scripts/mc-db-updates.sh
 
 if ! cmp /var/www/version.txt /var/www/var/private-files/deployment-version >/dev/null 2>&1
 then
-    /var/www/scripts/compile-sass.sh
-    /var/www/src/tools/doctrine orm:generate-proxies
+    sudo -E -u www-data /var/www/scripts/compile-sass.sh
+    sudo -E -u www-data /var/www/src/tools/doctrine orm:generate-proxies
     cp /var/www/version.txt /var/www/var/private-files/deployment-version
 fi
 

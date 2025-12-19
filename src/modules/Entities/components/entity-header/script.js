@@ -1,7 +1,7 @@
 app.component('entity-header', {
     template: $TEMPLATES['entity-header'],
-    setup() { 
-        // os textos estão localizados no arquivo texts.php deste componente 
+    setup() {
+        // os textos estão localizados no arquivo texts.php deste componente
         const text = Utils.getTexts('entity-header')
         return { text }
     },
@@ -22,7 +22,7 @@ app.component('entity-header', {
     },
     created() {
         switch(this.entity.__objectType) {
-            case 'agent': 
+            case 'agent':
                 this.titleEdit = (this.entity.type?.id == 1) ?  __('title agent-1', 'entity-header') : __('title agent-2', 'entity-header');
                 break;
             case 'project':
@@ -56,6 +56,7 @@ app.component('entity-header', {
                 'pinterest',
                 'whatsapp',
                 'tiktok',
+                'fediverso',
             ]
 
             let itHas = false;

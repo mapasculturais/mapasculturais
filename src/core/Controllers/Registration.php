@@ -84,8 +84,13 @@ class Registration extends EntityController {
             ];
             $registration = $this->requestedEntity;
             foreach($registration->opportunity->registrationFileConfigurations as $rfc){
+                // Se o campo tem tipos de arquivo definidos, usa eles; senão usa os tipos padrão
+                $allowed_mime_types = $mime_types;
+                if(!empty($rfc->allowedFileTypes) && is_array($rfc->allowedFileTypes)) {
+                    $allowed_mime_types = $rfc->allowedFileTypes;
+                }
 
-                $fileGroup = new Definitions\FileGroup($rfc->fileGroupName, $mime_types, \MapasCulturais\i::__('O arquivo enviado não é um documento válido.'), true, null, true);
+                $fileGroup = new Definitions\FileGroup($rfc->fileGroupName, $allowed_mime_types, \MapasCulturais\i::__('O arquivo enviado não é um documento válido.'), true, null, true);
                 $app->registerFileGroup('registration', $fileGroup);
             }
         });
@@ -768,7 +773,6 @@ class Registration extends EntityController {
         $this->json(true);
     }
 
-
     function GET_evaluation() {
         $this->requireAuthentication();
 
@@ -783,19 +787,6 @@ class Registration extends EntityController {
         $entity->checkPermission('viewUserEvaluation');
 
         $valuer_user = $app->repo('User')->find($this->data['user'] ?? -1) ?: $app->user;
-        
-        $evaluation = $entity->getUserEvaluation($valuer_user);
-
-        if (!$evaluation) {
-            $entity->checkPermission('evaluate', $valuer_user);
-            
-            $evaluation = new RegistrationEvaluation();
-            $evaluation->registration = $entity;
-            $evaluation->user = $valuer_user;
-            $evaluation->status = RegistrationEvaluation::STATUS_DRAFT;
-            
-            $evaluation->save(true);
-        }
 
         $this->render('evaluation', ['entity' => $entity, 'valuer_user' => $valuer_user]);
     }
@@ -824,11 +815,12 @@ class Registration extends EntityController {
         $this->requireAuthentication();
 
         $entity = $this->requestedEntity;
-        $entity->checkPermission('view');
-
+        
         if (!$entity) {
             $app->pass(); 
         }
+        
+        $entity->checkPermission('view');
 
         if(!$entity->files) {
           $this->json([
@@ -885,6 +877,131 @@ class Registration extends EntityController {
         exit;
     }
 
+    function GET_exportPDF() {
+        $app = App::i();
+        $this->requireAuthentication();
+        
+        $entity = $this->requestedEntity;
+        
+        if (!$entity) {
+            $app->pass(); 
+        }
+        
+        $entity->checkPermission('view');
+        
+        try {
+            // 1. Renderizar HTML da ficha usando template
+            $html = $app->view->partialRender(
+                __template: 'registration/pdf', 
+                __data: ['registration' => $entity],
+                _is_part: false
+            );
+            
+            // 2. Converter HTML → PDF principal
+            $mainPdf = $this->generatePDFFromHTML($html, $entity);
+            
+            // 3. Coletar anexos PDF
+            $attachments = $this->collectPDFAttachments($entity);
+            
+            // 4. Mesclar PDFs
+            $finalPdf = $this->mergePDFs($mainPdf, $attachments);
+            
+            // 5. Retornar para download
+            $filename = $this->sanitizeFilename($entity->number) . '.pdf';
+            header('Content-Type: application/pdf');
+            header('Content-Disposition: attachment; filename="' . $filename . '"');
+            header('Content-Length: ' . strlen($finalPdf));
+            header('Pragma: public');
+            header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
+            header('Expires: 0');
+            
+            echo $finalPdf;
+            exit;
+            
+        } catch (\Exception $e) {
+            error_log("Erro ao gerar PDF da inscrição {$entity->id}: " . $e->getMessage());
+            $this->json([
+                'success' => false,
+                'message' => \MapasCulturais\i::__('Erro ao gerar PDF. Tente novamente.')
+            ], 500);
+        }
+    }
 
+    private function generatePDFFromHTML($html, $registration) {
+        $options = new \Dompdf\Options();
+        $options->set('isRemoteEnabled', true);
+        $options->set('isHtml5ParserEnabled', true);
+        $options->set('defaultFont', 'DejaVu Sans');
+        
+        $dompdf = new \Dompdf\Dompdf($options);
+        $dompdf->loadHtml($html);
+        $dompdf->setPaper('A4', 'portrait');
+        $dompdf->render();
+        
+        return $dompdf->output();
+    }
+
+    private function collectPDFAttachments($registration) {
+        $pdfs = [];
+        
+        foreach ($registration->files as $group => $files) {
+            if (!is_array($files)) {
+                $files = [$files];
+            }
+            
+            foreach ($files as $file) {
+                if ($file->mimeType === 'application/pdf' && file_exists($file->path)) {
+                    $pdfs[] = $file->path;
+                }
+            }
+        }
+        
+        return $pdfs;
+    }
+
+    private function mergePDFs($mainPdfContent, $attachmentPaths) {
+        $pdf = new \setasign\Fpdi\Fpdi();
+        
+        // 1. Adicionar PDF principal
+        $tmpMain = tempnam(sys_get_temp_dir(), 'main_');
+        file_put_contents($tmpMain, $mainPdfContent);
+        
+        try {
+            $pageCount = $pdf->setSourceFile($tmpMain);
+            for ($i = 1; $i <= $pageCount; $i++) {
+                $tplId = $pdf->importPage($i);
+                $size = $pdf->getTemplateSize($tplId);
+                $pdf->AddPage($size['orientation'], [$size['width'], $size['height']]);
+                $pdf->useTemplate($tplId);
+            }
+        } catch (\Exception $e) {
+            error_log("Erro ao adicionar PDF principal: " . $e->getMessage());
+        }
+        
+        unlink($tmpMain);
+        
+        // 2. Adicionar anexos
+        foreach ($attachmentPaths as $path) {
+            if (file_exists($path)) {
+                try {
+                    $pageCount = $pdf->setSourceFile($path);
+                    for ($i = 1; $i <= $pageCount; $i++) {
+                        $tplId = $pdf->importPage($i);
+                        $size = $pdf->getTemplateSize($tplId);
+                        $pdf->AddPage($size['orientation'], [$size['width'], $size['height']]);
+                        $pdf->useTemplate($tplId);
+                    }
+                } catch (\Exception $e) {
+                    error_log("Erro ao adicionar anexo {$path}: " . $e->getMessage());
+                }
+            }
+        }
+        
+        return $pdf->Output('S'); // Retorna como string
+    }
+
+    private function sanitizeFilename($str) {
+        return preg_replace('/[^a-zA-Z0-9_\-]/', '_', $str);
+    }
 
 }

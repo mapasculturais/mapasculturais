@@ -200,7 +200,17 @@ class Entity {
     }
 
     catchErrors(res, data) {
-        const message = data.data.message;
+        let message = null;
+        
+        if (typeof data.data === 'string') {
+            message = data.data;
+        } else if (data.data && typeof data.data === 'object' && data.data.message !== undefined) {
+            if (Array.isArray(data.data.message)) {
+                message = data.data.message[0] || data.data.message.join(', ');
+            } else {
+                message = data.data.message;
+            }
+        }
         
         if (res.status >= 500 && res.status <= 599) {
             this.sendMessage(message || this.text('erro inesperado'), 'error');
@@ -448,6 +458,9 @@ class Entity {
         return result;
     }
 
+    /**
+     * @deprecated Use `invoke`
+     */
     async POST(action, {callback, data, processingMessage}) {
         this.__processing = processingMessage || this.text('processando');
         const res = await this.API.POST(this.getUrl(action), data);
@@ -466,10 +479,20 @@ class Entity {
         return Promise.reject({error: true, status:0, data: this.text('erro inesperado'), exception: error});
     }
 
+    async invoke(action, data, processingMessage) {
+        this.__processing = processingMessage || this.text('processando');
+        
+        const res = await this.API.POST(this.getUrl(action), data);
+        
+        try {
+            return this.doPromise(res, (data) => data);
+        } catch (error) {
+            return this.doCatch(error);
+        }
+    }
+
     async validate() {
-        this.POST('validateEntity', {callback: (response) => {
-            return response;
-        }});
+        await this.invoke('validateEntity');
     }
 
     async save(delay = 300, preserveValues = true, forceSave) {

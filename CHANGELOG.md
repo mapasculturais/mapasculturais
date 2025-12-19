@@ -5,6 +5,60 @@ Todas as mudanças notáveis no projeto serão documentadas neste arquivo.
 O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/)
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [7.7.0] - 2025-12-19
+### Novas Funcionalidades
+- Exportador / Importador de oportunidades
+- Lista de entidades seladas na single dos selos
+- Opção para habilitar página de certificado na configuração de selo
+- Aba de eventos na single de espaços com listagem de eventos programados no local
+- Aba de eventos na single de projetos com listagem de eventos vinculados e suas ocorrências
+- Fediverso como rede social nos metadados das entidades
+- Adiciona restrição de tipos de arquivo permitidos em campos anexo do formulário
+- Oportunidade apenas para divulgação - permite criar oportunidades informativas onde as inscrições não são feitas pela plataforma
+- Exportação de ficha de inscrição em PDF com mesclagem automática de anexos PDF em um único arquivo
+
+### Melhorias nas avaliação
+- Possibilidade de configuração de limite de inscrições para os avaliadores
+- Botão de excluir avaliação para os gestores da oportunidade
+- Mantém a avaliação como pendente enquanto não houver modificação, evitando que o simples acesso à página de avaliação marque a avaliação como iniciada
+- Novo filtro para comissão por data de envio da inscrição, possibilitando comissões que avaliem somente as inscrições enviadas em determinado período
+- Possibilidade de configurar uma lista de inscrições para os avaliadores das comissões
+- Substituição de avaliadores, passando todas as incrições que ainda não foram concluídas (pendentes e iniciadas) para um novo avaliador, sem redistribuir as avaliações
+
+### Melhorias
+- Redireciona usuario para o perfil quando o mesmo esta em rascunho ou com dados obrigatórios não preechidos
+- Adiciona suporte a autenticação JWT nas requisições para API [(1)](#770-snp)
+- Melhoria na exibição das mensagens de erro para capturar e exibir mensagens específicas
+- Melhora a comunicação da interface para deixar claro que a alteração de critérios ou sessões só deve ser feita por administradores quando já existirem avaliações técnicas enviadas.
+- Remove espaços múltiplos e espaços no início/fim do nome e nome completo das entidades
+- Adiciona campos de Galeria de Fotos, Vídeos e Downloads como opções de campos do agente responsável em formulários de inscrição, permitindo que o gestor solicite portfólio visual, galeria de vídeos ou documentos anexos que sincronizam automaticamente com o perfil do agente [(2)](#770-funarte)
+- Download em lote de anexos da inscrição em formato ZIP
+- Habilita as revisões para usuários, fases de avaliação, selos e funções de usuário
+
+### Correções
+- Corrige warnigs no navegador devido a problemas com o componente entity-field
+- Implementa verificações para evitar warnings indesejados referente ao componente de localização
+- Ajusta ApiQuery para evitar que _addFilterByMetadata crie JOIN's duplicados
+- Corrige função replaces da classe i
+- Corrige nome do hook entity().archive:after
+- Corrige busca pela chave primária da tabela Job
+- Impede que o usuarios que não são admnistradores alterem critérios ou sessões de critérios de avaliação técnica se já existem avaliações enviadas
+- Corrige erro ao salvar e publicar a entidade, que interpretava mensagens de erro de forma incorreta
+
+### Melhorias não funcionais
+- LifecycleCallbacks na Entities\SealRelation
+- Função \query que faz uma consulta no banco e imprime o resultado como uma tabela ascii
+- Impede a inserção do mesmo selo mais de uma vez em uma entidade
+- Possibilita a escrita de mc-updates para entidades fora do namespace MapasCulturais\Entities
+- Implementa novos hooks na edit de espaço e no componente entity-field
+- Infraestrutura para testes: novos builders, traits e directors
+
+### Créditos
+<a name="770-snp"></a>
+1. <small>Melhoria desenvolvida pelo Ministério das Cidades, através da Secretaria Nacional de Periferias, para o Prêmio Periferia Viva</small>
+<a name="770-funarte"></a>
+2. <small>Melhoria desenvolvida pela Funarte (Fundação Nacional de Artes) para a Rede das Artes</small>
+
 ## [7.6.27] - 2025-12-19
 ### Correções
 - Corrige exibição do campo de endereço no formulário de inscrição
@@ -59,6 +113,7 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 ### Correções
 - Corrige listagem de avaliações da fase de recurso
 
+
 ## [7.6.20] - 2025-10-22
 ### Correções
 - Corrige filtro de ordenamento na lista de avaliações "mais recentes primeiro" e "mais antigas primeiro" pela ordem de envio da inscrição
@@ -66,7 +121,6 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ### Melhorias
 - Template part para os créditos do footer
-
 
 ## [7.6.19] - 2025-10-20
 ### Correções
@@ -92,7 +146,7 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ## [7.6.13] - 2025-10-14
 ### Correções
-- Ajuste da exibição de acessbilidade na lista de espaços
+- Ajuste da exibição de acessibilidade na lista de espaços
 - Ajustes de filtros de categoria, faixa e tipo de proponente no suporte
 - Ajuste da visibilidade dos campos do formulário de inscrição condicionado a pergunta "Vai concorrer por cotas"?
 - Corrige a consolidação de resultado da avaliação do tipo habilitação documental
@@ -106,10 +160,10 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 ## [7.6.12] - 2025-10-08
 ### Correções
 - Ajuste a estilização do campo pessoa com deficiência
-- Padroniza labels dos cmapos da página de edição de agente individual
-- Ajuste de estilização na tela de aceitação de termos de usu e política de privacidade
+- Padroniza labels dos campos da página de edição de agente individual
+- Ajuste de estilização na tela de aceitação de termos de uso e política de privacidade
 - Corrige destinatário dos emails de início de inscrições quando o agente não tem o email privado definido
-- Evita que entidades em rascunho e lixiera sejam exportados nas planilhas
+- Evita que entidades em rascunho e lixeira sejam exportados nas planilhas
 
 ### Melhorias
 - Adiciona funcionalidade de remoção do supra espaço
@@ -122,7 +176,7 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 ## [7.6.11] - 2025-10-07
 ### Correções
 - Corrige erro na avaliação de qualificação documental, que exigia uma opção para desabilitação mesmo quando não existia opções configuradas
-- Corrige erro que impedia o carregamento da inscrição, quando nao existia step configurado em algum campo
+- Corrige erro que impedia o carregamento da inscrição, quando não existia step configurado em algum campo
 - Ajusta para que o script de cotas não quebre quando não existe configurações de cotas definidas ou se as configurações  estão incompletas
 - Corrige filtros da tabela de agentes individuais
 - Corrige funcionalidade de limpar filtros da tabela de agentes
@@ -139,7 +193,7 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Implementa método que melhora a auto aplicação de resultados das avaliações melhorando a usabilidade da funcionalidade
 
 ## [7.6.9] - 2025-09-26
-- Corrige criação de opportunidade de fluxo contínuo
+- Corrige criação de oportunidade de fluxo contínuo
 - Corrige permissão de bloquear uma entidade para edição quando a permissão de modificar foi dada por um role
 - Evita que campos @ condicionados tentem apagar a informação da entidade relacionada
 - Corrige salvamento de formulário de edição de campos de inscrição 

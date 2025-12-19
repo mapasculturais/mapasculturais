@@ -2196,6 +2196,8 @@ class ApiQuery {
                     continue;
                 }
 
+                $relations_by_owner_id[$owner_id] = $relations_by_owner_id[$owner_id] ?? [];
+
                 $relations_by_owner_id[$owner_id][$group] = $relations_by_owner_id[$owner_id][$group] ?? [];
                 $relation['agent'] = $agents_by_id[$agent_id];
 
@@ -2205,7 +2207,7 @@ class ApiQuery {
             foreach($entities as &$entity) {
                 $entity_id = $entity[$this->pk];
 
-                $entity['agentRelations'] = $relations_by_owner_id[$entity_id] ?? (object)[];
+                $entity['agentRelations'] = $relations_by_owner_id[$entity_id] ?? [];
                 $permisions = $entity['currentUserPermissions'] ?? [];
 
                 $can_view_pending = ($permisions['@controll'] ?? false) || 
@@ -2326,6 +2328,7 @@ class ApiQuery {
                     continue;
                 }
 
+                $relations_by_owner_id[$owner_id] =  $relations_by_owner_id[$owner_id] ?? [];
                 $relations_by_owner_id[$owner_id][$group] = $relations_by_owner_id[$owner_id][$group] ?? [];
                 $agent = $agents_by_id[$agent_id];
                 $agent['relationStatus'] = $relation['relationStatus'];
@@ -2336,7 +2339,7 @@ class ApiQuery {
             foreach($entities as &$entity) {
                 $entity_id = $entity[$this->pk];
 
-                $entity['relatedAgents'] = $relations_by_owner_id[$entity_id] ?? (object)[]; 
+                $entity['relatedAgents'] = $relations_by_owner_id[$entity_id] ?? []; 
                 
                 $permisions = $entity['currentUserPermissions'] ?? [];
                 
@@ -2741,7 +2744,8 @@ class ApiQuery {
                     sr.id as relation_id,
                     sr.createTimestamp as relation_create_timestamp,
                     s.id as seal_id,
-                    s.name as seal_name
+                    s.name as seal_name,
+                    s.shortDescription as seal_short_description
                 FROM
                     {$this->sealRelationClassName} sr
                     JOIN sr.seal s
@@ -2767,10 +2771,13 @@ class ApiQuery {
             }, $relations);
 
 
-            $seals_api_query = new ApiQuery(Seal::class, ['@select' => 'files', 'id' => API::IN($seal_ids)]);
+            $seals_api_query = new ApiQuery(Seal::class, ['@select' => 'files, enableCertificatePage', 'id' => API::IN($seal_ids)]);
+            
             $files = [];
+            $enable_certificate_page = [];
             foreach($seals_api_query->find() as $seal) {
-                $files[$seal['id']] = $seal['files'] ?? null; 
+                $files[$seal['id']] = $seal['files'] ?? null;
+                $enable_certificate_page[$seal['id']] = (bool) (is_null($seal['enableCertificatePage']) || $seal['enableCertificatePage'] === '1');
             }
             foreach($relations as $relation){
                 $relation = (object) $relation;
@@ -2790,6 +2797,8 @@ class ApiQuery {
                     'singleUrl' => $app->createUrl('seal', 'sealRelation', [$relation->relation_id]),
                     'createTimestamp' => $relation->relation_create_timestamp,
                     'isVerificationSeal' => in_array($relation->seal_id, $app->config['app.verifiedSealsIds']),
+                    'enableCertificatePage' => $enable_certificate_page[$relation->seal_id] ?? true,
+                    'shortDescription' => $relation->seal_short_description
                 ];
             }
         }

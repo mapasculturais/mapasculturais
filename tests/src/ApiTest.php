@@ -39,7 +39,7 @@ class ApiTest extends TestCase
             ['Auditiva', 'Múltipla'],
             ['Intelectual']
         ];
-        
+
 
         foreach ($values as $i => $vs) {
             $user = $this->userDirector->createUser();
@@ -57,7 +57,7 @@ class ApiTest extends TestCase
             '@order' => 'id ASC'
         ]);
         $result = $query->find();
-        
+
         $this->assertEquals(3, count($result), 'Certificando que a busca na api, quanto utilizado o operador IN em metadados de seleção múltipla, retorna a quantidade correta de resultados - busca por 1 termo');
 
         foreach ($result as $agent) {
@@ -81,7 +81,8 @@ class ApiTest extends TestCase
         $this->app->enableAccessControl();
     }
 
-    function testApiKeywordWithSingleQuota() {
+    function testApiKeywordWithSingleQuota()
+    {
         $this->app->disableAccessControl();
 
         $admin = $this->userDirector->createUser('admin');
@@ -132,9 +133,149 @@ class ApiTest extends TestCase
         $result = $query->find();
         $this->assertEquals(1, count($result), 'Certificando que a busca na api por palavra-chave com aspas simples retorna o número correto de resultados.');
 
+        $query = new ApiQuery(Agent::class, [
+            '@select' => 'id,name,nomeCompleto',
+            '@keyword' => 'Um',
+            '@order' => 'id ASC'
+        ]);
+
+        $result = $query->find();
+        $this->assertEquals(1, count($result), 'Certificando que a busca na api por palavra-chave simples retorna o número correto de resultados.');
+
         $this->app->enableAccessControl();
     }
 
+    function testAgentApiKeywordCNPJ()
+    {
+        $this->app->disableAccessControl();
+
+        $admin = $this->userDirector->createUser('admin');
+        $this->login($admin);
+
+        $agents = [
+            [
+                'name' => 'Fulano',
+                'nomeCompleto' => 'Fulano de Tal',
+                'cnpj' => '63.090.308/0001-95',
+
+            ],
+            [
+                'name' => 'Ciclano',
+                'nomeCompleto' => 'Ciclano de Catatau',
+                'cnpj' => '55.804.960/0001-04',
+
+            ],
+            [
+                'name' => 'Beltrano',
+                'nomeCompleto' => 'Beltrano\'s Um',
+                'cnpj' => null,
+
+            ],
+            [
+                'name' => 'Beltrano',
+                'nomeCompleto' => 'Beltrano\'s Dois',
+                'cnpj' => null,
+
+            ],
+
+        ];
+
+        foreach ($agents as $agent) {
+            $user = $this->userDirector->createUser();
+            $profile = $user->profile;
+            $profile->name = $agent['name'];
+            $profile->nomeCompleto = $agent['nomeCompleto'];
+            if ($agent['cnpj']) {
+                $profile->cnpj = $agent['cnpj'];
+            }
+            $profile->save(true);
+        }
+
+        $this->processPCache();
+
+        $query = new ApiQuery(Agent::class, [
+            '@select' => 'id,name,nomeCompleto,cnpj',
+            '@keyword' => '55.804.960/0001-04',
+            '@order' => 'id ASC'
+        ]);
+
+        $result = $query->find();
+
+        $this->assertEquals(1, count($result), 'Certificando que a busca por cnpj na api de agente por palavra-chave retorna o número correto de resultados.');
+
+        $this->assertEquals($result[0]['cnpj'], '55.804.960/0001-04', 'Certificando que a busca por cnpj na api de agente por palavra-chave retorn o resultado correto.');
+    }
+
+    function testAgentApiKeywordTAG()
+    {
+        $this->app->disableAccessControl();
+
+        $admin = $this->userDirector->createUser('admin');
+        $this->login($admin);
+
+        $agents = [
+            [
+                'name' => 'Fulano',
+                'nomeCompleto' => 'Fulano de Tal',
+                'tags' => 'tag 1,tag 2,tag 3',
+            ],
+            [
+                'name' => 'Ciclano',
+                'nomeCompleto' => 'Ciclano de Catatau',
+                'tags' => 'tag 1,tag 3',
+            ],
+            [
+                'name' => 'Beltrano',
+                'nomeCompleto' => 'Beltrano\'s Um',
+                'tags' => 'tag 1,outra tag',
+            ],
+            [
+                'name' => 'Beltrano',
+                'nomeCompleto' => 'Beltrano\'s Dois',
+                'tags' => null,
+            ],
+
+        ];
+
+        foreach ($agents as $agent) {
+            $user = $this->userDirector->createUser();
+            $profile = $user->profile;
+            $profile->name = $agent['name'];
+            $profile->nomeCompleto = $agent['nomeCompleto'];
+            if ($agent['tags']) {
+                $profile->terms = ['tag' => explode(',', $agent['tags'])];
+            }
+            $profile->save(true);
+        }
+
+        $this->processPCache();
+
+        $query = new ApiQuery(Agent::class, [
+            '@select' => 'id,name,nomeCompleto',
+            '@keyword' => 'tag 1',
+            '@order' => 'id ASC'
+        ]);
+        $result = $query->find();
+        $this->assertEquals(3, count($result), 'Certificando que a busca por tag na api de agente por palavra-chave retorna o número correto de resultados.');
+
+        $query = new ApiQuery(Agent::class, [
+            '@select' => 'id,name,nomeCompleto',
+            '@keyword' => 'tag 2',
+            '@order' => 'id ASC'
+        ]);
+        $result = $query->find();
+        $this->assertEquals(1, count($result), 'Certificando que a busca por tag na api de agente por palavra-chave retorna o número correto de resultados.');
+
+        $query = new ApiQuery(Agent::class, [
+            '@select' => 'id,name,nomeCompleto',
+            '@keyword' => 'tag 3',
+            '@order' => 'id ASC'
+        ]);
+        $result = $query->find();
+        $this->assertEquals(2, count($result), 'Certificando que a busca por tag na api de agente por palavra-chave retorna o número correto de resultados.');
+
+    }
+    
     function testAgentApiReturnsUserMetadata()
     {
         for ($i = 0; $i < 2; $i++) {

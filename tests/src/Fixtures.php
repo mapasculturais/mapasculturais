@@ -31,4 +31,20 @@ class Fixtures {
 
         return $result;
     }
+
+    public static function getJSON($filename): array {
+        $filename = __DIR__ . '/fixtures/' . $filename;
+        if(!file_exists($filename)) {
+            throw new Exception('Arquivo JSON não encontrado');
+        }
+
+        $json = file_get_contents($filename);
+        $data = json_decode($json, true);
+
+        if (json_last_error() !== JSON_ERROR_NONE) {
+            throw new Exception('Erro ao decodificar JSON: ' . json_last_error_msg());
+        }
+
+        return $data;
+    }
 }

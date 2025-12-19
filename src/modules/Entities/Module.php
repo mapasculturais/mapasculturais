@@ -18,6 +18,17 @@ class Module extends \MapasCulturais\Module{
     function _init(){
         $app = App::i();
 
+        // Remove espaços múltiplos e espaços no início/fim do nome e nome completo
+        $app->hook('entity(<<*>>).save:before', function() use($app) {
+            if($this->name) {
+                $this->name = trim(preg_replace('/\s+/', ' ', $this->name));
+            }
+            
+            if($this->nomeCompleto) {
+                $this->nomeCompleto = trim(preg_replace('/\s+/', ' ', $this->nomeCompleto));
+            }
+        });
+
         // Atualiza o campo pessoa idosa no momento de login
         $app->hook('auth.successful', function () use($app){
             if ($app->auth->isUserAuthenticated()) {

@@ -22,4 +22,8 @@ return [
     'tipo de proponente' => i::__('Tipo de proponente'),
     'categoria' => i::__('Categoria'),
     'faixa' => i::__('Faixa'),
+    'Ações' => i::__('Ações'),
+    'Excluir avaliação' => i::__('Excluir avaliação'),
+    'Tem certeza que deseja excluir esta avaliação?' => i::__('Tem certeza que deseja excluir esta avaliação?'),
+    'Erro ao excluir avaliação' => i::__('Erro ao excluir avaliação'),
 ];

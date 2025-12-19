@@ -61,7 +61,8 @@
                         :description="field.description"
                         editable
                         :required="field.required"
-                        :default-file="field?.template"></entity-file>
+                        :default-file="field?.template"
+                        :allowed-file-types="field.allowedFileTypes || []"></entity-file>
 
                 </template>
             </template>
