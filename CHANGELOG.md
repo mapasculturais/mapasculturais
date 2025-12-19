@@ -5,7 +5,7 @@ Todas as mudanças notáveis no projeto serão documentadas neste arquivo.
 O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/)
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [7.6.27] - UNRELEASED
+## [7.6.27] - 2025-12-19
 ### Correções
 - Corrige exibição do campo de endereço no formulário de inscrição
 - Corrige salvamento do CEP no campo de endereço no formulário de inscrição
