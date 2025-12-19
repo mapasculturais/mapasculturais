@@ -11,11 +11,6 @@ app.component('mc-toggle', {
         modelValue: {
             type: Boolean, 
             default: false,
-        },
-    },
-
-    data() {
-        return {
         }
     },
 

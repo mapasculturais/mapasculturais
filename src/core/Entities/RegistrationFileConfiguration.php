@@ -8,6 +8,21 @@ use MapasCulturais\Traits;
 
 /**
  * RegistrationMeta
+ * 
+ *  $owner
+ *  @property RegistrationStep $step
+ *  @property string $title
+ *  @property string $description
+ *  @property bool $required
+ *  @property string[] $categories
+ *  @property int $displayOrder
+ *  @property bool $conditional
+ *  @property string $conditionalField
+ *  @property string $conditionalValue
+ *  @property array $registrationRanges
+ *  @property string[] $proponentTypes
+ * 
+ * @property-read string $fileGroupName 
  *
  * @ORM\Table(name="registration_file_configuration")
  * @ORM\Entity
@@ -119,6 +134,13 @@ class RegistrationFileConfiguration extends \MapasCulturais\Entity {
     protected $proponentTypes = [];
 
     /**
+     * @var array
+     *
+     * @ORM\Column(name="allowed_file_types", type="json", nullable=true)
+     */
+    protected $allowedFileTypes = [];
+
+    /**
      * @var \MapasCulturais\Entities\AgentFile[] Files
      *
      * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\RegistrationFileConfigurationFile", mappedBy="owner", cascade={"remove"}, orphanRemoval=true)
@@ -186,6 +208,19 @@ class RegistrationFileConfiguration extends \MapasCulturais\Entity {
         $this->proponentTypes = $value;
     }
 
+    public function setAllowedFileTypes($value) {
+        if(!$value){
+            $value = [];
+        } else if (!is_array($value)){
+            $value = explode("\n", $value);
+        }
+        $this->allowedFileTypes = $value;
+    }
+
+    public function getAllowedFileTypes() {
+        return $this->allowedFileTypes ?: [];
+    }
+
     public function jsonSerialize(): array {
         $result = [
             'id' => $this->id,
@@ -202,6 +237,7 @@ class RegistrationFileConfiguration extends \MapasCulturais\Entity {
             'conditionalValue' => $this->conditionalValue,
             'registrationRanges' => $this->registrationRanges ?: [],
             'proponentTypes' => $this->proponentTypes ?: [],
+            'allowedFileTypes' => $this->allowedFileTypes ?: [],
             'step' => $this->step ?? null,
         ];
 

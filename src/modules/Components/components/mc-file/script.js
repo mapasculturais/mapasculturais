@@ -1,6 +1,13 @@
 app.component('mc-file', {
     template: $TEMPLATES['mc-file'],
     emits: ['fileSelected'],
+
+    props: {
+        accept: {
+            type: String,
+            default: null,
+        },
+    },
     
     mounted() {
         window.addEventListener('mcFileClear', this.mcFileClear);
@@ -8,13 +15,13 @@ app.component('mc-file', {
     
     setup(props, { slots }) {
         const hasSlot = name => !!slots[name];
+        const propId = Vue.useId()
         const text = Utils.getTexts('mc-file')
-        return { text, hasSlot }
+        return { propId, text, hasSlot }
     },
 
     data() {
         return {
-            uniqueId: 'newFile' + (Math.floor(Math.random() * 9000) + 1000),
             newFile: null,
             maxFileSize: $MAPAS.maxUploadSizeFormatted,
         }

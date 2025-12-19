@@ -6,6 +6,7 @@ use DateTime;
 use MapasCulturais\i;
 use MapasCulturais\App;
 use MapasCulturais\Traits;
+use MapasCulturais\GuestUser;
 use Doctrine\ORM\Mapping as ORM;
 use Opportunities\Jobs\UpdateSummaryCaches;
 
@@ -15,9 +16,11 @@ use Opportunities\Jobs\UpdateSummaryCaches;
  * @property \MapasCulturais\Entities\Opportunity $opportunity Opportunity
  * @property \DateTime $evaluationFrom
  * @property \DateTime $evaluationTo
+ * @property string $name
+ * @property \MapasCulturais\Definitions\EntityType $type
  * 
  * @property-read \MapasCulturais\Definitions\EvaluationMethod $definition The evaluation method definition object
- * @property-read \MapasCulturais\EvaluationMethod $evaluationMethod The evaluation method plugin object
+ * @property-read \MapasCulturais\EvaluationMethod $evaluationMethod The evaluation method module object
  * @property-read bool $useCommitteeGroups
  * @property-read bool $evaluateSelfApplication
  * @property-read string $summaryCacheKey Chave do cache do resumo das avaliações
@@ -38,6 +41,7 @@ class EvaluationMethodConfiguration extends \MapasCulturais\Entity {
     use Traits\EntityTypes,
         Traits\EntityMetadata,
         Traits\EntityAgentRelation,
+        Traits\EntityRevision,
         Traits\EntityPermissionCache{
             Traits\EntityTypes::setType as traitSetType;
         }
@@ -368,14 +372,15 @@ class EvaluationMethodConfiguration extends \MapasCulturais\Entity {
             }
         }
 
-        // Conta as inscrições que tenham o status pendente
+        // Conta as inscrições que não tenham sido totalmente avaliadas
         $query = $app->em->createQuery("
             SELECT 
                 count(r) as qtd 
             FROM 
                 MapasCulturais\\Entities\\Registration r  
             WHERE 
-                r.opportunity = :opp AND r.status = 1
+                r.opportunity = :opp AND r.status = 1 AND
+                (r.consolidatedResult is null or r.consolidatedResult in ('', '0'))
         ");
 
         $query->setParameters([
@@ -404,7 +409,7 @@ class EvaluationMethodConfiguration extends \MapasCulturais\Entity {
         // Conta as inscrições com avaliações iniciadas
         $query = $app->em->createQuery("
             SELECT 
-                COUNT(re) AS qtd 
+                COUNT(DISTINCT r.id) AS qtd 
             FROM 
                 MapasCulturais\\Entities\\RegistrationEvaluation re
             JOIN 
@@ -634,6 +639,17 @@ class EvaluationMethodConfiguration extends \MapasCulturais\Entity {
         } else {
             return parent::canUser_control($user);
         }
+    }
+
+    /**
+     * Verifica se o usuário pode substituir um avaliador
+     * 
+     * @param User $user
+     * @return bool
+     */
+    protected function canUserReplaceEvaluator(GuestUser|User $user): bool
+    {
+        return $this->opportunity->canUser('@control', $user);
     }
     
     function getExtraEntitiesToRecreatePermissionCache(){

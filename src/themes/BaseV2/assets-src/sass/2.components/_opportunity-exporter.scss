@@ -1,0 +1,47 @@
+.opportunity-exporter {
+
+    p {
+        margin-bottom: size(16);
+    }
+
+    p > .mc-popover {
+        display: inline-block;
+    }
+    
+    .field__group {
+        display: block;
+        column-count: 2;
+        margin-top: size(16);
+
+        @include mobile {
+            column-count: 1;
+        }
+    }
+
+    .field__checkbox {
+        break-inside: avoid;
+        margin-block: size(8);
+    }
+}
+
+.opportunity-importer {
+
+    .mc-file {
+
+        h5.bold {
+            display: none;
+        }
+    }
+
+    .mc-title {
+        font-size: size(14);
+        font-weight: 600;
+    }
+
+    &__button {
+
+        .iconify {
+            font-size: size(18);
+        }
+    }
+}

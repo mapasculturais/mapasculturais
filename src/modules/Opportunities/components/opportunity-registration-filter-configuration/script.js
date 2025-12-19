@@ -118,6 +118,52 @@ app.component('opportunity-registration-filter-configuration', {
             }
         },
 
+        canConfirm() {
+            if (this.selectedField === 'sentTimestamp') {
+                const hasInitialDate = !!this.selectedConfigs?.from;
+                const hasFinalDate = !!this.selectedConfigs?.to;
+                
+                // Precisa ter pelo menos uma data
+                if (!hasInitialDate && !hasFinalDate) {
+                    return false;
+                }
+                
+                // Se ambas as datas estiverem preenchidas, a data final deve ser maior ou igual à inicial
+                if (hasInitialDate && hasFinalDate) {
+                    const fromDate = new Date(this.selectedConfigs.from);
+                    const toDate = new Date(this.selectedConfigs.to);
+                    return toDate >= fromDate;
+                }
+                
+                return true;
+            }
+
+            return true;
+        },
+
+        sentTimestampErrors() {
+            if (this.selectedField !== 'sentTimestamp') {
+                return { from: '', to: '' };
+            }
+
+            const hasInitialDate = !!this.selectedConfigs?.from;
+            const hasFinalDate = !!this.selectedConfigs?.to;
+
+            if (hasInitialDate && hasFinalDate) {
+                const fromDate = new Date(this.selectedConfigs.from);
+                const toDate = new Date(this.selectedConfigs.to);
+                
+                if (fromDate > toDate) {
+                    return {
+                        from: this.text('A data inicial não pode ser maior que a data final'),
+                        to: ''
+                    };
+                }
+            }
+
+            return { from: '', to: '' };
+        },
+
         fillTagsList() {
             let groupData = this.defaultValue || {};
             this.tagsList = [];
@@ -126,27 +172,61 @@ app.component('opportunity-registration-filter-configuration', {
                 groupData = this.getAgentData() || {};
             }
 
+            const formatDate = (dateString) => {
+                if (!dateString) return '';
+                try {
+                    const date = new Date(dateString);
+                    const day = String(date.getDate()).padStart(2, '0');
+                    const month = String(date.getMonth() + 1).padStart(2, '0');
+                    const year = date.getFullYear();
+                    return `${day}/${month}/${year}`;
+                } catch (e) {
+                    return dateString;
+                }
+            };
+
             Object.entries(groupData).forEach(([prop, values]) => {
                 if ((this.isSection && this.excludeFields.includes(prop)) || (this.isCriterion && this.excludeFields.includes(prop))) {
                     return;
                 }
-                let keyPrefix;
-                if(prop.startsWith('field_')) {
-                    keyPrefix = prop;
-                    labelPrefix = this.registrationSelectionFields?.[prop]?.label;
-                } else {
-                    keyPrefix = prop;
-                    labelPrefix = prop;
+
+                if (prop == 'sentTimestamp' && values && (values.from || values.to)) {
+                    if (values.from) {
+                        const tagKey = `${this.dictTypes(prop)} - ${this.text('de')} ${formatDate(values.from)}`;
+                        if (!this.tagsList.includes(tagKey)) {
+                            this.tagsList.push(tagKey);
+                        }
+                    }
+                    if (values.to) {
+                        const tagKey = `${this.dictTypes(prop)} - ${this.text('até')} ${formatDate(values.to)}`;
+                        if (!this.tagsList.includes(tagKey)) {
+                            this.tagsList.push(tagKey);
+                        }
+                    }
+                    return;
                 }
-                
+
                 if (Array.isArray(values)) {
                     values.forEach(value => {
-                        const tagKey = `${this.dictTypes(keyPrefix)}: ${value}`;
+                        const tagKey = `${this.dictTypes(prop)}: ${value}`;
                         if (!this.tagsList.includes(tagKey)) {
                             this.tagsList.push(tagKey);
                         }
                     });
-                } else {
+                } else if (values && typeof values == 'object' && values.sentTimestamp && (values.sentTimestamp.from || values.sentTimestamp.to)) {
+                    if (values.sentTimestamp.from) {
+                        const tagKey = `${this.dictTypes('sentTimestamp')} - ${this.text('de')} ${formatDate(values.sentTimestamp.from)}`;
+                        if (!this.tagsList.includes(tagKey)) {
+                            this.tagsList.push(tagKey);
+                        }
+                    }
+                    if (values.sentTimestamp.to) {
+                        const tagKey = `${this.dictTypes('sentTimestamp')} - ${this.text('até')} ${formatDate(values.sentTimestamp.to)}`;
+                        if (!this.tagsList.includes(tagKey)) {
+                            this.tagsList.push(tagKey);
+                        }
+                    }
+                } else if (values != undefined && values != null && values != '') {
                     const tagKey = `${this.dictTypes(prop)}: ${values}`;
                     if (!this.tagsList.includes(tagKey)) {
                         this.tagsList.push(tagKey);
@@ -166,29 +246,53 @@ app.component('opportunity-registration-filter-configuration', {
                 groupData = this.getAgentData() || {};
             }
 
+            const formatDate = (dateString) => {
+                if (!dateString) return '';
+                try {
+                    const date = new Date(dateString);
+                    const day = String(date.getDate()).padStart(2, '0');
+                    const month = String(date.getMonth() + 1).padStart(2, '0');
+                    const year = date.getFullYear();
+                    return `${day}/${month}/${year}`;
+                } catch (e) {
+                    return dateString;
+                }
+            };
+
             Object.entries(groupData).forEach(([prop, values]) => {
                 if ((this.isSection && this.excludeFields.includes(prop)) || (this.isCriterion && this.excludeFields.includes(prop))) {
                     return;
                 }
-                let keyPrefix, labelPrefix;
-                if(prop.startsWith('field_')) {
-                    keyPrefix = prop;
-                    labelPrefix = this.registrationSelectionFields?.[prop]?.title;
-                } else {
-                    keyPrefix = prop;
-                    labelPrefix = prop;
+
+                if (prop === 'sentTimestamp' && values && (values.from || values.to)) {
+                    if (values.from) {
+                        const tagKey = `${this.dictTypes(prop)} - ${this.text('de')} ${formatDate(values.from)}`;
+                        this.tagsLabels[tagKey] = tagKey;
+                    }
+                    if (values.to) {
+                        const tagKey = `${this.dictTypes(prop)} - ${this.text('até')} ${formatDate(values.to)}`;
+                        this.tagsLabels[tagKey] = tagKey;
+                    }
+                    return;
                 }
-                
+
                 if (Array.isArray(values)) {
                     values.forEach(value => {
-                        const tagKey = `${this.dictTypes(keyPrefix)}: ${value}`;
-                        const tagLabel = `${this.dictTypes(labelPrefix)}: ${value}`;
-                        this.tagsLabels[tagKey] = tagLabel;
+                        const tagKey = `${this.dictTypes(prop)}: ${value}`;
+                        this.tagsLabels[tagKey] = tagKey;
                     });
-                } else {
+                } else if (values && typeof values == 'object' && values.sentTimestamp && (values.sentTimestamp.from || values.sentTimestamp.to)) {
+                    if (values.sentTimestamp.from) {
+                        const tagKey = `${this.dictTypes('sentTimestamp')} - ${this.text('de')} ${formatDate(values.sentTimestamp.from)}`;
+                        this.tagsLabels[tagKey] = tagKey;
+                    }
+                    if (values.sentTimestamp.to) {
+                        const tagKey = `${this.dictTypes('sentTimestamp')} - ${this.text('até')} ${formatDate(values.sentTimestamp.to)}`;
+                        this.tagsLabels[tagKey] = tagKey;
+                    }
+                } else if (values !== undefined && values !== null && values !== '') {
                     const tagKey = `${this.dictTypes(prop)}: ${values}`;
-                    const tagLabel = `${this.dictTypes(labelPrefix)}: ${values}`;
-                    this.tagsLabels[tagKey] = tagLabel;
+                    this.tagsLabels[tagKey] = tagKey;
                 }
             });
 
@@ -202,10 +306,18 @@ app.component('opportunity-registration-filter-configuration', {
             let prop = event.target.value;
             let _defaultValue = this.loadCheckedOptions();
 
-            if(prop in _defaultValue) {
-                for(item of _defaultValue[prop]) {
-                    selected.push(item);
-                }  
+            if (this.selectedField == 'sentTimestamp') {
+                const currentValue = _defaultValue?.[prop] || {};
+                selected = {
+                    from: currentValue.from ?? null,
+                    to: currentValue.to ?? null
+                };
+            } else {
+                if(prop in _defaultValue) {
+                    for(item of _defaultValue[prop]) {
+                        selected.push(item);
+                    }  
+                }
             }
         
             this.selectedConfigs = selected
@@ -234,6 +346,24 @@ app.component('opportunity-registration-filter-configuration', {
         addConfig(modal) {
             this.configs = this.defaultValue ?? {};
 
+            if (this.selectedField == 'sentTimestamp') {
+                const hasInitialDate = !!this.selectedConfigs?.from;
+                const hasFinalDate = !!this.selectedConfigs?.to;
+
+                if (!hasInitialDate && !hasFinalDate) {
+                    return;
+                }
+
+                // Valida se a data final não é menor que a data inicial
+                if (hasInitialDate && hasFinalDate) {
+                    const fromDate = new Date(this.selectedConfigs.from);
+                    const toDate = new Date(this.selectedConfigs.to);
+                    if (toDate < fromDate) {
+                        return;
+                    }
+                }
+            }
+
             if (this.isGlobal) {
                 this.globalConfig();
             } else if(this.isSection) {
@@ -244,6 +374,7 @@ app.component('opportunity-registration-filter-configuration', {
                 this.evaluatorConfig();
             }
 
+            this.selectedConfigs = [];
             this.selectedField = '';
             this.$emit('update:defaultValue', this.configs);
             this.loadExcludeFields();
@@ -264,6 +395,7 @@ app.component('opportunity-registration-filter-configuration', {
                 'range': this.text('Faixa/Linha'),
                 'ranges': this.text('Faixas/Linhas'),
                 'distribution': this.text('Distribuição'),
+                'sentTimestamp': this.text('Data de envio')
             };
 
             if (reverse) {
@@ -276,6 +408,25 @@ app.component('opportunity-registration-filter-configuration', {
         },
 
         removeTag(tag) {
+            // Verifica se é uma tag de sentTimestamp
+            if (tag.includes(' - ')) {
+                const parts = tag.split(' - ');
+                const keyPart = parts[0].trim();
+                const datePart = parts[1]?.trim();
+                
+                if (keyPart === this.text('Data de envio') || keyPart.startsWith('Data')) {
+                    // Extrai o tipo de data (de/até) e a data
+                    const dateMatch = datePart?.match(/^(de|até)\s+(.+)$/i);
+                    if (dateMatch) {
+                        const dateType = dateMatch[1];
+                        this.removeSentTimestampGlobal(dateType);
+                        this.loadExcludeFields();
+                        this.save();
+                        return;
+                    }
+                }
+            }
+            
             const [displayKey, value] = tag.split(': ');
             const key = this.dictTypes(displayKey, true);
 
@@ -291,6 +442,28 @@ app.component('opportunity-registration-filter-configuration', {
 
             this.loadExcludeFields();
             this.save();
+        },
+
+        removeSentTimestampGlobal(dateType) {
+            if (this.defaultValue && this.defaultValue.sentTimestamp) {
+                const dateTypeLower = dateType?.toLowerCase();
+                const isFrom = dateTypeLower == 'de' || dateTypeLower == this.text('de')?.toLowerCase();
+                const isTo = dateTypeLower == 'até' || dateTypeLower == 'ate' || dateTypeLower == this.text('até')?.toLowerCase();
+                
+                if (isFrom) {
+                    this.defaultValue.sentTimestamp.from = null;
+                }
+
+                if (isTo) {
+                    this.defaultValue.sentTimestamp.to = null;
+                }
+                
+                if (!this.defaultValue.sentTimestamp.from && !this.defaultValue.sentTimestamp.to) {
+                    delete this.defaultValue.sentTimestamp;
+                }
+                
+                this.$emit('update:defaultValue', this.defaultValue);
+            }
         },
 
         removeGlobal(key, value) {
@@ -389,10 +562,34 @@ app.component('opportunity-registration-filter-configuration', {
         },
 
         globalConfig() {
+            if (this.selectedField == 'sentTimestamp') {
+                const formatSentTimestamp = (dateString) => {
+                    if (!dateString) return null;
+                    try {
+                        const date = new Date(dateString);
+                        const year = date.getFullYear();
+                        const month = String(date.getMonth() + 1).padStart(2, '0');
+                        const day = String(date.getDate()).padStart(2, '0');
+                        const hours = String(date.getHours()).padStart(2, '0');
+                        const minutes = String(date.getMinutes()).padStart(2, '0');
+                        const seconds = String(date.getSeconds()).padStart(2, '0');
+                        return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+                    } catch (e) {
+                        return dateString;
+                    }
+                };
+
+                this.configs[this.selectedField] = {
+                    from: formatSentTimestamp(this.selectedConfigs?.from) || null,
+                    to: formatSentTimestamp(this.selectedConfigs?.to) || null
+                };
+                return;
+            }
+
             if (!this.configs[this.selectedField]) {
                 this.configs[this.selectedField] = [];
             }
-            this.configs[this.selectedField] = this.selectedConfigs;                
+            this.configs[this.selectedField] = [...this.selectedConfigs];                
         },
 
         evaluatorConfig() {

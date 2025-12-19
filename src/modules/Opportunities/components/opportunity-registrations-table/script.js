@@ -112,12 +112,28 @@ app.component('opportunity-registrations-table', {
         }
 
         const sortedAvaliableFields = [...avaliableFields];
-        const elementsWithDisplayOrder = avaliableFields.filter(item => item.displayOrder !== undefined);
-        const sortedElements = [...elementsWithDisplayOrder].sort((a, b) => a.displayOrder - b.displayOrder);
+        const steppedFields = sortedAvaliableFields.filter(item => item.step !== undefined);
 
+        // Ordena por step.displayOrder e depois por displayOrder
+        const sortedElements = [...steppedFields].sort((a, b) => {
+            const stepSortKeyA = a.step?.displayOrder ?? Infinity;
+            const stepSortKeyB = b.step?.displayOrder ?? Infinity;
+            
+        
+            if (stepSortKeyA !== stepSortKeyB) {
+                return stepSortKeyA - stepSortKeyB;
+            }
+        
+            const displayOrderA = a.displayOrder ?? Infinity;
+            const displayOrderB = b.displayOrder ?? Infinity;
+        
+            return displayOrderA - displayOrderB;
+        });
+        
+        // Preenche de volta no array original mantendo os elementos que não têm step/displayOrder nas mesmas posições
         let sortedIndex = 0;
         for (let i = 0; i < sortedAvaliableFields.length; i++) {
-            if (sortedAvaliableFields[i].displayOrder !== undefined) {
+            if (sortedAvaliableFields[i].step !== undefined) {
                 sortedAvaliableFields[i] = sortedElements[sortedIndex++];
             }
         }

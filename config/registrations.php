@@ -2,7 +2,7 @@
 
 return [
     'registration.prefix' => env('REGISTRATION_PREFIX', 'on-'),
-    
+
    'registration.proponentTypes' => [
     	\MapasCulturais\i::__('Pessoa Física'),
     	\MapasCulturais\i::__('MEI'),
@@ -11,14 +11,14 @@ return [
     ],
 
     'registration.proponentTypesToAgentsMap' => [
-        'Pessoa Física' => 'owner', 
+        'Pessoa Física' => 'owner',
         'MEI' => 'owner',
         'Coletivo' => 'coletivo',
         'Pessoa Jurídica' => 'coletivo',
     ],
 
 
-    /* 
+    /*
     Timeout para o auto salvamento das inscrições (em milisegundos)
     */
     'registration.autosaveTimeout' => env('REGISTRATION_AUTOSAVE_INTERVAL', MINUTE_IN_SECONDS * 1000),
@@ -29,10 +29,10 @@ return [
         'optional' => \MapasCulturais\i::__('Opcional')
     ),
 
-    /* 
+    /*
     Array que define quais propriedades do reponsável serão exportados.
-    
-    ex: `["genero","raca"]` 
+
+    ex: `["genero","raca"]`
     */
     'registration.reportOwnerProperties' => json_decode(env('REGISTRATION_REPORT_OWNER_PROPERTIES', '["name","genero","raca","documento"]')),
 
@@ -61,7 +61,8 @@ return [
         'site',
         'googleplus',
         'facebook',
-        'twitter'
+        'twitter',
+        'fediverso'
     ),
     'registration.ownerDefinition' => array(
         'required' => true,
@@ -107,9 +108,10 @@ return [
         'site',
         'googleplus',
         'facebook',
-        'twitter'
+        'twitter',
+        'fediverso'
     ),
 
-    'registrations.distribution.dateString' => 'H:00',
-    'registrations.distribution.incrementString' => '+1 hour',
+    'registrations.distribution.dateString' => env('REGISTRATIONS_DISTRIBUTION_DATE_STRING', 'H:00'),
+    'registrations.distribution.incrementString' => env('REGISTRATIONS_DISTRIBUTION_INCREMENT_STRING', '+1 hour'),
 ];

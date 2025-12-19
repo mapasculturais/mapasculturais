@@ -127,7 +127,7 @@ app.component('opportunity-committee-groups', {
             const props = ['fetchFields', 'valuersPerRegistration', 'ignoreStartedEvaluations'];
 
             for (let group of props) {
-                if (!this.entity[group] || this.entity[group] instanceof Array) {
+                if (!this.entity[group] || (this.entity[group] instanceof Array)) {
                     this.entity[group] = {};
                 }
             }

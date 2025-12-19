@@ -1551,6 +1551,10 @@ class Module extends \MapasCulturais\Module{
             $phase = null;
             $phases = $this->opportunity->allPhases;
 
+            if($this->opportunity && $this->opportunity->isAppealPhase) {
+                return;
+            }
+
             // procura a última fase (opportunity) sem método de avaliação/
             // que não seja a fase de publicação de resultado.
             for($i = count($phases) -1; $i >=0; $i--) {
@@ -1559,10 +1563,6 @@ class Module extends \MapasCulturais\Module{
                     $phase = $_phase;
                     break;
                 }
-            }
-
-            if (!$phase && $this->opportunity->status == Opportunity::STATUS_APPEAL_PHASE) {
-                $phase = $this->opportunity;
             }
 
             if(!$phase) {
@@ -1715,7 +1715,7 @@ class Module extends \MapasCulturais\Module{
             $app->hook('entity(EvaluationMethodConfiguration).save:finish', function($flush) use ($app) {
                 /** @var EvaluationMethodConfiguration $this */
                 $opportunity = $this->opportunity;
-                if (!$opportunity->isDataCollection) {
+                if (!$opportunity->isDataCollection && ($opportunity->registrationFrom != $this->evaluationFrom || $opportunity->registrationTo != $this->evaluationTo)) {
                     $opportunity->registrationFrom = $this->evaluationFrom;
                     $opportunity->registrationTo = $this->evaluationTo;
                     $opportunity->save($flush);

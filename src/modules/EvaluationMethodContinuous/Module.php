@@ -15,10 +15,21 @@ use MapasCulturais\Entities\RegistrationEvaluation;
 use MapasCulturais\Entities\RegistrationFieldConfiguration;
 use MapasCulturais\Entities\RegistrationFileConfiguration;
 use MapasCulturais\i;
-class Module extends \MapasCulturais\EvaluationMethod {
+class Module extends \MapasCulturais\EvaluationMethod 
+{
     const CHAT_THREAD_TYPE = 'EvaluationMethodContinuous';
 
     public $internal = true;
+
+    protected function _export(EvaluationMethodConfiguration $evaluation_method_configuration): array { 
+        return [
+            'allow_proponent_response' => $evaluation_method_configuration->opportunity->allow_proponent_response
+        ];
+    }
+
+    protected function _import(EvaluationMethodConfiguration $evaluation_method_configuration, array $data) { 
+        $evaluation_method_configuration->opportunity->allow_proponent_response = $data['allow_proponent_response'];
+    }
 
     protected function _getDefaultStatuses(EvaluationMethodConfiguration $evaluation_method_configuration): array
     {

@@ -132,19 +132,37 @@ class Module extends \MapasCulturais\Module{
             }
         });
 
-        $distribute_execution_time = date($app->config['registrations.distribution.dateString']) . ' ' . $app->config['registrations.distribution.incrementString'];
+        $distribute_execution_time = function($distribution_config) {
+            if ($distribution_config === 'hourly') {
+                return date('Y-m-d H:00:00', strtotime('+1 hour'));
+            } 
+            
+            if ($distribution_config === 'daily') {
+                // Próxima meia-noite
+                $next_midnight = new \DateTime('tomorrow 00:00:00');
+                return $next_midnight->format('Y-m-d H:i:s');
+            }
+        };
 
         /** 
          * Enfileiramento dos JOBs de distribuição de avaliadores
          */
         $app->hook('entity(EvaluationMethodConfigurationAgentRelation).<<insert|update|delete>>:finish', function() use($app, $distribute_execution_time) {
             /** @var EvaluationMethodConfigurationAgentRelation $this */
-            if($this->owner){
-                $app->enqueueJob(Jobs\RedistributeCommitteeRegistrations::SLUG, ['evaluationMethodConfiguration' => $this->owner], $distribute_execution_time);
+
+            if($this->__skipRedistribution) {
+                return;
+            }
+            
+            $distribution_config = $this->owner->distributionConfiguration ?? 'deactivate';
+            
+            if($this->owner && $distribution_config != 'deactivate') {
+                $execution_time = $distribute_execution_time($distribution_config);
+                $app->enqueueJob(Jobs\RedistributeCommitteeRegistrations::SLUG, ['evaluationMethodConfiguration' => $this->owner], $execution_time);
             }
         });
 
-        $_metadata_list = 'valuersPerRegistration|ignoreStartedEvaluations|fetchFields|fetchSelectionFields|fetch|fetchCategories|fetchRanges|fetchProponentTypes';
+        $_metadata_list = 'valuersPerRegistration|ignoreStartedEvaluations|fetchFields|fetchSelectionFields|fetch|fetchCategories|fetchRanges|fetchProponentTypes|distributionConfiguration';
         $app->hook("entity(EvaluationMethodConfiguration).meta(<<{$_metadata_list}>>).<<insert|update|delete>>:after", function() use($app) {
             /** @var EvaluationMethodConfigurationMeta $this */
             $this->owner->mustRedistributeCommitteeRegistrations = true;
@@ -153,14 +171,28 @@ class Module extends \MapasCulturais\Module{
         $app->hook('entity(EvaluationMethodConfiguration).save:finish', function () use($app, $distribute_execution_time) {
             /** @var EvaluationMethodConfiguration $this */
             if ($this->mustRedistributeCommitteeRegistrations) {
-                $app->enqueueJob(Jobs\RedistributeCommitteeRegistrations::SLUG, ['evaluationMethodConfiguration' => $this], $distribute_execution_time);
+                $distribution_config = $this->distributionConfiguration ?? 'deactivate';
+                
+                if($distribution_config == 'deactivate') {
+                    $app->unqueueJob(Jobs\RedistributeCommitteeRegistrations::SLUG, ['evaluationMethodConfiguration' => $this], 'now', '1 hour');
+                    $app->unqueueJob(Jobs\RedistributeCommitteeRegistrations::SLUG, ['evaluationMethodConfiguration' => $this], 'now', '1 day');
+                    return;
+                }
+
+                $execution_time = $distribute_execution_time($distribution_config);
+                $app->enqueueOrReplaceJob(Jobs\RedistributeCommitteeRegistrations::SLUG, ['evaluationMethodConfiguration' => $this], $execution_time);
             }
         });
 
         $app->hook('entity(<<RegistrationEvaluation|Registration>>).send:after', function() use($app, $distribute_execution_time) {
             /** @var Registration $this */
             if($emc = $this->evaluationMethodConfiguration) {
-                $app->enqueueJob(Jobs\RedistributeCommitteeRegistrations::SLUG, ['evaluationMethodConfiguration' => $emc], $distribute_execution_time);
+                $distribution_config = $emc->distributionConfiguration ?? 'deactivate';
+                // Só agenda se não estiver desativado
+                if($distribution_config != 'deactivate') {
+                    $execution_time = $distribute_execution_time($distribution_config);
+                    $app->enqueueJob(Jobs\RedistributeCommitteeRegistrations::SLUG, ['evaluationMethodConfiguration' => $emc], $execution_time);
+                }
             }
         });
 
@@ -181,7 +213,12 @@ class Module extends \MapasCulturais\Module{
 
         $app->hook("entity(Registration).status(<<*>>)", function() use ($app, $distribute_execution_time) {
             if($this->evaluationMethodConfiguration){
-                $app->enqueueJob(Jobs\RedistributeCommitteeRegistrations::SLUG, ['evaluationMethodConfiguration' => $this->evaluationMethodConfiguration], $distribute_execution_time);
+                $distribution_config = $this->evaluationMethodConfiguration->distributionConfiguration ?? 'deactivate';
+                // Só agenda se não estiver desativado
+                if($distribution_config != 'deactivate') {
+                    $execution_time = $distribute_execution_time($distribution_config);
+                    $app->enqueueJob(Jobs\RedistributeCommitteeRegistrations::SLUG, ['evaluationMethodConfiguration' => $this->evaluationMethodConfiguration], $execution_time);
+                }
 
                 /** @var Registration $this */
                 /** @var Opportunity $opportunity */
@@ -837,16 +874,16 @@ class Module extends \MapasCulturais\Module{
             }
 
             if ($opportunity && ($opportunity->publishedRegistrations || $this->opportunity->firstPhase->isContinuousFlow)) {
+                $proponent_type_seals = $opportunity->proponentSeals;
                 $proponent_type = $this->proponentType;
                 $owner = $this->owner;
                 $categories_seals = $opportunity->categorySeals;
                 $category = $this->category;
+                $proponent_typesTo_agents_Map = $app->config['registration.proponentTypesToAgentsMap'];
+                $agent_type = $proponent_typesTo_agents_Map[$proponent_type] ?? "owner";
 
-                if ($proponent_type) {
-                    $proponent_seals = $seals->{$proponent_type};
-                    $proponent_typesTo_agents_Map = $app->config['registration.proponentTypesToAgentsMap'];
-                    $agent_type = $proponent_typesTo_agents_Map[$proponent_type] ?? null;
-
+                if ($proponent_type  && $proponent_type_seals) {
+                    $proponent_seals = $proponent_type_seals->{$proponent_type};
 
                     if ($agent_type == "owner") {
                         $relations = $owner->getSealRelations();
@@ -862,39 +899,26 @@ class Module extends \MapasCulturais\Module{
                             $self->removeSeals($app, $relations, $proponent_seals);
                         }
                     }
-
-                    // Se a inscrição tiver "tipo de proponente" e "categoria", remover o selo verificador da categoria, caso possua.
-                    if($category) {
-                        if (isset($categories_seals->{$category})) {
-                            $category_seals = $categories_seals->{$category};
-
-                             // Verifica se a opção "Habilitar a vinculação de agente coletivo" esta ativa
-                            if($opportunity->firstPhase->useAgentRelationColetivo == 'required') {
-                                if ($agent_type == "coletivo") {
-                                    $agent_relations = $this->getAgentRelations();
-    
-                                    foreach ($agent_relations as $agent_relation) {
-                                        $agent = $agent_relation->agent;
-                                        $relations = $agent->getSealRelations();
-                                        $self->removeSeals($app, $relations, $category_seals);
-                                    }
-                                }
-                            }
-
-                            if ($agent_type == "owner") {
-                                $relations = $owner->getSealRelations();
-                                $self->removeSeals($app, $relations, $category_seals);
-                            }
-                        }
-                    }
                 }
 
-                // Se tiver apenas "categoria" e não houver "tipo de proponente", remover selo verificador (caso configurado) do agente individual
-                if($category && !$proponent_type) {
-                    if (isset($categories_seals->{$category})) {
-                        $category_seals = $categories_seals->{$category};
+                // Se tiver "categoria" remover selo verificador (caso configurado) do agente individual
+                if($category && $categories_seals && $categories_seals->{$category}) {
+                    $category_seals = $categories_seals->{$category};
+                    if($agent_type == 'owner'){
                         $relations = $owner->getSealRelations();
                         $self->removeSeals($app, $relations, $category_seals);
+
+                    }
+
+                    // Verifica se a opção "Habilitar a vinculação de agente coletivo" esta ativa
+                    if($proponent_type && $opportunity->firstPhase->useAgentRelationColetivo == 'required' && $agent_type == "coletivo") {
+                        $agent_relations = $this->getAgentRelations();
+
+                        foreach ($agent_relations as $agent_relation) {
+                            $agent = $agent_relation->agent;
+                            $relations = $agent->getSealRelations();
+                            $self->removeSeals($app, $relations, $category_seals);
+                        }
                     }
                 }
             }
@@ -1098,6 +1122,12 @@ class Module extends \MapasCulturais\Module{
             'default' => false,
         ]);
 
+        $this->registerOpportunityMetadata('publicityOnly', [
+            'label' => i::__('Oportunidade apenas para divulgação'),
+            'type' => 'boolean',
+            'default' => false,
+        ]);
+
         $this->registerOpportunityMetadata('proponentAgentRelation', [
             'label' => i::__('Vinculação de Agente coletivo para tipos de proponente'),
             'type' => 'object',
@@ -1149,6 +1179,17 @@ class Module extends \MapasCulturais\Module{
             'type' => 'boolean',
             'default' => false,
         ]);
+
+        $this->registerEvauationMethodConfigurationMetadata('distributionConfiguration', [
+            'label' => i::__('Configuração da distribuição das inscrições entre os avaliadores'),
+            'type' => 'select',
+            'options' => [
+                'hourly' => i::__('Distribuição por hora'),
+                'daily' => i::__('Distribuição por dia'),
+                'deactivate' => i::__('Desativar distribuição'),
+            ],
+            'default' => 'hourly',
+        ]);
     }
 
     public function applySeal(Agent $agent, array $sealIds){
@@ -1165,7 +1206,7 @@ class Module extends \MapasCulturais\Module{
                 }
             }
             if(!$has_new_seal){
-                $agent->createSealRelation($seal);
+                $agent->createSealRelation($seal, agent: $agent);
             }
         }
     }

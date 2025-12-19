@@ -29,7 +29,7 @@ class ConcurrentEndingAfter implements EvaluationPeriodInterface, DataCollection
 
     public function getEvaluationFrom(Opportunity $phase): DateTime
     {
-        return clone $phase->registrationTo;
+        return clone $phase->registrationFrom;
     }
 
     public function getEvaluationTo(Opportunity $phase): DateTime
