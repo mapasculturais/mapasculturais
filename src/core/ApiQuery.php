@@ -1480,15 +1480,6 @@ class ApiQuery {
 
                 $prop = $cfg['property'];
                 
-                // do usuário só permite id e profile
-                if($prop == 'user') {
-                    $cfg['select'] = array_filter($cfg['select'], function($field) {
-                        if ($field == 'id' || substr($field, 0, 7) == 'profile') {
-                            return $field;
-                        }
-                    });
-                }
-
                 if(isset($this->entityRelations[$prop])){
                     $mapping = $this->entityRelations[$prop];
                 } else if(isset($this->entityRelations['_' . $prop])){
@@ -3457,6 +3448,17 @@ class ApiQuery {
         foreach($this->_subqueriesSelect as $_uid => $_cfg) {
             if ($_cfg['property'] == $prop) {
                 return $_uid;
+            }
+        }
+
+        if (User::class == ($this->entityRelations[$prop]['targetEntity'] ?? false)) {
+            $allowed_user_properties = User::getPublicApiFields();
+            if($_select_all) {
+                $_select_all = false;
+                $select = $allowed_user_properties;
+                $_match = 'user.{' . implode(',', $allowed_user_properties) .  '}';
+            } else {
+                $select = array_intersect($select, $allowed_user_properties);
             }
         }
 
