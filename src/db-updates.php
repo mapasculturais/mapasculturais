@@ -2083,7 +2083,6 @@ $$
         __try("CREATE INDEX agent_relation_owner_agent ON agent_relation (object_type, object_id, agent_id);");
         __try("CREATE INDEX agent_relation_has_control ON agent_relation (has_control);");
         __try("CREATE INDEX agent_relation_status ON agent_relation (status);");
-        __try("ALTER INDEX idx_54585edd3414710b RENAME TO agent_relation_agent;");
     },
 
     'valuer disabling refactor' => function() use($conn) {
@@ -2901,7 +2900,7 @@ $$
         __exec("CREATE UNIQUE INDEX unique_evaluation_user_id ON registration_evaluation (registration_id, user_id)");
     },
 
-    'cria novos índices em diversas tabelas ' => function() {
+    'Adiciona novos índices em diversas tabelas' => function() {
         __exec('CREATE INDEX idx_usr_profile ON usr (profile_id);');
         __exec('CREATE INDEX id_agent_relation_agent ON agent_relation (agent_id);');
         __exec('CREATE INDEX idx_space_agent_id ON space (agent_id);');
@@ -3130,6 +3129,10 @@ $$
     },
     "incrementa a sequencia do id dos selos para evitar erro na primeira tentativa de criar um selo pois já existe o id 1" => function () {
         __exec("SELECT nextval('seal_id_seq')");
+    },
+
+    "limpa chaves incompatíveis com a v7.7" => function ()  {
+        __exec("DELETE FROM user_app");
     }
     
 ] + $updates ;   
