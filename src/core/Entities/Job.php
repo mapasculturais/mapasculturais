@@ -158,27 +158,27 @@ class Job extends \MapasCulturais\Entity{
         }
 
         if ($success !== false){
-            // para evitar que um eventual erro no job deixe a entidade detached
-            $job = $this->isNew() ? $this : $app->repo('Job')->find($this->pk);
+            if ($this->iterationsCount + 1 >= $this->iterations) {
 
-            $job->iterationsCount++;
-            
-            if ($job->iterationsCount >= $job->iterations) {
                 if($app->config['app.log.jobs']) {
-                    $app->log->info("Job {$job->slug}:{$job->id}: SUCCESSFUL and TERMINATED");
+                    $app->log->info("Job {$this->slug}:{$this->id}: SUCCESSFUL and TERMINATED");
                 }
 
-                $job->delete(true);
+                $this->delete(true);
             } else {
+                $conn = $app->conn;
+                $conn->update('job', [
+                    'status' => 0,
+                    'last_execution_timestamp' => date('Y-m-d H:i:s'),
+                    'next_execution_timestamp' => date('Y-m-d H:i:s', strtotime($this->intervalString, $this->nextExecutionTimestamp->getTimestamp())),
+                    'iterations_count' => $this->iterationsCount + 1,
+                ], [
+                    'id' => $this->id,
+                ]);
+
                 if($app->config['app.log.jobs']) {
-                    $app->log->info("Job {$job->slug}:{$job->id}: SUCCESSFUL");
+                    $app->log->info("Job {$this->slug}:{$this->id}: SUCCESSFUL");
                 }
-                $job->status = 0;
-                $job->lastExecutionTimestamp = new DateTime;
-                $job->nextExecutionTimestamp = new DateTime(date('Y-m-d H:i:s', strtotime($job->intervalString, $job->nextExecutionTimestamp->getTimestamp())));
-                $app->disableAccessControl();
-                $job->save(true);
-                $app->enableAccessControl();
             }
 
         } else {
