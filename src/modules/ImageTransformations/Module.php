@@ -14,13 +14,13 @@ class Module extends \MapasCulturais\Module
     {
         $app = App::i();
         
-        $app->hook('entity(<<agent|space|event|project|opportunity|subsite|seal>>).file(avatar).insert:after', function () {
+        $app->hook('entity(<<*>>).file(avatar).insert:after', function () {
             $this->transform('avatarSmall');
             $this->transform('avatarMedium');
             $this->transform('avatarBig');
         });
 
-        $app->hook('entity(<<agent|space|event|project|opportunity|subsite|seal>>).file(header).insert:after', function () {
+        $app->hook('entity(<<*>>).file(header).insert:after', function () {
             $this->transform('header');
         });
 
@@ -40,7 +40,7 @@ class Module extends \MapasCulturais\Module
             $this->transform('favicon');
         });
 
-        $app->hook('entity(<<agent|space|event|project|opportunity|seal>>).file(gallery).insert:after', function () {
+        $app->hook('entity(<<*>>).file(gallery).insert:after', function () {
             $this->transform('galleryThumb');
             $this->transform('galleryFull');
         });
