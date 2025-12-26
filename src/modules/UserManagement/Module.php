@@ -150,17 +150,17 @@ class Module extends \MapasCulturais\Module {
                 WITH nomeSocial.key = 'nomeSocial'
 
                 LEFT JOIN
-                    a._children children
-
-                LEFT JOIN 
-                    children.__metadata child_nomeCompleto 
-                WITH child_nomeCompleto.key = 'nomeCompleto'
+                    MapasCulturais\\Entities\\Agent user_agents
+                WITH
+                    user_agents.user = e.id
                 
                 LEFT JOIN 
-                    children.__metadata child_nomeSocial 
-
-                WITH child_nomeSocial.key = 'nomeSocial'
+                    user_agents.__metadata user_agent_nomeCompleto 
+                WITH user_agent_nomeCompleto.key = 'nomeCompleto'
                 
+                LEFT JOIN 
+                    user_agents.__metadata user_agent_nomeSocial 
+                WITH user_agent_nomeSocial.key = 'nomeSocial'
                 
                 ";
 
@@ -169,10 +169,26 @@ class Module extends \MapasCulturais\Module {
                     LEFT JOIN 
                         a.__metadata doc 
                     WITH doc.key = 'documento'
+                    
+                    LEFT JOIN 
+                    user_agents.__metadata user_agent_doc 
+                    WITH user_agent_doc.key = 'documento'
+                    
+                    LEFT JOIN 
+                        a.__metadata cpf 
+                    WITH cpf.key = 'cpf'
 
                     LEFT JOIN 
-                    children.__metadata child_doc 
-                    WITH child_doc.key = 'documento'
+                    user_agents.__metadata user_agent_cpf 
+                    WITH user_agent_cpf.key = 'cpf'
+
+                    LEFT JOIN 
+                        a.__metadata cnpj 
+                    WITH cnpj.key = 'cnpj'
+
+                    LEFT JOIN 
+                    user_agents.__metadata user_agent_cnpj 
+                    WITH user_agent_cnpj.key = 'cnpj'
                     
                 ";
             }
@@ -189,16 +205,20 @@ class Module extends \MapasCulturais\Module {
                 unaccent(lower(nomeCompleto.value)) LIKE unaccent(lower(:{$alias})) OR
                 unaccent(lower(nomeSocial.value)) LIKE unaccent(lower(:{$alias})) OR
 
-                unaccent(lower(children.name)) LIKE unaccent(lower(:{$alias})) OR
-                unaccent(lower(child_nomeCompleto.value)) LIKE unaccent(lower(:{$alias})) OR
-                unaccent(lower(child_nomeSocial.value)) LIKE unaccent(lower(:{$alias}))
+                unaccent(lower(user_agents.name)) LIKE unaccent(lower(:{$alias})) OR
+                unaccent(lower(user_agent_nomeCompleto.value)) LIKE unaccent(lower(:{$alias})) OR
+                unaccent(lower(user_agent_nomeSocial.value)) LIKE unaccent(lower(:{$alias}))
             )";
 
             $doc = preg_replace("/\D/", '', $keyword);
             if (strlen($doc) >= 11) {
                 $formated_doc = Utils::formatCnpjCpf($doc);
                 $where .= " OR doc.value = '{$doc}' OR doc.value = '{$formated_doc}'";
-                $where .= " OR child_doc.value = '{$doc}' OR child_doc.value = '{$formated_doc}'";
+                $where .= " OR user_agent_doc.value = '{$doc}' OR user_agent_doc.value = '{$formated_doc}'";
+                $where .= " OR cpf.value = '{$doc}' OR cpf.value = '{$formated_doc}'";
+                $where .= " OR user_agent_cpf.value = '{$doc}' OR user_agent_cpf.value = '{$formated_doc}'";
+                $where .= " OR cnpj.value = '{$doc}' OR cnpj.value = '{$formated_doc}'";
+                $where .= " OR user_agent_cnpj.value = '{$doc}' OR user_agent_cnpj.value = '{$formated_doc}'";
             }
         });
 
