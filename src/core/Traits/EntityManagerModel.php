@@ -22,7 +22,10 @@ trait EntityManagerModel {
         $this->generateRegistrationFieldsAndFiles($this->entityOpportunity, $this->entityOpportunityModel);
         $this->generateSealsRelations();
 
+        $this->generateTerms();
+
         $this->entityOpportunityModel->save(true);
+        $this->entityOpportunityModel = $this->entityOpportunityModel->refreshed();
         
         if($this->isAjax()){
             $this->json($this->entityOpportunity);
@@ -45,8 +48,11 @@ trait EntityManagerModel {
         $this->generateMetadata(0, 0);
         $this->generateRegistrationFieldsAndFiles($this->entityOpportunity, $this->entityOpportunityModel);
 
+        $this->generateTerms();
+
         $this->entityOpportunityModel->save(true);
-       
+        $this->entityOpportunityModel = $this->entityOpportunityModel->refreshed();
+        
         $app->enableAccessControl();
 
         $this->json($this->entityOpportunityModel); 
@@ -327,6 +333,21 @@ trait EntityManagerModel {
     {
         foreach ($this->entityOpportunity->getSealRelations() as $sealRelation) {
             $this->entityOpportunityModel->createSealRelation($sealRelation->seal, true, true);
+        }
+    }
+
+    private function generateTerms() : void
+    {
+        $original_terms = $this->entityOpportunity->getTerms();
+        
+        if (isset($original_terms['area']) && !empty($original_terms['area'])) {
+            $area_terms = is_array($original_terms['area']) ? $original_terms['area'] : (array) $original_terms['area'];
+            $this->entityOpportunityModel->setTerms(['area' => $area_terms]);
+        }
+        
+        if (isset($original_terms['tag']) && !empty($original_terms['tag'])) {
+            $tag_terms = is_array($original_terms['tag']) ? $original_terms['tag'] : (array) $original_terms['tag'];
+            $this->entityOpportunityModel->setTerms(['tag' => $tag_terms]);
         }
     }
 }
