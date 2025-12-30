@@ -223,7 +223,6 @@
                         case "orientacaoSexual":
                         case "raca":
                         case "@terms:area":
-                        case "@terms:segmento":
                         case "genero":
                         case "@type":
                         case "escolaridade":
