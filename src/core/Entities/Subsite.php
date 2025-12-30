@@ -375,7 +375,9 @@ class Subsite extends \MapasCulturais\Entity
         $assets_folder = "assets/{$domain}/";
 
         $app->config['base.assetUrl'] = $app->baseUrl . $assets_folder;
-        $app->assetManager->config['publishPath'] = BASE_PATH . $assets_folder;
+        $config = $app->assetManager->config;
+        $config['publishPath'] = BASE_PATH . $assets_folder;
+        $app->assetManager->config = $config;
 
         // @TODO: passar esta parte abaixo para o tema
         $entidades = $this->entidades_habilitadas ?: ['Agents', 'Projects', 'Spaces', 'Events', 'Opportunities'];
