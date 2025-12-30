@@ -5,7 +5,7 @@ Todas as mudanças notáveis no projeto serão documentadas neste arquivo.
 O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/)
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [UNRELEASED]
+## [7.7.0] - 2025-12-19
 ### Novas Funcionalidades
 - Exportador / Importador de oportunidades
 - Lista de entidades seladas na single dos selos
@@ -27,12 +27,11 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ### Melhorias
 - Redireciona usuario para o perfil quando o mesmo esta em rascunho ou com dados obrigatórios não preechidos
-- Implementa novos hooks na edit de espaço e no componente entity-field
-- Adiciona suporte a autenticação JWT nas requisições para API [(1)](#snp)
+- Adiciona suporte a autenticação JWT nas requisições para API [(1)](#770-snp)
 - Melhoria na exibição das mensagens de erro para capturar e exibir mensagens específicas
 - Melhora a comunicação da interface para deixar claro que a alteração de critérios ou sessões só deve ser feita por administradores quando já existirem avaliações técnicas enviadas.
 - Remove espaços múltiplos e espaços no início/fim do nome e nome completo das entidades
-- Adiciona campos de Galeria de Fotos, Vídeos e Downloads como opções de campos do agente responsável em formulários de inscrição, permitindo que o gestor solicite portfólio visual, galeria de vídeos ou documentos anexos que sincronizam automaticamente com o perfil do agente [(2)](#funarte)
+- Adiciona campos de Galeria de Fotos, Vídeos e Downloads como opções de campos do agente responsável em formulários de inscrição, permitindo que o gestor solicite portfólio visual, galeria de vídeos ou documentos anexos que sincronizam automaticamente com o perfil do agente [(2)](#770-funarte)
 - Download em lote de anexos da inscrição em formato ZIP
 - Habilita as revisões para usuários, fases de avaliação, selos e funções de usuário
 
@@ -43,7 +42,7 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Corrige função replaces da classe i
 - Corrige nome do hook entity().archive:after
 - Corrige busca pela chave primária da tabela Job
-- Impede que o usuarios que não são admnistradores altere critérios ou sessões de critérios de avaliação técnica se já existem avaliações enviadas
+- Impede que o usuarios que não são admnistradores alterem critérios ou sessões de critérios de avaliação técnica se já existem avaliações enviadas
 - Corrige erro ao salvar e publicar a entidade, que interpretava mensagens de erro de forma incorreta
 
 ### Melhorias não funcionais
@@ -51,17 +50,28 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Função \query que faz uma consulta no banco e imprime o resultado como uma tabela ascii
 - Impede a inserção do mesmo selo mais de uma vez em uma entidade
 - Possibilita a escrita de mc-updates para entidades fora do namespace MapasCulturais\Entities
+- Implementa novos hooks na edit de espaço e no componente entity-field
+- Infraestrutura para testes: novos builders, traits e directors
 
 ### Créditos
-<a name="snp"></a>
+<a name="770-snp"></a>
 1. <small>Melhoria desenvolvida pelo Ministério das Cidades, através da Secretaria Nacional de Periferias, para o Prêmio Periferia Viva</small>
+<a name="770-funarte"></a>
 2. <small>Melhoria desenvolvida pela Funarte (Fundação Nacional de Artes) para a Rede das Artes</small>
 
-## [7.6.26] - 2025-11-28
+## [7.6.27] - 2025-12-19
+### Correções
+- Corrige exibição do campo de endereço no formulário de inscrição
+- Corrige salvamento do CEP no campo de endereço no formulário de inscrição
+
+## [7.6.26] - 2025-12-10
 ### Correções
 - Corrige permissão de edição de campos bloqueados no formulário de inscrição
 - Adiciona todos os campos da lista de pessoas na ficha de inscrição e na exportação da lista de inscrição
 - Corrige seleção de campos na API
+- Remove codigo que insere o sergmento cultural da tabela de agentes
+- Ajusta verificação de permissões para permitir que gestores da oportunidade visualizem todos os campos do formulário de inscrição, mesmo sem serem administradores do sistema
+- Corrige erro que impedia a exibição do botão de editar campos do formulário quando liberado período de edição para o usuário
 
 ## [7.6.25] - 2025-11-27
 ### Melhorias

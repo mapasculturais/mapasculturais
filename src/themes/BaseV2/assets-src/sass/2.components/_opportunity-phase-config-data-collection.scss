@@ -98,17 +98,6 @@
             position: relative;
             white-space: nowrap;
 
-            &::after {
-                position: absolute ;
-                content: '';
-                grid-column: 1 / span 12;
-                height: 10px; 
-                width: 100%;
-                background-color: var(--mc-gray-100);
-                top: size(45);
-                left: 0;
-            }     
-
             &__limits {
                 & input {
                     max-width: size(100);
@@ -128,7 +117,7 @@
     &__fields {
         display: grid;
         grid-template-columns: repeat(4, 1fr);
-        gap: size(20) 0;
+        gap: size(20) size(8);
         z-index: 0;
 
         @media (max-width: 1181px) {
