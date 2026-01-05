@@ -59,6 +59,14 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 <a name="770-funarte"></a>
 2. <small>Melhoria desenvolvida pela Funarte (Fundação Nacional de Artes) para a Rede das Artes</small>
 
+## [7.6.29] - 2026-01-05
+### Correções
+- Corrige copia de áreas de interesse ao criar um modelo de oportunidade
+
+## [7.6.28] - 2025-12-26
+### Correções
+- Corrige filtro de usuários na gestão de usuários
+
 ## [7.6.27] - 2025-12-19
 ### Correções
 - Corrige exibição do campo de endereço no formulário de inscrição
