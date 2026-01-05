@@ -18,15 +18,14 @@ trait EntityManagerModel {
 
         $this->generateEvaluationMethods();
         $this->generatePhases();
+        $this->generateTerms();
         $this->generateMetadata();
         $this->generateRegistrationFieldsAndFiles($this->entityOpportunity, $this->entityOpportunityModel);
         $this->generateSealsRelations();
 
-        $this->generateTerms();
-
-        $this->entityOpportunityModel->save(true);
         $this->entityOpportunityModel = $this->entityOpportunityModel->refreshed();
-        
+        $this->entityOpportunityModel->save(true);
+
         if($this->isAjax()){
             $this->json($this->entityOpportunity);
         }else{
@@ -45,14 +44,13 @@ trait EntityManagerModel {
 
         $this->generateEvaluationMethods();
         $this->generatePhases();
+        $this->generateTerms();
         $this->generateMetadata(0, 0);
         $this->generateRegistrationFieldsAndFiles($this->entityOpportunity, $this->entityOpportunityModel);
 
-        $this->generateTerms();
-
-        $this->entityOpportunityModel->save(true);
         $this->entityOpportunityModel = $this->entityOpportunityModel->refreshed();
-        
+        $this->entityOpportunityModel->save(true);
+
         $app->enableAccessControl();
 
         $this->json($this->entityOpportunityModel); 
@@ -339,15 +337,21 @@ trait EntityManagerModel {
     private function generateTerms() : void
     {
         $original_terms = $this->entityOpportunity->getTerms();
+        $terms_to_set = [];
         
         if (isset($original_terms['area']) && !empty($original_terms['area'])) {
             $area_terms = is_array($original_terms['area']) ? $original_terms['area'] : (array) $original_terms['area'];
-            $this->entityOpportunityModel->setTerms(['area' => $area_terms]);
+            $terms_to_set['area'] = $area_terms;
+            
         }
         
         if (isset($original_terms['tag']) && !empty($original_terms['tag'])) {
             $tag_terms = is_array($original_terms['tag']) ? $original_terms['tag'] : (array) $original_terms['tag'];
-            $this->entityOpportunityModel->setTerms(['tag' => $tag_terms]);
+            $terms_to_set['tag'] = $tag_terms;
+        }
+        
+        if (!empty($terms_to_set)) {
+            $this->entityOpportunityModel->setTerms($terms_to_set);
         }
     }
 }
