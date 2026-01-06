@@ -336,7 +336,7 @@
                             .mc-avatar--big {
                                 min-width: unset;
                                 min-height: unset;
-                                @extend %full-width;
+                              /*   @extend %full-width; */
                                 height: 100%;
                             }
 
@@ -472,7 +472,22 @@
         }
     }
 
-    // Social Media
+    .social-media-card {
+        margin-top: 0px;  
+        width: 100%;
+        max-width: 100%;
+        box-sizing: border-box;
+    }
+
+    .social-media-card {
+        width: 100%;
+        max-width: 100%;
+    }
+
+    .social-media-card .mc-card__content {
+        padding: 24px;
+    }
+
     &__social-media {
         @extend %full-width;
         margin: 0 0 size(24);
