@@ -8,7 +8,8 @@ use MapasCulturais\i;
 
 $entity = $this->controller->requestedEntity;
 ?>
-<div v-if="registration.consolidatedDetails.sentEvaluationCount" class="registration-results">  
+
+<div v-if="!registration.consolidatedDetails.hasPendingEvaluations" class="registration-results">  
     <mc-modal :title="`${phase.name} - ${registration.number}`" classes="registration-results__modal">
         <template #default>
             <?php foreach($app->getRegisteredEvaluationMethods() as $evaluation_method): ?>

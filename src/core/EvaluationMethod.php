@@ -266,6 +266,7 @@ abstract class EvaluationMethod extends Module implements \JsonSerializable{
         $app = App::i();
         $result = $this->_getConsolidatedDetails($registration);
         $result['sentEvaluationCount'] = count($registration->sentEvaluations);
+        $result['hasPendingEvaluations'] = $registration->hasPendingEvaluations();
 
         $app->applyHookBoundTo($registration, "{$registration->hookPrefix}.details", [&$result]);
         return $result;
