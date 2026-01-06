@@ -171,7 +171,7 @@ class EvaluationPhaseBuilder extends Builder
                     $evaluation->registration = $registration;
                     $evaluation->user = $valuer;
                     $evaluation->status = $status;
-                    eval(\psy\sh());
+
                     $evaluation->save(true);
                 }
             }
@@ -276,6 +276,12 @@ class EvaluationPhaseBuilder extends Builder
 
         $this->instance->fetchFields = $fetch_fields;
 
+        return $this;
+    }
+
+    public function setCutoffScore(float $cutoffScore): self
+    {
+        $this->instance->cutoffScore = $cutoffScore;
         return $this;
     }
 
