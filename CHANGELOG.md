@@ -5,6 +5,10 @@ Todas as mudanças notáveis no projeto serão documentadas neste arquivo.
 O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/)
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [7.6.30] - 2026-01-06
+### Melhorias
+- Implementa forma de exibir todas as taxonomias obrigatórias no modal de criação de agente
+
 ## [7.6.29] - 2026-01-05
 ### Correções
 - Corrige copia de áreas de interesse ao criar um modelo de oportunidade
