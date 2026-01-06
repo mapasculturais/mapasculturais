@@ -8,6 +8,7 @@ use MapasCulturais\Entities\Opportunity;
 use Tests\Abstract\TestCase;
 use Tests\Builders\PhasePeriods\ConcurrentEndingAfter;
 use Tests\Builders\PhasePeriods\Past;
+use Tests\Directors\QuotaRegistrationDirector;
 use Tests\Enums\EvaluationMethods;
 use Tests\Enums\ProponentTypes;
 use Tests\Fixtures;
@@ -20,6 +21,14 @@ class EvaluationMethodTechnicalTest extends TestCase
     use OpportunityBuilder,
         RegistrationDirector,
         UserDirector;
+
+    protected QuotaRegistrationDirector $quotaRegistrationDirector;
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+        $this->quotaRegistrationDirector = new QuotaRegistrationDirector();
+    }
 
 
     function testQuotaInFirstEvaluationPhase() {
@@ -161,5 +170,163 @@ class EvaluationMethodTechnicalTest extends TestCase
 
         $eligible = array_filter($classification_zone, fn($registration) => !!$registration['eligible']);
         $this->assertCount(3, $eligible, "Certificando que o número de inscrições elegíveis a cota dentro da zona de classificação está correto");
+    }
+
+    protected function createOpportunityWithRanges($admin): Opportunity
+    {
+        $opportunity = $this->opportunityBuilder
+            ->reset(owner: $admin->profile, owner_entity: $admin->profile)
+            ->fillRequiredProperties()
+            ->setVacancies(100)
+            ->setRanges([
+                [
+                    'label' => 'Longa Metragem',
+                    'limit' => 30,
+                    'value' => 0
+                ],
+                [
+                    'label' => 'Curta Metragem',
+                    'limit' => 70,
+                    'value' => 0
+                ]
+            ])
+            ->firstPhase()
+                ->setRegistrationPeriod(new Past)
+                ->save()
+                ->done()
+            ->addEvaluationPhase(EvaluationMethods::technical)
+                ->setEvaluationPeriod(new ConcurrentEndingAfter)
+                ->setCutoffScore(40.0)
+                ->save()
+                ->config()
+                    ->done()
+                ->done()
+            ->save()
+            ->refresh()
+            ->getInstance();
+
+        return $opportunity;
+    }
+
+    function testRangeClassificationIdeal()
+    {
+        $admin = $this->userDirector->createUser('admin');
+        $this->login($admin);
+
+        $opportunity = $this->createOpportunityWithRanges($admin);
+
+        // Cria inscrições para o cenário ideal
+        $registrations = $this->quotaRegistrationDirector->cenarioIdealFaixas($opportunity);
+
+        $app = App::i();
+        /** @var OpportunityController */
+        $opportunity_controller = $app->controller('opportunity');
+
+        // Obtém a classificação ordenada por cotas (que considera faixas)
+        $query_result = $opportunity_controller->apiFindRegistrations($opportunity, [
+            '@select' => 'number,range,score,eligible',
+            '@order' => '@quota'
+        ], true);
+
+        // Filtra as inscrições classificadas respeitando os limites de cada faixa (30 Longas + 70 Curtas)
+        $classification_zone = [];
+        $longa_count = 0;
+        $curta_count = 0;
+
+        foreach ($query_result->registrations as $registration) {
+            // Pula inscrições abaixo da nota de corte
+            if ($registration['score'] < 40.0) {
+                continue;
+            }
+
+            // Adiciona até o limite de cada faixa
+            if ($registration['range'] === 'Longa Metragem' && $longa_count < 30) {
+                $classification_zone[] = $registration;
+                $longa_count++;
+            } elseif ($registration['range'] === 'Curta Metragem' && $curta_count < 70) {
+                $classification_zone[] = $registration;
+                $curta_count++;
+            }
+            
+            // Para quando atingir o total de vagas
+            if (count($classification_zone) >= 100) {
+                break;
+            }
+        }
+
+        // Verifica que foram selecionados exatamente 100
+        $this->assertCount(100, $classification_zone, "Deve ter exatamente 100 inscrições classificadas");
+
+        // Verifica que foram selecionados exatamente 30 Longas
+        $this->assertEquals(30, $longa_count, "Deve ter exatamente 30 inscrições de Longa Metragem classificadas");
+
+        // Verifica que foram selecionados exatamente 70 Curtas
+        $this->assertEquals(70, $curta_count, "Deve ter exatamente 70 inscrições de Curta Metragem classificadas");
+
+        // Verifica que todas as inscrições selecionadas têm nota >= 40 (nota de corte)
+        foreach ($classification_zone as $registration) {
+            $this->assertGreaterThanOrEqual(40.0, $registration['score'], "Todas as inscrições classificadas devem ter nota >= 40 (nota de corte)");
+        }
+    }
+
+    function testRangeClassificationRestricted()
+    {
+        $admin = $this->userDirector->createUser('admin');
+        $this->login($admin);
+
+        $opportunity = $this->createOpportunityWithRanges($admin);
+
+        // Cria inscrições para o cenário restrito
+        $registrations = $this->quotaRegistrationDirector->cenarioRestritoFaixas($opportunity);
+
+        $app = App::i();
+        /** @var OpportunityController */
+        $opportunity_controller = $app->controller('opportunity');
+
+        // Obtém a classificação ordenada por cotas (que considera faixas)
+        $query_result = $opportunity_controller->apiFindRegistrations($opportunity, [
+            '@select' => 'number,range,score,eligible',
+            '@order' => '@quota'
+        ], true);
+
+        // Filtra as inscrições classificadas respeitando os limites de cada faixa (máx. 30 Longas + 70 Curtas)
+        $classification_zone = [];
+        $longa_count = 0;
+        $curta_count = 0;
+        
+        foreach ($query_result->registrations as $registration) {
+            // Pula inscrições abaixo da nota de corte
+            if ($registration['score'] < 40.0) {
+                continue;
+            }
+            
+            // Adiciona até o limite de cada faixa
+            if ($registration['range'] === 'Longa Metragem' && $longa_count < 30) {
+                $classification_zone[] = $registration;
+                $longa_count++;
+            } elseif ($registration['range'] === 'Curta Metragem' && $curta_count < 70) {
+                $classification_zone[] = $registration;
+                $curta_count++;
+            }
+        }
+
+        // Verifica que foram selecionados exatamente 70 Curtas
+        $this->assertEquals(70, $curta_count, "Deve ter exatamente 70 inscrições de Curta Metragem classificadas");
+
+        // Verifica que foram selecionados apenas 10 Longas (não 30, pois faltam candidatos qualificados)
+        $this->assertEquals(10, $longa_count, "Deve ter apenas 10 inscrições de Longa Metragem classificadas (faltam candidatos qualificados)");
+
+        // Verifica que o total é 80 (não 100, pois faltam 20 vagas de Longa)
+        $total_classified = $longa_count + $curta_count;
+        $this->assertEquals(80, $total_classified, "Total de classificados deve ser 80 (70 Curtas + 10 Longas)");
+
+        // Verifica que todas as inscrições selecionadas têm nota >= 40 (nota de corte)
+        foreach ($classification_zone as $registration) {
+            $this->assertGreaterThanOrEqual(40.0, $registration['score'], "Todas as inscrições classificadas devem ter nota >= 40 (nota de corte)");
+        }
+
+        // Verifica que NÃO há inscrições de Curta preenchendo vagas de Longa
+        $this->assertLessThanOrEqual(30, $longa_count, "Não pode ter mais de 30 Longas (limite da faixa)");
+        $this->assertLessThanOrEqual(70, $curta_count, "Não pode ter mais de 70 Curtas (limite da faixa)");
     }
 }
