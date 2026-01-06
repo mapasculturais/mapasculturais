@@ -843,6 +843,42 @@ class Registration extends \MapasCulturais\Entity
         return (array) $exceptions->exclude;
     }
 
+
+    /**
+     * Verifica se a inscrição tem avaliações pendentes
+     * 
+     * @return bool
+     */
+    function hasPendingEvaluations(): bool
+    {
+        $app = App::i();
+        $conn = $app->em->getConnection();
+        $evaluations = $conn->fetchAll(
+            "
+            SELECT
+               *
+            FROM
+                evaluations
+            WHERE
+                registration_id = :registration_id AND
+                opportunity_id = :opportunity_id",
+            [
+                'registration_id' => $this->id,
+                'opportunity_id' => $this->opportunity->id
+            ]
+        );
+
+        $result = false;
+        foreach ($evaluations as $evaluation) {
+            if ($evaluation['evaluation_status'] !== RegistrationEvaluation::STATUS_SENT) {
+                $result = true;
+                break;
+            }
+        }
+
+        return $result;
+    }
+
     /** 
      * Retorna os avaliadores da inscrição agrupados pelos comitês
      * 
