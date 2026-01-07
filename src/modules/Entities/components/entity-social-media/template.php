@@ -8,13 +8,13 @@ use MapasCulturais\i;
 
 $this->import('
     entity-field
-    collapsible-content
+    mc-collapsible
     mc-title
     mc-icon
 ');
 ?>
 
-<collapsible-content :open="show" :classes="classes">
+<mc-collapsible :open="show" :classes="classes">
     <template #header>
         <mc-title tag="h4" size="medium" class="bold">
             <?= i::__("Redes sociais") ?>
@@ -122,4 +122,4 @@ $this->import('
             </div>
         </div>
     </template>
-</collapsible-content>
+</mc-collapsible>
