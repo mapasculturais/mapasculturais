@@ -618,7 +618,12 @@ class Quotas {
 
             foreach($this->quotaRules as $rule) {
                 $field_name = $rule->fields->$proponent_type->fieldName ??  null;
-                if($field_name && in_array($registration->$field_name, $rule->fields->$proponent_type->eligibleValues)) {
+                if(!$field_name) {
+                    continue;
+                }
+
+                $field_value = (array) $registration->$field_name;
+                if(array_intersect($field_value, $rule->fields->$proponent_type->eligibleValues)) {
                     $result[] = $this->getQuotaTypeSlugByRule($rule);
                     $quotas[] = $rule->title;
                 }
