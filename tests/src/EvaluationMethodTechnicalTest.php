@@ -178,18 +178,8 @@ class EvaluationMethodTechnicalTest extends TestCase
             ->reset(owner: $admin->profile, owner_entity: $admin->profile)
             ->fillRequiredProperties()
             ->setVacancies(100)
-            ->setRanges([
-                [
-                    'label' => 'Longa Metragem',
-                    'limit' => 30,
-                    'value' => 0
-                ],
-                [
-                    'label' => 'Curta Metragem',
-                    'limit' => 70,
-                    'value' => 0
-                ]
-            ])
+            ->addRange('Longa Metragem', 30, 0)
+            ->addRange('Curta Metragem', 70, 0)
             ->firstPhase()
                 ->setRegistrationPeriod(new Past)
                 ->save()
@@ -198,11 +188,8 @@ class EvaluationMethodTechnicalTest extends TestCase
                 ->setEvaluationPeriod(new ConcurrentEndingAfter)
                 ->setCutoffScore(40.0)
                 ->save()
-                ->config()
-                    ->done()
                 ->done()
             ->save()
-            ->refresh()
             ->getInstance();
 
         return $opportunity;
@@ -220,42 +207,32 @@ class EvaluationMethodTechnicalTest extends TestCase
 
         $app = App::i();
         /** @var OpportunityController */
-        $opportunity_controller = $app->controller('opportunity');
+        $opportunity_controller = $app->controller('opportunity'); 
 
-        // Obtém a classificação ordenada por cotas (que considera faixas)
+        // Obtém a classificação ordenada por cotas
         $query_result = $opportunity_controller->apiFindRegistrations($opportunity, [
             '@select' => 'number,range,score,eligible',
             '@order' => '@quota'
         ], true);
 
         // Filtra as inscrições classificadas respeitando os limites de cada faixa (30 Longas + 70 Curtas)
-        $classification_zone = [];
         $longa_count = 0;
         $curta_count = 0;
+        $lowest_score = 100;
 
-        foreach ($query_result->registrations as $registration) {
-            // Pula inscrições abaixo da nota de corte
-            if ($registration['score'] < 40.0) {
-                continue;
+        for($i = 0; $i < 100; $i++) {
+            $registration = $query_result->registrations[$i];
+
+            $lowest_score = min($lowest_score, $registration['score']);
+
+            if ($registration['range'] === 'Longa Metragem') {
+                $longa_count++;
             }
 
-            // Adiciona até o limite de cada faixa
-            if ($registration['range'] === 'Longa Metragem' && $longa_count < 30) {
-                $classification_zone[] = $registration;
-                $longa_count++;
-            } elseif ($registration['range'] === 'Curta Metragem' && $curta_count < 70) {
-                $classification_zone[] = $registration;
+            if ($registration['range'] === 'Curta Metragem') {
                 $curta_count++;
             }
-            
-            // Para quando atingir o total de vagas
-            if (count($classification_zone) >= 100) {
-                break;
-            }
         }
-
-        // Verifica que foram selecionados exatamente 100
-        $this->assertCount(100, $classification_zone, "Deve ter exatamente 100 inscrições classificadas");
 
         // Verifica que foram selecionados exatamente 30 Longas
         $this->assertEquals(30, $longa_count, "Deve ter exatamente 30 inscrições de Longa Metragem classificadas");
@@ -264,9 +241,74 @@ class EvaluationMethodTechnicalTest extends TestCase
         $this->assertEquals(70, $curta_count, "Deve ter exatamente 70 inscrições de Curta Metragem classificadas");
 
         // Verifica que todas as inscrições selecionadas têm nota >= 40 (nota de corte)
-        foreach ($classification_zone as $registration) {
-            $this->assertGreaterThanOrEqual(40.0, $registration['score'], "Todas as inscrições classificadas devem ter nota >= 40 (nota de corte)");
+        $this->assertGreaterThanOrEqual(40.0, $lowest_score, "A menor nota deve ser >= 40 (nota de corte)");
+
+        // ================================
+        // Testando com paginação
+
+        $query_result = $opportunity_controller->apiFindRegistrations($opportunity, [
+            '@select' => 'number,range,score,eligible',
+            '@order' => '@quota',
+            '@limit' => 100,
+        ], true);
+
+        // Filtra as inscrições classificadas respeitando os limites de cada faixa (30 Longas + 70 Curtas)
+        $longa_count = 0;
+        $curta_count = 0;
+        $lowest_score = 100;
+
+        foreach($query_result->registrations as $registration) {
+            $lowest_score = min($lowest_score, $registration['score']);
+
+            if ($registration['range'] === 'Longa Metragem') {
+                $longa_count++;
+            }
+
+            if ($registration['range'] === 'Curta Metragem') {
+                $curta_count++;
+            }
         }
+
+        // Verifica que foram selecionados exatamente 30 Longas
+        $this->assertEquals(30, $longa_count, "[LIMIT 100] Deve ter exatamente 30 inscrições de Longa Metragem classificadas");
+
+        // Verifica que foram selecionados exatamente 70 Curtas
+        $this->assertEquals(70, $curta_count, "[LIMIT 100] Deve ter exatamente 70 inscrições de Curta Metragem classificadas");
+
+        // Verifica que todas as inscrições selecionadas têm nota >= 40 (nota de corte)
+        $this->assertGreaterThanOrEqual(40.0, $lowest_score, "[LIMIT 100] A menor nota deve ser >= 40 (nota de corte)");
+
+        // ================================
+        // Testando com paginação 10 em 10
+        $longa_count = 0;
+        $curta_count = 0;
+        $lowest_score = 100;
+
+        for($page = 1; $page <= 10; $page++) {
+            $query_result = $opportunity_controller->apiFindRegistrations($opportunity, [
+                '@select' => 'number,range,score,eligible',
+                '@order' => '@quota',
+                '@limit' => 10,
+                '@page' => $page,
+            ], true);
+
+            foreach($query_result->registrations as $registration) {
+                $lowest_score = min($lowest_score, $registration['score']);
+                
+                if ($registration['range'] === 'Longa Metragem') {
+                    $longa_count++;
+                }
+    
+                if ($registration['range'] === 'Curta Metragem') {
+                    $curta_count++;
+                }
+            }
+        }      
+
+        $this->assertEquals(30, $longa_count, "[PAGINAÇÃO] Deve ter exatamente 30 inscrições de Longa Metragem classificadas");
+        $this->assertEquals(70, $curta_count, "[PAGINAÇÃO] Deve ter exatamente 70 inscrições de Curta Metragem classificadas");
+        $this->assertGreaterThanOrEqual(40.0, $lowest_score, "[PAGINAÇÃO] A menor nota deve ser >= 40 (nota de corte)");
+
     }
 
     function testRangeClassificationRestricted()
@@ -283,50 +325,104 @@ class EvaluationMethodTechnicalTest extends TestCase
         /** @var OpportunityController */
         $opportunity_controller = $app->controller('opportunity');
 
-        // Obtém a classificação ordenada por cotas (que considera faixas)
+        // Obtém a classificação ordenada por cotas
         $query_result = $opportunity_controller->apiFindRegistrations($opportunity, [
             '@select' => 'number,range,score,eligible',
             '@order' => '@quota'
         ], true);
 
         // Filtra as inscrições classificadas respeitando os limites de cada faixa (máx. 30 Longas + 70 Curtas)
-        $classification_zone = [];
         $longa_count = 0;
         $curta_count = 0;
-        
-        foreach ($query_result->registrations as $registration) {
-            // Pula inscrições abaixo da nota de corte
-            if ($registration['score'] < 40.0) {
-                continue;
-            }
-            
-            // Adiciona até o limite de cada faixa
-            if ($registration['range'] === 'Longa Metragem' && $longa_count < 30) {
-                $classification_zone[] = $registration;
+        $lowest_score = 100;
+
+        for($i = 0; $i < 100; $i++) {
+            $registration = $query_result->registrations[$i];
+
+            $lowest_score = min($lowest_score, $registration['score']);
+
+            if ($registration['range'] === 'Longa Metragem') {
                 $longa_count++;
-            } elseif ($registration['range'] === 'Curta Metragem' && $curta_count < 70) {
-                $classification_zone[] = $registration;
+            }
+
+            if ($registration['range'] === 'Curta Metragem') {
                 $curta_count++;
             }
         }
 
-        // Verifica que foram selecionados exatamente 70 Curtas
-        $this->assertEquals(70, $curta_count, "Deve ter exatamente 70 inscrições de Curta Metragem classificadas");
+        // Verifica que foram selecionados 90 Curtas (70 da faixa + 20 que preenchem vagas de Longa não preenchidas)
+        $this->assertEquals(90, $curta_count, "Deve ter 90 inscrições de Curta Metragem classificadas (70 da faixa + 20 preenchendo vagas de Longa)");
 
         // Verifica que foram selecionados apenas 10 Longas (não 30, pois faltam candidatos qualificados)
         $this->assertEquals(10, $longa_count, "Deve ter apenas 10 inscrições de Longa Metragem classificadas (faltam candidatos qualificados)");
 
-        // Verifica que o total é 80 (não 100, pois faltam 20 vagas de Longa)
-        $total_classified = $longa_count + $curta_count;
-        $this->assertEquals(80, $total_classified, "Total de classificados deve ser 80 (70 Curtas + 10 Longas)");
-
         // Verifica que todas as inscrições selecionadas têm nota >= 40 (nota de corte)
-        foreach ($classification_zone as $registration) {
-            $this->assertGreaterThanOrEqual(40.0, $registration['score'], "Todas as inscrições classificadas devem ter nota >= 40 (nota de corte)");
+        $this->assertGreaterThanOrEqual(40.0, $lowest_score, "A menor nota deve ser >= 40 (nota de corte)");
+
+        // ================================
+        // Testando com paginação
+
+        $query_result = $opportunity_controller->apiFindRegistrations($opportunity, [
+            '@select' => 'number,range,score,eligible',
+            '@order' => '@quota',
+            '@limit' => 100,
+        ], true);
+
+        // Filtra as inscrições classificadas respeitando os limites de cada faixa (máx. 30 Longas + 70 Curtas)
+        $longa_count = 0;
+        $curta_count = 0;
+        $lowest_score = 100;
+
+        foreach($query_result->registrations as $registration) {
+            $lowest_score = min($lowest_score, $registration['score']);
+
+            if ($registration['range'] === 'Longa Metragem') {
+                $longa_count++;
+            }
+
+            if ($registration['range'] === 'Curta Metragem') {
+                $curta_count++;
+            }
         }
 
-        // Verifica que NÃO há inscrições de Curta preenchendo vagas de Longa
-        $this->assertLessThanOrEqual(30, $longa_count, "Não pode ter mais de 30 Longas (limite da faixa)");
-        $this->assertLessThanOrEqual(70, $curta_count, "Não pode ter mais de 70 Curtas (limite da faixa)");
+        // Verifica que foram selecionados 90 Curtas (70 da faixa + 20 que preenchem vagas de Longa não preenchidas)
+        $this->assertEquals(90, $curta_count, "[LIMIT 100] Deve ter 90 inscrições de Curta Metragem classificadas (70 da faixa + 20 preenchendo vagas de Longa)");
+
+        // Verifica que foram selecionados apenas 10 Longas (não 30, pois faltam candidatos qualificados)
+        $this->assertEquals(10, $longa_count, "[LIMIT 100] Deve ter apenas 10 inscrições de Longa Metragem classificadas (faltam candidatos qualificados)");
+
+        // Verifica que todas as inscrições selecionadas têm nota >= 40 (nota de corte)
+        $this->assertGreaterThanOrEqual(40.0, $lowest_score, "[LIMIT 100] A menor nota deve ser >= 40 (nota de corte)");
+
+        // ================================
+        // Testando com paginação 10 em 10
+        $longa_count = 0;
+        $curta_count = 0;
+        $lowest_score = 100;
+
+        for($page = 1; $page <= 10; $page++) {
+            $query_result = $opportunity_controller->apiFindRegistrations($opportunity, [
+                '@select' => 'number,range,score,eligible',
+                '@order' => '@quota',
+                '@limit' => 10,
+                '@page' => $page,
+            ], true);
+
+            foreach($query_result->registrations as $registration) {
+                $lowest_score = min($lowest_score, $registration['score']);
+                
+                if ($registration['range'] === 'Longa Metragem') {
+                    $longa_count++;
+                }
+    
+                if ($registration['range'] === 'Curta Metragem') {
+                    $curta_count++;
+                }
+            }
+        }      
+
+        $this->assertEquals(90, $curta_count, "[PAGINAÇÃO] Deve ter 90 inscrições de Curta Metragem classificadas (70 da faixa + 20 preenchendo vagas de Longa)");
+        $this->assertEquals(10, $longa_count, "[PAGINAÇÃO] Deve ter apenas 10 inscrições de Longa Metragem classificadas (faltam candidatos qualificados)");
+        $this->assertGreaterThanOrEqual(40.0, $lowest_score, "[PAGINAÇÃO] A menor nota deve ser >= 40 (nota de corte)");
     }
 }
