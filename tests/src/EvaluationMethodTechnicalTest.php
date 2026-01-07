@@ -27,7 +27,7 @@ class EvaluationMethodTechnicalTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->quotaRegistrationDirector = new QuotaRegistrationDirector();
+        $this->quotaRegistrationDirector = new QuotaRegistrationDirector($this->opportunityBuilder, $this->registrationDirector);
     }
 
 
@@ -195,6 +195,44 @@ class EvaluationMethodTechnicalTest extends TestCase
         return $opportunity;
     }
 
+    protected function createOpportunityWithQuotas($admin): Opportunity
+    {
+        $opportunity = $this->opportunityBuilder
+            ->reset(owner: $admin->profile, owner_entity: $admin->profile)
+            ->fillRequiredProperties()
+            ->setVacancies(15)
+            ->firstPhase()
+                ->setRegistrationPeriod(new Past)
+                ->enableQuotaQuestion()
+                ->save()
+                ->createStep('Etapa 1')
+                ->createOwnerField('raca', 'raca', 'Raça/Cor', required: false)
+                ->createOwnerField('pessoaDeficiente', 'pessoaDeficiente', 'Pessoa com Deficiência', required: false)
+                ->save()
+                ->done()
+            ->addEvaluationPhase(EvaluationMethods::technical)
+                ->setEvaluationPeriod(new ConcurrentEndingAfter)
+                ->setCutoffScore(40.0)
+                ->save()
+                ->config()
+                    ->quota()
+                    // ->setConsiderQuotasInGeneralList(true)
+                        ->addRule('Pessoas Negras', 3)
+                            ->addRuleField('raca', ['Preta', 'Parda'])
+                        ->addRule('Indígenas', 1)
+                            ->addRuleField('raca', ['Indígena'])
+                        ->addRule('PCD', 1)
+                            ->addRuleField('pessoaDeficiente', ['Auditiva', 'Física-motora', 'Intelectual', 'Múltipla', 'Transtorno do Espectro Autista', 'Visual', 'Outras'])
+                    ->done() 
+                ->done()      
+                ->done()      
+            ->save()
+            ->refresh()
+            ->getInstance();
+
+        return $opportunity;
+    }
+
     function testRangeClassificationIdeal()
     {
         $admin = $this->userDirector->createUser('admin');
@@ -203,7 +241,7 @@ class EvaluationMethodTechnicalTest extends TestCase
         $opportunity = $this->createOpportunityWithRanges($admin);
 
         // Cria inscrições para o cenário ideal
-        $registrations = $this->quotaRegistrationDirector->cenarioIdealFaixas($opportunity);
+        $registrations = $this->quotaRegistrationDirector->idealRangesScenario($opportunity);
 
         $app = App::i();
         /** @var OpportunityController */
@@ -319,7 +357,7 @@ class EvaluationMethodTechnicalTest extends TestCase
         $opportunity = $this->createOpportunityWithRanges($admin);
 
         // Cria inscrições para o cenário restrito
-        $registrations = $this->quotaRegistrationDirector->cenarioRestritoFaixas($opportunity);
+        $registrations = $this->quotaRegistrationDirector->restrictedRangesScenario($opportunity);
 
         $app = App::i();
         /** @var OpportunityController */
@@ -424,5 +462,325 @@ class EvaluationMethodTechnicalTest extends TestCase
         $this->assertEquals(90, $curta_count, "[PAGINAÇÃO] Deve ter 90 inscrições de Curta Metragem classificadas (70 da faixa + 20 preenchendo vagas de Longa)");
         $this->assertEquals(10, $longa_count, "[PAGINAÇÃO] Deve ter apenas 10 inscrições de Longa Metragem classificadas (faltam candidatos qualificados)");
         $this->assertGreaterThanOrEqual(40.0, $lowest_score, "[PAGINAÇÃO] A menor nota deve ser >= 40 (nota de corte)");
+    }
+
+    function testQuotaClassificationIdeal()
+    {
+        $admin = $this->userDirector->createUser('admin');
+        $this->login($admin);
+
+        $opportunity = $this->createOpportunityWithQuotas($admin);
+
+        // Cria inscrições para o cenário ideal
+        $registrations = $this->quotaRegistrationDirector->idealQuotasScenario($opportunity);
+ 
+        $app = App::i();
+        /** @var OpportunityController */
+        $opportunity_controller = $app->controller('opportunity');
+
+        // Obtém os nomes corretos dos campos
+        $field_raca = $this->opportunityBuilder->getFieldName('raca', $opportunity);
+        $field_pessoa_deficiente = $this->opportunityBuilder->getFieldName('pessoaDeficiente', $opportunity);
+
+        // Obtém a classificação ordenada por cotas
+        $query_result = $opportunity_controller->apiFindRegistrations($opportunity, [
+            '@select' => "number,{$field_raca},{$field_pessoa_deficiente},score,eligible,quotas",
+            '@order' => '@quota',
+        ], true);
+        
+        // Conta as inscrições classificadas respeitando os limites de cada cota
+        $cutoff_score = $opportunity->evaluationMethodConfiguration->cutoffScore;
+        $negra_count = 0;
+        $indigena_count = 0;
+        $pcd_count = 0;
+        $ampla_count = 0;
+        $lowest_score = 100;
+        $total_vacancies = 15;
+
+        for($i = 0; $i < $total_vacancies && $i < count($query_result->registrations); $i++) {
+            $registration = $query_result->registrations[$i];
+            $lowest_score = min($lowest_score, $registration['score']);
+
+            // Verifica se é cotista e conta por tipo de cota
+            $quotas = $registration['quotas'] ?? [];
+            $is_quota = !empty($quotas);
+            
+            if ($is_quota) {
+                if (in_array('Pessoas Negras', $quotas)) {
+                    $negra_count++;
+                } 
+                
+                if (in_array('Indígenas', $quotas)) {
+                    $indigena_count++;
+                }
+                
+                if (in_array('PCD', $quotas)) {
+                    $pcd_count++;
+                }
+            } else {
+                $ampla_count++;
+            }
+        }
+
+        // Verifica que foram selecionados exatamente 3 Negras
+        $this->assertEquals(3, $negra_count, "Deve ter exatamente 3 inscrições de Pessoas Negras classificadas");
+
+        // Verifica que foram selecionados exatamente 1 Indígena
+        $this->assertEquals(1, $indigena_count, "Deve ter exatamente 1 inscrição de Indígenas classificada");
+
+        // Verifica que foram selecionados exatamente 1 PCD
+        $this->assertEquals(1, $pcd_count, "Deve ter exatamente 1 inscrição de PCD classificada");
+
+        // Verifica que todas as inscrições selecionadas têm nota >= nota de corte
+        $this->assertGreaterThanOrEqual($cutoff_score, $lowest_score, "A menor nota deve ser >= {$cutoff_score} (nota de corte)");
+
+        // ================================
+        // Testando com paginação
+
+        $query_result = $opportunity_controller->apiFindRegistrations($opportunity, [
+            '@select' => "number,{$field_raca},{$field_pessoa_deficiente},score,eligible,quotas",
+            '@order' => '@quota',
+            '@limit' => 15,
+        ], true);
+
+        // Conta as inscrições classificadas respeitando os limites de cada cota
+        $negra_count = 0;
+        $indigena_count = 0;
+        $pcd_count = 0;
+        $ampla_count = 0;
+        $lowest_score = 100;
+
+        foreach($query_result->registrations as $registration) {
+            $lowest_score = min($lowest_score, $registration['score']);
+
+            // Verifica se é cotista e conta por tipo de cota
+            $quotas = $registration['quotas'] ?? [];
+            $is_quota = !empty($quotas);
+
+            if ($is_quota) {
+                if (in_array('Pessoas Negras', $quotas)) {
+                    $negra_count++;
+                } elseif (in_array('Indígenas', $quotas)) {
+                    $indigena_count++;
+                } elseif (in_array('PCD', $quotas)) {
+                    $pcd_count++;
+                }
+            } else {
+                $ampla_count++;
+            }
+        }
+
+        // Verifica que foram selecionados exatamente 3 Negras
+        $this->assertEquals(3, $negra_count, "[LIMIT 15] Deve ter exatamente 3 inscrições de Pessoas Negras classificadas");
+
+        // Verifica que foram selecionados exatamente 1 Indígena
+        $this->assertEquals(1, $indigena_count, "[LIMIT 15] Deve ter exatamente 1 inscrição de Indígenas classificada");
+
+        // Verifica que foram selecionados exatamente 1 PCD
+        $this->assertEquals(1, $pcd_count, "[LIMIT 15] Deve ter exatamente 1 inscrição de PCD classificada");
+
+        // Verifica que todas as inscrições selecionadas têm nota >= nota de corte
+        $this->assertGreaterThanOrEqual($cutoff_score, $lowest_score, "[LIMIT 15] A menor nota deve ser >= {$cutoff_score} (nota de corte)");
+
+        // ================================
+        // Testando com paginação 10 em 10
+        $negra_count = 0;
+        $indigena_count = 0;
+        $pcd_count = 0;
+        $ampla_count = 0;
+        $lowest_score = 100;
+
+        for($page = 1; $page <= 4; $page++) {
+            $query_result = $opportunity_controller->apiFindRegistrations($opportunity, [
+                '@select' => "number,{$field_raca},{$field_pessoa_deficiente},score,eligible,quotas",
+                '@order' => '@quota',
+                '@limit' => 4,
+                '@page' => $page,
+            ], true);
+
+            foreach($query_result->registrations as $registration) {
+                $lowest_score = min($lowest_score, $registration['score']);
+                
+                // Verifica se é cotista e conta por tipo de cota
+                $quotas = $registration['quotas'] ?? [];
+                $is_quota = !empty($quotas);
+
+                if ($is_quota) {
+                    if (in_array('Pessoas Negras', $quotas)) {
+                        $negra_count++;
+                    } elseif (in_array('Indígenas', $quotas)) {
+                        $indigena_count++;
+                    } elseif (in_array('PCD', $quotas)) {
+                        $pcd_count++;
+                    }
+                } else {
+                    $ampla_count++;
+                }
+            }
+        }      
+
+        $this->assertEquals(3, $negra_count, "[PAGINAÇÃO] Deve ter exatamente 3 inscrições de Pessoas Negras classificadas");
+        $this->assertEquals(1, $indigena_count, "[PAGINAÇÃO] Deve ter exatamente 1 inscrição de Indígenas classificada");
+        $this->assertEquals(1, $pcd_count, "[PAGINAÇÃO] Deve ter exatamente 1 inscrição de PCD classificada");
+        $this->assertGreaterThanOrEqual($cutoff_score, $lowest_score, "[PAGINAÇÃO] A menor nota deve ser >= {$cutoff_score} (nota de corte)");
+
+    }
+
+    function testQuotaClassificationRestricted()
+    {
+        $admin = $this->userDirector->createUser('admin');
+        $this->login($admin);
+
+        $opportunity = $this->createOpportunityWithQuotas($admin);
+
+        // Cria inscrições para o cenário restrito
+        $registrations = $this->quotaRegistrationDirector->restrictedQuotasScenario($opportunity);
+
+        $app = App::i();
+        /** @var OpportunityController */
+        $opportunity_controller = $app->controller('opportunity');
+
+        // Obtém os nomes corretos dos campos
+        $field_raca = $this->opportunityBuilder->getFieldName('raca', $opportunity);
+        $field_pessoa_deficiente = $this->opportunityBuilder->getFieldName('pessoaDeficiente', $opportunity);
+
+        // Obtém a classificação ordenada por cotas
+        $query_result = $opportunity_controller->apiFindRegistrations($opportunity, [
+            '@select' => "number,{$field_raca},{$field_pessoa_deficiente},score,eligible,quotas",
+            '@order' => '@quota'
+        ], true);
+
+        // Conta as inscrições classificadas respeitando os limites de cada cota
+        $cutoff_score = $opportunity->evaluationMethodConfiguration->cutoffScore;
+        $negra_count = 0;
+        $indigena_count = 0;
+        $pcd_count = 0;
+        $ampla_count = 0;
+        $lowest_score = 100;
+
+        for($i = 0; $i < 15; $i++) {
+            $registration = $query_result->registrations[$i];
+
+            $lowest_score = min($lowest_score, $registration['score']);
+
+            // Verifica se é cotista e conta por tipo de cota
+            $quotas = $registration['quotas'] ?? [];
+            $is_quota = !empty($quotas);
+
+            if ($is_quota) {
+                if (in_array('Pessoas Negras', $quotas)) {
+                    $negra_count++;
+                } elseif (in_array('Indígenas', $quotas)) {
+                    $indigena_count++;
+                } elseif (in_array('PCD', $quotas)) {
+                    $pcd_count++;
+                }
+            } else {
+                $ampla_count++;
+            }
+        }
+
+        // Verifica que foram selecionados exatamente 3 Negras
+        $this->assertEquals(3, $negra_count, "Deve ter exatamente 3 inscrições de Pessoas Negras classificadas");
+
+        // Verifica que foram selecionados 0 Indígenas (não 1, pois faltam candidatos qualificados)
+        $this->assertEquals(0, $indigena_count, "Deve ter 0 inscrições de Indígenas classificadas (faltam candidatos qualificados)");
+
+        // Verifica que foram selecionados 0 PCD (não 1, pois faltam candidatos qualificados)
+        $this->assertEquals(0, $pcd_count, "Deve ter 0 inscrições de PCD classificadas (faltam candidatos qualificados)");
+
+        // Verifica que todas as inscrições selecionadas têm nota >= nota de corte
+        $this->assertGreaterThanOrEqual($cutoff_score, $lowest_score, "A menor nota deve ser >= {$cutoff_score} (nota de corte)");
+
+        // ================================
+        // Testando com paginação
+
+        $query_result = $opportunity_controller->apiFindRegistrations($opportunity, [
+            '@select' => 'number,raca,pessoaDeficiente,score,eligible,quotas',
+            '@order' => '@quota',
+            '@limit' => 15,
+        ], true);
+
+        // Conta as inscrições classificadas respeitando os limites de cada cota
+        $negra_count = 0;
+        $indigena_count = 0;
+        $pcd_count = 0;
+        $ampla_count = 0;
+        $lowest_score = 100;
+
+        foreach($query_result->registrations as $registration) {
+            $lowest_score = min($lowest_score, $registration['score']);
+
+            // Verifica se é cotista e conta por tipo de cota
+            $quotas = $registration['quotas'] ?? [];
+            $is_quota = !empty($quotas);
+
+            if ($is_quota) {
+                if (in_array('Pessoas Negras', $quotas)) {
+                    $negra_count++;
+                } elseif (in_array('Indígenas', $quotas)) {
+                    $indigena_count++;
+                } elseif (in_array('PCD', $quotas)) {
+                    $pcd_count++;
+                }
+            } else {
+                $ampla_count++;
+            }
+        }
+
+        // Verifica que foram selecionados exatamente 3 Negras
+        $this->assertEquals(3, $negra_count, "[LIMIT 15] Deve ter exatamente 3 inscrições de Pessoas Negras classificadas");
+
+        // Verifica que foram selecionados 0 Indígenas (não 1, pois faltam candidatos qualificados)
+        $this->assertEquals(0, $indigena_count, "[LIMIT 15] Deve ter 0 inscrições de Indígenas classificadas (faltam candidatos qualificados)");
+
+        // Verifica que foram selecionados 0 PCD (não 1, pois faltam candidatos qualificados)
+        $this->assertEquals(0, $pcd_count, "[LIMIT 15] Deve ter 0 inscrições de PCD classificadas (faltam candidatos qualificados)");
+
+        // Verifica que todas as inscrições selecionadas têm nota >= nota de corte
+        $this->assertGreaterThanOrEqual($cutoff_score, $lowest_score, "[LIMIT 15] A menor nota deve ser >= {$cutoff_score} (nota de corte)");
+
+        // ================================
+        // Testando com paginação 10 em 10
+        $negra_count = 0;
+        $indigena_count = 0;
+        $pcd_count = 0;
+        $ampla_count = 0;
+        $lowest_score = 100;
+
+        for($page = 1; $page <= 4; $page++) {
+            $query_result = $opportunity_controller->apiFindRegistrations($opportunity, [
+                '@select' => "number,{$field_raca},{$field_pessoa_deficiente},score,eligible,quotas",
+                '@order' => '@quota',
+                '@limit' => 4,
+                '@page' => $page,
+            ], true);
+
+            foreach($query_result->registrations as $registration) {
+                $lowest_score = min($lowest_score, $registration['score']);
+                
+                // Verifica se é cotista e conta por tipo de cota
+                $quotas = $registration['quotas'] ?? [];
+                $is_quota = !empty($quotas);
+
+                if ($is_quota) {
+                    if (in_array('Pessoas Negras', $quotas)) {
+                        $negra_count++;
+                    } elseif (in_array('Indígenas', $quotas)) {
+                        $indigena_count++;
+                    } elseif (in_array('PCD', $quotas)) {
+                        $pcd_count++;
+                    }
+                } else {
+                    $ampla_count++;
+                }
+            }
+        }      
+
+        $this->assertEquals(3, $negra_count, "[PAGINAÇÃO] Deve ter exatamente 3 inscrições de Pessoas Negras classificadas");
+        $this->assertEquals(0, $indigena_count, "[PAGINAÇÃO] Deve ter 0 inscrições de Indígenas classificadas (faltam candidatos qualificados)");
+        $this->assertEquals(0, $pcd_count, "[PAGINAÇÃO] Deve ter 0 inscrições de PCD classificadas (faltam candidatos qualificados)");
+        $this->assertGreaterThanOrEqual($cutoff_score, $lowest_score, "[PAGINAÇÃO] A menor nota deve ser >= {$cutoff_score} (nota de corte)");
+
     }
 }
