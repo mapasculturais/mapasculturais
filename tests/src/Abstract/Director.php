@@ -4,7 +4,7 @@ namespace Tests\Abstract;
 
 class Director
 {
-    final function __construct()
+    function __construct()
     {
         // chama os inicializadores das classes ou traits
         $methods = get_class_methods($this);
