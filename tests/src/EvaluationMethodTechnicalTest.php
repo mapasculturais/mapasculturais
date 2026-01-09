@@ -216,7 +216,6 @@ class EvaluationMethodTechnicalTest extends TestCase
                 ->save()
                 ->config()
                     ->quota()
-                    // ->setConsiderQuotasInGeneralList(true)
                         ->addRule('Pessoas Negras', 3)
                             ->addRuleField('raca', ['Preta', 'Parda'])
                         ->addRule('Indígenas', 1)
@@ -226,6 +225,94 @@ class EvaluationMethodTechnicalTest extends TestCase
                     ->done() 
                 ->done()      
                 ->done()      
+            ->save()
+            ->refresh()
+            ->getInstance();
+
+        return $opportunity;
+    }
+
+    protected function createFictitiousGeoDivisions(): array
+    {
+        $app = App::i();
+        $conn = $app->conn;
+        
+        $regions = [
+            [
+                'type' => '',
+                'cod' => '',
+                'name' => QuotaRegistrationDirector::REGION_CAPITAL,
+            ],
+            [
+                'type' => '',
+                'cod' => '',
+                'name' => QuotaRegistrationDirector::REGION_COASTAL,
+            ],
+            [
+                'type' => '',
+                'cod' => '',
+                'name' => QuotaRegistrationDirector::REGION_INTERIOR,
+            ],
+        ];
+        
+        $created_regions = [];
+        
+        foreach ($regions as $region) {
+            /** @var \Doctrine\DBAL\Connection */
+            $conn = $app->conn;
+            $conn->executeQuery(
+                "INSERT INTO geo_division (parent_id, type, cod, name, geom) 
+                 VALUES (NULL, :type, :cod, :name, NULL)",
+                [
+                    'type' => $region['type'],
+                    'cod' => $region['cod'],
+                    'name' => $region['name'],
+                ]
+            );
+            
+            $created_regions[$region['name']] = $region['cod'];
+        }
+        
+        return $created_regions;
+    }
+
+    protected function createOpportunityWithTerritoryVacancies($admin): Opportunity
+    {
+        $opportunity = $this->opportunityBuilder
+            ->reset(owner: $admin->profile, owner_entity: $admin->profile)
+            ->fillRequiredProperties()
+            ->setVacancies(60)
+            ->save()
+            ->firstPhase()
+                ->setRegistrationPeriod(new Past)
+                ->createStep('Informações')
+                ->createField(
+                    identifier: 'regiao',
+                    field_type: 'select',
+                    title: 'Região',
+                    required: false,
+                    options: [
+                        QuotaRegistrationDirector::REGION_CAPITAL,
+                        QuotaRegistrationDirector::REGION_COASTAL,
+                        QuotaRegistrationDirector::REGION_INTERIOR
+                    ]
+                )
+                ->save()
+                ->done()
+            ->addEvaluationPhase(EvaluationMethods::technical)
+                ->setEvaluationPeriod(new ConcurrentEndingAfter)
+                ->setCutoffScore(40.0)
+                ->save()
+                ->config()
+                    ->geoQuota()
+                        ->setGeoDivision('field')  // Valor fictício
+                        ->setField('regiao')
+                        ->addRegionDistribution(QuotaRegistrationDirector::REGION_CAPITAL, 30)
+                        ->addRegionDistribution(QuotaRegistrationDirector::REGION_COASTAL, 18)
+                        ->addRegionDistribution(QuotaRegistrationDirector::REGION_INTERIOR, 12)
+                    ->done()
+                ->done()
+            ->done()
             ->save()
             ->refresh()
             ->getInstance();
@@ -282,7 +369,7 @@ class EvaluationMethodTechnicalTest extends TestCase
         $this->assertGreaterThanOrEqual(40.0, $lowest_score, "A menor nota deve ser >= 40 (nota de corte)");
 
         // ================================
-        // Testando com paginação
+        // Testando com limite
 
         $query_result = $opportunity_controller->apiFindRegistrations($opportunity, [
             '@select' => 'number,range,score,eligible',
@@ -535,7 +622,7 @@ class EvaluationMethodTechnicalTest extends TestCase
         $this->assertGreaterThanOrEqual($cutoff_score, $lowest_score, "A menor nota deve ser >= {$cutoff_score} (nota de corte)");
 
         // ================================
-        // Testando com paginação
+        // Testando com limite
 
         $query_result = $opportunity_controller->apiFindRegistrations($opportunity, [
             '@select' => "number,{$field_raca},{$field_pessoa_deficiente},score,eligible,quotas",
@@ -782,5 +869,293 @@ class EvaluationMethodTechnicalTest extends TestCase
         $this->assertEquals(0, $pcd_count, "[PAGINAÇÃO] Deve ter 0 inscrições de PCD classificadas (faltam candidatos qualificados)");
         $this->assertGreaterThanOrEqual($cutoff_score, $lowest_score, "[PAGINAÇÃO] A menor nota deve ser >= {$cutoff_score} (nota de corte)");
 
+    }
+
+    function testTerritoryVacanciesClassificationIdeal()
+    {
+        $admin = $this->userDirector->createUser('admin');
+        $this->login($admin);
+
+        $opportunity = $this->createOpportunityWithTerritoryVacancies($admin);
+
+        // Cria inscrições para o cenário ideal
+        $registrations = $this->quotaRegistrationDirector->idealTerritoryVacanciesScenario($opportunity);
+
+        $app = App::i();
+        /** @var OpportunityController */
+        $opportunity_controller = $app->controller('opportunity');
+
+        // Obtém o nome do campo regiao
+        $field_regiao = $this->opportunityBuilder->getFieldName('regiao', $opportunity);
+
+        // Obtém a classificação ordenada por cotas
+        $query_result = $opportunity_controller->apiFindRegistrations($opportunity, [
+            '@select' => "number,{$field_regiao},score,eligible",
+            '@order' => '@quota',
+        ], true);
+
+        // Conta as inscrições classificadas respeitando os limites de cada região
+        $cutoff_score = $opportunity->evaluationMethodConfiguration->cutoffScore;
+        $capital_count = 0;
+        $coastal_count = 0;
+        $interior_count = 0;
+        $lowest_score = 100;
+        $total_vacancies = 60;
+
+        for($i = 0; $i < $total_vacancies && $i < count($query_result->registrations); $i++) {
+            $registration = $query_result->registrations[$i];
+            $lowest_score = min($lowest_score, $registration['score']);
+
+            // Busca a região do campo da inscrição
+            $region = $registration[$field_regiao] ?? null;
+            
+            if ($region === QuotaRegistrationDirector::REGION_CAPITAL) {
+                $capital_count++;
+            } elseif ($region === QuotaRegistrationDirector::REGION_COASTAL) {
+                $coastal_count++;
+            } elseif ($region === QuotaRegistrationDirector::REGION_INTERIOR) {
+                $interior_count++;
+            }
+        }
+
+        // Verifica que foram selecionados exatamente 30 da Capital
+        $this->assertEquals(30, $capital_count, "Deve ter exatamente 30 inscrições da Região da Capital classificadas");
+
+        // Verifica que foram selecionados exatamente 18 do Litoral
+        $this->assertEquals(18, $coastal_count, "Deve ter exatamente 18 inscrições da Região Litorânea classificadas");
+
+        // Verifica que foram selecionados exatamente 12 do Interior
+        $this->assertEquals(12, $interior_count, "Deve ter exatamente 12 inscrições da Região do Interior classificadas");
+
+        // Verifica que todas as inscrições selecionadas têm nota >= nota de corte
+        $this->assertGreaterThanOrEqual($cutoff_score, $lowest_score, "A menor nota deve ser >= {$cutoff_score} (nota de corte)");
+
+        // ================================
+        // Testando com limite
+
+        $query_result = $opportunity_controller->apiFindRegistrations($opportunity, [
+            '@select' => "number,{$field_regiao},score,eligible",
+            '@order' => '@quota',
+            '@limit' => 60,
+        ], true);
+
+        // Conta as inscrições classificadas respeitando os limites de cada região
+        $capital_count = 0;
+        $coastal_count = 0;
+        $interior_count = 0;
+        $lowest_score = 100;
+
+        foreach($query_result->registrations as $registration) {
+            $lowest_score = min($lowest_score, $registration['score']);
+
+            // Busca a região do campo da inscrição
+            $region = $registration[$field_regiao] ?? null;
+            
+            if ($region === QuotaRegistrationDirector::REGION_CAPITAL) {
+                $capital_count++;
+            } elseif ($region === QuotaRegistrationDirector::REGION_COASTAL) {
+                $coastal_count++;
+            } elseif ($region === QuotaRegistrationDirector::REGION_INTERIOR) {
+                $interior_count++;
+            }
+        }
+
+        // Verifica que foram selecionados exatamente 30 da Capital
+        $this->assertEquals(30, $capital_count, "[LIMIT 60] Deve ter exatamente 30 inscrições da Região da Capital classificadas");
+
+        // Verifica que foram selecionados exatamente 18 do Litoral
+        $this->assertEquals(18, $coastal_count, "[LIMIT 60] Deve ter exatamente 18 inscrições da Região Litorânea classificadas");
+
+        // Verifica que foram selecionados exatamente 12 do Interior
+        $this->assertEquals(12, $interior_count, "[LIMIT 60] Deve ter exatamente 12 inscrições da Região do Interior classificadas");
+
+        // Verifica que todas as inscrições selecionadas têm nota >= nota de corte
+        $this->assertGreaterThanOrEqual($cutoff_score, $lowest_score, "[LIMIT 60] A menor nota deve ser >= {$cutoff_score} (nota de corte)");
+
+        // ================================
+        // Testando com paginação 10 em 10
+        $capital_count = 0;
+        $coastal_count = 0;
+        $interior_count = 0;
+        $lowest_score = 100;
+
+        for($page = 1; $page <= 6; $page++) {
+            $query_result = $opportunity_controller->apiFindRegistrations($opportunity, [
+                '@select' => "number,{$field_regiao},score,eligible",
+                '@order' => '@quota',
+                '@limit' => 10,
+                '@page' => $page,
+            ], true);
+
+            foreach($query_result->registrations as $registration) {
+                $lowest_score = min($lowest_score, $registration['score']);
+                
+                // Busca a região do campo da inscrição
+                $region = $registration[$field_regiao] ?? null;
+                
+                if ($region === QuotaRegistrationDirector::REGION_CAPITAL) {
+                    $capital_count++;
+                } elseif ($region === QuotaRegistrationDirector::REGION_COASTAL) {
+                    $coastal_count++;
+                } elseif ($region === QuotaRegistrationDirector::REGION_INTERIOR) {
+                    $interior_count++;
+                }
+            }
+        }      
+
+        $this->assertEquals(30, $capital_count, "[PAGINAÇÃO] Deve ter exatamente 30 inscrições da Região da Capital classificadas");
+        $this->assertEquals(18, $coastal_count, "[PAGINAÇÃO] Deve ter exatamente 18 inscrições da Região Litorânea classificadas");
+        $this->assertEquals(12, $interior_count, "[PAGINAÇÃO] Deve ter exatamente 12 inscrições da Região do Interior classificadas");
+        $this->assertGreaterThanOrEqual($cutoff_score, $lowest_score, "[PAGINAÇÃO] A menor nota deve ser >= {$cutoff_score} (nota de corte)");
+    }
+
+    function testTerritoryVacanciesClassificationRestricted()
+    {
+        $admin = $this->userDirector->createUser('admin');
+        $this->login($admin);
+
+        $opportunity = $this->createOpportunityWithTerritoryVacancies($admin);
+
+        // Cria inscrições para o cenário restrito
+        $registrations = $this->quotaRegistrationDirector->restrictedTerritoryVacanciesScenario($opportunity);
+
+        $app = App::i();
+        /** @var OpportunityController */
+        $opportunity_controller = $app->controller('opportunity');
+
+        // Obtém o nome do campo regiao
+        $field_regiao = $this->opportunityBuilder->getFieldName('regiao', $opportunity);
+
+        // Obtém a classificação ordenada por cotas
+        $query_result = $opportunity_controller->apiFindRegistrations($opportunity, [
+            '@select' => "number,{$field_regiao},score,eligible",
+            '@order' => '@quota',
+        ], true);
+
+        // Conta as inscrições classificadas
+        $cutoff_score = $opportunity->evaluationMethodConfiguration->cutoffScore;
+        $capital_count = 0;
+        $coastal_count = 0;
+        $interior_count = 0;
+        $lowest_score = 100;
+        $total_vacancies = 60;
+
+        for($i = 0; $i < $total_vacancies && $i < count($query_result->registrations); $i++) {
+            $registration = $query_result->registrations[$i];
+            $lowest_score = min($lowest_score, $registration['score']);
+
+            // Busca a região do campo da inscrição
+            $region = $registration[$field_regiao] ?? null;
+            
+            if ($region === QuotaRegistrationDirector::REGION_CAPITAL) {
+                $capital_count++;
+            } elseif ($region === QuotaRegistrationDirector::REGION_COASTAL) {
+                $coastal_count++;
+            } elseif ($region === QuotaRegistrationDirector::REGION_INTERIOR) {
+                $interior_count++;
+            }
+        }
+
+        // Verifica que foram selecionados 60 no total (mesmo com falta de candidatos do Interior)
+        $total_selected = $capital_count + $coastal_count + $interior_count;
+        $this->assertEquals(60, $total_selected, "Deve ter exatamente 60 inscrições classificadas no total");
+
+        // Verifica que foram selecionados apenas 3 do Interior (não 12, pois faltam candidatos qualificados)
+        $this->assertEquals(3, $interior_count, "Deve ter apenas 3 inscrições da Região do Interior classificadas (faltam candidatos qualificados)");
+
+        // Verifica que as vagas remanescentes do Interior foram distribuídas para Capital/Litoral
+        // As 9 vagas restantes do Interior devem ter sido preenchidas por outras regiões
+        $this->assertGreaterThan(30, $capital_count, "A Capital deve ter mais de 30 inscrições (recebeu vagas do Interior)");
+        $this->assertGreaterThan(18, $coastal_count, "O Litoral deve ter mais de 18 inscrições (recebeu vagas do Interior)");
+
+        // Verifica que todas as inscrições selecionadas têm nota >= nota de corte
+        $this->assertGreaterThanOrEqual($cutoff_score, $lowest_score, "A menor nota deve ser >= {$cutoff_score} (nota de corte)");
+
+        // ================================
+        // Testando com limite
+
+        $query_result = $opportunity_controller->apiFindRegistrations($opportunity, [
+            '@select' => "number,{$field_regiao},score,eligible",
+            '@order' => '@quota',
+            '@limit' => 60,
+        ], true);
+
+        // Conta as inscrições classificadas
+        $capital_count = 0;
+        $coastal_count = 0;
+        $interior_count = 0;
+        $lowest_score = 100;
+
+        foreach($query_result->registrations as $registration) {
+            $lowest_score = min($lowest_score, $registration['score']);
+
+            // Busca a região do campo da inscrição
+            $region = $registration[$field_regiao] ?? null;
+            
+            if ($region === QuotaRegistrationDirector::REGION_CAPITAL) {
+                $capital_count++;
+            } elseif ($region === QuotaRegistrationDirector::REGION_COASTAL) {
+                $coastal_count++;
+            } elseif ($region === QuotaRegistrationDirector::REGION_INTERIOR) {
+                $interior_count++;
+            }
+        }
+
+        // Verifica que foram selecionados 60 no total
+        $total_selected = $capital_count + $coastal_count + $interior_count;
+        $this->assertEquals(60, $total_selected, "[LIMIT 60] Deve ter exatamente 60 inscrições classificadas no total");
+
+        // Verifica que foram selecionados apenas 3 do Interior
+        $this->assertEquals(3, $interior_count, "[LIMIT 60] Deve ter apenas 3 inscrições da Região do Interior classificadas (faltam candidatos qualificados)");
+
+        // Verifica que as vagas remanescentes do Interior foram distribuídas
+        $this->assertGreaterThan(30, $capital_count, "[LIMIT 60] A Capital deve ter mais de 30 inscrições (recebeu vagas do Interior)");
+        $this->assertGreaterThan(18, $coastal_count, "[LIMIT 60] O Litoral deve ter mais de 18 inscrições (recebeu vagas do Interior)");
+
+        // Verifica que todas as inscrições selecionadas têm nota >= nota de corte
+        $this->assertGreaterThanOrEqual($cutoff_score, $lowest_score, "[LIMIT 60] A menor nota deve ser >= {$cutoff_score} (nota de corte)");
+
+        // ================================
+        // Testando com paginação 10 em 10
+        $capital_count = 0;
+        $coastal_count = 0;
+        $interior_count = 0;
+        $lowest_score = 100;
+
+        for($page = 1; $page <= 6; $page++) {
+            $query_result = $opportunity_controller->apiFindRegistrations($opportunity, [
+                '@select' => "number,{$field_regiao},score,eligible",
+                '@order' => '@quota',
+                '@limit' => 10,
+                '@page' => $page,
+            ], true);
+
+            foreach($query_result->registrations as $registration) {
+                $lowest_score = min($lowest_score, $registration['score']);
+                
+                // Busca a região do campo da inscrição
+                $region = $registration[$field_regiao] ?? null;
+                
+                if ($region === QuotaRegistrationDirector::REGION_CAPITAL) {
+                    $capital_count++;
+                } elseif ($region === QuotaRegistrationDirector::REGION_COASTAL) {
+                    $coastal_count++;
+                } elseif ($region === QuotaRegistrationDirector::REGION_INTERIOR) {
+                    $interior_count++;
+                }
+            }
+        }      
+
+        // Verifica que foram selecionados 60 no total
+        $total_selected = $capital_count + $coastal_count + $interior_count;
+        $this->assertEquals(60, $total_selected, "[PAGINAÇÃO] Deve ter exatamente 60 inscrições classificadas no total");
+
+        // Verifica que foram selecionados apenas 3 do Interior
+        $this->assertEquals(3, $interior_count, "[PAGINAÇÃO] Deve ter apenas 3 inscrições da Região do Interior classificadas (faltam candidatos qualificados)");
+
+        // Verifica que as vagas remanescentes do Interior foram distribuídas
+        $this->assertGreaterThan(30, $capital_count, "[PAGINAÇÃO] A Capital deve ter mais de 30 inscrições (recebeu vagas do Interior)");
+        $this->assertGreaterThan(18, $coastal_count, "[PAGINAÇÃO] O Litoral deve ter mais de 18 inscrições (recebeu vagas do Interior)");
+        $this->assertGreaterThanOrEqual($cutoff_score, $lowest_score, "[PAGINAÇÃO] A menor nota deve ser >= {$cutoff_score} (nota de corte)");
     }
 }
