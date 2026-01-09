@@ -431,8 +431,8 @@ class Quotas {
 
 
                             if(!$this->isRegistrationInArray($registration, $range_result[$range]) && in_array($registration_region, $regions_with_vacancies)) {
-                                $geo_count_results[$registration_region]++;
-                                $geo_count_results[$region]--;
+                                $geo_count_results[$registration_region] = ($geo_count_results[$registration_region] ?? 0) + 1;
+                                $geo_count_results[$region] = ($geo_count_results[$region] ?? 0) - 1;
                                 $range_result[$range][$key_of_registration_to_exclude] = $registration;
                             }
                         }
