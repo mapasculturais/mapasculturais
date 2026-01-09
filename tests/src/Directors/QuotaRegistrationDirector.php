@@ -100,6 +100,7 @@ class QuotaRegistrationDirector extends Director
         // Obtém os field_names dos campos de cota
         $field_raca = $this->opportunityBuilder->getFieldName('raca', $opportunity);
         $field_pessoa_deficiente = $this->opportunityBuilder->getFieldName('pessoaDeficiente', $opportunity);
+        $field_regiao = $this->opportunityBuilder->getFieldName('regiao', $opportunity);
 
         foreach ($registrations_data as $data) {
             $registration_data = $data;
@@ -112,7 +113,10 @@ class QuotaRegistrationDirector extends Director
                 $registration_data[$field_pessoa_deficiente] = $data['pessoaDeficiente'];
             }
 
-            // Precisa colocar manualmente o appliedForQuota para true?
+            if (!empty($data['region']) && $field_regiao) {
+                $registration_data[$field_regiao] = $data['region'];
+            }
+
             $registration_data['appliedForQuota'] = true;
 
             $registration = $this->registrationDirector->createSentRegistration($opportunity, $registration_data);
@@ -271,6 +275,87 @@ class QuotaRegistrationDirector extends Director
             'pessoaDeficiente' => [], // Array vazio = não é PCD
             'score' => 95.0
         ], use_quota: true));
+
+        shuffle($list);
+        return $this->createRegistrationsFromData($list);
+    }
+
+    /**
+     * Cenário 5: "Caminho Feliz" - Vagas por território apenas (SEM faixas e SEM cotas)
+     * Há candidatos qualificados suficientes para preencher todas as regiões.
+     * Total esperado selecionado: 60 (30 Capital + 18 Litoral + 12 Interior)
+     */
+    public function idealTerritoryVacanciesScenario(Opportunity $opportunity): array
+    {
+        $list = [];
+
+        // 1. Garante Capital (30 vagas) com notas altas
+        $list = array_merge($list, $this->generateBatch($opportunity, 35, [
+            'region' => self::REGION_CAPITAL,
+            'score' => 90.0
+        ], use_region: true));
+
+        // 2. Garante Litoral (18 vagas) com notas altas
+        $list = array_merge($list, $this->generateBatch($opportunity, 22, [
+            'region' => self::REGION_COASTAL,
+            'score' => 85.0
+        ], use_region: true));
+
+        // 3. Garante Interior (12 vagas) com notas altas
+        $list = array_merge($list, $this->generateBatch($opportunity, 15, [
+            'region' => self::REGION_INTERIOR,
+            'score' => 88.0
+        ], use_region: true));
+
+        // 4. Adiciona Ruído (Gente reprovada e excedente)
+        $list = array_merge($list, $this->generateNoise($opportunity, 28, 50.0, use_region: true));
+
+        shuffle($list);
+        return $this->createRegistrationsFromData($list);
+    }
+
+    /**
+     * Cenário 6: Falha Regional (Vagas por território)
+     * O Interior não tem inscritos suficientes.
+     * As vagas do Interior devem migrar para Capital/Litoral (Prioridade 3 é flexível).
+     * Total esperado selecionado: 60 (30 Capital + 18 Litoral + 12 Interior, mas Interior não preenche)
+     */
+    public function restrictedTerritoryVacanciesScenario(Opportunity $opportunity): array
+    {
+        $list = [];
+
+        // CAPITAL e LITORAL: Superlotados com notas altas
+        $list = array_merge($list, $this->generateBatch($opportunity, 40, [
+            'region' => self::REGION_CAPITAL,
+            'score' => 95.0
+        ], use_region: true));
+        $list = array_merge($list, $this->generateBatch($opportunity, 25, [
+            'region' => self::REGION_COASTAL,
+            'score' => 90.0
+        ], use_region: true));
+
+        // INTERIOR: Apenas 3 inscritos qualificados (meta era 12 vagas)
+        $list = array_merge($list, $this->generateBatch($opportunity, 3, [
+            'region' => self::REGION_INTERIOR,
+            'score' => 60.0
+        ], use_region: true));
+
+        // INTERIOR: Existem outros inscritos, mas todos DESCLASSIFICADOS (< 40)
+        $list = array_merge($list, $this->generateBatch($opportunity, 8, [
+            'region' => self::REGION_INTERIOR,
+            'score' => 30.0
+        ], use_region: true));
+
+        // Adiciona ruído geral APENAS de Capital e Litoral para evitar mais inscrições do Interior
+        // Garante que o ruído não gere mais inscrições do Interior qualificadas
+        $list = array_merge($list, $this->generateBatch($opportunity, 12, [
+            'region' => self::REGION_CAPITAL,
+            'score' => 35.0
+        ], use_region: true));
+        $list = array_merge($list, $this->generateBatch($opportunity, 12, [
+            'region' => self::REGION_COASTAL,
+            'score' => 35.0
+        ], use_region: true));
 
         shuffle($list);
         return $this->createRegistrationsFromData($list);
