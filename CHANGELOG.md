@@ -5,6 +5,11 @@ Todas as mudanças notáveis no projeto serão documentadas neste arquivo.
 O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/)
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [7.6.31] - 2026-01-09
+### Correções
+- Ajusta o redirecionamento para usuários com perfil incompleto ou com erro, aplicando o magicGetter na validação dos erros do agente
+- Corrige a busca de dados no método getDataFromApi() do componente mc-entity, que falhava quando havia o parâmetro @keywords
+
 ## [7.6.30] - 2026-01-06
 ### Melhorias
 - Implementa forma de exibir todas as taxonomias obrigatórias no modal de criação de agente
