@@ -360,4 +360,198 @@ class QuotaRegistrationDirector extends Director
         shuffle($list);
         return $this->createRegistrationsFromData($list);
     }
+
+    /**
+     * Cenário 7: "Caminho Feliz" - Faixas e Cotas (SEM vagas por território)
+     * Há candidatos qualificados suficientes para preencher todas as faixas e todas as cotas.
+     * Total esperado selecionado: 100 (30 Longa + 70 Curta)
+     * Cotas: 20 Negras (20%), 5 Indígenas (5%), 2 PCD (2%)
+     * 
+     * Distribuição esperada nas cotas dentro das faixas:
+     * - Longa (30): ~6 Negras, ~1.5 Indígenas, ~0.6 PCD
+     * - Curta (70): ~14 Negras, ~3.5 Indígenas, ~1.4 PCD
+     */
+    public function idealRangesAndQuotasScenario(Opportunity $opportunity): array
+    {
+        $list = [];
+
+        // ===== CURTA METRAGEM (70 vagas) =====
+        
+        // 1. Garante Cotas para CURTA (proporcionalmente 20% de 70 = 14 negras, 5% = 3.5 indígenas, 2% = 1.4 PCD)
+        // Cria mais do que necessário para garantir cobertura
+        $list = array_merge($list, $this->generateBatch($opportunity, 15, [
+            'range' => self::RANGE_1,
+            'raca' => self::RACE_BLACK,
+            'score' => 85.0
+        ], use_range: true, use_quota: true));
+        $list = array_merge($list, $this->generateBatch($opportunity, 15, [
+            'range' => self::RANGE_1,
+            'raca' => self::RACE_BROWN,
+            'score' => 85.0
+        ], use_range: true, use_quota: true));
+        
+        $list = array_merge($list, $this->generateBatch($opportunity, 4, [
+            'range' => self::RANGE_1,
+            'raca' => self::RACE_INDIGENOUS,
+            'score' => 80.0
+        ], use_range: true, use_quota: true));
+        
+        $list = array_merge($list, $this->generateBatch($opportunity, 2, [
+            'range' => self::RANGE_1,
+            'raca' => self::RACE_WHITE,
+            'pessoaDeficiente' => ['Física-motora'],
+            'score' => 75.0
+        ], use_range: true, use_quota: true));
+
+        // 2. Garante ampla concorrência para CURTA (restante das 70 vagas)
+        $list = array_merge($list, $this->generateBatch($opportunity, 50, [
+            'range' => self::RANGE_1,
+            'raca' => self::RACE_WHITE,
+            'pessoaDeficiente' => [],
+            'score' => 90.0
+        ], use_range: true, use_quota: true));
+
+        // ===== LONGA METRAGEM (30 vagas) =====
+        
+        // 3. Garante Cotas para LONGA (proporcionalmente 20% de 30 = 6 negras, 5% = 1.5 indígenas, 2% = 0.6 PCD)
+        $list = array_merge($list, $this->generateBatch($opportunity, 7, [
+            'range' => self::RANGE_2,
+            'raca' => self::RACE_BLACK,
+            'score' => 88.0
+        ], use_range: true, use_quota: true));
+        $list = array_merge($list, $this->generateBatch($opportunity, 7, [
+            'range' => self::RANGE_2,
+            'raca' => self::RACE_BROWN,
+            'score' => 88.0
+        ], use_range: true, use_quota: true));
+        
+        $list = array_merge($list, $this->generateBatch($opportunity, 2, [
+            'range' => self::RANGE_2,
+            'raca' => self::RACE_INDIGENOUS,
+            'score' => 82.0
+        ], use_range: true, use_quota: true));
+        
+        $list = array_merge($list, $this->generateBatch($opportunity, 1, [
+            'range' => self::RANGE_2,
+            'raca' => self::RACE_WHITE,
+            'pessoaDeficiente' => ['Visual'],
+            'score' => 78.0
+        ], use_range: true, use_quota: true));
+
+        // 4. Garante ampla concorrência para LONGA (restante das 30 vagas)
+        $list = array_merge($list, $this->generateBatch($opportunity, 20, [
+            'range' => self::RANGE_2,
+            'raca' => self::RACE_WHITE,
+            'pessoaDeficiente' => [],
+            'score' => 92.0
+        ], use_range: true, use_quota: true));
+
+        // 5. Adiciona Ruído (Gente reprovada e excedente)
+        $list = array_merge($list, $this->generateNoise($opportunity, 50, 50.0, use_range: true, use_quota: true));
+
+        shuffle($list);
+        return $this->createRegistrationsFromData($list);
+    }
+
+    /**
+     * Cenário 8: Falha em Faixas e Cotas combinadas
+     * FALTAM candidatos qualificados para algumas cotas em algumas faixas.
+     * 
+     * Regras de priorização:
+     * 1. Faixas não podem variar (30 Longa + 70 Curta é fixo)
+     * 2. Cotas têm prioridade e podem usar vagas de outras cotas se necessário
+     * 
+     * Neste cenário:
+     * - Curta tem candidatos suficientes para todas as cotas
+     * - Longa tem escassez de Indígenas e PCD qualificados
+     * - As vagas de cota não preenchidas em Longa podem ser redistribuídas entre outras cotas
+     */
+    public function restrictedRangesAndQuotasScenario(Opportunity $opportunity): array
+    {
+        $list = [];
+
+        // ===== CURTA METRAGEM (70 vagas) - COMPLETA =====
+        
+        // 1. Garante todas as cotas para CURTA
+        $list = array_merge($list, $this->generateBatch($opportunity, 15, [
+            'range' => self::RANGE_1,
+            'raca' => self::RACE_BLACK,
+            'score' => 85.0
+        ], use_range: true, use_quota: true));
+        $list = array_merge($list, $this->generateBatch($opportunity, 15, [
+            'range' => self::RANGE_1,
+            'raca' => self::RACE_BROWN,
+            'score' => 85.0
+        ], use_range: true, use_quota: true));
+        
+        $list = array_merge($list, $this->generateBatch($opportunity, 4, [
+            'range' => self::RANGE_1,
+            'raca' => self::RACE_INDIGENOUS,
+            'score' => 80.0
+        ], use_range: true, use_quota: true));
+        
+        $list = array_merge($list, $this->generateBatch($opportunity, 2, [
+            'range' => self::RANGE_1,
+            'raca' => self::RACE_WHITE,
+            'pessoaDeficiente' => ['Auditiva'],
+            'score' => 75.0
+        ], use_range: true, use_quota: true));
+
+        // 2. Ampla concorrência para CURTA
+        $list = array_merge($list, $this->generateBatch($opportunity, 50, [
+            'range' => self::RANGE_1,
+            'raca' => self::RACE_WHITE,
+            'pessoaDeficiente' => [],
+            'score' => 90.0
+        ], use_range: true, use_quota: true));
+
+        // ===== LONGA METRAGEM (30 vagas) - COM ESCASSEZ =====
+        
+        // 3. Garante Negros para LONGA (há candidatos suficientes)
+        $list = array_merge($list, $this->generateBatch($opportunity, 8, [
+            'range' => self::RANGE_2,
+            'raca' => self::RACE_BLACK,
+            'score' => 88.0
+        ], use_range: true, use_quota: true));
+        $list = array_merge($list, $this->generateBatch($opportunity, 8, [
+            'range' => self::RANGE_2,
+            'raca' => self::RACE_BROWN,
+            'score' => 88.0
+        ], use_range: true, use_quota: true));
+        
+        // 4. ESCASSEZ: Apenas 0 Indígenas qualificados para LONGA (meta era ~1-2)
+        // Não cria nenhum indígena qualificado para Longa
+        
+        // 5. ESCASSEZ: Apenas 0 PCD qualificados para LONGA (meta era ~1)
+        // Não cria nenhum PCD qualificado para Longa
+        
+        // 6. Indígenas DESCLASSIFICADOS para LONGA
+        $list = array_merge($list, $this->generateBatch($opportunity, 3, [
+            'range' => self::RANGE_2,
+            'raca' => self::RACE_INDIGENOUS,
+            'score' => 30.0  // Abaixo da nota de corte
+        ], use_range: true, use_quota: true));
+        
+        // 7. PCD DESCLASSIFICADOS para LONGA
+        $list = array_merge($list, $this->generateBatch($opportunity, 2, [
+            'range' => self::RANGE_2,
+            'raca' => self::RACE_WHITE,
+            'pessoaDeficiente' => ['Visual'],
+            'score' => 25.0  // Abaixo da nota de corte
+        ], use_range: true, use_quota: true));
+
+        // 8. Ampla concorrência para LONGA (mais candidatos para preencher as vagas)
+        $list = array_merge($list, $this->generateBatch($opportunity, 20, [
+            'range' => self::RANGE_2,
+            'raca' => self::RACE_WHITE,
+            'pessoaDeficiente' => [],
+            'score' => 92.0
+        ], use_range: true, use_quota: true));
+
+        // 9. Adiciona Ruído
+        $list = array_merge($list, $this->generateNoise($opportunity, 40, 50.0, use_range: true, use_quota: true));
+
+        shuffle($list);
+        return $this->createRegistrationsFromData($list);
+    }
 }
