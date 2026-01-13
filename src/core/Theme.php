@@ -209,7 +209,7 @@ abstract class Theme {
                     $url = $app->user->profile->editUrl . '?notification_handler=true';
 
                     $redirect = false;
-                    if($app->user->profile->status < 1 || !empty($app->user->profile->getValidationErrors())) {
+                    if($app->user->profile->status < 1 || $app->user->profile->validationErrors) {
                         $redirect = true;
                     }
 
