@@ -50,6 +50,8 @@ $siteName = $app->config['logo.title'] . ' ' . $app->config['logo.subtitle'];
         .field { margin: 10px 0; padding: 10px; background: #f9f9f9; }
         .field-label { font-weight: bold; color: #555; display: block; margin-bottom: 5px; }
         .field-value { color: #333; }
+        .attachment-icon { margin-right: 5px; }
+        .attachment-link { text-decoration: underline; color: #0066cc; }
         table { width: 100%; border-collapse: collapse; margin: 10px 0; }
         th, td { padding: 8px; border: 1px solid #ddd; text-align: left; }
         th { background-color: #e9e9e9; font-weight: bold; }
@@ -117,25 +119,68 @@ $opportunity->registerRegistrationMetadata();
 <div class="info-block">
     <h2>Dados do Formulário</h2>
     
-    <?php foreach ($opportunity->registrationFieldConfigurations as $field): ?>
-        <?php 
-        $fieldName = $field->fieldName;
-        $value = $registration->$fieldName ?? null;
-        ?>
+    <?php 
+    // Combinar campos e arquivos na ordem correta
+    $allFields = [];
+    
+    // Adicionar campos de formulário
+    foreach ($opportunity->registrationFieldConfigurations as $field) {
+        $allFields[] = [
+            'type' => 'field',
+            'config' => $field,
+            'order' => $field->displayOrder ?? 999
+        ];
+    }
+    
+    // Adicionar campos de arquivo
+    foreach ($opportunity->registrationFileConfigurations as $fileConfig) {
+        $allFields[] = [
+            'type' => 'file',
+            'config' => $fileConfig,
+            'order' => $fileConfig->displayOrder ?? 999
+        ];
+    }
+    
+    // Ordenar por displayOrder
+    usort($allFields, function($a, $b) {
+        return $a['order'] <=> $b['order'];
+    });
+    
+    foreach ($allFields as $item):
+        $config = $item['config'];
         
-        <?php if ($value !== null && $value !== ''): ?>
-            <div class="field">
-                <span class="field-label"><?= htmlspecialchars($field->title) ?>:</span>
-                <span class="field-value">
-                    <?php if (is_array($value)): ?>
-                        <?= htmlspecialchars(implode(', ', $value)) ?>
-                    <?php elseif (is_object($value)): ?>
-                        <?= htmlspecialchars(json_encode($value, JSON_UNESCAPED_UNICODE)) ?>
-                    <?php else: ?>
-                        <?= nl2br(htmlspecialchars($value)) ?>
-                    <?php endif; ?>
-                </span>
-            </div>
+        if ($item['type'] === 'file'): 
+            // Campos de arquivo - usa fileGroupName que retorna "rfc_{id}"
+            $groupName = $config->fileGroupName;
+            $file = $registration->files[$groupName] ?? null;
+            if ($file): 
+            ?>
+                <div class="field">
+                    <span class="field-label"><?= $config->required ? '* ' : '' ?><?= htmlspecialchars($config->title) ?>:</span>
+                    <span class="field-value">
+                        <span class="attachment-link"><span class="attachment-icon">▸</span><?= htmlspecialchars($file->description ?: $file->name) ?></span>
+                    </span>
+                </div>
+            <?php endif; ?>
+        <?php else:
+            // Campos normais
+            $fieldName = $config->fieldName;
+            $value = $registration->$fieldName ?? null;
+            
+            if ($value !== null && $value !== ''): ?>
+                <div class="field">
+                    <span class="field-label"><?= $config->required ? '* ' : '' ?><?= htmlspecialchars($config->title) ?>:</span>
+                    <span class="field-value">
+                        <?php if (is_array($value)): ?>
+                            <?= htmlspecialchars(implode(', ', $value)) ?>
+                        <?php elseif (is_object($value)): ?>
+                            <?= htmlspecialchars(json_encode($value, JSON_UNESCAPED_UNICODE)) ?>
+                        <?php else: ?>
+                            <?= nl2br(htmlspecialchars($value)) ?>
+                        <?php endif; ?>
+                    </span>
+                </div>
+            <?php endif; ?>
         <?php endif; ?>
     <?php endforeach; ?>
 </div>
