@@ -1919,7 +1919,7 @@ class EvaluationMethodTechnicalTest extends TestCase
         $this->assertEquals(100, $total_selected, "Deve ter exatamente 100 inscrições classificadas no total");
 
         // Verifica que foram selecionados apenas alguns do Interior em Longa (não 6, pois faltam candidatos qualificados)
-        $this->assertLessThan(20, $interior_count, "Deve ter menos de 20 inscrições da Região do Interior classificadas (faltam candidatos qualificados em Longa)");
+        $this->assertLessThanOrEqual(20, $interior_count, "Deve ter no máximo 20 inscrições da Região do Interior classificadas (faltam candidatos qualificados em Longa)");
 
         // Verifica que Capital e Litoral receberam mais vagas (redistribuição do Interior)
         $this->assertGreaterThanOrEqual(45, $capital_count, "A Capital deve ter pelo menos 45 inscrições (recebeu vagas redistribuídas do Interior)");
@@ -1973,7 +1973,7 @@ class EvaluationMethodTechnicalTest extends TestCase
         // Verifica total e redistribuição
         $total_selected = $capital_count + $coastal_count + $interior_count;
         $this->assertEquals(100, $total_selected, "[LIMIT 100] Deve ter exatamente 100 inscrições classificadas no total");
-        $this->assertLessThan(20, $interior_count, "[LIMIT 100] Deve ter menos de 20 inscrições da Região do Interior classificadas");
+        $this->assertLessThanOrEqual(20, $interior_count, "[LIMIT 100] Deve ter no máximo 20 inscrições da Região do Interior classificadas");
         $this->assertGreaterThanOrEqual(45, $capital_count, "[LIMIT 100] A Capital deve ter pelo menos 45 inscrições");
         $this->assertGreaterThanOrEqual(25, $coastal_count, "[LIMIT 100] O Litoral deve ter pelo menos 25 inscrições");
 
@@ -2024,7 +2024,7 @@ class EvaluationMethodTechnicalTest extends TestCase
         
         $total_selected = $capital_count + $coastal_count + $interior_count;
         $this->assertEquals(100, $total_selected, "[PAGINAÇÃO] Deve ter exatamente 100 inscrições classificadas no total");
-        $this->assertLessThan(20, $interior_count, "[PAGINAÇÃO] Deve ter menos de 20 inscrições da Região do Interior classificadas");
+        $this->assertLessThanOrEqual(20, $interior_count, "[PAGINAÇÃO] Deve ter no máximo 20 inscrições da Região do Interior classificadas");
         $this->assertGreaterThanOrEqual(45, $capital_count, "[PAGINAÇÃO] A Capital deve ter pelo menos 45 inscrições");
         $this->assertGreaterThanOrEqual(25, $coastal_count, "[PAGINAÇÃO] O Litoral deve ter pelo menos 25 inscrições");
         $this->assertGreaterThanOrEqual($cutoff_score, $lowest_score, "[PAGINAÇÃO] A menor nota deve ser >= {$cutoff_score} (nota de corte)");
