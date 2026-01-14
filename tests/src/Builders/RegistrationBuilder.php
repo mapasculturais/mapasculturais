@@ -108,7 +108,7 @@ class RegistrationBuilder extends Builder
 
         $rand_index = array_rand($opportunity->registrationRanges);
         $range = $opportunity->registrationRanges[$rand_index];
-        $this->instance->range = $range;
+        $this->instance->range = $range['label'];
 
         return $this;
     }
