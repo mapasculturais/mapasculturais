@@ -171,7 +171,6 @@ class EvaluationPhaseBuilder extends Builder
                     $evaluation->registration = $registration;
                     $evaluation->user = $valuer;
                     $evaluation->status = $status;
-                    eval(\psy\sh());
                     $evaluation->save(true);
                 }
             }
