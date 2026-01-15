@@ -1253,25 +1253,73 @@ abstract class EvaluationMethod extends Module implements \JsonSerializable{
             }
             
             if(!empty($global_config_categories)) {
-                $config_fetchCategories = [$user->id => $global_config_categories];
+                $user_individual_categories = $config_fetchCategories[$user->id] ?? [];
+                
+                if(!empty($user_individual_categories)) {
+                    $config_fetchCategories[$user->id] = array_intersect(
+                        $global_config_categories, 
+                        $user_individual_categories
+                    );
+                } else {
+                    $config_fetchCategories[$user->id] = $global_config_categories;
+                }
             }
 
             if(!empty($global_config_ranges)) {
-                $config_ranges = [$user->id => $global_config_ranges];
+                $user_individual_ranges = $config_ranges[$user->id] ?? [];
+                
+                if(!empty($user_individual_ranges)) {
+                    $config_ranges[$user->id] = array_intersect(
+                        $global_config_ranges, 
+                        $user_individual_ranges
+                    );
+                } else {
+                    $config_ranges[$user->id] = $global_config_ranges;
+                }
             }
 
             if(!empty($global_config_proponent_types)) {
-                $config_proponent_types = [$user->id => $global_config_proponent_types];
+                $user_individual_proponent_types = $config_proponent_types[$user->id] ?? [];
+                
+                if(!empty($user_individual_proponent_types)) {
+                    $config_proponent_types[$user->id] = array_intersect(
+                        $global_config_proponent_types, 
+                        $user_individual_proponent_types
+                    );
+                } else {
+                    $config_proponent_types[$user->id] = $global_config_proponent_types;
+                }
             }
 
             if(!empty($global_config_selection_fields)) {
-                $config_selection_fields = [$user->id => $global_config_selection_fields];
+                $user_individual_selection_fields = $config_selection_fields[$user->id] ?? [];
+                
+                if(!empty($user_individual_selection_fields)) {
+                    $intersected_fields = [];   
+                    foreach($global_config_selection_fields as $field_name => $global_values) {
+                        
+                        $user_values = $user_individual_selection_fields->$field_name ?? [];
+                        if(!empty($user_values)) {
+                            $intersected_fields[$field_name] = array_intersect(
+                                (array) $global_values,
+                                (array) $user_values
+                            );
+                        } else {
+                            $intersected_fields[$field_name] = $global_values;
+                        }
+                    }
+                    $config_selection_fields[$user->id] = $intersected_fields;
+                } else {
+                    $config_selection_fields[$user->id] = $global_config_selection_fields;
+                }
             }
 
             if(!empty($global_config_sent_timestamp)) {
                 $config_sent_timestamp = [$user->id => $global_config_sent_timestamp]; 
             }
         }
+        
+        $configured_filters = [];
 
         if(is_array($config_fetch)){
             foreach($config_fetch as $id => $val){
@@ -1311,51 +1359,71 @@ abstract class EvaluationMethod extends Module implements \JsonSerializable{
         // verifica permissão de avaliação por número da inscrição
         if ($ufetch = !empty($fetch[$user->id]) ? $fetch[$user->id] : false){
             $has_filter = true;
-            if($this->canEvaluateRegistrationNumber($registration, $ufetch)){
-                $can = true;
-            }
+            $configured_filters['number'] = $ufetch;
         }
 
         // verifica permissão de avaliação por categoria
         if ($ucategories = $fetch_categories[$user->id] ?? false){
             $has_filter = true;
-            if($this->canEvaluateRegistrationCategory($registration, $ucategories)){
-                $can = true;
-            }
+            $configured_filters['category'] = $ucategories;
         }
 
         // verifica permissão de avaliação por faixa
         if ($uranges = $fetch_ranges[$user->id] ?? false){
             $has_filter = true;
-            if($this->canEvaluateRegistrationRange($registration, $uranges)){
-                $can = true;
-            }
+            $configured_filters['range'] = $uranges;
         }
 
         // verifica permissão de avaliação por tipo de proponente
         if ($uproponent_types = $fetch_proponent_types[$user->id] ?? false){
             $has_filter = true;
-            if($this->canEvaluateRegistrationProponentType($registration, $uproponent_types)){
-                $can = true;
-            }
+            $configured_filters['proponentType'] = $uproponent_types;
         }
 
         // verifica permissão de avaliação por campos de seleção
         if ($uselection_fields = $fetch_selection_fields[$user->id] ?? false){
             $has_filter = true;
-            if($this->canEvaluateRegistrationFields($registration, $uselection_fields)){
-                $can = true;
-            }
+            $configured_filters['selectionFields'] = $uselection_fields;
         }
 
         if ($usent_timestamp = $config_sent_timestamp[$user->id] ?? false) {
             $has_filter = true;
-            if($this->canEvaluateRegistrationSentTimestamp($registration, $usent_timestamp)){
-                $can = true;
-            }
+            $configured_filters['sentTimestamp'] = $usent_timestamp;
         }
         
-        if(!$can && !$has_filter) {
+        if (!empty($configured_filters)) {
+            $can = true;
+            
+            foreach ($configured_filters as $filter_type => $filter_value) {
+                $filter_passed = false;
+                
+                switch ($filter_type) {
+                    case 'number':
+                        $filter_passed = $this->canEvaluateRegistrationNumber($registration, $filter_value);
+                        break;
+                    case 'category':
+                        $filter_passed = $this->canEvaluateRegistrationCategory($registration, $filter_value);
+                        break;
+                    case 'range':
+                        $filter_passed = $this->canEvaluateRegistrationRange($registration, $filter_value);
+                        break;
+                    case 'proponentType':
+                        $filter_passed = $this->canEvaluateRegistrationProponentType($registration, $filter_value);
+                        break;
+                    case 'selectionFields':
+                        $filter_passed = $this->canEvaluateRegistrationFields($registration, $filter_value);
+                        break;
+                    case 'sentTimestamp':
+                        $filter_passed = $this->canEvaluateRegistrationSentTimestamp($registration, $filter_value);
+                        break;
+                }
+                
+                if (!$filter_passed) {
+                    $can = false;
+                    break;
+                }
+            }
+        } elseif (!$has_filter) {
             $can = (bool) $evaluation_config->valuersPerRegistration->$committe_name;
         }
 
