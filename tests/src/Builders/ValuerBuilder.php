@@ -151,4 +151,69 @@ class ValuerBuilder extends Builder
 
         return $this;
     }
+
+    public function categories(array $categories): static
+    {
+        $valuer_user_id = $this->instance->agent->user->id;
+
+        $result = (array) $this->instance->owner->fetchCategories ?? [];
+        $result[$valuer_user_id] =  [];
+
+        foreach($categories as $category) {
+            $result[$valuer_user_id][] = $category;
+        }
+
+        $this->instance->owner->fetchCategories = $result;
+        $this->instance->owner->save();
+
+        return $this;
+    }
+
+    public function proponentType(array $proponent_types): static
+    {
+        $valuer_user_id = $this->instance->agent->user->id;
+
+        $result = (array) $this->instance->owner->fetchProponentTypes ?? [];
+        $result[$valuer_user_id] = [];
+
+        foreach($proponent_types as $proponent_type) {
+            $result[$valuer_user_id][] = $proponent_type;
+        }
+
+        $this->instance->owner->fetchProponentTypes = $result;
+        $this->instance->owner->save();
+
+        return $this;
+    }
+
+ 
+
+    public function fetch($start, $end): static
+    {
+        $valuer_user_id = $this->instance->agent->user->id;
+
+        $result = (array) $this->instance->owner->fetch ?? [];
+        $result[$valuer_user_id] = "{$start}-{$end}";
+
+        $this->instance->owner->fetch = $result;
+
+        return $this;
+    }
+
+    public function ranges(array $ranges): static
+    {
+        $valuer_user_id = $this->instance->agent->user->id;
+
+        $result = (array) $this->instance->owner->fetchRanges ?? [];
+        $result[$valuer_user_id] = [];
+
+        foreach($ranges as $range) {
+            $result[$valuer_user_id][] = $range;
+        }
+
+        $this->instance->owner->fetchRanges = $result;
+        $this->instance->owner->save();
+
+        return $this;
+    }
 }
