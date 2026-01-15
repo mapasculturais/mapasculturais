@@ -1,7 +1,7 @@
 app.component('search-filter-agent', {
     template: $TEMPLATES['search-filter-agent'],
 
-    setup() { 
+    setup() {
         // os textos estão localizados no arquivo texts.php deste componente 
         const text = Utils.getTexts('search-filter-agent')
         return { text }
