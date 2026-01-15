@@ -19,6 +19,7 @@ $this->import('
     mc-alert
     opportunity-evaluation-committee
     opportunity-registration-filter-configuration
+    mc-alert
 ');
 
 ?>
@@ -108,6 +109,11 @@ $this->import('
                             @update:modelValue="enableRegisterFilterConf($event, groupName)"
                             label="<?= i::__('Configuração filtro de inscrição para avaliadores/comissão') ?>"
                         />
+                        <mc-alert v-if="hasFilterConfiguration(groupName)" type="warning">
+                            <div>
+                                {{filterConfigurationWarning}}
+                            </div>
+                        </mc-alert>
                         <opportunity-registration-filter-configuration 
                             v-if="entity.fetchFields[groupName] !== undefined" 
                             :entity="entity"

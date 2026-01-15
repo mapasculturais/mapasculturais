@@ -48,6 +48,18 @@ app.component('opportunity-registration-filter-configuration', {
             type: String,
             default: ''
         },
+
+        groupFilters: {
+            type: Object,
+            required: false,
+            default: null
+        },
+
+        group: {
+            type: String,
+            required: false,
+            default: null
+        },
     },
 
     setup() {
@@ -110,12 +122,59 @@ app.component('opportunity-registration-filter-configuration', {
                     ),
                 };
             } else {
+                // Se for avaliador individual e houver filtros globais da comissão, usar apenas esses filtros
+                if (!this.isGlobal && !this.isSection && this.groupFilters) {
+                    const globalCategories = Array.isArray(this.groupFilters.category) ? this.groupFilters.category : [];
+                    const globalProponentTypes = Array.isArray(this.groupFilters.proponentType) ? this.groupFilters.proponentType : [];
+                    const globalRanges = Array.isArray(this.groupFilters.range) ? this.groupFilters.range : [];
+                    
+                    return {
+                        categories: globalCategories.length > 1 
+                            ? globalCategories
+                            : (globalCategories.length > 0 
+                                ? globalCategories 
+                                : this.registrationCategories.filter(cat => !this.excludeFields.includes('category'))),
+                        proponentTypes: globalProponentTypes.length > 1
+                            ? globalProponentTypes
+                            : (globalProponentTypes.length > 0
+                                ? globalProponentTypes
+                                : this.registrationProponentTypes.filter(type => !this.excludeFields.includes('proponentType'))),
+                        ranges: globalRanges.length > 1
+                            ? globalRanges
+                            : (globalRanges.length > 0
+                                ? globalRanges
+                                : this.registrationRanges.filter(range => !this.excludeFields.includes('range'))),
+                    };
+                }
+                
                 return {
                     categories: this.registrationCategories.filter(cat => !this.excludeFields.includes('category')),
                     proponentTypes: this.registrationProponentTypes.filter(type => !this.excludeFields.includes('proponentType')),
                     ranges: this.registrationRanges.filter(range => !this.excludeFields.includes('range')),
                 };
             }
+        },
+
+        filteredSelectionFieldOptions() {
+            if (!this.isGlobal && !this.isSection && !this.isCriterion && this.groupFilters && this.selectedField) {
+                const reservedFields = ['category', 'proponentType', 'range', 'sentTimestamp', 'distribution'];
+                
+                if (!reservedFields.includes(this.selectedField)) {
+                    const globalFieldOptions = Array.isArray(this.groupFilters[this.selectedField]) 
+                        ? this.groupFilters[this.selectedField] 
+                        : [];
+                    
+                    if (globalFieldOptions.length > 1) {
+                        return globalFieldOptions;
+                    }
+                    
+                    if (globalFieldOptions.length > 0) {
+                        return globalFieldOptions;
+                    }
+                }
+            }
+            
+            return this.registrationSelectionFields?.[this.selectedField]?.fieldOptions ?? [];
         },
 
         canConfirm() {
@@ -340,6 +399,27 @@ app.component('opportunity-registration-filter-configuration', {
         },
 
         isFieldExcluded(field) {
+            if (!this.isGlobal && !this.isSection && !this.isCriterion && this.groupFilters) {
+                if (field === 'category') {
+                    const globalCategories = Array.isArray(this.groupFilters.category) ? this.groupFilters.category : [];
+                    if (globalCategories.length > 1) {
+                        return false;
+                    }
+                }
+                if (field === 'proponentType') {
+                    const globalProponentTypes = Array.isArray(this.groupFilters.proponentType) ? this.groupFilters.proponentType : [];
+                    if (globalProponentTypes.length > 1) {
+                        return false;
+                    }
+                }
+                if (field === 'range') {
+                    const globalRanges = Array.isArray(this.groupFilters.range) ? this.groupFilters.range : [];
+                    if (globalRanges.length > 1) {
+                        return false;
+                    }
+                }
+            }
+            
             return this.excludeFields.includes(field);
         },
 
@@ -826,6 +906,29 @@ app.component('opportunity-registration-filter-configuration', {
                         }
                 }
             } else {
+                if (!this.isGlobal && !this.isSection && this.groupFilters) {
+                    switch (type) {
+                        case 'category':
+                            const globalCategories = Array.isArray(this.groupFilters.category) ? this.groupFilters.category : [];
+                            if (globalCategories.length > 0) {
+                                return globalCategories.length > 1;
+                            }
+                            return this.registrationCategories.length > 0;
+                        case 'proponentType':
+                            const globalProponentTypes = Array.isArray(this.groupFilters.proponentType) ? this.groupFilters.proponentType : [];
+                            if (globalProponentTypes.length > 0) {
+                                return globalProponentTypes.length > 1;
+                            }
+                            return this.registrationProponentTypes.length > 0;
+                        case 'range':
+                            const globalRanges = Array.isArray(this.groupFilters.range) ? this.groupFilters.range : [];
+                            if (globalRanges.length > 0) {
+                                return globalRanges.length > 1;
+                            }
+                            return this.registrationRanges.length > 0;
+                    }
+                }
+                
                 switch (type) {
                     case 'category':
                         return this.registrationCategories.length > 0; 
