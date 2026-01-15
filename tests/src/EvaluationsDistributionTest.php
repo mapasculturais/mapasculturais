@@ -1626,4 +1626,112 @@ class EvaluationsDistributionTest extends TestCase
         $total_evaluations = $conn->fetchScalar("SELECT COUNT(*) FROM evaluations");
         $this->assertEquals($number_of_registrations, $total_evaluations, 'Garantindo que todas as inscrições foram distribuídas');
     }
+
+    function testDistributionConfigurationWithFilterConfiguration()
+    {
+        $app = $this->app;
+        $admin = $this->userDirector->createUser('admin');
+        $this->login($admin);
+
+        $opportunity = $this->opportunityBuilder
+        ->reset(owner: $admin->profile, owner_entity: $admin->profile)
+        ->fillRequiredProperties()
+        ->addCategory('Música')
+        ->addCategory('Dança')
+        ->addCategory('Teatro')
+        ->addCategory('Games')
+        ->addCategory('Outros')
+        ->addProponentType(ProponentTypes::PESSOA_FISICA)
+        ->addProponentType(ProponentTypes::PESSOA_JURIDICA)
+        ->addProponentType(ProponentTypes::COLETIVO)
+        ->addProponentType(ProponentTypes::MEI)
+        ->addRange('Faixa 1', 10, 10)
+        ->addRange('Faixa 2', 10, 10)
+        ->addRange('Faixa 3', 10, 10)
+        ->addRange('Faixa 4', 10, 10)
+        ->addRange('Faixa 5', 10, 10)
+        ->firstPhase()
+            ->setRegistrationPeriod(new Open)
+            ->done()
+        ->save()
+        ->createSentRegistrations( number_of_registrations: 8, category: 'Música', range: 'Faixa 1', proponent_type: ProponentTypes::PESSOA_FISICA->value)
+        ->createSentRegistrations( number_of_registrations: 8, category: 'Dança', range: 'Faixa 2', proponent_type: ProponentTypes::PESSOA_JURIDICA->value)
+        ->createSentRegistrations( number_of_registrations: 8, category: 'Teatro', range: 'Faixa 3', proponent_type: ProponentTypes::COLETIVO->value)
+        ->createSentRegistrations( number_of_registrations: 8, category: 'Games', range: 'Faixa 4', proponent_type: ProponentTypes::MEI->value)
+        ->createSentRegistrations( number_of_registrations: 8, category: 'Outros', range: 'Faixa 5', proponent_type: ProponentTypes::PESSOA_FISICA->value)
+        ->addEvaluationPhase(EvaluationMethods::simple)
+            ->setEvaluationPeriod(new ConcurrentEndingAfter)
+            // Categoria global
+            ->setCommitteeFilterCategory('committee 1', ['Música'])
+            ->setCommitteeFilterCategory('committee 2', ['Dança'])
+            ->setCommitteeFilterCategory('committee 3', ['Teatro, Games, Outros'])
+            // Tipo de proponente global
+            ->setCommitteeFilterProponentType('committee 4', [ProponentTypes::PESSOA_FISICA->value])
+            ->setCommitteeFilterProponentType('committee 5', [ProponentTypes::PESSOA_JURIDICA->value])
+            ->setCommitteeFilterProponentType('committee 6', [ProponentTypes::MEI->value, ProponentTypes::COLETIVO->value])
+            // Faixas global
+            ->setCommitteeFilterRange('committee 7', ['Faixa 1'])
+            ->setCommitteeFilterRange('committee 8', ['Faixa 2'])
+            ->setCommitteeFilterRange('committee 9', ['Faixa 3', 'Faixa 4', 'Faixa 5'])
+            ->save()
+            // Bloco para categorias
+            ->addValuer('committee 1', name: 'avaliador01')
+                ->done()
+            ->addValuer('committee 2', name: 'avaliador02')
+                ->done()
+            ->addValuer('committee 3', name: 'avaliador03')
+                ->categories(['Teatro', 'Games'])
+                ->done()
+            ->addValuer('committee 3', name: 'avaliador04')
+                ->categories(['Outros'])
+                ->done()
+            // Bloco para tipos de proponentes
+            ->addValuer('committee 4', name: 'avaliador05')
+                ->proponentType([ProponentTypes::PESSOA_FISICA->value])
+                ->done()
+            ->addValuer('committee 5', name: 'avaliador06')
+                ->proponentType([ProponentTypes::PESSOA_JURIDICA->value])
+                ->done()
+            ->addValuer('committee 6', name: 'avaliador07')
+                ->proponentType([ProponentTypes::MEI->value])
+                ->done()
+            ->addValuer('committee 6', name: 'avaliador08')
+                ->proponentType([ProponentTypes::COLETIVO->value])
+                ->done()
+            // Bloco para faixas
+            ->addValuer('committee 7', name: 'avaliador09')
+                ->ranges(['Faixa 1'])
+                ->done()
+            ->addValuer('committee 8', name: 'avaliador10')
+                ->ranges(['Faixa 2'])
+                ->done()
+            ->addValuer('committee 9', name: 'avaliador11')
+                ->ranges(['Faixa 3', 'Faixa 4'])
+                ->done()
+            ->addValuer('committee 9', name: 'avaliador12')
+                ->ranges(['Faixa 5'])
+                ->done()
+            ->save()
+            ->redistributeCommitteeRegistrations()
+            ->done()
+        ->getInstance();
+
+
+        $dict_values = [];
+        /** @var EvaluationMethodConfigurationAgentRelation[] */
+        $valuers = $opportunity->evaluationMethodConfiguration->agentRelations;
+
+        $conn = $app->em->getConnection();
+        foreach ($valuers as $valuer) {
+            $count_evaluations = $conn->fetchScalar(
+                "SELECT COUNT(*) FROM evaluations WHERE valuer_agent_id = :valuer_id",
+                ['valuer_id' => $valuer->agent->id]
+            );
+
+            $dict_values[$valuer->agent->name] = $count_evaluations;
+        }
+
+        eval(\psy\sh());
+    }
+      
 }
