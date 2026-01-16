@@ -63,6 +63,14 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 <a name="770-funarte"></a>
 2. <small>Melhoria desenvolvida pela Funarte (Fundação Nacional de Artes) para a Rede das Artes</small>
 
+## [7.6.33] - 2026-01-16
+### Correções
+- Corrige bug visual na remoção de administradores de entidades, onde ao excluir um administrador era removido visualmente outro da lista
+
+## [7.6.32] - 2026-01-15
+### Correções 
+- Ajusta para que seja possivel solicitar recurso em todos os status de inscrição na fase de recurso
+
 ## [7.6.31] - 2026-01-09
 ### Correções
 - Ajusta o redirecionamento para usuários com perfil incompleto ou com erro, aplicando o magicGetter na validação dos erros do agente
