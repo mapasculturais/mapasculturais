@@ -5,6 +5,10 @@ Todas as mudanças notáveis no projeto serão documentadas neste arquivo.
 O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/)
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [7.6.33] - 2026-01-16
+### Correções
+- Corrige bug visual na remoção de administradores de entidades, onde ao excluir um administrador era removido visualmente outro da lista
+
 ## [7.6.32] - 2026-01-15
 ### Correções 
 - Ajusta para que seja possivel solicitar recurso em todos os status de inscrição na fase de recurso
