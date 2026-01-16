@@ -789,11 +789,15 @@ class Entity {
             this.doPromise(res, (data) => {
                 let index;
                 
-                index = this.agentRelations[group].indexOf(agent);
-                this.agentRelations[group].splice(index,1);
+                index = this.agentRelations[group]?.findIndex(relation => relation.agent?.id === agent.id);
+                if (index != undefined && index != -1) {
+                    this.agentRelations[group].splice(index, 1);
+                }
                 
-                index = this.relatedAgents[group].indexOf(agent);
-                this.relatedAgents[group].splice(index,1);
+                index = this.relatedAgents[group]?.findIndex(a => a.id === agent.id);
+                if (index != undefined && index != -1) {
+                    this.relatedAgents[group].splice(index, 1);
+                }
             
             });
         } catch (error) {
