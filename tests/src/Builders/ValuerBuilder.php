@@ -216,4 +216,20 @@ class ValuerBuilder extends Builder
 
         return $this;
     }
+
+    public function fields(array $fields): static
+    {
+        $valuer_user_id = $this->instance->agent->user->id;
+
+        $result = (array) $this->instance->owner->fetchSelectionFields ?? [];
+        $result[$valuer_user_id] = [];
+
+        foreach($fields as $field => $value) {
+            $result[$valuer_user_id][$field] = $value;
+        }
+        $this->instance->owner->fetchSelectionFields = $result;
+        $this->instance->owner->save();
+
+        return $this;
+    }
 }

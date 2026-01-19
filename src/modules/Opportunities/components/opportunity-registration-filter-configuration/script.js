@@ -418,6 +418,15 @@ app.component('opportunity-registration-filter-configuration', {
                         return false;
                     }
                 }
+                
+                // Verifica campos de seleção customizados
+                const reservedFields = ['category', 'proponentType', 'range', 'sentTimestamp', 'distribution'];
+                if (!reservedFields.includes(field) && this.groupFilters[field]) {
+                    const globalFieldOptions = Array.isArray(this.groupFilters[field]) ? this.groupFilters[field] : [];
+                    if (globalFieldOptions.length > 1) {
+                        return false; // Permite subdividir os campos de seleção entre avaliadores
+                    }
+                }
             }
             
             return this.excludeFields.includes(field);
