@@ -23,7 +23,7 @@ class EntityRevision extends \MapasCulturais\Entity{
     const ACTION_UNARCHIVED     = 'unarchive';
     const ACTION_TRASHED        = 'delete';
     const ACTION_UNTRASHED      = 'undelete';
-    const ACTION_DELETED        = 'delete';
+    const ACTION_DELETED        = 'destroyed';
     const ACTION_AUTOUPDATED    = 'autoupdated'; // for implicit modifications
 
 
@@ -97,7 +97,7 @@ class EntityRevision extends \MapasCulturais\Entity{
 
     protected $modified = false;
 
-    public function __construct(array $dataRevision, $entity, $action, $message="", bool $flush = true)
+    public function __construct(array $dataRevision, $entity, $action, $message="", bool $flush = true, ?int $objectId = null)
     {
         parent::__construct();
         $app = App::i();
@@ -107,12 +107,17 @@ class EntityRevision extends \MapasCulturais\Entity{
         }
         $user = $app->repo("User")->find($user->id);
         $this->user = $user;
-        $this->objectId = $entity->id;
+        $pk = $entity->getPKPropertyName();
+        $this->objectId = $objectId ?: $entity->$pk;
         $this->objectType = $entity->getClassName();
         $this->action = $action;
         $this->__data = new \Doctrine\Common\Collections\ArrayCollection();
         if ($action == self::ACTION_CREATED) {
-            $this->createTimestamp = $entity->createTimestamp;
+            if (property_exists($entity, 'createTimestamp') && $entity->createTimestamp) {
+                $this->createTimestamp = $entity->createTimestamp;
+            } else {
+                $this->createTimestamp = new \DateTime;
+            }
             foreach ($dataRevision as $key => $data) {
                 $revisionData = new EntityRevisionData;
                 $revisionData->key = $key;

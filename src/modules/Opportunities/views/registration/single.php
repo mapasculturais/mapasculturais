@@ -156,7 +156,7 @@ $today = new DateTime();
                             </span>                            
                             <span class="info" v-if="entity.agentsData.owner?.dataDeNascimento"> 
                                 <strong> <?= i::__('Data de nascimento ou fundação') ?>: </strong> 
-                                <span>{{entity.agentsData.owner?.dataDeNascimento}}</span><!-- .date('2-digit year') -->
+                                <span>{{entity.agentsData.owner?.dataDeNascimento.split('-').reverse().join('/')}}</span>
                             </span>  
                             <span class="info" v-if="entity.agentsData.owner?.emailPublico"> 
                                 <strong> <?= i::__('Email') ?>: </strong> 

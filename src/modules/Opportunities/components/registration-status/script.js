@@ -60,7 +60,8 @@ app.component('registration-status', {
                 return false;
             }
 
-            return this.registration.status > 1 && this.registration.status < 10;
+
+            return this.registration.status > 1 && this.registration.status <= 10;
         },
 
         opportunity () {

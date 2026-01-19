@@ -133,8 +133,51 @@ $this->import('
                     class="opportunity-evaluation-committee__card-filter"
                     useDistributionField />
 
+                    
+                <div class="opportunity-evaluation-committee__registration-list">
+                    <mc-toggle
+                        v-model="showRegistrationListFlag[infoReviewer.id]"
+                        label="<?= i::esc_attr__('Informar lista de inscrições que este avaliador deve avaliar') ?>"
+                        @update:modelValue="changeShowRegistrationListFlag($event, infoReviewer)"
+                    />
+                    <template v-if="showRegistrationList(infoReviewer)">
+                        <label>
+                            <?= i::__('Lista de inscrições') ?>
+                            <div class='field opportunity-evaluation-committee__registration-list-textarea'>
+                                <textarea 
+                                    v-model="infoReviewer.registrationListText" 
+                                    @change="saveRegistrationList(infoReviewer)" 
+                                    placeholder="<?=  i::esc_attr__('Preencha com os números de inscrição que o avaliador deve avaliar, separados por vírgula.') ?>"
+                                    rows="4"></textarea>
+                            </div>
+                        </label>
+                        <label class="opportunity-evaluation-committee__registration-list__exclusive">
+                            <input 
+                                type="checkbox" 
+                                v-model="infoReviewer.metadata.registrationListExclusive" 
+                                @change="saveRegistrationListExclusive(infoReviewer)">
+                            <?= i::__('não distribuir outras inscrições desta comissão para este avaliador') ?>
+                        </label>
+                    </template>
+                </div>
+
                 <div class="opportunity-evaluation-committee__card-footer">
                     <div class="opportunity-evaluation-committee__card-footer-actions" v-if="infoReviewer.status !== -5">
+                        <select-entity v-if="!showDisabled" type="agent" :select="queryString" :query="query" @select="replaceReviewer($event, infoReviewer)" openside="down-right" permissions="">
+                            <template #button="{ toggle }">
+                                <button class="opportunity-evaluation-committee__card-footer-button button button--disable button--icon button--sm" @click="toggle()">
+                                    <mc-icon name="exchange"></mc-icon>
+                                    <?php i::_e('Substituir avaliador') ?>
+                                </button>
+                            </template>
+
+                            <template #entityInfo="{entity}">
+                                <span class="icon">
+                                    <mc-avatar :entity="entity" size="xsmall"></mc-avatar>
+                                </span>
+                                <span class="label"> #{{entity.id}} - {{entity.name}}</span>
+                            </template>
+                        </select-entity>
                         <mc-confirm-button v-if="infoReviewer.metadata?.summary.sent > 0" @confirm="reopenEvaluations(infoReviewer.agentUserId)">
                             <template #button="{open}">
                                 <button class="opportunity-evaluation-committee__card-footer-button danger__border button button--icon button--sm" :class="{'disabled' : infoReviewer.metadata.summary.sent <= 0}" @click="open()">
@@ -169,22 +212,6 @@ $this->import('
                                 </p>
                             </template>
                         </mc-confirm-button>
-
-                        <select-entity v-if="!showDisabled" type="agent" :select="queryString" :query="query" @select="replaceReviewer($event, infoReviewer)" openside="down-right" permissions="">
-                            <template #button="{ toggle }">
-                                <button class="opportunity-evaluation-committee__card-footer-button button button--disable button--icon button--sm" @click="toggle()">
-                                    <mc-icon name="change"></mc-icon>
-                                    <?php i::_e('Alterar avaliador') ?>
-                                </button>
-                            </template>
-
-                            <template #entityInfo="{entity}">
-                                <span class="icon">
-                                    <mc-avatar :entity="entity" size="xsmall"></mc-avatar>
-                                </span>
-                                <span class="label"> #{{entity.id}} - {{entity.name}}</span>
-                            </template>
-                        </select-entity>
                     </div>
 
                     <label>
@@ -196,26 +223,6 @@ $this->import('
                                 type="number">
                         </div>
                     </label>
-
-                    <div class="opportunity-evaluation-committee__registration-list">
-                        <label>
-                            <?= i::__('Lista de inscrições') ?>
-                            <div class='field opportunity-evaluation-committee__registration-list-textarea'>
-                                <textarea 
-                                    v-model="infoReviewer.registrationListText" 
-                                    @change="saveRegistrationList(infoReviewer)" 
-                                    :placeholder="'on-12312312312, on-332312312, on-3333, on-98987987'"
-                                    rows="4"></textarea>
-                            </div>
-                        </label>
-                        <label class="opportunity-evaluation-committee__registration-list-exclusive">
-                            <input 
-                                type="checkbox" 
-                                v-model="infoReviewer.metadata.registrationListExclusive" 
-                                @change="saveRegistrationListExclusive(infoReviewer)">
-                            <?= i::__('não distribuir outras inscrições desta comissão para este avaliador') ?>
-                        </label>
-                    </div>
                 </div>
             </div>
         </div>
