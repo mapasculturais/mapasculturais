@@ -130,7 +130,7 @@ $this->import('
                     :excludeFields="excludeFields"
                     @updateExcludeFields="$emit('updateExcludeFields', $event)"
                     :info-reviewer="infoReviewer"
-                    :group-filters="entity.fetchFields?.[group]"
+                    :group-filters="groupFiltersForComponent"
                     :group="group"
                     class="opportunity-evaluation-committee__card-filter"
                     useDistributionField />
