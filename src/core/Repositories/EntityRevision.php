@@ -6,6 +6,15 @@ use MapasCulturais\App;
 class EntityRevision extends \MapasCulturais\Repository{
     use Traits\EntityGeoLocation;
 
+    public function findLastRevisionByObjectTypeAndId(string $object_type, int $object_id) {
+        $query = $this->_em->createQuery("SELECT e
+                                            FROM MapasCulturais\Entities\EntityRevision e
+                                            WHERE e.objectId = {$object_id} AND e.objectType = '{$object_type}'
+                                            ORDER BY e.id DESC");
+        $query->setMaxResults(1);
+        return $query->getOneOrNullResult();
+    }
+
     public function findLastRevision($entity) {
         $objectId = $entity->id;
         $objectType = $entity->getClassName();

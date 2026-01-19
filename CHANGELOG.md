@@ -6,6 +6,10 @@ O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [UNRELEASED]
+### Correções
+- Corrige exibição de anexos no PDF de inscrição, respeitando a ordem dos campos (displayOrder) e exibindo marcadores de campos obrigatórios
+
+## [7.7.0] - 2025-12-19
 ### Novas Funcionalidades
 - Exportador / Importador de oportunidades
 - Lista de entidades seladas na single dos selos
@@ -15,6 +19,7 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Fediverso como rede social nos metadados das entidades
 - Adiciona restrição de tipos de arquivo permitidos em campos anexo do formulário
 - Oportunidade apenas para divulgação - permite criar oportunidades informativas onde as inscrições não são feitas pela plataforma
+- Exportação de ficha de inscrição em PDF com mesclagem automática de anexos PDF em um único arquivo
 
 ### Melhorias nas avaliação
 - Possibilidade de configuração de limite de inscrições para os avaliadores
@@ -26,12 +31,13 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ### Melhorias
 - Redireciona usuario para o perfil quando o mesmo esta em rascunho ou com dados obrigatórios não preechidos
-- Implementa novos hooks na edit de espaço e no componente entity-field
-- Adiciona suporte a autenticação JWT nas requisições para API [(1)](#snp)
+- Adiciona suporte a autenticação JWT nas requisições para API [(1)](#770-snp)
 - Melhoria na exibição das mensagens de erro para capturar e exibir mensagens específicas
 - Melhora a comunicação da interface para deixar claro que a alteração de critérios ou sessões só deve ser feita por administradores quando já existirem avaliações técnicas enviadas.
 - Remove espaços múltiplos e espaços no início/fim do nome e nome completo das entidades
-- Adiciona campos de Galeria de Fotos, Vídeos e Downloads como opções de campos do agente responsável em formulários de inscrição, permitindo que o gestor solicite portfólio visual, galeria de vídeos ou documentos anexos que sincronizam automaticamente com o perfil do agente [(2)](#funarte)
+- Adiciona campos de Galeria de Fotos, Vídeos e Downloads como opções de campos do agente responsável em formulários de inscrição, permitindo que o gestor solicite portfólio visual, galeria de vídeos ou documentos anexos que sincronizam automaticamente com o perfil do agente [(2)](#770-funarte)
+- Download em lote de anexos da inscrição em formato ZIP
+- Habilita as revisões para usuários, fases de avaliação, selos e funções de usuário
 
 ### Correções
 - Corrige warnigs no navegador devido a problemas com o componente entity-field
@@ -40,24 +46,61 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Corrige função replaces da classe i
 - Corrige nome do hook entity().archive:after
 - Corrige busca pela chave primária da tabela Job
-- Impede que o usuarios que não são admnistradores altere critérios ou sessões de critérios de avaliação técnica se já existem avaliações enviadas
+- Impede que o usuarios que não são admnistradores alterem critérios ou sessões de critérios de avaliação técnica se já existem avaliações enviadas
 - Corrige erro ao salvar e publicar a entidade, que interpretava mensagens de erro de forma incorreta
 
 ### Melhorias não funcionais
 - LifecycleCallbacks na Entities\SealRelation
 - Função \query que faz uma consulta no banco e imprime o resultado como uma tabela ascii
 - Impede a inserção do mesmo selo mais de uma vez em uma entidade
+- Possibilita a escrita de mc-updates para entidades fora do namespace MapasCulturais\Entities
+- Implementa novos hooks na edit de espaço e no componente entity-field
+- Infraestrutura para testes: novos builders, traits e directors
 
 ### Créditos
-<a name="snp"></a>
+<a name="770-snp"></a>
 1. <small>Melhoria desenvolvida pelo Ministério das Cidades, através da Secretaria Nacional de Periferias, para o Prêmio Periferia Viva</small>
+<a name="770-funarte"></a>
 2. <small>Melhoria desenvolvida pela Funarte (Fundação Nacional de Artes) para a Rede das Artes</small>
 
-## [7.6.26] - 2025-11-28
+## [7.6.33] - 2026-01-16
+### Correções
+- Corrige bug visual na remoção de administradores de entidades, onde ao excluir um administrador era removido visualmente outro da lista
+
+## [7.6.32] - 2026-01-15
+### Correções 
+- Ajusta para que seja possivel solicitar recurso em todos os status de inscrição na fase de recurso
+
+## [7.6.31] - 2026-01-09
+### Correções
+- Ajusta o redirecionamento para usuários com perfil incompleto ou com erro, aplicando o magicGetter na validação dos erros do agente
+- Corrige a busca de dados no método getDataFromApi() do componente mc-entity, que falhava quando havia o parâmetro @keywords
+
+## [7.6.30] - 2026-01-06
+### Melhorias
+- Implementa forma de exibir todas as taxonomias obrigatórias no modal de criação de agente
+
+## [7.6.29] - 2026-01-05
+### Correções
+- Corrige copia de áreas de interesse ao criar um modelo de oportunidade
+
+## [7.6.28] - 2025-12-26
+### Correções
+- Corrige filtro de usuários na gestão de usuários
+
+## [7.6.27] - 2025-12-19
+### Correções
+- Corrige exibição do campo de endereço no formulário de inscrição
+- Corrige salvamento do CEP no campo de endereço no formulário de inscrição
+
+## [7.6.26] - 2025-12-10
 ### Correções
 - Corrige permissão de edição de campos bloqueados no formulário de inscrição
 - Adiciona todos os campos da lista de pessoas na ficha de inscrição e na exportação da lista de inscrição
 - Corrige seleção de campos na API
+- Remove codigo que insere o sergmento cultural da tabela de agentes
+- Ajusta verificação de permissões para permitir que gestores da oportunidade visualizem todos os campos do formulário de inscrição, mesmo sem serem administradores do sistema
+- Corrige erro que impedia a exibição do botão de editar campos do formulário quando liberado período de edição para o usuário
 
 ## [7.6.25] - 2025-11-27
 ### Melhorias

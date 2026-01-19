@@ -431,8 +431,8 @@ class Quotas {
 
 
                             if(!$this->isRegistrationInArray($registration, $range_result[$range]) && in_array($registration_region, $regions_with_vacancies)) {
-                                $geo_count_results[$registration_region]++;
-                                $geo_count_results[$region]--;
+                                $geo_count_results[$registration_region] = ($geo_count_results[$registration_region] ?? 0) + 1;
+                                $geo_count_results[$region] = ($geo_count_results[$region] ?? 0) - 1;
                                 $range_result[$range][$key_of_registration_to_exclude] = $registration;
                             }
                         }
@@ -618,7 +618,12 @@ class Quotas {
 
             foreach($this->quotaRules as $rule) {
                 $field_name = $rule->fields->$proponent_type->fieldName ??  null;
-                if($field_name && in_array($registration->$field_name, $rule->fields->$proponent_type->eligibleValues)) {
+                if(!$field_name) {
+                    continue;
+                }
+
+                $field_value = (array) $registration->$field_name;
+                if(array_intersect($field_value, $rule->fields->$proponent_type->eligibleValues)) {
                     $result[] = $this->getQuotaTypeSlugByRule($rule);
                     $quotas[] = $rule->title;
                 }

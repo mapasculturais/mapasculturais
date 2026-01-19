@@ -88,8 +88,8 @@ $default_headers[] = [
 
 // Carrega metadados
 $definitions = Registration::getPropertiesMetadata();
-$can_see = function ($def) use ($app) {
-    return $app->user->is('admin') ? true : !(isset($def['private']) && $def['private']);
+$can_see = function ($def) use ($app, $opportunity) {
+    return ($app->user->is('admin') || $opportunity->canUser('@control')) ? true : !(isset($def['private']) && $def['private']);
 };
 
 foreach ($definitions as $field => $def) {
