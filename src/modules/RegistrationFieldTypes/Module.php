@@ -721,18 +721,13 @@ class Module extends \MapasCulturais\Module
                 'viewTemplate' => 'registration-field-types/custom-table',
                 'configTemplate' => 'registration-field-types/custom-table-config',
                 'serialize' => function($value) {
-                    $timestamp = microtime(true);
-                    error_log("🔴 SERIALIZE [{$timestamp}] - Valor recebido: " . print_r($value, true));
-                    error_log("🔴 SERIALIZE [{$timestamp}] - Tipo: " . gettype($value));
-                    
                     // Se já é string, retorna direto (evita double encoding)
                     if(is_string($value)) {
-                        error_log("🔴 SERIALIZE - Já é string, retornando direto");
                         return $value;
                     }
                     
+                    // Limpar propriedades internas do Vue (que começam com $$)
                     if(is_array($value)){
-                        error_log("🔴 SERIALIZE - É array com " . count($value) . " itens");
                         foreach($value as &$row){
                             if(is_object($row)) {
                                 foreach($row as $key => $v){
@@ -748,12 +743,9 @@ class Module extends \MapasCulturais\Module
                                 }
                             }
                         }
-                        error_log("🔴 SERIALIZE - Após limpar $$: " . print_r($value, true));
                     }
 
-                    $result = json_encode($value);
-                    error_log("🔴 SERIALIZE - Resultado JSON: " . $result);
-                    return $result;
+                    return json_encode($value);
                 },
                 'unserialize' => function($value) {
                     $rows = json_decode($value ?: "", true);
