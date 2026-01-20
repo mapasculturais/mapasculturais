@@ -2,7 +2,7 @@
 
 namespace Tests\Builders\PhasePeriods;
 
-use DateTime;
+use MapasCulturais\DateTime;
 use MapasCulturais\Entities\Opportunity;
 use Tests\Interfaces\DataCollectionPeriodInterface;
 

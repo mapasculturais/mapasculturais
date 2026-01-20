@@ -1,5 +1,6 @@
 
 <?php 
+use MapasCulturais\DateTime;
 use MapasCulturais\i;
 ?>
 <div class="box">
@@ -7,7 +8,7 @@ use MapasCulturais\i;
     <p><?= $text ?></p>
     <?php if(!$app->user->is('guest')):?>
         <?php if($accepted): ?>
-            <p ><?= sprintf(i::__('Aceito em %s'), date(i::__('d/m/Y à\s H:i'), $accepted->timestamp)) ?></p> 
+            <p ><?= sprintf(i::__('Aceito em %s'), DateTime::date(i::__('d/m/Y à\s H:i'), $accepted->timestamp)) ?></p> 
         <?php else: ?>
             <div class='align-button'>
                 <form action='<?= $url ?>' method="POST"> 

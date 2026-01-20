@@ -5,6 +5,7 @@ namespace MapasCulturais\Entities;
 use Doctrine\ORM\Mapping as ORM;
 use MapasCulturais\Traits;
 use MapasCulturais\App;
+use MapasCulturais\DateTime;
 
 /**
  * Project
@@ -76,28 +77,28 @@ class Project extends \MapasCulturais\Entity
     protected $longDescription;
 
     /**
-     * @var \DateTime
+     * @var DateTime
      *
      * @ORM\Column(name="update_timestamp", type="datetime", nullable=true)
      */
     protected $updateTimestamp;
 
     /**
-     * @var \DateTime
+     * @var DateTime
      *
      * @ORM\Column(name="starts_on", type="datetime", nullable=true)
      */
     protected $startsOn;
 
     /**
-     * @var \DateTime
+     * @var DateTime
      *
      * @ORM\Column(name="ends_on", type="datetime", nullable=true)
      */
     protected $endsOn;
 
     /**
-     * @var \DateTime
+     * @var DateTime
      *
      * @ORM\Column(name="create_timestamp", type="datetime", nullable=false)
      */
@@ -254,10 +255,10 @@ class Project extends \MapasCulturais\Entity
     }
 
     function setStartsOn($date){
-        if($date instanceof \DateTime){
+        if($date instanceof DateTime){
             $this->startsOn = $date;
         }elseif($date){
-            $this->startsOn = new \DateTime($date);
+            $this->startsOn = new DateTime($date);
             $this->startsOn->setTime(0,0,0);
         }else{
             $this->startsOn = null;
@@ -265,17 +266,17 @@ class Project extends \MapasCulturais\Entity
     }
 
     function setEndsOn($date){
-        if($date instanceof \DateTime){
+        if($date instanceof DateTime){
             $this->endsOn = $date;
         }elseif($date){
-            $this->endsOn =  new \DateTime($date);
+            $this->endsOn =  new DateTime($date);
         }else{
             $this->endsOn = null;
         }
     }
 
     function validateDate($value){
-        return !$value || $value instanceof \DateTime;
+        return !$value || $value instanceof DateTime;
     }
 
     function validateRegistrationDates() {
@@ -291,7 +292,7 @@ class Project extends \MapasCulturais\Entity
     }
 
     function isRegistrationOpen(){
-        $cdate = new \DateTime;
+        $cdate = new DateTime;
         return $cdate >= $this->startsOn && $cdate <= $this->endsOn;
     }
 

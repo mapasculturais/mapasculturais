@@ -2,21 +2,18 @@
 
 namespace OpportunityAccountability;
 
-use DateTime;
-use stdClass;
-use MapasCulturais\i;
-use MapasCulturais\App;
 use MapasCulturais\ApiQuery;
-use MapasCulturais\Entities\Project;
+use MapasCulturais\App;
+use MapasCulturais\DateTime;
 use MapasCulturais\Entities\ChatThread;
-use MapasCulturais\Entities\ChatMessage;
-use MapasCulturais\Entities\Opportunity;
-use MapasCulturais\Entities\Notification;
-use MapasCulturais\Entities\Registration;
-use OpportunityPhases\Module as PhasesModule;
-use MapasCulturais\Definitions\ChatThreadType;
-use MapasCulturais\Entities\RegistrationEvaluation;
 use MapasCulturais\Entities\EvaluationMethodConfiguration;
+use MapasCulturais\Entities\Notification;
+use MapasCulturais\Entities\Opportunity;
+use MapasCulturais\Entities\Project;
+use MapasCulturais\Entities\Registration;
+use MapasCulturais\Entities\RegistrationEvaluation;
+use MapasCulturais\i;
+use stdClass;
 
 /**
  * @property Module $evaluationMethod
@@ -998,8 +995,8 @@ class Module extends \MapasCulturais\Module
         $phase->isOpportunityPhase = true;
         $phase->isAccountabilityPhase = true;
 
-        $_from = $last_phase->registrationTo ? clone $last_phase->registrationTo : new \DateTime;
-        $_to = $last_phase->registrationTo ? clone $last_phase->registrationTo : new \DateTime;
+        $_from = $last_phase->registrationTo ? clone $last_phase->registrationTo : new DateTime;
+        $_to = $last_phase->registrationTo ? clone $last_phase->registrationTo : new DateTime;
         $_to->add(date_interval_create_from_date_string('1 days'));
 
         $phase->registrationFrom = $_from;

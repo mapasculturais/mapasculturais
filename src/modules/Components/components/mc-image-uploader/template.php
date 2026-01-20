@@ -6,6 +6,7 @@
  */
 
 use MapasCulturais\i;
+use MapasCulturais\DateTime;
 
 $this->import('
     mc-confirm-button
@@ -26,7 +27,7 @@ $this->import('
         <template #button="modal">
             <label>
                 <slot :modal="modal" :blob="blob" :file="file" :blobUrl="blobUrl" :description="description" :upload="upload"></slot>
-                <input :id="group+<?= date("Ymd") ?>" type="file" ref="file" @change="loadImage($event, modal)" accept="image/*" style="display:none">
+                <input :id="group+<?= DateTime::date("Ymd") ?>" type="file" ref="file" @change="loadImage($event, modal)" accept="image/*" style="display:none">
             </label>
 
             <mc-confirm-button v-if="showDelete" @confirm="delFile()">

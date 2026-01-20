@@ -3,6 +3,7 @@
 namespace MapasCulturais\Entities;
 
 use Doctrine\ORM\Mapping as ORM;
+use MapasCulturais\DateTime;
 
 /**
  * EventOccurrenceCancellation
@@ -25,7 +26,7 @@ class EventOccurrenceCancellation extends \MapasCulturais\Entity
     public $id;
 
     /**
-     * @var \DateTime
+     * @var DateTime
      *
      * @ORM\Column(name="date", type="date", nullable=true)
      */

@@ -1,7 +1,9 @@
 <?php
 namespace MapasCulturais\Repositories;
-use MapasCulturais\Traits;
+
 use MapasCulturais\App;
+use MapasCulturais\DateTime;
+use MapasCulturais\Traits;
 
 class Event extends \MapasCulturais\Repository{
     use Traits\RepositoryKeyword,
@@ -46,13 +48,13 @@ class Event extends \MapasCulturais\Repository{
         }
 
         if(is_null($date_from))
-            $date_from = date('Y-m-d');
-        else if($date_from instanceof \DateTime)
+            $date_from = DateTime::date('Y-m-d');
+        else if($date_from instanceof DateTime)
             $date_from = $date_from->format('Y-m-d');
 
         if(is_null($date_to))
             $date_to = $date_from;
-        else if($date_to instanceof \DateTime)
+        else if($date_to instanceof DateTime)
             $date_to = $date_to->format('Y-m-d');
 
         $dql_limit = $dql_offset = '';
@@ -125,14 +127,14 @@ class Event extends \MapasCulturais\Repository{
         }
 
         if(is_null($date_from)){
-            $date_from = date('Y-m-d');
-        }else if($date_from instanceof \DateTime){
+            $date_from = DateTime::date('Y-m-d');
+        }else if($date_from instanceof DateTime){
             $date_from = $date_from->format('Y-m-d');
         }
 
         if(is_null($date_to)){
             $date_to = $date_from;
-        }else if($date_to instanceof \DateTime){
+        }else if($date_to instanceof DateTime){
             $date_to = $date_to->format('Y-m-d');
         }
 
@@ -193,14 +195,14 @@ class Event extends \MapasCulturais\Repository{
     public function findByAgent(\MapasCulturais\Entities\Agent $agent, $date_from = null, $date_to = null, $limit = null, $offset = null){
         
         if(is_null($date_from)){
-            $date_from = date('Y-m-d');
-        }else if($date_from instanceof \DateTime){
+            $date_from = DateTime::date('Y-m-d');
+        }else if($date_from instanceof DateTime){
             $date_from = $date_from->format('Y-m-d');
         }
 
         if(is_null($date_to)){
             $date_to = $date_from;
-        }else if($date_to instanceof \DateTime){
+        }else if($date_to instanceof DateTime){
             $date_to = $date_to->format('Y-m-d');
         }
 
@@ -270,14 +272,14 @@ class Event extends \MapasCulturais\Repository{
     public function findByDateInterval($date_from = null, $date_to = null, $limit = null, $offset = null, $only_ids = false){
                 
         if(is_null($date_from)){
-            $date_from = date('Y-m-d');
-        } else if($date_from instanceof \DateTime){
+            $date_from = DateTime::date('Y-m-d');
+        } else if($date_from instanceof DateTime){
             $date_from = $date_from->format('Y-m-d');
         }
 
         if(is_null($date_to)){
             $date_to = $date_from;
-        }else if($date_to instanceof \DateTime){
+        }else if($date_to instanceof DateTime){
             $date_to = $date_to->format('Y-m-d');
         }
         $dql_limit = $dql_offset = '';

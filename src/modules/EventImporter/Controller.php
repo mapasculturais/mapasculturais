@@ -2,23 +2,21 @@
 
 namespace EventImporter;
 
-use DateTime;
-use stdClass;
 use Curl\Curl;
 use Exception;
-use MapasCulturais\i;
 use League\Csv\Reader;
+use League\Csv\Statement;
 use League\Csv\Writer;
 use MapasCulturais\App;
-use Shuchkin\SimpleXLS;
-use Shuchkin\SimpleXLSX;
-use League\Csv\Statement;
-use MapasCulturais\Entity;
+use MapasCulturais\DateTime;
 use MapasCulturais\Entities\Event;
+use MapasCulturais\Entities\EventOccurrence;
 use MapasCulturais\Entities\MetaList;
+use MapasCulturais\Entity;
+use MapasCulturais\i;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
-use MapasCulturais\Entities\EventOccurrence;
+use stdClass;
 
 class Controller extends \MapasCulturais\Controller
 {
@@ -605,7 +603,7 @@ class Controller extends \MapasCulturais\Controller
             $_agent = $app->user->profile;
             $files = $_agent->event_importer_processed_file ?: new stdClass();
             $files->{basename($file_dir)} = [
-               'date' => date('d/m/Y \à\s H:i'),
+               'date' => DateTime::date('d/m/Y \à\s H:i'),
                'countProsess' => $countNewEvent,
                'eventsIdList' => $eventsIdList,
                'typeFile' => ($type_process_map->create_event ? i::__('Criação') : ($type_process_map->edit_event ? i::__('Edição') : ($type_process_map->delete_event ? i::__('Deleção') : i::__('Não definido'))))

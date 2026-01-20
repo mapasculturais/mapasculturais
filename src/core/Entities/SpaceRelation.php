@@ -4,6 +4,7 @@ namespace MapasCulturais\Entities;
 
 use Doctrine\ORM\Mapping as ORM;
 use MapasCulturais\App;
+use MapasCulturais\DateTime;
 
 /**
  * SpaceRelation
@@ -44,7 +45,7 @@ abstract class SpaceRelation extends \MapasCulturais\Entity
     protected $objectId;
 
     /**
-     * @var \DateTime
+     * @var DateTime
      *
      * @ORM\Column(name="create_timestamp", type="datetime", nullable=true)
      */

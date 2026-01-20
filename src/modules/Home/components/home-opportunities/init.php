@@ -1,4 +1,5 @@
 <?php
+use MapasCulturais\DateTime;
 
 /* Get agents from logged user */
 $date = new DateTime();

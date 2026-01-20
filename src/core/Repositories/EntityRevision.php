@@ -1,7 +1,9 @@
 <?php
 namespace MapasCulturais\Repositories;
-use MapasCulturais\Traits;
+
 use MapasCulturais\App;
+use MapasCulturais\DateTime;
+use MapasCulturais\Traits;
 
 class EntityRevision extends \MapasCulturais\Repository{
     use Traits\EntityGeoLocation;
@@ -87,7 +89,7 @@ class EntityRevision extends \MapasCulturais\Repository{
             } elseif($dataRevision->key == 'createTimestamp' || $dataRevision->key == 'updateTimestamp') {
                 $attribute = $dataRevision->key;
                 if(isset($data->date)) {
-                    $entityRevisioned->$attribute = \DateTime::createFromFormat('Y-m-d H:i:s.u',$data->date);
+                    $entityRevisioned->$attribute = DateTime::createFromFormat('Y-m-d H:i:s.u',$data->date);
                 }
             } else {
                 $attribute = $dataRevision->key;

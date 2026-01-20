@@ -5,6 +5,7 @@ namespace Apps\Entities;
 use Doctrine\ORM\Mapping as ORM;
 
 use MapasCulturais\App;
+use MapasCulturais\DateTime;
 use MapasCulturais\Traits;
 
 /**
@@ -68,7 +69,7 @@ class UserApp extends \MapasCulturais\Entity {
     protected $status = self::STATUS_ENABLED;
 
     /**
-     * @var \DateTime
+     * @var DateTime
      *
      * @ORM\Column(name="create_timestamp", type="datetime", nullable=false)
      */

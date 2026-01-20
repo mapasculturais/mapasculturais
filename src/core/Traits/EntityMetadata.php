@@ -3,6 +3,7 @@ namespace MapasCulturais\Traits;
 
 use Exception;
 use MapasCulturais\App;
+use MapasCulturais\DateTime;
 use MapasCulturais\Entities\User;
 use MapasCulturais\GuestUser;
 
@@ -346,7 +347,7 @@ trait EntityMetadata{
             $this->__changedMetadata[$meta_key] = ['key'=> $meta_key, 'oldValue'=> $metadata_object->value, 'newValue'=> $value];
             $metadata_object->value = $value;
             if (property_exists($this, 'updateTimestamp')) {
-                $this->updateTimestamp = new \DateTime;
+                $this->updateTimestamp = new DateTime;
             }
         }
     }

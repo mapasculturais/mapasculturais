@@ -4,13 +4,11 @@ namespace MapasCulturais\Themes\BaseV1;
 
 use MapasCulturais;
 use MapasCulturais\App;
+use MapasCulturais\DateTime;
 use MapasCulturais\Entities;
-use MapasCulturais\Entities\Notification;
 use MapasCulturais\Entities\Registration;
-use Respect\Validation\length;
 use MapasCulturais\i;
 use OpportunityPhases\Module as Phases;
-use MapasCulturais\Utils;
 
 
 class Theme extends MapasCulturais\Theme {
@@ -1196,8 +1194,8 @@ class Theme extends MapasCulturais\Theme {
             $phase->useRegistrations = true;
             $phase->isOpportunityPhase = true;
     
-            $_from = $last_phase->registrationTo ? clone $last_phase->registrationTo : new \DateTime;
-            $_to = $last_phase->registrationTo ? clone $last_phase->registrationTo : new \DateTime;
+            $_from = $last_phase->registrationTo ? clone $last_phase->registrationTo : new DateTime;
+            $_to = $last_phase->registrationTo ? clone $last_phase->registrationTo : new DateTime;
             $_to->add(date_interval_create_from_date_string('1 days'));
     
             $phase->registrationFrom = $_from;
@@ -2827,8 +2825,8 @@ class Theme extends MapasCulturais\Theme {
 
         if ($entity_class === 'MapasCulturais\Entities\Event') {
             $entities = $controller->apiQueryByLocation(array(
-                '@from' => date('Y-m-d'),
-                '@to' => date('Y-m-d', time() + 28 * 24 * 3600),
+                '@from' => DateTime::date('Y-m-d'),
+                '@to' => DateTime::date('Y-m-d', time() + 28 * 24 * 3600),
                 '@verified' => 'IN(1)',
                 '@select' => 'id'
             ));
@@ -2917,8 +2915,8 @@ class Theme extends MapasCulturais\Theme {
 
         $result = $app->controller('Event')->apiQueryByLocation(array(
             '@count' => 1,
-            '@from' => date('Y-m-d'),
-            '@to' => date('Y-m-d', time() + 365 * 24 * 3600)
+            '@from' => DateTime::date('Y-m-d'),
+            '@to' => DateTime::date('Y-m-d', time() + 365 * 24 * 3600)
         ));
 
         $app->cache->save($cache_id, $result, 120);
@@ -2937,8 +2935,8 @@ class Theme extends MapasCulturais\Theme {
 
         $result = $app->controller('Event')->apiQueryByLocation(array(
             '@count' => 1,
-            '@from' => date('Y-m-d'),
-            '@to' => date('Y-m-d', time() + 365 * 24 * 3600),
+            '@from' => DateTime::date('Y-m-d'),
+            '@to' => DateTime::date('Y-m-d', time() + 365 * 24 * 3600),
             '@verified' => 'IN(1)'
         ));
 

@@ -3,6 +3,7 @@
 namespace MapasCulturais\Repositories;
 
 use MapasCulturais\App;
+use MapasCulturais\DateTime;
 
 class EventOccurrence extends \MapasCulturais\Repository {
 
@@ -16,13 +17,13 @@ class EventOccurrence extends \MapasCulturais\Repository {
         $app = App::i();
 
         if (is_null($date_from))
-            $date_from = date('Y-m-d');
-        else if ($date_from instanceof \DateTime)
+            $date_from = DateTime::date('Y-m-d');
+        else if ($date_from instanceof DateTime)
             $date_from = $date_from->format('Y-m-d');
 
         if (is_null($date_to))
             $date_to = $date_from;
-        else if ($date_to instanceof \DateTime)
+        else if ($date_to instanceof DateTime)
             $date_to = $date_to->format('Y-m-d');
 
         $rsm = new \Doctrine\ORM\Query\ResultSetMapping();

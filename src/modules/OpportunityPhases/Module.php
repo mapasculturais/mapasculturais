@@ -5,6 +5,7 @@ use MapasCulturais\API;
 use MapasCulturais\ApiQuery;
 use MapasCulturais\App;
 use MapasCulturais\Connection;
+use MapasCulturais\DateTime;
 use MapasCulturais\Definitions;
 use MapasCulturais\Entities;
 use MapasCulturais\Entities\EvaluationMethodConfiguration;
@@ -93,7 +94,7 @@ class Module extends \MapasCulturais\Module{
      * @return Opportunity
      */
     static function getLastCompletedPhase(Opportunity $base_opportunity){
-        $now = new \DateTime;
+        $now = new DateTime;
 
         if($base_opportunity->registrationTo > $now){
             return null;
@@ -117,7 +118,7 @@ class Module extends \MapasCulturais\Module{
      * @return Opportunity
      */
     static function getCurrentPhase(Opportunity $base_opportunity){
-        $now = new \DateTime;
+        $now = new DateTime;
 
         $result = $base_opportunity;
         $phases = self::getPhases($base_opportunity);
@@ -945,7 +946,7 @@ class Module extends \MapasCulturais\Module{
             if ($app->config['app.log.syncRegistrations']) {
                 $app->log->debug("Sincronizando inscrições da {$this->name} ({$this->id})");
             }
-            $today = new \DateTime;
+            $today = new DateTime;
 
             $result = (object) [
                 'imported' => [],

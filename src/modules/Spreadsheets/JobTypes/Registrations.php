@@ -1,13 +1,13 @@
 <?php
 namespace Spreadsheets\JobTypes;
 
+use \Spreadsheets\FieldParser;
 use EvaluationMethodTechnical\Module;
 use MapasCulturais\App;
+use MapasCulturais\DateTime;
 use MapasCulturais\Entities\Job;
 use MapasCulturais\Entities\Registration;
-use MapasCulturais\Entities\Opportunity;
 use MapasCulturais\i;
-use \Spreadsheets\FieldParser;
 use Spreadsheets\SpreadsheetJob;
 
 class Registrations extends SpreadsheetJob
@@ -559,7 +559,7 @@ class Registrations extends SpreadsheetJob
         $opportunity = i::__('oportunidade');
         $opportunity_id = $job->owner->id;
         $extension = $job->extension;
-        $date = date('Y-m-d H:i:s');
+        $date = DateTime::date('Y-m-d H:i:s');
         
         $result = "{$opportunity}-{$opportunity_id}--inscricoes-{$date}.{$extension}";
 

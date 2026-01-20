@@ -2,7 +2,7 @@
 
 namespace OpportunityAccountability;
 
-use DateTime;
+use MapasCulturais\DateTime;
 use MapasCulturais\i;
 use MapasCulturais\App;
 use MapasCulturais\Traits;

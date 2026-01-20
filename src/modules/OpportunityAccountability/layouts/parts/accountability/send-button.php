@@ -1,4 +1,5 @@
 <?php
+use MapasCulturais\DateTime;
 use MapasCulturais\i;
 
 $full_date_to = \OpportunityAccountability\Module::fullTextDate($entity->opportunity->registrationTo->getTimestamp());
@@ -11,7 +12,7 @@ $full_date_to = \OpportunityAccountability\Module::fullTextDate($entity->opportu
     <?php else: ?>
         <p class="registration-help">
             <strong>
-                <?php if ((new \DateTime()) > $entity->opportunity->registrationTo) {
+                <?php if ((new DateTime()) > $entity->opportunity->registrationTo) {
                     echo sprintf(i::__("As prestações de contas encerraram-se em %s."), $full_date_to);
                 } else {
                     $full_date_from = \OpportunityAccountability\Module::fullTextDate($entity->opportunity->registrationFrom->getTimestamp());

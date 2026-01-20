@@ -1,5 +1,7 @@
 <?php
-$start_time = date('H:i:s');
+use MapasCulturais\DateTime;
+
+$start_time = DateTime::date('H:i:s');
 $start_microtime = microtime(true);
 $NUMBER_OF_PROCESSES = $argv[1];
 $PROCESS_NUM = $argv[2];
@@ -188,7 +190,7 @@ if(PROCESS_NUM == 1){
     DB_UPDATE::save();
 }
 
-$finish_time = date('H:i:s');
+$finish_time = DateTime::date('H:i:s');
 $finish_microtime = microtime(true);
 
 $execution_time = number_format($finish_microtime - $start_microtime, 4);

@@ -3,7 +3,8 @@
 namespace MapasCulturais\Entities;
 
 use Doctrine\ORM\Mapping as ORM;
-use \MapasCulturais\App;
+use MapasCulturais\App;
+use MapasCulturais\DateTime;
 
 /**
  * File
@@ -13,7 +14,7 @@ use \MapasCulturais\App;
  * @property string $group MetaList Group (link, video etc)
  * @property string $objectType MetaList Owner Class Name
  * @property id $objectId MetaList Owner Id
- * @property \DateTime $createTimestamp MetaList Create Timestamp
+ * @property DateTime $createTimestamp MetaList Create Timestamp
  * @property \MapasCulturais\Entity $owner The Owner of this MetaList
  *
  * @ORM\Table(name="MetaList")
@@ -80,7 +81,7 @@ class MetaList extends \MapasCulturais\Entity
     protected $objectId;
 
     /**
-     * @var \DateTime
+     * @var DateTime
      *
      * @ORM\Column(name="create_timestamp", type="datetime", nullable=false)
      */

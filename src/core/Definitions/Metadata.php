@@ -1,7 +1,7 @@
 <?php
 namespace MapasCulturais\Definitions;
 
-use DateTime;
+use MapasCulturais\DateTime;
 use InvalidArgumentException;
 use MapasCulturais\App;
 

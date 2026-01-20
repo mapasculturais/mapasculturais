@@ -4,6 +4,7 @@ namespace MapasCulturais\Entities;
 
 use Doctrine\ORM\Mapping as ORM;
 use MapasCulturais\App;
+use MapasCulturais\DateTime;
 use MapasCulturais\Traits;
 
 /**
@@ -15,7 +16,7 @@ use MapasCulturais\Traits;
  * @property User $user
  * @property-write int $userId
  * @property mixed $payload
- * @property-read \DateTime $sentTimestamp
+ * @property-read DateTime $sentTimestamp
  *
  * @ORM\Table(name="chat_message")
  * @ORM\Entity
@@ -76,7 +77,7 @@ class ChatMessage extends \MapasCulturais\Entity
     protected $payload;
 
     /**
-     * @var \DateTime
+     * @var DateTime
      *
      * @ORM\Column(name="create_timestamp", type="datetime", nullable=false)
      */
@@ -98,7 +99,7 @@ class ChatMessage extends \MapasCulturais\Entity
     {
         parent::save($flush);
         $app = App::i();
-        $this->thread->lastMessageTimestamp = new \DateTime;
+        $this->thread->lastMessageTimestamp = new DateTime;
         $this->thread->sendNotifications($this);
         $app->disableAccessControl();
         $this->thread->save(true);

@@ -1,8 +1,7 @@
 <?php
 namespace MapasCulturais\Controllers;
 
-use DateTime;
-use Exception;
+use MapasCulturais\DateTime;
 use MapasCulturais\i;
 use MapasCulturais\API;
 use MapasCulturais\App;
@@ -169,7 +168,7 @@ class Opportunity extends EntityController {
         $app->controller('Registration')->registerRegistrationMetadata($entity);
         $registrationsDraftList = $entity->getRegistrationsByStatus(Entities\Registration::STATUS_DRAFT);
 
-        $date = date('Y-m-d.Hi');
+        $date = DateTime::date('Y-m-d.Hi');
 
         $filename = sprintf(\MapasCulturais\i::__("oportunidade-%s--rascunhos--%s"), $entity->id, $date);
 

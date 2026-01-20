@@ -7,6 +7,7 @@ use MapasCulturais\Entity;
 use MapasCulturais\ApiQuery;
 use MapasCulturais\Traits;
 use MapasCulturais\App;
+use MapasCulturais\DateTime;
 use MapasCulturais\Definitions\Metadata as MetadataDefinition;
 use MapasCulturais\Exceptions\BadRequest;
 use MapasCulturais\Exceptions\PermissionDenied;
@@ -19,19 +20,19 @@ use MapasCulturais\EvaluationMethod;
  *
  * @property-read int $id
  * @property int $status
- * @property-read \DateTime $createTimestamp
- * @property-read \DateTime $updateTimestamp
+ * @property-read DateTime $createTimestamp
+ * @property-read DateTime $updateTimestamp
  * @property-read array $summary
  * @property-read boolean $autoPublish
- * @property \DateTime $publishTimestamp
+ * @property DateTime $publishTimestamp
  * @property-read boolean $publishedRegistrations
  * @property-read int $totalRegistrations
  *
  *
  * @property string $name
  * @property string $shortDescription
- * @property \DateTime $registrationFrom
- * @property \DateTime $registrationTo
+ * @property DateTime $registrationFrom
+ * @property DateTime $registrationTo
  * @property array $registrationCategories
  * @property array $registrationProponentTypes
  * @property array $registrationRanges
@@ -134,14 +135,14 @@ abstract class Opportunity extends \MapasCulturais\Entity
     protected $shortDescription;
 
     /**
-     * @var \DateTime
+     * @var DateTime
      *
      * @ORM\Column(name="registration_from", type="datetime", nullable=false)
      */
     protected $registrationFrom;
 
     /**
-     * @var \DateTime
+     * @var DateTime
      *
      * @ORM\Column(name="registration_to", type="datetime", nullable=false)
      */
@@ -169,28 +170,28 @@ abstract class Opportunity extends \MapasCulturais\Entity
     protected $registrationSteps;
 
     /**
-     * @var \DateTime
+     * @var DateTime
      *
      * @ORM\Column(name="create_timestamp", type="datetime", nullable=false)
      */
     protected $createTimestamp;
 
     /**
-     * @var \DateTime
+     * @var DateTime
      *
      * @ORM\Column(name="update_timestamp", type="datetime", nullable=true)
      */
     protected $updateTimestamp;
 
     /**
-     * @var \DateTime
+     * @var DateTime
      *
      * @ORM\Column(name="publish_timestamp", type="datetime", nullable=true)
      */
     protected $publishTimestamp;
 
     /**
-     * @var \DateTime
+     * @var DateTime
      *
      * @ORM\Column(name="auto_publish", type="boolean", options={"default" : false})
      */
@@ -327,7 +328,7 @@ abstract class Opportunity extends \MapasCulturais\Entity
     protected $avaliableEvaluationFields = [];
 
     /**
-     * @var \DateTime
+     * @var DateTime
      *
      * @ORM\Column(name="continuous_flow", type="datetime", nullable=true)
      */
@@ -430,7 +431,7 @@ abstract class Opportunity extends \MapasCulturais\Entity
     function setContinuousFlow($value) {
         if ($value !== null) {
             try {
-                $this->continuousFlow = new \DateTime($value);
+                $this->continuousFlow = new DateTime($value);
             } catch (\Exception $e) {
                 $this->continuousFlow = null;
             }
@@ -686,30 +687,30 @@ abstract class Opportunity extends \MapasCulturais\Entity
     }
 
     function setRegistrationFrom($date){
-        if($date instanceof \DateTime){
+        if($date instanceof DateTime){
             $this->registrationFrom = $date;
         }elseif($date){
-            $this->registrationFrom = new \DateTime($date);
+            $this->registrationFrom = new DateTime($date);
         }else{
             $this->registrationFrom = null;
         }
     }
 
     function setRegistrationTo($date){
-        if($date instanceof \DateTime){
+        if($date instanceof DateTime){
             $this->registrationTo = $date;
         }elseif($date){
-            $this->registrationTo = new \DateTime($date);
+            $this->registrationTo = new DateTime($date);
         }else{
             $this->registrationTo = null;
         }
     }
 
     function setPublishTimestamp($date){
-        if($date instanceof \DateTime){
+        if($date instanceof DateTime){
             $this->publishTimestamp = $date;
         }elseif($date){
-            $this->publishTimestamp = new \DateTime($date);
+            $this->publishTimestamp = new DateTime($date);
         }else{
             $this->publishTimestamp = null;
         }
@@ -798,7 +799,7 @@ abstract class Opportunity extends \MapasCulturais\Entity
 
 
     function validateDate($value){
-        return !$value || $value instanceof \DateTime;
+        return !$value || $value instanceof DateTime;
     }
 
     function validateRegistrationDates() {
@@ -844,7 +845,7 @@ abstract class Opportunity extends \MapasCulturais\Entity
      * @return bool
      */
     function isRegistrationOpen(){
-        $cdate = new \DateTime;
+        $cdate = new DateTime;
         return $cdate >= $this->registrationFrom && $cdate <= $this->registrationTo;
     }
 
@@ -1337,21 +1338,21 @@ abstract class Opportunity extends \MapasCulturais\Entity
             foreach($importSource->meta as $key => $value) {
                 if($key == 'continuousFlow') {
                     if($importSource->meta->isContinuousFlow && !$importSource->meta->hasEndDate) {
-                        $this->$key = isset($value->date) ? new \DateTime($value->date) : null;
+                        $this->$key = isset($value->date) ? new DateTime($value->date) : null;
                     }
                     continue;
                 }
 
                 if($key == 'publishTimestamp') {
                     if($importSource->meta->isContinuousFlow && $importSource->meta->hasEndDate) {
-                        $this->lastPhase->$key = isset($value->date) ? new \DateTime($value->date) : null;
+                        $this->lastPhase->$key = isset($value->date) ? new DateTime($value->date) : null;
                     }
                     continue;
                 }
                 
                 if($key == 'registrationTo') {
                     if($importSource->meta->isContinuousFlow && $importSource->meta->hasEndDate) {
-                        $this->$key = isset($value->date) ? new \DateTime($value->date) : null;
+                        $this->$key = isset($value->date) ? new DateTime($value->date) : null;
                     }
                     continue;
                 }
@@ -1758,7 +1759,7 @@ abstract class Opportunity extends \MapasCulturais\Entity
             return false;
         }
 
-        if($this->registrationTo >= new \DateTime){
+        if($this->registrationTo >= new DateTime){
             return false;
         }
 
@@ -1795,7 +1796,7 @@ abstract class Opportunity extends \MapasCulturais\Entity
             return $can_evaluate ? true : false;
         }
 
-        $today = new \DateTime('now');
+        $today = new DateTime('now');
 
         $em = $this->evaluationMethodConfiguration;
 

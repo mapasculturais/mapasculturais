@@ -3,6 +3,7 @@
 namespace MapasCulturais\Entities;
 
 use Doctrine\ORM\Mapping as ORM;
+use MapasCulturais\DateTime;
 
 /**
  * AuthorityRequest
@@ -52,7 +53,7 @@ class AuthorityRequest extends \MapasCulturais\Entity
     protected $objectId;
 
     /**
-     * @var \DateTime
+     * @var DateTime
      *
      * @ORM\Column(name="create_timestamp", type="datetime", nullable=false)
      */

@@ -25,7 +25,7 @@ db updates executed in {$execution_time} seconds.
 
 if($save_log && $log){
     $log_path = MapasCulturais\App::i()->config['app.log.path'];
-    $log_filename = 'db-updates-' . date('Y.m.d-H.i.s') . '.log';
+    $log_filename = 'db-updates-' . MapasCulturais\DateTime::date('Y.m.d-H.i.s') . '.log';
     file_put_contents( $log_path . $log_filename, $exec_time . $log);
 }else{
     echo $exec_time;

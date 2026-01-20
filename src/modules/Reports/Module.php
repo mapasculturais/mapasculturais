@@ -2,12 +2,12 @@
 
 namespace Reports;
 
-use DateTime;
-use DatePeriod;
 use DateInterval;
+use DatePeriod;
 use MapasCulturais\App;
-use MapasCulturais\Entities\Opportunity;
+use MapasCulturais\DateTime;
 use MapasCulturais\Definitions\MetaListGroup;
+use MapasCulturais\Entities\Opportunity;
 use MapasCulturais\i;
 
 

@@ -4,7 +4,7 @@ namespace MapasCulturais\Entities;
 
 use Doctrine\ORM\Mapping as ORM;
 use MapasCulturais\App;
-use MapasCulturais\i;
+use MapasCulturais\DateTime;
 use MapasCulturais\Traits;
 
 /**
@@ -80,7 +80,7 @@ class Seal extends \MapasCulturais\Entity
     protected $validPeriod;
 
     /**
-     * @var \DateTime
+     * @var DateTime
      *
      * @ORM\Column(name="create_timestamp", type="datetime", nullable=false)
      */
@@ -144,7 +144,7 @@ class Seal extends \MapasCulturais\Entity
     protected $__permissionsCache;
 
     /**
-     * @var \DateTime
+     * @var DateTime
      *
      * @ORM\Column(name="update_timestamp", type="datetime", nullable=true)
      */

@@ -2,11 +2,11 @@
 
 namespace Tests;
 
-use DateTime;
+use MapasCulturais\DateTime;
 use Tests\Abstract\TestCase;
 use Tests\Traits\AgentDirector;
-use Tests\Traits\UserDirector;
 use Tests\Traits\SpaceDirector;
+use Tests\Traits\UserDirector;
 
 class EntitiesTest extends TestCase
 {

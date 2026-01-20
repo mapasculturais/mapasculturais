@@ -4,6 +4,7 @@ namespace MapasCulturais\Entities;
 
 use Doctrine\ORM\Mapping as ORM;
 use MapasCulturais\App;
+use MapasCulturais\DateTime;
 use MapasCulturais\i;
 
 /**
@@ -52,7 +53,7 @@ abstract class SealRelation extends \MapasCulturais\Entity
     protected $objectId;
 
     /**
-     * @var \DateTime
+     * @var DateTime
      *
      * @ORM\Column(name="create_timestamp", type="datetime", nullable=true)
      */
@@ -101,7 +102,7 @@ abstract class SealRelation extends \MapasCulturais\Entity
     protected $ownerRelation;
 
     /**
-     * @var \DateTime
+     * @var DateTime
      *
      * @ORM\Column(name="validate_date", type="date", nullable=true)
      */
@@ -164,7 +165,7 @@ abstract class SealRelation extends \MapasCulturais\Entity
     function getToExpire() {
         if($this->seal->validPeriod > 0){
             $expirationDate = $this->validateDate;
-            $now = new \DateTime();
+            $now = new DateTime();
 
             // Expired
             if($expirationDate < $now) { 
@@ -207,7 +208,7 @@ abstract class SealRelation extends \MapasCulturais\Entity
     public function isExpired() {
         if($this->seal->validPeriod > 0) {
             
-            $today = new \DateTime();
+            $today = new DateTime();
             $expirationDate = $this->validateDate;
             return $expirationDate < $today;
             

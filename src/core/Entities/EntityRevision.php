@@ -5,6 +5,7 @@ namespace MapasCulturais\Entities;
 use Doctrine\ORM\Mapping as ORM;
 use MapasCulturais\Traits;
 use MapasCulturais\App;
+use MapasCulturais\DateTime;
 
 /**
  * Entity Revision
@@ -53,7 +54,7 @@ class EntityRevision extends \MapasCulturais\Entity{
     protected $objectType;
 
     /**
-     * @var \DateTime
+     * @var DateTime
      *
      * @ORM\Column(name="create_timestamp", type="datetime", nullable=false)
      */
@@ -116,7 +117,7 @@ class EntityRevision extends \MapasCulturais\Entity{
             if (property_exists($entity, 'createTimestamp') && $entity->createTimestamp) {
                 $this->createTimestamp = $entity->createTimestamp;
             } else {
-                $this->createTimestamp = new \DateTime;
+                $this->createTimestamp = new DateTime;
             }
             foreach ($dataRevision as $key => $data) {
                 $revisionData = new EntityRevisionData;

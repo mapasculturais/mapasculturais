@@ -2,9 +2,9 @@
 
 namespace MapasCulturais\Entities;
 
-use DateTime;
 use MapasCulturais\i;
 use MapasCulturais\App;
+use MapasCulturais\DateTime;
 use MapasCulturais\Traits;
 use MapasCulturais\GuestUser;
 use Doctrine\ORM\Mapping as ORM;
@@ -14,8 +14,8 @@ use Opportunities\Jobs\UpdateSummaryCaches;
  * EvaluationMethodConfiguration
  *
  * @property \MapasCulturais\Entities\Opportunity $opportunity Opportunity
- * @property \DateTime $evaluationFrom
- * @property \DateTime $evaluationTo
+ * @property DateTime $evaluationFrom
+ * @property DateTime $evaluationTo
  * @property string $name
  * @property \MapasCulturais\Definitions\EntityType $type
  * 
@@ -84,7 +84,7 @@ class EvaluationMethodConfiguration extends \MapasCulturais\Entity {
     protected $name;
 
          /**
-     * @var \DateTime
+     * @var DateTime
      *
      * @ORM\Column(name="evaluation_from", type="datetime", nullable=true)
      */
@@ -92,7 +92,7 @@ class EvaluationMethodConfiguration extends \MapasCulturais\Entity {
 
 
      /**
-     * @var \DateTime
+     * @var DateTime
      *
      * @ORM\Column(name="evaluation_to", type="datetime", nullable=true)
      */
@@ -142,7 +142,7 @@ class EvaluationMethodConfiguration extends \MapasCulturais\Entity {
     }
 
     function validateDate($value){
-        return !$value || $value instanceof \DateTime;
+        return !$value || $value instanceof DateTime;
     }
 
     function validateEvaluationDates() {
@@ -191,20 +191,20 @@ class EvaluationMethodConfiguration extends \MapasCulturais\Entity {
     }
 
     function setEvaluationFrom($date){
-        if($date instanceof \DateTime){
+        if($date instanceof DateTime){
             $this->evaluationFrom = $date;
         }elseif($date){
-            $this->evaluationFrom = new \DateTime($date);
+            $this->evaluationFrom = new DateTime($date);
         }else{
             $this->evaluationFrom = null;
         }
     }
 
     function setEvaluationTo($date){
-        if($date instanceof \DateTime){
+        if($date instanceof DateTime){
             $this->evaluationTo = $date;
         }elseif($date){
-            $this->evaluationTo = new \DateTime($date);
+            $this->evaluationTo = new DateTime($date);
         }else{
             $this->evaluationTo = null;
         }

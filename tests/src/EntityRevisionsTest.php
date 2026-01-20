@@ -2,7 +2,7 @@
 
 namespace Tests;
 
-use DateTime;
+use MapasCulturais\DateTime;
 use Exception;
 use MapasCulturais\Entities\Agent;
 use MapasCulturais\Entities\EntityRevision;

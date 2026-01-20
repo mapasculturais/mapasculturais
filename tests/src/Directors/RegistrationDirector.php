@@ -2,9 +2,9 @@
 
 namespace Tests\Directors;
 
-use DateTime;
 use Doctrine\DBAL\Exception;
 use MapasCulturais\App;
+use MapasCulturais\DateTime;
 use MapasCulturais\Entities\Opportunity;
 use MapasCulturais\Entities\Registration;
 use Tests\Abstract\Director;

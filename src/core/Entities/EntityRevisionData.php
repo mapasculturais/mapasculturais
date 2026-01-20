@@ -4,6 +4,7 @@ namespace MapasCulturais\Entities;
 
 use Doctrine\ORM\Mapping as ORM;
 use MapasCulturais\App;
+use MapasCulturais\DateTime;
 
 /**
  * Entity Revision Data
@@ -25,7 +26,7 @@ class EntityRevisionData extends \MapasCulturais\Entity{
     public $id;
 
     /**
-     * @var \DateTime
+     * @var DateTime
      *
      * @ORM\Column(name="timestamp", type="datetime", nullable=false)
      */
@@ -46,7 +47,7 @@ class EntityRevisionData extends \MapasCulturais\Entity{
     protected $value;
 
     public function __construct() {
-        $this->timestamp = new \DateTime;
+        $this->timestamp = new DateTime;
     }
 
     public function setValue($value) {

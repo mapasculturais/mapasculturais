@@ -3,6 +3,7 @@
 namespace Search;
 
 use MapasCulturais\App;
+use MapasCulturais\DateTime;
 
 class Controller extends \MapasCulturais\Controller
 {
@@ -24,8 +25,8 @@ class Controller extends \MapasCulturais\Controller
     function GET_events() {
         $app = App::i();
         $initial_pseudo_query = [
-            '@from' => date('Y-m-d'),
-            '@to' => date('Y-m-d', strtotime($app->config['search.events.to']))
+            '@from' => DateTime::date('Y-m-d'),
+            '@to' => DateTime::date('Y-m-d', strtotime($app->config['search.events.to']))
         ];
 
         $app->applyHookBoundTo($this, 'search-events-initial-pseudo-query', [&$initial_pseudo_query]);

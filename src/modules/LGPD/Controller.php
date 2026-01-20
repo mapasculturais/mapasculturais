@@ -2,7 +2,7 @@
 
 namespace LGPD;
 
-use DateTime;
+use MapasCulturais\DateTime;
 use MapasCulturais\App;
 
 class Controller  extends \MapasCulturais\Controller

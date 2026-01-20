@@ -4,6 +4,7 @@ namespace MapasCulturais\Entities;
 
 use Doctrine\ORM\Mapping as ORM;
 use MapasCulturais\App;
+use MapasCulturais\DateTime;
 
 /**
  * AgentRelation
@@ -14,7 +15,7 @@ use MapasCulturais\App;
  * @property int $status
  * @property int $objectId
  * @property \MapasCulturais\Entities\Agent $agent
- * @property \DateTime $createTimestamp
+ * @property DateTime $createTimestamp
  *
  * @todo http://thoughtsofthree.com/2011/04/defining-discriminator-maps-at-child-level-in-doctrine-2-0/
  *
@@ -79,7 +80,7 @@ abstract class AgentRelation extends \MapasCulturais\Entity
     protected $hasControl = false;
 
     /**
-     * @var \DateTime
+     * @var DateTime
      *
      * @ORM\Column(name="create_timestamp", type="datetime", nullable=true)
      */

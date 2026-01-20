@@ -4,7 +4,6 @@ declare(strict_types=1);
 namespace MapasCulturais;
 
 use CountryLocalizations\CountryLocalizationDefinition;
-use DateTime;
 use Slim\Factory\AppFactory;
 use Slim;
 
@@ -1987,7 +1986,7 @@ class App {
     public function executeJob(?string $mock_date = null): int|false {
         /** @var Connection */
         $conn = $this->em->getConnection();
-        $now = $mock_date ?: date('Y-m-d H:i:s');
+        $now = $mock_date ?: DateTime::date('Y-m-d H:i:s');
         $job_id = $conn->fetchScalar("
             SELECT id
             FROM job
@@ -2504,9 +2503,9 @@ class App {
             }
             $log_data[$field] = $parseField($message->$getter());
         }
-        $log_line = (new \DateTime())->format('Y-m-d H:i:s.u') . ' ' . json_encode($log_data);
+        $log_line = (new DateTime())->format('Y-m-d H:i:s.u') . ' ' . json_encode($log_data);
 
-        $filename = date('Y-m') . ($error_message ? '-errors' : '-success') . '.log';
+        $filename = DateTime::date('Y-m') . ($error_message ? '-errors' : '-success') . '.log';
         file_put_contents($folder . $filename, $log_line . PHP_EOL, FILE_APPEND);
     }
 

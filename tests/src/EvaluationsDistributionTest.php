@@ -2,23 +2,23 @@
 
 namespace Test;
 
-use DateTime;
 use MapasCulturais\App;
-use Tests\Abstract\TestCase;
 use MapasCulturais\Connection;
-use Tests\Traits\UserDirector;
-use Tests\Enums\ProponentTypes;
-use Tests\Enums\EvaluationMethods;
-use Tests\Traits\OpportunityBuilder;
-use Tests\Builders\PhasePeriods\Open;
-use Tests\Builders\PhasePeriods\Past;
-use Tests\Builders\PhasePeriods\After;
-use Tests\Traits\RegistrationDirector;
-use MapasCulturais\Entities\Opportunity;
-use MapasCulturais\Entities\RegistrationEvaluation;
-use Tests\Builders\PhasePeriods\ConcurrentEndingAfter;
+use MapasCulturais\DateTime;
 use MapasCulturais\Entities\EvaluationMethodConfiguration;
 use MapasCulturais\Entities\EvaluationMethodConfigurationAgentRelation;
+use MapasCulturais\Entities\Opportunity;
+use MapasCulturais\Entities\RegistrationEvaluation;
+use Tests\Abstract\TestCase;
+use Tests\Builders\PhasePeriods\After;
+use Tests\Builders\PhasePeriods\ConcurrentEndingAfter;
+use Tests\Builders\PhasePeriods\Open;
+use Tests\Builders\PhasePeriods\Past;
+use Tests\Enums\EvaluationMethods;
+use Tests\Enums\ProponentTypes;
+use Tests\Traits\OpportunityBuilder;
+use Tests\Traits\RegistrationDirector;
+use Tests\Traits\UserDirector;
 
 class EvaluationsDistributionTest extends TestCase
 {
@@ -888,7 +888,7 @@ class EvaluationsDistributionTest extends TestCase
         $this->assertNotNull($job, 'Garantindo que o job de redistribuição foi agendado');
         
         // Verifica que o job foi agendado para a próxima hora
-        $expected_execution_time = date('Y-m-d H:00:00', strtotime('+1 hour'));
+        $expected_execution_time = DateTime::date('Y-m-d H:00:00', strtotime('+1 hour'));
         $actual_execution_time = $job->nextExecutionTimestamp->format('Y-m-d H:i:s');
         $this->assertEquals($expected_execution_time, $actual_execution_time, 'Garantindo que o job foi agendado para a próxima hora');
 
@@ -962,7 +962,7 @@ class EvaluationsDistributionTest extends TestCase
         $this->assertNotNull($job, 'Garantindo que o job de redistribuição foi agendado');
         
         // Verifica que o job foi agendado para a próxima meia-noite
-        $next_midnight = new \DateTime('tomorrow 00:00:00');
+        $next_midnight = new DateTime('tomorrow 00:00:00');
         $expected_execution_time = $next_midnight->format('Y-m-d H:i:s');
         $actual_execution_time = $job->nextExecutionTimestamp->format('Y-m-d H:i:s');
         $this->assertEquals($expected_execution_time, $actual_execution_time, 'Garantindo que o job foi agendado para a próxima meia-noite');

@@ -3,6 +3,7 @@
 namespace MapasCulturais\Controllers;
 
 use MapasCulturais\App;
+use MapasCulturais\DateTime;
 use MapasCulturais\Traits;
 
 /**
@@ -141,7 +142,7 @@ class Space extends EntityController {
         $eventController = App::i()->controller('event');
         $query_data = $this->getData;
 
-        $date_from  = key_exists('@from',   $query_data) ? $query_data['@from'] : date("Y-m-d");
+        $date_from  = key_exists('@from',   $query_data) ? $query_data['@from'] : DateTime::date("Y-m-d");
         $date_to    = key_exists('@to',     $query_data) ? $query_data['@to']   : $date_from;
 
         unset(

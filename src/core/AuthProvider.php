@@ -36,7 +36,7 @@ abstract class AuthProvider {
                 $user->getEntitiesNotifications($app);
             }
 
-            $user->lastLoginTimestamp = new \DateTime;
+            $user->lastLoginTimestamp = new DateTime;
             $user->save(true);
         });
     }

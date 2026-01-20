@@ -5,8 +5,9 @@ namespace MapasCulturais\Entities;
 use Doctrine\ORM\Mapping as ORM;
 use MapasCulturais\API;
 use MapasCulturais\ApiQuery;
-use MapasCulturais\Traits;
 use MapasCulturais\App;
+use MapasCulturais\DateTime;
+use MapasCulturais\Traits;
 
 /**
  * Subsite
@@ -52,7 +53,7 @@ class Subsite extends \MapasCulturais\Entity
     protected $name;
 
     /**
-     * @var \DateTime
+     * @var DateTime
      *
      * @ORM\Column(name="create_timestamp", type="datetime", nullable=false)
      */

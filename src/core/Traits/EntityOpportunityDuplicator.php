@@ -1,8 +1,8 @@
 <?php
 namespace MapasCulturais\Traits;
 
-use DateTime;
 use MapasCulturais\App;
+use MapasCulturais\DateTime;
 use MapasCulturais\Entity;
 
 trait EntityOpportunityDuplicator {
@@ -43,7 +43,7 @@ trait EntityOpportunityDuplicator {
 
         $this->entityNewOpportunity = clone $this->entityOpportunity;
 
-        $dateTime = new \DateTime();
+        $dateTime = new DateTime();
         $now = $dateTime->format('d-m-Y H:i:s');
         $name = $this->entityOpportunity->name;
         $this->entityNewOpportunity->name = "$name  - [Cópia][$now]";

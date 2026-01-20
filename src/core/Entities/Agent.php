@@ -5,6 +5,7 @@ namespace MapasCulturais\Entities;
 use Doctrine\ORM\Mapping as ORM;
 use MapasCulturais\Traits;
 use MapasCulturais\App;
+use MapasCulturais\DateTime;
 use MapasCulturais\UserInterface;
 
 /**
@@ -18,8 +19,8 @@ use MapasCulturais\UserInterface;
  * @property string $shortDescription
  * @property string $longDescription
  * @property int $status
- * @property-read \DateTime $createTimestamp
- * @property-read \DateTime $updateTimestamp
+ * @property-read DateTime $createTimestamp
+ * @property-read DateTime $updateTimestamp
  *
  * @property-read Space[] $spaces spaces owned by this agent
  * @property-read Event[] $events events owned by this agent
@@ -127,7 +128,7 @@ class Agent extends \MapasCulturais\Entity
     protected $longDescription;
 
     /**
-     * @var \DateTime
+     * @var DateTime
      *
      * @ORM\Column(name="create_timestamp", type="datetime", nullable=false)
      */
@@ -253,7 +254,7 @@ class Agent extends \MapasCulturais\Entity
     protected $__permissionsCache;
 
     /**
-     * @var \DateTime
+     * @var DateTime
      *
      * @ORM\Column(name="update_timestamp", type="datetime", nullable=true)
      */

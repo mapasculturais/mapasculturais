@@ -1,12 +1,12 @@
 <?php
 namespace MapasCulturais\Entities;
 
-use DateTime;
 use MapasCulturais\i;
 use Doctrine\ORM\Mapping as ORM;
 use Exception;
 use MapasCulturais\Traits;
 use MapasCulturais\App;
+use MapasCulturais\DateTime;
 use MapasCulturais\Exceptions\PermissionDenied;
 use MapasCulturais\EvaluationMethod;
 use MapasCulturais\GuestUser;
@@ -108,7 +108,7 @@ class Registration extends \MapasCulturais\Entity
     protected $owner;
 
     /**
-     * @var \DateTime
+     * @var DateTime
      *
      * @ORM\Column(name="create_timestamp", type="datetime", nullable=false)
      */
@@ -116,7 +116,7 @@ class Registration extends \MapasCulturais\Entity
 
 
     /**
-     * @var \DateTime
+     * @var DateTime
      *
      * @ORM\Column(name="sent_timestamp", type="datetime", nullable=true)
      */
@@ -1194,7 +1194,7 @@ class Registration extends \MapasCulturais\Entity
 
         $this->status = self::STATUS_SENT;
         if($update_sent_timestamp){
-            $this->sentTimestamp = new \DateTime;
+            $this->sentTimestamp = new DateTime;
         }
         $this->agentsData = $this->_getAgentsData();
         $this->_spaceData = $this->_getSpaceData();
@@ -1748,7 +1748,7 @@ class Registration extends \MapasCulturais\Entity
             return true;
         }
 
-        $now = new \DateTime();
+        $now = new DateTime();
 
         if ($this->opportunity->canUser('@control', $user) && $this->opportunity->registrationFrom < $now ) {
             return true;

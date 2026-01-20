@@ -2,12 +2,10 @@
 
 namespace CompliantSuggestion;
 
-use MapasCulturais\App,
-    MapasCulturais\i,
-    MapasCulturais\Entities,
-    MapasCulturais\Definitions,
-    MapasCulturais\Exceptions,
-    Respect\Validation\Rules\Email;
+use MapasCulturais\App;
+use MapasCulturais\DateTime;
+use MapasCulturais\i;
+use Respect\Validation\Rules\Email;
 
 class Module extends \MapasCulturais\Module {
 
@@ -163,7 +161,7 @@ class Module extends \MapasCulturais\Module {
                 'email'         => $person_email,
                 'url'           => $entity->singleUrl,
                 'type'          => $this->data['type'],
-                'date'          => date('d/m/Y H:i:s',$_SERVER['REQUEST_TIME']),
+                'date'          => DateTime::date('d/m/Y H:i:s',$_SERVER['REQUEST_TIME']),
                 'message'       => $this->data['message']
             ];
 
@@ -242,7 +240,7 @@ class Module extends \MapasCulturais\Module {
                 'email'         => $person_email,
                 'url'           => $entity->singleUrl,
                 'type'          => $this->data['type'],
-                'date'          => date('d/m/Y H:i:s',$_SERVER['REQUEST_TIME']),
+                'date'          => DateTime::date('d/m/Y H:i:s',$_SERVER['REQUEST_TIME']),
                 'message'       => $this->data['message']
             ];
 

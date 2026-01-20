@@ -3,7 +3,8 @@
 namespace MapasCulturais\Entities;
 
 use Doctrine\ORM\Mapping as ORM;
-use \MapasCulturais\App;
+use MapasCulturais\App;
+use MapasCulturais\DateTime;
 
 /**
  * PermissionCache
@@ -55,7 +56,7 @@ abstract class PermissionCache extends \MapasCulturais\Entity {
 
 
     /**
-     * @var \DateTime
+     * @var DateTime
      *
      * @ORM\Column(name="create_timestamp", type="datetime", nullable=false)
      */

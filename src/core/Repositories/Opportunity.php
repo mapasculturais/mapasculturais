@@ -1,15 +1,11 @@
 <?php
 namespace MapasCulturais\Repositories;
-use MapasCulturais\Traits;
-use MapasCulturais\Entities\ProjectOpportunity;
-use MapasCulturais\Entities\Project;
-use DateTime;
-use Doctrine\DBAL\Exception;
+
 use Doctrine\ORM\Query;
-use LogicException;
-use Doctrine\ORM\Exception\ORMException;
 use MapasCulturais\App;
-use Psr\Cache\InvalidArgumentException;
+use MapasCulturais\DateTime;
+use MapasCulturais\Entities\Project;
+use MapasCulturais\Traits;
 
 class Opportunity extends \MapasCulturais\Repository{
     use Traits\RepositoryKeyword,

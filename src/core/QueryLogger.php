@@ -1,7 +1,6 @@
 <?php
 namespace MapasCulturais;
 
-use DateTime;
 use Doctrine\DBAL\Logging\SQLLogger;
 use Respect\Validation\Rules\Date;
 

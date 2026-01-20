@@ -2,20 +2,20 @@
 
 namespace Reports;
 
-use DateTime;
 use DateInterval;
-use MapasCulturais\i;
 use League\Csv\Writer;
 use MapasCulturais\App;
-use MapasCulturais\Traits;
-use MapasCulturais\Entities\File;
+use MapasCulturais\DateTime;
 use MapasCulturais\Entities\Agent;
 use MapasCulturais\Entities\Event;
-use MapasCulturais\Entities\Space;
-use MapasCulturais\Entities\Project;
+use MapasCulturais\Entities\File;
 use MapasCulturais\Entities\MetaList;
 use MapasCulturais\Entities\Opportunity;
+use MapasCulturais\Entities\Project;
 use MapasCulturais\Entities\Registration;
+use MapasCulturais\Entities\Space;
+use MapasCulturais\i;
+use MapasCulturais\Traits;
 
 class Controller extends \MapasCulturais\Controller
 {
@@ -1367,11 +1367,11 @@ class Controller extends \MapasCulturais\Controller
     public function getDays($entity)
     {
         $first_day = $this->data['from'] ?? $this->getDayOfFirstEntity($entity);
-        $last_day = $this->data['to'] ?? date('Y-m-d');
+        $last_day = $this->data['to'] ?? DateTime::date('Y-m-d');
         $period = new \DatePeriod(
-            new \DateTime($first_day),
+            new DateTime($first_day),
             new \DateInterval('P1D'),
-            new \DateTime($last_day)
+            new DateTime($last_day)
         );
 
         $result = [];

@@ -3,7 +3,7 @@
 namespace Entities;
 
 use MapasCulturais\App;
-use MapasCulturais\Entity;
+use MapasCulturais\DateTime;
 
 class Module extends \MapasCulturais\Module{
 
@@ -36,8 +36,8 @@ class Module extends \MapasCulturais\Module{
                 if(!$app->cache->contains($cache_key)){
                     $entity = $app->user->profile;
                     if($entity->dataDeNascimento){
-                        $today = new \DateTime('now');
-                        $calc = (new \DateTime($entity->dataDeNascimento))->diff($today);
+                        $today = new DateTime('now');
+                        $calc = (new DateTime($entity->dataDeNascimento))->diff($today);
                         $idoso = ($calc->y >= 60) ? "1" : "0";
                         if($entity->idoso != $idoso){
                             $entity->idoso = $idoso;

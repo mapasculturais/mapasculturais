@@ -2,6 +2,7 @@
 namespace MapasCulturais\Entities;
 
 use Doctrine\ORM\Mapping as ORM;
+use MapasCulturais\DateTime;
 
 /**
  * RegistrationStep
@@ -61,14 +62,14 @@ class RegistrationStep extends \MapasCulturais\Entity
     protected $metadata;
 
     /**
-     * @var \DateTime
+     * @var DateTime
      *
      * @ORM\Column(name="create_timestamp", type="datetime")
      */
     protected $createTimestamp;
 
     /**
-     * @var \DateTime
+     * @var DateTime
      *
      * @ORM\Column(name="update_timestamp", type="datetime")
      */

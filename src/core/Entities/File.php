@@ -2,8 +2,9 @@
 
 namespace MapasCulturais\Entities;
 
-use \MapasCulturais\i;
-use \MapasCulturais\App;
+use MapasCulturais\i;
+use MapasCulturais\App;
+use MapasCulturais\DateTime;
 use MapasCulturais\Utils;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -17,7 +18,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @property string $description File description
  * @property string $group File Group (gallery|avatar|download|etc.)
  * @property \MapasCulturais\Entity $owner File Owner
- * @property-read \DateTime $createTimestamp File Create Timestamp
+ * @property-read DateTime $createTimestamp File Create Timestamp
  * @property \MapasCulturais\Entity $owner The Owner of this File
  * 
  * @property bool $private Is this file private?
@@ -118,7 +119,7 @@ abstract class File extends \MapasCulturais\Entity
     protected $private = null;
 
     /**
-     * @var \DateTime
+     * @var DateTime
      *
      * @ORM\Column(name="create_timestamp", type="datetime", nullable=false)
      */

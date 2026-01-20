@@ -4,6 +4,7 @@ namespace MapasCulturais\Entities;
 
 use Doctrine\ORM\Mapping as ORM;
 use MapasCulturais\App;
+use MapasCulturais\DateTime;
 use MapasCulturais\i;
 
 /**
@@ -45,14 +46,14 @@ class EventAttendance extends \MapasCulturais\Entity {
     protected $reccurrenceString;
 
     /**
-     * @var \DateTime
+     * @var DateTime
      *
      * @ORM\Column(name="start_timestamp", type="datetime", nullable=false)
      */
     protected $startTimestamp;
 
     /**
-     * @var \DateTime
+     * @var DateTime
      *
      * @ORM\Column(name="end_timestamp", type="datetime", nullable=false)
      */
@@ -100,7 +101,7 @@ class EventAttendance extends \MapasCulturais\Entity {
     protected $_space;
 
     /**
-     * @var \DateTime
+     * @var DateTime
      *
      * @ORM\Column(name="create_timestamp", type="datetime", nullable=false)
      */
@@ -223,8 +224,8 @@ class EventAttendance extends \MapasCulturais\Entity {
 
         $this->_setEventOccurrence($event_occurrence);
 
-        $this->startTimestamp = \DateTime::createFromFormat('Y-m-d H:i:s', "{$starts_on} {$starts_at}");
-        $this->endTimestamp = \DateTime::createFromFormat('Y-m-d H:i:s', "{$ends_on} {$ends_at}");
+        $this->startTimestamp = DateTime::createFromFormat('Y-m-d H:i:s', "{$starts_on} {$starts_at}");
+        $this->endTimestamp = DateTime::createFromFormat('Y-m-d H:i:s', "{$ends_on} {$ends_at}");
 
         return true;
     }

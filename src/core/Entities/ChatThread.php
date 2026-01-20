@@ -4,6 +4,7 @@ namespace MapasCulturais\Entities;
 
 use Doctrine\ORM\Mapping as ORM;
 use MapasCulturais\App;
+use MapasCulturais\DateTime;
 use MapasCulturais\Entity;
 use MapasCulturais\Traits;
 use MapasCulturais\UserInterface;
@@ -15,8 +16,8 @@ use MapasCulturais\UserInterface;
  * @property \MapasCulturais\Entity $ownerEntity the owner of this chat thread
  * @property string $identifier
  * @property string $description
- * @property-read \DateTime $createTimestamp
- * @property \DateTime $lastMessageTimestamp
+ * @property-read DateTime $createTimestamp
+ * @property DateTime $lastMessageTimestamp
  *
  * @ORM\Table(name="chat_thread")
  * @ORM\Entity
@@ -75,14 +76,14 @@ class ChatThread extends \MapasCulturais\Entity
     protected $description;
 
     /**
-     * @var \DateTime
+     * @var DateTime
      *
      * @ORM\Column(name="create_timestamp", type="datetime", nullable=false)
      */
     protected $createTimestamp;
 
     /**
-     * @var \DateTime
+     * @var DateTime
      *
      * @ORM\Column(name="last_message_timestamp", type="datetime", nullable=true)
      */

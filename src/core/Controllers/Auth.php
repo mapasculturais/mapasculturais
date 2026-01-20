@@ -1,7 +1,8 @@
 <?php
 namespace MapasCulturais\Controllers;
-use \MapasCulturais\App;
-use \MapasCulturais\i;
+use MapasCulturais\App;
+use MapasCulturais\i;
+use MapasCulturais\DateTime;
 
 class Auth extends \MapasCulturais\Controller {
     function __construct()
@@ -69,7 +70,7 @@ class Auth extends \MapasCulturais\Controller {
 
         if(isset($this->data['until'])){
             try{
-                $until = new \DateTime($this->data['until']);
+                $until = new DateTime($this->data['until']);
             } catch(\Exception $e){
                 $this->errorJson(i::__('Formato do parâmetro until inválido'));
             }

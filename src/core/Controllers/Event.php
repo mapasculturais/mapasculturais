@@ -2,7 +2,7 @@
 namespace MapasCulturais\Controllers;
 
 use DateInterval;
-use DateTime;
+use MapasCulturais\DateTime;
 use MapasCulturais\App;
 use MapasCulturais\Traits;
 use Doctrine\ORM\Query\ResultSetMapping;
@@ -154,7 +154,7 @@ class Event extends EntityController {
 
         // find occurrences
 
-        $date_from  = key_exists('@from',   $query_data) ? $query_data['@from'] : date("Y-m-d");
+        $date_from  = key_exists('@from',   $query_data) ? $query_data['@from'] : DateTime::date("Y-m-d");
         $date_to    = key_exists('@to',     $query_data) ? $query_data['@to']   : $date_from;
         
         $event_attendance_user = key_exists('@attendanceUser', $query_data) ? $query_data['@attendanceUser'] : $app->user->id;
@@ -400,7 +400,7 @@ class Event extends EntityController {
 
         // find occurrences
 
-        $date_from  = key_exists('@from',   $query_data) ? $query_data['@from'] : date("Y-m-d");
+        $date_from  = key_exists('@from',   $query_data) ? $query_data['@from'] : DateTime::date("Y-m-d");
         $date_to    = key_exists('@to',     $query_data) ? $query_data['@to']   : $date_from;
         
         $event_attendance_user = key_exists('@attendanceUser', $query_data) ? $query_data['@attendanceUser'] : $app->user->id;
@@ -544,8 +544,8 @@ class Event extends EntityController {
 
                     $occ->rule = json_decode($occ->rule);
 
-                    $starts = new \DateTime("{$occ->starts_on} {$occ->starts_at}");
-                    $ends = new \DateTime(date('Y-m-d H:i:s', strtotime("+{$occ->rule->duration} minutes", strtotime("{$occ->starts_on} {$occ->starts_at}"))));
+                    $starts = new DateTime("{$occ->starts_on} {$occ->starts_at}");
+                    $ends = new DateTime(date('Y-m-d H:i:s', strtotime("+{$occ->rule->duration} minutes", strtotime("{$occ->starts_on} {$occ->starts_at}"))));
 
                     $result[] = [
                         'occurrence_id' => $occ->occurrence_id,
@@ -661,7 +661,7 @@ class Event extends EntityController {
         $query_data = $this->getData;
 
         $spaceId = $query_data['spaceId'];
-        $date_from  = key_exists('@from',   $query_data) ? $query_data['@from'] : date("Y-m-d");
+        $date_from  = key_exists('@from',   $query_data) ? $query_data['@from'] : DateTime::date("Y-m-d");
         $date_to    = key_exists('@to',     $query_data) ? $query_data['@to']   : $date_from;
 
         unset(

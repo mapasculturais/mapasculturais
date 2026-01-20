@@ -2,8 +2,8 @@
 
 namespace LGPD;
 
-use DateTime;
 use MapasCulturais\App;
+use MapasCulturais\DateTime;
 
 class Module extends \MapasCulturais\Module
 {

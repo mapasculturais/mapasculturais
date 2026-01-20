@@ -1,7 +1,7 @@
 <?php
 namespace MapasCulturais\Controllers;
 
-use DateTime;
+use MapasCulturais\DateTime;
 use MapasCulturais\App;
 use MapasCulturais\Traits;
 use MapasCulturais\Entities;

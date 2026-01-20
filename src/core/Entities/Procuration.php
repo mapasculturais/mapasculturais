@@ -4,6 +4,7 @@ namespace MapasCulturais\Entities;
 
 use Doctrine\ORM\Mapping as ORM;
 use MapasCulturais\App;
+use MapasCulturais\DateTime;
 
 /**
  * Procuration
@@ -60,14 +61,14 @@ class Procuration extends \MapasCulturais\Entity{
     protected $attorney;
 
     /**
-     * @var \DateTime
+     * @var DateTime
      *
      * @ORM\Column(name="create_timestamp", type="datetime", nullable=false)
      */
     protected $createTimestamp;
 
     /**
-     * @var \DateTime
+     * @var DateTime
      *
      * @ORM\Column(name="valid_until_timestamp", type="datetime", nullable=true)
      */
@@ -86,7 +87,7 @@ class Procuration extends \MapasCulturais\Entity{
     }
 
     function isValid(){
-        $current_date = new \DateTime();
+        $current_date = new DateTime();
         return is_null($this->validUntilTimestamp) || $current_date < $this->validUntilTimestamp;
     }
 

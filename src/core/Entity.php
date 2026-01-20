@@ -112,11 +112,11 @@ abstract class Entity implements \JsonSerializable{
         }
 
         if(property_exists($this, 'createTimestamp')) {
-            $this->createTimestamp = new \DateTime;
+            $this->createTimestamp = new DateTime;
         }
 
         if(property_exists($this, 'updateTimestamp')) {
-            $this->updateTimestamp = new \DateTime;
+            $this->updateTimestamp = new DateTime;
         }
 
         if($this->usesOwnerAgent() && !$app->user->is('guest')){
@@ -1424,7 +1424,7 @@ abstract class Entity implements \JsonSerializable{
         $this->computeChangeSets();
         
         if (property_exists($this, 'updateTimestamp') && $this->isUpdateTimestampEnabled()) {
-            $this->updateTimestamp = new \DateTime;
+            $this->updateTimestamp = new DateTime;
         }
     }
 

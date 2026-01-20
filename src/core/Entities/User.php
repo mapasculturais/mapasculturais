@@ -3,12 +3,11 @@
 namespace MapasCulturais\Entities;
 
 use Doctrine\ORM\Mapping as ORM;
-use MapasCulturais\API;
 use MapasCulturais\ApiQuery;
 use MapasCulturais\App;
-use MapasCulturais\i;
-use MapasCulturais\Exceptions\PermissionDenied;
+use MapasCulturais\DateTime;
 use MapasCulturais\Exceptions\BadRequest;
+use MapasCulturais\i;
 use MapasCulturais\Traits;
 /**
  * User
@@ -24,7 +23,7 @@ use MapasCulturais\Traits;
  * @property string $authProvider
  * @property string $authUid
  * @property string $email
- * @property-read \DateTimes $lastLoginTimestamp
+ * @property-read DateTimes $lastLoginTimestamp
  * @property-read $createTimestamp
  * @property $status = self::STATUS_ENABLED
  * @property-read $roles
@@ -78,14 +77,14 @@ class User extends \MapasCulturais\Entity implements \MapasCulturais\UserInterfa
     protected $email;
 
     /**
-     * @var \DateTime
+     * @var DateTime
      *
      * @ORM\Column(name="last_login_timestamp", type="datetime", nullable=true)
      */
     protected $lastLoginTimestamp;
 
     /**
-     * @var \DateTime
+     * @var DateTime
      *
      * @ORM\Column(name="create_timestamp", type="datetime", nullable=false)
      */
@@ -171,7 +170,7 @@ class User extends \MapasCulturais\Entity implements \MapasCulturais\UserInterfa
         parent::__construct();
 
         $this->agents = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->lastLoginTimestamp = new \DateTime;
+        $this->lastLoginTimestamp = new DateTime;
     }
 
     public function getRevisionData()
@@ -337,7 +336,7 @@ class User extends \MapasCulturais\Entity implements \MapasCulturais\UserInterfa
         return is_null($user) || $user->is('guest');
     }
 
-    public function makeAttorney($action, \DateTime $valid_until = null, User $user = null){
+    public function makeAttorney($action, DateTime $valid_until = null, User $user = null){
         $app = App::i();
         if(is_null($user)){
             $user = $app->user;
@@ -701,8 +700,8 @@ class User extends \MapasCulturais\Entity implements \MapasCulturais\UserInterfa
     function getOpportunitiesCanBeEvaluated() {
         $app = App::i();
 
-        $next_week = date('Y-m-d', strtotime('+7 days'));
-        $previous_week = date('Y-m-d', strtotime('-7 days'));
+        $next_week = DateTime::date('Y-m-d', strtotime('+7 days'));
+        $previous_week = DateTime::date('Y-m-d', strtotime('-7 days'));
 
         $relation_class = EvaluationMethodConfigurationAgentRelation::class;
         $dql = "
@@ -849,7 +848,7 @@ class User extends \MapasCulturais\Entity implements \MapasCulturais\UserInterfa
     function getEntitiesNotifications($app) {
     
       if(isset($app->modules['Notifications']) && $app->config['notifications.user.access'] > 0) {
-        $now = new \DateTime;
+        $now = new DateTime;
         $interval = date_diff($app->user->lastLoginTimestamp, $now);
         if($interval->format('%a') >= $app->config['notifications.user.access']) {
           // message to user about last access system
@@ -861,7 +860,7 @@ class User extends \MapasCulturais\Entity implements \MapasCulturais\UserInterfa
       }
 
       if(isset($app->modules['Notifications']) && $app->config['notifications.entities.update'] > 0) {
-          $now = new \DateTime;
+          $now = new DateTime;
           foreach($this->agents as $agent) {
             $lastUpdateDate = $agent->updateTimestamp ? $agent->updateTimestamp: $agent->createTimestamp;
             $interval = date_diff($lastUpdateDate, $now);
@@ -898,7 +897,7 @@ class User extends \MapasCulturais\Entity implements \MapasCulturais\UserInterfa
 
       if(in_array('notifications.seal.toExpire',$app->config) && $app->config['notifications.seal.toExpire'] > 0) {
           $diff = 0;
-          $now = new \DateTime;
+          $now = new DateTime;
           foreach($this->agents as $agent) {
               foreach($agent->sealRelations as $relation) {
                 if(isset($relation->validateDate) && $relation->validateDate->date) {

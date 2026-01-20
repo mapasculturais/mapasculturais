@@ -2,9 +2,9 @@
 
 namespace MapasCulturais\Entities;
 
-use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 use MapasCulturais\App;
+use MapasCulturais\DateTime; 
 
 
 /**
@@ -33,14 +33,14 @@ class EventOccurrence extends \MapasCulturais\Entity
     public $id;
 
     /**
-     * @var \DateTime
+     * @var DateTime
      *
      * @ORM\Column(name="starts_on", type="date", nullable=true)
      */
     protected $startsOn;
 
     /**
-     * @var \DateTime
+     * @var DateTime
      *
      * @ORM\Column(name="ends_on", type="date", nullable=true)
      */
@@ -48,14 +48,14 @@ class EventOccurrence extends \MapasCulturais\Entity
 
 
     /**
-     * @var \DateTime
+     * @var DateTime
      *
      * @ORM\Column(name="starts_at", type="datetime", nullable=true)
      */
     protected $startsAt;
 
     /**
-     * @var \DateTime
+     * @var DateTime
      *
      * @ORM\Column(name="ends_at", type="datetime", nullable=true)
      */
@@ -83,7 +83,7 @@ class EventOccurrence extends \MapasCulturais\Entity
     protected $count;
 
     /**
-     * @var \DateTime
+     * @var DateTime
      *
      * @ORM\Column(name="until", type="date", nullable=true)
      */
@@ -171,14 +171,14 @@ class EventOccurrence extends \MapasCulturais\Entity
         $validations = [
             'startsOn' => [
                 'required' => \MapasCulturais\i::__('Data de inicio é obrigatória'),
-                '$value instanceof \DateTime' => \MapasCulturais\i::__('Data de inicio inválida')
+                '$value instanceof DateTime' => \MapasCulturais\i::__('Data de inicio inválida')
             ],
             'endsOn' => [
-                '$value instanceof \DateTime' => \MapasCulturais\i::__('Data final inválida'),
+                '$value instanceof DateTime' => \MapasCulturais\i::__('Data final inválida'),
             ],
             'startsAt' => [
                 'required' => \MapasCulturais\i::__('Hora de inicio é obrigatória'),
-                '$value instanceof \DateTime || preg_match("#([01][0-9]|2[0-3]):[0-5][0-9](:[0-5][0-9])?#", $value)' => \MapasCulturais\i::__('Hora de inicio inválida'),
+                '$value instanceof DateTime || preg_match("#([01][0-9]|2[0-3]):[0-5][0-9](:[0-5][0-9])?#", $value)' => \MapasCulturais\i::__('Hora de inicio inválida'),
             ],
             'duration' => [
                 //'required' => 'A duração é obrigatória',
@@ -192,7 +192,7 @@ class EventOccurrence extends \MapasCulturais\Entity
                 'v::positive()' => \MapasCulturais\i::__('Erro interno')
             ],
             'until' => [
-                '$value instanceof \DateTime' => \MapasCulturais\i::__('Data final inválida'),
+                '$value instanceof DateTime' => \MapasCulturais\i::__('Data final inválida'),
                 '$value >= $this->getStartsOn()' => \MapasCulturais\i::__('Data final antes da inicial')
             ],
             'event' => [
@@ -228,11 +228,11 @@ class EventOccurrence extends \MapasCulturais\Entity
 
     static function convert($value='', $format='Y-m-d H:i')
     {
-        if ($value === null || $value instanceof \DateTime) {
+        if ($value === null || $value instanceof DateTime) {
             return $value;
         }
 
-        $d = \DateTime::createFromFormat($format, $value);
+        $d = DateTime::createFromFormat($format, $value);
         if ($d && $d->format($format) == $value) {
             return $d;
         } else {
@@ -280,9 +280,9 @@ class EventOccurrence extends \MapasCulturais\Entity
     }
 
     function getDuration() {
-        if($this->getStartsAt() instanceof \DateTime && $this->getEndsAt() instanceof \DateTime){
-            $startsAtCopy = new \DateTime($this->getStartsAt()->format('Y-m-d H:i:s'));
-            $endsAtCopy = new \DateTime($this->getEndsAt()->format('Y-m-d H:i:s'));
+        if($this->getStartsAt() instanceof DateTime && $this->getEndsAt() instanceof DateTime){
+            $startsAtCopy = new DateTime($this->getStartsAt()->format('Y-m-d H:i:s'));
+            $endsAtCopy = new DateTime($this->getEndsAt()->format('Y-m-d H:i:s'));
             $interval = $endsAtCopy->diff($startsAtCopy);
             return $interval;
         }else{
@@ -331,15 +331,15 @@ class EventOccurrence extends \MapasCulturais\Entity
             $value['duration'] = intval($value['duration']);
             $dateString = 'PT'.$value['duration'] .'M';
 
-            if($this->getStartsAt() instanceof \DateTime){
-                $startsAtCopy = new \DateTime($this->getStartsAt()->format('Y-m-d H:i'));
+            if($this->getStartsAt() instanceof DateTime){
+                $startsAtCopy = new DateTime($this->getStartsAt()->format('Y-m-d H:i'));
                 $this->setEndsAt($startsAtCopy->add(new \DateInterval($dateString)));
             }
         }else{
             $value['duration'] = 0;
             $this->setEndsAt($this->getStartsAt()); // don't attributing causes the duration to be 1 minute
         }
-        if($this->getEndsAt() instanceof \DateTime){
+        if($this->getEndsAt() instanceof DateTime){
             $value['endsAt'] = $this->getEndsAt()->format('H:i');
         }
 

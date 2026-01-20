@@ -2,17 +2,12 @@
 
 namespace MapasCulturais\Entities;
 
-use Doctrine\ORM\Exception\NotSupported;
+use Doctrine\ORM\Mapping as ORM;
 use MapasCulturais;
+use MapasCulturais\App;
+use MapasCulturais\DateTime;
 use MapasCulturais\i;
 use MapasCulturais\Traits;
-use Doctrine\ORM\Mapping as ORM;
-use Doctrine\Persistence\Mapping\MappingException;
-use MapasCulturais\App;
-use MapasCulturais\Exceptions\PermissionDenied;
-use MapasCulturais\Exceptions\WorkflowRequest;
-use ReflectionException;
-use RuntimeException;
 
 /**
  * RegistrationMeta
@@ -91,21 +86,21 @@ class RegistrationEvaluation extends \MapasCulturais\Entity {
     protected $user;
 
     /**
-     * @var \DateTime
+     * @var DateTime
      *
      * @ORM\Column(name="create_timestamp", type="datetime", nullable=false)
      */
     protected $createTimestamp;
 
      /**
-     * @var \DateTime
+     * @var DateTime
      *
      * @ORM\Column(name="sent_timestamp", type="datetime", nullable=true)
      */
     protected $sentTimestamp;
 
     /**
-     * @var \DateTime
+     * @var DateTime
      *
      * @ORM\Column(name="update_timestamp", type="datetime", nullable=true)
      */
@@ -169,7 +164,7 @@ class RegistrationEvaluation extends \MapasCulturais\Entity {
         
         $this->_sending = true;
         $this->status = RegistrationEvaluation::STATUS_SENT;
-        $this->sentTimestamp = new \DateTime;
+        $this->sentTimestamp = new DateTime;
         $this->save($flush);
 
         $app->applyHookBoundTo($this, "{$this->hookPrefix}.send:after");

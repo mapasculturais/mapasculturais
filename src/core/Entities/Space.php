@@ -2,8 +2,9 @@
 namespace MapasCulturais\Entities;
 
 use Doctrine\ORM\Mapping as ORM;
-use MapasCulturais\Traits;
 use MapasCulturais\App;
+use MapasCulturais\DateTime;
+use MapasCulturais\Traits;
 
 /**
  * Space
@@ -14,8 +15,8 @@ use MapasCulturais\App;
  * @property string $shortDescription
  * @property string $longDescription
  * @property int $status
- * @property-read \DateTime $createTimestamp
- * @property-read \DateTime $updateTimestamp
+ * @property-read DateTime $createTimestamp
+ * @property-read DateTime $updateTimestamp
  * @property-read \MapasCulturais\Entities\EventOccurrence[] $eventOccurrences
  * 
  * @ORM\Table(name="space")
@@ -101,7 +102,7 @@ class Space extends \MapasCulturais\Entity
     protected $longDescription;
 
     /**
-     * @var \DateTime
+     * @var DateTime
      *
      * @ORM\Column(name="create_timestamp", type="datetime", nullable=false)
      */
@@ -215,7 +216,7 @@ class Space extends \MapasCulturais\Entity
     protected $__permissionsCache;
 
     /**
-     * @var \DateTime
+     * @var DateTime
      *
      * @ORM\Column(name="update_timestamp", type="datetime", nullable=true)
      */

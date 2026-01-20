@@ -2,9 +2,9 @@
 
 namespace MapasCulturais\Entities;
 
-use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 use MapasCulturais\App;
+use MapasCulturais\DateTime;
 use MapasCulturais\Definitions\JobType;
 use MapasCulturais\Entity;
 use stdClass;

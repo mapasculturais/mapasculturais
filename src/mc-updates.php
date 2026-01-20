@@ -2,6 +2,7 @@
 
 use MapasCulturais\i;
 use MapasCulturais\App;
+use MapasCulturais\DateTime;
 use MapasCulturais\Definitions\FileGroup;
 use MapasCulturais\Utils;
 use MapasCulturais\Entities\Agent;
@@ -449,8 +450,8 @@ return [
             $app = \MapasCulturais\App::i();
             $app->disableAccessControl();
             if ($agent->dataDeNascimento) {
-                $today = new \DateTime('now');
-                $calc = (new \DateTime($agent->dataDeNascimento))->diff($today);
+                $today = new DateTime('now');
+                $calc = (new DateTime($agent->dataDeNascimento))->diff($today);
                 $idoso = ($calc->y >= 60) ? "1" : "0";
                 if($agent->idoso != $idoso){
                     $agent->idoso = $idoso;

@@ -2,6 +2,7 @@
 namespace EvaluationMethodDocumentary\JobTypes;
 
 use MapasCulturais\App;
+use MapasCulturais\DateTime;
 use MapasCulturais\Entities\Job;
 use MapasCulturais\Entities\Registration;
 use MapasCulturais\Entities\RegistrationEvaluation;
@@ -107,7 +108,7 @@ class Spreadsheet extends EvaluationsSpreadsheetJob
         $opportunity = i::__('oportunidade');
         $opportunity_id = $job->owner->id;
         $extension = $job->extension;
-        $date = date('Y-m-d H:i:s');
+        $date = DateTime::date('Y-m-d H:i:s');
         
         $result = "{$opportunity}-{$opportunity_id}--avaliacoes-{$date}.{$extension}";
 

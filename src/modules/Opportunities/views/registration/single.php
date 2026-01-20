@@ -4,6 +4,7 @@
  * @var \MapasCulturais\App $app
  */
 
+use MapasCulturais\DateTime;
 use MapasCulturais\i;
 
 $this->layout = 'registrations';

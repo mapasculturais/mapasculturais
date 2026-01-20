@@ -2,6 +2,7 @@
 namespace MapasCulturais\Traits;
 
 use MapasCulturais\App;
+use MapasCulturais\DateTime;
 use MapasCulturais\Entities;
 
 /**
@@ -152,7 +153,7 @@ trait ControllerSealRelation{
         $relation = $app->repo($relation_class)->find($this->urlData['id']);
 
         $period = new \DateInterval("P" . $relation->seal->validPeriod . "M");
-        $dateIni = new \DateTime();
+        $dateIni = new DateTime();
         $dateFin = $dateIni->add($period);
         
         $notification = new Entities\Notification;

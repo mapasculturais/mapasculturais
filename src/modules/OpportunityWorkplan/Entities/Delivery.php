@@ -1,8 +1,9 @@
 <?php
 namespace OpportunityWorkplan\Entities;
 
-use MapasCulturais\i;
 use Doctrine\ORM\Mapping as ORM;
+use MapasCulturais\DateTime;
+use MapasCulturais\i;
 use MapasCulturais\Traits\EntityFiles;
 use MapasCulturais\Traits\EntityMetadata;
 use MapasCulturais\Traits\EntityOwnerAgent;
@@ -58,14 +59,14 @@ class Delivery extends \MapasCulturais\Entity {
     protected $__metadata;
 
     /**
-     * @var \DateTime
+     * @var DateTime
      *
      * @ORM\Column(name="create_timestamp", type="datetime", nullable=false)
      */
     protected $createTimestamp;
 
         /**
-     * @var \DateTime
+     * @var DateTime
      *
      * @ORM\Column(name="update_timestamp", type="datetime", nullable=true)
      */

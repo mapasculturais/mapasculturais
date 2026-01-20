@@ -3,10 +3,11 @@
 namespace OpportunityExporter;
 
 use Exception;
+use MapasCulturais\App;
+use MapasCulturais\DateTime;
+use MapasCulturais\Entities\EvaluationMethodConfiguration;
 use MapasCulturais\Entities\File;
 use MapasCulturais\Entities\Opportunity;
-use MapasCulturais\App;
-use MapasCulturais\Entities\EvaluationMethodConfiguration;
 use MapasCulturais\Entity;
 
 class Exporter
@@ -292,7 +293,7 @@ class Exporter
 
         foreach ($export_phase_props as $prop) {
             $value = $phase->$prop;
-            if($value instanceof \DateTime) {
+            if($value instanceof DateTime) {
                 $value = $value->format('Y-m-d H:i:s');
             }
             $result[$prop] = $value;

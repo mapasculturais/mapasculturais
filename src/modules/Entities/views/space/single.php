@@ -1,5 +1,8 @@
 <?php
+
+use MapasCulturais\DateTime;
 use MapasCulturais\i;
+
 $this->layout = 'entity';
 
 $this->import('
@@ -103,8 +106,8 @@ $this->breadcrumb = [
                 <search-list-event 
                     :pseudo-query='<?= json_encode([
                         "space:id" => $entity->id,
-                        "@from" => date("Y-m-d"),
-                        "@to" => date("Y") . "-12-31"
+                        "@from" => DateTime::date("Y-m-d"),
+                        "@to" => DateTime::date("Y") . "-12-31"
                     ]) ?>'
                     select="id,name,subTitle,files.avatar,seals,terms,classificacaoEtaria,singleUrl"
                     space-select="id,name,endereco,files.avatar,singleUrl"

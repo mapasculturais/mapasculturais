@@ -2,19 +2,19 @@
 
 namespace Tests\Builders;
 
-use DateTime;
 use MapasCulturais\App;
-use Tests\Traits\Faker;
-use Tests\Abstract\Builder;
-use Tests\Traits\UserDirector;
+use MapasCulturais\DateTime;
 use MapasCulturais\Entities\Agent;
-use Tests\Enums\EvaluationMethods;
-use MapasCulturais\Entities\Opportunity;
-use Tests\Interfaces\EvaluationPeriodInterface;
-use MapasCulturais\Entities\RegistrationEvaluation;
-use Tests\Abstract\EvaluationMethodConfigurationBuilder;
 use MapasCulturais\Entities\EvaluationMethodConfiguration;
 use MapasCulturais\Entities\EvaluationMethodConfigurationAgentRelation;
+use MapasCulturais\Entities\Opportunity;
+use MapasCulturais\Entities\RegistrationEvaluation;
+use Tests\Abstract\Builder;
+use Tests\Abstract\EvaluationMethodConfigurationBuilder;
+use Tests\Enums\EvaluationMethods;
+use Tests\Interfaces\EvaluationPeriodInterface;
+use Tests\Traits\Faker;
+use Tests\Traits\UserDirector;
 
 class EvaluationPhaseBuilder extends Builder
 {

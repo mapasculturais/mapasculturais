@@ -1,5 +1,6 @@
 <?php
 
+use MapasCulturais\DateTime;
 use MapasCulturais\i;
 
 //Recebe os valores do sistema

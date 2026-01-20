@@ -2,6 +2,7 @@
 namespace MapasCulturais\Traits;
 
 use MapasCulturais\App;
+use MapasCulturais\DateTime;
 use MapasCulturais\Entity;
 
 trait EntityManagerModel {
@@ -128,7 +129,7 @@ trait EntityManagerModel {
         $this->entityOpportunityModel->status = -1;
         $this->entityOpportunityModel->shortDescription = $description;
 
-        $now = new \DateTime('now');
+        $now = new DateTime('now');
         $this->entityOpportunityModel->createTimestamp = $now;
 
         $app->em->persist($this->entityOpportunityModel);
@@ -157,7 +158,7 @@ trait EntityManagerModel {
         $this->entityOpportunityModel->status = Entity::STATUS_DRAFT;
         $this->entityOpportunityModel->owner = $app->user->profile;
 
-        $now = new \DateTime('now');
+        $now = new DateTime('now');
         $this->entityOpportunityModel->createTimestamp = $now;
 
         $app->em->persist($this->entityOpportunityModel);
@@ -237,7 +238,7 @@ trait EntityManagerModel {
 
                 $this->generateRegistrationFieldsAndFiles($phase, $newPhase);
 
-                $now = new \DateTime('now');
+                $now = new DateTime('now');
                 $newPhase->createTimestamp = $now;
                 $newPhase->subsite = $phase->subsite;
 

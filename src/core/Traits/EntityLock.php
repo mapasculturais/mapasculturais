@@ -1,6 +1,8 @@
 <?php
 namespace MapasCulturais\Traits;
+
 use MapasCulturais\App;
+use MapasCulturais\DateTime;
 use MapasCulturais\UserInterface;
 
 trait EntityLock {
@@ -33,9 +35,9 @@ trait EntityLock {
         
         $lock_data = [
             'token' => $token,
-            'lockTimestamp' => date('Y-m-d H:i:s'),
+            'lockTimestamp' => DateTime::date('Y-m-d H:i:s'),
             'timeout' => $timeout,
-            'validUntil' => date('Y-m-d H:i:s', time() + $timeout),
+            'validUntil' => DateTime::date('Y-m-d H:i:s', time() + $timeout),
             'userId' => $app->user->id,
             'agent' => $app->user->profile->simplify('id,name,avatar')
         ];
@@ -108,7 +110,7 @@ trait EntityLock {
             $valid_until = strtotime($lock_data['validUntil']);
             $token_data = $lock_data['token'];
             if($token == $token_data) {
-                $lock_data['validUntil'] = date('Y-m-d H:i:s', time() + $lock_data['timeout']);
+                $lock_data['validUntil'] = DateTime::date('Y-m-d H:i:s', time() + $lock_data['timeout']);
                 $lock_data_json = json_encode($lock_data, JSON_PRETTY_PRINT);
 
                 file_put_contents($filename, $lock_data_json);

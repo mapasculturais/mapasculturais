@@ -2,21 +2,20 @@
 
 namespace Opportunities;
 
-use DateTime;
-use Exception;
 use MapasCulturais\App;
 use MapasCulturais\Controllers\Opportunity as ControllersOpportunity;
+use MapasCulturais\DateTime;
+use MapasCulturais\Entities\Agent;
 use MapasCulturais\Entities\AgentRelation;
-use MapasCulturais\i;
-use MapasCulturais\Entities\Opportunity;
 use MapasCulturais\Entities\EvaluationMethodConfiguration;
+use MapasCulturais\Entities\EvaluationMethodConfigurationAgentRelation;
+use MapasCulturais\Entities\EvaluationMethodConfigurationMeta;
+use MapasCulturais\Entities\Opportunity;
 use MapasCulturais\Entities\Registration;
 use MapasCulturais\Entities\RegistrationEvaluation;
 use MapasCulturais\Entities\RegistrationStep;
-use MapasCulturais\Entities\Agent;
-use MapasCulturais\Entities\EvaluationMethodConfigurationAgentRelation;
-use MapasCulturais\Entities\EvaluationMethodConfigurationMeta;
 use MapasCulturais\Entity;
+use MapasCulturais\i;
 
 class Module extends \MapasCulturais\Module{
 
@@ -134,12 +133,12 @@ class Module extends \MapasCulturais\Module{
 
         $distribute_execution_time = function($distribution_config) {
             if ($distribution_config === 'hourly') {
-                return date('Y-m-d H:00:00', strtotime('+1 hour'));
+                return DateTime::date('Y-m-d H:00:00', strtotime('+1 hour'));
             } 
             
             if ($distribution_config === 'daily') {
                 // Próxima meia-noite
-                $next_midnight = new \DateTime('tomorrow 00:00:00');
+                $next_midnight = new DateTime('tomorrow 00:00:00');
                 return $next_midnight->format('Y-m-d H:i:s');
             }
         };
@@ -305,7 +304,7 @@ class Module extends \MapasCulturais\Module{
             $enabled_status = $this->isAppealPhase ? -1 : Opportunity::STATUS_ENABLED;
             $active = in_array($this->status, [-1,-20, Opportunity::STATUS_ENABLED]) && $this->firstPhase->status === $enabled_status;
 
-            $now = new \DateTime;
+            $now = new DateTime;
 
             // Executa Job no momento da publicação automática dos resultados da fase
             $registration_from_changed = $this->_changes['registrationFrom'] ?? false;
@@ -347,7 +346,7 @@ class Module extends \MapasCulturais\Module{
 
             $active = in_array($this->opportunity->status, [-1, Opportunity::STATUS_ENABLED]) && $this->opportunity->firstPhase->status === Opportunity::STATUS_ENABLED;
 
-            $now = new \DateTime;
+            $now = new DateTime;
 
             // Executa Job no início de fase de avaliação
             $avaluation_from_changed = $this->_changes['registrationFrom'] ?? false;

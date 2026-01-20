@@ -2,7 +2,7 @@
 
 namespace EvaluationMethodContinuous;
 
-use DateTime;
+use MapasCulturais\DateTime;
 use MapasCulturais\App;
 use MapasCulturais\Definitions\ChatThreadType;
 use MapasCulturais\Entities;

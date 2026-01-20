@@ -103,10 +103,10 @@ abstract class EvaluationMethod extends Module implements \JsonSerializable{
     }
 
 
-    static function getNextRedistributionDateTime(): \DateTime {
+    static function getNextRedistributionDateTime(): DateTime {
         $app = App::i();
-        $str_time = date($app->config['registrations.distribution.dateString']) . ' ' . $app->config['registrations.distribution.incrementString'];
-        $datetime = new \DateTime($str_time);
+        $str_time = DateTime::date($app->config['registrations.distribution.dateString']) . ' ' . $app->config['registrations.distribution.incrementString'];
+        $datetime = new DateTime($str_time);
         return $datetime;
     }
 
