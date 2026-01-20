@@ -23,25 +23,17 @@ app.component('entity-field', {
         
         // Garantir que custom-table é sempre um array
         if (description.registrationFieldConfiguration?.fieldType === 'custom-table') {
-            console.log('🔵 DATA INIT - custom-table detectado:', this.prop);
-            console.log('🔵 DATA INIT - value inicial:', value);
-            console.log('🔵 DATA INIT - tipo:', typeof value);
-            
             if (typeof value === 'string') {
                 try {
                     value = JSON.parse(value);
-                    console.log('🔵 DATA INIT - após parse:', value);
                 } catch(e) {
-                    console.error('❌ DATA INIT - erro no parse:', e);
                     value = [];
                 }
             }
             if (!Array.isArray(value)) {
-                console.warn('⚠️ DATA INIT - não é array, convertendo');
                 value = [];
             }
             this.entity[this.prop] = value;
-            console.log('🔵 DATA INIT - valor final:', this.entity[this.prop]);
         }
         
         let isAdmin = function() {
@@ -245,47 +237,31 @@ app.component('entity-field', {
 
         // Inicializar dados da tabela customizável
         if (this.is('custom-table')) {
-            console.log('🟢 CREATED - custom-table detectado:', this.prop);
-            console.log('🟢 CREATED - valor atual:', this.entity[this.prop]);
-            console.log('🟢 CREATED - tipo:', typeof this.entity[this.prop]);
-            
             if (!this.entity[this.prop]) {
-                console.log('🟢 CREATED - valor vazio, inicializando array');
                 this.entity[this.prop] = [];
             } else if (!Array.isArray(this.entity[this.prop])) {
                 // Se não for array, tentar fazer parse
-                console.log('🟢 CREATED - não é array, tentando converter');
                 if (typeof this.entity[this.prop] === 'string') {
                     try {
                         this.entity[this.prop] = JSON.parse(this.entity[this.prop]);
-                        console.log('🟢 CREATED - parse OK:', this.entity[this.prop]);
                     } catch(e) {
-                        console.error('❌ CREATED - erro no parse:', e);
                         this.entity[this.prop] = [];
                     }
                 } else {
-                    console.log('🟢 CREATED - não é string nem array, zerando');
                     this.entity[this.prop] = [];
                 }
             }
-            
-            console.log('🟢 CREATED - antes do filter:', this.entity[this.prop]);
             
             // Remover linhas que não são objetos válidos (arrays vazios, null, etc)
             this.entity[this.prop] = this.entity[this.prop].filter(row => {
                 return row && typeof row === 'object' && !Array.isArray(row);
             });
             
-            console.log('🟢 CREATED - após filter:', this.entity[this.prop]);
-            
             // Adicionar linhas mínimas se necessário
             const minRows = this.description.registrationFieldConfiguration?.config?.minRows || 0;
-            console.log('🟢 CREATED - minRows:', minRows);
             while (this.entity[this.prop].length < minRows) {
                 this.entity[this.prop].push({});
             }
-            
-            console.log('🟢 CREATED - valor final:', this.entity[this.prop]);
         }
     },
 
@@ -313,14 +289,7 @@ app.component('entity-field', {
         },
         tableData() {
             if (this.is('custom-table')) {
-                const data = this.entity[this.prop] || [];
-                console.log('📊 TABLE DATA:', data);
-                if (data.length > 0) {
-                    console.log('📊 Primeira linha:', data[0]);
-                    console.log('📊 col0:', data[0].col0);
-                    console.log('📊 col1:', data[0].col1);
-                }
-                return data;
+                return this.entity[this.prop] || [];
             }
             return [];
         },
@@ -554,6 +523,7 @@ app.component('entity-field', {
                 }
                 
                 const maxRows = this.description.registrationFieldConfiguration?.config?.maxRows;
+                
                 if (!maxRows || maxRows <= 0 || this.entity[this.prop].length < maxRows) {
                     this.entity[this.prop].push({});
                     // NÃO chama updateTableData() aqui - apenas adiciona a linha
@@ -570,6 +540,7 @@ app.component('entity-field', {
                 }
                 
                 const minRows = this.description.registrationFieldConfiguration?.config?.minRows || 0;
+                
                 if (this.entity[this.prop].length > minRows) {
                     this.entity[this.prop].splice(index, 1);
                     this.updateTableData();
@@ -584,7 +555,7 @@ app.component('entity-field', {
                     clearTimeout(this._saveTimeout);
                 }
                 
-                // Aguardar 800ms antes de salvar (maior que o debounce do Entity)
+                // Aguardar 2 segundos antes de salvar (debounce)
                 this._saveTimeout = setTimeout(() => {
                     // CRÍTICO: Criar uma cópia SIMPLES do array, sem Proxy
                     const plainData = this.entity[this.prop]
@@ -616,16 +587,11 @@ app.component('entity-field', {
                         this.entity.__changedKeys.push(this.prop);
                     }
                     
-                    console.log('🔴 ANTES DE SALVAR - entity[prop]:', JSON.stringify(this.entity[this.prop]));
-                    console.log('🔴 ANTES DE SALVAR - __originalValues:', JSON.stringify(this.entity.__originalValues[this.prop]));
-                    console.log('🔴 ANTES DE SALVAR - data(true):', JSON.stringify(this.entity.data(true)));
-                    
-                    // Salvar (agora com debounce para evitar múltiplas chamadas)
+                    // Salvar
                     this.entity.save().then(() => {
-                        console.log('✅ SAVE COMPLETO!');
                         this._customTableSaveTimeout = null;
                     });
-                }, 2000); // 2 segundos de debounce
+                }, 2000);
             }
         }
     },
