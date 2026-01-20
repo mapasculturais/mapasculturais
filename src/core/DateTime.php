@@ -16,7 +16,7 @@ class DateTime extends \DateTime
         return parent::__construct($datetime, $timezone);
     }
 
-    static function date(string $format, ?int $timestamp) {
+    static function date(string $format, ?int $timestamp = null) {
         $timestamp = $timestamp ?: strtotime(self::$datetime);
         return date($format, $timestamp);
     }
