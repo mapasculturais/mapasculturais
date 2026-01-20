@@ -80,7 +80,12 @@
             <tbody>
                 <tr ng-repeat="row in entity[field.fieldName]">
                     <td ng-repeat="column in field.config.columns" style="border: 1px solid #ddd; padding: 8px;">
-                        {{row['col' + $index] || '-'}}
+                        <span ng-if="column.type === 'date' && row['col' + $index]">
+                            {{row['col' + $index] | date:'dd/MM/yyyy'}}
+                        </span>
+                        <span ng-if="column.type !== 'date' || !row['col' + $index]">
+                            {{row['col' + $index] || '-'}}
+                        </span>
                     </td>
                 </tr>
             </tbody>
