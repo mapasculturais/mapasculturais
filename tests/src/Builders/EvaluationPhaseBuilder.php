@@ -285,6 +285,24 @@ class EvaluationPhaseBuilder extends Builder
         return $this;
     }
 
+    public function setAutoApplicationAllowed(bool $auto_application_allowed = true): self
+    {
+        $this->instance->autoApplicationAllowed = $auto_application_allowed;
+        return $this;
+    }
+
+    public function setPublishTimestamp(string $publish_timestamp): self
+    {
+        $this->instance->opportunity->setPublishTimestamp($publish_timestamp);
+        return $this;
+    }
+
+    public function setAutoPublish(bool $auto_publish = true): self
+    {
+        $this->instance->opportunity->autoPublish = $auto_publish;
+        return $this;
+    }
+
     public function config(): EvaluationMethodConfigurationBuilder|EvaluationMethodTechnicalBuilder
     {
         $builder = $this->evaluationMethod->builder($this, $this->opportunityBuilder);
