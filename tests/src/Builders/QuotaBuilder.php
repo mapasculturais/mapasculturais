@@ -107,4 +107,70 @@ class QuotaBuilder extends Builder
 
         return $this;
     }
+
+    public function geoQuota(): self
+    {
+        if (!$this->instance->geoQuotaConfiguration) {
+            $this->instance->geoQuotaConfiguration = (object) [
+                'geoDivision' => '',
+                'distribution' => (object) [],
+                'fields' => (object) []
+            ];
+        }
+        return $this;
+    }
+
+    public function setGeoDivision(string $geo_division): self
+    {
+        $geo_quota_configuration = (object) ($this->instance->geoQuotaConfiguration ?: [
+            'geoDivision' => '',
+            'distribution' => (object) [],
+            'fields' => (object) []
+        ]);
+
+        $geo_quota_configuration->geoDivision = $geo_division;
+        $this->instance->geoQuotaConfiguration = $geo_quota_configuration;
+
+        return $this;
+    }
+
+    public function addRegionDistribution(string $region, int $vacancies): self
+    {
+        $geo_quota_configuration = (object) ($this->instance->geoQuotaConfiguration ?: [
+            'geoDivision' => '',
+            'distribution' => (object) [],
+            'fields' => (object) []
+        ]);
+
+        $distribution = (object) ($geo_quota_configuration->distribution ?? (object) []);
+        $distribution->$region = $vacancies;
+        
+        $geo_quota_configuration->distribution = $distribution;
+        $this->instance->geoQuotaConfiguration = $geo_quota_configuration;
+
+        return $this;
+    }
+
+    public function setField(string $field, ProponentTypes $proponent_type = ProponentTypes::DEFAULT): self
+    {
+        $geo_quota_configuration = (object) ($this->instance->geoQuotaConfiguration ?: [
+            'geoDivision' => '',
+            'distribution' => (object) [],
+            'fields' => (object) []
+        ]);
+
+        $fields = (object) ($geo_quota_configuration->fields ?? (object) []);
+        
+        // Se não for 'geo', tenta converter o identifier em field_name
+        if ($field != 'geo') {
+            $field = $this->opportunityBuilder->getFieldName($field, $this->instance->opportunity) ?: $field;
+        }
+        
+        $fields->{$proponent_type->value} = $field;
+        
+        $geo_quota_configuration->fields = $fields;
+        $this->instance->geoQuotaConfiguration = $geo_quota_configuration;
+
+        return $this;
+    }
 }

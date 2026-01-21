@@ -796,7 +796,7 @@ class Module extends \MapasCulturais\Module
                     }
                 },
                 'unserialize' => function($value, $registration = null, $metadata_definition = null) use ($module, $app) {
-                    if(is_null($registration) || $registration->status > 0){
+                    if(is_null($registration) || ($registration->status ?? 0) > 0){
                             
                         $first_char = strlen($value ?? '') > 0 ? $value[0] : "" ;
                         if(in_array($first_char, ['"', "[", "{"]) || in_array($value, ["null", "false", "true"])) {
