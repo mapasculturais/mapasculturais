@@ -79,8 +79,6 @@ return [
             'inscricao' => ['registration', 'edit'],
             'inscricao' => ['registration', 'single'],
             'inscricao' => ['registration', 'view'],
-            'inscricao' => ['registration', 'exportPDF'],
-            'inscricao' => ['registration', 'createZipFiles'],
 
             'visualizacao-de-formulario' => ['opportunity', 'formPreview'],
 
@@ -92,6 +90,8 @@ return [
 
             'file/arquivo-privado' => ['file', 'privateFile'],
 
+            'inscricao-exportar-pdf' => ['registration', 'exportPDF'],
+            'inscricao-baixar-arquivos' => ['registration', 'createZipFiles'],
         ],
         'controllers' => [
             'painel'         => 'panel',
