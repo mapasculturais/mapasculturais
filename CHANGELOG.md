@@ -59,6 +59,35 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 <a name="770-funarte"></a>
 2. <small>Melhoria desenvolvida pela Funarte (Fundação Nacional de Artes) para a Rede das Artes</small>
 
+## [7.6.34] - 2026-01-19
+### Correção
+- Corrige erro que impedia o uso do plano de metas
+
+## [7.6.33] - 2026-01-16
+### Correções
+- Corrige bug visual na remoção de administradores de entidades, onde ao excluir um administrador era removido visualmente outro da lista
+
+## [7.6.32] - 2026-01-15
+### Correções 
+- Ajusta para que seja possivel solicitar recurso em todos os status de inscrição na fase de recurso
+
+## [7.6.31] - 2026-01-09
+### Correções
+- Ajusta o redirecionamento para usuários com perfil incompleto ou com erro, aplicando o magicGetter na validação dos erros do agente
+- Corrige a busca de dados no método getDataFromApi() do componente mc-entity, que falhava quando havia o parâmetro @keywords
+
+## [7.6.30] - 2026-01-06
+### Melhorias
+- Implementa forma de exibir todas as taxonomias obrigatórias no modal de criação de agente
+
+## [7.6.29] - 2026-01-05
+### Correções
+- Corrige copia de áreas de interesse ao criar um modelo de oportunidade
+
+## [7.6.28] - 2025-12-26
+### Correções
+- Corrige filtro de usuários na gestão de usuários
+
 ## [7.6.27] - 2025-12-19
 ### Correções
 - Corrige exibição do campo de endereço no formulário de inscrição
