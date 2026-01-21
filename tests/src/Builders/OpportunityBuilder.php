@@ -68,6 +68,7 @@ class OpportunityBuilder extends Builder
 
     public function lastPhase(): DataCollectionPhaseBuilder
     {
+        $this->lastPhaseBuilder->reset($this->instance->lastPhase);
         return $this->lastPhaseBuilder;
     }
 
