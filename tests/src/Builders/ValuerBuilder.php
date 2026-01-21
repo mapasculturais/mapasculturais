@@ -147,7 +147,11 @@ class ValuerBuilder extends Builder
             return $builder->reset($evaluation_instance);
         }
         
-        throw new Exception("Builder específico não implementado para o método de avaliação: {$evaluation_method_slug}");
+        if ($evaluation_method_slug->id == 'documentary') {
+            $builder = new EvaluationDocumentaryBuilder($this->evaluationPhaseBuilder);
+        }
+
+        return $builder->reset($evaluation_instance);
     }
 
     public function createDraftRegistrations(int $number_of_registrations): static
