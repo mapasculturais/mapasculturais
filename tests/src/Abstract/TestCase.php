@@ -4,6 +4,7 @@ namespace Tests\Abstract;
 
 use MapasCulturais\App;
 use MapasCulturais\Connection;
+use MapasCulturais\DateTime;
 use MapasCulturais\Entities\User;
 use PHPUnit\Framework\Constraint\TraversableContainsEqual;
 use PHPUnit\Framework\TestCase as PHPUnitTestCase;
@@ -78,17 +79,27 @@ class TestCase extends PHPUnitTestCase
 
     // =================== PCACHE E JOBS ===================
 
-    protected function processJobs(string $as_date = '2100-01-01 00:00', ?int $number_of_jobs = null): void
+    protected function processJobs(string $as_date = '2100-01-01 00:00'): void
     {
         $app = App::i();
         $current_loggedin_user = $app->user;
 
-        $processed_jobs_count = 0;
-        while ($app->executeJob($as_date)) {
-            $processed_jobs_count++;
-            if ($number_of_jobs && $processed_jobs_count >= $number_of_jobs) {
-                break;
-            }
+        $as_date = (new DateTime($as_date))->format('Y-m-d H:i:s');
+
+        $jobs = $app->conn->fetchAll("
+            SELECT id
+            FROM job
+            WHERE
+                next_execution_timestamp <= '$as_date' AND
+                iterations_count < iterations AND
+                status = 0
+            ORDER BY next_execution_timestamp ASC
+        ");
+
+        // eval(\psy\sh());
+
+        foreach ($jobs as $job) {
+            $app->executeJob(job_id: $job['id']);
         }
 
         $this->login($current_loggedin_user);
