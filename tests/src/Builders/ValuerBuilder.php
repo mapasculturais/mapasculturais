@@ -3,13 +3,15 @@
 namespace Tests\Builders;
 
 use Exception;
-use Tests\Abstract\Builder;
-use Tests\Traits\UserDirector;
-use Tests\Traits\AgentDirector;
 use MapasCulturais\Entities\Agent;
-use Tests\Traits\EvaluationBuilder;
-use MapasCulturais\Entities\Registration;
 use MapasCulturais\Entities\EvaluationMethodConfigurationAgentRelation;
+use MapasCulturais\Entities\Registration;
+use Tests\Abstract\Builder;
+use Tests\Abstract\EvaluationBuilder as AbstractEvaluationBuilder;
+use Tests\Builders\EvaluationSimpleBuilder;
+use Tests\Traits\AgentDirector;
+use Tests\Traits\EvaluationBuilder;
+use Tests\Traits\UserDirector;
 
 class ValuerBuilder extends Builder
 {
@@ -115,6 +117,37 @@ class ValuerBuilder extends Builder
         $this->evaluationBuilder->send();
 
         return $this;
+    }
+
+    public function evaluation(?Registration $registration = null): AbstractEvaluationBuilder
+    {
+        $evaluation_method_config = $this->evaluationPhaseBuilder->getInstance();
+        $evaluation_method_slug = $evaluation_method_config->type;
+        
+        // TODO: Verificar se é necessário essa parte
+        // Criar a avaliação primeiro usando o builder que já existia
+        if ($registration) {
+            $this->evaluationBuilder->reset(
+                user: $this->instance->agent->user,
+                registration: $registration
+            );
+        } else {
+            $this->evaluationBuilder->reset(
+                user: $this->instance->agent->user,
+                opportunity: $this->instance->owner->opportunity
+            );
+        }
+        
+        $this->evaluationBuilder->fillRequiredProperties();
+        $evaluation_instance = $this->evaluationBuilder->getInstance();
+        
+        // Retornar o builder específico baseado no tipo
+        if ($evaluation_method_slug->id == 'simple') {
+            $builder = new EvaluationSimpleBuilder($this->evaluationPhaseBuilder);
+            return $builder->reset($evaluation_instance);
+        }
+        
+        throw new Exception("Builder específico não implementado para o método de avaliação: {$evaluation_method_slug}");
     }
 
     public function createDraftRegistrations(int $number_of_registrations): static
