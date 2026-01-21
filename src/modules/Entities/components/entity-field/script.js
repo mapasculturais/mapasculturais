@@ -21,6 +21,21 @@ app.component('entity-field', {
             }
         }
         
+        // Garantir que custom-table é sempre um array
+        if (description.registrationFieldConfiguration?.fieldType === 'custom-table') {
+            if (typeof value === 'string') {
+                try {
+                    value = JSON.parse(value);
+                } catch(e) {
+                    value = [];
+                }
+            }
+            if (!Array.isArray(value)) {
+                value = [];
+            }
+            this.entity[this.prop] = value;
+        }
+        
         let isAdmin = function() {
             let result = false;
             $MAPAS.currentUserRoles.forEach(function(item){
@@ -219,6 +234,35 @@ app.component('entity-field', {
             
             this.selectedOptions[this.prop] = [...this.entity[this.prop]];
         }
+
+        // Inicializar dados da tabela customizável
+        if (this.is('custom-table')) {
+            if (!this.entity[this.prop]) {
+                this.entity[this.prop] = [];
+            } else if (!Array.isArray(this.entity[this.prop])) {
+                // Se não for array, tentar fazer parse
+                if (typeof this.entity[this.prop] === 'string') {
+                    try {
+                        this.entity[this.prop] = JSON.parse(this.entity[this.prop]);
+                    } catch(e) {
+                        this.entity[this.prop] = [];
+                    }
+                } else {
+                    this.entity[this.prop] = [];
+                }
+            }
+            
+            // Remover linhas que não são objetos válidos (arrays vazios, null, etc)
+            this.entity[this.prop] = this.entity[this.prop].filter(row => {
+                return row && typeof row === 'object' && !Array.isArray(row);
+            });
+            
+            // Adicionar linhas mínimas se necessário
+            const minRows = this.description.registrationFieldConfiguration?.config?.minRows || 0;
+            while (this.entity[this.prop].length < minRows) {
+                this.entity[this.prop].push({});
+            }
+        }
     },
 
     mounted() {
@@ -242,6 +286,12 @@ app.component('entity-field', {
         },
         value() {
             return this.entity[this.prop]?.id ?? this.entity[this.prop];
+        },
+        tableData() {
+            if (this.is('custom-table')) {
+                return this.entity[this.prop] || [];
+            }
+            return [];
         },
         entitiesFildTypes() {
             return ['agent-owner-field', 'agent-collective-field']
@@ -463,6 +513,86 @@ app.component('entity-field', {
             }
 
             return this.readonly;
+        },
+
+        addRow() {
+            if (this.is('custom-table')) {
+                // Garantir que é um array
+                if (!Array.isArray(this.entity[this.prop])) {
+                    this.entity[this.prop] = [];
+                }
+                
+                const maxRows = this.description.registrationFieldConfiguration?.config?.maxRows;
+                
+                if (!maxRows || maxRows <= 0 || this.entity[this.prop].length < maxRows) {
+                    this.entity[this.prop].push({});
+                    // NÃO chama updateTableData() aqui - apenas adiciona a linha
+                }
+            }
+        },
+
+        removeRow(index) {
+            if (this.is('custom-table')) {
+                // Garantir que é um array
+                if (!Array.isArray(this.entity[this.prop])) {
+                    this.entity[this.prop] = [];
+                    return;
+                }
+                
+                const minRows = this.description.registrationFieldConfiguration?.config?.minRows || 0;
+                
+                if (this.entity[this.prop].length > minRows) {
+                    this.entity[this.prop].splice(index, 1);
+                    this.updateTableData();
+                }
+            }
+        },
+
+        updateTableData() {
+            if (this.is('custom-table')) {
+                // Cancelar save anterior
+                if (this._saveTimeout) {
+                    clearTimeout(this._saveTimeout);
+                }
+                
+                // Aguardar 2 segundos antes de salvar (debounce)
+                this._saveTimeout = setTimeout(() => {
+                    // CRÍTICO: Criar uma cópia SIMPLES do array, sem Proxy
+                    const plainData = this.entity[this.prop]
+                        .filter(row => row && typeof row === 'object' && !Array.isArray(row))
+                        .map(row => {
+                            const plainRow = {};
+                            for (const key in row) {
+                                if (key.substring(0, 2) !== '$$') {
+                                    plainRow[key] = row[key];
+                                }
+                            }
+                            return plainRow;
+                        });
+                    
+                    // Substituir por objetos simples
+                    this.entity[this.prop] = plainData;
+                    
+                    // CRÍTICO: Forçar __originalValues para [] para garantir que data(true) envie tudo
+                    if (!this.entity.__originalValues) {
+                        this.entity.__originalValues = {};
+                    }
+                    this.entity.__originalValues[this.prop] = [];
+                    
+                    // Garantir que o campo seja marcado como modificado
+                    if (!this.entity.__changedKeys) {
+                        this.entity.__changedKeys = [];
+                    }
+                    if (!this.entity.__changedKeys.includes(this.prop)) {
+                        this.entity.__changedKeys.push(this.prop);
+                    }
+                    
+                    // Salvar
+                    this.entity.save().then(() => {
+                        this._customTableSaveTimeout = null;
+                    });
+                }, 2000);
+            }
         }
     },
 });

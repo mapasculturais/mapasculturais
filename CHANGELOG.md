@@ -6,6 +6,9 @@ O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [UNRELEASED]
+### Novas Funcionalidades
+- Implementa tipo de campo custom-table (tabela customizável) para formulários de inscrição, permitindo que o proponente preencha dados em formato tabular com colunas configuráveis
+
 ### Correções
 - Corrige exibição de anexos no PDF de inscrição, respeitando a ordem dos campos (displayOrder) e exibindo marcadores de campos obrigatórios
 
