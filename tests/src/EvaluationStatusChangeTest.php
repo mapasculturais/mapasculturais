@@ -227,4 +227,124 @@ class EvaluationStatusChangeTest extends TestCase
             );
         }
     }
+
+    function testDocumentaryEvaluationStatusMatchesConsolidatedResult()
+    {
+        $admin = $this->userDirector->createUser('admin');
+        $this->login($admin);
+
+        // Configurar oportunidade sem categoria, com uma única comissão e 1 avaliador por inscrição
+        $this->opportunityBuilder
+            ->reset(owner: $admin->profile, owner_entity: $admin->profile)
+            ->fillRequiredProperties()
+            ->save()
+            ->firstPhase()
+                ->setRegistrationPeriod(new Open)
+                ->save()
+                ->createStep('Etapa 1')
+                ->createField('campo_teste', 'text', 'Campo de Teste')
+                ->save()
+                ->done();
+        
+        $evaluation_phase_builder = $this->opportunityBuilder
+            ->save()
+            ->addEvaluationPhase(EvaluationMethods::documentary)
+                ->setEvaluationPeriod(new ConcurrentEndingAfter)
+                ->setAutoApplicationAllowed(true)
+                ->setCommitteeValuersPerRegistration('Comissão', 1)
+                ->save()
+                ->addValuers(1, 'Comissão');
+        
+        $opportunity_builder = $evaluation_phase_builder
+            ->done();
+        
+        $opportunity = $opportunity_builder->getInstance();
+        
+        // Garantir que a oportunidade está salva
+        $opportunity_builder->save();
+        $opportunity = $opportunity->refreshed();
+        
+        // Obter o campo criado para usar na inscrição e na avaliação
+        $field = $this->opportunityBuilder->getField('campo_teste', $opportunity);
+        $field_name = $field->getFieldName();
+
+        // Testar avaliação inválida
+        $registration_invalid = $this->registrationDirector->createSentRegistration(
+            $opportunity,
+            data: [$field_name => 'Valor de teste']
+        );
+
+        // Redistribuir inscrições para os avaliadores
+        $opportunity->evaluationMethodConfiguration->redistributeCommitteeRegistrations();
+        $registration_invalid = $registration_invalid->refreshed();
+
+        // Obter o nome do avaliador
+        $valuers = $registration_invalid->valuers;
+        $valuer_user_ids = array_keys($valuers);
+        $valuer_name = null;
+        
+        $committee_relations = $opportunity->evaluationMethodConfiguration->getAgentRelationsGrouped()['Comissão'] ?? [];
+        foreach ($committee_relations as $relation) {
+            if (in_array($relation->agent->user->id, $valuer_user_ids)) {
+                $valuer_name = $relation->agent->name;
+                break;
+            }
+        }
+
+        // Avaliar como inválida
+        $evaluation_phase_builder->withValuer('Comissão', $valuer_name)
+            ->evaluation($registration_invalid)
+                ->setInvalid((string)$field->id, $field->title, 'Item não cumprido')
+                ->save()
+                ->send()
+                ->done();
+
+        // Verificar que o status da inscrição inválida é STATUS_INVALID
+        $registration_invalid = $registration_invalid->refreshed();
+        $this->assertEquals(
+            Registration::STATUS_INVALID,
+            $registration_invalid->status,
+            'Certificando que a inscrição avaliada como inválida fica com status inválido'
+        );
+
+        // Testar avaliação válida
+        $opportunity = $opportunity->refreshed();
+        
+        $registration_valid = $this->registrationDirector->createSentRegistration(
+            $opportunity,
+            data: [$field_name => 'Valor de teste']
+        );
+
+        // Redistribuir inscrições para os avaliadores
+        $opportunity->evaluationMethodConfiguration->redistributeCommitteeRegistrations();
+        $registration_valid = $registration_valid->refreshed();
+
+        // Obter o nome do avaliador
+        $valuers_valid = $registration_valid->valuers;
+        $valuer_user_ids_valid = array_keys($valuers_valid);
+        $valuer_name_valid = null;
+        
+        foreach ($committee_relations as $relation) {
+            if (in_array($relation->agent->user->id, $valuer_user_ids_valid)) {
+                $valuer_name_valid = $relation->agent->name;
+                break;
+            }
+        }
+
+        // Avaliar como válida
+        $evaluation_phase_builder->withValuer('Comissão', $valuer_name_valid)
+            ->evaluation($registration_valid)
+                ->setValid()
+                ->save()
+                ->send()
+                ->done();
+
+        // Verificar que o status da inscrição válida é STATUS_APPROVED
+        $registration_valid = $registration_valid->refreshed();
+        $this->assertEquals(
+            Registration::STATUS_APPROVED,
+            $registration_valid->status,
+            'Certificando que a inscrição avaliada como válida fica com status selecionado'
+        );
+    }
 }
