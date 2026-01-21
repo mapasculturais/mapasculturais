@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace MapasCulturais;
 
 use CountryLocalizations\CountryLocalizationDefinition;
+use DateTime;
 use Slim\Factory\AppFactory;
 use Slim;
 
@@ -1981,21 +1982,25 @@ class App {
      * - Aplica os hooks "app.executeJob:before" e "app.executeJob:after" antes e depois da execução do trabalho
      * - Persiste a fila de reprocessamento do cache de permissões
      * 
-     * @return int|false O ID do trabalho executado, ou false se nenhum trabalho estiver pronto para ser executado
+     * @return string|false O ID do trabalho executado, ou false se nenhum trabalho estiver pronto para ser executado
      */
-    public function executeJob(?string $mock_date = null): int|false {
+    public function executeJob(?string $mock_date = null, ?string $job_id = null): string|false {
         /** @var Connection */
         $conn = $this->em->getConnection();
-        $now = $mock_date ?: DateTime::date('Y-m-d H:i:s');
-        $job_id = $conn->fetchScalar("
-            SELECT id
-            FROM job
-            WHERE
-                next_execution_timestamp <= '$now' AND
-                iterations_count < iterations AND
-                status = 0
-            ORDER BY next_execution_timestamp ASC
-            LIMIT 1");
+        $now = $mock_date ?: date('Y-m-d H:i:s');
+        
+        if(!$job_id) {
+            $job_id = $conn->fetchScalar("
+                SELECT id
+                FROM job
+                WHERE
+                    next_execution_timestamp <= '$now' AND
+                    iterations_count < iterations AND
+                    status = 0
+                    ORDER BY next_execution_timestamp ASC
+                    LIMIT 1"
+            );
+        }
 
         if ($job_id) {
             /** @var Job $job */
@@ -2046,7 +2051,7 @@ class App {
             $this->applyHookBoundTo($this, "app.executeJob:after");
             // $this->enableAccessControl();
             $this->persistPCachePendingQueue();
-            return (int) $job_id;
+            return $job_id;
         } else {
             return false;
         }
@@ -2503,9 +2508,9 @@ class App {
             }
             $log_data[$field] = $parseField($message->$getter());
         }
-        $log_line = (new DateTime())->format('Y-m-d H:i:s.u') . ' ' . json_encode($log_data);
+        $log_line = (new \DateTime())->format('Y-m-d H:i:s.u') . ' ' . json_encode($log_data);
 
-        $filename = DateTime::date('Y-m') . ($error_message ? '-errors' : '-success') . '.log';
+        $filename = date('Y-m') . ($error_message ? '-errors' : '-success') . '.log';
         file_put_contents($folder . $filename, $log_line . PHP_EOL, FILE_APPEND);
     }
 
