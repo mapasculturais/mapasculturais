@@ -236,4 +236,16 @@ class DataCollectionPhaseBuilder extends Builder
 
         return $this;
     }
+
+    public function setPublishTimestamp(string $publish_timestamp): self
+    {
+        $this->instance->setPublishTimestamp($publish_timestamp);
+        return $this;
+    }
+
+    public function setAutoPublish(bool $auto_publish = true): self
+    {
+        $this->instance->autoPublish = $auto_publish;
+        return $this;
+    }
 }
