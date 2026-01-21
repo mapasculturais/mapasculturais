@@ -148,4 +148,83 @@ class EvaluationStatusChangeTest extends TestCase
         $registration_theater = $registration_theater->refreshed();
         $this->assertEquals(Registration::STATUS_APPROVED, $registration_theater->status, 'Certificando que a inscrição de Teatro foi aprovada');
     }
+
+    function testSimpleEvaluationStatusMatchesConsolidatedResult()
+    {
+        $admin = $this->userDirector->createUser('admin');
+        $this->login($admin);
+
+        $evaluation_phase_builder = $this->opportunityBuilder
+            ->reset(owner: $admin->profile, owner_entity: $admin->profile)
+            ->fillRequiredProperties()
+            ->firstPhase()
+                ->setRegistrationPeriod(new Open)
+                ->done()
+            ->save()
+            ->addEvaluationPhase(EvaluationMethods::simple)
+                ->setEvaluationPeriod(new ConcurrentEndingAfter)
+                ->setAutoApplicationAllowed(true)
+                ->setCommitteeValuersPerRegistration('Comissão', 1)
+                ->save()
+                ->addValuers(1, 'Comissão')
+                ->done();
+        
+        $opportunity = $evaluation_phase_builder->getInstance();
+
+        // Testar cada valor consolidado: inválido (2), não selecionado (3), suplente (8), selecionado (10)
+        $test_cases = [
+            ['status' => Registration::STATUS_INVALID, 'method' => 'setInvalid', 'description' => 'inválido'],
+            ['status' => Registration::STATUS_NOTAPPROVED, 'method' => 'setNotSelected', 'description' => 'não selecionado'],
+            ['status' => Registration::STATUS_WAITLIST, 'method' => 'setWaitlist', 'description' => 'suplente'],
+            ['status' => Registration::STATUS_APPROVED, 'method' => 'setSelected', 'description' => 'selecionado'],
+        ];
+
+        foreach ($test_cases as $test_case) {
+            // Criar inscrição para este teste
+            $registration = $this->registrationDirector->createSentRegistration(
+                $opportunity,
+                data: []
+            );
+
+            // Redistribuir inscrições para os avaliadores
+            $opportunity->evaluationMethodConfiguration->redistributeCommitteeRegistrations();
+            $registration = $registration->refreshed();
+
+            // Obter o nome do avaliador
+            $valuers = $registration->valuers;
+            $valuer_user_ids = array_keys($valuers);
+            $valuer_name = null;
+            
+            $committee_relations = $opportunity->evaluationMethodConfiguration->getAgentRelationsGrouped()['Comissão'] ?? [];
+            foreach ($committee_relations as $relation) {
+                if (in_array($relation->agent->user->id, $valuer_user_ids)) {
+                    $valuer_name = $relation->agent->name;
+                    break;
+                }
+            }
+
+            // Avaliar com o valor do teste
+            $evaluation_phase_builder->withValuer('Comissão', $valuer_name)
+                ->evaluation($registration)
+                    ->{$test_case['method']}('Avaliação')
+                    ->save()
+                    ->send()
+                    ->done();
+
+            // Verificar que o status da inscrição é igual ao valor consolidado
+            $registration = $registration->refreshed();
+            $this->assertEquals(
+                $test_case['status'],
+                $registration->status,
+                "Certificando que o status da inscrição é igual ao resultado consolidado ({$test_case['description']})"
+            );
+
+            // Verificar também que o consolidatedResult corresponde ao status
+            $this->assertEquals(
+                (string)$test_case['status'],
+                (string)$registration->consolidatedResult,
+                "Certificando que o consolidatedResult corresponde ao status ({$test_case['description']})"
+            );
+        }
+    }
 }
