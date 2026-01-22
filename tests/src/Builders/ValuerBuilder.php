@@ -8,6 +8,8 @@ use MapasCulturais\Entities\EvaluationMethodConfigurationAgentRelation;
 use MapasCulturais\Entities\Registration;
 use Tests\Abstract\Builder;
 use Tests\Abstract\EvaluationBuilder as AbstractEvaluationBuilder;
+use Tests\Builders\EvaluationDocumentaryBuilder;
+use Tests\Builders\EvaluationQualificationBuilder;
 use Tests\Builders\EvaluationSimpleBuilder;
 use Tests\Traits\AgentDirector;
 use Tests\Traits\EvaluationBuilder;
@@ -144,11 +146,14 @@ class ValuerBuilder extends Builder
         // Retornar o builder específico baseado no tipo
         if ($evaluation_method_slug->id == 'simple') {
             $builder = new EvaluationSimpleBuilder($this->evaluationPhaseBuilder);
-            return $builder->reset($evaluation_instance);
         }
         
         if ($evaluation_method_slug->id == 'documentary') {
             $builder = new EvaluationDocumentaryBuilder($this->evaluationPhaseBuilder);
+        }
+
+        if ($evaluation_method_slug->id == 'qualification') {
+            $builder = new EvaluationQualificationBuilder($this->evaluationPhaseBuilder);
         }
 
         return $builder->reset($evaluation_instance);
