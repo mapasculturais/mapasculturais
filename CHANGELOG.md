@@ -5,6 +5,10 @@ Todas as mudanças notáveis no projeto serão documentadas neste arquivo.
 O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/)
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [7.6.35] - 2026-01-22
+### Melhorias
+- Separa os banners da home em template parts, facilitando o gerenciamento e a manipulação dos banners via hooks
+
 ## [7.6.34] - 2026-01-19
 ### Correção
 - Corrige erro que impedia o uso do plano de metas
