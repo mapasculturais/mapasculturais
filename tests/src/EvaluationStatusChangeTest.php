@@ -347,4 +347,99 @@ class EvaluationStatusChangeTest extends TestCase
             'Certificando que a inscrição avaliada como válida fica com status selecionado'
         );
     }
+
+    function testQualificationEvaluationStatusMatchesConsolidatedResult()
+    {
+        $admin = $this->userDirector->createUser('admin');
+        $this->login($admin);
+
+        $this->opportunityBuilder
+            ->reset(owner: $admin->profile, owner_entity: $admin->profile)
+            ->fillRequiredProperties()
+            ->save()
+            ->firstPhase()
+                ->setRegistrationPeriod(new Open)
+                ->save()
+                ->done();
+
+        $evaluation_phase_builder = $this->opportunityBuilder
+            ->save()
+            ->addEvaluationPhase(EvaluationMethods::qualification)
+                ->setEvaluationPeriod(new ConcurrentEndingAfter)
+                ->setAutoApplicationAllowed(true)
+                ->setCommitteeValuersPerRegistration('Comissão', 1)
+                ->save()
+                ->config()
+                    ->addSection('sec1', 'Seção 1')
+                    ->addCriterion('cri1', 'sec1', 'Critério 1')
+                    ->done()
+                ->save()
+                ->addValuers(1, 'Comissão');
+
+        $opportunity_builder = $evaluation_phase_builder->done();
+        $opportunity = $opportunity_builder->getInstance();
+        $opportunity_builder->save();
+        $opportunity = $opportunity->refreshed();
+
+        $committee_relations = $opportunity->evaluationMethodConfiguration->getAgentRelationsGrouped()['Comissão'] ?? [];
+
+        // Testar avaliação inabilitada
+        $registration_invalid = $this->registrationDirector->createSentRegistration($opportunity, data: []);
+        $opportunity->evaluationMethodConfiguration->redistributeCommitteeRegistrations();
+        $registration_invalid = $registration_invalid->refreshed();
+
+        $valuers = $registration_invalid->valuers;
+        $valuer_user_ids = array_keys($valuers);
+        $valuer_name = null;
+        foreach ($committee_relations as $relation) {
+            if (in_array($relation->agent->user->id, $valuer_user_ids)) {
+                $valuer_name = $relation->agent->name;
+                break;
+            }
+        }
+
+        $evaluation_phase_builder->withValuer('Comissão', $valuer_name)
+            ->evaluation($registration_invalid)
+                ->setDisqualified('cri1')
+                ->save()
+                ->send()
+                ->done();
+
+        $registration_invalid = $registration_invalid->refreshed();
+        $this->assertEquals(
+            Registration::STATUS_NOTAPPROVED,
+            $registration_invalid->status,
+            'Certificando que a inscrição avaliada como inabilitada fica com status inválido'
+        );
+
+        // Testar avaliação habilitada
+        $opportunity = $opportunity->refreshed();
+        $registration_valid = $this->registrationDirector->createSentRegistration($opportunity, data: []);
+        $opportunity->evaluationMethodConfiguration->redistributeCommitteeRegistrations();
+        $registration_valid = $registration_valid->refreshed();
+
+        $valuers_valid = $registration_valid->valuers;
+        $valuer_user_ids_valid = array_keys($valuers_valid);
+        $valuer_name_valid = null;
+        foreach ($committee_relations as $relation) {
+            if (in_array($relation->agent->user->id, $valuer_user_ids_valid)) {
+                $valuer_name_valid = $relation->agent->name;
+                break;
+            }
+        }
+
+        $evaluation_phase_builder->withValuer('Comissão', $valuer_name_valid)
+            ->evaluation($registration_valid)
+                ->setQualified('cri1')
+                ->save()
+                ->send()
+                ->done();
+
+        $registration_valid = $registration_valid->refreshed();
+        $this->assertEquals(
+            Registration::STATUS_APPROVED,
+            $registration_valid->status,
+            'Certificando que a inscrição avaliada como habilitada fica com status selecionado'
+        );
+    }
 }
