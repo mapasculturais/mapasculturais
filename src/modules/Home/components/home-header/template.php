@@ -25,26 +25,11 @@ $this->import('
         </div>
 
         <div v-if="banner || secondBanner" class="home-header__banners">
-            <div v-if="banner" class="home-header__banner">
-                <a v-if="bannerLink" :href="bannerLink" :download="downloadableLink ? '' : undefined"  :target="!downloadableLink ? '_blank' : null">
-                    <img :src="banner" />
-                </a>
-                <img v-if="!bannerLink" :src="banner" />
-            </div>
+            <?php $this->part('first-banner'); ?>
 
-            <div v-if="secondBanner" class="home-header__banner">
-                <a v-if="secondBannerLink" :href="secondBannerLink" :download="secondDownloadableLink ? '' : undefined"  :target="!secondDownloadableLink ? '_blank' : null">
-                    <img :src="secondBanner" />
-                </a>
-                <img v-if="!secondBannerLink" :src="secondBanner" />
-            </div>
+            <?php $this->part('second-banner'); ?>
 
-            <div v-if="thirdBanner" class="home-header__banner">
-                <a v-if="thirdBannerLink" :href="thirdBannerLink" :download="thirdDownloadableLink ? '' : undefined"  :target="!thirdDownloadableLink ? '_blank' : null">
-                    <img :src="thirdBanner" />
-                </a>
-                <img v-if="!thirdBannerLink" :src="thirdBanner" />
-            </div>
+            <?php $this->part('third-banner'); ?>
         </div>
   
         <?php  $this->applyTemplateHook('home-header-content', 'after') ?>
