@@ -475,4 +475,85 @@ class EvaluationConsolidationTest extends TestCase
             'Certificando que 1 avaliação habilitada e 1 inabilitada resultam em inválido (invalid)'
         );
     }
+
+    function testTechnicalEvaluationConsolidationResult()
+    {
+        $admin = $this->userDirector->createUser('admin');
+        $this->login($admin);
+
+        // Configurar oportunidade
+        $this->opportunityBuilder
+            ->reset(owner: $admin->profile, owner_entity: $admin->profile)
+            ->fillRequiredProperties()
+            ->save()
+            ->firstPhase()
+                ->setRegistrationPeriod(new Open)
+                ->save()
+                ->done();
+        
+        $evaluation_phase_builder = $this->opportunityBuilder
+            ->save()
+            ->addEvaluationPhase(EvaluationMethods::technical)
+                ->setEvaluationPeriod(new ConcurrentEndingAfter)
+                ->setAutoApplicationAllowed(true)
+                ->setCommitteeValuersPerRegistration('Comissão', 2)
+                ->save()
+                ->config()
+                    ->addSection('sec1', 'Seção 1')
+                    ->addCriterion('cri1', 'sec1', 'Critério 1', 0, 10, 1)
+                    ->done()
+                ->save()
+                ->addValuers(2, 'Comissão');
+        
+        $opportunity_builder = $evaluation_phase_builder->done();
+        $opportunity = $opportunity_builder->getInstance();
+        $opportunity_builder->save();
+        $opportunity = $opportunity->refreshed();
+
+        $committee_relations = $opportunity->evaluationMethodConfiguration->getAgentRelationsGrouped()['Comissão'] ?? [];
+
+        // Teste: média das notas de 2 avaliadores
+        $registration = $this->registrationDirector->createSentRegistration(
+            $opportunity,
+            data: []
+        );
+
+        $opportunity->evaluationMethodConfiguration->redistributeCommitteeRegistrations();
+        $registration = $registration->refreshed();
+
+        $valuers = $registration->valuers;
+        $valuer_user_ids = array_keys($valuers);
+        $valuer_names = [];
+        
+        foreach ($committee_relations as $relation) {
+            if (in_array($relation->agent->user->id, $valuer_user_ids)) {
+                $valuer_names[] = $relation->agent->name;
+            }
+        }
+
+        // Primeiro avaliador avalia com nota 8.0
+        $evaluation_phase_builder->withValuer('Comissão', $valuer_names[0])
+            ->evaluation($registration)
+                ->setCriterionScore('cri1', 8.0)
+                ->save()
+                ->send()
+                ->done();
+
+        // Segundo avaliador avalia com nota 6.0
+        $evaluation_phase_builder->withValuer('Comissão', $valuer_names[1])
+            ->evaluation($registration)
+                ->setCriterionScore('cri1', 6.0)
+                ->save()
+                ->send()
+                ->done();
+
+        // Verificar que o resultado consolidado é a média (7.0)
+        $registration = $registration->refreshed();
+        
+        $this->assertEquals(
+            '7.00',
+            (string)$registration->consolidatedResult,
+            'Certificando que o resultado consolidado é a média das notas dos avaliadores (8.0 + 6.0) / 2 = 7.0'
+        );
+    }
 }
