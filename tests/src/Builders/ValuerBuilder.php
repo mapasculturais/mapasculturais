@@ -11,6 +11,7 @@ use Tests\Abstract\EvaluationBuilder as AbstractEvaluationBuilder;
 use Tests\Builders\EvaluationDocumentaryBuilder;
 use Tests\Builders\EvaluationQualificationBuilder;
 use Tests\Builders\EvaluationSimpleBuilder;
+use Tests\Builders\EvaluationTechnicalBuilder;
 use Tests\Traits\AgentDirector;
 use Tests\Traits\EvaluationBuilder;
 use Tests\Traits\UserDirector;
@@ -154,6 +155,10 @@ class ValuerBuilder extends Builder
 
         if ($evaluation_method_slug->id == 'qualification') {
             $builder = new EvaluationQualificationBuilder($this->evaluationPhaseBuilder);
+        }
+        
+        if ($evaluation_method_slug->id == 'technical') {
+            $builder = new EvaluationTechnicalBuilder($this->evaluationPhaseBuilder);
         }
 
         return $builder->reset($evaluation_instance);
