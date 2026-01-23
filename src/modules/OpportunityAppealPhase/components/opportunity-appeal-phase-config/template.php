@@ -85,8 +85,8 @@ $this->import('
                 <div class="opportunity-appeal-phase-config__content-title">
                     <h3 class="bold"><?= i::__('Configuração da fase') ?></h3>
                     <div class="opportunity-appeal-phase-config__datepicker">
-                        <entity-field :entity="entity" prop="registrationFrom" field-type="date" label="<?= i::__('Início') ?>" :autosave="3000" :min="fromDateMin?._date" :max="fromDateMax?._date" classes="col-6 sm:col-12"></entity-field>
-                        <entity-field v-if="!firstPhase?.isContinuousFlow" field-type="date" label="<?= i::__('Término') ?>" :entity="entity" prop="registrationTo" :autosave="3000" :min="toDateMin?._date" :max="toDateMax?._date" classes="col-6 sm:col-12"></entity-field>
+                        <entity-field :entity="entity" prop="registrationFrom" label="<?= i::__('Início') ?>" :autosave="3000" :min="fromDateMin?._date" :max="fromDateMax?._date" classes="col-6 sm:col-12"></entity-field>
+                        <entity-field v-if="!firstPhase?.isContinuousFlow" label="<?= i::__('Término') ?>" :entity="entity" prop="registrationTo" :autosave="3000" :min="toDateMin?._date" :max="toDateMax?._date" classes="col-6 sm:col-12"></entity-field>
                     </div>
                 </div>
                 <div class="opportunity-appeal-phase-config__config-button">
@@ -131,12 +131,12 @@ $this->import('
                 <div class="opportunity-appeal-phase-config__content-title">
                     <h3 class="bold"><?= i::__('Configuração da fase') ?></h3>
                     <div class="opportunity-appeal-phase-config__datepicker">
-                        <entity-field :entity="entity.evaluationMethodConfiguration" prop="evaluationFrom" label="<?= i::__('Início') ?>" field-type="date" :autosave="3000" :min="fromDateMin?._date" :max="fromDateMax?._date" classes="col-6 sm:col-12"></entity-field>
-                        <entity-field v-if="!firstPhase?.isContinuousFlow" field-type="date" :entity="entity.evaluationMethodConfiguration" prop="evaluationTo" label="<?= i::__('Término') ?>" :autosave="3000" :min="toDateMin?._date" :max="toDateMax?._date" classes="col-6 sm:col-12"></entity-field>
+                        <entity-field :entity="entity.evaluationMethodConfiguration" prop="evaluationFrom" label="<?= i::__('Início') ?>" :autosave="3000" :min="fromDateMin?._date" :max="fromDateMax?._date" classes="col-6 sm:col-12"></entity-field>
+                        <entity-field v-if="!firstPhase?.isContinuousFlow" :entity="entity.evaluationMethodConfiguration" prop="evaluationTo" label="<?= i::__('Término') ?>" :autosave="3000" :min="toDateMin?._date" :max="toDateMax?._date" classes="col-6 sm:col-12"></entity-field>
                     </div>
                 </div>
                 <div class="opportunity-appeal-phase-config__checkboxes field">
-                    <entity-field class="input-box" :entity="entity" hide-required  :editable="true" prop="allow_proponent_response" :autosave="3000"></entity-field>
+                    <entity-field :entity="entity" hide-required  :editable="true" prop="allow_proponent_response" :autosave="3000"></entity-field>
                 </div> 
 
                 <mc-alert v-if="entity.allow_proponent_response" type="warning" class="entity-owner-pending">
