@@ -304,4 +304,175 @@ class EvaluationConsolidationTest extends TestCase
             'Certificando que 1 avaliação válida e 1 inválida resultam em inválido (-1)'
         );
     }
+
+    function testQualificationEvaluationConsolidationResult()
+    {
+        $admin = $this->userDirector->createUser('admin');
+        $this->login($admin);
+
+        // Configurar oportunidade
+        $this->opportunityBuilder
+            ->reset(owner: $admin->profile, owner_entity: $admin->profile)
+            ->fillRequiredProperties()
+            ->save()
+            ->firstPhase()
+                ->setRegistrationPeriod(new Open)
+                ->save()
+                ->done();
+        
+        $evaluation_phase_builder = $this->opportunityBuilder
+            ->save()
+            ->addEvaluationPhase(EvaluationMethods::qualification)
+                ->setEvaluationPeriod(new ConcurrentEndingAfter)
+                ->setAutoApplicationAllowed(true)
+                ->setCommitteeValuersPerRegistration('Comissão', 2)
+                ->save()
+                ->config()
+                    ->addSection('sec1', 'Seção 1')
+                    ->addCriterion('cri1', 'sec1', 'Critério 1')
+                    ->done()
+                ->save()
+                ->addValuers(2, 'Comissão');
+        
+        $opportunity_builder = $evaluation_phase_builder->done();
+        $opportunity = $opportunity_builder->getInstance();
+        $opportunity_builder->save();
+        $opportunity = $opportunity->refreshed();
+
+        $committee_relations = $opportunity->evaluationMethodConfiguration->getAgentRelationsGrouped()['Comissão'] ?? [];
+
+        // Teste 1: 2 avaliações habilitadas => resultado selecionado ('valid')
+        $registration_qualified = $this->registrationDirector->createSentRegistration(
+            $opportunity,
+            data: []
+        );
+
+        $opportunity->evaluationMethodConfiguration->redistributeCommitteeRegistrations();
+        $registration_qualified = $registration_qualified->refreshed();
+
+        $valuers = $registration_qualified->valuers;
+        $valuer_user_ids = array_keys($valuers);
+        $valuer_names = [];
+        
+        foreach ($committee_relations as $relation) {
+            if (in_array($relation->agent->user->id, $valuer_user_ids)) {
+                $valuer_names[] = $relation->agent->name;
+            }
+        }
+
+        // Primeiro avaliador avalia como habilitada
+        $evaluation_phase_builder->withValuer('Comissão', $valuer_names[0])
+            ->evaluation($registration_qualified)
+                ->setQualified('cri1')
+                ->save()
+                ->send()
+                ->done();
+
+        // Segundo avaliador avalia como habilitada
+        $evaluation_phase_builder->withValuer('Comissão', $valuer_names[1])
+            ->evaluation($registration_qualified)
+                ->setQualified('cri1')
+                ->save()
+                ->send()
+                ->done();
+
+        // Verificar que o resultado consolidado é habilitado ('valid')
+        $registration_qualified = $registration_qualified->refreshed();
+        
+        $this->assertEquals(
+            'valid',
+            $registration_qualified->consolidatedResult,
+            'Certificando que 2 avaliações habilitadas resultam em selecionado (valid)'
+        );
+
+        // Teste 2: 2 avaliações inabilitadas => resultado inválido ('invalid')
+        $opportunity = $opportunity->refreshed();
+        $registration_disqualified = $this->registrationDirector->createSentRegistration(
+            $opportunity,
+            data: []
+        );
+
+        $opportunity->evaluationMethodConfiguration->redistributeCommitteeRegistrations();
+        $registration_disqualified = $registration_disqualified->refreshed();
+
+        $valuers_disqualified = $registration_disqualified->valuers;
+        $valuer_user_ids_disqualified = array_keys($valuers_disqualified);
+        $valuer_names_disqualified = [];
+        
+        foreach ($committee_relations as $relation) {
+            if (in_array($relation->agent->user->id, $valuer_user_ids_disqualified)) {
+                $valuer_names_disqualified[] = $relation->agent->name;
+            }
+        }
+
+        // Primeiro avaliador avalia como inabilitada
+        $evaluation_phase_builder->withValuer('Comissão', $valuer_names_disqualified[0])
+            ->evaluation($registration_disqualified)
+                ->setDisqualified('cri1')
+                ->save()
+                ->send()
+                ->done();
+
+        // Segundo avaliador avalia como inabilitada
+        $evaluation_phase_builder->withValuer('Comissão', $valuer_names_disqualified[1])
+            ->evaluation($registration_disqualified)
+                ->setDisqualified('cri1')
+                ->save()
+                ->send()
+                ->done();
+
+        // Verificar que o resultado consolidado é inabilitado ('invalid')
+        $registration_disqualified = $registration_disqualified->refreshed();
+        
+        $this->assertEquals(
+            'invalid',
+            $registration_disqualified->consolidatedResult,
+            'Certificando que 2 avaliações inabilitadas resultam em inválido (invalid)'
+        );
+
+        // Teste 3: 1 avaliação habilitada e 1 inabilitada => resultado inválido ('invalid')
+        $opportunity = $opportunity->refreshed();
+        $registration_mixed = $this->registrationDirector->createSentRegistration(
+            $opportunity,
+            data: []
+        );
+
+        $opportunity->evaluationMethodConfiguration->redistributeCommitteeRegistrations();
+        $registration_mixed = $registration_mixed->refreshed();
+
+        $valuers_mixed = $registration_mixed->valuers;
+        $valuer_user_ids_mixed = array_keys($valuers_mixed);
+        $valuer_names_mixed = [];
+        
+        foreach ($committee_relations as $relation) {
+            if (in_array($relation->agent->user->id, $valuer_user_ids_mixed)) {
+                $valuer_names_mixed[] = $relation->agent->name;
+            }
+        }
+
+        // Primeiro avaliador avalia como habilitada
+        $evaluation_phase_builder->withValuer('Comissão', $valuer_names_mixed[0])
+            ->evaluation($registration_mixed)
+                ->setQualified('cri1')
+                ->save()
+                ->send()
+                ->done();
+
+        // Segundo avaliador avalia como inabilitada
+        $evaluation_phase_builder->withValuer('Comissão', $valuer_names_mixed[1])
+            ->evaluation($registration_mixed)
+                ->setDisqualified('cri1')
+                ->save()
+                ->send()
+                ->done();
+
+        // Verificar que o resultado consolidado é inválido ('invalid')
+        $registration_mixed = $registration_mixed->refreshed();
+        
+        $this->assertEquals(
+            'invalid',
+            $registration_mixed->consolidatedResult,
+            'Certificando que 1 avaliação habilitada e 1 inabilitada resultam em inválido (invalid)'
+        );
+    }
 }
