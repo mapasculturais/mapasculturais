@@ -495,7 +495,6 @@ class EvaluationConsolidationTest extends TestCase
             ->save()
             ->addEvaluationPhase(EvaluationMethods::technical)
                 ->setEvaluationPeriod(new ConcurrentEndingAfter)
-                ->setAutoApplicationAllowed(true)
                 ->setCommitteeValuersPerRegistration('Comissão', 2)
                 ->save()
                 ->config()
