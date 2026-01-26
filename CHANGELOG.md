@@ -6,7 +6,6 @@ O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [UNRELEASED]
-### Correções
 - Corrige exibição de anexos no PDF de inscrição, respeitando a ordem dos campos (displayOrder) e exibindo marcadores de campos obrigatórios
 
 ## [7.7.0] - 2025-12-19
@@ -62,6 +61,15 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 1. <small>Melhoria desenvolvida pelo Ministério das Cidades, através da Secretaria Nacional de Periferias, para o Prêmio Periferia Viva</small>
 <a name="770-funarte"></a>
 2. <small>Melhoria desenvolvida pela Funarte (Fundação Nacional de Artes) para a Rede das Artes</small>
+
+## [7.6.36] - 2026-01-23
+### Correção
+- Corrige warnings no carregamento do componente opportunity-appeal-phase-config
+- Ajusta getter Opportunity.phases para que devolva os objetos da fase de recurso corretamente
+
+## [7.6.35] - 2026-01-22
+### Melhorias
+- Separa os banners da home em template parts, facilitando o gerenciamento e a manipulação dos banners via hooks
 
 ## [7.6.34] - 2026-01-19
 ### Correção
