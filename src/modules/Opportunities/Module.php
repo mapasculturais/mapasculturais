@@ -310,7 +310,7 @@ class Module extends \MapasCulturais\Module{
             $registration_from_changed = $this->_changes['registrationFrom'] ?? false;
             $registration_to_changed = $this->_changes['registrationTo'] ?? false;
 
-            if($active && $this->publishTimestamp && ($this->autoPublish && $this->publishTimestamp >= $now || $registration_from_changed)){
+            if($active && $this->publishTimestamp && !$this->publishedRegistrations && (($this->autoPublish && $this->publishTimestamp >= $now) || $registration_from_changed)){
                 $app->enqueueOrReplaceJob(Jobs\PublishResult::SLUG, $data, $this->publishTimestamp->format("Y-m-d H:i:s"));
             } else {
                 $app->unqueueJob(Jobs\PublishResult::SLUG, $data);
