@@ -18,4 +18,27 @@ class EvaluationTechnicalBuilder extends EvaluationBuilder
         $this->instance->setEvaluationData((object) $evaluation_data);
         return $this;
     }
+
+    public function setViabilityValid(?string $obs = null): self
+    {
+        return $this->setViability('valid', $obs);
+    }
+
+    public function setViabilityInvalid(?string $obs = null): self
+    {
+        return $this->setViability('invalid', $obs);
+    }
+
+    public function setViability(string $viability, ?string $obs = null): self
+    {
+        $evaluation_data = (array) ($this->instance->evaluationData ?? []);
+        $evaluation_data['viability'] = $viability;
+
+        if ($obs != null) {
+            $evaluation_data['obs'] = $obs;
+        }
+
+        $this->instance->setEvaluationData((object) $evaluation_data);
+        return $this;
+    }
 }
