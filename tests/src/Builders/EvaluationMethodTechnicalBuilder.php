@@ -18,7 +18,7 @@ class EvaluationMethodTechnicalBuilder extends EvaluationMethodConfigurationBuil
 
     public function setViability(bool $viability): self
     {
-        $this->instance->enableViability = $viability;
+        $this->instance->enableViability = $viability ? 'true' : 'false';
 
         return $this;
     }
