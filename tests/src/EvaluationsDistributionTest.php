@@ -1938,6 +1938,8 @@ class EvaluationsDistributionTest extends TestCase
         ->save()
         ->addEvaluationPhase(EvaluationMethods::simple)
             ->setEvaluationPeriod(new ConcurrentEndingAfter)
+            ->setCommitteeValuersPerRegistration('committee 1', 1)
+            ->setCommitteeValuersPerRegistration('committee 2', 1)
             ->setCommitteeFilterField('committee 3', 'campo01', ['Opcao01', 'Opcao02', 'Opcao03'])
             ->save()
             ->addValuer('committee 1', name: 'avaliador01')
@@ -1953,7 +1955,7 @@ class EvaluationsDistributionTest extends TestCase
                 ->fields(['campo01' => ['Opcao01']])
             ->done()
             ->addValuer('committee 3', name: 'avaliador06')
-                ->fields(['campo02' => ['Valor01']])
+                ->fields(['campo02' => ['valor01']])
                 ->done()
             ->save()
             ->done()
@@ -1996,6 +1998,7 @@ class EvaluationsDistributionTest extends TestCase
         /** @var EvaluationMethodConfigurationAgentRelation[] */
         $valuers = $evaluation_config->agentRelations;
 
+        // 1) Garante que cada avaliador recebeu a quantidade esperada de inscrições
         $expected_values = [
             'avaliador01' => 60,
             'avaliador02' => 60,
@@ -2005,19 +2008,102 @@ class EvaluationsDistributionTest extends TestCase
             'avaliador06' => 20,
         ];
 
-        eval(\psy\sh());
-        $conn = $app->em->getConnection();
+        $dict_values = [];
         foreach ($valuers as $valuer) {
             $count_evaluations = $conn->fetchOne(
-                "SELECT COUNT(*) FROM evaluations e join agent a on a.id = e.valuer_agent_id WHERE a.name = :valuer_name",
+                "SELECT COUNT(*) FROM evaluations WHERE valuer_agent_id = :valuer_id",
                 ['valuer_id' => $valuer->agent->id]
             );
 
-            $dict_values[$valuer->agent->name] = $count_evaluations;
-            $this->assertEquals($expected_values[$valuer->agent->name], $dict_values[$valuer->agent->name], "Garantindo que o {$valuer->agent->name} recebeu {$expected_values[$valuer->agent->name]} avaliações");
+            $dict_values[$valuer->agent->name] = (int)$count_evaluations;
         }
-        
-        
+
+        foreach ($expected_values as $valuer_name => $expected_count) {
+            $this->assertEquals(
+                $expected_count,
+                $dict_values[$valuer_name] ?? 0,
+                "Garantindo que o {$valuer_name} recebeu {$expected_count} avaliações"
+            );
+        }
+
+        // 2) Garante que cada avaliador recebeu APENAS as inscrições compatíveis com seus filtros
+
+        // Todas as inscrições dessa oportunidade (todas são enviadas)
+        $all_registrations = $this->app->repo('Registration')->findBy(['opportunity' => $opportunity]);
+        $all_registration_ids = array_map(fn($reg) => $reg->id, $all_registrations);
+
+        // Helper para buscar registration_ids por avaliador
+        $getRegistrationIdsByValuer = function (int $valuer_id) use ($conn): array {
+            $rows = $conn->fetchAllAssociative(
+                "SELECT registration_id FROM evaluations WHERE valuer_agent_id = :valuer_id",
+                ['valuer_id' => $valuer_id]
+            );
+
+            return array_map(fn($row) => (int)$row['registration_id'], $rows);
+        };
+
+        // Mapa nome -> relação do avaliador
+        $valuers_by_name = [];
+        foreach ($valuers as $relation) {
+            $valuers_by_name[$relation->agent->name] = $relation;
+        }
+
+        // 2.a) avaliador01 avalia TODAS as inscrições (sem filtro)
+        $avaliador01_registration_ids = $getRegistrationIdsByValuer($valuers_by_name['avaliador01']->agent->id);
+        sort($avaliador01_registration_ids);
+        $sorted_all_ids = $all_registration_ids;
+        sort($sorted_all_ids);
+
+        $this->assertEquals(
+            $sorted_all_ids,
+            $avaliador01_registration_ids,
+            'Garantindo que o avaliador01 recebeu todas as inscrições (sem filtro)'
+        );
+
+        // 2.b) avaliador04 só deve receber inscrições com campo01 = Opcao01 ou Opcao02
+        $avaliador04_registration_ids = $getRegistrationIdsByValuer($valuers_by_name['avaliador04']->agent->id);
+
+        foreach ($avaliador04_registration_ids as $registration_id) {
+            $registration = $this->app->repo('Registration')->find($registration_id);
+            $this->assertNotNull($registration, "Inscrição {$registration_id} deve existir");
+
+            $campo01_value = $registration->$field_campo01 ?? null;
+            $this->assertContains(
+                $campo01_value,
+                ['Opcao01', 'Opcao02'],
+                "Garantindo que o avaliador04 só recebeu inscrições com campo01 = Opcao01 ou Opcao02 (recebeu '{$campo01_value}')"
+            );
+        }
+
+        // 2.c) avaliador05 só deve receber inscrições com campo01 = Opcao01
+        $avaliador05_registration_ids = $getRegistrationIdsByValuer($valuers_by_name['avaliador05']->agent->id);
+
+        foreach ($avaliador05_registration_ids as $registration_id) {
+            $registration = $this->app->repo('Registration')->find($registration_id);
+            $this->assertNotNull($registration, "Inscrição {$registration_id} deve existir");
+
+            $campo01_value = $registration->$field_campo01 ?? null;
+            $this->assertEquals(
+                'Opcao01',
+                $campo01_value,
+                "Garantindo que o avaliador05 só recebeu inscrições com campo01 = Opcao01 (recebeu '{$campo01_value}')"
+            );
+        }
+
+        // 2.d) avaliador06 só deve receber inscrições com campo02 = valor01
+        $avaliador06_registration_ids = $getRegistrationIdsByValuer($valuers_by_name['avaliador06']->agent->id);
+
+        foreach ($avaliador06_registration_ids as $registration_id) {
+            $registration = $this->app->repo('Registration')->find($registration_id);
+            $this->assertNotNull($registration, "Inscrição {$registration_id} deve existir");
+
+            $campo02_value = $registration->$field_campo02 ?? null;
+            $this->assertEquals(
+                'valor01',
+                $campo02_value,
+                "Garantindo que o avaliador06 só recebeu inscrições com campo02 = valor01 (recebeu '{$campo02_value}')"
+            );
+        }
     }
       
 }

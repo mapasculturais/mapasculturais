@@ -19,6 +19,8 @@ class ValuerBuilder extends Builder
 
     protected EvaluationMethodConfigurationAgentRelation $instance;
 
+    protected array $fieldsByIdentifier = [];
+
     public function __construct(private EvaluationPhaseBuilder $evaluationPhaseBuilder)
     {
         parent::__construct();
@@ -224,9 +226,13 @@ class ValuerBuilder extends Builder
         $result = (array) $this->instance->owner->fetchSelectionFields ?? [];
         $result[$valuer_user_id] = [];
 
+        $opportunityBuilder = $this->evaluationPhaseBuilder->getOpportunityBuilder();
+
         foreach($fields as $field => $value) {
-            $result[$valuer_user_id][$field] = $value;
+            $field_name = $opportunityBuilder->getFieldName($field);
+            $result[$valuer_user_id][$field_name] = $value;
         }
+        
         $this->instance->owner->fetchSelectionFields = $result;
         $this->instance->owner->save();
 
