@@ -12,6 +12,7 @@ use Tests\Abstract\Builder;
 use Tests\Interfaces\DataCollectionPeriodInterface;
 use Tests\Traits\Faker;
 use Tests\Traits\RegistrationFieldBuilder;
+use Tests\Builders\Traits\EntityName;
 
 class DataCollectionPhaseBuilder extends Builder
 {
@@ -19,7 +20,8 @@ class DataCollectionPhaseBuilder extends Builder
     const FIELD_TYPE_AGENT_COLLECTIVE_FIELD = 'agent-collective-field';
 
     use Faker,
-        RegistrationFieldBuilder;
+        RegistrationFieldBuilder,
+        EntityName;
 
     protected Opportunity $instance;
 

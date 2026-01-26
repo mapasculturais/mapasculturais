@@ -11,6 +11,7 @@ use MapasCulturais\Entities\Opportunity;
 use MapasCulturais\Entities\RegistrationEvaluation;
 use Tests\Abstract\Builder;
 use Tests\Abstract\EvaluationMethodConfigurationBuilder;
+use Tests\Builders\Traits\EntityName;
 use Tests\Enums\EvaluationMethods;
 use Tests\Interfaces\EvaluationPeriodInterface;
 use Tests\Traits\Faker;
@@ -20,7 +21,8 @@ class EvaluationPhaseBuilder extends Builder
 {
     use Faker,
         Traits\AgentRelations,
-        UserDirector;
+        UserDirector,
+        EntityName;
 
     const PERIOD_AFTER = 'after';
     const PERIOD_CONCURRENT = 'concurrent';
