@@ -555,4 +555,119 @@ class EvaluationConsolidationTest extends TestCase
             'Certificando que o resultado consolidado é a média das notas dos avaliadores (8.0 + 6.0) / 2 = 7.0'
         );
     }
+
+    function testTechnicalEvaluationViability()
+    {
+        $admin = $this->userDirector->createUser('admin');
+        $this->login($admin);
+
+        $this->opportunityBuilder
+            ->reset(owner: $admin->profile, owner_entity: $admin->profile)
+            ->fillRequiredProperties()
+            ->save()
+            ->firstPhase()
+                ->setRegistrationPeriod(new Open)
+                ->save()
+                ->done();
+
+        $evaluation_phase_builder = $this->opportunityBuilder
+            ->save()
+            ->addEvaluationPhase(EvaluationMethods::technical)
+                ->setEvaluationPeriod(new ConcurrentEndingAfter)
+                ->setCommitteeValuersPerRegistration('Comissão', 2)
+                ->save()
+                ->config()
+                    ->setViability(true)
+                    ->addSection('sec1', 'Seção 1')
+                    ->addCriterion('cri1', 'sec1', 'Critério 1', 0, 10, 1)
+                    ->done()
+                ->save()
+                ->addValuers(2, 'Comissão');
+
+        $opportunity_builder = $evaluation_phase_builder->done();
+        $opportunity = $opportunity_builder->getInstance();
+        $opportunity_builder->save();
+        $opportunity = $opportunity->refreshed();
+
+        $committee_relations = $opportunity->evaluationMethodConfiguration->getAgentRelationsGrouped()['Comissão'] ?? [];
+
+        $getValuerNames = function (Registration $registration) use ($committee_relations): array {
+            $valuers = $registration->valuers;
+            $valuer_user_ids = array_keys($valuers);
+            $names = [];
+            foreach ($committee_relations as $relation) {
+                if (in_array($relation->agent->user->id, $valuer_user_ids)) {
+                    $names[] = $relation->agent->name;
+                }
+            }
+            return $names;
+        };
+
+        // Caso 1: maioria inválida (com 2 avaliadores, ambos "invalid") => inscrição vira inválida
+        $registration_invalid = $this->registrationDirector->createSentRegistration($opportunity, data: []);
+        $opportunity->evaluationMethodConfiguration->redistributeCommitteeRegistrations();
+        $registration_invalid = $registration_invalid->refreshed();
+
+        $valuer_names_invalid = $getValuerNames($registration_invalid);
+
+        $evaluation_phase_builder->withValuer('Comissão', $valuer_names_invalid[0])
+            ->evaluation($registration_invalid)
+                ->setCriterionScore('cri1', 8.0)
+                ->setViabilityInvalid()
+                ->save()
+                ->send()
+                ->done();
+
+        $evaluation_phase_builder->withValuer('Comissão', $valuer_names_invalid[1])
+            ->evaluation($registration_invalid)
+                ->setCriterionScore('cri1', 6.0)
+                ->setViabilityInvalid()
+                ->save()
+                ->send()
+                ->done();
+
+        $app = App::i();
+        $registration_controller = $app->controller('registration');
+        $registration_controller->setRegistrationStatus($registration_invalid);
+
+        $registration_invalid = $registration_invalid->refreshed();
+        $this->assertEquals(
+            Registration::STATUS_INVALID,
+            $registration_invalid->status,
+            'Certificando que, com exequibilidade habilitada, maioria "inválido" força status inválido'
+        );
+
+        // Caso 2: maioria válida (ambos "valid") => não força inválido (mantém pendente/enviada)
+        $opportunity = $opportunity->refreshed();
+        $registration_valid = $this->registrationDirector->createSentRegistration($opportunity, data: []);
+        $opportunity->evaluationMethodConfiguration->redistributeCommitteeRegistrations();
+        $registration_valid = $registration_valid->refreshed();
+
+        $valuer_names_valid = $getValuerNames($registration_valid);
+
+        $evaluation_phase_builder->withValuer('Comissão', $valuer_names_valid[0])
+            ->evaluation($registration_valid)
+                ->setCriterionScore('cri1', 8.0)
+                ->setViabilityValid()
+                ->save()
+                ->send()
+                ->done();
+
+        $evaluation_phase_builder->withValuer('Comissão', $valuer_names_valid[1])
+            ->evaluation($registration_valid)
+                ->setCriterionScore('cri1', 6.0)
+                ->setViabilityValid()
+                ->save()
+                ->send()
+                ->done();
+
+        $registration_controller->setRegistrationStatus($registration_valid);
+
+        $registration_valid = $registration_valid->refreshed();
+        $this->assertEquals(
+            Registration::STATUS_SENT,
+            $registration_valid->status,
+            'Certificando que maioria "válido" não força status inválido'
+        );
+    }
 }
