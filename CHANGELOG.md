@@ -5,7 +5,11 @@ Todas as mudanças notáveis no projeto serão documentadas neste arquivo.
 O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/)
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [7.6.37] - 2026
+## [7.6.38] - 2026-01-27
+### Melhorias
+- Adiciona descrição de imagem nos banners da home
+
+## [7.6.37] - 2026-01-27
 ### Correções
 - Corrige erro na persistência dos termos de usop no banco de dados
 
