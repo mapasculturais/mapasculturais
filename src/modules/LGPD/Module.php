@@ -107,7 +107,7 @@ class Module extends \MapasCulturais\Module
                         $user->$meta = $_accepted_terms;
                     }
                 }
-                $user->save();
+                $user->save(true);
             }
         }
     }
