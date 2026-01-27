@@ -9,10 +9,10 @@
 <?php $this->applyTemplateHook('second-banner', 'before') ?>
 <div v-if="secondBanner" class="home-header__banner">
     <?php $this->applyTemplateHook('second-banner-content', 'begin') ?>
-    <a v-if="secondBannerLink" :href="secondBannerLink" :download="secondDownloadableLink ? '' : undefined" :target="!secondDownloadableLink ? '_blank' : null">
-        <img :src="secondBanner" />
+    <a v-if="secondBannerLink" :href="secondBannerLink" :target="secondBannerOpenInNewTab ? '_blank' : null" :rel="secondBannerOpenInNewTab ? 'noopener noreferrer' : null">
+        <img :src="secondBanner" :alt="secondBannerAlt || ''" />
     </a>
-    <img v-if="!secondBannerLink" :src="secondBanner" />
+    <img v-if="!secondBannerLink" :src="secondBanner" :alt="secondBannerAlt || ''" />
     <?php $this->applyTemplateHook('second-banner-content', 'end') ?>
 </div>
 <?php $this->applyTemplateHook('second-banner', 'after') ?>
