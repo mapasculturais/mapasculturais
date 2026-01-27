@@ -5,6 +5,10 @@ Todas as mudanças notáveis no projeto serão documentadas neste arquivo.
 O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/)
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [7.6.37] - 2026
+### Correções
+- Corrige erro na persistência dos termos de usop no banco de dados
+
 ## [7.6.36] - 2026-01-23
 ### Correção
 - Corrige warnings no carregamento do componente opportunity-appeal-phase-config
