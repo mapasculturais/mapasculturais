@@ -21,7 +21,13 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - PHP atualizado para versão 8.4
 - Doctrine atualizado para versão 2.20.x
 
+
+## [7.7.2] - 2026-01-28
+### Correções
+- Correção no salvamento de metadados
+
 ## [7.7.1] - 2026-01-26
+### Correções
 - Corrige exibição de anexos no PDF de inscrição, respeitando a ordem dos campos (displayOrder) e exibindo marcadores de campos obrigatórios
 
 ## [7.7.0] - 2025-12-19
