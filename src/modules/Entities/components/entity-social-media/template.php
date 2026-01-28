@@ -25,53 +25,83 @@ $this->import('
         <div class="entity-social-media">
             <div v-if="!editable" class="entity-social-media__links">
                 <div v-if="entity.instagram" class="entity-social-media__links--link" classes="col-6 sm:col-12">
-                    <mc-icon name="instagram"></mc-icon>
-                    <a target="_blank" :href="buildSocialMediaLink('instagram')">{{entity.instagram}}</a>
+                    <span class="entity-social-media__links--label"><?= i::__('Instagram') ?></span>
+                    <div class="entity-social-media__links--content">
+                        <mc-icon name="instagram"></mc-icon>
+                        <a target="_blank" :href="buildSocialMediaLink('instagram')">{{entity.instagram}}</a>
+                    </div>
                 </div>
 
                 <div v-if="entity.twitter" class="entity-social-media__links--link">
-                    <mc-icon name="twitter"></mc-icon>
-                    <a target="_blank" :href="buildSocialMediaLink('twitter')">{{entity.twitter}}</a>
+                    <span class="entity-social-media__links--label"><?= i::__('X (antigo twitter)') ?></span>
+                    <div class="entity-social-media__links--content">
+                        <mc-icon name="x"></mc-icon>
+                        <a target="_blank" :href="buildSocialMediaLink('twitter')">{{entity.twitter}}</a>
+                    </div>
                 </div>
 
                 <div v-if="entity.facebook" class="entity-social-media__links--link">
-                    <mc-icon name="facebook"></mc-icon>
-                    <a target="_blank" :href="buildSocialMediaLink('facebook')">{{entity.facebook}}</a>
+                    <span class="entity-social-media__links--label"><?= i::__('Facebook') ?></span>
+                    <div class="entity-social-media__links--content">
+                        <mc-icon name="facebook"></mc-icon>
+                        <a target="_blank" :href="buildSocialMediaLink('facebook')">{{entity.facebook}}</a>
+                    </div>
                 </div>
 
                 <div v-if="entity.youtube" class="entity-social-media__links--link">
-                    <mc-icon name="youtube"></mc-icon>
-                    <a target="_blank" :href="buildSocialMediaLink('youtube')">{{entity.youtube}}</a>
+                    <span class="entity-social-media__links--label"><?= i::__('YouTube') ?></span>
+                    <div class="entity-social-media__links--content">
+                        <mc-icon name="youtube"></mc-icon>
+                        <a target="_blank" :href="buildSocialMediaLink('youtube')">{{entity.youtube}}</a>
+                    </div>
                 </div>
 
                 <div v-if="entity.linkedin" class="entity-social-media__links--link">
-                    <mc-icon name="linkedin"></mc-icon>
-                    <a target="_blank" :href="buildSocialMediaLink('linkedin')">{{entity.linkedin}}</a>
+                    <span class="entity-social-media__links--label"><?= i::__('Linkedin') ?></span>
+                    <div class="entity-social-media__links--content">
+                        <mc-icon name="linkedin"></mc-icon>
+                        <a target="_blank" :href="buildSocialMediaLink('linkedin')">{{entity.linkedin}}</a>
+                    </div>
                 </div>
 
                 <div v-if="entity.vimeo" class="entity-social-media__links--link">
-                    <mc-icon name="vimeo"></mc-icon>
-                    <a target="_blank" :href="buildSocialMediaLink('vimeo')">{{entity.vimeo}}</a>
+                    <span class="entity-social-media__links--label"><?= i::__('Vimeo') ?></span>
+                    <div class="entity-social-media__links--content">
+                        <mc-icon name="vimeo"></mc-icon>
+                        <a target="_blank" :href="buildSocialMediaLink('vimeo')">{{entity.vimeo}}</a>
+                    </div>
                 </div>
 
                 <div v-if="entity.spotify" class="entity-social-media__links--link">
-                    <mc-icon name="spotify"></mc-icon>
-                    <a target="_blank" :href="buildSocialMediaLink('spotify')">{{entity.spotify}}</a>
+                    <span class="entity-social-media__links--label"><?= i::__('Spotify') ?></span>
+                    <div class="entity-social-media__links--content">
+                        <mc-icon name="spotify"></mc-icon>
+                        <a target="_blank" :href="buildSocialMediaLink('spotify')">{{entity.spotify}}</a>
+                    </div>
                 </div>
 
                 <div v-if="entity.pinterest" class="entity-social-media__links--link">
-                    <mc-icon name="pinterest"></mc-icon>
-                    <a target="_blank" :href="buildSocialMediaLink('pinterest')">{{entity.pinterest}}</a>
+                    <span class="entity-social-media__links--label"><?= i::__('Pinterest') ?></span>
+                    <div class="entity-social-media__links--content">
+                        <mc-icon name="pinterest"></mc-icon>
+                        <a target="_blank" :href="buildSocialMediaLink('pinterest')">{{entity.pinterest}}</a>
+                    </div>
                 </div>
 
                 <div v-if="entity.tiktok" class="entity-social-media__links--link">
-                    <mc-icon name="tiktok"></mc-icon>
-                    <a target="_blank" :href="buildSocialMediaLink('tiktok')">{{entity.tiktok}}</a>
+                    <span class="entity-social-media__links--label"><?= i::__('Tiktok') ?></span>
+                    <div class="entity-social-media__links--content">
+                        <mc-icon name="tiktok"></mc-icon>
+                        <a target="_blank" :href="buildSocialMediaLink('tiktok')">{{entity.tiktok}}</a>
+                    </div>
                 </div>
 
                 <div v-if="entity.fediverso" class="entity-social-media__links--link">
-                    <mc-icon name="fediverso"></mc-icon>
-                    <a target="_blank" :href="buildSocialMediaLink('fediverso')">{{entity.fediverso}}</a>
+                    <span class="entity-social-media__links--label"><?= i::__('Fediverso') ?></span>
+                    <div class="entity-social-media__links--content">
+                        <mc-icon name="fediverso"></mc-icon>
+                        <a target="_blank" :href="buildSocialMediaLink('fediverso')">{{entity.fediverso}}</a>
+                    </div>
                 </div>
             </div>
 

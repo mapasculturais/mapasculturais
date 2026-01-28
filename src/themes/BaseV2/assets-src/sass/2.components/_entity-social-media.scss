@@ -7,13 +7,21 @@
         gap: size(13);
         list-style: none;
         padding: 0;
+        margin-top: size(24);
+
+        &--label {
+            display: block;
+            font-family: var(--mc-font-body);
+            font-style: normal;
+            font-weight: 700;
+            font-size: size(14);
+            color: #000;
+            margin-bottom: size(8);
+        }
 
         &--link {
-            align-items: center;
-            display: grid;
-            gap: size(15);
-            grid-template-columns: size(24) calc(100% - size(39));
-            line-height: size(19);
+            display: flex;
+            flex-direction: column;
             padding: 0;
             color: var(--mc-gray-700);
 
@@ -28,10 +36,16 @@
 
             .iconify {
                 font-size: size(24);
-                margin: 0 auto;
+                margin: 0;
             }
         }
 
+    }
+
+    &__links--content {
+        display: flex;
+        align-items: center;
+        gap: size(12);
     }
 
     &__description {
