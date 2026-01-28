@@ -171,7 +171,7 @@ class EvaluationPhaseBuilder extends Builder
                     $evaluation->registration = $registration;
                     $evaluation->user = $valuer;
                     $evaluation->status = $status;
-                    eval(\psy\sh());
+
                     $evaluation->save(true);
                 }
             }
@@ -276,6 +276,30 @@ class EvaluationPhaseBuilder extends Builder
 
         $this->instance->fetchFields = $fetch_fields;
 
+        return $this;
+    }
+
+    public function setCutoffScore(float $cutoffScore): self
+    {
+        $this->instance->cutoffScore = $cutoffScore;
+        return $this;
+    }
+
+    public function setAutoApplicationAllowed(bool $auto_application_allowed = true): self
+    {
+        $this->instance->autoApplicationAllowed = $auto_application_allowed;
+        return $this;
+    }
+
+    public function setPublishTimestamp(string $publish_timestamp): self
+    {
+        $this->instance->opportunity->setPublishTimestamp($publish_timestamp);
+        return $this;
+    }
+
+    public function setAutoPublish(bool $auto_publish = true): self
+    {
+        $this->instance->opportunity->autoPublish = $auto_publish;
         return $this;
     }
 

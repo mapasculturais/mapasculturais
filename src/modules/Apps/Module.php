@@ -19,7 +19,7 @@ class Module extends \MapasCulturais\Module {
         // });
 
         // impossibilita que a API retorne chaves de terceiros
-        $app->hook('ApiQuery(UserApp).params', function (&$params) {
+        $app->hook('ApiQuery(Apps.Entities.UserApp).params', function (&$params) {
             $params['user'] = 'EQ(@me)';
         });
 
