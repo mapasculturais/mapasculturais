@@ -115,7 +115,7 @@ $this->import('
                 </div>
 
                 <div class="entity-social-media__edit--link col-4 sm:col-12">
-                    <entity-field :entity="entity" prop="twitter" type="socialMedia" icon="twitter" :label="'X (antigo twitter)'" :placeholder="'<?= i::__('nomedousuario') ?>'"></entity-field>
+                    <entity-field :entity="entity" prop="twitter" type="socialMedia" icon="x" :label="'X (antigo twitter)'" :placeholder="'<?= i::__('nomedousuario') ?>'"></entity-field>
                 </div>
 
                 <div class="entity-social-media__edit--link col-4 sm:col-12">
