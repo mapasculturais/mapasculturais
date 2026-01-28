@@ -499,6 +499,26 @@ class Event extends EntityController {
         $page = $query_data['@page'] ?? null;
         $order = $query_data['@order'] ?? null;
 
+        // Filter by state and municipality
+        // Helper function to extract values from IIN(...)
+        $extractIIN = function($val) {
+            if ($val === null) {
+                return [];
+            }
+            if (is_string($val) && preg_match('/^IIN\((.*)\)$/i', $val, $matches)) {
+                $list = trim($matches[1]);
+                if ($list === '') {
+                    return [];
+                }
+                return array_map('trim', explode(',', $list));
+            }
+            return [];
+        };
+
+        // Extract En_Estado and En_Municipio, removing the IIN() prefix and splitting into array if needed
+        $en_estado_filter = $extractIIN($query_data['En_Estado'] ?? null);
+        $en_municipio_filter = $extractIIN($query_data['En_Municipio'] ?? null);
+
         if($event_ids){
 
             $event_ids = implode(',',$event_ids);
@@ -522,6 +542,8 @@ class Event extends EntityController {
                 $events_by_id[$event['id']] = $event;
             }
 
+            $conn = $app->em->getConnection();
+
             $result = [];
 
             foreach($_result as $i => $occ){
@@ -533,9 +555,35 @@ class Event extends EntityController {
                 if(!isset($events_by_id[$event_id]))
                     continue;
 
-
                 unset($occ->space_id);
-                
+
+                // Check if the space matches the event's state and municipality filters
+                if ($en_estado_filter || $en_municipio_filter) {
+                    // Query to get the state and municipality of the event
+                    $filter_space_query = "
+                        SELECT sm.key, sm.value
+                        FROM space_meta sm
+                        WHERE (sm.key = 'En_Estado' OR sm.key = 'En_Municipio')
+                        AND sm.object_id = :space_id
+                        ORDER BY sm.key ASC;"; // Alphabetic sort to ensure order: First En_Estado key and second En_Municipio key
+                    
+                    $space_state_city = $conn->fetchAll($filter_space_query, [
+                        'space_id' => $space_id,
+                        ]);
+                    
+                    // Extract the state and municipality values from the query result
+                    $space_state = $space_state_city[0]['value'] ?? null;
+                    $space_city = $space_state_city[1]['value'] ?? null;
+                    
+                    // Check if the space's state and municipality match the event's filters, if not, skip the occurrence
+                    if ($en_estado_filter && !in_array($space_state, $en_estado_filter)) {
+                        continue;
+                    }
+                    if ($en_municipio_filter && !in_array($space_city, $en_municipio_filter)) {
+                        continue;
+                    }
+                }
+
                 if(isset($spaces_by_id[$space_id]) && isset($events_by_id[$event_id])){
                     unset($occ->event);
 
