@@ -74,7 +74,20 @@ $this->import('
                                 </a>
                             </template>
                             <template #message="message">
-                                <?php i::_e('Remover comissão de avaliadores?') ?>
+                                <div class="grid-12">
+                                    <div class="col-12">
+                                        <p>
+                                            <?= i::__('Você tem certeza que deseja remover a comissão <strong>{{groupName}}</strong>?') ?>
+                                        </p>
+                                    </div>
+                                    <div class="col-12">
+                                        <p>
+                                            <mc-alert type="danger">
+                                                <strong><?= i::__('ATENÇÃO') ?>: </strong> <?= i::__('TODAS as avaliações realizadas pelos avaliadores desta comissão serão') ?> <strong><?= i::__('excluídas permanentemente') ?></strong>.
+                                            </mc-alert>
+                                        </p>
+                                    </div>
+                                </div>
                             </template>
                         </mc-confirm-button>
                     </div> 

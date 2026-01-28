@@ -122,7 +122,7 @@ app.component('mc-entities', {
         },
 
         getDataFromApi() {
-            const query = {...this.query};
+            const query = {...this.query, ...this.entities.query};
 
             this.$emit('loading', query);
 

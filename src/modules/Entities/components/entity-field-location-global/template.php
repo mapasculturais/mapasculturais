@@ -18,16 +18,18 @@ $this->import('
 <div class="country-address-form grid-12">
 
     <template v-if="hasLinkedEntity">
-        <div v-if="countryFieldEnabled" class="field col-12">
-            <label><?= i::__("País") ?></label>
-            <mc-select
-                :options="countries"
-                v-model:default-value="country"
-                @change-option="changeCountry"
-                placeholder="<?= i::__("País") ?>"
-                :has-public-location="hasPublicLocation"
-                show-filter>
-            </mc-select>
+        <div class="field col-12">
+            <div v-if="countryFieldEnabled">
+                <label><?= i::__("País") ?></label>
+                <mc-select
+                    :options="countries"
+                    v-model:default-value="country"
+                    @change-option="changeCountry"
+                    placeholder="<?= i::__("País") ?>"
+                    :has-public-location="hasPublicLocation"
+                    show-filter>
+                </mc-select>
+            </div>
             
             <mc-loading :condition="processing" class="col-12"> <?= i::__('Carregando') ?></mc-loading>
     
