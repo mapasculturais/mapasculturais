@@ -28,6 +28,7 @@ $iconset = [
     'telegram' => 'cib:telegram-plane',
     'tiktok' => 'akar-icons:tiktok-fill',
     'twitter' => 'akar-icons:twitter-fill',
+    'x' => 'fa6-brands:x-twitter',
     'whatsapp' => 'akar-icons:whatsapp-fill',
     'vimeo' => 'brandico:vimeo',
     'youtube' => 'akar-icons:youtube-fill',
