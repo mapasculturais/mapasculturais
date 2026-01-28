@@ -233,7 +233,7 @@ $this->breadcrumb = [
                 </mc-container>
             </mc-tab>
 
-            <mc-tab label="<?= i::esc_attr_e('PortFólio') ?>" slug="port">
+            <mc-tab label="<?= i::esc_attr_e('Portfólio') ?>" slug="port">
                 <mc-container>
                     <main>
                         <div class="single-1__inner-tabs">

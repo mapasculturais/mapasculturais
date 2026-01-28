@@ -177,7 +177,7 @@ $this->breadcrumb = [
             <?php $this->applyTemplateHook('entity-info-validation','end') ?>
         </mc-tab>
         
-        <mc-tab label="<?= i::esc_attr_e('PortFólio') ?>" slug="port">
+        <mc-tab label="<?= i::esc_attr_e('Portfólio') ?>" slug="port">
             <mc-container>
                 <main>
                     <mc-tabs class="tabs" sync-hash>
