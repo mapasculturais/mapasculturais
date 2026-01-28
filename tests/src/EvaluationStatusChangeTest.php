@@ -154,12 +154,15 @@ class EvaluationStatusChangeTest extends TestCase
         $admin = $this->userDirector->createUser('admin');
         $this->login($admin);
 
-        $evaluation_phase_builder = $this->opportunityBuilder
+        $this->opportunityBuilder
             ->reset(owner: $admin->profile, owner_entity: $admin->profile)
             ->fillRequiredProperties()
             ->firstPhase()
                 ->setRegistrationPeriod(new Open)
                 ->done()
+            ->save();
+        
+        $evaluation_phase_builder = $this->opportunityBuilder
             ->save()
             ->addEvaluationPhase(EvaluationMethods::simple)
                 ->setEvaluationPeriod(new ConcurrentEndingAfter)
@@ -167,9 +170,10 @@ class EvaluationStatusChangeTest extends TestCase
                 ->setCommitteeValuersPerRegistration('Comissão', 1)
                 ->save()
                 ->addValuers(1, 'Comissão')
-                ->done();
+                ->save();
         
-        $opportunity = $evaluation_phase_builder->getInstance();
+        $opportunity_builder = $evaluation_phase_builder->done();
+        $opportunity = $opportunity_builder->getInstance();
 
         // Testar cada valor consolidado: inválido (2), não selecionado (3), suplente (8), selecionado (10)
         $test_cases = [
@@ -180,6 +184,8 @@ class EvaluationStatusChangeTest extends TestCase
         ];
 
         foreach ($test_cases as $test_case) {
+            $opportunity = $opportunity->refreshed();
+            
             // Criar inscrição para este teste
             $registration = $this->registrationDirector->createSentRegistration(
                 $opportunity,
