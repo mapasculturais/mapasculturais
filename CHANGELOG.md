@@ -5,6 +5,10 @@ Todas as mudanças notáveis no projeto serão documentadas neste arquivo.
 O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/)
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [7.6.39] - 2026-01-29
+### Correções
+- Implementa pase exclusivo para o Spotify que identifique todas as variações de URL's disponíveis
+
 ## [7.6.38] - 2026-01-27
 ### Melhorias
 - Adiciona descrição de imagem nos banners da home
