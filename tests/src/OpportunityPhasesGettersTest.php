@@ -429,4 +429,73 @@ class OpportunityPhasesGettersTest extends TestCase
         $this->assertIsInt($count, 'Certificando que countEvaluations retorna inteiro');
         $this->assertEquals(5, $count, 'Certificando que countEvaluations da primeira fase retorna a quantidade de avaliações');
     }
+
+    // previousPhases
+    function testOpportunityPreviousPhasesGetter()
+    {
+        $admin = $this->userDirector->createUser('admin');
+        $this->login($admin);
+
+        /** @var Opportunity $opportunity */
+        $opportunity = $this->opportunityBuilder
+            ->reset(owner: $admin->profile, owner_entity: $admin->profile)
+            ->fillRequiredProperties()
+            ->firstPhase()
+                ->setRegistrationPeriod(new Open)
+                ->done()
+            ->save()
+            ->getInstance();
+
+        $first_phase_id = $opportunity->id;
+
+        $eval_phase_1 = $this->opportunityBuilder
+            ->addEvaluationPhase(EvaluationMethods::simple)
+                ->setEvaluationFrom('+2 days')
+                ->setEvaluationTo('+9 days')
+                ->save()
+                ->getInstance();
+
+        $eval_phase_2 = $this->opportunityBuilder
+            ->addEvaluationPhase(EvaluationMethods::simple)
+                ->setEvaluationFrom('+10 days')
+                ->setEvaluationTo('+17 days')
+                ->save()
+                ->getInstance();
+        $eval_phase_2_opp_id = $eval_phase_2->opportunity->id;
+
+        $eval_phase_3 = $this->opportunityBuilder
+            ->addEvaluationPhase(EvaluationMethods::simple)
+                ->setEvaluationFrom('+18 days')
+                ->setEvaluationTo('+25 days')
+                ->save()
+                ->getInstance();
+        $eval_phase_3_opp_id = $eval_phase_3->opportunity->id;
+
+        $opportunity = $opportunity->refreshed();
+        $last_phase = $opportunity->lastPhase;
+
+        // firstPhase -> previousPhases deve ser vazio
+        $previous_phases = $opportunity->previousPhases;
+        $this->assertEmpty($previous_phases, 'Certificando que previousPhases da firstPhase é vazio');
+
+        // segunda fase de avaliação -> previousPhases deve conter apenas a firstPhase (FirstPhase)
+        $previous_phases = $eval_phase_2->opportunity->previousPhases;
+        $this->assertCount(1, $previous_phases, 'Certificando que previousPhases da segunda fase de avaliação tem 1 elemento');
+        $this->assertEquals($first_phase_id, $previous_phases[0]->id, 'Certificando que previousPhases da segunda fase contém a firstPhase');
+
+        // terceira fase de avaliação -> previousPhases deve conter todas as fases anteriores (FirstPhase e eval_phase_2)
+        $previous_phases = $eval_phase_3->opportunity->previousPhases;
+        $this->assertCount(2, $previous_phases, 'Certificando que previousPhases da terceira fase de avaliação tem 2 elementos');
+        $this->assertEquals($first_phase_id, $previous_phases[0]->id, 'Certificando que a primeira anterior é a firstPhase');
+        $this->assertEquals($eval_phase_2_opp_id, $previous_phases[1]->id, 'Certificando que a segunda anterior é a fase de avaliação 2');
+        
+        // lastPhase -> previousPhases (quando não vazio, contém todas as fases anteriores (FirstPhase, eval_phase_2 e eval_phase_3))
+        $previous_phases = $last_phase->previousPhases;
+        if (count($previous_phases) > 0) {
+            $previous_ids = array_map(fn($p) => $p->id, $previous_phases);
+            $this->assertContains($first_phase_id, $previous_ids, 'Certificando que previousPhases da lastPhase contém a firstPhase');
+            $this->assertContains($eval_phase_2_opp_id, $previous_ids, 'Certificando que previousPhases da lastPhase contém a segunda fase de avaliação');
+            $this->assertContains($eval_phase_3_opp_id, $previous_ids, 'Certificando que previousPhases da lastPhase contém a terceira fase de avaliação');
+        }
+    }
 }
