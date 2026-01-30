@@ -201,4 +201,73 @@ class OpportunityPhasesGettersTest extends TestCase
         $next = $last_phase->nextPhase;
         $this->assertNull($next, 'Certificando que nextPhase da última fase é null');
     }
+
+    // previousPhase
+    function testOpportunityPreviousPhaseGetter()
+    {
+        $admin = $this->userDirector->createUser('admin');
+        $this->login($admin);
+
+        /** @var Opportunity $opportunity */
+        $opportunity = $this->opportunityBuilder
+            ->reset(owner: $admin->profile, owner_entity: $admin->profile)
+            ->fillRequiredProperties()
+            ->firstPhase()
+                ->setRegistrationPeriod(new Open)
+                ->done()
+            ->save()
+            ->getInstance();
+
+        // Fases de avaliação em sequência por data: cada uma abre após o fechamento da anterior
+        $eval_phase_1 = $this->opportunityBuilder
+            ->addEvaluationPhase(EvaluationMethods::simple)
+                ->setEvaluationFrom('+2 days')
+                ->setEvaluationTo('+9 days')
+                ->save()
+                ->getInstance();
+        $eval_phase_1_opp_id = $eval_phase_1->opportunity->id;
+
+        $eval_phase_2 = $this->opportunityBuilder
+            ->addEvaluationPhase(EvaluationMethods::simple)
+                ->setEvaluationFrom('+10 days')
+                ->setEvaluationTo('+17 days')
+                ->save()
+                ->getInstance();
+        $eval_phase_2_opp_id = $eval_phase_2->opportunity->id;
+
+        $eval_phase_3 = $this->opportunityBuilder
+            ->addEvaluationPhase(EvaluationMethods::simple)
+                ->setEvaluationFrom('+18 days')
+                ->setEvaluationTo('+25 days')
+                ->save()
+                ->getInstance();
+        $eval_phase_3_opp_id = $eval_phase_3->opportunity->id;
+
+        $opportunity = $opportunity->refreshed();
+        $last_phase = $opportunity->lastPhase;
+
+        // firstPhase->previousPhase deve ser null
+        $previous = $opportunity->previousPhase;
+        $this->assertNull($previous, 'Certificando que previousPhase da firstPhase é null');
+
+        // A primeira fase de avaliação usa a mesma Opportunity que a firstPhase
+        $this->assertEquals($opportunity->id, $eval_phase_1_opp_id, 'Certificando que a primeira fase de avaliação é a própria firstPhase');
+        $previous = $eval_phase_1->opportunity->previousPhase;
+        $this->assertNull($previous, 'Certificando que previousPhase da primeira fase de avaliação é null (é a firstPhase)');
+
+        // segunda fase de avaliação -> previousPhase deve ser a firstPhase
+        $previous = $eval_phase_2->opportunity->previousPhase;
+        $this->assertNotNull($previous, 'Certificando que a segunda fase de avaliação tem previousPhase');
+        $this->assertEquals($opportunity->id, $previous->id, 'Certificando que previousPhase da segunda fase de avaliação é a firstPhase');
+
+        // terceira fase de avaliação -> previousPhase deve ser a segunda
+        $previous = $eval_phase_3->opportunity->previousPhase;
+        $this->assertNotNull($previous, 'Certificando que a terceira fase de avaliação tem previousPhase');
+        $this->assertEquals($eval_phase_2_opp_id, $previous->id, 'Certificando que previousPhase da terceira fase de avaliação é a segunda');
+
+        // última fase (lastPhase) -> previousPhase deve ser a penultima fase
+        $previous = $last_phase->previousPhase;
+        $this->assertNotNull($previous, 'Certificando que lastPhase tem previousPhase');
+        $this->assertEquals($eval_phase_3_opp_id, $previous->id, 'Certificando que previousPhase da lastPhase é a penultima fase');
+    }
 }
