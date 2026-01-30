@@ -270,4 +270,68 @@ class OpportunityPhasesGettersTest extends TestCase
         $this->assertNotNull($previous, 'Certificando que lastPhase tem previousPhase');
         $this->assertEquals($eval_phase_3_opp_id, $previous->id, 'Certificando que previousPhase da lastPhase é a penultima fase');
     }
+
+    // firstPhase
+    function testOpportunityFirstPhaseGetter()
+    {
+        $admin = $this->userDirector->createUser('admin');
+        $this->login($admin);
+
+        $builder = $this->opportunityBuilder;
+
+        /** @var Opportunity $opportunity */
+        $opportunity = $builder
+            ->reset(owner: $admin->profile, owner_entity: $admin->profile)
+            ->fillRequiredProperties()
+            ->firstPhase()
+                ->setRegistrationPeriod(new Open)
+                ->done()
+            ->save()
+            ->getInstance();
+
+        $first_phase_id = $opportunity->id;
+
+        $eval_phase_1 = $builder->addEvaluationPhase(EvaluationMethods::simple)
+            ->setEvaluationPeriod(new ConcurrentEndingAfter)
+            ->save()
+            ->getInstance();
+
+        $eval_phase_2 = $builder->addEvaluationPhase(EvaluationMethods::simple)
+            ->setEvaluationPeriod(new ConcurrentEndingAfter)
+            ->save()
+            ->getInstance();
+
+        $eval_phase_3 = $builder->addEvaluationPhase(EvaluationMethods::simple)
+            ->setEvaluationPeriod(new ConcurrentEndingAfter)
+            ->save()
+            ->getInstance();
+
+        $last_phase = $opportunity->lastPhase;
+
+        // firstPhase da própria firstPhase retorna ela mesma
+        $first = $opportunity->firstPhase;
+        $this->assertNotNull($first, 'Certificando que firstPhase retorna valor');
+        $this->assertEquals($first_phase_id, $first->id, 'Certificando que firstPhase da oportunidade raiz é ela mesma');
+        $this->assertTrue($first->isFirstPhase, 'Certificando que firstPhase tem isFirstPhase = true');
+
+        // primeira fase de avaliação usa a mesma Opportunity que a firstPhase
+        $first = $eval_phase_1->opportunity->firstPhase;
+        $this->assertNotNull($first, 'Certificando que a primeira fase de avaliação tem firstPhase');
+        $this->assertEquals($first_phase_id, $first->id, 'Certificando que firstPhase da primeira fase de avaliação é a primeira fase');
+
+        // segunda fase de avaliação -> firstPhase deve ser a primeira fase
+        $first = $eval_phase_2->opportunity->firstPhase;
+        $this->assertNotNull($first, 'Certificando que a segunda fase de avaliação tem firstPhase');
+        $this->assertEquals($first_phase_id, $first->id, 'Certificando que firstPhase da segunda fase de avaliação é a primeira fase');
+
+        // terceira fase de avaliação -> firstPhase deve ser a primeira fase
+        $first = $eval_phase_3->opportunity->firstPhase;
+        $this->assertNotNull($first, 'Certificando que a terceira fase de avaliação tem firstPhase');
+        $this->assertEquals($first_phase_id, $first->id, 'Certificando que firstPhase da terceira fase de avaliação é a primeira fase');
+
+        // lastPhase -> firstPhase deve ser a primeira fase
+        $first = $last_phase->firstPhase;
+        $this->assertNotNull($first, 'Certificando que lastPhase tem firstPhase');
+        $this->assertEquals($first_phase_id, $first->id, 'Certificando que firstPhase da lastPhase é a primeira fase');
+    }
 }
