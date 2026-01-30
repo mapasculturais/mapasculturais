@@ -418,7 +418,7 @@ class Module extends \MapasCulturais\Module{
                 return;
             }
 
-            if($this->isLasPhase) {
+            if($this->isLastPhase) {
                 $value = [];
                 return;
             }
