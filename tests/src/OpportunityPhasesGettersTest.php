@@ -498,4 +498,54 @@ class OpportunityPhasesGettersTest extends TestCase
             $this->assertContains($eval_phase_3_opp_id, $previous_ids, 'Certificando que previousPhases da lastPhase contém a terceira fase de avaliação');
         }
     }
+
+    // lastCreatedPhase
+    function testOpportunityLastCreatedPhaseGetter()
+    {
+        $admin = $this->userDirector->createUser('admin');
+        $this->login($admin);
+
+        /** @var Opportunity $opportunity */
+        $opportunity = $this->opportunityBuilder
+            ->reset(owner: $admin->profile, owner_entity: $admin->profile)
+            ->fillRequiredProperties()
+            ->firstPhase()
+                ->setRegistrationPeriod(new Open)
+                ->done()
+            ->save()
+            ->getInstance();
+
+        $eval_phase_1 = $this->opportunityBuilder
+            ->addEvaluationPhase(EvaluationMethods::simple)
+                ->setEvaluationFrom('+2 days')
+                ->setEvaluationTo('+9 days')
+                ->save()
+                ->getInstance();
+
+        $eval_phase_2 = $this->opportunityBuilder
+            ->addEvaluationPhase(EvaluationMethods::simple)
+                ->setEvaluationFrom('+10 days')
+                ->setEvaluationTo('+17 days')
+                ->save()
+                ->getInstance();
+
+        $eval_phase_3 = $this->opportunityBuilder
+            ->addEvaluationPhase(EvaluationMethods::simple)
+                ->setEvaluationFrom('+18 days')
+                ->setEvaluationTo('+25 days')
+                ->save()
+                ->getInstance();
+
+        $opportunity = $opportunity->refreshed();
+
+        // lastCreatedPhase retorna a fase filha com registrationFrom mais recente, ou a first phase se não houver filhas
+        $last_created = $opportunity->lastCreatedPhase;
+        $this->assertNotNull($last_created, 'Certificando que lastCreatedPhase retorna valor');
+        $this->assertEquals($opportunity->id, $last_created->firstPhase->id, 'Certificando que lastCreatedPhase pertence à mesma oportunidade (mesma firstPhase)');
+
+        // De qualquer fase da oportunidade, lastCreatedPhase deve retornar o mesmo resultado
+        $this->assertEquals($last_created->id, $eval_phase_1->opportunity->lastCreatedPhase->id, 'Certificando que lastCreatedPhase é consistente a partir da primeira fase de avaliação');
+        $this->assertEquals($last_created->id, $eval_phase_2->opportunity->lastCreatedPhase->id, 'Certificando que lastCreatedPhase é consistente a partir da segunda fase de avaliação');
+        $this->assertEquals($last_created->id, $eval_phase_3->opportunity->lastCreatedPhase->id, 'Certificando que lastCreatedPhase é consistente a partir da terceira fase de avaliação');
+    }
 }
