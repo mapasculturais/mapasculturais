@@ -548,4 +548,77 @@ class OpportunityPhasesGettersTest extends TestCase
         $this->assertEquals($last_created->id, $eval_phase_2->opportunity->lastCreatedPhase->id, 'Certificando que lastCreatedPhase é consistente a partir da segunda fase de avaliação');
         $this->assertEquals($last_created->id, $eval_phase_3->opportunity->lastCreatedPhase->id, 'Certificando que lastCreatedPhase é consistente a partir da terceira fase de avaliação');
     }
+
+    // nextPhases
+    function testOpportunityNextPhasesGetter()
+    {
+        $admin = $this->userDirector->createUser('admin');
+        $this->login($admin);
+
+        /** @var Opportunity $opportunity */
+        $opportunity = $this->opportunityBuilder
+            ->reset(owner: $admin->profile, owner_entity: $admin->profile)
+            ->fillRequiredProperties()
+            ->firstPhase()
+                ->setRegistrationPeriod(new Open)
+                ->done()
+            ->save()
+            ->getInstance();
+
+        $eval_phase_1 = $this->opportunityBuilder
+            ->addEvaluationPhase(EvaluationMethods::simple)
+                ->setEvaluationFrom('+2 days')
+                ->setEvaluationTo('+9 days')
+                ->save()
+                ->getInstance();
+
+        $eval_phase_2 = $this->opportunityBuilder
+            ->addEvaluationPhase(EvaluationMethods::simple)
+                ->setEvaluationFrom('+10 days')
+                ->setEvaluationTo('+17 days')
+                ->save()
+                ->getInstance();
+        $eval_phase_2_opp_id = $eval_phase_2->opportunity->id;
+
+        $eval_phase_3 = $this->opportunityBuilder
+            ->addEvaluationPhase(EvaluationMethods::simple)
+                ->setEvaluationFrom('+18 days')
+                ->setEvaluationTo('+25 days')
+                ->save()
+                ->getInstance();
+        $eval_phase_3_opp_id = $eval_phase_3->opportunity->id;
+
+        $opportunity = $opportunity->refreshed();
+        $last_phase = $opportunity->lastPhase;
+        $last_phase_id = $last_phase->id;
+
+        // firstPhase -> nextPhases contém as fases seguintes (eval_2, eval_3 e lastPhase), última é lastPhase
+        $next_phases = $opportunity->nextPhases;
+        $this->assertIsArray($next_phases, 'Certificando que nextPhases retorna array');
+        $this->assertNotEmpty($next_phases, 'Certificando que nextPhases da firstPhase não é vazio');
+        $next_ids = array_map(fn($p) => $p->id, $next_phases);
+        $this->assertContains($eval_phase_2_opp_id, $next_ids, 'Certificando que nextPhases da firstPhase contém a segunda fase de avaliação');
+        $this->assertContains($eval_phase_3_opp_id, $next_ids, 'Certificando que nextPhases da firstPhase contém a terceira fase de avaliação');
+        $this->assertContains($last_phase_id, $next_ids, 'Certificando que nextPhases da firstPhase contém a lastPhase');
+        $this->assertEquals($last_phase_id, $next_phases[count($next_phases) - 1]->id, 'Certificando que a última fase em nextPhases é a lastPhase');
+
+        // primeira fase de avaliação (mesma opportunity que firstPhase) -> nextPhases igual ao da firstPhase
+        $this->assertEquals($next_phases, $eval_phase_1->opportunity->nextPhases, 'Certificando que nextPhases é o mesmo a partir da primeira fase de avaliação');
+
+        // segunda fase de avaliação -> nextPhases contém eval_3 e lastPhase
+        $next_phases = $eval_phase_2->opportunity->nextPhases;
+        $this->assertCount(2, $next_phases, 'Certificando que nextPhases da segunda fase de avaliação tem 2 elementos');
+        $this->assertEquals($eval_phase_3_opp_id, $next_phases[0]->id, 'Certificando que a primeira próxima é a terceira fase de avaliação');
+        $this->assertEquals($last_phase_id, $next_phases[1]->id, 'Certificando que a segunda próxima é a lastPhase');
+
+        // terceira fase de avaliação -> nextPhases contém apenas lastPhase
+        $next_phases = $eval_phase_3->opportunity->nextPhases;
+        $this->assertCount(1, $next_phases, 'Certificando que nextPhases da terceira fase de avaliação tem 1 elemento');
+        $this->assertEquals($last_phase_id, $next_phases[0]->id, 'Certificando que nextPhases da terceira fase contém apenas a lastPhase');
+
+        // lastPhase -> nextPhases é vazio
+        $next_phases = $last_phase->nextPhases;
+        $this->assertIsArray($next_phases, 'Certificando que nextPhases retorna array');
+        $this->assertEmpty($next_phases, 'Certificando que nextPhases da lastPhase é vazio');
+    }
 }
