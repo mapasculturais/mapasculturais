@@ -391,8 +391,42 @@ class OpportunityPhasesGettersTest extends TestCase
         $last = $eval_phase_3->opportunity->lastPhase;
         $this->assertNotNull($last, 'Certificando que a terceira fase de avaliação tem lastPhase');
         $this->assertEquals($last_phase_id, $last->id, 'Certificando que lastPhase da terceira fase de avaliação é a fase de publicação');
+    }
 
-        // lastPhase -> lastPhase retorna ela mesma
-        $this->assertEquals($last_phase_id, $last->id, 'Certificando que lastPhase da lastPhase é ela mesma');
+    // countEvaluations
+    function testOpportunityCountEvaluationsGetter()
+    {
+        $admin = $this->userDirector->createUser('admin');
+        $this->login($admin);
+
+        $builder = $this->opportunityBuilder;
+
+        /** @var Opportunity $opportunity */
+        $opportunity = $builder
+            ->reset(owner: $admin->profile, owner_entity: $admin->profile)
+            ->fillRequiredProperties()
+            ->firstPhase()
+                ->setRegistrationPeriod(new Open)
+                ->done()
+            ->save()
+            ->addEvaluationPhase(EvaluationMethods::simple)
+                ->setEvaluationPeriod(new ConcurrentEndingAfter)
+                ->setCommitteeValuersPerRegistration('committee 1', 1)
+                ->save()
+                ->addValuers(2, 'committee 1')
+                ->done()
+            ->getInstance();
+
+        $this->registrationDirector->createDraftRegistrations($opportunity, number_of_registrations: 5);
+        $this->registrationDirector->createSentRegistrations($opportunity, number_of_registrations: 5);
+
+        $opportunity->evaluationMethodConfiguration->redistributeCommitteeRegistrations();
+
+        $opportunity = $opportunity->refreshed();
+
+        // A view evaluations usa opportunity_id da inscrição; as inscrições estão na first phase
+        $count = $opportunity->countEvaluations;
+        $this->assertIsInt($count, 'Certificando que countEvaluations retorna inteiro');
+        $this->assertEquals(5, $count, 'Certificando que countEvaluations da primeira fase retorna a quantidade de avaliações');
     }
 }
