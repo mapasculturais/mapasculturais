@@ -290,17 +290,22 @@ class Module extends \MapasCulturais\Module{
                 return;
             }
 
-            $this->enableCacheGetterResult('previousPhase');
+            if(!$this->isLastPhase) {
+                $this->enableCacheGetterResult('previousPhase');
+            }
 
             $last_phase = $this->isLastPhase ? $this : $this->lastPhase;
 
             $complement = "";
-            if(!$this->isLastPhase) {
-                $complement = "o.id < :this AND";
-            }
-
-            if(!$this->isReportingPhase) {
-                $complement = "o.id <> :last AND o.id < :this AND";
+            if($this->isLastPhase) {
+                $complement = "o.id <> :this AND";
+            } else {
+                if(!$this->isLastPhase) {
+                    $complement = "o.id < :this AND";
+                }
+                if(!$this->isReportingPhase) {
+                    $complement = "o.id <> :last AND o.id < :this AND";
+                }
             }
 
             $query = $app->em->createQuery("
@@ -323,7 +328,7 @@ class Module extends \MapasCulturais\Module{
                 "this" => $this,
             ];
 
-            if(!$this->isReportingPhase) {
+            if(!$this->isReportingPhase && !$this->isLastPhase) {
                 $params["last"] = $last_phase;
             }
 
