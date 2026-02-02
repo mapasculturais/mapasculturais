@@ -25,7 +25,12 @@ class RequestFactory
         return $request;
     }
 
-    function GET(string $controller_id, string $action, array $url_params = [], array $query_params = [], array $headers = [], array $cookie_params = []): ServerRequestInterface {
+    function GET(string $controller_id, string $action, array $url_params = [], array $query_params = [], array $headers = [], array $cookie_params = [], bool $ajax = false): ServerRequestInterface {
+        
+        if($ajax){
+            $headers['X-Requested-With'] = 'XMLHttpRequest';
+        }
+        
         return $this->createServerRequest(
                         method: 'GET',
                         controller_id: $controller_id,
@@ -36,8 +41,13 @@ class RequestFactory
                         cookie_params: $cookie_params);
     }
 
-    function POST(string $controller_id, string $action, array $url_params = [], array $payload = [], array $query_params = [], array $headers = [], array $cookie_params = []): ServerRequestInterface
+    function POST(string $controller_id, string $action, array $url_params = [], array $payload = [], array $query_params = [], array $headers = [], array $cookie_params = [], bool $ajax = true): ServerRequestInterface
     {
+        
+        if($ajax){
+            $headers['X-Requested-With'] = 'XMLHttpRequest';
+        }
+
         return $this->createServerRequest(
                         method: 'POST',
                         controller_id: $controller_id,
@@ -49,8 +59,13 @@ class RequestFactory
                         cookie_params: $cookie_params);
     }
 
-    function PATCH(string $controller_id, string $action, array $url_params = [], array $payload = [], array $query_params = [], array $headers = [], array $cookie_params = []): ServerRequestInterface
+    function PATCH(string $controller_id, string $action, array $url_params = [], array $payload = [], array $query_params = [], array $headers = [], array $cookie_params = [], bool $ajax = true): ServerRequestInterface
     {
+        
+        if($ajax){
+            $headers['X-Requested-With'] = 'XMLHttpRequest';
+        }
+        
         return $this->createServerRequest(
                         method: 'PATCH',
                         controller_id: $controller_id,
@@ -62,8 +77,13 @@ class RequestFactory
                         cookie_params: $cookie_params);
     }
 
-    function DELETE(string $controller_id, string $action, array $url_params = [], array $payload = [], array $query_params = [], array $headers = [], array $cookie_params = []): ServerRequestInterface
+    function DELETE(string $controller_id, string $action, array $url_params = [], array $payload = [], array $query_params = [], array $headers = [], array $cookie_params = [], bool $ajax = true): ServerRequestInterface
     {
+        
+        if($ajax){
+            $headers['X-Requested-With'] = 'XMLHttpRequest';
+        }
+        
         return $this->createServerRequest(
                         method: 'DELETE',
                         controller_id: $controller_id,
