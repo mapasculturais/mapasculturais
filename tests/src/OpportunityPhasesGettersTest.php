@@ -945,4 +945,64 @@ class OpportunityPhasesGettersTest extends TestCase
         $this->assertNotNull($valor_via_getter, 'Certificando que o getter field_* retorna valor quando a inscrição não tem o campo preenchido');
         $this->assertEquals($valor_na_first_phase, $valor_via_getter, 'Certificando que o getter field_* retorna o valor do campo da inscrição na first phase');
     }
+
+    // Registration.isFirstPhase
+    function testRegistrationIsFirstPhaseGetter()
+    {
+        $admin = $this->userDirector->createUser('admin');
+        $this->login($admin);
+
+        /** @var Opportunity $opportunity */
+        $opportunity = $this->opportunityBuilder
+            ->reset(owner: $admin->profile, owner_entity: $admin->profile)
+            ->fillRequiredProperties()
+            ->firstPhase()
+                ->setRegistrationPeriod(new Open)
+                ->done()
+            ->save()
+            ->getInstance();
+
+        $eval_phase_1 = $this->opportunityBuilder
+            ->addEvaluationPhase(EvaluationMethods::simple)
+                ->setEvaluationPeriod(new ConcurrentEndingAfter)
+                ->save()
+                ->getInstance();
+
+        $eval_phase_2 = $this->opportunityBuilder
+            ->addEvaluationPhase(EvaluationMethods::simple)
+                ->setEvaluationPeriod(new ConcurrentEndingAfter)
+                ->save()
+                ->getInstance();
+        $eval_phase_2_opp = $eval_phase_2->opportunity;
+
+        $opportunity = $opportunity->refreshed();
+        $last_phase = $opportunity->lastPhase;
+
+        /** @var Registration $first_phase_registration */
+        $first_phase_registration = $this->registrationDirector->createSentRegistration($opportunity, []);
+
+        $first_phase_registration->setStatusToApproved(true);
+        $first_phase_registration = $first_phase_registration->refreshed();
+
+        $next_phase = $opportunity->nextPhase;
+        $next_phase->syncRegistrations([$first_phase_registration]);
+        $this->processJobs();
+
+        $repo = $this->app->repo('Registration');
+        $first_phase_registration = $repo->find($first_phase_registration->id);
+        $eval_phase_2_registration = $repo->findOneBy(['number' => $first_phase_registration->number, 'opportunity' => $eval_phase_2_opp]);
+        $last_phase_registration = $repo->findOneBy(['number' => $first_phase_registration->number, 'opportunity' => $last_phase]);
+
+        $this->assertNotNull($eval_phase_2_registration, 'Certificando que a inscrição foi sincronizada para a segunda fase de avaliação');
+        $this->assertNotNull($last_phase_registration, 'Certificando que a inscrição foi sincronizada para a lastPhase');
+
+        // Inscrição na firstPhase -> isFirstPhase deve ser true
+        $this->assertTrue($first_phase_registration->isFirstPhase, 'Certificando que isFirstPhase da inscrição na firstPhase é true');
+
+        // Inscrição na segunda fase de avaliação -> isFirstPhase deve ser false
+        $this->assertFalse($eval_phase_2_registration->isFirstPhase, 'Certificando que isFirstPhase da inscrição na eval_phase_2 é false');
+
+        // Inscrição na lastPhase -> isFirstPhase deve ser false
+        $this->assertFalse($last_phase_registration->isFirstPhase, 'Certificando que isFirstPhase da inscrição na lastPhase é false');
+    }
 }
