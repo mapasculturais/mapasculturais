@@ -24,7 +24,7 @@ $this->import('
             </p>
         </div>
 
-        <div v-if="banner || secondBanner" class="home-header__banners">
+        <div v-if="banner || secondBanner || thirdBanner" class="home-header__banners">
             <?php $this->part('first-banner'); ?>
 
             <?php $this->part('second-banner'); ?>
