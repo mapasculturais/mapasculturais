@@ -621,4 +621,60 @@ class OpportunityPhasesGettersTest extends TestCase
         $this->assertIsArray($next_phases, 'Certificando que nextPhases retorna array');
         $this->assertEmpty($next_phases, 'Certificando que nextPhases da lastPhase é vazio');
     }
+
+    // isFirstPhase
+    function testOpportunityIsFirstPhaseGetter()
+    {
+        $admin = $this->userDirector->createUser('admin');
+        $this->login($admin);
+
+        /** @var Opportunity $opportunity */
+        $opportunity = $this->opportunityBuilder
+            ->reset(owner: $admin->profile, owner_entity: $admin->profile)
+            ->fillRequiredProperties()
+            ->firstPhase()
+                ->setRegistrationPeriod(new Open)
+                ->done()
+            ->save()
+            ->getInstance();
+
+        $eval_phase_1 = $this->opportunityBuilder
+            ->addEvaluationPhase(EvaluationMethods::simple)
+                ->setEvaluationFrom('+2 days')
+                ->setEvaluationTo('+9 days')
+                ->save()
+                ->getInstance();
+
+        $eval_phase_2 = $this->opportunityBuilder
+            ->addEvaluationPhase(EvaluationMethods::simple)
+                ->setEvaluationFrom('+10 days')
+                ->setEvaluationTo('+17 days')
+                ->save()
+                ->getInstance();
+
+        $eval_phase_3 = $this->opportunityBuilder
+            ->addEvaluationPhase(EvaluationMethods::simple)
+                ->setEvaluationFrom('+18 days')
+                ->setEvaluationTo('+25 days')
+                ->save()
+                ->getInstance();
+
+        $opportunity = $opportunity->refreshed();
+        $last_phase = $opportunity->lastPhase;
+
+        // firstPhase -> isFirstPhase deve ser true
+        $this->assertTrue($opportunity->isFirstPhase, 'Certificando que isFirstPhase da firstPhase é true');
+
+        // primeira fase de avaliação -> isFirstPhase deve ser true
+        $this->assertTrue($eval_phase_1->opportunity->isFirstPhase, 'Certificando que isFirstPhase da primeira fase de avaliação é true');
+
+        // segunda fase de avaliação -> isFirstPhase deve ser false
+        $this->assertFalse($eval_phase_2->opportunity->isFirstPhase, 'Certificando que isFirstPhase da segunda fase de avaliação é false');
+
+        // terceira fase de avaliação -> isFirstPhase deve ser false
+        $this->assertFalse($eval_phase_3->opportunity->isFirstPhase, 'Certificando que isFirstPhase da terceira fase de avaliação é false');
+
+        // lastPhase -> isFirstPhase deve ser false
+        $this->assertFalse($last_phase->isFirstPhase, 'Certificando que isFirstPhase da lastPhase é false');
+    }
 }
