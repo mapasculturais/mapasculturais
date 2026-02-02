@@ -683,12 +683,12 @@ return array(
             'type' => "socialMedia",
             'label' => \MapasCulturais\i::__('Spotify'),
             'validations' => array(
-                "v::oneOf(v::urlDomain('open.spotify.com'), v::regex('/^@?([-\w\d\.]+)$/i'))" => \MapasCulturais\i::__("O valor deve ser uma URL ou usuário válido.")
+                "v::oneOf(v::urlDomain('open.spotify.com'), v::regex('/^([a-zA-Z0-9]+|(user|artist|playlist|show|album|track):[a-zA-Z0-9]+)$/i'))" => \MapasCulturais\i::__("O valor deve ser uma URL válida do Spotify ou um identificador válido.")
             ),
             'serialize' => function($value) {
                 return Utils::parseSocialMediaUser('open.spotify.com', $value);
             },
-            'placeholder' => \MapasCulturais\i::__('nomedousuario'),
+            'placeholder' => \MapasCulturais\i::__('URL ou identificador do Spotify'),
             'available_for_opportunities' => true
         ),
         'youtube' => array(

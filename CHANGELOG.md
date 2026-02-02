@@ -67,6 +67,18 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 <a name="770-funarte"></a>
 2. <small>Melhoria desenvolvida pela Funarte (Fundação Nacional de Artes) para a Rede das Artes</small>
 
+## [7.6.39] - 2026-01-29
+### Correções
+- Implementa pase exclusivo para o Spotify que identifique todas as variações de URL's disponíveis
+
+## [7.6.38] - 2026-01-27
+### Melhorias
+- Adiciona descrição de imagem nos banners da home
+
+## [7.6.37] - 2026-01-27
+### Correções
+- Corrige erro na persistência dos termos de usop no banco de dados
+
 ## [7.6.36] - 2026-01-23
 ### Correção
 - Corrige warnings no carregamento do componente opportunity-appeal-phase-config
