@@ -347,18 +347,34 @@ class Module extends \MapasCulturais\Module{
                 $value = $first_phase->lastPhase->previousPhases;
                 return;
             }
+            if($this->isFirstPhase) {
+                $value = [];
+                return;
+            }
 
-            $this->enableCacheGetterResult('previousPhases');
+            if(!$this->isLastPhase) {
+                $this->enableCacheGetterResult('previousPhases');
+            }
 
             $class = Opportunity::class;
-            $query = $app->em->createQuery("
-                SELECT o
-                FROM $class o
-                WHERE
-                    o.id = :parent OR
-                    (o.parent = :parent AND o.registrationFrom < (SELECT this.registrationFrom FROM $class this WHERE this.id = :this))
-                ORDER BY o.registrationFrom ASC");
-
+            if($this->isLastPhase) {
+                $query = $app->em->createQuery("
+                    SELECT o
+                    FROM $class o
+                    WHERE
+                        o.id = :parent OR
+                        (o.parent = :parent AND o.id <> :this)
+                    ORDER BY CASE WHEN o.registrationFrom IS NULL THEN 1 ELSE 0 END ASC, o.registrationFrom ASC, o.id ASC");
+            } else {
+                $query = $app->em->createQuery("
+                    SELECT o
+                    FROM $class o
+                    WHERE
+                        o.id = :parent OR
+                        (o.parent = :parent AND o.registrationFrom <= (SELECT this.registrationFrom FROM $class this WHERE this.id = :this) AND o.id <> :this)
+                    ORDER BY o.registrationFrom ASC");
+            }
+                
             $query->setParameters([
                 "parent" => $first_phase,
                 "this" => $this
