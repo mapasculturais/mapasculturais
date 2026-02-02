@@ -879,4 +879,70 @@ class OpportunityPhasesGettersTest extends TestCase
         $this->assertNotNull($registration_previous, 'Certificando que previousPhase da inscrição na lastPhase retorna valor');
         $this->assertEquals($eval_phase_2_registration->id, $registration_previous->id, 'Certificando que previousPhase da lastPhase é a inscrição na eval_phase_2');
     }
+
+    // Registration.field_*
+    function testRegistrationFieldIdGetter()
+    {
+        $admin = $this->userDirector->createUser('admin');
+        $this->login($admin);
+
+        $field_identifier = 'campo-teste';
+
+        /** @var Opportunity $opportunity */
+        $opportunity = $this->opportunityBuilder
+            ->reset(owner: $admin->profile, owner_entity: $admin->profile)
+            ->fillRequiredProperties()
+            ->save()
+            ->firstPhase()
+                ->setRegistrationPeriod(new Open)
+                ->createStep('etapa')
+                ->createField($field_identifier, 'text', 'Campo Teste', false)
+                ->done()
+            ->save()
+            ->getInstance();
+
+        $this->opportunityBuilder
+            ->addEvaluationPhase(EvaluationMethods::simple)
+                ->setEvaluationPeriod(new ConcurrentEndingAfter)
+                ->save()
+                ->done()
+            ->addEvaluationPhase(EvaluationMethods::simple)
+                ->setEvaluationPeriod(new ConcurrentEndingAfter)
+                ->save()
+                ->done();
+
+        $opportunity = $opportunity->refreshed();
+        $last_phase = $opportunity->lastPhase;
+
+        $field_id = $this->opportunityBuilder->getFieldName($field_identifier);
+        $this->assertStringStartsWith('field_', $field_id, 'Certificando que o nome do campo é field_<id>');
+
+        /** @var Registration $first_phase_registration */
+        $first_phase_registration = $this->registrationDirector->createSentRegistration($opportunity, []);
+
+        $valor_na_first_phase = 'valor-preenchido-na-primeira-fase';
+        $first_phase_registration->$field_id = $valor_na_first_phase;
+        $first_phase_registration->save(true);
+
+        $first_phase_registration->setStatusToApproved(true);
+        $first_phase_registration = $first_phase_registration->refreshed();
+
+        $next_phase = $opportunity->nextPhase;
+        $next_phase->syncRegistrations([$first_phase_registration]);
+        $this->processJobs();
+
+        $repo = $this->app->repo('Registration');
+        $first_phase_registration = $repo->find($first_phase_registration->id);
+        $last_phase_registration = $repo->findOneBy(['number' => $first_phase_registration->number, 'opportunity' => $last_phase]);
+
+        $this->assertNotNull($last_phase_registration, 'Certificando que a inscrição foi sincronizada para a lastPhase');
+
+        // Na first phase a inscrição tem o valor do campo
+        $this->assertEquals($valor_na_first_phase, $first_phase_registration->$field_id, 'Certificando que a inscrição na firstPhase tem o valor do campo');
+
+        // Na lastPhase a inscrição não tem o valor preenchido; o getter field_* deve retornar o valor de outra inscrição com o mesmo number (first phase)
+        $valor_via_getter = $last_phase_registration->$field_id;
+        $this->assertNotNull($valor_via_getter, 'Certificando que o getter field_* retorna valor quando a inscrição não tem o campo preenchido');
+        $this->assertEquals($valor_na_first_phase, $valor_via_getter, 'Certificando que o getter field_* retorna o valor do campo da inscrição na first phase');
+    }
 }
