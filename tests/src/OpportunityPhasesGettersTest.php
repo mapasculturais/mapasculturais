@@ -744,4 +744,72 @@ class OpportunityPhasesGettersTest extends TestCase
         $this->assertNotNull($registration_last_phase_self, 'Certificando que lastPhase da inscrição na lastPhase retorna valor');
         $this->assertEquals($last_phase_registration->id, $registration_last_phase_self->id, 'Certificando que lastPhase da inscrição na lastPhase retorna ela mesma');
     }
+
+    // Registration.nextPhase
+    function testRegistrationNextPhaseGetter()
+    {
+        $admin = $this->userDirector->createUser('admin');
+        $this->login($admin);
+
+        /** @var Opportunity $opportunity */
+        $opportunity = $this->opportunityBuilder
+            ->reset(owner: $admin->profile, owner_entity: $admin->profile)
+            ->fillRequiredProperties()
+            ->firstPhase()
+                ->setRegistrationPeriod(new Open)
+                ->done()
+            ->save()
+            ->getInstance();
+
+        $eval_phase_1 = $this->opportunityBuilder
+            ->addEvaluationPhase(EvaluationMethods::simple)
+                ->setEvaluationPeriod(new ConcurrentEndingAfter)
+                ->save()
+                ->getInstance();
+
+        $eval_phase_2 = $this->opportunityBuilder
+            ->addEvaluationPhase(EvaluationMethods::simple)
+                ->setEvaluationPeriod(new ConcurrentEndingAfter)
+                ->save()
+                ->getInstance();
+        $eval_phase_2_opp = $eval_phase_2->opportunity;
+
+        $opportunity = $opportunity->refreshed();
+        $last_phase = $opportunity->lastPhase;
+
+        /** @var Registration $first_phase_registration */
+        $first_phase_registration = $this->registrationDirector->createSentRegistration($opportunity, []);
+
+        $first_phase_registration->setStatusToApproved(true);
+        $first_phase_registration = $first_phase_registration->refreshed();
+
+        $next_phase = $opportunity->nextPhase;
+        $next_phase->syncRegistrations([$first_phase_registration]);
+        $this->processJobs();
+
+        $repo = $this->app->repo('Registration');
+        $first_phase_registration = $repo->find($first_phase_registration->id);
+
+        $eval_phase_2_registration = $repo->findOneBy(['number' => $first_phase_registration->number, 'opportunity' => $eval_phase_2_opp]);
+        $last_phase_registration = $repo->findOneBy(['number' => $first_phase_registration->number, 'opportunity' => $last_phase]);
+
+        $this->assertNotNull($eval_phase_2_registration, 'Certificando que a inscrição foi sincronizada para a segunda fase de avaliação');
+        $this->assertNotNull($last_phase_registration, 'Certificando que a inscrição foi sincronizada para a lastPhase');
+
+        // Inscrição na firstPhase -> nextPhase deve retornar a inscrição na próxima fase
+        $registration_next = $first_phase_registration->nextPhase;
+        $this->assertNotNull($registration_next, 'Certificando que nextPhase da inscrição na firstPhase retorna valor');
+        $this->assertEquals($eval_phase_2_registration->id, $registration_next->id, 'Certificando que nextPhase retorna a inscrição na próxima fase (eval_phase_2)');
+        $this->assertEquals($first_phase_registration->number, $registration_next->number, 'Certificando que a inscrição na próxima fase tem o mesmo number');
+        $this->assertEquals($eval_phase_2_opp->id, $registration_next->opportunity->id, 'Certificando que a inscrição retornada pertence à segunda fase de avaliação');
+
+        // Inscrição na segunda fase de avaliação -> nextPhase deve retornar a inscrição na lastPhase
+        $registration_next = $eval_phase_2_registration->nextPhase;
+        $this->assertNotNull($registration_next, 'Certificando que nextPhase da inscrição na eval_phase_2 retorna valor');
+        $this->assertEquals($last_phase_registration->id, $registration_next->id, 'Certificando que nextPhase da eval_phase_2 é a inscrição na lastPhase');
+
+        // Inscrição na lastPhase -> nextPhase deve ser null (não há próxima fase)
+        $registration_next = $last_phase_registration->nextPhase;
+        $this->assertNull($registration_next, 'Certificando que nextPhase da inscrição na lastPhase é null');
+    }
 }
