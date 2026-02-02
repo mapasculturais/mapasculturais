@@ -5,25 +5,26 @@ namespace Test;
 use MapasCulturais\API;
 use MapasCulturais\App;
 use MapasCulturais\ApiQuery;
-use MapasCulturais\Connection;
-use MapasCulturais\Entities\Opportunity;
-use MapasCulturais\Entities\Registration;
 use Tests\Abstract\TestCase;
-use Tests\Builders\PhasePeriods\After;
-use Tests\Builders\PhasePeriods\ConcurrentEndingAfter;
+use Tests\Traits\UserDirector;
+use Tests\Enums\ProponentTypes;
+use Tests\Traits\AgentDirector;
+use Tests\Traits\RequestFactory;
+use Tests\Traits\OpportunityBuilder;
 use Tests\Builders\PhasePeriods\Open;
 use Tests\Builders\PhasePeriods\Past;
-use Tests\Traits\AgentDirector;
-use Tests\Traits\OpportunityBuilder;
+use Tests\Builders\PhasePeriods\After;
 use Tests\Traits\RegistrationDirector;
-use Tests\Traits\UserDirector;
+use MapasCulturais\Entities\Opportunity;
+use MapasCulturais\Entities\Registration;
 
 class OpportunityRegistrationsTest extends TestCase
 {
     use OpportunityBuilder,
         RegistrationDirector,
         AgentDirector,
-        UserDirector;
+        UserDirector,
+        RequestFactory;
 
 
     function testRequiredOneLevelConditionalField() {
@@ -388,4 +389,54 @@ class OpportunityRegistrationsTest extends TestCase
             $this->assertEquals($expected['escolaridade'], $registration_data[$field_escolaridade_name], "Certificando que o valor de escolaridade (coletivo) está correto na inscrição {$registration_id}");
         }
     }
+
+    function testSendRegistration() 
+    {
+        $admin = $this->userDirector->createUser('admin');
+        $this->login($admin);
+
+        /** @var Opportunity */
+        $opportunity = $this->opportunityBuilder
+                            ->reset(owner: $admin->profile, owner_entity: $admin->profile)
+                            ->fillRequiredProperties()
+                            ->setVacancies(2)
+                            ->addProponentType(ProponentTypes::PESSOA_FISICA)
+                            ->addCategory('Literatura')
+                            ->save()
+                            ->firstPhase()
+                                ->setRegistrationPeriod(new Open)
+                                ->createStep('etapa')
+                                ->createField('cor', 'select', required:true, options:['Azul', 'Vermelho', 'Amarelo'])
+                                ->done()
+                            ->save()
+                            ->refresh()
+                            ->getInstance();
+                            
+        $field_cor = $this->opportunityBuilder->getFieldName('cor');
+
+        $registrations = $this->registrationDirector->createDraftRegistrations(
+            $opportunity,
+            number_of_registrations: 2,
+            category: 'Literatura',
+            proponent_type: ProponentTypes::PESSOA_FISICA->value
+        );
+        
+        foreach($registrations as $registration) {  
+            $registration->$field_cor = 'Vermelho';
+            $registration->save(true);
+            
+            $request = $this->requestFactory->POST(
+                controller_id: 'registration', 
+                action: 'send', 
+                url_params: [$registration->id],
+                ajax: true
+            );
+
+            $this->assertStatus200($request, 'Garantindo status 200 na rota POST "registration.send" para inscrições');
+
+            $this->assertEquals(Registration::STATUS_SENT, $registration->status, 'Certificando que a inscrição foi enviada');
+        }
+
+    }
+                            
 }
