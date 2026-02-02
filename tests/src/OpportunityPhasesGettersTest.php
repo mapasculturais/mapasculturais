@@ -3,6 +3,7 @@
 namespace Test;
 
 use MapasCulturais\Entities\Opportunity;
+use MapasCulturais\Entities\Registration;
 use Tests\Abstract\TestCase;
 use Tests\Builders\PhasePeriods\ConcurrentEndingAfter;
 use Tests\Builders\PhasePeriods\Open;
@@ -676,5 +677,71 @@ class OpportunityPhasesGettersTest extends TestCase
 
         // lastPhase -> isFirstPhase deve ser false
         $this->assertFalse($last_phase->isFirstPhase, 'Certificando que isFirstPhase da lastPhase é false');
+    }
+
+    // Registration.lastPhase
+    function testRegistrationLastPhaseGetter()
+    {
+        $admin = $this->userDirector->createUser('admin');
+        $this->login($admin);
+
+        /** @var Opportunity $opportunity */
+        $opportunity = $this->opportunityBuilder
+            ->reset(owner: $admin->profile, owner_entity: $admin->profile)
+            ->fillRequiredProperties()
+            ->firstPhase()
+                ->setRegistrationPeriod(new Open)
+                ->done()
+            ->save()
+            ->getInstance();
+
+        $eval_phase_1 = $this->opportunityBuilder
+            ->addEvaluationPhase(EvaluationMethods::simple)
+                ->setEvaluationFrom('+2 days')
+                ->setEvaluationTo('+9 days')
+                ->save()
+                ->getInstance();
+
+        $eval_phase_2 = $this->opportunityBuilder
+            ->addEvaluationPhase(EvaluationMethods::simple)
+                ->setEvaluationFrom('+10 days')
+                ->setEvaluationTo('+17 days')
+                ->save()
+                ->getInstance();
+
+        $eval_phase_3 = $this->opportunityBuilder
+            ->addEvaluationPhase(EvaluationMethods::simple)
+                ->setEvaluationFrom('+18 days')
+                ->setEvaluationTo('+25 days')
+                ->save()
+                ->getInstance();
+
+        $opportunity = $opportunity->refreshed();
+        $last_phase = $opportunity->lastPhase;
+
+        /** @var Registration $first_phase_registration */
+        $first_phase_registration = $this->registrationDirector->createSentRegistration($opportunity, []);
+
+        $last_phase->syncRegistrations([$first_phase_registration]);
+
+        // Buscar a inscrição sincronizada na lastPhase
+        $last_phase_registration = $this->app->repo('Registration')->findOneBy([
+            'number' => $first_phase_registration->number,
+            'opportunity' => $last_phase
+        ]);
+
+        $this->assertNotNull($last_phase_registration, 'Certificando que a inscrição foi sincronizada para a lastPhase');
+
+        // Inscrição na firstPhase -> lastPhase deve retornar a inscrição na lastPhase
+        $registration_last_phase = $first_phase_registration->lastPhase;
+        $this->assertNotNull($registration_last_phase, 'Certificando que lastPhase da inscrição na firstPhase retorna valor');
+        $this->assertEquals($last_phase_registration->id, $registration_last_phase->id, 'Certificando que lastPhase retorna a inscrição correta na lastPhase');
+        $this->assertEquals($first_phase_registration->number, $registration_last_phase->number, 'Certificando que a inscrição na lastPhase tem o mesmo number');
+        $this->assertEquals($last_phase->id, $registration_last_phase->opportunity->id, 'Certificando que a inscrição retornada pertence à lastPhase');
+
+        // Inscrição na lastPhase -> lastPhase deve retornar ela mesma
+        $registration_last_phase_self = $last_phase_registration->lastPhase;
+        $this->assertNotNull($registration_last_phase_self, 'Certificando que lastPhase da inscrição na lastPhase retorna valor');
+        $this->assertEquals($last_phase_registration->id, $registration_last_phase_self->id, 'Certificando que lastPhase da inscrição na lastPhase retorna ela mesma');
     }
 }
