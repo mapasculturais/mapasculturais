@@ -762,17 +762,6 @@ class Module extends \MapasCulturais\Module{
 
         });
 
-        $app->hook('entity(Registration).get(firstPhase)', function(&$value) use($registration_repository) {
-            /** @var Registration $this */
-
-            $this->enableCacheGetterResult('firstPhase');
-
-            $opportunity = $this->opportunity;
-
-            $value = $registration_repository->findOneBy(['opportunity' => $opportunity->firstPhase, 'number' => $this->number]);
-
-        });
-
         /**
          * NOVAS ROTAS
          */
