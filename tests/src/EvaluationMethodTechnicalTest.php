@@ -5,6 +5,7 @@ namespace Test;
 use MapasCulturais\App;
 use MapasCulturais\Controllers\Opportunity as OpportunityController;
 use MapasCulturais\Entities\Opportunity;
+use MapasCulturais\Entities\User;
 use Tests\Abstract\TestCase;
 use Tests\Builders\PhasePeriods\ConcurrentEndingAfter;
 use Tests\Builders\PhasePeriods\Past;
@@ -172,7 +173,7 @@ class EvaluationMethodTechnicalTest extends TestCase
         $this->assertCount(3, $eligible, "Certificando que o número de inscrições elegíveis a cota dentro da zona de classificação está correto");
     }
 
-    protected function createOpportunityWithRanges($admin): Opportunity
+    protected function createOpportunityWithRanges(User $admin): Opportunity
     {
         $opportunity = $this->opportunityBuilder
             ->reset(owner: $admin->profile, owner_entity: $admin->profile)
@@ -195,7 +196,7 @@ class EvaluationMethodTechnicalTest extends TestCase
         return $opportunity;
     }
 
-    protected function createOpportunityWithQuotas($admin): Opportunity
+    protected function createOpportunityWithQuotas(User $admin): Opportunity
     {
         $opportunity = $this->opportunityBuilder
             ->reset(owner: $admin->profile, owner_entity: $admin->profile)
@@ -276,7 +277,7 @@ class EvaluationMethodTechnicalTest extends TestCase
         return $created_regions;
     }
 
-    protected function createOpportunityWithTerritoryVacancies($admin): Opportunity
+    protected function createOpportunityWithTerritoryVacancies(User $admin): Opportunity
     {
         $opportunity = $this->opportunityBuilder
             ->reset(owner: $admin->profile, owner_entity: $admin->profile)
@@ -320,7 +321,7 @@ class EvaluationMethodTechnicalTest extends TestCase
         return $opportunity;
     }
 
-    protected function createOpportunityWithQuotasAndTerritoryVacancies($admin): Opportunity
+    protected function createOpportunityWithQuotasAndTerritoryVacancies(User $admin): Opportunity
     {
         $opportunity = $this->opportunityBuilder
             ->reset(owner: $admin->profile, owner_entity: $admin->profile)
@@ -375,7 +376,7 @@ class EvaluationMethodTechnicalTest extends TestCase
         return $opportunity;
     }
 
-    protected function createOpportunityWithRangesAndQuotas($admin): Opportunity
+    protected function createOpportunityWithRangesAndQuotas(User $admin): Opportunity
     {
         $opportunity = $this->opportunityBuilder
             ->reset(owner: $admin->profile, owner_entity: $admin->profile)
@@ -414,7 +415,7 @@ class EvaluationMethodTechnicalTest extends TestCase
         return $opportunity;
     }
 
-    protected function createOpportunityWithRangesAndTerritoryVacancies($admin): Opportunity
+    protected function createOpportunityWithRangesAndTerritoryVacancies(User $admin): Opportunity
     {
         $opportunity = $this->opportunityBuilder
             ->reset(owner: $admin->profile, owner_entity: $admin->profile)
@@ -460,7 +461,7 @@ class EvaluationMethodTechnicalTest extends TestCase
         return $opportunity;
     }
 
-    protected function createOpportunityWithRangesQuotasAndTerritoryVacancies($admin): Opportunity
+    protected function createOpportunityWithRangesQuotasAndTerritoryVacancies(User $admin): Opportunity
     {
         $opportunity = $this->opportunityBuilder
             ->reset(owner: $admin->profile, owner_entity: $admin->profile)
