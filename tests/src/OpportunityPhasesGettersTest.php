@@ -1117,4 +1117,47 @@ class OpportunityPhasesGettersTest extends TestCase
         $this->assertEquals($last_phase->id, $next->id, 'Certificando que nextPhase do eval_phase_2 é a lastPhase');
         $this->assertInstanceOf(\MapasCulturais\Entities\Opportunity::class, $next, 'Certificando que nextPhase retorna uma Opportunity (lastPhase)');
     }
+
+    // EvaluationMethodConfiguration.previousPhase
+    function testEvaluationMethodConfigurationPreviousPhaseGetter()
+    {
+        $admin = $this->userDirector->createUser('admin');
+        $this->login($admin);
+
+        /** @var Opportunity $opportunity */
+        $opportunity = $this->opportunityBuilder
+            ->reset(owner: $admin->profile, owner_entity: $admin->profile)
+            ->fillRequiredProperties()
+            ->firstPhase()
+                ->setRegistrationPeriod(new Open)
+                ->done()
+            ->save()
+            ->getInstance();
+
+        $eval_phase_1 = $this->opportunityBuilder
+            ->addEvaluationPhase(EvaluationMethods::simple)
+                ->setEvaluationPeriod(new ConcurrentEndingAfter)
+                ->save()
+                ->getInstance();
+
+        $eval_phase_2 = $this->opportunityBuilder
+            ->addEvaluationPhase(EvaluationMethods::simple)
+                ->setEvaluationPeriod(new ConcurrentEndingAfter)
+                ->save()
+                ->getInstance();
+
+        $opportunity = $opportunity->refreshed();
+
+        // eval_phase_1 -> previousPhase deve retornar a firstPhase (Opportunity, pois a opportunity do eval_phase_1 é isDataCollection)
+        $previous = $eval_phase_1->previousPhase;
+        $this->assertNotNull($previous, 'Certificando que previousPhase do eval_phase_1 retorna valor');
+        $this->assertEquals($opportunity->id, $previous->id, 'Certificando que previousPhase do eval_phase_1 é a firstPhase');
+        $this->assertInstanceOf(\MapasCulturais\Entities\Opportunity::class, $previous, 'Certificando que previousPhase retorna uma Opportunity (firstPhase)');
+
+        // eval_phase_2 -> previousPhase deve retornar eval_phase_1 (próximo EvaluationMethodConfiguration anterior)
+        $previous = $eval_phase_2->previousPhase;
+        $this->assertNotNull($previous, 'Certificando que previousPhase do eval_phase_2 retorna valor');
+        $this->assertEquals($eval_phase_1->id, $previous->id, 'Certificando que previousPhase do eval_phase_2 é o eval_phase_1');
+        $this->assertInstanceOf(\MapasCulturais\Entities\EvaluationMethodConfiguration::class, $previous, 'Certificando que previousPhase retorna um EvaluationMethodConfiguration');
+    }
 }
