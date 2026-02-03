@@ -1073,4 +1073,48 @@ class OpportunityPhasesGettersTest extends TestCase
         $this->assertNotNull($registration_first_phase, 'Certificando que firstPhase da inscrição na lastPhase retorna valor');
         $this->assertEquals($first_phase_registration->id, $registration_first_phase->id, 'Certificando que firstPhase da lastPhase é a inscrição na firstPhase');
     }
+
+    // EvaluationMethodConfiguration.nextPhase
+    function testEvaluationMethodConfigurationNextPhaseGetter()
+    {
+        $admin = $this->userDirector->createUser('admin');
+        $this->login($admin);
+
+        /** @var Opportunity $opportunity */
+        $opportunity = $this->opportunityBuilder
+            ->reset(owner: $admin->profile, owner_entity: $admin->profile)
+            ->fillRequiredProperties()
+            ->firstPhase()
+                ->setRegistrationPeriod(new Open)
+                ->done()
+            ->save()
+            ->getInstance();
+
+        $eval_phase_1 = $this->opportunityBuilder
+            ->addEvaluationPhase(EvaluationMethods::simple)
+                ->setEvaluationPeriod(new ConcurrentEndingAfter)
+                ->save()
+                ->getInstance();
+
+        $eval_phase_2 = $this->opportunityBuilder
+            ->addEvaluationPhase(EvaluationMethods::simple)
+                ->setEvaluationPeriod(new ConcurrentEndingAfter)
+                ->save()
+                ->getInstance();
+
+        $opportunity = $opportunity->refreshed();
+        $last_phase = $opportunity->lastPhase;
+
+        // eval_phase_1 -> nextPhase deve retornar eval_phase_2
+        $next = $eval_phase_1->nextPhase;
+        $this->assertNotNull($next, 'Certificando que nextPhase do eval_phase_1 retorna valor');
+        $this->assertEquals($eval_phase_2->id, $next->id, 'Certificando que nextPhase do eval_phase_1 é o eval_phase_2');
+        $this->assertInstanceOf(\MapasCulturais\Entities\EvaluationMethodConfiguration::class, $next, 'Certificando que nextPhase retorna um EvaluationMethodConfiguration');
+
+        // eval_phase_2 -> nextPhase deve retornar a lastPhase
+        $next = $eval_phase_2->nextPhase;
+        $this->assertNotNull($next, 'Certificando que nextPhase do eval_phase_2 retorna valor');
+        $this->assertEquals($last_phase->id, $next->id, 'Certificando que nextPhase do eval_phase_2 é a lastPhase');
+        $this->assertInstanceOf(\MapasCulturais\Entities\Opportunity::class, $next, 'Certificando que nextPhase retorna uma Opportunity (lastPhase)');
+    }
 }
