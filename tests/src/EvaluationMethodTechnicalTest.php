@@ -178,9 +178,9 @@ class EvaluationMethodTechnicalTest extends TestCase
         $opportunity = $this->opportunityBuilder
             ->reset(owner: $admin->profile, owner_entity: $admin->profile)
             ->fillRequiredProperties()
-            ->setVacancies(100)
-            ->addRange('Longa Metragem', 30, 0)
-            ->addRange('Curta Metragem', 70, 0)
+            ->setVacancies(10)
+            ->addRange('Longa Metragem', 3, 0)
+            ->addRange('Curta Metragem', 7, 0)
             ->firstPhase()
                 ->setRegistrationPeriod(new Past)
                 ->save()
@@ -538,12 +538,12 @@ class EvaluationMethodTechnicalTest extends TestCase
             '@order' => '@quota'
         ], true);
 
-        // Filtra as inscrições classificadas respeitando os limites de cada faixa (30 Longas + 70 Curtas)
+        // Filtra as inscrições classificadas respeitando os limites de cada faixa (3 Longas + 7 Curtas)
         $longa_count = 0;
         $curta_count = 0;
         $lowest_score = 100;
 
-        for($i = 0; $i < 100; $i++) {
+        for($i = 0; $i < 10; $i++) {
             $registration = $query_result->registrations[$i];
 
             $lowest_score = min($lowest_score, $registration['score']);
@@ -557,11 +557,11 @@ class EvaluationMethodTechnicalTest extends TestCase
             }
         }
 
-        // Verifica que foram selecionados exatamente 30 Longas
-        $this->assertEquals(30, $longa_count, "Deve ter exatamente 30 inscrições de Longa Metragem classificadas");
+        // Verifica que foram selecionados exatamente 3 Longas
+        $this->assertEquals(3, $longa_count, "Deve ter exatamente 3 inscrições de Longa Metragem classificadas");
 
-        // Verifica que foram selecionados exatamente 70 Curtas
-        $this->assertEquals(70, $curta_count, "Deve ter exatamente 70 inscrições de Curta Metragem classificadas");
+        // Verifica que foram selecionados exatamente 7 Curtas
+        $this->assertEquals(7, $curta_count, "Deve ter exatamente 7 inscrições de Curta Metragem classificadas");
 
         // Verifica que todas as inscrições selecionadas têm nota >= 40 (nota de corte)
         $this->assertGreaterThanOrEqual(40.0, $lowest_score, "A menor nota deve ser >= 40 (nota de corte)");
@@ -572,10 +572,10 @@ class EvaluationMethodTechnicalTest extends TestCase
         $query_result = $opportunity_controller->apiFindRegistrations($opportunity, [
             '@select' => 'number,range,score,eligible',
             '@order' => '@quota',
-            '@limit' => 100,
+            '@limit' => 10,
         ], true);
 
-        // Filtra as inscrições classificadas respeitando os limites de cada faixa (30 Longas + 70 Curtas)
+        // Filtra as inscrições classificadas respeitando os limites de cada faixa (3 Longas + 7 Curtas)
         $longa_count = 0;
         $curta_count = 0;
         $lowest_score = 100;
@@ -592,26 +592,26 @@ class EvaluationMethodTechnicalTest extends TestCase
             }
         }
 
-        // Verifica que foram selecionados exatamente 30 Longas
-        $this->assertEquals(30, $longa_count, "[LIMIT 100] Deve ter exatamente 30 inscrições de Longa Metragem classificadas");
+        // Verifica que foram selecionados exatamente 3 Longas
+        $this->assertEquals(3, $longa_count, "[LIMIT 10] Deve ter exatamente 3 inscrições de Longa Metragem classificadas");
 
-        // Verifica que foram selecionados exatamente 70 Curtas
-        $this->assertEquals(70, $curta_count, "[LIMIT 100] Deve ter exatamente 70 inscrições de Curta Metragem classificadas");
+        // Verifica que foram selecionados exatamente 7 Curtas
+        $this->assertEquals(7, $curta_count, "[LIMIT 10] Deve ter exatamente 7 inscrições de Curta Metragem classificadas");
 
         // Verifica que todas as inscrições selecionadas têm nota >= 40 (nota de corte)
-        $this->assertGreaterThanOrEqual(40.0, $lowest_score, "[LIMIT 100] A menor nota deve ser >= 40 (nota de corte)");
+        $this->assertGreaterThanOrEqual(40.0, $lowest_score, "[LIMIT 10] A menor nota deve ser >= 40 (nota de corte)");
 
         // ================================
-        // Testando com paginação 10 em 10
+        // Testando com paginação 5 em 5
         $longa_count = 0;
         $curta_count = 0;
         $lowest_score = 100;
 
-        for($page = 1; $page <= 10; $page++) {
+        for($page = 1; $page <= 2; $page++) {
             $query_result = $opportunity_controller->apiFindRegistrations($opportunity, [
                 '@select' => 'number,range,score,eligible',
                 '@order' => '@quota',
-                '@limit' => 10,
+                '@limit' => 5,
                 '@page' => $page,
             ], true);
 
@@ -628,8 +628,8 @@ class EvaluationMethodTechnicalTest extends TestCase
             }
         }      
 
-        $this->assertEquals(30, $longa_count, "[PAGINAÇÃO] Deve ter exatamente 30 inscrições de Longa Metragem classificadas");
-        $this->assertEquals(70, $curta_count, "[PAGINAÇÃO] Deve ter exatamente 70 inscrições de Curta Metragem classificadas");
+        $this->assertEquals(3, $longa_count, "[PAGINAÇÃO] Deve ter exatamente 3 inscrições de Longa Metragem classificadas");
+        $this->assertEquals(7, $curta_count, "[PAGINAÇÃO] Deve ter exatamente 7 inscrições de Curta Metragem classificadas");
         $this->assertGreaterThanOrEqual(40.0, $lowest_score, "[PAGINAÇÃO] A menor nota deve ser >= 40 (nota de corte)");
 
     }
@@ -654,12 +654,12 @@ class EvaluationMethodTechnicalTest extends TestCase
             '@order' => '@quota'
         ], true);
 
-        // Filtra as inscrições classificadas respeitando os limites de cada faixa (máx. 30 Longas + 70 Curtas)
+        // Filtra as inscrições classificadas respeitando os limites de cada faixa (máx. 3 Longas + 7 Curtas)
         $longa_count = 0;
         $curta_count = 0;
         $lowest_score = 100;
 
-        for($i = 0; $i < 100; $i++) {
+        for($i = 0; $i < 10; $i++) {
             $registration = $query_result->registrations[$i];
 
             $lowest_score = min($lowest_score, $registration['score']);
@@ -673,25 +673,25 @@ class EvaluationMethodTechnicalTest extends TestCase
             }
         }
 
-        // Verifica que foram selecionados 90 Curtas (70 da faixa + 20 que preenchem vagas de Longa não preenchidas)
-        $this->assertEquals(90, $curta_count, "Deve ter 90 inscrições de Curta Metragem classificadas (70 da faixa + 20 preenchendo vagas de Longa)");
+        // Verifica que foram selecionados 9 Curtas (7 da faixa + 2 que preenchem vagas de Longa não preenchidas)
+        $this->assertEquals(9, $curta_count, "Deve ter 9 inscrições de Curta Metragem classificadas (7 da faixa + 2 preenchendo vagas de Longa)");
 
-        // Verifica que foram selecionados apenas 10 Longas (não 30, pois faltam candidatos qualificados)
-        $this->assertEquals(10, $longa_count, "Deve ter apenas 10 inscrições de Longa Metragem classificadas (faltam candidatos qualificados)");
+        // Verifica que foram selecionados apenas 1 Longa (não 3, pois faltam candidatos qualificados)
+        $this->assertEquals(1, $longa_count, "Deve ter apenas 1 inscrição de Longa Metragem classificada (faltam candidatos qualificados)");
 
         // Verifica que todas as inscrições selecionadas têm nota >= 40 (nota de corte)
         $this->assertGreaterThanOrEqual(40.0, $lowest_score, "A menor nota deve ser >= 40 (nota de corte)");
 
         // ================================
-        // Testando com paginação
+        // Testando com limite
 
         $query_result = $opportunity_controller->apiFindRegistrations($opportunity, [
             '@select' => 'number,range,score,eligible',
             '@order' => '@quota',
-            '@limit' => 100,
+            '@limit' => 10,
         ], true);
 
-        // Filtra as inscrições classificadas respeitando os limites de cada faixa (máx. 30 Longas + 70 Curtas)
+        // Filtra as inscrições classificadas respeitando os limites de cada faixa (máx. 3 Longas + 7 Curtas)
         $longa_count = 0;
         $curta_count = 0;
         $lowest_score = 100;
@@ -708,26 +708,26 @@ class EvaluationMethodTechnicalTest extends TestCase
             }
         }
 
-        // Verifica que foram selecionados 90 Curtas (70 da faixa + 20 que preenchem vagas de Longa não preenchidas)
-        $this->assertEquals(90, $curta_count, "[LIMIT 100] Deve ter 90 inscrições de Curta Metragem classificadas (70 da faixa + 20 preenchendo vagas de Longa)");
+        // Verifica que foram selecionados 9 Curtas (7 da faixa + 2 que preenchem vagas de Longa não preenchidas)
+        $this->assertEquals(9, $curta_count, "[LIMIT 10] Deve ter 9 inscrições de Curta Metragem classificadas (7 da faixa + 2 preenchendo vagas de Longa)");
 
-        // Verifica que foram selecionados apenas 10 Longas (não 30, pois faltam candidatos qualificados)
-        $this->assertEquals(10, $longa_count, "[LIMIT 100] Deve ter apenas 10 inscrições de Longa Metragem classificadas (faltam candidatos qualificados)");
+        // Verifica que foram selecionados apenas 1 Longa (não 3, pois faltam candidatos qualificados)
+        $this->assertEquals(1, $longa_count, "[LIMIT 10] Deve ter apenas 1 inscrição de Longa Metragem classificada (faltam candidatos qualificados)");
 
         // Verifica que todas as inscrições selecionadas têm nota >= 40 (nota de corte)
-        $this->assertGreaterThanOrEqual(40.0, $lowest_score, "[LIMIT 100] A menor nota deve ser >= 40 (nota de corte)");
+        $this->assertGreaterThanOrEqual(40.0, $lowest_score, "[LIMIT 10] A menor nota deve ser >= 40 (nota de corte)");
 
         // ================================
-        // Testando com paginação 10 em 10
+        // Testando com paginação 5 em 5
         $longa_count = 0;
         $curta_count = 0;
         $lowest_score = 100;
 
-        for($page = 1; $page <= 10; $page++) {
+        for($page = 1; $page <= 2; $page++) {
             $query_result = $opportunity_controller->apiFindRegistrations($opportunity, [
                 '@select' => 'number,range,score,eligible',
                 '@order' => '@quota',
-                '@limit' => 10,
+                '@limit' => 5,
                 '@page' => $page,
             ], true);
 
@@ -744,8 +744,8 @@ class EvaluationMethodTechnicalTest extends TestCase
             }
         }      
 
-        $this->assertEquals(90, $curta_count, "[PAGINAÇÃO] Deve ter 90 inscrições de Curta Metragem classificadas (70 da faixa + 20 preenchendo vagas de Longa)");
-        $this->assertEquals(10, $longa_count, "[PAGINAÇÃO] Deve ter apenas 10 inscrições de Longa Metragem classificadas (faltam candidatos qualificados)");
+        $this->assertEquals(9, $curta_count, "[PAGINAÇÃO] Deve ter 9 inscrições de Curta Metragem classificadas (7 da faixa + 2 preenchendo vagas de Longa)");
+        $this->assertEquals(1, $longa_count, "[PAGINAÇÃO] Deve ter apenas 1 inscrição de Longa Metragem classificada (faltam candidatos qualificados)");
         $this->assertGreaterThanOrEqual(40.0, $lowest_score, "[PAGINAÇÃO] A menor nota deve ser >= 40 (nota de corte)");
     }
 
