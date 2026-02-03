@@ -130,25 +130,26 @@ class QuotaRegistrationDirector extends Director
     /**
      * Cenário 1: "Caminho Feliz" - Faixas apenas
      * Há candidatos qualificados suficientes para preencher todas as faixas.
+     * Escala reduzida (7 Curta + 3 Longa vagas) para testes mais rápidos.
      */
     public function idealRangesScenario(Opportunity $opportunity): array
     {
         $list = [];
 
-        // 1. Garante CURTA (70 vagas) com notas altas
-        $list = array_merge($list, $this->generateBatch($opportunity, 80, [
+        // 1. Garante CURTA (7 vagas) com notas altas
+        $list = array_merge($list, $this->generateBatch($opportunity, 8, [
             'range' => self::RANGE_1,
             'score' => 90.0
         ], use_range: true));
 
-        // 2. Garante LONGA (30 vagas) com notas altas. Criados mais do que o necessário para garantir que temos candidatos suficientes
-        $list = array_merge($list, $this->generateBatch($opportunity, 50, [
+        // 2. Garante LONGA (3 vagas) com notas altas
+        $list = array_merge($list, $this->generateBatch($opportunity, 5, [
             'range' => self::RANGE_2,
             'score' => 95.0  // Nota mais alta para garantir que sejam selecionadas
         ], use_range: true));
 
-        // 3. Adiciona Ruído (Gente reprovada e excedente) - mas com notas mais baixas para garantir que não sejam classificadas em vez das de Longa (nota máxima 50)
-        $list = array_merge($list, $this->generateNoise($opportunity, 50, 50.0, use_range: true));
+        // 3. Ruído (nota máxima 50, abaixo de corte 40 em parte) - não devem ser classificados
+        $list = array_merge($list, $this->generateNoise($opportunity, 5, 50.0, use_range: true));
         
         shuffle($list);
         return $this->createRegistrationsFromData($list);
@@ -157,26 +158,26 @@ class QuotaRegistrationDirector extends Director
     /**
      * Cenário 2: Falha na Faixa (Orçamento preso)
      * Sobram candidatos em Curta, mas FALTAM candidatos qualificados em Longa.
+     * Escala reduzida (7 Curta + 3 Longa vagas): 1 Longa qualificada, 9 Curta classificadas.
      */
     public function restrictedRangesScenario(Opportunity $opportunity): array
     {
         $list = [];
 
-        // CURTA: Superpopulação (150 inscritos para 70 vagas)
-        $list = array_merge($list, $this->generateBatch($opportunity, 150, [
+        // CURTA: Superpopulação (15 inscritos para 7 vagas)
+        $list = array_merge($list, $this->generateBatch($opportunity, 15, [
             'range' => self::RANGE_1,
             'score' => 90.0
         ], use_range: true));
 
-        // LONGA: Escassez (Apenas 10 qualificados para 30 vagas)
-        $list = array_merge($list, $this->generateBatch($opportunity, 10, [
+        // LONGA: Escassez (1 qualificado para 3 vagas)
+        $list = array_merge($list, $this->generateBatch($opportunity, 1, [
             'range' => self::RANGE_2,
             'score' => 80.0
         ], use_range: true));
 
-        // LONGA: Existem outros inscritos, mas todos DESCLASSIFICADOS (< 40)
-        // Eles existem, mas não podem levar a vaga.
-        $list = array_merge($list, $this->generateBatch($opportunity, 20, [
+        // LONGA: Inscritos desclassificados (< 40) - não podem levar vaga
+        $list = array_merge($list, $this->generateBatch($opportunity, 2, [
             'range' => self::RANGE_2,
             'score' => 30.0
         ], use_range: true));
