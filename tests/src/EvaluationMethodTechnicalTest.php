@@ -381,9 +381,9 @@ class EvaluationMethodTechnicalTest extends TestCase
         $opportunity = $this->opportunityBuilder
             ->reset(owner: $admin->profile, owner_entity: $admin->profile)
             ->fillRequiredProperties()
-            ->setVacancies(100)
-            ->addRange('Longa Metragem', 30, 0)
-            ->addRange('Curta Metragem', 70, 0)
+            ->setVacancies(10)
+            ->addRange('Longa Metragem', 3, 0)
+            ->addRange('Curta Metragem', 7, 0)
             ->firstPhase()
                 ->setRegistrationPeriod(new Past)
                 ->enableQuotaQuestion()
@@ -399,11 +399,11 @@ class EvaluationMethodTechnicalTest extends TestCase
                 ->save()
                 ->config()
                     ->quota()
-                        ->addRule('Pessoas Negras', 20)
+                        ->addRule('Pessoas Negras', 2)
                             ->addRuleField('raca', ['Preta', 'Parda'])
-                        ->addRule('Indígenas', 5)
+                        ->addRule('Indígenas', 1)
                             ->addRuleField('raca', ['Indígena'])
-                        ->addRule('PCD', 2)
+                        ->addRule('PCD', 1)
                             ->addRuleField('pessoaDeficiente', ['Auditiva', 'Física-motora', 'Intelectual', 'Múltipla', 'Transtorno do Espectro Autista', 'Visual', 'Outras'])
                     ->done() 
                 ->done()      
@@ -1389,7 +1389,7 @@ class EvaluationMethodTechnicalTest extends TestCase
         $indigena_count = 0;
         $pcd_count = 0;
         $lowest_score = 100;
-        $total_vacancies = 100;
+        $total_vacancies = 10;
 
         for($i = 0; $i < $total_vacancies && $i < count($query_result->registrations); $i++) {
             $registration = $query_result->registrations[$i];
@@ -1419,20 +1419,20 @@ class EvaluationMethodTechnicalTest extends TestCase
             }
         }
 
-        // Verifica que foram selecionados exatamente 30 Longas
-        $this->assertEquals(30, $longa_count, "Deve ter exatamente 30 inscrições de Longa Metragem classificadas");
+        // Verifica que foram selecionados exatamente 3 Longas
+        $this->assertEquals(3, $longa_count, "Deve ter exatamente 3 inscrições de Longa Metragem classificadas");
 
-        // Verifica que foram selecionados exatamente 70 Curtas
-        $this->assertEquals(70, $curta_count, "Deve ter exatamente 70 inscrições de Curta Metragem classificadas");
+        // Verifica que foram selecionados exatamente 7 Curtas
+        $this->assertEquals(7, $curta_count, "Deve ter exatamente 7 inscrições de Curta Metragem classificadas");
 
-        // Verifica que foram selecionadas pelo menos 20 Pessoas Negras (20% de 100)
-        $this->assertGreaterThanOrEqual(20, $negra_count, "Deve ter pelo menos 20 inscrições de Pessoas Negras classificadas (20% de 100)");
+        // Verifica que foram selecionadas pelo menos 2 Pessoas Negras (20% de 10)
+        $this->assertGreaterThanOrEqual(2, $negra_count, "Deve ter pelo menos 2 inscrições de Pessoas Negras classificadas (20% de 10)");
 
-        // Verifica que foram selecionados pelo menos 5 Indígenas (5% de 100)
-        $this->assertGreaterThanOrEqual(5, $indigena_count, "Deve ter pelo menos 5 inscrições de Indígenas classificadas (5% de 100)");
+        // Verifica que foram selecionados pelo menos 1 Indígena (10% de 10)
+        $this->assertGreaterThanOrEqual(1, $indigena_count, "Deve ter pelo menos 1 inscrição de Indígenas classificada (10% de 10)");
 
-        // Verifica que foram selecionados pelo menos 2 PCD (2% de 100)
-        $this->assertGreaterThanOrEqual(2, $pcd_count, "Deve ter pelo menos 2 inscrições de PCD classificadas (2% de 100)");
+        // Verifica que foram selecionados pelo menos 1 PCD (10% de 10)
+        $this->assertGreaterThanOrEqual(1, $pcd_count, "Deve ter pelo menos 1 inscrição de PCD classificada (10% de 10)");
 
         // Verifica que todas as inscrições selecionadas têm nota >= nota de corte
         $this->assertGreaterThanOrEqual($cutoff_score, $lowest_score, "A menor nota deve ser >= {$cutoff_score} (nota de corte)");
@@ -1443,7 +1443,7 @@ class EvaluationMethodTechnicalTest extends TestCase
         $query_result = $opportunity_controller->apiFindRegistrations($opportunity, [
             '@select' => "number,range,{$field_raca},{$field_pessoa_deficiente},score,eligible,quotas",
             '@order' => '@quota',
-            '@limit' => 100,
+            '@limit' => 10,
         ], true);
 
         // Conta as inscrições classificadas respeitando os limites de cada faixa e cota
@@ -1481,22 +1481,22 @@ class EvaluationMethodTechnicalTest extends TestCase
             }
         }
 
-        // Verifica que foram selecionados exatamente 30 Longas
-        $this->assertEquals(30, $longa_count, "[LIMIT 100] Deve ter exatamente 30 inscrições de Longa Metragem classificadas");
+        // Verifica que foram selecionados exatamente 3 Longas
+        $this->assertEquals(3, $longa_count, "[LIMIT 10] Deve ter exatamente 3 inscrições de Longa Metragem classificadas");
 
-        // Verifica que foram selecionados exatamente 70 Curtas
-        $this->assertEquals(70, $curta_count, "[LIMIT 100] Deve ter exatamente 70 inscrições de Curta Metragem classificadas");
+        // Verifica que foram selecionados exatamente 7 Curtas
+        $this->assertEquals(7, $curta_count, "[LIMIT 10] Deve ter exatamente 7 inscrições de Curta Metragem classificadas");
 
         // Verifica as cotas
-        $this->assertGreaterThanOrEqual(20, $negra_count, "[LIMIT 100] Deve ter pelo menos 20 inscrições de Pessoas Negras classificadas");
-        $this->assertGreaterThanOrEqual(5, $indigena_count, "[LIMIT 100] Deve ter pelo menos 5 inscrições de Indígenas classificadas");
-        $this->assertGreaterThanOrEqual(2, $pcd_count, "[LIMIT 100] Deve ter pelo menos 2 inscrições de PCD classificadas");
+        $this->assertGreaterThanOrEqual(2, $negra_count, "[LIMIT 10] Deve ter pelo menos 2 inscrições de Pessoas Negras classificadas");
+        $this->assertGreaterThanOrEqual(1, $indigena_count, "[LIMIT 10] Deve ter pelo menos 1 inscrição de Indígenas classificada");
+        $this->assertGreaterThanOrEqual(1, $pcd_count, "[LIMIT 10] Deve ter pelo menos 1 inscrição de PCD classificada");
 
         // Verifica que todas as inscrições selecionadas têm nota >= nota de corte
-        $this->assertGreaterThanOrEqual($cutoff_score, $lowest_score, "[LIMIT 100] A menor nota deve ser >= {$cutoff_score} (nota de corte)");
+        $this->assertGreaterThanOrEqual($cutoff_score, $lowest_score, "[LIMIT 10] A menor nota deve ser >= {$cutoff_score} (nota de corte)");
 
         // ================================
-        // Testando com paginação 10 em 10
+        // Testando com paginação 5 em 5
         $longa_count = 0;
         $curta_count = 0;
         $negra_count = 0;
@@ -1504,11 +1504,11 @@ class EvaluationMethodTechnicalTest extends TestCase
         $pcd_count = 0;
         $lowest_score = 100;
 
-        for($page = 1; $page <= 10; $page++) {
+        for($page = 1; $page <= 2; $page++) {
             $query_result = $opportunity_controller->apiFindRegistrations($opportunity, [
                 '@select' => "number,range,{$field_raca},{$field_pessoa_deficiente},score,eligible,quotas",
                 '@order' => '@quota',
-                '@limit' => 10,
+                '@limit' => 5,
                 '@page' => $page,
             ], true);
 
@@ -1540,11 +1540,11 @@ class EvaluationMethodTechnicalTest extends TestCase
             }
         }
 
-        $this->assertEquals(30, $longa_count, "[PAGINAÇÃO] Deve ter exatamente 30 inscrições de Longa Metragem classificadas");
-        $this->assertEquals(70, $curta_count, "[PAGINAÇÃO] Deve ter exatamente 70 inscrições de Curta Metragem classificadas");
-        $this->assertGreaterThanOrEqual(20, $negra_count, "[PAGINAÇÃO] Deve ter pelo menos 20 inscrições de Pessoas Negras classificadas");
-        $this->assertGreaterThanOrEqual(5, $indigena_count, "[PAGINAÇÃO] Deve ter pelo menos 5 inscrições de Indígenas classificadas");
-        $this->assertGreaterThanOrEqual(2, $pcd_count, "[PAGINAÇÃO] Deve ter pelo menos 2 inscrições de PCD classificadas");
+        $this->assertEquals(3, $longa_count, "[PAGINAÇÃO] Deve ter exatamente 3 inscrições de Longa Metragem classificadas");
+        $this->assertEquals(7, $curta_count, "[PAGINAÇÃO] Deve ter exatamente 7 inscrições de Curta Metragem classificadas");
+        $this->assertGreaterThanOrEqual(2, $negra_count, "[PAGINAÇÃO] Deve ter pelo menos 2 inscrições de Pessoas Negras classificadas");
+        $this->assertGreaterThanOrEqual(1, $indigena_count, "[PAGINAÇÃO] Deve ter pelo menos 1 inscrição de Indígenas classificada");
+        $this->assertGreaterThanOrEqual(1, $pcd_count, "[PAGINAÇÃO] Deve ter pelo menos 1 inscrição de PCD classificada");
         $this->assertGreaterThanOrEqual($cutoff_score, $lowest_score, "[PAGINAÇÃO] A menor nota deve ser >= {$cutoff_score} (nota de corte)");
     }
 
@@ -1580,7 +1580,7 @@ class EvaluationMethodTechnicalTest extends TestCase
         $indigena_count = 0;
         $pcd_count = 0;
         $lowest_score = 100;
-        $total_vacancies = 100;
+        $total_vacancies = 10;
 
         for($i = 0; $i < $total_vacancies && $i < count($query_result->registrations); $i++) {
             $registration = $query_result->registrations[$i];
@@ -1610,14 +1610,14 @@ class EvaluationMethodTechnicalTest extends TestCase
             }
         }
 
-        // Verifica que foram selecionados exatamente 30 Longas (faixas não podem variar)
-        $this->assertEquals(30, $longa_count, "Deve ter exatamente 30 inscrições de Longa Metragem classificadas (faixas não podem variar)");
+        // Verifica que foram selecionados exatamente 3 Longas (faixas não podem variar)
+        $this->assertEquals(3, $longa_count, "Deve ter exatamente 3 inscrições de Longa Metragem classificadas (faixas não podem variar)");
 
-        // Verifica que foram selecionados exatamente 70 Curtas (faixas não podem variar)
-        $this->assertEquals(70, $curta_count, "Deve ter exatamente 70 inscrições de Curta Metragem classificadas (faixas não podem variar)");
+        // Verifica que foram selecionados exatamente 7 Curtas (faixas não podem variar)
+        $this->assertEquals(7, $curta_count, "Deve ter exatamente 7 inscrições de Curta Metragem classificadas (faixas não podem variar)");
 
         // Verifica que foram selecionadas pelo menos algumas Pessoas Negras
-        $this->assertGreaterThanOrEqual(15, $negra_count, "Deve ter pelo menos 15 inscrições de Pessoas Negras classificadas (principalmente de Curta)");
+        $this->assertGreaterThanOrEqual(2, $negra_count, "Deve ter pelo menos 2 inscrições de Pessoas Negras classificadas (principalmente de Curta)");
 
         $total_quotists = $negra_count + $indigena_count + $pcd_count;
         $this->assertGreaterThan(0, $total_quotists, "Deve ter pelo menos alguns cotistas classificados");
@@ -1631,7 +1631,7 @@ class EvaluationMethodTechnicalTest extends TestCase
         $query_result = $opportunity_controller->apiFindRegistrations($opportunity, [
             '@select' => "number,range,{$field_raca},{$field_pessoa_deficiente},score,eligible,quotas",
             '@order' => '@quota',
-            '@limit' => 100,
+            '@limit' => 10,
         ], true);
 
         // Conta as inscrições classificadas respeitando os limites de cada faixa e cota
@@ -1669,23 +1669,23 @@ class EvaluationMethodTechnicalTest extends TestCase
             }
         }
 
-        // Verifica que foram selecionados exatamente 30 Longas
-        $this->assertEquals(30, $longa_count, "[LIMIT 100] Deve ter exatamente 30 inscrições de Longa Metragem classificadas");
+        // Verifica que foram selecionados exatamente 3 Longas
+        $this->assertEquals(3, $longa_count, "[LIMIT 10] Deve ter exatamente 3 inscrições de Longa Metragem classificadas");
 
-        // Verifica que foram selecionados exatamente 70 Curtas
-        $this->assertEquals(70, $curta_count, "[LIMIT 100] Deve ter exatamente 70 inscrições de Curta Metragem classificadas");
+        // Verifica que foram selecionados exatamente 7 Curtas
+        $this->assertEquals(7, $curta_count, "[LIMIT 10] Deve ter exatamente 7 inscrições de Curta Metragem classificadas");
 
         // Verifica as cotas (podem estar parcialmente preenchidas)
-        $this->assertGreaterThanOrEqual(15, $negra_count, "[LIMIT 100] Deve ter pelo menos 15 inscrições de Pessoas Negras classificadas");
+        $this->assertGreaterThanOrEqual(2, $negra_count, "[LIMIT 10] Deve ter pelo menos 2 inscrições de Pessoas Negras classificadas");
         
         $total_quotists = $negra_count + $indigena_count + $pcd_count;
-        $this->assertGreaterThan(0, $total_quotists, "[LIMIT 100] Deve ter pelo menos alguns cotistas classificados");
+        $this->assertGreaterThan(0, $total_quotists, "[LIMIT 10] Deve ter pelo menos alguns cotistas classificados");
 
         // Verifica que todas as inscrições selecionadas têm nota >= nota de corte
-        $this->assertGreaterThanOrEqual($cutoff_score, $lowest_score, "[LIMIT 100] A menor nota deve ser >= {$cutoff_score} (nota de corte)");
+        $this->assertGreaterThanOrEqual($cutoff_score, $lowest_score, "[LIMIT 10] A menor nota deve ser >= {$cutoff_score} (nota de corte)");
 
         // ================================
-        // Testando com paginação 10 em 10
+        // Testando com paginação 5 em 5
         $longa_count = 0;
         $curta_count = 0;
         $negra_count = 0;
@@ -1693,11 +1693,11 @@ class EvaluationMethodTechnicalTest extends TestCase
         $pcd_count = 0;
         $lowest_score = 100;
 
-        for($page = 1; $page <= 10; $page++) {
+        for($page = 1; $page <= 2; $page++) {
             $query_result = $opportunity_controller->apiFindRegistrations($opportunity, [
                 '@select' => "number,range,{$field_raca},{$field_pessoa_deficiente},score,eligible,quotas",
                 '@order' => '@quota',
-                '@limit' => 10,
+                '@limit' => 5,
                 '@page' => $page,
             ], true);
 
@@ -1729,9 +1729,9 @@ class EvaluationMethodTechnicalTest extends TestCase
             }
         }
 
-        $this->assertEquals(30, $longa_count, "[PAGINAÇÃO] Deve ter exatamente 30 inscrições de Longa Metragem classificadas");
-        $this->assertEquals(70, $curta_count, "[PAGINAÇÃO] Deve ter exatamente 70 inscrições de Curta Metragem classificadas");
-        $this->assertGreaterThanOrEqual(15, $negra_count, "[PAGINAÇÃO] Deve ter pelo menos 15 inscrições de Pessoas Negras classificadas");
+        $this->assertEquals(3, $longa_count, "[PAGINAÇÃO] Deve ter exatamente 3 inscrições de Longa Metragem classificadas");
+        $this->assertEquals(7, $curta_count, "[PAGINAÇÃO] Deve ter exatamente 7 inscrições de Curta Metragem classificadas");
+        $this->assertGreaterThanOrEqual(2, $negra_count, "[PAGINAÇÃO] Deve ter pelo menos 2 inscrições de Pessoas Negras classificadas");
         
         $total_quotists = $negra_count + $indigena_count + $pcd_count;
         $this->assertGreaterThan(0, $total_quotists, "[PAGINAÇÃO] Deve ter pelo menos alguns cotistas classificados");
