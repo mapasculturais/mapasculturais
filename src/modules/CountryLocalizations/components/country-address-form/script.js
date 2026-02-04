@@ -37,6 +37,11 @@ app.component('country-address-form', {
 
         countryFieldEnabled() {
             return $MAPAS.config.countryLocalization.countryFieldEnabled;
+        },
+
+        isCountryRequired() {
+            const description = this.entity.$PROPERTIES?.address_level0 || {};
+            return description.required || false;
         }
     },
 
