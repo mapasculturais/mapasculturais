@@ -48,10 +48,10 @@ app.component('country-address-form', {
     methods: {
         changeCountry() {
             this.processing = true;
-            this.entity.address_level0 = this.country;   
-            this.clearFields();
-
+            
             this.$nextTick(() => {
+                this.entity.address_level0 = this.country;
+                this.clearFields();
                 this.getLevelHierarchy();
             });
         },
