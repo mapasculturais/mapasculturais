@@ -169,7 +169,7 @@ class Controller extends \MapasCulturais\Controller
         $app->hook('mapas.printJsObject:before', function() use ($app, $entity) {
             foreach ($entity->opportunity->agentRelations as $agent_relation) {
                 if ($agent_relation->group === '@support' && $agent_relation->agent->user->equals($app->user)) {
-                    $support_fields = $agent_relation->metadata['registrationPermissions'];
+                    $support_fields = $agent_relation->metadata['registrationPermissions'] ?? [];
                     $this->jsObject['requestedEntity']['editableFields'] = [];
 
                     foreach ($support_fields as $support_field => $permission) {
