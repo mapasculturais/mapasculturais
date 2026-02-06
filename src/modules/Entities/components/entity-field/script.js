@@ -387,6 +387,15 @@ app.component('entity-field', {
             const userPermission = this.entity.currentUserPermissions?.modifyReadonlyData;
             const lockedFieldSeals = this.entity.__lockedFieldSeals;
 
+            if(this.entity.__objectType == "registration") {
+                const editableFields = this.entity.editableFields || [];
+
+                if(editableFields.length > 0 && !editableFields.includes(this.prop) && !userPermission) {
+                    this.readonly = true;
+                    return this.readonly;
+                }
+            }
+
             if(this.entity.__objectType == "registration" && this.description.registrationFieldConfiguration) {
                 const registrationConfig = this.description.registrationFieldConfiguration;
                 
