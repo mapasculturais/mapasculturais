@@ -1674,6 +1674,7 @@ class EvaluationsDistributionTest extends TestCase
             ->setCommitteeFilterRange('committee 7', ['Faixa 1'])
             ->setCommitteeFilterRange('committee 8', ['Faixa 2'])
             ->setCommitteeFilterRange('committee 9', ['Faixa 3', 'Faixa 4', 'Faixa 5'])
+            ->setCommitteeValuersPerRegistration('committee 10', 1)
             ->save()
             // Bloco para categorias
             ->addValuer('committee 1', name: 'avaliador01')
@@ -1739,7 +1740,7 @@ class EvaluationsDistributionTest extends TestCase
             'avaliador09' => 8,
             'avaliador10' => 8,
             'avaliador11' => 16,
-            'avaliador12' => 24,
+            'avaliador12' => 24, 
         ];
 
         $conn = $app->em->getConnection();
@@ -1955,7 +1956,7 @@ class EvaluationsDistributionTest extends TestCase
                 ->fields(['campo01' => ['Opcao01']])
             ->done()
             ->addValuer('committee 3', name: 'avaliador06')
-                ->fields(['campo02' => ['valor01']])
+                ->fields(['campo01' => ['Opcao01']])
                 ->done()
             ->save()
             ->done()
