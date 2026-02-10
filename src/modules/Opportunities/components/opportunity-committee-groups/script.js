@@ -8,6 +8,11 @@ app.component('opportunity-committee-groups', {
         }
     },
 
+    setup() {
+        const text = Utils.getTexts('opportunity-committee-groups');
+        return { text }
+    },
+
     data() {
         return {
             editable: true,
@@ -36,6 +41,9 @@ app.component('opportunity-committee-groups', {
             const filteredGroups = Object.keys(this.entity.relatedAgents).filter(group => group !== this.minervaGroup);
             const groupCount = filteredGroups.length;
             return groupCount >= 2 && !this.entity.relatedAgents[this.minervaGroup];
+        },
+        filterConfigurationWarning() {
+            return this.text('filter-configuration-warning');
         }
     },
 
@@ -57,6 +65,9 @@ app.component('opportunity-committee-groups', {
     },
     
     methods: {
+        hasFilterConfiguration(group) {
+            return this.entity.fetchFields?.[group] ? Object.values(this.entity.fetchFields?.[group])?.length > 0 : false;
+        },
         initLogInterval(interval = 10000){
             const self = this;
             clearInterval(this.interval);

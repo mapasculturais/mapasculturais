@@ -5,6 +5,13 @@ Todas as mudanças notáveis no projeto serão documentadas neste arquivo.
 O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/)
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [7.7.4] - 2026-02-10
+### Melhorias 
+- Implementa uma flag no componente opportunity-evaluation-committee que permite indicar que os dados devem ser salvos no agente relacionado
+- Implementa getters e setters para persistir os filtros individuais dos avaliadores no agente relacionado
+- Ajusta a lógica de distribuição das avaliações para considerar os filtros definidos no agente relacionado
+- Implementa endpoints para configurar os filtros individuais dos avaliadores, cada um em seu respectivo agente relaciona
+
 ## [7.7.3] - 2026-02-02
 ### Correções
 - Corrige erro que impedia enviar a inscrição
@@ -73,6 +80,25 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 1. <small>Melhoria desenvolvida pelo Ministério das Cidades, através da Secretaria Nacional de Periferias, para o Prêmio Periferia Viva</small>
 <a name="770-funarte"></a>
 2. <small>Melhoria desenvolvida pela Funarte (Fundação Nacional de Artes) para a Rede das Artes</small>
+
+## [7.6.42] - 2026-02-09
+### Correções
+- Corrige exibição do botão de "Editar informações enviadas" na tela de acompanhamento
+
+## Melhorias
+- Adiciona novo hook no componente de configuração de edição de inscrição
+
+## [7.6.41] - 2026-02-06
+### Correções
+- Implementação de verificações para campos editáveis da inscrição
+
+## Melhorias
+- Adiciona novo hook no componente de suporte
+
+## [7.6.40] - 2026-02-04
+### Correções
+- Exibe indicador de campo obrigatório no campo País do formulário de endereço
+- Corrige preenchimento do campo de país internacional na edição de agente
 
 ## [7.6.39] - 2026-01-29
 ### Correções

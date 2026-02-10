@@ -37,16 +37,21 @@ app.component('country-address-form', {
 
         countryFieldEnabled() {
             return $MAPAS.config.countryLocalization.countryFieldEnabled;
+        },
+
+        isCountryRequired() {
+            const description = this.entity.$PROPERTIES?.address_level0 || {};
+            return description.required || false;
         }
     },
 
     methods: {
         changeCountry() {
             this.processing = true;
-            this.entity.address_level0 = this.country;   
-            this.clearFields();
-
+            
             this.$nextTick(() => {
+                this.entity.address_level0 = this.country;
+                this.clearFields();
                 this.getLevelHierarchy();
             });
         },
