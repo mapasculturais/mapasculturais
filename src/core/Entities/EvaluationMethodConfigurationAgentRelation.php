@@ -15,6 +15,9 @@ use MapasCulturais\JobTypes\ReopenEvaluations;
  * @property \MapasCulturais\Entities\EvaluationMethodConfiguration $owner
  * @property \MapasCulturais\Entities\Agent $agent
  * @property ?int $maxRegistrations Número máximo de inscrições que o avaliador pode receber dentro da comissão
+ * @property ?array $categories Array de strings com as categorias
+ * @property ?array $proponentTypes Array de strings com os tipos de proponentes
+ * @property ?array $ranges Array de strings com os intervalos
  * 
  * @ORM\Entity
  * @ORM\entity(repositoryClass="MapasCulturais\Repository")
@@ -126,6 +129,11 @@ class EvaluationMethodConfigurationAgentRelation extends AgentRelation {
         $this->metadata->maxRegistrations = $this->metadata->maxRegistrations ?? null;
         $this->metadata->registrationList = $this->metadata->registrationList ?? null;
         $this->metadata->registrationListExclusive = $this->metadata->registrationListExclusive ?? false;
+        $this->metadata->categories = $this->metadata->categories ?? null;
+        $this->metadata->proponentTypes = $this->metadata->proponentTypes ?? null;
+        $this->metadata->ranges = $this->metadata->ranges ?? null;
+        $this->metadata->distribution = $this->metadata->distribution ?? null;
+        $this->metadata->selectionFields = $this->metadata->selectionFields ?? null;
 
         return $this->metadata;
     }
@@ -172,10 +180,13 @@ class EvaluationMethodConfigurationAgentRelation extends AgentRelation {
         return $this->metadata->maxRegistrations;
     }
 
-    public function setMaxRegistrations(?int $max_registrations): void
+    public function setMaxRegistrations(mixed $max_registrations): void
     {
         $this->initializeMetadata();
-        $this->metadata->maxRegistrations = $max_registrations;
+        $this->metadata->maxRegistrations = ($max_registrations === '' || $max_registrations === null)
+            ? null
+            : (int) $max_registrations;
+        $this->metadata = (object) (array) $this->metadata;
     }
 
     public function getRegistrationList(): ?array
@@ -188,6 +199,7 @@ class EvaluationMethodConfigurationAgentRelation extends AgentRelation {
     {
         $this->initializeMetadata();
         $this->metadata->registrationList = $registration_numbers;
+        $this->metadata = (object) (array) $this->metadata;
     }
 
     public function getRegistrationListExclusive(): bool
@@ -200,6 +212,72 @@ class EvaluationMethodConfigurationAgentRelation extends AgentRelation {
     {
         $this->initializeMetadata();
         $this->metadata->registrationListExclusive = $exclusive;
+        $this->metadata = (object) (array) $this->metadata;
+    }
+
+    public function getCategories(): ?array
+    {
+        $this->initializeMetadata();
+        return $this->metadata->categories;
+    }
+
+    public function setCategories(?array $categories): void
+    {
+        $this->initializeMetadata();
+        $this->metadata->categories = $categories;
+        $this->metadata = (object) (array) $this->metadata;
+    }
+
+    public function getProponentTypes(): ?array
+    {
+        $this->initializeMetadata();
+        return $this->metadata->proponentTypes;
+    }
+
+    public function setProponentTypes(?array $proponent_types): void
+    {
+        $this->initializeMetadata();
+        $this->metadata->proponentTypes = $proponent_types;
+        $this->metadata = (object) (array) $this->metadata;
+    }
+
+    public function getRanges(): ?array
+    {
+        $this->initializeMetadata();
+        return $this->metadata->ranges;
+    }
+
+    public function setRanges(?array $ranges): void
+    {
+        $this->initializeMetadata();
+        $this->metadata->ranges = $ranges;
+        $this->metadata = (object) (array) $this->metadata;
+    }
+
+    public function getDistribution(): ?string
+    {
+        $this->initializeMetadata();
+        return $this->metadata->distribution;
+    }
+
+    public function setDistribution(?string $distribution): void
+    {
+        $this->initializeMetadata();
+        $this->metadata->distribution = $distribution;
+        $this->metadata = (object) (array) $this->metadata;
+    }
+
+    public function getSelectionFields(): ?object
+    {
+        $this->initializeMetadata();
+        return $this->metadata->selectionFields ? (object) $this->metadata->selectionFields : null;
+    }
+
+    public function setSelectionFields(?array $selection_fields): void
+    {
+        $this->initializeMetadata();
+        $this->metadata->selectionFields = $selection_fields ? (object) $selection_fields : null;
+        $this->metadata = (object) (array) $this->metadata;
     }
 
     protected function canUserRemove($user): bool
