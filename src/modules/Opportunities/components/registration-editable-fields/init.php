@@ -1,4 +1,8 @@
 <?php
+use MapasCulturais\App;
+
+$app = App::i();
+
 $entity = $this->controller->requestedEntity;
 
 $result = [];
@@ -20,5 +24,7 @@ foreach ($fields_list as $field) {
 }
 
 usort($result, fn($field1, $field2) => $field1['displayOrder'] <=> $field2['displayOrder']);
+
+$app->applyHook('component(registration-editable-fields).fields', [&$result, $entity]);
 
 $this->jsObject['config']['registrationEditableFields'] = $result;

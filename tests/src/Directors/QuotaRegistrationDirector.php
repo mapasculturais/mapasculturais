@@ -130,25 +130,26 @@ class QuotaRegistrationDirector extends Director
     /**
      * Cenário 1: "Caminho Feliz" - Faixas apenas
      * Há candidatos qualificados suficientes para preencher todas as faixas.
+     * Escala reduzida (7 Curta + 3 Longa vagas) para testes mais rápidos.
      */
     public function idealRangesScenario(Opportunity $opportunity): array
     {
         $list = [];
 
-        // 1. Garante CURTA (70 vagas) com notas altas
-        $list = array_merge($list, $this->generateBatch($opportunity, 80, [
+        // 1. Garante CURTA (7 vagas) com notas altas
+        $list = array_merge($list, $this->generateBatch($opportunity, 8, [
             'range' => self::RANGE_1,
             'score' => 90.0
         ], use_range: true));
 
-        // 2. Garante LONGA (30 vagas) com notas altas. Criados mais do que o necessário para garantir que temos candidatos suficientes
-        $list = array_merge($list, $this->generateBatch($opportunity, 50, [
+        // 2. Garante LONGA (3 vagas) com notas altas
+        $list = array_merge($list, $this->generateBatch($opportunity, 5, [
             'range' => self::RANGE_2,
             'score' => 95.0  // Nota mais alta para garantir que sejam selecionadas
         ], use_range: true));
 
-        // 3. Adiciona Ruído (Gente reprovada e excedente) - mas com notas mais baixas para garantir que não sejam classificadas em vez das de Longa (nota máxima 50)
-        $list = array_merge($list, $this->generateNoise($opportunity, 50, 50.0, use_range: true));
+        // 3. Ruído (nota máxima 50, abaixo de corte 40 em parte) - não devem ser classificados
+        $list = array_merge($list, $this->generateNoise($opportunity, 5, 50.0, use_range: true));
         
         shuffle($list);
         return $this->createRegistrationsFromData($list);
@@ -157,26 +158,26 @@ class QuotaRegistrationDirector extends Director
     /**
      * Cenário 2: Falha na Faixa (Orçamento preso)
      * Sobram candidatos em Curta, mas FALTAM candidatos qualificados em Longa.
+     * Escala reduzida (7 Curta + 3 Longa vagas): 1 Longa qualificada, 9 Curta classificadas.
      */
     public function restrictedRangesScenario(Opportunity $opportunity): array
     {
         $list = [];
 
-        // CURTA: Superpopulação (150 inscritos para 70 vagas)
-        $list = array_merge($list, $this->generateBatch($opportunity, 150, [
+        // CURTA: Superpopulação (15 inscritos para 7 vagas)
+        $list = array_merge($list, $this->generateBatch($opportunity, 15, [
             'range' => self::RANGE_1,
             'score' => 90.0
         ], use_range: true));
 
-        // LONGA: Escassez (Apenas 10 qualificados para 30 vagas)
-        $list = array_merge($list, $this->generateBatch($opportunity, 10, [
+        // LONGA: Escassez (1 qualificado para 3 vagas)
+        $list = array_merge($list, $this->generateBatch($opportunity, 1, [
             'range' => self::RANGE_2,
             'score' => 80.0
         ], use_range: true));
 
-        // LONGA: Existem outros inscritos, mas todos DESCLASSIFICADOS (< 40)
-        // Eles existem, mas não podem levar a vaga.
-        $list = array_merge($list, $this->generateBatch($opportunity, 20, [
+        // LONGA: Inscritos desclassificados (< 40) - não podem levar vaga
+        $list = array_merge($list, $this->generateBatch($opportunity, 2, [
             'range' => self::RANGE_2,
             'score' => 30.0
         ], use_range: true));
@@ -366,66 +367,62 @@ class QuotaRegistrationDirector extends Director
      * Há candidatos qualificados suficientes para preencher todas as faixas e todas as cotas.
      * Total esperado selecionado: 100 (30 Longa + 70 Curta)
      * Cotas: 20 Negras (20%), 5 Indígenas (5%), 2 PCD (2%)
-     * 
-     * Distribuição esperada nas cotas dentro das faixas:
-     * - Longa (30): ~6 Negras, ~1.5 Indígenas, ~0.6 PCD
-     * - Curta (70): ~14 Negras, ~3.5 Indígenas, ~1.4 PCD
+     *
+     * Escala reduzida (7 Curta + 3 Longa, cotas 2+1+1) para testes mais rápidos.
+     * - Longa (3): ~1 Negras, ~0.5 Indígenas, ~0.3 PCD
+     * - Curta (7): ~1.4 Negras, ~0.35 Indígenas, ~0.14 PCD
      */
     public function idealRangesAndQuotasScenario(Opportunity $opportunity): array
     {
         $list = [];
 
-        // ===== CURTA METRAGEM (70 vagas) =====
+        // ===== CURTA METRAGEM (7 vagas) =====
         
-        // 1. Garante Cotas para CURTA (proporcionalmente 20% de 70 = 14 negras, 5% = 3.5 indígenas, 2% = 1.4 PCD)
-        // Cria mais do que necessário para garantir cobertura
-        $list = array_merge($list, $this->generateBatch($opportunity, 15, [
+        $list = array_merge($list, $this->generateBatch($opportunity, 2, [
             'range' => self::RANGE_1,
             'raca' => self::RACE_BLACK,
             'score' => 85.0
         ], use_range: true, use_quota: true));
-        $list = array_merge($list, $this->generateBatch($opportunity, 15, [
+        $list = array_merge($list, $this->generateBatch($opportunity, 2, [
             'range' => self::RANGE_1,
             'raca' => self::RACE_BROWN,
             'score' => 85.0
         ], use_range: true, use_quota: true));
         
-        $list = array_merge($list, $this->generateBatch($opportunity, 4, [
+        $list = array_merge($list, $this->generateBatch($opportunity, 1, [
             'range' => self::RANGE_1,
             'raca' => self::RACE_INDIGENOUS,
             'score' => 80.0
         ], use_range: true, use_quota: true));
         
-        $list = array_merge($list, $this->generateBatch($opportunity, 2, [
+        $list = array_merge($list, $this->generateBatch($opportunity, 1, [
             'range' => self::RANGE_1,
             'raca' => self::RACE_WHITE,
             'pessoaDeficiente' => ['Física-motora'],
             'score' => 75.0
         ], use_range: true, use_quota: true));
 
-        // 2. Garante ampla concorrência para CURTA (restante das 70 vagas)
-        $list = array_merge($list, $this->generateBatch($opportunity, 50, [
+        $list = array_merge($list, $this->generateBatch($opportunity, 5, [
             'range' => self::RANGE_1,
             'raca' => self::RACE_WHITE,
             'pessoaDeficiente' => [],
             'score' => 90.0
         ], use_range: true, use_quota: true));
 
-        // ===== LONGA METRAGEM (30 vagas) =====
+        // ===== LONGA METRAGEM (3 vagas) =====
         
-        // 3. Garante Cotas para LONGA (proporcionalmente 20% de 30 = 6 negras, 5% = 1.5 indígenas, 2% = 0.6 PCD)
-        $list = array_merge($list, $this->generateBatch($opportunity, 7, [
+        $list = array_merge($list, $this->generateBatch($opportunity, 1, [
             'range' => self::RANGE_2,
             'raca' => self::RACE_BLACK,
             'score' => 88.0
         ], use_range: true, use_quota: true));
-        $list = array_merge($list, $this->generateBatch($opportunity, 7, [
+        $list = array_merge($list, $this->generateBatch($opportunity, 1, [
             'range' => self::RANGE_2,
             'raca' => self::RACE_BROWN,
             'score' => 88.0
         ], use_range: true, use_quota: true));
         
-        $list = array_merge($list, $this->generateBatch($opportunity, 2, [
+        $list = array_merge($list, $this->generateBatch($opportunity, 1, [
             'range' => self::RANGE_2,
             'raca' => self::RACE_INDIGENOUS,
             'score' => 82.0
@@ -438,16 +435,14 @@ class QuotaRegistrationDirector extends Director
             'score' => 78.0
         ], use_range: true, use_quota: true));
 
-        // 4. Garante ampla concorrência para LONGA (restante das 30 vagas)
-        $list = array_merge($list, $this->generateBatch($opportunity, 20, [
+        $list = array_merge($list, $this->generateBatch($opportunity, 2, [
             'range' => self::RANGE_2,
             'raca' => self::RACE_WHITE,
             'pessoaDeficiente' => [],
             'score' => 92.0
         ], use_range: true, use_quota: true));
 
-        // 5. Adiciona Ruído (Gente reprovada e excedente)
-        $list = array_merge($list, $this->generateNoise($opportunity, 50, 50.0, use_range: true, use_quota: true));
+        $list = array_merge($list, $this->generateNoise($opportunity, 5, 50.0, use_range: true, use_quota: true));
 
         shuffle($list);
         return $this->createRegistrationsFromData($list);
@@ -461,95 +456,81 @@ class QuotaRegistrationDirector extends Director
      * 1. Faixas não podem variar (30 Longa + 70 Curta é fixo)
      * 2. Cotas têm prioridade e podem usar vagas de outras cotas se necessário
      * 
-     * Neste cenário:
-     * - Curta tem candidatos suficientes para todas as cotas
-     * - Longa tem escassez de Indígenas e PCD qualificados
-     * - As vagas de cota não preenchidas em Longa podem ser redistribuídas entre outras cotas
+     * Escala reduzida (7 Curta + 3 Longa): Curta completa, Longa com escassez de Indígenas e PCD.
      */
     public function restrictedRangesAndQuotasScenario(Opportunity $opportunity): array
     {
         $list = [];
 
-        // ===== CURTA METRAGEM (70 vagas) - COMPLETA =====
+        // ===== CURTA METRAGEM (7 vagas) - COMPLETA =====
         
-        // 1. Garante todas as cotas para CURTA
-        $list = array_merge($list, $this->generateBatch($opportunity, 15, [
+        $list = array_merge($list, $this->generateBatch($opportunity, 2, [
             'range' => self::RANGE_1,
             'raca' => self::RACE_BLACK,
             'score' => 85.0
         ], use_range: true, use_quota: true));
-        $list = array_merge($list, $this->generateBatch($opportunity, 15, [
+        $list = array_merge($list, $this->generateBatch($opportunity, 2, [
             'range' => self::RANGE_1,
             'raca' => self::RACE_BROWN,
             'score' => 85.0
         ], use_range: true, use_quota: true));
         
-        $list = array_merge($list, $this->generateBatch($opportunity, 4, [
+        $list = array_merge($list, $this->generateBatch($opportunity, 1, [
             'range' => self::RANGE_1,
             'raca' => self::RACE_INDIGENOUS,
             'score' => 80.0
         ], use_range: true, use_quota: true));
         
-        $list = array_merge($list, $this->generateBatch($opportunity, 2, [
+        $list = array_merge($list, $this->generateBatch($opportunity, 1, [
             'range' => self::RANGE_1,
             'raca' => self::RACE_WHITE,
             'pessoaDeficiente' => ['Auditiva'],
             'score' => 75.0
         ], use_range: true, use_quota: true));
 
-        // 2. Ampla concorrência para CURTA
-        $list = array_merge($list, $this->generateBatch($opportunity, 50, [
+        $list = array_merge($list, $this->generateBatch($opportunity, 5, [
             'range' => self::RANGE_1,
             'raca' => self::RACE_WHITE,
             'pessoaDeficiente' => [],
             'score' => 90.0
         ], use_range: true, use_quota: true));
 
-        // ===== LONGA METRAGEM (30 vagas) - COM ESCASSEZ =====
+        // ===== LONGA METRAGEM (3 vagas) - COM ESCASSEZ =====
         
-        // 3. Garante Negros para LONGA (há candidatos suficientes)
-        $list = array_merge($list, $this->generateBatch($opportunity, 8, [
+        $list = array_merge($list, $this->generateBatch($opportunity, 1, [
             'range' => self::RANGE_2,
             'raca' => self::RACE_BLACK,
             'score' => 88.0
         ], use_range: true, use_quota: true));
-        $list = array_merge($list, $this->generateBatch($opportunity, 8, [
+        $list = array_merge($list, $this->generateBatch($opportunity, 1, [
             'range' => self::RANGE_2,
             'raca' => self::RACE_BROWN,
             'score' => 88.0
         ], use_range: true, use_quota: true));
         
-        // 4. ESCASSEZ: Apenas 0 Indígenas qualificados para LONGA (meta era ~1-2)
-        // Não cria nenhum indígena qualificado para Longa
+        // ESCASSEZ: 0 Indígenas e 0 PCD qualificados para LONGA
         
-        // 5. ESCASSEZ: Apenas 0 PCD qualificados para LONGA (meta era ~1)
-        // Não cria nenhum PCD qualificado para Longa
-        
-        // 6. Indígenas DESCLASSIFICADOS para LONGA
-        $list = array_merge($list, $this->generateBatch($opportunity, 3, [
+        $list = array_merge($list, $this->generateBatch($opportunity, 1, [
             'range' => self::RANGE_2,
             'raca' => self::RACE_INDIGENOUS,
             'score' => 30.0  // Abaixo da nota de corte
         ], use_range: true, use_quota: true));
         
-        // 7. PCD DESCLASSIFICADOS para LONGA
-        $list = array_merge($list, $this->generateBatch($opportunity, 2, [
+        $list = array_merge($list, $this->generateBatch($opportunity, 1, [
             'range' => self::RANGE_2,
             'raca' => self::RACE_WHITE,
             'pessoaDeficiente' => ['Visual'],
             'score' => 25.0  // Abaixo da nota de corte
         ], use_range: true, use_quota: true));
 
-        // 8. Ampla concorrência para LONGA (mais candidatos para preencher as vagas)
-        $list = array_merge($list, $this->generateBatch($opportunity, 20, [
+        $list = array_merge($list, $this->generateBatch($opportunity, 2, [
             'range' => self::RANGE_2,
             'raca' => self::RACE_WHITE,
             'pessoaDeficiente' => [],
             'score' => 92.0
         ], use_range: true, use_quota: true));
 
-        // 9. Adiciona Ruído
-        $list = array_merge($list, $this->generateNoise($opportunity, 40, 50.0, use_range: true, use_quota: true));
+        $list = array_merge($list, $this->generateNoise($opportunity, 4, 50.0, use_range: true, use_quota: true));
 
         shuffle($list);
         return $this->createRegistrationsFromData($list);
@@ -557,68 +538,59 @@ class QuotaRegistrationDirector extends Director
 
     /**
      * Cenário 9: "Caminho Feliz" - Faixas e Vagas por Território (SEM cotas)
-     * Há candidatos qualificados suficientes para preencher todas as faixas e todas as regiões.
-     * Total esperado selecionado: 100 (30 Longa + 70 Curta)
-     * Vagas por Território: 50 Capital, 30 Litoral, 20 Interior
-     * 
-     * Distribuição esperada nas regiões dentro das faixas:
-     * - Longa (30): proporcionalmente ~15 Capital, ~9 Litoral, ~6 Interior
-     * - Curta (70): proporcionalmente ~35 Capital, ~21 Litoral, ~14 Interior
+     * Escala reduzida: 10 vagas (3 Longa + 7 Curta), regiões 5 Capital, 3 Litoral, 2 Interior.
      */
     public function idealRangesAndTerritoryVacanciesScenario(Opportunity $opportunity): array
     {
         $list = [];
 
-        // ===== CURTA METRAGEM (70 vagas) =====
-        
-        // 1. Garante distribuição regional para CURTA
-        // Capital: ~35 vagas de 70 (50% de 70)
-        $list = array_merge($list, $this->generateBatch($opportunity, 40, [
+        // ===== CURTA METRAGEM (7 vagas) =====
+        // Notas: Capital 90, Litoral 88 (2) e 86 (1), Interior 87 — garante 4 Capital + 2 Litoral + 1 Interior nos 7
+        $list = array_merge($list, $this->generateBatch($opportunity, 4, [
             'range' => self::RANGE_1,
             'region' => self::REGION_CAPITAL,
             'score' => 90.0
         ], use_range: true, use_region: true));
         
-        // Litoral: ~21 vagas de 70 (30% de 70)
-        $list = array_merge($list, $this->generateBatch($opportunity, 25, [
+        $list = array_merge($list, $this->generateBatch($opportunity, 2, [
             'range' => self::RANGE_1,
             'region' => self::REGION_COASTAL,
-            'score' => 85.0
-        ], use_range: true, use_region: true));
-        
-        // Interior: ~14 vagas de 70 (20% de 70)
-        $list = array_merge($list, $this->generateBatch($opportunity, 18, [
-            'range' => self::RANGE_1,
-            'region' => self::REGION_INTERIOR,
             'score' => 88.0
         ], use_range: true, use_region: true));
-
-        // ===== LONGA METRAGEM (30 vagas) =====
         
-        // 2. Garante distribuição regional para LONGA
-        // Capital: ~15 vagas de 30 (50% de 30)
-        $list = array_merge($list, $this->generateBatch($opportunity, 18, [
+        $list = array_merge($list, $this->generateBatch($opportunity, 1, [
+            'range' => self::RANGE_1,
+            'region' => self::REGION_COASTAL,
+            'score' => 86.0
+        ], use_range: true, use_region: true));
+        
+        $list = array_merge($list, $this->generateBatch($opportunity, 2, [
+            'range' => self::RANGE_1,
+            'region' => self::REGION_INTERIOR,
+            'score' => 87.0
+        ], use_range: true, use_region: true));
+
+        // ===== LONGA METRAGEM (3 vagas) =====
+        // Capital e Litoral altos; Interior 90 — garante 1 Litoral em Longa (2 Capital + 1 Interior ou 2 Capital + 1 Litoral)
+        $list = array_merge($list, $this->generateBatch($opportunity, 2, [
             'range' => self::RANGE_2,
             'region' => self::REGION_CAPITAL,
             'score' => 92.0
         ], use_range: true, use_region: true));
         
-        // Litoral: ~9 vagas de 30 (30% de 30)
-        $list = array_merge($list, $this->generateBatch($opportunity, 12, [
+        $list = array_merge($list, $this->generateBatch($opportunity, 2, [
             'range' => self::RANGE_2,
             'region' => self::REGION_COASTAL,
-            'score' => 88.0
+            'score' => 89.0
         ], use_range: true, use_region: true));
         
-        // Interior: ~6 vagas de 30 (20% de 30)
-        $list = array_merge($list, $this->generateBatch($opportunity, 8, [
+        $list = array_merge($list, $this->generateBatch($opportunity, 1, [
             'range' => self::RANGE_2,
             'region' => self::REGION_INTERIOR,
             'score' => 90.0
         ], use_range: true, use_region: true));
 
-        // 3. Adiciona Ruído (Gente reprovada e excedente)
-        $list = array_merge($list, $this->generateNoise($opportunity, 50, 50.0, use_range: true, use_region: true));
+        $list = array_merge($list, $this->generateNoise($opportunity, 5, 50.0, use_range: true, use_region: true));
 
         shuffle($list);
         return $this->createRegistrationsFromData($list);
@@ -626,86 +598,78 @@ class QuotaRegistrationDirector extends Director
 
     /**
      * Cenário 10: Falha em Faixas e Vagas por Território combinadas
-     * FALTAM candidatos qualificados para algumas regiões em algumas faixas.
-     * 
-     * Regras de priorização:
-     * 1. Faixas não podem variar (30 Longa + 70 Curta é fixo)
-     * 2. Vagas por território têm menor prioridade e podem ser redistribuídas quando não há candidatos suficientes
-     * 
-     * Neste cenário:
-     * - Curta tem candidatos suficientes para todas as regiões
-     * - Longa tem escassez de candidatos do Interior
-     * - As vagas do Interior em Longa devem ser redistribuídas para outras regiões
+     * Escala reduzida (3 Longa + 7 Curta): Longa com escassez de candidatos do Interior.
      */
     public function restrictedRangesAndTerritoryVacanciesScenario(Opportunity $opportunity): array
     {
         $list = [];
 
-        // ===== CURTA METRAGEM (70 vagas) - COMPLETA =====
-        
-        // 1. Garante todas as regiões para CURTA
-        $list = array_merge($list, $this->generateBatch($opportunity, 40, [
+        // ===== CURTA METRAGEM (7 vagas) - COMPLETA =====
+        // Mesmas notas do ideal: 2 Litoral 88, 1 Litoral 86, Interior 87 — garante 2 Litoral nos 7 de Curta
+        $list = array_merge($list, $this->generateBatch($opportunity, 4, [
             'range' => self::RANGE_1,
             'region' => self::REGION_CAPITAL,
             'score' => 90.0
         ], use_range: true, use_region: true));
         
-        $list = array_merge($list, $this->generateBatch($opportunity, 25, [
+        $list = array_merge($list, $this->generateBatch($opportunity, 2, [
             'range' => self::RANGE_1,
             'region' => self::REGION_COASTAL,
-            'score' => 85.0
-        ], use_range: true, use_region: true));
-        
-        $list = array_merge($list, $this->generateBatch($opportunity, 18, [
-            'range' => self::RANGE_1,
-            'region' => self::REGION_INTERIOR,
             'score' => 88.0
         ], use_range: true, use_region: true));
-
-        // ===== LONGA METRAGEM (30 vagas) - COM ESCASSEZ REGIONAL =====
         
-        // 2. Garante Capital e Litoral para LONGA (há candidatos suficientes)
-        $list = array_merge($list, $this->generateBatch($opportunity, 18, [
+        $list = array_merge($list, $this->generateBatch($opportunity, 1, [
+            'range' => self::RANGE_1,
+            'region' => self::REGION_COASTAL,
+            'score' => 86.0
+        ], use_range: true, use_region: true));
+        
+        $list = array_merge($list, $this->generateBatch($opportunity, 2, [
+            'range' => self::RANGE_1,
+            'region' => self::REGION_INTERIOR,
+            'score' => 87.0
+        ], use_range: true, use_region: true));
+
+        // ===== LONGA METRAGEM (3 vagas) - COM ESCASSEZ REGIONAL =====
+        // Litoral 89 para garantir 1 Litoral em Longa (2 Capital + 1 Litoral = 3) → total 3 Litoral
+        $list = array_merge($list, $this->generateBatch($opportunity, 2, [
             'range' => self::RANGE_2,
             'region' => self::REGION_CAPITAL,
             'score' => 92.0
         ], use_range: true, use_region: true));
         
-        $list = array_merge($list, $this->generateBatch($opportunity, 12, [
+        $list = array_merge($list, $this->generateBatch($opportunity, 2, [
             'range' => self::RANGE_2,
             'region' => self::REGION_COASTAL,
-            'score' => 88.0
+            'score' => 89.0
         ], use_range: true, use_region: true));
         
-        // 3. ESCASSEZ: Apenas 2 candidatos do Interior para LONGA (meta era ~6)
-        $list = array_merge($list, $this->generateBatch($opportunity, 2, [
+        // ESCASSEZ: 1 candidato do Interior para LONGA (meta era 2)
+        $list = array_merge($list, $this->generateBatch($opportunity, 1, [
             'range' => self::RANGE_2,
             'region' => self::REGION_INTERIOR,
             'score' => 60.0
         ], use_range: true, use_region: true));
         
-        // 4. Interior DESCLASSIFICADOS para LONGA
-        $list = array_merge($list, $this->generateBatch($opportunity, 5, [
+        $list = array_merge($list, $this->generateBatch($opportunity, 1, [
             'range' => self::RANGE_2,
             'region' => self::REGION_INTERIOR,
             'score' => 30.0  // Abaixo da nota de corte
         ], use_range: true, use_region: true));
 
-        // 5. Mais candidatos de Capital e Litoral para LONGA (para preencher as vagas do Interior)
-        $list = array_merge($list, $this->generateBatch($opportunity, 15, [
+        $list = array_merge($list, $this->generateBatch($opportunity, 2, [
             'range' => self::RANGE_2,
             'region' => self::REGION_CAPITAL,
             'score' => 85.0
         ], use_range: true, use_region: true));
         
-        $list = array_merge($list, $this->generateBatch($opportunity, 10, [
+        $list = array_merge($list, $this->generateBatch($opportunity, 1, [
             'range' => self::RANGE_2,
             'region' => self::REGION_COASTAL,
             'score' => 82.0
         ], use_range: true, use_region: true));
 
-        // 6. Adiciona Ruído
-        $list = array_merge($list, $this->generateNoise($opportunity, 40, 50.0, use_range: true, use_region: true));
+        $list = array_merge($list, $this->generateNoise($opportunity, 4, 50.0, use_range: true, use_region: true));
 
         shuffle($list);
         return $this->createRegistrationsFromData($list);
@@ -713,28 +677,24 @@ class QuotaRegistrationDirector extends Director
 
     /**
      * Cenário 11: "Caminho Feliz" - Cotas e Vagas por Território (SEM faixas)
-     * Há candidatos qualificados suficientes para preencher todas as cotas e todas as regiões.
-     * Total esperado selecionado: 100
-     * Cotas: 20 Negras (20%), 5 Indígenas (5%), 2 PCD (2%)
-     * Vagas por Território: 50 Capital, 30 Litoral, 20 Interior
+     * Escala reduzida: 10 vagas, cotas 2+1+1, regiões 5 Capital, 3 Litoral, 2 Interior.
      */
     public function idealQuotasAndTerritoryVacanciesScenario(Opportunity $opportunity): array
     {
         $list = [];
 
-        // 1. Garante Cotas e Regiões - Capital (50 vagas)
-        // Precisamos garantir negros, indígenas e pcds com nota > 40
-        $list = array_merge($list, $this->generateBatch($opportunity, 12, [
+        // 1. Capital (5 vagas)
+        $list = array_merge($list, $this->generateBatch($opportunity, 2, [
             'raca' => self::RACE_BLACK,
             'region' => self::REGION_CAPITAL,
             'score' => 85.0
         ], use_quota: true, use_region: true));
-        $list = array_merge($list, $this->generateBatch($opportunity, 8, [
+        $list = array_merge($list, $this->generateBatch($opportunity, 1, [
             'raca' => self::RACE_BROWN,
             'region' => self::REGION_CAPITAL,
             'score' => 85.0
         ], use_quota: true, use_region: true));
-        $list = array_merge($list, $this->generateBatch($opportunity, 3, [
+        $list = array_merge($list, $this->generateBatch($opportunity, 1, [
             'raca' => self::RACE_INDIGENOUS,
             'region' => self::REGION_CAPITAL,
             'score' => 80.0
@@ -745,30 +705,23 @@ class QuotaRegistrationDirector extends Director
             'region' => self::REGION_CAPITAL,
             'score' => 75.0
         ], use_quota: true, use_region: true));
-        
-        // Ampla concorrência para Capital
-        $list = array_merge($list, $this->generateBatch($opportunity, 40, [
+        $list = array_merge($list, $this->generateBatch($opportunity, 4, [
             'raca' => self::RACE_WHITE,
             'pessoaDeficiente' => [],
             'region' => self::REGION_CAPITAL,
             'score' => 90.0
         ], use_quota: true, use_region: true));
 
-        // 2. Garante Cotas e Regiões - Litoral (30 vagas)
-        $list = array_merge($list, $this->generateBatch($opportunity, 7, [
+        // 2. Litoral (3 vagas)
+        $list = array_merge($list, $this->generateBatch($opportunity, 1, [
             'raca' => self::RACE_BLACK,
             'region' => self::REGION_COASTAL,
             'score' => 85.0
         ], use_quota: true, use_region: true));
-        $list = array_merge($list, $this->generateBatch($opportunity, 5, [
+        $list = array_merge($list, $this->generateBatch($opportunity, 1, [
             'raca' => self::RACE_BROWN,
             'region' => self::REGION_COASTAL,
             'score' => 85.0
-        ], use_quota: true, use_region: true));
-        $list = array_merge($list, $this->generateBatch($opportunity, 2, [
-            'raca' => self::RACE_INDIGENOUS,
-            'region' => self::REGION_COASTAL,
-            'score' => 80.0
         ], use_quota: true, use_region: true));
         $list = array_merge($list, $this->generateBatch($opportunity, 1, [
             'raca' => self::RACE_WHITE,
@@ -776,37 +729,32 @@ class QuotaRegistrationDirector extends Director
             'region' => self::REGION_COASTAL,
             'score' => 75.0
         ], use_quota: true, use_region: true));
-        
-        // Ampla concorrência para Litoral
-        $list = array_merge($list, $this->generateBatch($opportunity, 25, [
+        $list = array_merge($list, $this->generateBatch($opportunity, 3, [
             'raca' => self::RACE_WHITE,
             'pessoaDeficiente' => [],
             'region' => self::REGION_COASTAL,
             'score' => 88.0
         ], use_quota: true, use_region: true));
 
-        // 3. Garante Cotas e Regiões - Interior (20 vagas)
-        $list = array_merge($list, $this->generateBatch($opportunity, 5, [
+        // 3. Interior (2 vagas)
+        $list = array_merge($list, $this->generateBatch($opportunity, 1, [
             'raca' => self::RACE_BLACK,
             'region' => self::REGION_INTERIOR,
             'score' => 85.0
         ], use_quota: true, use_region: true));
-        $list = array_merge($list, $this->generateBatch($opportunity, 3, [
+        $list = array_merge($list, $this->generateBatch($opportunity, 1, [
             'raca' => self::RACE_BROWN,
             'region' => self::REGION_INTERIOR,
             'score' => 85.0
         ], use_quota: true, use_region: true));
-        
-        // Ampla concorrência para Interior
-        $list = array_merge($list, $this->generateBatch($opportunity, 15, [
+        $list = array_merge($list, $this->generateBatch($opportunity, 2, [
             'raca' => self::RACE_WHITE,
             'pessoaDeficiente' => [],
             'region' => self::REGION_INTERIOR,
             'score' => 88.0
         ], use_quota: true, use_region: true));
 
-        // 4. Adiciona Ruído (Gente reprovada e excedente)
-        $list = array_merge($list, $this->generateNoise($opportunity, 50, 50.0, use_quota: true, use_region: true));
+        $list = array_merge($list, $this->generateNoise($opportunity, 5, 50.0, use_quota: true, use_region: true));
 
         shuffle($list);
         return $this->createRegistrationsFromData($list);
@@ -814,37 +762,24 @@ class QuotaRegistrationDirector extends Director
 
     /**
      * Cenário 12: Falha em Cotas e Vagas por Território combinadas (SEM faixas)
-     * FALTAM candidatos qualificados para algumas cotas ou regiões.
-     * 
-     * Regras de priorização:
-     * 1. Cotas têm prioridade sobre vagas por território
-     * 2. Não tendo inscrições para cumprir uma das cotas, a vaga remanescente pode ser utilizada em outra cota
-     * 3. Vagas por território têm menor prioridade, mas quando não há inscrições suficientes em um território, uma inscrição de outra região pode ser selecionada
-     * 
-     * Neste cenário:
-     * - Capital e Litoral têm candidatos suficientes para todas as cotas
-     * - Interior tem escassez de candidatos qualificados (especialmente indígenas e PCD)
-     * - As vagas do Interior podem ser redistribuídas para outras regiões
-     * - As cotas não preenchidas no Interior podem ser redistribuídas entre outras cotas
+     * Escala reduzida (10 vagas): Capital e Litoral completos, Interior com escassez.
      */
     public function restrictedQuotasAndTerritoryVacanciesScenario(Opportunity $opportunity): array
     {
         $list = [];
 
-        // ===== CAPITAL (50 vagas) - COMPLETA =====
-        
-        // 1. Garante todas as cotas para Capital
-        $list = array_merge($list, $this->generateBatch($opportunity, 12, [
+        // ===== CAPITAL (5 vagas) - COMPLETA =====
+        $list = array_merge($list, $this->generateBatch($opportunity, 2, [
             'raca' => self::RACE_BLACK,
             'region' => self::REGION_CAPITAL,
             'score' => 85.0
         ], use_quota: true, use_region: true));
-        $list = array_merge($list, $this->generateBatch($opportunity, 8, [
+        $list = array_merge($list, $this->generateBatch($opportunity, 1, [
             'raca' => self::RACE_BROWN,
             'region' => self::REGION_CAPITAL,
             'score' => 85.0
         ], use_quota: true, use_region: true));
-        $list = array_merge($list, $this->generateBatch($opportunity, 3, [
+        $list = array_merge($list, $this->generateBatch($opportunity, 1, [
             'raca' => self::RACE_INDIGENOUS,
             'region' => self::REGION_CAPITAL,
             'score' => 80.0
@@ -855,32 +790,23 @@ class QuotaRegistrationDirector extends Director
             'region' => self::REGION_CAPITAL,
             'score' => 75.0
         ], use_quota: true, use_region: true));
-
-        // 2. Ampla concorrência para Capital
-        $list = array_merge($list, $this->generateBatch($opportunity, 40, [
+        $list = array_merge($list, $this->generateBatch($opportunity, 4, [
             'raca' => self::RACE_WHITE,
             'pessoaDeficiente' => [],
             'region' => self::REGION_CAPITAL,
             'score' => 90.0
         ], use_quota: true, use_region: true));
 
-        // ===== LITORAL (30 vagas) - COMPLETA =====
-        
-        // 3. Garante todas as cotas para Litoral
-        $list = array_merge($list, $this->generateBatch($opportunity, 7, [
+        // ===== LITORAL (3 vagas) - COMPLETA =====
+        $list = array_merge($list, $this->generateBatch($opportunity, 1, [
             'raca' => self::RACE_BLACK,
             'region' => self::REGION_COASTAL,
             'score' => 85.0
         ], use_quota: true, use_region: true));
-        $list = array_merge($list, $this->generateBatch($opportunity, 5, [
+        $list = array_merge($list, $this->generateBatch($opportunity, 1, [
             'raca' => self::RACE_BROWN,
             'region' => self::REGION_COASTAL,
             'score' => 85.0
-        ], use_quota: true, use_region: true));
-        $list = array_merge($list, $this->generateBatch($opportunity, 2, [
-            'raca' => self::RACE_INDIGENOUS,
-            'region' => self::REGION_COASTAL,
-            'score' => 80.0
         ], use_quota: true, use_region: true));
         $list = array_merge($list, $this->generateBatch($opportunity, 1, [
             'raca' => self::RACE_WHITE,
@@ -888,67 +814,38 @@ class QuotaRegistrationDirector extends Director
             'region' => self::REGION_COASTAL,
             'score' => 75.0
         ], use_quota: true, use_region: true));
-
-        // 4. Ampla concorrência para Litoral
-        $list = array_merge($list, $this->generateBatch($opportunity, 25, [
+        $list = array_merge($list, $this->generateBatch($opportunity, 3, [
             'raca' => self::RACE_WHITE,
             'pessoaDeficiente' => [],
             'region' => self::REGION_COASTAL,
             'score' => 88.0
         ], use_quota: true, use_region: true));
 
-        // ===== INTERIOR (20 vagas) - COM ESCASSEZ =====
-        
-        // 5. ESCASSEZ: Apenas alguns candidatos qualificados do Interior
-        // Negros para Interior (há alguns)
-        $list = array_merge($list, $this->generateBatch($opportunity, 3, [
+        // ===== INTERIOR (2 vagas) - COM ESCASSEZ (apenas 1 qualificado) =====
+        $list = array_merge($list, $this->generateBatch($opportunity, 1, [
             'raca' => self::RACE_BLACK,
             'region' => self::REGION_INTERIOR,
             'score' => 85.0
         ], use_quota: true, use_region: true));
-        $list = array_merge($list, $this->generateBatch($opportunity, 2, [
-            'raca' => self::RACE_BROWN,
-            'region' => self::REGION_INTERIOR,
-            'score' => 85.0
-        ], use_quota: true, use_region: true));
-        
-        // 6. ESCASSEZ: Apenas 0 Indígenas qualificados para Interior
-        // Não cria nenhum indígena qualificado para Interior
-        
-        // 7. ESCASSEZ: Apenas 0 PCD qualificados para Interior
-        // Não cria nenhum PCD qualificado para Interior
-        
-        // 8. Indígenas DESCLASSIFICADOS para Interior
-        $list = array_merge($list, $this->generateBatch($opportunity, 3, [
+        $list = array_merge($list, $this->generateBatch($opportunity, 1, [
             'raca' => self::RACE_INDIGENOUS,
             'region' => self::REGION_INTERIOR,
             'score' => 30.0  // Abaixo da nota de corte
         ], use_quota: true, use_region: true));
-        
-        // 9. PCD DESCLASSIFICADOS para Interior
-        $list = array_merge($list, $this->generateBatch($opportunity, 2, [
+        $list = array_merge($list, $this->generateBatch($opportunity, 1, [
             'raca' => self::RACE_WHITE,
             'pessoaDeficiente' => ['Visual'],
             'region' => self::REGION_INTERIOR,
             'score' => 25.0  // Abaixo da nota de corte
         ], use_quota: true, use_region: true));
 
-        // 10. Ampla concorrência para Interior (poucos candidatos)
-        $list = array_merge($list, $this->generateBatch($opportunity, 5, [
-            'raca' => self::RACE_WHITE,
-            'pessoaDeficiente' => [],
-            'region' => self::REGION_INTERIOR,
-            'score' => 60.0
-        ], use_quota: true, use_region: true));
-
-        // 11. Adiciona Ruído (somente de Capital e Litoral para evitar mais candidatos do Interior)
-        $list = array_merge($list, $this->generateBatch($opportunity, 20, [
+        $list = array_merge($list, $this->generateBatch($opportunity, 2, [
             'raca' => self::RACE_WHITE,
             'pessoaDeficiente' => [],
             'region' => self::REGION_CAPITAL,
             'score' => 35.0
         ], use_quota: true, use_region: true));
-        $list = array_merge($list, $this->generateBatch($opportunity, 15, [
+        $list = array_merge($list, $this->generateBatch($opportunity, 2, [
             'raca' => self::RACE_WHITE,
             'pessoaDeficiente' => [],
             'region' => self::REGION_COASTAL,
@@ -965,35 +862,24 @@ class QuotaRegistrationDirector extends Director
      * todas as cotas e todas as regiões.
      * Total esperado selecionado: 100
      * 
-     * Distribuição esperada:
-     * - Faixas: 30 Longa + 70 Curta (fixo)
-     * - Cotas: 20 Negras (20%), 5 Indígenas (5%), 2 PCD (2%)
-     * - Território: 50 Capital, 30 Litoral, 20 Interior
+     * Escala reduzida: 10 vagas (3 Longa + 7 Curta), cotas 2+1+1, regiões 5+3+2.
      */
     public function idealRangesQuotasAndTerritoryVacanciesScenario(Opportunity $opportunity): array
     {
         $list = [];
 
-        // ===== CURTA METRAGEM (70 vagas) =====
-        
-        // 1. Garante Cotas e Regiões para CURTA - Capital (proporcionalmente ~35 vagas)
-        $list = array_merge($list, $this->generateBatch($opportunity, 8, [
+        // ===== CURTA METRAGEM (7 vagas) =====
+        $list = array_merge($list, $this->generateBatch($opportunity, 1, [
             'range' => self::RANGE_1,
             'raca' => self::RACE_BLACK,
             'region' => self::REGION_CAPITAL,
             'score' => 85.0
         ], use_range: true, use_quota: true, use_region: true));
-        $list = array_merge($list, $this->generateBatch($opportunity, 8, [
+        $list = array_merge($list, $this->generateBatch($opportunity, 1, [
             'range' => self::RANGE_1,
             'raca' => self::RACE_BROWN,
             'region' => self::REGION_CAPITAL,
             'score' => 85.0
-        ], use_range: true, use_quota: true, use_region: true));
-        $list = array_merge($list, $this->generateBatch($opportunity, 2, [
-            'range' => self::RANGE_1,
-            'raca' => self::RACE_INDIGENOUS,
-            'region' => self::REGION_CAPITAL,
-            'score' => 80.0
         ], use_range: true, use_quota: true, use_region: true));
         $list = array_merge($list, $this->generateBatch($opportunity, 1, [
             'range' => self::RANGE_1,
@@ -1002,7 +888,7 @@ class QuotaRegistrationDirector extends Director
             'region' => self::REGION_CAPITAL,
             'score' => 75.0
         ], use_range: true, use_quota: true, use_region: true));
-        $list = array_merge($list, $this->generateBatch($opportunity, 20, [
+        $list = array_merge($list, $this->generateBatch($opportunity, 2, [
             'range' => self::RANGE_1,
             'raca' => self::RACE_WHITE,
             'pessoaDeficiente' => [],
@@ -1010,24 +896,11 @@ class QuotaRegistrationDirector extends Director
             'score' => 90.0
         ], use_range: true, use_quota: true, use_region: true));
 
-        // 2. Garante Cotas e Regiões para CURTA - Litoral (proporcionalmente ~21 vagas)
-        $list = array_merge($list, $this->generateBatch($opportunity, 5, [
+        $list = array_merge($list, $this->generateBatch($opportunity, 1, [
             'range' => self::RANGE_1,
             'raca' => self::RACE_BLACK,
             'region' => self::REGION_COASTAL,
             'score' => 85.0
-        ], use_range: true, use_quota: true, use_region: true));
-        $list = array_merge($list, $this->generateBatch($opportunity, 5, [
-            'range' => self::RANGE_1,
-            'raca' => self::RACE_BROWN,
-            'region' => self::REGION_COASTAL,
-            'score' => 85.0
-        ], use_range: true, use_quota: true, use_region: true));
-        $list = array_merge($list, $this->generateBatch($opportunity, 1, [
-            'range' => self::RANGE_1,
-            'raca' => self::RACE_INDIGENOUS,
-            'region' => self::REGION_COASTAL,
-            'score' => 80.0
         ], use_range: true, use_quota: true, use_region: true));
         $list = array_merge($list, $this->generateBatch($opportunity, 1, [
             'range' => self::RANGE_1,
@@ -1036,7 +909,7 @@ class QuotaRegistrationDirector extends Director
             'region' => self::REGION_COASTAL,
             'score' => 75.0
         ], use_range: true, use_quota: true, use_region: true));
-        $list = array_merge($list, $this->generateBatch($opportunity, 15, [
+        $list = array_merge($list, $this->generateBatch($opportunity, 2, [
             'range' => self::RANGE_1,
             'raca' => self::RACE_WHITE,
             'pessoaDeficiente' => [],
@@ -1044,26 +917,13 @@ class QuotaRegistrationDirector extends Director
             'score' => 88.0
         ], use_range: true, use_quota: true, use_region: true));
 
-        // 3. Garante Cotas e Regiões para CURTA - Interior (proporcionalmente ~14 vagas)
-        $list = array_merge($list, $this->generateBatch($opportunity, 3, [
-            'range' => self::RANGE_1,
-            'raca' => self::RACE_BLACK,
-            'region' => self::REGION_INTERIOR,
-            'score' => 85.0
-        ], use_range: true, use_quota: true, use_region: true));
-        $list = array_merge($list, $this->generateBatch($opportunity, 3, [
-            'range' => self::RANGE_1,
-            'raca' => self::RACE_BROWN,
-            'region' => self::REGION_INTERIOR,
-            'score' => 85.0
-        ], use_range: true, use_quota: true, use_region: true));
         $list = array_merge($list, $this->generateBatch($opportunity, 1, [
             'range' => self::RANGE_1,
             'raca' => self::RACE_INDIGENOUS,
             'region' => self::REGION_INTERIOR,
             'score' => 80.0
         ], use_range: true, use_quota: true, use_region: true));
-        $list = array_merge($list, $this->generateBatch($opportunity, 10, [
+        $list = array_merge($list, $this->generateBatch($opportunity, 2, [
             'range' => self::RANGE_1,
             'raca' => self::RACE_WHITE,
             'pessoaDeficiente' => [],
@@ -1071,18 +931,10 @@ class QuotaRegistrationDirector extends Director
             'score' => 85.0
         ], use_range: true, use_quota: true, use_region: true));
 
-        // ===== LONGA METRAGEM (30 vagas) =====
-        
-        // 4. Garante Cotas e Regiões para LONGA - Capital (proporcionalmente ~15 vagas)
-        $list = array_merge($list, $this->generateBatch($opportunity, 4, [
+        // ===== LONGA METRAGEM (3 vagas) =====
+        $list = array_merge($list, $this->generateBatch($opportunity, 1, [
             'range' => self::RANGE_2,
             'raca' => self::RACE_BLACK,
-            'region' => self::REGION_CAPITAL,
-            'score' => 88.0
-        ], use_range: true, use_quota: true, use_region: true));
-        $list = array_merge($list, $this->generateBatch($opportunity, 4, [
-            'range' => self::RANGE_2,
-            'raca' => self::RACE_BROWN,
             'region' => self::REGION_CAPITAL,
             'score' => 88.0
         ], use_range: true, use_quota: true, use_region: true));
@@ -1092,7 +944,7 @@ class QuotaRegistrationDirector extends Director
             'region' => self::REGION_CAPITAL,
             'score' => 82.0
         ], use_range: true, use_quota: true, use_region: true));
-        $list = array_merge($list, $this->generateBatch($opportunity, 8, [
+        $list = array_merge($list, $this->generateBatch($opportunity, 2, [
             'range' => self::RANGE_2,
             'raca' => self::RACE_WHITE,
             'pessoaDeficiente' => [],
@@ -1100,52 +952,6 @@ class QuotaRegistrationDirector extends Director
             'score' => 92.0
         ], use_range: true, use_quota: true, use_region: true));
 
-        // 5. Garante Cotas e Regiões para LONGA - Litoral (proporcionalmente ~9 vagas)
-        $list = array_merge($list, $this->generateBatch($opportunity, 2, [
-            'range' => self::RANGE_2,
-            'raca' => self::RACE_BLACK,
-            'region' => self::REGION_COASTAL,
-            'score' => 88.0
-        ], use_range: true, use_quota: true, use_region: true));
-        $list = array_merge($list, $this->generateBatch($opportunity, 2, [
-            'range' => self::RANGE_2,
-            'raca' => self::RACE_BROWN,
-            'region' => self::REGION_COASTAL,
-            'score' => 88.0
-        ], use_range: true, use_quota: true, use_region: true));
-        $list = array_merge($list, $this->generateBatch($opportunity, 1, [
-            'range' => self::RANGE_2,
-            'raca' => self::RACE_INDIGENOUS,
-            'region' => self::REGION_COASTAL,
-            'score' => 82.0
-        ], use_range: true, use_quota: true, use_region: true));
-        $list = array_merge($list, $this->generateBatch($opportunity, 6, [
-            'range' => self::RANGE_2,
-            'raca' => self::RACE_WHITE,
-            'pessoaDeficiente' => [],
-            'region' => self::REGION_COASTAL,
-            'score' => 90.0
-        ], use_range: true, use_quota: true, use_region: true));
-
-        // 6. Garante Cotas e Regiões para LONGA - Interior (proporcionalmente ~6 vagas)
-        $list = array_merge($list, $this->generateBatch($opportunity, 2, [
-            'range' => self::RANGE_2,
-            'raca' => self::RACE_BLACK,
-            'region' => self::REGION_INTERIOR,
-            'score' => 88.0
-        ], use_range: true, use_quota: true, use_region: true));
-        $list = array_merge($list, $this->generateBatch($opportunity, 2, [
-            'range' => self::RANGE_2,
-            'raca' => self::RACE_BROWN,
-            'region' => self::REGION_INTERIOR,
-            'score' => 88.0
-        ], use_range: true, use_quota: true, use_region: true));
-        $list = array_merge($list, $this->generateBatch($opportunity, 1, [
-            'range' => self::RANGE_2,
-            'raca' => self::RACE_INDIGENOUS,
-            'region' => self::REGION_INTERIOR,
-            'score' => 82.0
-        ], use_range: true, use_quota: true, use_region: true));
         $list = array_merge($list, $this->generateBatch($opportunity, 1, [
             'range' => self::RANGE_2,
             'raca' => self::RACE_WHITE,
@@ -1153,7 +959,7 @@ class QuotaRegistrationDirector extends Director
             'region' => self::REGION_INTERIOR,
             'score' => 78.0
         ], use_range: true, use_quota: true, use_region: true));
-        $list = array_merge($list, $this->generateBatch($opportunity, 3, [
+        $list = array_merge($list, $this->generateBatch($opportunity, 1, [
             'range' => self::RANGE_2,
             'raca' => self::RACE_WHITE,
             'pessoaDeficiente' => [],
@@ -1161,8 +967,7 @@ class QuotaRegistrationDirector extends Director
             'score' => 88.0
         ], use_range: true, use_quota: true, use_region: true));
 
-        // 7. Adiciona Ruído (Gente reprovada e excedente)
-        $list = array_merge($list, $this->generateNoise($opportunity, 50, 50.0, use_range: true, use_quota: true, use_region: true));
+        $list = array_merge($list, $this->generateNoise($opportunity, 5, 50.0, use_range: true, use_quota: true, use_region: true));
 
         shuffle($list);
         return $this->createRegistrationsFromData($list);
@@ -1177,36 +982,24 @@ class QuotaRegistrationDirector extends Director
      * 2. Cotas têm prioridade sobre vagas por território e devem tentar ser garantidas dentro de cada faixa
      * 3. Vagas por território têm menor prioridade e podem ser redistribuídas
      * 
-     * Neste cenário:
-     * - Curta tem candidatos suficientes para todas as cotas e regiões
-     * - Longa tem escassez de Indígenas e PCD qualificados no Interior
-     * - As vagas de cota não preenchidas em Longa podem ser redistribuídas entre outras cotas
-     * - As vagas do Interior em Longa podem ser redistribuídas para outras regiões
+     * Escala reduzida (3 Longa + 7 Curta): Longa com escassez de Indígenas e PCD no Interior.
      */
     public function restrictedRangesQuotasAndTerritoryVacanciesScenario(Opportunity $opportunity): array
     {
         $list = [];
 
-        // ===== CURTA METRAGEM (70 vagas) - COMPLETA =====
-        
-        // 1. Garante todas as cotas e regiões para CURTA - Capital (~35 vagas)
-        $list = array_merge($list, $this->generateBatch($opportunity, 8, [
+        // ===== CURTA METRAGEM (7 vagas) - COMPLETA =====
+        $list = array_merge($list, $this->generateBatch($opportunity, 1, [
             'range' => self::RANGE_1,
             'raca' => self::RACE_BLACK,
             'region' => self::REGION_CAPITAL,
             'score' => 85.0
         ], use_range: true, use_quota: true, use_region: true));
-        $list = array_merge($list, $this->generateBatch($opportunity, 8, [
+        $list = array_merge($list, $this->generateBatch($opportunity, 1, [
             'range' => self::RANGE_1,
             'raca' => self::RACE_BROWN,
             'region' => self::REGION_CAPITAL,
             'score' => 85.0
-        ], use_range: true, use_quota: true, use_region: true));
-        $list = array_merge($list, $this->generateBatch($opportunity, 2, [
-            'range' => self::RANGE_1,
-            'raca' => self::RACE_INDIGENOUS,
-            'region' => self::REGION_CAPITAL,
-            'score' => 80.0
         ], use_range: true, use_quota: true, use_region: true));
         $list = array_merge($list, $this->generateBatch($opportunity, 1, [
             'range' => self::RANGE_1,
@@ -1215,7 +1008,7 @@ class QuotaRegistrationDirector extends Director
             'region' => self::REGION_CAPITAL,
             'score' => 75.0
         ], use_range: true, use_quota: true, use_region: true));
-        $list = array_merge($list, $this->generateBatch($opportunity, 20, [
+        $list = array_merge($list, $this->generateBatch($opportunity, 2, [
             'range' => self::RANGE_1,
             'raca' => self::RACE_WHITE,
             'pessoaDeficiente' => [],
@@ -1223,24 +1016,11 @@ class QuotaRegistrationDirector extends Director
             'score' => 90.0
         ], use_range: true, use_quota: true, use_region: true));
 
-        // 2. Garante todas as cotas e regiões para CURTA - Litoral (~21 vagas)
-        $list = array_merge($list, $this->generateBatch($opportunity, 5, [
+        $list = array_merge($list, $this->generateBatch($opportunity, 1, [
             'range' => self::RANGE_1,
             'raca' => self::RACE_BLACK,
             'region' => self::REGION_COASTAL,
             'score' => 85.0
-        ], use_range: true, use_quota: true, use_region: true));
-        $list = array_merge($list, $this->generateBatch($opportunity, 5, [
-            'range' => self::RANGE_1,
-            'raca' => self::RACE_BROWN,
-            'region' => self::REGION_COASTAL,
-            'score' => 85.0
-        ], use_range: true, use_quota: true, use_region: true));
-        $list = array_merge($list, $this->generateBatch($opportunity, 1, [
-            'range' => self::RANGE_1,
-            'raca' => self::RACE_INDIGENOUS,
-            'region' => self::REGION_COASTAL,
-            'score' => 80.0
         ], use_range: true, use_quota: true, use_region: true));
         $list = array_merge($list, $this->generateBatch($opportunity, 1, [
             'range' => self::RANGE_1,
@@ -1249,7 +1029,7 @@ class QuotaRegistrationDirector extends Director
             'region' => self::REGION_COASTAL,
             'score' => 75.0
         ], use_range: true, use_quota: true, use_region: true));
-        $list = array_merge($list, $this->generateBatch($opportunity, 15, [
+        $list = array_merge($list, $this->generateBatch($opportunity, 2, [
             'range' => self::RANGE_1,
             'raca' => self::RACE_WHITE,
             'pessoaDeficiente' => [],
@@ -1257,45 +1037,25 @@ class QuotaRegistrationDirector extends Director
             'score' => 88.0
         ], use_range: true, use_quota: true, use_region: true));
 
-        // 3. Garante cotas e região para CURTA - Interior (~14 vagas)
-        $list = array_merge($list, $this->generateBatch($opportunity, 3, [
-            'range' => self::RANGE_1,
-            'raca' => self::RACE_BLACK,
-            'region' => self::REGION_INTERIOR,
-            'score' => 85.0
-        ], use_range: true, use_quota: true, use_region: true));
-        $list = array_merge($list, $this->generateBatch($opportunity, 3, [
-            'range' => self::RANGE_1,
-            'raca' => self::RACE_BROWN,
-            'region' => self::REGION_INTERIOR,
-            'score' => 85.0
-        ], use_range: true, use_quota: true, use_region: true));
+        // Interior Curta: só 1 qualificado (80) para que no máximo 2 do Interior no total (1 Curta + 1 Longa)
         $list = array_merge($list, $this->generateBatch($opportunity, 1, [
             'range' => self::RANGE_1,
             'raca' => self::RACE_INDIGENOUS,
             'region' => self::REGION_INTERIOR,
             'score' => 80.0
         ], use_range: true, use_quota: true, use_region: true));
-        $list = array_merge($list, $this->generateBatch($opportunity, 10, [
+        $list = array_merge($list, $this->generateBatch($opportunity, 2, [
             'range' => self::RANGE_1,
             'raca' => self::RACE_WHITE,
             'pessoaDeficiente' => [],
             'region' => self::REGION_INTERIOR,
-            'score' => 85.0
+            'score' => 40.0  // Abaixo do corte para não entrar no top 10
         ], use_range: true, use_quota: true, use_region: true));
 
-        // ===== LONGA METRAGEM (30 vagas) - COM ESCASSEZ =====
-        
-        // 4. Garante Cotas e Regiões para LONGA - Capital (há candidatos suficientes)
-        $list = array_merge($list, $this->generateBatch($opportunity, 4, [
+        // ===== LONGA METRAGEM (3 vagas) - COM ESCASSEZ NO INTERIOR =====
+        $list = array_merge($list, $this->generateBatch($opportunity, 1, [
             'range' => self::RANGE_2,
             'raca' => self::RACE_BLACK,
-            'region' => self::REGION_CAPITAL,
-            'score' => 88.0
-        ], use_range: true, use_quota: true, use_region: true));
-        $list = array_merge($list, $this->generateBatch($opportunity, 4, [
-            'range' => self::RANGE_2,
-            'raca' => self::RACE_BROWN,
             'region' => self::REGION_CAPITAL,
             'score' => 88.0
         ], use_range: true, use_quota: true, use_region: true));
@@ -1305,7 +1065,7 @@ class QuotaRegistrationDirector extends Director
             'region' => self::REGION_CAPITAL,
             'score' => 82.0
         ], use_range: true, use_quota: true, use_region: true));
-        $list = array_merge($list, $this->generateBatch($opportunity, 10, [
+        $list = array_merge($list, $this->generateBatch($opportunity, 2, [
             'range' => self::RANGE_2,
             'raca' => self::RACE_WHITE,
             'pessoaDeficiente' => [],
@@ -1313,80 +1073,33 @@ class QuotaRegistrationDirector extends Director
             'score' => 92.0
         ], use_range: true, use_quota: true, use_region: true));
 
-        // 5. Garante Cotas e Regiões para LONGA - Litoral (há candidatos suficientes)
-        $list = array_merge($list, $this->generateBatch($opportunity, 2, [
+        $list = array_merge($list, $this->generateBatch($opportunity, 1, [
             'range' => self::RANGE_2,
             'raca' => self::RACE_BLACK,
-            'region' => self::REGION_COASTAL,
-            'score' => 88.0
-        ], use_range: true, use_quota: true, use_region: true));
-        $list = array_merge($list, $this->generateBatch($opportunity, 2, [
-            'range' => self::RANGE_2,
-            'raca' => self::RACE_BROWN,
-            'region' => self::REGION_COASTAL,
+            'region' => self::REGION_INTERIOR,
             'score' => 88.0
         ], use_range: true, use_quota: true, use_region: true));
         $list = array_merge($list, $this->generateBatch($opportunity, 1, [
             'range' => self::RANGE_2,
             'raca' => self::RACE_INDIGENOUS,
-            'region' => self::REGION_COASTAL,
-            'score' => 82.0
-        ], use_range: true, use_quota: true, use_region: true));
-        $list = array_merge($list, $this->generateBatch($opportunity, 6, [
-            'range' => self::RANGE_2,
-            'raca' => self::RACE_WHITE,
-            'pessoaDeficiente' => [],
-            'region' => self::REGION_COASTAL,
-            'score' => 90.0
-        ], use_range: true, use_quota: true, use_region: true));
-
-        // 6. ESCASSEZ: Apenas alguns candidatos do Interior para LONGA (meta era ~6)
-        // Negros para Interior em Longa (há alguns)
-        $list = array_merge($list, $this->generateBatch($opportunity, 2, [
-            'range' => self::RANGE_2,
-            'raca' => self::RACE_BLACK,
-            'region' => self::REGION_INTERIOR,
-            'score' => 88.0
-        ], use_range: true, use_quota: true, use_region: true));
-        $list = array_merge($list, $this->generateBatch($opportunity, 2, [
-            'range' => self::RANGE_2,
-            'raca' => self::RACE_BROWN,
-            'region' => self::REGION_INTERIOR,
-            'score' => 88.0
-        ], use_range: true, use_quota: true, use_region: true));
-        
-        // 7. ESCASSEZ: Apenas 0 Indígenas qualificados para LONGA no Interior
-        // Não cria nenhum indígena qualificado para Longa no Interior
-        
-        // 8. ESCASSEZ: Apenas 0 PCD qualificados para LONGA no Interior
-        // Não cria nenhum PCD qualificado para Longa no Interior
-        
-        // 9. Indígenas DESCLASSIFICADOS para LONGA no Interior
-        $list = array_merge($list, $this->generateBatch($opportunity, 2, [
-            'range' => self::RANGE_2,
-            'raca' => self::RACE_INDIGENOUS,
             'region' => self::REGION_INTERIOR,
             'score' => 30.0  // Abaixo da nota de corte
         ], use_range: true, use_quota: true, use_region: true));
-        
-        // 10. PCD DESCLASSIFICADOS para LONGA no Interior
-        $list = array_merge($list, $this->generateBatch($opportunity, 2, [
+        $list = array_merge($list, $this->generateBatch($opportunity, 1, [
             'range' => self::RANGE_2,
             'raca' => self::RACE_WHITE,
             'pessoaDeficiente' => ['Visual'],
             'region' => self::REGION_INTERIOR,
             'score' => 25.0  // Abaixo da nota de corte
         ], use_range: true, use_quota: true, use_region: true));
-
-        // 11. Mais candidatos de Capital e Litoral para LONGA (para preencher as vagas do Interior)
-        $list = array_merge($list, $this->generateBatch($opportunity, 8, [
+        $list = array_merge($list, $this->generateBatch($opportunity, 1, [
             'range' => self::RANGE_2,
             'raca' => self::RACE_WHITE,
             'pessoaDeficiente' => [],
             'region' => self::REGION_CAPITAL,
             'score' => 85.0
         ], use_range: true, use_quota: true, use_region: true));
-        $list = array_merge($list, $this->generateBatch($opportunity, 5, [
+        $list = array_merge($list, $this->generateBatch($opportunity, 1, [
             'range' => self::RANGE_2,
             'raca' => self::RACE_WHITE,
             'pessoaDeficiente' => [],
@@ -1394,14 +1107,13 @@ class QuotaRegistrationDirector extends Director
             'score' => 82.0
         ], use_range: true, use_quota: true, use_region: true));
 
-        // 12. Adiciona Ruído (somente de Capital e Litoral para evitar mais candidatos do Interior)
-        $list = array_merge($list, $this->generateBatch($opportunity, 30, [
+        $list = array_merge($list, $this->generateBatch($opportunity, 3, [
             'raca' => self::RACE_WHITE,
             'pessoaDeficiente' => [],
             'region' => self::REGION_CAPITAL,
             'score' => 35.0
         ], use_quota: true, use_region: true));
-        $list = array_merge($list, $this->generateBatch($opportunity, 20, [
+        $list = array_merge($list, $this->generateBatch($opportunity, 2, [
             'raca' => self::RACE_WHITE,
             'pessoaDeficiente' => [],
             'region' => self::REGION_COASTAL,

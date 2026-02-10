@@ -290,17 +290,22 @@ class Module extends \MapasCulturais\Module{
                 return;
             }
 
-            $this->enableCacheGetterResult('previousPhase');
+            if(!$this->isLastPhase) {
+                $this->enableCacheGetterResult('previousPhase');
+            }
 
             $last_phase = $this->isLastPhase ? $this : $this->lastPhase;
 
             $complement = "";
-            if(!$this->isLastPhase) {
-                $complement = "o.id < :this AND";
-            }
-
-            if(!$this->isReportingPhase) {
-                $complement = "o.id <> :last AND o.id < :this AND";
+            if($this->isLastPhase) {
+                $complement = "o.id <> :this AND";
+            } else {
+                if(!$this->isLastPhase) {
+                    $complement = "o.id < :this AND";
+                }
+                if(!$this->isReportingPhase) {
+                    $complement = "o.id <> :last AND o.id < :this AND";
+                }
             }
 
             $query = $app->em->createQuery("
@@ -323,7 +328,7 @@ class Module extends \MapasCulturais\Module{
                 "this" => $this,
             ];
 
-            if(!$this->isReportingPhase) {
+            if(!$this->isReportingPhase && !$this->isLastPhase) {
                 $params["last"] = $last_phase;
             }
 
@@ -342,18 +347,34 @@ class Module extends \MapasCulturais\Module{
                 $value = $first_phase->lastPhase->previousPhases;
                 return;
             }
+            if($this->isFirstPhase) {
+                $value = [];
+                return;
+            }
 
-            $this->enableCacheGetterResult('previousPhases');
+            if(!$this->isLastPhase) {
+                $this->enableCacheGetterResult('previousPhases');
+            }
 
             $class = Opportunity::class;
-            $query = $app->em->createQuery("
-                SELECT o
-                FROM $class o
-                WHERE
-                    o.id = :parent OR
-                    (o.parent = :parent AND o.registrationFrom < (SELECT this.registrationFrom FROM $class this WHERE this.id = :this))
-                ORDER BY o.registrationFrom ASC");
-
+            if($this->isLastPhase) {
+                $query = $app->em->createQuery("
+                    SELECT o
+                    FROM $class o
+                    WHERE
+                        o.id = :parent OR
+                        (o.parent = :parent AND o.id <> :this)
+                    ORDER BY CASE WHEN o.registrationFrom IS NULL THEN 1 ELSE 0 END ASC, o.registrationFrom ASC, o.id ASC");
+            } else {
+                $query = $app->em->createQuery("
+                    SELECT o
+                    FROM $class o
+                    WHERE
+                        o.id = :parent OR
+                        (o.parent = :parent AND o.registrationFrom <= (SELECT this.registrationFrom FROM $class this WHERE this.id = :this) AND o.id <> :this)
+                    ORDER BY o.registrationFrom ASC");
+            }
+                
             $query->setParameters([
                 "parent" => $first_phase,
                 "this" => $this
@@ -418,7 +439,7 @@ class Module extends \MapasCulturais\Module{
                 return;
             }
 
-            if($this->isLasPhase) {
+            if($this->isLastPhase) {
                 $value = [];
                 return;
             }
@@ -519,7 +540,7 @@ class Module extends \MapasCulturais\Module{
                     if($opportunity->isDataCollection || $opportunity->isFirstPhase || $opportunity->isLastPhase){
                         $app->applyHook('module(OpportunityPhases).dataCollectionPhaseData', [&$mout_simplify]);
 
-                        $item = $opportunity->simplify("{$mout_simplify},type,publishedRegistrations,publishTimestamp,registrationFrom,registrationTo,isFirstPhase,isLastPhase,isReportingPhase,isLastReportingPhase,files,statusLabels");
+                        $item = $opportunity->simplify("{$mout_simplify},type,publishedRegistrations,publishTimestamp,registrationFrom,registrationTo,isDataCollection,isFirstPhase,isLastPhase,isReportingPhase,isLastReportingPhase,files,statusLabels");
                         $item->appealPhase = $opportunity->appealPhase;
 
                         $item->registrationSteps = [];
@@ -749,17 +770,6 @@ class Module extends \MapasCulturais\Module{
         $app->hook('entity(Registration).get(isFirstPhase)', function(&$value) {
             /** @var Registration $this */
             $value = $this->opportunity->isFirstPhase ? true : false;
-        });
-
-        $app->hook('entity(Registration).get(firstPhase)', function(&$value) use($registration_repository) {
-            /** @var Registration $this */
-
-            $this->enableCacheGetterResult('firstPhase');
-
-            $opportunity = $this->opportunity;
-
-            $value = $registration_repository->findOneBy(['opportunity' => $opportunity->firstPhase, 'number' => $this->number]);
-
         });
 
         $app->hook('entity(Registration).get(firstPhase)', function(&$value) use($registration_repository) {

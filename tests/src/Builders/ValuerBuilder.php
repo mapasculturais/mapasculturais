@@ -24,6 +24,8 @@ class ValuerBuilder extends Builder
 
     protected EvaluationMethodConfigurationAgentRelation $instance;
 
+    protected array $fieldsByIdentifier = [];
+
     public function __construct(private EvaluationPhaseBuilder $evaluationPhaseBuilder)
     {
         parent::__construct();
@@ -196,6 +198,46 @@ class ValuerBuilder extends Builder
         $this->instance->metadata->registrationList = $registration_numbers;
         $this->instance->metadata->registrationListExclusive = $exclusive;
 
+        return $this;
+    }
+
+    public function categories(array $categories): static
+    {
+        $this->instance->setCategories($categories);
+
+        return $this;
+    }
+
+    public function proponentType(array $proponent_types): static
+    {
+        $this->instance->setProponentTypes($proponent_types);
+
+        return $this;
+    }
+
+ 
+
+    public function fetch($start, $end): static
+    {
+        $this->instance->setDistribution("{$start}-{$end}");
+        return $this;
+    }
+
+    public function ranges(array $ranges): static
+    {
+        $this->instance->setRanges($ranges);
+
+        return $this;
+    }
+
+    public function fields(array $fields): static
+    {
+        $opportunityBuilder = $this->evaluationPhaseBuilder->getOpportunityBuilder();
+        $selectionFields = [];
+        foreach ($fields as $field => $value) {
+            $selectionFields[$opportunityBuilder->getFieldName($field)] = $value;
+        }
+        $this->instance->setSelectionFields($selectionFields);
         return $this;
     }
 }

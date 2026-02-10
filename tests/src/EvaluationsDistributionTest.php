@@ -1626,4 +1626,485 @@ class EvaluationsDistributionTest extends TestCase
         $total_evaluations = $conn->fetchScalar("SELECT COUNT(*) FROM evaluations");
         $this->assertEquals($number_of_registrations, $total_evaluations, 'Garantindo que todas as inscrições foram distribuídas');
     }
+
+    function testDistributionConfigurationWithFilterConfiguration()
+    {
+        $app = $this->app;
+        $admin = $this->userDirector->createUser('admin');
+        $this->login($admin);
+
+        $opportunity = $this->opportunityBuilder
+        ->reset(owner: $admin->profile, owner_entity: $admin->profile)
+        ->fillRequiredProperties()
+        ->save()
+        ->addCategory('Música')
+        ->addCategory('Dança')
+        ->addCategory('Teatro')
+        ->addCategory('Games')
+        ->addCategory('Outros')
+        ->addProponentType(ProponentTypes::PESSOA_FISICA)
+        ->addProponentType(ProponentTypes::PESSOA_JURIDICA)
+        ->addProponentType(ProponentTypes::COLETIVO)
+        ->addProponentType(ProponentTypes::MEI)
+        ->addRange('Faixa 1', 10, 10)
+        ->addRange('Faixa 2', 10, 10)
+        ->addRange('Faixa 3', 10, 10)
+        ->addRange('Faixa 4', 10, 10)
+        ->addRange('Faixa 5', 10, 10)
+        ->firstPhase()
+            ->setRegistrationPeriod(new Open)
+            ->done()
+        ->save()
+        ->createSentRegistrations( number_of_registrations: 8, category: 'Música', range: 'Faixa 1', proponent_type: ProponentTypes::PESSOA_FISICA->value)
+        ->createSentRegistrations( number_of_registrations: 8, category: 'Dança', range: 'Faixa 2', proponent_type: ProponentTypes::PESSOA_JURIDICA->value)
+        ->createSentRegistrations( number_of_registrations: 8, category: 'Teatro', range: 'Faixa 3', proponent_type: ProponentTypes::COLETIVO->value)
+        ->createSentRegistrations( number_of_registrations: 8, category: 'Games', range: 'Faixa 4', proponent_type: ProponentTypes::MEI->value)
+        ->createSentRegistrations( number_of_registrations: 8, category: 'Outros', range: 'Faixa 5', proponent_type: ProponentTypes::PESSOA_FISICA->value)
+        ->addEvaluationPhase(EvaluationMethods::simple)
+            ->setEvaluationPeriod(new ConcurrentEndingAfter)
+            // Categoria global
+            ->setCommitteeFilterCategory('committee 1', ['Música'])
+            ->setCommitteeFilterCategory('committee 2', ['Dança'])
+            ->setCommitteeFilterCategory('committee 3', ['Teatro', 'Games', 'Outros'])
+            // Tipo de proponente global
+            ->setCommitteeFilterProponentType('committee 4', [ProponentTypes::PESSOA_FISICA->value])
+            ->setCommitteeFilterProponentType('committee 5', [ProponentTypes::PESSOA_JURIDICA->value])
+            ->setCommitteeFilterProponentType('committee 6', [ProponentTypes::MEI->value, ProponentTypes::COLETIVO->value])
+            // Faixas global
+            ->setCommitteeFilterRange('committee 7', ['Faixa 1'])
+            ->setCommitteeFilterRange('committee 8', ['Faixa 2'])
+            ->setCommitteeFilterRange('committee 9', ['Faixa 3', 'Faixa 4', 'Faixa 5'])
+            ->setCommitteeValuersPerRegistration('committee 10', 1)
+            ->save()
+            // Bloco para categorias
+            ->addValuer('committee 1', name: 'avaliador01')
+                ->done()
+            ->addValuer('committee 2', name: 'avaliador02')
+                ->done()
+            ->addValuer('committee 3', name: 'avaliador03')
+                ->categories(['Teatro', 'Games'])
+                ->done()
+            ->addValuer('committee 3', name: 'avaliador04')
+                ->categories(['Outros'])
+                ->done()
+            // Bloco para tipos de proponentes
+            ->addValuer('committee 4', name: 'avaliador05')
+                ->done()
+            ->addValuer('committee 5', name: 'avaliador06')
+                ->done()
+            ->addValuer('committee 6', name: 'avaliador07')
+                ->done()
+            ->addValuer('committee 6', name: 'avaliador08')
+                ->proponentType([ProponentTypes::MEI->value, ProponentTypes::COLETIVO->value])
+                ->done()
+            // Bloco para faixas
+            ->addValuer('committee 7', name: 'avaliador09')
+                ->done()
+            ->addValuer('committee 8', name: 'avaliador10')
+                ->done()
+            ->addValuer('committee 9', name: 'avaliador11')
+                ->ranges(['Faixa 3', 'Faixa 4'])
+                ->done()
+            ->addValuer('committee 9', name: 'avaliador12')
+                ->ranges(['Faixa 5', 'Faixa 3', 'Faixa 4'])
+                ->done()
+            ->addValuer('committee 10', name: 'avaliador13')
+                ->fetch('00','20')
+                ->done()
+            ->addValuer('committee 10', name: 'avaliador14')
+                ->fetch('21','40')
+                ->done()
+            ->addValuer('committee 10', name: 'avaliador15')
+                ->fetch('41','99')
+                ->done()
+            ->save()
+            ->redistributeCommitteeRegistrations()
+            ->done()
+        ->getInstance();
+
+
+        $dict_values = [];
+        /** @var EvaluationMethodConfigurationAgentRelation[] */
+        $valuers = $opportunity->evaluationMethodConfiguration->agentRelations;
+
+        // Garantindo a quantidade de avaliações por avaliador
+        $expected_values = [
+            'avaliador01' => 8,
+            'avaliador02' => 8,
+            'avaliador03' => 16,
+            'avaliador04' => 8,
+            'avaliador05' => 16,
+            'avaliador06' => 8,
+            'avaliador07' => 16,
+            'avaliador08' => 16,
+            'avaliador09' => 8,
+            'avaliador10' => 8,
+            'avaliador11' => 16,
+            'avaliador12' => 24, 
+        ];
+
+        $conn = $app->em->getConnection();
+        foreach ($valuers as $valuer) {
+            if(!in_array($valuer->agent->name, array_keys($expected_values))) {
+                continue;
+            }
+
+            $count_evaluations = $conn->fetchOne(
+                "SELECT COUNT(*) FROM evaluations WHERE valuer_agent_id = :valuer_id",
+                ['valuer_id' => $valuer->agent->id]
+            );
+
+            $dict_values[$valuer->agent->name] = $count_evaluations;
+            $this->assertEquals($expected_values[$valuer->agent->name], $dict_values[$valuer->agent->name], "Garantindo que o {$valuer->agent->name} recebeu {$expected_values[$valuer->agent->name]} avaliações");
+        }
+
+        // Garantir que as avaliações etajem nas comissões categorias, tipos de proponentes e faixas corretas
+        $expected_values = [
+            'committee 1' => [
+                'valuers' => ['avaliador01'],
+                'category' => ['Música'],
+                'proponent_type' => [],
+                'range' => [],
+            ],
+            'committee 2' => [
+                'valuers' => ['avaliador02'],
+                'category' => ['Dança'],
+                'proponent_type' => [],
+                'range' => [],
+            ],
+            'committee 3' => [
+                'valuers' => ['avaliador03', 'avaliador04'],
+                'category' => ['Teatro', 'Games', 'Outros'],
+                'proponent_type' => [],
+                'range' => [],
+            ],
+            'committee 4' => [
+                'valuers' => ['avaliador05'],
+                'category' => [],
+                'proponent_type' => [ProponentTypes::PESSOA_FISICA->value],
+                'range' => [],
+            ],
+            'committee 5' => [
+                'valuers' => ['avaliador06'],
+                'category' => [],
+                'proponent_type' => [ProponentTypes::PESSOA_JURIDICA->value],
+                'range' => [],
+            ],
+            'committee 6' => [
+                'valuers' => ['avaliador07', 'avaliador08'],
+                'category' => [],
+                'proponent_type' => [ProponentTypes::MEI->value, ProponentTypes::COLETIVO->value],
+                'range' => [],
+            ],
+            'committee 7' => [
+                'valuers' => ['avaliador09'],
+                'category' => [],
+                'proponent_type' => [],
+                'range' => ['Faixa 1'],
+            ],
+            'committee 8' => [
+                'valuers' => ['avaliador10'],
+                'category' => [],
+                'proponent_type' => [],
+                'range' => ['Faixa 2'],
+            ],
+            'committee 9' => [
+                'valuers' => ['avaliador11', 'avaliador12'],
+                'category' => [],
+                'proponent_type' => [],
+                'range' => ['Faixa 3', 'Faixa 4', 'Faixa 5'],
+            ],
+            'committee 10' => [
+                'valuers' => ['avaliador13', 'avaliador14', 'avaliador15'],
+                'category' => [],
+                'proponent_type' => [],
+                'range' => [],
+            ],           
+        ];
+
+        foreach ($expected_values as $committee => $values) {
+            $evaluations = $conn->fetchAll(
+                "SELECT
+                    e.registration_id,
+                    e.registration_category,
+                    a.name AS valuer_name,
+                    r.proponent_type AS registration_proponent_type,
+                    r.range AS registration_range
+                FROM evaluations e
+                JOIN agent a
+                    ON a.id = e.valuer_agent_id
+                JOIN registration r
+                    ON r.id = e.registration_id
+                WHERE e.valuer_committee = :committee",
+                [
+                    'committee' => $committee
+                ]
+            );
+
+            foreach ($evaluations as $evaluation) {
+                if($values['category']) {
+                    $categories = implode(', ', $values['category']);
+                    $this->assertContains($evaluation['registration_category'], $values['category'], "Garantindo que a avaliação {$evaluation['registration_id']} está nas categorias {$categories}");
+                }
+
+                if($values['valuers']) {
+                    $valuers = implode(', ', $values['valuers']);
+                    $this->assertContains($evaluation['valuer_name'], $values['valuers'], "Garantindo que a avaliação {$evaluation['registration_id']} está com os avaliadores {$valuers}");
+                }
+
+                if($values['proponent_type']) {
+                    $proponent_types = implode(', ', $values['proponent_type']);
+                    $this->assertContains($evaluation['registration_proponent_type'], $values['proponent_type'], "Garantindo que a avaliação {$evaluation['registration_id']} está no tipo de proponente {$proponent_types}");
+                }
+
+                if($values['range']) {
+                    $ranges = implode(', ', $values['range']);
+                    $this->assertContains($evaluation['registration_range'], $values['range'], "Garantindo que a avaliação {$evaluation['registration_id']} está na faixa {$ranges}");
+                }
+
+            }
+            
+        }
+
+        // Garantir que as avaliações do committee 10 que usam fetch estão distribuidas corretamente
+        $committee_10_evaluations = $conn->fetchAll(
+            "SELECT
+                e.registration_id,
+                e.registration_number,
+                a.name AS valuer_name
+            FROM evaluations e
+            JOIN agent a
+                ON a.id = e.valuer_agent_id
+            WHERE e.valuer_committee = 'committee 10'"
+        );
+
+        // Verificar que cada avaliador recebe apenas inscrições dentro do intervalo fetch correto
+        foreach ($committee_10_evaluations as $evaluation) {
+            $registration_number = $evaluation['registration_number'];
+            $valuer_name = $evaluation['valuer_name'];
+            
+            // Pega os últimos 2 dígitos da inscrição
+            $last_two_digits = (int) substr($registration_number, -2);
+            
+            switch ($valuer_name) {
+                case 'avaliador13':
+                    $this->assertGreaterThanOrEqual(0, $last_two_digits, "Garantindo que a inscrição {$registration_number} do avaliador13 tem os últimos dígitos >= 00");
+                    $this->assertLessThanOrEqual(20, $last_two_digits, "Garantindo que a inscrição {$registration_number} do avaliador13 tem os últimos dígitos <= 20");
+                    break;
+                    
+                case 'avaliador14':
+                    $this->assertGreaterThanOrEqual(21, $last_two_digits, "Garantindo que a inscrição {$registration_number} do avaliador14 tem os últimos dígitos >= 21");
+                    $this->assertLessThanOrEqual(40, $last_two_digits, "Garantindo que a inscrição {$registration_number} do avaliador14 tem os últimos dígitos <= 40");
+                    break;
+                    
+                case 'avaliador15':
+                    $this->assertGreaterThanOrEqual(41, $last_two_digits, "Garantindo que a inscrição {$registration_number} do avaliador15 tem os últimos dígitos >= 41");
+                    $this->assertLessThanOrEqual(99, $last_two_digits, "Garantindo que a inscrição {$registration_number} do avaliador15 tem os últimos dígitos <= 99");
+                    break;
+            }
+        }
+
+        // Verificar que todas as 40 inscrições foram distribuídas no committee 10
+        $total_committee_10_evaluations = count($committee_10_evaluations);
+        $this->assertEquals(40, $total_committee_10_evaluations, "Garantindo que todas as 40 inscrições foram distribuídas no committee 10");
+
+        // Verificar a quantidade de avaliações por avaliador no committee 10
+        $valuers_committee_10 = [];
+        foreach ($committee_10_evaluations as $evaluation) {
+            $valuer_name = $evaluation['valuer_name'];
+            $valuers_committee_10[$valuer_name] = ($valuers_committee_10[$valuer_name] ?? 0) + 1;
+        }
+
+        // Verificar que a soma das avaliações dos 3 avaliadores é 40
+        $total_by_valuers = array_sum($valuers_committee_10);
+        $this->assertEquals(40, $total_by_valuers, "Garantindo que a soma das avaliações dos avaliadores do committee 10 é 40");
+    }
+
+    function testDistributionConfigurationWithFieldFilterConfiguration()
+    {
+        $app = $this->app;
+        $admin = $this->userDirector->createUser('admin');
+        $this->login($admin);
+
+        $opportunity = $this->opportunityBuilder
+        ->reset(owner: $admin->profile, owner_entity: $admin->profile)
+        ->fillRequiredProperties()
+        ->save()
+        ->firstPhase()
+            ->setRegistrationPeriod(new Open)
+            ->createStep('etapa')
+            ->createField('campo01', 'select', required:true, options:['Opcao01', 'Opcao02', 'Opcao03'])
+            ->createField('campo02', 'text', required:true)
+            ->done()
+        ->save()
+        ->addEvaluationPhase(EvaluationMethods::simple)
+            ->setEvaluationPeriod(new ConcurrentEndingAfter)
+            ->setCommitteeValuersPerRegistration('committee 1', 1)
+            ->setCommitteeValuersPerRegistration('committee 2', 1)
+            ->setCommitteeFilterField('committee 3', 'campo01', ['Opcao01', 'Opcao02', 'Opcao03'])
+            ->save()
+            ->addValuer('committee 1', name: 'avaliador01')
+                ->done()
+            ->addValuer('committee 2', name: 'avaliador02')
+                ->done()
+            ->addValuer('committee 3', name: 'avaliador03')
+                ->done()
+            ->addValuer('committee 3', name: 'avaliador04')
+                ->fields(['campo01' => ['Opcao01', 'Opcao02']])
+                ->done()
+            ->addValuer('committee 3', name: 'avaliador05')
+                ->fields(['campo01' => ['Opcao01']])
+            ->done()
+            ->addValuer('committee 3', name: 'avaliador06')
+                ->fields(['campo01' => ['Opcao01']])
+                ->done()
+            ->save()
+            ->done()
+        ->getInstance();
+
+        $registrations = $this->registrationDirector->createDraftRegistrations(
+            $opportunity,
+            number_of_registrations: 30
+        );
+
+        $field_campo01 = $this->opportunityBuilder->getFieldName('campo01');
+        $field_campo02 = $this->opportunityBuilder->getFieldName('campo02');
+
+        for ($i = 0; $i < 10; $i++) {
+            $registrations[$i]->$field_campo01 = 'Opcao01';
+            $registrations[$i]->$field_campo02 = 'valor01';
+            $registrations[$i]->send();
+        }
+
+        for ($i = 10; $i < 20; $i++) {
+            $registrations[$i]->$field_campo01 = 'Opcao02';
+            $registrations[$i]->$field_campo02 = 'valor01';
+            $registrations[$i]->send();
+        }
+
+        for ($i = 20; $i < 30; $i++) {
+            $registrations[$i]->$field_campo01 = 'Opcao03';
+            $registrations[$i]->$field_campo02 = 'valor03';
+            $registrations[$i]->send();
+        }
+
+        $opportunity->evaluationMethodConfiguration->redistributeCommitteeRegistrations();
+
+        // Recarrega a configuração para obter dados atualizados
+        $evaluation_config = $opportunity->evaluationMethodConfiguration->refreshed();
+        
+        /** @var \Doctrine\DBAL\Connection */
+        $conn = $app->em->getConnection();
+        
+        /** @var EvaluationMethodConfigurationAgentRelation[] */
+        $valuers = $evaluation_config->agentRelations;
+
+        // 1) Garante que cada avaliador recebeu a quantidade esperada de inscrições (30 total: 10 Opcao01, 10 Opcao02, 10 Opcao03)
+        $expected_values = [
+            'avaliador01' => 30,
+            'avaliador02' => 30,
+            'avaliador03' => 30,
+            'avaliador04' => 20,
+            'avaliador05' => 10,
+            'avaliador06' => 10,
+        ];
+
+        $dict_values = [];
+        foreach ($valuers as $valuer) {
+            $count_evaluations = $conn->fetchOne(
+                "SELECT COUNT(*) FROM evaluations WHERE valuer_agent_id = :valuer_id",
+                ['valuer_id' => $valuer->agent->id]
+            );
+
+            $dict_values[$valuer->agent->name] = (int)$count_evaluations;
+        }
+
+        foreach ($expected_values as $valuer_name => $expected_count) {
+            $this->assertEquals(
+                $expected_count,
+                $dict_values[$valuer_name] ?? 0,
+                "Garantindo que o {$valuer_name} recebeu {$expected_count} avaliações"
+            );
+        }
+
+        // 2) Garante que cada avaliador recebeu APENAS as inscrições compatíveis com seus filtros
+
+        // Todas as inscrições dessa oportunidade (todas são enviadas)
+        $all_registrations = $this->app->repo('Registration')->findBy(['opportunity' => $opportunity]);
+        $all_registration_ids = array_map(fn($reg) => $reg->id, $all_registrations);
+
+        // Helper para buscar registration_ids por avaliador
+        $getRegistrationIdsByValuer = function (int $valuer_id) use ($conn): array {
+            $rows = $conn->fetchAllAssociative(
+                "SELECT registration_id FROM evaluations WHERE valuer_agent_id = :valuer_id",
+                ['valuer_id' => $valuer_id]
+            );
+
+            return array_map(fn($row) => (int)$row['registration_id'], $rows);
+        };
+
+        // Mapa nome -> relação do avaliador
+        $valuers_by_name = [];
+        foreach ($valuers as $relation) {
+            $valuers_by_name[$relation->agent->name] = $relation;
+        }
+
+        // 2.a) avaliador01 avalia TODAS as inscrições (sem filtro)
+        $avaliador01_registration_ids = $getRegistrationIdsByValuer($valuers_by_name['avaliador01']->agent->id);
+        sort($avaliador01_registration_ids);
+        $sorted_all_ids = $all_registration_ids;
+        sort($sorted_all_ids);
+
+        $this->assertEquals(
+            $sorted_all_ids,
+            $avaliador01_registration_ids,
+            'Garantindo que o avaliador01 recebeu todas as inscrições (sem filtro)'
+        );
+
+        // 2.b) avaliador04 só deve receber inscrições com campo01 = Opcao01 ou Opcao02
+        $avaliador04_registration_ids = $getRegistrationIdsByValuer($valuers_by_name['avaliador04']->agent->id);
+
+        foreach ($avaliador04_registration_ids as $registration_id) {
+            $registration = $this->app->repo('Registration')->find($registration_id);
+            $this->assertNotNull($registration, "Inscrição {$registration_id} deve existir");
+
+            $campo01_value = $registration->$field_campo01 ?? null;
+            $this->assertContains(
+                $campo01_value,
+                ['Opcao01', 'Opcao02'],
+                "Garantindo que o avaliador04 só recebeu inscrições com campo01 = Opcao01 ou Opcao02 (recebeu '{$campo01_value}')"
+            );
+        }
+
+        // 2.c) avaliador05 só deve receber inscrições com campo01 = Opcao01
+        $avaliador05_registration_ids = $getRegistrationIdsByValuer($valuers_by_name['avaliador05']->agent->id);
+
+        foreach ($avaliador05_registration_ids as $registration_id) {
+            $registration = $this->app->repo('Registration')->find($registration_id);
+            $this->assertNotNull($registration, "Inscrição {$registration_id} deve existir");
+
+            $campo01_value = $registration->$field_campo01 ?? null;
+            $this->assertEquals(
+                'Opcao01',
+                $campo01_value,
+                "Garantindo que o avaliador05 só recebeu inscrições com campo01 = Opcao01 (recebeu '{$campo01_value}')"
+            );
+        }
+
+        // 2.d) avaliador06 só deve receber inscrições com campo02 = valor01
+        $avaliador06_registration_ids = $getRegistrationIdsByValuer($valuers_by_name['avaliador06']->agent->id);
+
+        foreach ($avaliador06_registration_ids as $registration_id) {
+            $registration = $this->app->repo('Registration')->find($registration_id);
+            $this->assertNotNull($registration, "Inscrição {$registration_id} deve existir");
+
+            $campo02_value = $registration->$field_campo02 ?? null;
+            $this->assertEquals(
+                'valor01',
+                $campo02_value,
+                "Garantindo que o avaliador06 só recebeu inscrições com campo02 = valor01 (recebeu '{$campo02_value}')"
+            );
+        }
+    }
+      
 }

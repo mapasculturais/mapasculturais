@@ -61,9 +61,9 @@ $this->import('
             <div v-if="selectedField == 'distribution'" class="opportunity-registration-filter-configuration__related-input col-12 field">
                 <input type="text" placeholder="00-99" maxlength="5" v-model="selectedDistribution" />
             </div>
-            <div v-if="registrationSelectionFields?.[selectedField]?.fieldOptions?.length > 0" class="opportunity-registration-filter-configuration__related-input col-12 field">
-                <label class="input__label input__checkboxLabel input__multiselect" v-for="option in registrationSelectionFields[selectedField].fieldOptions">
-                    <input :checked="selectedConfigs.includes[option]" type="checkbox" :value="option" v-model="selectedConfigs"> {{option}}
+            <div v-if="filteredSelectionFieldOptions?.length > 0" class="opportunity-registration-filter-configuration__related-input col-12 field">
+                <label class="input__label input__checkboxLabel input__multiselect" v-for="option in filteredSelectionFieldOptions">
+                    <input :checked="selectedConfigs.includes(option)" type="checkbox" :value="option" v-model="selectedConfigs"> {{option}}
                 </label>
             </div>
         </div>

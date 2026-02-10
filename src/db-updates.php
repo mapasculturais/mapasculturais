@@ -3133,6 +3133,99 @@ $$
 
     "limpa chaves incompatíveis com a v7.7" => function ()  {
         __exec("DELETE FROM user_app");
-    }
+    },
+
+    "Migra configurações de distribuição de evaluationmethodconfiguration_meta para agent_relation" => function() use ($conn, $app) {
+        $keys = ['fetchCategories', 'fetchRanges', 'fetchProponentTypes', 'fetch', 'fetchSelectionFields'];
+        $keys_sql = implode("','", $keys);
+        
+        $meta_records = $conn->fetchAllAssociative("
+            SELECT object_id, key, value FROM evaluationmethodconfiguration_meta
+            WHERE key IN ('{$keys_sql}') ORDER BY object_id
+        ");
+
+        if (empty($meta_records)) {
+            $app->log->debug("Nenhum registro encontrado para migração.");
+            return true;
+        }
+
+        $decode_json = fn($val) => ($val && $val !== '{}') ? json_decode($val, true) : null;
+        
+        $get_value = fn($data, $user_id) => is_array($data) 
+            ? ($data[(string)$user_id] ?? $data[$user_id] ?? null) 
+            : null;
+
+        $configs_by_object = [];
+        foreach ($meta_records as $record) {
+            $configs_by_object[$record['object_id']][$record['key']] = $record['value'];
+        }
+
+        $total = count($configs_by_object);
+        $processed = $updated = $skipped = 0;
+
+        foreach ($configs_by_object as $emc_id => $configs) {
+            $app->log->debug("(" . ++$processed . "/{$total}) Processando EMC {$emc_id}");
+
+            $data = [
+                'categories' => $decode_json($configs['fetchCategories'] ?? null),
+                'ranges' => $decode_json($configs['fetchRanges'] ?? null),
+                'proponentTypes' => $decode_json($configs['fetchProponentTypes'] ?? null),
+                'distribution' => $decode_json($configs['fetch'] ?? null),
+                'selectionFields' => $decode_json($configs['fetchSelectionFields'] ?? null),
+            ];
+
+            $agent_relations = $conn->fetchAllAssociative("
+                SELECT ar.id, ar.agent_id, ar.metadata, u.id as user_id
+                FROM agent_relation ar
+                JOIN agent a ON a.id = ar.agent_id
+                JOIN usr u ON u.profile_id = a.id
+                WHERE ar.object_type = 'MapasCulturais\Entities\EvaluationMethodConfiguration'
+                  AND ar.object_id = :emc_id
+            ", ['emc_id' => $emc_id]);
+
+            if (empty($agent_relations)) {
+                $app->log->debug("  Sem agent_relation. Pulando...");
+                $skipped++;
+                continue;
+            }
+
+            foreach ($agent_relations as $ar) {
+                $user_id = (int) $ar['user_id'];
+                $new_data = [];
+
+                foreach (['categories', 'ranges', 'proponentTypes'] as $field) {
+                    $val = $get_value($data[$field], $user_id);
+                    if (is_array($val)) $new_data[$field] = $val;
+                }
+
+                $dist = $get_value($data['distribution'], $user_id);
+                if ($dist !== null && $dist !== '') $new_data['distribution'] = $dist;
+
+                $sel = $get_value($data['selectionFields'], $user_id);
+                if (is_array($sel) || is_object($sel)) {
+                    $sel = array_filter((array)$sel, fn($v) => !empty($v));
+                    if (!empty($sel)) $new_data['selectionFields'] = $sel;
+                }
+
+                if (empty($new_data)) continue;
+
+                $metadata = json_decode($ar['metadata'], true) ?: [];
+                $metadata = array_merge($metadata, $new_data);
+                $metadata['summary'] ??= ["pending" => 0, "started" => 0, "completed" => 0, "sent" => 0];
+
+                $conn->executeQuery(
+                    "UPDATE agent_relation SET metadata = :metadata WHERE id = :id",
+                    ['metadata' => json_encode($metadata), 'id' => $ar['id']]
+                );
+
+                $updated++;
+                $info = array_map(fn($k) => isset($new_data[$k]) ? "$k:" . (is_array($new_data[$k]) ? count($new_data[$k]) : $new_data[$k]) : null, array_keys($new_data));
+                $app->log->debug("  AR {$ar['id']} (user:{$user_id}) - " . implode(', ', array_filter($info)));
+            }
+        }
+
+        $app->log->debug("Migração concluída! Atualizados: {$updated} | Sem relations: {$skipped}");
+        return true;
+    },
     
 ] + $updates ;   
