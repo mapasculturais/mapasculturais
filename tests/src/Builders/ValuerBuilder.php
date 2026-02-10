@@ -156,34 +156,14 @@ class ValuerBuilder extends Builder
 
     public function categories(array $categories): static
     {
-        $valuer_user_id = $this->instance->agent->user->id;
-
-        $result = (array) $this->instance->owner->fetchCategories ?? [];
-        $result[$valuer_user_id] =  [];
-
-        foreach($categories as $category) {
-            $result[$valuer_user_id][] = $category;
-        }
-
-        $this->instance->owner->fetchCategories = $result;
-        $this->instance->owner->save();
+        $this->instance->setCategories($categories);
 
         return $this;
     }
 
     public function proponentType(array $proponent_types): static
     {
-        $valuer_user_id = $this->instance->agent->user->id;
-
-        $result = (array) $this->instance->owner->fetchProponentTypes ?? [];
-        $result[$valuer_user_id] = [];
-
-        foreach($proponent_types as $proponent_type) {
-            $result[$valuer_user_id][] = $proponent_type;
-        }
-
-        $this->instance->owner->fetchProponentTypes = $result;
-        $this->instance->owner->save();
+        $this->instance->setProponentTypes($proponent_types);
 
         return $this;
     }
@@ -192,50 +172,25 @@ class ValuerBuilder extends Builder
 
     public function fetch($start, $end): static
     {
-        $valuer_user_id = $this->instance->agent->user->id;
-
-        $result = (array) $this->instance->owner->fetch ?? [];
-        $result[$valuer_user_id] = "{$start}-{$end}";
-
-        $this->instance->owner->fetch = $result;
-
+        $this->instance->setDistribution("{$start}-{$end}");
         return $this;
     }
 
     public function ranges(array $ranges): static
     {
-        $valuer_user_id = $this->instance->agent->user->id;
-
-        $result = (array) $this->instance->owner->fetchRanges ?? [];
-        $result[$valuer_user_id] = [];
-
-        foreach($ranges as $range) {
-            $result[$valuer_user_id][] = $range;
-        }
-
-        $this->instance->owner->fetchRanges = $result;
-        $this->instance->owner->save();
+        $this->instance->setRanges($ranges);
 
         return $this;
     }
 
     public function fields(array $fields): static
     {
-        $valuer_user_id = $this->instance->agent->user->id;
-
-        $result = (array) $this->instance->owner->fetchSelectionFields ?? [];
-        $result[$valuer_user_id] = [];
-
         $opportunityBuilder = $this->evaluationPhaseBuilder->getOpportunityBuilder();
-
-        foreach($fields as $field => $value) {
-            $field_name = $opportunityBuilder->getFieldName($field);
-            $result[$valuer_user_id][$field_name] = $value;
+        $selectionFields = [];
+        foreach ($fields as $field => $value) {
+            $selectionFields[$opportunityBuilder->getFieldName($field)] = $value;
         }
-        
-        $this->instance->owner->fetchSelectionFields = $result;
-        $this->instance->owner->save();
-
+        $this->instance->setSelectionFields($selectionFields);
         return $this;
     }
 }
