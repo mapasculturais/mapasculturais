@@ -133,7 +133,8 @@ $this->import('
                     :group-filters="groupFiltersForComponent"
                     :group="group"
                     class="opportunity-evaluation-committee__card-filter"
-                    useDistributionField />
+                    useDistributionField
+                    saveToAgentRelation />
 
                     
                 <div class="opportunity-evaluation-committee__registration-list">

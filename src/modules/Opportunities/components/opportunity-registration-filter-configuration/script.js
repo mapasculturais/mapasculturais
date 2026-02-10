@@ -60,6 +60,11 @@ app.component('opportunity-registration-filter-configuration', {
             required: false,
             default: null
         },
+
+        saveToAgentRelation: {
+            type: Boolean,
+            default: false
+        },
     },
 
     setup() {
@@ -472,7 +477,50 @@ app.component('opportunity-registration-filter-configuration', {
         },
 
         async save() {
-            this.entity.save();
+            if (this.saveToAgentRelation && this.infoReviewer) {
+                await this.saveValuerFilters();
+            } else {
+                this.entity.save();
+            }
+        },
+
+        async saveValuerFilters() {
+            const agentData = this.getAgentData();
+            const url = Utils.createUrl('evaluationMethodConfiguration', 'setValuerFilters', { id: this.entity.id });
+            
+            const data = {
+                relationId: this.infoReviewer.id,
+                categories: agentData.category || null,
+                proponentTypes: agentData.proponentType || null,
+                ranges: agentData.range || null,
+                distribution: agentData.distribution || null,
+                selectionFields: this.buildSelectionFieldsPayload(agentData),
+            };
+
+            try {
+                await fetch(url, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(data),
+                });
+            } catch (error) {
+                console.error('Erro ao salvar filtros do avaliador:', error);
+            }
+        },
+
+        buildSelectionFieldsPayload(agentData) {
+            const reservedFields = ['category', 'proponentType', 'range', 'distribution', 'sentTimestamp'];
+            const selectionFields = {};
+
+            Object.entries(agentData).forEach(([key, value]) => {
+                if (!reservedFields.includes(key) && value) {
+                    selectionFields[key] = value;
+                }
+            });
+
+            return Object.keys(selectionFields).length > 0 ? selectionFields : null;
         },
 
         dictTypes(type, reverse = false) {
@@ -629,6 +677,11 @@ app.component('opportunity-registration-filter-configuration', {
         },
         
         updateAgentData(agentId, key, value) {
+            if (this.saveToAgentRelation && this.infoReviewer?.metadata) {
+                this.updateAgentDataInMetadata(key, value);
+                return;
+            }
+
             if (!this.entity.fetchCategories[agentId]) {
                 this.entity.fetchCategories[agentId] = [];
             }
@@ -646,6 +699,29 @@ app.component('opportunity-registration-filter-configuration', {
 
                 if (Object.keys(this.entity.fetchSelectionFields[agentId][key]).length === 0) {
                     delete this.entity.fetchSelectionFields[agentId][key];
+                }
+            }
+        },
+
+        updateAgentDataInMetadata(key, value) {
+            const metadata = this.infoReviewer.metadata;
+
+            if (key === 'category') {
+                metadata.categories = value || null;
+            } else if (key === 'proponentType') {
+                metadata.proponentTypes = value || null;
+            } else if (key === 'range') {
+                metadata.ranges = value || null;
+            } else if (key === 'distribution') {
+                metadata.distribution = value || null;
+            } else {
+                if (!metadata.selectionFields) {
+                    metadata.selectionFields = {};
+                }
+                if (value && (Array.isArray(value) ? value.length > 0 : Object.keys(value).length > 0)) {
+                    metadata.selectionFields[key] = value;
+                } else {
+                    delete metadata.selectionFields[key];
                 }
             }
         },
@@ -701,6 +777,11 @@ app.component('opportunity-registration-filter-configuration', {
                         this.configs[agentId][this.selectedField].push(config);
                     }
                 });
+            }
+
+            if (this.saveToAgentRelation) {
+                this.updateInfoReviewerMetadata(agentId);
+                return;
             }
 
             Object.entries(this.configs).forEach(([agentId, values]) => {
@@ -770,11 +851,38 @@ app.component('opportunity-registration-filter-configuration', {
             });
         },
 
+        updateInfoReviewerMetadata(agentId) {
+            const values = this.configs[agentId] || {};
+            const metadata = this.infoReviewer.metadata;
+
+            Object.entries(values).forEach(([key, configs]) => {
+                if (key === 'category') {
+                    metadata.categories = Array.isArray(configs) ? [...configs] : null;
+                } else if (key === 'proponentType') {
+                    metadata.proponentTypes = Array.isArray(configs) ? [...configs] : null;
+                } else if (key === 'range') {
+                    metadata.ranges = Array.isArray(configs) ? [...configs] : null;
+                } else if (key === 'distribution') {
+                    metadata.distribution = configs || null;
+                } else {
+                    // Selection fields
+                    if (!metadata.selectionFields) {
+                        metadata.selectionFields = {};
+                    }
+                    metadata.selectionFields[key] = configs;
+                }
+            });
+        },
+
         getAgentData() {
             const agentId = this.infoReviewer?.agentUserId;
 
             if (!agentId) {
                 return null;
+            }
+
+            if (this.saveToAgentRelation && this.infoReviewer?.metadata) {
+                return this.getAgentDataFromMetadata();
             }
 
             let agentData = {};
@@ -799,6 +907,35 @@ app.component('opportunity-registration-filter-configuration', {
             if (this.entity.fetchSelectionFields && this.entity.fetchSelectionFields[agentId]) {
                 for (const field in this.entity.fetchSelectionFields[agentId]) {
                     agentData[field] = this.entity.fetchSelectionFields[agentId][field];
+                }
+            }
+
+            return agentData;
+        },
+
+        getAgentDataFromMetadata() {
+            const metadata = this.infoReviewer.metadata;
+            let agentData = {};
+
+            if (metadata.categories && metadata.categories.length > 0) {
+                agentData['category'] = metadata.categories;
+            }
+
+            if (metadata.proponentTypes && metadata.proponentTypes.length > 0) {
+                agentData['proponentType'] = metadata.proponentTypes;
+            }
+
+            if (metadata.ranges && metadata.ranges.length > 0) {
+                agentData['range'] = metadata.ranges;
+            }
+
+            if (metadata.distribution) {
+                agentData['distribution'] = metadata.distribution;
+            }
+
+            if (metadata.selectionFields) {
+                for (const field in metadata.selectionFields) {
+                    agentData[field] = metadata.selectionFields[field];
                 }
             }
 
