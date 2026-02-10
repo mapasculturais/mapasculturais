@@ -765,8 +765,8 @@ abstract class EvaluationMethod extends Module implements \JsonSerializable{
                 // se a configuração `Desconsiderar as avaliações já feitas na distribuição` estiver desativada
                 if(!($ignore_started_evaluations->$committee_name ?? false)) {
                     // atualiza o número de avaliadores da inscrição
-                    $valuers_committee_registrations_count[$committee_name][$user_id]++;
-                    $valuers_total_registrations_count[$user_id]++;
+                    $valuers_committee_registrations_count[$committee_name][$user_id] = ($valuers_committee_registrations_count[$committee_name][$user_id] ?? 0) + 1;
+                    $valuers_total_registrations_count[$user_id] = ($valuers_total_registrations_count[$user_id] ?? 0) + 1;
                 }
 
                 $registration_valuers_count[$registration->id][$committee_name] = $registration_valuers_count[$registration->id][$committee_name] ?? 0;
@@ -831,6 +831,8 @@ abstract class EvaluationMethod extends Module implements \JsonSerializable{
 
             // passa por cada comissão adicionando os avaliadores até o limite de avaliadores por inscrição configurado na comissão
             foreach($committees as $committee_name => $users) {
+                // Garante que $app está disponível no escopo
+                $app = App::i();
                 $max_valuers = $valuers_per_registration->$committee_name ?? null;
                 // se a comissão tem limite de avaliadores por inscrição e esse limite já foi atingido, não adiociona
                     
@@ -854,14 +856,14 @@ abstract class EvaluationMethod extends Module implements \JsonSerializable{
                     }
                 }
 
-                usort($users, function($u1, $u2) use ($registration, $registration_lists_per_valuer, $registration_list_exclusive_per_valuer, $committee, $valuers_total_registrations_count) {
+                usort($users, function($u1, $u2) use ($registration, $registration_lists_per_valuer, $registration_list_exclusive_per_valuer, $committee_name, $valuers_total_registrations_count) {
                     $registration_number = $registration->number;
 
-                    $list1 = $registration_lists_per_valuer[$committee][$u1->id] ?? [];
-                    $list2 = $registration_lists_per_valuer[$committee][$u2->id] ?? [];
+                    $list1 = $registration_lists_per_valuer[$committee_name][$u1->id] ?? [];
+                    $list2 = $registration_lists_per_valuer[$committee_name][$u2->id] ?? [];
 
-                    $exclusive1 = $registration_list_exclusive_per_valuer[$committee][$u1->id] ?? false;
-                    $exclusive2 = $registration_list_exclusive_per_valuer[$committee][$u2->id] ?? false;
+                    $exclusive1 = $registration_list_exclusive_per_valuer[$committee_name][$u1->id] ?? false;
+                    $exclusive2 = $registration_list_exclusive_per_valuer[$committee_name][$u2->id] ?? false;
 
                     $priority1 = 0;
                     $priority2 = 0;
@@ -889,14 +891,14 @@ abstract class EvaluationMethod extends Module implements \JsonSerializable{
                     $checks_count++;
 
                     // se o usuário já alcançou o limite de inscrições configurado para ele na comissão, pula
-                    $max_user_registrations = $registrations_per_valuer[$committee][$user->id] ?? null;
+                    $max_user_registrations = $registrations_per_valuer[$committee_name][$user->id] ?? null;
                     if($max_user_registrations && ($valuers_committee_registrations_count[$committee_name][$user->id] ?? 0) >= $max_user_registrations) {
                         continue;
                     }
 
                     // verifica se a inscrição está na lista de inscrições do avaliador
-                    $user_registration_list = $registration_lists_per_valuer[$committee][$user->id] ?? null;
-                    $is_list_exclusive = $registration_list_exclusive_per_valuer[$committee][$user->id] ?? false;
+                    $user_registration_list = $registration_lists_per_valuer[$committee_name][$user->id] ?? null;
+                    $is_list_exclusive = $registration_list_exclusive_per_valuer[$committee_name][$user->id] ?? false;
                     
                     if($user_registration_list && is_array($user_registration_list) && count($user_registration_list) > 0) {
                         $registration_number = $registration->number;
@@ -1213,11 +1215,17 @@ abstract class EvaluationMethod extends Module implements \JsonSerializable{
 
         // se não tem filtros globais da comissão E não há nenhum filtro 
         // configurado para o avaliador, ele não pode avaliar
-        if (empty($evaluation_config->fetch->{$user->id}) && 
-            empty($evaluation_config->fetchCategories->{$user->id}) && 
-            empty($evaluation_config->fetchRanges->{$user->id}) && 
-            empty($evaluation_config->fetchProponentTypes->{$user->id}) && 
-            empty($evaluation_config->fetchSelectionFields->{$user->id}) && 
+        $agent_categories = $agent_relation->getCategories();
+        $agent_ranges = $agent_relation->getRanges();
+        $agent_proponent_types = $agent_relation->getProponentTypes();
+        $agent_distribution = $agent_relation->getDistribution();
+        $agent_selection_fields = $agent_relation->getSelectionFields();
+
+        if (empty($agent_distribution) && 
+            empty($agent_categories) && 
+            empty($agent_ranges) && 
+            empty($agent_proponent_types) && 
+            empty($agent_selection_fields) && 
             (!$has_filter && !$has_limit_per_committee)
         ) {
             return false;
@@ -1229,11 +1237,11 @@ abstract class EvaluationMethod extends Module implements \JsonSerializable{
         }
 
         $fetch = [];
-        $config_fetch = (array) $evaluation_config->fetch;
-        $config_fetchCategories = (array) $evaluation_config->fetchCategories;
-        $config_ranges = (array) $evaluation_config->fetchRanges;
-        $config_proponent_types = (array) $evaluation_config->fetchProponentTypes;
-        $config_selection_fields = (array) $evaluation_config->fetchSelectionFields;
+        $config_fetch = [$user->id => $agent_distribution];
+        $config_fetchCategories = [$user->id => $agent_categories ?? []];
+        $config_ranges = [$user->id => $agent_ranges ?? []];
+        $config_proponent_types = [$user->id => $agent_proponent_types ?? []];
+        $config_selection_fields = [$user->id => $agent_selection_fields ?? []];
         $config_sent_timestamp = [];
         $global_filter_configs = (array) $evaluation_config->fetchFields;
         
