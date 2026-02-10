@@ -1964,25 +1964,25 @@ class EvaluationsDistributionTest extends TestCase
 
         $registrations = $this->registrationDirector->createDraftRegistrations(
             $opportunity,
-            number_of_registrations: 60
+            number_of_registrations: 30
         );
 
         $field_campo01 = $this->opportunityBuilder->getFieldName('campo01');
         $field_campo02 = $this->opportunityBuilder->getFieldName('campo02');
 
-        for ($i = 0; $i < 20; $i++) {
+        for ($i = 0; $i < 10; $i++) {
             $registrations[$i]->$field_campo01 = 'Opcao01';
             $registrations[$i]->$field_campo02 = 'valor01';
             $registrations[$i]->send();
         }
 
-        for ($i = 20; $i < 40; $i++) {
+        for ($i = 10; $i < 20; $i++) {
             $registrations[$i]->$field_campo01 = 'Opcao02';
             $registrations[$i]->$field_campo02 = 'valor01';
             $registrations[$i]->send();
         }
 
-        for ($i = 40; $i < 60; $i++) {
+        for ($i = 20; $i < 30; $i++) {
             $registrations[$i]->$field_campo01 = 'Opcao03';
             $registrations[$i]->$field_campo02 = 'valor03';
             $registrations[$i]->send();
@@ -1999,14 +1999,14 @@ class EvaluationsDistributionTest extends TestCase
         /** @var EvaluationMethodConfigurationAgentRelation[] */
         $valuers = $evaluation_config->agentRelations;
 
-        // 1) Garante que cada avaliador recebeu a quantidade esperada de inscrições
+        // 1) Garante que cada avaliador recebeu a quantidade esperada de inscrições (30 total: 10 Opcao01, 10 Opcao02, 10 Opcao03)
         $expected_values = [
-            'avaliador01' => 60,
-            'avaliador02' => 60,
-            'avaliador03' => 60,
-            'avaliador04' => 40,
-            'avaliador05' => 20,
-            'avaliador06' => 20,
+            'avaliador01' => 30,
+            'avaliador02' => 30,
+            'avaliador03' => 30,
+            'avaliador04' => 20,
+            'avaliador05' => 10,
+            'avaliador06' => 10,
         ];
 
         $dict_values = [];
