@@ -186,6 +186,7 @@ class EvaluationMethodConfigurationAgentRelation extends AgentRelation {
         $this->metadata->maxRegistrations = ($max_registrations === '' || $max_registrations === null)
             ? null
             : (int) $max_registrations;
+        $this->metadata = (object) (array) $this->metadata;
     }
 
     public function getRegistrationList(): ?array
@@ -198,6 +199,7 @@ class EvaluationMethodConfigurationAgentRelation extends AgentRelation {
     {
         $this->initializeMetadata();
         $this->metadata->registrationList = $registration_numbers;
+        $this->metadata = (object) (array) $this->metadata;
     }
 
     public function getRegistrationListExclusive(): bool
@@ -210,6 +212,7 @@ class EvaluationMethodConfigurationAgentRelation extends AgentRelation {
     {
         $this->initializeMetadata();
         $this->metadata->registrationListExclusive = $exclusive;
+        $this->metadata = (object) (array) $this->metadata;
     }
 
     public function getCategories(): ?array
@@ -261,6 +264,7 @@ class EvaluationMethodConfigurationAgentRelation extends AgentRelation {
     {
         $this->initializeMetadata();
         $this->metadata->distribution = $distribution;
+        $this->metadata = (object) (array) $this->metadata;
     }
 
     public function getSelectionFields(): ?object
@@ -273,6 +277,7 @@ class EvaluationMethodConfigurationAgentRelation extends AgentRelation {
     {
         $this->initializeMetadata();
         $this->metadata->selectionFields = $selection_fields ? (object) $selection_fields : null;
+        $this->metadata = (object) (array) $this->metadata;
     }
 
     protected function canUserRemove($user): bool
