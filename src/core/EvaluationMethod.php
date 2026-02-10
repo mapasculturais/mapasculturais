@@ -1085,25 +1085,20 @@ abstract class EvaluationMethod extends Module implements \JsonSerializable{
      * @return bool 
      */
     public function canEvaluateRegistrationNumber(Entities\Registration $registration, string $filter_configuration) {
-        $can = true;
-
-        if(preg_match("#([0-9]+) *[-] *([0-9]+)*#", $filter_configuration, $matches)){
-            $s1 = $matches[1];
-            $s2 = $matches[2];
-            
-            $len = max([strlen($s1), strlen($s2)]);
-            
-            $fin = substr($registration->number, -$len);
-            
-            if(intval($s2) == 0){ // "00" => "100"
-                $s2 = "1$s2";
-            }
-            if($fin < $s1 || $fin > $s2){
-                $can = false;
-            }
+        if (!preg_match("#([0-9]+) *[-] *([0-9]+)*#", $filter_configuration, $matches)) {
+            return false;
         }
-
-        return $can;
+        
+        $s1 = (int) $matches[1];
+        $s2 = (int) $matches[2];
+        $len = max(strlen($matches[1]), strlen($matches[2]));
+        $fin = (int) substr($registration->number, -$len);
+        
+        if ($s2 == 0) {
+            $s2 = 100;
+        }
+        
+        return $fin >= $s1 && $fin <= $s2;
     }
 
     public function canEvaluateRegistrationFields(Entities\Registration $registration, array $filter_configuration): bool {
@@ -1181,10 +1176,13 @@ abstract class EvaluationMethod extends Module implements \JsonSerializable{
             return $app->rcache->fetch($cache_key);
         }
 
+        $evaluation_config = $registration->evaluationMethodConfiguration;
+
         $agent_relation = $app->repo(EvaluationMethodConfigurationAgentRelation::class)->findOneBy([
             'group' => $committe_name,
             'status' => EvaluationMethodConfigurationAgentRelation::STATUS_ACTIVE,
-            'agent' => $user->profile
+            'agent' => $user->profile,
+            'owner' => $evaluation_config
         ]);
 
         // se o usuário não é avaliador da comissão em questão, ele não pode avaliar
@@ -1198,8 +1196,6 @@ abstract class EvaluationMethod extends Module implements \JsonSerializable{
             $app->rcache->save($cache_key, false);
             return false;
         }
-
-        $evaluation_config = $registration->evaluationMethodConfiguration;
 
         $config = $evaluation_config->fetchFields->{$committe_name} ?? (object) [];
         foreach($config as $values) {
