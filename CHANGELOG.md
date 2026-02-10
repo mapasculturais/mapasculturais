@@ -11,6 +11,10 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ### Melhorias
 - Implementa teste para garantir o correto funcionamento do envio da inscrição
+- Implementa flar no componente opportunity-evaluation-committee que permite sinalizar que deve ser salvo os dados no agente realcionado
+- Implementa getters e setters para salvar os filtrosindividuais dos avaliadores no agente relacionado
+- Ajusta distribuição de avaliações para que distribua as avaliações levando em consideração dos filtros do agente relacionado
+- Implementa endpoints para setar os filtros individuais nos avaliadores cada um em seu respectivo agente relacionado
 
 ## [7.7.2] - 2026-01-28
 ### Correções
