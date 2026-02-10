@@ -25,7 +25,7 @@ app.component('opportunity-category-list' , {
     },
     methods: {
       addCategory () {
-          this.entity.registrationCategories.push(this.category);
+          this.entity.registrationCategories.push(this.category.trim());
           this.clear();
       },
 
