@@ -74,6 +74,25 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 <a name="770-funarte"></a>
 2. <small>Melhoria desenvolvida pela Funarte (Fundação Nacional de Artes) para a Rede das Artes</small>
 
+## [7.6.42] - 2026-02-09
+### Correções
+- Corrige exibição do botão de "Editar informações enviadas" na tela de acompanhamento
+
+## Melhorias
+- Adiciona novo hook no componente de configuração de edição de inscrição
+
+## [7.6.41] - 2026-02-06
+### Correções
+- Implementação de verificações para campos editáveis da inscrição
+
+## Melhorias
+- Adiciona novo hook no componente de suporte
+
+## [7.6.40] - 2026-02-04
+### Correções
+- Exibe indicador de campo obrigatório no campo País do formulário de endereço
+- Corrige preenchimento do campo de país internacional na edição de agente
+
 ## [7.6.39] - 2026-01-29
 ### Correções
 - Implementa pase exclusivo para o Spotify que identifique todas as variações de URL's disponíveis
