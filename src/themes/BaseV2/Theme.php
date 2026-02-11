@@ -50,6 +50,64 @@ class Theme extends \MapasCulturais\Theme
     {
     }
 
+    protected function _addTexts(array $dict = []){
+        $this->_dict = array_merge($dict, $this->_dict);
+    }
+
+    function dict($key, $print = true){
+        if(!$this->_dict){
+            $class = get_called_class();
+            while($class !== __CLASS__){
+                if(!method_exists($class, '_getTexts'))
+                    throw new \Exception ("_getTexts method is required for theme classes and is not present in {$class} class");
+                
+                $this->_addTexts($class::_getTexts());
+                $class = get_parent_class($class);
+            }
+        }
+
+        $text = '';
+        if(key_exists($key, $this->_dict)){
+            $text = $this->_dict[$key];
+        }
+
+        if($print){
+            echo $text;
+        }else{
+            return $text;
+        }
+    }
+
+    static function getDictGroups(){
+        $groups = [
+            'site' => [
+                'name' => i::__('Nome do site'),
+                'description' => i::__('Usado para formar o título do site e título do compartilhamento das páginas do site')
+            ],
+        ];
+
+        return $groups;
+    }
+
+    static function _dict(){
+        $app = App::i();
+        return [
+            'site: name' => [
+                'name' => i::__('nome do site'),
+                'description' => i::__('usado para formar o título do site e título do compartilhamento das páginas do site'),
+                'examples' => [i::__('Mapa da Cultura'), i::__('Mapa Cultural do Estado do Acre'), i::__('Mapa da Cultura de Rio Branco')],
+                'text' => $app->config["app.siteName"],
+                'required' => true
+            ],
+            'site: description' => [
+                'name' => i::__('descrição do site'),
+                'description' => i::__('usado principalmente como texto do compartilhamento da home do site'),
+                'text' => $app->config["app.siteDescription"],
+                'required' => true
+            ],
+        ];
+    }
+
     function addDocumentMetas() {
         $app = App::i();
         $entity = $this->controller->requestedEntity;
