@@ -10,6 +10,7 @@ data:
   DB_NAME: {{ include "mapas.postgresql.database" . | quote }}
   DB_USER: "mapas"
   REDIS_CACHE: {{ include "mapas.redis.cache.host" . | quote }}
+  REDIS_CACHE_PORT: {{ include "mapas.redis.cache.port" . | quote }}
   {{- if and .Values.mapas.redisCache.password (not .Values.mapas.redisCache.existingSecret) }}
   REDIS_CACHE_PASSWORD: {{ .Values.mapas.redisCache.password | quote }}
   {{- end }}

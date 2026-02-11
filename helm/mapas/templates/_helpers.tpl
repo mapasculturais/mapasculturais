@@ -150,7 +150,31 @@ Return the Redis cache hostname (PHP Redis connect uses default port 6379)
 {{- end }}
 
 {{/*
-Return the Redis sessions hostname (without port)
+Return the Redis cache hostname with port
+*/}}
+{{- define "mapas.redis.cache.port" -}}
+{{- if index .Values "redis-cache" "enabled" }}
+{{- "6379" }}
+{{- else }}
+{{- .Values.mapas.redisCache.port | default "6379" | toString }}
+{{- end }}
+{{- end }}
+
+{{/*
+Return to Redis cache hostname with port
+*/}}
+{{- define "mapas.redis.cache.hostWithPort" -}}
+{{- $host := include "mapas.redis.cache.host" . }}
+{{- if $host }}
+{{- $port := .Values.mapas.redisCache.port | default "6379" | toString }}
+{{- printf "%s:%s" $host $port }}
+{{- else }}
+{{- "" }}
+{{- end }}
+{{- end }}
+
+{{/*
+Return to Redis sessions hostname (without port)
 */}}
 {{- define "mapas.redis.sessions.host" -}}
 {{- if index .Values "redis-sessions" "enabled" }}

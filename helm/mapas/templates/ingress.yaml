@@ -40,7 +40,31 @@ spec:
           {{- end }}
     {{- end }}
     {{- else }}
-    - host: {{ include "mapas.ingress.host" . | quote }}
+    {{- /* Generate both baseDomain and funarte.baseDomain or with namespace prefix */}}
+    {{- $baseDomain := .Values.ingress.baseDomain | default "mapas.tec.br" }}
+    {{- $namespace := .Release.Namespace }}
+    {{- $useNamespacePrefix := .Values.ingress.namespacePrefix | default true }}
+    {{- /* First host */}}
+    {{- if $useNamespacePrefix }}
+    - host: {{ printf "%s.%s" $namespace $baseDomain | quote }}
+    {{- else }}
+    - host: {{ printf "%s" $baseDomain | quote }}
+    {{- end }}
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: {{ include "mapas.fullname" . }}
+                port:
+                  number: {{ .Values.service.port }}
+    {{- /* Second host: funarte.prefix */}}
+    {{- if $useNamespacePrefix }}
+    - host: {{ printf "funarte-%s.%s" $namespace $baseDomain | quote }}
+    {{- else }}
+    - host: {{ printf "funarte.%s" $baseDomain | quote }}
+    {{- end }}
       http:
         paths:
           - path: /

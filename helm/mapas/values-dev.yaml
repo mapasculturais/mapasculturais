@@ -26,6 +26,9 @@ mapas:
     user: mapas
     password: ""
 
+  redisCache:
+    port: 6379
+
   mailer:
     transport: "smtp://naoresponda%40cultura.org.br:%5DOwjq%2A4%25cjHJqLD9%40mail.cultura.org.br:465"
     from: "não responda<naoresponda@cultura.org.br>"
@@ -88,5 +91,6 @@ ingress:
   enabled: true
   className: traefik
   baseDomain: "mapas.tec.br"
+  hosts: null
   annotations:
     traefik.ingress.kubernetes.io/router.entrypoints: web,websecure
