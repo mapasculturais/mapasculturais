@@ -1,0 +1,61 @@
+apiVersion: skaffold/v4beta11
+kind: Config
+metadata:
+  name: mapas
+
+build:
+  artifacts:
+    - image: ghcr.io/redemapas/mapas
+      docker:
+        dockerfile: Dockerfile
+        target: development
+  local:
+    useBuildkit: true
+
+deploy:
+  helm:
+    releases:
+      - name: mapas-dev
+        chartPath: helm/mapas
+        namespace: mapas-dev
+        createNamespace: true
+        valuesFiles:
+          - helm/mapas/values-dev.yaml
+        setValueTemplates:
+          image.repository: "{{.IMAGE_REPO_ghcr_io_redemapas_mapas}}"
+          image.tag: "{{.IMAGE_TAG_ghcr_io_redemapas_mapas}}"
+
+# portForward:
+#   - resourceType: service
+#     resourceName: mapas-dev
+#     namespace: mapas-dev
+#     port: 80
+#     localPort: 8080
+#   - resourceType: service
+#     resourceName: mapas-dev-postgresql
+#     namespace: mapas-dev
+#     port: 5432
+#     localPort: 5432
+
+profiles:
+  - name: prod
+    build:
+      artifacts:
+        - image: ghcr.io/redemapas/mapas
+          docker:
+            dockerfile: Dockerfile
+            target: production
+      local:
+        useBuildkit: true
+    deploy:
+      helm:
+        releases:
+          - name: mapas
+            chartPath: helm/mapas
+            namespace: mapas
+            createNamespace: true
+            valuesFiles:
+              - helm/mapas/values.yaml
+            setValueTemplates:
+              image.repository: "{{.IMAGE_REPO_ghcr_io_redemapas_mapas}}"
+              image.tag: "{{.IMAGE_TAG_ghcr_io_redemapas_mapas}}"

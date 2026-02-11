@@ -1,0 +1,67 @@
+[submodule "src/themes/Funarte"]
+	path = src/themes/Funarte
+	url = https://github.com/RedeMapas/theme-Funarte.git
+
+[submodule "src/themes/RCV"]
+	path = src/themes/RCV
+	url = https://gitlab.hacklab.com.br/mapas/theme-rcv.git
+
+[submodule "src/themes/RedeMapas"]
+	path = src/themes/RedeMapas
+	url = https://github.com/RedeMapas/theme-RedeMapas.git
+
+[submodule "src/themes/MapaMinC"]
+	path = src/themes/MapaMinC
+	url = https://github.com/culturagovbr/theme-MapaMinC.git
+
+[submodule "src/themes/Pnab"]
+	path = src/themes/Pnab
+	url = https://github.com/culturagovbr/theme-Pnab.git
+
+[submodule "src/themes/PeriferiaViva25"]
+	path = src/themes/PeriferiaViva25
+	url = https://github.com/Periferias/theme-ppv-25.git
+
+[submodule "src/plugins/SpamDetector"]
+	path = src/plugins/SpamDetector
+	url = https://github.com/mapasculturais/plugin-SpamDetector.git
+
+[submodule "src/plugins/MultipleLocalAuth"]
+	path = src/plugins/MultipleLocalAuth
+	url = https://github.com/RedeMapas/plugin-MultipleLocalAuth.git
+
+[submodule "src/plugins/ValuersManagement"]
+	path = src/plugins/ValuersManagement
+	url = https://github.com/mapasculturais/plugin-ValuersManagement.git
+
+[submodule "src/plugins/WhatsAppFloating"]
+	path = src/plugins/WhatsAppFloating
+	url = https://github.com/RedeMapas/plugin-WhatsAppFloating.git
+
+[submodule "src/plugins/CustomEntity"]
+	path = src/plugins/CustomEntity
+	url = https://github.com/mapasculturais/plugin-CustomEntity.git
+
+[submodule "src/plugins/ListmonkSync"]
+	path = src/plugins/ListmonkSync
+	url = https://github.com/RedeMapas/plugin-ListmonkSync.git
+
+[submodule "src/plugins/AdminLoginAsUser"]
+	path = src/plugins/AdminLoginAsUser
+	url = https://github.com/mapasculturais/plugin-AdminLoginAsUser.git
+
+[submodule "src/plugins/RecreatePCacheOnLogin"]
+	path = src/plugins/RecreatePCacheOnLogin
+	url = https://github.com/mapasculturais/plugin-RecreatePCacheOnLogin.git
+
+[submodule "src/plugins/MapasNetwork"]
+	path = src/plugins/MapasNetwork
+	url = https://github.com/RedeMapas/plugin-MapasNetwork.git
+
+[submodule "src/plugins/Metabase"]
+	path = src/plugins/Metabase
+	url = https://github.com/RedeMapas/plugin-Metabase.git
+
+[submodule "src/plugins/MapasBlame"]
+	path = src/plugins/MapasBlame
+	url = https://github.com/mapasculturais/plugin-MapasBlame.git

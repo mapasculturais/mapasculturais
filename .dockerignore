@@ -1,4 +1,71 @@
-dev
+# Git
+.git
+.gitignore
+.gitattributes
+
+# Development environment
+dev/
+.worktrees/
+
+# CI/CD
+.github/
+.gitlab-ci.yml
+
+# IDE and editor
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Documentation
+*.md
+!README.md
+docs/
+
+# Tests
+# tests/
+old-tests/
+#phpunit.xml
+.phpunit.result.cache
+
+# Node modules (rebuilt in docker)
+node_modules/
+**/node_modules/
+
+# Var directory (runtime data)
 var/*/*
-node_modules
-*/node_modules
+!var/.gitkeep
+
+# Build artifacts
+*.tgz
+*.tar.gz
+
+# Helm charts directory (not needed in image)
+helm/
+
+# Skaffold
+skaffold.yaml
+
+# Docker compose (dev only)
+docker-compose*.yml
+docker-compose*.yaml
+
+# Environment files
+.env
+.env.*
+!.env.example
+
+# Claude/AI
+.claude/
+.gemini/
+AGENTS.md
+
+# Temporary files
+*.tmp
+*.log
+*.cache
+
+# OS files
+.DS_Store
+Thumbs.db

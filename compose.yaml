@@ -1,0 +1,113 @@
+# Docker Compose development environment for MapaCultural
+# Usage: docker compose up -d
+# Access: http://localhost:8080
+# MailPit UI: http://localhost:8025
+
+services:
+  mapas:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: development
+      args:
+        COMPOSER_ARGS: "" # include dev dependencies
+    container_name: mapas-dev-mapas
+    depends_on:
+      postgres:
+        condition: service_healthy
+    ports:
+      - "8080:80"
+    environment:
+      DB_HOST: postgres
+      DB_PORT: 5432
+      DB_NAME: mapas
+      DB_USER: mapas
+      DB_PASS: mapas-dev
+      # No REDIS_CACHE → falls back to APCu (or FilesystemAdapter if APCu unavailable)
+      # No SESSIONS_SAVE_PATH → defaults to /var/www/var/sessions/ (filesystem)
+      MAILER_TRANSPORT: "smtp://mailpit:1025"
+      MAILER_FROM: "dev@mapas.local"
+      BUILD_ASSETS: "0"
+      CI: "true"
+      BASE_URL: "http://localhost:8080/"
+      APP_DEBUG: "true"
+      DISABLE_SUBSITES: "true"
+      PENDING_PCACHE_RECREATION_INTERVAL: "5"
+      JOBS_INTERVAL: "5"
+      NUM_PROCESSES: "2"
+      MC_UPDATES_PROCESSES: "2"
+      # Test reCAPTCHA keys (public Google test keys, safe to commit)
+      GOOGLE_RECAPTCHA_SITEKEY: "6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI"
+      GOOGLE_RECAPTCHA_SECRET: "6LeIxAcTAAAAAGG-vFI1TnRWxMZNFuojJ4WifJWe"
+      REDIRECT_404_ASSETS_TO: ""
+    volumes:
+      # Development PHP configuration
+      - ./dev/docker/php.ini:/usr/local/etc/php/php.ini:ro
+      - ./dev/docker/xdebug.ini:/usr/local/etc/php/conf.d/xdebug.ini:ro
+      # Entrypoint and cron scripts
+      - ./docker/entrypoint.sh:/entrypoint.sh:ro
+      - ./docker/jobs-cron.sh:/jobs-cron.sh:ro
+      - ./docker/recreate-pending-pcache-cron.sh:/recreate-pending-pcache-cron.sh:ro
+      # Source code (live editing)
+      - ./src:/var/www/src:cached
+      - ./config:/var/www/config:cached
+      - ./public:/var/www/html:cached
+      - ./scripts:/var/www/scripts:cached
+      - ./composer.json:/var/www/composer.json:cached
+      - ./composer.lock:/var/www/composer.lock:cached
+      # Runtime data (named volumes for persistence)
+      - mapas-var:/var/www/var
+      - mapas-assets:/var/www/html/assets
+      - mapas-files:/var/www/html/files
+      - mapas-private:/var/www/var/private-files
+      # Development configuration overrides
+      - ./dev/config.d:/var/www/config/config.d:ro
+      - ./tests/:/var/www/tests
+    networks:
+      - mapas-dev
+    healthcheck:
+      test: ["CMD", "test", "-f", "/mapas-ready"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+
+  postgres:
+    image: postgis/postgis:14-3.4
+    container_name: mapas-dev-postgres
+    environment:
+      POSTGRES_DB: mapas
+      POSTGRES_USER: mapas
+      POSTGRES_PASSWORD: mapas-dev
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+      - ./dev/db:/docker-entrypoint-initdb.d:ro
+    networks:
+      - mapas-dev
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U mapas -d mapas"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  mailpit:
+    image: axllent/mailpit:v1.18
+    container_name: mapas-dev-mailpit
+    ports:
+      - "1025:1025" # SMTP
+      - "8025:8025" # Web UI
+    networks:
+      - mapas-dev
+
+volumes:
+  postgres-data:
+  mapas-var:
+  mapas-assets:
+  mapas-files:
+  mapas-private:
+
+networks:
+  mapas-dev:
+    driver: bridge
