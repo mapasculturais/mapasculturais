@@ -8,7 +8,7 @@ return [
 
     ex: `Name\Space` (deve existir a classe `\Name\Space\Theme`)
     */
-    'themes.active' => env('ACTIVE_THEME', 'MapasCulturais\Themes\BaseV2'),
+    'themes.active' => env('ACTIVE_THEME', 'redemapas'),
 
     
     /*
