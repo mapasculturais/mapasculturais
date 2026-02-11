@@ -6,10 +6,16 @@ use Symfony\Component\Cache\Adapter\FilesystemAdapter;
 if (env('REDIS_CACHE')) {
     $redis = new \Redis();
     $redis->connect(env('REDIS_CACHE'));
+    if (env('REDIS_CACHE_PASSWORD')) {
+        $redis->auth(env('REDIS_CACHE_PASSWORD'));
+    }
     $_cache = new RedisAdapter($redis);
 
     $redis = new \Redis();
     $redis->connect(env('REDIS_CACHE'));
+    if (env('REDIS_CACHE_PASSWORD')) {
+        $redis->auth(env('REDIS_CACHE_PASSWORD'));
+    }
     $_mscache = new RedisAdapter($redis, "ms");
 } else {
     try {
