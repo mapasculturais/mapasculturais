@@ -86,7 +86,7 @@ class Theme extends BaseV1\Theme{
             putenv('LC_ALL=en_US.UTF-8');
 
             $theme_class = "\\" . $this->subsiteInstance->namespace . "\Theme";
-            $theme_instance = new $theme_class($app->config['themes.assetManager'],$this->subsiteInstance);
+            $theme_instance = new $theme_class($app->assetManager,$this->subsiteInstance);
 
             if(is_subclass_of($theme_instance,'Subsite\Theme') || $this->subsiteInstance->namespace == 'Subsite'){
                 $variables_scss = "";
@@ -154,8 +154,12 @@ class Theme extends BaseV1\Theme{
                 exec("sass " . $this->subsitePath . '/assets/css/sass/main.scss ' . $this->subsitePath . '/assets/css/main.css');
 
                 $entidades = $this->subsiteInstance->entidades_habilitadas;
-                $entidades = explode(';', $entidades);
-                $entities = is_array($entidades)? array_map('strtolower',$entidades): [];
+                if (is_array($entidades)) {
+                    $entities = array_map('strtolower', $entidades);
+                } else {
+                    $entidades = explode(';', (string) $entidades);
+                    $entities = is_array($entidades) ? array_map('strtolower', $entidades) : [];
+                }
 
                 $entities_second = $entities;
                 $entities_third = $entities;
