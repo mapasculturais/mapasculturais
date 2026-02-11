@@ -1,9 +1,9 @@
-name: Develop Images
+name: Release
 
 on:
   push:
-    branches:
-      - "dev/**"
+    tags:
+      - "v*"
 
 jobs:
   docker:
@@ -19,18 +19,6 @@ jobs:
           submodules: recursive
           token: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Extract branch tag
-        id: tag
-        run: |
-          BRANCH=${{ github.ref_name }}
-          if [[ ! "$BRANCH" =~ ^dev/ ]]; then
-            echo "Branch não é do tipo dev/*. Saindo."
-            exit 1
-          fi
-          TAG="${BRANCH/dev\//}"
-          echo "tag=v${TAG}" >> $GITHUB_OUTPUT
-          echo "BRANCH=$BRANCH" >> $GITHUB_OUTPUT
-
       - name: Docker meta
         id: meta
         uses: docker/metadata-action@v5
@@ -38,7 +26,8 @@ jobs:
           images: |
             ghcr.io/${{ github.repository }}
           tags: |
-            type=raw,value=${{ steps.tag.outputs.tag }}
+            type=ref,event=tag
+            type=raw,value=latest,enable={{is_default_branch}}
 
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
@@ -64,6 +53,31 @@ jobs:
           labels: ${{ steps.meta.outputs.labels }}
           platforms: linux/amd64
 
+      - name: Extract version
+        id: version
+        run: |
+          VERSION=${{ github.ref_name }}
+          echo "version=${VERSION#v}" >> $GITHUB_OUTPUT
+          echo "tag=${VERSION}" >> $GITHUB_OUTPUT
+
+      - name: Checkout GitOps repo
+        uses: actions/checkout@v4
+        with:
+          repository: lpirola/gitops-caicara-dev
+          token: ${{ secrets.GITOPS_TOKEN }}
+          path: gitops
+
+      - name: Update GitOps values.yaml
+        run: |
+          IMAGE_TAG="${{ steps.version.outputs.tag }}"
+          sed -i "s/tag: .*/tag: ${IMAGE_TAG}/" gitops/clusters/production/applications/mapas/values.yaml
+          git -C gitops diff clusters/production/applications/mapas/values.yaml
+          git -C gitops config user.name "github-actions[bot]"
+          git -C gitops config user.email "github-actions[bot]@users.noreply.github.com"
+          git -C gitops add clusters/production/applications/mapas/values.yaml
+          git -C gitops commit -m "chore: update mapas image to ${IMAGE_TAG}"
+          git -C gitops push
+
   helm-test:
     runs-on: ubuntu-latest
     needs: docker
@@ -73,13 +87,6 @@ jobs:
         with:
           submodules: recursive
           token: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Extract branch tag
-        id: tag
-        run: |
-          BRANCH=${{ github.ref_name }}
-          TAG="${BRANCH/dev\//}"
-          echo "tag=v${TAG}" >> $GITHUB_OUTPUT
 
       - name: Set up Helm
         uses: azure/setup-helm@v4
@@ -94,11 +101,11 @@ jobs:
 
       - name: Load Docker image into kind
         run: |
-          TAG="${{ steps.tag.outputs.tag }}"
+          IMAGE_TAG="${{ github.ref_name }}"
           REPO="${{ github.repository }}"
           REPO_LOWER=$(echo "$REPO" | tr '[:upper:]' '[:lower:]')
-          docker pull ghcr.io/${REPO_LOWER}:${TAG}
-          kind load docker-image ghcr.io/${REPO_LOWER}:${TAG} --name mapas-test
+          docker pull ghcr.io/${REPO_LOWER}:${IMAGE_TAG}
+          kind load docker-image ghcr.io/${REPO_LOWER}:${IMAGE_TAG} --name mapas-test
 
       - name: Add helm repositories
         run: helm repo add groundhog2k https://groundhog2k.github.io/helm-charts/
@@ -108,14 +115,14 @@ jobs:
 
       - name: Install helm chart
         run: |
-          TAG="${{ steps.tag.outputs.tag }}"
+          IMAGE_TAG="${{ github.ref_name }}"
           REPO="${{ github.repository }}"
           REPO_LOWER=$(echo "$REPO" | tr '[:upper:]' '[:lower:]')
           helm install mapas helm/mapas \
             --namespace mapas-test \
             --create-namespace \
             --set image.repository=ghcr.io/${REPO_LOWER} \
-            --set image.tag=${TAG} \
+            --set image.tag=${IMAGE_TAG} \
             --set postgresql.enabled=true \
             --set 'redis-cache.enabled=false' \
             --set 'redis-sessions.enabled=false' \
