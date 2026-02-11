@@ -126,6 +126,125 @@ Sobre o armazenamento deve-se considerar que a tendência é que o uso de espaç
 
 Vale lembrar que os requisitos de hardware podem variar de acordo com a latência da rede, velocidade dos cores dos cpus, uso de proxies, entre outros fatores. Recomendamos aos sysadmin da rede em que a aplicação será instalada um monitoramento de tráfego e uso durante o período de 6 meses a 1 ano para avaliação de cenário de uso. 
 
+## Como criar um subsite
+
+Para criar um novo subsite na instação, você pode executar comandos PHP diretamente no container usando o `psysh` (shell interativo do PHP).
+
+### Acesso ao psysh
+
+```bash
+kubectl exec -n <namespace> <pod-name> -- php /var/www/src/tools/psysh.php
+```
+
+### Criar um subsite via psysh
+
+Execute os seguintes comandos no psysh:
+
+```php
+// 1. Obter o app e o usuário admin
+$app = MapasCulturais\App::i();
+$em = $app->em;
+
+// 2. Obter o agente do usuário (necessário como owner do subsite)
+$agent = $app->repo("Agent")->find(1); // Usuário ID 1 geralmente é o admin
+
+// 3. Criar nova instância de Subsite
+$subsite = new \MapasCulturais\Entities\Subsite();
+$subsite->name = 'Nome do Subsite';          // Nome de exibição
+$subsite->url = 'funarte-mapas-dev';         // URL do subsite
+$subsite->aliasUrl = 'funarte-mapas-dev';     // Alias URL
+$subsite->namespace = 'Funarte';             // Namespace do tema
+
+// 4. Definir o owner do subsite (via reflection)
+$reflection = new ReflectionClass($subsite);
+$property = $reflection->getProperty("owner");
+$property->setAccessible(true);
+$property->setValue($subsite, $agent);
+
+$property = $reflection->getProperty("_ownerId");
+$property->setAccessible(true);
+$property->setValue($subsite, $agent->id);
+
+// 5. Salvar no banco de dados
+$app->disableAccessControl();
+$em->persist($subsite);
+$em->flush();
+$app->enableAccessControl();
+
+echo "Subsite criado com ID: " . $subsite->id;
+```
+
+### Exemplo: Criar subsite "Funarte Dev"
+
+```php
+// Obter agente do usuário
+$agent = $app->repo("Agent")->find(1);
+
+// Criar subsite
+$subsite = new \MapasCulturais\Entities\Subsite();
+$subsite->name = 'Funarte Dev';
+$subsite->url = 'funarte-mapas-dev.mapas.tec.br';
+$subsite->aliasUrl = 'funarte-mapas-dev';
+$subsite->namespace = 'Funarte';
+
+// Definir owner
+$reflection = new ReflectionClass($subsite);
+$property = $reflection->getProperty("owner");
+$property->setAccessible(true);
+$property->setValue($subsite, $agent);
+
+$property = $reflection->getProperty("_ownerId");
+$property->setAccessible(true);
+$property->setValue($subsite, $agent->id);
+
+// Salvar
+$app->disableAccessControl();
+$em->persist($subsite);
+$em->flush();
+$app->enableAccessControl();
+
+echo "Subsite ID: " . $subsite->id;
+```
+
+### Adicionar permissões de admin ao subsite
+
+Após criar o subsite, adicione a role de admin para o usuário:
+
+```php
+$user = $app->repo("User")->find(1);
+$app->disableAccessControl();
+$user->addRole("admin", $subsite->id);
+$em->flush();
+$app->enableAccessControl();
+```
+
+### Acessar o subsite
+
+Depois de criado, o subsite será acessível em:
+- `https://<url-do-subsite>/`
+- `https://<alias-url-do-subsite>/`
+
+Exemplo: `https://funarte-mapas-dev.mapas.tec.br/`
+
+### Atualizar subsite existente
+
+Se precisar atualizar um subsite existente:
+
+```php
+// Obter o subsite
+$subsite = $app->repo("Subsite")->find(<SUBSITE_ID>);
+
+// Atualizar valores
+$subsite->name = 'Novo Nome';
+$subsite->url = 'nova-url';
+$subsite->aliasUrl = 'novo-alias';
+
+// Salvar
+$app->disableAccessControl();
+$em->flush();
+$app->enableAccessControl();
+```
+
 ## Canais de comunicação
 
 * Jitsi: https://meet.jit.si/MapasCulturais
