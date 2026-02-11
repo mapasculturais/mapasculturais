@@ -2,8 +2,8 @@
 
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 CDIR=$( pwd )
-cd $DIR
+cd "$DIR/.."
 
-docker compose exec db psql -U mapas psql -d mapas
+docker compose exec postgres psql -U mapas -d mapas
 
-cd $CDIR
+cd "$CDIR"

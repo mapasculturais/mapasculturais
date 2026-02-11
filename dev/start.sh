@@ -2,7 +2,7 @@
 
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 CDIR=$( pwd )
-cd $DIR
+cd "$DIR/.."
 
 BUILD="0"
 DOWN="0"
@@ -12,34 +12,33 @@ do
 case $i in
     -b|--build)
             BUILD="1"
-	    shift
+            shift
     ;;
     -d|--down)
             DOWN="1"
-	    shift
+            shift
     ;;
     -h|--help)
-    	    echo "
-	run-tests.sh [-b] [-u] [-d] [-s=25]
+            echo "
+    start.sh [-b] [-d]
 
-    -b=  | --build      builda a imagem Docker
-	-d=  | --down       executa o docker compose down antes do docker compose run
-    -h=  | --help       Imprime este texto de ajuda
-		    "
-    	    exit
+    -b | --build    rebuild the Docker image before starting
+    -d | --down     bring containers down before starting
+    -h | --help     print this help text
+            "
+            exit
     ;;
 esac
 done
 
-if [ $BUILD = "1" ]; then
-   docker compose build
-fi
-
 if [ $DOWN = "1" ]; then
-   docker compose down
+    docker compose down --remove-orphans
 fi
 
-docker compose run --service-ports mapas 
+if [ $BUILD = "1" ]; then
+    docker compose build
+fi
 
-docker compose down --remove-orphans
-cd $CDIR
+docker compose up
+
+cd "$CDIR"
