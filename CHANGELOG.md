@@ -5,6 +5,10 @@ Todas as mudanças notáveis no projeto serão documentadas neste arquivo.
 O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/)
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [7.6.44] - 2026-02-11
+### Melhorias
+- Melhora desempenho do mc-update de noralização da coluna valuers_exceptions_list 
+
 ## [7.6.43] - 2026-02-11
 ### Correção
 - Implementa mc-update para normalizar a coluna valuers_exceptions_list das inscrições
