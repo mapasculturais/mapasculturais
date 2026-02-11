@@ -22,6 +22,26 @@ Create a default fully qualified app name.
 {{- end }}
 
 {{/*
+Return ingress hostname based on namespace
+Uses mapas.ingress.host as base domain (e.g., mapas.tec.br)
+*/}}
+{{- define "mapas.ingress.host" -}}
+{{- if .Values.ingress.hosts }}
+  {{- range .Values.ingress.hosts }}
+    {{- if .host }}
+      {{- /* Use explicit host if defined */}}
+      {{- .host }}
+    {{- end }}
+  {{- end }}
+{{- else }}
+  {{- /* Fallback: dynamic host based on namespace */}}
+  {{- $baseDomain := .Values.ingress.baseDomain | default "mapas.tec.br" }}
+  {{- $subdomain := .Release.Namespace }}
+  {{- printf "%s.%s" $subdomain $baseDomain }}
+{{- end }}
+{{- end }}
+
+{{/*
 Create chart name and version as used by the chart label.
 */}}
 {{- define "mapas.chart" -}}

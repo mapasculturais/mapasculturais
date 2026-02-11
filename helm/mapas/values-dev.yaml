@@ -20,21 +20,30 @@ mapas:
   appDebug: "true"
 
   database:
-    host: ""       # uses internal postgresql subchart
+    host: "" # uses internal postgresql subchart
     port: 5432
     name: mapas
     user: mapas
     password: ""
 
   mailer:
-    transport: "smtp://mailhog:1025"
-    from: "noreply@mapas.local"
+    transport: "smtp://naoresponda%40cultura.org.br:%5DOwjq%2A4%25cjHJqLD9%40mail.cultura.org.br:465"
+    from: "não responda<naoresponda@cultura.org.br>"
+
+  recaptcha:
+    siteKey: "6LfU2CEqAAAAACrGVDj6Vw3GF16RbBap1uTUG2aE"
+    secret: "6LfU2CEqAAAAAApmAVs3ZDHmCIgdaYEgFanKxNDl"
 
   buildAssets: "0"
   pendingPcacheRecreationInterval: "60"
   jobsInterval: "60"
   numProcesses: "2"
   mcUpdatesProcesses: "4"
+  redirectNotFoundAssetsTo: ""
+
+  extraEnv:
+    - name: MAPAS_HTTPS
+      value: "true"
 
 postgresql:
   enabled: true
@@ -44,7 +53,7 @@ postgresql:
   userDatabase:
     name: mapas
   storage:
-    requestedSize: 5Gi
+    requestedSize: 1Gi
 
 redis-cache:
   enabled: true
@@ -64,23 +73,20 @@ redis-sessions:
 persistence:
   assets:
     enabled: true
-    size: 5Gi
+    size: 1Gi
   publicFiles:
     enabled: true
-    size: 10Gi
+    size: 1Gi
   privateFiles:
     enabled: true
-    size: 5Gi
+    size: 1Gi
   varFiles:
     enabled: true
-    size: 2Gi
+    size: 1Gi
 
 ingress:
   enabled: true
-  className: "nginx"
-  hosts:
-    - host: dev.mapas.local
-      paths:
-        - path: /
-          pathType: Prefix
-  tls: []
+  className: traefik
+  baseDomain: "mapas.tec.br"
+  annotations:
+    traefik.ingress.kubernetes.io/router.entrypoints: web,websecure

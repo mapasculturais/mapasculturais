@@ -24,6 +24,7 @@ spec:
     {{- end }}
   {{- end }}
   rules:
+    {{- if .Values.ingress.hosts }}
     {{- range .Values.ingress.hosts }}
     - host: {{ .host | quote }}
       http:
@@ -37,5 +38,17 @@ spec:
                 port:
                   number: {{ $.Values.service.port }}
           {{- end }}
+    {{- end }}
+    {{- else }}
+    - host: {{ include "mapas.ingress.host" . | quote }}
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: {{ include "mapas.fullname" . }}
+                port:
+                  number: {{ .Values.service.port }}
     {{- end }}
 {{- end }}

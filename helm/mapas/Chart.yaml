@@ -2,7 +2,7 @@ apiVersion: v2
 name: mapas
 description: Helm chart for Mapas Culturais - a platform for cultural mapping
 type: application
-version: 1.0.3
+version: 1.0.5
 appVersion: "7.7.5"
 
 keywords:
