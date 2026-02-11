@@ -1,0 +1,263 @@
+# MapaCultural Helm Chart Values
+
+# Global settings for subcharts
+global:
+  security:
+    # Required for PostGIS custom image
+    allowInsecureImages: true
+
+replicaCount: 1
+
+image:
+  # OCI-compatible image reference
+  repository: ghcr.io/redemapas/mapas
+  tag: ""  # Defaults to Chart.appVersion
+  pullPolicy: IfNotPresent
+
+imagePullSecrets: []
+nameOverride: ""
+fullnameOverride: ""
+
+serviceAccount:
+  create: true
+  automount: true
+  annotations: {}
+  name: ""
+
+podAnnotations: {}
+podLabels: {}
+
+podSecurityContext:
+  fsGroup: 33  # www-data
+
+securityContext: {}
+
+service:
+  type: ClusterIP
+  port: 80
+  targetPort: 80
+
+ingress:
+  enabled: false
+  className: "nginx"
+  annotations: {}
+  hosts:
+    - host: mapas.local
+      paths:
+        - path: /
+          pathType: Prefix
+  tls: []
+
+resources:
+  requests:
+    memory: "512Mi"
+    cpu: "250m"
+  limits:
+    memory: "1Gi"
+    cpu: "1000m"
+
+autoscaling:
+  enabled: false
+  minReplicas: 1
+  maxReplicas: 10
+  targetCPUUtilizationPercentage: 80
+
+nodeSelector: {}
+tolerations: []
+affinity: {}
+
+# Application configuration
+mapas:
+  # Runtime environment settings
+  appEnv: "production"
+  appDebug: "false"
+
+  # Database configuration (used when postgresql.enabled is false)
+  database:
+    host: ""
+    port: 5432
+    name: mapas
+    user: mapas
+    password: ""
+    existingSecret: ""
+    existingSecretKey: "password"
+
+  # Redis cache configuration (used when redis-cache.enabled is false)
+  redisCache:
+    host: ""
+    port: 6379
+    password: ""
+    existingSecret: ""
+    existingSecretKey: "password"
+
+  # Redis sessions configuration (used when redis-sessions.enabled is false)
+  # If empty and useSameRedisForCacheAndSessions is true, uses redisCache configuration
+  redisSessions:
+    host: ""
+    port: 6379
+    password: ""
+    existingSecret: ""
+    existingSecretKey: "password"
+
+  # Use same Redis instance for both cache and sessions
+  useSameRedisForCacheAndSessions: false
+
+  # Legacy session configuration (filesystem fallback)
+  sessions:
+    savePath: ""
+
+  # SMTP/Mailer configuration
+  mailer:
+    transport: "smtp://localhost:25"
+    from: "noreply@mapas.local"
+
+  # Google reCAPTCHA
+  recaptcha:
+    siteKey: ""
+    secret: ""
+    existingSecret: ""
+
+  # Application settings
+  buildAssets: "0"
+  pendingPcacheRecreationInterval: "60"
+  jobsInterval: "60"
+  numProcesses: "2"
+  mcUpdatesProcesses: "4"
+  redirectNotFoundAssetsTo: ""
+
+  # Additional environment variables
+  extraEnv: []
+
+  # Database migration configuration
+  # Note: MapaCultural runs db-update.sh automatically in entrypoint.sh
+  # This job is only needed if you want to run migrations separately
+  migration:
+    enabled: false
+
+# Persistence configuration
+persistence:
+  assets:
+    enabled: true
+    storageClass: ""
+    accessModes:
+      - ReadWriteOnce
+    size: 10Gi
+    existingClaim: ""
+
+  publicFiles:
+    enabled: true
+    storageClass: ""
+    accessModes:
+      - ReadWriteOnce
+    size: 50Gi
+    existingClaim: ""
+
+  privateFiles:
+    enabled: true
+    storageClass: ""
+    accessModes:
+      - ReadWriteOnce
+    size: 10Gi
+    existingClaim: ""
+
+  varFiles:
+    enabled: true
+    storageClass: ""
+    accessModes:
+      - ReadWriteOnce
+    size: 5Gi
+    existingClaim: ""
+
+# PostgreSQL subchart configuration (groundhog2k)
+# Uses PostGIS image for geospatial support
+postgresql:
+  enabled: true
+  image:
+    registry: "docker.io"
+    repository: "postgis/postgis"
+    tag: "16-3.5"
+    pullPolicy: IfNotPresent
+  settings:
+    # Using 'mapas' as superuser to match dump ownership
+    superuser: mapas
+    # IMPORTANT: Set a secure password in production!
+    # Use: helm install mapas ... --set postgresql.settings.superuserPassword=$(openssl rand -base64 32)
+    superuserPassword: "CHANGE_ME_IN_PRODUCTION"
+  userDatabase:
+    # Database named 'mapas' - since superuser is 'mapas', this creates the database
+    # The user/password here would create an additional user, but we use superuser directly
+    name: mapas
+  # Reference the ConfigMap with init.sql for database initialization
+  # This ConfigMap is created by templates/db-init-configmap.yaml
+  # The init.sql contains the database schema dump required for MapaCultural
+  # Set to empty string to disable database initialization (for existing databases)
+  extraScripts: "mapas-db-init"
+  storage:
+    requestedSize: 20Gi
+    className: ""
+  resources:
+    requests:
+      memory: "256Mi"
+      cpu: "250m"
+    limits:
+      memory: "1Gi"
+      cpu: "1000m"
+
+# Redis cache subchart configuration (groundhog2k)
+# Set enabled: false to use external Redis/Valkey (configured in mapas.redisCache)
+redis-cache:
+  enabled: true
+  image:
+    repository: redis
+    tag: "7-alpine"
+    pullPolicy: IfNotPresent
+  # Authentication configuration
+  # For production, set auth.enabled: true and provide password via:
+  # - auth.password: "secure-password" (not recommended for production)
+  # - auth.existingSecret: "redis-cache-auth-secret" (recommended)
+  auth:
+    enabled: false
+    # password: ""
+    # existingSecret: ""
+  persistence:
+    enabled: false
+  resources:
+    requests:
+      memory: "64Mi"
+      cpu: "50m"
+    limits:
+      memory: "256Mi"
+      cpu: "250m"
+  redisConfig: |
+    maxmemory 256mb
+    maxmemory-policy allkeys-lru
+
+# Redis sessions subchart configuration (groundhog2k)
+# Set enabled: false to use external Redis/Valkey or same instance as cache
+# (configured in mapas.redisSessions or mapas.useSameRedisForCacheAndSessions: true)
+redis-sessions:
+  enabled: true
+  image:
+    repository: redis
+    tag: "7-alpine"
+    pullPolicy: IfNotPresent
+  # Authentication configuration
+  # For production, set auth.enabled: true and provide password
+  auth:
+    enabled: false
+    # password: ""
+    # existingSecret: ""
+  persistence:
+    enabled: true
+    size: 1Gi
+    storageClass: ""
+  resources:
+    requests:
+      memory: "32Mi"
+      cpu: "25m"
+    limits:
+      memory: "128Mi"
+      cpu: "100m"
+  redisConfig: |
+    maxmemory 128mb
+    maxmemory-policy allkeys-lru

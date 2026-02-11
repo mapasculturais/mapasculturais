@@ -1,0 +1,90 @@
+{{- if .Values.mapas.migration.enabled }}
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: {{ include "mapas.fullname" . }}-db-migration
+  labels:
+    {{- include "mapas.labels" . | nindent 4 }}
+  annotations:
+    "helm.sh/hook": post-install,post-upgrade
+    "helm.sh/hook-weight": "5"
+    "helm.sh/hook-delete-policy": hook-succeeded
+spec:
+  backoffLimit: 3
+  template:
+    metadata:
+      name: {{ include "mapas.fullname" . }}-db-migration
+      labels:
+        {{- include "mapas.selectorLabels" . | nindent 8 }}
+        app.kubernetes.io/component: db-migration
+    spec:
+      restartPolicy: Never
+      serviceAccountName: {{ include "mapas.serviceAccountName" . }}
+      containers:
+      - name: db-migration
+        image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+        imagePullPolicy: {{ .Values.image.pullPolicy }}
+        command:
+        - /bin/bash
+        - -c
+        - |
+          set -e
+          echo "Iniciando migração de banco de dados MapaCultural..."
+          
+          # Aguardar porta do banco de dados estar acessível
+          echo "Aguardando banco de dados (porta)..."
+          until nc -z "$DB_HOST" "$DB_PORT"; do
+            echo "Porta do banco de dados não está acessível, aguardando..."
+            sleep 3
+          done
+          echo "Porta do banco de dados está acessível!"
+          
+          # Aguardar banco de dados aceitar conexões via PHP/PDO
+          echo "Testando conexão com o banco..."
+          until php -r "
+            try {
+              \$pdo = new PDO('pgsql:host=' . getenv('DB_HOST') . ';port=' . getenv('DB_PORT') . ';dbname=' . getenv('DB_NAME'), getenv('DB_USER'), getenv('DB_PASS'));
+              \$pdo->query('SELECT 1');
+              echo \"OK\n\";
+              exit(0);
+            } catch (Exception \$e) {
+              echo 'Erro: ' . \$e->getMessage() . \"\n\";
+              exit(1);
+            }
+          "; do
+            echo "Banco de dados não está pronto, aguardando..."
+            sleep 5
+          done
+          echo "Banco de dados está pronto!"
+          
+          # Executar migrações do MapaCultural usando apply-updates.php
+          cd /var/www
+          echo "Executando db-updates (sem plugins)..."
+          DISABLE_PLUGINS=1 HTTP_HOST=localhost REQUEST_METHOD='CLI' REMOTE_ADDR='127.0.0.1' REQUEST_URI='/' SERVER_NAME=127.0.0.1 SERVER_PORT="80" php src/tools/apply-updates.php
+          
+          echo "Executando db-updates (com plugins)..."
+          HTTP_HOST=localhost REQUEST_METHOD='CLI' REMOTE_ADDR='127.0.0.1' REQUEST_URI='/' SERVER_NAME=127.0.0.1 SERVER_PORT="80" php src/tools/apply-updates.php
+          
+          echo "Migração concluída com sucesso!"
+        env:
+        - name: DB_HOST
+          value: {{ include "mapas.postgresql.host" . }}
+        - name: DB_PORT
+          value: {{ include "mapas.postgresql.port" . | quote }}
+        - name: DB_NAME
+          value: {{ include "mapas.postgresql.database" . }}
+        - name: DB_USER
+          value: {{ include "mapas.postgresql.username" . }}
+        - name: DB_PASS
+          valueFrom:
+            secretKeyRef:
+              name: {{ include "mapas.postgresql.secretName" . }}
+              key: {{ if .Values.postgresql.enabled }}POSTGRES_PASSWORD{{ else }}{{ .Values.mapas.database.existingSecretKey | default "password" }}{{ end }}
+        resources:
+          requests:
+            memory: "512Mi"
+            cpu: "250m"
+          limits:
+            memory: "2Gi"
+            cpu: "1000m"
+{{- end }}

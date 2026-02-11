@@ -1,0 +1,45 @@
+MapaCultural has been deployed!
+
+1. Get the application URL:
+{{- if .Values.ingress.enabled }}
+{{- range $host := .Values.ingress.hosts }}
+  http{{ if $.Values.ingress.tls }}s{{ end }}://{{ $host.host }}{{ (index $host.paths 0).path }}
+{{- end }}
+{{- else if contains "NodePort" .Values.service.type }}
+  export NODE_PORT=$(kubectl get --namespace {{ .Release.Namespace }} -o jsonpath="{.spec.ports[0].nodePort}" services {{ include "mapas.fullname" . }})
+  export NODE_IP=$(kubectl get nodes --namespace {{ .Release.Namespace }} -o jsonpath="{.items[0].status.addresses[0].address}")
+  echo http://$NODE_IP:$NODE_PORT
+{{- else if contains "LoadBalancer" .Values.service.type }}
+  NOTE: It may take a few minutes for the LoadBalancer IP to be available.
+  You can watch the status by running:
+    kubectl get --namespace {{ .Release.Namespace }} svc -w {{ include "mapas.fullname" . }}
+  export SERVICE_IP=$(kubectl get svc --namespace {{ .Release.Namespace }} {{ include "mapas.fullname" . }} --template "{{"{{ range (index .status.loadBalancer.ingress 0) }}{{.}}{{ end }}"}}")
+  echo http://$SERVICE_IP:{{ .Values.service.port }}
+{{- else if contains "ClusterIP" .Values.service.type }}
+  kubectl --namespace {{ .Release.Namespace }} port-forward svc/{{ include "mapas.fullname" . }} 8080:{{ .Values.service.port }}
+  echo "Visit http://127.0.0.1:8080"
+{{- end }}
+
+ 2. Database connection:
+ {{- if .Values.postgresql.enabled }}
+    PostgreSQL is running as a subchart.
+    Host: {{ include "mapas.postgresql.host" . }}
+    Database: {{ include "mapas.postgresql.database" . }}
+    Username: mapas
+ {{- else }}
+   Using external PostgreSQL at {{ .Values.mapas.database.host }}
+{{- end }}
+
+3. Redis:
+{{- if index .Values "redis-cache" "enabled" }}
+   Redis cache: {{ include "mapas.redis.cache.host" . }}
+{{- end }}
+{{- if index .Values "redis-sessions" "enabled" }}
+   Redis sessions: {{ include "mapas.redis.sessions.host" . }}
+{{- end }}
+
+4. Initial setup:
+   The application will automatically run database migrations on startup.
+   First startup may take a few minutes while initializing.
+
+For more information, visit: https://github.com/redemapas/mapas

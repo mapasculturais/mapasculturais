@@ -1,0 +1,46 @@
+apiVersion: v2
+name: mapas
+description: Helm chart for Mapas Culturais - a platform for cultural mapping
+type: application
+version: 1.0.3
+appVersion: "7.7.5"
+
+keywords:
+  - mapacultura
+  - cultural
+  - php
+  - mapas
+  - kubernetes
+
+annotations:
+  category: web
+  certified: "false"
+  support: community
+  repository: https://github.com/redemapas/mapas
+
+maintainers:
+  - name: RedeMapas Team
+    email: tech@redemapas.org
+    url: https://github.com/redemapas
+
+sources:
+  - https://github.com/redemapas/mapas
+
+home: https://github.com/redemapas/mapas
+
+dependencies:
+  - name: postgres
+    version: "0.2.28"
+    repository: https://groundhog2k.github.io/helm-charts/
+    alias: postgresql
+    condition: postgresql.enabled
+  - name: redis
+    version: "2.2.1"
+    repository: https://groundhog2k.github.io/helm-charts/
+    alias: redis-cache
+    condition: redis-cache.enabled
+  - name: redis
+    version: "2.2.1"
+    repository: https://groundhog2k.github.io/helm-charts/
+    alias: redis-sessions
+    condition: redis-sessions.enabled

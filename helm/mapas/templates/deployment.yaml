@@ -1,0 +1,156 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "mapas.fullname" . }}
+  labels:
+    {{- include "mapas.labels" . | nindent 4 }}
+spec:
+  {{- if not .Values.autoscaling.enabled }}
+  replicas: {{ .Values.replicaCount }}
+  {{- end }}
+  selector:
+    matchLabels:
+      {{- include "mapas.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      {{- with .Values.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      labels:
+        {{- include "mapas.selectorLabels" . | nindent 8 }}
+    spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      serviceAccountName: {{ include "mapas.serviceAccountName" . }}
+      securityContext:
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      containers:
+        - name: {{ .Chart.Name }}
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          envFrom:
+            - configMapRef:
+                name: {{ include "mapas.fullname" . }}-env
+            {{- if .Values.postgresql.enabled }}
+            - secretRef:
+                name: {{ include "mapas.postgresql.secretName" . }}
+            {{- else if .Values.mapas.database.existingSecret }}
+            - secretRef:
+                name: {{ .Values.mapas.database.existingSecret }}
+            {{- end }}
+          env:
+            - name: APP_ENV
+              value: {{ .Values.mapas.appEnv | default "production" | quote }}
+            - name: APP_DEBUG
+              value: {{ .Values.mapas.appDebug | default "false" | quote }}
+            - name: DB_PASS
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "mapas.postgresql.secretName" . }}
+                  key: {{ if .Values.postgresql.enabled }}POSTGRES_PASSWORD{{ else }}{{ .Values.mapas.database.existingSecretKey | default "password" }}{{ end }}
+            {{- if .Values.mapas.redisCache.existingSecret }}
+            - name: REDIS_CACHE_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.mapas.redisCache.existingSecret }}
+                  key: {{ .Values.mapas.redisCache.existingSecretKey | default "password" }}
+            {{- end }}
+            {{- if .Values.mapas.recaptcha.existingSecret }}
+            - name: GOOGLE_RECAPTCHA_SITEKEY
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.mapas.recaptcha.existingSecret }}
+                  key: siteKey
+            - name: GOOGLE_RECAPTCHA_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.mapas.recaptcha.existingSecret }}
+                  key: secret
+            {{- end }}
+            {{- with .Values.mapas.extraEnv }}
+            {{- toYaml . | nindent 12 }}
+            {{- end }}
+          ports:
+            - name: http
+              containerPort: 80
+              protocol: TCP
+          livenessProbe:
+            httpGet:
+              path: /health.php
+              port: http
+            initialDelaySeconds: 30
+            periodSeconds: 30
+            timeoutSeconds: 5
+            failureThreshold: 3
+          readinessProbe:
+            httpGet:
+              path: /health.php
+              port: http
+            initialDelaySeconds: 15
+            periodSeconds: 10
+            timeoutSeconds: 5
+            failureThreshold: 3
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+          volumeMounts:
+            {{- if .Values.persistence.assets.enabled }}
+            - name: assets
+              mountPath: /var/www/html/assets
+            {{- end }}
+            {{- if .Values.persistence.publicFiles.enabled }}
+            - name: public-files
+              mountPath: /var/www/html/files
+            {{- end }}
+            {{- if .Values.persistence.privateFiles.enabled }}
+            - name: private-files
+              mountPath: /var/www/var/private-files
+            {{- end }}
+            {{- if .Values.persistence.varFiles.enabled }}
+            - name: var-files
+              mountPath: /var/www/var/sessions
+              subPath: sessions
+            - name: var-files
+              mountPath: /var/www/var/logs
+              subPath: logs
+            - name: var-files
+              mountPath: /var/www/var/DoctrineProxies
+              subPath: DoctrineProxies
+            {{- end }}
+      volumes:
+        {{- if .Values.persistence.assets.enabled }}
+        - name: assets
+          persistentVolumeClaim:
+            claimName: {{ .Values.persistence.assets.existingClaim | default (printf "%s-assets" (include "mapas.fullname" .)) }}
+        {{- end }}
+        {{- if .Values.persistence.publicFiles.enabled }}
+        - name: public-files
+          persistentVolumeClaim:
+            claimName: {{ .Values.persistence.publicFiles.existingClaim | default (printf "%s-public-files" (include "mapas.fullname" .)) }}
+        {{- end }}
+        {{- if .Values.persistence.privateFiles.enabled }}
+        - name: private-files
+          persistentVolumeClaim:
+            claimName: {{ .Values.persistence.privateFiles.existingClaim | default (printf "%s-private-files" (include "mapas.fullname" .)) }}
+        {{- end }}
+        {{- if .Values.persistence.varFiles.enabled }}
+        - name: var-files
+          persistentVolumeClaim:
+            claimName: {{ .Values.persistence.varFiles.existingClaim | default (printf "%s-var-files" (include "mapas.fullname" .)) }}
+        {{- end }}
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}

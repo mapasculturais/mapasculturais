@@ -1,0 +1,72 @@
+{{- if and .Values.persistence.assets.enabled (not .Values.persistence.assets.existingClaim) }}
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ include "mapas.fullname" . }}-assets
+  labels:
+    {{- include "mapas.labels" . | nindent 4 }}
+spec:
+  accessModes:
+    {{- toYaml .Values.persistence.assets.accessModes | nindent 4 }}
+  {{- if .Values.persistence.assets.storageClass }}
+  storageClassName: {{ .Values.persistence.assets.storageClass | quote }}
+  {{- end }}
+  resources:
+    requests:
+      storage: {{ .Values.persistence.assets.size | quote }}
+---
+{{- end }}
+{{- if and .Values.persistence.publicFiles.enabled (not .Values.persistence.publicFiles.existingClaim) }}
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ include "mapas.fullname" . }}-public-files
+  labels:
+    {{- include "mapas.labels" . | nindent 4 }}
+spec:
+  accessModes:
+    {{- toYaml .Values.persistence.publicFiles.accessModes | nindent 4 }}
+  {{- if .Values.persistence.publicFiles.storageClass }}
+  storageClassName: {{ .Values.persistence.publicFiles.storageClass | quote }}
+  {{- end }}
+  resources:
+    requests:
+      storage: {{ .Values.persistence.publicFiles.size | quote }}
+---
+{{- end }}
+{{- if and .Values.persistence.privateFiles.enabled (not .Values.persistence.privateFiles.existingClaim) }}
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ include "mapas.fullname" . }}-private-files
+  labels:
+    {{- include "mapas.labels" . | nindent 4 }}
+spec:
+  accessModes:
+    {{- toYaml .Values.persistence.privateFiles.accessModes | nindent 4 }}
+  {{- if .Values.persistence.privateFiles.storageClass }}
+  storageClassName: {{ .Values.persistence.privateFiles.storageClass | quote }}
+  {{- end }}
+  resources:
+    requests:
+      storage: {{ .Values.persistence.privateFiles.size | quote }}
+---
+{{- end }}
+{{- if and .Values.persistence.varFiles.enabled (not .Values.persistence.varFiles.existingClaim) }}
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ include "mapas.fullname" . }}-var-files
+  labels:
+    {{- include "mapas.labels" . | nindent 4 }}
+spec:
+  accessModes:
+    {{- toYaml .Values.persistence.varFiles.accessModes | nindent 4 }}
+  {{- if .Values.persistence.varFiles.storageClass }}
+  storageClassName: {{ .Values.persistence.varFiles.storageClass | quote }}
+  {{- end }}
+  resources:
+    requests:
+      storage: {{ .Values.persistence.varFiles.size | quote }}
+---
+{{- end }}

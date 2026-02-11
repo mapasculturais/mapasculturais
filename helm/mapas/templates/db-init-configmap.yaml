@@ -1,0 +1,10 @@
+{{- if and .Values.postgresql.enabled .Values.postgresql.extraScripts }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .Values.postgresql.extraScripts }}
+  labels:
+    {{- include "mapas.labels" . | nindent 4 }}
+data:
+  {{- (.Files.Glob "files/init.sql").AsConfig | nindent 2 }}
+{{- end }}

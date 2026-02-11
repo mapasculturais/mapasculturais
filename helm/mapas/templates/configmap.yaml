@@ -1,0 +1,33 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "mapas.fullname" . }}-env
+  labels:
+    {{- include "mapas.labels" . | nindent 4 }}
+data:
+  DB_HOST: {{ include "mapas.postgresql.host" . | quote }}
+  DB_PORT: {{ include "mapas.postgresql.port" . | quote }}
+  DB_NAME: {{ include "mapas.postgresql.database" . | quote }}
+  DB_USER: "mapas"
+  REDIS_CACHE: {{ include "mapas.redis.cache.host" . | quote }}
+  {{- if and .Values.mapas.redisCache.password (not .Values.mapas.redisCache.existingSecret) }}
+  REDIS_CACHE_PASSWORD: {{ .Values.mapas.redisCache.password | quote }}
+  {{- end }}
+  SESSIONS_SAVE_PATH: {{ include "mapas.sessions.savePath" . | quote }}
+  MAILER_TRANSPORT: {{ .Values.mapas.mailer.transport | quote }}
+  MAILER_FROM: {{ .Values.mapas.mailer.from | quote }}
+  BUILD_ASSETS: {{ .Values.mapas.buildAssets | quote }}
+  PENDING_PCACHE_RECREATION_INTERVAL: {{ .Values.mapas.pendingPcacheRecreationInterval | quote }}
+  JOBS_INTERVAL: {{ .Values.mapas.jobsInterval | quote }}
+  NUM_PROCESSES: {{ .Values.mapas.numProcesses | quote }}
+  MC_UPDATES_PROCESSES: {{ .Values.mapas.mcUpdatesProcesses | quote }}
+  {{- if .Values.mapas.redirectNotFoundAssetsTo }}
+  REDIRECT_404_ASSETS_TO: {{ .Values.mapas.redirectNotFoundAssetsTo | quote }}
+  {{- end }}
+  {{- if and .Values.mapas.recaptcha.siteKey (not .Values.mapas.recaptcha.existingSecret) }}
+  GOOGLE_RECAPTCHA_SITEKEY: {{ .Values.mapas.recaptcha.siteKey | quote }}
+  {{- end }}
+  {{- if and .Values.mapas.recaptcha.secret (not .Values.mapas.recaptcha.existingSecret) }}
+  GOOGLE_RECAPTCHA_SECRET: {{ .Values.mapas.recaptcha.secret | quote }}
+  {{- end }}
+

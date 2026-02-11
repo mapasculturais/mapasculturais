@@ -1,0 +1,86 @@
+replicaCount: 1
+
+image:
+  repository: mapas
+  tag: dev
+  pullPolicy: Always
+
+resources:
+  requests:
+    cpu: 100m
+    memory: 256Mi
+  limits:
+    cpu: 500m
+    memory: 1Gi
+
+podAnnotations: {}
+
+mapas:
+  appEnv: development
+  appDebug: "true"
+
+  database:
+    host: ""       # uses internal postgresql subchart
+    port: 5432
+    name: mapas
+    user: mapas
+    password: ""
+
+  mailer:
+    transport: "smtp://mailhog:1025"
+    from: "noreply@mapas.local"
+
+  buildAssets: "0"
+  pendingPcacheRecreationInterval: "60"
+  jobsInterval: "60"
+  numProcesses: "2"
+  mcUpdatesProcesses: "4"
+
+postgresql:
+  enabled: true
+  settings:
+    superuser: mapas
+    superuserPassword: "mapas"
+  userDatabase:
+    name: mapas
+  storage:
+    requestedSize: 5Gi
+
+redis-cache:
+  enabled: true
+  auth:
+    enabled: false
+  persistence:
+    enabled: false
+
+redis-sessions:
+  enabled: true
+  auth:
+    enabled: false
+  persistence:
+    enabled: true
+    size: 1Gi
+
+persistence:
+  assets:
+    enabled: true
+    size: 5Gi
+  publicFiles:
+    enabled: true
+    size: 10Gi
+  privateFiles:
+    enabled: true
+    size: 5Gi
+  varFiles:
+    enabled: true
+    size: 2Gi
+
+ingress:
+  enabled: true
+  className: "nginx"
+  hosts:
+    - host: dev.mapas.local
+      paths:
+        - path: /
+          pathType: Prefix
+  tls: []
