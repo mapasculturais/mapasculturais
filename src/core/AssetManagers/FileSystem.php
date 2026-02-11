@@ -49,9 +49,6 @@ class FileSystem extends \MapasCulturais\AssetManager{
             ], $command_pattern);
 
         
-        if($command_pattern === 'cp -Rf {IN} {PUBLISH_PATH}')
-            die(var_dump($command));
-        
         $result = '';
         $result_code = '';
         exec($command, $result, $result_code);
@@ -140,7 +137,8 @@ class FileSystem extends \MapasCulturais\AssetManager{
                 $this->_exec($process_pattern, $input_files, $output_file);
 
             }else{
-                file_put_contents($output_file, $content);
+                $this->_mkAssetDir($output_file);
+                file_put_contents($this->config['publishPath'] . $output_file, $content);
             }
 
             $result[] = $app->assetUrl . $output_file;

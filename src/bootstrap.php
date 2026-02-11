@@ -22,10 +22,14 @@ define('CONFIG_PATH', PROTECTED_PATH . 'config/');
 
 define('DOCTRINE_PROXIES_PATH', VAR_PATH . 'DoctrineProxies/');
 define('PRIVATE_FILES_PATH', env('PRIVATE_FILES_PATH', VAR_PATH . 'private-files/'));
-define('SESSIONS_SAVE_PATH', env('SESSIONS_SAVE_PATH', VAR_PATH . 'sessions/'));
+$session_save_path = env('SESSIONS_SAVE_PATH', VAR_PATH . 'sessions/');
+if (strpos($session_save_path, 'tcp://') !== false) {
+    $session_save_path = preg_replace('/^tcp:\/\//', '', $session_save_path);
+}
+define('SESSIONS_SAVE_PATH', $session_save_path);
 
 define('SESSION_TIMEOUT', intval(env('SESSION_TIMEOUT', 12 * HOUR_IN_SECONDS)));
-define('REDIS_SESSION', strpos(SESSIONS_SAVE_PATH, 'tcp://') !== false);
+define('REDIS_SESSION', strpos($session_save_path, ':') !== false && strpos($session_save_path, '/') === false);
 
 define('AUTOLOAD_TTL', 5 * MINUTE_IN_SECONDS);
 
