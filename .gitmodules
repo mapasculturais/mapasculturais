@@ -28,7 +28,7 @@
 
 [submodule "src/plugins/MultipleLocalAuth"]
 	path = src/plugins/MultipleLocalAuth
-	url = https://github.com/RedeMapas/plugin-MultipleLocalAuth.git
+	url = https://github.com/mapasculturais/plugin-MultipleLocalAuth
 
 [submodule "src/plugins/ValuersManagement"]
 	path = src/plugins/ValuersManagement
