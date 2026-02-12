@@ -71,8 +71,16 @@ app.component('registration-evaluation-tab', {
 
     methods: {
         initializeLists() {
-            this.valuersIncludeList = [...(this.entity.valuersIncludeList || [])];
-            this.valuersExcludeList = [...(this.entity.valuersExcludeList || [])];
+            const normalizeIds = (list) => {
+                const ids = (list || [])
+                    .map(id => parseInt(id, 10))
+                    .filter(id => !Number.isNaN(id));
+                
+                return ids.filter((id, index) => ids.indexOf(id) === index);
+            };
+
+            this.valuersIncludeList = normalizeIds(this.entity.valuersIncludeList);
+            this.valuersExcludeList = normalizeIds(this.entity.valuersExcludeList);
         },
 
         updateGroupedValuers() {
