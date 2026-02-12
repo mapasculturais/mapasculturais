@@ -793,4 +793,27 @@ return [
         $app->auth->logout();
     },
 
+    'Migra valuers_exceptions_list para arrays de inteiros (include e exclude)' => function() {
+        $app = App::i();
+        $conn = $app->em->getConnection();
+        if (!$conn->fetchAll("SELECT column_name FROM information_schema.columns WHERE table_name='registration' AND column_name='valuers_exceptions_list'")) {
+            $app->log->debug("[valuers_exceptions_list] Coluna não existe, migração ignorada");
+            return;
+        }
+        $app->log->debug("[valuers_exceptions_list] Enfileirando migração (apenas inscrições com include ou exclude não vazios)");
+        $where = "(valuers_exceptions_list::jsonb->'include' != '[]'::jsonb OR valuers_exceptions_list::jsonb->'exclude' != '[]'::jsonb)";
+        DB_UPDATE::enqueue('Registration', $where, function (Registration $registration) use ($app) {
+            $exceptions = $registration->valuersExceptionsList;
+            $include = array_values(array_map('intval', (array)($exceptions->include ?? [])));
+            $exclude = array_values(array_map('intval', (array)($exceptions->exclude ?? [])));
+            if (empty($include) && empty($exclude)) {
+                return;
+            }
+            $registration->setValuersIncludeList($include);
+            $registration->setValuersExcludeList($exclude);
+            $registration->save(true);
+            $app->log->debug("[valuers_exceptions_list] Inscrição {$registration->id} migrada (include: " . implode(',', $include) . ", exclude: " . implode(',', $exclude) . ")");
+        });
+    }
+
 ];
