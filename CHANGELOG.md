@@ -5,6 +5,10 @@ Todas as mudanças notáveis no projeto serão documentadas neste arquivo.
 O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/)
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [7.6.45] - 2026-02-12
+### Correções
+- Corrige falha que impedia o carregamento correto de alguns avaliadores na tela das listas de inclusão e exclusão.
+
 ## [7.6.44] - 2026-02-11
 ### Melhorias
 - Melhora desempenho do mc-update de noralização da coluna valuers_exceptions_list 
