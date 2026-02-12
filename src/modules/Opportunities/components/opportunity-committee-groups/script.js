@@ -25,6 +25,8 @@ app.component('opportunity-committee-groups', {
             globalExcludeFields: [],
             individualExcludeFields: [],
             relatedAgentsIndex: Object.keys(this.entity.relatedAgents),
+            distributionRules: {},
+            distributionDisabledFilters: {},
             selectedFields: {
                 global: '',
                 individual: ''
@@ -142,6 +144,164 @@ app.component('opportunity-committee-groups', {
                     this.entity[group] = {};
                 }
             }
+
+            for (let groupName of Object.keys(this.entity.relatedAgents)) {
+                if (groupName != '@support') {
+                    this.ensureDistributionRule(groupName);
+                }
+            }
+
+            this.recalculateDistributionDisabledFilters();
+        },
+
+        getDefaultDistributionRule() {
+            return {
+                categories: [],
+                proponentTypes: [],
+                ranges: [],
+                distribution: '',
+                sentTimestamp: {
+                    from: '',
+                    to: ''
+                },
+                fields: {}
+            };
+        },
+
+        ensureDistributionRule(groupName) {
+            if (!this.distributionRules) {
+                this.distributionRules = {};
+            }
+
+            if (!this.distributionRules[groupName]) {
+                const persisted = this.entity.fetchFields?.[groupName];
+                if (persisted && typeof persisted == 'object') {
+                    this.distributionRules[groupName] = {
+                        ...this.getDefaultDistributionRule(),
+                        ...this.mapFetchFieldsToDistributionRule(persisted),
+                    };
+                } else {
+                    this.distributionRules[groupName] = this.getDefaultDistributionRule();
+                }
+            }
+        },
+
+        recalculateDistributionDisabledFilters() {
+            const groups = Object.keys(this.entity.relatedAgents || {}).filter(name => name != '@support');
+
+            const disabled = {};
+
+            groups.forEach(currentGroup => {
+                const usedCategories = new Set();
+                const usedProponentTypes = new Set();
+                const usedRanges = new Set();
+
+                groups.forEach(otherGroup => {
+                    if (otherGroup === currentGroup) {
+                        return;
+                    }
+                    const rule = this.distributionRules[otherGroup] || {};
+
+                    (rule.categories || []).forEach(category => usedCategories.add(category));
+                    (rule.proponentTypes || []).forEach(proponentType => usedProponentTypes.add(proponentType));
+                    (rule.ranges || []).forEach(range => usedRanges.add(range));
+                });
+
+                disabled[currentGroup] = {
+                    categories: Array.from(usedCategories),
+                    proponentTypes: Array.from(usedProponentTypes),
+                    ranges: Array.from(usedRanges),
+                };
+            });
+
+            this.distributionDisabledFilters = disabled;
+        },
+
+        onDistributionRuleChange(rule, groupName) {
+            if (!this.entity.fetchFields) {
+                this.entity.fetchFields = {};
+            }
+
+            if (this.entity.fetchFields[groupName] != undefined) {
+                this.entity.fetchFields[groupName] = this.mapDistributionRuleToFetchFields(rule);
+            }
+
+            this.recalculateDistributionDisabledFilters();
+
+            this.autoSave();
+        },
+
+        mapDistributionRuleToFetchFields(rule) {
+            const result = {};
+            const value = rule || {};
+
+            if (Array.isArray(value.categories) && value.categories.length > 0) {
+                result.category = [...value.categories];
+            }
+
+            if (Array.isArray(value.proponentTypes) && value.proponentTypes.length > 0) {
+                result.proponentType = [...value.proponentTypes];
+            }
+
+            if (Array.isArray(value.ranges) && value.ranges.length > 0) {
+                result.range = [...value.ranges];
+            }
+
+            if (value.sentTimestamp && typeof value.sentTimestamp == 'object' && (value.sentTimestamp.from || value.sentTimestamp.to)) {
+                result.sentTimestamp = {
+                    from: value.sentTimestamp.from || '',
+                    to: value.sentTimestamp.to || ''
+                };
+            }
+
+            if (value.fields && typeof value.fields == 'object') {
+                Object.entries(value.fields).forEach(([fieldId, fieldValues]) => {
+                    if (Array.isArray(fieldValues) && fieldValues.length > 0) {
+                        result[fieldId] = [...fieldValues];
+                    }
+                });
+            }
+
+            return result;
+        },
+
+        mapFetchFieldsToDistributionRule(fetchFieldsGroup) {
+            const base = this.getDefaultDistributionRule();
+            const src = fetchFieldsGroup || {};
+
+            const categories = Array.isArray(src.category) ? [...src.category] : [];
+            const proponentTypes = Array.isArray(src.proponentType) ? [...src.proponentType] : [];
+            const ranges = Array.isArray(src.range) ? [...src.range] : [];
+
+            const distribution = typeof src.distribution == 'string' ? src.distribution : '';
+
+            let sentTimestamp = base.sentTimestamp;
+            if (src.sentTimestamp && typeof src.sentTimestamp == 'object') {
+                sentTimestamp = {
+                    from: src.sentTimestamp.from || '',
+                    to: src.sentTimestamp.to || '',
+                };
+            }
+
+            const fields = {};
+            Object.entries(src).forEach(([key, value]) => {
+                if (['category', 'proponentType', 'range', 'distribution', 'sentTimestamp'].includes(key)) {
+                    return;
+                }
+                
+                if (Array.isArray(value) && value.length > 0) {
+                    fields[key] = [...value];
+                }
+            });
+
+            return {
+                categories,
+                proponentTypes,
+                ranges,
+                distribution,
+                sentTimestamp,
+                fields,
+            };
         },
 
         hasGroups() {
@@ -180,8 +340,10 @@ app.component('opportunity-committee-groups', {
             this.entity.relatedAgents = { ...this.entity.relatedAgents, [group]: this.entity.agentRelations[group] };
 
             if(!this.entity?.fetchFields) {
-                this.entity.fetchFields = {}
+                this.entity.fetchFields = {};
             }
+
+            this.ensureDistributionRule(group);
 
             this.reorderGroups();
         },
@@ -272,7 +434,9 @@ app.component('opportunity-committee-groups', {
             if (value) {
                 if (!this.entity.fetchFields[group]) {
                     this.entity.fetchFields[group] = {};
-                } 
+                }
+                
+                this.ensureDistributionRule(group);
             } else {
                 delete this.entity.fetchFields[group];
             }
