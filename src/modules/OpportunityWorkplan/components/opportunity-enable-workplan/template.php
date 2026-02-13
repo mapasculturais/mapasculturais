@@ -200,41 +200,6 @@ $this->import('
                                 <input type="checkbox" v-model="entity.workplan_registrationReportExpectedRenevue" @click="autoSave()" /><?= i::__("Informar receita prevista") ?>
                             </label>
                         </div>
-                    </div>
-                </div>
-                <div v-if="entity.workplan_deliveryReportTheDeliveriesLinkedToTheGoals" id="data-monitoring" class="opportunity-enable-workplan__block  col-12">
-                    <h4 class="bold opportunity-enable-workplan__title"><?= i::__('Monitoramento') ?></h4>
-                    <h6><?= $this->text('header-description', i::__('As informações marcadas abaixo serão obrigatórias no monitoramento da oportunidade.')) ?></h6>
-                    <div class="field col-12">
-                        <div class="field__group">
-                            <label class="field__checkbox">
-                                <input type="checkbox" v-model="entity.workplan_monitoringInformTheFormOfAvailability" @click="autoSave()" /><?= i::__("Informar forma de disponibilização") ?>
-                            </label>
-                        </div>
-
-                        <div class="field__group">
-                            <label class="field__checkbox">
-                                <input type="checkbox" v-model="entity.workplan_monitoringInformAccessibilityMeasures" @click="autoSave()" /><?= i::__("Informar as medidas de acessibilidade") ?>
-                            </label>
-                        </div>
-
-                        <div class="field__group">
-                            <label class="field__checkbox">
-                                <input type="checkbox" v-model="entity.workplan_monitoringProvideTheProfileOfParticipants" @click="autoSave()" /><?= i::__("Informar o perfil do público") ?>
-                            </label>
-                        </div>
-
-                        <div class="field__group">
-                            <label class="field__checkbox">
-                                <input type="checkbox" v-model="entity.workplan_monitoringInformThePriorityAudience" @click="autoSave()" /><?= i::__("Informar os territórios prioritários") ?>
-                            </label>
-                        </div>
-
-                        <div class="field__group">
-                            <label class="field__checkbox">
-                                <input type="checkbox" v-model="entity.workplan_monitoringReportExecutedRevenue" @click="autoSave()" /><?= i::__("Informar receita executada") ?>
-                            </label>
-                        </div>
                         
                         <h4><?= i::__("Campos adicionais da entrega") ?></h4>
                         
@@ -337,6 +302,79 @@ $this->import('
                         <div class="field__group">
                             <label class="field__checkbox">
                                 <input type="checkbox" v-model="entity.workplan_deliveryInformDocumentationTypes" @click="autoSave()" /><?= i::__("Informar tipo de documentação") ?>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div v-if="entity.workplan_deliveryReportTheDeliveriesLinkedToTheGoals" id="data-monitoring" class="opportunity-enable-workplan__block  col-12">
+                    <h4 class="bold opportunity-enable-workplan__title"><?= i::__('Monitoramento') ?></h4>
+                    <h6><?= $this->text('header-description', i::__('As informações marcadas abaixo serão obrigatórias no monitoramento da oportunidade.')) ?></h6>
+                    <div class="field col-12">
+                        <div class="field__group">
+                            <label class="field__checkbox">
+                                <input type="checkbox" v-model="entity.workplan_monitoringInformTheFormOfAvailability" @click="autoSave()" /><?= i::__("Informar forma de disponibilização") ?>
+                            </label>
+                        </div>
+
+                        <div class="field__group">
+                            <label class="field__checkbox">
+                                <input type="checkbox" v-model="entity.workplan_monitoringInformAccessibilityMeasures" @click="autoSave()" /><?= i::__("Informar as medidas de acessibilidade") ?>
+                            </label>
+                        </div>
+
+                        <div class="field__group">
+                            <label class="field__checkbox">
+                                <input type="checkbox" v-model="entity.workplan_monitoringProvideTheProfileOfParticipants" @click="autoSave()" /><?= i::__("Informar o perfil do público") ?>
+                            </label>
+                        </div>
+
+                        <div class="field__group">
+                            <label class="field__checkbox">
+                                <input type="checkbox" v-model="entity.workplan_monitoringInformThePriorityAudience" @click="autoSave()" /><?= i::__("Informar os territórios prioritários") ?>
+                            </label>
+                        </div>
+
+                        <div class="field__group">
+                            <label class="field__checkbox">
+                                <input type="checkbox" v-model="entity.workplan_monitoringReportExecutedRevenue" @click="autoSave()" /><?= i::__("Informar receita executada") ?>
+                            </label>
+                        </div>
+                        
+                        <h4><?= i::__("Campos adicionais executados") ?></h4>
+                        
+                        <div class="field__group">
+                            <label class="field__checkbox">
+                                <input type="checkbox" v-model="entity.workplan_monitoringInformNumberOfCities" @click="autoSave()" /><?= i::__("Informar número de municípios executados") ?>
+                            </label>
+                        </div>
+                        
+                        <div class="field__group">
+                            <label class="field__checkbox">
+                                <input type="checkbox" v-model="entity.workplan_monitoringInformNumberOfNeighborhoods" @click="autoSave()" /><?= i::__("Informar número de bairros executados") ?>
+                            </label>
+                        </div>
+                        
+                        <div class="field__group">
+                            <label class="field__checkbox">
+                                <input type="checkbox" v-model="entity.workplan_monitoringInformMediationActions" @click="autoSave()" /><?= i::__("Informar ações de mediação executadas") ?>
+                            </label>
+                        </div>
+                        
+                        <div class="field__group">
+                            <label class="field__checkbox">
+                                <input type="checkbox" v-model="entity.workplan_monitoringInformCommercialUnits" @click="autoSave()" /><?= i::__("Informar unidades comercializadas executadas") ?>
+                            </label>
+                        </div>
+                        
+                        <div class="field__group">
+                            <label class="field__checkbox">
+                                <input type="checkbox" v-model="entity.workplan_monitoringInformPaidStaffByRole" @click="autoSave()" /><?= i::__("Informar pessoas remuneradas executadas por função") ?>
+                            </label>
+                        </div>
+                        
+                        <div class="field__group">
+                            <label class="field__checkbox">
+                                <input type="checkbox" v-model="entity.workplan_monitoringInformTeamComposition" @click="autoSave()" /><?= i::__("Informar composição da equipe executada (gênero e raça/cor)") ?>
                             </label>
                         </div>
                     </div>
