@@ -142,6 +142,43 @@ app.component('registration-workplan', {
             entityDelivery.renevueQtd = null;
             entityDelivery.unitValueForecast = null;
             entityDelivery.totalValueForecast = null;
+            
+            // Novos campos de planejamento
+            entityDelivery.artChainLink = null;
+            entityDelivery.totalBudget = null;
+            entityDelivery.numberOfCities = null;
+            entityDelivery.numberOfNeighborhoods = null;
+            entityDelivery.mediationActions = null;
+            entityDelivery.paidStaffByRole = [];
+            entityDelivery.teamCompositionGender = {
+                masculine: 0,
+                feminine: 0,
+                nonBinary: 0,
+                notDeclared: 0
+            };
+            entityDelivery.teamCompositionRace = {
+                white: 0,
+                black: 0,
+                brown: 0,
+                indigenous: 0,
+                asian: 0,
+                notDeclared: 0
+            };
+            entityDelivery.revenueType = [];
+            entityDelivery.commercialUnits = null;
+            entityDelivery.unitPrice = null;
+            entityDelivery.hasCommunityCoauthors = null;
+            entityDelivery.hasTransInclusionStrategy = null;
+            entityDelivery.transInclusionActions = null;
+            entityDelivery.hasAccessibilityPlan = null;
+            entityDelivery.expectedAccessibilityMeasures = [];
+            entityDelivery.hasEnvironmentalPractices = null;
+            entityDelivery.environmentalPracticesDescription = null;
+            entityDelivery.hasPressStrategy = null;
+            entityDelivery.communicationChannels = [];
+            entityDelivery.hasInnovationAction = null;
+            entityDelivery.innovationTypes = [];
+            entityDelivery.documentationTypes = [];
 
             goal.deliveries.push(entityDelivery);
         },
@@ -571,6 +608,43 @@ app.component('registration-workplan', {
         },
         enableTutorial() {
             localStorage.setItem('tutorialDisabled', 'false');
+        },
+        
+        // ============================================
+        // MÉTODOS PARA NOVOS CAMPOS ESTRUTURADOS
+        // ============================================
+        
+        // Pessoas remuneradas por função
+        addPaidStaffRole(delivery) {
+            if (!delivery.paidStaffByRole) {
+                delivery.paidStaffByRole = [];
+            }
+            delivery.paidStaffByRole.push({ role: '', count: 0 });
+        },
+        removePaidStaffRole(delivery, index) {
+            delivery.paidStaffByRole.splice(index, 1);
+        },
+        
+        // Calcular total de composição por gênero
+        calculateGenderTotal(composition) {
+            if (!composition) return 0;
+            const total = (composition.masculine || 0) + 
+                         (composition.feminine || 0) + 
+                         (composition.nonBinary || 0) + 
+                         (composition.notDeclared || 0);
+            return total;
+        },
+        
+        // Calcular total de composição por raça/cor
+        calculateRaceTotal(composition) {
+            if (!composition) return 0;
+            const total = (composition.white || 0) + 
+                         (composition.black || 0) + 
+                         (composition.brown || 0) + 
+                         (composition.indigenous || 0) + 
+                         (composition.asian || 0) + 
+                         (composition.notDeclared || 0);
+            return total;
         },
     },
 })
