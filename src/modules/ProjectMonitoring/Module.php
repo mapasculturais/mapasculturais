@@ -358,6 +358,99 @@ class Module extends \MapasCulturais\Module {
         ]);
         $app->registerMetadata($evidenceLinks, Delivery::class);
 
+        // ============================================
+        // NOVOS CAMPOS DE MONITORAMENTO (EXECUTADOS)
+        // ============================================
+
+        // Municípios executados
+        $executedNumberOfCities = new Metadata('executedNumberOfCities', [
+            'label' => i::__('Em quantos municípios a atividade foi realizada?'),
+            'type' => 'integer',
+            'validations' => [
+                'v::intVal()->min(0)' => i::__('Deve ser um número maior ou igual a zero')
+            ]
+        ]);
+        $app->registerMetadata($executedNumberOfCities, Delivery::class);
+
+        // Bairros executados
+        $executedNumberOfNeighborhoods = new Metadata('executedNumberOfNeighborhoods', [
+            'label' => i::__('Em quantos bairros a atividade foi realizada?'),
+            'type' => 'integer',
+            'validations' => [
+                'v::intVal()->min(0)' => i::__('Deve ser um número maior ou igual a zero')
+            ]
+        ]);
+        $app->registerMetadata($executedNumberOfNeighborhoods, Delivery::class);
+
+        // Ações de mediação executadas
+        $executedMediationActions = new Metadata('executedMediationActions', [
+            'label' => i::__('Quantas ações de mediação/formação de público foram realizadas?'),
+            'type' => 'integer',
+            'validations' => [
+                'v::intVal()->min(0)' => i::__('Deve ser um número maior ou igual a zero')
+            ]
+        ]);
+        $app->registerMetadata($executedMediationActions, Delivery::class);
+
+        // Unidades comercializadas (executado)
+        $executedCommercialUnits = new Metadata('executedCommercialUnits', [
+            'label' => i::__('Quantidade de unidades efetivamente comercializadas'),
+            'type' => 'integer',
+            'validations' => [
+                'v::intVal()->min(0)' => i::__('Deve ser um número maior ou igual a zero')
+            ]
+        ]);
+        $app->registerMetadata($executedCommercialUnits, Delivery::class);
+
+        // Valor unitário executado
+        $executedUnitPrice = new Metadata('executedUnitPrice', [
+            'label' => i::__('Valor unitário praticado (R$)'),
+            'type' => 'currency'
+        ]);
+        $app->registerMetadata($executedUnitPrice, Delivery::class);
+
+        // Pessoas remuneradas por função (executado)
+        $executedPaidStaffByRole = new Metadata('executedPaidStaffByRole', [
+            'label' => i::__('Quantas pessoas foram remuneradas, por função?'),
+            'type' => 'json',
+            'serialize' => function ($val) {
+                return json_encode($val);
+            },
+            'unserialize' => function($val) {
+                return json_decode((string) $val, true);
+            }
+        ]);
+        $app->registerMetadata($executedPaidStaffByRole, Delivery::class);
+
+        // Composição da equipe por gênero (executado)
+        $executedTeamCompositionGender = new Metadata('executedTeamCompositionGender', [
+            'label' => i::__('Composição efetiva da equipe por gênero'),
+            'type' => 'json',
+            'serialize' => function ($val) {
+                return json_encode($val);
+            },
+            'unserialize' => function($val) {
+                return json_decode((string) $val, true);
+            }
+        ]);
+        $app->registerMetadata($executedTeamCompositionGender, Delivery::class);
+
+        // Composição da equipe por raça/cor (executado)
+        $executedTeamCompositionRace = new Metadata('executedTeamCompositionRace', [
+            'label' => i::__('Composição efetiva da equipe por raça/cor'),
+            'type' => 'json',
+            'serialize' => function ($val) {
+                return json_encode($val);
+            },
+            'unserialize' => function($val) {
+                return json_decode((string) $val, true);
+            }
+        ]);
+        $app->registerMetadata($executedTeamCompositionRace, Delivery::class);
+
+        // Medidas de acessibilidade executadas (já existe accessibilityMeasures)
+        // Este campo já existe e será usado para os dados executados
+
         // Metadados para Registration (Inscrição)
         $this->registerRegistrationMetadata('workplanSnapshot', [
             'label'     => i::__('Snapshot do plano de trabalho'),
@@ -420,6 +513,16 @@ class Module extends \MapasCulturais\Module {
                         $delivery->numberOfParticipants  = $data['numberOfParticipants'];
                         $delivery->participantProfile    = $data['participantProfile'];
                         $delivery->priorityAudience      = $data['priorityAudience'];
+                        
+                        // Novos campos executados
+                        $delivery->executedNumberOfCities        = $data['executedNumberOfCities'] ?? null;
+                        $delivery->executedNumberOfNeighborhoods = $data['executedNumberOfNeighborhoods'] ?? null;
+                        $delivery->executedMediationActions      = $data['executedMediationActions'] ?? null;
+                        $delivery->executedCommercialUnits       = $data['executedCommercialUnits'] ?? null;
+                        $delivery->executedUnitPrice             = $data['executedUnitPrice'] ?? null;
+                        $delivery->executedPaidStaffByRole       = $data['executedPaidStaffByRole'] ?? null;
+                        $delivery->executedTeamCompositionGender = $data['executedTeamCompositionGender'] ?? null;
+                        $delivery->executedTeamCompositionRace   = $data['executedTeamCompositionRace'] ?? null;
                     }
 
                     $app->hook('entity(Registration).save:finish', function() use ($goals, $deliveries, $first_phase, $app) {
@@ -486,7 +589,17 @@ class Module extends \MapasCulturais\Module {
                             'numberOfParticipants'  => $delivery->numberOfParticipants,
                             'participantProfile'    => $delivery->participantProfile,
                             'priorityAudience'      => $delivery->priorityAudience,
-                            'status'                => $delivery->status
+                            'status'                => $delivery->status,
+                            
+                            // Novos campos executados
+                            'executedNumberOfCities'        => $delivery->executedNumberOfCities,
+                            'executedNumberOfNeighborhoods' => $delivery->executedNumberOfNeighborhoods,
+                            'executedMediationActions'      => $delivery->executedMediationActions,
+                            'executedCommercialUnits'       => $delivery->executedCommercialUnits,
+                            'executedUnitPrice'             => $delivery->executedUnitPrice,
+                            'executedPaidStaffByRole'       => $delivery->executedPaidStaffByRole,
+                            'executedTeamCompositionGender' => $delivery->executedTeamCompositionGender,
+                            'executedTeamCompositionRace'   => $delivery->executedTeamCompositionRace,
                         ];
                     }
 

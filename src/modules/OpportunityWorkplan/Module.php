@@ -217,6 +217,112 @@ class Module extends \MapasCulturais\Module{
             'default_value' => false
         ]);
 
+        // ============================================
+        // CONFIGURAÇÕES PARA NOVOS CAMPOS DE ENTREGA
+        // ============================================
+
+        $this->registerOpportunityMetadata('workplan_deliveryInformArtChainLink', [
+            'label' => i::__('Informar principal elo das artes acionado'),
+            'type' => 'boolean',
+            'default_value' => false
+        ]);
+
+        $this->registerOpportunityMetadata('workplan_deliveryInformTotalBudget', [
+            'label' => i::__('Informar orçamento total da atividade'),
+            'type' => 'boolean',
+            'default_value' => false
+        ]);
+
+        $this->registerOpportunityMetadata('workplan_deliveryInformNumberOfCities', [
+            'label' => i::__('Informar número de municípios'),
+            'type' => 'boolean',
+            'default_value' => false
+        ]);
+
+        $this->registerOpportunityMetadata('workplan_deliveryInformNumberOfNeighborhoods', [
+            'label' => i::__('Informar número de bairros'),
+            'type' => 'boolean',
+            'default_value' => false
+        ]);
+
+        $this->registerOpportunityMetadata('workplan_deliveryInformMediationActions', [
+            'label' => i::__('Informar número de ações de mediação/formação de público'),
+            'type' => 'boolean',
+            'default_value' => false
+        ]);
+
+        $this->registerOpportunityMetadata('workplan_deliveryInformPaidStaffByRole', [
+            'label' => i::__('Informar pessoas remuneradas por função'),
+            'type' => 'boolean',
+            'default_value' => false
+        ]);
+
+        $this->registerOpportunityMetadata('workplan_deliveryInformTeamComposition', [
+            'label' => i::__('Informar composição da equipe (gênero e raça/cor)'),
+            'type' => 'boolean',
+            'default_value' => false
+        ]);
+
+        $this->registerOpportunityMetadata('workplan_deliveryInformRevenueType', [
+            'label' => i::__('Informar tipo de receita previsto'),
+            'type' => 'boolean',
+            'default_value' => false
+        ]);
+
+        $this->registerOpportunityMetadata('workplan_deliveryInformCommercialUnits', [
+            'label' => i::__('Informar unidades para comercialização'),
+            'type' => 'boolean',
+            'default_value' => false
+        ]);
+
+        $this->registerOpportunityMetadata('workplan_deliveryInformCommunityCoauthors', [
+            'label' => i::__('Informar envolvimento de comunidades como coautores'),
+            'type' => 'boolean',
+            'default_value' => false
+        ]);
+
+        $this->registerOpportunityMetadata('workplan_deliveryInformTransInclusion', [
+            'label' => i::__('Informar estratégias de inclusão Trans e Travestis'),
+            'type' => 'boolean',
+            'default_value' => false
+        ]);
+
+        $this->registerOpportunityMetadata('workplan_deliveryInformAccessibilityPlan', [
+            'label' => i::__('Informar medidas de acessibilidade previstas'),
+            'type' => 'boolean',
+            'default_value' => false
+        ]);
+
+        $this->registerOpportunityMetadata('workplan_deliveryInformEnvironmentalPractices', [
+            'label' => i::__('Informar práticas socioambientais'),
+            'type' => 'boolean',
+            'default_value' => false
+        ]);
+
+        $this->registerOpportunityMetadata('workplan_deliveryInformPressStrategy', [
+            'label' => i::__('Informar estratégia de relacionamento com imprensa'),
+            'type' => 'boolean',
+            'default_value' => false
+        ]);
+
+        $this->registerOpportunityMetadata('workplan_deliveryInformCommunicationChannels', [
+            'label' => i::__('Informar canais de comunicação'),
+            'type' => 'boolean',
+            'default_value' => false
+        ]);
+
+        $this->registerOpportunityMetadata('workplan_deliveryInformInnovation', [
+            'label' => i::__('Informar ações de experimentação/inovação'),
+            'type' => 'boolean',
+            'default_value' => false
+        ]);
+
+        $this->registerOpportunityMetadata('workplan_deliveryInformDocumentationTypes', [
+            'label' => i::__('Informar tipo de documentação'),
+            'type' => 'boolean',
+            'default_value' => false
+        ]);
+
         $app->registerFileGroup('delivery', new \MapasCulturais\Definitions\FileGroup('evidences'));
 
         // metadados workplan
@@ -523,5 +629,327 @@ class Module extends \MapasCulturais\Module{
 
         $totalValueForecast = new Metadata('totalValueForecast', ['label' => \MapasCulturais\i::__('Previsão de valor total')]);
         $app->registerMetadata($totalValueForecast, Delivery::class);
+
+        // ============================================
+        // NOVOS CAMPOS DE PLANEJAMENTO DA ENTREGA
+        // ============================================
+
+        // Principal elo das artes acionado pela atividade
+        $artChainLink = new Metadata('artChainLink', [
+            'label' => \MapasCulturais\i::__('Principal elo das artes acionado pela atividade'),
+            'type' => 'select',
+            'options' => array(
+                \MapasCulturais\i::__('Criação'),
+                \MapasCulturais\i::__('Produção'),
+                \MapasCulturais\i::__('Difusão'),
+                \MapasCulturais\i::__('Circulação'),
+                \MapasCulturais\i::__('Formação'),
+                \MapasCulturais\i::__('Fruição'),
+                \MapasCulturais\i::__('Memória/Preservação'),
+                \MapasCulturais\i::__('Pesquisa'),
+                \MapasCulturais\i::__('Gestão Cultural'),
+            ),
+        ]);
+        $app->registerMetadata($artChainLink, Delivery::class);
+
+        // Orçamento total da atividade
+        $totalBudget = new Metadata('totalBudget', [
+            'label' => \MapasCulturais\i::__('Qual o orçamento total da atividade?'),
+            'type' => 'currency'
+        ]);
+        $app->registerMetadata($totalBudget, Delivery::class);
+
+        // Em quantos municípios
+        $numberOfCities = new Metadata('numberOfCities', [
+            'label' => \MapasCulturais\i::__('Em quantos municípios a atividade vai ser realizada?'),
+            'type' => 'integer',
+            'validations' => [
+                'v::intVal()->min(0)' => \MapasCulturais\i::__('Deve ser um número maior ou igual a zero')
+            ]
+        ]);
+        $app->registerMetadata($numberOfCities, Delivery::class);
+
+        // Em quantos bairros
+        $numberOfNeighborhoods = new Metadata('numberOfNeighborhoods', [
+            'label' => \MapasCulturais\i::__('Em quantos bairros a atividade vai ser realizada?'),
+            'type' => 'integer',
+            'validations' => [
+                'v::intVal()->min(0)' => \MapasCulturais\i::__('Deve ser um número maior ou igual a zero')
+            ]
+        ]);
+        $app->registerMetadata($numberOfNeighborhoods, Delivery::class);
+
+        // Quantas ações de mediação/formação de público
+        $mediationActions = new Metadata('mediationActions', [
+            'label' => \MapasCulturais\i::__('Quantas ações de mediação/formação de público estão previstas?'),
+            'type' => 'integer',
+            'validations' => [
+                'v::intVal()->min(0)' => \MapasCulturais\i::__('Deve ser um número maior ou igual a zero')
+            ]
+        ]);
+        $app->registerMetadata($mediationActions, Delivery::class);
+
+        // Pessoas remuneradas por função (estrutura JSON)
+        $paidStaffByRole = new Metadata('paidStaffByRole', [
+            'label' => \MapasCulturais\i::__('Quantas pessoas serão remuneradas, por função?'),
+            'type' => 'json',
+            'serialize' => function ($val) {
+                return json_encode($val);
+            },
+            'unserialize' => function($val) {
+                return json_decode((string) $val, true);
+            }
+        ]);
+        $app->registerMetadata($paidStaffByRole, Delivery::class);
+
+        // Composição da equipe por gênero
+        $teamCompositionGender = new Metadata('teamCompositionGender', [
+            'label' => \MapasCulturais\i::__('Composição prevista da equipe por gênero'),
+            'type' => 'json',
+            'serialize' => function ($val) {
+                return json_encode($val);
+            },
+            'unserialize' => function($val) {
+                return json_decode((string) $val, true);
+            }
+        ]);
+        $app->registerMetadata($teamCompositionGender, Delivery::class);
+
+        // Composição da equipe por raça/cor
+        $teamCompositionRace = new Metadata('teamCompositionRace', [
+            'label' => \MapasCulturais\i::__('Composição prevista da equipe por raça/cor'),
+            'type' => 'json',
+            'serialize' => function ($val) {
+                return json_encode($val);
+            },
+            'unserialize' => function($val) {
+                return json_decode((string) $val, true);
+            }
+        ]);
+        $app->registerMetadata($teamCompositionRace, Delivery::class);
+
+        // Tipo de receita previsto
+        $revenueType = new Metadata('revenueType', [
+            'label' => \MapasCulturais\i::__('Qual o tipo de receita previsto?'),
+            'type' => 'multiselect',
+            'options' => array(
+                \MapasCulturais\i::__('Venda de ingressos'),
+                \MapasCulturais\i::__('Venda de produtos'),
+                \MapasCulturais\i::__('Patrocínio privado'),
+                \MapasCulturais\i::__('Apoio cultural'),
+                \MapasCulturais\i::__('Doações'),
+                \MapasCulturais\i::__('Cachê'),
+                \MapasCulturais\i::__('Prestação de serviços'),
+                \MapasCulturais\i::__('Direitos autorais'),
+                \MapasCulturais\i::__('Licenciamento'),
+                \MapasCulturais\i::__('Não haverá receita'),
+                \MapasCulturais\i::__('Outros'),
+            ),
+        ]);
+        $app->registerMetadata($revenueType, Delivery::class);
+
+        // Quantidade de unidades para comercialização
+        $commercialUnits = new Metadata('commercialUnits', [
+            'label' => \MapasCulturais\i::__('Quantidade de unidades previstas para comercialização'),
+            'type' => 'integer',
+            'validations' => [
+                'v::intVal()->min(0)' => \MapasCulturais\i::__('Deve ser um número maior ou igual a zero')
+            ]
+        ]);
+        $app->registerMetadata($commercialUnits, Delivery::class);
+
+        // Valor unitário previsto
+        $unitPrice = new Metadata('unitPrice', [
+            'label' => \MapasCulturais\i::__('Valor unitário previsto (R$)'),
+            'type' => 'currency'
+        ]);
+        $app->registerMetadata($unitPrice, Delivery::class);
+
+        // Envolvimento de comunidades como coautores
+        $hasCommunityCoauthors = new Metadata('hasCommunityCoauthors', [
+            'label' => \MapasCulturais\i::__('A atividade prevê envolvimento de comunidades/coletivos como coautores/coexecutores?'),
+            'type' => 'select',
+            'options' => array(
+                'true' => \MapasCulturais\i::__('Sim'),
+                'false' => \MapasCulturais\i::__('Não'),
+            ),
+        ]);
+        $app->registerMetadata($hasCommunityCoauthors, Delivery::class);
+
+        // Estratégias Trans e Travestis (boolean)
+        $hasTransInclusionStrategy = new Metadata('hasTransInclusionStrategy', [
+            'label' => \MapasCulturais\i::__('A atividade prevê estratégias voltadas à promoção do acesso de pessoas Trans e Travestis?'),
+            'type' => 'select',
+            'options' => array(
+                'true' => \MapasCulturais\i::__('Sim'),
+                'false' => \MapasCulturais\i::__('Não'),
+            ),
+        ]);
+        $app->registerMetadata($hasTransInclusionStrategy, Delivery::class);
+
+        // Quais ações Trans e Travestis (condicional)
+        $transInclusionActions = new Metadata('transInclusionActions', [
+            'label' => \MapasCulturais\i::__('Quais ações foram previstas para incorporar estratégias voltadas à promoção do acesso de pessoas Trans e Travestis?'),
+            'type' => 'text'
+        ]);
+        $app->registerMetadata($transInclusionActions, Delivery::class);
+
+        // Medidas de acessibilidade (boolean)
+        $hasAccessibilityPlan = new Metadata('hasAccessibilityPlan', [
+            'label' => \MapasCulturais\i::__('A atividade prevê medidas de acessibilidade?'),
+            'type' => 'select',
+            'options' => array(
+                'true' => \MapasCulturais\i::__('Sim'),
+                'false' => \MapasCulturais\i::__('Não'),
+            ),
+        ]);
+        $app->registerMetadata($hasAccessibilityPlan, Delivery::class);
+
+        // Quais medidas de acessibilidade previstas (condicional)
+        $expectedAccessibilityMeasures = new Metadata('expectedAccessibilityMeasures', [
+            'label' => \MapasCulturais\i::__('Quais medidas de acessibilidade estão previstas na atividade?'),
+            'type' => 'multiselect',
+            'options' => array(
+                \MapasCulturais\i::__('Rotas acessíveis, com espaço de manobra para cadeira de rodas'),
+                \MapasCulturais\i::__('Palco acessível'),
+                \MapasCulturais\i::__('Camarim acessível'),
+                \MapasCulturais\i::__('Piso tátil'),
+                \MapasCulturais\i::__('Rampas'),
+                \MapasCulturais\i::__("Elevadores adequados para PCD's"),
+                \MapasCulturais\i::__('Corrimãos e guarda-corpos'),
+                \MapasCulturais\i::__("Banheiros adaptados para PCD's"),
+                \MapasCulturais\i::__('Área de alimentação preferencial identificada'),
+                \MapasCulturais\i::__("Vagas de estacionamento para PCD's reservadas"),
+                \MapasCulturais\i::__("Assentos para pessoas obesas, pessoas com mobilidade reduzida, PCD's e pessoas idosas reservadas"),
+                \MapasCulturais\i::__('Filas preferenciais identificadas'),
+                \MapasCulturais\i::__('Iluminação adequada'),
+                \MapasCulturais\i::__('Livro e/ou similares em braile'),
+                \MapasCulturais\i::__('Audiolivro'),
+                \MapasCulturais\i::__('Uso Língua Brasileira de Sinais - Libras'),
+                \MapasCulturais\i::__('Sistema Braille em materiais impressos'),
+                \MapasCulturais\i::__('Sistema de sinalização ou comunicação tátil'),
+                \MapasCulturais\i::__('Audiodescrição'),
+                \MapasCulturais\i::__('Legendas para surdos e ensurdecidos'),
+                \MapasCulturais\i::__('Linguagem simples'),
+                \MapasCulturais\i::__('Textos adaptados para software de leitor de tela'),
+                \MapasCulturais\i::__('Capacitação em acessibilidade para equipes atuantes nos projetos culturais'),
+                \MapasCulturais\i::__('Contratação de profissionais especializados em acessibilidade cultural'),
+                \MapasCulturais\i::__('Contratação de profissionais com deficiência'),
+                \MapasCulturais\i::__('Formação e sensibilização de agentes culturais sobre acessibilidade'),
+                \MapasCulturais\i::__('Formação e sensibilização de públicos da cadeia produtiva cultural sobre acessibilidade'),
+                \MapasCulturais\i::__("Envolvimento de PCD's na concepção do projeto"),
+                \MapasCulturais\i::__('Outras'),
+            ),
+        ]);
+        $app->registerMetadata($expectedAccessibilityMeasures, Delivery::class);
+
+        // Práticas socioambientais (boolean)
+        $hasEnvironmentalPractices = new Metadata('hasEnvironmentalPractices', [
+            'label' => \MapasCulturais\i::__('A atividade prevê medidas ou práticas socioambientais?'),
+            'type' => 'select',
+            'options' => array(
+                'true' => \MapasCulturais\i::__('Sim'),
+                'false' => \MapasCulturais\i::__('Não'),
+            ),
+        ]);
+        $app->registerMetadata($hasEnvironmentalPractices, Delivery::class);
+
+        // Quais práticas socioambientais (condicional)
+        $environmentalPracticesDescription = new Metadata('environmentalPracticesDescription', [
+            'label' => \MapasCulturais\i::__('Quais medidas e práticas socioambientais estão previstas na atividade?'),
+            'type' => 'text'
+        ]);
+        $app->registerMetadata($environmentalPracticesDescription, Delivery::class);
+
+        // Estratégia de relacionamento com imprensa
+        $hasPressStrategy = new Metadata('hasPressStrategy', [
+            'label' => \MapasCulturais\i::__('A atividade contará com uma estratégia de relacionamento com a imprensa?'),
+            'type' => 'select',
+            'options' => array(
+                'true' => \MapasCulturais\i::__('Sim'),
+                'false' => \MapasCulturais\i::__('Não'),
+            ),
+        ]);
+        $app->registerMetadata($hasPressStrategy, Delivery::class);
+
+        // Canais de comunicação
+        $communicationChannels = new Metadata('communicationChannels', [
+            'label' => \MapasCulturais\i::__('Quais canais de comunicação estão previstos para difusão da atividade?'),
+            'type' => 'multiselect',
+            'options' => array(
+                \MapasCulturais\i::__('Redes sociais (Instagram, Facebook, Twitter/X)'),
+                \MapasCulturais\i::__('Site próprio'),
+                \MapasCulturais\i::__('Blog'),
+                \MapasCulturais\i::__('YouTube'),
+                \MapasCulturais\i::__('Podcast'),
+                \MapasCulturais\i::__('Newsletter/E-mail marketing'),
+                \MapasCulturais\i::__('WhatsApp/Telegram'),
+                \MapasCulturais\i::__('Assessoria de imprensa'),
+                \MapasCulturais\i::__('Rádio'),
+                \MapasCulturais\i::__('TV'),
+                \MapasCulturais\i::__('Jornal impresso'),
+                \MapasCulturais\i::__('Revista'),
+                \MapasCulturais\i::__('Cartazes/Flyers'),
+                \MapasCulturais\i::__('Outdoor/Mídia externa'),
+                \MapasCulturais\i::__('Plataformas de streaming'),
+                \MapasCulturais\i::__('Comunicação direta (corpo a corpo)'),
+                \MapasCulturais\i::__('Outros'),
+            ),
+        ]);
+        $app->registerMetadata($communicationChannels, Delivery::class);
+
+        // Experimentação/inovação (boolean)
+        $hasInnovationAction = new Metadata('hasInnovationAction', [
+            'label' => \MapasCulturais\i::__('A atividade prevê ao menos uma ação de experimentação/inovação?'),
+            'type' => 'select',
+            'options' => array(
+                'true' => \MapasCulturais\i::__('Sim'),
+                'false' => \MapasCulturais\i::__('Não'),
+            ),
+        ]);
+        $app->registerMetadata($hasInnovationAction, Delivery::class);
+
+        // Tipos de experimentação/inovação (condicional)
+        $innovationTypes = new Metadata('innovationTypes', [
+            'label' => \MapasCulturais\i::__('Quais tipos de experimentação/inovação previstos na atividade?'),
+            'type' => 'multiselect',
+            'options' => array(
+                \MapasCulturais\i::__('Uso de novas tecnologias (AR, VR, IA, etc.)'),
+                \MapasCulturais\i::__('Novas linguagens artísticas'),
+                \MapasCulturais\i::__('Fusão de linguagens'),
+                \MapasCulturais\i::__('Metodologias participativas inovadoras'),
+                \MapasCulturais\i::__('Novos modelos de gestão cultural'),
+                \MapasCulturais\i::__('Economia criativa e novos modelos de negócio'),
+                \MapasCulturais\i::__('Sustentabilidade e práticas ambientais inovadoras'),
+                \MapasCulturais\i::__('Inclusão e acessibilidade de forma inovadora'),
+                \MapasCulturais\i::__('Experimentação em espaços não convencionais'),
+                \MapasCulturais\i::__('Coprodução/cocriação com públicos'),
+                \MapasCulturais\i::__('Outros'),
+            ),
+        ]);
+        $app->registerMetadata($innovationTypes, Delivery::class);
+
+        // Tipo de documentação
+        $documentationTypes = new Metadata('documentationTypes', [
+            'label' => \MapasCulturais\i::__('Tipo de documentação que será produzida'),
+            'type' => 'multiselect',
+            'options' => array(
+                \MapasCulturais\i::__('Fotografia'),
+                \MapasCulturais\i::__('Vídeo'),
+                \MapasCulturais\i::__('Áudio'),
+                \MapasCulturais\i::__('Relatório textual'),
+                \MapasCulturais\i::__('Caderno de processo'),
+                \MapasCulturais\i::__('Publicação impressa'),
+                \MapasCulturais\i::__('Publicação digital'),
+                \MapasCulturais\i::__('Website/Plataforma online'),
+                \MapasCulturais\i::__('Redes sociais'),
+                \MapasCulturais\i::__('Depoimentos'),
+                \MapasCulturais\i::__('Registros de processo'),
+                \MapasCulturais\i::__('Acervo digitalizado'),
+                \MapasCulturais\i::__('Não haverá documentação específica'),
+                \MapasCulturais\i::__('Outros'),
+            ),
+        ]);
+        $app->registerMetadata($documentationTypes, Delivery::class);
     }
 }

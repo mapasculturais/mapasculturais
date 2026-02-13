@@ -122,6 +122,31 @@ class Delivery extends \MapasCulturais\Entity {
             'availabilityType'      => 'workplan_monitoringInformTheFormOfAvailability',
             'numberOfParticipants'  => 'workplan_registrationReportTheNumberOfParticipants',
             'participantProfile'    => 'workplan_monitoringProvideTheProfileOfParticipants',
+            
+            // Novos campos de planejamento
+            'artChainLink'                    => 'workplan_deliveryInformArtChainLink',
+            'totalBudget'                     => 'workplan_deliveryInformTotalBudget',
+            'numberOfCities'                  => 'workplan_deliveryInformNumberOfCities',
+            'numberOfNeighborhoods'           => 'workplan_deliveryInformNumberOfNeighborhoods',
+            'mediationActions'                => 'workplan_deliveryInformMediationActions',
+            'paidStaffByRole'                 => 'workplan_deliveryInformPaidStaffByRole',
+            'teamCompositionGender'           => 'workplan_deliveryInformTeamComposition',
+            'teamCompositionRace'             => 'workplan_deliveryInformTeamComposition',
+            'revenueType'                     => 'workplan_deliveryInformRevenueType',
+            'commercialUnits'                 => 'workplan_deliveryInformCommercialUnits',
+            'unitPrice'                       => 'workplan_deliveryInformCommercialUnits',
+            'hasCommunityCoauthors'           => 'workplan_deliveryInformCommunityCoauthors',
+            'hasTransInclusionStrategy'       => 'workplan_deliveryInformTransInclusion',
+            'transInclusionActions'           => 'workplan_deliveryInformTransInclusion',
+            'hasAccessibilityPlan'            => 'workplan_deliveryInformAccessibilityPlan',
+            'expectedAccessibilityMeasures'   => 'workplan_deliveryInformAccessibilityPlan',
+            'hasEnvironmentalPractices'       => 'workplan_deliveryInformEnvironmentalPractices',
+            'environmentalPracticesDescription' => 'workplan_deliveryInformEnvironmentalPractices',
+            'hasPressStrategy'                => 'workplan_deliveryInformPressStrategy',
+            'communicationChannels'           => 'workplan_deliveryInformCommunicationChannels',
+            'hasInnovationAction'             => 'workplan_deliveryInformInnovation',
+            'innovationTypes'                 => 'workplan_deliveryInformInnovation',
+            'documentationTypes'              => 'workplan_deliveryInformDocumentationTypes',
         ];
 
         if ($this->$metadata_key) {
