@@ -323,6 +323,46 @@ class Module extends \MapasCulturais\Module{
             'default_value' => false
         ]);
 
+        // ============================================
+        // CONFIGURAÇÕES PARA MONITORAMENTO (CAMPOS EXECUTADOS)
+        // ============================================
+
+        $this->registerOpportunityMetadata('workplan_monitoringInformNumberOfCities', [
+            'label' => i::__('Informar número de municípios executados'),
+            'type' => 'boolean',
+            'default_value' => false
+        ]);
+
+        $this->registerOpportunityMetadata('workplan_monitoringInformNumberOfNeighborhoods', [
+            'label' => i::__('Informar número de bairros executados'),
+            'type' => 'boolean',
+            'default_value' => false
+        ]);
+
+        $this->registerOpportunityMetadata('workplan_monitoringInformMediationActions', [
+            'label' => i::__('Informar ações de mediação executadas'),
+            'type' => 'boolean',
+            'default_value' => false
+        ]);
+
+        $this->registerOpportunityMetadata('workplan_monitoringInformCommercialUnits', [
+            'label' => i::__('Informar unidades comercializadas executadas'),
+            'type' => 'boolean',
+            'default_value' => false
+        ]);
+
+        $this->registerOpportunityMetadata('workplan_monitoringInformPaidStaffByRole', [
+            'label' => i::__('Informar pessoas remuneradas executadas por função'),
+            'type' => 'boolean',
+            'default_value' => false
+        ]);
+
+        $this->registerOpportunityMetadata('workplan_monitoringInformTeamComposition', [
+            'label' => i::__('Informar composição da equipe executada (gênero e raça/cor)'),
+            'type' => 'boolean',
+            'default_value' => false
+        ]);
+
         $app->registerFileGroup('delivery', new \MapasCulturais\Definitions\FileGroup('evidences'));
 
         // metadados workplan
