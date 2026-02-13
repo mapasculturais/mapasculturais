@@ -5,6 +5,10 @@ Todas as mudanças notáveis no projeto serão documentadas neste arquivo.
 O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/)
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [7.7.5] - 2026-02-13
+### Correções
+- Corrige falha que impedia o carregamento correto de alguns avaliadores na tela das listas de inclusão e exclusão.
+
 ## [7.7.4] - 2026-02-10
 ### Melhorias 
 - Implementa uma flag no componente opportunity-evaluation-committee que permite indicar que os dados devem ser salvos no agente relacionado
