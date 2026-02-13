@@ -235,6 +235,110 @@ $this->import('
                                 <input type="checkbox" v-model="entity.workplan_monitoringReportExecutedRevenue" @click="autoSave()" /><?= i::__("Informar receita executada") ?>
                             </label>
                         </div>
+                        
+                        <h4><?= i::__("Campos adicionais da entrega") ?></h4>
+                        
+                        <div class="field__group">
+                            <label class="field__checkbox">
+                                <input type="checkbox" v-model="entity.workplan_deliveryInformArtChainLink" @click="autoSave()" /><?= i::__("Informar principal elo das artes acionado") ?>
+                            </label>
+                        </div>
+                        
+                        <div class="field__group">
+                            <label class="field__checkbox">
+                                <input type="checkbox" v-model="entity.workplan_deliveryInformTotalBudget" @click="autoSave()" /><?= i::__("Informar orçamento total da atividade") ?>
+                            </label>
+                        </div>
+                        
+                        <div class="field__group">
+                            <label class="field__checkbox">
+                                <input type="checkbox" v-model="entity.workplan_deliveryInformNumberOfCities" @click="autoSave()" /><?= i::__("Informar número de municípios") ?>
+                            </label>
+                        </div>
+                        
+                        <div class="field__group">
+                            <label class="field__checkbox">
+                                <input type="checkbox" v-model="entity.workplan_deliveryInformNumberOfNeighborhoods" @click="autoSave()" /><?= i::__("Informar número de bairros") ?>
+                            </label>
+                        </div>
+                        
+                        <div class="field__group">
+                            <label class="field__checkbox">
+                                <input type="checkbox" v-model="entity.workplan_deliveryInformMediationActions" @click="autoSave()" /><?= i::__("Informar ações de mediação/formação de público") ?>
+                            </label>
+                        </div>
+                        
+                        <div class="field__group">
+                            <label class="field__checkbox">
+                                <input type="checkbox" v-model="entity.workplan_deliveryInformPaidStaffByRole" @click="autoSave()" /><?= i::__("Informar pessoas remuneradas por função") ?>
+                            </label>
+                        </div>
+                        
+                        <div class="field__group">
+                            <label class="field__checkbox">
+                                <input type="checkbox" v-model="entity.workplan_deliveryInformTeamComposition" @click="autoSave()" /><?= i::__("Informar composição da equipe (gênero e raça/cor)") ?>
+                            </label>
+                        </div>
+                        
+                        <div class="field__group">
+                            <label class="field__checkbox">
+                                <input type="checkbox" v-model="entity.workplan_deliveryInformRevenueType" @click="autoSave()" /><?= i::__("Informar tipo de receita previsto") ?>
+                            </label>
+                        </div>
+                        
+                        <div class="field__group">
+                            <label class="field__checkbox">
+                                <input type="checkbox" v-model="entity.workplan_deliveryInformCommercialUnits" @click="autoSave()" /><?= i::__("Informar unidades para comercialização") ?>
+                            </label>
+                        </div>
+                        
+                        <div class="field__group">
+                            <label class="field__checkbox">
+                                <input type="checkbox" v-model="entity.workplan_deliveryInformCommunityCoauthors" @click="autoSave()" /><?= i::__("Informar envolvimento de comunidades como coautores") ?>
+                            </label>
+                        </div>
+                        
+                        <div class="field__group">
+                            <label class="field__checkbox">
+                                <input type="checkbox" v-model="entity.workplan_deliveryInformTransInclusion" @click="autoSave()" /><?= i::__("Informar estratégias de inclusão Trans e Travestis") ?>
+                            </label>
+                        </div>
+                        
+                        <div class="field__group">
+                            <label class="field__checkbox">
+                                <input type="checkbox" v-model="entity.workplan_deliveryInformAccessibilityPlan" @click="autoSave()" /><?= i::__("Informar medidas de acessibilidade previstas") ?>
+                            </label>
+                        </div>
+                        
+                        <div class="field__group">
+                            <label class="field__checkbox">
+                                <input type="checkbox" v-model="entity.workplan_deliveryInformEnvironmentalPractices" @click="autoSave()" /><?= i::__("Informar práticas socioambientais") ?>
+                            </label>
+                        </div>
+                        
+                        <div class="field__group">
+                            <label class="field__checkbox">
+                                <input type="checkbox" v-model="entity.workplan_deliveryInformPressStrategy" @click="autoSave()" /><?= i::__("Informar estratégia de relacionamento com imprensa") ?>
+                            </label>
+                        </div>
+                        
+                        <div class="field__group">
+                            <label class="field__checkbox">
+                                <input type="checkbox" v-model="entity.workplan_deliveryInformCommunicationChannels" @click="autoSave()" /><?= i::__("Informar canais de comunicação") ?>
+                            </label>
+                        </div>
+                        
+                        <div class="field__group">
+                            <label class="field__checkbox">
+                                <input type="checkbox" v-model="entity.workplan_deliveryInformInnovation" @click="autoSave()" /><?= i::__("Informar ações de experimentação/inovação") ?>
+                            </label>
+                        </div>
+                        
+                        <div class="field__group">
+                            <label class="field__checkbox">
+                                <input type="checkbox" v-model="entity.workplan_deliveryInformDocumentationTypes" @click="autoSave()" /><?= i::__("Informar tipo de documentação") ?>
+                            </label>
+                        </div>
                     </div>
                 </div>
             </div>

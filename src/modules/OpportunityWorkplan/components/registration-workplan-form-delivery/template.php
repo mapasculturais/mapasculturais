@@ -122,6 +122,53 @@ $this->import('
             <span v-else>{{ convertToCurrency(executedRevenue) }}</span>
             <small class="field__error" v-if="validationErrors.executedRevenue">{{ validationErrors.executedRevenue.join('; ') }}</small>
         </div>
+
+        <!-- NOVOS CAMPOS DE MONITORAMENTO (EXECUTADOS) -->
+        
+        <div class="field" v-if="opportunity.workplan_deliveryInformNumberOfCities && (editable || proxy.executedNumberOfCities)">
+            <label :for="`${vid}__executedNumberOfCities`"><?= i::__('Municípios realizados') ?></label>
+            <div v-if="delivery.numberOfCities" class="field__note">
+                <strong><?= i::__('Previsto:') ?></strong> {{ delivery.numberOfCities }}
+            </div>
+            <input v-if="editable" :id="`${vid}__executedNumberOfCities`" type="number" v-model.number="proxy.executedNumberOfCities" min="0">
+            <span v-else>{{ proxy.executedNumberOfCities }}</span>
+        </div>
+
+        <div class="field" v-if="opportunity.workplan_deliveryInformNumberOfNeighborhoods && (editable || proxy.executedNumberOfNeighborhoods)">
+            <label :for="`${vid}__executedNumberOfNeighborhoods`"><?= i::__('Bairros realizados') ?></label>
+            <div v-if="delivery.numberOfNeighborhoods" class="field__note">
+                <strong><?= i::__('Previsto:') ?></strong> {{ delivery.numberOfNeighborhoods }}
+            </div>
+            <input v-if="editable" :id="`${vid}__executedNumberOfNeighborhoods`" type="number" v-model.number="proxy.executedNumberOfNeighborhoods" min="0">
+            <span v-else>{{ proxy.executedNumberOfNeighborhoods }}</span>
+        </div>
+
+        <div class="field" v-if="opportunity.workplan_deliveryInformMediationActions && (editable || proxy.executedMediationActions)">
+            <label :for="`${vid}__executedMediationActions`"><?= i::__('Ações de mediação realizadas') ?></label>
+            <div v-if="delivery.mediationActions" class="field__note">
+                <strong><?= i::__('Previsto:') ?></strong> {{ delivery.mediationActions }}
+            </div>
+            <input v-if="editable" :id="`${vid}__executedMediationActions`" type="number" v-model.number="proxy.executedMediationActions" min="0">
+            <span v-else>{{ proxy.executedMediationActions }}</span>
+        </div>
+
+        <div class="field" v-if="opportunity.workplan_deliveryInformCommercialUnits && (editable || proxy.executedCommercialUnits)">
+            <label :for="`${vid}__executedCommercialUnits`"><?= i::__('Unidades comercializadas') ?></label>
+            <div v-if="delivery.commercialUnits" class="field__note">
+                <strong><?= i::__('Previsto:') ?></strong> {{ delivery.commercialUnits }}
+            </div>
+            <input v-if="editable" :id="`${vid}__executedCommercialUnits`" type="number" v-model.number="proxy.executedCommercialUnits" min="0">
+            <span v-else>{{ proxy.executedCommercialUnits }}</span>
+        </div>
+
+        <div class="field" v-if="opportunity.workplan_deliveryInformCommercialUnits && (editable || proxy.executedUnitPrice)">
+            <label :for="`${vid}__executedUnitPrice`"><?= i::__('Valor unitário praticado (R$)') ?></label>
+            <div v-if="delivery.unitPrice" class="field__note">
+                <strong><?= i::__('Previsto:') ?></strong> {{ convertToCurrency(delivery.unitPrice) }}
+            </div>
+            <input v-if="editable" :id="`${vid}__executedUnitPrice`" type="number" v-model.number="proxy.executedUnitPrice" min="0" step="0.01">
+            <span v-else>{{ convertToCurrency(proxy.executedUnitPrice) }}</span>
+        </div>
         
         <div class="field" v-if="editable || proxy.files.length > 0">
             <label :for="`${vid}__evidenceFiles`"><?= i::__('Evidências') ?></label>
