@@ -141,31 +141,55 @@ app.component('registration-distribution-rule', {
         },
 
         filteredCategories() {
+            let list = this.registrationCategories;
+            
+            if (this.parentFilters && Array.isArray(this.parentFilters.categories) && this.parentFilters.categories.length > 0) {
+                list = list.filter(cat => this.parentFilters.categories.includes(cat));
+            }
+ 
             const disabled = this.disabledValues.categories || [];
-            return this.registrationCategories.filter(cat => !disabled.includes(cat));
+
+            return list.filter(cat => !disabled.includes(cat));
         },
 
         filteredProponentTypes() {
+            let list = this.registrationProponentTypes;
+            
+            if (this.parentFilters && Array.isArray(this.parentFilters.proponentTypes) && this.parentFilters.proponentTypes.length > 0) {
+                list = list.filter(type => this.parentFilters.proponentTypes.includes(type));
+            }
+
             const disabled = this.disabledValues.proponentTypes || [];
-            return this.registrationProponentTypes.filter(type => !disabled.includes(type));
+  
+            return list.filter(type => !disabled.includes(type));
         },
 
         filteredRanges() {
+            let list = this.registrationRanges;
+            
+            if (this.parentFilters && Array.isArray(this.parentFilters.ranges) && this.parentFilters.ranges.length > 0) {
+                list = list.filter(range => this.parentFilters.ranges.includes(range));
+            }
+
             const disabled = this.disabledValues.ranges || [];
-            return this.registrationRanges.filter(range => !disabled.includes(range));
+
+            return list.filter(range => !disabled.includes(range));
         },
 
         canConfirm() {
             if (this.selectedField === 'sentTimestamp') {
                 const from = this.selectedConfigs?.from;
                 const to = this.selectedConfigs?.to;
+
                 if (!from && !to) {
                     return false;
                 }
+
                 if (from && to && new Date(to) < new Date(from)) {
                     return false;
                 }
             }
+
             return true;
         },
 
@@ -173,11 +197,14 @@ app.component('registration-distribution-rule', {
             if (this.selectedField !== 'sentTimestamp') {
                 return { from: '', to: '' };
             }
+
             const from = this.selectedConfigs?.from;
             const to = this.selectedConfigs?.to;
+
             if (from && to && new Date(from) > new Date(to)) {
                 return { from: this.text('errorDateFromAfterTo'), to: '' };
             }
+
             return { from: '', to: '' };
         },
 
@@ -189,8 +216,6 @@ app.component('registration-distribution-rule', {
             return this.buildTagsLabels();
         },
 
-        // Quando disableFilters vier como objeto, tratamos como valores desabilitados por tipo;
-        // quando vier como array, continua sendo a lista de tipos desabilitados.
         disabledTypes() {
             return Array.isArray(this.disableFilters) ? this.disableFilters : [];
         },
@@ -206,11 +231,23 @@ app.component('registration-distribution-rule', {
                 this.localModel = this.normalizeModel(val);
             },
             deep: true
+        },
+        parentFilters: {
+            handler(newVal) {
+                this.applyParentRestrictions();
+                this.$emit('update:parentFilters', newVal ?? null);
+            },
+            deep: true
         }
     },
 
     mounted() {
         this.localModel = this.normalizeModel(this.modelValue);
+        this.applyParentRestrictions();
+        
+        if (this.parentFilters != null) {
+            this.$emit('update:parentFilters', this.parentFilters);
+        }
     },
 
     methods: {
@@ -230,39 +267,146 @@ app.component('registration-distribution-rule', {
             };
         },
 
-        /** Verifica se o tipo de filtro está disponível (dados + não desabilitado) */
+        applyParentRestrictions() {
+            if (!this.parentFilters || !this.localModel) {
+                return;
+            }
+            
+            const next = { ...this.normalizeModel(this.localModel) };
+            let changed = false;
+
+            if (Array.isArray(this.parentFilters.categories) && this.parentFilters.categories.length > 0) {
+                const allowed = new Set(this.parentFilters.categories);
+                const prev = next.categories.length;
+                next.categories = next.categories.filter(c => allowed.has(c));
+                
+                if (next.categories.length != prev) {
+                    changed = true;
+                }
+            }
+
+            if (Array.isArray(this.parentFilters.proponentTypes) && this.parentFilters.proponentTypes.length > 0) {
+                const allowed = new Set(this.parentFilters.proponentTypes);
+                const prev = next.proponentTypes.length;
+                next.proponentTypes = next.proponentTypes.filter(p => allowed.has(p));
+                
+                if (next.proponentTypes.length != prev) {
+                    changed = true;
+                }
+            }
+
+            if (Array.isArray(this.parentFilters.ranges) && this.parentFilters.ranges.length > 0) {
+                const allowed = new Set(this.parentFilters.ranges);
+                const prev = next.ranges.length;
+                next.ranges = next.ranges.filter(r => allowed.has(r));
+                
+                if (next.ranges.length != prev) {
+                    changed = true;
+                }
+            }
+
+            if (this.parentFilters.fields && typeof this.parentFilters.fields === 'object') {
+                const nextFields = {};
+                for (const [fieldId, allowedValues] of Object.entries(this.parentFilters.fields)) {
+                    if (!Array.isArray(allowedValues) || allowedValues.length === 0) {
+                        continue;
+                    }
+
+                    const set = new Set(allowedValues);
+                    const current = next.fields[fieldId];
+                    
+                    if (Array.isArray(current)) {
+                        const filtered = current.filter(v => set.has(v));
+                        
+                        if (filtered.length > 0) {
+                            nextFields[fieldId] = filtered;
+                        }
+                    }
+                }
+
+                const prevKeys = Object.keys(next.fields).sort().join('');
+                const nextKeys = Object.keys(nextFields).sort().join('');
+
+                if (prevKeys != nextKeys) {
+                    changed = true;
+                } else {
+                    for (const k of Object.keys(next.fields)) {
+                        const a = (next.fields[k] || []).slice().sort().join();
+                        const b = (nextFields[k] || []).slice().sort().join();
+                        
+                        if (a != b) {
+                            changed = true;
+                            break;
+                        }
+                    }
+                }
+                next.fields = nextFields;
+            }
+
+            if (changed) {
+                this.localModel = next;
+                this.$emit('update:modelValue', next);
+            }
+        },
+
         isFilterAvailable(type) {
             if (this.disabledTypes.includes(type)) {
                 return false;
             }
+
             if (type === 'categories') {
                 if (this.registrationCategories.length === 0) {
                     return false;
                 }
+                
+                if (this.parentFilters && Array.isArray(this.parentFilters.categories)) {
+                    return this.parentFilters.categories.length > 0;
+                }
+
                 return true;
             }
+
             if (type === 'proponentTypes') {
                 if (this.registrationProponentTypes.length === 0) {
                     return false;
                 }
+
+                if (this.parentFilters && Array.isArray(this.parentFilters.proponentTypes)) {
+                    return this.parentFilters.proponentTypes.length > 0;
+                }
+
                 return true;
             }
+
             if (type === 'ranges') {
                 if (this.registrationRanges.length === 0) {
                     return false;
                 }
+
+                if (this.parentFilters && Array.isArray(this.parentFilters.ranges)) {
+                    return this.parentFilters.ranges.length > 0;
+                }
+
                 return true;
             }
+
             if (type === 'distribution') {
                 return this.enableFilterByNumber;
             }
+
             if (type === 'sentTimestamp') {
                 return this.enableFilterBySentTimestamp;
             }
+
             if (type === 'fields') {
                 if (Object.keys(this.selectionFields).length === 0) {
                     return false;
                 }
+
+                if (this.parentFilters && this.parentFilters.fields && typeof this.parentFilters.fields === 'object') {
+                    return Object.keys(this.parentFilters.fields).some(id => Array.isArray(this.parentFilters.fields[id]) && this.parentFilters.fields[id].length > 0);
+                }
+
                 return true;
             }
             return false;
@@ -272,29 +416,58 @@ app.component('registration-distribution-rule', {
             if (this.disabledTypes.includes(type)) {
                 return true;
             }
+
             return false;
+        },
+
+        isFieldAllowedByParent(fieldId) {
+            if (!this.parentFilters?.fields || typeof this.parentFilters.fields !== 'object') {
+                return true;
+            }
+
+            const allowed = this.parentFilters.fields[fieldId];
+            return Array.isArray(allowed) && allowed.length > 0;
+        },
+
+        getFieldOptions(fieldId) {
+            const field = this.selectionFields[fieldId];
+            
+            if (!field?.fieldOptions?.length) {
+                return [];
+            }
+
+            const parentOpts = this.parentFilters?.fields?.[fieldId];
+            
+            if (Array.isArray(parentOpts) && parentOpts.length > 0) {
+                return field.fieldOptions.filter(opt => parentOpts.includes(opt));
+            }
+
+            return field.fieldOptions;
         },
 
         handleSelection() {
             const field = this.selectedField;
             const model = this.localModel;
 
-            if (field === 'sentTimestamp') {
+            if (field == 'sentTimestamp') {
                 this.selectedConfigs = {
                     from: model.sentTimestamp?.from ?? '',
                     to: model.sentTimestamp?.to ?? ''
                 };
                 return;
             }
-            if (field === 'distribution') {
+
+            if (field == 'distribution') {
                 this.selectedDistribution = model.distribution ?? '';
                 return;
             }
+
             if (field.startsWith('field:')) {
                 const fieldId = field.replace(/^field:/, '');
                 this.selectedConfigs = Array.isArray(model.fields?.[fieldId]) ? [...model.fields[fieldId]] : [];
                 return;
             }
+
             this.selectedConfigs = Array.isArray(model[field]) ? [...model[field]] : [];
         },
 
@@ -305,14 +478,17 @@ app.component('registration-distribution-rule', {
             if (field == 'sentTimestamp') {
                 const from = this.selectedConfigs?.from;
                 const to = this.selectedConfigs?.to;
+
                 if (!from && !to) {
                     modal.close();
                     return;
                 }
+
                 if (from && to && new Date(to) < new Date(from)) {
                     modal.close();
                     return;
                 }
+
                 next.sentTimestamp = {
                     from: from ? this.formatSentTimestamp(from) : '',
                     to: to ? this.formatSentTimestamp(to) : ''
@@ -347,6 +523,7 @@ app.component('registration-distribution-rule', {
             if (!dateString) {
                 return '';
             }
+
             try {
                 const date = new Date(dateString);
                 const year = date.getFullYear();
@@ -469,6 +646,7 @@ app.component('registration-distribution-rule', {
             const isArrayKey = ['categories', 'proponentTypes', 'ranges'].includes(this.labelToKey(displayKey));
             if (isArrayKey) {
                 const key = this.labelToKey(displayKey);
+                
                 if (Array.isArray(model[key])) {
                     model[key] = model[key].filter(item => item != value);
                 }
@@ -479,6 +657,7 @@ app.component('registration-distribution-rule', {
                 
                 if (fieldId && Array.isArray(model.fields[fieldId])) {
                     model.fields[fieldId] = model.fields[fieldId].filter(item => item != value);
+                    
                     if (model.fields[fieldId].length == 0) {
                         delete model.fields[fieldId];
                     }
