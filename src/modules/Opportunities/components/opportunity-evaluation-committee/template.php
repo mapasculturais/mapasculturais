@@ -128,6 +128,7 @@ $this->import('
                     :opportunity="entity.opportunity"
                     v-model="evaluatorDistributionRules[infoReviewer.agentUserId]"
                     :parent-filters="commissionDistributionRule"
+                    :disable-filters="evaluatorDisabledFilters"
                     enable-filter-by-number
                     enable-filter-by-sent-timestamp
                     class="opportunity-evaluation-committee__card-filter"

@@ -68,6 +68,69 @@ app.component('opportunity-evaluation-committee', {
             return this.entity.fetchFields?.[this.group] || null;
         },
 
+        evaluatorDisabledFilters() {
+            const disabled = {
+                categories: [],
+                proponentTypes: [],
+                ranges: [],
+                fields: {}
+            };
+
+            const fetchFields = this.entity.fetchFields || {};
+            const allGroups = Object.keys(this.entity.relatedAgents || {});
+
+            allGroups.forEach(groupName => {
+                if (groupName === this.group || groupName === '@support') {
+                    return;
+                }
+
+                const src = fetchFields[groupName] || {};
+
+                const categories = Array.isArray(src.category) ? src.category : [];
+                categories.forEach(value => {
+                    if (disabled.categories.indexOf(value) === -1) {
+                        disabled.categories.push(value);
+                    }
+                });
+
+                const proponentTypes = Array.isArray(src.proponentType) ? src.proponentType : [];
+                proponentTypes.forEach(value => {
+                    if (disabled.proponentTypes.indexOf(value) === -1) {
+                        disabled.proponentTypes.push(value);
+                    }
+                });
+
+                const ranges = Array.isArray(src.range) ? src.range : [];
+                ranges.forEach(value => {
+                    if (disabled.ranges.indexOf(value) === -1) {
+                        disabled.ranges.push(value);
+                    }
+                });
+
+                Object.entries(src).forEach(([key, value]) => {
+                    if (['category', 'proponentType', 'range', 'distribution', 'sentTimestamp'].indexOf(key) !== -1) {
+                        return;
+                    }
+                    
+                    if (!Array.isArray(value) || value.length === 0) {
+                        return;
+                    }
+
+                    if (!disabled.fields[key]) {
+                        disabled.fields[key] = [];
+                    }
+
+                    value.forEach(v => {
+                        if (disabled.fields[key].indexOf(v) === -1) {
+                            disabled.fields[key].push(v);
+                        }
+                    });
+                });
+            });
+
+            return disabled;
+        },
+        
         commissionDistributionRule() {
             const src = this.entity.fetchFields?.[this.group] || {};
             const categories = Array.isArray(src.category) ? [...src.category] : [];
