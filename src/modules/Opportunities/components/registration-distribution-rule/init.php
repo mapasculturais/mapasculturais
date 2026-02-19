@@ -55,4 +55,4 @@ foreach ($first_phase->registrationFieldConfigurations ?? [] as $field) {
     }
 }
 
-$this->jsObject['config']['fetchSelectFields'] = $_fields;
+$this->jsObject['config']['registrationFilterFields'] = $_fields;
