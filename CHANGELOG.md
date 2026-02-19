@@ -89,6 +89,10 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 <a name="770-funarte"></a>
 2. <small>Melhoria desenvolvida pela Funarte (Fundação Nacional de Artes) para a Rede das Artes</small>
 
+## [7.6.46] - 2026-02-19
+### Melhorias
+- Aplica melhorias no processo de envio de denúncia e contato, permitindo definir uma lista configurável de destinatários para o envio de e-mails
+
 ## [7.6.45] - 2026-02-12
 ### Correções
 - Corrige falha que impedia o carregamento correto de alguns avaliadores na tela das listas de inclusão e exclusão.
