@@ -591,7 +591,10 @@ app.component('registration-distribution-rule', {
                 Object.entries(model.fields).forEach(([fieldId, values]) => {
                     const field = this.selectionFields[fieldId];
                     const title = field?.title || fieldId;
-                    (values || []).forEach(value => list.push(`${title}: ${value}`));
+                    (values || []).forEach(value => {
+                        const displayValue = this.getFieldOptionLabel(fieldId, value);
+                        list.push(`${title}: ${displayValue}`);
+                    });
                 });
             }
 
