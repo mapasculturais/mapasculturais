@@ -313,18 +313,18 @@ app.component('registration-distribution-rule', {
 
     methods: {
         normalizeModel(val) {
-            const v = val || {};
+            const model = val || {};
 
             return {
-                categories: Array.isArray(v.categories) ? [...v.categories] : [],
-                proponentTypes: Array.isArray(v.proponentTypes) ? [...v.proponentTypes] : [],
-                ranges: Array.isArray(v.ranges) ? [...v.ranges] : [],
-                distribution: typeof v.distribution == 'string' ? v.distribution : '',
+                categories: Array.isArray(model.categories) ? [...model.categories] : [],
+                proponentTypes: Array.isArray(model.proponentTypes) ? [...model.proponentTypes] : [],
+                ranges: Array.isArray(model.ranges) ? [...model.ranges] : [],
+                distribution: typeof model.distribution == 'string' ? model.distribution : '',
                 sentTimestamp: {
-                    from: v.sentTimestamp?.from ?? '',
-                    to: v.sentTimestamp?.to ?? ''
+                    from: model.sentTimestamp?.from ?? '',
+                    to: model.sentTimestamp?.to ?? ''
                 },
-                fields: v.fields && typeof v.fields == 'object' ? { ...v.fields } : {}
+                fields: model.fields && typeof model.fields == 'object' ? { ...model.fields } : {}
             };
         },
 
