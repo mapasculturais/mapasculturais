@@ -64,7 +64,7 @@ $this->import('
 
             <div v-if="selectedFieldType === 'field' && selectedFieldId && getFieldOptions(selectedFieldId).length" class="opportunity-registration-filter-configuration__related-input col-12 field">
                 <label class="input__label input__checkboxLabel input__multiselect" v-for="option in getFieldOptions(selectedFieldId)" :key="option">
-                    <input :checked="selectedConfigs.includes(option)" type="checkbox" :value="option" v-model="selectedConfigs"> {{ option }}
+                    <input :checked="selectedConfigs.includes(option)" type="checkbox" :value="option" v-model="selectedConfigs"> {{ getFieldOptionLabel(selectedFieldId, option) }}
                 </label>
             </div>
         </div>
