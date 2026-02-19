@@ -8,6 +8,7 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 ## [7.7.6] - UNRELEASED
 ### Correções
 - Corrige permissão para administrador da oportunidade remover uma avaliação
+- Corrige validação e exibição de campos ao adicionar fases de avaliação em oportunidades de fluxo contínuo
 
 ## [7.7.5] - 2026-02-13
 ### Correções
