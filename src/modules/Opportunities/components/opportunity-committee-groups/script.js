@@ -192,25 +192,57 @@ app.component('opportunity-committee-groups', {
             const disabled = {};
 
             groups.forEach(currentGroup => {
-                const usedCategories = new Set();
-                const usedProponentTypes = new Set();
-                const usedRanges = new Set();
+                const usedCategories = [];
+                const usedProponentTypes = [];
+                const usedRanges = [];
+                const usedFields = {};
 
                 groups.forEach(otherGroup => {
                     if (otherGroup === currentGroup) {
                         return;
                     }
+                    
                     const rule = this.distributionRules[otherGroup] || {};
 
-                    (rule.categories || []).forEach(category => usedCategories.add(category));
-                    (rule.proponentTypes || []).forEach(proponentType => usedProponentTypes.add(proponentType));
-                    (rule.ranges || []).forEach(range => usedRanges.add(range));
+                    (rule.categories || []).forEach(category => {
+                        if (usedCategories.indexOf(category) == -1) {
+                            usedCategories.push(category);
+                        }
+                    });
+
+                    (rule.proponentTypes || []).forEach(proponentType => {
+                        if (usedProponentTypes.indexOf(proponentType) == -1) {
+                            usedProponentTypes.push(proponentType);
+                        }
+                    });
+
+                    (rule.ranges || []).forEach(range => {
+                        if (usedRanges.indexOf(range) == -1) {
+                            usedRanges.push(range);
+                        }
+                    });
+
+                    if (rule.fields && typeof rule.fields === 'object') {
+                        Object.entries(rule.fields).forEach(([fieldId, fieldValues]) => {
+                            if (!usedFields[fieldId]) {
+                                usedFields[fieldId] = [];
+                            }
+                            if (Array.isArray(fieldValues)) {
+                                fieldValues.forEach(value => {
+                                    if (usedFields[fieldId].indexOf(value) == -1) {
+                                        usedFields[fieldId].push(value);
+                                    }
+                                });
+                            }
+                        });
+                    }
                 });
 
                 disabled[currentGroup] = {
-                    categories: Array.from(usedCategories),
-                    proponentTypes: Array.from(usedProponentTypes),
-                    ranges: Array.from(usedRanges),
+                    categories: usedCategories,
+                    proponentTypes: usedProponentTypes,
+                    ranges: usedRanges,
+                    fields: usedFields
                 };
             });
 
