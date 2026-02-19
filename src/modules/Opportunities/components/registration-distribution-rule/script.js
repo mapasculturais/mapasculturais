@@ -872,7 +872,25 @@ app.component('registration-distribution-rule', {
                 const fieldId = this.labelToFieldId(displayKey);
                 
                 if (fieldId && Array.isArray(model.fields[fieldId])) {
-                    model.fields[fieldId] = model.fields[fieldId].filter(item => item != value);
+                    const field = this.selectionFields[fieldId];
+                    
+                    if (field?.fieldType === 'checkbox') {
+                        const checkedLabel = this.text('Marcado');
+                        const uncheckedLabel = this.text('Desmarcado');
+                        
+                        let valueToRemove = null;
+                        if (value === checkedLabel) {
+                            valueToRemove = true;
+                        } else if (value === uncheckedLabel) {
+                            valueToRemove = false;
+                        }
+                        
+                        if (valueToRemove !== null) {
+                            model.fields[fieldId] = model.fields[fieldId].filter(item => item !== valueToRemove);
+                        }
+                    } else {
+                        model.fields[fieldId] = model.fields[fieldId].filter(item => item != value);
+                    }
                     
                     if (model.fields[fieldId].length == 0) {
                         delete model.fields[fieldId];
