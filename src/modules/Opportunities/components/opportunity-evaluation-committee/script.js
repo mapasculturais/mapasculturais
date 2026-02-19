@@ -66,6 +66,25 @@ app.component('opportunity-evaluation-committee', {
             
             // Retorna os filtros globais do grupo atual
             return this.entity.fetchFields?.[this.group] || null;
+        },
+
+        commissionDistributionRule() {
+            const src = this.entity.fetchFields?.[this.group] || {};
+            const categories = Array.isArray(src.category) ? [...src.category] : [];
+            const proponentTypes = Array.isArray(src.proponentType) ? [...src.proponentType] : [];
+            const ranges = Array.isArray(src.range) ? [...src.range] : [];
+            const distribution = typeof src.distribution == 'string' ? src.distribution : '';
+            const sentTimestamp = (src.sentTimestamp && typeof src.sentTimestamp == 'object')
+                ? { from: src.sentTimestamp.from || '', to: src.sentTimestamp.to || '' }
+                : { from: '', to: '' };
+            const fields = {};
+
+            Object.entries(src).forEach(([key, value]) => {
+                if (['category', 'proponentType', 'range', 'distribution', 'sentTimestamp'].includes(key)) return;
+                if (Array.isArray(value) && value.length > 0) fields[key] = [...value];
+            });
+
+            return { categories, proponentTypes, ranges, distribution, sentTimestamp, fields };
         }
     },
 
@@ -106,7 +125,9 @@ app.component('opportunity-evaluation-committee', {
             fetchConfigs: {},
             reviewersId: [],
             fetchFields: this.entity.fetchFields,
-            showRegistrationListFlag: {}
+            showRegistrationListFlag: {},
+            evaluatorDistributionRules: {},
+            lastParentFilters: null
         }
     },
     
@@ -204,6 +225,10 @@ app.component('opportunity-evaluation-committee', {
             let url = api.createApiUrl('evaluationCommittee', args);
             
             api.GET(url).then(res => res.json()).then(data => {
+                const expandedIds = (this.infosReviewers || [])
+                    .filter(reviewer => reviewer.isContentVisible)
+                    .map(reviewer => reviewer.id);
+
                 this.infosReviewers = data.filter(reviewer => reviewer.group === this.group).map(reviewer => {
                     if (!reviewer.metadata) {
                         reviewer.metadata = {};
@@ -217,7 +242,7 @@ app.component('opportunity-evaluation-committee', {
                     
                     return {
                         ...reviewer,
-                        isContentVisible: false,
+                        isContentVisible: expandedIds.indexOf(reviewer.id) != -1,
                         registrationListText: this.formatRegistrationList(reviewer.metadata?.registrationList),
                     };
                 });
@@ -386,34 +411,116 @@ app.component('opportunity-evaluation-committee', {
 
         loadFetchs() {
             if(this.infosReviewers?.length > 0) {
+                const keys = ['fetch', 'fetchCategories', 'fetchRanges', 'fetchProponentTypes', 'fetchSelectionFields'];
+                
                 this.infosReviewers.forEach(info => {
-                    for (const key of ['fetch', 'fetchCategories', 'fetchRanges', 'fetchProponentTypes']) {
+                    for (const key of keys) {
                         if (!this.entity[key]) {
                             this.entity[key] = {};
                         } else if (Array.isArray(this.entity[key])) {
                             if (this.entity[key].length === 0) {
                                 this.entity[key] = {};
                             } else {
-                                const entries = Object.entries(this.entity[key]).filter(([key, value]) => {
-                                    return value != null;
-                                });
-
+                                const entries = Object.entries(this.entity[key]).filter(([k, value]) => value != null);
                                 this.entity[key] = Object.fromEntries(entries);
                             }
                         }
 
-                        if(this.entity[key] && !this.entity[key][info.agentUserId]) {
+                        if (this.entity[key] && this.entity[key][info.agentUserId] === undefined) {
                             if (key === 'fetch') {
                                 this.entity[key][info.agentUserId] = '';
+                            } else if (key === 'fetchSelectionFields') {
+                                this.entity[key][info.agentUserId] = {};
                             } else {
                                 this.entity[key][info.agentUserId] = [];
                             }
                         }
                     }
 
+                    this.evaluatorDistributionRules[info.agentUserId] = this.getEvaluatorDistributionRule(info.agentUserId);
                     info.default = (this.entity.fetch[info.agentUserId] || this.entity.fetchCategories[info.agentUserId].length > 0 || this.entity.fetchRanges[info.agentUserId].length > 0 || this.entity.fetchProponentTypes[info.agentUserId].length > 0) ? false : true;
                 });
             }
+        },
+
+        getEvaluatorDistributionRule(agentUserId) {
+            return {
+                categories: Array.isArray(this.entity.fetchCategories?.[agentUserId]) ? [...this.entity.fetchCategories[agentUserId]] : [],
+                proponentTypes: Array.isArray(this.entity.fetchProponentTypes?.[agentUserId]) ? [...this.entity.fetchProponentTypes[agentUserId]] : [],
+                ranges: Array.isArray(this.entity.fetchRanges?.[agentUserId]) ? [...this.entity.fetchRanges[agentUserId]] : [],
+                distribution: typeof this.entity.fetch?.[agentUserId] == 'string' ? this.entity.fetch[agentUserId] : '',
+                sentTimestamp: { from: '', to: '' },
+                fields: this.entity.fetchSelectionFields?.[agentUserId] && typeof this.entity.fetchSelectionFields[agentUserId] == 'object'
+                    ? { ...this.entity.fetchSelectionFields[agentUserId] }
+                    : {}
+            };
+        },
+
+        async onEvaluatorDistributionRuleChange(rule, infoReviewer) {
+            if (!rule || !infoReviewer) {
+                return;
+            }
+
+            const relationId = infoReviewer.id;
+            const agentUserId = infoReviewer.agentUserId;
+
+            const categories = Array.isArray(rule.categories) && rule.categories.length > 0 ? rule.categories : null;
+            const proponentTypes = Array.isArray(rule.proponentTypes) && rule.proponentTypes.length > 0 ? rule.proponentTypes : null;
+            const ranges = Array.isArray(rule.ranges) && rule.ranges.length > 0 ? rule.ranges : null;
+            const distribution = typeof rule.distribution == 'string' && rule.distribution.trim() ? rule.distribution.trim() : null;
+            const selectionFields = rule.fields && typeof rule.fields == 'object' && Object.keys(rule.fields).length > 0 ? rule.fields : null;
+
+            const url = Utils.createUrl('evaluationMethodConfiguration', 'setValuerFilters', { id: this.entity.id });
+            const data = {
+                relationId,
+                categories,
+                proponentTypes,
+                ranges,
+                distribution,
+                selectionFields
+            };
+
+            try {
+                const api = new API();
+                await api.POST(url, data);
+                this.syncEntityFromEvaluatorRule(agentUserId, rule);
+                this.messages.success(this.text('modificações salvas'));
+                this.loadReviewers();
+            } catch (error) {
+                console.error('Erro ao salvar filtros do avaliador:', error);
+            }
+        },
+
+        syncEntityFromEvaluatorRule(agentUserId, rule) {
+            if (!this.entity.fetchCategories) {
+                this.entity.fetchCategories = {};
+            }
+
+            if (!this.entity.fetchProponentTypes) {
+                this.entity.fetchProponentTypes = {};
+            }
+
+            if (!this.entity.fetchRanges) {
+                this.entity.fetchRanges = {};
+            }
+
+            if (!this.entity.fetch) {
+                this.entity.fetch = {};
+            }
+
+            if (!this.entity.fetchSelectionFields) {
+                this.entity.fetchSelectionFields = {};
+            }
+
+            this.entity.fetchCategories[agentUserId] = Array.isArray(rule.categories) ? rule.categories : [];
+            this.entity.fetchProponentTypes[agentUserId] = Array.isArray(rule.proponentTypes) ? rule.proponentTypes : [];
+            this.entity.fetchRanges[agentUserId] = Array.isArray(rule.ranges) ? rule.ranges : [];
+            this.entity.fetch[agentUserId] = typeof rule.distribution == 'string' ? rule.distribution : '';
+            this.entity.fetchSelectionFields[agentUserId] = rule.fields && typeof rule.fields == 'object' ? { ...rule.fields } : {};
+        },
+
+        onParentFiltersUpdate(parentFilters) {
+            this.lastParentFilters = parentFilters;
         },
 
         saveMaxRegistrations(infoReviewer){

@@ -15,7 +15,7 @@ $this->import('
     mc-multiselect
     mc-tag-list
     select-entity
-    opportunity-registration-filter-configuration
+    registration-distribution-rule
 ');
 ?>
 <div class="opportunity-evaluation-committee">
@@ -124,19 +124,17 @@ $this->import('
             </div>
 
             <div class="opportunity-evaluation-committee__card-content" v-if="infoReviewer.isContentVisible">
-                <opportunity-registration-filter-configuration
-                    :entity="entity"
-                    v-model:default-value="fetchConfigs[infoReviewer.agent.id]"
-                    :excludeFields="excludeFields"
-                    @updateExcludeFields="$emit('updateExcludeFields', $event)"
-                    :info-reviewer="infoReviewer"
-                    :group-filters="groupFiltersForComponent"
-                    :group="group"
+                <registration-distribution-rule
+                    :opportunity="entity.opportunity"
+                    v-model="evaluatorDistributionRules[infoReviewer.agentUserId]"
+                    :parent-filters="commissionDistributionRule"
+                    enable-filter-by-number
+                    enable-filter-by-sent-timestamp
                     class="opportunity-evaluation-committee__card-filter"
-                    useDistributionField
-                    saveToAgentRelation />
+                    @update:modelValue="onEvaluatorDistributionRuleChange($event, infoReviewer)"
+                    @update:parentFilters="onParentFiltersUpdate($event)"
+                />
 
-                    
                 <div class="opportunity-evaluation-committee__registration-list">
                     <mc-toggle
                         v-model="showRegistrationListFlag[infoReviewer.id]"
