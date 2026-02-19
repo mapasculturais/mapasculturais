@@ -438,18 +438,49 @@ app.component('registration-distribution-rule', {
 
         getFieldOptions(fieldId) {
             const field = this.selectionFields[fieldId];
-            
-            if (!field?.fieldOptions?.length) {
+            if (!field) {
+                return [];
+            }
+
+            if (field.fieldType == 'checkbox') {
+                const baseOptions = [true, false];
+                const parentOpts = this.parentFilters?.fields?.[fieldId];
+
+                if (Array.isArray(parentOpts) && parentOpts.length > 0) {
+                    return baseOptions.filter(option => parentOpts.includes(option));
+                }
+
+                return baseOptions;
+            }
+
+            const options = field.fieldOptions || [];
+            if (!options.length) {
                 return [];
             }
 
             const parentOpts = this.parentFilters?.fields?.[fieldId];
             
             if (Array.isArray(parentOpts) && parentOpts.length > 0) {
-                return field.fieldOptions.filter(opt => parentOpts.includes(opt));
+                return options.filter(option => parentOpts.includes(option));
             }
 
-            return field.fieldOptions;
+            return options;
+        },
+
+        getFieldOptionLabel(fieldId, option) {
+            const field = this.selectionFields[fieldId];
+
+            if (field?.fieldType == 'checkbox') {
+                if (option == true) {
+                    return this.text('Marcado');
+                }
+
+                if (option == false) {
+                    return this.text('Desmarcado');
+                }
+            }
+
+            return String(option);
         },
 
         handleSelection() {

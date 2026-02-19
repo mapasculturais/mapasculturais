@@ -24,7 +24,7 @@ if (!$opportunity || !$opportunity->firstPhase) {
 }
 
 $agent_description = Agent::getPropertiesMetadata();
-$field_types = ['select'];
+$field_types = ['select', 'checkboxes', 'checkbox'];
 
 $parse_agent_field = function ($field) use ($agent_description, $field_types) {
     $config = is_array($field->config ?? null) ? $field->config : [];
