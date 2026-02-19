@@ -1506,6 +1506,12 @@ class Module extends \MapasCulturais\Module{
          * Validação das datas da fase de avaliação em relação às fases anterior e posterior
          */
         $app->hook('entity(EvaluationMethodConfiguration).validations', function(&$validations) {
+            // em oportunidades de fluxo contínuo sem data final, a data final da avaliação não é obrigatória
+            $first_phase = $this->opportunity->firstPhase;
+            if($first_phase->isContinuousFlow && !$first_phase->hasEndDate) {
+                unset($validations['evaluationTo']['required']);
+            }
+
             if($previous_phase = $this->previousPhase){
                 $previous_date_from = ($previous_phase instanceof Opportunity) ? $previous_phase->registrationFrom : $previous_phase->evaluationFrom;
                 
@@ -1516,7 +1522,9 @@ class Module extends \MapasCulturais\Module{
 
                 $previous_date_to = ($previous_phase instanceof Opportunity) ? $previous_phase->registrationTo : $previous_phase->evaluationTo;
                 
-                if($this->evaluationTo < $previous_date_to) {
+                // só valida a data final em relação à fase anterior se houver data final na fase anterior e na fase atual
+                // isso permite adicionar fases em oportunidades de fluxo contínuo sem data final
+                if($previous_date_to && $this->evaluationTo && $this->evaluationTo < $previous_date_to) {
                     $previous_date_to_string = $previous_date_to->format('Y-m-d H:i:s');
                     $validations['evaluationTo']["\$value >= new DateTime('$previous_date_to_string')"] = i::__('A data final deve ser maior ou igual a data de término da fase anterior');
                 }
