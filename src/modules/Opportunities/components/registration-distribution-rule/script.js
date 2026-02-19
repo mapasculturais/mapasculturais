@@ -93,6 +93,7 @@ app.component('registration-distribution-rule', {
                         byId[id] = {
                             fieldName: field.fieldName,
                             title: field.title || field.fieldName,
+                            fieldType: field.fieldType || 'select',
                             fieldOptions: field.fieldOptions || []
                         };
                     }
@@ -105,17 +106,23 @@ app.component('registration-distribution-rule', {
                 fromConfigs(configs);
             }
 
-            if (Object.keys(byId).length === 0 && typeof $MAPAS !== 'undefined' && $MAPAS.config?.fetchSelectFields) {
-                const selectFields = $MAPAS.config.fetchSelectFields;
-                selectFields.forEach(field => {
+            if (typeof $MAPAS != 'undefined' && $MAPAS.config?.registrationFilterFields) {
+                const filterFields = $MAPAS.config.registrationFilterFields;
+                filterFields.forEach(field => {
                     if (!field) {
                         return;
                     }
 
                     const id = String(field.fieldName || field.id);
+
+                    if (byId[id]) {
+                        return;
+                    }
+
                     byId[id] = {
                         fieldName: field.fieldName || id,
                         title: field.title || field.fieldName || id,
+                        fieldType: field.fieldType || 'select',
                         fieldOptions: field.fieldOptions || []
                     };
                 });
