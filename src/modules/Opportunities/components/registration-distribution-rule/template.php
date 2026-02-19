@@ -20,12 +20,12 @@ $this->import('
             <div class="col-12 field">
                 <select v-model="selectedField" @change="handleSelection($event)">
                     <option value="" disabled selected><?php i::_e("Selecione um filtro") ?></option>
-                    <option v-if="isFilterAvailable('categories')" value="categories" :disabled="isFilterDisabled('categories')"><?php i::_e("Categoria") ?></option>
-                    <option v-if="isFilterAvailable('proponentTypes')" value="proponentTypes" :disabled="isFilterDisabled('proponentTypes')"><?php i::_e("Tipos de proponente") ?></option>
-                    <option v-if="isFilterAvailable('ranges')" value="ranges" :disabled="isFilterDisabled('ranges')"><?php i::_e("Faixa/Linha") ?></option>
-                    <option v-if="isFilterAvailable('distribution')" value="distribution" :disabled="isFilterDisabled('distribution')"><?php i::_e("Distribuição") ?></option>
-                    <option v-if="isFilterAvailable('sentTimestamp')" value="sentTimestamp" :disabled="isFilterDisabled('sentTimestamp')"><?php i::_e("Data de envio da inscrição") ?></option>
-                    <option v-if="isFilterAvailable('fields')" v-for="(field, fieldId) in selectionFields" :key="fieldId" :value="'field:' + fieldId" :disabled="isFilterDisabled('fields') || !isFieldAllowedByParent(fieldId)">{{ field.title }}</option>
+                    <option v-if="isFilterAvailable('categories')" value="categories"><?php i::_e("Categoria") ?></option>
+                    <option v-if="isFilterAvailable('proponentTypes')" value="proponentTypes"><?php i::_e("Tipos de proponente") ?></option>
+                    <option v-if="isFilterAvailable('ranges')" value="ranges"><?php i::_e("Faixa/Linha") ?></option>
+                    <option v-if="isFilterAvailable('distribution')" value="distribution"><?php i::_e("Distribuição") ?></option>
+                    <option v-if="isFilterAvailable('sentTimestamp')" value="sentTimestamp"><?php i::_e("Data de envio da inscrição") ?></option>
+                    <option v-if="isFilterAvailable('fields')" v-for="(field, fieldId) in availableFields" :key="fieldId" :value="'field:' + fieldId">{{ field.title }}</option>
                 </select>
             </div>
 
