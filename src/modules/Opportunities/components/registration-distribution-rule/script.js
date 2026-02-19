@@ -150,7 +150,7 @@ app.component('registration-distribution-rule', {
         filteredCategories() {
             let list = this.registrationCategories;
             
-            if (this.parentFilters && Array.isArray(this.parentFilters.categories) && this.parentFilters.categories.length > 0) {
+            if (this.hasCommissionFilters && this.parentFilters && Array.isArray(this.parentFilters.categories) && this.parentFilters.categories.length > 0) {
                 list = list.filter(cat => this.parentFilters.categories.includes(cat));
             }
  
@@ -162,7 +162,7 @@ app.component('registration-distribution-rule', {
         filteredProponentTypes() {
             let list = this.registrationProponentTypes;
             
-            if (this.parentFilters && Array.isArray(this.parentFilters.proponentTypes) && this.parentFilters.proponentTypes.length > 0) {
+            if (this.hasCommissionFilters && this.parentFilters && Array.isArray(this.parentFilters.proponentTypes) && this.parentFilters.proponentTypes.length > 0) {
                 list = list.filter(type => this.parentFilters.proponentTypes.includes(type));
             }
 
@@ -174,7 +174,7 @@ app.component('registration-distribution-rule', {
         filteredRanges() {
             let list = this.registrationRanges;
             
-            if (this.parentFilters && Array.isArray(this.parentFilters.ranges) && this.parentFilters.ranges.length > 0) {
+            if (this.hasCommissionFilters && this.parentFilters && Array.isArray(this.parentFilters.ranges) && this.parentFilters.ranges.length > 0) {
                 list = list.filter(range => this.parentFilters.ranges.includes(range));
             }
 
@@ -229,6 +229,54 @@ app.component('registration-distribution-rule', {
 
         disabledValues() {
             return Array.isArray(this.disableFilters) ? {} : (this.disableFilters || {});
+        },
+
+        /** Verifica se a comissão tem pelo menos um filtro configurado */
+        hasCommissionFilters() {
+            if (!this.parentFilters || typeof this.parentFilters !== 'object') {
+                return false;
+            }
+
+            if (Array.isArray(this.parentFilters.categories) && this.parentFilters.categories.length > 0) {
+                return true;
+            }
+
+            if (Array.isArray(this.parentFilters.proponentTypes) && this.parentFilters.proponentTypes.length > 0) {
+                return true;
+            }
+
+            if (Array.isArray(this.parentFilters.ranges) && this.parentFilters.ranges.length > 0) {
+                return true;
+            }
+
+            if (this.parentFilters.fields && typeof this.parentFilters.fields === 'object' && Object.keys(this.parentFilters.fields).length > 0) {
+                return true;
+            }
+
+            if (this.parentFilters.distribution && typeof this.parentFilters.distribution === 'string' && this.parentFilters.distribution.trim()) {
+                return true;
+            }
+
+            if (this.parentFilters.sentTimestamp && typeof this.parentFilters.sentTimestamp === 'object' && (this.parentFilters.sentTimestamp.from || this.parentFilters.sentTimestamp.to)) {
+                return true;
+            }
+
+            return false;
+        },
+
+        availableFields() {
+            if (!this.isFilterAvailable('fields')) {
+                return {};
+            }
+
+            const available = {};
+            Object.entries(this.selectionFields).forEach(([fieldId, field]) => {
+                if (this.isFieldAllowedByParent(fieldId)) {
+                    available[fieldId] = field;
+                }
+            });
+
+            return available;
         }
     },
 
@@ -243,6 +291,12 @@ app.component('registration-distribution-rule', {
             handler(newVal) {
                 this.applyParentRestrictions();
                 this.$emit('update:parentFilters', newVal ?? null);
+            },
+            deep: true
+        },
+        disableFilters: {
+            handler() {
+                this.applyParentRestrictions();
             },
             deep: true
         }
@@ -275,61 +329,132 @@ app.component('registration-distribution-rule', {
         },
 
         applyParentRestrictions() {
-            if (!this.parentFilters || !this.localModel) {
+            if (!this.localModel) {
                 return;
             }
             
             const next = { ...this.normalizeModel(this.localModel) };
             let changed = false;
+            const disabled = this.disabledValues;
 
-            if (Array.isArray(this.parentFilters.categories) && this.parentFilters.categories.length > 0) {
+            if (this.parentFilters && Array.isArray(this.parentFilters.categories) && this.parentFilters.categories.length > 0) {
                 const allowed = new Set(this.parentFilters.categories);
+                const disabledCategories = disabled.categories || [];
                 const prev = next.categories.length;
-                next.categories = next.categories.filter(c => allowed.has(c));
+                next.categories = next.categories.filter(c => {
+                    return allowed.has(c) && disabledCategories.indexOf(c) === -1;
+                });
+                
+                if (next.categories.length != prev) {
+                    changed = true;
+                }
+            } else if (Array.isArray(disabled.categories) && disabled.categories.length > 0) {
+                const prev = next.categories.length;
+                next.categories = next.categories.filter(c => disabled.categories.indexOf(c) === -1);
                 
                 if (next.categories.length != prev) {
                     changed = true;
                 }
             }
 
-            if (Array.isArray(this.parentFilters.proponentTypes) && this.parentFilters.proponentTypes.length > 0) {
+            if (this.parentFilters && Array.isArray(this.parentFilters.proponentTypes) && this.parentFilters.proponentTypes.length > 0) {
                 const allowed = new Set(this.parentFilters.proponentTypes);
+                const disabledProponentTypes = disabled.proponentTypes || [];
                 const prev = next.proponentTypes.length;
-                next.proponentTypes = next.proponentTypes.filter(p => allowed.has(p));
+                next.proponentTypes = next.proponentTypes.filter(p => {
+                    return allowed.has(p) && disabledProponentTypes.indexOf(p) === -1;
+                });
+                
+                if (next.proponentTypes.length != prev) {
+                    changed = true;
+                }
+            } else if (Array.isArray(disabled.proponentTypes) && disabled.proponentTypes.length > 0) {
+                const prev = next.proponentTypes.length;
+                next.proponentTypes = next.proponentTypes.filter(p => disabled.proponentTypes.indexOf(p) === -1);
                 
                 if (next.proponentTypes.length != prev) {
                     changed = true;
                 }
             }
 
-            if (Array.isArray(this.parentFilters.ranges) && this.parentFilters.ranges.length > 0) {
+            if (this.parentFilters && Array.isArray(this.parentFilters.ranges) && this.parentFilters.ranges.length > 0) {
                 const allowed = new Set(this.parentFilters.ranges);
+                const disabledRanges = disabled.ranges || [];
                 const prev = next.ranges.length;
-                next.ranges = next.ranges.filter(r => allowed.has(r));
+                next.ranges = next.ranges.filter(r => {
+                    return allowed.has(r) && disabledRanges.indexOf(r) === -1;
+                });
+                
+                if (next.ranges.length != prev) {
+                    changed = true;
+                }
+            } else if (Array.isArray(disabled.ranges) && disabled.ranges.length > 0) {
+                const prev = next.ranges.length;
+                next.ranges = next.ranges.filter(r => disabled.ranges.indexOf(r) === -1);
                 
                 if (next.ranges.length != prev) {
                     changed = true;
                 }
             }
 
-            if (this.parentFilters.fields && typeof this.parentFilters.fields === 'object') {
+            if (this.parentFilters && this.parentFilters.fields && typeof this.parentFilters.fields === 'object') {
                 const nextFields = {};
+                const disabledFields = disabled.fields || {};
+
                 for (const [fieldId, allowedValues] of Object.entries(this.parentFilters.fields)) {
                     if (!Array.isArray(allowedValues) || allowedValues.length === 0) {
                         continue;
                     }
 
-                    const set = new Set(allowedValues);
+                    const allowedSet = new Set(allowedValues);
+                    const disabledForField = disabledFields[fieldId] || [];
+                    const disabledSet = new Set(disabledForField);
                     const current = next.fields[fieldId];
                     
                     if (Array.isArray(current)) {
-                        const filtered = current.filter(v => set.has(v));
+                        const filtered = current.filter(v => {
+                            return allowedSet.has(v) && !disabledSet.has(v);
+                        });
                         
                         if (filtered.length > 0) {
                             nextFields[fieldId] = filtered;
                         }
                     }
                 }
+
+                const prevKeys = Object.keys(next.fields).sort().join('');
+                const nextKeys = Object.keys(nextFields).sort().join('');
+
+                if (prevKeys != nextKeys) {
+                    changed = true;
+                } else {
+                    for (const k of Object.keys(next.fields)) {
+                        const a = (next.fields[k] || []).slice().sort().join();
+                        const b = (nextFields[k] || []).slice().sort().join();
+                        
+                        if (a != b) {
+                            changed = true;
+                            break;
+                        }
+                    }
+                }
+                next.fields = nextFields;
+            } else if (disabled.fields && typeof disabled.fields === 'object') {
+                const nextFields = {};
+                const disabledFields = disabled.fields;
+
+                Object.entries(next.fields || {}).forEach(([fieldId, values]) => {
+                    if (!Array.isArray(values)) {
+                        return;
+                    }
+
+                    const disabledForField = disabledFields[fieldId] || [];
+                    const filtered = values.filter(v => disabledForField.indexOf(v) === -1);
+                    
+                    if (filtered.length > 0) {
+                        nextFields[fieldId] = filtered;
+                    }
+                });
 
                 const prevKeys = Object.keys(next.fields).sort().join('');
                 const nextKeys = Object.keys(nextFields).sort().join('');
@@ -366,11 +491,11 @@ app.component('registration-distribution-rule', {
                     return false;
                 }
                 
-                if (this.parentFilters && Array.isArray(this.parentFilters.categories)) {
+                if (this.hasCommissionFilters && this.parentFilters && Array.isArray(this.parentFilters.categories)) {
                     return this.parentFilters.categories.length > 0;
                 }
-
-                return true;
+                
+                return this.filteredCategories.length > 0;
             }
 
             if (type === 'proponentTypes') {
@@ -378,11 +503,11 @@ app.component('registration-distribution-rule', {
                     return false;
                 }
 
-                if (this.parentFilters && Array.isArray(this.parentFilters.proponentTypes)) {
+                if (this.hasCommissionFilters && this.parentFilters && Array.isArray(this.parentFilters.proponentTypes)) {
                     return this.parentFilters.proponentTypes.length > 0;
                 }
 
-                return true;
+                return this.filteredProponentTypes.length > 0;
             }
 
             if (type === 'ranges') {
@@ -390,11 +515,11 @@ app.component('registration-distribution-rule', {
                     return false;
                 }
 
-                if (this.parentFilters && Array.isArray(this.parentFilters.ranges)) {
+                if (this.hasCommissionFilters && this.parentFilters && Array.isArray(this.parentFilters.ranges)) {
                     return this.parentFilters.ranges.length > 0;
                 }
 
-                return true;
+                return this.filteredRanges.length > 0;
             }
 
             if (type === 'distribution') {
@@ -410,12 +535,28 @@ app.component('registration-distribution-rule', {
                     return false;
                 }
 
-                if (this.parentFilters && this.parentFilters.fields && typeof this.parentFilters.fields === 'object') {
-                    return Object.keys(this.parentFilters.fields).some(id => Array.isArray(this.parentFilters.fields[id]) && this.parentFilters.fields[id].length > 0);
+                if (this.hasCommissionFilters && this.parentFilters && this.parentFilters.fields && typeof this.parentFilters.fields === 'object') {
+                    const fieldsKeys = Object.keys(this.parentFilters.fields);
+                    
+                    if (fieldsKeys.length === 0) {
+                        return false;
+                    }
+                    
+                    const hasFields = fieldsKeys.some(id => {
+                        const arr = this.parentFilters.fields[id];
+                        return Array.isArray(arr) && arr.length > 0;
+                    });
+
+                    return hasFields;
                 }
 
-                return true;
+                const hasOptions = Object.keys(this.selectionFields).some(fieldId => {
+                    return this.getFieldOptions(fieldId).length > 0;
+                });
+
+                return hasOptions;
             }
+
             return false;
         },
 
@@ -428,12 +569,18 @@ app.component('registration-distribution-rule', {
         },
 
         isFieldAllowedByParent(fieldId) {
-            if (!this.parentFilters?.fields || typeof this.parentFilters.fields !== 'object') {
-                return true;
+            if (this.hasCommissionFilters && this.parentFilters?.fields && typeof this.parentFilters.fields === 'object') {
+                const fieldsKeys = Object.keys(this.parentFilters.fields);
+                
+                if (fieldsKeys.length === 0) {
+                    return false;
+                }
+                
+                const allowed = this.parentFilters.fields[fieldId];
+                return Array.isArray(allowed) && allowed.length > 0;
             }
 
-            const allowed = this.parentFilters.fields[fieldId];
-            return Array.isArray(allowed) && allowed.length > 0;
+            return this.getFieldOptions(fieldId).length > 0;
         },
 
         getFieldOptions(fieldId) {
@@ -442,26 +589,54 @@ app.component('registration-distribution-rule', {
                 return [];
             }
 
-            if (field.fieldType == 'checkbox') {
-                const baseOptions = [true, false];
-                const parentOpts = this.parentFilters?.fields?.[fieldId];
+            let options = [];
 
-                if (Array.isArray(parentOpts) && parentOpts.length > 0) {
-                    return baseOptions.filter(option => parentOpts.includes(option));
+            if (field.fieldType === 'checkbox') {
+                const parentOptsRaw = this.parentFilters?.fields?.[fieldId];
+                
+                if (Array.isArray(parentOptsRaw) && parentOptsRaw.length > 0) {
+                    let hasTrue = false;
+                    let hasFalse = false;
+                    
+                    parentOptsRaw.forEach((val) => {
+                        if (val === true || val === 'true' || val === 1 || val === '1' || val === 'on') {
+                            hasTrue = true;
+                        } else if (val === false || val === 'false' || val === 0 || val === '0' || val === '' || val == null) {
+                            hasFalse = true;
+                        } else {
+                            hasTrue = true;
+                        }
+                    });
+
+                    options = [];
+                    if (hasTrue) {
+                        options.push(true);
+                    }
+                    if (hasFalse) {
+                        options.push(false);
+                    }
+                    
+                    return options;
+                } else {
+                    options = [true, false];
+                }
+            } else {
+                options = field.fieldOptions || [];
+
+                if (!options.length) {
+                    return [];
                 }
 
-                return baseOptions;
+                const parentOpts = this.parentFilters?.fields?.[fieldId];
+                if (Array.isArray(parentOpts) && parentOpts.length > 0) {
+                    options = options.filter(option => parentOpts.includes(option));
+                    return options;
+                }
             }
 
-            const options = field.fieldOptions || [];
-            if (!options.length) {
-                return [];
-            }
-
-            const parentOpts = this.parentFilters?.fields?.[fieldId];
-            
-            if (Array.isArray(parentOpts) && parentOpts.length > 0) {
-                return options.filter(option => parentOpts.includes(option));
+            const disabledValuesForField = this.disabledValues.fields?.[fieldId] || [];
+            if (Array.isArray(disabledValuesForField) && disabledValuesForField.length > 0) {
+                options = options.filter(option => disabledValuesForField.indexOf(option) === -1);
             }
 
             return options;
