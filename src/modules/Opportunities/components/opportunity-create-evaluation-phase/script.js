@@ -60,10 +60,11 @@ app.component('opportunity-create-evaluation-phase' , {
             this.phase.infos = {general: ''};
             this.phase.opportunity = this.opportunity;
             
-            if(this.isContinuousFlow) {
+            if(this.isContinuousFlow && !this.opportunity.hasEndDate) {
+                // fluxo contínuo sem data final: preenche datas automaticamente
                 this.phase.evaluationFrom = this.opportunity.registrationFrom;
-                this.phase.evaluationTo = this.opportunity?.hasEndDate ? this.lastPhase.publishTimestamp : this.opportunity.registrationTo;
-                this.phase.publishedRegistrations = this.opportunity?.hasEndDate ? false : true;
+                this.phase.evaluationTo = this.opportunity.registrationTo;
+                this.phase.publishedRegistrations = true;
             }
         },
         destroyEntity() {
