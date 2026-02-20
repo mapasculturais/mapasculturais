@@ -209,7 +209,7 @@ app.component('registration-distribution-rule', {
             const to = this.selectedConfigs?.to;
 
             if (from && to && new Date(from) > new Date(to)) {
-                return { from: this.text('errorDateFromAfterTo'), to: '' };
+                return { from: this.text('A data inicial não pode ser maior que a data final'), to: '' };
             }
 
             return { from: '', to: '' };
@@ -776,21 +776,22 @@ app.component('registration-distribution-rule', {
 
             if (model.sentTimestamp && (model.sentTimestamp.from || model.sentTimestamp.to)) {
                 if (model.sentTimestamp.from) {
-                    list.push(`${this.text('sentTimestamp')} - ${this.text('de')} ${formatDate(model.sentTimestamp.from)}`);
+                    list.push(`${this.text('Data de envio')} - ${this.text('de')} ${formatDate(model.sentTimestamp.from)}`);
                 }
 
                 if (model.sentTimestamp.to) {
-                    list.push(`${this.text('sentTimestamp')} - ${this.text('toDate')} ${formatDate(model.sentTimestamp.to)}`);
+                    list.push(`${this.text('Data de envio')} - ${this.text('até')} ${formatDate(model.sentTimestamp.to)}`);
                 }
             }
 
+            const propToLabelKey = { categories: 'Categorias', proponentTypes: 'Tipos de proponente', ranges: 'Faixas/Linhas' };
             ['categories', 'proponentTypes', 'ranges'].forEach(prop => {
-                const label = this.text(prop);
+                const label = this.text(propToLabelKey[prop]);
                 (model[prop] || []).forEach(value => list.push(`${label}: ${value}`));
             });
 
             if (model.distribution) {
-                list.push(`${this.text('distribution')}: ${model.distribution}`);
+                list.push(`${this.text('Distribuição')}: ${model.distribution}`);
             }
 
             if (model.fields && typeof model.fields === 'object') {
@@ -822,8 +823,8 @@ app.component('registration-distribution-rule', {
                 const keyPart = parts[0].trim();
                 const datePart = parts[1]?.trim() || '';
 
-                if (keyPart === this.text('sentTimestamp') || keyPart.indexOf('envio') !== -1) {
-                    const toLabel = (this.text('toDate') || 'até').toLowerCase();
+                if (keyPart === this.text('Data de envio') || keyPart.indexOf('envio') !== -1) {
+                    const toLabel = (this.text('até') || 'até').toLowerCase();
                     const dateMatch = datePart.match(new RegExp(`^(de|${toLabel.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')})\\s+(.+)$`, 'i'));
                     
                     if (dateMatch) {
@@ -855,7 +856,7 @@ app.component('registration-distribution-rule', {
             const displayKey = tag.substring(0, colonIndex);
             const value = tag.substring(colonIndex + 2);
 
-            if (displayKey == this.text('distribution')) {
+            if (displayKey == this.text('Distribuição')) {
                 model.distribution = '';
             }
 
@@ -903,7 +904,7 @@ app.component('registration-distribution-rule', {
         },
 
         labelToKey(displayKey) {
-            const map = { [this.text('categories')]: 'categories', [this.text('proponentTypes')]: 'proponentTypes', [this.text('ranges')]: 'ranges' };
+            const map = { [this.text('Categorias')]: 'categories', [this.text('Tipos de proponente')]: 'proponentTypes', [this.text('Faixas/Linhas')]: 'ranges' };
             return map[displayKey] || null;
         },
 
