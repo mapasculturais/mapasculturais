@@ -59,7 +59,7 @@ $this->import('
             </div>
 
             <div v-if="selectedField === 'distribution'" class="opportunity-registration-filter-configuration__related-input col-12 field">
-                <input type="text" :placeholder="text('placeholderDistribution')" maxlength="5" v-model="selectedDistribution" />
+                <input type="text" :placeholder="'00-99'" maxlength="5" v-model="selectedDistribution" />
             </div>
 
             <div v-if="selectedFieldType === 'field' && selectedFieldId && getFieldOptions(selectedFieldId).length" class="opportunity-registration-filter-configuration__related-input col-12 field">
