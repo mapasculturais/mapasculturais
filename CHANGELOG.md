@@ -5,7 +5,7 @@ Todas as mudanças notáveis no projeto serão documentadas neste arquivo.
 O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/)
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [7.7.6] - UNRELEASED
+## [7.7.6] - 2026-02-22
 ### Correções
 - Corrige permissão para administrador da oportunidade remover uma avaliação
 - Corrige os campos visíveis para o avaliador para nao ignorar campos com somente uma fase de coleta de dados
