@@ -5,6 +5,10 @@ Todas as mudanças notáveis no projeto serão documentadas neste arquivo.
 O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/)
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [7.6.47] - 2026-02-22
+### Correções
+- Corrige os campos visíveis para o avaçliador para nao ignorar campos com sosmente uam fase de coleta de dados
+
 ## [7.6.46] - 2026-02-19
 ### Melhorias
 - Aplica melhorias no processo de envio de denúncia e contato, permitindo definir uma lista configurável de destinatários para o envio de e-mails
