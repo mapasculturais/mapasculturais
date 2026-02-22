@@ -8,6 +8,7 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 ## [7.7.6] - UNRELEASED
 ### Correções
 - Corrige permissão para administrador da oportunidade remover uma avaliação
+- Corrige os campos visíveis para o avaliador para nao ignorar campos com somente uma fase de coleta de dados
 
 ## [7.7.5] - 2026-02-13
 ### Correções
@@ -88,6 +89,10 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 1. <small>Melhoria desenvolvida pelo Ministério das Cidades, através da Secretaria Nacional de Periferias, para o Prêmio Periferia Viva</small>
 <a name="770-funarte"></a>
 2. <small>Melhoria desenvolvida pela Funarte (Fundação Nacional de Artes) para a Rede das Artes</small>
+
+## [7.6.47] - 2026-02-22
+### Correções
+- Corrige os campos visíveis para o avaçliador para nao ignorar campos com sosmente uam fase de coleta de dados
 
 ## [7.6.46] - 2026-02-19
 ### Melhorias
