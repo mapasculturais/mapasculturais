@@ -894,7 +894,7 @@ class Module extends \MapasCulturais\Module
         return $registration_field_types;
     }
 
-    function saveToEntity(Entity $entity, $value, Registration $registration=null, Metadata $metadata_definition=null)
+    function saveToEntity(Entity $entity, $value, ?Registration $registration=null, ?Metadata $metadata_definition=null)
     {
         if (isset($metadata_definition->config['registrationFieldConfiguration']->config['entityField'])) {
             $app = App::i();
@@ -1078,7 +1078,7 @@ class Module extends \MapasCulturais\Module
         return json_encode($value);
     }
 
-    function fetchFromEntity (Entity $entity, $value, Registration $registration = null, $metadata_definition = null)
+    function fetchFromEntity (Entity $entity, $value, ?Registration $registration = null, $metadata_definition = null)
     {
         $app = App::i();
 

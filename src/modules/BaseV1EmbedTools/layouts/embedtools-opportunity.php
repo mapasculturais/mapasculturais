@@ -6,23 +6,24 @@ $this->bodyProperties['ng-controller'] = "EntityController";
 $this->jsObject['angularAppDependencies'][] = 'entity.module.opportunity';
 $this->jsObject['angularAppDependencies'][] = 'ui.sortable';
 
-$this->jsObject['opportunityControl'] = $entity->canUser('@control');
+$this->jsObject['opportunityControl'] = isset($entity) ? $entity->canUser('@control') : null;
 
-$this->addEntityToJs($entity);
-
-$this->addOpportunityToJs($entity);
-
-$this->addOpportunitySelectFieldsToJs($entity);
-
-$this->includeAngularEntityAssets($entity);
+if (isset($entity)) {
+    $this->addEntityToJs($entity);
+    $this->addOpportunityToJs($entity);
+    $this->addOpportunitySelectFieldsToJs($entity);
+    $this->includeAngularEntityAssets($entity);
+}
 
 $this->jsObject['request']['controller'] = "opportunity";
 
 $site_name = $this->dict('site: name', false);
 $title = isset($entity) ? $this->getTitle($entity) : $this->getTitle();
-$this->jsObject['evaluationConfiguration'] = $entity->evaluationMethodConfiguration;
+$this->jsObject['evaluationConfiguration'] = isset($entity) ? $entity->evaluationMethodConfiguration : null;
 
-$this->jsObject['entity']['registrationCategories'] = $this->controller->requestedEntity->firstPhase->registrationCategories
+if (isset($this->controller->requestedEntity) && isset($this->controller->requestedEntity->firstPhase)) {
+    $this->jsObject['entity']['registrationCategories'] = $this->controller->requestedEntity->firstPhase->registrationCategories;
+}
 
 ?>
 <!DOCTYPE html>

@@ -337,7 +337,7 @@ class User extends \MapasCulturais\Entity implements \MapasCulturais\UserInterfa
         return is_null($user) || $user->is('guest');
     }
 
-    public function makeAttorney($action, \DateTime $valid_until = null, User $user = null){
+    public function makeAttorney($action, ?\DateTime $valid_until = null, ?User $user = null){
         $app = App::i();
         if(is_null($user)){
             $user = $app->user;

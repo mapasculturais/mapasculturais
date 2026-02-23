@@ -397,7 +397,7 @@ abstract class Controller{
      *
      * Call this method at the beginning of actions that require authentication.
      */
-    public function requireAuthentication(string $redirect_url = null){
+    public function requireAuthentication(?string $redirect_url = null){
         $app = App::i();
 
         if($app->user->is('guest')){

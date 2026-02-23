@@ -1,6 +1,6 @@
 # syntax=docker/dockerfile:1
 ARG NODE_VERSION=20
-ARG PHP_VERSION=8.3
+ARG PHP_VERSION=8.4
 
 # =============================================================================
 # Stage 1: Node.js builder - Compiles frontend assets
@@ -124,7 +124,6 @@ RUN apk add --no-cache --virtual .build-deps \
 # Install PHP extensions
 RUN docker-php-ext-configure gd --with-freetype --with-jpeg && \
   docker-php-ext-install -j$(nproc) \
-  opcache \
   pdo_pgsql \
   zip \
   gd \
@@ -139,8 +138,8 @@ RUN pecl install imagick && \
   docker-php-ext-enable imagick
 
 # Install Redis
-RUN pecl install redis && \
-  docker-php-ext-enable redis
+# RUN pecl install redis && \
+#   docker-php-ext-enable redis
 
 # Cleanup build dependencies
 RUN apk del .build-deps && \
