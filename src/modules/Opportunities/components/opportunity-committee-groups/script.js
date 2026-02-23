@@ -376,6 +376,7 @@ app.component('opportunity-committee-groups', {
             }
 
             this.ensureDistributionRule(group);
+            this.recalculateDistributionDisabledFilters();
 
             this.reorderGroups();
         },
@@ -398,7 +399,11 @@ app.component('opportunity-committee-groups', {
             delete this.entity.relatedAgents[group]
             delete this.entity.valuersPerRegistration[group];
             delete this.entity.fetchFields[group];
+            delete this.distributionRules[group];
+            delete this.distributionDisabledFilters[group];
             this.entity.removeAgentRelationGroup(group);
+
+            this.recalculateDistributionDisabledFilters();
 
             await this.autoSave();
 

@@ -129,6 +129,7 @@ $this->import('
 
                         <registration-distribution-rule
                             v-if="entity.fetchFields[groupName] !== undefined"
+                            :key="groupName"
                             :opportunity="entity.opportunity"
                             v-model="distributionRules[groupName]"
                             @update:modelValue="onDistributionRuleChange($event, groupName)"
