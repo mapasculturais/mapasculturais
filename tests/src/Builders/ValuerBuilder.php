@@ -3,13 +3,18 @@
 namespace Tests\Builders;
 
 use Exception;
-use Tests\Abstract\Builder;
-use Tests\Traits\UserDirector;
-use Tests\Traits\AgentDirector;
 use MapasCulturais\Entities\Agent;
-use Tests\Traits\EvaluationBuilder;
-use MapasCulturais\Entities\Registration;
 use MapasCulturais\Entities\EvaluationMethodConfigurationAgentRelation;
+use MapasCulturais\Entities\Registration;
+use Tests\Abstract\Builder;
+use Tests\Abstract\EvaluationBuilder as AbstractEvaluationBuilder;
+use Tests\Builders\EvaluationDocumentaryBuilder;
+use Tests\Builders\EvaluationQualificationBuilder;
+use Tests\Builders\EvaluationSimpleBuilder;
+use Tests\Builders\EvaluationTechnicalBuilder;
+use Tests\Traits\AgentDirector;
+use Tests\Traits\EvaluationBuilder;
+use Tests\Traits\UserDirector;
 
 class ValuerBuilder extends Builder
 {
@@ -18,6 +23,8 @@ class ValuerBuilder extends Builder
         UserDirector;
 
     protected EvaluationMethodConfigurationAgentRelation $instance;
+
+    protected array $fieldsByIdentifier = [];
 
     public function __construct(private EvaluationPhaseBuilder $evaluationPhaseBuilder)
     {
@@ -117,6 +124,48 @@ class ValuerBuilder extends Builder
         return $this;
     }
 
+    public function evaluation(?Registration $registration = null): AbstractEvaluationBuilder
+    {
+        $evaluation_method_config = $this->evaluationPhaseBuilder->getInstance();
+        $evaluation_method_slug = $evaluation_method_config->type;
+        
+        // TODO: Verificar se é necessário essa parte
+        // Criar a avaliação primeiro usando o builder que já existia
+        if ($registration) {
+            $this->evaluationBuilder->reset(
+                user: $this->instance->agent->user,
+                registration: $registration
+            );
+        } else {
+            $this->evaluationBuilder->reset(
+                user: $this->instance->agent->user,
+                opportunity: $this->instance->owner->opportunity
+            );
+        }
+        
+        $this->evaluationBuilder->fillRequiredProperties();
+        $evaluation_instance = $this->evaluationBuilder->getInstance();
+        
+        // Retornar o builder específico baseado no tipo
+        if ($evaluation_method_slug->id == 'simple') {
+            $builder = new EvaluationSimpleBuilder($this->evaluationPhaseBuilder);
+        }
+        
+        if ($evaluation_method_slug->id == 'documentary') {
+            $builder = new EvaluationDocumentaryBuilder($this->evaluationPhaseBuilder);
+        }
+
+        if ($evaluation_method_slug->id == 'qualification') {
+            $builder = new EvaluationQualificationBuilder($this->evaluationPhaseBuilder);
+        }
+        
+        if ($evaluation_method_slug->id == 'technical') {
+            $builder = new EvaluationTechnicalBuilder($this->evaluationPhaseBuilder);
+        }
+
+        return $builder->reset($evaluation_instance);
+    }
+
     public function createDraftRegistrations(int $number_of_registrations): static
     {
         for ($i = 0; $i < $number_of_registrations; $i++) {
@@ -149,6 +198,46 @@ class ValuerBuilder extends Builder
         $this->instance->metadata->registrationList = $registration_numbers;
         $this->instance->metadata->registrationListExclusive = $exclusive;
 
+        return $this;
+    }
+
+    public function categories(array $categories): static
+    {
+        $this->instance->setCategories($categories);
+
+        return $this;
+    }
+
+    public function proponentType(array $proponent_types): static
+    {
+        $this->instance->setProponentTypes($proponent_types);
+
+        return $this;
+    }
+
+ 
+
+    public function fetch($start, $end): static
+    {
+        $this->instance->setDistribution("{$start}-{$end}");
+        return $this;
+    }
+
+    public function ranges(array $ranges): static
+    {
+        $this->instance->setRanges($ranges);
+
+        return $this;
+    }
+
+    public function fields(array $fields): static
+    {
+        $opportunityBuilder = $this->evaluationPhaseBuilder->getOpportunityBuilder();
+        $selectionFields = [];
+        foreach ($fields as $field => $value) {
+            $selectionFields[$opportunityBuilder->getFieldName($field)] = $value;
+        }
+        $this->instance->setSelectionFields($selectionFields);
         return $this;
     }
 }

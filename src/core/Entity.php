@@ -990,10 +990,6 @@ abstract class Entity implements \JsonSerializable{
             $app->em->persist($this);
             $app->applyHookBoundTo($this, "{$hook_prefix}.save:after");
 
-            if($flush){
-                $app->em->flush($this);
-            }
-
             if($this->usesMetadata()){
                 $this->saveMetadata($flush);
             }
@@ -1008,6 +1004,10 @@ abstract class Entity implements \JsonSerializable{
                 } else {
                     $this->_newModifiedRevision(flush: $flush);
                 }
+            }
+
+            if($flush){
+                $app->em->flush();
             }
 
         }catch(Exceptions\PermissionDenied $e){

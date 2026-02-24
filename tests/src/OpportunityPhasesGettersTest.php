@@ -1,0 +1,1163 @@
+<?php
+
+namespace Test;
+
+use MapasCulturais\Entities\Opportunity;
+use MapasCulturais\Entities\Registration;
+use Tests\Abstract\TestCase;
+use Tests\Builders\PhasePeriods\ConcurrentEndingAfter;
+use Tests\Builders\PhasePeriods\Open;
+use Tests\Enums\EvaluationMethods;
+use Tests\Traits\OpportunityBuilder;
+use Tests\Traits\RegistrationDirector;
+use Tests\Traits\UserDirector;
+
+class OpportunityPhasesGettersTest extends TestCase
+{
+    use OpportunityBuilder,
+        RegistrationDirector,
+        UserDirector;
+
+    // phases
+    function testOpportunityPhasesGetter()
+    {
+        $admin = $this->userDirector->createUser('admin');
+        $this->login($admin);
+
+        /** @var Opportunity $opportunity */
+        $opportunity = $this->opportunityBuilder
+            ->reset(owner: $admin->profile, owner_entity: $admin->profile)
+            ->fillRequiredProperties()
+            ->firstPhase()
+                ->setRegistrationPeriod(new Open)
+                ->done()
+            ->save()
+            ->addEvaluationPhase(EvaluationMethods::simple)
+                ->setEvaluationPeriod(new ConcurrentEndingAfter)
+                ->save()
+                ->done()
+            ->addEvaluationPhase(EvaluationMethods::simple)
+                ->setEvaluationPeriod(new ConcurrentEndingAfter)
+                ->save()
+                ->done()
+            ->addEvaluationPhase(EvaluationMethods::simple)
+                ->setEvaluationPeriod(new ConcurrentEndingAfter)
+                ->save()
+                ->done()
+            ->refresh()
+            ->getInstance();
+
+        $phases = $opportunity->phases;
+
+        $this->assertIsArray($phases, 'Certificando que phases retorna um array');
+        $this->assertNotEmpty($phases, 'Certificando que phases não é vazio quando a oportunidade tem fases');
+
+        $expected_count = 5;
+        $this->assertCount($expected_count, $phases, "Certificando que phases retorna {$expected_count} itens para 1 fase de coleta + 3 fases de avaliação");
+    }
+
+    // allPhases
+    function testOpportunityAllPhasesGetter()
+    {
+        $admin = $this->userDirector->createUser('admin');
+        $this->login($admin);
+
+        $builder = $this->opportunityBuilder;
+
+        /** @var Opportunity $opportunity */
+        $opportunity = $builder
+            ->reset(owner: $admin->profile, owner_entity: $admin->profile)
+            ->fillRequiredProperties()
+            ->firstPhase()
+                ->setRegistrationPeriod(new Open)
+                ->done()
+            ->save()
+            ->getInstance();
+
+        // Guarda o ID da primeira fase
+        $first_phase_id = $opportunity->id;
+
+        // Cria as fases de avaliação e guarda os IDs das oportunidades
+        $eval_phase_1 = $builder->addEvaluationPhase(EvaluationMethods::simple)
+            ->setEvaluationPeriod(new ConcurrentEndingAfter)
+            ->save()
+            ->getInstance();
+        $eval_phase_1_opp_id = $eval_phase_1->opportunity->id;
+
+        $eval_phase_2 = $builder->addEvaluationPhase(EvaluationMethods::simple)
+            ->setEvaluationPeriod(new ConcurrentEndingAfter)
+            ->save()
+            ->getInstance();
+        $eval_phase_2_opp_id = $eval_phase_2->opportunity->id;
+
+        $eval_phase_3 = $builder->addEvaluationPhase(EvaluationMethods::simple)
+            ->setEvaluationPeriod(new ConcurrentEndingAfter)
+            ->save()
+            ->getInstance();
+        $eval_phase_3_opp_id = $eval_phase_3->opportunity->id;
+
+        // IDs esperados na ordem: firstPhase, eval_phase_1, eval_phase_2, eval_phase_3 (lastPhase)
+        $expected_phase_ids = [
+            $first_phase_id,
+            $eval_phase_1_opp_id,
+            $eval_phase_2_opp_id,
+            $eval_phase_3_opp_id,
+        ];
+
+        $all_phases = $opportunity->allPhases;
+
+        $this->assertIsArray($all_phases, 'Certificando que allPhases retorna um array');
+        $this->assertNotEmpty($all_phases, 'Certificando que allPhases não é vazio quando a oportunidade tem fases');
+
+        // Com 1 fase de coleta + 3 fases de avaliação, esperamos 4 fases no total
+        $expected_count = 4;
+        $this->assertCount($expected_count, $all_phases, "Certificando que allPhases retorna {$expected_count} fases para 1 fase de coleta + 3 fases de avaliação");
+
+        // Verifica que a primeira fase é a firstPhase
+        $first_phase = $all_phases[0];
+        $this->assertEquals($first_phase_id, $first_phase->id, 'Certificando que a primeira fase em allPhases é a firstPhase');
+        $this->assertTrue($first_phase->isFirstPhase, 'Certificando que a primeira fase em allPhases tem isFirstPhase = true');
+
+        // Verifica que todas as fases criadas aparecem em allPhases
+        $present_ids = array_map(fn($phase) => $phase->id, $all_phases);
+        foreach ($expected_phase_ids as $expected_id) {
+            $this->assertContains($expected_id, $present_ids, "Certificando que a fase com id {$expected_id} está presente em allPhases");
+        }
+
+        // Verifica que a última fase em allPhases é a lastPhase da oportunidade (última fase em geral, não necessariamente a última de avaliação)
+        $last_phase_in_list = $all_phases[count($all_phases) - 1];
+        $last_phase = $opportunity->lastPhase;
+        $this->assertTrue($last_phase_in_list->isLastPhase, 'Certificando que a última fase em allPhases tem isLastPhase = true');
+        $this->assertTrue($last_phase->isLastPhase, 'Certificando que lastPhase da oportunidade tem isLastPhase = true');
+        $this->assertEquals($last_phase->id, $last_phase_in_list->id, 'Certificando que a última fase em allPhases é a mesma que opportunity->lastPhase');
+
+        // Verifica que as fases estão na ordem correta (firstPhase primeiro, lastPhase por último)
+        $this->assertEquals($first_phase_id, $all_phases[0]->id, 'Certificando que a primeira fase em allPhases é a firstPhase');
+        $this->assertEquals($last_phase->id, $all_phases[count($all_phases) - 1]->id, 'Certificando que a última fase em allPhases é a lastPhase da oportunidade');
+    }
+
+    // nextPhase
+    function testOpportunityNextPhaseGetter()
+    {
+        $app = $this->app;
+        $admin = $this->userDirector->createUser('admin');
+        $this->login($admin);
+
+        $builder = $this->opportunityBuilder;
+
+        /** @var Opportunity $opportunity */
+        $opportunity = $builder
+            ->reset(owner: $admin->profile, owner_entity: $admin->profile)
+            ->fillRequiredProperties()
+            ->firstPhase()
+                ->setRegistrationPeriod(new Open)
+                ->done()
+            ->save()
+            ->getInstance();
+
+        $eval_phase_1 = $builder->addEvaluationPhase(EvaluationMethods::simple)
+            ->setEvaluationPeriod(new ConcurrentEndingAfter)
+            ->save()
+            ->getInstance();
+        $eval_phase_1_opp_id = $eval_phase_1->opportunity->id;
+
+        $eval_phase_2 = $builder->addEvaluationPhase(EvaluationMethods::simple)
+            ->setEvaluationPeriod(new ConcurrentEndingAfter)
+            ->save()
+            ->getInstance();
+        $eval_phase_2_opp_id = $eval_phase_2->opportunity->id;
+
+        $eval_phase_3 = $builder->addEvaluationPhase(EvaluationMethods::simple)
+            ->setEvaluationPeriod(new ConcurrentEndingAfter)
+            ->save()
+            ->getInstance();
+        $eval_phase_3_opp_id = $eval_phase_3->opportunity->id;
+
+        $last_phase = $opportunity->lastPhase;
+
+        // firstPhase->nextPhase deve ser a primeira fase de avaliação (ou a próxima na ordem de allPhases)
+        $all_phases = $opportunity->allPhases;
+        $first_phase_next_expected_id = $all_phases[1]->id;
+
+        $next = $opportunity->nextPhase;
+        $this->assertNotNull($next, 'Certificando que firstPhase tem nextPhase');
+        $this->assertEquals($first_phase_next_expected_id, $next->id, 'Certificando que nextPhase da firstPhase é a próxima fase em allPhases');
+
+        // primeira fase de avaliação -> nextPhase deve ser a segunda
+        $next = $eval_phase_1->opportunity->nextPhase;
+        $this->assertNotNull($next, 'Certificando que a primeira fase de avaliação tem nextPhase');
+        $this->assertEquals($eval_phase_2_opp_id, $next->id, 'Certificando que nextPhase da primeira fase de avaliação é a segunda');
+
+        // segunda fase de avaliação -> nextPhase deve ser a terceira
+        $next = $eval_phase_2->opportunity->nextPhase;
+        $this->assertNotNull($next, 'Certificando que a segunda fase de avaliação tem nextPhase');
+        $this->assertEquals($eval_phase_3_opp_id, $next->id, 'Certificando que nextPhase da segunda fase de avaliação é a terceira');
+
+        // terceira fase de avaliação -> nextPhase deve ser a última fase
+        $next = $eval_phase_3->opportunity->nextPhase;
+        $this->assertNotNull($next, 'Certificando que nextPhase da terceira fase é a última fase');
+        $this->assertEquals($last_phase->id, $next->id, 'Certificando que nextPhase da terceira fase é a última fase');
+
+        // última fase (lastPhase) -> nextPhase retorna null (não há próxima fase; lastPhase costuma ser reporting phase)
+        $next = $last_phase->nextPhase;
+        $this->assertNull($next, 'Certificando que nextPhase da última fase é null');
+    }
+
+    // previousPhase
+    function testOpportunityPreviousPhaseGetter()
+    {
+        $admin = $this->userDirector->createUser('admin');
+        $this->login($admin);
+
+        /** @var Opportunity $opportunity */
+        $opportunity = $this->opportunityBuilder
+            ->reset(owner: $admin->profile, owner_entity: $admin->profile)
+            ->fillRequiredProperties()
+            ->firstPhase()
+                ->setRegistrationPeriod(new Open)
+                ->done()
+            ->save()
+            ->getInstance();
+
+        // Fases de avaliação em sequência por data: cada uma abre após o fechamento da anterior
+        $eval_phase_1 = $this->opportunityBuilder
+            ->addEvaluationPhase(EvaluationMethods::simple)
+                ->setEvaluationFrom('+2 days')
+                ->setEvaluationTo('+9 days')
+                ->save()
+                ->getInstance();
+        $eval_phase_1_opp_id = $eval_phase_1->opportunity->id;
+
+        $eval_phase_2 = $this->opportunityBuilder
+            ->addEvaluationPhase(EvaluationMethods::simple)
+                ->setEvaluationFrom('+10 days')
+                ->setEvaluationTo('+17 days')
+                ->save()
+                ->getInstance();
+        $eval_phase_2_opp_id = $eval_phase_2->opportunity->id;
+
+        $eval_phase_3 = $this->opportunityBuilder
+            ->addEvaluationPhase(EvaluationMethods::simple)
+                ->setEvaluationFrom('+18 days')
+                ->setEvaluationTo('+25 days')
+                ->save()
+                ->getInstance();
+        $eval_phase_3_opp_id = $eval_phase_3->opportunity->id;
+
+        $opportunity = $opportunity->refreshed();
+        $last_phase = $opportunity->lastPhase;
+
+        // firstPhase->previousPhase deve ser null
+        $previous = $opportunity->previousPhase;
+        $this->assertNull($previous, 'Certificando que previousPhase da firstPhase é null');
+
+        // A primeira fase de avaliação usa a mesma Opportunity que a firstPhase
+        $this->assertEquals($opportunity->id, $eval_phase_1_opp_id, 'Certificando que a primeira fase de avaliação é a própria firstPhase');
+        $previous = $eval_phase_1->opportunity->previousPhase;
+        $this->assertNull($previous, 'Certificando que previousPhase da primeira fase de avaliação é null (é a firstPhase)');
+
+        // segunda fase de avaliação -> previousPhase deve ser a firstPhase
+        $previous = $eval_phase_2->opportunity->previousPhase;
+        $this->assertNotNull($previous, 'Certificando que a segunda fase de avaliação tem previousPhase');
+        $this->assertEquals($opportunity->id, $previous->id, 'Certificando que previousPhase da segunda fase de avaliação é a firstPhase');
+
+        // terceira fase de avaliação -> previousPhase deve ser a segunda
+        $previous = $eval_phase_3->opportunity->previousPhase;
+        $this->assertNotNull($previous, 'Certificando que a terceira fase de avaliação tem previousPhase');
+        $this->assertEquals($eval_phase_2_opp_id, $previous->id, 'Certificando que previousPhase da terceira fase de avaliação é a segunda');
+
+        // última fase (lastPhase) -> previousPhase deve ser a penultima fase
+        $previous = $last_phase->previousPhase;
+        $this->assertNotNull($previous, 'Certificando que lastPhase tem previousPhase');
+        $this->assertEquals($eval_phase_3_opp_id, $previous->id, 'Certificando que previousPhase da lastPhase é a penultima fase');
+    }
+
+    // firstPhase
+    function testOpportunityFirstPhaseGetter()
+    {
+        $admin = $this->userDirector->createUser('admin');
+        $this->login($admin);
+
+        $builder = $this->opportunityBuilder;
+
+        /** @var Opportunity $opportunity */
+        $opportunity = $builder
+            ->reset(owner: $admin->profile, owner_entity: $admin->profile)
+            ->fillRequiredProperties()
+            ->firstPhase()
+                ->setRegistrationPeriod(new Open)
+                ->done()
+            ->save()
+            ->getInstance();
+
+        $first_phase_id = $opportunity->id;
+
+        $eval_phase_1 = $builder->addEvaluationPhase(EvaluationMethods::simple)
+            ->setEvaluationPeriod(new ConcurrentEndingAfter)
+            ->save()
+            ->getInstance();
+
+        $eval_phase_2 = $builder->addEvaluationPhase(EvaluationMethods::simple)
+            ->setEvaluationPeriod(new ConcurrentEndingAfter)
+            ->save()
+            ->getInstance();
+
+        $eval_phase_3 = $builder->addEvaluationPhase(EvaluationMethods::simple)
+            ->setEvaluationPeriod(new ConcurrentEndingAfter)
+            ->save()
+            ->getInstance();
+
+        $last_phase = $opportunity->lastPhase;
+
+        // firstPhase da própria firstPhase retorna ela mesma
+        $first = $opportunity->firstPhase;
+        $this->assertNotNull($first, 'Certificando que firstPhase retorna valor');
+        $this->assertEquals($first_phase_id, $first->id, 'Certificando que firstPhase da oportunidade raiz é ela mesma');
+        $this->assertTrue($first->isFirstPhase, 'Certificando que firstPhase tem isFirstPhase = true');
+
+        // primeira fase de avaliação usa a mesma Opportunity que a firstPhase
+        $first = $eval_phase_1->opportunity->firstPhase;
+        $this->assertNotNull($first, 'Certificando que a primeira fase de avaliação tem firstPhase');
+        $this->assertEquals($first_phase_id, $first->id, 'Certificando que firstPhase da primeira fase de avaliação é a primeira fase');
+
+        // segunda fase de avaliação -> firstPhase deve ser a primeira fase
+        $first = $eval_phase_2->opportunity->firstPhase;
+        $this->assertNotNull($first, 'Certificando que a segunda fase de avaliação tem firstPhase');
+        $this->assertEquals($first_phase_id, $first->id, 'Certificando que firstPhase da segunda fase de avaliação é a primeira fase');
+
+        // terceira fase de avaliação -> firstPhase deve ser a primeira fase
+        $first = $eval_phase_3->opportunity->firstPhase;
+        $this->assertNotNull($first, 'Certificando que a terceira fase de avaliação tem firstPhase');
+        $this->assertEquals($first_phase_id, $first->id, 'Certificando que firstPhase da terceira fase de avaliação é a primeira fase');
+
+        // lastPhase -> firstPhase deve ser a primeira fase
+        $first = $last_phase->firstPhase;
+        $this->assertNotNull($first, 'Certificando que lastPhase tem firstPhase');
+        $this->assertEquals($first_phase_id, $first->id, 'Certificando que firstPhase da lastPhase é a primeira fase');
+    }
+
+    // lastPhase
+    function testOpportunityLastPhaseGetter()
+    {
+        $admin = $this->userDirector->createUser('admin');
+        $this->login($admin);
+
+        $builder = $this->opportunityBuilder;
+
+        /** @var Opportunity $opportunity */
+        $opportunity = $builder
+            ->reset(owner: $admin->profile, owner_entity: $admin->profile)
+            ->fillRequiredProperties()
+            ->firstPhase()
+                ->setRegistrationPeriod(new Open)
+                ->done()
+            ->save()
+            ->getInstance();
+
+        $eval_phase_1 = $builder->addEvaluationPhase(EvaluationMethods::simple)
+            ->setEvaluationPeriod(new ConcurrentEndingAfter)
+            ->save()
+            ->getInstance();
+
+        $eval_phase_2 = $builder->addEvaluationPhase(EvaluationMethods::simple)
+            ->setEvaluationPeriod(new ConcurrentEndingAfter)
+            ->save()
+            ->getInstance();
+
+        $eval_phase_3 = $builder->addEvaluationPhase(EvaluationMethods::simple)
+            ->setEvaluationPeriod(new ConcurrentEndingAfter)
+            ->save()
+            ->getInstance();
+
+        $last_phase = $opportunity->lastPhase;
+        $last_phase_id = $last_phase->id;
+
+        // lastPhase da primeira fase retorna a fase de publicação de resultado
+        $last = $opportunity->lastPhase;
+        $this->assertNotNull($last, 'Certificando que lastPhase retorna valor');
+        $this->assertEquals($last_phase_id, $last->id, 'Certificando que lastPhase da oportunidade raiz é a fase de publicação');
+        $this->assertTrue($last->isLastPhase, 'Certificando que lastPhase tem isLastPhase = true');
+
+        // primeira fase de avaliação -> lastPhase deve ser a fase de publicação
+        $last = $eval_phase_1->opportunity->lastPhase;
+        $this->assertNotNull($last, 'Certificando que a primeira fase de avaliação tem lastPhase');
+        $this->assertEquals($last_phase_id, $last->id, 'Certificando que lastPhase da primeira fase de avaliação é a fase de publicação');
+
+        // segunda fase de avaliação -> lastPhase deve ser a fase de publicação
+        $last = $eval_phase_2->opportunity->lastPhase;
+        $this->assertNotNull($last, 'Certificando que a segunda fase de avaliação tem lastPhase');
+        $this->assertEquals($last_phase_id, $last->id, 'Certificando que lastPhase da segunda fase de avaliação é a fase de publicação');
+
+        // terceira fase de avaliação -> lastPhase deve ser a fase de publicação
+        $last = $eval_phase_3->opportunity->lastPhase;
+        $this->assertNotNull($last, 'Certificando que a terceira fase de avaliação tem lastPhase');
+        $this->assertEquals($last_phase_id, $last->id, 'Certificando que lastPhase da terceira fase de avaliação é a fase de publicação');
+    }
+
+    // countEvaluations
+    function testOpportunityCountEvaluationsGetter()
+    {
+        $admin = $this->userDirector->createUser('admin');
+        $this->login($admin);
+
+        $builder = $this->opportunityBuilder;
+
+        /** @var Opportunity $opportunity */
+        $opportunity = $builder
+            ->reset(owner: $admin->profile, owner_entity: $admin->profile)
+            ->fillRequiredProperties()
+            ->firstPhase()
+                ->setRegistrationPeriod(new Open)
+                ->done()
+            ->save()
+            ->addEvaluationPhase(EvaluationMethods::simple)
+                ->setEvaluationPeriod(new ConcurrentEndingAfter)
+                ->setCommitteeValuersPerRegistration('committee 1', 1)
+                ->save()
+                ->addValuers(2, 'committee 1')
+                ->done()
+            ->getInstance();
+
+        $this->registrationDirector->createDraftRegistrations($opportunity, number_of_registrations: 5);
+        $this->registrationDirector->createSentRegistrations($opportunity, number_of_registrations: 5);
+
+        $opportunity->evaluationMethodConfiguration->redistributeCommitteeRegistrations();
+
+        $opportunity = $opportunity->refreshed();
+
+        // A view evaluations usa opportunity_id da inscrição; as inscrições estão na first phase
+        $count = $opportunity->countEvaluations;
+        $this->assertIsInt($count, 'Certificando que countEvaluations retorna inteiro');
+        $this->assertEquals(5, $count, 'Certificando que countEvaluations da primeira fase retorna a quantidade de avaliações');
+    }
+
+    // previousPhases
+    function testOpportunityPreviousPhasesGetter()
+    {
+        $admin = $this->userDirector->createUser('admin');
+        $this->login($admin);
+
+        /** @var Opportunity $opportunity */
+        $opportunity = $this->opportunityBuilder
+            ->reset(owner: $admin->profile, owner_entity: $admin->profile)
+            ->fillRequiredProperties()
+            ->firstPhase()
+                ->setRegistrationPeriod(new Open)
+                ->done()
+            ->save()
+            ->getInstance();
+
+        $first_phase_id = $opportunity->id;
+
+        $eval_phase_1 = $this->opportunityBuilder
+            ->addEvaluationPhase(EvaluationMethods::simple)
+                ->setEvaluationFrom('+2 days')
+                ->setEvaluationTo('+9 days')
+                ->save()
+                ->getInstance();
+
+        $eval_phase_2 = $this->opportunityBuilder
+            ->addEvaluationPhase(EvaluationMethods::simple)
+                ->setEvaluationFrom('+10 days')
+                ->setEvaluationTo('+17 days')
+                ->save()
+                ->getInstance();
+        $eval_phase_2_opp_id = $eval_phase_2->opportunity->id;
+
+        $eval_phase_3 = $this->opportunityBuilder
+            ->addEvaluationPhase(EvaluationMethods::simple)
+                ->setEvaluationFrom('+18 days')
+                ->setEvaluationTo('+25 days')
+                ->save()
+                ->getInstance();
+        $eval_phase_3_opp_id = $eval_phase_3->opportunity->id;
+
+        $opportunity = $opportunity->refreshed();
+        $last_phase = $opportunity->lastPhase;
+
+        // firstPhase -> previousPhases deve ser vazio
+        $previous_phases = $opportunity->previousPhases;
+        $this->assertEmpty($previous_phases, 'Certificando que previousPhases da firstPhase é vazio');
+
+        // segunda fase de avaliação -> previousPhases deve conter apenas a firstPhase (FirstPhase)
+        $previous_phases = $eval_phase_2->opportunity->previousPhases;
+        $this->assertCount(1, $previous_phases, 'Certificando que previousPhases da segunda fase de avaliação tem 1 elemento');
+        $this->assertEquals($first_phase_id, $previous_phases[0]->id, 'Certificando que previousPhases da segunda fase contém a firstPhase');
+
+        // terceira fase de avaliação -> previousPhases deve conter todas as fases anteriores (FirstPhase e eval_phase_2)
+        $previous_phases = $eval_phase_3->opportunity->previousPhases;
+        $this->assertCount(2, $previous_phases, 'Certificando que previousPhases da terceira fase de avaliação tem 2 elementos');
+        $this->assertEquals($first_phase_id, $previous_phases[0]->id, 'Certificando que a primeira anterior é a firstPhase');
+        $this->assertEquals($eval_phase_2_opp_id, $previous_phases[1]->id, 'Certificando que a segunda anterior é a fase de avaliação 2');
+        
+        // lastPhase -> previousPhases (quando não vazio, contém todas as fases anteriores (FirstPhase, eval_phase_2 e eval_phase_3))
+        $previous_phases = $last_phase->previousPhases;
+        if (count($previous_phases) > 0) {
+            $previous_ids = array_map(fn($p) => $p->id, $previous_phases);
+            $this->assertContains($first_phase_id, $previous_ids, 'Certificando que previousPhases da lastPhase contém a firstPhase');
+            $this->assertContains($eval_phase_2_opp_id, $previous_ids, 'Certificando que previousPhases da lastPhase contém a segunda fase de avaliação');
+            $this->assertContains($eval_phase_3_opp_id, $previous_ids, 'Certificando que previousPhases da lastPhase contém a terceira fase de avaliação');
+        }
+    }
+
+    // lastCreatedPhase
+    function testOpportunityLastCreatedPhaseGetter()
+    {
+        $admin = $this->userDirector->createUser('admin');
+        $this->login($admin);
+
+        /** @var Opportunity $opportunity */
+        $opportunity = $this->opportunityBuilder
+            ->reset(owner: $admin->profile, owner_entity: $admin->profile)
+            ->fillRequiredProperties()
+            ->firstPhase()
+                ->setRegistrationPeriod(new Open)
+                ->done()
+            ->save()
+            ->getInstance();
+
+        $eval_phase_1 = $this->opportunityBuilder
+            ->addEvaluationPhase(EvaluationMethods::simple)
+                ->setEvaluationFrom('+2 days')
+                ->setEvaluationTo('+9 days')
+                ->save()
+                ->getInstance();
+
+        $eval_phase_2 = $this->opportunityBuilder
+            ->addEvaluationPhase(EvaluationMethods::simple)
+                ->setEvaluationFrom('+10 days')
+                ->setEvaluationTo('+17 days')
+                ->save()
+                ->getInstance();
+
+        $eval_phase_3 = $this->opportunityBuilder
+            ->addEvaluationPhase(EvaluationMethods::simple)
+                ->setEvaluationFrom('+18 days')
+                ->setEvaluationTo('+25 days')
+                ->save()
+                ->getInstance();
+
+        $opportunity = $opportunity->refreshed();
+
+        // lastCreatedPhase retorna a fase filha com registrationFrom mais recente, ou a first phase se não houver filhas
+        $last_created = $opportunity->lastCreatedPhase;
+        $this->assertNotNull($last_created, 'Certificando que lastCreatedPhase retorna valor');
+        $this->assertEquals($opportunity->id, $last_created->firstPhase->id, 'Certificando que lastCreatedPhase pertence à mesma oportunidade (mesma firstPhase)');
+
+        // De qualquer fase da oportunidade, lastCreatedPhase deve retornar o mesmo resultado
+        $this->assertEquals($last_created->id, $eval_phase_1->opportunity->lastCreatedPhase->id, 'Certificando que lastCreatedPhase é consistente a partir da primeira fase de avaliação');
+        $this->assertEquals($last_created->id, $eval_phase_2->opportunity->lastCreatedPhase->id, 'Certificando que lastCreatedPhase é consistente a partir da segunda fase de avaliação');
+        $this->assertEquals($last_created->id, $eval_phase_3->opportunity->lastCreatedPhase->id, 'Certificando que lastCreatedPhase é consistente a partir da terceira fase de avaliação');
+    }
+
+    // nextPhases
+    function testOpportunityNextPhasesGetter()
+    {
+        $admin = $this->userDirector->createUser('admin');
+        $this->login($admin);
+
+        /** @var Opportunity $opportunity */
+        $opportunity = $this->opportunityBuilder
+            ->reset(owner: $admin->profile, owner_entity: $admin->profile)
+            ->fillRequiredProperties()
+            ->firstPhase()
+                ->setRegistrationPeriod(new Open)
+                ->done()
+            ->save()
+            ->getInstance();
+
+        $eval_phase_1 = $this->opportunityBuilder
+            ->addEvaluationPhase(EvaluationMethods::simple)
+                ->setEvaluationFrom('+2 days')
+                ->setEvaluationTo('+9 days')
+                ->save()
+                ->getInstance();
+
+        $eval_phase_2 = $this->opportunityBuilder
+            ->addEvaluationPhase(EvaluationMethods::simple)
+                ->setEvaluationFrom('+10 days')
+                ->setEvaluationTo('+17 days')
+                ->save()
+                ->getInstance();
+        $eval_phase_2_opp_id = $eval_phase_2->opportunity->id;
+
+        $eval_phase_3 = $this->opportunityBuilder
+            ->addEvaluationPhase(EvaluationMethods::simple)
+                ->setEvaluationFrom('+18 days')
+                ->setEvaluationTo('+25 days')
+                ->save()
+                ->getInstance();
+        $eval_phase_3_opp_id = $eval_phase_3->opportunity->id;
+
+        $opportunity = $opportunity->refreshed();
+        $last_phase = $opportunity->lastPhase;
+        $last_phase_id = $last_phase->id;
+
+        // firstPhase -> nextPhases contém as fases seguintes (eval_2, eval_3 e lastPhase), última é lastPhase
+        $next_phases = $opportunity->nextPhases;
+        $this->assertIsArray($next_phases, 'Certificando que nextPhases retorna array');
+        $this->assertNotEmpty($next_phases, 'Certificando que nextPhases da firstPhase não é vazio');
+        $next_ids = array_map(fn($p) => $p->id, $next_phases);
+        $this->assertContains($eval_phase_2_opp_id, $next_ids, 'Certificando que nextPhases da firstPhase contém a segunda fase de avaliação');
+        $this->assertContains($eval_phase_3_opp_id, $next_ids, 'Certificando que nextPhases da firstPhase contém a terceira fase de avaliação');
+        $this->assertContains($last_phase_id, $next_ids, 'Certificando que nextPhases da firstPhase contém a lastPhase');
+        $this->assertEquals($last_phase_id, $next_phases[count($next_phases) - 1]->id, 'Certificando que a última fase em nextPhases é a lastPhase');
+
+        // primeira fase de avaliação (mesma opportunity que firstPhase) -> nextPhases igual ao da firstPhase
+        $this->assertEquals($next_phases, $eval_phase_1->opportunity->nextPhases, 'Certificando que nextPhases é o mesmo a partir da primeira fase de avaliação');
+
+        // segunda fase de avaliação -> nextPhases contém eval_3 e lastPhase
+        $next_phases = $eval_phase_2->opportunity->nextPhases;
+        $this->assertCount(2, $next_phases, 'Certificando que nextPhases da segunda fase de avaliação tem 2 elementos');
+        $this->assertEquals($eval_phase_3_opp_id, $next_phases[0]->id, 'Certificando que a primeira próxima é a terceira fase de avaliação');
+        $this->assertEquals($last_phase_id, $next_phases[1]->id, 'Certificando que a segunda próxima é a lastPhase');
+
+        // terceira fase de avaliação -> nextPhases contém apenas lastPhase
+        $next_phases = $eval_phase_3->opportunity->nextPhases;
+        $this->assertCount(1, $next_phases, 'Certificando que nextPhases da terceira fase de avaliação tem 1 elemento');
+        $this->assertEquals($last_phase_id, $next_phases[0]->id, 'Certificando que nextPhases da terceira fase contém apenas a lastPhase');
+
+        // lastPhase -> nextPhases é vazio
+        $next_phases = $last_phase->nextPhases;
+        $this->assertIsArray($next_phases, 'Certificando que nextPhases retorna array');
+        $this->assertEmpty($next_phases, 'Certificando que nextPhases da lastPhase é vazio');
+    }
+
+    // isFirstPhase
+    function testOpportunityIsFirstPhaseGetter()
+    {
+        $admin = $this->userDirector->createUser('admin');
+        $this->login($admin);
+
+        /** @var Opportunity $opportunity */
+        $opportunity = $this->opportunityBuilder
+            ->reset(owner: $admin->profile, owner_entity: $admin->profile)
+            ->fillRequiredProperties()
+            ->firstPhase()
+                ->setRegistrationPeriod(new Open)
+                ->done()
+            ->save()
+            ->getInstance();
+
+        $eval_phase_1 = $this->opportunityBuilder
+            ->addEvaluationPhase(EvaluationMethods::simple)
+                ->setEvaluationFrom('+2 days')
+                ->setEvaluationTo('+9 days')
+                ->save()
+                ->getInstance();
+
+        $eval_phase_2 = $this->opportunityBuilder
+            ->addEvaluationPhase(EvaluationMethods::simple)
+                ->setEvaluationFrom('+10 days')
+                ->setEvaluationTo('+17 days')
+                ->save()
+                ->getInstance();
+
+        $eval_phase_3 = $this->opportunityBuilder
+            ->addEvaluationPhase(EvaluationMethods::simple)
+                ->setEvaluationFrom('+18 days')
+                ->setEvaluationTo('+25 days')
+                ->save()
+                ->getInstance();
+
+        $opportunity = $opportunity->refreshed();
+        $last_phase = $opportunity->lastPhase;
+
+        // firstPhase -> isFirstPhase deve ser true
+        $this->assertTrue($opportunity->isFirstPhase, 'Certificando que isFirstPhase da firstPhase é true');
+
+        // primeira fase de avaliação -> isFirstPhase deve ser true
+        $this->assertTrue($eval_phase_1->opportunity->isFirstPhase, 'Certificando que isFirstPhase da primeira fase de avaliação é true');
+
+        // segunda fase de avaliação -> isFirstPhase deve ser false
+        $this->assertFalse($eval_phase_2->opportunity->isFirstPhase, 'Certificando que isFirstPhase da segunda fase de avaliação é false');
+
+        // terceira fase de avaliação -> isFirstPhase deve ser false
+        $this->assertFalse($eval_phase_3->opportunity->isFirstPhase, 'Certificando que isFirstPhase da terceira fase de avaliação é false');
+
+        // lastPhase -> isFirstPhase deve ser false
+        $this->assertFalse($last_phase->isFirstPhase, 'Certificando que isFirstPhase da lastPhase é false');
+    }
+
+    // Registration.lastPhase
+    function testRegistrationLastPhaseGetter()
+    {
+        $admin = $this->userDirector->createUser('admin');
+        $this->login($admin);
+
+        /** @var Opportunity $opportunity */
+        $opportunity = $this->opportunityBuilder
+            ->reset(owner: $admin->profile, owner_entity: $admin->profile)
+            ->fillRequiredProperties()
+            ->firstPhase()
+                ->setRegistrationPeriod(new Open)
+                ->done()
+            ->save()
+            ->getInstance();
+
+        $eval_phase_1 = $this->opportunityBuilder
+            ->addEvaluationPhase(EvaluationMethods::simple)
+                ->setEvaluationFrom('+2 days')
+                ->setEvaluationTo('+9 days')
+                ->save()
+                ->getInstance();
+
+        $eval_phase_2 = $this->opportunityBuilder
+            ->addEvaluationPhase(EvaluationMethods::simple)
+                ->setEvaluationFrom('+10 days')
+                ->setEvaluationTo('+17 days')
+                ->save()
+                ->getInstance();
+
+        $eval_phase_3 = $this->opportunityBuilder
+            ->addEvaluationPhase(EvaluationMethods::simple)
+                ->setEvaluationFrom('+18 days')
+                ->setEvaluationTo('+25 days')
+                ->save()
+                ->getInstance();
+
+        $opportunity = $opportunity->refreshed();
+        $last_phase = $opportunity->lastPhase;
+
+        /** @var Registration $first_phase_registration */
+        $first_phase_registration = $this->registrationDirector->createSentRegistration($opportunity, []);
+
+        $last_phase->syncRegistrations([$first_phase_registration]);
+
+        // Buscar a inscrição sincronizada na lastPhase
+        $last_phase_registration = $this->app->repo('Registration')->findOneBy([
+            'number' => $first_phase_registration->number,
+            'opportunity' => $last_phase
+        ]);
+
+        $this->assertNotNull($last_phase_registration, 'Certificando que a inscrição foi sincronizada para a lastPhase');
+
+        // Inscrição na firstPhase -> lastPhase deve retornar a inscrição na lastPhase
+        $registration_last_phase = $first_phase_registration->lastPhase;
+        $this->assertNotNull($registration_last_phase, 'Certificando que lastPhase da inscrição na firstPhase retorna valor');
+        $this->assertEquals($last_phase_registration->id, $registration_last_phase->id, 'Certificando que lastPhase retorna a inscrição correta na lastPhase');
+        $this->assertEquals($first_phase_registration->number, $registration_last_phase->number, 'Certificando que a inscrição na lastPhase tem o mesmo number');
+        $this->assertEquals($last_phase->id, $registration_last_phase->opportunity->id, 'Certificando que a inscrição retornada pertence à lastPhase');
+
+        // Inscrição na lastPhase -> lastPhase deve retornar ela mesma
+        $registration_last_phase_self = $last_phase_registration->lastPhase;
+        $this->assertNotNull($registration_last_phase_self, 'Certificando que lastPhase da inscrição na lastPhase retorna valor');
+        $this->assertEquals($last_phase_registration->id, $registration_last_phase_self->id, 'Certificando que lastPhase da inscrição na lastPhase retorna ela mesma');
+    }
+
+    // Registration.nextPhase
+    function testRegistrationNextPhaseGetter()
+    {
+        $admin = $this->userDirector->createUser('admin');
+        $this->login($admin);
+
+        /** @var Opportunity $opportunity */
+        $opportunity = $this->opportunityBuilder
+            ->reset(owner: $admin->profile, owner_entity: $admin->profile)
+            ->fillRequiredProperties()
+            ->firstPhase()
+                ->setRegistrationPeriod(new Open)
+                ->done()
+            ->save()
+            ->getInstance();
+
+        $eval_phase_1 = $this->opportunityBuilder
+            ->addEvaluationPhase(EvaluationMethods::simple)
+                ->setEvaluationPeriod(new ConcurrentEndingAfter)
+                ->save()
+                ->getInstance();
+
+        $eval_phase_2 = $this->opportunityBuilder
+            ->addEvaluationPhase(EvaluationMethods::simple)
+                ->setEvaluationPeriod(new ConcurrentEndingAfter)
+                ->save()
+                ->getInstance();
+        $eval_phase_2_opp = $eval_phase_2->opportunity;
+
+        $opportunity = $opportunity->refreshed();
+        $last_phase = $opportunity->lastPhase;
+
+        /** @var Registration $first_phase_registration */
+        $first_phase_registration = $this->registrationDirector->createSentRegistration($opportunity, []);
+
+        $first_phase_registration->setStatusToApproved(true);
+        $first_phase_registration = $first_phase_registration->refreshed();
+
+        $next_phase = $opportunity->nextPhase;
+        $next_phase->syncRegistrations([$first_phase_registration]);
+        $this->processJobs();
+
+        $repo = $this->app->repo('Registration');
+        $first_phase_registration = $repo->find($first_phase_registration->id);
+
+        $eval_phase_2_registration = $repo->findOneBy(['number' => $first_phase_registration->number, 'opportunity' => $eval_phase_2_opp]);
+        $last_phase_registration = $repo->findOneBy(['number' => $first_phase_registration->number, 'opportunity' => $last_phase]);
+
+        $this->assertNotNull($eval_phase_2_registration, 'Certificando que a inscrição foi sincronizada para a segunda fase de avaliação');
+        $this->assertNotNull($last_phase_registration, 'Certificando que a inscrição foi sincronizada para a lastPhase');
+
+        // Inscrição na firstPhase -> nextPhase deve retornar a inscrição na próxima fase
+        $registration_next = $first_phase_registration->nextPhase;
+        $this->assertNotNull($registration_next, 'Certificando que nextPhase da inscrição na firstPhase retorna valor');
+        $this->assertEquals($eval_phase_2_registration->id, $registration_next->id, 'Certificando que nextPhase retorna a inscrição na próxima fase (eval_phase_2)');
+        $this->assertEquals($first_phase_registration->number, $registration_next->number, 'Certificando que a inscrição na próxima fase tem o mesmo number');
+        $this->assertEquals($eval_phase_2_opp->id, $registration_next->opportunity->id, 'Certificando que a inscrição retornada pertence à segunda fase de avaliação');
+
+        // Inscrição na segunda fase de avaliação -> nextPhase deve retornar a inscrição na lastPhase
+        $registration_next = $eval_phase_2_registration->nextPhase;
+        $this->assertNotNull($registration_next, 'Certificando que nextPhase da inscrição na eval_phase_2 retorna valor');
+        $this->assertEquals($last_phase_registration->id, $registration_next->id, 'Certificando que nextPhase da eval_phase_2 é a inscrição na lastPhase');
+
+        // Inscrição na lastPhase -> nextPhase deve ser null (não há próxima fase)
+        $registration_next = $last_phase_registration->nextPhase;
+        $this->assertNull($registration_next, 'Certificando que nextPhase da inscrição na lastPhase é null');
+    }
+
+    // Registration.previousPhase
+    function testRegistrationPreviousPhaseGetter()
+    {
+        $admin = $this->userDirector->createUser('admin');
+        $this->login($admin);
+
+        /** @var Opportunity $opportunity */
+        $opportunity = $this->opportunityBuilder
+            ->reset(owner: $admin->profile, owner_entity: $admin->profile)
+            ->fillRequiredProperties()
+            ->firstPhase()
+                ->setRegistrationPeriod(new Open)
+                ->done()
+            ->save()
+            ->getInstance();
+
+        $eval_phase_1 = $this->opportunityBuilder
+            ->addEvaluationPhase(EvaluationMethods::simple)
+                ->setEvaluationPeriod(new ConcurrentEndingAfter)
+                ->save()
+                ->getInstance();
+
+        $eval_phase_2 = $this->opportunityBuilder
+            ->addEvaluationPhase(EvaluationMethods::simple)
+                ->setEvaluationPeriod(new ConcurrentEndingAfter)
+                ->save()
+                ->getInstance();
+        $eval_phase_2_opp = $eval_phase_2->opportunity;
+
+        $opportunity = $opportunity->refreshed();
+        $last_phase = $opportunity->lastPhase;
+
+        /** @var Registration $first_phase_registration */
+        $first_phase_registration = $this->registrationDirector->createSentRegistration($opportunity, []);
+
+        $first_phase_registration->setStatusToApproved(true);
+        $first_phase_registration = $first_phase_registration->refreshed();
+
+        $next_phase = $opportunity->nextPhase;
+        $next_phase->syncRegistrations([$first_phase_registration]);
+        $this->processJobs();
+
+        $repo = $this->app->repo('Registration');
+        $first_phase_registration = $repo->find($first_phase_registration->id);
+        $eval_phase_2_registration = $repo->findOneBy(['number' => $first_phase_registration->number, 'opportunity' => $eval_phase_2_opp]);
+        $last_phase_registration = $repo->findOneBy(['number' => $first_phase_registration->number, 'opportunity' => $last_phase]);
+
+        $this->assertNotNull($eval_phase_2_registration, 'Certificando que a inscrição foi sincronizada para a segunda fase de avaliação');
+        $this->assertNotNull($last_phase_registration, 'Certificando que a inscrição foi sincronizada para a lastPhase');
+
+        // Inscrição na firstPhase -> previousPhase deve ser null (não há fase anterior)
+        $registration_previous = $first_phase_registration->previousPhase;
+        $this->assertNull($registration_previous, 'Certificando que previousPhase da inscrição na firstPhase é null');
+
+        // Inscrição na segunda fase de avaliação -> previousPhase deve retornar a inscrição na firstPhase
+        $registration_previous = $eval_phase_2_registration->previousPhase;
+        $this->assertNotNull($registration_previous, 'Certificando que previousPhase da inscrição na eval_phase_2 retorna valor');
+        $this->assertEquals($first_phase_registration->id, $registration_previous->id, 'Certificando que previousPhase da eval_phase_2 é a inscrição na firstPhase');
+        $this->assertEquals($first_phase_registration->number, $registration_previous->number, 'Certificando que a inscrição na fase anterior tem o mesmo number');
+        $this->assertEquals($opportunity->id, $registration_previous->opportunity->id, 'Certificando que a inscrição retornada pertence à firstPhase');
+
+        // Inscrição na lastPhase -> previousPhase deve retornar a inscrição na segunda fase de avaliação
+        $registration_previous = $last_phase_registration->previousPhase;
+        $this->assertNotNull($registration_previous, 'Certificando que previousPhase da inscrição na lastPhase retorna valor');
+        $this->assertEquals($eval_phase_2_registration->id, $registration_previous->id, 'Certificando que previousPhase da lastPhase é a inscrição na eval_phase_2');
+    }
+
+    // Registration.field_*
+    function testRegistrationFieldIdGetter()
+    {
+        $admin = $this->userDirector->createUser('admin');
+        $this->login($admin);
+
+        $field_identifier = 'campo-teste';
+
+        /** @var Opportunity $opportunity */
+        $opportunity = $this->opportunityBuilder
+            ->reset(owner: $admin->profile, owner_entity: $admin->profile)
+            ->fillRequiredProperties()
+            ->save()
+            ->firstPhase()
+                ->setRegistrationPeriod(new Open)
+                ->createStep('etapa')
+                ->createField($field_identifier, 'text', 'Campo Teste', false)
+                ->done()
+            ->save()
+            ->getInstance();
+
+        $this->opportunityBuilder
+            ->addEvaluationPhase(EvaluationMethods::simple)
+                ->setEvaluationPeriod(new ConcurrentEndingAfter)
+                ->save()
+                ->done()
+            ->addEvaluationPhase(EvaluationMethods::simple)
+                ->setEvaluationPeriod(new ConcurrentEndingAfter)
+                ->save()
+                ->done();
+
+        $opportunity = $opportunity->refreshed();
+        $last_phase = $opportunity->lastPhase;
+
+        $field_id = $this->opportunityBuilder->getFieldName($field_identifier);
+        $this->assertStringStartsWith('field_', $field_id, 'Certificando que o nome do campo é field_<id>');
+
+        /** @var Registration $first_phase_registration */
+        $first_phase_registration = $this->registrationDirector->createSentRegistration($opportunity, []);
+
+        $valor_na_first_phase = 'valor-preenchido-na-primeira-fase';
+        $first_phase_registration->$field_id = $valor_na_first_phase;
+        $first_phase_registration->save(true);
+
+        $first_phase_registration->setStatusToApproved(true);
+        $first_phase_registration = $first_phase_registration->refreshed();
+
+        $next_phase = $opportunity->nextPhase;
+        $next_phase->syncRegistrations([$first_phase_registration]);
+        $this->processJobs();
+
+        $repo = $this->app->repo('Registration');
+        $first_phase_registration = $repo->find($first_phase_registration->id);
+        $last_phase_registration = $repo->findOneBy(['number' => $first_phase_registration->number, 'opportunity' => $last_phase]);
+
+        $this->assertNotNull($last_phase_registration, 'Certificando que a inscrição foi sincronizada para a lastPhase');
+
+        // Na first phase a inscrição tem o valor do campo
+        $this->assertEquals($valor_na_first_phase, $first_phase_registration->$field_id, 'Certificando que a inscrição na firstPhase tem o valor do campo');
+
+        // Na lastPhase a inscrição não tem o valor preenchido; o getter field_* deve retornar o valor de outra inscrição com o mesmo number (first phase)
+        $valor_via_getter = $last_phase_registration->$field_id;
+        $this->assertNotNull($valor_via_getter, 'Certificando que o getter field_* retorna valor quando a inscrição não tem o campo preenchido');
+        $this->assertEquals($valor_na_first_phase, $valor_via_getter, 'Certificando que o getter field_* retorna o valor do campo da inscrição na first phase');
+    }
+
+    // Registration.isFirstPhase
+    function testRegistrationIsFirstPhaseGetter()
+    {
+        $admin = $this->userDirector->createUser('admin');
+        $this->login($admin);
+
+        /** @var Opportunity $opportunity */
+        $opportunity = $this->opportunityBuilder
+            ->reset(owner: $admin->profile, owner_entity: $admin->profile)
+            ->fillRequiredProperties()
+            ->firstPhase()
+                ->setRegistrationPeriod(new Open)
+                ->done()
+            ->save()
+            ->getInstance();
+
+        $eval_phase_1 = $this->opportunityBuilder
+            ->addEvaluationPhase(EvaluationMethods::simple)
+                ->setEvaluationPeriod(new ConcurrentEndingAfter)
+                ->save()
+                ->getInstance();
+
+        $eval_phase_2 = $this->opportunityBuilder
+            ->addEvaluationPhase(EvaluationMethods::simple)
+                ->setEvaluationPeriod(new ConcurrentEndingAfter)
+                ->save()
+                ->getInstance();
+        $eval_phase_2_opp = $eval_phase_2->opportunity;
+
+        $opportunity = $opportunity->refreshed();
+        $last_phase = $opportunity->lastPhase;
+
+        /** @var Registration $first_phase_registration */
+        $first_phase_registration = $this->registrationDirector->createSentRegistration($opportunity, []);
+
+        $first_phase_registration->setStatusToApproved(true);
+        $first_phase_registration = $first_phase_registration->refreshed();
+
+        $next_phase = $opportunity->nextPhase;
+        $next_phase->syncRegistrations([$first_phase_registration]);
+        $this->processJobs();
+
+        $repo = $this->app->repo('Registration');
+        $first_phase_registration = $repo->find($first_phase_registration->id);
+        $eval_phase_2_registration = $repo->findOneBy(['number' => $first_phase_registration->number, 'opportunity' => $eval_phase_2_opp]);
+        $last_phase_registration = $repo->findOneBy(['number' => $first_phase_registration->number, 'opportunity' => $last_phase]);
+
+        $this->assertNotNull($eval_phase_2_registration, 'Certificando que a inscrição foi sincronizada para a segunda fase de avaliação');
+        $this->assertNotNull($last_phase_registration, 'Certificando que a inscrição foi sincronizada para a lastPhase');
+
+        // Inscrição na firstPhase -> isFirstPhase deve ser true
+        $this->assertTrue($first_phase_registration->isFirstPhase, 'Certificando que isFirstPhase da inscrição na firstPhase é true');
+
+        // Inscrição na segunda fase de avaliação -> isFirstPhase deve ser false
+        $this->assertFalse($eval_phase_2_registration->isFirstPhase, 'Certificando que isFirstPhase da inscrição na eval_phase_2 é false');
+
+        // Inscrição na lastPhase -> isFirstPhase deve ser false
+        $this->assertFalse($last_phase_registration->isFirstPhase, 'Certificando que isFirstPhase da inscrição na lastPhase é false');
+    }
+
+    // Registration.firstPhase
+    function testRegistrationFirstPhaseGetter()
+    {
+        $admin = $this->userDirector->createUser('admin');
+        $this->login($admin);
+
+        /** @var Opportunity $opportunity */
+        $opportunity = $this->opportunityBuilder
+            ->reset(owner: $admin->profile, owner_entity: $admin->profile)
+            ->fillRequiredProperties()
+            ->firstPhase()
+                ->setRegistrationPeriod(new Open)
+                ->done()
+            ->save()
+            ->getInstance();
+
+        $eval_phase_1 = $this->opportunityBuilder
+            ->addEvaluationPhase(EvaluationMethods::simple)
+                ->setEvaluationPeriod(new ConcurrentEndingAfter)
+                ->save()
+                ->getInstance();
+
+        $eval_phase_2 = $this->opportunityBuilder
+            ->addEvaluationPhase(EvaluationMethods::simple)
+                ->setEvaluationPeriod(new ConcurrentEndingAfter)
+                ->save()
+                ->getInstance();
+        $eval_phase_2_opp = $eval_phase_2->opportunity;
+
+        $opportunity = $opportunity->refreshed();
+        $last_phase = $opportunity->lastPhase;
+
+        /** @var Registration $first_phase_registration */
+        $first_phase_registration = $this->registrationDirector->createSentRegistration($opportunity, []);
+
+        $first_phase_registration->setStatusToApproved(true);
+        $first_phase_registration = $first_phase_registration->refreshed();
+
+        $next_phase = $opportunity->nextPhase;
+        $next_phase->syncRegistrations([$first_phase_registration]);
+        $this->processJobs();
+
+        $repo = $this->app->repo('Registration');
+        $first_phase_registration = $repo->find($first_phase_registration->id);
+        $eval_phase_2_registration = $repo->findOneBy(['number' => $first_phase_registration->number, 'opportunity' => $eval_phase_2_opp]);
+        $last_phase_registration = $repo->findOneBy(['number' => $first_phase_registration->number, 'opportunity' => $last_phase]);
+
+        $this->assertNotNull($eval_phase_2_registration, 'Certificando que a inscrição foi sincronizada para a segunda fase de avaliação');
+        $this->assertNotNull($last_phase_registration, 'Certificando que a inscrição foi sincronizada para a lastPhase');
+
+        // Inscrição na firstPhase -> firstPhase deve retornar ela mesma
+        $registration_first_phase = $first_phase_registration->firstPhase;
+        $this->assertNotNull($registration_first_phase, 'Certificando que firstPhase da inscrição na firstPhase retorna valor');
+        $this->assertEquals($first_phase_registration->id, $registration_first_phase->id, 'Certificando que firstPhase da inscrição na firstPhase retorna ela mesma');
+        $this->assertEquals($opportunity->id, $registration_first_phase->opportunity->id, 'Certificando que a inscrição retornada pertence à firstPhase');
+
+        // Inscrição na segunda fase de avaliação -> firstPhase deve retornar a inscrição na firstPhase
+        $registration_first_phase = $eval_phase_2_registration->firstPhase;
+        $this->assertNotNull($registration_first_phase, 'Certificando que firstPhase da inscrição na eval_phase_2 retorna valor');
+        $this->assertEquals($first_phase_registration->id, $registration_first_phase->id, 'Certificando que firstPhase da eval_phase_2 é a inscrição na firstPhase');
+        $this->assertEquals($first_phase_registration->number, $registration_first_phase->number, 'Certificando que a inscrição na first phase tem o mesmo number');
+
+        // Inscrição na lastPhase -> firstPhase deve retornar a inscrição na firstPhase
+        $registration_first_phase = $last_phase_registration->firstPhase;
+        $this->assertNotNull($registration_first_phase, 'Certificando que firstPhase da inscrição na lastPhase retorna valor');
+        $this->assertEquals($first_phase_registration->id, $registration_first_phase->id, 'Certificando que firstPhase da lastPhase é a inscrição na firstPhase');
+    }
+
+    // EvaluationMethodConfiguration.nextPhase
+    function testEvaluationMethodConfigurationNextPhaseGetter()
+    {
+        $admin = $this->userDirector->createUser('admin');
+        $this->login($admin);
+
+        /** @var Opportunity $opportunity */
+        $opportunity = $this->opportunityBuilder
+            ->reset(owner: $admin->profile, owner_entity: $admin->profile)
+            ->fillRequiredProperties()
+            ->firstPhase()
+                ->setRegistrationPeriod(new Open)
+                ->done()
+            ->save()
+            ->getInstance();
+
+        $eval_phase_1 = $this->opportunityBuilder
+            ->addEvaluationPhase(EvaluationMethods::simple)
+                ->setEvaluationPeriod(new ConcurrentEndingAfter)
+                ->save()
+                ->getInstance();
+
+        $eval_phase_2 = $this->opportunityBuilder
+            ->addEvaluationPhase(EvaluationMethods::simple)
+                ->setEvaluationPeriod(new ConcurrentEndingAfter)
+                ->save()
+                ->getInstance();
+
+        $opportunity = $opportunity->refreshed();
+        $last_phase = $opportunity->lastPhase;
+
+        // eval_phase_1 -> nextPhase deve retornar eval_phase_2
+        $next = $eval_phase_1->nextPhase;
+        $this->assertNotNull($next, 'Certificando que nextPhase do eval_phase_1 retorna valor');
+        $this->assertEquals($eval_phase_2->id, $next->id, 'Certificando que nextPhase do eval_phase_1 é o eval_phase_2');
+        $this->assertInstanceOf(\MapasCulturais\Entities\EvaluationMethodConfiguration::class, $next, 'Certificando que nextPhase retorna um EvaluationMethodConfiguration');
+
+        // eval_phase_2 -> nextPhase deve retornar a lastPhase
+        $next = $eval_phase_2->nextPhase;
+        $this->assertNotNull($next, 'Certificando que nextPhase do eval_phase_2 retorna valor');
+        $this->assertEquals($last_phase->id, $next->id, 'Certificando que nextPhase do eval_phase_2 é a lastPhase');
+        $this->assertInstanceOf(\MapasCulturais\Entities\Opportunity::class, $next, 'Certificando que nextPhase retorna uma Opportunity (lastPhase)');
+    }
+
+    // EvaluationMethodConfiguration.previousPhase
+    function testEvaluationMethodConfigurationPreviousPhaseGetter()
+    {
+        $admin = $this->userDirector->createUser('admin');
+        $this->login($admin);
+
+        /** @var Opportunity $opportunity */
+        $opportunity = $this->opportunityBuilder
+            ->reset(owner: $admin->profile, owner_entity: $admin->profile)
+            ->fillRequiredProperties()
+            ->firstPhase()
+                ->setRegistrationPeriod(new Open)
+                ->done()
+            ->save()
+            ->getInstance();
+
+        $eval_phase_1 = $this->opportunityBuilder
+            ->addEvaluationPhase(EvaluationMethods::simple)
+                ->setEvaluationPeriod(new ConcurrentEndingAfter)
+                ->save()
+                ->getInstance();
+
+        $eval_phase_2 = $this->opportunityBuilder
+            ->addEvaluationPhase(EvaluationMethods::simple)
+                ->setEvaluationPeriod(new ConcurrentEndingAfter)
+                ->save()
+                ->getInstance();
+
+        $opportunity = $opportunity->refreshed();
+
+        // eval_phase_1 -> previousPhase deve retornar a firstPhase (Opportunity, pois a opportunity do eval_phase_1 é isDataCollection)
+        $previous = $eval_phase_1->previousPhase;
+        $this->assertNotNull($previous, 'Certificando que previousPhase do eval_phase_1 retorna valor');
+        $this->assertEquals($opportunity->id, $previous->id, 'Certificando que previousPhase do eval_phase_1 é a firstPhase');
+        $this->assertInstanceOf(\MapasCulturais\Entities\Opportunity::class, $previous, 'Certificando que previousPhase retorna uma Opportunity (firstPhase)');
+
+        // eval_phase_2 -> previousPhase deve retornar eval_phase_1 (próximo EvaluationMethodConfiguration anterior)
+        $previous = $eval_phase_2->previousPhase;
+        $this->assertNotNull($previous, 'Certificando que previousPhase do eval_phase_2 retorna valor');
+        $this->assertEquals($eval_phase_1->id, $previous->id, 'Certificando que previousPhase do eval_phase_2 é o eval_phase_1');
+        $this->assertInstanceOf(\MapasCulturais\Entities\EvaluationMethodConfiguration::class, $previous, 'Certificando que previousPhase retorna um EvaluationMethodConfiguration');
+    }
+}

@@ -64,6 +64,11 @@ class EvaluationPhaseBuilder extends Builder
         return $this->instance;
     }
 
+    public function getOpportunityBuilder(): OpportunityBuilder
+    {
+        return $this->opportunityBuilder;
+    }
+
     public function save(bool $flush = true): static
     {
         parent::save($flush);
@@ -282,6 +287,24 @@ class EvaluationPhaseBuilder extends Builder
     public function setCutoffScore(float $cutoffScore): self
     {
         $this->instance->cutoffScore = $cutoffScore;
+        return $this;
+    }
+
+    public function setAutoApplicationAllowed(bool $auto_application_allowed = true): self
+    {
+        $this->instance->autoApplicationAllowed = $auto_application_allowed;
+        return $this;
+    }
+
+    public function setPublishTimestamp(string $publish_timestamp): self
+    {
+        $this->instance->opportunity->setPublishTimestamp($publish_timestamp);
+        return $this;
+    }
+
+    public function setAutoPublish(bool $auto_publish = true): self
+    {
+        $this->instance->opportunity->autoPublish = $auto_publish;
         return $this;
     }
 

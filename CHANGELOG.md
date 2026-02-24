@@ -9,6 +9,34 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 ### Novas Funcionalidades
 - Implementa tipo de campo custom-table (tabela customizável) para formulários de inscrição, permitindo que o proponente preencha dados em formato tabular com colunas configuráveis
 
+## [7.7.6] - UNRELEASED
+### Correções
+- Corrige permissão para administrador da oportunidade remover uma avaliação
+- Corrige os campos visíveis para o avaliador para nao ignorar campos com somente uma fase de coleta de dados
+
+## [7.7.5] - 2026-02-13
+### Correções
+- Corrige falha que impedia o carregamento correto de alguns avaliadores na tela das listas de inclusão e exclusão.
+
+## [7.7.4] - 2026-02-10
+### Melhorias 
+- Implementa uma flag no componente opportunity-evaluation-committee que permite indicar que os dados devem ser salvos no agente relacionado
+- Implementa getters e setters para persistir os filtros individuais dos avaliadores no agente relacionado
+- Ajusta a lógica de distribuição das avaliações para considerar os filtros definidos no agente relacionado
+- Implementa endpoints para configurar os filtros individuais dos avaliadores, cada um em seu respectivo agente relaciona
+
+## [7.7.3] - 2026-02-02
+### Correções
+- Corrige erro que impedia enviar a inscrição
+
+### Melhorias
+- Implementa teste para garantir o correto funcionamento do envio da inscrição
+
+## [7.7.2] - 2026-01-28
+### Correções
+- Correção no salvamento de metadados
+
+## [7.7.1] - 2026-01-26
 ### Correções
 - Corrige exibição de anexos no PDF de inscrição, respeitando a ordem dos campos (displayOrder) e exibindo marcadores de campos obrigatórios
 
@@ -65,6 +93,70 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 1. <small>Melhoria desenvolvida pelo Ministério das Cidades, através da Secretaria Nacional de Periferias, para o Prêmio Periferia Viva</small>
 <a name="770-funarte"></a>
 2. <small>Melhoria desenvolvida pela Funarte (Fundação Nacional de Artes) para a Rede das Artes</small>
+
+## [7.6.47] - 2026-02-22
+### Correções
+- Corrige os campos visíveis para o avaçliador para nao ignorar campos com sosmente uam fase de coleta de dados
+
+## [7.6.46] - 2026-02-19
+### Melhorias
+- Aplica melhorias no processo de envio de denúncia e contato, permitindo definir uma lista configurável de destinatários para o envio de e-mails
+
+## [7.6.45] - 2026-02-12
+### Correções
+- Corrige falha que impedia o carregamento correto de alguns avaliadores na tela das listas de inclusão e exclusão.
+
+## [7.6.44] - 2026-02-11
+### Melhorias
+- Melhora desempenho do mc-update de noralização da coluna valuers_exceptions_list 
+
+## [7.6.43] - 2026-02-11
+### Correção
+- Implementa mc-update para normalizar a coluna valuers_exceptions_list das inscrições
+
+## [7.6.42] - 2026-02-09
+### Correções
+- Corrige exibição do botão de "Editar informações enviadas" na tela de acompanhamento
+
+## Melhorias
+- Adiciona novo hook no componente de configuração de edição de inscrição
+
+## [7.6.41] - 2026-02-06
+### Correções
+- Implementação de verificações para campos editáveis da inscrição
+
+## Melhorias
+- Adiciona novo hook no componente de suporte
+
+## [7.6.40] - 2026-02-04
+### Correções
+- Exibe indicador de campo obrigatório no campo País do formulário de endereço
+- Corrige preenchimento do campo de país internacional na edição de agente
+
+## [7.6.39] - 2026-01-29
+### Correções
+- Implementa pase exclusivo para o Spotify que identifique todas as variações de URL's disponíveis
+
+## [7.6.38] - 2026-01-27
+### Melhorias
+- Adiciona descrição de imagem nos banners da home
+
+## [7.6.37] - 2026-01-27
+### Correções
+- Corrige erro na persistência dos termos de usop no banco de dados
+
+## [7.6.36] - 2026-01-23
+### Correção
+- Corrige warnings no carregamento do componente opportunity-appeal-phase-config
+- Ajusta getter Opportunity.phases para que devolva os objetos da fase de recurso corretamente
+
+## [7.6.35] - 2026-01-22
+### Melhorias
+- Separa os banners da home em template parts, facilitando o gerenciamento e a manipulação dos banners via hooks
+
+## [7.6.34] - 2026-01-19
+### Correção
+- Corrige erro que impedia o uso do plano de metas
 
 ## [7.6.33] - 2026-01-16
 ### Correções
