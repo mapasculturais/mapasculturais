@@ -535,7 +535,7 @@ app.component('entity-field', {
                 
                 if (!maxRows || maxRows <= 0 || this.entity[this.prop].length < maxRows) {
                     this.entity[this.prop].push({});
-                    // NÃO chama updateTableData() aqui - apenas adiciona a linha
+                    this.updateTableData();
                 }
             }
         },

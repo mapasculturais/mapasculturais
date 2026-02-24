@@ -251,7 +251,7 @@ $this->import('
                                                 :disabled="readonly || disabled"
                                                 style="width: 100%; padding: 5px; border: 1px solid #ccc; border-radius: 3px;">
                                             <option value=""><?= i::__('Selecione...') ?></option>
-                                            <option v-for="(option, optIndex) in column.options.split('\n').filter(o => o.trim())" :key="optIndex" :value="option.trim()">
+                                            <option v-for="(option, optIndex) in (column.options || '').split('\n').filter(o => o.trim())" :key="optIndex" :value="option.trim()">
                                                 {{option.trim()}}
                                             </option>
                                         </select>
