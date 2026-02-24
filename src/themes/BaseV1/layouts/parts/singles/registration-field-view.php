@@ -1,5 +1,5 @@
 <?php $this->applyTemplateHook('registration-field-item', 'begin') ?>
-<div ng-if="field.fieldType !== 'file' && field.fieldType !== 'section' && field.fieldType !== 'persons' && field.config.entityField !== '@location' && field.config.entityField !== '@links' &&  field.fieldType !== 'links'  && !checkRegistrationFields(field, 'links')">
+<div ng-if="field.fieldType !== 'file' && field.fieldType !== 'section' && field.fieldType !== 'persons' && field.fieldType !== 'custom-table' && field.config.entityField !== '@location' && field.config.entityField !== '@links' &&  field.fieldType !== 'links'  && !checkRegistrationFields(field, 'links')">
     <label>{{field.required ? '*' : ''}} {{field.title}}: </label>
     <div ng-if="field.fieldType !== 'agent-owner-field'">
         <div ng-if="field.fieldType != 'bankFields'">
@@ -64,6 +64,35 @@
             <div ng-if="field.config.relationship && person.relationship"><strong><?php \MapasCulturais\i::_e("Relação"); ?>: </strong>{{person.relationship}}</div>
             <div ng-if="field.config.function && person.function"><strong><?php \MapasCulturais\i::_e("Função"); ?>: </strong>{{person.function}}</div>
         </div>
+    </div>
+</div>
+<div ng-if="field.fieldType === 'custom-table'">
+    <label>{{field.required ? '*' : ''}} {{field.title}}: </label>
+    <div ng-if="entity[field.fieldName] && entity[field.fieldName].length > 0">
+        <table class="custom-table-view" style="width: 100%; border-collapse: collapse; border: 1px solid #ddd; margin-top: 10px;">
+            <thead>
+                <tr style="background-color: #f2f2f2;">
+                    <th ng-repeat="column in field.config.columns" style="border: 1px solid #ddd; padding: 10px; text-align: left;">
+                        {{column.name}}
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="row in entity[field.fieldName]">
+                    <td ng-repeat="column in field.config.columns" style="border: 1px solid #ddd; padding: 8px;">
+                        <span ng-if="column.type === 'date' && row['col' + $index]">
+                            {{row['col' + $index] | date:'dd/MM/yyyy'}}
+                        </span>
+                        <span ng-if="column.type !== 'date' || !row['col' + $index]">
+                            {{row['col' + $index] || '-'}}
+                        </span>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div ng-if="!entity[field.fieldName] || entity[field.fieldName].length === 0">
+        <em><?php \MapasCulturais\i::_e("Nenhum dado informado."); ?></em>
     </div>
 </div>
 <?php //@TODO pegar endereço do campo endereço (verificar porque não esta salvando corretamente, arquicos location.js e _location.php)

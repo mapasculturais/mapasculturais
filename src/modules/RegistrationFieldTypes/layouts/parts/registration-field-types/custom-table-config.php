@@ -1,0 +1,77 @@
+<?php
+use MapasCulturais\i;
+?>
+
+<div ng-if="field.fieldType === 'custom-table'" ng-init="field.config = field.config || {}; field.config.columns = field.config.columns || []">
+    <h4><?= i::__('Configuração das Colunas da Tabela') ?></h4>
+    
+    <!-- Lista de colunas configuradas -->
+    <div ng-repeat="column in field.config.columns track by $index" style="border: 1px solid #ddd; padding: 15px; margin-bottom: 15px; border-radius: 4px; background-color: #f9f9f9;">
+        <div style="margin-bottom: 10px;">
+            <label style="display: block; margin-bottom: 5px;">
+                <strong><?= i::__('Nome da Coluna') ?>:</strong>
+                <input type="text" ng-model="column.name" ng-change="$parent.$parent.save()" ng-blur="$parent.$parent.save()" style="width: 100%; padding: 5px;" placeholder="<?= i::__('Ex: Nome, Quantidade, Valor...') ?>" required>
+            </label>
+        </div>
+        
+        <div style="margin-bottom: 10px;" ng-init="column.type = column.type || 'text'">
+            <label style="display: block; margin-bottom: 5px;">
+                <strong><?= i::__('Tipo de Dado') ?>:</strong>
+                <select ng-model="column.type" ng-change="$parent.$parent.save()" style="width: 100%; padding: 5px;">
+                    <option value="text"><?= i::__('Texto') ?></option>
+                    <option value="number"><?= i::__('Número') ?></option>
+                    <option value="email"><?= i::__('E-mail') ?></option>
+                    <option value="cpf"><?= i::__('CPF') ?></option>
+                    <option value="date"><?= i::__('Data') ?></option>
+                    <option value="select"><?= i::__('Lista de opções') ?></option>
+                </select>
+            </label>
+        </div>
+        
+        <div style="margin-bottom: 10px;">
+            <label class="checkbox-label" style="display: inline-block;">
+                <input type="checkbox" ng-model="column.required" ng-true-value="'true'" ng-false-value="" ng-change="$parent.$parent.save()">
+                <?= i::__('Campo Obrigatório') ?>
+            </label>
+        </div>
+        
+        <!-- Opções para tipo 'select' -->
+        <div ng-if="column.type === 'select'" style="margin-bottom: 10px;" ng-init="column.options = column.options || ''">
+            <label style="display: block; margin-bottom: 5px;">
+                <strong><?= i::__('Opções (uma por linha)') ?>:</strong>
+                <textarea ng-model="column.options" ng-change="$parent.$parent.save()" ng-blur="$parent.$parent.save()" style="width: 100%; padding: 5px; min-height: 80px;" placeholder="<?= i::__('Digite uma opção por linha') ?>"></textarea>
+            </label>
+        </div>
+        
+        <button type="button" ng-click="field.config.columns.splice($index, 1); $parent.$parent.save()" class="btn btn-danger" style="margin-top: 10px;">
+            <?= i::__('Remover Coluna') ?>
+        </button>
+    </div>
+    
+    <button type="button" ng-click="field.config.columns.push({name:'', type:'text', required:false, options:''}); $parent.$parent.save()" class="btn btn-primary" style="margin-bottom: 20px;">
+        <?= i::__('Adicionar Coluna') ?>
+    </button>
+    
+    <hr style="margin: 20px 0;">
+    
+    <!-- Configuração de min/max linhas -->
+    <div style="margin-bottom: 10px;">
+        <label style="display: block; margin-bottom: 5px;">
+            <strong><?= i::__('Mínimo de linhas') ?>:</strong>
+            <input type="number" ng-model="field.config.minRows" min="0" style="width: 100px; padding: 5px;" placeholder="0">
+            <small style="display: block; color: #666; margin-top: 3px;">
+                <?= i::__('Deixe 0 para não ter mínimo') ?>
+            </small>
+        </label>
+    </div>
+    
+    <div style="margin-bottom: 10px;">
+        <label style="display: block; margin-bottom: 5px;">
+            <strong><?= i::__('Máximo de linhas') ?>:</strong>
+            <input type="number" ng-model="field.config.maxRows" min="1" style="width: 100px; padding: 5px;" placeholder="<?= i::__('Ilimitado') ?>">
+            <small style="display: block; color: #666; margin-top: 3px;">
+                <?= i::__('Deixe vazio para ilimitado') ?>
+            </small>
+        </label>
+    </div>
+</div>

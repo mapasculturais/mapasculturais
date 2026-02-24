@@ -716,6 +716,48 @@ class Module extends \MapasCulturais\Module
                 }
             ],
             [
+                'slug' => 'custom-table',
+                'name' => \MapasCulturais\i::__('Tabela Customizável'),
+                'viewTemplate' => 'registration-field-types/custom-table',
+                'configTemplate' => 'registration-field-types/custom-table-config',
+                'serialize' => function($value) {
+                    // Se já é string, retorna direto (evita double encoding)
+                    if(is_string($value)) {
+                        return $value;
+                    }
+                    
+                    // Limpar propriedades internas do Vue (que começam com $$)
+                    if(is_array($value)){
+                        foreach($value as &$row){
+                            if(is_object($row)) {
+                                foreach($row as $key => $v){
+                                    if(substr($key, 0, 2) == '$$'){
+                                        unset($row->$key);
+                                    }
+                                }
+                            } elseif(is_array($row)) {
+                                foreach($row as $key => $v){
+                                    if(substr($key, 0, 2) == '$$'){
+                                        unset($row[$key]);
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+                    return json_encode($value);
+                },
+                'unserialize' => function($value) {
+                    $rows = json_decode($value ?: "", true);
+
+                    if(!is_array($rows)){
+                        $rows = [];
+                    }
+
+                    return $rows;
+                }
+            ],
+            [
                 'slug' => 'municipio',
                 'name' => \MapasCulturais\i::__('Seleção de município'),
                 'viewTemplate' => 'registration-field-types/municipio',

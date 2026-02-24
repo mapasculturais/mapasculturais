@@ -21,3 +21,86 @@
 .field-required {
     color: red;
 }
+
+/* Custom Table Field Styles */
+.custom-table-field {
+    margin-bottom: 20px;
+}
+
+.custom-table-field .custom-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 15px 0;
+    font-size: 14px;
+    background-color: white;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
+}
+
+.custom-table-field .custom-table th,
+.custom-table-field .custom-table td {
+    border: 1px solid #ddd;
+    padding: 10px;
+    text-align: left;
+}
+
+.custom-table-field .custom-table th {
+    background-color: #f2f2f2;
+    font-weight: bold;
+    color: #333;
+}
+
+.custom-table-field .custom-table tbody tr:hover {
+    background-color: #f9f9f9;
+}
+
+.custom-table-field .custom-table input,
+.custom-table-field .custom-table select {
+    width: 100%;
+    padding: 6px 8px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    font-size: 13px;
+    box-sizing: border-box;
+}
+
+.custom-table-field .custom-table input:focus,
+.custom-table-field .custom-table select:focus {
+    outline: none;
+    border-color: #4CAF50;
+    box-shadow: 0 0 3px rgba(76, 175, 80, 0.3);
+}
+
+.custom-table-field .btn-sm {
+    padding: 5px 10px;
+    font-size: 12px;
+}
+
+/* Responsividade */
+@media screen and (max-width: 768px) {
+    .custom-table-field .custom-table {
+        font-size: 12px;
+    }
+    
+    .custom-table-field .custom-table th,
+    .custom-table-field .custom-table td {
+        padding: 6px;
+    }
+    
+    .custom-table-field .custom-table input,
+    .custom-table-field .custom-table select {
+        padding: 4px 6px;
+        font-size: 12px;
+    }
+}
+
+/* Estilo para campos obrigatórios não preenchidos */
+.custom-table-field .custom-table input.ng-invalid-required,
+.custom-table-field .custom-table select.ng-invalid-required {
+    border-color: #f44336;
+}
+
+.custom-table-field .custom-table input.ng-invalid-required:focus,
+.custom-table-field .custom-table select.ng-invalid-required:focus {
+    border-color: #f44336;
+    box-shadow: 0 0 3px rgba(244, 67, 54, 0.3);
+}
