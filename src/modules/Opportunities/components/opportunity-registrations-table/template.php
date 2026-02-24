@@ -112,6 +112,16 @@ $entity = $this->controller->requestedEntity;
                     <span v-else>&nbsp;</span>
                 </template>
 
+                <template #appliedPointReward="{entity}">
+                    <template v-if="entity.appliedPointReward && (entity.appliedPointReward.percentage > 0 || entity.appliedPointReward.raw != null)">
+                        <div class="entity-table__applied-point-reward">
+                            <span v-if="entity.appliedPointReward.percentage != null && entity.appliedPointReward.percentage > 0">{{ entity.appliedPointReward.percentage }}%</span>
+                            <span v-else>&nbsp;</span>
+                        </div>
+                    </template>
+                    <span v-else>&nbsp;</span>
+                </template>
+
                 <template #consolidatedResult="{entity}"> 
                     {{consolidatedResultToString(entity)}}
                 </template>
