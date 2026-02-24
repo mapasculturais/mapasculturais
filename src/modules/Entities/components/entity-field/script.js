@@ -524,6 +524,127 @@ app.component('entity-field', {
             return this.readonly;
         },
 
+        validateCPF(cpf) {
+            if (!cpf) return true; // Campo vazio é validado por 'required'
+            
+            // Remove formatação
+            cpf = cpf.replace(/[^\d]/g, '');
+            
+            // Verifica se tem 11 dígitos
+            if (cpf.length !== 11) return false;
+            
+            // Verifica se todos os dígitos são iguais (CPF inválido)
+            if (/^(\d)\1{10}$/.test(cpf)) return false;
+            
+            // Valida primeiro dígito verificador
+            let soma = 0;
+            for (let i = 0; i < 9; i++) {
+                soma += parseInt(cpf.charAt(i)) * (10 - i);
+            }
+            let resto = soma % 11;
+            let digito1 = resto < 2 ? 0 : 11 - resto;
+            
+            if (parseInt(cpf.charAt(9)) !== digito1) return false;
+            
+            // Valida segundo dígito verificador
+            soma = 0;
+            for (let i = 0; i < 10; i++) {
+                soma += parseInt(cpf.charAt(i)) * (11 - i);
+            }
+            resto = soma % 11;
+            let digito2 = resto < 2 ? 0 : 11 - resto;
+            
+            return parseInt(cpf.charAt(10)) === digito2;
+        },
+
+        validateEmail(email) {
+            if (!email) return true; // Campo vazio é validado por 'required'
+            
+            const regex = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+            return regex.test(String(email).toLowerCase());
+        },
+
+        validateTableCell(row, columnIndex, column) {
+            const value = row[`col${columnIndex}`];
+            
+            if (!value) {
+                return column.required === 'true' ? false : true;
+            }
+            
+            switch(column.type) {
+                case 'cpf':
+                    return this.validateCPF(value);
+                case 'email':
+                    return this.validateEmail(value);
+                default:
+                    return true;
+            }
+        },
+
+        getCellValidationClass(row, columnIndex, column) {
+            const value = row[`col${columnIndex}`];
+            
+            // Não mostrar erro em campos vazios não obrigatórios
+            if (!value && column.required !== 'true') {
+                return '';
+            }
+            
+            const isValid = this.validateTableCell(row, columnIndex, column);
+            return isValid ? '' : 'invalid-cell';
+        },
+
+        validateCustomTable() {
+            if (!this.is('custom-table')) return true;
+            
+            const tableData = this.entity[this.prop];
+            const columns = this.description.registrationFieldConfiguration?.config?.columns || [];
+            
+            if (!Array.isArray(tableData) || tableData.length === 0) {
+                return true; // Tabela vazia é válida (a menos que seja obrigatória)
+            }
+            
+            for (let rowIndex = 0; rowIndex < tableData.length; rowIndex++) {
+                const row = tableData[rowIndex];
+                
+                for (let colIndex = 0; colIndex < columns.length; colIndex++) {
+                    const column = columns[colIndex];
+                    const value = row[`col${colIndex}`];
+                    
+                    // Verificar campo obrigatório
+                    if (column.required === 'true' && (!value || value.trim() === '')) {
+                        const messages = useMessages();
+                        messages.error(`Campo "${column.name}" (linha ${rowIndex + 1}) é obrigatório`);
+                        return false;
+                    }
+                    
+                    // Verificar validação específica do tipo
+                    if (value && value.trim() !== '') {
+                        let isValid = true;
+                        let errorMessage = '';
+                        
+                        switch(column.type) {
+                            case 'cpf':
+                                isValid = this.validateCPF(value);
+                                errorMessage = `CPF inválido no campo "${column.name}" (linha ${rowIndex + 1})`;
+                                break;
+                            case 'email':
+                                isValid = this.validateEmail(value);
+                                errorMessage = `E-mail inválido no campo "${column.name}" (linha ${rowIndex + 1})`;
+                                break;
+                        }
+                        
+                        if (!isValid) {
+                            const messages = useMessages();
+                            messages.error(errorMessage);
+                            return false;
+                        }
+                    }
+                }
+            }
+            
+            return true;
+        },
+
         addRow() {
             if (this.is('custom-table')) {
                 // Garantir que é um array
@@ -566,6 +687,12 @@ app.component('entity-field', {
                 
                 // Aguardar 2 segundos antes de salvar (debounce)
                 this._saveTimeout = setTimeout(() => {
+                    // Validar dados antes de salvar
+                    if (!this.validateCustomTable()) {
+                        this._saveTimeout = null;
+                        return; // Não salva se houver erros de validação
+                    }
+                    
                     // CRÍTICO: Criar uma cópia SIMPLES do array, sem Proxy
                     const plainData = this.entity[this.prop]
                         .filter(row => row && typeof row === 'object' && !Array.isArray(row))

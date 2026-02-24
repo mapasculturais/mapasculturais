@@ -215,24 +215,34 @@ $this->import('
                                                style="width: 100%; padding: 5px; border: 1px solid #ccc; border-radius: 3px;">
                                         
                                         <!-- Campo de e-mail -->
-                                        <input v-else-if="column.type === 'email'" 
-                                               type="email" 
-                                               v-model="row['col' + colIndex]"
-                                               @blur="updateTableData"
-                                               :required="column.required === 'true'"
-                                               :disabled="readonly || disabled"
-                                               style="width: 100%; padding: 5px; border: 1px solid #ccc; border-radius: 3px;">
+                                        <div v-else-if="column.type === 'email'" style="position: relative;">
+                                            <input type="email" 
+                                                   v-model="row['col' + colIndex]"
+                                                   @blur="updateTableData"
+                                                   :required="column.required === 'true'"
+                                                   :disabled="readonly || disabled"
+                                                   :class="getCellValidationClass(row, colIndex, column)"
+                                                   style="width: 100%; padding: 5px; border: 1px solid #ccc; border-radius: 3px;">
+                                            <small v-if="row['col' + colIndex] && !validateEmail(row['col' + colIndex])" style="color: #d32f2f; font-size: 11px; display: block; margin-top: 2px;">
+                                                <?= i::__('E-mail inválido') ?>
+                                            </small>
+                                        </div>
                                         
                                         <!-- Campo de CPF -->
-                                        <input v-else-if="column.type === 'cpf'" 
-                                               type="text" 
-                                               v-model="row['col' + colIndex]"
-                                               @blur="updateTableData"
-                                               v-maska data-maska="###.###.###-##"
-                                               placeholder="___.___.___-__"
-                                               :required="column.required === 'true'"
-                                               :disabled="readonly || disabled"
-                                               style="width: 100%; padding: 5px; border: 1px solid #ccc; border-radius: 3px;">
+                                        <div v-else-if="column.type === 'cpf'" style="position: relative;">
+                                            <input type="text" 
+                                                   v-model="row['col' + colIndex]"
+                                                   @blur="updateTableData"
+                                                   v-maska data-maska="###.###.###-##"
+                                                   placeholder="___.___.___-__"
+                                                   :required="column.required === 'true'"
+                                                   :disabled="readonly || disabled"
+                                                   :class="getCellValidationClass(row, colIndex, column)"
+                                                   style="width: 100%; padding: 5px; border: 1px solid #ccc; border-radius: 3px;">
+                                            <small v-if="row['col' + colIndex] && !validateCPF(row['col' + colIndex])" style="color: #d32f2f; font-size: 11px; display: block; margin-top: 2px;">
+                                                <?= i::__('CPF inválido') ?>
+                                            </small>
+                                        </div>
                                         
                                         <!-- Campo de data -->
                                         <input v-else-if="column.type === 'date'" 
