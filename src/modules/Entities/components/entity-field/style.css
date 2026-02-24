@@ -1,0 +1,9 @@
+.custom-table input.invalid-cell {
+    border-color: #d32f2f !important;
+    background-color: #fff5f5 !important;
+}
+
+.custom-table input.invalid-cell:focus {
+    outline-color: #d32f2f !important;
+    box-shadow: 0 0 0 2px rgba(211, 47, 47, 0.1) !important;
+}
