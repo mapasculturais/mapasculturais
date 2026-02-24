@@ -236,6 +236,9 @@ app.component('opportunity-support-config', {
         },
 
         getFieldType(field) {
+            if (field.type == 'string' || field.type == 'select') {
+                return 'text';
+            }
             if(field.ref.startsWith('field_')) {
                 return 'text';
             }

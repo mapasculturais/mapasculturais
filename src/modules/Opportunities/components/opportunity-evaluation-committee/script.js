@@ -54,10 +54,26 @@ app.component('opportunity-evaluation-committee', {
                     const bName = b.agent?.name.toLocaleLowerCase() ?? '';
                     return aName.localeCompare(bName);
                 });
+        },
+
+        // Garante que os filtros globais da comissão sejam passados corretamente
+        // mesmo após recarregar a página (F5)
+        groupFiltersForComponent() {
+            // Garante que fetchFields está inicializado
+            if (!this.entity.fetchFields) {
+                this.entity.fetchFields = {};
+            }
+            
+            // Retorna os filtros globais do grupo atual
+            return this.entity.fetchFields?.[this.group] || null;
         }
     },
 
     mounted() {
+        // Garante que fetchFields está inicializado
+        if (!this.entity.fetchFields) {
+            this.entity.fetchFields = {};
+        }
         this.loadReviewers();
     },
 
