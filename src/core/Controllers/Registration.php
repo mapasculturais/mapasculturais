@@ -155,8 +155,8 @@ class Registration extends EntityController {
         // se estiver no modo "editableFields", filtra os dados da requisição para 
         // passar somente os que estão abertos para edição
         if ($entity->status > 0 && $entity->canUser('sendEditableFields')) {
-            foreach(array_keys($data['editableFields']) as $key) {
-                if(!in_array($key, $entity->editableFields)) {
+            foreach(array_keys($data) as $key) {
+                if($key !== 'editableFields' && !in_array($key, $entity->editableFields)) {
                     unset($data[$key]);
                 }
             }
