@@ -5,6 +5,11 @@ Todas as mudanças notáveis no projeto serão documentadas neste arquivo.
 O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/)
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [7.6.49] - 2026-02-24
+### Correções
+- Corrige a aplicação de resultados da avaliações por pontuação e classificação
+- Corrige a exibição do valor da coluna "Bônus por pontuação aplicadas a inscrição" na tabela de inscrições
+
 ## [7.6.48] - 2026-02-23
 ### Correções
 - Corrige exibição de indicação do campo obrigatório de país
