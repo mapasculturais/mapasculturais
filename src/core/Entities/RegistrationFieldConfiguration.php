@@ -252,6 +252,69 @@ class RegistrationFieldConfiguration extends \MapasCulturais\Entity {
         $this->proponentTypes = $value;
     }
 
+    public function setConfig($value) {
+        $app = App::i();
+        
+        // Converter para array se for objeto  
+        if (is_object($value)) {
+            $value = json_decode(json_encode($value), true);
+        }
+        
+        // Garantir que é array
+        if (!is_array($value)) {
+            $value = [];
+        }
+        
+        // Garantir que minRows e maxRows são inteiros quando definidos
+        if (array_key_exists('minRows', $value)) {
+            if ($value['minRows'] === null || $value['minRows'] === '' || $value['minRows'] === false) {
+                $value['minRows'] = 0;
+            } else {
+                $value['minRows'] = (int) $value['minRows'];
+            }
+        }
+        
+        if (array_key_exists('maxRows', $value)) {
+            if ($value['maxRows'] === null || $value['maxRows'] === '' || $value['maxRows'] === false) {
+                $value['maxRows'] = null; // null = ilimitado
+            } else {
+                $value['maxRows'] = (int) $value['maxRows'];
+            }
+        }
+        
+        $this->config = $value;
+        
+        // CRÍTICO: Notificar o Doctrine que o objeto mudou
+        // Isso força o UnitOfWork a reconhecer a mudança em colunas JSON
+        // SEMPRE forçar, mesmo para entidades novas (para garantir que mudanças sejam detectadas)
+        if ($app->em->contains($this)) {
+            try {
+                $app->em->getUnitOfWork()->recomputeSingleEntityChangeSet(
+                    $app->em->getClassMetadata(get_class($this)),
+                    $this
+                );
+            } catch (\Exception $e) {
+                // Silenciosamente ignora se ainda não está no UnitOfWork
+            }
+        }
+    }
+
+    public function getConfig() {
+        $config = $this->config ?: [];
+        
+        // Garantir que minRows é sempre inteiro (default 0)
+        if (array_key_exists('minRows', $config) && $config['minRows'] !== null) {
+            $config['minRows'] = (int) $config['minRows'];
+        }
+        
+        // Garantir que maxRows é inteiro ou null (null = ilimitado)
+        if (array_key_exists('maxRows', $config)) {
+            $config['maxRows'] = $config['maxRows'] !== null ? (int) $config['maxRows'] : null;
+        }
+        
+        return $config;
+    }
+
     public function getFieldName(){
         return 'field_' . $this->id;
     }
@@ -275,7 +338,7 @@ class RegistrationFieldConfiguration extends \MapasCulturais\Entity {
         'required' => $this->required,
         'fieldType' => $this->fieldType,
         'fieldOptions' => $this->fieldOptions,
-        'config' => $this->config,
+        'config' => $this->getConfig(), // Usa getConfig() para garantir tipos corretos
         'categories' => $this->categories ?: [],
         'fieldName' => $this->getFieldName(),
         'displayOrder' => $this->displayOrder,

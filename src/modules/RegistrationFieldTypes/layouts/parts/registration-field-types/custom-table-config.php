@@ -2,11 +2,7 @@
 use MapasCulturais\i;
 ?>
 
-<div ng-if="field.fieldType === 'custom-table'" ng-init="
-    if(!field.config) { field.config = {}; }
-    if(!field.config.columns) { field.config.columns = []; }
-    if(field.config.minRows === undefined || field.config.minRows === null) { field.config.minRows = 0; }
-">
+<div ng-if="field.fieldType === 'custom-table'" ng-init="field.config = field.config || {}; field.config.columns = field.config.columns || []">
     <h4><?= i::__('Configuração das Colunas da Tabela') ?></h4>
     
     <!-- Lista de colunas configuradas -->
@@ -18,7 +14,7 @@ use MapasCulturais\i;
             </label>
         </div>
         
-        <div style="margin-bottom: 10px;" ng-init="if(!column.type) { column.type = 'text'; }">
+        <div style="margin-bottom: 10px;" ng-init="column.type = column.type || 'text'">
             <label style="display: block; margin-bottom: 5px;">
                 <strong><?= i::__('Tipo de Dado') ?>:</strong>
                 <select ng-model="column.type" ng-change="$parent.$parent.save()" style="width: 100%; padding: 5px;">
@@ -40,7 +36,7 @@ use MapasCulturais\i;
         </div>
         
         <!-- Opções para tipo 'select' -->
-        <div ng-if="column.type === 'select'" style="margin-bottom: 10px;" ng-init="if(!column.options) { column.options = ''; }">
+        <div ng-if="column.type === 'select'" style="margin-bottom: 10px;" ng-init="column.options = column.options || ''">
             <label style="display: block; margin-bottom: 5px;">
                 <strong><?= i::__('Opções (uma por linha)') ?>:</strong>
                 <textarea ng-model="column.options" ng-change="$parent.$parent.save()" ng-blur="$parent.$parent.save()" style="width: 100%; padding: 5px; min-height: 80px;" placeholder="<?= i::__('Digite uma opção por linha') ?>"></textarea>
@@ -62,7 +58,7 @@ use MapasCulturais\i;
     <div style="margin-bottom: 10px;">
         <label style="display: block; margin-bottom: 5px;">
             <strong><?= i::__('Mínimo de linhas') ?>:</strong>
-            <input type="number" ng-model="field.config.minRows" ng-change="$parent.$parent.save()" ng-blur="$parent.$parent.save()" min="0" style="width: 100px; padding: 5px;" placeholder="0">
+            <input type="number" ng-model="field.config.minRows" min="0" style="width: 100px; padding: 5px;" placeholder="0">
             <small style="display: block; color: #666; margin-top: 3px;">
                 <?= i::__('Deixe 0 para não ter mínimo') ?>
             </small>
@@ -72,7 +68,7 @@ use MapasCulturais\i;
     <div style="margin-bottom: 10px;">
         <label style="display: block; margin-bottom: 5px;">
             <strong><?= i::__('Máximo de linhas') ?>:</strong>
-            <input type="number" ng-model="field.config.maxRows" ng-change="$parent.$parent.save()" ng-blur="$parent.$parent.save()" min="1" style="width: 100px; padding: 5px;" placeholder="<?= i::__('Ilimitado') ?>">
+            <input type="number" ng-model="field.config.maxRows" min="1" style="width: 100px; padding: 5px;" placeholder="<?= i::__('Ilimitado') ?>">
             <small style="display: block; color: #666; margin-top: 3px;">
                 <?= i::__('Deixe vazio para ilimitado') ?>
             </small>
