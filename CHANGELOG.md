@@ -90,6 +90,15 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 <a name="770-funarte"></a>
 2. <small>Melhoria desenvolvida pela Funarte (Fundação Nacional de Artes) para a Rede das Artes</small>
 
+## [7.6.49] - 2026-02-24
+### Correções
+- Corrige a aplicação de resultados da avaliações por pontuação e classificação
+- Corrige a exibição do valor da coluna "Bônus por pontuação aplicadas a inscrição" na tabela de inscrições
+
+## [7.6.48] - 2026-02-23
+### Correções
+- Corrige exibição de indicação do campo obrigatório de país
+
 ## [7.6.47] - 2026-02-22
 ### Correções
 - Corrige os campos visíveis para o avaçliador para nao ignorar campos com sosmente uam fase de coleta de dados
