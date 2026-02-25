@@ -5,6 +5,10 @@ Todas as mudanças notáveis no projeto serão documentadas neste arquivo.
 O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/)
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [7.7.8] - unreleased
+### Correções
+- Corrige a remoção de avaliações quando um avaliador é excluído de uma comissão, afetando apenas a comissão correta.
+
 ## [7.7.7] - 2026-02-24
 ### Correções
 - Corrige a aplicação de resultados da avaliações por pontuação e classificação
