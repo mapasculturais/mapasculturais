@@ -59,7 +59,11 @@ class EvaluationMethodConfigurationAgentRelation extends AgentRelation {
         
         $this->checkPermission('remove');
 
-        $evaluations = \MapasCulturais\App::i()->repo('RegistrationEvaluation')->findByOpportunityAndUser($this->owner->opportunity, $this->agent->user);
+        $evaluations = $app->repo('RegistrationEvaluation')->findByOpportunityAndUser(
+            $this->owner->opportunity,
+            $this->agent->user,
+            $this->group
+        );
         $app->disableAccessControl();    
         foreach($evaluations as $eval){
             $eval->delete($flush);
