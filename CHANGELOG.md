@@ -95,6 +95,10 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 <a name="770-funarte"></a>
 2. <small>Melhoria desenvolvida pela Funarte (Fundação Nacional de Artes) para a Rede das Artes</small>
 
+## [7.6.50] - 2026-02-25
+### Correções
+- Corrige a remoção de avaliações quando um avaliador é excluído de uma comissão, afetando apenas a comissão correta.
+
 ## [7.6.49] - 2026-02-24
 ### Correções
 - Corrige a aplicação de resultados da avaliações por pontuação e classificação
