@@ -317,12 +317,34 @@ app.component('registration-workplan', {
                 if ('name' in delivery && !delivery.name) emptyFields.push(`Nome da ${this.getDeliveryLabelDefault}`);
                 if ('description' in delivery && !delivery.description) emptyFields.push("Descrição");
                 if ('typeDelivery' in delivery && !delivery.typeDelivery) emptyFields.push(`Tipo de ${this.getDeliveryLabelDefault}`);
-                if (this.opportunity.workplan_registrationInformCulturalArtisticSegment && 'segmentDelivery' in delivery && !delivery.segmentDelivery) emptyFields.push(`Segmento artístico-cultural da ${this.getDeliveryLabelDefault}`);
-                if (this.opportunity.workplan_registrationReportTheNumberOfParticipants && 'expectedNumberPeople' in delivery && !delivery.expectedNumberPeople) emptyFields.push("Número previsto de pessoas");
+
+                // Campos configuráveis: só valida se habilitado E obrigatório
+                if (this.opportunity.workplan_registrationInformCulturalArtisticSegment && this.opportunity.workplan_deliveryRequireSegment && !delivery.segmentDelivery) emptyFields.push(`Segmento artístico-cultural da ${this.getDeliveryLabelDefault}`);
+                if (this.opportunity.workplan_registrationReportTheNumberOfParticipants && this.opportunity.workplan_deliveryRequireExpectedNumberPeople && !delivery.expectedNumberPeople) emptyFields.push("Número previsto de pessoas");
                 if (this.opportunity.workplan_registrationReportExpectedRenevue && 'generaterRevenue' in delivery && !delivery.generaterRevenue) emptyFields.push(`A ${this.getDeliveryLabelDefault} irá gerar receita?`);
                 if (delivery.generaterRevenue == 'true' && 'renevueQtd' in delivery && !delivery.renevueQtd) emptyFields.push("Quantidade");
                 if (delivery.generaterRevenue == 'true' && 'unitValueForecast' in delivery && !delivery.unitValueForecast) emptyFields.push("Previsão de valor unitário");
                 if (delivery.generaterRevenue == 'true' && 'totalValueForecast' in delivery && !delivery.totalValueForecast) emptyFields.push("Previsão de valor total");
+
+                // Novos campos configuráveis
+                if (this.opportunity.workplan_deliveryInformArtChainLink && this.opportunity.workplan_deliveryRequireArtChainLink && !delivery.artChainLink) emptyFields.push("Principal elo das artes acionado");
+                if (this.opportunity.workplan_deliveryInformTotalBudget && this.opportunity.workplan_deliveryRequireTotalBudget && !delivery.totalBudget) emptyFields.push("Orçamento total da atividade");
+                if (this.opportunity.workplan_deliveryInformNumberOfCities && this.opportunity.workplan_deliveryRequireNumberOfCities && (delivery.numberOfCities === null || delivery.numberOfCities === '')) emptyFields.push("Número de municípios");
+                if (this.opportunity.workplan_deliveryInformNumberOfNeighborhoods && this.opportunity.workplan_deliveryRequireNumberOfNeighborhoods && (delivery.numberOfNeighborhoods === null || delivery.numberOfNeighborhoods === '')) emptyFields.push("Número de bairros");
+                if (this.opportunity.workplan_deliveryInformMediationActions && this.opportunity.workplan_deliveryRequireMediationActions && (delivery.mediationActions === null || delivery.mediationActions === '')) emptyFields.push("Ações de mediação/formação de público");
+                if (this.opportunity.workplan_deliveryInformPaidStaffByRole && this.opportunity.workplan_deliveryRequirePaidStaffByRole && (!Array.isArray(delivery.paidStaffByRole) || !delivery.paidStaffByRole.length)) emptyFields.push("Pessoas remuneradas por função");
+                if (this.opportunity.workplan_deliveryInformTeamComposition && this.opportunity.workplan_deliveryRequireTeamCompositionGender && (!delivery.teamCompositionGender || !this.calculateGenderTotal(delivery.teamCompositionGender))) emptyFields.push("Composição da equipe por gênero");
+                if (this.opportunity.workplan_deliveryInformTeamComposition && this.opportunity.workplan_deliveryRequireTeamCompositionRace && (!delivery.teamCompositionRace || !this.calculateRaceTotal(delivery.teamCompositionRace))) emptyFields.push("Composição da equipe por raça/cor");
+                if (this.opportunity.workplan_deliveryInformRevenueType && this.opportunity.workplan_deliveryRequireRevenueType && (!Array.isArray(delivery.revenueType) || !delivery.revenueType.length)) emptyFields.push("Tipo de receita previsto");
+                if (this.opportunity.workplan_deliveryInformCommercialUnits && this.opportunity.workplan_deliveryRequireCommercialUnits && (delivery.commercialUnits === null || delivery.commercialUnits === '')) emptyFields.push("Quantidade de unidades para comercialização");
+                if (this.opportunity.workplan_deliveryInformCommercialUnits && this.opportunity.workplan_deliveryRequireUnitPrice && !delivery.unitPrice) emptyFields.push("Valor unitário previsto");
+                if (this.opportunity.workplan_deliveryInformCommunityCoauthors && this.opportunity.workplan_deliveryRequireCommunityCoauthorsDetail && !delivery.hasCommunityCoauthors) emptyFields.push("Envolvimento de comunidades como coautores");
+                if (this.opportunity.workplan_deliveryInformTransInclusion && delivery.hasTransInclusionStrategy === 'true' && this.opportunity.workplan_deliveryRequireTransInclusionActions && !delivery.transInclusionActions) emptyFields.push("Ações de inclusão Trans e Travestis");
+                if (this.opportunity.workplan_deliveryInformAccessibilityPlan && delivery.hasAccessibilityPlan === 'true' && this.opportunity.workplan_deliveryRequireExpectedAccessibilityMeasures && (!Array.isArray(delivery.expectedAccessibilityMeasures) || !delivery.expectedAccessibilityMeasures.length)) emptyFields.push("Medidas de acessibilidade previstas");
+                if (this.opportunity.workplan_deliveryInformEnvironmentalPractices && delivery.hasEnvironmentalPractices === 'true' && this.opportunity.workplan_deliveryRequireEnvironmentalPracticesDescription && !delivery.environmentalPracticesDescription) emptyFields.push("Descrição de práticas socioambientais");
+                if (this.opportunity.workplan_deliveryInformCommunicationChannels && this.opportunity.workplan_deliveryRequireCommunicationChannels && (!Array.isArray(delivery.communicationChannels) || !delivery.communicationChannels.length)) emptyFields.push("Canais de comunicação");
+                if (this.opportunity.workplan_deliveryInformInnovation && delivery.hasInnovationAction === 'true' && this.opportunity.workplan_deliveryRequireInnovationTypes && (!Array.isArray(delivery.innovationTypes) || !delivery.innovationTypes.length)) emptyFields.push("Tipos de experimentação/inovação");
+                if (this.opportunity.workplan_deliveryInformDocumentationTypes && this.opportunity.workplan_deliveryRequireDocumentationTypes && (!Array.isArray(delivery.documentationTypes) || !delivery.documentationTypes.length)) emptyFields.push("Tipo de documentação");
                 
                 if (emptyFields.length > 0) {
                     const emptyFieldsList = `<ul>${emptyFields.map(item => `<li>${item}</li>`).join('')}</ul>`;
