@@ -93,14 +93,14 @@ app.component('registration-workplan', {
 
                 goal.deliveries.forEach(delivery => {
                     // Initialize array fields (required for mc-multiselect)
-                    if (!delivery.revenueType) delivery.revenueType = [];
-                    if (!delivery.expectedAccessibilityMeasures) delivery.expectedAccessibilityMeasures = [];
-                    if (!delivery.communicationChannels) delivery.communicationChannels = [];
-                    if (!delivery.innovationTypes) delivery.innovationTypes = [];
-                    if (!delivery.documentationTypes) delivery.documentationTypes = [];
+                    if (!Array.isArray(delivery.revenueType)) delivery.revenueType = [];
+                    if (!Array.isArray(delivery.expectedAccessibilityMeasures)) delivery.expectedAccessibilityMeasures = [];
+                    if (!Array.isArray(delivery.communicationChannels)) delivery.communicationChannels = [];
+                    if (!Array.isArray(delivery.innovationTypes)) delivery.innovationTypes = [];
+                    if (!Array.isArray(delivery.documentationTypes)) delivery.documentationTypes = [];
 
                     // Initialize object fields
-                    if (!delivery.paidStaffByRole) delivery.paidStaffByRole = [];
+                    if (!Array.isArray(delivery.paidStaffByRole)) delivery.paidStaffByRole = [];
                     if (!delivery.teamCompositionGender) {
                         delivery.teamCompositionGender = {
                             masculine: 0,
@@ -663,7 +663,7 @@ app.component('registration-workplan', {
         
         // Pessoas remuneradas por função
         addPaidStaffRole(delivery) {
-            if (!delivery.paidStaffByRole) {
+            if (!Array.isArray(delivery.paidStaffByRole)) {
                 delivery.paidStaffByRole = [];
             }
             delivery.paidStaffByRole.push({ role: '', count: 0 });
