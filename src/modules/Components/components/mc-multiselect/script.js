@@ -21,7 +21,7 @@ app.component('mc-multiselect', {
 
         model: {
             type: Array,
-            required: true,
+            default: () => [],
         },
 
         title: {

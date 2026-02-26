@@ -73,14 +73,71 @@ app.component('registration-workplan', {
         },
         getWorkplan() {
             const api = new API('workplan');
-            
+
             const response = api.GET(`${this.registration.id}`);
             response.then((res) => res.json().then((data) => {
                 if (data.workplan != null) {
                     this.workplan = data.workplan;
+                    this.ensureDeliveryFieldsInitialized();
                     this.updateEnableButtonNewGoal();
                 }
             }));
+        },
+
+        ensureDeliveryFieldsInitialized() {
+            // Ensure all goals and their deliveries have the new fields initialized
+            if (!this.workplan.goals) return;
+
+            this.workplan.goals.forEach(goal => {
+                if (!goal.deliveries) return;
+
+                goal.deliveries.forEach(delivery => {
+                    // Initialize array fields (required for mc-multiselect)
+                    if (!delivery.revenueType) delivery.revenueType = [];
+                    if (!delivery.expectedAccessibilityMeasures) delivery.expectedAccessibilityMeasures = [];
+                    if (!delivery.communicationChannels) delivery.communicationChannels = [];
+                    if (!delivery.innovationTypes) delivery.innovationTypes = [];
+                    if (!delivery.documentationTypes) delivery.documentationTypes = [];
+
+                    // Initialize object fields
+                    if (!delivery.paidStaffByRole) delivery.paidStaffByRole = [];
+                    if (!delivery.teamCompositionGender) {
+                        delivery.teamCompositionGender = {
+                            masculine: 0,
+                            feminine: 0,
+                            nonBinary: 0,
+                            notDeclared: 0
+                        };
+                    }
+                    if (!delivery.teamCompositionRace) {
+                        delivery.teamCompositionRace = {
+                            white: 0,
+                            black: 0,
+                            brown: 0,
+                            indigenous: 0,
+                            asian: 0,
+                            notDeclared: 0
+                        };
+                    }
+
+                    // Initialize simple fields if they don't exist
+                    if (!('artChainLink' in delivery)) delivery.artChainLink = null;
+                    if (!('totalBudget' in delivery)) delivery.totalBudget = null;
+                    if (!('numberOfCities' in delivery)) delivery.numberOfCities = null;
+                    if (!('numberOfNeighborhoods' in delivery)) delivery.numberOfNeighborhoods = null;
+                    if (!('mediationActions' in delivery)) delivery.mediationActions = null;
+                    if (!('commercialUnits' in delivery)) delivery.commercialUnits = null;
+                    if (!('unitPrice' in delivery)) delivery.unitPrice = null;
+                    if (!('hasCommunityCoauthors' in delivery)) delivery.hasCommunityCoauthors = null;
+                    if (!('hasTransInclusionStrategy' in delivery)) delivery.hasTransInclusionStrategy = null;
+                    if (!('transInclusionActions' in delivery)) delivery.transInclusionActions = null;
+                    if (!('hasAccessibilityPlan' in delivery)) delivery.hasAccessibilityPlan = null;
+                    if (!('hasEnvironmentalPractices' in delivery)) delivery.hasEnvironmentalPractices = null;
+                    if (!('environmentalPracticesDescription' in delivery)) delivery.environmentalPracticesDescription = null;
+                    if (!('hasPressStrategy' in delivery)) delivery.hasPressStrategy = null;
+                    if (!('hasInnovationAction' in delivery)) delivery.hasInnovationAction = null;
+                });
+            });
         },
         
         async newGoal() {
@@ -278,11 +335,11 @@ app.component('registration-workplan', {
         
             return validationMessages;
         },
-        async save_(enableValidations = true) {    
+        async save_(enableValidations = true) {
             if (enableValidations && !this.validateGoal()) {
                 return false;
             }
-            const messages = useMessages();        
+            const messages = useMessages();
             const api = new API('workplan');
 
             let data = {
@@ -291,11 +348,12 @@ app.component('registration-workplan', {
             };
 
             const response = api.POST(`save`, data);
-            response.then((res) => res.json().then((data) => {                
-                this.getWorkplan();
+            response.then((res) => res.json().then((data) => {
+                this.workplan = data.workplan;
+                this.ensureDeliveryFieldsInitialized();
                 this.updateEnableButtonNewGoal();
                 messages.success(this.text('Modificações salvas'));
-            }));    
+            }));
         },
         range(start, end) {
             return Array.from({ length: end - start + 1 }, (_, i) => start + i);
