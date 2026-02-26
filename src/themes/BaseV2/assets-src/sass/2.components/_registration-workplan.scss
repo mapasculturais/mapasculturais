@@ -89,3 +89,49 @@
         z-index: 2;
     }
 }
+
+// Paid Staff by Role - Lista de funções remuneradas
+.paid-staff-list {
+    margin-top: size(12);
+}
+
+.paid-staff-item {
+    background-color: #ffffff;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    padding: size(16);
+    margin-bottom: size(12);
+
+    &__header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: size(12);
+        padding-bottom: size(8);
+        border-bottom: 1px solid #eee;
+    }
+
+    &__title {
+        color: var(--mc-primary-500);
+        font-size: 0.95rem;
+        margin: 0;
+    }
+
+    &__fields {
+        .field {
+            margin-bottom: size(8);
+
+            label {
+                display: block;
+                font-weight: 500;
+                margin-bottom: size(4);
+                font-size: 0.9rem;
+                color: #666;
+            }
+        }
+    }
+}
+
+.paid-staff-add {
+    margin-top: size(12);
+}
