@@ -157,6 +157,12 @@ class ApiQuery {
      * @var bool
      */
     protected $usesFiles;
+
+    /**
+     * Registered file group names for this entity (for filter by file group).
+     * @var string[]
+     */
+    protected $registeredFileGroups = [];
     
     /**
      * The entity uses MetaLists?
@@ -566,6 +572,7 @@ class ApiQuery {
 
         if ($this->usesFiles) {
             $this->fileClassName = $class::getFileClassName();
+            $this->registeredFileGroups = array_keys($app->getRegisteredFileGroupsByEntity($class));
         }
         
         if ($this->usesPermissionCache) {
@@ -3208,6 +3215,8 @@ class ApiQuery {
                 $this->_addFilterByTermTaxonomy($key, $value);
             } elseif ($this->usesMetadata && in_array($key, $this->registeredMetadata)) {
                 $this->_addFilterByMetadata($key, $value);
+            } elseif ($this->usesFiles && in_array($key, $this->registeredFileGroups)) {
+                $this->_addFilterByFileGroup($key, $value);
             } elseif ($key[0] !== '_' && $key != 'callback') {
                 throw new Exceptions\Api\PropertyDoesNotExists("property $key does not exists");
             }
@@ -3351,6 +3360,21 @@ class ApiQuery {
         $this->joins .= str_replace(['{ALIAS_TR}', '{ALIAS_T}', '{TAXO}'], [$tr_alias, $t_alias, $taxonomy_slug], $this->_templateJoinTerm);
 
         $this->_whereDqls[] = $this->parseParam($this->_keys[$key], $value);
+    }
+
+    protected function _addFilterByFileGroup(string $group_name, string $value) {
+        $value = trim($value);
+        $has_file = preg_match('/^(1|true|EQ\s*\(\s*1\s*\))$/i', $value);
+        $not_has_file = preg_match('/^(0|false|EQ\s*\(\s*0\s*\))$/i', $value);
+
+        if (!$has_file && !$not_has_file) {
+            throw new Exceptions\Api\InvalidArgument("file group filter expects EQ(1) (has file) or EQ(0) (no file), got: {$value}");
+        }
+
+        $file_alias = $this->getAlias('file_' . $group_name);
+        $exists_dql = "EXISTS (SELECT 1 FROM {$this->fileClassName} {$file_alias} WHERE {$file_alias}.owner = e AND {$file_alias}.group = '{$group_name}')";
+
+        $this->_whereDqls[] = $has_file ? $exists_dql : "NOT {$exists_dql}";
     }
     
     public function addFilterByApiQuery(ApiQuery $subquery, $subquery_property = 'id', $property = null){
