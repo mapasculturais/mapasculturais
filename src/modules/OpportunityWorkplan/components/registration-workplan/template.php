@@ -177,6 +177,11 @@ $this->import('
                                 </select>
                             </div>
 
+                            <div v-if="opportunity.workplan_registrationReportTheNumberOfParticipants" class="field">
+                                <label><?= i::esc_attr__('Número previsto de pessoas') ?><span v-if="opportunity.workplan_deliveryRequireExpectedNumberPeople" class="required">obrigatório*</span></label>
+                                <input class="field__limits" v-model="delivery.expectedNumberPeople" min="0" type="number">
+                            </div>
+
                             <div v-if="opportunity.workplan_registrationInformCulturalArtisticSegment" class="field">
                                 <label>
                                     {{ `Segmento artístico-cultural da entrega` }}
@@ -187,9 +192,60 @@ $this->import('
                                 </select>
                             </div>
 
-                            <div v-if="opportunity.workplan_registrationReportTheNumberOfParticipants" class="field">
-                                <label><?= i::esc_attr__('Número previsto de pessoas') ?><span v-if="opportunity.workplan_deliveryRequireExpectedNumberPeople" class="required">obrigatório*</span></label>
-                                <input class="field__limits" v-model="delivery.expectedNumberPeople" min="0" type="number">
+                            <div v-if="opportunity.workplan_registrationReportExpectedRenevue">
+                                <div class="field">
+                                    <label>
+                                        {{ `A ${getDeliveryLabelDefault} irá gerar receita?` }}
+                                        <span class="required">obrigatório*</span></label>
+                                    <select class="field__limits" v-model="delivery.generaterRevenue">
+                                        <option value=""><?= i::esc_attr__('Selecione') ?></option>
+                                        <option v-for="(n, i) in workplanFields.goal.delivery.generaterRevenue.options" :key="i" :value="i">{{ n }}</option>
+                                    </select>
+                                </div>
+
+                                <div v-if="delivery.generaterRevenue == 'true'" class="grid-12">
+                                    <div class="field col-4 sm:col-12">
+                                        <label><?= i::esc_attr__('Previsão Quantidade') ?><span class="required">obrigatório*</span></label>
+                                        <input v-model="delivery.renevueQtd" type="number" min="0">
+                                    </div>
+
+                                    <div class="field col-4 sm:col-12">
+                                        <label><?= i::esc_attr__('Previsão de valor unitário') ?><span class="required">obrigatório*</span></label>
+                                        <mc-currency-input v-model="delivery.unitValueForecast"></mc-currency-input>
+                                    </div>
+
+                                    <div class="field col-4 sm:col-12">
+                                        <label><?= i::esc_attr__(text: 'Previsão de valor total') ?><span class="required">obrigatório*</span></label>
+                                        <input readonly :model="delivery.totalValueForecast" :value="totalValueForecastToCurrency(delivery, delivery.renevueQtd, delivery.unitValueForecast)">
+                                    </div>
+                                </div>
+                            </div>
+                            <div v-if="opportunity.workplan_deliveryInformArtChainLink" class="field">
+                                <label><?= i::esc_attr__('Principal elo das artes acionado pela atividade') ?><span v-if="opportunity.workplan_deliveryRequireArtChainLink" class="required">obrigatório*</span></label>
+                                <select v-model="delivery.artChainLink">
+                                    <option value=""><?= i::esc_attr__('Selecione') ?></option>
+                                    <option v-for="n in workplanFields.goal.delivery.artChainLink.options" :key="n" :value="n">{{ n }}</option>
+                                </select>
+                            </div>
+
+                            <div v-if="opportunity.workplan_deliveryInformTotalBudget" class="field">
+                                <label><?= i::esc_attr__('Qual o orçamento total da atividade?') ?><span v-if="opportunity.workplan_deliveryRequireTotalBudget" class="required">obrigatório*</span></label>
+                                <mc-currency-input v-model="delivery.totalBudget"></mc-currency-input>
+                            </div>
+
+                            <div v-if="opportunity.workplan_deliveryInformNumberOfCities" class="field">
+                                <label><?= i::esc_attr__('Em quantos municípios a atividade vai ser realizada?') ?><span v-if="opportunity.workplan_deliveryRequireNumberOfCities" class="required">obrigatório*</span></label>
+                                <input v-model.number="delivery.numberOfCities" type="number" min="0">
+                            </div>
+
+                            <div v-if="opportunity.workplan_deliveryInformNumberOfNeighborhoods" class="field">
+                                <label><?= i::esc_attr__('Em quantos bairros a atividade vai ser realizada?') ?><span v-if="opportunity.workplan_deliveryRequireNumberOfNeighborhoods" class="required">obrigatório*</span></label>
+                                <input v-model.number="delivery.numberOfNeighborhoods" type="number" min="0">
+                            </div>
+
+                            <div v-if="opportunity.workplan_deliveryInformMediationActions" class="field">
+                                <label><?= i::esc_attr__('Quantas ações de mediação/formação de público estão previstas?') ?><span v-if="opportunity.workplan_deliveryRequireMediationActions" class="required">obrigatório*</span></label>
+                                <input v-model.number="delivery.mediationActions" type="number" min="0">
                             </div>
 
                             <!-- Pessoas remuneradas por função -->
@@ -278,65 +334,6 @@ $this->import('
                                 <div class="field__note">
                                     <strong><?= i::__('Total:') ?></strong> {{ calculateRaceTotal(delivery.teamCompositionRace) }}
                                 </div>
-                            </div>
-
-                            <div v-if="opportunity.workplan_registrationReportExpectedRenevue">
-                                <div class="field">
-                                    <label>
-                                        {{ `A ${getDeliveryLabelDefault} irá gerar receita?` }}
-                                        <span class="required">obrigatório*</span></label>
-                                    <select class="field__limits" v-model="delivery.generaterRevenue">
-                                        <option value=""><?= i::esc_attr__('Selecione') ?></option>
-                                        <option v-for="(n, i) in workplanFields.goal.delivery.generaterRevenue.options" :key="i" :value="i">{{ n }}</option>
-                                    </select>
-                                </div>
-
-                                <div v-if="delivery.generaterRevenue == 'true'" class="grid-12">
-                                    <div class="field col-4 sm:col-12">
-                                        <label><?= i::esc_attr__('Previsão Quantidade') ?><span class="required">obrigatório*</span></label>
-                                        <input v-model="delivery.renevueQtd" type="number" min="0">
-                                    </div>
-
-                                    <div class="field col-4 sm:col-12">
-                                        <label><?= i::esc_attr__('Previsão de valor unitário') ?><span class="required">obrigatório*</span></label>
-                                        <mc-currency-input v-model="delivery.unitValueForecast"></mc-currency-input>
-                                    </div>
-
-                                    <div class="field col-4 sm:col-12">
-                                        <label><?= i::esc_attr__(text: 'Previsão de valor total') ?><span class="required">obrigatório*</span></label>
-                                        <input readonly :model="delivery.totalValueForecast" :value="totalValueForecastToCurrency(delivery, delivery.renevueQtd, delivery.unitValueForecast)">
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- NOVOS CAMPOS DE PLANEJAMENTO -->
-                            
-                            <div v-if="opportunity.workplan_deliveryInformArtChainLink" class="field">
-                                <label><?= i::esc_attr__('Principal elo das artes acionado pela atividade') ?><span v-if="opportunity.workplan_deliveryRequireArtChainLink" class="required">obrigatório*</span></label>
-                                <select v-model="delivery.artChainLink">
-                                    <option value=""><?= i::esc_attr__('Selecione') ?></option>
-                                    <option v-for="n in workplanFields.goal.delivery.artChainLink.options" :key="n" :value="n">{{ n }}</option>
-                                </select>
-                            </div>
-
-                            <div v-if="opportunity.workplan_deliveryInformTotalBudget" class="field">
-                                <label><?= i::esc_attr__('Qual o orçamento total da atividade?') ?><span v-if="opportunity.workplan_deliveryRequireTotalBudget" class="required">obrigatório*</span></label>
-                                <mc-currency-input v-model="delivery.totalBudget"></mc-currency-input>
-                            </div>
-
-                            <div v-if="opportunity.workplan_deliveryInformNumberOfCities" class="field">
-                                <label><?= i::esc_attr__('Em quantos municípios a atividade vai ser realizada?') ?><span v-if="opportunity.workplan_deliveryRequireNumberOfCities" class="required">obrigatório*</span></label>
-                                <input v-model.number="delivery.numberOfCities" type="number" min="0">
-                            </div>
-
-                            <div v-if="opportunity.workplan_deliveryInformNumberOfNeighborhoods" class="field">
-                                <label><?= i::esc_attr__('Em quantos bairros a atividade vai ser realizada?') ?><span v-if="opportunity.workplan_deliveryRequireNumberOfNeighborhoods" class="required">obrigatório*</span></label>
-                                <input v-model.number="delivery.numberOfNeighborhoods" type="number" min="0">
-                            </div>
-
-                            <div v-if="opportunity.workplan_deliveryInformMediationActions" class="field">
-                                <label><?= i::esc_attr__('Quantas ações de mediação/formação de público estão previstas?') ?><span v-if="opportunity.workplan_deliveryRequireMediationActions" class="required">obrigatório*</span></label>
-                                <input v-model.number="delivery.mediationActions" type="number" min="0">
                             </div>
 
                             <div v-if="opportunity.workplan_deliveryInformRevenueType" class="field">
