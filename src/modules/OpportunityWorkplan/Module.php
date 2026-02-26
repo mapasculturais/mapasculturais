@@ -51,7 +51,7 @@ class Module extends \MapasCulturais\Module{
                         $errors['projectDuration'] = [i::__('Plano de metas - Duração do projeto (meses) obrigatório.')];
                     }
 
-                    if (!$workplan?->culturalArtisticSegment) {
+                    if ($registration->opportunity->workplan_dataProjectInformCulturalArtisticSegment && !$workplan?->culturalArtisticSegment) {
                         $errors['culturalArtisticSegment'] = [i::__('Plano de metas - Segmento artistico-cultural obrigatório.')];
                     }
                    
@@ -115,6 +115,12 @@ class Module extends \MapasCulturais\Module{
         ]);
 
          
+        $this->registerOpportunityMetadata('workplan_dataProjectInformCulturalArtisticSegment', [
+            'label' => i::__('Informar segmento artístico-cultural'),
+            'type' => 'boolean',
+            'default_value' => false
+        ]);
+
         $this->registerOpportunityMetadata('workplan_dataProjectlimitMaximumDurationOfProjects', [
             'label' => i::__('Limitar duração máxima dos projetos'),
             'type' => 'boolean',

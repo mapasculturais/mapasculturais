@@ -304,7 +304,10 @@ app.component('registration-workplan', {
             this.enableButtonNewGoal = this.enableNewGoal(this.workplan);
         },
         enableNewGoal(workplan) {
-            if (workplan.projectDuration == null || workplan.culturalArtisticSegment == null) {
+            if (workplan.projectDuration == null) {
+                return false;
+            }
+            if (this.opportunity.workplan_dataProjectInformCulturalArtisticSegment && workplan.culturalArtisticSegment == null) {
                 return false;
             }
 

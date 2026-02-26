@@ -68,6 +68,12 @@ $this->import('
                 <div class="field col-12">
                     <div class="field__group">
                         <label class="field__checkbox">
+                            <input type="checkbox" v-model="entity.workplan_dataProjectInformCulturalArtisticSegment" @click="autoSave()" /><?= i::__("Informar segmento artístico-cultural") ?>
+                        </label>
+                    </div>
+
+                    <div class="field__group">
+                        <label class="field__checkbox">
                             <input type="checkbox" v-model="entity.workplan_dataProjectlimitMaximumDurationOfProjects" @click="autoSave()" /><?= i::__("Limitar a duração máxima dos projetos") ?>
                         </label>
                     </div>
