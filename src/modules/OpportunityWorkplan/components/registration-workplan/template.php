@@ -257,23 +257,39 @@ $this->import('
                                         <?= i::__('+ Adicionar função') ?>
                                     </button>
                                 </div>
-                                <div v-else>
-                                    <div v-for="(staff, index) in delivery.paidStaffByRole" :key="index" class="grid-12 field__group">
-                                        <div class="col-6 sm:col-12">
-                                            <input v-model="staff.role" type="text" placeholder="<?= i::esc_attr__('Função (ex: Direção, Atores, Técnicos)') ?>">
-                                        </div>
-                                        <div class="col-4 sm:col-10">
-                                            <input v-model.number="staff.count" type="number" min="0" placeholder="<?= i::esc_attr__('Quantidade') ?>">
-                                        </div>
-                                        <div class="col-2 sm:col-2">
-                                            <button type="button" class="button button--sm button--delete" @click="removePaidStaffRole(delivery, index)" title="<?= i::esc_attr__('Remover') ?>">
-                                                <iconify-icon icon="material-symbols:delete-outline"></iconify-icon>
+                                <div v-else class="paid-staff-list">
+                                    <div v-for="(staff, index) in delivery.paidStaffByRole" :key="index" class="paid-staff-item">
+                                        <div class="paid-staff-item__header">
+                                            <p class="paid-staff-item__title semibold">{{ index + 1 }}ª <?= i::__('Função') ?></p>
+                                            <button type="button" class="button button--delete button--icon button--sm" @click="removePaidStaffRole(delivery, index)">
+                                                <mc-icon name="trash"></mc-icon>
+                                                <?= i::__('Remover') ?>
                                             </button>
                                         </div>
+                                        <div class="paid-staff-item__fields grid-12">
+                                            <div class="col-6 sm:col-12 field">
+                                                <label><?= i::esc_attr__('Função') ?></label>
+                                                <select v-model="staff.role">
+                                                    <option value=""><?= i::esc_attr__('Selecione a função') ?></option>
+                                                    <option v-for="roleOption in workplanFields.goal.delivery.paidStaffByRole.options" :key="roleOption" :value="roleOption">{{ roleOption }}</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-6 sm:col-12 field">
+                                                <label><?= i::esc_attr__('Quantidade') ?></label>
+                                                <input v-model.number="staff.count" type="number" min="0" placeholder="<?= i::esc_attr__('Quantidade de pessoas') ?>">
+                                            </div>
+                                            <div v-if="staff.role === 'Outra'" class="col-12 field">
+                                                <label><?= i::esc_attr__('Especifique a função') ?></label>
+                                                <input v-model="staff.customRole" type="text" placeholder="<?= i::esc_attr__('Digite o nome da função') ?>">
+                                            </div>
+                                        </div>
                                     </div>
-                                    <button type="button" class="button button--sm button--primary-outline" @click="addPaidStaffRole(delivery)">
-                                        <?= i::__('+ Adicionar outra função') ?>
-                                    </button>
+                                    <div class="paid-staff-add">
+                                        <button type="button" class="button button--sm button--icon button--primary-outline" @click="addPaidStaffRole(delivery)">
+                                            <mc-icon name="add"></mc-icon>
+                                            <?= i::__('Adicionar outra função') ?>
+                                        </button>
+                                    </div>
                                 </div>
                             </div>
 

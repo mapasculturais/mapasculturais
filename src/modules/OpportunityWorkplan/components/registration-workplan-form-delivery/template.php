@@ -169,7 +169,16 @@ $this->import('
             <input v-if="editable" :id="`${vid}__executedUnitPrice`" type="number" v-model.number="proxy.executedUnitPrice" min="0" step="0.01">
             <span v-else>{{ convertToCurrency(proxy.executedUnitPrice) }}</span>
         </div>
-        
+
+        <div class="field" v-if="opportunity.workplan_deliveryInformPaidStaffByRole && delivery.paidStaffByRole && delivery.paidStaffByRole.length > 0">
+            <label><?= i::__('Pessoas remuneradas por função (previsto)') ?></label>
+            <ul class="field__note">
+                <li v-for="(staff, index) in delivery.paidStaffByRole" :key="index">
+                    <strong>{{ staff.role === 'Outra' && staff.customRole ? staff.customRole : staff.role }}:</strong> {{ staff.count }}
+                </li>
+            </ul>
+        </div>
+
         <div class="field" v-if="editable || proxy.files.length > 0">
             <label :for="`${vid}__evidenceFiles`"><?= i::__('Evidências') ?></label>
             <entity-files-list :id="`${vid}__evidenceFiles`" :entity="dummyEntity" group="evidences" title="<?= i::esc_attr__('Arquivos de evidência') ?>" :editable="editable">

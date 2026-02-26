@@ -124,7 +124,14 @@ app.component('registration-workplan', {
                     if (typeof delivery.paidStaffByRole === 'string') {
                         delivery.paidStaffByRole = JSON.parse(delivery.paidStaffByRole || '[]');
                     }
-                    if (!Array.isArray(delivery.paidStaffByRole)) delivery.paidStaffByRole = [];
+                    if (!Array.isArray(delivery.paidStaffByRole)) {
+                        delivery.paidStaffByRole = [];
+                    } else {
+                        // Ensure each staff object has customRole property
+                        delivery.paidStaffByRole.forEach(staff => {
+                            if (!('customRole' in staff)) staff.customRole = '';
+                        });
+                    }
 
                     // Initialize teamCompositionGender - PARSE JSON STRING FROM API
                     if (typeof delivery.teamCompositionGender === 'string') {
@@ -400,7 +407,27 @@ app.component('registration-workplan', {
                 if (this.opportunity.workplan_deliveryInformNumberOfCities && this.opportunity.workplan_deliveryRequireNumberOfCities && (delivery.numberOfCities === null || delivery.numberOfCities === '')) emptyFields.push("Número de municípios");
                 if (this.opportunity.workplan_deliveryInformNumberOfNeighborhoods && this.opportunity.workplan_deliveryRequireNumberOfNeighborhoods && (delivery.numberOfNeighborhoods === null || delivery.numberOfNeighborhoods === '')) emptyFields.push("Número de bairros");
                 if (this.opportunity.workplan_deliveryInformMediationActions && this.opportunity.workplan_deliveryRequireMediationActions && (delivery.mediationActions === null || delivery.mediationActions === '')) emptyFields.push("Ações de mediação/formação de público");
-                if (this.opportunity.workplan_deliveryInformPaidStaffByRole && this.opportunity.workplan_deliveryRequirePaidStaffByRole && (!Array.isArray(delivery.paidStaffByRole) || !delivery.paidStaffByRole.length)) emptyFields.push("Pessoas remuneradas por função");
+                // Validação de pessoas remuneradas por função
+                if (this.opportunity.workplan_deliveryInformPaidStaffByRole && this.opportunity.workplan_deliveryRequirePaidStaffByRole) {
+                    if (!Array.isArray(delivery.paidStaffByRole) || !delivery.paidStaffByRole.length) {
+                        emptyFields.push("Pessoas remuneradas por função");
+                    } else {
+                        // Validar se todos os itens têm função e quantidade preenchidos
+                        let hasInvalidStaff = false;
+                        delivery.paidStaffByRole.forEach((staff, idx) => {
+                            if (!staff.role || staff.count === null || staff.count === '' || staff.count === 0) {
+                                hasInvalidStaff = true;
+                            }
+                            // Se a função é "Outra", verificar se customRole está preenchido
+                            if (staff.role === 'Outra' && !staff.customRole) {
+                                hasInvalidStaff = true;
+                            }
+                        });
+                        if (hasInvalidStaff) {
+                            emptyFields.push("Pessoas remuneradas por função - todos os campos devem estar preenchidos");
+                        }
+                    }
+                }
                 if (this.opportunity.workplan_deliveryInformTeamComposition && this.opportunity.workplan_deliveryRequireTeamCompositionGender && (!delivery.teamCompositionGender || !this.calculateGenderTotal(delivery.teamCompositionGender))) emptyFields.push("Composição da equipe por gênero");
                 if (this.opportunity.workplan_deliveryInformTeamComposition && this.opportunity.workplan_deliveryRequireTeamCompositionRace && (!delivery.teamCompositionRace || !this.calculateRaceTotal(delivery.teamCompositionRace))) emptyFields.push("Composição da equipe por raça/cor");
                 if (this.opportunity.workplan_deliveryInformRevenueType && this.opportunity.workplan_deliveryRequireRevenueType && (!Array.isArray(delivery.revenueType) || !delivery.revenueType.length)) emptyFields.push("Tipo de receita previsto");
@@ -756,7 +783,7 @@ app.component('registration-workplan', {
             if (!Array.isArray(delivery.paidStaffByRole)) {
                 delivery.paidStaffByRole = [];
             }
-            delivery.paidStaffByRole.push({ role: '', count: 0 });
+            delivery.paidStaffByRole.push({ role: '', count: 0, customRole: '' });
         },
         removePaidStaffRole(delivery, index) {
             delivery.paidStaffByRole.splice(index, 1);

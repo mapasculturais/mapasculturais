@@ -1079,6 +1079,108 @@ class Module extends \MapasCulturais\Module{
         $paidStaffByRole = new Metadata('paidStaffByRole', [
             'label' => \MapasCulturais\i::__('Quantas pessoas serão remuneradas, por função?'),
             'type' => 'json',
+            'options' => [
+                // Direção e Gestão
+                \MapasCulturais\i::__('Diretor Artístico'),
+                \MapasCulturais\i::__('Diretor de Arte'),
+                \MapasCulturais\i::__('Diretor Musical'),
+                \MapasCulturais\i::__('Produtor Cultural'),
+                \MapasCulturais\i::__('Produtor Musical'),
+                \MapasCulturais\i::__('Produtor Audiovisual'),
+                \MapasCulturais\i::__('Gestor Cultural'),
+                \MapasCulturais\i::__('Curador'),
+                \MapasCulturais\i::__('Assistente de produção'),
+                \MapasCulturais\i::__('Assistente de direção'),
+
+                // Artes Cênicas
+                \MapasCulturais\i::__('Ator/Atriz'),
+                \MapasCulturais\i::__('Bailarino'),
+                \MapasCulturais\i::__('Dançarino'),
+                \MapasCulturais\i::__('Coreógrafo'),
+                \MapasCulturais\i::__('Dramaturgo'),
+                \MapasCulturais\i::__('Iluminador'),
+                \MapasCulturais\i::__('Cenotécnico'),
+                \MapasCulturais\i::__('Figurinista'),
+                \MapasCulturais\i::__('Maquiador'),
+                \MapasCulturais\i::__('Contra-regra'),
+                \MapasCulturais\i::__('Assistente de palco'),
+
+                // Música
+                \MapasCulturais\i::__('Músico/Musicista'),
+                \MapasCulturais\i::__('Cantor'),
+                \MapasCulturais\i::__('Compositor'),
+                \MapasCulturais\i::__('Arranjador'),
+                \MapasCulturais\i::__('Maestro'),
+                \MapasCulturais\i::__('Instrumentista'),
+                \MapasCulturais\i::__('DJ'),
+
+                // Artes Visuais
+                \MapasCulturais\i::__('Artista Visual'),
+                \MapasCulturais\i::__('Pintor'),
+                \MapasCulturais\i::__('Escultor'),
+                \MapasCulturais\i::__('Fotógrafo'),
+                \MapasCulturais\i::__('Designer Gráfico'),
+                \MapasCulturais\i::__('Ilustrador'),
+                \MapasCulturais\i::__('Grafiteiro'),
+                \MapasCulturais\i::__('Muralista'),
+
+                // Audiovisual
+                \MapasCulturais\i::__('Roteirista'),
+                \MapasCulturais\i::__('Operador de Câmera'),
+                \MapasCulturais\i::__('Editor de Vídeo'),
+                \MapasCulturais\i::__('Operador de Som'),
+                \MapasCulturais\i::__('Técnico de Iluminação'),
+                \MapasCulturais\i::__('Finalizador'),
+
+                // Literatura e Comunicação
+                \MapasCulturais\i::__('Escritor'),
+                \MapasCulturais\i::__('Poeta'),
+                \MapasCulturais\i::__('Contador de Histórias'),
+                \MapasCulturais\i::__('Jornalista'),
+                \MapasCulturais\i::__('Redator'),
+                \MapasCulturais\i::__('Editor de Livros'),
+                \MapasCulturais\i::__('Revisor'),
+                \MapasCulturais\i::__('Tradutor'),
+
+                // Educação e Mediação
+                \MapasCulturais\i::__('Educador Cultural'),
+                \MapasCulturais\i::__('Mediador'),
+                \MapasCulturais\i::__('Oficineiro'),
+                \MapasCulturais\i::__('Professor'),
+                \MapasCulturais\i::__('Instrutor'),
+
+                // Técnicos e Suporte
+                \MapasCulturais\i::__('Técnico de Som'),
+                \MapasCulturais\i::__('Técnico de Iluminação'),
+                \MapasCulturais\i::__('Montador de Palco'),
+                \MapasCulturais\i::__('Maquinista'),
+                \MapasCulturais\i::__('Eletricista'),
+                \MapasCulturais\i::__('Engenheiro de Som'),
+
+                // Cultura Popular
+                \MapasCulturais\i::__('Mestre de Cultura Popular'),
+                \MapasCulturais\i::__('Brincante'),
+                \MapasCulturais\i::__('Artesão'),
+                \MapasCulturais\i::__('Capoeirista'),
+
+                // Digital
+                \MapasCulturais\i::__('Desenvolvedor de Software'),
+                \MapasCulturais\i::__('Web Designer'),
+                \MapasCulturais\i::__('Designer de Som'),
+                \MapasCulturais\i::__('Gestor de Redes Sociais'),
+
+                // Administração
+                \MapasCulturais\i::__('Coordenador'),
+                \MapasCulturais\i::__('Secretário'),
+                \MapasCulturais\i::__('Assistente Administrativo'),
+                \MapasCulturais\i::__('Contador'),
+
+                // Outros
+                \MapasCulturais\i::__('Pesquisador'),
+                \MapasCulturais\i::__('Consultor Cultural'),
+                \MapasCulturais\i::__('Assessor de Imprensa'),
+                \MapasCulturais\i::__('Outra'),
+            ],
             'serialize' => function ($val) {
                 return json_encode($val);
             },
