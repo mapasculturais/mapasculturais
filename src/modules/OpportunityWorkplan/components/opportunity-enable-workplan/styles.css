@@ -1,0 +1,36 @@
+/* Estilos para checkboxes de obrigatoriedade (sub-checkboxes) */
+.field__checkbox--sub {
+    margin-left: 30px;
+    font-size: 0.9em;
+    color: #666;
+    font-weight: normal;
+}
+
+.field__checkbox--sub input[type="checkbox"] {
+    margin-right: 8px;
+}
+
+/* Animação suave para aparecer/desaparecer */
+.field__checkbox--sub {
+    animation: fadeIn 0.3s ease-in;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-5px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Estilo para indicar agrupamento visual */
+.field__group {
+    margin-bottom: 12px;
+}
+
+.field__group .field__checkbox--sub:last-child {
+    margin-bottom: 0;
+}

@@ -114,48 +114,289 @@ class Delivery extends \MapasCulturais\Entity {
         ];
     }
 
+    /**
+     * Verifica se um campo de metadata é obrigatório
+     *
+     * Lógica:
+     * 1. Se campo não está habilitado (inform) → não é obrigatório
+     * 2. Se campo está habilitado mas não tem require → é opcional
+     * 3. Se campo está habilitado E require = true → é obrigatório
+     * 4. Se campo já tem valor preenchido → considera satisfeito (retorna true)
+     *
+     * @param string $metadata_key Nome do campo de metadata
+     * @return bool Se o campo é obrigatório
+     */
     public function isMetadataRequired(string $metadata_key):bool {
+        // Mapeamento completo: campo → [inform, require]
         $metadata_map = [
-            'accessibilityMeasures' => 'workplan_monitoringInformAccessibilityMeasures',
-            'executedRevenue'       => 'workplan_monitoringReportExecutedRevenue',
-            'priorityAudience'      => 'workplan_monitoringInformThePriorityAudience',
-            'availabilityType'      => 'workplan_monitoringInformTheFormOfAvailability',
-            'numberOfParticipants'  => 'workplan_registrationReportTheNumberOfParticipants',
-            'participantProfile'    => 'workplan_monitoringProvideTheProfileOfParticipants',
-            
-            // Novos campos de planejamento
-            'artChainLink'                    => 'workplan_deliveryInformArtChainLink',
-            'totalBudget'                     => 'workplan_deliveryInformTotalBudget',
-            'numberOfCities'                  => 'workplan_deliveryInformNumberOfCities',
-            'numberOfNeighborhoods'           => 'workplan_deliveryInformNumberOfNeighborhoods',
-            'mediationActions'                => 'workplan_deliveryInformMediationActions',
-            'paidStaffByRole'                 => 'workplan_deliveryInformPaidStaffByRole',
-            'teamCompositionGender'           => 'workplan_deliveryInformTeamComposition',
-            'teamCompositionRace'             => 'workplan_deliveryInformTeamComposition',
-            'revenueType'                     => 'workplan_deliveryInformRevenueType',
-            'commercialUnits'                 => 'workplan_deliveryInformCommercialUnits',
-            'unitPrice'                       => 'workplan_deliveryInformCommercialUnits',
-            'hasCommunityCoauthors'           => 'workplan_deliveryInformCommunityCoauthors',
-            'hasTransInclusionStrategy'       => 'workplan_deliveryInformTransInclusion',
-            'transInclusionActions'           => 'workplan_deliveryInformTransInclusion',
-            'hasAccessibilityPlan'            => 'workplan_deliveryInformAccessibilityPlan',
-            'expectedAccessibilityMeasures'   => 'workplan_deliveryInformAccessibilityPlan',
-            'hasEnvironmentalPractices'       => 'workplan_deliveryInformEnvironmentalPractices',
-            'environmentalPracticesDescription' => 'workplan_deliveryInformEnvironmentalPractices',
-            'hasPressStrategy'                => 'workplan_deliveryInformPressStrategy',
-            'communicationChannels'           => 'workplan_deliveryInformCommunicationChannels',
-            'hasInnovationAction'             => 'workplan_deliveryInformInnovation',
-            'innovationTypes'                 => 'workplan_deliveryInformInnovation',
-            'documentationTypes'              => 'workplan_deliveryInformDocumentationTypes',
+            // MONITORAMENTO - Campos originais
+            'accessibilityMeasures' => [
+                'inform' => 'workplan_monitoringInformAccessibilityMeasures',
+                'require' => 'workplan_monitoringRequireAccessibilityMeasures'
+            ],
+            'executedRevenue' => [
+                'inform' => 'workplan_monitoringReportExecutedRevenue',
+                'require' => 'workplan_monitoringRequireExecutedRevenue'
+            ],
+            'priorityAudience' => [
+                'inform' => 'workplan_monitoringInformThePriorityAudience',
+                'require' => 'workplan_monitoringRequirePriorityAudience'
+            ],
+            'availabilityType' => [
+                'inform' => 'workplan_monitoringInformTheFormOfAvailability',
+                'require' => 'workplan_monitoringRequireAvailabilityType'
+            ],
+            'numberOfParticipants' => [
+                'inform' => 'workplan_registrationReportTheNumberOfParticipants',
+                'require' => 'workplan_deliveryRequireExpectedNumberPeople'
+            ],
+            'participantProfile' => [
+                'inform' => 'workplan_monitoringProvideTheProfileOfParticipants',
+                'require' => 'workplan_monitoringRequireParticipantProfile'
+            ],
+
+            // PLANEJAMENTO - Campos originais
+            'segmentDelivery' => [
+                'inform' => 'workplan_registrationInformCulturalArtisticSegment',
+                'require' => 'workplan_deliveryRequireSegment'
+            ],
+            'expectedNumberPeople' => [
+                'inform' => 'workplan_registrationReportTheNumberOfParticipants',
+                'require' => 'workplan_deliveryRequireExpectedNumberPeople'
+            ],
+
+            // PLANEJAMENTO - Novos campos
+            'artChainLink' => [
+                'inform' => 'workplan_deliveryInformArtChainLink',
+                'require' => 'workplan_deliveryRequireArtChainLink'
+            ],
+            'totalBudget' => [
+                'inform' => 'workplan_deliveryInformTotalBudget',
+                'require' => 'workplan_deliveryRequireTotalBudget'
+            ],
+            'numberOfCities' => [
+                'inform' => 'workplan_deliveryInformNumberOfCities',
+                'require' => 'workplan_deliveryRequireNumberOfCities'
+            ],
+            'numberOfNeighborhoods' => [
+                'inform' => 'workplan_deliveryInformNumberOfNeighborhoods',
+                'require' => 'workplan_deliveryRequireNumberOfNeighborhoods'
+            ],
+            'mediationActions' => [
+                'inform' => 'workplan_deliveryInformMediationActions',
+                'require' => 'workplan_deliveryRequireMediationActions'
+            ],
+            'paidStaffByRole' => [
+                'inform' => 'workplan_deliveryInformPaidStaffByRole',
+                'require' => 'workplan_deliveryRequirePaidStaffByRole'
+            ],
+            'teamCompositionGender' => [
+                'inform' => 'workplan_deliveryInformTeamComposition',
+                'require' => 'workplan_deliveryRequireTeamCompositionGender'
+            ],
+            'teamCompositionRace' => [
+                'inform' => 'workplan_deliveryInformTeamComposition',
+                'require' => 'workplan_deliveryRequireTeamCompositionRace'
+            ],
+            'revenueType' => [
+                'inform' => 'workplan_deliveryInformRevenueType',
+                'require' => 'workplan_deliveryRequireRevenueType'
+            ],
+            'commercialUnits' => [
+                'inform' => 'workplan_deliveryInformCommercialUnits',
+                'require' => 'workplan_deliveryRequireCommercialUnits'
+            ],
+            'unitPrice' => [
+                'inform' => 'workplan_deliveryInformCommercialUnits',
+                'require' => 'workplan_deliveryRequireUnitPrice'
+            ],
+
+            // Campos gate (sempre obrigatórios quando habilitados - sem 'require')
+            'hasCommunityCoauthors' => [
+                'inform' => 'workplan_deliveryInformCommunityCoauthors',
+                'require' => null // Gate sempre obrigatório
+            ],
+            'hasTransInclusionStrategy' => [
+                'inform' => 'workplan_deliveryInformTransInclusion',
+                'require' => null // Gate sempre obrigatório
+            ],
+            'hasAccessibilityPlan' => [
+                'inform' => 'workplan_deliveryInformAccessibilityPlan',
+                'require' => null // Gate sempre obrigatório
+            ],
+            'hasEnvironmentalPractices' => [
+                'inform' => 'workplan_deliveryInformEnvironmentalPractices',
+                'require' => null // Gate sempre obrigatório
+            ],
+            'hasPressStrategy' => [
+                'inform' => 'workplan_deliveryInformPressStrategy',
+                'require' => null // Gate sempre obrigatório
+            ],
+            'hasInnovationAction' => [
+                'inform' => 'workplan_deliveryInformInnovation',
+                'require' => null // Gate sempre obrigatório
+            ],
+
+            // Campos detail (condicionais - só obrigatórios se gate = true)
+            'communityCoauthorsDetail' => [
+                'inform' => 'workplan_deliveryInformCommunityCoauthors',
+                'require' => 'workplan_deliveryRequireCommunityCoauthorsDetail',
+                'gate' => 'hasCommunityCoauthors'
+            ],
+            'transInclusionActions' => [
+                'inform' => 'workplan_deliveryInformTransInclusion',
+                'require' => 'workplan_deliveryRequireTransInclusionActions',
+                'gate' => 'hasTransInclusionStrategy'
+            ],
+            'expectedAccessibilityMeasures' => [
+                'inform' => 'workplan_deliveryInformAccessibilityPlan',
+                'require' => 'workplan_deliveryRequireExpectedAccessibilityMeasures',
+                'gate' => 'hasAccessibilityPlan'
+            ],
+            'environmentalPracticesDescription' => [
+                'inform' => 'workplan_deliveryInformEnvironmentalPractices',
+                'require' => 'workplan_deliveryRequireEnvironmentalPracticesDescription',
+                'gate' => 'hasEnvironmentalPractices'
+            ],
+            'innovationTypes' => [
+                'inform' => 'workplan_deliveryInformInnovation',
+                'require' => 'workplan_deliveryRequireInnovationTypes',
+                'gate' => 'hasInnovationAction'
+            ],
+
+            // Campos independentes
+            'communicationChannels' => [
+                'inform' => 'workplan_deliveryInformCommunicationChannels',
+                'require' => 'workplan_deliveryRequireCommunicationChannels'
+            ],
+            'documentationTypes' => [
+                'inform' => 'workplan_deliveryInformDocumentationTypes',
+                'require' => 'workplan_deliveryRequireDocumentationTypes'
+            ],
+
+            // MONITORAMENTO - Novos campos executados
+            'executedNumberOfCities' => [
+                'inform' => 'workplan_monitoringInformNumberOfCities',
+                'require' => 'workplan_monitoringRequireNumberOfCities'
+            ],
+            'executedNumberOfNeighborhoods' => [
+                'inform' => 'workplan_monitoringInformNumberOfNeighborhoods',
+                'require' => 'workplan_monitoringRequireNumberOfNeighborhoods'
+            ],
+            'executedMediationActions' => [
+                'inform' => 'workplan_monitoringInformMediationActions',
+                'require' => 'workplan_monitoringRequireMediationActions'
+            ],
+            'executedCommercialUnits' => [
+                'inform' => 'workplan_monitoringInformCommercialUnits',
+                'require' => 'workplan_monitoringRequireCommercialUnits'
+            ],
+            'executedUnitPrice' => [
+                'inform' => 'workplan_monitoringInformCommercialUnits',
+                'require' => 'workplan_monitoringRequireUnitPrice'
+            ],
+            'executedPaidStaffByRole' => [
+                'inform' => 'workplan_monitoringInformPaidStaffByRole',
+                'require' => 'workplan_monitoringRequirePaidStaffByRole'
+            ],
+            'executedTeamCompositionGender' => [
+                'inform' => 'workplan_monitoringInformTeamComposition',
+                'require' => 'workplan_monitoringRequireTeamCompositionGender'
+            ],
+            'executedTeamCompositionRace' => [
+                'inform' => 'workplan_monitoringInformTeamComposition',
+                'require' => 'workplan_monitoringRequireTeamCompositionRace'
+            ],
         ];
 
+        // Campo não está no mapa → não é obrigatório
+        if (!isset($metadata_map[$metadata_key])) {
+            return false;
+        }
+
+        $config = $metadata_map[$metadata_key];
+        $opportunity = $this->goal->workplan->registration->opportunity->firstPhase;
+
+        // Se campo não está habilitado → não é obrigatório
+        if (!($opportunity->{$config['inform']} ?? false)) {
+            return false;
+        }
+
+        // Se campo tem gate, verifica se gate está ativo
+        if (isset($config['gate'])) {
+            $gate_value = $this->{$config['gate']} ?? null;
+            // Se gate não for 'true' (string), o detail não é obrigatório
+            if ($gate_value !== 'true') {
+                return false;
+            }
+        }
+
+        // Se é um campo gate (require = null), sempre é obrigatório quando habilitado
+        if ($config['require'] === null) {
+            return true;
+        }
+
+        // Se campo já tem valor preenchido, considera satisfeito
         if ($this->$metadata_key) {
             return true;
         }
-        
-        $opportunity = $this->goal->workplan->registration->opportunity->firstPhase;
-        $opportunity_metadata = $metadata_map[$metadata_key];
 
-        return $opportunity->$opportunity_metadata ?? false;
+        // Verifica configuração de obrigatoriedade
+        return $opportunity->{$config['require']} ?? false;
+    }
+
+    /**
+     * Valida campo JSON do tipo array de objetos
+     * Ex: paidStaffByRole = [{role, quantity, totalValue}, ...]
+     *
+     * @param string $field Nome do campo
+     * @return bool Se o campo tem conteúdo válido
+     */
+    protected function validateJsonArrayField(string $field): bool {
+        $value = $this->$field;
+        if (!$value) return false;
+
+        $decoded = is_string($value) ? json_decode($value, true) : $value;
+        return is_array($decoded) && count($decoded) > 0;
+    }
+
+    /**
+     * Valida campo JSON do tipo objeto
+     * Ex: teamCompositionGender = {cisMale: 5, cisFemale: 8, ...}
+     *
+     * @param string $field Nome do campo
+     * @return bool Se o campo tem conteúdo válido
+     */
+    protected function validateJsonObjectField(string $field): bool {
+        $value = $this->$field;
+        if (!$value) return false;
+
+        $decoded = is_string($value) ? json_decode($value, true) : $value;
+        return is_array($decoded) && count($decoded) > 0;
+    }
+
+    /**
+     * Valida campo multiselect (array)
+     *
+     * @param string $field Nome do campo
+     * @return bool Se o campo tem ao menos uma opção selecionada
+     */
+    protected function validateMultiselectField(string $field): bool {
+        $value = $this->$field;
+        if (!$value) return false;
+
+        $array = is_string($value) ? json_decode($value, true) : $value;
+        return is_array($array) && count($array) > 0;
+    }
+
+    /**
+     * Valida campo select (não pode ser null ou vazio)
+     *
+     * @param string $field Nome do campo
+     * @return bool Se o campo tem valor selecionado
+     */
+    protected function validateSelectField(string $field): bool {
+        $value = $this->$field;
+        return !is_null($value) && $value !== '';
     }
 }
