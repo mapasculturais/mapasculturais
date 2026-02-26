@@ -77,39 +77,99 @@ app.component('registration-workplan', {
             const response = api.GET(`${this.registration.id}`);
             response.then((res) => res.json().then((data) => {
                 if (data.workplan != null) {
+                    this.ensureDeliveryFieldsInitialized(data.workplan);
                     this.workplan = data.workplan;
-                    this.ensureDeliveryFieldsInitialized();
                     this.updateEnableButtonNewGoal();
                 }
             }));
         },
 
-        ensureDeliveryFieldsInitialized() {
+        ensureDeliveryFieldsInitialized(workplan = null) {
             // Ensure all goals and their deliveries have the new fields initialized
-            if (!this.workplan.goals) return;
+            const wp = workplan || this.workplan;
+            if (!wp.goals) return;
 
-            this.workplan.goals.forEach(goal => {
+            wp.goals.forEach(goal => {
                 if (!goal.deliveries) return;
 
                 goal.deliveries.forEach(delivery => {
                     // Initialize array fields (required for mc-multiselect)
+                    // Parse JSON strings if needed
+                    if (typeof delivery.revenueType === 'string') {
+                        delivery.revenueType = JSON.parse(delivery.revenueType || '[]');
+                    }
                     if (!Array.isArray(delivery.revenueType)) delivery.revenueType = [];
+
+                    if (typeof delivery.expectedAccessibilityMeasures === 'string') {
+                        delivery.expectedAccessibilityMeasures = JSON.parse(delivery.expectedAccessibilityMeasures || '[]');
+                    }
                     if (!Array.isArray(delivery.expectedAccessibilityMeasures)) delivery.expectedAccessibilityMeasures = [];
+
+                    if (typeof delivery.communicationChannels === 'string') {
+                        delivery.communicationChannels = JSON.parse(delivery.communicationChannels || '[]');
+                    }
                     if (!Array.isArray(delivery.communicationChannels)) delivery.communicationChannels = [];
+
+                    if (typeof delivery.innovationTypes === 'string') {
+                        delivery.innovationTypes = JSON.parse(delivery.innovationTypes || '[]');
+                    }
                     if (!Array.isArray(delivery.innovationTypes)) delivery.innovationTypes = [];
+
+                    if (typeof delivery.documentationTypes === 'string') {
+                        delivery.documentationTypes = JSON.parse(delivery.documentationTypes || '[]');
+                    }
                     if (!Array.isArray(delivery.documentationTypes)) delivery.documentationTypes = [];
 
-                    // Initialize object fields
+                    // Initialize paidStaffByRole
+                    if (typeof delivery.paidStaffByRole === 'string') {
+                        delivery.paidStaffByRole = JSON.parse(delivery.paidStaffByRole || '[]');
+                    }
                     if (!Array.isArray(delivery.paidStaffByRole)) delivery.paidStaffByRole = [];
-                    if (!delivery.teamCompositionGender) {
+
+                    // Initialize teamCompositionGender - PARSE JSON STRING FROM API
+                    if (typeof delivery.teamCompositionGender === 'string') {
+                        try {
+                            delivery.teamCompositionGender = JSON.parse(delivery.teamCompositionGender);
+                        } catch (e) {
+                            delivery.teamCompositionGender = {
+                                masculine: 0,
+                                feminine: 0,
+                                nonBinary: 0,
+                                notDeclared: 0
+                            };
+                        }
+                    }
+                    if (!delivery.teamCompositionGender || typeof delivery.teamCompositionGender !== 'object') {
                         delivery.teamCompositionGender = {
                             masculine: 0,
                             feminine: 0,
                             nonBinary: 0,
                             notDeclared: 0
                         };
+                    } else {
+                        // Ensure all properties exist and convert to numbers
+                        delivery.teamCompositionGender.masculine = Number(delivery.teamCompositionGender.masculine) || 0;
+                        delivery.teamCompositionGender.feminine = Number(delivery.teamCompositionGender.feminine) || 0;
+                        delivery.teamCompositionGender.nonBinary = Number(delivery.teamCompositionGender.nonBinary) || 0;
+                        delivery.teamCompositionGender.notDeclared = Number(delivery.teamCompositionGender.notDeclared) || 0;
                     }
-                    if (!delivery.teamCompositionRace) {
+
+                    // Initialize teamCompositionRace - PARSE JSON STRING FROM API
+                    if (typeof delivery.teamCompositionRace === 'string') {
+                        try {
+                            delivery.teamCompositionRace = JSON.parse(delivery.teamCompositionRace);
+                        } catch (e) {
+                            delivery.teamCompositionRace = {
+                                white: 0,
+                                black: 0,
+                                brown: 0,
+                                indigenous: 0,
+                                asian: 0,
+                                notDeclared: 0
+                            };
+                        }
+                    }
+                    if (!delivery.teamCompositionRace || typeof delivery.teamCompositionRace !== 'object') {
                         delivery.teamCompositionRace = {
                             white: 0,
                             black: 0,
@@ -118,6 +178,14 @@ app.component('registration-workplan', {
                             asian: 0,
                             notDeclared: 0
                         };
+                    } else {
+                        // Ensure all properties exist and convert to numbers
+                        delivery.teamCompositionRace.white = Number(delivery.teamCompositionRace.white) || 0;
+                        delivery.teamCompositionRace.black = Number(delivery.teamCompositionRace.black) || 0;
+                        delivery.teamCompositionRace.brown = Number(delivery.teamCompositionRace.brown) || 0;
+                        delivery.teamCompositionRace.indigenous = Number(delivery.teamCompositionRace.indigenous) || 0;
+                        delivery.teamCompositionRace.asian = Number(delivery.teamCompositionRace.asian) || 0;
+                        delivery.teamCompositionRace.notDeclared = Number(delivery.teamCompositionRace.notDeclared) || 0;
                     }
 
                     // Initialize simple fields if they don't exist
@@ -371,8 +439,8 @@ app.component('registration-workplan', {
 
             const response = api.POST(`save`, data);
             response.then((res) => res.json().then((data) => {
+                this.ensureDeliveryFieldsInitialized(data.workplan);
                 this.workplan = data.workplan;
-                this.ensureDeliveryFieldsInitialized();
                 this.updateEnableButtonNewGoal();
                 messages.success(this.text('Modificações salvas'));
             }));
@@ -697,22 +765,22 @@ app.component('registration-workplan', {
         // Calcular total de composição por gênero
         calculateGenderTotal(composition) {
             if (!composition) return 0;
-            const total = (composition.masculine || 0) + 
-                         (composition.feminine || 0) + 
-                         (composition.nonBinary || 0) + 
-                         (composition.notDeclared || 0);
+            const total = (Number(composition.masculine) || 0) +
+                         (Number(composition.feminine) || 0) +
+                         (Number(composition.nonBinary) || 0) +
+                         (Number(composition.notDeclared) || 0);
             return total;
         },
-        
+
         // Calcular total de composição por raça/cor
         calculateRaceTotal(composition) {
             if (!composition) return 0;
-            const total = (composition.white || 0) + 
-                         (composition.black || 0) + 
-                         (composition.brown || 0) + 
-                         (composition.indigenous || 0) + 
-                         (composition.asian || 0) + 
-                         (composition.notDeclared || 0);
+            const total = (Number(composition.white) || 0) +
+                         (Number(composition.black) || 0) +
+                         (Number(composition.brown) || 0) +
+                         (Number(composition.indigenous) || 0) +
+                         (Number(composition.asian) || 0) +
+                         (Number(composition.notDeclared) || 0);
             return total;
         },
     },
