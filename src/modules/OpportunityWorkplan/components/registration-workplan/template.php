@@ -13,6 +13,7 @@ $this->import('
     mc-icon
     mc-confirm-button
     mc-currency-input
+    mc-tag-list
 ');
 ?>
 
@@ -338,7 +339,8 @@ $this->import('
 
                             <div v-if="opportunity.workplan_deliveryInformRevenueType" class="field">
                                 <label><?= i::esc_attr__('Qual o tipo de receita previsto?') ?><span v-if="opportunity.workplan_deliveryRequireRevenueType" class="required">obrigatório*</span></label>
-                                <mc-multiselect v-model="delivery.revenueType" :items="workplanFields.goal.delivery.revenueType.options"></mc-multiselect>
+                                <mc-multiselect :model="delivery.revenueType" :items="workplanFields.goal.delivery.revenueType.options" hide-filter hide-button></mc-multiselect>
+                                <mc-tag-list :tags="delivery.revenueType" :labels="workplanFields.goal.delivery.revenueType.options" classes="opportunity__background" @remove="toggleRevenueType(delivery, $event)" editable></mc-tag-list>
                             </div>
 
                             <div v-if="opportunity.workplan_deliveryInformCommercialUnits">
@@ -384,7 +386,8 @@ $this->import('
                                 </div>
                                 <div v-if="delivery.hasAccessibilityPlan === 'true'" class="field">
                                     <label><?= i::esc_attr__('Quais medidas de acessibilidade estão previstas?') ?><span v-if="opportunity.workplan_deliveryRequireExpectedAccessibilityMeasures" class="required">obrigatório*</span></label>
-                                    <mc-multiselect v-model="delivery.expectedAccessibilityMeasures" :items="workplanFields.goal.delivery.expectedAccessibilityMeasures.options"></mc-multiselect>
+                                    <mc-multiselect :model="delivery.expectedAccessibilityMeasures" :items="workplanFields.goal.delivery.expectedAccessibilityMeasures.options" hide-filter hide-button></mc-multiselect>
+                                    <mc-tag-list :tags="delivery.expectedAccessibilityMeasures" :labels="workplanFields.goal.delivery.expectedAccessibilityMeasures.options" classes="opportunity__background" @remove="toggleAccessibilityMeasures(delivery, $event)" editable></mc-tag-list>
                                 </div>
                             </div>
 
@@ -412,7 +415,8 @@ $this->import('
 
                             <div v-if="opportunity.workplan_deliveryInformCommunicationChannels" class="field">
                                 <label><?= i::esc_attr__('Quais canais de comunicação estão previstos para difusão da atividade?') ?><span v-if="opportunity.workplan_deliveryRequireCommunicationChannels" class="required">obrigatório*</span></label>
-                                <mc-multiselect v-model="delivery.communicationChannels" :items="workplanFields.goal.delivery.communicationChannels.options"></mc-multiselect>
+                                <mc-multiselect :model="delivery.communicationChannels" :items="workplanFields.goal.delivery.communicationChannels.options" hide-filter hide-button></mc-multiselect>
+                                <mc-tag-list :tags="delivery.communicationChannels" :labels="workplanFields.goal.delivery.communicationChannels.options" classes="opportunity__background" @remove="toggleCommunicationChannels(delivery, $event)" editable></mc-tag-list>
                             </div>
 
                             <div v-if="opportunity.workplan_deliveryInformInnovation">
@@ -425,13 +429,15 @@ $this->import('
                                 </div>
                                 <div v-if="delivery.hasInnovationAction === 'true'" class="field">
                                     <label><?= i::esc_attr__('Quais tipos de experimentação/inovação previstos?') ?><span v-if="opportunity.workplan_deliveryRequireInnovationTypes" class="required">obrigatório*</span></label>
-                                    <mc-multiselect v-model="delivery.innovationTypes" :items="workplanFields.goal.delivery.innovationTypes.options"></mc-multiselect>
+                                    <mc-multiselect :model="delivery.innovationTypes" :items="workplanFields.goal.delivery.innovationTypes.options" hide-filter hide-button></mc-multiselect>
+                                    <mc-tag-list :tags="delivery.innovationTypes" :labels="workplanFields.goal.delivery.innovationTypes.options" classes="opportunity__background" @remove="toggleInnovationTypes(delivery, $event)" editable></mc-tag-list>
                                 </div>
                             </div>
 
                             <div v-if="opportunity.workplan_deliveryInformDocumentationTypes" class="field">
                                 <label><?= i::esc_attr__('Tipo de documentação que será produzida') ?><span v-if="opportunity.workplan_deliveryRequireDocumentationTypes" class="required">obrigatório*</span></label>
-                                <mc-multiselect v-model="delivery.documentationTypes" :items="workplanFields.goal.delivery.documentationTypes.options"></mc-multiselect>
+                                <mc-multiselect :model="delivery.documentationTypes" :items="workplanFields.goal.delivery.documentationTypes.options" hide-filter hide-button></mc-multiselect>
+                                <mc-tag-list :tags="delivery.documentationTypes" :labels="workplanFields.goal.delivery.documentationTypes.options" classes="opportunity__background" @remove="toggleDocumentationTypes(delivery, $event)" editable></mc-tag-list>
                             </div>
 
                         </div>

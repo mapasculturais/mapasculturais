@@ -783,5 +783,34 @@ app.component('registration-workplan', {
                          (Number(composition.notDeclared) || 0);
             return total;
         },
+
+        // ============================================
+        // MÉTODOS HELPER PARA MULTISELECT
+        // ============================================
+
+        // Remove item de um array multiselect
+        removeMultiselectItem(array, key) {
+            const index = array.indexOf(key);
+            if (index > -1) {
+                array.splice(index, 1);
+            }
+        },
+
+        // Toggle item em array multiselect (usado pelos mc-tag-list)
+        toggleRevenueType(delivery, key) {
+            this.removeMultiselectItem(delivery.revenueType, key);
+        },
+        toggleAccessibilityMeasures(delivery, key) {
+            this.removeMultiselectItem(delivery.expectedAccessibilityMeasures, key);
+        },
+        toggleCommunicationChannels(delivery, key) {
+            this.removeMultiselectItem(delivery.communicationChannels, key);
+        },
+        toggleInnovationTypes(delivery, key) {
+            this.removeMultiselectItem(delivery.innovationTypes, key);
+        },
+        toggleDocumentationTypes(delivery, key) {
+            this.removeMultiselectItem(delivery.documentationTypes, key);
+        },
     },
 })
