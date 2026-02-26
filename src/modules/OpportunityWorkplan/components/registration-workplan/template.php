@@ -54,7 +54,7 @@ $this->import('
             </select>
         </div>
 
-        <div class="field" id="culturalArtisticSegment">
+        <div v-if="opportunity.workplan_dataProjectInformCulturalArtisticSegment" class="field" id="culturalArtisticSegment">
             <label><?= i::esc_attr__('Segmento artistico-cultural') ?><span class="required">obrigatório*</span></label>
             <select v-model="workplan.culturalArtisticSegment" @change="save_(false)">
                 <option value=""><?= i::esc_attr__('Selecione') ?></option>
