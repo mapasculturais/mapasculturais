@@ -44,3 +44,36 @@
 .field__group .field__checkbox--sub:last-child {
     margin-bottom: 0;
 }
+
+/* Headers de seção para agrupamento temático */
+.config-section-header {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--mc-primary-500, #4a90e2);
+    margin-top: 24px;
+    margin-bottom: 8px;
+    padding-bottom: 6px;
+    border-bottom: 2px solid var(--mc-primary-500, #4a90e2);
+}
+
+.config-section-header:first-child {
+    margin-top: 0;
+}
+
+.config-section-description {
+    font-size: 0.85rem;
+    color: var(--mc-gray-700, #666);
+    margin-bottom: 16px;
+    font-style: italic;
+    line-height: 1.4;
+}
+
+@media (max-width: 768px) {
+    .config-section-header {
+        font-size: 1rem;
+    }
+
+    .config-section-description {
+        font-size: 0.8rem;
+    }
+}

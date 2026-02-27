@@ -212,6 +212,10 @@ $this->import('
                     <h4 class="bold opportunity-enable-workplan__title"><?= i::__('Inscrição') ?></h4>
                     <h6><?= $this->text('header-description', i::__('As informações que forem marcadas abaixo poderão ser configuradas como obrigatórias ou opcionais no momento de inscrição.')) ?></h6>
                     <div class="field col-12">
+
+                        <h4 class="config-section-header"><?= i::__("Entregas, execução e receita") ?></h4>
+                        <p class="config-section-description"><?= i::__("Características básicas da entrega, localização, público e aspectos financeiros") ?></p>
+
                         <div class="field__group">
                             <label class="field__checkbox">
                                 <input type="checkbox" v-model="entity.workplan_registrationReportTheNumberOfParticipants" @click="autoSave()" /><?= i::__("Informar a quantidade estimada de público") ?>
@@ -228,13 +232,6 @@ $this->import('
                                 <input type="checkbox" v-model="entity.workplan_deliveryRequireSegment" @click="autoSave()" /><?= i::__("Obrigatório") ?>
                             </label>
                         </div>
-                        <div class="field__group">
-                            <label class="field__checkbox">
-                                <input type="checkbox" v-model="entity.workplan_registrationReportExpectedRenevue" @click="autoSave()" /><?= i::__("Informar receita prevista") ?>
-                            </label>
-                        </div>
-                        
-                        <h4><?= i::__("Campos adicionais da entrega") ?></h4>
 
                         <div class="field__group">
                             <label class="field__checkbox">
@@ -292,13 +289,7 @@ $this->import('
 
                         <div class="field__group">
                             <label class="field__checkbox">
-                                <input type="checkbox" v-model="entity.workplan_deliveryInformTeamComposition" @click="autoSave()" /><?= i::__("Informar composição da equipe (gênero e raça/cor)") ?>
-                            </label>
-                            <label v-if="entity.workplan_deliveryInformTeamComposition" class="field__checkbox field__checkbox--sub">
-                                <input type="checkbox" v-model="entity.workplan_deliveryRequireTeamCompositionGender" @click="autoSave()" /><?= i::__("Obrigatório (gênero)") ?>
-                            </label>
-                            <label v-if="entity.workplan_deliveryInformTeamComposition" class="field__checkbox field__checkbox--sub">
-                                <input type="checkbox" v-model="entity.workplan_deliveryRequireTeamCompositionRace" @click="autoSave()" /><?= i::__("Obrigatório (raça/cor)") ?>
+                                <input type="checkbox" v-model="entity.workplan_registrationReportExpectedRenevue" @click="autoSave()" /><?= i::__("Informar receita prevista") ?>
                             </label>
                         </div>
 
@@ -320,6 +311,21 @@ $this->import('
                             </label>
                             <label v-if="entity.workplan_deliveryInformCommercialUnits" class="field__checkbox field__checkbox--sub">
                                 <input type="checkbox" v-model="entity.workplan_deliveryRequireUnitPrice" @click="autoSave()" /><?= i::__("Obrigatório (valor unitário)") ?>
+                            </label>
+                        </div>
+
+                        <h4 class="config-section-header"><?= i::__("Equipe, diversidade e acesso") ?></h4>
+                        <p class="config-section-description"><?= i::__("Composição da equipe, estratégias de inclusão e práticas socioambientais") ?></p>
+
+                        <div class="field__group">
+                            <label class="field__checkbox">
+                                <input type="checkbox" v-model="entity.workplan_deliveryInformTeamComposition" @click="autoSave()" /><?= i::__("Informar composição da equipe (gênero e raça/cor)") ?>
+                            </label>
+                            <label v-if="entity.workplan_deliveryInformTeamComposition" class="field__checkbox field__checkbox--sub">
+                                <input type="checkbox" v-model="entity.workplan_deliveryRequireTeamCompositionGender" @click="autoSave()" /><?= i::__("Obrigatório (gênero)") ?>
+                            </label>
+                            <label v-if="entity.workplan_deliveryInformTeamComposition" class="field__checkbox field__checkbox--sub">
+                                <input type="checkbox" v-model="entity.workplan_deliveryRequireTeamCompositionRace" @click="autoSave()" /><?= i::__("Obrigatório (raça/cor)") ?>
                             </label>
                         </div>
 
@@ -359,6 +365,9 @@ $this->import('
                             </label>
                         </div>
 
+                        <h4 class="config-section-header"><?= i::__("Comunicação e registro") ?></h4>
+                        <p class="config-section-description"><?= i::__("Estratégias de divulgação, inovação e documentação do projeto") ?></p>
+
                         <div class="field__group">
                             <label class="field__checkbox">
                                 <input type="checkbox" v-model="entity.workplan_deliveryInformPressStrategy" @click="autoSave()" /><?= i::__("Informar estratégia de relacionamento com imprensa") ?>
@@ -397,6 +406,10 @@ $this->import('
                     <h4 class="bold opportunity-enable-workplan__title"><?= i::__('Monitoramento') ?></h4>
                     <h6><?= $this->text('header-description', i::__('As informações marcadas abaixo poderão ser configuradas como obrigatórias ou opcionais no monitoramento.')) ?></h6>
                     <div class="field col-12">
+
+                        <h4 class="config-section-header"><?= i::__("Execução e público") ?></h4>
+                        <p class="config-section-description"><?= i::__("Informações sobre realização, público alcançado e acessibilidade") ?></p>
+
                         <div class="field__group">
                             <label class="field__checkbox">
                                 <input type="checkbox" v-model="entity.workplan_monitoringInformTheFormOfAvailability" @click="autoSave()" /><?= i::__("Informar forma de disponibilização") ?>
@@ -433,6 +446,9 @@ $this->import('
                             </label>
                         </div>
 
+                        <h4 class="config-section-header"><?= i::__("Dados executados") ?></h4>
+                        <p class="config-section-description"><?= i::__("Valores e quantidades realizadas durante a execução do projeto") ?></p>
+
                         <div class="field__group">
                             <label class="field__checkbox">
                                 <input type="checkbox" v-model="entity.workplan_monitoringReportExecutedRevenue" @click="autoSave()" /><?= i::__("Informar receita executada") ?>
@@ -441,8 +457,6 @@ $this->import('
                                 <input type="checkbox" v-model="entity.workplan_monitoringRequireExecutedRevenue" @click="autoSave()" /><?= i::__("Obrigatório") ?>
                             </label>
                         </div>
-
-                        <h4><?= i::__("Campos adicionais executados") ?></h4>
 
                         <div class="field__group">
                             <label class="field__checkbox">
