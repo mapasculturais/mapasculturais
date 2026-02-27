@@ -172,7 +172,7 @@
     }
 
     .single-1__inner-tabs .tabs-component__buttons {
-        margin: 6rem 0 0;
+        margin: 0.5rem 0 0;
     }
 
     > .tabs-component .tabs-component__panels .tab-component .mc-container {
@@ -442,34 +442,47 @@
         .grid-12 {
             display: block;
         }
+    }
 
-        &-item {
-            @extend %full-width;
-            margin-bottom: size(16);
+    &__connection-item {
+        @extend %full-width;
+        margin-bottom: size(24);
 
-            &:last-child {
-                margin-bottom: 0;
-            }
+        &:last-child {
+            margin-bottom: 0;
+        }
 
-            .collapsible-content__header {
-                @extend %collapsible-header;
-            }
+        .collapsible-content__header,
+        .mc-collapsible__header {
+            @extend %collapsible-header;
 
-            .collapsible-content__body {
-                @extend %full-width;
-                padding-top: size(12);
-            }
-
-            .entity-list {
-                margin-bottom: 0;
-                padding-bottom: 0;
-                border-bottom: none;
-
-                &__title {
-                    display: none;
-                }
+            .mc-title {
+                font-size: var(--mc-font-size-xs);
             }
         }
+
+        .collapsible-content__body {
+            @extend %full-width;
+            padding-top: size(12);
+        }
+
+        .entity-list {
+            margin-bottom: 0;
+            padding-bottom: 0;
+            border-bottom: none;
+
+            &__title {
+                display: none;
+            }
+        }
+    }
+
+    .complaint-suggestion {
+        margin-top: size(24);
+    }
+
+    &__administration-intro {
+        margin-bottom: size(24);
     }
 
     .social-media-card {

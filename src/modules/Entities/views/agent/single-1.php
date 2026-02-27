@@ -209,7 +209,7 @@ $this->breadcrumb = [
                             <mc-tab label="<?= i::_e('Administração') ?>" slug="administracao">
                                 <mc-card>
                                     <template #content>
-                                        <p><?php i::_e("Administradores do perfil podem visualizar e editar os dados públicos e pessoais do agente cultural que administram, além de fazer inscrições em seu nome nas oportunidades vinculadas na plataforma e transferir,editar e/ou excluir suas entidades. A administração dos perfis só e possivel mediante a autorização do proprietário do perfil."); ?></p>
+                                        <p class="single-1__administration-intro"><?php i::_e("Administradores do perfil podem visualizar e editar os dados públicos e pessoais do agente cultural que administram, além de fazer inscrições em seu nome nas oportunidades vinculadas na plataforma e transferir,editar e/ou excluir suas entidades. A administração dos perfis só e possivel mediante a autorização do proprietário do perfil."); ?></p>
                                         <div class="grid-12">
                                             <?php $this->applyTemplateHook('single1-entity-info-entity-admins', 'before') ?>
                                             <entity-admins :entity="entity" classes="col-12"></entity-admins>
