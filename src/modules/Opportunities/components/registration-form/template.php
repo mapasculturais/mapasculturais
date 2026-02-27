@@ -50,6 +50,7 @@
                         :autosave="60000"
                         description-first
                         :max-options="field?.config?.maxOptions !== undefined && field?.config?.maxOptions !== '' ? Number(field.config.maxOptions) : 0"
+                        :registration-field-configuration="field"
                         preserve-order></entity-field>
 
                     <entity-file v-else-if="field.groupName" 

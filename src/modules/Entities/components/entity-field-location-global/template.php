@@ -20,7 +20,10 @@ $this->import('
     <template v-if="hasLinkedEntity">
         <div class="field col-12">
             <div v-if="countryFieldEnabled">
-                <label><?= i::__("País") ?></label>
+                <label>
+                    <?= i::__("País") ?>
+                    <span v-if="requiredAddressFields.address_level0" class="required">*</span>
+                </label>
                 <mc-select
                     :options="countries"
                     v-model:default-value="country"
@@ -40,6 +43,9 @@ $this->import('
                     :entity="entity[fieldName]"
                     :hierarchy="levelHierarchy"
                     :has-public-location="hasPublicLocation"
+                    :required-fields="requiredAddressFields"
+                    :has-errors="hasLocationErrors"
+                    :missing-keys="missingLocationKeys"
                     class="col-12">
                 </entity-address-form-nacional>
 
@@ -48,6 +54,9 @@ $this->import('
                     :entity="entity[fieldName]"
                     :hierarchy="levelHierarchy"
                     :country="country"
+                    :required-fields="requiredAddressFields"
+                    :has-errors="hasLocationErrors"
+                    :missing-keys="missingLocationKeys"
                     has-public-location
                     class="col-12">
                 </entity-address-form-internacional>

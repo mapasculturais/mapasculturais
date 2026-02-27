@@ -87,6 +87,41 @@ $this->jsObject['registered_terms'] = array_keys($taxonomie_options);
     <div ng-if="field.config.entityField == '@location'">
         <label><input type="checkbox" ng-model="field.config.setLatLon" ng-true-value="'true'" ng-false-value=""> <?php i::_e('Definir a latitude e longitude baseado no CEP?') ?></label><br>
         <label><input type="checkbox" ng-model="field.config.setPrivacy" ng-true-value="'true'" ng-false-value=""> <?php i::_e('Fornecer opção para mudar a privacidade da localização?') ?></label>
+        <?php
+        $location_required_brazil = $app->modules['RegistrationFieldTypes']->getLocationRequiredFieldsConfigBrazil();
+        $location_required_other = $app->modules['RegistrationFieldTypes']->getLocationRequiredFieldsConfigOther();
+        ?>
+        <div ng-if="field.required" class="registration-field-config--location-required" style="margin-top: 0.75em;">
+            <?php if (!empty($location_required_brazil)) : ?>
+            <div style="margin-bottom: 1em;">
+                <strong><?php i::_e('Subcampos obrigatórios do endereço no Brasil:') ?></strong>
+                <div style="margin-top: 0.25em;">
+                    <?php foreach ($location_required_brazil as $key => $label) : ?>
+                    <label style="display: inline-block; margin-right: 1em; white-space: nowrap;">
+                        <input type="checkbox" ng-model="field.config.requiredAddressFieldsBrazil.<?= $key ?>" ng-change="saveField()">
+                        <?= $label ?>
+                    </label>
+                    <?php endforeach; ?>
+                </div>
+            </div>
+            <?php endif; ?>
+
+            <?php if (!empty($location_required_other)) : ?>
+            <div>
+                <strong><?php i::_e('Subcampos obrigatórios do endereço em outros países:') ?></strong>
+                <div style="margin-top: 0.25em;">
+                    <?php foreach ($location_required_other as $key => $label) : ?>
+                    <label style="display: inline-block; margin-right: 1em; white-space: nowrap;">
+                        <input type="checkbox" ng-model="field.config.requiredAddressFieldsOther.<?= $key ?>" ng-change="saveField()">
+                        <?= $label ?>
+                    </label>
+                    <?php endforeach; ?>
+                </div>
+            </div>
+            <?php endif; ?>
+
+            <small class="registration-help" style="margin-top: 0.5em; display: block;"><?php i::_e('Marque os subcampos que devem ser obrigatórios para cada tipo de endereço.'); ?></small>
+        </div>
     </div>
     <div ng-if="data.registered_terms.includes(field.config.entityField)">
         <?php foreach($taxonomie_options as $field_name => $slug):?>

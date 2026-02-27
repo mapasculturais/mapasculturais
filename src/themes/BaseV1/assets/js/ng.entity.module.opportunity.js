@@ -105,8 +105,22 @@
                 jQuery('a.js-submit-button').click();
             },
 
-            validateEntity: function(registrationId) {
-                return $http.post(this.getUrl('validateEntity', registrationId)).
+            validateEntity: function(registrationId, entityData) {
+                var data = entityData || {};
+                if (entityData && typeof entityData === 'object' && !Array.isArray(entityData)) {
+                    data = {};
+                    Object.keys(entityData).forEach(function(key) {
+                        if (key.indexOf('$$') === -1) {
+                            data[key] = entityData[key];
+                            if (data[key] instanceof Date) {
+                                data[key] = moment(data[key]).format('YYYY-MM-DD');
+                            } else if (data[key] instanceof Array && data[key].length === 0) {
+                                data[key] = null;
+                            }
+                        }
+                    });
+                }
+                return $http.post(this.getUrl('validateEntity', registrationId), data).
                 success(function(data, status){
                     $rootScope.$emit('registration.validate', {message: "Opportunity registration was validated ", data: data, status: status});
                 }).
@@ -150,13 +164,59 @@
                     fieldTypesBySlug[e.slug] = e;
                 });
 
+                // Subcampos de endereço considerados para o Brasil (segue o padrão da BrasilLocalization)
+                var KEYS_BRAZIL = [
+                    'address_level0',    // País
+                    'address_postalCode',// CEP
+                    'address_line1',     // Endereço
+                    'address_number',    // Número
+                    'address_line2',     // Complemento
+                    'address_level2',    // Estado (UF)
+                    'address_level4',    // Município/Cidade
+                    'address_level6'     // Bairro
+                ];
+                var KEYS_OTHER = ['address_level0', 'address_level1', 'address_level2', 'address_level3', 'address_level4', 'address_level5', 'address_level6', 'address_postalCode', 'address_line1', 'address_line2'];
+
+                function normalizeConfig(raw, keys) {
+                    var out = {};
+                    if (Array.isArray(raw)) {
+                        keys.forEach(function (k) { out[k] = raw.indexOf(k) >= 0; });
+                    } else if (raw && typeof raw === 'object') {
+                        keys.forEach(function (k) {
+                            var v = raw[k];
+                            out[k] = !!(v === true || v === 1 || v === '1' || v === 'true');
+                        });
+                    } else {
+                        keys.forEach(function (k) { out[k] = false; });
+                    }
+                    return out;
+                }
+
                 function processFieldConfiguration(field) {
-                    if(typeof field.fieldOptions === 'string'){
+                    if (typeof field.fieldOptions === 'string') {
                         field.fieldOptions = field.fieldOptions ? field.fieldOptions.split("\n") : [];
                     }
 
-                    if(typeof field.config !== 'object' || field.config instanceof Array) {
+                    if (typeof field.config !== 'object' || field.config instanceof Array) {
                         field.config = {};
+                    }
+
+                    // Suporte ao novo formato (Brazil/Other) e retrocompatibilidade (requiredAddressFields)
+                    if (field.config && field.config.entityField === '@location') {
+                        var hasBrazil = field.config.requiredAddressFieldsBrazil !== undefined;
+                        var hasOther = field.config.requiredAddressFieldsOther !== undefined;
+                        var hasLegacy = field.config.requiredAddressFields !== undefined;
+
+                        if (hasBrazil || hasOther) {
+                            field.config.requiredAddressFieldsBrazil = normalizeConfig(field.config.requiredAddressFieldsBrazil, KEYS_BRAZIL);
+                            field.config.requiredAddressFieldsOther = normalizeConfig(field.config.requiredAddressFieldsOther, KEYS_OTHER);
+                        } else if (hasLegacy) {
+                            field.config.requiredAddressFieldsBrazil = normalizeConfig(field.config.requiredAddressFields, KEYS_BRAZIL);
+                            field.config.requiredAddressFieldsOther = normalizeConfig({}, KEYS_OTHER);
+                        } else {
+                            field.config.requiredAddressFieldsBrazil = normalizeConfig({}, KEYS_BRAZIL);
+                            field.config.requiredAddressFieldsOther = normalizeConfig({}, KEYS_OTHER);
+                        }
                     }
 
                     return field;
@@ -393,7 +453,70 @@ module.controller('RegistrationConfigurationsController', ['$scope', '$rootScope
         return foundField ? true : false;
     }
 
+    /** Chaves de subcampos de endereço que podem ser obrigatórios. */
+    var LOCATION_REQUIRED_KEYS_BRAZIL = [
+        'address_level0',     // País
+        'address_postalCode', // CEP
+        'address_line1',      // Endereço
+        'address_number',     // Número
+        'address_line2',      // Complemento
+        'address_level2',     // Estado (UF)
+        'address_level4',     // Município/Cidade
+        'address_level6'      // Bairro
+    ];
+    var LOCATION_REQUIRED_KEYS_OTHER = ['address_level0', 'address_level1', 'address_level2', 'address_level3', 'address_level4', 'address_level5', 'address_level6', 'address_postalCode', 'address_line1', 'address_line2'];
+
+    function normalizeRequiredConfig(raw, keys) {
+        var out = {};
+        if (Array.isArray(raw)) {
+            keys.forEach(function(k) { out[k] = raw.indexOf(k) >= 0; });
+        } else if (raw && typeof raw === 'object' && !Array.isArray(raw)) {
+            keys.forEach(function(k) {
+                var v = raw[k];
+                out[k] = !!(v === true || v === 1 || v === '1' || v === 'true');
+            });
+        } else {
+            keys.forEach(function(k) { out[k] = false; });
+        }
+        return out;
+    }
+
+    function normalizeRequiredAddressFields(config, type) {
+        if (typeof config !== 'object' || config instanceof Array) {
+            config = {};
+        }
+        if (type === 'brazil') {
+            return normalizeRequiredConfig(config.requiredAddressFieldsBrazil, LOCATION_REQUIRED_KEYS_BRAZIL);
+        } else if (type === 'other') {
+            return normalizeRequiredConfig(config.requiredAddressFieldsOther, LOCATION_REQUIRED_KEYS_OTHER);
+        }
+        // Retrocompatibilidade: campo legado único
+        return normalizeRequiredConfig(config.requiredAddressFields, LOCATION_REQUIRED_KEYS_BRAZIL);
+    }
+
     function processFieldConfiguration(field){
+        if (typeof field.config !== 'object' || field.config instanceof Array) {
+            field.config = {};
+        }
+        if (field.config && field.config.entityField === '@location') {
+            // Suporta novo formato (Brazil/Other) ou legado
+            var hasBrazil = field.config.requiredAddressFieldsBrazil !== undefined;
+            var hasOther = field.config.requiredAddressFieldsOther !== undefined;
+            var hasLegacy = field.config.requiredAddressFields !== undefined;
+
+            if (hasBrazil || hasOther) {
+                field.config.requiredAddressFieldsBrazil = normalizeRequiredAddressFields(field.config, 'brazil');
+                field.config.requiredAddressFieldsOther = normalizeRequiredAddressFields(field.config, 'other');
+            } else if (hasLegacy) {
+                // Migra legado para os dois conjuntos
+                var legacy = normalizeRequiredAddressFields(field.config);
+                field.config.requiredAddressFieldsBrazil = legacy;
+                field.config.requiredAddressFieldsOther = normalizeRequiredConfig({}, LOCATION_REQUIRED_KEYS_OTHER);
+            } else {
+                field.config.requiredAddressFieldsBrazil = normalizeRequiredConfig({}, LOCATION_REQUIRED_KEYS_BRAZIL);
+                field.config.requiredAddressFieldsOther = normalizeRequiredConfig({}, LOCATION_REQUIRED_KEYS_OTHER);
+            }
+        }
         if(field.fieldOptions instanceof Array){
             field.fieldOptions = field.fieldOptions.join("\n");
         }
@@ -703,8 +826,56 @@ module.controller('RegistrationConfigurationsController', ['$scope', '$rootScope
         };
 
         $scope.openFieldConfigurationEditBox = function(id, index, event){
-            $scope.fieldConfigurationBackups[index] = angular.copy($scope.data.fields[index]);
+            var field = $scope.data.fields[index];
+            // Normaliza requiredAddressFields (Brazil e Other) para booleanos antes de abrir o modal
+            if (field.config && field.config.entityField === '@location') {
+                field.config.requiredAddressFieldsBrazil = normalizeRequiredAddressFields(field.config, 'brazil');
+                field.config.requiredAddressFieldsOther = normalizeRequiredAddressFields(field.config, 'other');
+            }
+            $scope.fieldConfigurationBackups[index] = angular.copy(field);
             EditBox.open('editbox-registration-field-'+id, event);
+        };
+
+        // Quando field.required muda para campos @location
+        $scope.onRequiredChange = function(field) {
+            if (!field || !field.config || field.config.entityField !== '@location') {
+                return;
+            }
+
+            // Garante estrutura básica dos dois conjuntos
+            if (typeof field.config.requiredAddressFieldsBrazil !== 'object' || Array.isArray(field.config.requiredAddressFieldsBrazil)) {
+                field.config.requiredAddressFieldsBrazil = normalizeRequiredAddressFields(field.config, 'brazil');
+            }
+            if (typeof field.config.requiredAddressFieldsOther !== 'object' || Array.isArray(field.config.requiredAddressFieldsOther)) {
+                field.config.requiredAddressFieldsOther = normalizeRequiredAddressFields(field.config, 'other');
+            }
+
+            if (!field.required) {
+                // Ao desmarcar obrigatoriedade, limpa todos os subcampos obrigatórios de ambos os conjuntos
+                LOCATION_REQUIRED_KEYS_BRAZIL.forEach(function(k) {
+                    field.config.requiredAddressFieldsBrazil[k] = false;
+                });
+                LOCATION_REQUIRED_KEYS_OTHER.forEach(function(k) {
+                    field.config.requiredAddressFieldsOther[k] = false;
+                });
+                return;
+            }
+
+            // Modal de criação: ao marcar como obrigatório, se nenhum subcampo estiver marcado,
+            // marca País (address_level0) por padrão em ambos os conjuntos.
+            var hasAnyBrazil = LOCATION_REQUIRED_KEYS_BRAZIL.some(function(k) {
+                return !!field.config.requiredAddressFieldsBrazil[k];
+            });
+            if (!hasAnyBrazil) {
+                field.config.requiredAddressFieldsBrazil.address_level0 = true;
+            }
+
+            var hasAnyOther = LOCATION_REQUIRED_KEYS_OTHER.some(function(k) {
+                return !!field.config.requiredAddressFieldsOther[k];
+            });
+            if (!hasAnyOther) {
+                field.config.requiredAddressFieldsOther.address_level0 = true;
+            }
         };
 
         // Files
@@ -1526,7 +1697,7 @@ module.controller('RegistrationFieldsController', ['$scope', '$rootScope', '$int
     });
 
     $scope.validateRegistration = function(callback='') {
-        return RegistrationService.validateEntity(MapasCulturais.entity.object.id)
+        return RegistrationService.validateEntity(MapasCulturais.entity.object.id, $scope.data.editableEntity)
             .success(function(response) {
                 if(response.error) {
                     $scope.entityValidated = false;
@@ -1938,6 +2109,28 @@ module.controller('RegistrationFieldsController', ['$scope', '$rootScope', '$int
 
         return false;
     }
+
+    /** Para campo @location: retorna true só se o subcampo (En_*) estiver em requiredAddressFields. */
+    $scope.requiredLocationSubfield = function(field, enKey) {
+        if (!field || !field.required || (field.config && field.config.entityField !== '@location')) {
+            return false;
+        }
+        var locationKeyMap = {
+            'En_Pais': 'address_level0',
+            'En_Estado': 'address_level1',
+            'En_Municipio': 'address_level2',
+            'En_Bairro': 'address_level3',
+            'En_CEP': 'address_postalCode',
+            'En_Nome_Logradouro': 'address_line1',
+            'En_Num': 'address_number',
+            'En_Complemento': 'address_line2'
+        };
+        var addrKey = locationKeyMap[enKey];
+        if (!addrKey || !field.config || !field.config.requiredAddressFields) {
+            return false;
+        }
+        return !!field.config.requiredAddressFields[addrKey];
+    };
 
     $scope.checkField =  function(field) {
         
@@ -2473,6 +2666,15 @@ module.controller('OpportunityController', ['$scope', '$rootScope', '$anchorScro
         }
         object[key] = value;
         return;
+    };
+
+    /** Label de campo de endereço por país (MapasCulturais.config.countryLocalization.labelsByCountry) */
+    $scope.getAddressLabel = function(key, country) {
+        var conf = MapasCulturais.config && MapasCulturais.config.countryLocalization;
+        var byCountry = conf && conf.labelsByCountry;
+        if (byCountry && country && byCountry[country] && byCountry[country][key]) return byCountry[country][key];
+        if (byCountry && byCountry.BR && byCountry.BR[key]) return byCountry.BR[key];
+        return (key && key.split('_').pop()) || key;
     };
 
     $scope.toggleSelectionColumn = function(object, key){
