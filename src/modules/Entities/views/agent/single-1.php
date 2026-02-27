@@ -81,11 +81,14 @@ $this->breadcrumb = [
                                         </div>
 
                                         <div class="grid-12 single-1__presentation-item">
-                                            <div class="col-6 sm:col-12">
+                                            <div class="col-4 sm:col-12">
                                                 <entity-data :entity="entity" prop="site" label="<?php i::_e('Site') ?>"></entity-data>
                                             </div>
-                                            <div class="col-6 sm:col-12">
+                                            <div class="col-4 sm:col-12">
                                                 <entity-data :entity="entity" prop="telefone1" label="<?php i::_e('Telefone') ?>"></entity-data>
+                                            </div>
+                                            <div class="col-4 sm:col-12">
+                                                <entity-data :entity="entity" prop="emailPublico" label="<?php i::_e('E-mail público') ?>"></entity-data>
                                             </div>
                                         </div>
                                     </div>
