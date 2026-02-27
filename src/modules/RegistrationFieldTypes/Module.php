@@ -65,6 +65,111 @@ class Module extends \MapasCulturais\Module
             }
         });
 
+        // Validação de @location: lista de subcampos obrigatórios vem do banco.
+        // Suporta config separada (requiredAddressFieldsBrazil / requiredAddressFieldsOther) ou legado (requiredAddressFields).
+        $module = $this;
+        $app->hook('entity(Registration).sendValidationErrors', function(&$errorsResult) use($app, $module) {
+            /** @var Registration $registration */
+            $registration = $this;
+            $opportunity = $registration->opportunity;
+
+            foreach ($opportunity->registrationFieldConfigurations as $field) {
+
+                if (!$field->required) {
+                    continue;
+                }
+                if (!in_array($field->fieldType ?? '', ['agent-owner-field', 'agent-collective-field', 'space-field'])) {
+                    continue;
+                }
+                if (($field->config['entityField'] ?? '') !== '@location') {
+                    continue;
+                }
+                if (!$registration->isFieldVisisble($field)) {
+                    continue;
+                }
+
+                $prop_name = $field->getFieldName();
+                $val = $registration->$prop_name;
+                if (!is_array($val) && !is_object($val)) {
+                    $val = [];
+                }
+                $arr = (array) $val;
+
+                $country = trim((string) ($arr['address_level0'] ?? ''));
+                $isBrazil = in_array(strtoupper($country), ['BR', 'BRA'], true)
+                    || in_array(strtolower($country), ['brasil', 'brazil'], true);
+
+                // Usa conjunto apropriado (BR ou outros) conforme país do endereço
+                $requiredKeys = $module->resolveLocationRequiredFields($field, $isBrazil);
+                if (empty($requiredKeys)) {
+                    continue;
+                }
+
+                $missing = [];
+                foreach ($requiredKeys as $configKey) {
+                    $storedKeys = $module->getLocationStoredKeysForConfigKey($configKey, $isBrazil);
+                    $raw = null;
+                    foreach ($storedKeys as $k) {
+                        if (array_key_exists($k, $arr)) {
+                            $val = $arr[$k];
+                            // Só considera preenchido se o valor for não vazio (form BR pode ter address_level1/3 null e dados em level2/4/6)
+                            if ($val !== null && trim((string) $val) !== '') {
+                                $raw = $val;
+                                break;
+                            }
+                        }
+                    }
+                    if ($raw === null || trim((string) $raw) === '') {
+                        // Fora do Brasil não existe campo "Número" separado: Endereço (address_line1) atende ambos.
+                        if ($configKey === 'address_number') {
+                            $line1 = trim((string) ($arr['address_line1'] ?? ''));
+
+                            if (!$isBrazil) {
+                                if ($line1 !== '') {
+                                    continue;
+                                }
+                            } else {
+                                // No formulário nacional, o número vai como "Rua..., 123".
+                                // Considera número presente apenas se houver parte após a vírgula com algum dígito.
+                                if ($line1 !== '' && strpos($line1, ',') !== false) {
+                                    [$street, $rest] = explode(',', $line1, 2);
+                                    $rest = trim((string) $rest);
+                                    if ($rest !== '' && preg_match('/\\d/', $rest)) {
+                                        continue;
+                                    }
+                                }
+                            }
+                        }
+
+                        $missing[] = $configKey;
+                    }
+                }
+                if (empty($missing)) {
+                    continue;
+                }
+
+                $field_name = 'field_' . $field->id;
+                if (!isset($errorsResult[$field_name])) {
+                    $errorsResult[$field_name] = [];
+                }
+
+                // Usa labels apropriados ao país
+                $labels = $isBrazil
+                    ? $module->getLocationRequiredFieldsConfigBrazil()
+                    : $module->getLocationRequiredFieldsConfigOther();
+
+                foreach ($missing as $configKey) {
+                    $label = $labels[$configKey] ?? $configKey;
+                    
+                    $_message = sprintf('O campo %s é obrigatório.', $label);
+                    $msg = i::__($_message);
+                    if (!in_array($msg, $errorsResult[$field_name])) {
+                        $errorsResult[$field_name][] = $msg;
+                    }
+                }
+            }
+        });
+
         $app->hook("entity(Registration).save:before", function() use($module, $app) {
             /** @var Registration $this */
             $fix_field = function($entity, $field) use($module){
@@ -266,6 +371,150 @@ class Module extends \MapasCulturais\Module
             }
         });
         $this->_config['availableSpaceFields'] = $this->getSpaceFields();
+    }
+
+    /**
+     * Subcampos de endereço que podem ser marcados como obrigatórios na config do campo @location.
+     * Chave = nome do campo no valor; valor = label na interface.
+     * 
+     * RETROCOMPATIBILIDADE: Este método continua existindo para código legado.
+     * Para novos usos, prefira getLocationRequiredFieldsConfigBrazil() ou getLocationRequiredFieldsConfigOther().
+     * 
+     * @return array<string, string>
+     */
+    function getLocationRequiredFieldsConfig()
+    {
+        return $this->getLocationRequiredFieldsConfigBrazil();
+    }
+
+
+    /**
+     * Mapeamento de chaves En_* (formulário BR) para chaves address_* usadas na validação.
+     * @return array<string, string>
+     */
+    protected function getLocationFieldKeyMap()
+    {
+        return [
+            'En_Pais'           => 'address_level0',
+            'En_Estado'          => 'address_level1',
+            'En_Municipio'      => 'address_level2',
+            'En_Bairro'         => 'address_level3',
+            'En_CEP'             => 'address_postalCode',
+            'En_Nome_Logradouro' => 'address_line1',
+            'En_Num'             => 'address_number',
+            'En_Complemento'     => 'address_line2',
+        ];
+    }
+
+    /**
+     * Resolve a lista de chaves de subcampos de endereço obrigatórios a partir da config do campo (banco).
+     * 
+     * RETROCOMPATIBILIDADE: Se existir apenas 'requiredAddressFields' (legado), usa para ambos os casos.
+     * Se existirem 'requiredAddressFieldsBrazil' e/ou 'requiredAddressFieldsOther', usa o conjunto apropriado.
+     * 
+     * @param RegistrationFieldConfiguration $field
+     * @param bool $isBrazil Se true, retorna config do Brasil; se false, retorna config de outros países.
+     * @return list<string>
+     */
+    function resolveLocationRequiredFields(RegistrationFieldConfiguration $field, ?bool $isBrazil = null): array
+    {
+        $fieldConfig = $field->config ?? [];
+
+        $isTruthy = function($v): bool {
+            if (is_bool($v)) {
+                return $v;
+            }
+            if (is_int($v)) {
+                return $v === 1;
+            }
+            if (is_string($v)) {
+                return in_array(strtolower($v), ['true', '1'], true);
+            }
+            return (bool) $v;
+        };
+
+        $parseConfig = function($config) use ($isTruthy): array {
+            if (is_array($config)) {
+                $keys = [];
+                foreach ($config as $k => $v) {
+                    if (is_string($k) && $isTruthy($v)) {
+                        $keys[] = $k;
+                    } elseif (is_int($k) && is_string($v)) {
+                        $keys[] = $v;
+                    }
+                }
+                return $keys;
+            }
+            if (is_object($config)) {
+                $arr = (array) $config;
+                $out = [];
+                foreach ($arr as $k => $v) {
+                    if ($isTruthy($v)) {
+                        $out[] = $k;
+                    }
+                }
+                return $out;
+            }
+            return [];
+        };
+
+        $hasBrazilConfig = isset($fieldConfig['requiredAddressFieldsBrazil']);
+        $hasOtherConfig = isset($fieldConfig['requiredAddressFieldsOther']);
+        $hasLegacyConfig = isset($fieldConfig['requiredAddressFields']);
+
+        if ($hasBrazilConfig || $hasOtherConfig) {
+            if ($isBrazil === true) {
+                return $parseConfig($fieldConfig['requiredAddressFieldsBrazil'] ?? []);
+            } elseif ($isBrazil === false) {
+                return $parseConfig($fieldConfig['requiredAddressFieldsOther'] ?? []);
+            } else {
+                return array_unique(array_merge(
+                    $parseConfig($fieldConfig['requiredAddressFieldsBrazil'] ?? []),
+                    $parseConfig($fieldConfig['requiredAddressFieldsOther'] ?? [])
+                ));
+            }
+        }
+
+        if ($hasLegacyConfig) {
+            return $parseConfig($fieldConfig['requiredAddressFields']);
+        }
+
+        return [];
+    }
+
+    /**
+     * Para uma chave da config de endereço (ex: address_level1), retorna as chaves possíveis no valor salvo.
+     * 
+     * Para Brasil: usa mapeamento En_* (legado) e as chaves do formulário nacional (level2/4/6).
+     * O formulário nacional usa address_level2=Estado, address_level4=Cidade, address_level6=Bairro.
+     * Para outros países: usa apenas address_* diretamente.
+     * 
+     * @param string $configKey
+     * @param bool $isBrazil
+     * @return array<string>
+     */
+    function getLocationStoredKeysForConfigKey(string $configKey, bool $isBrazil = true): array
+    {
+        $keys = [$configKey];
+
+        if ($isBrazil) {
+            $map = $this->getLocationFieldKeyMap();
+            $enKey = array_search($configKey, $map, true);
+            if ($enKey !== false) {
+                $keys[] = $enKey;
+            }
+            // Formulário nacional (Brasil) guarda Estado/Cidade/Bairro em level2/4/6, não em 1/2/3
+            $brazilFormKeys = [
+                'address_level1' => 'address_level2', // Estado (UF)
+                'address_level2' => 'address_level4', // Cidade/Município
+                'address_level3' => 'address_level6', // Bairro
+            ];
+            if (isset($brazilFormKeys[$configKey])) {
+                $keys[] = $brazilFormKeys[$configKey];
+            }
+        }
+
+        return $keys;
     }
 
     function getAgentFields()
@@ -956,5 +1205,82 @@ class Module extends \MapasCulturais\Module
         }
 
         return $taxonomies_fields;
+    }
+
+    /**
+     * Subcampos de endereço (label) usados na config de campos de inscrição.
+     *
+     * Retorna o mapa completo de labels, independente de país.
+     *
+     * @return array<string,string>
+     */
+    protected function getBaseLocationFieldsLabels(): array
+    {
+        $app = App::i();
+
+        $level_labels = $app->config['address.defaultLevelsLabels'] ?? [];
+
+        $labels = [
+            'address_level0'     => i::__('País'),
+            'address_postalCode' => i::__('Código postal'),
+            'address_line1'      => i::__('Endereço'),
+            'address_number'     => i::__('Número'),
+            'address_line2'      => i::__('Complemento'),
+            'address_level3'     => i::__('Mesorregião'),
+        ];
+
+        // níveis hierárquicos (1 a 6) vindos da configuração global
+        for ($i = 1; $i <= 6; $i++) {
+            $labels["address_level{$i}"] = $level_labels[$i] ?? "address_level{$i}";
+        }
+
+        return $labels;
+    }
+
+    /**
+     * Campos de endereço que podem ser marcados como obrigatórios para Brasil.
+     *
+     * @return array<string,string>
+     */
+    public function getLocationRequiredFieldsConfigBrazil(): array
+    {
+        // Para o Brasil usamos a convenção específica da BrasilLocalization:
+        // level0 = País, level2 = Estado, level4 = Município/Cidade, level6 = Bairro.
+        // Os demais níveis (1,3,5) não são exibidos aqui.
+        return [
+            'address_level0'     => i::__('País'),
+            'address_postalCode' => i::__('CEP'),
+            'address_line1'      => i::__('Endereço'),
+            'address_number'     => i::__('Número'),
+            'address_line2'      => i::__('Complemento'),
+            'address_level2'     => i::__('Estado'),
+            'address_level4'     => i::__('Município/Cidade'),
+            'address_level6'     => i::__('Bairro'),
+        ];
+    }
+
+    /**
+     * Campos de endereço que podem ser marcados como obrigatórios para outros países.
+     *
+     * @return array<string,string>
+     */
+    public function getLocationRequiredFieldsConfigOther(): array
+    {
+        $labels = $this->getBaseLocationFieldsLabels();
+
+        $keys = [
+            'address_level0',
+            'address_level1',
+            'address_level2',
+            'address_level3',
+            'address_level4',
+            'address_level5',
+            'address_level6',
+            'address_postalCode',
+            'address_line1',
+            'address_line2',
+        ];
+
+        return array_intersect_key($labels, array_flip($keys));
     }
 }

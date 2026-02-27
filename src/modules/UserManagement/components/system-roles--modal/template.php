@@ -16,7 +16,7 @@ $this->import('
 ?>
 <mc-modal :title="title" classes="create-modal system-roles-modal" @close="destroyInstance()" @open="createInstance()">
     <template v-if="instance" #default>
-        <entity-field v-if="!entity" :entity="instance" prop="name" hide-required class="system-roles-modal__field"></entity-field>
+        <entity-field v-if="!entity" :entity="instance" prop="name" hide-required :classes="'system-roles-modal__field'"></entity-field>
         <form class="system-roles-modal__filter">
                <input type="text" class="system-roles-modal__input">
                <mc-icon name="search" class="system-roles-modal__icon"></mc-icon>
