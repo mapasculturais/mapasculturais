@@ -139,26 +139,35 @@ app.component('registration-workplan', {
                             delivery.teamCompositionGender = JSON.parse(delivery.teamCompositionGender);
                         } catch (e) {
                             delivery.teamCompositionGender = {
-                                masculine: 0,
-                                feminine: 0,
+                                cisgenderWoman: 0,
+                                cisgenderMan: 0,
+                                transgenderWoman: 0,
+                                transgenderMan: 0,
                                 nonBinary: 0,
-                                notDeclared: 0
+                                otherGenderIdentity: 0,
+                                preferNotToSay: 0
                             };
                         }
                     }
                     if (!delivery.teamCompositionGender || typeof delivery.teamCompositionGender !== 'object') {
                         delivery.teamCompositionGender = {
-                            masculine: 0,
-                            feminine: 0,
+                            cisgenderWoman: 0,
+                            cisgenderMan: 0,
+                            transgenderWoman: 0,
+                            transgenderMan: 0,
                             nonBinary: 0,
-                            notDeclared: 0
+                            otherGenderIdentity: 0,
+                            preferNotToSay: 0
                         };
                     } else {
                         // Ensure all properties exist and convert to numbers
-                        delivery.teamCompositionGender.masculine = Number(delivery.teamCompositionGender.masculine) || 0;
-                        delivery.teamCompositionGender.feminine = Number(delivery.teamCompositionGender.feminine) || 0;
+                        delivery.teamCompositionGender.cisgenderWoman = Number(delivery.teamCompositionGender.cisgenderWoman) || 0;
+                        delivery.teamCompositionGender.cisgenderMan = Number(delivery.teamCompositionGender.cisgenderMan) || 0;
+                        delivery.teamCompositionGender.transgenderWoman = Number(delivery.teamCompositionGender.transgenderWoman) || 0;
+                        delivery.teamCompositionGender.transgenderMan = Number(delivery.teamCompositionGender.transgenderMan) || 0;
                         delivery.teamCompositionGender.nonBinary = Number(delivery.teamCompositionGender.nonBinary) || 0;
-                        delivery.teamCompositionGender.notDeclared = Number(delivery.teamCompositionGender.notDeclared) || 0;
+                        delivery.teamCompositionGender.otherGenderIdentity = Number(delivery.teamCompositionGender.otherGenderIdentity) || 0;
+                        delivery.teamCompositionGender.preferNotToSay = Number(delivery.teamCompositionGender.preferNotToSay) || 0;
                     }
 
                     // Initialize teamCompositionRace - PARSE JSON STRING FROM API
@@ -283,10 +292,13 @@ app.component('registration-workplan', {
             entityDelivery.mediationActions = null;
             entityDelivery.paidStaffByRole = [];
             entityDelivery.teamCompositionGender = {
-                masculine: 0,
-                feminine: 0,
+                cisgenderWoman: 0,
+                cisgenderMan: 0,
+                transgenderWoman: 0,
+                transgenderMan: 0,
                 nonBinary: 0,
-                notDeclared: 0
+                otherGenderIdentity: 0,
+                preferNotToSay: 0
             };
             entityDelivery.teamCompositionRace = {
                 white: 0,
@@ -792,10 +804,13 @@ app.component('registration-workplan', {
         // Calcular total de composição por gênero
         calculateGenderTotal(composition) {
             if (!composition) return 0;
-            const total = (Number(composition.masculine) || 0) +
-                         (Number(composition.feminine) || 0) +
+            const total = (Number(composition.cisgenderWoman) || 0) +
+                         (Number(composition.cisgenderMan) || 0) +
+                         (Number(composition.transgenderWoman) || 0) +
+                         (Number(composition.transgenderMan) || 0) +
                          (Number(composition.nonBinary) || 0) +
-                         (Number(composition.notDeclared) || 0);
+                         (Number(composition.otherGenderIdentity) || 0) +
+                         (Number(composition.preferNotToSay) || 0);
             return total;
         },
 

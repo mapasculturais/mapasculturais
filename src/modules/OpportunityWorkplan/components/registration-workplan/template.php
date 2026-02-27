@@ -362,6 +362,43 @@ $this->import('
                             <div class="form-section">
                                 <h4 class="form-section__title">4. <?= i::__('Equipe, diversidade e acesso') ?></h4>
                                 <p class="form-section__description"><?= i::__('Composição da equipe por gênero e raça, estratégias de inclusão, acessibilidade e práticas socioambientais.') ?></p>
+                                <!-- Composição da equipe por gênero -->
+                                <div v-if="opportunity.workplan_deliveryInformTeamComposition" class="field">
+                                    <label><?= i::esc_attr__('Composição prevista da equipe por gênero') ?><span v-if="opportunity.workplan_deliveryRequireTeamCompositionGender" class="required">obrigatório*</span></label>
+                                    <div class="grid-12">
+                                        <div class="col-3 sm:col-6 field">
+                                            <label><?= i::esc_attr__('Mulher cisgênero') ?></label>
+                                            <input v-model.number="delivery.teamCompositionGender.cisgenderWoman" type="number" min="0">
+                                        </div>
+                                        <div class="col-3 sm:col-6 field">
+                                            <label><?= i::esc_attr__('Homem cisgênero') ?></label>
+                                            <input v-model.number="delivery.teamCompositionGender.cisgenderMan" type="number" min="0">
+                                        </div>
+                                        <div class="col-3 sm:col-6 field">
+                                            <label><?= i::esc_attr__('Mulher transgênero') ?></label>
+                                            <input v-model.number="delivery.teamCompositionGender.transgenderWoman" type="number" min="0">
+                                        </div>
+                                        <div class="col-3 sm:col-6 field">
+                                            <label><?= i::esc_attr__('Homem transgênero') ?></label>
+                                            <input v-model.number="delivery.teamCompositionGender.transgenderMan" type="number" min="0">
+                                        </div>
+                                        <div class="col-3 sm:col-6 field">
+                                            <label><?= i::esc_attr__('Pessoa não binária') ?></label>
+                                            <input v-model.number="delivery.teamCompositionGender.nonBinary" type="number" min="0">
+                                        </div>
+                                        <div class="col-3 sm:col-6 field">
+                                            <label><?= i::esc_attr__('Outra identidade de gênero') ?></label>
+                                            <input v-model.number="delivery.teamCompositionGender.otherGenderIdentity" type="number" min="0">
+                                        </div>
+                                        <div class="col-3 sm:col-6 field">
+                                            <label><?= i::esc_attr__('Prefiro não informar') ?></label>
+                                            <input v-model.number="delivery.teamCompositionGender.preferNotToSay" type="number" min="0">
+                                        </div>
+                                    </div>
+                                    <div class="field__note">
+                                        <strong><?= i::__('Total:') ?></strong> {{ calculateGenderTotal(delivery.teamCompositionGender) }}
+                                    </div>
+                                </div>
 
                                 <!-- Composição da equipe por gênero -->
                                 <div v-if="opportunity.workplan_deliveryInformTeamComposition" class="field">
