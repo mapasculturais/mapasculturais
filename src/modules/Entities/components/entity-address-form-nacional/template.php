@@ -48,8 +48,8 @@ $this->import('
             </div>
 
             <!-- Bairro -->
-            <div class="field col-10 sm:col-8" :class="{'field--error': hasError('address_level3')}">
-                <label :for="fid('neighborhood')"><?= i::__('Bairro') ?> <span v-if="isRequired('address_level3')" class="required">*</span></label>
+            <div class="field col-10 sm:col-8" :class="{'field--error': hasError('address_level6')}">
+                <label :for="fid('neighborhood')"><?= i::__('Bairro') ?> <span v-if="isRequired('address_level6')" class="required">*</span></label>
                 <input
                     :id="fid('neighborhood')"
                     type="text"
@@ -70,9 +70,9 @@ $this->import('
             </div>
 
             <!-- Estado (UF) -->
-            <div class="field col-6 sm:col-12" :class="{'field--error': hasError('address_level1')}">
+            <div class="field col-6 sm:col-12" :class="{'field--error': hasError('address_level2')}">
                 <label class="field__title" :for="fid('state')">
-                    <?php i::_e('Estado') ?> <span v-if="isRequired('address_level1')" class="required">*</span>
+                    <?php i::_e('Estado') ?> <span v-if="isRequired('address_level2')" class="required">*</span>
                 </label>
                 <select
                     :id="fid('state')"
@@ -86,9 +86,9 @@ $this->import('
             </div>
 
             <!-- Município -->
-            <div class="field col-6 sm:col-12" :class="{'field--error': hasError('address_level2')}">
+            <div class="field col-6 sm:col-12" :class="{'field--error': hasError('address_level4')}">
                 <label class="field__title" :for="fid('city')">
-                    <?php i::_e('Município') ?> <span v-if="isRequired('address_level2')" class="required">*</span>
+                    <?php i::_e('Município') ?> <span v-if="isRequired('address_level4')" class="required">*</span>
                 </label>
                 <select
                     :disabled="!entity.address_level2"

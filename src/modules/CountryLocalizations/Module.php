@@ -63,8 +63,8 @@ class Module extends \MapasCulturais\Module {
             'address'            => i::__('Endereço completo'),
             'address_postalCode' => i::__('Código postal'),
             'address_level0'     => i::__('País'),
-            'address_line1'      => i::__('Endereço linha 1'),
-            'address_line2'      => i::__('Endereço linha 2'),
+            'address_line1'      => i::__('Endereço'),
+            'address_line2'      => i::__('Complemento'),
         ];
 
         $level_labels = $app->config['address.defaultLevelsLabels'] ?? [];
