@@ -84,7 +84,8 @@ app.component('entity-field-location-global', {
             const result = {};
 
             const isBrazil = this.isBrazil;
-            const keysBrazil = ['address_level0', 'address_level1', 'address_level2', 'address_level3', 'address_postalCode', 'address_line1', 'address_number', 'address_line2'];
+            // Brasil: level2=Estado, level4=Município, level6=Bairro (padrão BrasilLocalization)
+            const keysBrazil = ['address_level0', 'address_postalCode', 'address_line1', 'address_number', 'address_line2', 'address_level2', 'address_level4', 'address_level6'];
             const keysOther = ['address_level0', 'address_level1', 'address_level2', 'address_level3', 'address_level4', 'address_level5', 'address_level6', 'address_postalCode', 'address_line1', 'address_line2'];
 
             const normalize = (raw, keys) => {
@@ -151,21 +152,22 @@ app.component('entity-field-location-global', {
                     case 'address_level0':
                         return clean(value.address_level0);
                     case 'address_level1':
-                        // Brasil: UF vem de address_level2; internacional: nível 1 em address_level1
                         return isBrazil ? clean(value.address_level2) : clean(value.address_level1);
                     case 'address_level2':
-                        // Brasil: município em address_level4; internacional: nível 2 em address_level2
-                        return isBrazil ? clean(value.address_level4) : clean(value.address_level2);
+                        // Brasil: Estado (UF) em address_level2; outros: nível 2
+                        return clean(value.address_level2);
                     case 'address_level3':
-                        // Brasil: bairro em address_level6; internacional: nível 3 em address_level3
                         return isBrazil ? clean(value.address_level6) : clean(value.address_level3);
-                    case 'address_level4': return clean(value.address_level4);
+                    case 'address_level4':
+                        // Brasil: Município em address_level4
+                        return clean(value.address_level4);
                     case 'address_level5': return clean(value.address_level5);
-                    case 'address_level6': return clean(value.address_level6);
+                    case 'address_level6':
+                        // Brasil: Bairro em address_level6
+                        return clean(value.address_level6);
                     case 'address_postalCode': return clean(value.address_postalCode);
                     case 'address_line1':      return clean(value.address_line1);
                     case 'address_number':
-                        // Fora do Brasil não há campo Número separado; Endereço (address_line1) atende ambos
                         return isBrazil ? clean(value.address_number) : clean(value.address_line1);
                     case 'address_line2':      return clean(value.address_line2);
                     default:                   return '';

@@ -387,53 +387,6 @@ class Module extends \MapasCulturais\Module
         return $this->getLocationRequiredFieldsConfigBrazil();
     }
 
-    /**
-     * Subcampos de endereço obrigatórios para o Brasil.
-     * Baseado na estrutura do BrasilLocalization (En_Estado, En_Municipio, En_Bairro, etc.)
-     * 
-     * @return array<string, string>
-     */
-    function getLocationRequiredFieldsConfigBrazil(): array
-    {
-        return [
-            'address_level0'     => i::__('País'),
-            'address_level1'     => i::__('Estado'),
-            'address_postalCode' => i::__('CEP'),
-            'address_level2'     => i::__('Cidade'),
-            'address_level3'     => i::__('Bairro'),
-            'address_line1'      => i::__('Logradouro'),
-            'address_number'     => i::__('Número'),
-            'address_line2'      => i::__('Complemento'),
-        ];
-    }
-
-    /**
-     * Subcampos de endereço obrigatórios para outros países (não-Brasil).
-     * Baseado na estrutura genérica de country-localization (address_level1..6, line1, line2).
-     * 
-     * @return array<string, string>
-     */
-    function getLocationRequiredFieldsConfigOther(): array
-    {
-        $app = App::i();
-        $levelLabels = $app->config['address.defaultLevelsLabels'] ?? [];
-
-        $config = [
-            'address_level0'     => i::__('País'),
-            'address_postalCode' => i::__('Código postal'),
-        ];
-
-        for ($i = 1; $i <= 6; $i++) {
-            if (isset($levelLabels[$i])) {
-                $config["address_level{$i}"] = $levelLabels[$i];
-            }
-        }
-
-        $config['address_line1'] = i::__('Endereço');
-        $config['address_line2'] = i::__('Complemento');
-
-        return $config;
-    }
 
     /**
      * Mapeamento de chaves En_* (formulário BR) para chaves address_* usadas na validação.
@@ -1252,5 +1205,82 @@ class Module extends \MapasCulturais\Module
         }
 
         return $taxonomies_fields;
+    }
+
+    /**
+     * Subcampos de endereço (label) usados na config de campos de inscrição.
+     *
+     * Retorna o mapa completo de labels, independente de país.
+     *
+     * @return array<string,string>
+     */
+    protected function getBaseLocationFieldsLabels(): array
+    {
+        $app = App::i();
+
+        $level_labels = $app->config['address.defaultLevelsLabels'] ?? [];
+
+        $labels = [
+            'address_level0'     => i::__('País'),
+            'address_postalCode' => i::__('Código postal'),
+            'address_line1'      => i::__('Endereço'),
+            'address_number'     => i::__('Número'),
+            'address_line2'      => i::__('Complemento'),
+            'address_level3'     => i::__('Mesorregião'),
+        ];
+
+        // níveis hierárquicos (1 a 6) vindos da configuração global
+        for ($i = 1; $i <= 6; $i++) {
+            $labels["address_level{$i}"] = $level_labels[$i] ?? "address_level{$i}";
+        }
+
+        return $labels;
+    }
+
+    /**
+     * Campos de endereço que podem ser marcados como obrigatórios para Brasil.
+     *
+     * @return array<string,string>
+     */
+    public function getLocationRequiredFieldsConfigBrazil(): array
+    {
+        // Para o Brasil usamos a convenção específica da BrasilLocalization:
+        // level0 = País, level2 = Estado, level4 = Município/Cidade, level6 = Bairro.
+        // Os demais níveis (1,3,5) não são exibidos aqui.
+        return [
+            'address_level0'     => i::__('País'),
+            'address_postalCode' => i::__('CEP'),
+            'address_line1'      => i::__('Endereço'),
+            'address_number'     => i::__('Número'),
+            'address_line2'      => i::__('Complemento'),
+            'address_level2'     => i::__('Estado'),
+            'address_level4'     => i::__('Município/Cidade'),
+            'address_level6'     => i::__('Bairro'),
+        ];
+    }
+
+    /**
+     * Campos de endereço que podem ser marcados como obrigatórios para outros países.
+     *
+     * @return array<string,string>
+     */
+    public function getLocationRequiredFieldsConfigOther(): array
+    {
+        $labels = $this->getBaseLocationFieldsLabels();
+
+        $keys = [
+            'address_level0',
+            'address_level1',
+            'address_level2',
+            'address_level3',
+            'address_level4',
+            'address_level5',
+            'address_level6',
+            'address_postalCode',
+            'address_line1',
+            'address_line2',
+        ];
+
+        return array_intersect_key($labels, array_flip($keys));
     }
 }

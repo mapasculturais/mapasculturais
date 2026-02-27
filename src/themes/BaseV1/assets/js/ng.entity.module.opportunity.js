@@ -164,7 +164,17 @@
                     fieldTypesBySlug[e.slug] = e;
                 });
 
-                var KEYS_BRAZIL = ['address_level0', 'address_level1', 'address_level2', 'address_level3', 'address_postalCode', 'address_line1', 'address_number', 'address_line2'];
+                // Subcampos de endereço considerados para o Brasil (segue o padrão da BrasilLocalization)
+                var KEYS_BRAZIL = [
+                    'address_level0',    // País
+                    'address_postalCode',// CEP
+                    'address_line1',     // Endereço
+                    'address_number',    // Número
+                    'address_line2',     // Complemento
+                    'address_level2',    // Estado (UF)
+                    'address_level4',    // Município/Cidade
+                    'address_level6'     // Bairro
+                ];
                 var KEYS_OTHER = ['address_level0', 'address_level1', 'address_level2', 'address_level3', 'address_level4', 'address_level5', 'address_level6', 'address_postalCode', 'address_line1', 'address_line2'];
 
                 function normalizeConfig(raw, keys) {
@@ -444,7 +454,16 @@ module.controller('RegistrationConfigurationsController', ['$scope', '$rootScope
     }
 
     /** Chaves de subcampos de endereço que podem ser obrigatórios. */
-    var LOCATION_REQUIRED_KEYS_BRAZIL = ['address_level0', 'address_level1', 'address_level2', 'address_level3', 'address_postalCode', 'address_line1', 'address_number', 'address_line2'];
+    var LOCATION_REQUIRED_KEYS_BRAZIL = [
+        'address_level0',     // País
+        'address_postalCode', // CEP
+        'address_line1',      // Endereço
+        'address_number',     // Número
+        'address_line2',      // Complemento
+        'address_level2',     // Estado (UF)
+        'address_level4',     // Município/Cidade
+        'address_level6'      // Bairro
+    ];
     var LOCATION_REQUIRED_KEYS_OTHER = ['address_level0', 'address_level1', 'address_level2', 'address_level3', 'address_level4', 'address_level5', 'address_level6', 'address_postalCode', 'address_line1', 'address_line2'];
 
     function normalizeRequiredConfig(raw, keys) {
