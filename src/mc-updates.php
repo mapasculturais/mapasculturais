@@ -741,6 +741,44 @@ return [
             $registration->save(true);
             $app->log->debug("[valuers_exceptions_list] Inscrição {$registration->id} migrada (include: " . implode(',', $include) . ", exclude: " . implode(',', $exclude) . ")");
         });
-    }
+    },
+    'ajusta requiredAddressFields dos campos @location obrigatórios' => function () {
+        DB_UPDATE::enqueue(
+            'RegistrationFieldConfiguration',
+            "field_type IN ('agent-owner-field','agent-collective-field','space-field') AND required IS TRUE",
+            function (MapasCulturais\Entities\RegistrationFieldConfiguration $field) {
+                $config = $field->config;
+
+                if (!is_array($config)) {
+                    return;
+                }
+
+                // Apenas campos @location
+                if (($config['entityField'] ?? null) !== '@location') {
+                    return;
+                }
+
+                // Não sobrescreve quem já foi configurado manualmente
+                if (!empty($config['requiredAddressFieldsBrazil']) || !empty($config['requiredAddressFieldsOther'])) {
+                    return;
+                }
+
+                // Brasil: país, estado (level2), município (level4)
+                $config['requiredAddressFieldsBrazil'] = [
+                    'address_level0' => true,
+                    'address_level2' => true,
+                    'address_level4' => true,
+                ];
+
+                // Outros países: apenas país obrigatório
+                $config['requiredAddressFieldsOther'] = [
+                    'address_level0' => true,
+                ];
+
+                $field->config = $config;
+                $field->save(true);
+            }
+        );
+    },
 
 ];
