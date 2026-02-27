@@ -88,6 +88,42 @@
         padding: .5rem;
         z-index: 2;
     }
+
+    .form-section {
+        margin-bottom: size(24);
+        padding: size(16) 0;
+
+        &__title {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: var(--mc-primary-500);
+            margin-bottom: size(8);
+            border-bottom: 2px solid var(--mc-primary-500);
+            padding-bottom: size(4);
+
+            @media (max-width: 768px) {
+                font-size: 1rem;
+            }
+        }
+
+        &__description {
+            font-size: 0.9rem;
+            color: var(--mc-gray-700, #666);
+            margin-bottom: size(16);
+            font-style: italic;
+            line-height: 1.5;
+
+            @media (max-width: 768px) {
+                font-size: 0.85rem;
+            }
+        }
+
+        &__divider {
+            border: 0;
+            border-top: 1px dashed var(--mc-gray-300, #ccc);
+            margin: size(24) 0;
+        }
+    }
 }
 
 // Paid Staff by Role - Lista de funções remuneradas
