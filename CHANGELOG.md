@@ -5,6 +5,10 @@ Todas as mudanças notáveis no projeto serão documentadas neste arquivo.
 O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/)
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [7.6.52] - 2026-02-27
+### Melhorias
+- Aplica melhoria no campo @ de endereço para possibilitar que se defina quais subcampos do endereço sejam obrigatórios no formulário de inscrição
+
 ## [7.6.51] - 2026-02-26
 ### Melhorias
 - Adiciona possibilidade de filtro por arquivo na api
