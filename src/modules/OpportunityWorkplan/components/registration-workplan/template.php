@@ -200,6 +200,14 @@ $this->import('
                                     <label><?= i::esc_attr__('Número previsto de pessoas') ?><span v-if="opportunity.workplan_deliveryRequireExpectedNumberPeople" class="required">obrigatório*</span></label>
                                     <input class="field__limits" v-model="delivery.expectedNumberPeople" min="0" type="number">
                                 </div>
+                            </div>
+                            <div v-if="opportunity.workplan_deliveryInformArtChainLink" class="field">
+                                <label><?= i::esc_attr__('Principal elo das artes acionado') ?><span v-if="opportunity.workplan_deliveryRequireArtChainLink" class="required">obrigatório*</span></label>
+                                <select v-model="delivery.artChainLink">
+                                    <option value=""><?= i::esc_attr__('Selecione') ?></option>
+                                    <option v-for="n in workplanFields.goal.delivery.artChainLink.options" :key="n" :value="n">{{ n }}</option>
+                                </select>
+                            </div>
 
                             <div v-if="opportunity.workplan_deliveryInformTotalBudget" class="field">
                                 <label><?= i::esc_attr__('Qual o orçamento total da atividade?') ?><span v-if="opportunity.workplan_deliveryRequireTotalBudget" class="required">obrigatório*</span></label>

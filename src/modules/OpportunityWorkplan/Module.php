@@ -1020,19 +1020,22 @@ class Module extends \MapasCulturais\Module{
         // NOVOS CAMPOS DE PLANEJAMENTO DA ENTREGA
         // ============================================
 
-        // Principal elo das artes acionado pela atividade
+        // Principal elo das artes acionado
         $artChainLink = new Metadata('artChainLink', [
-            'label' => \MapasCulturais\i::__('Principal elo das artes acionado pela atividade'),
+            'label' => \MapasCulturais\i::__('Principal elo das artes acionado'),
             'type' => 'select',
             'options' => array(
+                \MapasCulturais\i::__('Acesso'),
                 \MapasCulturais\i::__('Criação'),
                 \MapasCulturais\i::__('Produção'),
                 \MapasCulturais\i::__('Difusão'),
                 \MapasCulturais\i::__('Circulação'),
+                \MapasCulturais\i::__('Internacionalização'),
                 \MapasCulturais\i::__('Formação'),
                 \MapasCulturais\i::__('Fruição'),
                 \MapasCulturais\i::__('Memória/Preservação'),
                 \MapasCulturais\i::__('Pesquisa'),
+                \MapasCulturais\i::__('Reflexão'),
                 \MapasCulturais\i::__('Gestão Cultural'),
             ),
         ]);
