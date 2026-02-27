@@ -13,10 +13,11 @@ $this->import('
         <?php $this->applyTemplateHook('entity-address-form-nacional', 'begin'); ?>
 
         <!-- Formulário nacional -->
+         {{hasError('address_level2')}}
         <div class="col-12 grid-12">
             <!-- CEP -->
-            <div class="field col-4 sm:col-12">
-                <label :for="fid('postalCode')"><?= i::__('CEP') ?></label>
+            <div class="field col-4 sm:col-12" :class="{'field--error': hasError('address_postalCode')}">
+                <label :for="fid('postalCode')"><?= i::__('CEP') ?> <span v-if="isRequired('address_postalCode')" class="required">*</span></label>
                 <input
                     :id="fid('postalCode')"
                     type="text"
@@ -26,8 +27,8 @@ $this->import('
             </div>
 
             <!-- Logradouro (rua) -->
-            <div class="field col-8 sm:col-12">
-                <label :for="fid('street')"><?= i::__('Logradouro') ?></label>
+            <div class="field col-8 sm:col-12" :class="{'field--error': hasError('address_line1')}">
+                <label :for="fid('street')"><?= i::__('Logradouro') ?> <span v-if="isRequired('address_line1')" class="required">*</span></label>
                 <input
                     :id="fid('street')"
                     type="text"
@@ -37,8 +38,8 @@ $this->import('
             </div>
 
             <!-- Número -->
-            <div class="field col-2 sm:col-4">
-                <label :for="fid('number')"><?= i::__('Número') ?></label>
+            <div class="field col-2 sm:col-4" :class="{'field--error': hasError('address_number')}">
+                <label :for="fid('number')"><?= i::__('Número') ?> <span v-if="isRequired('address_number')" class="required">*</span></label>
                 <input
                     :id="fid('number')"
                     type="text"
@@ -48,8 +49,8 @@ $this->import('
             </div>
 
             <!-- Bairro -->
-            <div class="field col-10 sm:col-8">
-                <label :for="fid('neighborhood')"><?= i::__('Bairro') ?></label>
+            <div class="field col-10 sm:col-8" :class="{'field--error': hasError('address_level3')}">
+                <label :for="fid('neighborhood')"><?= i::__('Bairro') ?> <span v-if="isRequired('address_level3')" class="required">*</span></label>
                 <input
                     :id="fid('neighborhood')"
                     type="text"
@@ -59,8 +60,8 @@ $this->import('
             </div>
 
             <!-- Complemento -->
-            <div class="field col-12 sm:col-6">
-                <label :for="fid('line2')"><?= i::__('Complemento ou ponto de referência') ?></label>
+            <div class="field col-12 sm:col-6" :class="{'field--error': hasError('address_line2')}">
+                <label :for="fid('line2')"><?= i::__('Complemento ou ponto de referência') ?> <span v-if="isRequired('address_line2')" class="required">*</span></label>
                 <input
                     :id="fid('line2')"
                     type="text"
@@ -70,9 +71,9 @@ $this->import('
             </div>
 
             <!-- Estado (UF) -->
-            <div class="field col-6 sm:col-12">
+            <div class="field col-6 sm:col-12" :class="{'field--error': hasError('address_level1')}">
                 <label class="field__title" :for="fid('state')">
-                    <?php i::_e('Estado') ?>
+                    <?php i::_e('Estado') ?> <span v-if="isRequired('address_level1')" class="required">*</span>
                 </label>
                 <select
                     :id="fid('state')"
@@ -86,9 +87,9 @@ $this->import('
             </div>
 
             <!-- Município -->
-            <div class="field col-6 sm:col-12">
+            <div class="field col-6 sm:col-12" :class="{'field--error': hasError('address_level2')}">
                 <label class="field__title" :for="fid('city')">
-                    <?php i::_e('Município') ?>
+                    <?php i::_e('Município') ?> <span v-if="isRequired('address_level2')" class="required">*</span>
                 </label>
                 <select
                     :disabled="!entity.address_level2"

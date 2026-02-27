@@ -29,11 +29,16 @@ $this->import('
         </template>
     
         <template v-if="!levelHierarchy" v-for="(level, index) in activeLevels" :key="index">
-            <entity-field v-if="!getLevel(index)" :classes="getColumnClass(index, Object.keys(activeLevels))" class="sm:col-12" :entity="entity" :prop="`address_level${index}`" @change="address()"></entity-field>
+            <entity-field
+                v-if="!getLevel(index)"
+                :classes="[getColumnClass(index, Object.keys(activeLevels)), 'sm:col-12']"
+                :entity="entity"
+                :prop="`address_level${index}`"
+                @change="address()"></entity-field>
         </template>
     
-        <entity-field classes="col-12" :entity="entity" prop="address_line1"></entity-field>
-        <entity-field classes="col-12" :entity="entity" prop="address_line2"></entity-field>
+        <entity-field :classes="'col-12'" :entity="entity" prop="address_line1"></entity-field>
+        <entity-field :classes="'col-12'" :entity="entity" prop="address_line2"></entity-field>
 
         <div class="col-12" v-if="hasPublicLocation">
             <div class="col-6 sm:col-12 field public-location">

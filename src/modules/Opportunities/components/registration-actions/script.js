@@ -249,7 +249,8 @@ app.component('registration-actions', {
 
             try {
                 await this.save();
-                const success = await this.registration.POST('validateEntity', {processingMessage: this.text('Validando')});
+                const data = this.getRegistrationPayloadForValidation();
+                const success = await this.registration.POST('validateEntity', { data, processingMessage: this.text('Validando') });
 
                 if (success) {
                     this.isValidated = true;
@@ -265,6 +266,21 @@ app.component('registration-actions', {
                 }
                 return false;
             }
+        },
+
+        getRegistrationPayloadForValidation() {
+            const r = this.registration;
+            const payload = {};
+            const keys = new Set(['category', 'proponentType', 'range', 'projectName']);
+            (this.fields || []).forEach(f => { if (f.fieldName) keys.add(f.fieldName); });
+            (this.additionalValidateFields || []).forEach(k => keys.add(k));
+            keys.forEach(key => {
+                if (!Object.prototype.hasOwnProperty.call(r, key) || key.indexOf('$$') === 0) return;
+                const val = r[key];
+                if (val === undefined) return;
+                payload[key] = (typeof val === 'object' && val !== null) ? JSON.parse(JSON.stringify(val)) : val;
+            });
+            return payload;
         },
 
         getEmptyValidationState() {

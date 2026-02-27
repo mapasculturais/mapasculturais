@@ -36,6 +36,23 @@ foreach ($space_fields as $field) {
     <div ng-if="field.config.entityField == '@location'">
         <label><input type="checkbox" ng-model="field.config.setLatLon" ng-true-value="'true'" ng-false-value=""> <?php i::_e('Definir a latitude e longitude baseado no CEP?') ?></label><br>
         <label><input type="checkbox" ng-model="field.config.setPrivacy" ng-true-value="'true'" ng-false-value=""> <?php i::_e('Fornecer opção para mudar a privacidade da localização?') ?></label>
+        <?php
+        $location_required_config = $app->modules['RegistrationFieldTypes']->getLocationRequiredFieldsConfig();
+        if (!empty($location_required_config)) :
+        ?>
+        <div ng-if="field.required" class="registration-field-config--location-required" style="margin-top: 0.75em;">
+            <strong><?php i::_e('Subcampos obrigatórios do endereço:') ?></strong>
+            <div style="margin-top: 0.25em;">
+                <?php foreach ($location_required_config as $key => $label) : ?>
+                <label style="display: inline-block; margin-right: 1em; white-space: nowrap;">
+                    <input type="checkbox" ng-model="field.config.requiredAddressFields.<?= $key ?>" ng-change="saveField()">
+                    <?= $label ?>
+                </label>
+                <?php endforeach; ?>
+            </div>
+            <small class="registration-help"><?php i::_e('Marque os subcampos que devem ser obrigatórios.'); ?></small>
+        </div>
+        <?php endif; ?>
     </div>
     <div ng-if="field.config.entityField == '@terms:area'">
         <?php i::_e("Informe os termos que estarão disponíveis para seleção. <br>Para fazer um mapeamento de valores utilize <strong>valor salvo:valor exibido</strong>. Exemplo: <strong>Dança:Artes da Dança</strong>") ?>
