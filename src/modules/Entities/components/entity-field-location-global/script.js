@@ -70,23 +70,57 @@ app.component('entity-field-location-global', {
             return this.configs?.fieldType !== 'space-field';
         },
 
-        // Retorna objeto com os subcampos obrigatórios (ex: { address_level1: true, address_level2: true })
+        // Detecta se o país atual é Brasil
+        isBrazil() {
+            const country = (this.country || '').toString().trim();
+            const upper = country.toUpperCase();
+            const lower = country.toLowerCase();
+            return upper === 'BR' || upper === 'BRA' || ['brasil', 'brazil'].includes(lower);
+        },
+
+        // Retorna objeto com os subcampos obrigatórios conforme país (Brazil ou Other)
         requiredAddressFields() {
-            const raw = this.configs?.config?.requiredAddressFields;
+            const config = this.configs?.config || {};
             const result = {};
 
-            const keys = ['address_level0', 'address_level1', 'address_level2', 'address_level3', 'address_postalCode', 'address_line1', 'address_number', 'address_line2', 'endereco'];
+            const isBrazil = this.isBrazil;
+            const keysBrazil = ['address_level0', 'address_level1', 'address_level2', 'address_level3', 'address_postalCode', 'address_line1', 'address_number', 'address_line2'];
+            const keysOther = ['address_level0', 'address_level1', 'address_level2', 'address_level3', 'address_level4', 'address_level5', 'address_level6', 'address_postalCode', 'address_line1', 'address_line2'];
 
-            if (raw && typeof raw === 'object') {
-                // Normaliza strings "true"/"false" para booleanos
-                keys.forEach(k => {
-                    const v = raw[k];
-                    result[k] = v === true || v === 1 || v === '1' || v === 'true';
-                });
-            } else {
-                keys.forEach(k => { result[k] = false; });
+            const normalize = (raw, keys) => {
+                const out = {};
+                if (raw && typeof raw === 'object') {
+                    keys.forEach(k => {
+                        const v = raw[k];
+                        out[k] = v === true || v === 1 || v === '1' || v === 'true';
+                    });
+                } else {
+                    keys.forEach(k => { out[k] = false; });
+                }
+                return out;
+            };
+
+            // Suporte ao novo formato (Brazil/Other) e retrocompatibilidade (requiredAddressFields)
+            const hasBrazil = config.requiredAddressFieldsBrazil !== undefined;
+            const hasOther = config.requiredAddressFieldsOther !== undefined;
+            const hasLegacy = config.requiredAddressFields !== undefined;
+
+            if (hasBrazil || hasOther) {
+                if (isBrazil) {
+                    return normalize(config.requiredAddressFieldsBrazil, keysBrazil);
+                } else {
+                    return normalize(config.requiredAddressFieldsOther, keysOther);
+                }
             }
 
+            // Retrocompatibilidade: formato legado único
+            if (hasLegacy) {
+                return normalize(config.requiredAddressFields, keysBrazil);
+            }
+
+            // Sem config
+            const keys = isBrazil ? keysBrazil : keysOther;
+            keys.forEach(k => { result[k] = false; });
             return result;
         },
 
@@ -110,11 +144,7 @@ app.component('entity-field-location-global', {
             const required = this.requiredAddressFields;
             const value = this.model || {};
             const clean = v => (v ?? '').toString().trim();
-
-            const country = (value.address_level0 || this.country || '').toString().trim();
-            const upper = country.toUpperCase();
-            const lower = country.toLowerCase();
-            const isBrazil = upper === 'BR' || upper === 'BRA' || ['brasil', 'brazil'].includes(lower);
+            const isBrazil = this.isBrazil;
 
             const getVal = key => {
                 switch (key) {
@@ -129,6 +159,9 @@ app.component('entity-field-location-global', {
                     case 'address_level3':
                         // Brasil: bairro em address_level6; internacional: nível 3 em address_level3
                         return isBrazil ? clean(value.address_level6) : clean(value.address_level3);
+                    case 'address_level4': return clean(value.address_level4);
+                    case 'address_level5': return clean(value.address_level5);
+                    case 'address_level6': return clean(value.address_level6);
                     case 'address_postalCode': return clean(value.address_postalCode);
                     case 'address_line1':      return clean(value.address_line1);
                     case 'address_number':

@@ -77,9 +77,7 @@ app.component('entity-address-form-nacional', {
             return !!this.requiredFields?.[addressKey];
         },
 
-        // Verifica se o subcampo obrigatório está faltando (após validação do backend)
         hasError(addressKey) {
-            console.log(this.hasErrors, this.missingKeys, addressKey);
             return this.hasErrors && this.missingKeys.includes(addressKey);
         },
 
