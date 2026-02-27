@@ -105,8 +105,22 @@
                 jQuery('a.js-submit-button').click();
             },
 
-            validateEntity: function(registrationId) {
-                return $http.post(this.getUrl('validateEntity', registrationId)).
+            validateEntity: function(registrationId, entityData) {
+                var data = entityData || {};
+                if (entityData && typeof entityData === 'object' && !Array.isArray(entityData)) {
+                    data = {};
+                    Object.keys(entityData).forEach(function(key) {
+                        if (key.indexOf('$$') === -1) {
+                            data[key] = entityData[key];
+                            if (data[key] instanceof Date) {
+                                data[key] = moment(data[key]).format('YYYY-MM-DD');
+                            } else if (data[key] instanceof Array && data[key].length === 0) {
+                                data[key] = null;
+                            }
+                        }
+                    });
+                }
+                return $http.post(this.getUrl('validateEntity', registrationId), data).
                 success(function(data, status){
                     $rootScope.$emit('registration.validate', {message: "Opportunity registration was validated ", data: data, status: status});
                 }).
@@ -151,12 +165,30 @@
                 });
 
                 function processFieldConfiguration(field) {
-                    if(typeof field.fieldOptions === 'string'){
+                    if (typeof field.fieldOptions === 'string') {
                         field.fieldOptions = field.fieldOptions ? field.fieldOptions.split("\n") : [];
                     }
 
-                    if(typeof field.config !== 'object' || field.config instanceof Array) {
+                    if (typeof field.config !== 'object' || field.config instanceof Array) {
                         field.config = {};
+                    }
+
+                    // Normalização inline original (sem default por país)
+                    if (field.config && field.config.entityField === '@location') {
+                        var raw = field.config.requiredAddressFields;
+                        var keys = ['address_level0', 'address_level1', 'address_level2', 'address_level3', 'address_postalCode', 'address_line1', 'address_number', 'address_line2', 'endereco'];
+                        var out = {};
+                        if (Array.isArray(raw)) {
+                            keys.forEach(function (k) { out[k] = raw.indexOf(k) >= 0; });
+                        } else if (raw && typeof raw === 'object') {
+                            keys.forEach(function (k) {
+                                var v = raw[k];
+                                out[k] = !!(v === true || v === 1 || v === '1' || v === 'true');
+                            });
+                        } else {
+                            keys.forEach(function (k) { out[k] = (k === 'address_level1' || k === 'address_level2'); });
+                        }
+                        field.config.requiredAddressFields = out;
                     }
 
                     return field;
@@ -393,7 +425,37 @@ module.controller('RegistrationConfigurationsController', ['$scope', '$rootScope
         return foundField ? true : false;
     }
 
+    /** Chaves de subcampos de endereço que podem ser obrigatórios (espelha getLocationRequiredFieldsConfig no PHP). */
+    var LOCATION_REQUIRED_KEYS = ['address_level0', 'address_level1', 'address_level2', 'address_level3', 'address_postalCode', 'address_line1', 'address_number', 'address_line2', 'endereco'];
+
+    function normalizeRequiredAddressFields(config) {
+        if (typeof config !== 'object' || config instanceof Array) {
+            config = {};
+        }
+        var raw = config.requiredAddressFields;
+        var out = {};
+
+        if (Array.isArray(raw)) {
+            LOCATION_REQUIRED_KEYS.forEach(function(k) { out[k] = raw.indexOf(k) >= 0; });
+        } else if (raw && typeof raw === 'object' && !Array.isArray(raw)) {
+            LOCATION_REQUIRED_KEYS.forEach(function(k) {
+                var v = raw[k];
+                out[k] = !!(v === true || v === 1 || v === '1' || v === 'true');
+            });
+        } else {
+            LOCATION_REQUIRED_KEYS.forEach(function(k) { out[k] = false; });
+        }
+
+        return out;
+    }
+
     function processFieldConfiguration(field){
+        if (typeof field.config !== 'object' || field.config instanceof Array) {
+            field.config = {};
+        }
+        if (field.config && field.config.entityField === '@location') {
+            field.config.requiredAddressFields = normalizeRequiredAddressFields(field.config);
+        }
         if(field.fieldOptions instanceof Array){
             field.fieldOptions = field.fieldOptions.join("\n");
         }
@@ -703,8 +765,42 @@ module.controller('RegistrationConfigurationsController', ['$scope', '$rootScope
         };
 
         $scope.openFieldConfigurationEditBox = function(id, index, event){
-            $scope.fieldConfigurationBackups[index] = angular.copy($scope.data.fields[index]);
+            var field = $scope.data.fields[index];
+            // Normaliza requiredAddressFields para booleanos antes de abrir o modal
+            if (field.config && field.config.entityField === '@location') {
+                field.config.requiredAddressFields = normalizeRequiredAddressFields(field.config);
+            }
+            $scope.fieldConfigurationBackups[index] = angular.copy(field);
             EditBox.open('editbox-registration-field-'+id, event);
+        };
+
+        // Quando field.required muda para campos @location
+        $scope.onRequiredChange = function(field) {
+            if (!field || !field.config || field.config.entityField !== '@location') {
+                return;
+            }
+
+            // Garante estrutura básica
+            if (typeof field.config.requiredAddressFields !== 'object' || Array.isArray(field.config.requiredAddressFields)) {
+                field.config.requiredAddressFields = normalizeRequiredAddressFields(field.config);
+            }
+
+            if (!field.required) {
+                // Ao desmarcar obrigatoriedade, limpa todos os subcampos obrigatórios
+                LOCATION_REQUIRED_KEYS.forEach(function(k) {
+                    field.config.requiredAddressFields[k] = false;
+                });
+                return;
+            }
+
+            // Modal de criação: ao marcar como obrigatório, se nenhum subcampo estiver marcado,
+            // marca País (address_level0) por padrão.
+            var hasAny = LOCATION_REQUIRED_KEYS.some(function(k) {
+                return !!field.config.requiredAddressFields[k];
+            });
+            if (!hasAny) {
+                field.config.requiredAddressFields.address_level0 = true;
+            }
         };
 
         // Files
@@ -1526,7 +1622,7 @@ module.controller('RegistrationFieldsController', ['$scope', '$rootScope', '$int
     });
 
     $scope.validateRegistration = function(callback='') {
-        return RegistrationService.validateEntity(MapasCulturais.entity.object.id)
+        return RegistrationService.validateEntity(MapasCulturais.entity.object.id, $scope.data.editableEntity)
             .success(function(response) {
                 if(response.error) {
                     $scope.entityValidated = false;
@@ -1938,6 +2034,28 @@ module.controller('RegistrationFieldsController', ['$scope', '$rootScope', '$int
 
         return false;
     }
+
+    /** Para campo @location: retorna true só se o subcampo (En_*) estiver em requiredAddressFields. */
+    $scope.requiredLocationSubfield = function(field, enKey) {
+        if (!field || !field.required || (field.config && field.config.entityField !== '@location')) {
+            return false;
+        }
+        var locationKeyMap = {
+            'En_Pais': 'address_level0',
+            'En_Estado': 'address_level1',
+            'En_Municipio': 'address_level2',
+            'En_Bairro': 'address_level3',
+            'En_CEP': 'address_postalCode',
+            'En_Nome_Logradouro': 'address_line1',
+            'En_Num': 'address_number',
+            'En_Complemento': 'address_line2'
+        };
+        var addrKey = locationKeyMap[enKey];
+        if (!addrKey || !field.config || !field.config.requiredAddressFields) {
+            return false;
+        }
+        return !!field.config.requiredAddressFields[addrKey];
+    };
 
     $scope.checkField =  function(field) {
         

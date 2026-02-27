@@ -65,6 +65,89 @@ class Module extends \MapasCulturais\Module
             }
         });
 
+        // Validação de @location: lista de subcampos obrigatórios vem do banco (field.config.requiredAddressFields).
+        $module = $this;
+        $app->hook('entity(Registration).sendValidationErrors', function(&$errorsResult) use($app, $module) {
+            /** @var Registration $registration */
+            $registration = $this;
+            $opportunity = $registration->opportunity;
+
+            foreach ($opportunity->registrationFieldConfigurations as $field) {
+
+                if (!$field->required) {
+                    continue;
+                }
+                if (!in_array($field->fieldType ?? '', ['agent-owner-field', 'agent-collective-field', 'space-field'])) {
+                    continue;
+                }
+                if (($field->config['entityField'] ?? '') !== '@location') {
+                    continue;
+                }
+                if (!$registration->isFieldVisisble($field)) {
+                    continue;
+                }
+
+                // Lista de subcampos obrigatórios vem do banco (requiredAddressFields)
+                $requiredKeys = $module->resolveLocationRequiredFields($field);
+                if (empty($requiredKeys)) {
+                    continue;
+                }
+
+                $prop_name = $field->getFieldName();
+                $val = $registration->$prop_name;
+                if (!is_array($val) && !is_object($val)) {
+                    $val = [];
+                }
+                $arr = (array) $val;
+
+                $country = trim((string) ($arr['address_level0'] ?? ''));
+                $isBrazil = in_array(strtoupper($country), ['BR', 'BRA'], true)
+                    || in_array(strtolower($country), ['brasil', 'brazil'], true);
+
+                $missing = [];
+                foreach ($requiredKeys as $configKey) {
+                    $storedKeys = $module->getLocationStoredKeysForConfigKey($configKey);
+                    $raw = null;
+                    foreach ($storedKeys as $k) {
+                        if (array_key_exists($k, $arr)) {
+                            $raw = $arr[$k];
+                            break;
+                        }
+                    }
+                    if ($raw === null || trim((string) $raw) === '') {
+                        // Fora do Brasil não existe campo "Número" separado: Endereço (address_line1) atende ambos.
+                        if ($configKey === 'address_number' && !$isBrazil) {
+                            $line1 = trim((string) ($arr['address_line1'] ?? ''));
+                            if ($line1 !== '') {
+                                continue; // não considerar número como faltando
+                            }
+                        }
+                        $missing[] = $configKey;
+                    }
+                }
+                if (empty($missing)) {
+                    continue;
+                }
+
+                $field_name = 'field_' . $field->id;
+                if (!isset($errorsResult[$field_name])) {
+                    $errorsResult[$field_name] = [];
+                }
+
+                // Mensagens específicas por subcampo ausente, usando os rótulos definidos em getLocationRequiredFieldsConfig().
+                $labels = $module->getLocationRequiredFieldsConfig();
+                foreach ($missing as $configKey) {
+                    $label = $labels[$configKey] ?? $configKey;
+                    
+                    $_message = sprintf('O campo %s é obrigatório.', $label);
+                    $msg = i::__($_message);
+                    if (!in_array($msg, $errorsResult[$field_name])) {
+                        $errorsResult[$field_name][] = $msg;
+                    }
+                }
+            }
+        });
+
         $app->hook("entity(Registration).save:before", function() use($module, $app) {
             /** @var Registration $this */
             $fix_field = function($entity, $field) use($module){
@@ -266,6 +349,107 @@ class Module extends \MapasCulturais\Module
             }
         });
         $this->_config['availableSpaceFields'] = $this->getSpaceFields();
+    }
+
+    /**
+     * Subcampos de endereço que podem ser marcados como obrigatórios na config do campo @location.
+     * Chave = nome do campo no valor; valor = label na interface.
+     * @return array<string, string>
+     */
+    function getLocationRequiredFieldsConfig()
+    {
+        return [
+            'address_level0'     => i::__('País'),
+            'address_level1'     => i::__('Estado'),
+            'address_postalCode' => i::__('CEP'),
+            'address_level2'     => i::__('Cidade'),
+            'address_level3'     => i::__('Bairro'),
+            'address_line1'      => i::__('Logradouro'),
+            'address_number'     => i::__('Número'),
+            'address_line2'      => i::__('Complemento'),
+            'endereco'           => i::__('Endereço completo'),
+        ];
+    }
+
+    /**
+     * Mapeamento de chaves En_* (formulário BR) para chaves address_* usadas na validação.
+     * @return array<string, string>
+     */
+    protected function getLocationFieldKeyMap()
+    {
+        return [
+            'En_Pais'           => 'address_level0',
+            'En_Estado'          => 'address_level1',
+            'En_Municipio'      => 'address_level2',
+            'En_Bairro'         => 'address_level3',
+            'En_CEP'             => 'address_postalCode',
+            'En_Nome_Logradouro' => 'address_line1',
+            'En_Num'             => 'address_number',
+            'En_Complemento'     => 'address_line2',
+        ];
+    }
+
+    /**
+     * Resolve a lista de chaves de subcampos de endereço obrigatórios a partir da config do campo (banco).
+     * Aceita field.config.requiredAddressFields como array ['address_level1', ...] ou objeto { address_level1: true, ... }.
+     * Trata valores como string "true"/"false", "1"/"0", booleano ou inteiro.
+     * @return list<string>
+     */
+    function resolveLocationRequiredFields(\MapasCulturais\Entities\RegistrationFieldConfiguration $field)
+    {
+        $config = $field->config['requiredAddressFields'] ?? null;
+
+        $isTruthy = function($v): bool {
+            if (is_bool($v)) {
+                return $v;
+            }
+            if (is_int($v)) {
+                return $v === 1;
+            }
+            if (is_string($v)) {
+                return in_array(strtolower($v), ['true', '1'], true);
+            }
+            return (bool) $v;
+        };
+
+        if (is_array($config)) {
+            $keys = [];
+            foreach ($config as $k => $v) {
+                if (is_string($k) && $isTruthy($v)) {
+                    $keys[] = $k;
+                } elseif (is_int($k) && is_string($v)) {
+                    $keys[] = $v;
+                }
+            }
+            return $keys;
+        }
+        if (is_object($config)) {
+            $arr = (array) $config;
+            $out = [];
+            foreach ($arr as $k => $v) {
+                if ($isTruthy($v)) {
+                    $out[] = $k;
+                }
+            }
+            return $out;
+        }
+        return [];
+    }
+
+    /**
+     * Para uma chave da config de endereço (ex: address_level1), retorna as chaves possíveis no valor salvo (En_* ou address_*).
+     * Usado na validação para ler o valor da registration.
+     * @return array{0: string, 1?: string}
+     */
+    function getLocationStoredKeysForConfigKey(string $configKey): array
+    {
+        $map = $this->getLocationFieldKeyMap();
+        $enKey = array_search($configKey, $map, true);
+        $keys = [$configKey];
+        if ($enKey !== false) {
+            $keys[] = $enKey;
+        }
+        return $keys;
     }
 
     function getAgentFields()
