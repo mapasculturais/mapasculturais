@@ -15,6 +15,7 @@ class Module extends \MapasCulturais\Module {
     function _init(){
         /** @var App $app */
         $app = App::i();
+        $module = $this;
 
         $app->hook('entity(<<Agent|Space>>).save:before', function() use($app) {
             /** @var \MapasCulturais\Entities\Agent|\MapasCulturais\Entities\Space $this */
@@ -37,9 +38,58 @@ class Module extends \MapasCulturais\Module {
         });
 
 
-        $app->hook('Theme::addLocalizedCountriesToJS', function () {
+        $app->hook('Theme::addLocalizedCountriesToJS', function () use ($app, $module) {
             $this->jsObject['countries'] = include __DIR__ . '/countries.php';
+            $this->jsObject['config']['countryLocalization']['labelsByCountry'] = $module->getCountryAddressLabelsByCountry($app);
         });
+
+        $app->hook('mapas.printJsObject:before', function () use ($app, $module) {
+            $theme = $app->view;
+            $theme->jsObject['countries'] = $theme->jsObject['countries'] ?? include __DIR__ . '/countries.php';
+            if (empty($theme->jsObject['config']['countryLocalization'])) {
+                $theme->jsObject['config']['countryLocalization'] = [];
+            }
+            $theme->jsObject['config']['countryLocalization']['labelsByCountry'] = $module->getCountryAddressLabelsByCountry($app);
+        });
+    }
+
+    /**
+     * @param App $app
+     * @return array<string, array<string, string>>
+     */
+    public function getCountryAddressLabelsByCountry(App $app): array
+    {
+        $address_metadata = [
+            'address'            => i::__('Endereço completo'),
+            'address_postalCode' => i::__('Código postal'),
+            'address_level0'     => i::__('País'),
+            'address_line1'      => i::__('Endereço linha 1'),
+            'address_line2'      => i::__('Endereço linha 2'),
+        ];
+
+        $level_labels = $app->config['address.defaultLevelsLabels'] ?? [];
+
+        if ($level_labels) {
+            for ($i = 1; $i <= 6; $i++) {
+                if (isset($level_labels[$i])) {
+                    $address_metadata["address_level{$i}"] = $level_labels[$i];
+                }
+            }
+        }
+
+        $labels_by_country = [];
+
+        foreach ($app->getRegisteredCountryLocalizations() as $definition) {
+            $code = $definition->getCountryCode();
+
+            if (!$code) {
+                continue;
+            }
+
+            $labels_by_country[$code] = $address_metadata;
+        }
+
+        return $labels_by_country;
     }
 
     function register(){

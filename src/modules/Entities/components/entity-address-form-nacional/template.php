@@ -13,7 +13,6 @@ $this->import('
         <?php $this->applyTemplateHook('entity-address-form-nacional', 'begin'); ?>
 
         <!-- Formulário nacional -->
-         {{hasError('address_level2')}}
         <div class="col-12 grid-12">
             <!-- CEP -->
             <div class="field col-4 sm:col-12" :class="{'field--error': hasError('address_postalCode')}">

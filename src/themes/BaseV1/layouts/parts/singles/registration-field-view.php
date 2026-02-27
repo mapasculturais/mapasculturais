@@ -72,7 +72,7 @@
     <label>{{field.required ? '*' : ''}} {{field.title}}: </label>
     <div ng-repeat="(key, item) in entity[field.fieldName]"
         ng-if="key !== 'location' && key !== 'publicLocation' && item && !key.startsWith('field')">
-        <span style="text-transform:capitalize"> {{ key.split('_').pop() }}: {{ item }}</span>
+        <span><strong>{{ getAddressLabel(key, entity[field.fieldName].address_level0) }}:</strong> {{ item }}</span>
     </div>
     <div ng-if="entity[field.fieldName].hasOwnProperty('publicLocation')">
         <span>

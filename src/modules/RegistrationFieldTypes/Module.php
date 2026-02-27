@@ -65,7 +65,8 @@ class Module extends \MapasCulturais\Module
             }
         });
 
-        // Validação de @location: lista de subcampos obrigatórios vem do banco (field.config.requiredAddressFields).
+        // Validação de @location: lista de subcampos obrigatórios vem do banco.
+        // Suporta config separada (requiredAddressFieldsBrazil / requiredAddressFieldsOther) ou legado (requiredAddressFields).
         $module = $this;
         $app->hook('entity(Registration).sendValidationErrors', function(&$errorsResult) use($app, $module) {
             /** @var Registration $registration */
@@ -87,12 +88,6 @@ class Module extends \MapasCulturais\Module
                     continue;
                 }
 
-                // Lista de subcampos obrigatórios vem do banco (requiredAddressFields)
-                $requiredKeys = $module->resolveLocationRequiredFields($field);
-                if (empty($requiredKeys)) {
-                    continue;
-                }
-
                 $prop_name = $field->getFieldName();
                 $val = $registration->$prop_name;
                 if (!is_array($val) && !is_object($val)) {
@@ -104,24 +99,48 @@ class Module extends \MapasCulturais\Module
                 $isBrazil = in_array(strtoupper($country), ['BR', 'BRA'], true)
                     || in_array(strtolower($country), ['brasil', 'brazil'], true);
 
+                // Usa conjunto apropriado (BR ou outros) conforme país do endereço
+                $requiredKeys = $module->resolveLocationRequiredFields($field, $isBrazil);
+                if (empty($requiredKeys)) {
+                    continue;
+                }
+
                 $missing = [];
                 foreach ($requiredKeys as $configKey) {
-                    $storedKeys = $module->getLocationStoredKeysForConfigKey($configKey);
+                    $storedKeys = $module->getLocationStoredKeysForConfigKey($configKey, $isBrazil);
                     $raw = null;
                     foreach ($storedKeys as $k) {
                         if (array_key_exists($k, $arr)) {
-                            $raw = $arr[$k];
-                            break;
+                            $val = $arr[$k];
+                            // Só considera preenchido se o valor for não vazio (form BR pode ter address_level1/3 null e dados em level2/4/6)
+                            if ($val !== null && trim((string) $val) !== '') {
+                                $raw = $val;
+                                break;
+                            }
                         }
                     }
                     if ($raw === null || trim((string) $raw) === '') {
                         // Fora do Brasil não existe campo "Número" separado: Endereço (address_line1) atende ambos.
-                        if ($configKey === 'address_number' && !$isBrazil) {
+                        if ($configKey === 'address_number') {
                             $line1 = trim((string) ($arr['address_line1'] ?? ''));
-                            if ($line1 !== '') {
-                                continue; // não considerar número como faltando
+
+                            if (!$isBrazil) {
+                                if ($line1 !== '') {
+                                    continue;
+                                }
+                            } else {
+                                // No formulário nacional, o número vai como "Rua..., 123".
+                                // Considera número presente apenas se houver parte após a vírgula com algum dígito.
+                                if ($line1 !== '' && strpos($line1, ',') !== false) {
+                                    [$street, $rest] = explode(',', $line1, 2);
+                                    $rest = trim((string) $rest);
+                                    if ($rest !== '' && preg_match('/\\d/', $rest)) {
+                                        continue;
+                                    }
+                                }
                             }
                         }
+
                         $missing[] = $configKey;
                     }
                 }
@@ -134,8 +153,11 @@ class Module extends \MapasCulturais\Module
                     $errorsResult[$field_name] = [];
                 }
 
-                // Mensagens específicas por subcampo ausente, usando os rótulos definidos em getLocationRequiredFieldsConfig().
-                $labels = $module->getLocationRequiredFieldsConfig();
+                // Usa labels apropriados ao país
+                $labels = $isBrazil
+                    ? $module->getLocationRequiredFieldsConfigBrazil()
+                    : $module->getLocationRequiredFieldsConfigOther();
+
                 foreach ($missing as $configKey) {
                     $label = $labels[$configKey] ?? $configKey;
                     
@@ -354,9 +376,24 @@ class Module extends \MapasCulturais\Module
     /**
      * Subcampos de endereço que podem ser marcados como obrigatórios na config do campo @location.
      * Chave = nome do campo no valor; valor = label na interface.
+     * 
+     * RETROCOMPATIBILIDADE: Este método continua existindo para código legado.
+     * Para novos usos, prefira getLocationRequiredFieldsConfigBrazil() ou getLocationRequiredFieldsConfigOther().
+     * 
      * @return array<string, string>
      */
     function getLocationRequiredFieldsConfig()
+    {
+        return $this->getLocationRequiredFieldsConfigBrazil();
+    }
+
+    /**
+     * Subcampos de endereço obrigatórios para o Brasil.
+     * Baseado na estrutura do BrasilLocalization (En_Estado, En_Municipio, En_Bairro, etc.)
+     * 
+     * @return array<string, string>
+     */
+    function getLocationRequiredFieldsConfigBrazil(): array
     {
         return [
             'address_level0'     => i::__('País'),
@@ -367,8 +404,35 @@ class Module extends \MapasCulturais\Module
             'address_line1'      => i::__('Logradouro'),
             'address_number'     => i::__('Número'),
             'address_line2'      => i::__('Complemento'),
-            'endereco'           => i::__('Endereço completo'),
         ];
+    }
+
+    /**
+     * Subcampos de endereço obrigatórios para outros países (não-Brasil).
+     * Baseado na estrutura genérica de country-localization (address_level1..6, line1, line2).
+     * 
+     * @return array<string, string>
+     */
+    function getLocationRequiredFieldsConfigOther(): array
+    {
+        $app = App::i();
+        $levelLabels = $app->config['address.defaultLevelsLabels'] ?? [];
+
+        $config = [
+            'address_level0'     => i::__('País'),
+            'address_postalCode' => i::__('Código postal'),
+        ];
+
+        for ($i = 1; $i <= 6; $i++) {
+            if (isset($levelLabels[$i])) {
+                $config["address_level{$i}"] = $levelLabels[$i];
+            }
+        }
+
+        $config['address_line1'] = i::__('Endereço');
+        $config['address_line2'] = i::__('Complemento');
+
+        return $config;
     }
 
     /**
@@ -391,13 +455,17 @@ class Module extends \MapasCulturais\Module
 
     /**
      * Resolve a lista de chaves de subcampos de endereço obrigatórios a partir da config do campo (banco).
-     * Aceita field.config.requiredAddressFields como array ['address_level1', ...] ou objeto { address_level1: true, ... }.
-     * Trata valores como string "true"/"false", "1"/"0", booleano ou inteiro.
+     * 
+     * RETROCOMPATIBILIDADE: Se existir apenas 'requiredAddressFields' (legado), usa para ambos os casos.
+     * Se existirem 'requiredAddressFieldsBrazil' e/ou 'requiredAddressFieldsOther', usa o conjunto apropriado.
+     * 
+     * @param RegistrationFieldConfiguration $field
+     * @param bool $isBrazil Se true, retorna config do Brasil; se false, retorna config de outros países.
      * @return list<string>
      */
-    function resolveLocationRequiredFields(\MapasCulturais\Entities\RegistrationFieldConfiguration $field)
+    function resolveLocationRequiredFields(RegistrationFieldConfiguration $field, ?bool $isBrazil = null): array
     {
-        $config = $field->config['requiredAddressFields'] ?? null;
+        $fieldConfig = $field->config ?? [];
 
         $isTruthy = function($v): bool {
             if (is_bool($v)) {
@@ -412,43 +480,87 @@ class Module extends \MapasCulturais\Module
             return (bool) $v;
         };
 
-        if (is_array($config)) {
-            $keys = [];
-            foreach ($config as $k => $v) {
-                if (is_string($k) && $isTruthy($v)) {
-                    $keys[] = $k;
-                } elseif (is_int($k) && is_string($v)) {
-                    $keys[] = $v;
+        $parseConfig = function($config) use ($isTruthy): array {
+            if (is_array($config)) {
+                $keys = [];
+                foreach ($config as $k => $v) {
+                    if (is_string($k) && $isTruthy($v)) {
+                        $keys[] = $k;
+                    } elseif (is_int($k) && is_string($v)) {
+                        $keys[] = $v;
+                    }
                 }
+                return $keys;
             }
-            return $keys;
-        }
-        if (is_object($config)) {
-            $arr = (array) $config;
-            $out = [];
-            foreach ($arr as $k => $v) {
-                if ($isTruthy($v)) {
-                    $out[] = $k;
+            if (is_object($config)) {
+                $arr = (array) $config;
+                $out = [];
+                foreach ($arr as $k => $v) {
+                    if ($isTruthy($v)) {
+                        $out[] = $k;
+                    }
                 }
+                return $out;
             }
-            return $out;
+            return [];
+        };
+
+        $hasBrazilConfig = isset($fieldConfig['requiredAddressFieldsBrazil']);
+        $hasOtherConfig = isset($fieldConfig['requiredAddressFieldsOther']);
+        $hasLegacyConfig = isset($fieldConfig['requiredAddressFields']);
+
+        if ($hasBrazilConfig || $hasOtherConfig) {
+            if ($isBrazil === true) {
+                return $parseConfig($fieldConfig['requiredAddressFieldsBrazil'] ?? []);
+            } elseif ($isBrazil === false) {
+                return $parseConfig($fieldConfig['requiredAddressFieldsOther'] ?? []);
+            } else {
+                return array_unique(array_merge(
+                    $parseConfig($fieldConfig['requiredAddressFieldsBrazil'] ?? []),
+                    $parseConfig($fieldConfig['requiredAddressFieldsOther'] ?? [])
+                ));
+            }
         }
+
+        if ($hasLegacyConfig) {
+            return $parseConfig($fieldConfig['requiredAddressFields']);
+        }
+
         return [];
     }
 
     /**
-     * Para uma chave da config de endereço (ex: address_level1), retorna as chaves possíveis no valor salvo (En_* ou address_*).
-     * Usado na validação para ler o valor da registration.
-     * @return array{0: string, 1?: string}
+     * Para uma chave da config de endereço (ex: address_level1), retorna as chaves possíveis no valor salvo.
+     * 
+     * Para Brasil: usa mapeamento En_* (legado) e as chaves do formulário nacional (level2/4/6).
+     * O formulário nacional usa address_level2=Estado, address_level4=Cidade, address_level6=Bairro.
+     * Para outros países: usa apenas address_* diretamente.
+     * 
+     * @param string $configKey
+     * @param bool $isBrazil
+     * @return array<string>
      */
-    function getLocationStoredKeysForConfigKey(string $configKey): array
+    function getLocationStoredKeysForConfigKey(string $configKey, bool $isBrazil = true): array
     {
-        $map = $this->getLocationFieldKeyMap();
-        $enKey = array_search($configKey, $map, true);
         $keys = [$configKey];
-        if ($enKey !== false) {
-            $keys[] = $enKey;
+
+        if ($isBrazil) {
+            $map = $this->getLocationFieldKeyMap();
+            $enKey = array_search($configKey, $map, true);
+            if ($enKey !== false) {
+                $keys[] = $enKey;
+            }
+            // Formulário nacional (Brasil) guarda Estado/Cidade/Bairro em level2/4/6, não em 1/2/3
+            $brazilFormKeys = [
+                'address_level1' => 'address_level2', // Estado (UF)
+                'address_level2' => 'address_level4', // Cidade/Município
+                'address_level3' => 'address_level6', // Bairro
+            ];
+            if (isset($brazilFormKeys[$configKey])) {
+                $keys[] = $brazilFormKeys[$configKey];
+            }
         }
+
         return $keys;
     }
 
