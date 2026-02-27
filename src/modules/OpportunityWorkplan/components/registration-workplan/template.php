@@ -49,7 +49,7 @@ $this->import('
     <template #content>
         <!-- BLOCO 1 — Sobre o projeto -->
         <div class="form-section">
-            <h4 class="form-section__title">1. <?= i::__('Sobre o projeto') ?></h4>
+            <h4 class="form-section__title"><?= i::__('Sobre o projeto') ?></h4>
             <p class="form-section__description"><?= i::__('Informações gerais que ajudam a contextualizar o projeto antes do detalhamento das metas.') ?></p>
 
             <div class="field" id="projectDuration">
@@ -102,7 +102,7 @@ $this->import('
                 <div v-if="isExpanded(index)" class="collapse-content">
                     <!-- BLOCO 2 — Plano de metas -->
                     <div class="form-section">
-                        <h4 class="form-section__title">2. <?= i::__('Plano de metas') ?></h4>
+                        <h4 class="form-section__title"><?= i::__('Plano de metas') ?></h4>
                         <p class="form-section__description"><?= i::__('Descreva o que o projeto pretende realizar. Foque nos objetivos, não na execução.') ?></p>
                         
                         <div class="registration-workplan__goals-period">
@@ -174,7 +174,7 @@ $this->import('
 
                             <!-- BLOCO 3 — Entregas, execução e receita -->
                             <div class="form-section">
-                                <h4 class="form-section__title">3. <?= i::__('Entregas, execução e receita') ?></h4>
+                                <h4 class="form-section__title"><?= i::__('Entregas, execução e receita') ?></h4>
                                 <p class="form-section__description"><?= i::__('Detalhe como cada meta será executada: tipo de entrega, público esperado, localização, orçamento e equipe remunerada.') ?></p>
 
                                 <div class="field">
@@ -360,7 +360,7 @@ $this->import('
 
                             <!-- BLOCO 4 — Equipe, diversidade e acesso -->
                             <div class="form-section">
-                                <h4 class="form-section__title">4. <?= i::__('Equipe, diversidade e acesso') ?></h4>
+                                <h4 class="form-section__title"><?= i::__('Equipe, diversidade e acesso') ?></h4>
                                 <p class="form-section__description"><?= i::__('Composição da equipe por gênero e raça, estratégias de inclusão, acessibilidade e práticas socioambientais.') ?></p>
                                 <!-- Composição da equipe por gênero -->
                                 <div v-if="opportunity.workplan_deliveryInformTeamComposition" class="field">
@@ -514,7 +514,7 @@ $this->import('
 
                             <!-- BLOCO 5 — Comunicação e registro -->
                             <div class="form-section">
-                                <h4 class="form-section__title">5. <?= i::__('Comunicação e registro') ?></h4>
+                                <h4 class="form-section__title"><?= i::__('Comunicação e registro') ?></h4>
                                 <p class="form-section__description"><?= i::__('Estratégias de divulgação, canais de comunicação, ações de inovação e tipos de documentação previstos.') ?></p>
 
                                 <div v-if="opportunity.workplan_deliveryInformPressStrategy" class="field">
