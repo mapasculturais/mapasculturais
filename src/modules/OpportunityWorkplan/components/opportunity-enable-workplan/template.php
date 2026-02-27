@@ -517,6 +517,24 @@ $this->import('
                                 <input type="checkbox" v-model="entity.workplan_monitoringRequireTeamCompositionRace" @click="autoSave()" /><?= i::__("Obrigatório (raça/cor)") ?>
                             </label>
                         </div>
+
+                        <div class="field__group">
+                            <label class="field__checkbox">
+                                <input type="checkbox" v-model="entity.workplan_monitoringInformArtChainLink" @click="autoSave()" /><?= i::__("Informar principal elo das artes acionado (executado)") ?>
+                            </label>
+                            <label v-if="entity.workplan_monitoringInformArtChainLink" class="field__checkbox field__checkbox--sub">
+                                <input type="checkbox" v-model="entity.workplan_monitoringRequireArtChainLink" @click="autoSave()" /><?= i::__("Obrigatório") ?>
+                            </label>
+                        </div>
+
+                        <div class="field__group">
+                            <label class="field__checkbox">
+                                <input type="checkbox" v-model="entity.workplan_monitoringInformCommunicationChannels" @click="autoSave()" /><?= i::__("Informar canais de comunicação utilizados (executado)") ?>
+                            </label>
+                            <label v-if="entity.workplan_monitoringInformCommunicationChannels" class="field__checkbox field__checkbox--sub">
+                                <input type="checkbox" v-model="entity.workplan_monitoringRequireCommunicationChannels" @click="autoSave()" /><?= i::__("Obrigatório") ?>
+                            </label>
+                        </div>
                     </div>
                 </div>
             </div>

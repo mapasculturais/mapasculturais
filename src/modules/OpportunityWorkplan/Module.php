@@ -709,6 +709,30 @@ class Module extends \MapasCulturais\Module{
             'default_value' => false
         ]);
 
+        $this->registerOpportunityMetadata('workplan_monitoringInformArtChainLink', [
+            'label' => i::__('Informar principal elo das artes acionado (executado)'),
+            'type' => 'boolean',
+            'default_value' => false
+        ]);
+
+        $this->registerOpportunityMetadata('workplan_monitoringRequireArtChainLink', [
+            'label' => i::__('Principal elo das artes (executado) é obrigatório'),
+            'type' => 'boolean',
+            'default_value' => false
+        ]);
+
+        $this->registerOpportunityMetadata('workplan_monitoringInformCommunicationChannels', [
+            'label' => i::__('Informar canais de comunicação utilizados (executado)'),
+            'type' => 'boolean',
+            'default_value' => false
+        ]);
+
+        $this->registerOpportunityMetadata('workplan_monitoringRequireCommunicationChannels', [
+            'label' => i::__('Canais de comunicação utilizados são obrigatórios'),
+            'type' => 'boolean',
+            'default_value' => false
+        ]);
+
         $app->registerFileGroup('delivery', new \MapasCulturais\Definitions\FileGroup('evidences'));
 
         // metadados workplan

@@ -106,10 +106,85 @@ app.component('registration-workplan-form-delivery', {
         validationErrors () {
             return this.registration.__validationErrors?.workplanProxy?.deliveries[this.delivery.id] ?? {};
         },
+
+        // ── Novos campos executados ──────────────────────────────────────
+        artChainLinkOptions () {
+            return Vue.markRaw($DESCRIPTIONS.delivery.artChainLink?.options ?? []);
+        },
+        communicationChannelsOptions () {
+            return Vue.markRaw($DESCRIPTIONS.delivery.communicationChannels?.options ?? {});
+        },
+        executedCommunicationChannels: {
+            get () {
+                const val = this.proxy.executedCommunicationChannels;
+                if (!val) return [];
+                if (typeof val === 'string') return JSON.parse(val) ?? [];
+                return val;
+            },
+            set (value) {
+                this.proxy.executedCommunicationChannels = value;
+            },
+        },
+        executedTeamCompositionGender: {
+            get () {
+                let val = this.proxy.executedTeamCompositionGender;
+                if (typeof val === 'string') {
+                    try { val = JSON.parse(val); } catch (e) { val = null; }
+                }
+                return val && typeof val === 'object' ? val : {
+                    cisgenderWoman: 0, cisgenderMan: 0,
+                    transgenderWoman: 0, transgenderMan: 0,
+                    nonBinary: 0, otherGenderIdentity: 0, preferNotToSay: 0
+                };
+            },
+            set (value) {
+                this.proxy.executedTeamCompositionGender = value;
+            },
+        },
+        executedTeamCompositionRace: {
+            get () {
+                let val = this.proxy.executedTeamCompositionRace;
+                if (typeof val === 'string') {
+                    try { val = JSON.parse(val); } catch (e) { val = null; }
+                }
+                return val && typeof val === 'object' ? val : {
+                    white: 0, black: 0, brown: 0,
+                    indigenous: 0, asian: 0, notDeclared: 0
+                };
+            },
+            set (value) {
+                this.proxy.executedTeamCompositionRace = value;
+            },
+        },
+        hasExecutedGenderData () {
+            const g = this.executedTeamCompositionGender;
+            return Object.values(g).some(v => Number(v) > 0);
+        },
+        hasExecutedRaceData () {
+            const r = this.executedTeamCompositionRace;
+            return Object.values(r).some(v => Number(v) > 0);
+        },
     },
     methods: {
         convertToCurrency(field) {
             return new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(Number(field));
+        },
+        toggleExecutedCommunicationChannel (item) {
+            const idx = this.executedCommunicationChannels.indexOf(item);
+            const arr = [...this.executedCommunicationChannels];
+            if (idx >= 0) arr.splice(idx, 1);
+            else arr.push(item);
+            this.executedCommunicationChannels = arr;
+        },
+        calculateGenderTotal (composition) {
+            if (!composition) return 0;
+            return ['cisgenderWoman','cisgenderMan','transgenderWoman','transgenderMan','nonBinary','otherGenderIdentity','preferNotToSay']
+                .reduce((sum, k) => sum + (Number(composition[k]) || 0), 0);
+        },
+        calculateRaceTotal (composition) {
+            if (!composition) return 0;
+            return ['white','black','brown','indigenous','asian','notDeclared']
+                .reduce((sum, k) => sum + (Number(composition[k]) || 0), 0);
         },
     }
 });

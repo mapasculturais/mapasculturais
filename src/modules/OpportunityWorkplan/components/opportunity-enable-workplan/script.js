@@ -166,6 +166,12 @@ app.component('opportunity-enable-workplan', {
                 this.entity.workplan_monitoringRequireTeamCompositionRace = false;
             }
         },
+        'entity.workplan_monitoringInformArtChainLink'(_new) {
+            if (!_new) this.entity.workplan_monitoringRequireArtChainLink = false;
+        },
+        'entity.workplan_monitoringInformCommunicationChannels'(_new) {
+            if (!_new) this.entity.workplan_monitoringRequireCommunicationChannels = false;
+        },
     },
     computed: {
         getWorkplanLabelDefault() {
@@ -291,6 +297,10 @@ app.component('opportunity-enable-workplan', {
             this.entity.workplan_monitoringInformTeamComposition = false;
             this.entity.workplan_monitoringRequireTeamCompositionGender = false;
             this.entity.workplan_monitoringRequireTeamCompositionRace = false;
+            this.entity.workplan_monitoringInformArtChainLink = false;
+            this.entity.workplan_monitoringRequireArtChainLink = false;
+            this.entity.workplan_monitoringInformCommunicationChannels = false;
+            this.entity.workplan_monitoringRequireCommunicationChannels = false;
         },
         pluralParaSingular(texto) {
             const palavras = texto.split(' ');

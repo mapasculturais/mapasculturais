@@ -307,6 +307,14 @@ class Delivery extends \MapasCulturais\Entity {
                 'inform' => 'workplan_monitoringInformTeamComposition',
                 'require' => 'workplan_monitoringRequireTeamCompositionRace'
             ],
+            'executedArtChainLink' => [
+                'inform' => 'workplan_monitoringInformArtChainLink',
+                'require' => 'workplan_monitoringRequireArtChainLink'
+            ],
+            'executedCommunicationChannels' => [
+                'inform' => 'workplan_monitoringInformCommunicationChannels',
+                'require' => 'workplan_monitoringRequireCommunicationChannels'
+            ],
         ];
 
         // Campo não está no mapa → não é obrigatório

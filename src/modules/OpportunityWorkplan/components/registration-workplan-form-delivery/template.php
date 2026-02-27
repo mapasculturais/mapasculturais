@@ -179,6 +179,149 @@ $this->import('
             </ul>
         </div>
 
+        <!-- Composição da equipe por gênero (executado) -->
+        <div class="field" v-if="opportunity.workplan_monitoringInformTeamComposition && (editable || hasExecutedGenderData)">
+            <label><?= i::__('Composição da equipe por gênero (executado)') ?></label>
+            <div v-if="delivery.teamCompositionGender" class="field__note">
+                <strong><?= i::__('Previsto:') ?></strong>
+                <?= i::__('Mulher cisg.') ?>: {{ delivery.teamCompositionGender.cisgenderWoman || 0 }},
+                <?= i::__('Homem cisg.') ?>: {{ delivery.teamCompositionGender.cisgenderMan || 0 }},
+                <?= i::__('Mulher trans') ?>: {{ delivery.teamCompositionGender.transgenderWoman || 0 }},
+                <?= i::__('Homem trans') ?>: {{ delivery.teamCompositionGender.transgenderMan || 0 }},
+                <?= i::__('Não-binário') ?>: {{ delivery.teamCompositionGender.nonBinary || 0 }},
+                <?= i::__('Outra') ?>: {{ delivery.teamCompositionGender.otherGenderIdentity || 0 }},
+                <?= i::__('Pref. não inf.') ?>: {{ delivery.teamCompositionGender.preferNotToSay || 0 }}
+            </div>
+            <template v-if="editable">
+                <div class="grid-12">
+                    <div class="col-3 sm:col-6 field">
+                        <label><?= i::esc_attr__('Mulher cisgênero') ?></label>
+                        <input v-model.number="executedTeamCompositionGender.cisgenderWoman" type="number" min="0">
+                    </div>
+                    <div class="col-3 sm:col-6 field">
+                        <label><?= i::esc_attr__('Homem cisgênero') ?></label>
+                        <input v-model.number="executedTeamCompositionGender.cisgenderMan" type="number" min="0">
+                    </div>
+                    <div class="col-3 sm:col-6 field">
+                        <label><?= i::esc_attr__('Mulher transgênero') ?></label>
+                        <input v-model.number="executedTeamCompositionGender.transgenderWoman" type="number" min="0">
+                    </div>
+                    <div class="col-3 sm:col-6 field">
+                        <label><?= i::esc_attr__('Homem transgênero') ?></label>
+                        <input v-model.number="executedTeamCompositionGender.transgenderMan" type="number" min="0">
+                    </div>
+                    <div class="col-3 sm:col-6 field">
+                        <label><?= i::esc_attr__('Pessoa não binária') ?></label>
+                        <input v-model.number="executedTeamCompositionGender.nonBinary" type="number" min="0">
+                    </div>
+                    <div class="col-3 sm:col-6 field">
+                        <label><?= i::esc_attr__('Outra identidade de gênero') ?></label>
+                        <input v-model.number="executedTeamCompositionGender.otherGenderIdentity" type="number" min="0">
+                    </div>
+                    <div class="col-3 sm:col-6 field">
+                        <label><?= i::esc_attr__('Prefiro não informar') ?></label>
+                        <input v-model.number="executedTeamCompositionGender.preferNotToSay" type="number" min="0">
+                    </div>
+                </div>
+                <div class="field__note">
+                    <strong><?= i::__('Total executado:') ?></strong> {{ calculateGenderTotal(executedTeamCompositionGender) }}
+                </div>
+            </template>
+            <template v-else>
+                <div>
+                    <?= i::__('Mulher cisg.') ?>: {{ proxy.executedTeamCompositionGender?.cisgenderWoman || 0 }},
+                    <?= i::__('Homem cisg.') ?>: {{ proxy.executedTeamCompositionGender?.cisgenderMan || 0 }},
+                    <?= i::__('Mulher trans') ?>: {{ proxy.executedTeamCompositionGender?.transgenderWoman || 0 }},
+                    <?= i::__('Homem trans') ?>: {{ proxy.executedTeamCompositionGender?.transgenderMan || 0 }},
+                    <?= i::__('Não-binário') ?>: {{ proxy.executedTeamCompositionGender?.nonBinary || 0 }},
+                    <?= i::__('Outra') ?>: {{ proxy.executedTeamCompositionGender?.otherGenderIdentity || 0 }},
+                    <?= i::__('Pref. não inf.') ?>: {{ proxy.executedTeamCompositionGender?.preferNotToSay || 0 }}
+                </div>
+            </template>
+        </div>
+
+        <!-- Composição da equipe por raça/cor (executado) -->
+        <div class="field" v-if="opportunity.workplan_monitoringInformTeamComposition && (editable || hasExecutedRaceData)">
+            <label><?= i::__('Composição da equipe por raça/cor (executado)') ?></label>
+            <div v-if="delivery.teamCompositionRace" class="field__note">
+                <strong><?= i::__('Previsto:') ?></strong>
+                <?= i::__('Branca') ?>: {{ delivery.teamCompositionRace.white || 0 }},
+                <?= i::__('Preta') ?>: {{ delivery.teamCompositionRace.black || 0 }},
+                <?= i::__('Parda') ?>: {{ delivery.teamCompositionRace.brown || 0 }},
+                <?= i::__('Indígena') ?>: {{ delivery.teamCompositionRace.indigenous || 0 }},
+                <?= i::__('Amarela') ?>: {{ delivery.teamCompositionRace.asian || 0 }},
+                <?= i::__('Não decl.') ?>: {{ delivery.teamCompositionRace.notDeclared || 0 }}
+            </div>
+            <template v-if="editable">
+                <div class="grid-12">
+                    <div class="col-4 sm:col-6 field">
+                        <label><?= i::esc_attr__('Branca') ?></label>
+                        <input v-model.number="executedTeamCompositionRace.white" type="number" min="0">
+                    </div>
+                    <div class="col-4 sm:col-6 field">
+                        <label><?= i::esc_attr__('Preta') ?></label>
+                        <input v-model.number="executedTeamCompositionRace.black" type="number" min="0">
+                    </div>
+                    <div class="col-4 sm:col-6 field">
+                        <label><?= i::esc_attr__('Parda') ?></label>
+                        <input v-model.number="executedTeamCompositionRace.brown" type="number" min="0">
+                    </div>
+                    <div class="col-4 sm:col-6 field">
+                        <label><?= i::esc_attr__('Indígena') ?></label>
+                        <input v-model.number="executedTeamCompositionRace.indigenous" type="number" min="0">
+                    </div>
+                    <div class="col-4 sm:col-6 field">
+                        <label><?= i::esc_attr__('Amarela') ?></label>
+                        <input v-model.number="executedTeamCompositionRace.asian" type="number" min="0">
+                    </div>
+                    <div class="col-4 sm:col-6 field">
+                        <label><?= i::esc_attr__('Não declarado') ?></label>
+                        <input v-model.number="executedTeamCompositionRace.notDeclared" type="number" min="0">
+                    </div>
+                </div>
+                <div class="field__note">
+                    <strong><?= i::__('Total executado:') ?></strong> {{ calculateRaceTotal(executedTeamCompositionRace) }}
+                </div>
+            </template>
+            <template v-else>
+                <div>
+                    <?= i::__('Branca') ?>: {{ proxy.executedTeamCompositionRace?.white || 0 }},
+                    <?= i::__('Preta') ?>: {{ proxy.executedTeamCompositionRace?.black || 0 }},
+                    <?= i::__('Parda') ?>: {{ proxy.executedTeamCompositionRace?.brown || 0 }},
+                    <?= i::__('Indígena') ?>: {{ proxy.executedTeamCompositionRace?.indigenous || 0 }},
+                    <?= i::__('Amarela') ?>: {{ proxy.executedTeamCompositionRace?.asian || 0 }},
+                    <?= i::__('Não decl.') ?>: {{ proxy.executedTeamCompositionRace?.notDeclared || 0 }}
+                </div>
+            </template>
+        </div>
+
+        <!-- Elo das artes executado -->
+        <div class="field" v-if="opportunity.workplan_monitoringInformArtChainLink && (editable || proxy.executedArtChainLink)">
+            <label :for="`${vid}__executedArtChainLink`"><?= i::__('Principal elo das artes acionado (executado)') ?></label>
+            <div v-if="delivery.artChainLink" class="field__note">
+                <strong><?= i::__('Previsto:') ?></strong> {{ delivery.artChainLink }}
+            </div>
+            <select v-if="editable" :id="`${vid}__executedArtChainLink`" v-model="proxy.executedArtChainLink">
+                <option value=""><?= i::esc_attr__('Selecione') ?></option>
+                <option v-for="opt in artChainLinkOptions" :key="opt" :value="opt">{{ opt }}</option>
+            </select>
+            <span v-else>{{ proxy.executedArtChainLink }}</span>
+        </div>
+
+        <!-- Canais de comunicação executados -->
+        <div class="field" v-if="opportunity.workplan_monitoringInformCommunicationChannels && (editable || executedCommunicationChannels.length > 0)">
+            <label :for="`${vid}__executedCommunicationChannels`"><?= i::__('Canais de comunicação utilizados (executado)') ?></label>
+            <div v-if="delivery.communicationChannels && delivery.communicationChannels.length > 0" class="field__note">
+                <strong><?= i::__('Previsto:') ?></strong>
+                <mc-tag-list :tags="delivery.communicationChannels" :labels="communicationChannelsOptions" classes="opportunity__background" :editable="false"></mc-tag-list>
+            </div>
+            <template v-if="editable">
+                <mc-multiselect :id="`${vid}__executedCommunicationChannels`" :model="executedCommunicationChannels" :items="communicationChannelsOptions" hide-filter hide-button></mc-multiselect>
+                <mc-tag-list :tags="executedCommunicationChannels" :labels="communicationChannelsOptions" classes="opportunity__background" @remove="toggleExecutedCommunicationChannel($event)" editable></mc-tag-list>
+            </template>
+            <mc-tag-list v-else :tags="executedCommunicationChannels" :labels="communicationChannelsOptions" classes="opportunity__background" :editable="false"></mc-tag-list>
+        </div>
+
         <div class="field" v-if="editable || proxy.files.length > 0">
             <label :for="`${vid}__evidenceFiles`"><?= i::__('Evidências') ?></label>
             <entity-files-list :id="`${vid}__evidenceFiles`" :entity="dummyEntity" group="evidences" title="<?= i::esc_attr__('Arquivos de evidência') ?>" :editable="editable">
