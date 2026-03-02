@@ -3202,7 +3202,7 @@ class ApiQuery {
             } elseif (strtolower($key) == '@permissions') {
                 $this->_addFilterByPermissions($value);
             } elseif (strtolower($key) == '@seals') {
-                $this->_addFilterBySeals(explode(',', $value));
+                $this->_addFilterBySeals($value);
             } elseif (strtolower($key) == '@verified') {
                 $this->_addFilterBySeals($app->config['app.verifiedSealsIds']);
             } elseif (strtolower($key) == '@or') {
@@ -3240,10 +3240,12 @@ class ApiQuery {
     
     protected function _addFilterBySeals($seals_ids){
         if(is_string($seals_ids)) {
+            // aceita tanto "1,2,3" (formato direto) quanto "IN(1,2,3)" / "IIN(1,2,3)" (formato gerado pelo parsePseudoQuery)
+            $seals_ids = preg_replace('/^I?IN\((.+)\)$/i', '$1', trim($seals_ids));
             $seals_ids = explode(',', $seals_ids);
         }
         foreach($seals_ids as $seal){
-            $s = intval($seal);
+            $s = intval(trim($seal));
             if($s && !in_array($s, $this->_seals)){
                 $this->_seals[] = $s;
             }
