@@ -43,16 +43,6 @@ $this->import('
             <label> <?php i::_e('Status do evento') ?></label>
             <label class="verified"><input v-model="pseudoQuery['event:@verified']" type="checkbox"> <?php i::_e('Eventos oficiais') ?> </label>
         </div>
-        <div class="field">
-            <label> <?php i::_e('Classificação Etária') ?></label>
-            <mc-multiselect :model="pseudoQuery['event:classificacaoEtaria']" placeholder="<?php i::_e('Classificação Etária')?>" :items="ageRating" hide-filter hide-button></mc-multiselect>
-            <mc-tag-list editable :tags="pseudoQuery['event:classificacaoEtaria']" classes="event__background event__color"></mc-tag-list>
-        </div>
-        <div class="field">
-            <label> <?php i::_e('Linguagens') ?></label>
-            <mc-multiselect :model="pseudoQuery['event:term:linguagem']" :items="terms" placeholder="<?php i::_e('Selecione as linguagens') ?>" hide-filter hide-button></mc-multiselect>
-            <mc-tag-list editable :tags="pseudoQuery['event:term:linguagem']" classes="event__background event__color"></mc-tag-list>
-        </div>
         <div v-if="sealsFilterEnabled" class="field">
             <label> <?php i::_e('Selos') ?></label>
             <mc-multiselect
@@ -65,16 +55,26 @@ $this->import('
             <mc-tag-list
                 editable
                 :tags="pseudoQuery['event:@seals']"
-                :labels="seals"
+                :labels="sealsLabels"
                 classes="event__background event__color">
             </mc-tag-list>
         </div>
-        <div v-if="statesAndCitiesFilterEnabled && !isInternational" class="field">
+        <div v-if="statesAndCitiesFilterEnabled && hasStatesAndCities" class="field">
             <label><?php i::_e('Estado e Cidade') ?></label>
             <mc-states-and-cities
                 v-model:model-states="pseudoQuery['space:En_Estado']"
                 v-model:model-cities="pseudoQuery['space:En_Municipio']">
             </mc-states-and-cities>
+        </div>
+        <div class="field">
+            <label> <?php i::_e('Classificação Etária') ?></label>
+            <mc-multiselect :model="pseudoQuery['event:classificacaoEtaria']" placeholder="<?php i::_e('Classificação Etária')?>" :items="ageRating" hide-filter hide-button></mc-multiselect>
+            <mc-tag-list editable :tags="pseudoQuery['event:classificacaoEtaria']" classes="event__background event__color"></mc-tag-list>
+        </div>
+        <div class="field">
+            <label> <?php i::_e('Linguagens') ?></label>
+            <mc-multiselect :model="pseudoQuery['event:term:linguagem']" :items="terms" placeholder="<?php i::_e('Selecione as linguagens') ?>" hide-filter hide-button></mc-multiselect>
+            <mc-tag-list editable :tags="pseudoQuery['event:term:linguagem']" classes="event__background event__color"></mc-tag-list>
         </div>
         <?php $this->applyTemplateHook('search-filter-event', 'end') ?>
     </form>
