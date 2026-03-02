@@ -10,6 +10,7 @@ $this->import('
     mc-icon
     mc-multiselect 
     mc-tag-list
+    mc-states-and-cities
     search-filter 
 ');
 ?>
@@ -51,6 +52,29 @@ $this->import('
             <label> <?php i::_e('Linguagens') ?></label>
             <mc-multiselect :model="pseudoQuery['event:term:linguagem']" :items="terms" placeholder="<?php i::_e('Selecione as linguagens') ?>" hide-filter hide-button></mc-multiselect>
             <mc-tag-list editable :tags="pseudoQuery['event:term:linguagem']" classes="event__background event__color"></mc-tag-list>
+        </div>
+        <div v-if="sealsFilterEnabled" class="field">
+            <label> <?php i::_e('Selos') ?></label>
+            <mc-multiselect
+                :model="pseudoQuery['event:@seals']"
+                :items="seals"
+                placeholder="<?php i::_e('Selecione os selos') ?>"
+                hide-filter
+                hide-button>
+            </mc-multiselect>
+            <mc-tag-list
+                editable
+                :tags="pseudoQuery['event:@seals']"
+                :labels="seals"
+                classes="event__background event__color">
+            </mc-tag-list>
+        </div>
+        <div v-if="statesAndCitiesFilterEnabled && !isInternational" class="field">
+            <label><?php i::_e('Estado e Cidade') ?></label>
+            <mc-states-and-cities
+                v-model:model-states="pseudoQuery['space:En_Estado']"
+                v-model:model-cities="pseudoQuery['space:En_Municipio']">
+            </mc-states-and-cities>
         </div>
         <?php $this->applyTemplateHook('search-filter-event', 'end') ?>
     </form>
