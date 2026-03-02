@@ -4,8 +4,28 @@ namespace MapasCulturais\Repositories;
 
 use MapasCulturais\App;
 
+/**
+ * Repositório para ocorrências de eventos
+ * 
+ * Este repositório fornece métodos específicos para consulta
+ * e manipulação de ocorrências de eventos no sistema,
+ * com foco em buscas por eventos, espaços e intervalos de datas.
+ * 
+ * @package MapasCulturais\Repositories
+ */
 class EventOccurrence extends \MapasCulturais\Repository {
 
+    /**
+     * Encontra ocorrências de eventos por eventos e espaços
+     * 
+     * @param array $events Array de entidades Event
+     * @param array $spaces Array de entidades Space
+     * @param string|\DateTime|null $date_from Data de início (padrão: hoje)
+     * @param string|\DateTime|null $date_to Data de fim (padrão: igual a date_from)
+     * @param int|null $limit Limite de resultados
+     * @param int|null $offset Offset dos resultados
+     * @return array Ocorrências de eventos encontradas
+     */
     function findByEventsAndSpaces(array $events, array $spaces, $date_from = null, $date_to = null, $limit = null, $offset = null) {
         $map_function = function($e) {
             return $e->id;

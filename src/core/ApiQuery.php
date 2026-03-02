@@ -13,37 +13,79 @@ use MapasCulturais\Entities\Seal;
 use MapasCulturais\Entities\User;
 use MapasCulturais\Types\GeoPoint;
 
+/**
+ * Classe responsável por gerenciar e executar consultas na API
+ * 
+ * @property string $name O Nome da ApiQuery
+ * @property int $maxBeforeSubquery Número máximo de resultados antes de usar subquery
+ * @property \Doctrine\ORM\EntityManager $em Doctrine Entity Manager
+ * @property \Doctrine\ORM\Mapping\ClassMetadata $entityClassMetadata Metadados da Classe da Entidade
+ * @property string $rootEntityClassName Nome da classe da entidade raiz
+ * @property string $pk Chave primária da entidade
+ * @property string $entityClassName O Nome da Classe da Entidade
+ * @property string $metadataClassName O Nome da Classe de Metadados da Entidade
+ * @property string $fileClassName O Nome da Classe de Arquivo da Entidade
+ * @property string $termRelationClassName O Nome da Classe de Relação de Termo da Entidade
+ * @property string $agentRelationClassName O Nome da Classe de Relação de Agente da Entidade
+ * @property string $spaceRelationClassName O Nome da Classe de Relação de Espaço da Entidade
+ * @property string $permissionCacheClassName O Nome da Classe de Cache de Permissão da Entidade
+ * @property string $sealRelationClassName O Nome da Classe de Entidade de Relação de Selo
+ * @property \MapasCulturais\Controllers\EntityController $entityController O controlador da entidade
+ * @property \MapasCulturais\Repository $entityRepository O objeto repositório da entidade
+ * @property bool $usesSpaceRelations A entidade usa relações de espaço?
+ * @property bool $usesAgentRelations A entidade usa relações de agente?
+ * @property bool $usesFiles A entidade usa arquivos?
+ * @property bool $usesMetalists A entidade usa MetaLists?
+ * @property bool $usesPermissionCache A entidade usa cache de permissão?
+ * @property bool $usesTaxonomies A entidade usa taxonomias?
+ * @property bool $usesMetadata A entidade usa metadados?
+ * @property bool $usesOriginSubsite A entidade usa subsite de origem?
+ * @property bool $usesSealRelation A entidade usa relação de selo?
+ * @property bool $usesTypes A entidade usa tipos?
+ * @property bool $usesOwnerAgent A entidade usa agente proprietário?
+ * @property bool $usesStatus A entidade possui a propriedade status
+ * @property array $entityProperties Lista das propriedades da entidade
+ * @property array $entityRelations Lista das relações da entidade
+ * @property array $fieldMappings Mapa dos mapeamentos de campos da entidade
+ * @property array $registeredMetadata Lista de metadados registrados
+ * @property array $registeredMetadataDefinitions Definições de metadados registrados
+ * @property array $registeredTaxonomies Lista das taxonomias registradas
+ * @property array $adminInSubsites Lista de ids de subsites nos quais o usuário logado é administrador
+ * @property array $apiParams Os parâmetros da consulta da API
+ * 
+ * @package MapasCulturais
+ */
 class ApiQuery {
     use Traits\MagicGetter,
         Traits\MagicSetter,
         Traits\MagicCallers;
     
     /**
-     * Number of query objects to generate query ids
+     * Número de objetos de consulta para gerar ids de consulta
      * @var int
      */
     protected static $queryCounter = 0;
     
     /**
-     * Id of this query
+     * Id desta consulta
      * @var int
      */
     protected $__queryNum;
 
     /**
-     * Global counter used to name DQL alias
+     * Contador global usado para nomear aliases DQL
      * @var int
      */
     protected $__counter = 0;
     
     /**
-     * Maximum number of results before use subquery instead of a list of ids in secondary queries
+     * Número máximo de resultados antes de usar subquery em vez de uma lista de ids em consultas secundárias
      * @var int
      */
     protected $maxBeforeSubquery = 4096;
     
     /**
-     * The ApiQuery Name
+     * O Nome da ApiQuery
      * @var string
      */
     protected $name;
@@ -55,17 +97,25 @@ class ApiQuery {
     protected $em;
 
     /**
-     * Doctrine Entity Class Metadata
+     * Metadados da Classe da Entidade do Doctrine
      * @var \Doctrine\ORM\Mapping\ClassMetadata
      */
     protected $entityClassMetadata;
 
+    /**
+     * Nome da classe da entidade raiz
+     * @var string
+     */
     protected $rootEntityClassName;
 
+    /**
+     * Chave primária da entidade
+     * @var string
+     */
     protected $pk = 'id';
 
     /**
-     * The Entity Class Name
+     * O Nome da Classe da Entidade
      *
      * @example "MapasCulturais\Entities\Agent"
      * @var string
@@ -73,7 +123,7 @@ class ApiQuery {
     protected $entityClassName;
 
     /**
-     * The Entity Metadata Class Name
+     * O Nome da Classe de Metadados da Entidade
      *
      * @example "MapasCulturais\Entities\AgentMeta"
      * @var string
@@ -81,7 +131,7 @@ class ApiQuery {
     protected $metadataClassName;
     
     /**
-     * The Entity File Class Name
+     * O Nome da Classe de Arquivo da Entidade
      *
      * @example "MapasCulturais\Entities\AgentFile"
      * @var string
@@ -89,7 +139,7 @@ class ApiQuery {
     protected $fileClassName;
     
     /**
-     * The Entity Term Relation Class Name
+     * O Nome da Classe de Relação de Termo da Entidade
      *
      * @example "MapasCulturais\Entities\AgentTermRelation"
      * @var string
@@ -97,7 +147,7 @@ class ApiQuery {
     protected $termRelationClassName;
     
     /**
-     * The Entity Agent Relation Class Name
+     * O Nome da Classe de Relação de Agente da Entidade
      *
      * @example "MapasCulturais\Entities\AgentAgentRelation"
      * @var string
@@ -105,7 +155,7 @@ class ApiQuery {
     protected $agentRelationClassName;
     
     /**
-     * The Entity Space Relation Class Name
+     * O Nome da Classe de Relação de Espaço da Entidade
      *
      * @example "MapasCulturais\Entities\AgentSpaceRelation"
      * @var string
@@ -113,7 +163,7 @@ class ApiQuery {
     protected $spaceRelationClassName;
     
     /**
-     * The Entity Permission Cache Class Name
+     * O Nome da Classe de Cache de Permissão da Entidade
      *
      * @example "MapasCulturais\Entities\AgentPermissionCache"
      * @var string
@@ -121,7 +171,7 @@ class ApiQuery {
     protected $permissionCacheClassName;
 
     /**
-     * The Seal Relation Entity Class Name
+     * O Nome da Classe de Entidade de Relação de Selo
      *
      * @example "MapasCulturais\Entities\AgentSealRelation"
      * @var string
@@ -129,131 +179,133 @@ class ApiQuery {
     protected $sealRelationClassName;
     
     /**
-     * The entity controller
+     * O controlador da entidade
      * @var \MapasCulturais\Controllers\EntityController
      */
     protected $entityController;
     
     /**
-     * The entity repository object
+     * O objeto repositório da entidade
      * @var \MapasCulturais\Repository
      */
     protected $entityRepository;
     
     /**
-     * The entity uses space relations?
+     * A entidade usa relações de espaço?
      * @var bool
      */
     protected $usesSpaceRelations;
     
     /**
-     * The entity uses agent relations?
+     * A entidade usa relações de agente?
      * @var bool
      */
     protected $usesAgentRelations;
     
     /**
-     * The entity uses files?
+     * A entidade usa arquivos?
      * @var bool
      */
     protected $usesFiles;
     
     /**
-     * The entity uses MetaLists?
+     * A entidade usa MetaLists?
      * @var bool
      */
     protected $usesMetalists;
     
     /**
-     * The entity uses permission cache?
+     * A entidade usa cache de permissão?
      * @var bool
      */
     protected $usesPermissionCache;
     
     /**
-     * The entity uses taxonomies?
+     * A entidade usa taxonomias?
      * @var bool
      */
     protected $usesTaxonomies;
     
     /**
-     * The entity uses metadata?
+     * A entidade usa metadados?
      * @var bool
      */
     protected $usesMetadata;
     
     /**
-     * The entity uses origin subsite?
+     * A entidade usa subsite de origem?
      * @var bool
      */
     protected $usesOriginSubsite;
     
     /**
-     * The entity uses seal relation?
+     * A entidade usa relação de selo?
      * @var bool
      */
     protected $usesSealRelation;
     
     /**
-     * The entity uses types?
+     * A entidade usa tipos?
      * @var bool
      */
     protected $usesTypes;
     
     /**
-     * The entity uses owner agent?
+     * A entidade usa agente proprietário?
      * @var bool
      */
     protected $usesOwnerAgent;
     
     /**
-     * The entity has the status property
+     * A entidade possui a propriedade status
      * @var bool
      */
     protected $usesStatus;
     
     /**
-     * List of the entity properties
+     * Lista das propriedades da entidade
      * @var array
      */
     protected $entityProperties = [];
 
     /**
-     * List of entity ralations
+     * Lista das relações da entidade
      * @var array
      */
     protected $entityRelations = [];
 
     /**
-     * Map of entity fields mappings
+     * Mapa dos mapeamentos de campos da entidade
+     * @var array
      */
     protected $fieldMappings = [];
 
     /**
-     * List of registered metadata to the requested entity for this context (subsite?)
+     * Lista de metadados registrados para a entidade solicitada para este contexto
      * @var array
      */
     protected $registeredMetadata = [];
 
     /**
+     * Definições de metadados registrados
      * @var array
      */
     protected array $registeredMetadataDefinitions;
 
     /**
-     * List of the registered taxonomies for this context
+     * Lista das taxonomias registradas para este contexto
      * @var array
      */
     protected $registeredTaxonomies = [];
     
     /**
-     * List of subsite ids in which the logged in user is admin
+     * Lista de ids de subsites nos quais o usuário logado é administrador
      * @var array
      */
     protected $adminInSubsites = [];
 
     /**
-     * the parameter of api query
+     * Os parâmetros da consulta da API
      *
      * @example ['@select' => 'id,name', '@order' => 'name ASC', 'id' => 'GT(10)', 'name' => 'ILIKE(fulano%)']
      * @var array
@@ -261,7 +313,7 @@ class ApiQuery {
     protected $apiParams = [];
 
     /**
-     * The SELECT part of the DQL that will be executed
+     * A parte SELECT do DQL que será executada
      *
      * @example "e.id, e.name"
      * @var string
@@ -269,13 +321,13 @@ class ApiQuery {
     public $select = "";
 
     /**
-     * The JOINs fo the DQL that will be executed
+     * Os JOINs do DQL que será executado
      * @var string
      */
     public $joins = "";
 
     /**
-     * The WHERE part of the DQL that will be executed
+     * A parte WHERE do DQL que será executada
      *
      * @example "e.id > 10"
      * @var string
@@ -283,97 +335,97 @@ class ApiQuery {
     public $where = "";
 
     /**
-     * List of expressions used to compose the where part of the DQL that will be executed
+     * Lista de expressões usadas para compor a parte where do DQL que será executado
      * @var array
      */
     protected $_whereDqls = [];
 
     /**
-     * Mapping of the api query params to dql params
+     * Mapeamento dos parâmetros da consulta da API para parâmetros DQL
      * @var array
      */
     protected $_keys = [];
 
     /**
-     * List of parameters that will be used to run the DQL
+     * Lista de parâmetros que serão usados para executar o DQL
      * @var array
      */
     public $_dqlParams = [];
 
     /**
-     * Fields that are being selected
+     * Campos que estão sendo selecionados
      * @var array
      */
     protected $_selecting = [];
 
     /**
-     * Slice of the fields that are being selected that are properties of the entity
+     * Fração dos campos que estão sendo selecionados que são propriedades da entidade
      * @var array
      */
     protected $_selectingProperties = [];
 
     /**
-     * Slice of the fields that are being selected that are metadata of the entity
+     * Fração dos campos que estão sendo selecionados que são metadados da entidade
      * @var array
      */
     protected $_selectingMetadata = [];
     
     /**
-     * Slice of the fields that are being selected that are relations of the entity
+     * Fração dos campos que estão sendo selecionados que são relações da entidade
      * @var array
      */
     protected $_selectingRelations = [];
     
     /**
-     * Urls that are being selected
+     * Urls que estão sendo selecionadas
      * @var array
      */
     protected $_selectingUrls = [];
 
     /**
-     * Agent relations that are being selected
+     * Relações de agente que estão sendo selecionadas
      * @var array
      */
     protected $_selectingAgentRelations = [];
 
     /**
-     * Related Agentes that are being selected
+     * Agentes relacionados que estão sendo selecionados
      * @var array
      */
     protected $_selectingRelatedAgents = [];
 
     /**
-     * Space relations that are being selected
+     * Relações de espaço que estão sendo selecionadas
      * @var array
      */
     protected $_selectingSpaceRelations = [];
 
     /**
-     * Related Spaces that are being selected
+     * Espaços relacionados que estão sendo selecionados
      * @var array
      */
     protected $_selectingRelatedSpaces = [];
 
     /**
-     * Files that are being selected
+     * Arquivos que estão sendo selecionados
      * @var array
      */
     protected $_selectingFiles = [];
     
     /**
-     * Properties of files that are being selected
+     * Propriedades de arquivos que estão sendo selecionadas
      * @var array
      */
     protected $_selectingFilesProperties = ['url'];
 
     /**
-     * Metalists that are being selected
+     * Metalists que estão sendo selecionadas
      * @var array
      */
     protected $_selectingMetalists = [];
 
     /**
-     * Permissions that are being selected
+     * Permissões que estão sendo selecionadas
      * @var array
      */
     protected $_selectingCurrentUserPermissions = [];
@@ -397,13 +449,13 @@ class ApiQuery {
     protected $_selectingSeals = false;
     
     /**
-     * Subqueries configuration
+     * Configuração de subconsultas
      * @var array
      */
     protected $_subqueriesSelect = [];
     
     /**
-     * Result Order
+     * Ordem do resultado
      *
      * @example 'name ASC'
      * @var string
@@ -411,31 +463,31 @@ class ApiQuery {
     protected $_order = 'id ASC';
     
     /**
-     * Query offset
+     * Offset da consulta
      * @var int
      */
     protected $_offset;
     
     /**
-     * Maximum results to return
+     * Máximo de resultados a retornar
      * @var int
      */
     protected $_limit;
     
     /**
-     * Page number. Used to create the query offset.
+     * Número da página. Usado para criar o offset da consulta.
      * @var int
      */
     protected $_page;
     
     /**
-     * Keyword filter
+     * Filtro por palavra-chave
      * @var string
      */
     protected $_keyword;
     
     /**
-     * Seals filter
+     * Filtro por selos
      * @var array
      */
     protected $_seals = [];
@@ -500,7 +552,7 @@ class ApiQuery {
     }
 
     /**
-     * Initializes the ApiQuery properties
+     * Inicializa as propriedades da ApiQuery
      *
      * @param string $class
      * @param array $api_params
@@ -620,6 +672,12 @@ class ApiQuery {
 
     }
     
+    /**
+     * Gera um alias único para ser usado no DQL
+     * 
+     * @param string|null $name
+     * @return string
+     */
     protected function getAlias($name){
         if(!$name){
             $name = uniqid();
@@ -629,6 +687,14 @@ class ApiQuery {
     }
     
     
+    /**
+     * Registra o log do DQL gerado
+     * 
+     * @param string $dql
+     * @param string $action
+     * @param array $params
+     * @return void
+     */
     public function logDql($dql, $action, $params = []){
         $app = App::i();
         if($app->config['app.log.apiDql']){
@@ -651,6 +717,11 @@ class ApiQuery {
 
     protected $_findingIds = false;
 
+    /**
+     * Retorna apenas os IDs dos resultados da consulta
+     * 
+     * @return int[]
+     */
     public function findIds() {
         $this->_findingIds = true;
         $pk = $this->pk ?: 'id';
@@ -662,10 +733,25 @@ class ApiQuery {
         }, $result);
     }
 
+    /**
+     * Executa a consulta e retorna um único resultado
+     * 
+     * @return array|null
+     */
     public function findOne(){
         return $this->getFindOneResult();
     }
     
+    /**
+     * Executa a consulta e retorna um único resultado
+     * 
+     * @return array|null
+     */
+    /**
+     * Executa a consulta e retorna um único resultado hidratado como array
+     * 
+     * @return array|null
+     */
     public function getFindOneResult() {
         $app = App::i();
         
@@ -716,12 +802,37 @@ class ApiQuery {
         return $result;
     }
 
+    /**
+     * Executa a consulta e retorna os resultados
+     * 
+     * @return array
+     */
     public function find(){
         return $this->getFindResult();
     }
 
+    /**
+     * Indica se está obtendo resultados de subclasses
+     * @var bool
+     */
     private $__inGetSubClassesResult = false;
+
+    /**
+     * Filtro de IDs
+     * @var array
+     */
     private $_idsFilter = [];
+
+    /**
+     * Retorna o resultado para subclasses
+     * 
+     * @return array
+     */
+    /**
+     * Retorna o resultado da consulta considerando a herança de classes
+     * 
+     * @return array
+     */
     protected function getSubClassesResult() {
         $ids = $this->findIds();
 
@@ -759,6 +870,15 @@ class ApiQuery {
         return $result;
     }
 
+    /**
+     * Gera uma chave de cache para a consulta atual
+     * 
+     * @param string $method
+     * @param string|null $select
+     * @param int|null $offset
+     * @param int|null $limit
+     * @return string
+     */
     function getCacheKey($method, string $select = null, $offset = null, $limit = null) {
         $dql = $this->getFindDQL($select);
         $params = $this->getDqlParams();
@@ -772,6 +892,13 @@ class ApiQuery {
     }
     
     private $__inSubclassesQuery = false;
+    
+    /**
+     * Executa a consulta e retorna os resultados hidratados como array
+     * 
+     * @param string|null $select
+     * @return array
+     */
     public function getFindResult(?string $select = null) {
         $app = App::i();
 
@@ -831,10 +958,20 @@ class ApiQuery {
     }
 
     
+    /**
+     * Retorna o número total de resultados da consulta
+     * 
+     * @return int
+     */
     public function count(){
         return $this->getCountResult();
     }
     
+    /**
+     * Retorna o número total de resultados da consulta
+     * 
+     * @return int
+     */
     public function getCountResult() {
         $app = App::i();
 
@@ -868,6 +1005,11 @@ class ApiQuery {
         return $result;
     }
     
+    /**
+     * Retorna os parâmetros que serão usados no DQL
+     * 
+     * @return array
+     */
     function getDqlParams(){
         $params = $this->_dqlParams;
         
@@ -879,6 +1021,12 @@ class ApiQuery {
         return $params;
     }
 
+    /**
+     * Gera o DQL para a consulta find
+     * 
+     * @param string|null $select
+     * @return string
+     */
     public function getFindDQL(?string $select = null) {
         $where = $this->generateWhere();
         $order = $this->generateOrder();
@@ -909,6 +1057,11 @@ class ApiQuery {
         return $dql;
     }
 
+    /**
+     * Gera o DQL para a consulta count
+     * 
+     * @return string
+     */
     public function getCountDQL() {
         $where = $this->generateWhere();
         $joins = $this->generateJoins();
@@ -925,6 +1078,13 @@ class ApiQuery {
         return $dql;
     }
 
+    /**
+     * Gera um sub-DQL para ser usado em subconsultas
+     * 
+     * @param string|null $prop
+     * @param string|null $cast
+     * @return string
+     */
     public function getSubDQL($prop = null, $cast = null) {
         if(is_null($prop)) {
             $prop = $this->pk;
@@ -985,10 +1145,23 @@ class ApiQuery {
         return $result;
     }
     
+    /**
+     * Retorna a lista de campos que estão sendo selecionados
+     * 
+     * @return array
+     */
     protected function getSelecting(){
         return $this->_selecting;
     }
 
+    /**
+     * Retorna uma lista de IDs ou um sub-DQL para ser usado em cláusulas IN
+     * 
+     * @param array $entities
+     * @param string|null $property
+     * @param bool $force_ids
+     * @return string|null
+     */
     protected function getSubqueryInIdentities(array $entities, $property = null, $force_ids = false) {
         if(is_null($property)) {
             $property = $this->pk;
@@ -1013,6 +1186,11 @@ class ApiQuery {
         return $result;
     }
     
+    /**
+     * Gera o sub-DQL para busca por palavra-chave
+     * 
+     * @return string
+     */
     function getKeywordSubDQL(){
         $subdql = '';
         if($this->_keyword){
@@ -1050,10 +1228,20 @@ class ApiQuery {
         return $subdql;
     }
 
+    /**
+     * Retorna o limite de resultados
+     * 
+     * @return int|null
+     */
     function getLimit() {
         return $this->_limit;
     }
 
+    /**
+     * Retorna o offset da consulta
+     * 
+     * @return int
+     */
     function getOffset() {
         if ($this->_offset) {
             return $this->_offset;
@@ -1064,6 +1252,11 @@ class ApiQuery {
         }
     }
     
+    /**
+     * Retorna os filtros de subconsulta configurados
+     * 
+     * @return array
+     */
     function getSubqueryFilters(){
         $app = App::i();
         
@@ -1088,6 +1281,11 @@ class ApiQuery {
         return $filters;
     }
 
+    /**
+     * Gera a cláusula WHERE do DQL
+     * 
+     * @return string
+     */
     protected function generateWhere() {
         $app = App::i();
 
@@ -1154,6 +1352,11 @@ class ApiQuery {
         return $where;
     }
 
+    /**
+     * Gera a cláusula JOIN do DQL
+     * 
+     * @return string
+     */
     protected function generateJoins() {
         $app = App::i();
         $joins = $this->joins;
@@ -1177,6 +1380,11 @@ class ApiQuery {
     
     protected $_removeFromResult = [];
 
+    /**
+     * Gera a cláusula SELECT do DQL
+     * 
+     * @return string
+     */
     protected function generateSelect() {
         $app = App::i();
 
@@ -1245,6 +1453,11 @@ class ApiQuery {
 
     protected $generatedOrder = '';
 
+    /**
+     * Gera a cláusula ORDER BY do DQL
+     * 
+     * @return string|null
+     */
     protected function generateOrder() {
         if ($this->generatedOrder) {
             return $this->generatedOrder;
@@ -1326,6 +1539,12 @@ class ApiQuery {
         }
     }
     
+    /**
+     * Processa os resultados da consulta para adicionar metadados, arquivos, etc.
+     * 
+     * @param array $entities
+     * @return void
+     */
     protected function processEntities(array &$entities) {
         if(empty($entities)) {
             return;
@@ -1419,6 +1638,12 @@ class ApiQuery {
         $entities = array_values($entities);
     }
 
+    /**
+     * Adiciona os metadados às entidades processadas
+     * 
+     * @param array $entities
+     * @return void
+     */
     protected function appendMetadata(array &$entities) {
         $app = App::i();
         $metadata = [];
@@ -1506,6 +1731,12 @@ class ApiQuery {
         }
     }    
     
+    /**
+     * Adiciona as relações às entidades processadas
+     * 
+     * @param array $entities
+     * @return void
+     */
     protected function appendRelations(array &$entities) {
         if ($this->_subqueriesSelect) {
             $_subquery_where_id_in = $this->getSubqueryInIdentities($entities);
@@ -1836,6 +2067,12 @@ class ApiQuery {
         }
     }
     
+    /**
+     * Adiciona os arquivos às entidades processadas
+     * 
+     * @param array $entities
+     * @return void
+     */
     protected function appendFiles(array &$entities){
         if(!$this->_selectingFiles || !$this->usesFiles){
             return;
@@ -2024,6 +2261,12 @@ class ApiQuery {
         }
         
     }
+    /**
+     * Adiciona os metalists às entidades processadas
+     * 
+     * @param array $entities
+     * @return void
+     */
     protected function appendMetalists(array &$entities){
         if(!$this->_selectingMetalists || !$this->usesMetalists){
             return;
@@ -2102,6 +2345,12 @@ class ApiQuery {
         }
     }
 
+    /**
+     * Adiciona as relações de agente às entidades processadas
+     * 
+     * @param array $entities
+     * @return void
+     */
     protected function appendAgentRelations(array &$entities) {
         if (!$this->_selectingAgentRelations || !$this->usesAgentRelations) {
             return;
@@ -2233,6 +2482,12 @@ class ApiQuery {
         }
     }
 
+    /**
+     * Adiciona os agentes relacionados às entidades processadas
+     * 
+     * @param array $entities
+     * @return void
+     */
     protected function appendRelatedAgents(array &$entities) {
         if (!$this->_selectingRelatedAgents || !$this->usesAgentRelations) {
             return;
@@ -2366,6 +2621,12 @@ class ApiQuery {
         }
     }
 
+    /**
+     * Adiciona as relações de espaço às entidades processadas
+     * 
+     * @param array $entities
+     * @return void
+     */
     protected function appendSpaceRelations(array &$entities) {
         if (!$this->_selectingSpaceRelations || !$this->usesSpaceRelations) {
             return;
@@ -2468,6 +2729,12 @@ class ApiQuery {
         }
     }
 
+    /**
+     * Adiciona os espaços relacionados às entidades processadas
+     * 
+     * @param array $entities
+     * @return void
+     */
     protected function appendRelatedSpaces(array &$entities) {
         
         if (!$this->_selectingSpaceRelations || !$this->usesSpaceRelations) {
@@ -2563,6 +2830,12 @@ class ApiQuery {
         }
     }
 
+    /**
+     * Adiciona as permissões do usuário atual às entidades processadas
+     * 
+     * @param array $entities
+     * @return void
+     */
     protected function appendCurrentUserPermissions(array &$entities) {
         if (!$this->_selectingCurrentUserPermissions || !$this->usesPermissionCache) {
             return;
@@ -2658,6 +2931,12 @@ class ApiQuery {
         }
     }
 
+    /**
+     * Adiciona os termos de taxonomia às entidades processadas
+     * 
+     * @param array $entities
+     * @return void
+     */
     protected function appendTerms(array &$entities){
         $class = $this->rootEntityClassName;
         $term_relation_class_name = $this->termRelationClassName;
@@ -2728,6 +3007,12 @@ class ApiQuery {
 
     protected $_relatedSeals = null;
 
+    /**
+     * Busca os selos relacionados para as entidades
+     * 
+     * @param array $entities
+     * @return void
+     */
     protected function _fetchRelatedSeals(array &$entities){
         if(is_null($this->_relatedSeals)){
             $app = App::i();
@@ -2804,6 +3089,12 @@ class ApiQuery {
         }
     }
 
+    /**
+     * Adiciona a informação se a entidade é verificada
+     * 
+     * @param array $entities
+     * @return void
+     */
     protected function appendIsVerified(array &$entities){
         if($this->usesSealRelation && $this->_selectingIsVerfied){
             $this->_fetchRelatedSeals($entities);
@@ -2823,6 +3114,12 @@ class ApiQuery {
         }
     }
 
+    /**
+     * Adiciona os selos de verificação às entidades processadas
+     * 
+     * @param array $entities
+     * @return void
+     */
     protected function appendVerifiedSeals(array &$entities){
         if($this->usesSealRelation && $this->_selectingVerfiedSeals){
             $this->_fetchRelatedSeals($entities);
@@ -2841,6 +3138,12 @@ class ApiQuery {
         }
     }
 
+    /**
+     * Adiciona todos os selos às entidades processadas
+     * 
+     * @param array $entities
+     * @return void
+     */
     protected function appendSeals(array &$entities){
         if($this->usesSealRelation && $this->_selectingSeals){
             $this->_fetchRelatedSeals($entities);
@@ -2857,6 +3160,12 @@ class ApiQuery {
     
     private $__viewPrivateDataPermissions = null;
     
+    /**
+     * Retorna as permissões de visualização de dados privados para as entidades
+     * 
+     * @param array $entities
+     * @return array
+     */
     protected function getViewPrivateDataPermissions(array $entities){
         if(is_null($this->__viewPrivateDataPermissions) && count($entities) > 0){
             $this->__viewPrivateDataPermissions = [];
@@ -2903,6 +3212,12 @@ class ApiQuery {
         return $this->__viewPrivateDataPermissions;
     }
 
+    /**
+     * Adiciona múltiplos parâmetros ao DQL
+     * 
+     * @param array $values
+     * @return array
+     */
     protected function addMultipleParams(array $values) {
         $result = [];
         foreach ($values as $value) {
@@ -2912,6 +3227,12 @@ class ApiQuery {
         return $result;
     }
 
+    /**
+     * Adiciona um único parâmetro ao DQL e retorna o alias do parâmetro (:v...)
+     * 
+     * @param mixed $value
+     * @return string
+     */
     protected function addSingleParam($value) {
         $app = App::i();
         
@@ -2944,6 +3265,15 @@ class ApiQuery {
         return $result;
     }
 
+    /**
+     * Analisa um parâmetro de consulta e retorna o DQL correspondente
+     * 
+     * @param string $key
+     * @param string $expression
+     * @return string
+     * @throws Exceptions\Api\InvalidExpression
+     * @throws Exceptions\Api\InvalidArgument
+     */
     protected function parseParam($key, $expression) {
         
         if (is_string($expression) && !preg_match('#^[ ]*(!)?([a-z_]+)[ ]*\((.*)\)$#i', $expression, $match)) {
@@ -3112,6 +3442,12 @@ class ApiQuery {
         }
     }
 
+    /**
+     * Divide os valores de um parâmetro respeitando vírgulas escapadas
+     * 
+     * @param string $val
+     * @return array
+     */
     private function splitParam($val) {
         
         $result = explode("\n", str_replace('\\,', ',', preg_replace('#(^[ ]*|([^\\\]))\,#', "$1\n", $val)));
@@ -3128,6 +3464,12 @@ class ApiQuery {
         }
     }
 
+    /**
+     * Analisa expressões aninhadas
+     * 
+     * @param string $val
+     * @return array
+     */
     protected function parseExpression($val) {
 
         $open = false;
@@ -3166,6 +3508,12 @@ class ApiQuery {
         return $results;
     }
 
+    /**
+     * Analisa todos os parâmetros da consulta da API
+     * 
+     * @return void
+     * @throws Exceptions\Api\PropertyDoesNotExists
+     */
     protected function parseQueryParams() {
         $app = App::i();
         $class = $this->entityClassName;
@@ -3229,6 +3577,12 @@ class ApiQuery {
         $app->applyHookBoundTo($this, "{$this->hookPrefix}.parseQueryParams");
     }
     
+    /**
+     * Adiciona filtro por selos
+     * 
+     * @param array|string $seals_ids
+     * @return void
+     */
     protected function _addFilterBySeals($seals_ids){
         if(is_string($seals_ids)) {
             $seals_ids = explode(',', $seals_ids);
@@ -3249,6 +3603,12 @@ class ApiQuery {
         $this->_permissionsUser = $value;
     }
 
+    /**
+     * Adiciona filtro por permissões
+     * 
+     * @param string $value
+     * @return void
+     */
     protected function _addFilterByPermissions($value) {
         $app = App::i();
 
@@ -3308,6 +3668,12 @@ class ApiQuery {
         }
     }
 
+    /**
+     * Adiciona filtro pelo usuário proprietário
+     * 
+     * @param string $value
+     * @return void
+     */
     protected function _addFilterByOwnerUser($value) {
         $alias = uniqid('user_agent__');
         $this->_keys['user'] = "{$alias}.user";
@@ -3317,16 +3683,38 @@ class ApiQuery {
         $this->_whereDqls[] = $this->parseParam($this->_keys['user'], $value);
     }
 
+    /**
+     * Adiciona filtro por uma propriedade da entidade
+     * 
+     * @param string $key
+     * @param string $value
+     * @param string|null $propery_name
+     * @return void
+     */
     protected function _addFilterByEntityProperty($key, $value, $propery_name = null) {
         $this->_keys[$key] = $propery_name ? "e.{$propery_name}" : "e.{$key}";
 
         $this->_whereDqls[] = $this->parseParam($this->_keys[$key], $value);
     }
 
+    /**
+     * Adiciona filtro por uma relação da entidade (não implementado)
+     * 
+     * @param string $key
+     * @param string $value
+     * @return void
+     */
     protected function _addFilterByEntityRelation($key, $value) {
         // @TODO: implementar
     }
 
+    /**
+     * Adiciona filtro por metadados
+     * 
+     * @param string $key
+     * @param string $value
+     * @return void
+     */
     protected function _addFilterByMetadata($key, $value) {
         if (isset($this->_keys[$key])) {
             $this->_whereDqls[] = $this->parseParam($this->_keys[$key], $value);
@@ -3350,6 +3738,13 @@ class ApiQuery {
         $this->_whereDqls[] = $this->parseParam($this->_keys[$key], $value);
     }
 
+    /**
+     * Adiciona filtro por termos de taxonomia
+     * 
+     * @param string $key
+     * @param string $value
+     * @return void
+     */
     protected function _addFilterByTermTaxonomy($key, $value) {
         $tr_alias = $this->getAlias('tr');
         $t_alias = $this->getAlias('t');
@@ -3362,6 +3757,14 @@ class ApiQuery {
         $this->_whereDqls[] = $this->parseParam($this->_keys[$key], $value);
     }
     
+    /**
+     * Adiciona um filtro baseado em outra ApiQuery (subconsulta)
+     * 
+     * @param ApiQuery $subquery
+     * @param string $subquery_property
+     * @param string|null $property
+     * @return void
+     */
     public function addFilterByApiQuery(ApiQuery $subquery, $subquery_property = 'id', $property = null){
         if(is_null($property)) {
             $property = $this->pk;
@@ -3377,6 +3780,11 @@ class ApiQuery {
         ];
     }
     
+    /**
+     * Retorna os nomes de todas as propriedades selecionáveis da entidade
+     * 
+     * @return array
+     */
     protected function _getAllPropertiesNames(){
         $remove_properties = [
             '_geoLocation'
@@ -3436,6 +3844,12 @@ class ApiQuery {
         return $properties;
     }
     
+    /**
+     * Analisa o parâmetro @select
+     * 
+     * @param string $select
+     * @return void
+     */
     protected function _parseSelect($select) {
         if($select == '*' && $this->entityClassName == Opportunity::class) {
             $select .= ',ownerEntity';
@@ -3559,6 +3973,14 @@ class ApiQuery {
         }
     }
     
+    /**
+     * Pré-configura uma subconsulta de seleção
+     * 
+     * @param string $prop
+     * @param string $_select
+     * @param string $_match
+     * @return string
+     */
     protected function _preCreateSelectSubquery($prop, $_select, $_match) {
                 
         $_select_properties = explode(',', $_select);
@@ -3622,6 +4044,12 @@ class ApiQuery {
         return $result;
     }
 
+    /**
+     * Analisa o parâmetro @files
+     * 
+     * @param string $value
+     * @return void
+     */
     protected function _parseFiles($value) {
         if (preg_match('#^\(([\w\., ]+)\)[ ]*(:[ ]*([\w, ]+))?#i', $value, $imatch)) {
             $this->_selectingFiles = explode(',', str_replace(' ', '', $imatch[1]));

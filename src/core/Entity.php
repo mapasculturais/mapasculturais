@@ -6,50 +6,54 @@ use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\Criteria;
 
 /**
- * The base class for all entities used in MapasCulturais.
+ * Classe base para todas as entidades usadas no MapasCulturais.
  *
- * @property-read array $validationErrors Entity properties and metadata validation errors.
- * @property-read array $propertiesMetadata Properties Metadata
- * @property-read Controller $controller The controller with the class with the same name of this entity class in the parent namespace.
- * @property-read string $controllerId The controller id for this entity
- * @property-read string $className 
- * @property-read Entities\User $ownerUser The User owner of this entity
- * @property-read array $userPermissions Returns the user's permission list. If no user is specified, returns the authenticated user.
-
- * 
- * @property-read string $hookClassPath
- * @property-read string $hookPrefix
+ * @property-read array $validationErrors Erros de validação das propriedades e metadados da entidade.
+ * @property-read array $propertiesMetadata Metadados das propriedades
+ * @property-read Controller $controller Controlador com a classe de mesmo nome desta classe de entidade no namespace pai.
+ * @property-read string $controllerId ID do controlador para esta entidade
+ * @property-read string $className Nome da classe da entidade
+ * @property-read Entities\User $ownerUser Usuário proprietário desta entidade
+ * @property-read array $userPermissions Retorna a lista de permissões do usuário. Se nenhum usuário for especificado, retorna o usuário autenticado.
+ * @property-read string $hookClassPath Caminho da classe para hooks
+ * @property-read string $hookPrefix Prefixo para hooks
+ * @property-read array $currentUserPermissions Permissões do usuário atual sobre a entidade
+ * @property-read string $permissionCacheKeyPrefix Prefixo para chaves de cache de permissão
+ * @property-read array $entity Esta entidade como um array
+ * @property-read string $singleUrl URL para visualização individual da entidade
+ * @property-read string $editUrl URL para edição da entidade
+ * @property-read string $deleteUrl URL para exclusão da entidade
+ * @property-read string $entityType Tipo da entidade (nome da classe sem o namespace)
+ * @property-read int $entityState Estado da entidade no UnitOfWork do Doctrine
  *
+ * @hook **entity.new** - Executado quando o método __construct de qualquer entidade é chamado.
+ * @hook **entity({$entity_class}).new** - Executado quando o método __construct da $entity_class é chamado.
  *
- * @hook **entity.new** - Executed when the __construct method of any entity is called.
- * @hook **entity({$entity_class}).new** - Executed when the __construct method of the $entity_class is called.
+ * @hook **entity.load** - Executado após qualquer entidade ser carregada.
+ * @hook **entity({$entity_class}).load** - Executado após uma entidade da classe $entity_class ser carregada.
  *
- * @hook **entity.load** - Executed after any entity is loaded.
- * @hook **entity({$entity_class}).load** - Executed after an entity of class $entity_class is loaded.
+ * @hook **entity.save:before** - Executado antes de qualquer entidade ser inserida ou atualizada.
+ * @hook **entity({$entity_class}).save:before** - Executado antes de uma entidade da classe $entity_class ser inserida ou atualizada.
+ * @hook **entity.save:after**  - Executado após qualquer entidade ser inserida ou atualizada.
+ * @hook **entity({$entity_class}).save:after** - Executado antes de uma entidade da classe $entity_class ser inserida ou atualizada.
  *
+ * @hook **entity.insert:before** - Executado antes de qualquer entidade ser inserida.
+ * @hook **entity({$entity_class}).insert:before** - Executado antes de uma entidade da classe $entity_class ser inserida.
  *
- * @hook **entity.save:before** - Executed before any entity is inserted or updated.
- * @hook **entity({$entity_class}).save:before** - Executed before an entity of class $entity_class is inserted or updated.
- * @hook **entity.save:after**  - Executed after any entity is inserted or updated.
- * @hook **entity({$entity_class}).save:after** - Executed before an entity of class $entity_class is inserted or updated.
+ * @hook **entity.insert:after** - Executado após qualquer entidade ser inserida.
+ * @hook **entity({$entity_class}).insert:after** - Executado após uma entidade da classe $entity_class ser inserida.
  *
- * @hook **entity.insert:before** - Executed before any entity is inserted.
- * @hook **entity({$entity_class}).insert:before** - Executed before an entity of class $entity_class is inserted.
+ * @hook **entity.remove:before** - Executado antes de qualquer entidade ser inserida.
+ * @hook **entity({$entity_class}).remove:before** - Executado antes de uma entidade da classe $entity_class ser removida.
  *
- * @hook **entity.insert:after** - Executed after any entity is inserted.
- * @hook **entity({$entity_class}).insert:after** - Executed after an entity of class $entity_class is inserted.
+ * @hook **entity.remove:after** - Executado após qualquer entidade ser inserida.
+ * @hook **entity({$entity_class}).remove:after** - Executado após uma entidade da classe $entity_class ser removida.
  *
- * @hook **entity.remove:before** - Executed before any entity is inserted.
- * @hook **entity({$entity_class}).remove:before** - Executed before an entity of class $entity_class is removed.
+ * @hook **entity.update:before** - Executado antes de qualquer entidade ser atualizada.
+ * @hook **entity({$entity_class}).update:before** - Executado antes de uma entidade da classe $entity_class ser atualizada.
  *
- * @hook **entity.remove:after** - Executed after any entity is inserted.
- * @hook **entity({$entity_class}).remove:after** - Executed after an entity of class $entity_class is removed.
- *
- * @hook **entity.update:before** - Executed before any entity is updated.
- * @hook **entity({$entity_class}).update:before** - Executed before an entity of class $entity_class is updated.
- *
- * @hook **entity.update:after** - Executed after any entity is updated.
- * @hook **entity({$entity_class}).update:after** - Executed after an entity of class $entity_class is updated.
+ * @hook **entity.update:after** - Executado após qualquer entidade ser atualizada.
+ * @hook **entity({$entity_class}).update:after** - Executado após uma entidade da classe $entity_class ser atualizada.
  *
  */
 abstract class Entity implements \JsonSerializable{
@@ -57,43 +61,77 @@ abstract class Entity implements \JsonSerializable{
         Traits\MagicSetter,
         Traits\MagicCallers;
 
+    /**
+     * @var int STATUS_ENABLED Status ativado
+     */
     const STATUS_ENABLED = 1;
+    
+    /**
+     * @var int STATUS_DRAFT Status rascunho
+     */
     const STATUS_DRAFT = 0;
+    
+    /**
+     * @var int STATUS_DISABLED Status desabilitado
+     */
     const STATUS_DISABLED = -9;
+    
+    /**
+     * @var int STATUS_TRASH Status lixeira
+     */
     const STATUS_TRASH = -10;
+    
+    /**
+     * @var int STATUS_ARCHIVED Status arquivado
+     */
     const STATUS_ARCHIVED = -2;
 
     /**
-     * array of validation definition
+     * Array de definições de validação
      * @var array
      */
     protected static $validations = [];
 
+    /**
+     * @var array Erros de validação da entidade
+     */
     protected $_validationErrors = [];
 
+    /**
+     * @var array Objetos aninhados para serialização JSON
+     */
     private static $_jsonSerializeNestedObjects = [];
 
+    /**
+     * @var array Mudanças na entidade
+     */
     public $_changes = [];
     
     /**
-     * enable or disable the usage of magic getter hook to filter properties values
+     * Habilita ou desabilita o uso do hook magic getter para filtrar valores de propriedades
+     * @var bool
      */
     protected $__enableMagicGetterHook = false;
+    
+    /**
+     * Habilita ou desabilita o uso do hook magic setter para filtrar valores de propriedades
+     * @var bool
+     */
     protected $__enableMagicSetterHook = false;
     
     /**
      * Flag para desabilitar a atualização do updateTimestamp no save
      * 
-     * a flag está ativa se o valor igual ou maior que 1
+     * A flag está ativa se o valor for igual ou maior que 1
      * @var int
      */
     private int $__updateTimestampEnabled = 1;
 
     /**
-     * Creates the new empty entity object adding an empty point to properties of type 'point' and,
-     * if the createTimestamp property exists, a DateTime object with the current date and time.
+     * Cria o novo objeto de entidade vazio adicionando um ponto vazio para propriedades do tipo 'point' e,
+     * se a propriedade createTimestamp existir, um objeto DateTime com a data e hora atuais.
      *
-     * @hook **entity(<<Entity>>).new** - Executed when the __construct method of the $entity_class is called.
+     * @hook **entity(<<Entity>>).new** - Executado quando o método __construct da $entity_class é chamado.
      */
     public function __construct() {
         $app = App::i();
@@ -125,11 +163,21 @@ abstract class Entity implements \JsonSerializable{
 
     }
 
+    /**
+     * Retorna a representação em string da entidade (classe:ID)
+     * 
+     * @return string
+     */
     function __toString() {
         $pk = $this->getPKPropertyName();
         return $this->getClassName() . ':' . $this->$pk;
     }
 
+    /**
+     * Retorna o nome da propriedade que é a chave primária da entidade
+     * 
+     * @return string Nome da propriedade da chave primária
+     */
     static function getPKPropertyName(): string
     {
         $app = App::i();
@@ -137,10 +185,20 @@ abstract class Entity implements \JsonSerializable{
         return $metadata->identifier[0];
     }
 
+    /**
+     * Indica se a entidade é privada
+     * 
+     * @return bool Sempre retorna false
+     */
     static function isPrivateEntity(){
         return false;
     }
 
+    /**
+     * Atualiza a entidade com os dados do banco de dados
+     * 
+     * @return void
+     */
     function refresh(){
         $app = App::i();
 
@@ -166,19 +224,41 @@ abstract class Entity implements \JsonSerializable{
         return $this->repo()->find($this->$pk);
     }
 
+    /**
+     * Verifica se esta entidade é igual a outra entidade
+     * 
+     * @param mixed $entity Entidade para comparar
+     * @return bool True se as entidades forem iguais
+     */
     function equals($entity){
         $pk = $this->getPKPropertyName();
         return is_object($entity) && $entity instanceof Entity && $entity->getClassName() === $this->getClassName() && $entity->$pk === $this->$pk;
     }
 
+    /**
+     * Verifica se a entidade é nova (não persistida no banco)
+     * 
+     * @return bool True se a entidade for nova
+     */
     function isNew(){
         return App::i()->em->getUnitOfWork()->getEntityState($this) === \Doctrine\ORM\UnitOfWork::STATE_NEW;
     }
 
+    /**
+     * Verifica se a entidade está arquivada
+     * 
+     * @return bool True se a entidade estiver arquivada
+     */
     function isArchived(){
         return $this->status === self::STATUS_ARCHIVED;
     }
 
+    /**
+     * Retorna uma versão simplificada da entidade com as propriedades especificadas
+     * 
+     * @param string|array $properties Propriedades a serem incluídas (string separada por vírgulas ou array)
+     * @return \stdClass Objeto com as propriedades simplificadas
+     */
     function simplify($properties = 'id,name'){
         $e = new \stdClass;
         $e->{'@entityType'} = $this->getControllerId();
@@ -220,18 +300,28 @@ abstract class Entity implements \JsonSerializable{
         return $e;
     }
 
+    /**
+     * Exibe um dump da entidade para debug
+     * 
+     * @return void
+     */
     function dump(){
         echo '<pre>';
         \Doctrine\Common\Util\Debug::dump($this);
         echo '</pre>';
     }
 
+    /**
+     * Retorna o nome da classe da entidade
+     * 
+     * @return string Nome da classe
+     */
     static function getClassName(){
         return App::i()->em->getClassMetadata(get_called_class())->name;
     }
 
     /**
-     * Returns the owner User of this entity
+     * Retorna o usuário proprietário desta entidade
      *
      * @return \MapasCulturais\Entities\User
      */
@@ -304,9 +394,9 @@ abstract class Entity implements \JsonSerializable{
     }
 
     /**
-     * Set entity status
+     * Define o status da entidade
      * 
-     * @param int $status 
+     * @param int $status Novo status da entidade
      * @return void 
      */    
     function setStatus(int $status){
@@ -355,6 +445,14 @@ abstract class Entity implements \JsonSerializable{
         $this->status = $status;
     }
 
+    /**
+     * Filtra uma coleção de entidades por status
+     * 
+     * @param iterable $collection Coleção de entidades para filtrar
+     * @param int $status Status para filtrar
+     * @param mixed $order Ordenação (não utilizado no momento)
+     * @return array Entidades filtradas pelo status
+     */
     protected function fetchByStatus($collection, $status, $order = null){
         $collection = is_iterable($collection) ? $collection : [];
         $result = [];
@@ -368,6 +466,12 @@ abstract class Entity implements \JsonSerializable{
         return $result;
     }
 
+    /**
+     * Verificação genérica de permissão para um usuário
+     * 
+     * @param UserInterface $user Usuário para verificar permissões
+     * @return bool True se o usuário tiver permissão genérica
+     */
     protected function genericPermissionVerification($user){
         
         if($user->is('guest'))
@@ -395,6 +499,12 @@ abstract class Entity implements \JsonSerializable{
         return false;
     }
 
+    /**
+     * Verifica se um usuário pode visualizar esta entidade
+     * 
+     * @param UserInterface $user Usuário para verificar permissão
+     * @return bool True se o usuário pode visualizar a entidade
+     */
     protected function canUserView($user){
         if($this->status > 0){
             return true;
@@ -403,7 +513,12 @@ abstract class Entity implements \JsonSerializable{
         }
     }
 
-
+    /**
+     * Verifica se um usuário pode criar esta entidade
+     * 
+     * @param UserInterface $user Usuário para verificar permissão
+     * @return bool True se o usuário pode criar a entidade
+     */
     protected function canUserCreate($user){
         $result = $this->genericPermissionVerification($user);
         if($result && $this->usesOwnerAgent()){
@@ -423,11 +538,22 @@ abstract class Entity implements \JsonSerializable{
         return $result;
     }
 
-
+    /**
+     * Verifica se um usuário pode modificar esta entidade
+     * 
+     * @param UserInterface $user Usuário para verificar permissão
+     * @return bool True se o usuário pode modificar a entidade
+     */
     protected function canUserModify($user) {
         return $this->genericPermissionVerification($user);
     }
 
+    /**
+     * Verifica se um usuário pode remover esta entidade
+     * 
+     * @param UserInterface $user Usuário para verificar permissão
+     * @return bool True se o usuário pode remover a entidade
+     */
     protected function canUserRemove($user){
         if($user->is('guest'))
             return false;
@@ -440,6 +566,12 @@ abstract class Entity implements \JsonSerializable{
         return false;
     }
 
+    /**
+     * Verifica se um usuário tem controle sobre esta entidade
+     * 
+     * @param UserInterface $user Usuário para verificar permissão
+     * @return bool True se o usuário tem controle sobre a entidade
+     */
     protected function canUser_control($user) {
         if ($this->usesAgentRelation() && $this->userHasControl($user)){
             return true;
@@ -463,7 +595,7 @@ abstract class Entity implements \JsonSerializable{
     /** 
      * Retorna o prefixo para as chaves de cache de permissão
      * 
-     * @return bool
+     * @return string Prefixo para chaves de cache de permissão
      */
     protected function getPermissionCacheKeyPrefix(): string {
         $app = App::i();
@@ -488,7 +620,13 @@ abstract class Entity implements \JsonSerializable{
         $app->cache->delete($key); 
     }
 
-    
+    /**
+     * Verifica se um usuário pode executar uma ação sobre esta entidade
+     * 
+     * @param string $action Ação a ser verificada
+     * @param UserInterface|Entities\Agent|null $userOrAgent Usuário ou agente para verificar permissão
+     * @return bool True se o usuário pode executar a ação
+     */
     public function canUser($action, $userOrAgent = null){
         $app = App::i();
         if(!$app->isAccessControlEnabled()){
@@ -539,12 +677,14 @@ abstract class Entity implements \JsonSerializable{
     }
     
     /**
-     * Wether a user can access the private files owned by this entity
+     * Verifica se um usuário pode acessar os arquivos privados pertencentes a esta entidade
      * 
-     * Default is to 'view', as it is used to protect the files attached to the registrations
+     * O padrão é 'view', pois é usado para proteger os arquivos anexados às inscrições
      * 
-     * Other entities can extend this method and change the verification
+     * Outras entidades podem estender este método e alterar a verificação
      * 
+     * @param UserInterface $user Usuário para verificar permissão
+     * @return bool True se o usuário pode visualizar arquivos privados
      */ 
     protected function canUserViewPrivateFiles($user) {
         if($this->isPrivateEntity()) {
@@ -575,6 +715,13 @@ abstract class Entity implements \JsonSerializable{
     }
     
 
+    /**
+     * Verifica se um usuário é administrador para esta entidade
+     * 
+     * @param UserInterface $user Usuário para verificar
+     * @param string $role Papel do administrador (padrão: 'admin')
+     * @return bool True se o usuário for administrador
+     */
     public function isUserAdmin(UserInterface $user, $role = 'admin'){
         if($user->is('guest')) {
             return false;
@@ -597,11 +744,23 @@ abstract class Entity implements \JsonSerializable{
         return $result;
     }
 
+    /**
+     * Verifica se o usuário atual tem permissão para executar uma ação e lança exceção se não tiver
+     * 
+     * @param string $action Ação a ser verificada
+     * @throws Exceptions\PermissionDenied Se o usuário não tiver permissão
+     * @return void
+     */
     public function checkPermission($action){
         if(!$this->canUser($action))
             throw new Exceptions\PermissionDenied(App::i()->user, $this, $action);
     }
 
+    /**
+     * Retorna os rótulos das propriedades da entidade
+     * 
+     * @return array Array associativo com os rótulos das propriedades
+     */
     public static function getPropertiesLabels(){
         $result = [];
         foreach(self::getPropertiesMetadata() as $key => $metadata){
@@ -613,12 +772,27 @@ abstract class Entity implements \JsonSerializable{
         return $result;
     }
 
+    /**
+     * Retorna o rótulo de uma propriedade específica
+     * 
+     * @param string $property_name Nome da propriedade
+     * @return string Rótulo da propriedade ou string vazia se não encontrado
+     */
     public static function getPropertyLabel($property_name){
         $labels = self::getPropertiesLabels();
 
         return isset($labels[$property_name]) ? $labels[$property_name] : '';
     }
 
+    /**
+     * Retorna o rótulo configurado para uma propriedade específica
+     * 
+     * Verifica primeiro se há um rótulo específico para a classe da entidade,
+     * caso contrário usa o rótulo padrão configurado.
+     * 
+     * @param string $property_name Nome da propriedade
+     * @return string Rótulo da propriedade ou string vazia se não encontrado
+     */
     public static function _getConfiguredPropertyLabel($property_name){
         $app = App::i();
         $label = '';
@@ -634,6 +808,11 @@ abstract class Entity implements \JsonSerializable{
         return $label;
     }
 
+    /**
+     * Cache de permissões por classe de entidade
+     * 
+     * @var array
+     */
     private static $__permissions = [];
 
     static function getPermissionsList() {
@@ -678,13 +857,13 @@ abstract class Entity implements \JsonSerializable{
 
 
     /**
-     * Returns the metadata of this entity properties.
+     * Retorna os metadados das propriedades desta entidade.
      *
-     * The metadata is composed of a required key, type key (Doctrine Map type) and a length key.
+     * Os metadados são compostos por uma chave required, uma chave type (tipo de mapeamento Doctrine) e uma chave length.
      *
      * <code>
      * /**
-     *  * Example
+     *  * Exemplo
      *  array(
      *     'name' => array(
      *         'required' => true,
@@ -694,12 +873,13 @@ abstract class Entity implements \JsonSerializable{
      *      ...
      * </code>
      *
-     * If the entity uses metadada the metadata of the metadata (metameta??) will be included in the result.
+     * Se a entidade usa metadados, os metadados dos metadados (metameta??) serão incluídos no resultado.
      *
      * @see \MapasCulturais\Definitions\Metadata::getMetadata()
      * @see \MapasCulturais\Traits\EntityMetadata
      *
-     * @return array the metadata of this entity properties.
+     * @param bool $include_column_name Incluir o nome da coluna no resultado
+     * @return array Os metadados das propriedades desta entidade.
      */
     public static function getPropertiesMetadata($include_column_name = false){
         $app = App::i();
@@ -802,6 +982,16 @@ abstract class Entity implements \JsonSerializable{
         return [];
     }
 
+    /**
+     * Verifica se uma propriedade é obrigatória para a entidade
+     * 
+     * Verifica primeiro nos metadados das propriedades e depois nas validações
+     * configuradas para a classe da entidade.
+     * 
+     * @param mixed $entity Entidade (parâmetro não utilizado, mantido para compatibilidade)
+     * @param string $property Nome da propriedade
+     * @return bool True se a propriedade for obrigatória
+     */
     public function isPropertyRequired($entity,$property) {
         $app = App::i();
         $return = false;
@@ -837,21 +1027,43 @@ abstract class Entity implements \JsonSerializable{
         return $data;
     }
 
+    /**
+     * Retorna a URL para visualização individual da entidade
+     * 
+     * @return string URL para a página de visualização da entidade
+     */
     public function getSingleUrl(){
         $pk = $this->getPKPropertyName();
         return App::i()->createUrl($this->controllerId, 'single', [$this->$pk]);
     }
 
+    /**
+     * Retorna a URL para edição da entidade
+     * 
+     * @return string URL para a página de edição da entidade
+     */
     public function getEditUrl(){
         $pk = $this->getPKPropertyName();
         return App::i()->createUrl($this->controllerId, 'edit', [$this->$pk]);
     }
 
+    /**
+     * Retorna a URL para exclusão da entidade
+     * 
+     * @return string URL para a ação de exclusão da entidade
+     */
     public function getDeleteUrl(){
         $pk = $this->getPKPropertyName();
         return App::i()->createUrl($this->controllerId, 'delete', [$this->$pk]);
     }
 
+    /**
+     * Retorna o nome da classe do controlador associado a esta entidade
+     * 
+     * Substitui o namespace 'Entities' por 'Controllers' mantendo o nome da classe.
+     * 
+     * @return string Nome da classe do controlador
+     */
     static function getControllerClassName() {
         $class = get_called_class();
         
@@ -902,28 +1114,68 @@ abstract class Entity implements \JsonSerializable{
         return "entity({$hook_class_path})";
     }
 
+    /**
+     * Retorna o tipo da entidade (nome da classe sem o namespace)
+     * 
+     * @return string Tipo da entidade
+     */
     public function getEntityType(){
         return str_replace('MapasCulturais\Entities\\','',$this->getClassName());
     }
 
+    /**
+     * Retorna o rótulo do tipo da entidade
+     * 
+     * Método a ser sobrescrito pelas classes filhas para fornecer
+     * um rótulo adequado para o tipo de entidade.
+     * 
+     * @param bool $plural Se true, retorna o rótulo no plural
+     * @return string Rótulo do tipo da entidade
+     */
     public static function getEntityTypeLabel($plural = false): string {
         return '';
     }
 
+    /**
+     * Retorna o estado da entidade no UnitOfWork do Doctrine
+     * 
+     * @return int Estado da entidade (STATE_MANAGED, STATE_NEW, STATE_DETACHED, STATE_REMOVED)
+     */
     function getEntityState() {
         return App::i()->em->getUnitOfWork()->getEntityState($this);
     }
 
+    /**
+     * Desabilita a atualização automática do timestamp de atualização
+     * 
+     * Decrementa o contador interno. A atualização só é habilitada
+     * quando o contador for maior que zero.
+     * 
+     * @return void
+     */
     function disableUpdateTimestamp(): void
     {
         $this->__updateTimestampEnabled--;
     }
 
+    /**
+     * Habilita a atualização automática do timestamp de atualização
+     * 
+     * Incrementa o contador interno. A atualização só é habilitada
+     * quando o contador for maior que zero.
+     * 
+     * @return void
+     */
     function enableUpdateTimestamp(): void
     {
         $this->__updateTimestampEnabled++;
     }
 
+    /**
+     * Verifica se a atualização automática do timestamp está habilitada
+     * 
+     * @return bool True se a atualização do timestamp estiver habilitada
+     */
     function isUpdateTimestampEnabled(): bool
     {
         return $this->__updateTimestampEnabled > 0;
@@ -1049,6 +1301,18 @@ abstract class Entity implements \JsonSerializable{
             App::i()->em->flush();
     }
 
+    /**
+     * Verifica se um valor é serializável para JSON
+     * 
+     * Método recursivo que verifica se um valor (array, objeto ou primitivo)
+     * pode ser serializado para JSON, considerando as classes permitidas
+     * e evitando referências circulares.
+     * 
+     * @param mixed $val Valor a ser verificado
+     * @param array $allowed_classes Lista de classes permitidas para serialização
+     * @return mixed Valor serializável
+     * @throws \Exception Se o valor não for serializável
+     */
     private function _isPropertySerializable($val, array $allowed_classes){
         if(is_array($val)){
             $nval = [];

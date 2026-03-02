@@ -3,10 +3,25 @@ namespace MapasCulturais\Repositories;
 use MapasCulturais\Traits;
 use MapasCulturais\App;
 
+/**
+ * Repositório para entidades de espaço
+ * 
+ * Este repositório fornece métodos específicos para consulta
+ * e manipulação de entidades do tipo Space no sistema,
+ * com foco em operações relacionadas a subsites e eventos.
+ * 
+ * @package MapasCulturais\Repositories
+ */
 class Space extends \MapasCulturais\Repository{
     use Traits\RepositoryKeyword,
         Traits\RepositoryAgentRelation;
 
+    /**
+     * Obtém os IDs dos espaços do subsite atual
+     * 
+     * @param bool $implode Se true, retorna string SQL; se false, retorna array
+     * @return string|array|null IDs dos espaços
+     */
     public function getCurrentSubsiteSpaceIds($implode = false){
         $app = App::i();
         if($subsite_id = $app->getCurrentSubsiteId()){
@@ -44,6 +59,16 @@ class Space extends \MapasCulturais\Repository{
         return $space_ids;
     }
 
+    /**
+     * Encontra espaços por eventos e intervalo de datas
+     * 
+     * @param array $event_ids IDs dos eventos
+     * @param string|\DateTime|null $date_from Data de início (padrão: hoje)
+     * @param string|\DateTime|null $date_to Data de fim (padrão: igual a date_from)
+     * @param int|null $limit Limite de resultados
+     * @param int|null $offset Offset dos resultados
+     * @return array Espaços encontrados
+     */
     public function findByEventsAndDateInterval($event_ids = [], $date_from = null, $date_to = null, $limit = null, $offset = null){
         if(!$event_ids)
             return [];

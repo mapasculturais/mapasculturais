@@ -9,32 +9,34 @@ use MapasCulturais\Entities\Opportunity;
 use MapasCulturais\Entities\Registration;
 
 /**
- * This is the default MapasCulturais View class. It extends the \Slim\View class adding a layout layer and the option to render the template partially.
+ * Classe base para temas do MapasCulturais. Fornece funcionalidades para renderização de templates,
+ * gerenciamento de assets e configuração de interface.
  *
- * When rendering, the template can access view object whith the $this variable and the controller that call the render/partial methiod with $this->controller.
+ * Ao renderizar, o template pode acessar o objeto view através da variável $this e o controlador
+ * que chamou o método render/partial através de $this->controller.
  *
- * @property Controller $controller The controller that call the render / partial
- * @property string $template
- * @property \ArrayObject $documentMeta
- * @property \ArrayObject $bodyClasses
- * @property \ArrayObject $bodyProperties
- * @property \ArrayObject $jsObject
- * @property \ArrayObject $path
+ * @property Controller $controller Controlador que chamou o render/partial
+ * @property string $template Template atual sendo renderizado
+ * @property \ArrayObject $documentMeta Meta tags do documento
+ * @property \ArrayObject $bodyClasses Classes CSS do elemento body
+ * @property \ArrayObject $bodyProperties Propriedades do elemento body
+ * @property \ArrayObject $jsObject Objeto JavaScript para passar dados ao frontend
+ * @property \ArrayObject $path Caminhos de busca para templates e assets
  * 
- * @property-read string $title The title of the page
- * @property-read AssetManager $assetManager The asset manager
+ * @property-read string $title Título da página
+ * @property-read AssetManager $assetManager Gerenciador de assets
+ * @property-read int $version Versão do tema
  * 
- * @property-read int $version Theme version 
+ * @hook **view.render:before ($template_name)** - executado antes da renderização do template e do layout
+ * @hook **view.render({$template_name}):before ($template_name)** - executado antes da renderização do template e do layout
+ * @hook **view.partial:before ($template_name)** - executado antes da renderização do template
+ * @hook **view.partial({$template_name}):before ($template_name)** - executado antes da renderização do template
+ * @hook **view.partial:after ($template_name, $html)** - executado após a renderização do template
+ * @hook **view.partial({$template_name}):before ($template_name, $html)** - executado após a renderização do template
+ * @hook **view.render:after ($template_name, $html)** - executado após a renderização do template e do layout
+ * @hook **view.render({$template_name}):before ($template_name, $html)** - executado após a renderização do template e do layout
  * 
- *
- * @hook **view.render:before ($template_name)** - executed before the render of the template and the layout
- * @hook **view.render({$template_name}):before ($template_name)** - executed before the render of the template and the layout
- * @hook **view.partial:before ($template_name)** - executed before the template render.
- * @hook **view.partial({$template_name}):before ($template_name)** - executed before the template render.
- * @hook **view.partial:after ($template_name, $html)** - executed after the template render.
- * @hook **view.partial({$template_name}):before ($template_name, $html)** - executed after the template render.
- * @hook **view.render:after ($template_name, $html)** - executed after the render of the template and the layout
- * @hook **view.render({$template_name}):before ($template_name, $html)** - executed after the render of the template and the layout
+ * @package MapasCulturais
  */
 abstract class Theme {
     use Traits\MagicGetter,
@@ -44,63 +46,86 @@ abstract class Theme {
 
 
     /**
-     * The controller that is using this view object.
+     * Controlador que está usando este objeto de view
      * @var \MapasCulturais\Controller
      */
     public $controller;
 
     /**
-     * The template that this view is rendering.
+     * Template que está sendo renderizado
      * @var string
      */
     protected $template = '';
 
     /**
-     * When to render the template partially
+     * Indica se o template deve ser renderizado parcialmente (sem layout)
      * @var bool
      */
     protected $_partial = false;
 
+    /**
+     * Gerenciador de assets
+     * @var AssetManager
+     */
     protected $_assetManager = null;
 
     /**
-     * Document meta tags
+     * Meta tags do documento
      * @var ArrayObject
      */
     public $documentMeta = [];
 
     /**
-     * CSS Classes to print in body tag
-     * @var  \ArrayObject
+     * Classes CSS para imprimir na tag body
+     * @var \ArrayObject
      */
     protected $bodyClasses = null;
 
     /**
-     * Properties of body tag
-     * @var  \ArrayObject
+     * Propriedades da tag body
+     * @var \ArrayObject
      */
     protected $bodyProperties =  null;
 
     /**
-     * MapasCulturais JS Object
+     * Objeto JavaScript do MapasCulturais
      * @var \ArrayObject
      */
     public $jsObject = null;
 
     /**
-     *
+     * Caminhos de busca para templates e assets
      * @var \ArrayObject
      */
     protected $path = null;
 
+    /**
+     * Dados passados para o template
+     * @var array
+     */
     public array $data = [];
 
+    /**
+     * Inicialização do tema (método abstrato)
+     */
     abstract protected function _init();
 
+    /**
+     * Registro do tema (método abstrato)
+     */
     abstract function register();
 
+    /**
+     * Retorna a versão do tema (método abstrato)
+     * @return int
+     */
     abstract function getVersion();
 
+    /**
+     * Construtor do tema
+     * 
+     * @param AssetManager $asset_manager Gerenciador de assets
+     */
     public function __construct(AssetManager $asset_manager) {
         $this->_assetManager = $asset_manager;
 
@@ -243,6 +268,9 @@ abstract class Theme {
         }
     }
 
+    /**
+     * Inicializa o tema
+     */
     function init(){
         $app = App::i();
         $app->applyHookBoundTo($this, 'theme.init:before');
@@ -252,47 +280,20 @@ abstract class Theme {
 
     
     /**
-     * Nome do último arquivo que teve o log de texto impresso.     * 
+     * Nome do último arquivo que teve o log de texto impresso
      * @var string
      */
     private $__previousLoggedFilename = '';
 
     /**
-     * Retorna um texto configurável
+     * Retorna um texto configurável baseado no contexto
      * 
-     * Quando chamada passando um $name = 'title', a função procurará o texto
-     * nas seguintes chaves de configuração respeitando a ordem:
+     * Quando chamada passando $name = 'title', a função procurará o texto
+     * nas chaves de configuração respeitando a ordem de prioridade baseada no contexto.
      * 
-     * Se for chamada no template.php de um componente chamado `component-name`
-     * - **text:controllerId.action.component-name.title**
-     * - **text:*.action.component-name.title**
-     * - **text:controllerId.*.component-name.title**
-     * - **text:component-name.title**
-     * 
-     * Se for chamada dentro do template part `layouts/parts/singles/avatar.php`
-     * - **text:controllerId.action.part(singles/avatar).title**
-     * - **text:*.action.part(singles/avatar).title**
-     * - **text:controllerId.*.part(singles/avatar).title**
-     * - **text:part(singles/avatar).title**
-     * 
-     * Se for chamada dentro do arquivo de layout `layouts/entity.php`
-     * - **text:controllerId.action.layout(entity).title**
-     * - **text:*.action.layout(entity).title**
-     * - **text:controllerId.*.layout(entity).title**
-     * - **text:layout(entity).title**
-     * 
-     * Se for chamada dentro de um arquivo de visão `views/agent/single-1.php`
-     * - **text:controllerId.action.view(agent/single-1).title**
-     * - **text:*.action.view(agent/single-1).title**
-     * - **text:controllerId.*.view(agent/single-1).title**
-     * - **text:view(agent/single-1).title**
-     * 
-     * **Não encontrando nenhuma configuração, a função retornará o texto padrão**
-     * 
-     * @param string $name 
-     * @param string $default_localized_text 
-     * 
-     * @return string 
+     * @param string $name Nome do texto
+     * @param string $default_localized_text Texto padrão localizado
+     * @return string Texto configurado ou padrão
      */
     function text(string $name, string $default_localized_text) {
         $app = App::i();
@@ -370,9 +371,9 @@ abstract class Theme {
     }
 
     /**
-     * Sets partial property.
+     * Define a propriedade partial
      *
-     * Use this passing true when you want to render the template without the layout.
+     * Use passando true quando quiser renderizar o template sem o layout.
      *
      * @param bool $val
      */
@@ -381,31 +382,34 @@ abstract class Theme {
     }
 
     /**
-     * Sets the layout property.
-     * @param string $name
+     * Define o layout a ser usado
+     * @param string $name Nome do layout
      */
     public function setLayout($name){
         $this->controller->layout = $name;
     }
 
     /**
-     * Sets the controller property.
+     * Define o controlador
      *
-     * @param \MapasCulturais\Controller $controller the controller.
+     * @param \MapasCulturais\Controller $controller Controlador
      */
     public function setController(\MapasCulturais\Controller $controller){
         $this->controller = $controller;
     }
 
     /**
-     * Render the template.
+     * Renderiza o template
      *
-     * Inside the template the view object is the $this variable and the controller that call the template is $this->controller.
+     * Dentro do template o objeto view é a variável $this e o controlador
+     * que chamou o template é $this->controller.
      *
-     * If the property "partial" is setted to true the template will be rendered without the layout.
+     * Se a propriedade "partial" estiver definida como true, o template será
+     * renderizado sem o layout.
      *
-     * @param string $template the template name.
-     * @return string The rendered template
+     * @param string $template Nome do template
+     * @param array $data Dados para o template
+     * @return string Template renderizado
      */
     public function render($template, array $data = []){
         $app = App::i();
@@ -424,21 +428,23 @@ abstract class Theme {
     }
 
     /**
-     * Render the template with the layout.
+     * Renderiza o template com o layout
      *
-     * To change the layout that will be used set the property "layout" of the this object inside the template file.
-     * Inside the template file, the view object is the $this variable, so to set the layout you can do: $this->layout = 'my-layout';
+     * Para alterar o layout que será usado, defina a propriedade "layout" deste objeto
+     * dentro do arquivo de template. Dentro do arquivo de template, o objeto view é a
+     * variável $this, então para definir o layout você pode fazer: $this->layout = 'meu-layout';
      *
-     * This method extracts the property "data" array to make the variables accessible inside the template.
+     * Este método extrai o array "data" para tornar as variáveis acessíveis dentro do template.
      *
-     * @param string $__template the template to render
+     * @param string $__template Template a ser renderizado
+     * @param array|null $data Dados para o template
      *
-     * @hook **view.render:before ($template_name)** - executed before the render of the template and the layout
-     * @hook **view.render({$template_name}):before ($template_name)** - executed before the render of the template and the layout
-     * @hook **view.render:after ($template_name, $html)** - executed after the render of the template and the layout
-     * @hook **view.render({$template_name}):before ($template_name, $html)** - executed after the render of the template and the layout
+     * @hook **view.render:before ($template_name)** - executado antes da renderização do template e do layout
+     * @hook **view.render({$template_name}):before ($template_name)** - executado antes da renderização do template e do layout
+     * @hook **view.render:after ($template_name, $html)** - executado após a renderização do template e do layout
+     * @hook **view.render({$template_name}):before ($template_name, $html)** - executado após a renderização do template e do layout
      *
-     * @return string The rendered template.
+     * @return string Template renderizado
      */
     public function fullRender($__template, $data = null){
         $app = App::i();
@@ -502,21 +508,23 @@ abstract class Theme {
     }
 
     /**
-     * Render the template without the layout.
+     * Renderiza o template sem o layout
      *
-     * This method is called when the property "partial" was setted to true before the render method is called.
+     * Este método é chamado quando a propriedade "partial" foi definida como true
+     * antes do método render ser chamado.
      *
-     * This method extracts the data array to make the variables accessible inside the template.
+     * Este método extrai o array de dados para tornar as variáveis acessíveis dentro do template.
      *
-     * @param string $__template the template to render
-     * @param array $__data the data to be passed to template.
+     * @param string $__template Template a ser renderizado
+     * @param array $__data Dados a serem passados para o template
+     * @param bool $_is_part Indica se é uma partial (parte de layout)
      *
-     * @hook **view.partial:before ($template_name)** - executed before the template render.
-     * @hook **view.partial({$template_name}):before ($template_name)** - executed before the template render.
-     * @hook **view.partial:after ($template_name, $html)** - executed after the template render.
-     * @hook **view.partial({$template_name}):before ($template_name, $html)** - executed after the template render.
+     * @hook **view.partial:before ($template_name)** - executado antes da renderização do template
+     * @hook **view.partial({$template_name}):before ($template_name)** - executado antes da renderização do template
+     * @hook **view.partial:after ($template_name, $html)** - executado após a renderização do template
+     * @hook **view.partial({$template_name}):before ($template_name, $html)** - executado após a renderização do template
      *
-     * @return string The rendered template.
+     * @return string Template renderizado
      */
     public function partialRender($__template, $__data = [], $_is_part = false){
         $app = App::i();
