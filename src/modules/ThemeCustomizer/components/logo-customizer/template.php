@@ -20,9 +20,9 @@ $this->import('
 
     <div class="logo-customizer__content">        
         <div class="logo-customizer__settings grid-12">
-            <entity-field class="col-12" :entity="subsite" prop="logo_title" :autosave="300"></entity-field>
-            <entity-field class="col-12" :entity="subsite" prop="logo_subtitle" :autosave="300"></entity-field>
-            <entity-field class="col-12" :entity="subsite" prop="custom_colors" :autosave="300"></entity-field>
+            <entity-field :classes="'col-12'" :entity="subsite" prop="logo_title" :autosave="300"></entity-field>
+            <entity-field :classes="'col-12'" :entity="subsite" prop="logo_subtitle" :autosave="300"></entity-field>
+            <entity-field :classes="'col-12'" :entity="subsite" prop="custom_colors" :autosave="300"></entity-field>
             
             <div v-if="subsite.custom_colors" class="logo-customizer__color-inputs col-12">
                 <entity-field :entity="subsite" prop="logo_color1" :autosave="300"></entity-field>
