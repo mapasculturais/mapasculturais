@@ -109,6 +109,9 @@ app.component('search-filter-event', {
         this.defaultDateTo = this.parseDate(this.pseudoQuery['@to']);
         this.pseudoQuery['event:term:linguagem'] = this.pseudoQuery['event:term:linguagem'] || [];
         this.pseudoQuery['event:classificacaoEtaria'] = this.pseudoQuery['event:classificacaoEtaria'] || [];
+        this.pseudoQuery['event:@seals'] = this.pseudoQuery['event:@seals'] || [];
+        this.pseudoQuery['space:En_Estado'] = this.pseudoQuery['space:En_Estado'] || [];
+        this.pseudoQuery['space:En_Municipio'] = this.pseudoQuery['space:En_Municipio'] || [];
     },
 
     props: {
@@ -153,12 +156,18 @@ app.component('search-filter-event', {
             this.ranges.thisYear,
         ];
 
+        const filterConfig = $MAPAS.config.searchFilterEvent || {};
+
         return {
             locale: $MAPAS.config.locale,
             terms: $TAXONOMIES.linguagem.terms,
             date: [this.defaultDateFrom, this.defaultDateTo],
             presetRanges: presetRanges,
-            ageRating: $DESCRIPTIONS.event.classificacaoEtaria.optionsOrder
+            ageRating: $DESCRIPTIONS.event.classificacaoEtaria.optionsOrder,
+            sealsFilterEnabled: filterConfig.sealsFilterEnabled ?? false,
+            statesAndCitiesFilterEnabled: filterConfig.statesAndCitiesFilterEnabled ?? false,
+            isInternational: $MAPAS.config.countryLocalization?.countryFieldEnabled ?? false,
+            seals: (filterConfig.seals || []).map(s => ({ value: String(s.id), label: s.name })),
         }
     },
 
