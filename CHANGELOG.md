@@ -5,6 +5,38 @@ Todas as mudanças notáveis no projeto serão documentadas neste arquivo.
 O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/)
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [7.7.8] - unreleased
+### Correções
+- Corrige a remoção de avaliações quando um avaliador é excluído de uma comissão, afetando apenas a comissão correta.
+
+## [7.7.7] - 2026-02-24
+### Correções
+- Corrige a aplicação de resultados da avaliações por pontuação e classificação
+- Corrige a exibição do valor da coluna "Bônus por pontuação aplicadas a inscrição" na tabela de inscrições
+
+## [7.7.6] - 2026-02-22
+### Correções
+- Corrige permissão para administrador da oportunidade remover uma avaliação
+- Corrige os campos visíveis para o avaliador para nao ignorar campos com somente uma fase de coleta de dados
+
+## [7.7.5] - 2026-02-13
+### Correções
+- Corrige falha que impedia o carregamento correto de alguns avaliadores na tela das listas de inclusão e exclusão.
+
+## [7.7.4] - 2026-02-10
+### Melhorias 
+- Implementa uma flag no componente opportunity-evaluation-committee que permite indicar que os dados devem ser salvos no agente relacionado
+- Implementa getters e setters para persistir os filtros individuais dos avaliadores no agente relacionado
+- Ajusta a lógica de distribuição das avaliações para considerar os filtros definidos no agente relacionado
+- Implementa endpoints para configurar os filtros individuais dos avaliadores, cada um em seu respectivo agente relaciona
+
+## [7.7.3] - 2026-02-02
+### Correções
+- Corrige erro que impedia enviar a inscrição
+
+### Melhorias
+- Implementa teste para garantir o correto funcionamento do envio da inscrição
+
 ## [7.7.2] - 2026-01-28
 ### Correções
 - Correção no salvamento de metadados
@@ -66,6 +98,70 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 1. <small>Melhoria desenvolvida pelo Ministério das Cidades, através da Secretaria Nacional de Periferias, para o Prêmio Periferia Viva</small>
 <a name="770-funarte"></a>
 2. <small>Melhoria desenvolvida pela Funarte (Fundação Nacional de Artes) para a Rede das Artes</small>
+
+## [7.6.50] - 2026-02-25
+### Correções
+- Corrige a remoção de avaliações quando um avaliador é excluído de uma comissão, afetando apenas a comissão correta.
+
+## [7.6.49] - 2026-02-24
+### Correções
+- Corrige a aplicação de resultados da avaliações por pontuação e classificação
+- Corrige a exibição do valor da coluna "Bônus por pontuação aplicadas a inscrição" na tabela de inscrições
+
+## [7.6.48] - 2026-02-23
+### Correções
+- Corrige exibição de indicação do campo obrigatório de país
+
+## [7.6.47] - 2026-02-22
+### Correções
+- Corrige os campos visíveis para o avaçliador para nao ignorar campos com sosmente uam fase de coleta de dados
+
+## [7.6.46] - 2026-02-19
+### Melhorias
+- Aplica melhorias no processo de envio de denúncia e contato, permitindo definir uma lista configurável de destinatários para o envio de e-mails
+
+## [7.6.45] - 2026-02-12
+### Correções
+- Corrige falha que impedia o carregamento correto de alguns avaliadores na tela das listas de inclusão e exclusão.
+
+## [7.6.44] - 2026-02-11
+### Melhorias
+- Melhora desempenho do mc-update de noralização da coluna valuers_exceptions_list 
+
+## [7.6.43] - 2026-02-11
+### Correção
+- Implementa mc-update para normalizar a coluna valuers_exceptions_list das inscrições
+
+## [7.6.42] - 2026-02-09
+### Correções
+- Corrige exibição do botão de "Editar informações enviadas" na tela de acompanhamento
+
+## Melhorias
+- Adiciona novo hook no componente de configuração de edição de inscrição
+
+## [7.6.41] - 2026-02-06
+### Correções
+- Implementação de verificações para campos editáveis da inscrição
+
+## Melhorias
+- Adiciona novo hook no componente de suporte
+
+## [7.6.40] - 2026-02-04
+### Correções
+- Exibe indicador de campo obrigatório no campo País do formulário de endereço
+- Corrige preenchimento do campo de país internacional na edição de agente
+
+## [7.6.39] - 2026-01-29
+### Correções
+- Implementa pase exclusivo para o Spotify que identifique todas as variações de URL's disponíveis
+
+## [7.6.38] - 2026-01-27
+### Melhorias
+- Adiciona descrição de imagem nos banners da home
+
+## [7.6.37] - 2026-01-27
+### Correções
+- Corrige erro na persistência dos termos de usop no banco de dados
 
 ## [7.6.36] - 2026-01-23
 ### Correção

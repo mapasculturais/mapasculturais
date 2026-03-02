@@ -287,7 +287,7 @@ class RegistrationEvaluation extends \MapasCulturais\Entity {
 
     protected function canUserRemove($user)
     {
-        if ($this->registration->opportunity->canUser('remove', $user)) {
+        if ($this->registration->opportunity->canUser('remove', $user) || $this->registration->opportunity->canUser('@control', $user)) {
             return true;
         } else {
             return parent::canUserRemove($user);

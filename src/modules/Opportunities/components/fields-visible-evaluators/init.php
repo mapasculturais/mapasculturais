@@ -2,7 +2,7 @@
 $phase =  $this->controller->requestedEntity;
 
 $get_fields = function ($opportunity) {
-    $previous_phases = $opportunity->previousPhases;
+    $previous_phases = $opportunity->isFirstPhase ? [$opportunity] : $opportunity->previousPhases;
 
     if ($opportunity->firstPhase->id != $opportunity->id) {
         $previous_phases[] = $opportunity;

@@ -1259,7 +1259,7 @@ abstract class Entity implements \JsonSerializable{
             }
 
             if($flush){
-                $app->em->flush($this);
+                $app->em->flush();
             }
 
         }catch(Exceptions\PermissionDenied $e){
