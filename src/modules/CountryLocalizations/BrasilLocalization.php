@@ -161,7 +161,13 @@ class BrasilLocalization extends CountryLocalizationDefinition
 
     public function setLine1(Entity $entity, ?string $value): void
     {
-        $parts = explode(',', $value);
+        if ($value === null || $value === '') {
+            $entity->En_Nome_Logradouro = '';
+            $entity->En_Num = '';
+            return;
+        }
+
+        $parts = explode(',', (string) $value);
         $entity->En_Nome_Logradouro = trim($parts[0] ?? '');
         $entity->En_Num = trim($parts[1] ?? '');
     }

@@ -63,21 +63,10 @@ app.component('entity-card', {
         },
         openSubscriptions() {
             if (this.entity.__objectType == "opportunity") {
-                
                 if (this.entity.registrationFrom && this.entity.registrationTo) {
-                    if (this.entity.isContinuousFlow) {
-                        if (!this.entity.hasEndDate && this.entity.registrationFrom.isFuture()) {
-                            return false; 
-                        }
-                        
-                        if (!this.entity.hasEndDate && this.entity.registrationFrom.isPast()) {
-                            return true; 
-                        }
-                    }
                     return this.entity.registrationFrom.isPast() && this.entity.registrationTo.isFuture();
-                } else {
-                    return false;
                 }
+                return false;
             }
             return false;
         },

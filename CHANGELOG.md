@@ -99,6 +99,18 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 <a name="770-funarte"></a>
 2. <small>Melhoria desenvolvida pela Funarte (Fundação Nacional de Artes) para a Rede das Artes</small>
 
+## [7.6.53] - 2026-03-02
+### Correções
+- Corrige erro de verificação de inscrições abertas no card de listagem de oportunidades
+
+## [7.6.52] - 2026-02-27
+### Melhorias
+- Aplica melhoria no campo @ de endereço para possibilitar que se defina quais subcampos do endereço sejam obrigatórios no formulário de inscrição
+
+## [7.6.51] - 2026-02-26
+### Melhorias
+- Adiciona possibilidade de filtro por arquivo na api
+
 ## [7.6.50] - 2026-02-25
 ### Correções
 - Corrige a remoção de avaliações quando um avaliador é excluído de uma comissão, afetando apenas a comissão correta.
