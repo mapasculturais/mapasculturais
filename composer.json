@@ -5,7 +5,7 @@
         "doctrine/annotations": "^2.0",
         "doctrine/dbal": "^3.6",
         "doctrine/orm": "2.16.*",
-        "firebase/php-jwt": "^6.4",
+        "firebase/php-jwt": "^7.0",
         "michelf/php-markdown": "1.*",
         "monolog/monolog": "^3.4",
         "mustache/mustache": "^2.11",
