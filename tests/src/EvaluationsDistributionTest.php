@@ -2106,5 +2106,115 @@ class EvaluationsDistributionTest extends TestCase
             );
         }
     }
-      
+
+    function testGlobalCommitteeFiltersWithSelectionFields()
+    {
+        $admin = $this->userDirector->createUser('admin');
+        $this->login($admin);
+
+        $opportunity = $this->opportunityBuilder
+            ->reset(owner: $admin->profile, owner_entity: $admin->profile)
+            ->fillRequiredProperties()
+            ->save()
+            ->firstPhase()
+                ->setRegistrationPeriod(new Open)
+                ->createStep('etapa')
+                ->createField('campo_select', 'select', required: true, options: ['A', 'B', 'C'])
+                ->createField('campo_mult', 'checkboxes', required: false, options: ['X', 'Y', 'Z'])
+                ->createField('campo_bool', 'checkbox', required: false)
+                ->done()
+            ->save()
+            ->addEvaluationPhase(EvaluationMethods::simple)
+                ->setEvaluationPeriod(new ConcurrentEndingAfter)
+                ->setCommitteeValuersPerRegistration('committee-select', 1)
+                ->setCommitteeFilterField('committee-select', 'campo_select', ['A'])
+                ->setCommitteeValuersPerRegistration('committee-mult', 1)
+                ->setCommitteeFilterField('committee-mult', 'campo_mult', ['X'])
+                ->setCommitteeValuersPerRegistration('committee-bool', 1)
+                ->setCommitteeFilterField('committee-bool', 'campo_bool', ['1'])
+                ->save()
+                ->addValuer('committee-select', name: 'avaliador-select')->done()
+                ->addValuer('committee-mult', name: 'avaliador-mult')->done()
+                ->addValuer('committee-bool', name: 'avaliador-bool')->done()
+                ->done()
+            ->getInstance();
+
+        $field_select = $this->opportunityBuilder->getFieldName('campo_select');
+        $field_mult = $this->opportunityBuilder->getFieldName('campo_mult');
+        $field_bool = $this->opportunityBuilder->getFieldName('campo_bool');
+
+        $registrations = $this->registrationDirector->createDraftRegistrations(
+            $opportunity,
+            number_of_registrations: 5
+        );
+
+        // 1) select = A, mult = [X], bool = true
+        $registrations[0]->$field_select = 'A';
+        $registrations[0]->$field_mult = ['X'];
+        $registrations[0]->$field_bool = true;
+        $registrations[0]->send();
+
+        // 2) select = A, mult = [Y], bool = false
+        $registrations[1]->$field_select = 'A';
+        $registrations[1]->$field_mult = ['Y'];
+        $registrations[1]->$field_bool = false;
+        $registrations[1]->send();
+
+        // 3) select = B, mult = [X, Y], bool = true
+        $registrations[2]->$field_select = 'B';
+        $registrations[2]->$field_mult = ['X', 'Y'];
+        $registrations[2]->$field_bool = true;
+        $registrations[2]->send();
+
+        // 4) select = C, mult = [], bool = true
+        $registrations[3]->$field_select = 'C';
+        $registrations[3]->$field_mult = [];
+        $registrations[3]->$field_bool = true;
+        $registrations[3]->send();
+
+        // 5) select = B, mult = [Z], bool = false
+        $registrations[4]->$field_select = 'B';
+        $registrations[4]->$field_mult = ['Z'];
+        $registrations[4]->$field_bool = false;
+        $registrations[4]->send();
+
+        $opportunity->evaluationMethodConfiguration->redistributeCommitteeRegistrations();
+
+        /** @var Connection */
+        $conn = $this->app->em->getConnection();
+
+        // committee-select deve avaliar apenas inscrições com campo_select = 'A' (2 inscrições)
+        $select_evaluations = $conn->fetchScalar(
+            "SELECT COUNT(*) FROM evaluations WHERE valuer_committee = :committee",
+            ['committee' => 'committee-select']
+        );
+        $this->assertEquals(
+            2,
+            $select_evaluations,
+            'Garantindo que o comitê filtrado por campo select recebeu apenas as inscrições com valor A'
+        );
+
+        // committee-mult deve avaliar apenas inscrições onde campo_mult contém 'X' (2 inscrições: 0 e 2)
+        $mult_evaluations = $conn->fetchScalar(
+            "SELECT COUNT(*) FROM evaluations WHERE valuer_committee = :committee",
+            ['committee' => 'committee-mult']
+        );
+        $this->assertEquals(
+            2,
+            $mult_evaluations,
+            'Garantindo que o comitê filtrado por campo checkboxes recebeu apenas as inscrições contendo X'
+        );
+
+        // committee-bool deve avaliar apenas inscrições com campo_bool true (3 inscrições: 0, 2 e 3)
+        $bool_evaluations = $conn->fetchScalar(
+            "SELECT COUNT(*) FROM evaluations WHERE valuer_committee = :committee",
+            ['committee' => 'committee-bool']
+        );
+        $this->assertEquals(
+            3,
+            $bool_evaluations,
+            'Garantindo que o comitê filtrado por campo checkbox recebeu apenas as inscrições com valor verdadeiro'
+        );
+    }
+     
 }
