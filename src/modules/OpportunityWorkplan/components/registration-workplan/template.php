@@ -197,12 +197,12 @@ $this->import('
                                 </div>
 
                                 <div v-if="opportunity.workplan_registrationReportTheNumberOfParticipants" class="field">
-                                    <label><?= i::esc_attr__('Número previsto de pessoas') ?><span v-if="opportunity.workplan_deliveryRequireExpectedNumberPeople" class="required">obrigatório*</span></label>
+                                    <label>{{ `Número previsto de pessoas no ${getWorkplanLabelDefault}` }}<span v-if="opportunity.workplan_deliveryRequireExpectedNumberPeople" class="required">obrigatório*</span></label>
                                     <input class="field__limits" v-model="delivery.expectedNumberPeople" min="0" type="number">
                                 </div>
                             </div>
                             <div v-if="opportunity.workplan_deliveryInformArtChainLink" class="field">
-                                <label><?= i::esc_attr__('Principal elo das artes acionado') ?><span v-if="opportunity.workplan_deliveryRequireArtChainLink" class="required">obrigatório*</span></label>
+                                <label>{{ `Principal elo das artes acionado no ${getWorkplanLabelDefault}` }}<span v-if="opportunity.workplan_deliveryRequireArtChainLink" class="required">obrigatório*</span></label>
                                 <select v-model="delivery.artChainLink">
                                     <option value=""><?= i::esc_attr__('Selecione') ?></option>
                                     <option v-for="n in workplanFields.goal.delivery.artChainLink.options" :key="n" :value="n">{{ n }}</option>
@@ -210,28 +210,28 @@ $this->import('
                             </div>
 
                             <div v-if="opportunity.workplan_deliveryInformTotalBudget" class="field">
-                                <label><?= i::esc_attr__('Qual o orçamento total da atividade?') ?><span v-if="opportunity.workplan_deliveryRequireTotalBudget" class="required">obrigatório*</span></label>
+                                <label>{{ `Qual o orçamento total da atividade no ${getWorkplanLabelDefault}?` }}<span v-if="opportunity.workplan_deliveryRequireTotalBudget" class="required">obrigatório*</span></label>
                                 <mc-currency-input v-model="delivery.totalBudget"></mc-currency-input>
                             </div>
 
                             <div v-if="opportunity.workplan_deliveryInformNumberOfCities" class="field">
-                                <label><?= i::esc_attr__('Em quantos municípios a atividade vai ser realizada?') ?><span v-if="opportunity.workplan_deliveryRequireNumberOfCities" class="required">obrigatório*</span></label>
+                                <label>{{ `Em quantos municípios a atividade vai ser realizada no ${getWorkplanLabelDefault}?` }}<span v-if="opportunity.workplan_deliveryRequireNumberOfCities" class="required">obrigatório*</span></label>
                                 <input class="field__limits" v-model.number="delivery.numberOfCities" type="number" min="0">
                             </div>
 
                             <div v-if="opportunity.workplan_deliveryInformNumberOfNeighborhoods" class="field">
-                                <label><?= i::esc_attr__('Em quantos bairros a atividade vai ser realizada?') ?><span v-if="opportunity.workplan_deliveryRequireNumberOfNeighborhoods" class="required">obrigatório*</span></label>
+                                <label>{{ `Em quantos bairros a atividade vai ser realizada no ${getWorkplanLabelDefault}?` }}<span v-if="opportunity.workplan_deliveryRequireNumberOfNeighborhoods" class="required">obrigatório*</span></label>
                                 <input class="field__limits" v-model.number="delivery.numberOfNeighborhoods" type="number" min="0">
                             </div>
 
                             <div v-if="opportunity.workplan_deliveryInformMediationActions" class="field">
-                                <label><?= i::esc_attr__('Quantas ações de mediação/formação de público estão previstas?') ?><span v-if="opportunity.workplan_deliveryRequireMediationActions" class="required">obrigatório*</span></label>
+                                <label>{{ `Quantas ações de mediação/formação de público estão previstas no ${getWorkplanLabelDefault}?` }}<span v-if="opportunity.workplan_deliveryRequireMediationActions" class="required">obrigatório*</span></label>
                                 <input class="field__limits" v-model.number="delivery.mediationActions" type="number" min="0">
                             </div>
 
                             <!-- Pessoas remuneradas por função -->
                             <div v-if="opportunity.workplan_deliveryInformPaidStaffByRole" class="field">
-                                <label><?= i::esc_attr__('Quantas pessoas serão remuneradas, por função?') ?><span v-if="opportunity.workplan_deliveryRequirePaidStaffByRole" class="required">obrigatório*</span></label>
+                                <label>{{ `Quantas pessoas serão remuneradas, por função no ${getWorkplanLabelDefault}?` }}<span v-if="opportunity.workplan_deliveryRequirePaidStaffByRole" class="required">obrigatório*</span></label>
                                 <div v-if="!delivery.paidStaffByRole || !delivery.paidStaffByRole.length" class="field__note">
                                     <button type="button" class="button button--sm button--primary-outline" @click="addPaidStaffRole(delivery)">
                                         <?= i::__('+ Adicionar função') ?>
@@ -239,7 +239,7 @@ $this->import('
                                 </div>
 
                                 <div v-if="opportunity.workplan_deliveryInformArtChainLink" class="field">
-                                    <label><?= i::esc_attr__('Principal elo das artes acionado pela atividade') ?><span v-if="opportunity.workplan_deliveryRequireArtChainLink" class="required">obrigatório*</span></label>
+                                    <label>{{ `Principal elo das artes acionado pela atividade no ${getWorkplanLabelDefault}` }}<span v-if="opportunity.workplan_deliveryRequireArtChainLink" class="required">obrigatório*</span></label>
                                     <select v-model="delivery.artChainLink">
                                         <option value=""><?= i::esc_attr__('Selecione') ?></option>
                                         <option v-for="n in workplanFields.goal.delivery.artChainLink.options" :key="n" :value="n">{{ n }}</option>
@@ -247,28 +247,28 @@ $this->import('
                                 </div>
 
                                 <div v-if="opportunity.workplan_deliveryInformTotalBudget" class="field">
-                                    <label><?= i::esc_attr__('Qual o orçamento total da atividade?') ?><span v-if="opportunity.workplan_deliveryRequireTotalBudget" class="required">obrigatório*</span></label>
+                                    <label>{{ `Qual o orçamento total da atividade no ${getWorkplanLabelDefault}?` }}<span v-if="opportunity.workplan_deliveryRequireTotalBudget" class="required">obrigatório*</span></label>
                                     <mc-currency-input v-model="delivery.totalBudget"></mc-currency-input>
                                 </div>
 
                                 <div v-if="opportunity.workplan_deliveryInformNumberOfCities" class="field">
-                                    <label><?= i::esc_attr__('Em quantos municípios a atividade vai ser realizada?') ?><span v-if="opportunity.workplan_deliveryRequireNumberOfCities" class="required">obrigatório*</span></label>
+                                    <label>{{ `Em quantos municípios a atividade vai ser realizada no ${getWorkplanLabelDefault}?` }}<span v-if="opportunity.workplan_deliveryRequireNumberOfCities" class="required">obrigatório*</span></label>
                                     <input v-model.number="delivery.numberOfCities" type="number" min="0">
                                 </div>
 
                                 <div v-if="opportunity.workplan_deliveryInformNumberOfNeighborhoods" class="field">
-                                    <label><?= i::esc_attr__('Em quantos bairros a atividade vai ser realizada?') ?><span v-if="opportunity.workplan_deliveryRequireNumberOfNeighborhoods" class="required">obrigatório*</span></label>
+                                    <label>{{ `Em quantos bairros a atividade vai ser realizada no ${getWorkplanLabelDefault}?` }}<span v-if="opportunity.workplan_deliveryRequireNumberOfNeighborhoods" class="required">obrigatório*</span></label>
                                     <input v-model.number="delivery.numberOfNeighborhoods" type="number" min="0">
                                 </div>
 
                                 <div v-if="opportunity.workplan_deliveryInformMediationActions" class="field">
-                                    <label><?= i::esc_attr__('Quantas ações de mediação/formação de público estão previstas?') ?><span v-if="opportunity.workplan_deliveryRequireMediationActions" class="required">obrigatório*</span></label>
+                                    <label>{{ `Quantas ações de mediação/formação de público estão previstas no ${getWorkplanLabelDefault}?` }}<span v-if="opportunity.workplan_deliveryRequireMediationActions" class="required">obrigatório*</span></label>
                                     <input v-model.number="delivery.mediationActions" type="number" min="0">
                                 </div>
 
                                 <!-- Pessoas remuneradas por função -->
                                 <div v-if="opportunity.workplan_deliveryInformPaidStaffByRole" class="field">
-                                    <label><?= i::esc_attr__('Quantas pessoas serão remuneradas, por função?') ?><span v-if="opportunity.workplan_deliveryRequirePaidStaffByRole" class="required">obrigatório*</span></label>
+                                    <label>{{ `Quantas pessoas serão remuneradas, por função no ${getWorkplanLabelDefault}?` }}<span v-if="opportunity.workplan_deliveryRequirePaidStaffByRole" class="required">obrigatório*</span></label>
                                     <div v-if="!delivery.paidStaffByRole || !delivery.paidStaffByRole.length" class="field__note">
                                         <button type="button" class="button button--sm button--primary-outline" @click="addPaidStaffRole(delivery)">
                                             <?= i::__('+ Adicionar função') ?>
@@ -340,18 +340,18 @@ $this->import('
                                     </div>
 
                                     <div v-if="opportunity.workplan_deliveryInformRevenueType" class="field">
-                                        <label><?= i::esc_attr__('Qual o tipo de receita previsto?') ?><span v-if="opportunity.workplan_deliveryRequireRevenueType" class="required">obrigatório*</span></label>
+                                        <label>{{ `Qual o tipo de receita previsto no ${getWorkplanLabelDefault}?` }}<span v-if="opportunity.workplan_deliveryRequireRevenueType" class="required">obrigatório*</span></label>
                                         <mc-multiselect :model="delivery.revenueType" :items="workplanFields.goal.delivery.revenueType.options" hide-filter hide-button></mc-multiselect>
                                         <mc-tag-list :tags="delivery.revenueType" :labels="workplanFields.goal.delivery.revenueType.options" classes="opportunity__background" @remove="toggleRevenueType(delivery, $event)" editable></mc-tag-list>
                                     </div>
 
                                     <div v-if="opportunity.workplan_deliveryInformCommercialUnits">
                                         <div class="field">
-                                            <label><?= i::esc_attr__('Quantidade de unidades previstas para comercialização') ?><span v-if="opportunity.workplan_deliveryRequireCommercialUnits" class="required">obrigatório*</span></label>
+                                            <label>{{ `Quantidade de unidades previstas para comercialização no ${getWorkplanLabelDefault}` }}<span v-if="opportunity.workplan_deliveryRequireCommercialUnits" class="required">obrigatório*</span></label>
                                             <input v-model.number="delivery.commercialUnits" type="number" min="0">
                                         </div>
                                         <div class="field">
-                                            <label><?= i::esc_attr__('Valor unitário previsto (R$)') ?><span v-if="opportunity.workplan_deliveryRequireUnitPrice" class="required">obrigatório*</span></label>
+                                            <label>{{ `Valor unitário previsto (R$) no ${getWorkplanLabelDefault}` }}<span v-if="opportunity.workplan_deliveryRequireUnitPrice" class="required">obrigatório*</span></label>
                                             <mc-currency-input v-model="delivery.unitPrice"></mc-currency-input>
                                         </div>
                                     </div>
@@ -364,7 +364,7 @@ $this->import('
                                 <p class="form-section__description"><?= i::__('Composição da equipe por gênero e raça, estratégias de inclusão, acessibilidade e práticas socioambientais.') ?></p>
                                 <!-- Composição da equipe por gênero -->
                                 <div v-if="opportunity.workplan_deliveryInformTeamComposition" class="field">
-                                    <label><?= i::esc_attr__('Composição prevista da equipe por gênero') ?><span v-if="opportunity.workplan_deliveryRequireTeamCompositionGender" class="required">obrigatório*</span></label>
+                                    <label>{{ `Composição prevista da equipe por gênero no ${getWorkplanLabelDefault}` }}<span v-if="opportunity.workplan_deliveryRequireTeamCompositionGender" class="required">obrigatório*</span></label>
                                     <div class="grid-12">
                                         <div class="col-3 sm:col-6 field">
                                             <label><?= i::esc_attr__('Mulher cisgênero') ?></label>
@@ -402,7 +402,7 @@ $this->import('
 
                                 <!-- Composição da equipe por gênero -->
                                 <div v-if="opportunity.workplan_deliveryInformTeamComposition" class="field">
-                                    <label><?= i::esc_attr__('Composição prevista da equipe por gênero') ?><span v-if="opportunity.workplan_deliveryRequireTeamCompositionGender" class="required">obrigatório*</span></label>
+                                    <label>{{ `Composição prevista da equipe por gênero no ${getWorkplanLabelDefault}` }}<span v-if="opportunity.workplan_deliveryRequireTeamCompositionGender" class="required">obrigatório*</span></label>
                                     <div class="grid-12">
                                         <div class="col-3 sm:col-6 field">
                                             <label><?= i::esc_attr__('Masculino') ?></label>
@@ -428,7 +428,7 @@ $this->import('
 
                                 <!-- Composição da equipe por raça/cor -->
                                 <div v-if="opportunity.workplan_deliveryInformTeamComposition" class="field">
-                                    <label><?= i::esc_attr__('Composição prevista da equipe por raça/cor (autodeclaração)') ?><span v-if="opportunity.workplan_deliveryRequireTeamCompositionRace" class="required">obrigatório*</span></label>
+                                    <label>{{ `Composição prevista da equipe por raça/cor (autodeclaração) no ${getWorkplanLabelDefault}` }}<span v-if="opportunity.workplan_deliveryRequireTeamCompositionRace" class="required">obrigatório*</span></label>
                                     <div class="grid-12">
                                         <div class="col-4 sm:col-6 field">
                                             <label><?= i::esc_attr__('Branca') ?></label>
@@ -461,7 +461,7 @@ $this->import('
                                 </div>
 
                                 <div v-if="opportunity.workplan_deliveryInformCommunityCoauthors" class="field">
-                                    <label><?= i::esc_attr__('A atividade prevê envolvimento de comunidades/coletivos como coautores/coexecutores?') ?><span v-if="opportunity.workplan_deliveryRequireCommunityCoauthorsDetail" class="required">obrigatório*</span></label>
+                                    <label>{{ `A atividade prevê envolvimento de comunidades/coletivos como coautores/coexecutores no ${getWorkplanLabelDefault}?` }}<span v-if="opportunity.workplan_deliveryRequireCommunityCoauthorsDetail" class="required">obrigatório*</span></label>
                                     <select v-model="delivery.hasCommunityCoauthors">
                                         <option value=""><?= i::esc_attr__('Selecione') ?></option>
                                         <option v-for="(n, i) in workplanFields.goal.delivery.hasCommunityCoauthors.options" :key="i" :value="i">{{ n }}</option>
@@ -470,28 +470,28 @@ $this->import('
 
                                 <div v-if="opportunity.workplan_deliveryInformTransInclusion">
                                     <div class="field">
-                                        <label><?= i::esc_attr__('A atividade prevê estratégias voltadas à promoção do acesso de pessoas Trans e Travestis?') ?></label>
+                                        <label>{{ `A atividade prevê estratégias voltadas à promoção do acesso de pessoas Trans e Travestis no ${getWorkplanLabelDefault}?` }}</label>
                                         <select v-model="delivery.hasTransInclusionStrategy">
                                             <option value=""><?= i::esc_attr__('Selecione') ?></option>
                                             <option v-for="(n, i) in workplanFields.goal.delivery.hasTransInclusionStrategy.options" :key="i" :value="i">{{ n }}</option>
                                         </select>
                                     </div>
                                     <div v-if="delivery.hasTransInclusionStrategy === 'true'" class="field">
-                                        <label><?= i::esc_attr__('Quais ações foram previstas?') ?><span v-if="opportunity.workplan_deliveryRequireTransInclusionActions" class="required">obrigatório*</span></label>
+                                        <label>{{ `Quais ações foram previstas no ${getWorkplanLabelDefault}?` }}<span v-if="opportunity.workplan_deliveryRequireTransInclusionActions" class="required">obrigatório*</span></label>
                                         <textarea v-model="delivery.transInclusionActions" rows="3"></textarea>
                                     </div>
                                 </div>
 
                                 <div v-if="opportunity.workplan_deliveryInformAccessibilityPlan">
                                     <div class="field">
-                                        <label><?= i::esc_attr__('A atividade prevê medidas de acessibilidade?') ?></label>
+                                        <label>{{ `A atividade prevê medidas de acessibilidade no ${getWorkplanLabelDefault}?` }}</label>
                                         <select v-model="delivery.hasAccessibilityPlan">
                                             <option value=""><?= i::esc_attr__('Selecione') ?></option>
                                             <option v-for="(n, i) in workplanFields.goal.delivery.hasAccessibilityPlan.options" :key="i" :value="i">{{ n }}</option>
                                         </select>
                                     </div>
                                     <div v-if="delivery.hasAccessibilityPlan === 'true'" class="field">
-                                        <label><?= i::esc_attr__('Quais medidas de acessibilidade estão previstas?') ?><span v-if="opportunity.workplan_deliveryRequireExpectedAccessibilityMeasures" class="required">obrigatório*</span></label>
+                                        <label>{{ `Quais medidas de acessibilidade estão previstas no ${getWorkplanLabelDefault}?` }}<span v-if="opportunity.workplan_deliveryRequireExpectedAccessibilityMeasures" class="required">obrigatório*</span></label>
                                         <mc-multiselect :model="delivery.expectedAccessibilityMeasures" :items="workplanFields.goal.delivery.expectedAccessibilityMeasures.options" hide-filter hide-button></mc-multiselect>
                                         <mc-tag-list :tags="delivery.expectedAccessibilityMeasures" :labels="workplanFields.goal.delivery.expectedAccessibilityMeasures.options" classes="opportunity__background" @remove="toggleAccessibilityMeasures(delivery, $event)" editable></mc-tag-list>
                                     </div>
@@ -499,14 +499,14 @@ $this->import('
 
                                 <div v-if="opportunity.workplan_deliveryInformEnvironmentalPractices">
                                     <div class="field">
-                                        <label><?= i::esc_attr__('A atividade prevê medidas ou práticas socioambientais?') ?></label>
+                                        <label>{{ `A atividade prevê medidas ou práticas socioambientais no ${getWorkplanLabelDefault}?` }}</label>
                                         <select v-model="delivery.hasEnvironmentalPractices">
                                             <option value=""><?= i::esc_attr__('Selecione') ?></option>
                                             <option v-for="(n, i) in workplanFields.goal.delivery.hasEnvironmentalPractices.options" :key="i" :value="i">{{ n }}</option>
                                         </select>
                                     </div>
                                     <div v-if="delivery.hasEnvironmentalPractices === 'true'" class="field">
-                                        <label><?= i::esc_attr__('Quais medidas e práticas socioambientais estão previstas?') ?><span v-if="opportunity.workplan_deliveryRequireEnvironmentalPracticesDescription" class="required">obrigatório*</span></label>
+                                        <label>{{ `Quais medidas e práticas socioambientais estão previstas no ${getWorkplanLabelDefault}?` }}<span v-if="opportunity.workplan_deliveryRequireEnvironmentalPracticesDescription" class="required">obrigatório*</span></label>
                                         <textarea v-model="delivery.environmentalPracticesDescription" rows="3"></textarea>
                                     </div>
                                 </div>
@@ -518,7 +518,7 @@ $this->import('
                                 <p class="form-section__description"><?= i::__('Estratégias de divulgação, canais de comunicação, ações de inovação e tipos de documentação previstos.') ?></p>
 
                                 <div v-if="opportunity.workplan_deliveryInformPressStrategy" class="field">
-                                    <label><?= i::esc_attr__('A atividade contará com uma estratégia de relacionamento com a imprensa?') ?></label>
+                                    <label>{{ `A atividade contará com uma estratégia de relacionamento com a imprensa no ${getWorkplanLabelDefault}?` }}</label>
                                     <select v-model="delivery.hasPressStrategy">
                                         <option value=""><?= i::esc_attr__('Selecione') ?></option>
                                         <option v-for="(n, i) in workplanFields.goal.delivery.hasPressStrategy.options" :key="i" :value="i">{{ n }}</option>
@@ -526,28 +526,28 @@ $this->import('
                                 </div>
 
                                 <div v-if="opportunity.workplan_deliveryInformCommunicationChannels" class="field">
-                                    <label><?= i::esc_attr__('Quais canais de comunicação estão previstos para difusão da atividade?') ?><span v-if="opportunity.workplan_deliveryRequireCommunicationChannels" class="required">obrigatório*</span></label>
+                                    <label>{{ `Quais canais de comunicação estão previstos para difusão da atividade no ${getWorkplanLabelDefault}?` }}<span v-if="opportunity.workplan_deliveryRequireCommunicationChannels" class="required">obrigatório*</span></label>
                                     <mc-multiselect :model="delivery.communicationChannels" :items="workplanFields.goal.delivery.communicationChannels.options" hide-filter hide-button></mc-multiselect>
                                     <mc-tag-list :tags="delivery.communicationChannels" :labels="workplanFields.goal.delivery.communicationChannels.options" classes="opportunity__background" @remove="toggleCommunicationChannels(delivery, $event)" editable></mc-tag-list>
                                 </div>
 
                                 <div v-if="opportunity.workplan_deliveryInformInnovation">
                                     <div class="field">
-                                        <label><?= i::esc_attr__('A atividade prevê ao menos uma ação de experimentação/inovação?') ?></label>
+                                        <label>{{ `A atividade prevê ao menos uma ação de experimentação/inovação no ${getWorkplanLabelDefault}?` }}</label>
                                         <select v-model="delivery.hasInnovationAction">
                                             <option value=""><?= i::esc_attr__('Selecione') ?></option>
                                             <option v-for="(n, i) in workplanFields.goal.delivery.hasInnovationAction.options" :key="i" :value="i">{{ n }}</option>
                                         </select>
                                     </div>
                                     <div v-if="delivery.hasInnovationAction === 'true'" class="field">
-                                        <label><?= i::esc_attr__('Quais tipos de experimentação/inovação previstos?') ?><span v-if="opportunity.workplan_deliveryRequireInnovationTypes" class="required">obrigatório*</span></label>
+                                        <label>{{ `Quais tipos de experimentação/inovação previstos no ${getWorkplanLabelDefault}?` }}<span v-if="opportunity.workplan_deliveryRequireInnovationTypes" class="required">obrigatório*</span></label>
                                         <mc-multiselect :model="delivery.innovationTypes" :items="workplanFields.goal.delivery.innovationTypes.options" hide-filter hide-button></mc-multiselect>
                                         <mc-tag-list :tags="delivery.innovationTypes" :labels="workplanFields.goal.delivery.innovationTypes.options" classes="opportunity__background" @remove="toggleInnovationTypes(delivery, $event)" editable></mc-tag-list>
                                     </div>
                                 </div>
 
                                 <div v-if="opportunity.workplan_deliveryInformDocumentationTypes" class="field">
-                                    <label><?= i::esc_attr__('Tipo de documentação que será produzida') ?><span v-if="opportunity.workplan_deliveryRequireDocumentationTypes" class="required">obrigatório*</span></label>
+                                    <label>{{ `Tipo de documentação que será produzida no ${getWorkplanLabelDefault}` }}<span v-if="opportunity.workplan_deliveryRequireDocumentationTypes" class="required">obrigatório*</span></label>
                                     <mc-multiselect :model="delivery.documentationTypes" :items="workplanFields.goal.delivery.documentationTypes.options" hide-filter hide-button></mc-multiselect>
                                     <mc-tag-list :tags="delivery.documentationTypes" :labels="workplanFields.goal.delivery.documentationTypes.options" classes="opportunity__background" @remove="toggleDocumentationTypes(delivery, $event)" editable></mc-tag-list>
                                 </div>
