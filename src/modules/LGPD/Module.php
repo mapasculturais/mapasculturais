@@ -86,7 +86,11 @@ class Module extends \MapasCulturais\Module
                     'timestamp' => (new DateTime())->getTimestamp(),
                     'md5' => Module::createHash($text),
                     'text' => $text,
-                    'ip' => $app->request->getIp(),
+                    'ip' => (function() use ($app) {
+                        $proxyHeader = env('PROXY_HEADER', null);
+
+                        return $_SERVER[$proxyHeader] ?? $app->request->getIp();
+                    })(),
                     'userAgent' => $app->request->getUserAgent(),
                 ];
             }
