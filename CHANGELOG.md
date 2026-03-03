@@ -5,7 +5,7 @@ Todas as mudanças notáveis no projeto serão documentadas neste arquivo.
 O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/)
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [7.7.11] - UNRELEASED
+## [7.7.11] - 2026-03-03
 ### Melhorias
 - Refatora o componente de Configuração filtro de inscrição para avaliadores/comissão
 - Adiciona opções de campos de seleção múltipla e checkbox no novo componente de configuração de filtro
