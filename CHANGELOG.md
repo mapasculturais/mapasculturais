@@ -12,6 +12,7 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ### Correções
 - Realiza a correção para o carregamento adequado das geodivisões do responsável na tabela e na planilha de inscritos.
+- Ajusta regra para permitir publicação de resultado da fase para antes, durante ou depois da data final da fase
 
 ## [7.7.10] - 2026-03-02
 ### Correções
