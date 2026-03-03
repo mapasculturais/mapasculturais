@@ -10,6 +10,9 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Refatora o componente de Configuração filtro de inscrição para avaliadores/comissão
 - Adiciona opções de campos de seleção múltipla e checkbox no novo componente de configuração de filtro
 
+### Correções
+- Realiza a correção para o carregamento adequado das geodivisões do responsável na tabela e na planilha de inscritos.
+
 ## [7.7.10] - 2026-03-02
 ### Correções
 - Corrige erro de verificação de inscrições abertas no card de listagem de oportunidades
