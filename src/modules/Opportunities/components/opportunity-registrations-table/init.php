@@ -39,7 +39,7 @@ $data['evaluationStatusDict'] = [
 $phase = $this->controller->requestedEntity;
 
 $skipFields = ["previousPhaseRegistrationId", "nextPhaseRegistrationId", "id"];
-$default_select = "agentsData,number,singleUrl,consolidatedResult,score,status,sentTimestamp,createTimestamp,files,owner.{name,geoMesoregiao},editSentTimestamp,editableUntil,editableFields";
+$default_select = "agentsData,number,singleUrl,consolidatedResult,score,status,sentTimestamp,createTimestamp,files,owner.{name,geoMesorregiao,geoEstado,geoMicrorregiao,geoMunicipio,geoPais},editSentTimestamp,editableUntil,editableFields";
 $default_headers = [
     [
         'text' => i::__('inscrição'),
@@ -69,6 +69,26 @@ $default_headers = [
     [
         'text' => i::__('data de envio'),
         'value' => 'sentTimestamp',
+    ],
+    [
+        'text' => i::__('Divisão geográfica do responsável – Mesorregião'),
+        'value' => 'owner?.geoMesorregiao',
+    ],
+    [
+        'text' => i::__('Divisão geográfica do responsável – Estado'),
+        'value' => 'owner?.geoEstado',
+    ],
+    [
+        'text' => i::__('Divisão geográfica do responsável – Microrregião'),
+        'value' => 'owner?.geoMicrorregiao',
+    ],
+    [
+        'text' => i::__('Divisão geográfica do responsável – Município'),
+        'value' => 'owner?.geoMunicipio',
+    ],
+    [
+        'text' => i::__('Divisão geográfica do responsável – País'),
+        'value' => 'owner?.geoPais',
     ],
 ];
 
