@@ -115,6 +115,10 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 <a name="770-funarte"></a>
 2. <small>Melhoria desenvolvida pela Funarte (Fundação Nacional de Artes) para a Rede das Artes</small>
 
+## [7.6.54] - 2026-03-03
+### Correções
+- Ajusta regra para permitir publicação de resultado da fase para antes, durante ou depois da data final da fase.
+
 ## [7.6.53] - 2026-03-02
 ### Correções
 - Corrige erro de verificação de inscrições abertas no card de listagem de oportunidades
