@@ -631,11 +631,41 @@ module.controller('RegistrationConfigurationsController', ['$scope', '$rootScope
         sortFields();
 
         function validationErrors(response){
-            Object.keys(response.data).forEach(function(prop){
-                Object.keys(response.data[prop]).forEach(function(error){
-                    MapasCulturais.Messages.error(response.data[prop][error]);
+            // Verificar se response.data existe e é um objeto
+            if (!response || !response.data) {
+                // Se não houver data, tentar exibir mensagem de erro genérica
+                if (response && response.message) {
+                    MapasCulturais.Messages.error(response.message);
+                } else if (response && response.statusText) {
+                    MapasCulturais.Messages.error(response.statusText);
+                } else {
+                    MapasCulturais.Messages.error('Erro ao processar a solicitação');
+                }
+                return;
+            }
+
+            // Tratamento para objeto simples de erro (exceção genérica do backend)
+            if (typeof response.data === 'string') {
+                MapasCulturais.Messages.error(response.data);
+                return;
+            }
+
+            // Formato padrão de validação (objeto com propriedades)
+            try {
+                Object.keys(response.data).forEach(function(prop){
+                    if (response.data[prop] && typeof response.data[prop] === 'object') {
+                        Object.keys(response.data[prop]).forEach(function(error){
+                            MapasCulturais.Messages.error(response.data[prop][error]);
+                        });
+                    } else if (typeof response.data[prop] === 'string') {
+                        // Se for string direta, mostrar
+                        MapasCulturais.Messages.error(response.data[prop]);
+                    }
                 });
-            });
+            } catch (e) {
+                console.error('Erro ao processar validationErrors:', e);
+                MapasCulturais.Messages.error('Erro de validação');
+            }
         }
 
         // Fields
@@ -718,7 +748,14 @@ module.controller('RegistrationConfigurationsController', ['$scope', '$rootScope
             fieldService.create($scope.data.newFieldConfiguration).then(function(response){
                 $scope.data.fieldSpinner = false;
                 if (response.error) {
-                    validationErrors(response);
+                    // Tratar erro de validação ou exceção do backend
+                    if (response.data && typeof response.data === 'object' && response.data.message) {
+                        // Erro com mensagem estruturada (Exception do PHP)
+                        MapasCulturais.Messages.error(response.data.message);
+                    } else {
+                        // Erros de validação padrão
+                        validationErrors(response);
+                    }
                 } else {
                     if(response.fieldType == 'checkboxes') {
                         response.config.maxOptions = response.config.maxOptions ? Number(response.config.maxOptions) : 0;
@@ -811,8 +848,11 @@ module.controller('RegistrationConfigurationsController', ['$scope', '$rootScope
             fieldService.edit(data).then(function(response){
                 $scope.data.fieldSpinner = false;
                 if (response.error) {
-                    validationErrors(response);
-
+                    if (response.data && typeof response.data === 'object' && response.data.message) {
+                        MapasCulturais.Messages.error(response.data.message);
+                    } else {
+                        validationErrors(response);
+                    }
                 } else {
                     sortFields();
                     EditBox.close('editbox-registration-field-'+data.id);
@@ -893,8 +933,11 @@ module.controller('RegistrationConfigurationsController', ['$scope', '$rootScope
             fileService.create($scope.data.newFileConfiguration).then(function(response){
                 $scope.data.uploadSpinner = false;
                 if (response.error) {
-                    validationErrors(response);
-
+                    if (response.data && typeof response.data === 'object' && response.data.message) {
+                        MapasCulturais.Messages.error(response.data.message);
+                    } else {
+                        validationErrors(response);
+                    }
                 } else {
                     response = processFileConfiguration(response);
                     $scope.data.fields.push(response);
@@ -963,8 +1006,11 @@ module.controller('RegistrationConfigurationsController', ['$scope', '$rootScope
             fileService.edit(data).then(function(response){
                 $scope.data.uploadSpinner = false;
                 if (response.error) {
-                    validationErrors(response);
-
+                    if (response.data && typeof response.data === 'object' && response.data.message) {
+                        MapasCulturais.Messages.error(response.data.message);
+                    } else {
+                        validationErrors(response);
+                    }
                 } else {
                     sortFields();
                     EditBox.close('editbox-registration-files-'+data.id);

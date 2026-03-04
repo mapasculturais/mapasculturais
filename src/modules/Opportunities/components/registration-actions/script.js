@@ -265,14 +265,22 @@ app.component('registration-actions', {
                         const column = columns[colIndex];
                         const value = row[`col${colIndex}`];
                         
+                        // Helper para verificar se valor está vazio
+                        const isEmpty = (val) => {
+                            if (val === null || val === undefined) return true;
+                            if (typeof val === 'string') return val.trim() === '';
+                            if (typeof val === 'number') return false; // 0 é um valor válido
+                            return false;
+                        };
+                        
                         // Verificar campo obrigatório
-                        if (column.required === 'true' && (!value || value.trim() === '')) {
+                        if (column.required === 'true' && isEmpty(value)) {
                             messages.error(`Campo "${column.name}" (linha ${rowIndex + 1}) em "${field.title}" é obrigatório`);
                             return false;
                         }
                         
-                        // Verificar validação específica do tipo
-                        if (value && value.trim() !== '') {
+                        // Verificar validação específica do tipo (apenas se não estiver vazio)
+                        if (!isEmpty(value)) {
                             let isValid = true;
                             let errorMessage = '';
                             
@@ -284,6 +292,10 @@ app.component('registration-actions', {
                                 case 'email':
                                     isValid = this.validateEmail(value);
                                     errorMessage = `E-mail inválido no campo "${column.name}" (linha ${rowIndex + 1}) em "${field.title}"`;
+                                    break;
+                                case 'number':
+                                    isValid = !isNaN(Number(value));
+                                    errorMessage = `Número inválido no campo "${column.name}" (linha ${rowIndex + 1}) em "${field.title}"`;
                                     break;
                             }
                             

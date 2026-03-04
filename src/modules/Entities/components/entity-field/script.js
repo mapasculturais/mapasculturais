@@ -574,7 +574,7 @@ app.component('entity-field', {
         validateTableCell(row, columnIndex, column) {
             const value = row[`col${columnIndex}`];
             
-            if (!value) {
+            if (!value && value !== 0) {
                 return column.required === 'true' ? false : true;
             }
             
@@ -583,6 +583,12 @@ app.component('entity-field', {
                     return this.validateCPF(value);
                 case 'email':
                     return this.validateEmail(value);
+                case 'number':
+                    // Validar se é um número válido quando não está vazio
+                    if (value === '' || value === null || value === undefined) {
+                        return column.required !== 'true';
+                    }
+                    return !isNaN(Number(value));
                 default:
                     return true;
             }
@@ -610,6 +616,14 @@ app.component('entity-field', {
                 return true; // Tabela vazia é válida (a menos que seja obrigatória)
             }
             
+            // Helper para verificar se valor está vazio
+            const isEmpty = (val) => {
+                if (val === null || val === undefined) return true;
+                if (typeof val === 'string') return val.trim() === '';
+                if (typeof val === 'number') return false; // 0 é um valor válido
+                return false;
+            };
+            
             for (let rowIndex = 0; rowIndex < tableData.length; rowIndex++) {
                 const row = tableData[rowIndex];
                 
@@ -618,14 +632,14 @@ app.component('entity-field', {
                     const value = row[`col${colIndex}`];
                     
                     // Verificar campo obrigatório
-                    if (column.required === 'true' && (!value || value.trim() === '')) {
+                    if (column.required === 'true' && isEmpty(value)) {
                         const messages = useMessages();
                         messages.error(`Campo "${column.name}" (linha ${rowIndex + 1}) é obrigatório`);
                         return false;
                     }
                     
-                    // Verificar validação específica do tipo
-                    if (value && value.trim() !== '') {
+                    // Verificar validação específica do tipo (apenas se não estiver vazio)
+                    if (!isEmpty(value)) {
                         let isValid = true;
                         let errorMessage = '';
                         
@@ -637,6 +651,10 @@ app.component('entity-field', {
                             case 'email':
                                 isValid = this.validateEmail(value);
                                 errorMessage = `E-mail inválido no campo "${column.name}" (linha ${rowIndex + 1})`;
+                                break;
+                            case 'number':
+                                isValid = !isNaN(Number(value));
+                                errorMessage = `Número inválido no campo "${column.name}" (linha ${rowIndex + 1})`;
                                 break;
                         }
                         
@@ -700,6 +718,9 @@ app.component('entity-field', {
                         return; // Não salva se houver erros de validação
                     }
                     
+                    // Obter configuração de colunas para processar tipos
+                    const columns = this.description.registrationFieldConfiguration?.config?.columns || [];
+                    
                     // CRÍTICO: Criar uma cópia SIMPLES do array, sem Proxy
                     const plainData = this.entity[this.prop]
                         .filter(row => row && typeof row === 'object' && !Array.isArray(row))
@@ -707,7 +728,28 @@ app.component('entity-field', {
                             const plainRow = {};
                             for (const key in row) {
                                 if (key.substring(0, 2) !== '$$') {
-                                    plainRow[key] = row[key];
+                                    let value = row[key];
+                                    
+                                    // Processar campos numéricos: converter string vazia para null
+                                    if (key.startsWith('col')) {
+                                        const colIndexMatch = key.match(/^col(\d+)$/);
+                                        if (colIndexMatch) {
+                                            const colIndex = parseInt(colIndexMatch[1]);
+                                            const column = columns[colIndex];
+                                            
+                                            if (column && column.type === 'number') {
+                                                // Converter para número ou null se vazio
+                                                if (value === '' || value === null || value === undefined) {
+                                                    value = null;
+                                                } else {
+                                                    const numValue = Number(value);
+                                                    value = isNaN(numValue) ? null : numValue;
+                                                }
+                                            }
+                                        }
+                                    }
+                                    
+                                    plainRow[key] = value;
                                 }
                             }
                             return plainRow;

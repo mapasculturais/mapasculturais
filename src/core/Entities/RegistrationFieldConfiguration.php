@@ -318,6 +318,34 @@ class RegistrationFieldConfiguration extends \MapasCulturais\Entity {
     public function getFieldName(){
         return 'field_' . $this->id;
     }
+    
+    /**
+     * Valida a configuração de campos custom-table
+     * @throws \Exception
+     */
+    protected function validateCustomTableConfig() {
+        if ($this->fieldType !== 'custom-table') {
+            return;
+        }
+        
+        $config = $this->getConfig();
+        
+        // Validação 1: Verificar se há pelo menos uma coluna configurada
+        if (!isset($config['columns']) || !is_array($config['columns']) || empty($config['columns'])) {
+            throw new \Exception(
+                \MapasCulturais\i::__('É necessário configurar pelo menos uma coluna para o campo de tabela')
+            );
+        }
+        
+        // Validação 2: Verificar se todas as colunas têm nome (label)
+        foreach ($config['columns'] as $index => $column) {
+            if (!isset($column['name']) || trim($column['name']) === '') {
+                throw new \Exception(
+                    \MapasCulturais\i::__('Todas as colunas devem ter um nome configurado')
+                );
+            }
+        }
+    }
 
     /**
      *
@@ -380,6 +408,9 @@ class RegistrationFieldConfiguration extends \MapasCulturais\Entity {
         if(!$this->getFieldTypeDefinition()->requireValuesConfiguration){
             $this->fieldOptions = [];
         }
+        
+        // Validação específica para custom-table
+        $this->validateCustomTableConfig();
     }
     /** @ORM\PostPersist */
     public function _postPersist($args = null){
@@ -402,6 +433,9 @@ class RegistrationFieldConfiguration extends \MapasCulturais\Entity {
         if(!$this->getFieldTypeDefinition()->requireValuesConfiguration){
             $this->fieldOptions = [];
         }
+        
+        // Validação específica para custom-table
+        $this->validateCustomTableConfig();
     }
     /** @ORM\PostUpdate */
     public function _postUpdate($args = null){
