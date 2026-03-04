@@ -60,8 +60,9 @@ app.component('opportunity-create-evaluation-phase' , {
             this.phase.infos = {general: ''};
             this.phase.opportunity = this.opportunity;
             
-            if(this.isContinuousFlow && !this.opportunity.hasEndDate) {
-                // fluxo contínuo sem data final: preenche datas automaticamente
+            if(this.isContinuousFlow) {
+                // Fluxo contínuo: inicializa datas com as da primeira fase
+                // Para hasEndDate=true os campos ficam visíveis e editáveis; para hasEndDate=false ficam ocultos
                 this.phase.evaluationFrom = this.opportunity.registrationFrom;
                 this.phase.evaluationTo = this.opportunity.registrationTo;
                 this.phase.publishedRegistrations = true;

@@ -1730,6 +1730,12 @@ class Module extends \MapasCulturais\Module{
                 $last_phase->isLastPhase = true;
                 $last_phase->isOpportunityPhase = true;
                 $last_phase->isDataCollection = '0';
+
+                // Em fluxo contínuo com data final, inicializa publishTimestamp com registrationTo da primeira fase
+                if ($this->isContinuousFlow && $this->hasEndDate && $this->registrationTo) {
+                    $last_phase->publishTimestamp = $this->registrationTo;
+                }
+
                 $last_phase->save(true);
             });
 
@@ -1780,6 +1786,45 @@ class Module extends \MapasCulturais\Module{
                     $this->isContinuousFlow = true;
                     $this->save(true);
                 }
+            });
+
+            // Propaga mudança no publishTimestamp da última fase para fases de avaliação com evaluationTo igual ao valor anterior
+            // Apenas se a oportunidade for de fluxo contínuo com data final
+            $pendingPublishTimestampChanges = [];
+
+            $app->hook('entity(Opportunity).set(publishTimestamp)', function($new_value) use ($app, &$pendingPublishTimestampChanges) {
+                /** @var Opportunity $this */
+                if (!$this->id || !$this->isLastPhase) return;
+                $firstPhase = $this->firstPhase;
+                if (!$firstPhase->isContinuousFlow || !$firstPhase->hasEndDate) return;
+
+                $old_value = $this->publishTimestamp;
+                if ($old_value) {
+                    $pendingPublishTimestampChanges[$this->id] = [$old_value, $new_value];
+                }
+            });
+
+            $app->hook('entity(Opportunity).save:after', function() use ($app, &$pendingPublishTimestampChanges) {
+                /** @var Opportunity $this */
+                if (!isset($pendingPublishTimestampChanges[$this->id])) return;
+
+                [$old_value, $new_value] = $pendingPublishTimestampChanges[$this->id];
+                unset($pendingPublishTimestampChanges[$this->id]);
+
+                if (!$new_value) return;
+
+                $firstPhase = $this->firstPhase;
+
+                $app->disableAccessControl();
+                foreach ($firstPhase->allPhases as $phase) {
+                    /** @var Opportunity $phase */
+                    $emc = $phase->evaluationMethodConfiguration ?? null;
+                    if ($emc && $emc->evaluationTo == $old_value) {
+                        $emc->evaluationTo = $new_value;
+                        $emc->save(true);
+                    }
+                }
+                $app->enableAccessControl();
             });
 
             $app->hook('entity(Registration).insert:after', function() use($app){
