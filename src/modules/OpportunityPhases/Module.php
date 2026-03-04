@@ -1796,7 +1796,7 @@ class Module extends \MapasCulturais\Module{
                 /** @var Opportunity $this */
                 if (!$this->id || !$this->isLastPhase) return;
                 $firstPhase = $this->firstPhase;
-                if (!$firstPhase->isContinuousFlow || !$firstPhase->hasEndDate) return;
+                if (!$firstPhase->isContinuousFlow && !$firstPhase->hasEndDate) return;
 
                 $old_value = $this->publishTimestamp;
                 if ($old_value) {
