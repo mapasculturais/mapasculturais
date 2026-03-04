@@ -1109,11 +1109,34 @@ abstract class EvaluationMethod extends Module implements \JsonSerializable{
         
         foreach($filter_configuration as $field_name => $values){
             $found_field = false;
+
+            $field_value = $registration->metadata[$field_name] ?? null;
+
+            if (!is_array($field_value) && is_string($field_value)) {
+                $trimmed = ltrim($field_value);
+                if ($trimmed != '' && ($trimmed[0] == '[' || $trimmed[0] == '{')) {
+                    $decoded = json_decode($field_value, true);
+                    if (json_last_error() === JSON_ERROR_NONE) {
+                        $field_value = $decoded;
+                    }
+                }
+            }
+
             foreach($values as $val) {
                 $val = trim($val);
-                
-                if(strtolower((string)$registration->metadata[$field_name]) === strtolower($val)){
-                    $found_field = true;
+
+                if (is_array($field_value) || is_object($field_value)) {
+                    foreach ((array) $field_value as $single_value) {
+                        if (strtolower((string) $single_value) === strtolower($val)) {
+                            $found_field = true;
+                            break 2;
+                        }
+                    }
+                } else {
+                    if (strtolower((string) $field_value) === strtolower($val)) {
+                        $found_field = true;
+                        break;
+                    }
                 }
             }
 

@@ -5,6 +5,15 @@ Todas as mudanças notáveis no projeto serão documentadas neste arquivo.
 O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/)
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [7.7.11] - 2026-03-03
+### Melhorias
+- Refatora o componente de Configuração filtro de inscrição para avaliadores/comissão
+- Adiciona opções de campos de seleção múltipla e checkbox no novo componente de configuração de filtro
+
+### Correções
+- Realiza a correção para o carregamento adequado das geodivisões do responsável na tabela e na planilha de inscritos.
+- Ajusta regra para permitir publicação de resultado da fase para antes, durante ou depois da data final da fase
+
 ## [7.7.10] - 2026-03-02
 ### Correções
 - Corrige erro de verificação de inscrições abertas no card de listagem de oportunidades
@@ -106,6 +115,10 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 1. <small>Melhoria desenvolvida pelo Ministério das Cidades, através da Secretaria Nacional de Periferias, para o Prêmio Periferia Viva</small>
 <a name="770-funarte"></a>
 2. <small>Melhoria desenvolvida pela Funarte (Fundação Nacional de Artes) para a Rede das Artes</small>
+
+## [7.6.54] - 2026-03-03
+### Correções
+- Ajusta regra para permitir publicação de resultado da fase para antes, durante ou depois da data final da fase.
 
 ## [7.6.53] - 2026-03-02
 ### Correções
