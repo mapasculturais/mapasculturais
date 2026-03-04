@@ -11,23 +11,23 @@ $this->includeGeocodingAssets();
     <div ng-if="lockedEntityField('En_CEP')"><strong><?= i::__('CEP') ?></strong>: {{entity[fieldName].En_CEP}}</div>
     <p ng-if="!lockedEntityField('En_CEP')" class="opportunity-field field-En_CEP">
         <label>
-            <strong><?= i::__('CEP') ?></strong><br>
-            <input ng-required="requiredField(field)" ng-model="entity[fieldName].En_CEP" js-mask="99999-999"  ng-blur="saveField(field, entity[fieldName])" ng-focus="saveField(field, entity[fieldName],10000)" class="js-rfc-input js-rfc-input-En_CEP" size=11 />
+            <strong ng-class="{'required': requiredLocationSubfield(field, 'En_CEP')}"><?= i::__('CEP') ?></strong><br>
+            <input ng-required="requiredLocationSubfield(field, 'En_CEP')" ng-model="entity[fieldName].En_CEP" js-mask="99999-999"  ng-blur="saveField(field, entity[fieldName])" ng-focus="saveField(field, entity[fieldName],10000)" class="js-rfc-input js-rfc-input-En_CEP" size=11 />
         </label>
     </p>
     <section>
     <div ng-if="lockedEntityField('En_Nome_Logradouro')"><strong><?= i::__('Logradouro') ?></strong>: {{entity[fieldName].En_Nome_Logradouro}}</div>    
     <p ng-if="!lockedEntityField('En_Nome_Logradouro')" class="opportunity-field field-En_Nome_Logradouro">
             <label>
-                <strong><?= i::__('Logradouro') ?></strong><br>
-                <input ng-required="requiredField(field)" ng-model="entity[fieldName].En_Nome_Logradouro" ng-blur="saveField(field, entity[fieldName])" ng-focus="saveField(field, entity[fieldName],10000)" class="js-rfc-input js-rfc-input-En_Nome_Logradouro" />
+                <strong ng-class="{'required': requiredLocationSubfield(field, 'En_Nome_Logradouro')}"><?= i::__('Logradouro') ?></strong><br>
+                <input ng-required="requiredLocationSubfield(field, 'En_Nome_Logradouro')" ng-model="entity[fieldName].En_Nome_Logradouro" ng-blur="saveField(field, entity[fieldName])" ng-focus="saveField(field, entity[fieldName],10000)" class="js-rfc-input js-rfc-input-En_Nome_Logradouro" />
             </label>
         </p>
         <div ng-if="lockedEntityField('En_Num')"><strong><?= i::__('Número') ?></strong>: {{entity[fieldName].En_Num}}</div>
         <p ng-if="!lockedEntityField('En_Num')" class="opportunity-field field-En_Num">
             <label>
-                <strong><?= i::__('Número') ?></strong><br>
-                <input ng-required="requiredField(field)" ng-model="entity[fieldName].En_Num" ng-blur="saveField(field, entity[fieldName])" ng-focus="saveField(field, entity[fieldName],10000)" class="js-rfc-input js-rfc-input-En_Num" />
+                <strong ng-class="{'required': requiredLocationSubfield(field, 'En_Num')}"><?= i::__('Número') ?></strong><br>
+                <input ng-required="requiredLocationSubfield(field, 'En_Num')" ng-model="entity[fieldName].En_Num" ng-blur="saveField(field, entity[fieldName])" ng-focus="saveField(field, entity[fieldName],10000)" class="js-rfc-input js-rfc-input-En_Num" />
             </label>
         </p>
         <div ng-if="lockedEntityField('En_Complemento')"><strong><?= i::__('Complemento') ?></strong>: {{entity[fieldName].En_Complemento}}</div>
@@ -41,16 +41,16 @@ $this->includeGeocodingAssets();
     <div ng-if="lockedEntityField('En_Bairro')"><strong><?= i::__('Bairro') ?></strong>: {{entity[fieldName].En_Bairro}}</div>
     <p ng-if="!lockedEntityField('En_Bairro')" class="opportunity-field field-En_Bairro">
         <label>
-            <strong><?= i::__('Bairro') ?></strong><br>
-            <input ng-required="requiredField(field)" ng-model="entity[fieldName].En_Bairro" ng-blur="saveField(field, entity[fieldName])" ng-focus="saveField(field, entity[fieldName],10000)" class="js-rfc-input js-rfc-input-En_Bairro" />
+            <strong ng-class="{'required': requiredLocationSubfield(field, 'En_Bairro')}"><?= i::__('Bairro') ?></strong><br>
+            <input ng-required="requiredLocationSubfield(field, 'En_Bairro')" ng-model="entity[fieldName].En_Bairro" ng-blur="saveField(field, entity[fieldName])" ng-focus="saveField(field, entity[fieldName],10000)" class="js-rfc-input js-rfc-input-En_Bairro" />
         </label>
     </p>
     <section>
     <div ng-if="lockedEntityField('En_Estado')"><strong><?= i::__('Estado') ?></strong>: {{entity[fieldName].En_Estado}}</div>    
     <p ng-if="!lockedEntityField('En_Estado')" class="opportunity-field field-En_Estado">
             <label>
-                <strong><?= i::__('Estado') ?></strong><br>
-                <select ng-required="requiredField(field)" ng-model="entity[fieldName].En_Estado" ng-blur="saveField(field, entity[fieldName])" ng-focus="saveField(field, entity[fieldName],10000)" class="js-rfc-input js-rfc-input-En_Estado" >
+                <strong ng-class="{'required': requiredLocationSubfield(field, 'En_Estado')}"><?= i::__('Estado') ?></strong><br>
+                <select ng-required="requiredLocationSubfield(field, 'En_Estado')" ng-model="entity[fieldName].En_Estado" ng-blur="saveField(field, entity[fieldName])" ng-focus="saveField(field, entity[fieldName],10000)" class="js-rfc-input js-rfc-input-En_Estado" >
                     <option value=""><?php i::_e("Selecione") ?></option>
                     <option ng-repeat="uf in ::ibge" value="{{::uf.sigla}}">{{::uf.nome}}</option>
                 </select>
@@ -59,8 +59,8 @@ $this->includeGeocodingAssets();
         <div ng-if="lockedEntityField('En_Municipio')"><strong><?= i::__('Cidade') ?></strong>: {{entity[fieldName].En_Municipio}}</div>
         <p ng-if="!lockedEntityField('En_Municipio')" class="opportunity-field field-En_Municipio">
             <label>
-                <strong><?= i::__('Cidade') ?></strong><br>
-                <select ng-required="requiredField(field)" ng-model="entity[fieldName].En_Municipio" ng-blur="saveField(field, entity[fieldName])" ng-focus="saveField(field, entity[fieldName],10000)" class="js-rfc-input js-rfc-input-En_Municipio" >
+                <strong ng-class="{'required': requiredLocationSubfield(field, 'En_Municipio')}"><?= i::__('Cidade') ?></strong><br>
+                <select ng-required="requiredLocationSubfield(field, 'En_Municipio')" ng-model="entity[fieldName].En_Municipio" ng-blur="saveField(field, entity[fieldName])" ng-focus="saveField(field, entity[fieldName],10000)" class="js-rfc-input js-rfc-input-En_Municipio" >
                     <option value=""><?php i::_e("Selecione") ?></option>
                     <option ng-if="entity[fieldName].En_Estado" ng-repeat="municipio in ibge[entity[fieldName].En_Estado].municipios" value="{{::municipio.nome}}">{{::municipio.nome}}</option>
 

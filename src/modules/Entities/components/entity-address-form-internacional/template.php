@@ -19,8 +19,11 @@ $this->import('
         <?php $this->applyTemplateHook('entity-address-form-internacional', 'begin'); ?>
 
         <!-- Código postal -->
-        <div class="field col-12 sm:col-6">
-            <label :for="fid('postalCode')"><?= i::__('Código postal') ?></label>
+        <div class="field col-12 sm:col-6" :class="{'field--error': hasError('address_postalCode')}">
+            <label :for="fid('postalCode')">
+                <?= i::__('Código postal') ?>
+                <span v-if="isRequired('address_postalCode')" class="required">*</span>
+            </label>
             <input
                 :id="fid('postalCode')"
                 type="text"
@@ -33,11 +36,13 @@ $this->import('
         <template v-for="i in 6" :key="`sel-${i}`">
             <div
                 v-if="getLevel(i-1) && showSubLevelSelect(getLevel(i-1), i-1)"
-                class="field col-6 sm:col-12">
+                class="field col-6 sm:col-12"
+                :class="{'field--error': hasError(addressKeyForLevel(i))}">
                 <label
                     class="field__title"
                     :for="fid(`level${i}`)">
                     {{ fieldLabel(i) }}
+                    <span v-if="isRequired(addressKeyForLevel(i))" class="required">*</span>
                 </label>
 
                 <select
@@ -60,10 +65,14 @@ $this->import('
                 <div
                     v-if="enabled && !getLevel(toLevelNum(lvlKey))"
                     class="field sm:col-12"
-                    :class="getColumnClass(toLevelNum(lvlKey), Object.keys(activeLevels))"
+                    :class="[
+                        getColumnClass(toLevelNum(lvlKey), Object.keys(activeLevels)),
+                        {'field--error': hasError(addressKeyForLevel(toLevelNum(lvlKey)))}
+                    ]"
                 >
                     <label class="field__title" :for="fid(`level${toLevelNum(lvlKey)}`)">
                         {{ fieldLabel(toLevelNum(lvlKey)) }}
+                        <span v-if="isRequired(addressKeyForLevel(toLevelNum(lvlKey)))" class="required">*</span>
                     </label>
                     <input
                         :id="fid(`level${toLevelNum(lvlKey)}`)"
@@ -76,9 +85,11 @@ $this->import('
             </template>
         </template>
 
-        <!-- Endereço (linhas) -->
-        <div class="field col-12 sm:col-6">
-            <label :for="fid('line1')"><?= i::__('Endereço') ?></label>
+        <div class="field col-12 sm:col-6" :class="{'field--error': hasError('address_line1')}">
+            <label :for="fid('line1')">
+                <?= i::__('Endereço') ?>
+                <span v-if="isRequired('address_line1') || isRequired('address_number')" class="required">*</span>
+            </label>
             <input
                 :id="fid('line1')"
                 type="text"
@@ -87,8 +98,11 @@ $this->import('
                 placeholder="<?= i::__('Endereço (rua, número, etc.)') ?>" />
         </div>
 
-        <div class="field col-12 sm:col-6">
-            <label :for="fid('line2')"><?= i::__('Complemento') ?></label>
+        <div class="field col-12 sm:col-6" :class="{'field--error': hasError('address_line2')}">
+            <label :for="fid('line2')">
+                <?= i::__('Complemento') ?>
+                <span v-if="isRequired('address_line2')" class="required">*</span>
+            </label>
             <input
                 :id="fid('line2')"
                 type="text"

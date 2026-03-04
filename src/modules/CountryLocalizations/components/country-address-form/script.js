@@ -40,8 +40,10 @@ app.component('country-address-form', {
         },
 
         isCountryRequired() {
-            const description = this.entity.$PROPERTIES?.address_level0 || {};
-            return description.required || false;
+            const addressLevel0 = this.entity.$PROPERTIES?.address_level0;
+            const enPais = this.entity.$PROPERTIES?.En_Pais;
+        
+            return !!(addressLevel0?.required || enPais?.required);
         }
     },
 

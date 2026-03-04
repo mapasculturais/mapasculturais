@@ -9,5 +9,7 @@ return [
     'isRequired' => i::__('é obrigatório'),
     'checkField' => i::__('Verifique o campo'),
     'lastCriterion' => i::__('no último critério'),
-    'criteriaConfiguration' => i::__('Configuração do critério')
+    'criteriaConfiguration' => i::__('Configuração do critério'),
+    'sectionFiltersTitle' => i::__('Configuração de filtros da seção'),
+    'criteriaFiltersTitle' => i::__('Configuração de filtros do critério'),
 ];
