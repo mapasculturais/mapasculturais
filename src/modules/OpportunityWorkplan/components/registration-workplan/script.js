@@ -205,6 +205,8 @@ app.component('registration-workplan', {
                     }
 
                     // Initialize simple fields if they don't exist
+                    if (!('monthInitial' in delivery)) delivery.monthInitial = null;
+                    if (!('monthEnd' in delivery)) delivery.monthEnd = null;
                     if (!('artChainLink' in delivery)) delivery.artChainLink = null;
                     if (!('totalBudget' in delivery)) delivery.totalBudget = null;
                     if (!('numberOfCities' in delivery)) delivery.numberOfCities = null;
@@ -274,6 +276,8 @@ app.component('registration-workplan', {
 
             const entityDelivery = new Entity('delivery');
             entityDelivery.id = null;
+            entityDelivery.monthInitial = null;
+            entityDelivery.monthEnd = null;
             entityDelivery.name = null;
             entityDelivery.description = null;
             entityDelivery.typeDelivery = null
@@ -402,8 +406,24 @@ app.component('registration-workplan', {
                 let position = index+1;
         
                 if ('name' in delivery && !delivery.name) emptyFields.push(`Nome da ${this.getDeliveryLabelDefault}`);
-                if ('description' in delivery && !delivery.description) emptyFields.push("Descrição");
+                if ('description' in delivery && !delivery.description) emptyFields.push(`Descrição da ${this.getDeliveryLabelDefault}`);
                 if ('typeDelivery' in delivery && !delivery.typeDelivery) emptyFields.push(`Tipo de ${this.getDeliveryLabelDefault}`);
+
+                // Validação de mês inicial e final em relação ao período da meta
+                if (this.opportunity.workplan_deliveryInformDeliveryPeriod) {
+                    if (this.opportunity.workplan_deliveryRequireDeliveryPeriod && !delivery.monthInitial) {
+                        emptyFields.push(`Mês inicial da ${this.getDeliveryLabelDefault}`);
+                    } else if (delivery.monthInitial && goal.monthInitial && parseInt(delivery.monthInitial) < parseInt(goal.monthInitial)) {
+                        emptyFields.push(`Mês inicial da ${this.getDeliveryLabelDefault} deve estar dentro do período da ${this.getGoalLabelDefault} (mês ${goal.monthInitial} a ${goal.monthEnd})`);
+                    }
+                    if (this.opportunity.workplan_deliveryRequireDeliveryPeriod && !delivery.monthEnd) {
+                        emptyFields.push(`Mês final da ${this.getDeliveryLabelDefault}`);
+                    } else if (delivery.monthEnd && goal.monthEnd && parseInt(delivery.monthEnd) > parseInt(goal.monthEnd)) {
+                        emptyFields.push(`Mês final da ${this.getDeliveryLabelDefault} deve estar dentro do período da ${this.getGoalLabelDefault} (mês ${goal.monthInitial} a ${goal.monthEnd})`);
+                    } else if (delivery.monthInitial && delivery.monthEnd && parseInt(delivery.monthEnd) < parseInt(delivery.monthInitial)) {
+                        emptyFields.push(`Mês final da ${this.getDeliveryLabelDefault} não pode ser anterior ao mês inicial`);
+                    }
+                }
 
                 // Campos configuráveis: só valida se habilitado E obrigatório
                 if (this.opportunity.workplan_registrationInformCulturalArtisticSegment && this.opportunity.workplan_deliveryRequireSegment && !delivery.segmentDelivery) emptyFields.push(`Segmento artístico-cultural da ${this.getDeliveryLabelDefault}`);

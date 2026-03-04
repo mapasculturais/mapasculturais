@@ -218,6 +218,15 @@ $this->import('
 
                         <div class="field__group">
                             <label class="field__checkbox">
+                                <input type="checkbox" v-model="entity.workplan_deliveryInformDeliveryPeriod" @click="autoSave()" /><?= i::__("Informar período de realização") ?> {{ `da ${getDeliveryLabelDefault}` }}
+                            </label>
+                            <label v-if="entity.workplan_deliveryInformDeliveryPeriod" class="field__checkbox field__checkbox--sub">
+                                <input type="checkbox" v-model="entity.workplan_deliveryRequireDeliveryPeriod" @click="autoSave()" /><?= i::__("Obrigatório") ?>
+                            </label>
+                        </div>
+
+                        <div class="field__group">
+                            <label class="field__checkbox">
                                 <input type="checkbox" v-model="entity.workplan_registrationReportTheNumberOfParticipants" @click="autoSave()" /><?= i::__("Informar a quantidade estimada de público") ?> {{ `no ${getWorkplanLabelDefault}` }}
                             </label>
                             <label v-if="entity.workplan_registrationReportTheNumberOfParticipants" class="field__checkbox field__checkbox--sub">

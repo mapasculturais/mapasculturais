@@ -183,6 +183,25 @@ $this->import('
                                     <input v-model="delivery.name" type="text">
                                 </div>
 
+                                <div v-if="opportunity.workplan_deliveryInformDeliveryPeriod" class="registration-workplan__goals-period">
+                                    <div class="registration-workplan__goals-months">
+                                        <div class="field">
+                                            <label>{{ `Mês inicial da ${getDeliveryLabelDefault}` }}<span v-if="opportunity.workplan_deliveryRequireDeliveryPeriod" class="required">obrigatório*</span></label>
+                                            <select v-model="delivery.monthInitial">
+                                                <option value=""><?= i::esc_attr__('Selecione') ?></option>
+                                                <option v-for="n in range(parseInt(goal.monthInitial), parseInt(goal.monthEnd))" :key="n" :value="n">{{ n }}</option>
+                                            </select>
+                                        </div>
+                                        <div class="field">
+                                            <label>{{ `Mês final da ${getDeliveryLabelDefault}` }}<span v-if="opportunity.workplan_deliveryRequireDeliveryPeriod" class="required">obrigatório*</span></label>
+                                            <select v-model="delivery.monthEnd">
+                                                <option value=""><?= i::esc_attr__('Selecione') ?></option>
+                                                <option v-for="n in range(parseInt(delivery.monthInitial || goal.monthInitial), parseInt(goal.monthEnd))" :key="n" :value="n">{{ n }}</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+
                                 <div class="field">
                                     <label>{{ `Descrição da ${getDeliveryLabelDefault}` }}<span class="required">obrigatório*</span></label>
                                     <textarea v-model="delivery.description"></textarea>
