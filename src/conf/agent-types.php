@@ -329,15 +329,25 @@ return array(
             'private' => true,
             'label' => \MapasCulturais\i::__('Data de Nascimento/Fundação'),
             'type' => 'date',
-            'serialize' => function($value, $entity = null){
-               if(is_null($value)) { return null; }
-               $this->hook("entity(<<*>>).save:before", function() use ($entity){
+            'serialize' => function ($value, $entity = null) {
+                if (is_null($value)) {
+                    return null;
+                }
+
+                $this->hook("entity(<<*>>).save:before", function () use ($entity) {
                     /** @var MapasCulturais\Entity $entity */
                     if($this->equals($entity)){
                         $this->idoso = 1;
                     }
-               });
-               return (new DateTime($value))->format("Y-m-d");
+                });
+
+                if (is_array($value) && isset($value['_date'])) {
+                    $value = $value['_date'];
+                } elseif (is_object($value) && isset($value->_date)) {
+                    $value = $value->_date;
+                }
+
+                return $value ? (new \DateTime($value))->format("Y-m-d") : null;
             },
             'validations' => array(
                 'v::date("Y-m-d")' => \MapasCulturais\i::__('Data inválida').'{{format}}',
