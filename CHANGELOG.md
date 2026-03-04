@@ -9,7 +9,37 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 ### Novas Funcionalidades
 - Implementa tipo de campo custom-table (tabela customizável) para formulários de inscrição, permitindo que o proponente preencha dados em formato tabular com colunas configuráveis
 
-## [7.7.6] - UNRELEASED
+## [7.7.12] - UNRELEASED
+### Correções
+- Faz ajuste no campo dataDeNascimento para que o formato de data seja interpretado corretamente.
+
+## [7.7.11] - 2026-03-03
+### Melhorias
+- Refatora o componente de Configuração filtro de inscrição para avaliadores/comissão
+- Adiciona opções de campos de seleção múltipla e checkbox no novo componente de configuração de filtro
+
+### Correções
+- Realiza a correção para o carregamento adequado das geodivisões do responsável na tabela e na planilha de inscritos.
+- Ajusta regra para permitir publicação de resultado da fase para antes, durante ou depois da data final da fase
+
+## [7.7.10] - 2026-03-02
+### Correções
+- Corrige erro de verificação de inscrições abertas no card de listagem de oportunidades
+
+## [7.7.9] - 2026-02-26
+### Melhorias
+- Adiciona possibilidade de filtro por arquivo na api
+
+## [7.7.8] - 2026-02-25
+### Correções
+- Corrige a remoção de avaliações quando um avaliador é excluído de uma comissão, afetando apenas a comissão correta.
+
+## [7.7.7] - 2026-02-24
+### Correções
+- Corrige a aplicação de resultados da avaliações por pontuação e classificação
+- Corrige a exibição do valor da coluna "Bônus por pontuação aplicadas a inscrição" na tabela de inscrições
+
+## [7.7.6] - 2026-02-22
 ### Correções
 - Corrige permissão para administrador da oportunidade remover uma avaliação
 - Corrige os campos visíveis para o avaliador para nao ignorar campos com somente uma fase de coleta de dados
@@ -93,6 +123,39 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 1. <small>Melhoria desenvolvida pelo Ministério das Cidades, através da Secretaria Nacional de Periferias, para o Prêmio Periferia Viva</small>
 <a name="770-funarte"></a>
 2. <small>Melhoria desenvolvida pela Funarte (Fundação Nacional de Artes) para a Rede das Artes</small>
+
+## [7.6.55] - 2026-03-04
+### Correções
+- Faz ajuste no campo dataDeNascimento para que o formato de data seja interpretado corretamente
+
+## [7.6.54] - 2026-03-03
+### Correções
+- Ajusta regra para permitir publicação de resultado da fase para antes, durante ou depois da data final da fase.
+
+## [7.6.53] - 2026-03-02
+### Correções
+- Corrige erro de verificação de inscrições abertas no card de listagem de oportunidades
+
+## [7.6.52] - 2026-02-27
+### Melhorias
+- Aplica melhoria no campo @ de endereço para possibilitar que se defina quais subcampos do endereço sejam obrigatórios no formulário de inscrição
+
+## [7.6.51] - 2026-02-26
+### Melhorias
+- Adiciona possibilidade de filtro por arquivo na api
+
+## [7.6.50] - 2026-02-25
+### Correções
+- Corrige a remoção de avaliações quando um avaliador é excluído de uma comissão, afetando apenas a comissão correta.
+
+## [7.6.49] - 2026-02-24
+### Correções
+- Corrige a aplicação de resultados da avaliações por pontuação e classificação
+- Corrige a exibição do valor da coluna "Bônus por pontuação aplicadas a inscrição" na tabela de inscrições
+
+## [7.6.48] - 2026-02-23
+### Correções
+- Corrige exibição de indicação do campo obrigatório de país
 
 ## [7.6.47] - 2026-02-22
 ### Correções

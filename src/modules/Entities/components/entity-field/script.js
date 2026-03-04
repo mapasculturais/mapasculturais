@@ -206,6 +206,10 @@ app.component('entity-field', {
             type: Boolean,
             default: false
         },
+        registrationFieldConfiguration: {
+            type: Object,
+            default: null
+        },
         titleModal: {
             type: String,
             required: false,
@@ -274,12 +278,15 @@ app.component('entity-field', {
 
     computed: {
         hasErrors() {
-            let errors = this.entity.__validationErrors[this.prop] || [];
-            if(errors.length > 0){
-                return true;
-            } else {
+            const errors = this.entity.__validationErrors[this.prop] || [];
+
+            // Para campos @location, deixamos a sinalização visual por conta
+            // do componente de endereço, que destaca apenas os subcampos faltando.
+            if (errors.length > 0 && this.is('location')) {
                 return false;
             }
+
+            return errors.length > 0;
         },
         errors() {
             return this.entity.__validationErrors[this.prop];
