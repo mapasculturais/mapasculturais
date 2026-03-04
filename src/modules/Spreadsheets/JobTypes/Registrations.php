@@ -20,6 +20,21 @@ class Registrations extends SpreadsheetJob
         return [Registration::class];
     }
 
+    /**
+     * Obtém valor de localização aceitando tanto objeto quanto array (address_level* ou En_*).
+     */
+    private static function _getLocationValue($location, string $prop1, string $prop2): ?string {
+        if ($location === null) {
+            return null;
+        }
+        if (is_array($location)) {
+            $v = $location[$prop1] ?? $location[$prop2] ?? null;
+            return $v !== '' && $v !== null ? (string) $v : null;
+        }
+        $v = $location->$prop1 ?? $location->$prop2 ?? null;
+        return $v !== '' && $v !== null ? (string) $v : null;
+    }
+
     protected function _getHeader(Job $job) : array {
         $header = [];
 
@@ -43,8 +58,25 @@ class Registrations extends SpreadsheetJob
                 continue;
             }
 
-            if($property == 'ownerGeoMesoregiao') {
-                $header[$property] = i::__('Mesorregião do responsável');
+            // Ordem alinhada ao bloco de dados (ownerGeo* / geo*), mesmas labels
+            if($property == 'ownerGeoMesorregiao') {
+                $header[$property] = i::__('Divisão geográfica do responsável – Mesorregião');
+                continue;
+            }
+            if($property == 'ownerGeoMunicipio') {
+                $header[$property] = i::__('Divisão geográfica do responsável – Município');
+                continue;
+            }
+            if($property == 'ownerGeoPais') {
+                $header[$property] = i::__('Divisão geográfica do responsável – País');
+                continue;
+            }
+            if($property == 'ownerGeoEstado') {
+                $header[$property] = i::__('Divisão geográfica do responsável – Estado');
+                continue;
+            }
+            if($property == 'ownerGeoMicrorregiao') {
+                $header[$property] = i::__('Divisão geográfica do responsável – Microrregião');
                 continue;
             }
 
@@ -374,9 +406,8 @@ class Registrations extends SpreadsheetJob
 
                         if($entity_type_field['ft'] == '@location') {
                             $location = $entity[$field->fieldName] ?? null;
-                            
-                            $entity['UF'] = $location->address_level2 ?? $location->En_Estado ?? null;
-                            $entity['Municipio'] = $location->address_level4 ?: $location->En_Municipio ?: null;
+                            $entity['UF'] = self::_getLocationValue($location, 'address_level2', 'En_Estado');
+                            $entity['Municipio'] = self::_getLocationValue($location, 'address_level4', 'En_Municipio');
                             unset($entity[$field->fieldName]);
                         }
 
@@ -474,11 +505,33 @@ class Registrations extends SpreadsheetJob
                     $entity['files'] = $app->createUrl('registration', 'createZipFiles', [$entity['id']]);
                 }
 
-                if (isset($entity['geoMesoregiao'])) {
-                    $entity['ownerGeoMesoregiao'] = eval('return $entity' . $properties['ownerGeoMesoregiao'] . ';');
-                     unset($entity['geoMesoregiao']);
+                // Dados do owner já foram mesclados em $entity (owner foi unset); geo* estão no nível raiz
+                $geoMesorregiao = $entity['geoMesorregiao'] ?? $entity['geoMesoregiao'] ?? null;
+                if ($geoMesorregiao !== null) {
+                    $entity['ownerGeoMesorregiao'] = $geoMesorregiao;
+                    $entity['ownerGeoMesoregiao'] = $geoMesorregiao; // fallback para typo no @select
+                    unset($entity['geoMesorregiao'], $entity['geoMesoregiao']);
                 }
-                
+
+                if (isset($entity['geoMunicipio'])) {
+                    $entity['ownerGeoMunicipio'] = $entity['geoMunicipio'];
+                    unset($entity['geoMunicipio']);
+                }
+
+                if (isset($entity['geoPais'])) {
+                    $entity['ownerGeoPais'] = $entity['geoPais'];
+                    unset($entity['geoPais']);
+                }
+
+                if (isset($entity['geoEstado'])) {
+                    $entity['ownerGeoEstado'] = $entity['geoEstado'];
+                    unset($entity['geoEstado']);
+                }
+
+                if (isset($entity['geoMicrorregiao'])) {
+                    $entity['ownerGeoMicrorregiao'] = $entity['geoMicrorregiao'];
+                    unset($entity['geoMicrorregiao']);
+                }
                 if(isset($entity['sentTimestamp']) && !is_null($entity['sentTimestamp'])) {
                     $entity['sentDate'] = $entity['sentTimestamp']->format('d-m-Y');
                     $entity['sentTime'] = $entity['sentTimestamp']->format('H:i:s');
