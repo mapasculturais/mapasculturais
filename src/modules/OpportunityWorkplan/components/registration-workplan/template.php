@@ -126,30 +126,31 @@ $this->import('
                                 </div>
                             </div>
                         </div>
-                        
-                        <!-- Título da meta -->
-                        <div class="field">
-                            <label>
-                                {{ `Título da ${getGoalLabelDefault}` }}<span class="required">obrigatório*</span></label>
-                            <input v-model="goal.title" type="text">
-                        </div>
-
-                        <!-- Descrição -->
-                        <div class="field">
-                            <label><?= i::esc_attr__('Descrição') ?><span class="required">obrigatório*</span></label>
-                            <textarea v-model="goal.description"></textarea>
-                        </div>
-
-                        <!-- Etapa do fazer cultural -->
-                        <div v-if="opportunity.workplan_metaInformTheStageOfCulturalMaking" class="field">
-                            <label><?= i::esc_attr__('Etapa do fazer cultural') ?><span class="required">obrigatório*</span></label>
-                            <select v-model="goal.culturalMakingStage">
-                                <option value=""><?= i::esc_attr__('Selecione') ?></option>
-                                <option v-for="n in workplanFields.goal?.culturalMakingStage?.options" :key="n" :value="n">{{ n }}</option>
-                            </select>
-                        </div>
+                    </div>
+                    
+                    <!-- Título da meta -->
+                    <div v-if="opportunity.workplan_goalInformTitle" class="field">
+                        <label>
+                            {{ `Título da ${getGoalLabelDefault}` }}<span v-if="opportunity.workplan_goalRequireTitle" class="required">obrigatório*</span></label>
+                        <input v-model="goal.title" type="text">
                     </div>
 
+                    <!-- Descrição -->
+                    <div v-if="opportunity.workplan_goalInformDescription" class="field">
+                        <label>{{ `Descrição da ${getGoalLabelDefault}` }}<span v-if="opportunity.workplan_goalRequireDescription" class="required">obrigatório*</span></label>
+                        <textarea v-model="goal.description"></textarea>
+                    </div>
+
+                    <!-- Etapa do fazer cultural -->
+                    <div v-if="opportunity.workplan_metaInformTheStageOfCulturalMaking" class="field">
+                        <label>{{ `Etapa do fazer cultural da ${getGoalLabelDefault}` }}<span class="required">obrigatório*</span></label>
+                        <select v-model="goal.culturalMakingStage">
+                            <option value=""><?= i::esc_attr__('Selecione') ?></option>
+                            <option v-for="n in workplanFields.goal?.culturalMakingStage?.options" :key="n" :value="n">{{ n }}</option>
+                        </select>
+                    </div>
+
+                    <!-- Valor da meta -->
                     <div id="container_deliveries">
                         <div v-for="(delivery, index_) in goal.deliveries" :key="delivery.id" class="registration-workplan__goals__deliveries">
                             <div class="registration-workplan__header-deliveries">

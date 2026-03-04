@@ -363,8 +363,8 @@ app.component('registration-workplan', {
                 // Verificar cada campo do objeto `goal`
                 if (!goal.monthInitial) emptyFields.push("Mês inicial");
                 if (!goal.monthEnd) emptyFields.push("Mês final");
-                if (!goal.title) emptyFields.push(`Título da ${this.getGoalLabelDefault}`);
-                if (!goal.description) emptyFields.push("Descrição");
+                if (this.opportunity.workplan_goalInformTitle && this.opportunity.workplan_goalRequireTitle && !goal.title) emptyFields.push(`Título da ${this.getGoalLabelDefault}`);
+                if (this.opportunity.workplan_goalInformDescription && this.opportunity.workplan_goalRequireDescription && !goal.description) emptyFields.push("Descrição");
                 if (this.opportunity.workplan_metaInformTheStageOfCulturalMaking && !goal.culturalMakingStage) emptyFields.push("Etapa do fazer cultural");
                 if (this.opportunity.workplan_deliveryReportTheDeliveriesLinkedToTheGoals && goal.deliveries.length === 0) emptyFields.push(`${this.getDeliveryLabelDefault}`);
 
