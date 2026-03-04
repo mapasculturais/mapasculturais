@@ -121,7 +121,7 @@ $this->import('
                                     <label for="mes-final"><?= i::esc_attr__('Mês final') ?><span class="required">obrigatório*</span></label>
                                     <select v-model="goal.monthEnd" id="mes-final">
                                         <option value=""><?= i::esc_attr__('Selecione') ?></option>
-                                        <option v-for="n in range(parseInt(goal.monthInitial), parseInt(workplan.projectDuration)) " :key="n" :value="n">{{ n }}</option>
+                                        <option v-for="n in range(parseInt(goal.monthInitial) || 1, parseInt(workplan.projectDuration))" :key="n" :value="n">{{ n }}</option>
                                     </select>
                                 </div>
                             </div>
@@ -183,6 +183,20 @@ $this->import('
                                     <input v-model="delivery.name" type="text">
                                 </div>
 
+                                <div class="field">
+                                    <label>{{ `Descrição da ${getDeliveryLabelDefault}` }}<span class="required">obrigatório*</span></label>
+                                    <textarea v-model="delivery.description"></textarea>
+                                </div>
+
+                                <div class="field">
+                                    <label>
+                                        {{ `Tipo de ${getDeliveryLabelDefault}` }}<span class="required">obrigatório*</span></label>
+                                    <select v-model="delivery.typeDelivery">
+                                        <option value=""><?= i::esc_attr__('Selecione') ?></option>
+                                        <option v-for="n in workplanFields.goal.delivery.typeDelivery.options" :key="n" :value="n">{{ n }}</option>
+                                    </select>
+                                </div>
+
                                 <div v-if="opportunity.workplan_deliveryInformDeliveryPeriod" class="registration-workplan__goals-period">
                                     <div class="registration-workplan__goals-months">
                                         <div class="field">
@@ -200,20 +214,6 @@ $this->import('
                                             </select>
                                         </div>
                                     </div>
-                                </div>
-
-                                <div class="field">
-                                    <label>{{ `Descrição da ${getDeliveryLabelDefault}` }}<span class="required">obrigatório*</span></label>
-                                    <textarea v-model="delivery.description"></textarea>
-                                </div>
-
-                                <div class="field">
-                                    <label>
-                                        {{ `Tipo de ${getDeliveryLabelDefault}` }}<span class="required">obrigatório*</span></label>
-                                    <select v-model="delivery.typeDelivery">
-                                        <option value=""><?= i::esc_attr__('Selecione') ?></option>
-                                        <option v-for="n in workplanFields.goal.delivery.typeDelivery.options" :key="n" :value="n">{{ n }}</option>
-                                    </select>
                                 </div>
 
                                 <div v-if="opportunity.workplan_registrationReportTheNumberOfParticipants" class="field">
@@ -257,123 +257,85 @@ $this->import('
                                         <?= i::__('+ Adicionar função') ?>
                                     </button>
                                 </div>
+                                <div v-else class="paid-staff-list">
+                                    <div v-for="(staff, index) in delivery.paidStaffByRole" :key="index" class="paid-staff-item">
+                                        <div class="paid-staff-item__header">
+                                            <p class="paid-staff-item__title semibold">{{ index + 1 }}ª <?= i::__('Função') ?></p>
+                                            <button type="button" class="button button--delete button--icon button--sm" @click="removePaidStaffRole(delivery, index)">
+                                                <mc-icon name="trash"></mc-icon>
+                                                <?= i::__('Remover') ?>
+                                            </button>
+                                        </div>
+                                        <div class="paid-staff-item__fields grid-12">
+                                            <div class="col-6 sm:col-12 field">
+                                                <label><?= i::esc_attr__('Função') ?></label>
+                                                <select v-model="staff.role">
+                                                    <option value=""><?= i::esc_attr__('Selecione a função') ?></option>
+                                                    <option v-for="roleOption in workplanFields.goal.delivery.paidStaffByRole.options" :key="roleOption" :value="roleOption">{{ roleOption }}</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-6 sm:col-12 field">
+                                                <label><?= i::esc_attr__('Quantidade') ?></label>
+                                                <input v-model.number="staff.count" type="number" min="0" placeholder="<?= i::esc_attr__('Quantidade de pessoas') ?>">
+                                            </div>
+                                            <div v-if="staff.role === 'Outra'" class="col-12 field">
+                                                <label><?= i::esc_attr__('Especifique a função') ?></label>
+                                                <input v-model="staff.customRole" type="text" placeholder="<?= i::esc_attr__('Digite o nome da função') ?>">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="paid-staff-add">
+                                        <button type="button" class="button button--sm button--icon button--primary-outline" @click="addPaidStaffRole(delivery)">
+                                            <mc-icon name="add"></mc-icon>
+                                            <?= i::__('Adicionar outra função') ?>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
 
-                                <div v-if="opportunity.workplan_deliveryInformArtChainLink" class="field">
-                                    <label>{{ `Principal elo das artes acionado pela ${getDeliveryLabelDefault} no ${getWorkplanLabelDefault}` }}<span v-if="opportunity.workplan_deliveryRequireArtChainLink" class="required">obrigatório*</span></label>
-                                    <select v-model="delivery.artChainLink">
+                            <!-- Receita -->
+                            <div v-if="opportunity.workplan_registrationReportExpectedRenevue">
+                                <div class="field">
+                                    <label>
+                                        {{ `A ${getDeliveryLabelDefault} irá gerar receita?` }}
+                                        <span class="required">obrigatório*</span></label>
+                                    <select class="field__limits" v-model="delivery.generaterRevenue">
                                         <option value=""><?= i::esc_attr__('Selecione') ?></option>
-                                        <option v-for="n in workplanFields.goal.delivery.artChainLink.options" :key="n" :value="n">{{ n }}</option>
+                                        <option v-for="(n, i) in workplanFields.goal.delivery.generaterRevenue.options" :key="i" :value="i">{{ n }}</option>
                                     </select>
                                 </div>
 
-                                <div v-if="opportunity.workplan_deliveryInformTotalBudget" class="field">
-                                    <label>{{ `Qual o orçamento total da ${getDeliveryLabelDefault}?` }}<span v-if="opportunity.workplan_deliveryRequireTotalBudget" class="required">obrigatório*</span></label>
-                                    <mc-currency-input v-model="delivery.totalBudget"></mc-currency-input>
-                                </div>
-
-                                <div v-if="opportunity.workplan_deliveryInformNumberOfCities" class="field">
-                                    <label>{{ `Em quantos municípios a ${getDeliveryLabelDefault} vai ser realizada?` }}<span v-if="opportunity.workplan_deliveryRequireNumberOfCities" class="required">obrigatório*</span></label>
-                                    <input v-model.number="delivery.numberOfCities" type="number" min="0">
-                                </div>
-
-                                <div v-if="opportunity.workplan_deliveryInformNumberOfNeighborhoods" class="field">
-                                    <label>{{ `Em quantos bairros a ${getDeliveryLabelDefault} vai ser realizada?` }}<span v-if="opportunity.workplan_deliveryRequireNumberOfNeighborhoods" class="required">obrigatório*</span></label>
-                                    <input v-model.number="delivery.numberOfNeighborhoods" type="number" min="0">
-                                </div>
-
-                                <div v-if="opportunity.workplan_deliveryInformMediationActions" class="field">
-                                    <label>{{ `Quantas ações de mediação/formação de público estão previstas nesta ${getDeliveryLabelDefault}?` }}<span v-if="opportunity.workplan_deliveryRequireMediationActions" class="required">obrigatório*</span></label>
-                                    <input v-model.number="delivery.mediationActions" type="number" min="0">
-                                </div>
-
-                                <!-- Pessoas remuneradas por função -->
-                                <div v-if="opportunity.workplan_deliveryInformPaidStaffByRole" class="field">
-                                    <label>{{ `Quantas pessoas serão remuneradas, por função, nesta ${getDeliveryLabelDefault}?` }}<span v-if="opportunity.workplan_deliveryRequirePaidStaffByRole" class="required">obrigatório*</span></label>
-                                    <div v-if="!delivery.paidStaffByRole || !delivery.paidStaffByRole.length" class="field__note">
-                                        <button type="button" class="button button--sm button--primary-outline" @click="addPaidStaffRole(delivery)">
-                                            <?= i::__('+ Adicionar função') ?>
-                                        </button>
+                                <div v-if="delivery.generaterRevenue == 'true'" class="grid-12">
+                                    <div class="field col-4 sm:col-12">
+                                        <label><?= i::esc_attr__('Previsão Quantidade') ?><span class="required">obrigatório*</span></label>
+                                        <input v-model="delivery.renevueQtd" type="number" min="0">
                                     </div>
-                                    <div v-else class="paid-staff-list">
-                                        <div v-for="(staff, index) in delivery.paidStaffByRole" :key="index" class="paid-staff-item">
-                                            <div class="paid-staff-item__header">
-                                                <p class="paid-staff-item__title semibold">{{ index + 1 }}ª <?= i::__('Função') ?></p>
-                                                <button type="button" class="button button--delete button--icon button--sm" @click="removePaidStaffRole(delivery, index)">
-                                                    <mc-icon name="trash"></mc-icon>
-                                                    <?= i::__('Remover') ?>
-                                                </button>
-                                            </div>
-                                            <div class="paid-staff-item__fields grid-12">
-                                                <div class="col-6 sm:col-12 field">
-                                                    <label><?= i::esc_attr__('Função') ?></label>
-                                                    <select v-model="staff.role">
-                                                        <option value=""><?= i::esc_attr__('Selecione a função') ?></option>
-                                                        <option v-for="roleOption in workplanFields.goal.delivery.paidStaffByRole.options" :key="roleOption" :value="roleOption">{{ roleOption }}</option>
-                                                    </select>
-                                                </div>
-                                                <div class="col-6 sm:col-12 field">
-                                                    <label><?= i::esc_attr__('Quantidade') ?></label>
-                                                    <input v-model.number="staff.count" type="number" min="0" placeholder="<?= i::esc_attr__('Quantidade de pessoas') ?>">
-                                                </div>
-                                                <div v-if="staff.role === 'Outra'" class="col-12 field">
-                                                    <label><?= i::esc_attr__('Especifique a função') ?></label>
-                                                    <input v-model="staff.customRole" type="text" placeholder="<?= i::esc_attr__('Digite o nome da função') ?>">
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="paid-staff-add">
-                                            <button type="button" class="button button--sm button--icon button--primary-outline" @click="addPaidStaffRole(delivery)">
-                                                <mc-icon name="add"></mc-icon>
-                                                <?= i::__('Adicionar outra função') ?>
-                                            </button>
-                                        </div>
+
+                                    <div class="field col-4 sm:col-12">
+                                        <label><?= i::esc_attr__('Previsão de valor unitário') ?><span class="required">obrigatório*</span></label>
+                                        <mc-currency-input v-model="delivery.unitValueForecast"></mc-currency-input>
+                                    </div>
+
+                                    <div class="field col-4 sm:col-12">
+                                        <label><?= i::esc_attr__('Previsão de valor total') ?><span class="required">obrigatório*</span></label>
+                                        <input readonly :model="delivery.totalValueForecast" :value="totalValueForecastToCurrency(delivery, delivery.renevueQtd, delivery.unitValueForecast)">
                                     </div>
                                 </div>
 
-                                <!-- Receita -->
-                                <div v-if="opportunity.workplan_registrationReportExpectedRenevue">
+                                <div v-if="opportunity.workplan_deliveryInformRevenueType" class="field">
+                                    <label>{{ `Qual o tipo de receita previsto no ${getWorkplanLabelDefault}?` }}<span v-if="opportunity.workplan_deliveryRequireRevenueType" class="required">obrigatório*</span></label>
+                                    <mc-multiselect :model="delivery.revenueType" :items="workplanFields.goal.delivery.revenueType.options" hide-filter hide-button></mc-multiselect>
+                                    <mc-tag-list :tags="delivery.revenueType" :labels="workplanFields.goal.delivery.revenueType.options" classes="opportunity__background" @remove="toggleRevenueType(delivery, $event)" editable></mc-tag-list>
+                                </div>
+
+                                <div v-if="opportunity.workplan_deliveryInformCommercialUnits">
                                     <div class="field">
-                                        <label>
-                                            {{ `A ${getDeliveryLabelDefault} irá gerar receita?` }}
-                                            <span class="required">obrigatório*</span></label>
-                                        <select class="field__limits" v-model="delivery.generaterRevenue">
-                                            <option value=""><?= i::esc_attr__('Selecione') ?></option>
-                                            <option v-for="(n, i) in workplanFields.goal.delivery.generaterRevenue.options" :key="i" :value="i">{{ n }}</option>
-                                        </select>
+                                        <label>{{ `Quantidade de unidades previstas para comercialização no ${getWorkplanLabelDefault}` }}<span v-if="opportunity.workplan_deliveryRequireCommercialUnits" class="required">obrigatório*</span></label>
+                                        <input v-model.number="delivery.commercialUnits" type="number" min="0">
                                     </div>
-
-                                    <div v-if="delivery.generaterRevenue == 'true'" class="grid-12">
-                                        <div class="field col-4 sm:col-12">
-                                            <label><?= i::esc_attr__('Previsão Quantidade') ?><span class="required">obrigatório*</span></label>
-                                            <input v-model="delivery.renevueQtd" type="number" min="0">
-                                        </div>
-
-                                        <div class="field col-4 sm:col-12">
-                                            <label><?= i::esc_attr__('Previsão de valor unitário') ?><span class="required">obrigatório*</span></label>
-                                            <mc-currency-input v-model="delivery.unitValueForecast"></mc-currency-input>
-                                        </div>
-
-                                        <div class="field col-4 sm:col-12">
-                                            <label><?= i::esc_attr__('Previsão de valor total') ?><span class="required">obrigatório*</span></label>
-                                            <input readonly :model="delivery.totalValueForecast" :value="totalValueForecastToCurrency(delivery, delivery.renevueQtd, delivery.unitValueForecast)">
-                                        </div>
-                                    </div>
-
-                                    <div v-if="opportunity.workplan_deliveryInformRevenueType" class="field">
-                                        <label>{{ `Qual o tipo de receita previsto no ${getWorkplanLabelDefault}?` }}<span v-if="opportunity.workplan_deliveryRequireRevenueType" class="required">obrigatório*</span></label>
-                                        <mc-multiselect :model="delivery.revenueType" :items="workplanFields.goal.delivery.revenueType.options" hide-filter hide-button></mc-multiselect>
-                                        <mc-tag-list :tags="delivery.revenueType" :labels="workplanFields.goal.delivery.revenueType.options" classes="opportunity__background" @remove="toggleRevenueType(delivery, $event)" editable></mc-tag-list>
-                                    </div>
-
-                                    <div v-if="opportunity.workplan_deliveryInformCommercialUnits">
-                                        <div class="field">
-                                            <label>{{ `Quantidade de unidades previstas para comercialização no ${getWorkplanLabelDefault}` }}<span v-if="opportunity.workplan_deliveryRequireCommercialUnits" class="required">obrigatório*</span></label>
-                                            <input v-model.number="delivery.commercialUnits" type="number" min="0">
-                                        </div>
-                                        <div class="field">
-                                            <label>{{ `Valor unitário previsto (R$) no ${getWorkplanLabelDefault}` }}<span v-if="opportunity.workplan_deliveryRequireUnitPrice" class="required">obrigatório*</span></label>
-                                            <mc-currency-input v-model="delivery.unitPrice"></mc-currency-input>
-                                        </div>
+                                    <div class="field">
+                                        <label>{{ `Valor unitário previsto (R$) no ${getWorkplanLabelDefault}` }}<span v-if="opportunity.workplan_deliveryRequireUnitPrice" class="required">obrigatório*</span></label>
+                                        <mc-currency-input v-model="delivery.unitPrice"></mc-currency-input>
                                     </div>
                                 </div>
                             </div>
