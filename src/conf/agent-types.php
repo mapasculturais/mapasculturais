@@ -336,7 +336,7 @@ return array(
 
                 $this->hook("entity(<<*>>).save:before", function () use ($entity) {
                     /** @var MapasCulturais\Entity $entity */
-                    if($this->equals($entity)){
+                    if ($this->equals($entity)) {
                         $this->idoso = 1;
                     }
                 });
