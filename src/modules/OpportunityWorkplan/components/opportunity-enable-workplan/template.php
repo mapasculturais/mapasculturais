@@ -379,7 +379,7 @@ $this->import('
 
                         <div class="field__group">
                             <label class="field__checkbox">
-                                <input type="checkbox" v-model="entity.workplan_deliveryInformPressStrategy" @click="autoSave()" /><?= i::__("Informar estratégia de relacionamento com imprensa") ?> {{ `no ${getWorkplanLabelDefault}` }}
+                                <input type="checkbox" v-model="entity.workplan_deliveryInformPressStrategy" @click="autoSave()" /><?= i::__("Informar estratégias de comunicação") ?> {{ `da ${getDeliveryLabelDefault}` }}
                             </label>
                         </div>
 
