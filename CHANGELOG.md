@@ -5,6 +5,10 @@ Todas as mudanças notáveis no projeto serão documentadas neste arquivo.
 O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/)
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [7.6.55] - 2026-03-04
+### Correções
+- Faz ajuste no campo dataDeNascimento para que o formato de data seja interpretado corretamente
+
 ## [7.6.54] - 2026-03-03
 ### Correções
 - Ajusta regra para permitir publicação de resultado da fase para antes, durante ou depois da data final da fase.
