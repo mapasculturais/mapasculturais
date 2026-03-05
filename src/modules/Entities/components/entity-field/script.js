@@ -531,67 +531,19 @@ app.component('entity-field', {
             return this.readonly;
         },
 
-        validateCPF(cpf) {
-            if (!cpf) return true; // Campo vazio é validado por 'required'
-            
-            // Remove formatação
-            cpf = cpf.replace(/[^\d]/g, '');
-            
-            // Verifica se tem 11 dígitos
-            if (cpf.length !== 11) return false;
-            
-            // Verifica se todos os dígitos são iguais (CPF inválido)
-            if (/^(\d)\1{10}$/.test(cpf)) return false;
-            
-            // Valida primeiro dígito verificador
-            let soma = 0;
-            for (let i = 0; i < 9; i++) {
-                soma += parseInt(cpf.charAt(i)) * (10 - i);
-            }
-            let resto = soma % 11;
-            let digito1 = resto < 2 ? 0 : 11 - resto;
-            
-            if (parseInt(cpf.charAt(9)) !== digito1) return false;
-            
-            // Valida segundo dígito verificador
-            soma = 0;
-            for (let i = 0; i < 10; i++) {
-                soma += parseInt(cpf.charAt(i)) * (11 - i);
-            }
-            resto = soma % 11;
-            let digito2 = resto < 2 ? 0 : 11 - resto;
-            
-            return parseInt(cpf.charAt(10)) === digito2;
-        },
-
-        validateEmail(email) {
-            if (!email) return true; // Campo vazio é validado por 'required'
-            
-            const regex = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-            return regex.test(String(email).toLowerCase());
-        },
-
         validateTableCell(row, columnIndex, column) {
+            // Validação básica apenas para feedback visual
+            // Validações complexas (CPF, email, número) são feitas no backend
             const value = row[`col${columnIndex}`];
             
-            if (!value && value !== 0) {
-                return column.required === 'true' ? false : true;
+            // Verificar apenas campo obrigatório vazio
+            if (column.required === 'true') {
+                if (value === null || value === undefined || value === '') {
+                    return false;
+                }
             }
             
-            switch(column.type) {
-                case 'cpf':
-                    return this.validateCPF(value);
-                case 'email':
-                    return this.validateEmail(value);
-                case 'number':
-                    // Validar se é um número válido quando não está vazio
-                    if (value === '' || value === null || value === undefined) {
-                        return column.required !== 'true';
-                    }
-                    return !isNaN(Number(value));
-                default:
-                    return true;
-            }
+            return true;
         },
 
         getCellValidationClass(row, columnIndex, column) {
@@ -607,22 +559,16 @@ app.component('entity-field', {
         },
 
         validateCustomTable() {
+            // Validação básica apenas de campos obrigatórios
+            // Backend faz validações de formato (CPF, email, número)
             if (!this.is('custom-table')) return true;
             
             const tableData = this.entity[this.prop];
             const columns = this.description.registrationFieldConfiguration?.config?.columns || [];
             
             if (!Array.isArray(tableData) || tableData.length === 0) {
-                return true; // Tabela vazia é válida (a menos que seja obrigatória)
+                return true;
             }
-            
-            // Helper para verificar se valor está vazio
-            const isEmpty = (val) => {
-                if (val === null || val === undefined) return true;
-                if (typeof val === 'string') return val.trim() === '';
-                if (typeof val === 'number') return false; // 0 é um valor válido
-                return false;
-            };
             
             for (let rowIndex = 0; rowIndex < tableData.length; rowIndex++) {
                 const row = tableData[rowIndex];
@@ -631,36 +577,11 @@ app.component('entity-field', {
                     const column = columns[colIndex];
                     const value = row[`col${colIndex}`];
                     
-                    // Verificar campo obrigatório
-                    if (column.required === 'true' && isEmpty(value)) {
-                        const messages = useMessages();
-                        messages.error(`Campo "${column.name}" (linha ${rowIndex + 1}) é obrigatório`);
-                        return false;
-                    }
-                    
-                    // Verificar validação específica do tipo (apenas se não estiver vazio)
-                    if (!isEmpty(value)) {
-                        let isValid = true;
-                        let errorMessage = '';
-                        
-                        switch(column.type) {
-                            case 'cpf':
-                                isValid = this.validateCPF(value);
-                                errorMessage = `CPF inválido no campo "${column.name}" (linha ${rowIndex + 1})`;
-                                break;
-                            case 'email':
-                                isValid = this.validateEmail(value);
-                                errorMessage = `E-mail inválido no campo "${column.name}" (linha ${rowIndex + 1})`;
-                                break;
-                            case 'number':
-                                isValid = !isNaN(Number(value));
-                                errorMessage = `Número inválido no campo "${column.name}" (linha ${rowIndex + 1})`;
-                                break;
-                        }
-                        
-                        if (!isValid) {
+                    // Verificar apenas campo obrigatório vazio
+                    if (column.required === 'true') {
+                        if (value === null || value === undefined || value === '') {
                             const messages = useMessages();
-                            messages.error(errorMessage);
+                            messages.error(`Campo "${column.name}" (linha ${rowIndex + 1}) é obrigatório`);
                             return false;
                         }
                     }
