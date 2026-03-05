@@ -390,7 +390,7 @@ $this->import('
                     <p v-if="editable"><?= i::__('Adicione vídeos, fotos e documentos que servirão como evidência para o seu projeto') ?></p>
                 </template>
             </entity-files-list>
-            <small class="field__error" v-if="validationErrors.evidenceFiles">{{ validationErrors.evidenceLinks.join('; ') }}</small>
+            <small class="field__error" v-if="validationErrors.evidenceLinks">{{ validationErrors.evidenceLinks.join('; ') }}</small>
         </div>
 
         <div class="field" v-if="editable || evidenceLinks.length > 0">
