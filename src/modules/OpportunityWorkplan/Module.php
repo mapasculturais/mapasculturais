@@ -99,6 +99,17 @@ class Module extends \MapasCulturais\Module{
                         foreach ($workplan->goals as $goal) {
                             if (is_iterable($goal->deliveries)) {
                                 foreach ($goal->deliveries as $delivery) {
+                                    // Campos core da entrega — sempre obrigatórios
+                                    if (!$delivery->name) {
+                                        $errors['delivery'][] = i::__("Campo 'Nome' obrigatório na entrega.");
+                                    }
+                                    if (!$delivery->description) {
+                                        $errors['delivery'][] = i::__("Campo 'Descrição' obrigatório na entrega.");
+                                    }
+                                    if (!$delivery->typeDelivery) {
+                                        $errors['delivery'][] = i::__("Campo 'Tipo de entrega' obrigatório na entrega.");
+                                    }
+
                                     // Campos simples de planejamento (integer, currency, text)
                                     $simple_fields = [
                                         'artChainLink', 'totalBudget', 'numberOfCities',
