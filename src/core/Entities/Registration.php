@@ -10,6 +10,7 @@ use MapasCulturais\App;
 use MapasCulturais\Exceptions\PermissionDenied;
 use MapasCulturais\EvaluationMethod;
 use MapasCulturais\GuestUser;
+use Respect\Validation\Validator as v;
 
 /**
  * Registration
@@ -1547,6 +1548,74 @@ class Registration extends \MapasCulturais\Entity
 
                         if (!$ok) {
                             $errors[] = $error_message;
+                        }
+                    }
+                }
+
+                // Validação específica para custom-table
+                if ($field->fieldType === 'custom-table' && is_array($val)) {
+                    $columns = $field->config['columns'] ?? [];
+                    
+                    foreach ($val as $rowIndex => $row) {
+                        if (!is_array($row)) continue;
+                        
+                        foreach ($columns as $colIndex => $column) {
+                            $cellValue = $row["col{$colIndex}"] ?? null;
+                            $columnName = $column['name'] ?? "Coluna {$colIndex}";
+                            $columnType = $column['type'] ?? 'text';
+                            $isRequired = ($column['required'] ?? '') === 'true';
+                            
+                            // Verificar campo obrigatório
+                            if ($isRequired && ($cellValue === null || $cellValue === '')) {
+                                $errors[] = sprintf(
+                                    i::__('Campo "%s" (linha %d) é obrigatório'),
+                                    $columnName,
+                                    $rowIndex + 1
+                                );
+                                continue;
+                            }
+                            
+                            // Se vazio e não obrigatório, pular validação
+                            if ($cellValue === null || $cellValue === '') {
+                                continue;
+                            }
+                            
+                            // Validações por tipo de coluna
+                            $cellOk = true;
+                            $cellErrorMsg = '';
+                            
+                            switch ($columnType) {
+                                case 'cpf':
+                                    $cellOk = v::cpf()->validate($cellValue);
+                                    $cellErrorMsg = sprintf(
+                                        i::__('CPF inválido no campo "%s" (linha %d)'),
+                                        $columnName,
+                                        $rowIndex + 1
+                                    );
+                                    break;
+                                    
+                                case 'email':
+                                    $cellOk = v::email()->validate($cellValue);
+                                    $cellErrorMsg = sprintf(
+                                        i::__('E-mail inválido no campo "%s" (linha %d)'),
+                                        $columnName,
+                                        $rowIndex + 1
+                                    );
+                                    break;
+                                    
+                                case 'number':
+                                    $cellOk = v::numericVal()->validate($cellValue);
+                                    $cellErrorMsg = sprintf(
+                                        i::__('Número inválido no campo "%s" (linha %d)'),
+                                        $columnName,
+                                        $rowIndex + 1
+                                    );
+                                    break;
+                            }
+                            
+                            if (!$cellOk) {
+                                $errors[] = $cellErrorMsg;
+                            }
                         }
                     }
                 }
