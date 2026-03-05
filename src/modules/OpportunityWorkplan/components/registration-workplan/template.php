@@ -61,7 +61,7 @@ $this->import('
             </div>
 
             <div v-if="opportunity.workplan_dataProjectInformCulturalArtisticSegment" class="field" id="culturalArtisticSegment">
-                <label><?= i::esc_attr__('Segmento artistico-cultural') ?><span class="required">obrigatório*</span></label>
+                <label><?= i::esc_attr__('Segmento artistico-cultural') ?><span v-if="opportunity.workplan_dataProjectRequireCulturalArtisticSegment" class="required">obrigatório*</span></label>
                 <select v-model="workplan.culturalArtisticSegment" @change="save_(false)">
                     <option value=""><?= i::esc_attr__('Selecione') ?></option>
                     <option v-for="n in workplanFields.culturalArtisticSegment.options" :key="n" :value="n">{{ n }}</option>
@@ -194,6 +194,17 @@ $this->import('
                                     <select v-model="delivery.typeDelivery">
                                         <option value=""><?= i::esc_attr__('Selecione') ?></option>
                                         <option v-for="n in workplanFields.goal.delivery.typeDelivery.options" :key="n" :value="n">{{ n }}</option>
+                                    </select>
+                                </div>
+
+                                <div v-if="opportunity.workplan_registrationInformCulturalArtisticSegment" class="field">
+                                    <label>
+                                        {{ `Segmento artístico-cultural da ${getDeliveryLabelDefault}` }}
+                                        <span v-if="opportunity.workplan_deliveryRequireSegment" class="required">obrigatório*</span>
+                                    </label>
+                                    <select v-model="delivery.segmentDelivery">
+                                        <option value=""><?= i::esc_attr__('Selecione') ?></option>
+                                        <option v-for="n in workplanFields.goal.delivery.segmentDelivery.options" :key="n" :value="n">{{ n }}</option>
                                     </select>
                                 </div>
 
