@@ -416,19 +416,21 @@ $this->import('
                                     </div>
                                 </div>
 
-                                <div v-if="opportunity.workplan_deliveryInformCommunityCoauthors" class="field">
-                                    <label>{{ `A ${getDeliveryLabelDefault} prevê envolvimento de comunidades/coletivos como coautores/coexecutores da ${getDeliveryLabelDefault}?` }}<span class="required">obrigatório*</span></label>
-                                    <select v-model="delivery.hasCommunityCoauthors">
-                                        <option value=""><?= i::esc_attr__('Selecione') ?></option>
-                                        <option v-for="(n, i) in workplanFields.goal.delivery.hasCommunityCoauthors.options" :key="i" :value="i">{{ n }}</option>
-                                    </select>
-                                </div>
-                                <div v-if="delivery.hasCommunityCoauthors === 'true'" class="field">
-                                    <label>
-                                        {{ `Descreva o envolvimento das comunidades/coletivos como coautores/coexecutores desta ${getDeliveryLabelDefault}` }}
-                                        <span v-if="opportunity.workplan_deliveryRequireCommunityCoauthorsDetail" class="required">obrigatório*</span>
-                                    </label>
-                                    <textarea v-model="delivery.communityCoauthorsDetail" rows="3"></textarea>
+                                <div v-if="opportunity.workplan_deliveryInformCommunityCoauthors">
+                                    <div class="field">
+                                        <label>{{ `A ${getDeliveryLabelDefault} prevê envolvimento de comunidades/coletivos como coautores/coexecutores da ${getDeliveryLabelDefault}?` }}<span class="required">obrigatório*</span></label>
+                                        <select v-model="delivery.hasCommunityCoauthors">
+                                            <option value=""><?= i::esc_attr__('Selecione') ?></option>
+                                            <option v-for="(n, i) in workplanFields.goal.delivery.hasCommunityCoauthors.options" :key="i" :value="i">{{ n }}</option>
+                                        </select>
+                                    </div>
+                                    <div v-if="delivery.hasCommunityCoauthors === 'true'" class="field">
+                                        <label>
+                                            {{ `Descreva o envolvimento das comunidades/coletivos como coautores/coexecutores desta ${getDeliveryLabelDefault}` }}
+                                            <span v-if="opportunity.workplan_deliveryRequireCommunityCoauthorsDetail" class="required">obrigatório*</span>
+                                        </label>
+                                        <textarea v-model="delivery.communityCoauthorsDetail" rows="3"></textarea>
+                                    </div>
                                 </div>
 
                                 <div v-if="opportunity.workplan_deliveryInformTransInclusion">
