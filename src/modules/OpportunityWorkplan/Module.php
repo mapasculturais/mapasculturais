@@ -84,15 +84,15 @@ class Module extends \MapasCulturais\Module{
 
                             // Validar mês inicial e final da meta — sempre obrigatórios
                             if (!$goal->monthInitial) {
-                                $errors['goal'][] = i::__('Mês inicial da meta obrigatório');
+                                $errors['goal'][] = i::__('Mês inicial da meta obrigatório.');
                             }
                             if (!$goal->monthEnd) {
-                                $errors['goal'][] = i::__('Mês final da meta obrigatório');
+                                $errors['goal'][] = i::__('Mês final da meta obrigatório.');
                             }
 
                             // Validar etapa do fazer cultural — obrigatório quando a seção está visível
                             if ($registration->opportunity->workplan_metaInformTheStageOfCulturalMaking && !$goal->culturalMakingStage) {
-                                $errors['goal'][] = i::__('Etapa do fazer cultural obrigatória');
+                                $errors['goal'][] = i::__('Etapa do fazer cultural obrigatória.');
                             }
                         }
                     }
