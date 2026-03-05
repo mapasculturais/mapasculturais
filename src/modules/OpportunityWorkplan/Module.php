@@ -101,7 +101,7 @@ class Module extends \MapasCulturais\Module{
                         if (is_iterable($workplan?->goals)) {
                             foreach ($workplan?->goals as $goal) {
                                 if ($goal?->deliveries->isEmpty()) {
-                                    $errors['delivery'] = [i::__('Entrega da meta do plano de metas obrigatório.')];
+                                    $errors['delivery'][] = i::__('Entrega da meta do plano de metas obrigatório.');
                                 }
                             }
                         }
@@ -114,7 +114,7 @@ class Module extends \MapasCulturais\Module{
                                 foreach ($goal->deliveries as $delivery) {
                                     // Campos core da entrega — sempre obrigatórios
                                     if (!$delivery->name) {
-                                        $errors['delivery'][] = i::__("Campo 'Nome' obrigatório na entrega '{$delivery->name}'.");
+                                        $errors['delivery'][] = i::__("Campo 'Nome' obrigatório em uma das entregas.");
                                     }
                                     if (!$delivery->description) {
                                         $errors['delivery'][] = i::__("Campo 'Descrição' obrigatório na entrega '{$delivery->name}'.");
