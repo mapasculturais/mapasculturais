@@ -265,42 +265,11 @@ app.component('registration-actions', {
                         const column = columns[colIndex];
                         const value = row[`col${colIndex}`];
                         
-                        // Helper para verificar se valor está vazio
-                        const isEmpty = (val) => {
-                            if (val === null || val === undefined) return true;
-                            if (typeof val === 'string') return val.trim() === '';
-                            if (typeof val === 'number') return false; // 0 é um valor válido
-                            return false;
-                        };
-                        
-                        // Verificar campo obrigatório
-                        if (column.required === 'true' && isEmpty(value)) {
-                            messages.error(`Campo "${column.name}" (linha ${rowIndex + 1}) em "${field.title}" é obrigatório`);
-                            return false;
-                        }
-                        
-                        // Verificar validação específica do tipo (apenas se não estiver vazio)
-                        if (!isEmpty(value)) {
-                            let isValid = true;
-                            let errorMessage = '';
-                            
-                            switch(column.type) {
-                                case 'cpf':
-                                    isValid = this.validateCPF(value);
-                                    errorMessage = `CPF inválido no campo "${column.name}" (linha ${rowIndex + 1}) em "${field.title}"`;
-                                    break;
-                                case 'email':
-                                    isValid = this.validateEmail(value);
-                                    errorMessage = `E-mail inválido no campo "${column.name}" (linha ${rowIndex + 1}) em "${field.title}"`;
-                                    break;
-                                case 'number':
-                                    isValid = !isNaN(Number(value));
-                                    errorMessage = `Número inválido no campo "${column.name}" (linha ${rowIndex + 1}) em "${field.title}"`;
-                                    break;
-                            }
-                            
-                            if (!isValid) {
-                                messages.error(errorMessage);
+                        // Verificar apenas campo obrigatório vazio
+                        // Validações de formato (CPF, email, número) são feitas no backend
+                        if (column.required === 'true') {
+                            if (value === null || value === undefined || value === '') {
+                                messages.error(`Campo "${column.name}" (linha ${rowIndex + 1}) em "${field.title}" é obrigatório`);
                                 return false;
                             }
                         }
@@ -327,40 +296,6 @@ app.component('registration-actions', {
                 }
                 return false;
             }
-        },
-
-        validateCPF(cpf) {
-            if (!cpf) return true;
-            
-            cpf = cpf.replace(/[^\d]/g, '');
-            
-            if (cpf.length !== 11) return false;
-            if (/^(\d)\1{10}$/.test(cpf)) return false;
-            
-            let soma = 0;
-            for (let i = 0; i < 9; i++) {
-                soma += parseInt(cpf.charAt(i)) * (10 - i);
-            }
-            let resto = soma % 11;
-            let digito1 = resto < 2 ? 0 : 11 - resto;
-            
-            if (parseInt(cpf.charAt(9)) !== digito1) return false;
-            
-            soma = 0;
-            for (let i = 0; i < 10; i++) {
-                soma += parseInt(cpf.charAt(i)) * (11 - i);
-            }
-            resto = soma % 11;
-            let digito2 = resto < 2 ? 0 : 11 - resto;
-            
-            return parseInt(cpf.charAt(10)) === digito2;
-        },
-
-        validateEmail(email) {
-            if (!email) return true;
-            
-            const regex = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-            return regex.test(String(email).toLowerCase());
         },
 
         getRegistrationPayloadForValidation() {
