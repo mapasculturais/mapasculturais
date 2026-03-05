@@ -362,6 +362,13 @@ app.component('registration-workplan', {
 
             let validationMessages = [];
 
+            // Validação de nível workplan
+            if (this.opportunity.workplan_dataProjectInformCulturalArtisticSegment &&
+                this.opportunity.workplan_dataProjectRequireCulturalArtisticSegment &&
+                !this.workplan.culturalArtisticSegment) {
+                validationMessages.push('Segmento artístico-cultural do plano de metas obrigatório');
+            }
+
             this.workplan.goals.forEach((goal, index) => {
                 let emptyFields = [];
                 let position = index+1;
