@@ -114,13 +114,13 @@ class Module extends \MapasCulturais\Module{
                                 foreach ($goal->deliveries as $delivery) {
                                     // Campos core da entrega — sempre obrigatórios
                                     if (!$delivery->name) {
-                                        $errors['delivery'][] = i::__("Campo 'Nome' obrigatório na entrega.");
+                                        $errors['delivery'][] = i::__("Campo 'Nome' obrigatório na entrega '{$delivery->name}'.");
                                     }
                                     if (!$delivery->description) {
-                                        $errors['delivery'][] = i::__("Campo 'Descrição' obrigatório na entrega.");
+                                        $errors['delivery'][] = i::__("Campo 'Descrição' obrigatório na entrega '{$delivery->name}'.");
                                     }
                                     if (!$delivery->typeDelivery) {
-                                        $errors['delivery'][] = i::__("Campo 'Tipo de entrega' obrigatório na entrega.");
+                                        $errors['delivery'][] = i::__("Campo 'Tipo de entrega' obrigatório na entrega '{$delivery->name}'.");
                                     }
 
                                     // Validar período de realização da entrega
