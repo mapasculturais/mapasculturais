@@ -99,18 +99,13 @@ class Module extends \MapasCulturais\Module{
                         foreach ($workplan->goals as $goal) {
                             if (is_iterable($goal->deliveries)) {
                                 foreach ($goal->deliveries as $delivery) {
-                                    // Campos simples (integer, currency, text)
+                                    // Campos simples de planejamento (integer, currency, text)
                                     $simple_fields = [
                                         'artChainLink', 'totalBudget', 'numberOfCities',
                                         'numberOfNeighborhoods', 'mediationActions',
                                         'commercialUnits', 'unitPrice', 'segmentDelivery',
                                         'expectedNumberPeople', 'communityCoauthorsDetail',
                                         'transInclusionActions', 'environmentalPracticesDescription',
-                                        // Monitoramento
-                                        'executedNumberOfCities', 'executedNumberOfNeighborhoods',
-                                        'executedMediationActions', 'executedCommercialUnits',
-                                        'executedUnitPrice', 'availabilityType', 'numberOfParticipants',
-                                        'participantProfile', 'executedRevenue'
                                     ];
 
                                     foreach ($simple_fields as $field) {
@@ -120,8 +115,8 @@ class Module extends \MapasCulturais\Module{
                                         }
                                     }
 
-                                    // Campos JSON array (paidStaffByRole)
-                                    $json_array_fields = ['paidStaffByRole', 'executedPaidStaffByRole'];
+                                    // Campos JSON array de planejamento (paidStaffByRole)
+                                    $json_array_fields = ['paidStaffByRole'];
                                     foreach ($json_array_fields as $field) {
                                         if ($delivery->isMetadataRequired($field) && !self::validateJsonArrayField($delivery, $field)) {
                                             $label = self::getFieldLabel($field);
@@ -129,10 +124,9 @@ class Module extends \MapasCulturais\Module{
                                         }
                                     }
 
-                                    // Campos JSON object (teamComposition*)
+                                    // Campos JSON object de planejamento (teamComposition*)
                                     $json_object_fields = [
                                         'teamCompositionGender', 'teamCompositionRace',
-                                        'executedTeamCompositionGender', 'executedTeamCompositionRace'
                                     ];
                                     foreach ($json_object_fields as $field) {
                                         if ($delivery->isMetadataRequired($field) && !self::validateJsonObjectField($delivery, $field)) {
@@ -141,12 +135,11 @@ class Module extends \MapasCulturais\Module{
                                         }
                                     }
 
-                                    // Campos multiselect
+                                    // Campos multiselect de planejamento
                                     $multiselect_fields = [
                                         'revenueType', 'expectedAccessibilityMeasures',
                                         'communicationChannels', 'innovationTypes',
-                                        'documentationTypes', 'accessibilityMeasures',
-                                        'priorityAudience'
+                                        'documentationTypes',
                                     ];
                                     foreach ($multiselect_fields as $field) {
                                         if ($delivery->isMetadataRequired($field) && !self::validateMultiselectField($delivery, $field)) {
