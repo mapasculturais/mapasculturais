@@ -4,7 +4,8 @@ app.component('entity-field', {
 
     setup(props) {
         const propId = Vue.useId();
-        return { propId };
+        const text = Utils.getTexts('entity-field');
+        return { propId, text };
     },
 
     data() {         
@@ -581,7 +582,10 @@ app.component('entity-field', {
                     if (column.required === 'true') {
                         if (value === null || value === undefined || value === '') {
                             const messages = useMessages();
-                            messages.error(`Campo "${column.name}" (linha ${rowIndex + 1}) é obrigatório`);
+                            const errorMessage = this.text('Campo obrigatório não preenchido')
+                                .replace('{{columnName}}', column.name)
+                                .replace('{{rowNumber}}', rowIndex + 1);
+                            messages.error(errorMessage);
                             return false;
                         }
                     }
