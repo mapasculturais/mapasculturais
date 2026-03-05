@@ -382,32 +382,6 @@ $this->import('
                                     </div>
                                 </div>
 
-                                <!-- Composição da equipe por gênero -->
-                                <div v-if="opportunity.workplan_deliveryInformTeamComposition" class="field">
-                                    <label>{{ `Composição prevista da equipe por gênero nesta ${getDeliveryLabelDefault}` }}<span v-if="opportunity.workplan_deliveryRequireTeamCompositionGender" class="required">obrigatório*</span></label>
-                                    <div class="grid-12">
-                                        <div class="col-3 sm:col-6 field">
-                                            <label><?= i::esc_attr__('Masculino') ?></label>
-                                            <input v-model.number="delivery.teamCompositionGender.masculine" type="number" min="0">
-                                        </div>
-                                        <div class="col-3 sm:col-6 field">
-                                            <label><?= i::esc_attr__('Feminino') ?></label>
-                                            <input v-model.number="delivery.teamCompositionGender.feminine" type="number" min="0">
-                                        </div>
-                                        <div class="col-3 sm:col-6 field">
-                                            <label><?= i::esc_attr__('Não-binário') ?></label>
-                                            <input v-model.number="delivery.teamCompositionGender.nonBinary" type="number" min="0">
-                                        </div>
-                                        <div class="col-3 sm:col-6 field">
-                                            <label><?= i::esc_attr__('Não declarado') ?></label>
-                                            <input v-model.number="delivery.teamCompositionGender.notDeclared" type="number" min="0">
-                                        </div>
-                                    </div>
-                                    <div class="field__note">
-                                        <strong><?= i::__('Total:') ?></strong> {{ calculateGenderTotal(delivery.teamCompositionGender) }}
-                                    </div>
-                                </div>
-
                                 <!-- Composição da equipe por raça/cor -->
                                 <div v-if="opportunity.workplan_deliveryInformTeamComposition" class="field">
                                     <label>{{ `Composição prevista da equipe por raça/cor (autodeclaração) nesta ${getDeliveryLabelDefault}` }}<span v-if="opportunity.workplan_deliveryRequireTeamCompositionRace" class="required">obrigatório*</span></label>
