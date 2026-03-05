@@ -178,7 +178,7 @@ app.component('registration-workplan-form-delivery', {
             },
         },
         paidStaffRoleOptions () {
-            return Vue.markRaw($MAPAS.EntitiesDescription.workplan.goal.delivery.paidStaffByRole?.options ?? []);
+            return Vue.markRaw($DESCRIPTIONS.delivery.paidStaffByRole?.options ?? []);
         },
     },
     methods: {
