@@ -18,5 +18,4 @@ return [
     'Entrega' => i::__('Entrega'),
     'Quer enviar seu recurso?' => i::__('Quer enviar seu recurso?'),
     'Quer enviar sua inscrição?' => i::__('Quer enviar sua inscrição?'),
-    'Campo obrigatório em tabela' => i::__('Campo "{{columnName}}" (linha {{rowNumber}}) em "{{fieldTitle}}" é obrigatório'),
 ];
