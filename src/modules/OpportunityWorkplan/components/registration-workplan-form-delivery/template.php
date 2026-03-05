@@ -125,7 +125,7 @@ $this->import('
 
         <!-- NOVOS CAMPOS DE MONITORAMENTO (EXECUTADOS) -->
         
-        <div class="field" v-if="opportunity.workplan_deliveryInformNumberOfCities && (editable || proxy.executedNumberOfCities)">
+        <div class="field" v-if="opportunity.workplan_monitoringInformNumberOfCities && (editable || proxy.executedNumberOfCities)">
             <label :for="`${vid}__executedNumberOfCities`"><?= i::__('Municípios realizados') ?></label>
             <div v-if="delivery.numberOfCities" class="field__note">
                 <strong><?= i::__('Previsto:') ?></strong> {{ delivery.numberOfCities }}
@@ -134,7 +134,7 @@ $this->import('
             <span v-else>{{ proxy.executedNumberOfCities }}</span>
         </div>
 
-        <div class="field" v-if="opportunity.workplan_deliveryInformNumberOfNeighborhoods && (editable || proxy.executedNumberOfNeighborhoods)">
+        <div class="field" v-if="opportunity.workplan_monitoringInformNumberOfNeighborhoods && (editable || proxy.executedNumberOfNeighborhoods)">
             <label :for="`${vid}__executedNumberOfNeighborhoods`"><?= i::__('Bairros realizados') ?></label>
             <div v-if="delivery.numberOfNeighborhoods" class="field__note">
                 <strong><?= i::__('Previsto:') ?></strong> {{ delivery.numberOfNeighborhoods }}
@@ -143,7 +143,7 @@ $this->import('
             <span v-else>{{ proxy.executedNumberOfNeighborhoods }}</span>
         </div>
 
-        <div class="field" v-if="opportunity.workplan_deliveryInformMediationActions && (editable || proxy.executedMediationActions)">
+        <div class="field" v-if="opportunity.workplan_monitoringInformMediationActions && (editable || proxy.executedMediationActions)">
             <label :for="`${vid}__executedMediationActions`"><?= i::__('Ações de mediação realizadas') ?></label>
             <div v-if="delivery.mediationActions" class="field__note">
                 <strong><?= i::__('Previsto:') ?></strong> {{ delivery.mediationActions }}
@@ -152,7 +152,7 @@ $this->import('
             <span v-else>{{ proxy.executedMediationActions }}</span>
         </div>
 
-        <div class="field" v-if="opportunity.workplan_deliveryInformCommercialUnits && (editable || proxy.executedCommercialUnits)">
+        <div class="field" v-if="opportunity.workplan_monitoringInformCommercialUnits && (editable || proxy.executedCommercialUnits)">
             <label :for="`${vid}__executedCommercialUnits`"><?= i::__('Unidades comercializadas') ?></label>
             <div v-if="delivery.commercialUnits" class="field__note">
                 <strong><?= i::__('Previsto:') ?></strong> {{ delivery.commercialUnits }}
@@ -161,7 +161,7 @@ $this->import('
             <span v-else>{{ proxy.executedCommercialUnits }}</span>
         </div>
 
-        <div class="field" v-if="opportunity.workplan_deliveryInformCommercialUnits && (editable || proxy.executedUnitPrice)">
+        <div class="field" v-if="opportunity.workplan_monitoringInformCommercialUnits && (editable || proxy.executedUnitPrice)">
             <label :for="`${vid}__executedUnitPrice`"><?= i::__('Valor unitário praticado (R$)') ?></label>
             <div v-if="delivery.unitPrice" class="field__note">
                 <strong><?= i::__('Previsto:') ?></strong> {{ convertToCurrency(delivery.unitPrice) }}
