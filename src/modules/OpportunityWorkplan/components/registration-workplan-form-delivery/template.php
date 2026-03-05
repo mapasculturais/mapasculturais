@@ -179,6 +179,67 @@ $this->import('
             </ul>
         </div>
 
+        <div class="field" v-if="opportunity.workplan_monitoringInformPaidStaffByRole && (editable || (executedPaidStaffByRole && executedPaidStaffByRole.length > 0))">
+            <label :for="`${vid}__executedPaidStaffByRole`"><?= i::__('Pessoas remuneradas por função (executado)') ?></label>
+            <div v-if="delivery.paidStaffByRole && delivery.paidStaffByRole.length > 0" class="field__note">
+                <strong><?= i::__('Previsto:') ?></strong>
+                <ul>
+                    <li v-for="(staff, index) in delivery.paidStaffByRole" :key="index">
+                        <strong>{{ staff.role === 'Outra' && staff.customRole ? staff.customRole : staff.role }}:</strong> {{ staff.count }}
+                    </li>
+                </ul>
+            </div>
+            <template v-if="editable">
+                <div v-if="!executedPaidStaffByRole || !executedPaidStaffByRole.length" class="field__note">
+                    <button type="button" class="button button--sm button--primary-outline" @click="addExecutedPaidStaffRole()">
+                        <?= i::__('+ Adicionar função') ?>
+                    </button>
+                </div>
+                <div v-else class="paid-staff-list">
+                    <div v-for="(staff, index) in executedPaidStaffByRole" :key="index" class="paid-staff-item">
+                        <div class="paid-staff-item__header">
+                            <p class="paid-staff-item__title semibold">{{ index + 1 }}ª <?= i::__('Função') ?></p>
+                            <button type="button" class="button button--delete button--icon button--sm" @click="removeExecutedPaidStaffRole(index)">
+                                <mc-icon name="trash"></mc-icon>
+                                <?= i::__('Remover') ?>
+                            </button>
+                        </div>
+                        <div class="paid-staff-item__fields grid-12">
+                            <div class="col-6 sm:col-12 field">
+                                <label><?= i::esc_attr__('Função') ?></label>
+                                <select v-model="staff.role">
+                                    <option value=""><?= i::esc_attr__('Selecione a função') ?></option>
+                                    <option v-for="roleOption in paidStaffRoleOptions" :key="roleOption" :value="roleOption">{{ roleOption }}</option>
+                                </select>
+                            </div>
+                            <div class="col-6 sm:col-12 field">
+                                <label><?= i::esc_attr__('Quantidade') ?></label>
+                                <input v-model.number="staff.count" type="number" min="0" placeholder="<?= i::esc_attr__('Quantidade de pessoas') ?>">
+                            </div>
+                            <div v-if="staff.role === 'Outra'" class="col-12 field">
+                                <label><?= i::esc_attr__('Especifique a função') ?></label>
+                                <input v-model="staff.customRole" type="text" placeholder="<?= i::esc_attr__('Digite o nome da função') ?>">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="paid-staff-add">
+                        <button type="button" class="button button--sm button--icon button--primary-outline" @click="addExecutedPaidStaffRole()">
+                            <mc-icon name="add"></mc-icon>
+                            <?= i::__('Adicionar outra função') ?>
+                        </button>
+                    </div>
+                </div>
+            </template>
+            <template v-else>
+                <ul v-if="executedPaidStaffByRole && executedPaidStaffByRole.length > 0">
+                    <li v-for="(staff, index) in executedPaidStaffByRole" :key="index">
+                        <strong>{{ staff.role === 'Outra' && staff.customRole ? staff.customRole : staff.role }}:</strong> {{ staff.count }}
+                    </li>
+                </ul>
+            </template>
+            <small class="field__error" v-if="validationErrors.executedPaidStaffByRole">{{ validationErrors.executedPaidStaffByRole.join('; ') }}</small>
+        </div>
+
         <!-- Composição da equipe por gênero (executado) -->
         <div class="field" v-if="opportunity.workplan_monitoringInformTeamComposition && (editable || hasExecutedGenderData)">
             <label><?= i::__('Composição da equipe por gênero (executado)') ?></label>

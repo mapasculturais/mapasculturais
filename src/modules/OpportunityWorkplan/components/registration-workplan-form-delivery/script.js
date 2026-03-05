@@ -164,6 +164,22 @@ app.component('registration-workplan-form-delivery', {
             const r = this.executedTeamCompositionRace;
             return Object.values(r).some(v => Number(v) > 0);
         },
+        executedPaidStaffByRole: {
+            get () {
+                const val = this.proxy.executedPaidStaffByRole;
+                if (!val) return [];
+                if (typeof val === 'string') {
+                    try { return JSON.parse(val) ?? []; } catch (e) { return []; }
+                }
+                return Array.isArray(val) ? val : [];
+            },
+            set (value) {
+                this.proxy.executedPaidStaffByRole = value;
+            },
+        },
+        paidStaffRoleOptions () {
+            return Vue.markRaw($MAPAS.EntitiesDescription.workplan.goal.delivery.paidStaffByRole?.options ?? []);
+        },
     },
     methods: {
         convertToCurrency(field) {
@@ -185,6 +201,16 @@ app.component('registration-workplan-form-delivery', {
             if (!composition) return 0;
             return ['white','black','brown','indigenous','asian','notDeclared']
                 .reduce((sum, k) => sum + (Number(composition[k]) || 0), 0);
+        },
+        addExecutedPaidStaffRole () {
+            const arr = [...this.executedPaidStaffByRole];
+            arr.push({ role: '', count: 0, customRole: '' });
+            this.executedPaidStaffByRole = arr;
+        },
+        removeExecutedPaidStaffRole (index) {
+            const arr = [...this.executedPaidStaffByRole];
+            arr.splice(index, 1);
+            this.executedPaidStaffByRole = arr;
         },
     }
 });
