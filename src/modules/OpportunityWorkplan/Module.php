@@ -123,6 +123,32 @@ class Module extends \MapasCulturais\Module{
                                         $errors['delivery'][] = i::__("Campo 'Tipo de entrega' obrigatório na entrega.");
                                     }
 
+                                    // Validar período de realização da entrega
+                                    if ($registration->opportunity->workplan_deliveryInformDeliveryPeriod &&
+                                        $registration->opportunity->workplan_deliveryRequireDeliveryPeriod) {
+                                        if (!$delivery->monthInitial) {
+                                            $errors['delivery'][] = i::__("Campo 'Mês inicial' obrigatório na entrega '{$delivery->name}'.");
+                                        }
+                                        if (!$delivery->monthEnd) {
+                                            $errors['delivery'][] = i::__("Campo 'Mês final' obrigatório na entrega '{$delivery->name}'.");
+                                        }
+                                    }
+
+                                    // Validar campos de receita
+                                    if ($registration->opportunity->workplan_registrationReportExpectedRenevue) {
+                                        if (!$delivery->generaterRevenue) {
+                                            $errors['delivery'][] = i::__("Campo 'Irá gerar receita?' obrigatório na entrega '{$delivery->name}'.");
+                                        }
+                                        if ($delivery->generaterRevenue == 'true') {
+                                            if (!$delivery->renevueQtd) {
+                                                $errors['delivery'][] = i::__("Campo 'Previsão Quantidade' obrigatório na entrega '{$delivery->name}'.");
+                                            }
+                                            if (!$delivery->unitValueForecast) {
+                                                $errors['delivery'][] = i::__("Campo 'Previsão de valor unitário' obrigatório na entrega '{$delivery->name}'.");
+                                            }
+                                        }
+                                    }
+
                                     // Campos simples de planejamento (integer, currency, text)
                                     $simple_fields = [
                                         'artChainLink', 'totalBudget', 'numberOfCities',
