@@ -639,7 +639,7 @@ module.controller('RegistrationConfigurationsController', ['$scope', '$rootScope
                 } else if (response && response.statusText) {
                     MapasCulturais.Messages.error(response.statusText);
                 } else {
-                    MapasCulturais.Messages.error('Erro ao processar a solicitação');
+                    MapasCulturais.Messages.error(labels['processingError']);
                 }
                 return;
             }
@@ -663,8 +663,8 @@ module.controller('RegistrationConfigurationsController', ['$scope', '$rootScope
                     }
                 });
             } catch (e) {
-                console.error('Erro ao processar validationErrors:', e);
-                MapasCulturais.Messages.error('Erro de validação');
+                console.error(labels['validationProcessingError'], e);
+                MapasCulturais.Messages.error(labels['validationError']);
             }
         }
 

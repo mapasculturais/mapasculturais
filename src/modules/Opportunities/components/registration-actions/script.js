@@ -269,7 +269,11 @@ app.component('registration-actions', {
                         // Validações de formato (CPF, email, número) são feitas no backend
                         if (column.required === 'true') {
                             if (value === null || value === undefined || value === '') {
-                                messages.error(`Campo "${column.name}" (linha ${rowIndex + 1}) em "${field.title}" é obrigatório`);
+                                const errorMessage = this.text('Campo obrigatório em tabela')
+                                    .replace('{{columnName}}', column.name)
+                                    .replace('{{rowNumber}}', rowIndex + 1)
+                                    .replace('{{fieldTitle}}', field.title);
+                                messages.error(errorMessage);
                                 return false;
                             }
                         }
