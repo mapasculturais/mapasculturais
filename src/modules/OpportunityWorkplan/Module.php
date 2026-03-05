@@ -134,18 +134,14 @@ class Module extends \MapasCulturais\Module{
                                         }
                                     }
 
-                                    // Validar campos de receita
-                                    if ($registration->opportunity->workplan_registrationReportExpectedRenevue) {
-                                        if (!$delivery->generaterRevenue) {
-                                            $errors['delivery'][] = i::__("Campo 'Irá gerar receita?' obrigatório na entrega '{$delivery->name}'.");
+                                    // Validar campos de receita (sub-campos obrigatórios quando receita = sim)
+                                    if ($registration->opportunity->workplan_registrationReportExpectedRenevue &&
+                                        $delivery->generaterRevenue == 'true') {
+                                        if (!$delivery->renevueQtd) {
+                                            $errors['delivery'][] = i::__("Campo 'Previsão Quantidade' obrigatório na entrega '{$delivery->name}'.");
                                         }
-                                        if ($delivery->generaterRevenue == 'true') {
-                                            if (!$delivery->renevueQtd) {
-                                                $errors['delivery'][] = i::__("Campo 'Previsão Quantidade' obrigatório na entrega '{$delivery->name}'.");
-                                            }
-                                            if (!$delivery->unitValueForecast) {
-                                                $errors['delivery'][] = i::__("Campo 'Previsão de valor unitário' obrigatório na entrega '{$delivery->name}'.");
-                                            }
+                                        if (!$delivery->unitValueForecast) {
+                                            $errors['delivery'][] = i::__("Campo 'Previsão de valor unitário' obrigatório na entrega '{$delivery->name}'.");
                                         }
                                     }
 
@@ -198,18 +194,6 @@ class Module extends \MapasCulturais\Module{
                                         }
                                     }
 
-                                    // Campos select (gate fields)
-                                    $select_fields = [
-                                        'hasCommunityCoauthors', 'hasTransInclusionStrategy',
-                                        'hasAccessibilityPlan', 'hasEnvironmentalPractices',
-                                        'hasPressStrategy', 'hasInnovationAction'
-                                    ];
-                                    foreach ($select_fields as $field) {
-                                        if ($delivery->isMetadataRequired($field) && !self::validateSelectField($delivery, $field)) {
-                                            $label = self::getFieldLabel($field);
-                                            $errors['delivery'][] = i::__("Campo '{$label}' obrigatório na entrega '{$delivery->name}'");
-                                        }
-                                    }
                                 }
                             }
                         }

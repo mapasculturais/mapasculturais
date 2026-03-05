@@ -211,32 +211,6 @@ class Delivery extends \MapasCulturais\Entity {
                 'require' => 'workplan_deliveryRequireUnitPrice'
             ],
 
-            // Campos gate (sempre obrigatórios quando habilitados - sem 'require')
-            'hasCommunityCoauthors' => [
-                'inform' => 'workplan_deliveryInformCommunityCoauthors',
-                'require' => null // Gate sempre obrigatório
-            ],
-            'hasTransInclusionStrategy' => [
-                'inform' => 'workplan_deliveryInformTransInclusion',
-                'require' => null // Gate sempre obrigatório
-            ],
-            'hasAccessibilityPlan' => [
-                'inform' => 'workplan_deliveryInformAccessibilityPlan',
-                'require' => null // Gate sempre obrigatório
-            ],
-            'hasEnvironmentalPractices' => [
-                'inform' => 'workplan_deliveryInformEnvironmentalPractices',
-                'require' => null // Gate sempre obrigatório
-            ],
-            'hasPressStrategy' => [
-                'inform' => 'workplan_deliveryInformPressStrategy',
-                'require' => null // Gate sempre obrigatório
-            ],
-            'hasInnovationAction' => [
-                'inform' => 'workplan_deliveryInformInnovation',
-                'require' => null // Gate sempre obrigatório
-            ],
-
             // Campos detail (condicionais - só obrigatórios se gate = true)
             'communityCoauthorsDetail' => [
                 'inform' => 'workplan_deliveryInformCommunityCoauthors',
