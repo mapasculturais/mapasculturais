@@ -86,6 +86,8 @@ app.component('registration-distribution-rule', {
             const allowed = ['select', 'checkboxes', 'checkbox'];
             const byId = {};
 
+            const isAppealPhase = opp?.isAppealPhase === true;
+
             const fromConfigs = (configs) => {
                 (configs || []).forEach(field => {
                     if (allowed.includes(field.fieldType) && field.fieldName) {
@@ -110,6 +112,10 @@ app.component('registration-distribution-rule', {
                 const filterFields = $MAPAS.config.registrationFilterFields;
                 filterFields.forEach(field => {
                     if (!field) {
+                        return;
+                    }
+
+                    if (!isAppealPhase && field.appealPhase) {
                         return;
                     }
 

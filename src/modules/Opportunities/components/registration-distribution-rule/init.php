@@ -39,19 +39,45 @@ $parse_agent_field = function ($field) use ($agent_description, $field_types) {
     return in_array($agent_field['type'], $field_types) ? $field : null;
 };
 
-$first_phase = $opportunity->firstPhase;
+$phases = (array) $opportunity->allPhases;
+$appeal_phases = [];
+
+foreach ($phases as $phase) {
+    if ($appeal_phase = $phase->appealPhase) {
+        $appeal_phases[] = $appeal_phase;
+    }
+}
+
 $_fields = [];
 
-foreach ($first_phase->registrationFieldConfigurations ?? [] as $field) {
-    if (in_array($field->fieldType ?? '', ['agent-owner-field', 'agent-collective-field'])) {
-        $parsed = $parse_agent_field($field);
-        if ($parsed) {
-            $_fields[] = $parsed;
-        }
-    }
+foreach ([...$phases, ...$appeal_phases] as $phase) {
+    $is_appeal_phase = (bool) ($phase->isAppealPhase ?? false);
 
-    if (in_array($field->fieldType ?? '', ['select', 'checkboxes', 'checkbox'])) {
-        $_fields[] = $field;
+    foreach ($phase->registrationFieldConfigurations ?? [] as $field) {
+        $field_to_add = null;
+
+        if (in_array($field->fieldType ?? '', ['agent-owner-field', 'agent-collective-field'])) {
+            $parsed = $parse_agent_field($field);
+
+            if ($parsed) {
+                $field_to_add = $parsed;
+            }
+        } elseif (in_array($field->fieldType ?? '', ['select', 'checkboxes', 'checkbox'])) {
+            $field_to_add = $field;
+        }
+
+        if (!$field_to_add) {
+            continue;
+        }
+
+        $_fields[] = [
+            'id' => $field_to_add->id,
+            'fieldName' => $field_to_add->fieldName,
+            'title' => $field_to_add->title ?: $field_to_add->fieldName,
+            'fieldType' => $field_to_add->fieldType ?: 'select',
+            'fieldOptions' => $field_to_add->fieldOptions ?? [],
+            'appealPhase' => $is_appeal_phase,
+        ];
     }
 }
 
