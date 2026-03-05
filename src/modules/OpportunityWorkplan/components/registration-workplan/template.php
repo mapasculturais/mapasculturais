@@ -423,6 +423,13 @@ $this->import('
                                         <option v-for="(n, i) in workplanFields.goal.delivery.hasCommunityCoauthors.options" :key="i" :value="i">{{ n }}</option>
                                     </select>
                                 </div>
+                                <div v-if="delivery.hasCommunityCoauthors === 'true'" class="field">
+                                    <label>
+                                        {{ `Descreva o envolvimento das comunidades/coletivos como coautores/coexecutores desta ${getDeliveryLabelDefault}` }}
+                                        <span v-if="opportunity.workplan_deliveryRequireCommunityCoauthorsDetail" class="required">obrigatório*</span>
+                                    </label>
+                                    <textarea v-model="delivery.communityCoauthorsDetail" rows="3"></textarea>
+                                </div>
 
                                 <div v-if="opportunity.workplan_deliveryInformTransInclusion">
                                     <div class="field">

@@ -215,6 +215,7 @@ app.component('registration-workplan', {
                     if (!('commercialUnits' in delivery)) delivery.commercialUnits = null;
                     if (!('unitPrice' in delivery)) delivery.unitPrice = null;
                     if (!('hasCommunityCoauthors' in delivery)) delivery.hasCommunityCoauthors = null;
+                    if (!('communityCoauthorsDetail' in delivery)) delivery.communityCoauthorsDetail = null;
                     if (!('hasTransInclusionStrategy' in delivery)) delivery.hasTransInclusionStrategy = null;
                     if (!('transInclusionActions' in delivery)) delivery.transInclusionActions = null;
                     if (!('hasAccessibilityPlan' in delivery)) delivery.hasAccessibilityPlan = null;
@@ -316,6 +317,7 @@ app.component('registration-workplan', {
             entityDelivery.commercialUnits = null;
             entityDelivery.unitPrice = null;
             entityDelivery.hasCommunityCoauthors = null;
+            entityDelivery.communityCoauthorsDetail = null;
             entityDelivery.hasTransInclusionStrategy = null;
             entityDelivery.transInclusionActions = null;
             entityDelivery.hasAccessibilityPlan = null;
