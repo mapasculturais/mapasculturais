@@ -695,6 +695,12 @@ class Module extends \MapasCulturais\Module{
             'default_value' => false
         ]);
 
+        $this->registerOpportunityMetadata('workplan_monitoringRequireNumberOfParticipants', [
+            'label' => i::__('Número de participantes executado é obrigatório'),
+            'type' => 'boolean',
+            'default_value' => false
+        ]);
+
         $this->registerOpportunityMetadata('workplan_monitoringRequireCommercialUnits', [
             'label' => i::__('Unidades comercializadas executadas são obrigatórias'),
             'type' => 'boolean',

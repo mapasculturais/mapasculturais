@@ -148,7 +148,7 @@ class Delivery extends \MapasCulturais\Entity {
             ],
             'numberOfParticipants' => [
                 'inform' => 'workplan_registrationReportTheNumberOfParticipants',
-                'require' => 'workplan_deliveryRequireExpectedNumberPeople'
+                'require' => 'workplan_monitoringRequireNumberOfParticipants'
             ],
             'participantProfile' => [
                 'inform' => 'workplan_monitoringProvideTheProfileOfParticipants',
