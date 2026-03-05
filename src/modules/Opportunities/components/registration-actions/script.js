@@ -247,40 +247,6 @@ app.component('registration-actions', {
         async validate() {
             const messages = useMessages();
 
-            // VALIDAÇÃO: Verificar campos custom-table antes de enviar ao backend
-            const customTableFields = this.fields.filter(field => field.fieldType === 'custom-table');
-            
-            for (const field of customTableFields) {
-                const tableData = this.registration[field.fieldName];
-                const columns = field.config?.columns || [];
-                
-                if (!Array.isArray(tableData) || tableData.length === 0) {
-                    continue; // Tabela vazia, próximo campo
-                }
-                
-                for (let rowIndex = 0; rowIndex < tableData.length; rowIndex++) {
-                    const row = tableData[rowIndex];
-                    
-                    for (let colIndex = 0; colIndex < columns.length; colIndex++) {
-                        const column = columns[colIndex];
-                        const value = row[`col${colIndex}`];
-                        
-                        // Verificar apenas campo obrigatório vazio
-                        // Validações de formato (CPF, email, número) são feitas no backend
-                        if (column.required === 'true') {
-                            if (value === null || value === undefined || value === '') {
-                                const errorMessage = this.text('Campo obrigatório em tabela')
-                                    .replace('{{columnName}}', column.name)
-                                    .replace('{{rowNumber}}', rowIndex + 1)
-                                    .replace('{{fieldTitle}}', field.title);
-                                messages.error(errorMessage);
-                                return false;
-                            }
-                        }
-                    }
-                }
-            }
-
             try {
                 await this.save();
                 const data = this.getRegistrationPayloadForValidation();
