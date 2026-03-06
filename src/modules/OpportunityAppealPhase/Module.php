@@ -72,13 +72,17 @@ class Module extends \MapasCulturais\Module {
         $app->hook('POST(opportunity.createAppealPhaseRegistration)', function() use ($app, $self) {
             /** @var Controllers\Opportunity $this  */
 
-            $opportunity = $this->requestedEntity;
-            $appeal_phase = $opportunity->appealPhase;
+            try {
+                $opportunity = $this->requestedEntity;
+                $appeal_phase = $opportunity->appealPhase;
 
-            $data = $this->data;
-            $registration_id = $data['registration_id'] ?? 0;
-            
-            if ($registration_id) {
+                $data = $this->data;
+                $registration_id = $data['registration_id'] ?? 0;
+
+                if (!$registration_id) {
+                    $this->errorJson(i::__('ID da inscrição é obrigatório'), 400);
+                }
+
                 $registration = $app->repo('Registration')->findOneBy(['id' => $registration_id]);
 
                 if (!$registration) {
@@ -95,6 +99,17 @@ class Module extends \MapasCulturais\Module {
                 
                 if (!$appeal_phase) {
                     $this->errorJson(sprintf(i::__('Não existe uma fase de recurso para a %s'), $opportunity->name), 403);
+                }
+
+                // Verifica se já existe inscrição de recurso com o mesmo number
+                $existing_appeal = $app->repo('Registration')->findOneBy([
+                    'opportunity' => $appeal_phase,
+                    'number' => $registration->number
+                ]);
+
+                if ($existing_appeal) {
+                    $this->json($existing_appeal);
+                    return;
                 }
 
                 $new_registration = new \MapasCulturais\Entities\Registration();
@@ -130,6 +145,8 @@ class Module extends \MapasCulturais\Module {
                 }
 
                 $this->json($new_registration);
+            } catch (\MapasCulturais\Exceptions\PermissionDenied $e) {
+                $this->errorJson($e->getMessage(), 403);
             }
         });
 
