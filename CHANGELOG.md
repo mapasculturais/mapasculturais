@@ -5,6 +5,10 @@ Todas as mudanças notáveis no projeto serão documentadas neste arquivo.
 O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/)
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [UNRELEASED]
+### Novas Funcionalidades
+- Implementa tipo de campo custom-table (tabela customizável) para formulários de inscrição, permitindo que o proponente preencha dados em formato tabular com colunas configuráveis
+
 ## [7.7.12] - UNRELEASED
 ### Melhorias
 - Adiciona filtro de selos na tela de busca de eventos, ativável via variável de ambiente `EVENTS_FILTER_SEALS`

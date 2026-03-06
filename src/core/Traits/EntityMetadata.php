@@ -345,6 +345,16 @@ trait EntityMetadata{
         if($metadata_object->value !== $value){
             $this->__changedMetadata[$meta_key] = ['key'=> $meta_key, 'oldValue'=> $metadata_object->value, 'newValue'=> $value];
             $metadata_object->value = $value;
+            
+            // CRÍTICO: Notificar o Doctrine que o objeto mudou
+            // Isso força o UnitOfWork a reconhecer a mudança e executar UPDATE
+            if (!$metadata_object->isNew() && $app->em->contains($metadata_object)) {
+                $app->em->getUnitOfWork()->recomputeSingleEntityChangeSet(
+                    $app->em->getClassMetadata(get_class($metadata_object)),
+                    $metadata_object
+                );
+            }
+            
             if (property_exists($this, 'updateTimestamp')) {
                 $this->updateTimestamp = new \DateTime;
             }
