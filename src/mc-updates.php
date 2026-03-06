@@ -854,4 +854,108 @@ return [
         );
     },
 
+    'Normalização de CPF e CNPJ em registration_meta' => function () {
+        
+        $app = App::i();
+        $conn = $app->em->getConnection();
+
+        // 1) Listar apenas campos que são definitivamente CPF ou CNPJ (campo direto ou agent-owner-field documento/cpf/cnpj)
+        $rows = $conn->fetchAll("
+            SELECT id, opportunity_id, field_type, config
+            FROM registration_field_configuration
+            WHERE field_type IN ('cpf', 'cnpj')
+               OR (field_type = 'agent-owner-field' AND config IS NOT NULL)
+        ");
+
+        $fieldsByOpportunity = [];
+        foreach ($rows as $row) {
+            $fieldId = (int) $row['id'];
+            $oppId = (int) $row['opportunity_id'];
+            $fieldType = $row['field_type'];
+
+            if ($fieldType === 'cpf') {
+                $docType = 'cpf';
+            } elseif ($fieldType === 'cnpj') {
+                $docType = 'cnpj';
+            } else {
+                $config = is_string($row['config']) ? json_decode($row['config'], true) : $row['config'];
+                $entityField = $config['entityField'] ?? null;
+                if (!in_array($entityField, ['documento', 'cpf', 'cnpj'], true)) {
+                    continue;
+                }
+                $docType = 'documento'; // CPF ou CNPJ conforme o valor (11 ou 14 dígitos)
+            }
+
+            if (!isset($fieldsByOpportunity[$oppId])) {
+                $fieldsByOpportunity[$oppId] = [];
+            }
+            $fieldsByOpportunity[$oppId][] = ['field_id' => $fieldId, 'key' => 'field_' . $fieldId, 'doc_type' => $docType];
+        }
+
+        if (empty($fieldsByOpportunity)) {
+            return;
+        }
+
+        $opportunityIds = array_keys($fieldsByOpportunity);
+        $oppIdsList = implode(',', array_map('intval', $opportunityIds));
+
+        $maskCpf = function ($digits) {
+            return substr($digits, 0, 3) . '.' . substr($digits, 3, 3) . '.' . substr($digits, 6, 3) . '-' . substr($digits, 9, 2);
+        };
+        $maskCnpj = function ($digits) {
+            return substr($digits, 0, 2) . '.' . substr($digits, 2, 3) . '.' . substr($digits, 5, 3) . '/' . substr($digits, 8, 4) . '-' . substr($digits, 12, 2);
+        };
+
+        DB_UPDATE::enqueue(Registration::class, "opportunity_id IN ({$oppIdsList})", function (Registration $registration) use ($app, $conn, $fieldsByOpportunity, $maskCpf, $maskCnpj) {
+            $regId = (int) $registration->id;
+            $oppId = (int) $registration->opportunity->id;
+            $fields = $fieldsByOpportunity[$oppId] ?? [];
+            if (empty($fields)) {
+                return;
+            }
+
+            foreach ($fields as $field) {
+                $key = $field['key'];
+                $docType = $field['doc_type'];
+
+                $meta = $conn->fetchAssoc(
+                    'SELECT value FROM registration_meta WHERE object_id = :oid AND key = :key',
+                    ['oid' => $regId, 'key' => $key]
+                );
+                if (!$meta || $meta['value'] === '' || $meta['value'] === null) {
+                    continue;
+                }
+
+                $value = trim((string) $meta['value']);
+                $digits = preg_replace('/[^0-9]/', '', $value);
+                $len = strlen($digits);
+
+                // Só alterar se for exatamente 11 (CPF) ou 14 (CNPJ) dígitos e válido
+                if ($len === 11) {
+                    if ($docType !== 'cnpj' && \Respect\Validation\Validator::cpf()->validate($digits)) {
+                        $masked = $maskCpf($digits);
+                        if ($masked !== $value) {
+                            $conn->executeQuery(
+                                'UPDATE registration_meta SET value = :val WHERE object_id = :oid AND key = :key',
+                                ['val' => $masked, 'oid' => $regId, 'key' => $key]
+                            );
+                            $app->log->debug("registration_meta: inscrição {$regId}, key {$key}: CPF normalizado com máscara. {$digits} --- {$masked}");
+                        }
+                    }
+                } elseif ($len === 14) {
+                    if ($docType !== 'cpf' && \Respect\Validation\Validator::cnpj()->validate($digits)) {
+                        $masked = $maskCnpj($digits);
+                        if ($masked !== $value) {
+                            $conn->executeQuery(
+                                'UPDATE registration_meta SET value = :val WHERE object_id = :oid AND key = :key',
+                                ['val' => $masked, 'oid' => $regId, 'key' => $key]
+                            );
+                            $app->log->debug("registration_meta: inscrição {$regId}, key {$key}: CNPJ normalizado com máscara. {$digits} --- {$masked}");
+                        }
+                    }
+                }
+            }
+        });
+    },
+
 ];

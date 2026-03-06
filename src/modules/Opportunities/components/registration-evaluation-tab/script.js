@@ -27,6 +27,9 @@ app.component('registration-evaluation-tab', {
             let result = [];
             const phaseId = this.phaseId;
             const phaseValuers = this.valuers[phaseId];
+            if (!phaseValuers || typeof phaseValuers !== 'object') {
+                return result;
+            }
             for (const userId in phaseValuers) {
                 const valuer = phaseValuers[userId];
 
@@ -48,8 +51,8 @@ app.component('registration-evaluation-tab', {
         },
 
         evaluations() {
-            const evaluations = $MAPAS.config.registrationEvaluationTab.evaluations;
-            return evaluations[this.phaseId];
+            const evaluations = $MAPAS.config.registrationEvaluationTab?.evaluations || {};
+            return evaluations[this.phaseId] || {};
         }
     },
 
