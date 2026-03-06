@@ -321,20 +321,33 @@ $today = new DateTime();
         <mc-tab v-if="entity.opportunity.currentUserPermissions['@control']" label="<?= i::_e('Avaliadores') ?>" slug="valuers">
             <div class="registration__content">
                 <mc-tabs>
-                <?php $phase = $entity; 
-                    while($phase):
-                        if (!($emc = $phase->opportunity->evaluationMethodConfiguration)) {
-                            $phase = $phase->nextPhase; 
-                            continue;
-                        }
+                <?php
+                $phase = $entity;
+                while ($phase):
+                    $opp = $phase->opportunity;
+                    $emc = $opp->evaluationMethodConfiguration ?? null;
+                    if ($emc):
                         ?>
-                        <mc-tab label="<?= htmlspecialchars($emc->name) ?>" slug="valuers-<?= $phase->opportunity->id ?>">
+                        <mc-tab label="<?= htmlspecialchars($emc->name) ?>" slug="valuers-<?= $opp->id ?>">
                             <mc-card>
-                                <registration-evaluation-tab :phase-id="<?= $phase->opportunity->id ?>"></registration-evaluation-tab>
+                                <registration-evaluation-tab :phase-id="<?= (int) $opp->id ?>"></registration-evaluation-tab>
                             </mc-card>
                         </mc-tab>
-                    <?php $phase = $phase->nextPhase;
-                    endwhile ?>
+                    <?php
+                    endif;
+                    $appeal_opp = $opp->appealPhase ?? null;
+                    if ($appeal_opp && ($appeal_emc = $appeal_opp->evaluationMethodConfiguration ?? null)):
+                        ?>
+                        <mc-tab label="<?= htmlspecialchars($appeal_emc->name) ?>" slug="valuers-<?= $appeal_opp->id ?>">
+                            <mc-card>
+                                <registration-evaluation-tab :phase-id="<?= (int) $appeal_opp->id ?>"></registration-evaluation-tab>
+                            </mc-card>
+                        </mc-tab>
+                    <?php
+                    endif;
+                    $phase = $phase->nextPhase;
+                endwhile;
+                ?>
                 </mc-tabs>
             </div>
         </mc-tab>
