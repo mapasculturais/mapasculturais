@@ -406,6 +406,15 @@ class Module extends \MapasCulturais\Module
             }
             return;
         });
+
+        $app->hook("entity(registration).fieldConfiguration(custom-table).insert:before", function() use($module) {
+            /** @var RegistrationFieldConfiguration $this */
+            $module->normalizeAndValidateCustomTableConfig($this);
+        });
+        $app->hook("entity(registration).fieldConfiguration(custom-table).update:before", function() use($module) {
+            /** @var RegistrationFieldConfiguration $this */
+            $module->normalizeAndValidateCustomTableConfig($this);
+        });
     }
 
     public function register()
@@ -416,6 +425,35 @@ class Module extends \MapasCulturais\Module
         $this->register_space_field();
         foreach ($this->getRegistrationFieldTypesDefinitions() as $definition) {
             $app->registerRegistrationFieldType(new RegistrationFieldType($definition));
+        }
+    }
+
+    function normalizeAndValidateCustomTableConfig(RegistrationFieldConfiguration $field): void
+    {
+        $config = is_array($field->config) ? $field->config : [];
+
+        if (array_key_exists('minRows', $config)) {
+            $config['minRows'] = ($config['minRows'] === null || $config['minRows'] === '' || $config['minRows'] === false)
+                ? 0
+                : (int) $config['minRows'];
+        }
+
+        if (array_key_exists('maxRows', $config)) {
+            $config['maxRows'] = ($config['maxRows'] === null || $config['maxRows'] === '' || $config['maxRows'] === false)
+                ? null
+                : (int) $config['maxRows'];
+        }
+
+        $field->config = $config;
+
+        if (!isset($config['columns']) || !is_array($config['columns']) || empty($config['columns'])) {
+            throw new \Exception(i::__('É necessário configurar pelo menos uma coluna para o campo de tabela'));
+        }
+
+        foreach ($config['columns'] as $column) {
+            if (!isset($column['name']) || trim($column['name']) === '') {
+                throw new \Exception(i::__('Todas as colunas devem ter um nome configurado'));
+            }
         }
     }
 
@@ -969,6 +1007,7 @@ class Module extends \MapasCulturais\Module
                 'name' => \MapasCulturais\i::__('Tabela Customizável'),
                 'viewTemplate' => 'registration-field-types/custom-table',
                 'configTemplate' => 'registration-field-types/custom-table-config',
+                'validations' => [],
                 'serialize' => function($value) {
                     // Se já é string, retorna direto (evita double encoding)
                     if(is_string($value)) {
