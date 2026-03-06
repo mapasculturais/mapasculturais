@@ -5,6 +5,10 @@ Todas as mudanças notáveis no projeto serão documentadas neste arquivo.
 O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/)
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [7.6.56] - UNRELEASED
+### Correções
+- Corrige endpoint createAppealPhaseRegistration para verificar se já existe inscrição do proponente na fase de recurso
+
 ## [7.6.55] - 2026-03-04
 ### Correções
 - Faz ajuste no campo dataDeNascimento para que o formato de data seja interpretado corretamente
