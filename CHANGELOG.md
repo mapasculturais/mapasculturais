@@ -6,6 +6,10 @@ O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [7.7.12] - UNRELEASED
+### Melhorias
+- Adiciona filtro de selos na tela de busca de eventos, ativável via variável de ambiente `EVENTS_FILTER_SEALS`
+- Adiciona filtro de estado e cidade na tela de busca de eventos, ativável via variável de ambiente `EVENTS_FILTER_STATES_AND_CITIES`
+
 ### Correções
 - Faz ajuste no campo dataDeNascimento para que o formato de data seja interpretado corretamente.
 - Implementa comportamento correto de fluxo contínuo com data final: inicializa publishTimestamp da última fase, inicializa datas da fase de avaliação e propaga automaticamente alterações do publishTimestamp para as fases de avaliação vinculadas
