@@ -48,7 +48,7 @@ app.component('registration-workplan', {
             const label = this.opportunity.deliveryLabelDefault ? this.opportunity.deliveryLabelDefault : $MAPAS.EntitiesDescription.opportunity.deliveryLabelDefault.default_value;
             return this.pluralParaSingular(label);
         },
-        
+
     },
     methods: {
         handleHashChange() {
@@ -57,9 +57,9 @@ app.component('registration-workplan', {
 
             if (this.registration.opportunity.registrationSteps.length > 1) {
                 if (stepMatch && stepMatch[1]) {
-                    const stepNumber = parseInt(stepMatch[1], 10); 
+                    const stepNumber = parseInt(stepMatch[1], 10);
                     this.enableWorkplanInStep = stepNumber === this.registration.opportunity.registrationSteps.length;
-    
+
                 } else {
                     this.enableWorkplanInStep = false;
                 }
@@ -67,9 +67,9 @@ app.component('registration-workplan', {
                 this.enableWorkplanInStep = true;
             }
 
-            if (this.enableWorkplanInStep) {
-                this.startTutorialWorkplan();
-            }
+            // if (this.enableWorkplanInStep) {
+            //     this.startTutorialWorkplan();
+            // }
         },
         getWorkplan() {
             const api = new API('workplan');
@@ -226,13 +226,13 @@ app.component('registration-workplan', {
                 });
             });
         },
-        
+
         async newGoal() {
             if (!this.validateGoal()) {
                 return false;
             }
 
-            this.startTutorialGoal();
+            // this.startTutorialGoal();
 
             const entityGoal = new Entity('goal');
             entityGoal.id = null;
@@ -243,15 +243,15 @@ app.component('registration-workplan', {
             entityGoal.culturalMakingStage = null;
             entityGoal.deliveries = [];
 
-        
+
             this.workplan.goals.push(entityGoal);
             this.expandedGoals.push(this.workplan.goals.length - 1);
         },
         async deleteGoal(goal) {
             const api = new API('workplan');
-            
+
             if (goal.id) {
-                const response = api.DELETE('goal', {id: goal.id});
+                const response = api.DELETE('goal', { id: goal.id });
                 response.then((res) => res.json().then((data) => {
                     this.workplan.goals = this.workplan.goals.filter(g => g.id !== goal.id);
                     this.updateEnableButtonNewGoal();
@@ -259,12 +259,12 @@ app.component('registration-workplan', {
             } else {
                 const index = this.workplan.goals.indexOf(goal);
                 if (index !== -1) {
-                    this.workplan.goals.splice(index, 1);Zs
+                    this.workplan.goals.splice(index, 1);
                     this.expandedGoals = this.expandedGoals
                         .filter(i => i !== index)
                         .map(i => i > index ? i - 1 : i);
-                    
-                        this.updateEnableButtonNewGoal();
+
+                    this.updateEnableButtonNewGoal();
                 }
             }
         },
@@ -273,7 +273,7 @@ app.component('registration-workplan', {
                 return false;
             }
 
-            this.startTutorialDelivery();
+            // this.startTutorialDelivery();
 
             const entityDelivery = new Entity('delivery');
             entityDelivery.id = null;
@@ -288,7 +288,7 @@ app.component('registration-workplan', {
             entityDelivery.renevueQtd = null;
             entityDelivery.unitValueForecast = null;
             entityDelivery.totalValueForecast = null;
-            
+
             // Novos campos de planejamento
             entityDelivery.artChainLink = null;
             entityDelivery.totalBudget = null;
@@ -336,7 +336,7 @@ app.component('registration-workplan', {
             const api = new API('workplan');
 
             if (delivery.id) {
-                const response = api.DELETE('delivery', {id: delivery.id});
+                const response = api.DELETE('delivery', { id: delivery.id });
                 response.then((res) => res.json().then((data) => {
                     this.workplan.goals = this.workplan.goals.map(goal => {
                         if (goal.deliveries) {
@@ -355,7 +355,7 @@ app.component('registration-workplan', {
                     return goal;
                 });
             }
-           
+
         },
         validateGoal() {
             const messages = useMessages();
@@ -371,7 +371,7 @@ app.component('registration-workplan', {
 
             this.workplan.goals.forEach((goal, index) => {
                 let emptyFields = [];
-                let position = index+1;
+                let position = index + 1;
 
                 // Verificar cada campo do objeto `goal`
                 if (!goal.monthInitial) emptyFields.push("Mês inicial");
@@ -386,7 +386,7 @@ app.component('registration-workplan', {
                     emptyFields.push(`${this.getDeliveryLabelDefault}`);
                     emptyFields.push(validateDelivery);
                 }
-        
+
                 // Adicionar mensagem ao array se houver campos vazios
                 if (emptyFields.length > 0) {
 
@@ -397,12 +397,12 @@ app.component('registration-workplan', {
                     );
                 }
             });
-        
+
             if (validationMessages.length > 0) {
                 messages.error(validationMessages);
                 return false;
             }
-            
+
             return true;
         },
         validateDelivery(goal) {
@@ -412,8 +412,8 @@ app.component('registration-workplan', {
 
             goal.deliveries.forEach((delivery, index) => {
                 let emptyFields = [];
-                let position = index+1;
-        
+                let position = index + 1;
+
                 if ('name' in delivery && !delivery.name) emptyFields.push(`Nome da ${this.getDeliveryLabelDefault}`);
                 if ('description' in delivery && !delivery.description) emptyFields.push(`Descrição da ${this.getDeliveryLabelDefault}`);
                 if ('typeDelivery' in delivery && !delivery.typeDelivery) emptyFields.push(`Tipo de ${this.getDeliveryLabelDefault}`);
@@ -487,7 +487,7 @@ app.component('registration-workplan', {
                 if (this.opportunity.workplan_deliveryInformInnovation && !delivery.hasInnovationAction) emptyFields.push("Previsão de ação de experimentação/inovação");
                 if (this.opportunity.workplan_deliveryInformInnovation && delivery.hasInnovationAction === 'true' && this.opportunity.workplan_deliveryRequireInnovationTypes && (!Array.isArray(delivery.innovationTypes) || !delivery.innovationTypes.length)) emptyFields.push("Tipos de experimentação/inovação");
                 if (this.opportunity.workplan_deliveryInformDocumentationTypes && this.opportunity.workplan_deliveryRequireDocumentationTypes && (!Array.isArray(delivery.documentationTypes) || !delivery.documentationTypes.length)) emptyFields.push("Tipo de documentação");
-                
+
                 if (emptyFields.length > 0) {
                     const emptyFieldsList = `<ul>${emptyFields.map(item => `<li>${item}</li>`).join('')}</ul>`;
 
@@ -496,7 +496,7 @@ app.component('registration-workplan', {
                     );
                 }
             });
-        
+
             return validationMessages;
         },
         async save_(enableValidations = true) {
@@ -536,7 +536,7 @@ app.component('registration-workplan', {
             if (!this.opportunity.workplan_metaLimitNumberOfGoals) {
                 return true;
             }
-            
+
             return this.opportunity.workplan_metaMaximumNumberOfGoals > workplan.goals.length;
         },
         enableNewDelivery(goal) {
@@ -554,7 +554,7 @@ app.component('registration-workplan', {
             return new Intl.NumberFormat("pt-BR", {
                 style: "currency",
                 currency: "BRL"
-              }).format(value);
+            }).format(value);
         },
         optionsProjectDurationData() {
             if (this.opportunity.workplan_dataProjectlimitMaximumDurationOfProjects) {
@@ -565,17 +565,17 @@ app.component('registration-workplan', {
         },
         toggle(index) {
             if (this.expandedGoals.includes(index)) {
-              this.expandedGoals = this.expandedGoals.filter((i) => i !== index);
+                this.expandedGoals = this.expandedGoals.filter((i) => i !== index);
             } else {
-              this.expandedGoals.push(index);
+                this.expandedGoals.push(index);
             }
         },
         isExpanded(index) {
-            return this.expandedGoals.includes(index); 
+            return this.expandedGoals.includes(index);
         },
         pluralParaSingular(texto) {
             const palavras = texto.split(' ');
-        
+
             const palavrasNoSingular = palavras.map(palavra => {
                 if (palavra.endsWith('ões')) {
                     palavra = palavra.slice(0, -3) + 'ão';
@@ -596,19 +596,18 @@ app.component('registration-workplan', {
                 } else if (palavra.endsWith('s')) {
                     palavra = palavra.slice(0, -1);
                 }
-        
+
                 return palavra.toLowerCase();
             });
-    
+
             return palavrasNoSingular.join(' ');
         },
-        tutorialButtonsDisabled() {
+        tutorialButtonsFirstStep() {
             return [
                 {
-                    text: 'Desativar assistente de configuração',
+                    text: 'Fechar',
                     action: () => {
-                        this.disableTutorial();
-                        this.tour.complete(); // Fecha o tutorial imediatamente
+                        this.tour.complete();
                     },
                     classes: 'button button--secondary button--sm'
                 },
@@ -617,66 +616,62 @@ app.component('registration-workplan', {
                     action: this.tour.next,
                     classes: 'button button--primary button--sm'
                 }
-          ];
+            ];
         },
         tutorialButtonsDefault() {
             return [
                 {
-                  text: 'Voltar',
-                  action: this.tour.back,
-                  classes: 'button button--solid-dark button--sm'
+                    text: 'Voltar',
+                    action: this.tour.back,
+                    classes: 'button button--solid-dark button--sm'
                 },
                 {
-                  text: 'Avançar',
-                  action: this.tour.next,
-                  classes: 'button button--primary button--sm'
+                    text: 'Avançar',
+                    action: this.tour.next,
+                    classes: 'button button--primary button--sm'
                 }
-              ];
+            ];
         },
         titleTutorial() {
             return "Assistente de Configuração - Plano de metas";
         },
         startTutorialWorkplan() {
-            if (this.isTutorialDisabled()) {
-                return;
-            }
-
             if (this.tour) {
-                this.tour.complete(); 
+                this.tour.complete();
                 this.tour = null;
             }
 
             this.tour = new Shepherd.Tour({
-              useModalOverlay: true, // Escurece a tela
-              defaultStepOptions: {
-                cancelIcon: {
-                    enabled: true
+                useModalOverlay: true,
+                defaultStepOptions: {
+                    cancelIcon: {
+                        enabled: true
+                    },
+                    classes: 'shadow-md bg-white p-4 rounded-lg',
+                    scrollTo: true
+                }
+            });
+
+            this.tour.addStep({
+                id: 'registration-workplan',
+                title: this.titleTutorial(),
+                text: 'Bem-vindo ao tutorial do Plano de Metas! Aqui você aprenderá a usá-lo de forma fácil e eficiente.',
+                attachTo: {
+                    element: '#registration-workplan',
+                    on: 'bottom'
                 },
-                classes: 'shadow-md bg-white p-4 rounded-lg', // Estilização
-                scrollTo: true
-              }
+                buttons: this.tutorialButtonsFirstStep()
             });
-      
+
             this.tour.addStep({
-              id: 'registration-workplan',
-              title: this.titleTutorial(),
-              text: 'Bem-vindo ao tutorial do Plano de Metas! Aqui você aprenderá a usá-lo de forma fácil e eficiente.',
-              attachTo: {
-                element: '#registration-workplan',
-                on: 'bottom'
-              },
-              buttons: this.tutorialButtonsDisabled()
-            });
-      
-            this.tour.addStep({
-              id: 'projectDuration',
-              title: this.titleTutorial(),
-              text: 'Este campo exibe a duração do projeto em meses.',
-              attachTo: {
-                element: '#projectDuration',
-                on: 'bottom'
-              },
-              buttons: this.tutorialButtonsDefault()
+                id: 'projectDuration',
+                title: this.titleTutorial(),
+                text: 'Este campo exibe a duração do projeto em meses.',
+                attachTo: {
+                    element: '#projectDuration',
+                    on: 'bottom'
+                },
+                buttons: this.tutorialButtonsDefault()
             });
 
             this.tour.addStep({
@@ -684,52 +679,48 @@ app.component('registration-workplan', {
                 title: this.titleTutorial(),
                 text: 'Este campo exibe o segmento artístico-cultural. Após o preenchimento, um botão para cadastro de metas será habilitado.',
                 attachTo: {
-                  element: '#culturalArtisticSegment',
-                  on: 'bottom'
+                    element: '#culturalArtisticSegment',
+                    on: 'bottom'
                 },
                 buttons: this.tutorialButtonsDefault()
             });
-      
+
             this.tour.start();
         },
         startTutorialGoal() {
-            if (this.isTutorialDisabled()) {
-                return;
-            }
-
             if (this.tour) {
-                this.tour.complete(); 
+                this.tour.complete();
                 this.tour = null;
             }
 
             this.tour = new Shepherd.Tour({
-              useModalOverlay: true, // Escurece a tela
-              defaultStepOptions: {
-                classes: 'shadow-md bg-white p-4 rounded-lg', // Estilização
-                scrollTo: true
-              }
+                useModalOverlay: true,
+                defaultStepOptions: {
+                    classes: 'shadow-md bg-white p-4 rounded-lg',
+                    scrollTo: true
+                }
             });
-      
+
             this.tour.addStep({
-              id: 'container_goals',
-              title: this.titleTutorial(),
-              text: 'Preencha as metas do projeto.',
-              attachTo: {
-                element: '#container_goals',
-                on: 'bottom'
-              },
-              buttons: this.tutorialButtonsDisabled()
+                id: 'container_goals',
+                title: this.titleTutorial(),
+                text: 'Preencha as metas do projeto.',
+                attachTo: {
+                    element: '#container_goals',
+                    on: 'bottom'
+                },
+                buttons: this.tutorialButtonsFirstStep()
             });
-      
+
             this.tour.addStep({
-              id: 'registration-workplan__delete-goal',
-              title: this.titleTutorial(),
-              text: 'O botão "Excluir meta" permite remover uma meta cadastrada ou em processo de cadastro.',
-              attachTo: {
-                element: '#registration-workplan__delete-goal',
-                on: 'bottom'
-              },
-              buttons: this.tutorialButtonsDefault()
+                id: 'registration-workplan__delete-goal',
+                title: this.titleTutorial(),
+                text: 'O botão "Excluir meta" permite remover uma meta cadastrada ou em processo de cadastro.',
+                attachTo: {
+                    element: '#registration-workplan__delete-goal',
+                    on: 'bottom'
+                },
+                buttons: this.tutorialButtonsDefault()
             });
 
             this.tour.addStep({
@@ -737,8 +728,8 @@ app.component('registration-workplan', {
                 title: this.titleTutorial(),
                 text: 'O botão "+ Entrega" permite adicionar uma nova entrega à sua meta.',
                 attachTo: {
-                  element: '#button-registration-workplan__new-delivery',
-                  on: 'bottom'
+                    element: '#button-registration-workplan__new-delivery',
+                    on: 'bottom'
                 },
                 buttons: this.tutorialButtonsDefault()
             });
@@ -748,52 +739,48 @@ app.component('registration-workplan', {
                 title: this.titleTutorial(),
                 text: 'Última etapa! Clique no botão "Salvar metas" para garantir que suas metas e entregas sejam salvas.',
                 attachTo: {
-                  element: '#button-registration-workplan__save-goal',
-                  on: 'bottom'
+                    element: '#button-registration-workplan__save-goal',
+                    on: 'bottom'
                 },
                 buttons: this.tutorialButtonsDefault()
             });
-            
+
             this.tour.start();
         },
         startTutorialDelivery() {
-            if (this.isTutorialDisabled()) {
-                return;
-            }
-
             if (this.tour) {
-                this.tour.complete(); 
+                this.tour.complete();
                 this.tour = null;
             }
 
             this.tour = new Shepherd.Tour({
-              useModalOverlay: true, // Escurece a tela
-              defaultStepOptions: {
-                classes: 'shadow-md bg-white p-4 rounded-lg', // Estilização
-                scrollTo: true
-              }
+                useModalOverlay: true,
+                defaultStepOptions: {
+                    classes: 'shadow-md bg-white p-4 rounded-lg',
+                    scrollTo: true
+                }
             });
-      
+
             this.tour.addStep({
-              id: 'container_deliveries',
-              title: this.titleTutorial(),
-              text: 'Preencha as informações das suas entregas.',
-              attachTo: {
-                element: '#container_deliveries',
-                on: 'bottom'
-              },
-              buttons: this.tutorialButtonsDisabled()
+                id: 'container_deliveries',
+                title: this.titleTutorial(),
+                text: 'Preencha as informações das suas entregas.',
+                attachTo: {
+                    element: '#container_deliveries',
+                    on: 'bottom'
+                },
+                buttons: this.tutorialButtonsFirstStep()
             });
-      
+
             this.tour.addStep({
-              id: 'registration-workplan__delete-delivery',
-              title: this.titleTutorial(),
-              text: 'Botão "Excluir entrega" para remover a entrega cadastrada ou em processo de cadastro.',
-              attachTo: {
-                element: '#registration-workplan__delete-delivery',
-                on: 'bottom'
-              },
-              buttons: this.tutorialButtonsDefault()
+                id: 'registration-workplan__delete-delivery',
+                title: this.titleTutorial(),
+                text: 'Botão "Excluir entrega" para remover a entrega cadastrada ou em processo de cadastro.',
+                attachTo: {
+                    element: '#registration-workplan__delete-delivery',
+                    on: 'bottom'
+                },
+                buttons: this.tutorialButtonsDefault()
             });
 
             this.tour.addStep({
@@ -801,30 +788,22 @@ app.component('registration-workplan', {
                 title: this.titleTutorial(),
                 text: 'Última etapa! Para garantir que suas metas e entregas sejam salvas, clique no botão "Salvar metas".',
                 attachTo: {
-                  element: '#button-registration-workplan__save-goal',
-                  on: 'bottom'
+                    element: '#button-registration-workplan__save-goal',
+                    on: 'bottom'
                 },
                 buttons: this.tutorialButtonsDefault()
             });
 
-            this.disableTutorial();
-            
             this.tour.start();
         },
-        isTutorialDisabled() {
-            return localStorage.getItem('tutorialDisabled') === 'true';
-        },
-        disableTutorial() {
-            localStorage.setItem('tutorialDisabled', 'true');
-        },
         enableTutorial() {
-            localStorage.setItem('tutorialDisabled', 'false');
+            // Método mantido para compatibilidade - tutoriais agora estão sempre disponíveis
         },
-        
+
         // ============================================
         // MÉTODOS PARA NOVOS CAMPOS ESTRUTURADOS
         // ============================================
-        
+
         // Pessoas remuneradas por função
         addPaidStaffRole(delivery) {
             if (!Array.isArray(delivery.paidStaffByRole)) {
@@ -835,17 +814,17 @@ app.component('registration-workplan', {
         removePaidStaffRole(delivery, index) {
             delivery.paidStaffByRole.splice(index, 1);
         },
-        
+
         // Calcular total de composição por gênero
         calculateGenderTotal(composition) {
             if (!composition) return 0;
             const total = (Number(composition.cisgenderWoman) || 0) +
-                         (Number(composition.cisgenderMan) || 0) +
-                         (Number(composition.transgenderWoman) || 0) +
-                         (Number(composition.transgenderMan) || 0) +
-                         (Number(composition.nonBinary) || 0) +
-                         (Number(composition.otherGenderIdentity) || 0) +
-                         (Number(composition.preferNotToSay) || 0);
+                (Number(composition.cisgenderMan) || 0) +
+                (Number(composition.transgenderWoman) || 0) +
+                (Number(composition.transgenderMan) || 0) +
+                (Number(composition.nonBinary) || 0) +
+                (Number(composition.otherGenderIdentity) || 0) +
+                (Number(composition.preferNotToSay) || 0);
             return total;
         },
 
@@ -853,11 +832,11 @@ app.component('registration-workplan', {
         calculateRaceTotal(composition) {
             if (!composition) return 0;
             const total = (Number(composition.white) || 0) +
-                         (Number(composition.black) || 0) +
-                         (Number(composition.brown) || 0) +
-                         (Number(composition.indigenous) || 0) +
-                         (Number(composition.asian) || 0) +
-                         (Number(composition.notDeclared) || 0);
+                (Number(composition.black) || 0) +
+                (Number(composition.brown) || 0) +
+                (Number(composition.indigenous) || 0) +
+                (Number(composition.asian) || 0) +
+                (Number(composition.notDeclared) || 0);
             return total;
         },
 

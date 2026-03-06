@@ -22,13 +22,12 @@ $this->import('
     <template #title>
         <h3 class="card__title">
             {{ getWorkplanLabelDefault }}
-            <?php $this->info('inscricao -> preenchimento -> plano-de-metas') ?>
         </h3>
         <p>
             {{ `Descrição do ${getWorkplanLabelDefault}` }}
         </p>
-        <br>
-        <div class="registration-actions__alert">
+        <br />
+        <!--div class="registration-actions__alert">
             <div class="registration-actions__alert-header">
                 <mc-icon name="exclamation"></mc-icon>
                 <span class="bold"><?= i::__('Atenção - Preenchimento do plano de metas') ?></span>
@@ -36,13 +35,12 @@ $this->import('
             <div class="registration-actions__alert-content">
                 <span><?= i::__('Para registrar as metas e entregas do plano de metas, preencha os campos obrigatórios e clique no botão "Salvar Meta"') ?></span>
             </div>
-        </div>
-        <br>
-        <!-- Botão para ativar tutorial -->
-        <div v-if="isTutorialDisabled()" >
-            <button class="button button--primary button--primary-outline button--sm" @click="enableTutorial(); startTutorialWorkplan()">
+        </div-->
+        <!-- Botões para ativar tutoriais -->
+        <div class="registration-workplan__tutorials">
+            <button class="button button--primary button--primary-outline button--sm registration-workplan__tutorial-button" @click="enableTutorial(); startTutorialWorkplan()">
                 <mc-icon name="help"></mc-icon>
-                <?= i::__('Reativar assistente de configuração') ?>
+                {{ `Como preencher este ${getWorkplanLabelDefault}?` }}
             </button>
         </div>
     </template>
@@ -81,10 +79,10 @@ $this->import('
                         <mc-icon v-if="!isExpanded(index)" name="arrowPoint-down"></mc-icon>
                     </h4>
 
-                    <div id="registration-workplan__delete-goal" class="registration-workplan__delete-goal">
+                    <div class="registration-workplan__goal-actions">
                         <mc-confirm-button @confirm="deleteGoal(goal)">
                             <template #button="{open}">
-                                <button class="button button--delete button--icon button--sm" @click="open()">
+                                <button class="button button--delete button--icon button--sm registration-workplan__delete-goal" @click="open()">
                                     <mc-icon name="trash"></mc-icon>
                                     {{ `Excluir ${getGoalLabelDefault}`  }}
                                 </button>
@@ -96,15 +94,21 @@ $this->import('
                                 </p>
                             </template>
                         </mc-confirm-button>
+
+                        <!-- Botão para ativar tutorial da Meta -->
+                        <button class="button button--primary button--primary-outline button--sm registration-workplan__tutorial-button" @click="enableTutorial(); startTutorialGoal()">
+                            <mc-icon name="help"></mc-icon>
+                            {{ `Como preencher esta ${getGoalLabelDefault}?`  }}
+                        </button>
                     </div>
                 </div>
-                
+
                 <div v-if="isExpanded(index)" class="collapse-content">
                     <!-- BLOCO 2 — Plano de metas -->
                     <div class="form-section">
                         <h4 class="form-section__title">{{ `${getWorkplanLabelDefault}` }}</h4>
                         <p class="form-section__description"><?= i::__('Descreva o que o projeto pretende realizar. Foque nos objetivos, não na execução.') ?></p>
-                        
+
                         <div class="registration-workplan__goals-period">
                             <p>
                                 {{ `Especificação da ${getGoalLabelDefault}` }}
@@ -127,7 +131,7 @@ $this->import('
                             </div>
                         </div>
                     </div>
-                    
+
                     <!-- Título da meta -->
                     <div v-if="opportunity.workplan_goalInformTitle" class="field">
                         <label>
@@ -155,11 +159,11 @@ $this->import('
                         <div v-for="(delivery, index_) in goal.deliveries" :key="delivery.id" class="registration-workplan__goals__deliveries">
                             <div class="registration-workplan__header-deliveries">
                                 <h4 class="registration-workplan__goals-title">{{ delivery.name || (getDeliveryLabelDefault + ' ' + (index_ + 1)) }}</h4>
-                                <div id="registration-workplan__delete-delivery"  class="registration-workplan__delete-delivery">
+                                <div class="registration-workplan__delivery-actions">
                                     <mc-confirm-button @confirm="deleteDelivery(delivery)">
                                         <template #button="{open}">
-                                            <button class="button button--delete button--icon button--sm" @click="open()">
-                                                <mc-icon name="trash"></mc-icon> 
+                                            <button class="button button--delete button--icon button--sm registration-workplan__delete-delivery" @click="open()">
+                                                <mc-icon name="trash"></mc-icon>
                                                 {{ `Excluir ${getDeliveryLabelDefault}` }}
                                             </button>
                                         </template>
@@ -170,6 +174,12 @@ $this->import('
                                             </p>
                                         </template>
                                     </mc-confirm-button>
+
+                                    <!-- Botão para ativar tutorial da Entrega -->
+                                    <button class="button button--primary button--primary-outline button--sm registration-workplan__tutorial-button" @click="enableTutorial(); startTutorialDelivery()">
+                                        <mc-icon name="help"></mc-icon>
+                                        {{ `Como preencher esta ${getDeliveryLabelDefault}?` }}
+                                    </button>
                                 </div>
                             </div>
 
