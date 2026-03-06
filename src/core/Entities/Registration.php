@@ -1208,31 +1208,6 @@ class Registration extends \MapasCulturais\Entity
 
     }
 
-    function cleanMaskedRegistrationFields(){
-        $app = App::i();
-        $fieldsValues = $this->getMetadata();
-
-        $fieldsConfigurations = $this->opportunity->registrationFieldConfigurations;
-
-        $app->disableAccessControl();
-        foreach ($fieldsValues as $fieldName => $value){
-
-            foreach ($fieldsConfigurations as $fieldConf){
-
-                if('field_'.$fieldConf->id  === $fieldName){
-                    switch ($fieldConf->getFieldTypeDefinition()->slug){
-                        case 'cpf':
-                        case 'cnpj':
-                            $value = preg_replace( '/[^0-9]/', '', (string) $value );
-                            $this->setMetadata($fieldName, $value);
-                            break;
-                    }
-                }
-            }
-        }
-        $app->enableAccessControl();
-    }
-
     /**
      * Verifica se uma etapa deve ser exibida com base nas categorias, 
      * faixas e tipos de proponente definidos na configuração do etapa.
