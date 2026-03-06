@@ -102,7 +102,7 @@ $this->import('
                 <div v-if="isExpanded(index)" class="collapse-content">
                     <!-- BLOCO 2 — Plano de metas -->
                     <div class="form-section">
-                        <h4 class="form-section__title"><?= i::__('Plano de metas') ?></h4>
+                        <h4 class="form-section__title">{{ `${getWorkplanLabelDefault}` }}</h4>
                         <p class="form-section__description"><?= i::__('Descreva o que o projeto pretende realizar. Foque nos objetivos, não na execução.') ?></p>
                         
                         <div class="registration-workplan__goals-period">
