@@ -3373,8 +3373,13 @@ class ApiQuery {
         $this->_whereDqls[] = $this->parseParam($this->_keys[$key], $value);
     }
 
-    protected function _addFilterByFileGroup(string $group_name, string $value) {
-        $value = trim($value);
+    protected function _addFilterByFileGroup(string $group_name, ?string $value) {
+        $value = $value === null ? '' : trim((string) $value);
+
+        if ($value === '' || strtolower($value) === 'null') {
+            return;
+        }
+
         $has_file = preg_match('/^(1|true|EQ\s*\(\s*1\s*\))$/i', $value);
         $not_has_file = preg_match('/^(0|false|EQ\s*\(\s*0\s*\))$/i', $value);
 
