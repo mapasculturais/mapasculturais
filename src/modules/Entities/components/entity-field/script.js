@@ -191,6 +191,10 @@ app.component('entity-field', {
             type: Boolean,
             default: false
         },
+        registrationFieldConfiguration: {
+            type: Object,
+            default: null
+        },
         titleModal: {
             type: String,
             required: false,
@@ -230,12 +234,15 @@ app.component('entity-field', {
 
     computed: {
         hasErrors() {
-            let errors = this.entity.__validationErrors[this.prop] || [];
-            if(errors.length > 0){
-                return true;
-            } else {
+            const errors = this.entity.__validationErrors[this.prop] || [];
+
+            // Para campos @location, deixamos a sinalização visual por conta
+            // do componente de endereço, que destaca apenas os subcampos faltando.
+            if (errors.length > 0 && this.is('location')) {
                 return false;
             }
+
+            return errors.length > 0;
         },
         errors() {
             return this.entity.__validationErrors[this.prop];
@@ -430,6 +437,15 @@ app.component('entity-field', {
         isReadonly() {
             const userPermission = this.entity.currentUserPermissions?.modifyReadonlyData;
             const lockedFieldSeals = this.entity.__lockedFieldSeals;
+
+            if(this.entity.__objectType == "registration") {
+                const editableFields = this.entity.editableFields || [];
+
+                if(editableFields.length > 0 && !editableFields.includes(this.prop) && !userPermission) {
+                    this.readonly = true;
+                    return this.readonly;
+                }
+            }
 
             if(this.entity.__objectType == "registration" && this.description.registrationFieldConfiguration) {
                 const registrationConfig = this.description.registrationFieldConfiguration;

@@ -144,6 +144,14 @@
         color: var(--mc-error);
     }
 
+    &.field--error {
+        input,
+        textarea,
+        select {
+            border-color: var(--mc-error);
+        }
+    }
+
     &.disabled {
         label {
             color: var(--mc-gray-500);

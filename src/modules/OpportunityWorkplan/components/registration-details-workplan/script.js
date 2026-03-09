@@ -54,38 +54,24 @@ app.component('registration-details-workplan', {
             const palavras = texto.split(' ');
         
             const palavrasNoSingular = palavras.map(palavra => {
-                if (palavra.endsWith('s')) {
+                if (palavra.endsWith('ões')) {
+                    palavra = palavra.slice(0, -3) + 'ão';
+                } else if (palavra.endsWith('ães')) {
+                    palavra = palavra.slice(0, -3) + 'ão';
+                } else if (palavra.endsWith('ais')) {
+                    palavra = palavra.slice(0, -2) + 'al';
+                } else if (palavra.endsWith('éis')) {
+                    palavra = palavra.slice(0, -2) + 'el';
+                } else if (palavra.endsWith('óis')) {
+                    palavra = palavra.slice(0, -2) + 'ol';
+                } else if (palavra.endsWith('uis')) {
+                    palavra = palavra.slice(0, -2) + 'ul';
+                } else if (palavra.endsWith('is')) {
+                    palavra = palavra.slice(0, -2) + 'il';
+                } else if (palavra.endsWith('ns')) {
+                    palavra = palavra.slice(0, -2) + 'm';
+                } else if (palavra.endsWith('s')) {
                     palavra = palavra.slice(0, -1);
-        
-                    if (palavra.endsWith('e')) {
-                        palavra = palavra.slice(0, -1);
-                    }
-    
-                    if (palavra.endsWith('ã')) {
-                        palavra = palavra.slice(0, -1) + 'ão';
-                    } else if (palavra.endsWith('õ')) {
-                        palavra = palavra.slice(0, -1) + 'ão';
-                    } else if (palavra.endsWith('is')) {
-                        palavra = palavra.slice(0, -2) + 'il';
-                    } else if (palavra.endsWith('ns')) {
-                        palavra = palavra.slice(0, -2) + 'm';
-                    } else if (palavra.endsWith('ões')) {
-                        palavra = palavra.slice(0, -3) + 'ão';
-                    } else if (palavra.endsWith('ães')) {
-                        palavra = palavra.slice(0, -3) + 'ão';
-                    } else if (palavra.endsWith('ais')) {
-                        palavra = palavra.slice(0, -2) + 'al';
-                    } else if (palavra.endsWith('éis')) {
-                        palavra = palavra.slice(0, -2) + 'el';
-                    } else if (palavra.endsWith('óis')) {
-                        palavra = palavra.slice(0, -2) + 'ol';
-                    } else if (palavra.endsWith('uis')) {
-                        palavra = palavra.slice(0, -2) + 'ul';
-                    } else if (palavra.endsWith('ões')) {
-                        palavra = palavra.slice(0, -3) + 'ão';
-                    } else if (palavra.endsWith('ães')) {
-                        palavra = palavra.slice(0, -3) + 'ão';
-                    }
                 }
         
                 return palavra.toLowerCase();

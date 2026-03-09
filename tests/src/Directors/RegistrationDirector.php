@@ -82,10 +82,9 @@ class RegistrationDirector extends Director
                 ->fillRequiredProperties()
                 ->getInstance();
 
+        $this->setRegistrationData($registration, data: $data);
                 
         $registration->send();
-
-        $this->setRegistrationData($registration, data: $data, save: true);
 
         return $registration->refreshed();
     }
