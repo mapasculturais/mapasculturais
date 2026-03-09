@@ -7,11 +7,22 @@ class RegistrationEvaluation extends \MapasCulturais\Repository{
      *
      * @param \MapasCulturais\Entities\Opportunity $opportunity
      * @param \MapasCulturais\Entities\User $user
+     * @param string $committee
      * @return \MapasCulturais\Entities\RegistrationEvaluation[]
      */
-    function findByOpportunityAndUser(\MapasCulturais\Entities\Opportunity $opportunity, $user){
+    function findByOpportunityAndUser(\MapasCulturais\Entities\Opportunity $opportunity, $user, ?string $committee = null){
         if($user->is('guest') || !$opportunity->id){
             return [];
+        }
+
+        $params = [
+            'opportunity' => $opportunity, 
+            'user' => $user
+        ];
+
+        if($committee){
+            $committee_where = " AND e.committee = :committee";
+            $params['committee'] = $committee;
         }
 
         $dql = "
@@ -22,14 +33,11 @@ class RegistrationEvaluation extends \MapasCulturais\Repository{
                 JOIN e.registration r
             WHERE
                 r.opportunity = :opportunity AND
-                e.user = :user";
+                e.user = :user {$committee_where}";
 
         $q = $this->_em->createQuery($dql);
 
-        $q->setParameters([
-            'opportunity' => $opportunity,
-            'user' => $user
-        ]);
+        $q->setParameters($params);
 
         return $q->getResult();
     }

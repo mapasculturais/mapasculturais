@@ -14,7 +14,7 @@ $this->import('
     mc-tag-list
     mc-toggle
     mc-accordion 
-    opportunity-registration-filter-configuration
+    registration-distribution-rule
 ');
 ?>
 
@@ -60,14 +60,14 @@ $this->import('
                         label="<?= i::__('Configurar filtro') ?>"
                         >
                     </mc-toggle>
-                    <opportunity-registration-filter-configuration
+                    <registration-distribution-rule
                         v-if="section.showFilters"
-                        :entity="entity"
-                        v-model:default-value="section"
-                        :excludeFields="['id', 'name', 'showFilters', 'maxNonEliminatory', 'numberMaxNonEliminatory','requiredSectionObservation']"
-                        titleModal="<?= i::__('Configuração de filtros da seção') ?>"
-                        is-section
-                        ></opportunity-registration-filter-configuration>
+                        :opportunity="opportunity"
+                        :modelValue="sectionFilterModel(section)"
+                        @update:modelValue="onSectionFilterChange(section, $event)"
+                        :titleModal="text('sectionFiltersTitle')"
+                        class="qualification-evaluation-config__section-filter"
+                    />
 
                         <mc-toggle
                             :modelValue="section.requiredSectionObservation" 
@@ -167,14 +167,16 @@ $this->import('
                                             label="<?= i::__('Configurar filtro') ?>"
                                             >
                                         </mc-toggle>
-                                        <opportunity-registration-filter-configuration
+                                        
+                                        <registration-distribution-rule
                                             v-if="criteria.showFilters"
-                                            :entity="entity"
-                                            v-model:default-value="criteria"
-                                            :excludeFields="['id', 'name', 'showFilters', 'options', 'notApplyOption', 'otherReasonsOption', 'sid', 'weight', 'description', 'nonEliminatory']"
-                                            titleModal="<?= i::__('Configuração de filtros do critério') ?>"
-                                            is-criterion
-                                        ></opportunity-registration-filter-configuration>   
+                                            :opportunity="opportunity"
+                                            :modelValue="criteriaFilterModel(criteria)"
+                                            @update:modelValue="onCriteriaFilterChange(criteria, $event)"
+                                            :parentFilters="section"
+                                            :titleModal="text('criteriaFiltersTitle')"
+                                            class="qualification-evaluation-config__criteria-filter"
+                                        />   
                                     </div>
                                 </template>
                             </mc-accordion>

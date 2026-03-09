@@ -32,6 +32,10 @@ app.component('qualification-evaluation-config', {
         fieldsDict() {
             return $MAPAS.config.qualificationAssessmentSection.fieldsDict;
         },
+
+        opportunity() {
+            return this.entity?.opportunity || this.entity;
+        },
     },
 
     methods: {
@@ -253,13 +257,19 @@ app.component('qualification-evaluation-config', {
                     if (section.categories) section.categories = [];
                     if (section.ranges) section.ranges = [];
                     if (section.proponentTypes) section.proponentTypes = [];
-        
+                    if (section.distribution) section.distribution = '';
+                    if (section.sentTimestamp) section.sentTimestamp = { from: '', to: '' };
+                    if (section.fields) section.fields = {};
+
                     this.entity.criteria.forEach(criteria => {
-                        if (criteria.sid === section.id) { 
+                        if (criteria.sid === section.id) {
                             criteria.showFilters = false;
                             if (criteria.categories) criteria.categories = [];
                             if (criteria.ranges) criteria.ranges = [];
                             if (criteria.proponentTypes) criteria.proponentTypes = [];
+                            if (criteria.distribution) criteria.distribution = '';
+                            if (criteria.sentTimestamp) criteria.sentTimestamp = { from: '', to: '' };
+                            if (criteria.fields) criteria.fields = {};
                         }
                     });
                 }
@@ -281,8 +291,79 @@ app.component('qualification-evaluation-config', {
                     if (criteria.categories) criteria.categories = [];
                     if (criteria.ranges) criteria.ranges = [];
                     if (criteria.proponentTypes) criteria.proponentTypes = [];
+                    if (criteria.distribution) criteria.distribution = '';
+                    if (criteria.sentTimestamp) criteria.sentTimestamp = { from: '', to: '' };
+                    if (criteria.fields) criteria.fields = {};
                 }
             }
+
+            this.save();
+        },
+
+        sectionFilterModel(section) {
+            if (!section) {
+                return { categories: [], proponentTypes: [], ranges: [], distribution: '', sentTimestamp: { from: '', to: '' }, fields: {} };
+            }
+            
+            return {
+                categories: Array.isArray(section.categories) ? section.categories : [],
+                proponentTypes: Array.isArray(section.proponentTypes) ? section.proponentTypes : [],
+                ranges: Array.isArray(section.ranges) ? section.ranges : [],
+                distribution: typeof section.distribution == 'string' ? section.distribution : '',
+                sentTimestamp: section.sentTimestamp && typeof section.sentTimestamp == 'object'
+                    ? { from: section.sentTimestamp.from ?? '', to: section.sentTimestamp.to ?? '' }
+                    : { from: '', to: '' },
+                fields: section.fields && typeof section.fields == 'object' ? section.fields : {},
+            };
+        },
+
+        onSectionFilterChange(section, value) {
+            if (!section || !value) {
+                return;
+            }
+
+            section.categories = Array.isArray(value.categories) ? [...value.categories] : [];
+            section.proponentTypes = Array.isArray(value.proponentTypes) ? [...value.proponentTypes] : [];
+            section.ranges = Array.isArray(value.ranges) ? [...value.ranges] : [];
+            section.distribution = typeof value.distribution == 'string' ? value.distribution : '';
+            section.sentTimestamp = value.sentTimestamp && typeof value.sentTimestamp == 'object'
+                ? { from: value.sentTimestamp.from ?? '', to: value.sentTimestamp.to ?? '' }
+                : { from: '', to: '' };
+            section.fields = value.fields && typeof value.fields == 'object' ? { ...value.fields } : {};
+            
+            this.save();
+        },
+
+        criteriaFilterModel(criteria) {
+            if (!criteria) {
+                return { categories: [], proponentTypes: [], ranges: [], distribution: '', sentTimestamp: { from: '', to: '' }, fields: {} };
+            }
+
+            return {
+                categories: Array.isArray(criteria.categories) ? criteria.categories : [],
+                proponentTypes: Array.isArray(criteria.proponentTypes) ? criteria.proponentTypes : [],
+                ranges: Array.isArray(criteria.ranges) ? criteria.ranges : [],
+                distribution: typeof criteria.distribution == 'string' ? criteria.distribution : '',
+                sentTimestamp: criteria.sentTimestamp && typeof criteria.sentTimestamp == 'object'
+                    ? { from: criteria.sentTimestamp.from ?? '', to: criteria.sentTimestamp.to ?? '' }
+                    : { from: '', to: '' },
+                fields: criteria.fields && typeof criteria.fields == 'object' ? criteria.fields : {},
+            };
+        },
+
+        onCriteriaFilterChange(criteria, value) {
+            if (!criteria || !value) {
+                return;
+            }
+
+            criteria.categories = Array.isArray(value.categories) ? [...value.categories] : [];
+            criteria.proponentTypes = Array.isArray(value.proponentTypes) ? [...value.proponentTypes] : [];
+            criteria.ranges = Array.isArray(value.ranges) ? [...value.ranges] : [];
+            criteria.distribution = typeof value.distribution == 'string' ? value.distribution : '';
+            criteria.sentTimestamp = value.sentTimestamp && typeof value.sentTimestamp == 'object'
+                ? { from: value.sentTimestamp.from ?? '', to: value.sentTimestamp.to ?? '' }
+                : { from: '', to: '' };
+            criteria.fields = value.fields && typeof value.fields == 'object' ? { ...value.fields } : {};
 
             this.save();
         },

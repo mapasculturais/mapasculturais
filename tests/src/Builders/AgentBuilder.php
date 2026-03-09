@@ -13,6 +13,7 @@ class AgentBuilder extends Builder
         Traits\AgentRelations,
         Traits\SealRelations,
         Traits\Taxonomies,
+        Traits\EntityFile,
         Traits\EntityType,
         Traits\EntityParent;
 

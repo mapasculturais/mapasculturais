@@ -3,19 +3,43 @@ namespace MapasCulturais\ApiOutputs;
 use \MapasCulturais\App;
 use MapasCulturais;
 
-
-
+/**
+ * Saída de API em formato de tabela de texto (ASCII)
+ * 
+ * Esta classe gera tabelas de texto formatadas com caracteres ASCII,
+ * útil para visualização de dados em terminais ou logs.
+ * 
+ * @package MapasCulturais\ApiOutputs
+ */
 class TextTable extends \MapasCulturais\ApiOutput{
 
+    /**
+     * Retorna o tipo de conteúdo HTTP para esta saída
+     * 
+     * @return string Tipo de conteúdo (text/plain; charset=utf-8)
+     */
     protected function getContentType() {
         return 'text/plain; charset=utf-8';
     }
 
 
+    /**
+     * Gera a saída de tabela de texto para um array de dados
+     * 
+     * @param array $data Dados a serem formatados como tabela
+     * @param string $singular_object_name Nome no singular para a entidade (não utilizado)
+     * @param string $plural_object_name Nome no plural para a entidade (não utilizado)
+     */
     protected function _outputArray(array $data, $singular_object_name = 'Entity', $plural_object_name = 'Entities') {
         echo $this->arr2textTable($data);
     }
 
+    /**
+     * Converte um array em uma tabela de texto formatada
+     * 
+     * @param array $table Array de dados a serem convertidos
+     * @return string Tabela de texto formatada
+     */
     function arr2textTable($table) {
         function clean($var) { 
             $search=array("`((?:https?|ftp)://\S+[[:alnum:]]/?)`si","`((?<!//)(www\.\S+[[:alnum:]]/?))`si");
@@ -56,8 +80,18 @@ class TextTable extends \MapasCulturais\ApiOutput{
         return clean($output);
     }
 
+    /**
+     * Função de preenchimento de string com suporte a multibyte (UTF-8)
+     * 
+     * @param string $str String original
+     * @param int $pad_len Comprimento total desejado
+     * @param string $pad_str String de preenchimento (padrão: espaço)
+     * @param int $dir Direção do preenchimento (STR_PAD_RIGHT, STR_PAD_LEFT, STR_PAD_BOTH)
+     * @param string|null $encoding Codificação (padrão: mb_internal_encoding)
+     * @return string String preenchida
+     */
     function mb_str_pad($str, $pad_len, $pad_str = ' ', $dir = STR_PAD_RIGHT, $encoding = NULL)
-        {
+    {
             $encoding = $encoding === NULL ? mb_internal_encoding() : $encoding;
             $padBefore = $dir === STR_PAD_BOTH || $dir === STR_PAD_LEFT;
             $padAfter = $dir === STR_PAD_BOTH || $dir === STR_PAD_RIGHT;
@@ -71,10 +105,21 @@ class TextTable extends \MapasCulturais\ApiOutput{
             return $before . $str . $after;
         }
 
+    /**
+     * Gera a saída para um único item (usa dump para debug)
+     * 
+     * @param mixed $data Dados a serem exibidos
+     * @param string $object_name Nome do objeto
+     */
     function _outputItem($data, $object_name = 'entity') {
         \dump($data); 
     }
 
+    /**
+     * Gera a saída para um erro (usa dump para debug)
+     * 
+     * @param mixed $data Dados do erro
+     */
     protected function _outputError($data) {
         \dump($data);
     }

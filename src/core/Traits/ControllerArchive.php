@@ -3,7 +3,28 @@ namespace MapasCulturais\Traits;
 
 use MapasCulturais\App;
 
+/**
+ * Trait para controladores que suportam operações de arquivamento de entidades
+ * 
+ * Este trait fornece métodos para arquivar e desarquivar entidades,
+ * permitindo que sejam movidas para um estado de arquivo e restauradas.
+ * 
+ * @package MapasCulturais\Traits
+ */
 trait ControllerArchive{
+    
+    /**
+     * Arquiva uma entidade
+     * 
+     * Este método altera o status da entidade para arquivado.
+     * Requer autenticação do usuário.
+     * 
+     * @api ALL archive
+     * @return void Retorna JSON da entidade (AJAX) ou redireciona
+     * 
+     * @throws \MapasCulturais\Exceptions\PermissionDenied Se o usuário não tiver permissão
+     * @uses \MapasCulturais\Traits\EntityArchive::archive()
+     */
     function ALL_archive(){
         $this->requireAuthentication();
 
@@ -28,6 +49,18 @@ trait ControllerArchive{
         }
     }
 
+    /**
+     * Desarquiva uma entidade
+     * 
+     * Este método restaura uma entidade do estado arquivado.
+     * Requer autenticação do usuário.
+     * 
+     * @api ALL unarchive
+     * @return void Retorna JSON da entidade (AJAX) ou redireciona
+     * 
+     * @throws \MapasCulturais\Exceptions\PermissionDenied Se o usuário não tiver permissão
+     * @uses \MapasCulturais\Traits\EntityArchive::unarchive()
+     */
     function ALL_unarchive(){
         $this->requireAuthentication();
 
@@ -54,6 +87,5 @@ trait ControllerArchive{
             else
                 $app->redirect($app->request->getReferer());
         }
-
     }
 }

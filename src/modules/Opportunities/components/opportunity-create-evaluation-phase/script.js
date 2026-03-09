@@ -61,9 +61,11 @@ app.component('opportunity-create-evaluation-phase' , {
             this.phase.opportunity = this.opportunity;
             
             if(this.isContinuousFlow) {
+                // Fluxo contínuo: inicializa datas com as da primeira fase
+                // Para hasEndDate=true os campos ficam visíveis e editáveis; para hasEndDate=false ficam ocultos
                 this.phase.evaluationFrom = this.opportunity.registrationFrom;
-                this.phase.evaluationTo = this.opportunity?.hasEndDate ? this.lastPhase.publishTimestamp : this.opportunity.registrationTo;
-                this.phase.publishedRegistrations = this.opportunity?.hasEndDate ? false : true;
+                this.phase.evaluationTo = this.opportunity.registrationTo;
+                this.phase.publishedRegistrations = true;
             }
         },
         destroyEntity() {

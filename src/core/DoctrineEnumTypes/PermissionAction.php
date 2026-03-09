@@ -4,13 +4,33 @@ namespace MapasCulturais\DoctrineEnumTypes;
 
 use MapasCulturais\DoctrineEnumType;
 
+/**
+ * Enum para ações de permissão no sistema
+ * 
+ * Este enum define todas as ações que podem ser realizadas sobre entidades,
+ * usadas no sistema de controle de permissões do Mapas Culturais.
+ * 
+ * @package MapasCulturais\DoctrineEnumTypes
+ */
 class PermissionAction extends DoctrineEnumType
 {
+    /**
+     * Retorna o nome do tipo usado no banco de dados
+     * 
+     * @return string Nome do tipo no banco de dados
+     */
     public static function getTypeName(): string
     {
         return 'permission_action';
     }
 
+    /**
+     * Retorna um array com as chaves e valores do enum
+     * 
+     * As chaves e valores são idênticos, representando os nomes das ações de permissão.
+     * 
+     * @return array Array associativo com chaves e valores do enum
+     */
     protected static function getKeysValues(): array
     {
         return [

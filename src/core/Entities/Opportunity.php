@@ -1586,10 +1586,6 @@ abstract class Opportunity extends \MapasCulturais\Entity
             return false;
         }
 
-        if($this->registrationTo >= new \DateTime){
-            return false;
-        }
-
         return $this->canUser('@control', $user);
     }
 

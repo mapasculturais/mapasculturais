@@ -20,7 +20,10 @@ $this->import('
 
     <div v-if="countryFieldEnabled" class="field col-12">
         <?php $this->applyTemplateHook('country-address-form-country-field','before'); ?>
-        <label><?= i::__("País") ?></label>
+        <label class="field__title">
+            <?= i::__("País") ?>
+            <span v-if="isCountryRequired" class="required">*<?php i::_e('obrigatório') ?></span>
+        </label>
         <mc-select 
             :options="countries" 
             v-model:default-value="country" 

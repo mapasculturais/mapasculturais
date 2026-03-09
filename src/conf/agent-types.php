@@ -329,15 +329,25 @@ return array(
             'private' => true,
             'label' => \MapasCulturais\i::__('Data de Nascimento/Fundação'),
             'type' => 'date',
-            'serialize' => function($value, $entity = null){
-               if(is_null($value)) { return null; }
-               $this->hook("entity(<<*>>).save:before", function() use ($entity){
+            'serialize' => function ($value, $entity = null) {
+                if (is_null($value)) {
+                    return null;
+                }
+
+                $this->hook("entity(<<*>>).save:before", function () use ($entity) {
                     /** @var MapasCulturais\Entity $entity */
-                    if($this->equals($entity)){
+                    if ($this->equals($entity)) {
                         $this->idoso = 1;
                     }
-               });
-               return (new DateTime($value))->format("Y-m-d");
+                });
+
+                if (is_array($value) && isset($value['_date'])) {
+                    $value = $value['_date'];
+                } elseif (is_object($value) && isset($value->_date)) {
+                    $value = $value->_date;
+                }
+
+                return $value ? (new \DateTime($value))->format("Y-m-d") : null;
             },
             'validations' => array(
                 'v::date("Y-m-d")' => \MapasCulturais\i::__('Data inválida').'{{format}}',
@@ -683,12 +693,12 @@ return array(
             'type' => "socialMedia",
             'label' => \MapasCulturais\i::__('Spotify'),
             'validations' => array(
-                "v::oneOf(v::urlDomain('open.spotify.com'), v::regex('/^@?([-\w\d\.]+)$/i'))" => \MapasCulturais\i::__("O valor deve ser uma URL ou usuário válido.")
+                "v::oneOf(v::urlDomain('open.spotify.com'), v::regex('/^([a-zA-Z0-9]+|(user|artist|playlist|show|album|track):[a-zA-Z0-9]+)$/i'))" => \MapasCulturais\i::__("O valor deve ser uma URL válida do Spotify ou um identificador válido.")
             ),
             'serialize' => function($value) {
                 return Utils::parseSocialMediaUser('open.spotify.com', $value);
             },
-            'placeholder' => \MapasCulturais\i::__('nomedousuario'),
+            'placeholder' => \MapasCulturais\i::__('URL ou identificador do Spotify'),
             'available_for_opportunities' => true
         ),
         'youtube' => array(
