@@ -123,15 +123,17 @@ app.component('technical-assessment-section', {
         validateErrors(addCriteria = false) {
             let hasError = false;
 
-            this.entity.sections.forEach((section) => {
-                Object.keys(this.fieldsDict.sections).forEach((field) => {
-                    let _field = this.fieldsDict.sections[field];
-                    if (_field.isRequired && !section[field]) {
-                        this.messages.error(`${this.text('theField')} ${this.text(_field.label)} ${this.text('isRequired')}`)
-                        hasError = true;
-                    }
-                })
-            })
+            if (this.entity.sections && Array.isArray(this.entity.sections)) {
+                this.entity.sections.forEach((section) => {
+                    Object.keys(this.fieldsDict.sections).forEach((field) => {
+                        let _field = this.fieldsDict.sections[field];
+                        if (_field.isRequired && !section[field]) {
+                            this.messages.error(`${this.text('theSection')} ${this.text(_field.label)} ${this.text('isRequired')}`)
+                            hasError = true;
+                        }
+                    })
+                });
+            }
 
             if(this.entity.criteria) {
                 this.entity.criteria.forEach((criterion) => {
@@ -148,6 +150,22 @@ app.component('technical-assessment-section', {
                         }
                     })
                 })
+            }
+
+            if (!addCriteria && this.entity.sections && Array.isArray(this.entity.sections)) {
+                const criteria = Array.isArray(this.entity.criteria) ? this.entity.criteria : [];
+
+                this.entity.sections.forEach((section) => {
+                    const hasCriteriaForSection = criteria.some(criterion => criterion.sid === section.id);
+
+                    if (!hasCriteriaForSection) {
+                        const sectionName = section.name || this.text('section');
+                        this.messages.error(
+                            `${this.text('theSection')} ${sectionName} ${this.text('must_have_at_least_one_criterion')}`
+                        );
+                        hasError = true;
+                    }
+                });
             }
 
             return hasError;
