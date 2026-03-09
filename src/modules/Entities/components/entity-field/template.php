@@ -223,9 +223,7 @@ $this->import('
                                                    :disabled="readonly || disabled"
                                                    :class="getCellValidationClass(row, colIndex, column)"
                                                    style="width: 100%; padding: 5px; border: 1px solid #ccc; border-radius: 3px;">
-                                            <small v-if="row['col' + colIndex] && !validateEmail(row['col' + colIndex])" style="color: #d32f2f; font-size: 11px; display: block; margin-top: 2px;">
-                                                <?= i::__('E-mail inválido') ?>
-                                            </small>
+
                                         </div>
                                         
                                         <!-- Campo de CPF -->
@@ -239,9 +237,7 @@ $this->import('
                                                    :disabled="readonly || disabled"
                                                    :class="getCellValidationClass(row, colIndex, column)"
                                                    style="width: 100%; padding: 5px; border: 1px solid #ccc; border-radius: 3px;">
-                                            <small v-if="row['col' + colIndex] && !validateCPF(row['col' + colIndex])" style="color: #d32f2f; font-size: 11px; display: block; margin-top: 2px;">
-                                                <?= i::__('CPF inválido') ?>
-                                            </small>
+
                                         </div>
                                         
                                         <!-- Campo de data -->

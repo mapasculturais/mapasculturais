@@ -533,17 +533,42 @@ app.component('entity-field', {
         },
 
         validateTableCell(row, columnIndex, column) {
-            // Validação básica apenas para feedback visual
-            // Validações complexas (CPF, email, número) são feitas no backend
             const value = row[`col${columnIndex}`];
             
-            // Verificar apenas campo obrigatório vazio
+            // Campo obrigatório vazio — inválido
             if (column.required === 'true') {
                 if (value === null || value === undefined || value === '') {
                     return false;
                 }
             }
-            
+
+            // Se vazio e não obrigatório — válido
+            if (value === null || value === undefined || value === '') {
+                return true;
+            }
+
+            // Validação de formato por tipo (feedback visual na célula)
+            switch (column.type) {
+                case 'cpf': {
+                    const digits = String(value).replace(/\D/g, '');
+                    if (digits.length !== 11 || /^(\d)\1+$/.test(digits)) return false;
+                    let sum = 0;
+                    for (let i = 0; i < 9; i++) sum += parseInt(digits[i]) * (10 - i);
+                    let r = (sum * 10) % 11;
+                    if (r === 10 || r === 11) r = 0;
+                    if (r !== parseInt(digits[9])) return false;
+                    sum = 0;
+                    for (let i = 0; i < 10; i++) sum += parseInt(digits[i]) * (11 - i);
+                    r = (sum * 10) % 11;
+                    if (r === 10 || r === 11) r = 0;
+                    return r === parseInt(digits[10]);
+                }
+                case 'email':
+                    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(String(value));
+                case 'number':
+                    return !isNaN(Number(value)) && String(value).trim() !== '';
+            }
+
             return true;
         },
 
@@ -697,9 +722,22 @@ app.component('entity-field', {
                         this.entity.__changedKeys.push(this.prop);
                     }
                     
-                    // Salvar
+                    // Salvar (erros 400 são esperados durante preenchimento parcial)
+                    // Snapshot do erro anterior: pode ter sido gerado por validação explícita ("Validar")
+                    const previousFieldError = this.entity.__validationErrors?.[this.prop];
                     this.entity.save().then(() => {
                         this._customTableSaveTimeout = null;
+                    }).catch(() => {
+                        this._customTableSaveTimeout = null;
+                        // Auto-save não deve sobrescrever o estado de validação explícita.
+                        // Restaura o erro anterior (ou remove se não havia nenhum).
+                        if (this.entity.__validationErrors) {
+                            if (previousFieldError !== undefined) {
+                                this.entity.__validationErrors[this.prop] = previousFieldError;
+                            } else {
+                                delete this.entity.__validationErrors[this.prop];
+                            }
+                        }
                     });
                 }, 2000);
             }

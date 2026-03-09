@@ -287,6 +287,38 @@ class Module extends \MapasCulturais\Module
             }
         });
 
+        $app->hook("entity(Registration).sendValidationErrors", function(&$errorsResult) use($module) {
+            /** @var Registration $this */
+            $registration = $this;
+            $opportunity = $registration->opportunity;
+
+            foreach ($opportunity->registrationFieldConfigurations as $field) {
+                if ($field->fieldType !== 'custom-table') {
+                    continue;
+                }
+                if (!$registration->isFieldVisisble($field)) {
+                    continue;
+                }
+
+                $prop_name = $field->getFieldName();
+                $val = $registration->$prop_name;
+
+                if (!is_array($val)) {
+                    continue;
+                }
+
+                $field_name = 'field_' . $field->id;
+                $cellErrors = $module->validateCustomTableCells($field->config['columns'] ?? [], $val);
+
+                if (!empty($cellErrors)) {
+                    if (!isset($errorsResult[$field_name])) {
+                        $errorsResult[$field_name] = [];
+                    }
+                    $errorsResult[$field_name] = array_merge($errorsResult[$field_name], $cellErrors);
+                }
+            }
+        });
+
         $app->hook("entity(Registration).save:before", function() use($module, $app) {
             /** @var Registration $this */
             $fix_field = function($entity, $field) use($module){
@@ -426,6 +458,57 @@ class Module extends \MapasCulturais\Module
         foreach ($this->getRegistrationFieldTypesDefinitions() as $definition) {
             $app->registerRegistrationFieldType(new RegistrationFieldType($definition));
         }
+    }
+
+    function validateCustomTableCells(array $columns, array $rows): array
+    {
+        $errors = [];
+
+        foreach ($rows as $rowIndex => $row) {
+            if (!is_array($row)) {
+                continue;
+            }
+
+            foreach ($columns as $colIndex => $column) {
+                $cellValue = $row["col{$colIndex}"] ?? null;
+                $columnName = $column['name'] ?? "Coluna {$colIndex}";
+                $columnType = $column['type'] ?? 'text';
+                $isRequired = ($column['required'] ?? '') === 'true';
+
+                if ($isRequired && ($cellValue === null || $cellValue === '')) {
+                    $errors[] = sprintf(i::__('Campo "%s" (linha %d) é obrigatório'), $columnName, $rowIndex + 1);
+                    continue;
+                }
+
+                if ($cellValue === null || $cellValue === '') {
+                    continue;
+                }
+
+                $cellOk = true;
+                $cellErrorMsg = '';
+
+                switch ($columnType) {
+                    case 'cpf':
+                        $cellOk = \Respect\Validation\Validator::cpf()->validate($cellValue);
+                        $cellErrorMsg = sprintf(i::__('CPF inválido no campo "%s" (linha %d)'), $columnName, $rowIndex + 1);
+                        break;
+                    case 'email':
+                        $cellOk = \Respect\Validation\Validator::email()->validate($cellValue);
+                        $cellErrorMsg = sprintf(i::__('E-mail inválido no campo "%s" (linha %d)'), $columnName, $rowIndex + 1);
+                        break;
+                    case 'number':
+                        $cellOk = \Respect\Validation\Validator::numericVal()->validate($cellValue);
+                        $cellErrorMsg = sprintf(i::__('Número inválido no campo "%s" (linha %d)'), $columnName, $rowIndex + 1);
+                        break;
+                }
+
+                if (!$cellOk) {
+                    $errors[] = $cellErrorMsg;
+                }
+            }
+        }
+
+        return $errors;
     }
 
     function normalizeAndValidateCustomTableConfig(RegistrationFieldConfiguration $field): void
