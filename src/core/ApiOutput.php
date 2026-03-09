@@ -2,10 +2,14 @@
 namespace MapasCulturais;
 
 /**
- * This is the base class of API output implementations.
+ * Classe base para implementações de saída da API.
  *
- * @property-read string $contentType The content type
- * 
+ * Esta classe abstrata define a interface para diferentes formatos de saída
+ * da API do Mapas Culturais (JSON, HTML, Excel, etc.). Classes derivadas
+ * devem implementar os métodos abstratos para gerar saídas específicas.
+ *
+ * @property-read string $contentType O tipo de conteúdo (content-type)
+ * @property-read string $hookClassName Nome da classe usado nos hooks
  * 
  * @hook api.response({API_OUTPUT_ID}).error:before
  * @hook api.response({API_OUTPUT_ID}).error:after
@@ -13,19 +17,28 @@ namespace MapasCulturais;
  * @hook api.response({API_OUTPUT_ID}).item({$singular_object_name}):after
  * @hook api.response({API_OUTPUT_ID}).array({$singular_object_name}):before
  * @hook api.response({API_OUTPUT_ID}).array({$singular_object_name}):after
+ * 
+ * @package MapasCulturais
  */
 abstract class ApiOutput{
     use Traits\Singleton,
         Traits\MagicGetter;
 
+    /**
+     * Nome da classe usado nos hooks
+     * @var string
+     */
     protected $hookClassName = '';
 
+    /**
+     * Construtor da classe
+     */
     protected function __construct() {
         $this->hookClassName = App::i()->getRegisteredApiOutputId($this);
     }
 
     /**
-     * Outputs an error data
+     * Exibe dados de erro
      *
      * @param mixed $data
      * 
@@ -55,7 +68,7 @@ abstract class ApiOutput{
     }
 
     /**
-     * Outputs a single item
+     * Exibe um único item
      * 
      * @param mixed $data
      * @param string $singular_object_name
@@ -89,7 +102,7 @@ abstract class ApiOutput{
     }
 
     /**
-     * Outputs an array of items
+     * Exibe um array de itens
      * 
      * @param array $data
      * @param string $singular_object_name
@@ -122,16 +135,16 @@ abstract class ApiOutput{
     }
 
     /**
-     * Returns the content type of this response generator
+     * Retorna o tipo de conteúdo (content type) desta resposta
      *
-     * @return string the content type
+     * @return string o tipo de conteúdo
      * 
-     * @example return the string **application/json**
+     * @example retorna a string **application/json**
      */
     abstract protected function getContentType();
 
     /**
-     * Returns the content to be printed
+     * Retorna o conteúdo a ser impresso para um array
      * 
      * @param array $data
      * @param string $singular_object_name
@@ -140,7 +153,7 @@ abstract class ApiOutput{
     abstract protected function _outputArray(array $data, $singular_object_name = 'entity', $plural_object_name = 'entities');
 
     /**
-     * Returns the content to be printed
+     * Retorna o conteúdo a ser impresso para um item
      * 
      * @param mixed $data
      * @param string $object_name
@@ -148,7 +161,7 @@ abstract class ApiOutput{
     abstract protected function _outputItem($data, $object_name = 'entity');
 
     /**
-     * Returns the error message to be printed
+     * Retorna a mensagem de erro a ser impressa
      * 
      * @param mixed $data
      */

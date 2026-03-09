@@ -8,10 +8,29 @@ use Psr\Http\Message\ServerRequestInterface;
 use Throwable;
 
 
+/**
+ * Classe responsável pelo tratamento de erros da aplicação
+ * 
+ * @package MapasCulturais
+ */
 class ErrorHandler implements ErrorHandlerInterface {
     
+    /**
+     * O manipulador de erros padrão do Slim
+     * @var \Slim\Handlers\ErrorHandler
+     */
     static \Slim\Handlers\ErrorHandler $defaultErrorHandler;
 
+    /**
+     * Manipula o erro, registrando logs detalhados se necessário
+     * 
+     * @param ServerRequestInterface $request
+     * @param Throwable $exception
+     * @param bool $displayErrorDetails
+     * @param bool $logErrors
+     * @param bool $logErrorDetails
+     * @return ResponseInterface
+     */
     public function __invoke(ServerRequestInterface $request, Throwable $exception, bool $displayErrorDetails, bool $logErrors, bool $logErrorDetails): ResponseInterface {
         $app = App::i();
         

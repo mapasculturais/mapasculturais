@@ -3,14 +3,42 @@ namespace MapasCulturais\ApiOutputs;
 use \MapasCulturais\App;
 use MapasCulturais;
 
-
-
+/**
+ * Saída de API em formato HTML para exportação de dados
+ * 
+ * Esta classe gera tabelas HTML a partir dos resultados da API,
+ * permitindo a exportação de dados em formato legível para navegadores.
+ * É especialmente útil para exportação de eventos com suas ocorrências,
+ * espaços e agentes.
+ * 
+ * @package MapasCulturais\ApiOutputs
+ */
 class Html extends \MapasCulturais\ApiOutput{
 
+    /**
+     * Detalhes das ocorrências de eventos para exibição na tabela
+     * @var array
+     */
     protected $occurrenceDetails = array();
+
+    /**
+     * Dias da semana para exibição na tabela de eventos
+     * @var array
+     */
     protected $diasSemana = array();
+
+    /**
+     * Detalhes dos espaços para exibição na tabela
+     * @var array
+     */
     protected $spaceDetails = array();
 
+    /**
+     * Construtor da classe HTML
+     * 
+     * Inicializa os arrays de detalhes de ocorrências, dias da semana e espaços
+     * com as traduções apropriadas.
+     */
     public function __construct(){
         array_push($this->occurrenceDetails, \MapasCulturais\i::__('Data Inicial'));
         array_push($this->occurrenceDetails, \MapasCulturais\i::__('Data Final'));
@@ -37,10 +65,20 @@ class Html extends \MapasCulturais\ApiOutput{
         array_push($this->spaceDetails, \MapasCulturais\i::__('Estado'));
     }
 
+    /**
+     * Retorna o tipo de conteúdo HTTP para esta saída
+     * 
+     * @return string Tipo de conteúdo (text/html)
+     */
     protected function getContentType() {
         return 'text/html';
     }
 
+    /**
+     * Imprime uma tabela HTML com os dados fornecidos
+     * 
+     * @param mixed $data Dados a serem exibidos (array ou objeto)
+     */
     protected function printTable($data){
         if(is_array($data))
             $this->printArrayTable($data);
@@ -54,8 +92,8 @@ class Html extends \MapasCulturais\ApiOutput{
      * Traduz os textos da tabela de acordo com o padrão
      * de internacionalização configurado
      *
-     * @param string $text
-     * @return void
+     * @param string $text Texto a ser traduzido
+     * @return string Texto traduzido ou o original se não houver tradução
      */
     protected function translate($text){
         $translated = '';
@@ -151,10 +189,10 @@ class Html extends \MapasCulturais\ApiOutput{
     }
 
     /**
-     * Retorna o numero do dia da semana de 0 a 6
+     * Retorna o número do dia da semana de 0 a 6
      *
-     * @param string $date data no formato Y-m-d
-     * @return date
+     * @param string $date Data no formato Y-m-d
+     * @return int Número do dia da semana (0=domingo, 6=sábado)
      */
     protected function getDayOfWeek($date){
         $timestamp = strtotime($date);
@@ -164,8 +202,8 @@ class Html extends \MapasCulturais\ApiOutput{
     /**
      * Preenche os dias que o evento se repete
      *
-     * @param string $field referente ao dia a ser preenchido
-     * @param obj $occurrence
+     * @param string $field Campo referente ao dia a ser preenchido
+     * @param object $occurrence Objeto da ocorrência do evento
      * @return void
      */
     protected function printDaysOfEvent($field, $occurrence){
@@ -227,10 +265,10 @@ class Html extends \MapasCulturais\ApiOutput{
     }
 
     /**
-     * Preenche os detalhes da ocorrência de acordo o $field enviado
+     * Preenche os detalhes da ocorrência de acordo com o campo enviado
      *
-     * @param string $field    campo a ser preenchido
-     * @param obj $occurrence
+     * @param string $field Campo a ser preenchido
+     * @param object $occurrence Objeto da ocorrência do evento
      * @return void
      */
     protected function printOccurenceDetails($field, $occurrence){
@@ -264,10 +302,10 @@ class Html extends \MapasCulturais\ApiOutput{
     }
 
     /**
-     * Preenche as informações do espaço da ocorrência de acordo o $field enviado
+     * Preenche as informações do espaço da ocorrência de acordo com o campo enviado
      *
-     * @param string $field    campo a ser preenchido
-     * @param obj $occurrence
+     * @param string $field Campo a ser preenchido
+     * @param object $occurrence Objeto da ocorrência do evento
      * @return void
      */
     protected function printSpaceDetails($field, $occurrence){
@@ -309,10 +347,10 @@ class Html extends \MapasCulturais\ApiOutput{
     }
 
     /**
-     * Seta o cabeçalho a ser impresso na tabela de eventos
+     * Define o cabeçalho a ser impresso na tabela de eventos
      *
-     * @param array $item
-     * @return array
+     * @param array $item Item do evento
+     * @return array Chaves do cabeçalho da tabela
      */
     protected function setEventKeys($item){
         $itemKeys = array_keys($item);
@@ -333,22 +371,21 @@ class Html extends \MapasCulturais\ApiOutput{
     }
 
     /**
-     * Converte os caracteres para UTF-16 para
-     * não haver quebra dos caracteres
+     * Converte os caracteres para UTF-16 para evitar quebra de caracteres
+     * 
      * @todo Verificar possibilidade de remover a função
-     * @param string $text
-     * @return string
+     * @param string $text Texto a ser convertido
+     * @return string Texto convertido (atualmente retorna o mesmo texto)
      */
     protected function convertToUTF16($text){
         return $text;
     }
 
     /**
-     * Checa se a requisição foi feita a partir da agenda da single do espaço
-     * e retorna seu id. Se não foi, retorna falso.
+     * Verifica se a requisição foi feita a partir da agenda da single do espaço
+     * e retorna seu ID. Se não foi, retorna falso.
      *
-     * @param array $app
-     * @return int | false
+     * @return int|false ID do espaço ou false se não for uma requisição da agenda
      */
     protected function getSpaceSingleAgendaRequest(){
         $app = App::i();
@@ -365,11 +402,12 @@ class Html extends \MapasCulturais\ApiOutput{
     /**
      * Filtra as ocorrências apenas pelas quais ocorrem no espaço selecionado
      * 
-     * Isto é útil para quando estamos filtrando eventos por um espaço e não queremos que apareçam suas ocorrências em outros espaços
+     * Isto é útil para quando estamos filtrando eventos por um espaço e não queremos
+     * que apareçam suas ocorrências em outros espaços
      * 
-     * @param string $space_id id do espaço
-     * @param array $data array com os eventos
-     * @return array
+     * @param string $space_id ID do espaço
+     * @param array $data Array com os eventos
+     * @return array Dados filtrados
      */
     protected function filterOccurrencesBySpace($space_id, $data){
         //iterador eventos
@@ -386,6 +424,11 @@ class Html extends \MapasCulturais\ApiOutput{
         return $data;
     }
 
+    /**
+     * Imprime uma tabela HTML a partir de um array de dados
+     * 
+     * @param array $data Dados a serem exibidos
+     */
     protected function printArrayTable($data){
     	$app = App::i();
     	$entity = $app->view->controller->entityClassName;
@@ -490,6 +533,11 @@ class Html extends \MapasCulturais\ApiOutput{
     <?php
     }
 
+    /**
+     * Imprime uma tabela HTML para um único item
+     * 
+     * @param object $item Item a ser exibido
+     */
     protected function printOneItemTable($item){
         $item = (array)$item;
         if(count($item) === 3){
@@ -524,6 +572,13 @@ class Html extends \MapasCulturais\ApiOutput{
         <?php
     }
 
+    /**
+     * Gera a saída HTML para um array de dados
+     * 
+     * @param array $data Dados a serem exibidos
+     * @param string $singular_object_name Nome no singular para a entidade
+     * @param string $plural_object_name Nome no plural para a entidade
+     */
     protected function _outputArray(array $data, $singular_object_name = 'Entity', $plural_object_name = 'Entidades') {
         $uriExplode = explode('/',$_SERVER['REQUEST_URI']);
         if($data && key_exists(2,$uriExplode) ){
@@ -563,10 +618,21 @@ class Html extends \MapasCulturais\ApiOutput{
         <?php
     }
 
+    /**
+     * Gera a saída HTML para um único item
+     * 
+     * @param mixed $data Dados a serem exibidos
+     * @param string $object_name Nome do objeto
+     */
     function _outputItem($data, $object_name = 'entity') {
         var_dump($data);
     }
 
+    /**
+     * Gera a saída HTML para um erro
+     * 
+     * @param mixed $data Dados do erro
+     */
     protected function _outputError($data) {
         var_dump('ERROR', $data);
     }
@@ -574,9 +640,9 @@ class Html extends \MapasCulturais\ApiOutput{
     /**
      * Corpo da tabela gerado na exportação dos eventos
      *
-     * @param obj $occs ocorrências
-     * @param array $first_item_keys cabeçalhos da tabela
-     * @param obj $item
+     * @param array $occs Ocorrências dos eventos
+     * @param array $first_item_keys Cabeçalhos da tabela
+     * @param object $item Item do evento
      * @return void
      */
     protected function printEventsBodyTable($occs, $first_item_keys, $item){
@@ -671,8 +737,8 @@ class Html extends \MapasCulturais\ApiOutput{
     /**
      * Corpo da tabela gerado para espaço e agente
      *
-     * @param array $first_item_keys cabeçalhos da tabela
-     * @param obj $item
+     * @param array $first_item_keys Cabeçalhos da tabela
+     * @param object $item Item a ser exibido
      * @return void
      */
     protected function printBodyTable($first_item_keys, $item){

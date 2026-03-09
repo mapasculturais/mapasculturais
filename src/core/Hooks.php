@@ -11,27 +11,59 @@ use Throwable;
  * @package MapasCulturais
  */
 class Hooks {
+    /**
+     * Instância da aplicação
+     * @var App
+     */
     protected App $app;
 
+    /**
+     * Array de hooks registrados, indexados por nome de hook
+     * @var array
+     */
     protected array $_hooks = [];
+
+    /**
+     * Array de hooks excluídos
+     * @var array
+     */
     protected array $_excludeHooks = [];
+
+    /**
+     * Cache de callables por nome de hook
+     * @var array
+     */
     protected array $_hookCache = [];
     
+    /**
+     * Contador de hooks registrados
+     * @var int
+     */
     protected int $hookCount = 0;
+
+    /**
+     * Pilha de hooks sendo executados
+     * @var array
+     */
     public array $hookStack = [];
 
+    /**
+     * Construtor
+     * 
+     * @param App $app
+     */
     function __construct(App $app) {
         $this->app = $app;
     }
 
     /**
-     * Clear hook listeners
+     * Limpa os listeners de hooks
      *
-     * Clear all listeners for all hooks. If `$name` is
-     * a valid hook name, only the listeners attached
-     * to that hook will be cleared.
+     * Limpa todos os listeners de todos os hooks. Se `$name` for
+     * um nome de hook válido, apenas os listeners anexados
+     * a esse hook serão limpos.
      *
-     * @param  string   $name   A hook name (Optional)
+     * @param  string|null   $name   Um nome de hook (Opcional)
      */
     public function clear(string $name = null) {
         if (is_null($name)) {
@@ -59,14 +91,14 @@ class Hooks {
 
 
     /**
-     * Get hook listeners
+     * Obtém os listeners de hooks
      *
-     * Return an array of registered hooks. If `$name` is a valid
-     * hook name, only the listeners attached to that hook are returned.
-     * Else, all listeners are returned as an associative array whose
-     * keys are hook names and whose values are arrays of listeners.
+     * Retorna um array de hooks registrados. Se `$name` for um nome
+     * de hook válido, apenas os listeners anexados a esse hook são retornados.
+     * Caso contrário, todos os listeners são retornados como um array associativo
+     * cujas chaves são nomes de hooks e cujos valores são arrays de listeners.
      *
-     * @param  string     $name     A hook name (Optional)
+     * @param  string|null     $name     Um nome de hook (Opcional)
      * @return array|null
      */
     public function get(string $name = null) {
@@ -74,10 +106,11 @@ class Hooks {
     }
 
     /**
-     * Assign hook
-     * @param  string   $name       The hook name
-     * @param  callable    $callable   A callable object
-     * @param  int      $priority   The hook priority; 0 = high, 10 = low
+     * Registra um hook
+     * 
+     * @param  string   $name       O nome do hook
+     * @param  callable $callable   Um objeto callable
+     * @param  int      $priority   A prioridade do hook; 0 = alta, 10 = baixa
      */
     function hook(string $name, callable $callable, int $priority = 10) {
         $this->hookCount++;
@@ -110,6 +143,11 @@ class Hooks {
     }
 
 
+    /**
+     * Registra um hook no log
+     * 
+     * @param string $name Nome do hook
+     */
     protected function _log(string $name) {
         $n = 2;
 
@@ -152,9 +190,10 @@ class Hooks {
 
 
     /**
-     * Invoke hook
-     * @param  string   $name       The hook name
-     * @param  mixed    $hookArgs   (Optional) Argument for hooked functions
+     * Invoca um hook
+     * 
+     * @param  string   $name       O nome do hook
+     * @param  array    $hookArg    (Opcional) Argumento para as funções hook
      * 
      * @return callable[]
      */
@@ -185,11 +224,11 @@ class Hooks {
     }
 
     /**
-     * Invoke hook binding callbacks to the target object
+     * Invoca um hook vinculando os callbacks ao objeto alvo
      *
-     * @param  object $target_object Object to bind hook
-     * @param  string   $name       The hook name
-     * @param  mixed    $hookArgs   (Optional) Argument for hooked functions
+     * @param  object $target_object Objeto ao qual vincular o hook
+     * @param  string $name          O nome do hook
+     * @param  array  $hookArg       (Opcional) Argumento para as funções hook
      * 
      * @return callable[]
      */
@@ -225,8 +264,9 @@ class Hooks {
 
 
     /**
+     * Retorna os callables registrados para um hook
      * 
-     * @param string $name 
+     * @param string $name Nome do hook
      * @return \Closure[]
      */
     function getCallables(string $name):array  {
@@ -271,6 +311,12 @@ class Hooks {
         return $result;
     }
 
+    /**
+     * Compila um padrão de hook para uma expressão regular
+     * 
+     * @param string $hook Padrão do hook
+     * @return string Expressão regular compilada
+     */
     protected function _compile(string $hook):string {
         $hook = trim($hook);
 

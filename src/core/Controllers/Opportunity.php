@@ -44,6 +44,15 @@ class Opportunity extends EntityController {
             Traits\ControllerEntityActions::PATCH_single as _PATCH_single;
         }
 
+    /**
+     * Atualiza parcialmente uma oportunidade.
+     *
+     * Este método sobrescreve o comportamento padrão para permitir alterar
+     * o tipo de objeto e entidade proprietária da oportunidade.
+     *
+     * @param mixed $data Dados para atualização
+     * @return void
+     */
     function PATCH_single($data = null)
     {
         $app = App::i();
@@ -67,12 +76,30 @@ class Opportunity extends EntityController {
         self::_PATCH_single();
     }
     
+    /**
+     * Exibe o formulário de criação de oportunidade.
+     *
+     * Este método sobrescreve o comportamento padrão para permitir a definição
+     * da entidade relacionada à oportunidade.
+     *
+     * @return void
+     */
     function GET_create() {
         // @TODO: definir entitidade relacionada
 
         parent::GET_create();
     }
 
+    /**
+     * Cria uma nova oportunidade.
+     *
+     * Este método determina automaticamente o tipo de oportunidade com base
+     * no parâmetro 'objectType' ou 'parent' fornecido nos dados da requisição.
+     * Os tipos suportados são: agent, event, space, project.
+     *
+     * @param mixed $data Dados da oportunidade a ser criada
+     * @return void
+     */
     function POST_index($data = null)
     {
         $classes = [
@@ -97,6 +124,15 @@ class Opportunity extends EntityController {
         parent::POST_index($this->data);
     }
 
+    /**
+     * Envia as avaliações por email para os usuários.
+     *
+     * Esta ação requer autenticação e permissão na oportunidade.
+     * Envia emails com os resultados das avaliações para os proponentes
+     * das inscrições.
+     *
+     * @return void
+     */
     function ALL_sendEvaluations(){
         $this->requireAuthentication();
 
@@ -117,6 +153,15 @@ class Opportunity extends EntityController {
         }
     }
 
+    /**
+     * Publica as inscrições de uma oportunidade.
+     *
+     * Esta ação requer autenticação e permissão na oportunidade.
+     * Torna as inscrições visíveis publicamente, alterando seu status
+     * para publicado.
+     *
+     * @return void
+     */
     function ALL_publishRegistrations(){
         $this->requireAuthentication();
 
@@ -138,6 +183,15 @@ class Opportunity extends EntityController {
         }
     }
 
+    /**
+    * Despublica as inscrições de uma oportunidade
+    * 
+    * Esta ação requer autenticação e permissão na oportunidade.
+    * Torna as inscrições não visíveis publicamente, revertendo o status
+    * para não publicado.
+    * 
+    * @return void
+    */
     function ALL_unPublishRegistrations() {
         $this->requireAuthentication();
 
@@ -160,6 +214,14 @@ class Opportunity extends EntityController {
         }
     }
 
+    /**
+    * Gera relatório de rascunhos de inscrições
+    * 
+    * Esta ação requer autenticação e permissão '@control' na oportunidade.
+    * Gera um arquivo CSV com as inscrições em status rascunho.
+    * 
+    * @return void
+    */
     function GET_reportDrafts(){
         $this->requireAuthentication();
         $app = App::i();
@@ -176,6 +238,14 @@ class Opportunity extends EntityController {
         $this->reportOutput('report-drafts-csv', ['entity' => $entity, 'registrationsDraftList' => $registrationsDraftList], $filename );
      }
 
+    /**
+    * Gera relatório de avaliações
+    * 
+    * Esta ação requer autenticação e permissão 'viewEvaluations' na oportunidade.
+    * Gera um arquivo Excel com as avaliações realizadas.
+    * 
+    * @return void
+    */
     function GET_reportEvaluations(){
         $this->requireAuthentication();
         $app = App::i();
@@ -213,6 +283,16 @@ class Opportunity extends EntityController {
         $this->reportOutput('report-evaluations', ['cfg' => $cfg, 'evaluations' => $evaluations, 'pending_evaluations' => $all_evaluations], $filename);
     }
 
+    /**
+    * Emite saída de relatório
+    * 
+    * Processa e emite a saída de relatórios em formatos CSV ou Excel.
+    * 
+    * @param string $view Nome da view do relatório
+    * @param array $view_params Parâmetros para a view
+    * @param string $filename Nome do arquivo de saída
+    * @return void
+    */
     protected function reportOutput($view, $view_params, $filename){
         $app = App::i();
         ini_set('max_execution_time', 0);
@@ -270,6 +350,14 @@ class Opportunity extends EntityController {
     }
 
 
+    /**
+    * Busca oportunidades com inscrições aprovadas pelo usuário
+    * 
+    * Esta ação requer autenticação.
+    * Retorna as oportunidades onde o usuário tem inscrições aprovadas.
+    * 
+    * @return void
+    */
     function API_findByUserApprovedRegistration(){
         ini_set('max_execution_time', 0);
         ini_set('memory_limit', '-1');
@@ -320,6 +408,14 @@ class Opportunity extends EntityController {
         return $opportunity;
     }
 
+    /**
+    * Obtém campos do tipo select de uma oportunidade
+    * 
+    * Retorna os campos de seleção configurados na oportunidade.
+    * 
+    * @param \MapasCulturais\Entities\Opportunity $opportunity Oportunidade
+    * @return array Campos do tipo select
+    */
     function getSelectFields(Entities\Opportunity $opportunity){
         $app = App::i();
 
@@ -338,6 +434,14 @@ class Opportunity extends EntityController {
         return $fields;
     }
 
+    /**
+    * Retorna o comitê de avaliação da oportunidade
+    * 
+    * Esta ação requer autenticação e permissão '@control' na oportunidade.
+    * Retorna a lista de avaliadores do comitê de avaliação.
+    * 
+    * @return void
+    */
     function API_evaluationCommittee(){
         $this->requireAuthentication();
 
@@ -364,6 +468,13 @@ class Opportunity extends EntityController {
         $this->apiResponse($result);
     }
 
+    /**
+    * Retorna os campos de seleção da oportunidade via API
+    * 
+    * Retorna os campos do tipo select configurados na oportunidade.
+    * 
+    * @return void
+    */
     function API_selectFields(){
         $app = App::i();
 
@@ -374,6 +485,17 @@ class Opportunity extends EntityController {
         $this->apiResponse($fields);
     }
 
+    /**
+    * Busca inscrições de uma oportunidade
+    * 
+    * Executa uma busca complexa de inscrições considerando múltiplas fases
+    * da oportunidade e seus metadados.
+    * 
+    * @param \MapasCulturais\Entities\Opportunity $opportunity Oportunidade
+    * @param array $query_data Dados da consulta
+    * @param bool $enalble_quota Habilita controle de cotas
+    * @return object Resultado da busca com contagem e registros
+    */
     function apiFindRegistrations($opportunity, $query_data, $enalble_quota = false) {
         $app = App::i();
         $data = $query_data;
@@ -527,6 +649,14 @@ class Opportunity extends EntityController {
         return (object) ['count' => $current_phase_query->count(), 'registrations' => $current_phase_result,];
     }
 
+    /**
+    * Busca inscrições via API
+    * 
+    * Esta ação busca inscrições de uma oportunidade com suporte a
+    * paginação, filtros e ordenação.
+    * 
+    * @return void
+    */
     function API_findRegistrations() {
         $app = App::i();
         
@@ -546,6 +676,14 @@ class Opportunity extends EntityController {
         $app->applyHookBoundTo($this, "API.{$this->action}({$this->id}).result" , [$query_data,  &$result]);
     }
 
+    /**
+    * Obtém o comitê de avaliação de uma oportunidade
+    * 
+    * Retorna a lista de avaliadores do comitê de avaliação.
+    * 
+    * @param int $opportunity_id ID da oportunidade
+    * @return array Comitê de avaliação
+    */
     protected function _getOpportunityCommittee($opportunity_id) {
         $app = App::i();
 
@@ -599,6 +737,14 @@ class Opportunity extends EntityController {
         return $committee;
     }
 
+    /**
+    * Obtém avaliadores por usuário
+    * 
+    * Retorna um mapeamento de usuários para seus respectivos avaliadores.
+    * 
+    * @param int $opportunity_id ID da oportunidade
+    * @return array Mapeamento usuário → avaliador
+    */
     function _getOpportunityValuerByUser($opportunity_id){
         $committee = $this->_getOpportunityCommittee($opportunity_id);
 
@@ -611,6 +757,16 @@ class Opportunity extends EntityController {
         return $valuer_by_user;
     }
 
+    /**
+    * Obtém inscrições de uma oportunidade
+    * 
+    * Retorna as inscrições com base nos números de inscrição fornecidos.
+    * 
+    * @param \MapasCulturais\Entities\Opportunity $opportunity Oportunidade
+    * @param array $registration_numbers Números das inscrições
+    * @param array $query_data Dados da consulta
+    * @return array Inscrições encontradas
+    */
     function _getOpportunityRegistrations($opportunity, array $registration_numbers, array $query_data){
         if (empty($registration_numbers)) {
             return [];
@@ -669,6 +825,15 @@ class Opportunity extends EntityController {
 
     }
 
+    /**
+    * Obtém avaliações de uma oportunidade
+    * 
+    * Retorna as avaliações com base nos IDs fornecidos.
+    * 
+    * @param \MapasCulturais\Entities\Opportunity $opportunity Oportunidade
+    * @param array $evaluation_ids IDs das avaliações
+    * @return array Avaliações encontradas
+    */
     function _getOpportunityEvaluations($opportunity, $evaluation_ids) {
         $app = App::i();
 
@@ -709,6 +874,15 @@ class Opportunity extends EntityController {
 
     }
 
+    /**
+    * Busca inscrições e avaliações via API
+    * 
+    * Esta ação requer autenticação.
+    * Retorna inscrições e suas avaliações para o usuário atual.
+    * 
+    * @param bool $return Se true, retorna os dados em vez de emitir resposta
+    * @return mixed Dados ou void
+    */
     function API_findRegistrationsAndEvaluations($return = false) {
         $app = App::i();
 
@@ -857,6 +1031,15 @@ class Opportunity extends EntityController {
         $this->apiResponse($registrationWithResultString);
     }
 
+    /**
+    * Busca avaliações via API
+    * 
+    * Esta ação requer autenticação.
+    * Retorna avaliações de uma oportunidade.
+    * 
+    * @param int|null $opportunity_id ID da oportunidade (opcional)
+    * @return void
+    */
     function API_findEvaluations($opportunity_id = null) {
         $this->requireAuthentication();
         
@@ -870,6 +1053,16 @@ class Opportunity extends EntityController {
         }
     }
 
+    /**
+    * Busca avaliações
+    * 
+    * Executa uma busca complexa de avaliações considerando comitê,
+    * usuários e filtros.
+    * 
+    * @param int|null $opportunity_id ID da oportunidade
+    * @param array $query_data Dados da consulta
+    * @return object Resultado da busca com contagem e avaliações
+    */
     function apiFindEvaluations(int $opportunity_id = null, array $query_data = []) {
         $app = App::i();
         $conn = $app->em->getConnection();
@@ -1123,6 +1316,14 @@ class Opportunity extends EntityController {
         return (object) ['evaluations' => $_result, 'count' => $queryNumberOfResults];
     }
 
+    /**
+    * Reconcilia resultados de avaliações
+    * 
+    * Esta ação requer autenticação e permissão '@control' na oportunidade.
+    * Recalcula e atualiza os resultados consolidados das avaliações.
+    * 
+    * @return void
+    */
     function ALL_reconsolidateResults() {
         $this->requireAuthentication();
 
@@ -1183,6 +1384,14 @@ class Opportunity extends EntityController {
         $app->redirect($url);
     }
 
+    /**
+    * Exporta configuração de campos
+    * 
+    * Esta ação requer autenticação e permissão 'modify' na oportunidade.
+    * Exporta a configuração de campos e arquivos da oportunidade.
+    * 
+    * @return void
+    */
     function GET_exportFields() {
         $this->requireAuthentication();
 
@@ -1282,6 +1491,14 @@ class Opportunity extends EntityController {
         echo json_encode($result);
     }
 
+    /**
+    * Importa configuração de campos
+    * 
+    * Esta ação requer autenticação e permissão 'modify' na oportunidade.
+    * Importa configuração de campos e arquivos para a oportunidade.
+    * 
+    * @return void
+    */
     function POST_importFields() {
         $this->requireAuthentication();
 
@@ -1311,6 +1528,14 @@ class Opportunity extends EntityController {
 
     }
 
+    /**
+    * Salva ordem dos campos
+    * 
+    * Esta ação requer autenticação e permissão 'modify' na oportunidade.
+    * Salva a ordem de exibição dos campos e arquivos.
+    * 
+    * @return void
+    */
     function POST_saveFieldsOrder() {
 
         $this->requireAuthentication();
@@ -1355,6 +1580,14 @@ class Opportunity extends EntityController {
 
     }
 
+    /**
+    * Exibe construtor de formulário
+    * 
+    * Esta ação requer autenticação e permissão 'modify' na oportunidade.
+    * Exibe a interface para construção do formulário de inscrição.
+    * 
+    * @return void
+    */
     function GET_formBuilder() {
         $this->requireAuthentication();
         $app = App::i();
@@ -1398,6 +1631,14 @@ class Opportunity extends EntityController {
         $this->render('form-builder', ['entity' => $entity]);
     }
 
+    /**
+    * Exibe lista de inscrições
+    * 
+    * Esta ação requer autenticação e permissão 'modify' na oportunidade.
+    * Exibe a lista de inscrições da oportunidade.
+    * 
+    * @return void
+    */
     function GET_registrations() {
         $this->requireAuthentication();
         $app = App::i();
@@ -1415,6 +1656,14 @@ class Opportunity extends EntityController {
         $this->render('registrations', ['entity' => $entity]);
     }
 
+    /**
+    * Exibe avaliações do usuário
+    * 
+    * Esta ação requer autenticação e permissão 'viewEvaluations' na oportunidade.
+    * Exibe as avaliações realizadas pelo usuário atual.
+    * 
+    * @return void
+    */
     function GET_userEvaluations() {
         $this->requireAuthentication();
 
@@ -1449,6 +1698,14 @@ class Opportunity extends EntityController {
         $this->render('evaluations-list--user', ['entity' => $opportunity->evaluationMethodConfiguration, 'valuer_user' => $valuer_user]);
     }
 
+    /**
+    * Exibe todas as avaliações
+    * 
+    * Esta ação requer autenticação e permissão '@control' na oportunidade.
+    * Exibe todas as avaliações da oportunidade.
+    * 
+    * @return void
+    */
     function GET_allEvaluations() {
         $this->requireAuthentication();
 
@@ -1469,6 +1726,14 @@ class Opportunity extends EntityController {
         $this->render('evaluations-list--all', ['entity' => $opportunity->evaluationMethodConfiguration]);
     }
 
+    /**
+    * Reabre avaliações
+    * 
+    * Esta ação requer autenticação e permissão 'manageEvaluationCommittee'.
+    * Reabre avaliações enviadas por um usuário específico.
+    * 
+    * @return void
+    */
     public function POST_reopenEvaluations() {
         $this->requireAuthentication();
 
@@ -1518,8 +1783,12 @@ class Opportunity extends EntityController {
     }
 
     /**
-     * Recria ponteiros entre fases das inscrições
-     * @return void 
+     * Corrige ponteiros entre fases de inscrições
+     * 
+     * Esta ação requer autenticação.
+     * Corrige os IDs de inscrição entre fases sequenciais da oportunidade.
+     * 
+     * @return void
      */
     public function ALL_fixNextPhaseRegistrationIds():void
     {
@@ -1531,6 +1800,14 @@ class Opportunity extends EntityController {
 
     }
 
+    /**
+    * Busca oportunidades avaliáveis
+    * 
+    * Esta ação requer autenticação.
+    * Retorna oportunidades que o usuário pode avaliar.
+    * 
+    * @return void
+    */
     public function API_findEvaluable(): void {
         $this->requireAuthentication();
 

@@ -4,50 +4,59 @@ namespace MapasCulturais;
 use \MapasCulturais\App;
 
 /**
- * The base class for all controllers.
+ * Classe base para todos os controladores.
  *
- * To create a controller you must extends this class and register the new controller class as a controller in the application
- * with the method \MapasCulturais\App::registerController(). Inside this class you can create actions.
+ * Esta classe abstrata fornece a estrutura fundamental para todos os controladores
+ * do sistema Mapas Culturais. Ela implementa o padrão de roteamento baseado em métodos
+ * HTTP e hooks, permitindo a criação de ações RESTful de forma consistente.
  *
- * The controllers actions are methods with name starting with the request type (GET_, POST_, PUT_ or DELETE_) or the word ALL_
- * followed by action name. So if you want an action that responds to all requests methods you use the word ALL, otherwise you put
- * the request type in the begin of the method name.
+ * Para criar um controlador você deve estender esta classe e registrar a nova classe de controlador
+ * na aplicação com o método \MapasCulturais\App::registerController(). Dentro desta classe você pode criar ações.
  *
- * Inside the action method you can access the data passed to action through
- * $this->data, $this->urlData, $this->requestData, $this->getData, $this->postData, $this->putData and $this->deleteData
+ * As ações dos controladores são métodos com nomes começando com o tipo de requisição (GET_, POST_, PUT_ ou DELETE_)
+ * ou a palavra ALL_ seguida do nome da ação. Se você quiser uma ação que responda a todos os métodos de requisição,
+ * use a palavra ALL, caso contrário coloque o tipo de requisição no início do nome do método.
  *
- * If you want that only logged in users can access an action, call the method $this->requireAuthentication(); at the first line of the action.
- * This method redirects the user, if he is not logged in, to the login page and redirects back to the action after the user successful log in
+ * Dentro do método de ação você pode acessar os dados passados para a ação através de
+ * $this->data, $this->urlData, $this->requestData, $this->getData, $this->postData, $this->putData e $this->deleteData
  *
- * To render a json call $this->json($data_to_encode_to_json).
+ * Se você quiser que apenas usuários autenticados possam acessar uma ação, chame o método $this->requireAuthentication();
+ * na primeira linha da ação. Este método redireciona o usuário, se ele não estiver logado, para a página de login
+ * e redireciona de volta para a ação após o login bem-sucedido.
  *
- * To render a template with the layout call $this->render('template-name', $array_of_data_to_pass_to_template).
+ * Para renderizar JSON, chame $this->json($dados_para_codificar_em_json).
  *
- * To render a template without the layout call $this->partial('template-name', $array_of_data_to_pass_to_template).
+ * Para renderizar um template com o layout, chame $this->render('nome-do-template', $array_de_dados_para_passar_ao_template).
  *
- * The template files for this controller is located in the folder themes/active/views/{$controller_id}/
+ * Para renderizar um template sem o layout, chame $this->partial('nome-do-template', $array_de_dados_para_passar_ao_template).
  *
- * @property string $layout
- * @property-read Theme $view
+ * Os arquivos de template para este controlador estão localizados na pasta themes/active/views/{$controller_id}/
+ *
+ * @property string $layout Layout utilizado para renderização
+ * @property-read Theme $view Instância do tema
+ * @property-read string $templatePrefix Prefixo para templates do controlador
+ * @property-read array $urlData Variáveis baseadas em URL passadas na URL após o nome da ação
  *
  * @see \MapasCulturais\App::registerController()
  *
- * @hook **{$method}({$controller_id}.{$action_name})** *($arguments)* - executed if the methods {$method}_{$action_name} and ALL_{$action_name} not exists.
- * @hook **ALL({$controller_id}.{$action_name})** *($arguments)* - executed if the methods {$method}_{$action_name} and ALL_{$action_name} and the previous hook not exists.
+ * @hook **{$method}({$controller_id}.{$action_name})** *($arguments)* - executado se os métodos {$method}_{$action_name} e ALL_{$action_name} não existirem.
+ * @hook **ALL({$controller_id}.{$action_name})** *($arguments)* - executado se os métodos {$method}_{$action_name} e ALL_{$action_name} e o hook anterior não existirem.
  *
- * @hook **{$method}:before** *($arguments)* - executed before the execution of all actions of all controllers.
- * @hook **{$method}({$controller_id}):before** *($arguments)* - executed before the execution of all actions of the controller.
- * @hook **{$method}({$controller_id}.{$action_name}):before** *($arguments)* - executed before the execution of the action.
- * @hook **ALL:before** *($arguments)* - executed before the execution of all actions of all controllers.
- * @hook **ALL({$controller_id}):before** *($arguments)* - executed before the execution ofall actions of the controller.
- * @hook **ALL({$controller_id}.{$action_name}):before** *($arguments)* - executed before the execution of the action.
+ * @hook **{$method}:before** *($arguments)* - executado antes da execução de todas as ações de todos os controladores.
+ * @hook **{$method}({$controller_id}):before** *($arguments)* - executado antes da execução de todas as ações do controlador.
+ * @hook **{$method}({$controller_id}.{$action_name}):before** *($arguments)* - executado antes da execução da ação.
+ * @hook **ALL:before** *($arguments)* - executado antes da execução de todas as ações de todos os controladores.
+ * @hook **ALL({$controller_id}):before** *($arguments)* - executado antes da execução de todas as ações do controlador.
+ * @hook **ALL({$controller_id}.{$action_name}):before** *($arguments)* - executado antes da execução da ação.
  *
- * @hook **{$method}:after** *($arguments)* - executed after the execution of all actions of all controllers
- * @hook **{$method}({$controller_id}):after** *($arguments)* - executed after the execution of all actions of the controller.
- * @hook **{$method}({$controller_id}.{$action_name}):after** *($arguments)* - executed after the execution of the action.
- * @hook **ALL:after** *($arguments)* - executed after the execution of all actions of all controllers.
- * @hook **ALL({$controller_id}):after** *($arguments)* - executed after the execution of all actions of the controller.
- * @hook **ALL({$controller_id}.{$action_name}):after** *($arguments)* - executed after the execution of the action.
+ * @hook **{$method}:after** *($arguments)* - executado após a execução de todas as ações de todos os controladores
+ * @hook **{$method}({$controller_id}):after** *($arguments)* - executado após a execução de todas as ações do controlador.
+ * @hook **{$method}({$controller_id}.{$action_name}):after** *($arguments)* - executado após a execução da ação.
+ * @hook **ALL:after** *($arguments)* - executado após a execução de todas as ações de todos os controladores.
+ * @hook **ALL({$controller_id}):after** *($arguments)* - executado após a execução de todas as ações do controlador.
+ * @hook **ALL({$controller_id}.{$action_name}):after** *($arguments)* - executado após a execução da ação.
+ * 
+ * @package MapasCulturais
  */
 
 abstract class Controller{
@@ -58,54 +67,86 @@ abstract class Controller{
 
 
     /**
-     * URL based vars passed in URL after the action name (not by GET).
+     * Variáveis baseadas em URL passadas na URL após o nome da ação (não por GET).
      *
-     * @example for de url **http://mapasculturais/controller/action/id:11/name:Fulanano** this property will be ['id' => 11, 'name' => 'Fulano']
+     * @example para a URL **http://mapasculturais/controller/action/id:11/name:Fulanano** esta propriedade será ['id' => 11, 'name' => 'Fulano']
      *
-     * @var array The URL data
+     * @var array Dados da URL
      */
     protected $_urlData = [];
 
     /**
-     * Array with the request data.
+     * Array com os dados da requisição.
      *
-     * This array is the merge of the URL based vars with $_REQUEST
+     * Este array é a combinação das variáveis baseadas em URL com $_REQUEST
      *
-     * @example for the URL .../actionname/id:1/a-data/name:Fulano?age=33 the resultant array will be [id=>1, 0=>a-data, name=>Fulano, age=>33]
+     * @example para a URL .../actionname/id:1/a-data/name:Fulano?age=33 o array resultante será [id=>1, 0=>a-data, name=>Fulano, age=>33]
      * @var array
      */
     public array $data = [];
 
-
+    /**
+     * @var array Dados da requisição GET
+     */
     public array $getData = [];
+    
+    /**
+     * @var array Dados da requisição POST
+     */
     public array $postData = [];
+    
+    /**
+     * @var array Dados da requisição PUT
+     */
     public array $putData = [];
+    
+    /**
+     * @var array Dados da requisição PATCH
+     */
     public array $patchData = [];
+    
+    /**
+     * @var array Dados da requisição DELETE
+     */
     public array $deleteData = [];
+    
+    /**
+     * @var array Dados da requisição (todos os métodos)
+     */
     public array $requestData = [];
 
+    /**
+     * @var string|null Nome da ação atual
+     */
     public $action = null;
     
+    /**
+     * @var string|null Método HTTP da requisição atual
+     */
     public $method = null;
 
+    /**
+     * @var string Layout utilizado para renderização
+     */
     protected $_layout = 'default';
 
     
     /**
-     * Array of instances of this class and all subclasses.
+     * Array de instâncias desta classe e todas as subclasses.
      * @var array
      */
     protected static $_singletonInstances = [];
 
     /**
-     * 
-     * @var string controller id
+     * @var string|null ID do controlador
      */
     public $id = null;
 
     /**
-     * Returns the singleton instance. This method creates the instance when called for the first time.
-     * @return self
+     * Retorna a instância singleton. Este método cria a instância quando chamado pela primeira vez.
+     * 
+     * @param string $controller_id ID do controlador
+     * @return Controller Instância do controlador
      */
     static public function i(string $controller_id): Controller {
         $class = get_called_class();
@@ -121,17 +162,18 @@ abstract class Controller{
     }
 
     /**
-     * This class use Singleton
-     * @return true
+     * Indica se esta classe usa o padrão Singleton.
+     * 
+     * @return bool Sempre retorna true
      */
     public static function usesSingleton(){
         return true;
     }
 
     /**
-     * Is this an AJAX request?
+     * Verifica se a requisição atual é uma requisição AJAX.
      *
-     * @return bool
+     * @return bool True se for uma requisição AJAX, false caso contrário
      */
     public function isAjax(){
         $app = App::i();
@@ -141,18 +183,18 @@ abstract class Controller{
     // =================== GETTERS ================== //
 
     /**
-     * Returns the controller layout
+     * Retorna o layout do controlador.
      * 
-     * @return string 
+     * @return string Layout atual
      */
     public function getLayout() {
         return $this->_layout;
     }
 
     /**
-     * Returns the URL based vars passed in URL after the action name (not by GET).
+     * Retorna as variáveis baseadas em URL passadas na URL após o nome da ação (não por GET).
      *
-     * @return array URL data
+     * @return array Dados da URL
      */
     public function getUrlData(){
         return $this->_urlData;
@@ -161,18 +203,18 @@ abstract class Controller{
     // =================== SETTERS ===================== //
 
     /**
-     * Set the layout to use to render the template.
+     * Define o layout a ser usado para renderizar o template.
      *
-     * @param string $layout
+     * @param string $layout Nome do layout
      */
     public function setLayout($layout){
         $this->_layout = $layout;
     }
 
     /**
-     * Defines the request data to be used in actions.
+     * Define os dados da requisição a serem usados nas ações.
      *
-     * @param array $args
+     * @param array $args Argumentos da URL
      */
     public function setRequestData(array $args){
         $this->_urlData = $args;
@@ -195,38 +237,40 @@ abstract class Controller{
 
 
     /**
-     * Call an action of this controller.
+     * Chama uma ação deste controlador.
      *
-     * The action is a method named {$method}_actionName (ex: GET_list) or a hook like GET(controllerId.actionName).
+     * A ação é um método nomeado {$method}_actionName (ex: GET_list) ou um hook como GET(controllerId.actionName).
      *
-     * This method first try to call a method starting with the request type (like GET_), then try to call a method starting with the word ALL_, then try to call the hooks.
-     * If none of these methods exists, the request is passed by calling the App::i()->pass().
+     * Este método primeiro tenta chamar um método começando com o tipo de requisição (como GET_), depois tenta chamar
+     * um método começando com a palavra ALL_, depois tenta chamar os hooks.
+     * Se nenhum desses métodos existir, a requisição é passada chamando App::i()->pass().
      *
-     * For the API actions the name of the action method must starts with API_ (ex: API_actionName)
+     * Para ações da API, o nome do método de ação deve começar com API_ (ex: API_actionName)
      *
-     * @param string $method (GET, PUT, POST, DELETE or ALL)
-     * @param string $action_name the action name
-     * @param array $arguments arguments to pass to action
+     * @param string $method (GET, PUT, POST, DELETE ou ALL)
+     * @param string $action_name Nome da ação
+     * @param array $arguments Argumentos para passar para a ação
      *
-     * @example For a POST request to the ..../controller_id/actionName, first try Controller::POST_actionName, then Controller::ALL_actionName,
-     *          then the hook with name POST(controller_id.actionName), then the hook ALL(controller_id.actionName)
+     * @example Para uma requisição POST para ..../controller_id/actionName, primeiro tenta Controller::POST_actionName,
+     *          depois Controller::ALL_actionName, depois o hook com nome POST(controller_id.actionName),
+     *          depois o hook ALL(controller_id.actionName)
      *
-     * @hook **{$method}({$controller_id}.{$action_name})** *($arguments)* - executed if the methods {$method}_{$action_name} and ALL_{$action_name} not exists.
-     * @hook **ALL({$controller_id}.{$action_name})** *($arguments)* - executed if the methods {$method}_{$action_name} and ALL_{$action_name} and the previous hook not exists.
+     * @hook **{$method}({$controller_id}.{$action_name})** *($arguments)* - executado se os métodos {$method}_{$action_name} e ALL_{$action_name} não existirem.
+     * @hook **ALL({$controller_id}.{$action_name})** *($arguments)* - executado se os métodos {$method}_{$action_name} e ALL_{$action_name} e o hook anterior não existirem.
      *
-     * @hook **{$method}:before** *($arguments)* - executed before the execution of all actions of all controllers.
-     * @hook **{$method}({$controller_id}):before** *($arguments)* - executed before the execution of all actions of the controller.
-     * @hook **{$method}({$controller_id}.{$action_name}):before** *($arguments)* - executed before the execution of the action.
-     * @hook **ALL:before** *($arguments)* - executed before the execution of all actions of all controllers.
-     * @hook **ALL({$controller_id}):before** *($arguments)* - executed before the execution ofall actions of the controller.
-     * @hook **ALL({$controller_id}.{$action_name}):before** *($arguments)* - executed before the execution of the action.
+     * @hook **{$method}:before** *($arguments)* - executado antes da execução de todas as ações de todos os controladores.
+     * @hook **{$method}({$controller_id}):before** *($arguments)* - executado antes da execução de todas as ações do controlador.
+     * @hook **{$method}({$controller_id}.{$action_name}):before** *($arguments)* - executado antes da execução da ação.
+     * @hook **ALL:before** *($arguments)* - executado antes da execução de todas as ações de todos os controladores.
+     * @hook **ALL({$controller_id}):before** *($arguments)* - executado antes da execução de todas as ações do controlador.
+     * @hook **ALL({$controller_id}.{$action_name}):before** *($arguments)* - executado antes da execução da ação.
      *
-     * @hook **{$method}:after** *($arguments)* - executed after the execution of all actions of all controllers
-     * @hook **{$method}({$controller_id}):after** *($arguments)* - executed after the execution of all actions of the controller.
-     * @hook **{$method}({$controller_id}.{$action_name}):after** *($arguments)* - executed after the execution of the action.
-     * @hook **ALL:after** *($arguments)* - executed after the execution of all actions of all controllers.
-     * @hook **ALL({$controller_id}):after** *($arguments)* - executed after the execution of all actions of the controller.
-     * @hook **ALL({$controller_id}.{$action_name}):after** *($arguments)* - executed after the execution of the action.
+     * @hook **{$method}:after** *($arguments)* - executado após a execução de todas as ações de todos os controladores
+     * @hook **{$method}({$controller_id}):after** *($arguments)* - executado após a execução de todas as ações do controlador.
+     * @hook **{$method}({$controller_id}.{$action_name}):after** *($arguments)* - executado após a execução da ação.
+     * @hook **ALL:after** *($arguments)* - executado após a execução de todas as ações de todos os controladores.
+     * @hook **ALL({$controller_id}):after** *($arguments)* - executado após a execução de todas as ações do controlador.
+     * @hook **ALL({$controller_id}.{$action_name}):after** *($arguments)* - executado após a execução da ação.
      *
      */
     public function callAction($method, $action_name, $arguments) {
@@ -309,24 +353,30 @@ abstract class Controller{
     }
 
     /**
-     * Retorna instância do tema
-     * @return Theme 
+     * Retorna instância do tema.
+     * 
+     * @return Theme Instância do tema
      */
     function getView() {
         $app = App::i();
         return $app->view;
     }
 
+    /**
+     * Retorna o prefixo para templates do controlador.
+     * 
+     * @return string Prefixo do template (ID do controlador)
+     */
     function getTemplatePrefix()
     {
         return $this->id;
     }
 
     /**
-     * Render a template in the folder with the name of the controller id
+     * Renderiza um template na pasta com o nome do ID do controlador.
      *
-     * @param string $template the template name
-     * @param type $data array with data to pass to the template
+     * @param string $template Nome do template
+     * @param array $data Array com dados para passar ao template
      */
     public function render($template, $data=[])
     {
@@ -341,10 +391,10 @@ abstract class Controller{
     }
 
     /**
-     * Render a template without the layout, in the folder with the name of the controller id
+     * Renderiza um template sem o layout, na pasta com o nome do ID do controlador.
      *
-     * @param string $template the template name
-     * @param type $data array with data to pass to the template
+     * @param string $template Nome do template
+     * @param array $data Array com dados para passar ao template
      */
     public function partial($template, $data=[])
     {
@@ -359,9 +409,10 @@ abstract class Controller{
     }
 
     /**
-     * Sets the response content type to application/json and prints the $data encoded to json.
+     * Define o tipo de conteúdo da resposta como application/json e imprime os $data codificados em JSON.
      *
-     * @param mixed $data
+     * @param mixed $data Dados a serem codificados em JSON
+     * @param int $status Código de status HTTP (padrão: 200)
      */
     public function json($data, $status = 200){
         $app = App::i();
@@ -370,9 +421,10 @@ abstract class Controller{
     }
 
     /**
-     * Sets the response content type to application/json and prints a json of ['error' => true, 'data' => $data]
+     * Define o tipo de conteúdo da resposta como application/json e imprime um JSON de ['error' => true, 'data' => $data].
      *
-     * @param mixed $data
+     * @param mixed $data Dados a serem incluídos na resposta de erro
+     * @param int $status Código de status HTTP (padrão: 400)
      *
      * @TODO Alterar o status padrão para 400. será necessário alterar os js para esperar este retorno.
      */
@@ -383,19 +435,22 @@ abstract class Controller{
     }
 
     /**
-     * Creates a URL to the given action name and data
-     * @param string $actionName
-     * @param array $data
-     * @return string the generated URL
+     * Cria uma URL para o nome da ação e dados fornecidos.
+     * 
+     * @param string $actionName Nome da ação
+     * @param array $data Dados para a URL
+     * @return string URL gerada
      */
     public function createUrl($actionName, array $data = []){
         return App::i()->routesManager->createUrl($this->id, $actionName, $data);
     }
 
     /**
-     * This method redirects the request to authentication page if the user is not logged in.
+     * Este método redireciona a requisição para a página de autenticação se o usuário não estiver logado.
      *
-     * Call this method at the beginning of actions that require authentication.
+     * Chame este método no início de ações que requerem autenticação.
+     * 
+     * @param string|null $redirect_url URL para redirecionar após o login (opcional)
      */
     public function requireAuthentication(string $redirect_url = null){
         $app = App::i();

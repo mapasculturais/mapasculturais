@@ -11,11 +11,13 @@ use MapasCulturais\Entities\Registration;
 use MapasCulturais\Entities\User;
 
 /**
- * @property-read string $slug
- * @property-read string $name
- * @property-read string $description
- * @property-read array  $defaultStatuses
- * @property-read string $hookPrefix
+ * Classe base para métodos de avaliação de inscrições
+ * 
+ * @property-read string $slug Identificador único do método de avaliação
+ * @property-read string $name Nome do método de avaliação
+ * @property-read string $description Descrição do método de avaliação
+ * @property-read array  $defaultStatuses Status padrão da fase de avaliação
+ * @property-read string $hookPrefix Prefixo para hooks deste método
  * 
  * @package MapasCulturais
  */
@@ -24,8 +26,22 @@ abstract class EvaluationMethod extends Module implements \JsonSerializable{
 
     abstract function enqueueScriptsAndStyles();
 
+    /**
+     * Retorna o slug do método
+     * @return string
+     */
     abstract function getSlug();
+
+    /**
+     * Retorna o nome do método
+     * @return string
+     */
     abstract function getName();
+
+    /**
+     * Retorna a descrição do método
+     * @return string
+     */
     abstract function getDescription();
 
     /**
@@ -46,18 +62,43 @@ abstract class EvaluationMethod extends Module implements \JsonSerializable{
 
     abstract protected function _getConsolidatedAutoApplicationResult(Entities\Registration $registration);
 
+    /**
+     * Retorna o resultado da avaliação
+     * @param Entities\RegistrationEvaluation $evaluation
+     * @return mixed
+     */
     abstract function getEvaluationResult(Entities\RegistrationEvaluation $evaluation);
 
+    /**
+     * Retorna os detalhes de uma avaliação (implementação dependente do método)
+     */
     abstract function _getEvaluationDetails(Entities\RegistrationEvaluation $evaluation): ?array;
+
+    /**
+     * Retorna os detalhes consolidados de uma inscrição (implementação dependente do método)
+     */
     abstract function _getConsolidatedDetails(Entities\Registration $registration): ?array;
 
+    /**
+     * Retorna os status padrão (implementação dependente do método)
+     */
     protected abstract function _getDefaultStatuses(EvaluationMethodConfiguration $evaluation_method_configuration): array;
 
+    /**
+     * Retorna o prefixo para hooks deste método
+     * @return string
+     */
     public function getHookPrefix(): string
     {
         return "evaluationMethod({$this->slug})";
     }
 
+    /**
+     * Exporta as configurações do método para array
+     * 
+     * @param EvaluationMethodConfiguration $evaluation_method_configuration
+     * @return array
+     */
     public function export(EvaluationMethodConfiguration $evaluation_method_configuration): array
     {
         $app = App::i();
@@ -71,6 +112,13 @@ abstract class EvaluationMethod extends Module implements \JsonSerializable{
         return $result;
     }
 
+    /**
+     * Importa as configurações do método a partir de um array
+     * 
+     * @param EvaluationMethodConfiguration $evaluation_method_configuration
+     * @param array $data
+     * @return void
+     */
     public function import(EvaluationMethodConfiguration $evaluation_method_configuration, array $data)
     {
         $app = App::i();
@@ -98,11 +146,22 @@ abstract class EvaluationMethod extends Module implements \JsonSerializable{
         return $statuses;
     }
 
+    /**
+     * Retorna a chave de configuração para os status padrão
+     * 
+     * @param EvaluationMethodConfiguration $evaluation_method_configuration
+     * @return string
+     */
     public function getDefaultStatusesConfigKey(EvaluationMethodConfiguration $evaluation_method_configuration): string {
         return "opportunityPhase.defaultStatuses.{$evaluation_method_configuration->slug}";
     }
 
 
+    /**
+     * Retorna a próxima data e hora para redistribuição de inscrições
+     * 
+     * @return \DateTime
+     */
     static function getNextRedistributionDateTime(): \DateTime {
         $app = App::i();
         $str_time = date($app->config['registrations.distribution.dateString']) . ' ' . $app->config['registrations.distribution.incrementString'];
@@ -110,6 +169,13 @@ abstract class EvaluationMethod extends Module implements \JsonSerializable{
         return $datetime;
     }
 
+    /**
+     * Compara dois valores de resultado
+     * 
+     * @param mixed $value1
+     * @param mixed $value2
+     * @return int
+     */
     public function cmpValues($value1, $value2){
         if($value1 > $value2){
             return 1;
@@ -139,6 +205,13 @@ abstract class EvaluationMethod extends Module implements \JsonSerializable{
         return [];
     }
 
+    /**
+     * Retorna a configuração do relatório para este método
+     * 
+     * @param Opportunity $opportunity
+     * @param bool $call_hooks
+     * @return array
+     */
     function getReportConfiguration($opportunity, $call_hooks = true){
         $app = App::i();
 
@@ -239,10 +312,22 @@ abstract class EvaluationMethod extends Module implements \JsonSerializable{
     }
 
 
+    /**
+     * Converte o resultado de uma avaliação para string
+     * 
+     * @param Entities\RegistrationEvaluation $evaluation
+     * @return string
+     */
     function evaluationToString(Entities\RegistrationEvaluation $evaluation){
         return $this->valueToString($evaluation->result);
     }
 
+    /**
+     * Converte um valor de resultado para string
+     * 
+     * @param mixed $value
+     * @return string
+     */
     function valueToString($value) {
         if($value == '@tiebreaker'){
             return i::__('Aguardando desempate');
@@ -319,7 +404,7 @@ abstract class EvaluationMethod extends Module implements \JsonSerializable{
     }
 
     /**
-     * Retorna se método de avaliação deve ou não auto aplicar os resultados
+     * Retorna se o método de avaliação deve auto-aplicar os resultados
      *
      * @return boolean
      */
@@ -329,9 +414,10 @@ abstract class EvaluationMethod extends Module implements \JsonSerializable{
     }
     
     /**
-     * Aplica o resultado de uma avaliação na inscrição
+     * Aplica o resultado consolidado de uma avaliação na inscrição, alterando seu status
      *
      * @param Entities\Registration $registration
+     * @param int|null $status_force
      * @return boolean
      */
     function applyConsolidatedResult(Entities\Registration $registration, $status_force = null): bool
@@ -382,6 +468,13 @@ abstract class EvaluationMethod extends Module implements \JsonSerializable{
         return true;
     }
 
+    /**
+     * Retorna o resultado da auto-aplicação consolidada
+     * 
+     * @param Registration $registration
+     * @param int|null $status_force
+     * @return mixed
+     */
     public function getConsolidatedAutoApplicationResult(Registration $registration, $status_force = null)
     {
         $app = App::i();
@@ -1468,12 +1561,23 @@ abstract class EvaluationMethod extends Module implements \JsonSerializable{
         }
     }
 
+    /**
+     * Retorna o nome da partial do formulário de avaliação
+     * 
+     * @return string
+     */
     function getEvaluationFormPartName(){
         $slug = $this->getSlug();
 
         return "$slug--evaluation-form";
     }
 
+    /**
+     * Retorna o sumário de avaliações de uma inscrição
+     * 
+     * @param Registration $registration
+     * @return array
+     */
     public function getEvaluationSummary($registration) {
         $app = App::i();
 
@@ -1500,24 +1604,44 @@ abstract class EvaluationMethod extends Module implements \JsonSerializable{
         return $result;
     }
 
+    /**
+     * Retorna o nome da partial de visualização da avaliação
+     * 
+     * @return string
+     */
     function getEvaluationViewPartName(){
         $slug = $this->getSlug();
 
         return "$slug--evaluation-view";
     }
 
+    /**
+     * Retorna o nome da partial de informações do formulário de avaliação
+     * 
+     * @return string
+     */
     function getEvaluationFormInfoPartName(){
         $slug = $this->getSlug();
 
         return "$slug--evaluation-info";
     }
     
+    /**
+     * Retorna o nome da partial do formulário de configuração do método
+     * 
+     * @return string
+     */
     function getConfigurationFormPartName(){
         $slug = $this->getSlug();
 
         return "$slug--configuration-form";
     }
 
+    /**
+     * Registra o método de avaliação na aplicação
+     * 
+     * @return void
+     */
     function register(){
         $app = App::i();
 
@@ -1544,6 +1668,13 @@ abstract class EvaluationMethod extends Module implements \JsonSerializable{
         ]);
     }
     
+    /**
+     * Registra um metadado específico para a configuração deste método
+     * 
+     * @param string $key
+     * @param array $config
+     * @return void
+     */
     function registerEvaluationMethodConfigurationMetadata($key, array $config){
         $app = App::i();
 
@@ -1552,18 +1683,38 @@ abstract class EvaluationMethod extends Module implements \JsonSerializable{
         $app->registerMetadata($metadata, 'MapasCulturais\Entities\EvaluationMethodConfiguration', $this->getSlug());
     }
 
+    /**
+     * Indica se o método utiliza comitê de avaliação
+     * 
+     * @return bool
+     */
     function usesEvaluationCommittee(){
         return true;
     }
     
+    /**
+     * Indica se o método utiliza grupos de comitê
+     * 
+     * @return bool
+     */
     public function useCommitteeGroups(): bool {
         return true;
     }
 
+    /**
+     * Indica se o método avalia a própria inscrição (auto-avaliação)
+     * 
+     * @return bool
+     */
     public function evaluateSelfApplication(): bool {
         return true;
     }
 
+    /**
+     * Serializa o objeto para JSON
+     * 
+     * @return array
+     */
     public function jsonSerialize(): array {
         return [];
     }
