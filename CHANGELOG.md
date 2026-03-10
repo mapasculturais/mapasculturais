@@ -9,6 +9,7 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 ### Correções
 - Aplica verificação para evitar a criação de sessões sem critérios de avaliação no método de avaliação técnica.
 - Ajusta a exibição da aba de avaliação na oportunidade para o avaliador do edital.
+- Corrige erro ao formatar a data no método _logMailMessage()
 
 ### Melhorias
 - Inclui nova área de atuação "Cultura do Povo Tupiniquin"

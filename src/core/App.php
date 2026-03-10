@@ -3033,9 +3033,7 @@ class App
             }
             $log_data[$field] = $parseField($message->$getter());
         }
-        $log_line =
-            new \DateTime()->format("Y-m-d H:i:s.u") .
-            " " .
+        $log_line = (new \DateTime())->format("Y-m-d H:i:s.u") . " " .
             json_encode($log_data);
 
         $filename =
