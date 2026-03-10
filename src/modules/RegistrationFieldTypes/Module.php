@@ -182,6 +182,25 @@ class Module extends \MapasCulturais\Module
             }
         });
 
+        // Faz validação dos dados de entrada no campo de tabela
+        $app->hook("entity(RegistrationFieldConfiguration).validationErrors", function(&$errors) use($module, $app) {
+            if($this->fieldType == 'custom-table') {
+                if (!isset($this->config['columns']) || !is_array($this->config['columns']) || empty($this->config['columns'])) {
+                    $errors[] = i::__('É necessário configurar pelo menos uma coluna para o campo de tabela');
+                }
+
+                foreach ($this->config['columns'] as $column) {
+                    if (!isset($column['name']) || trim($column['name']) === '') {
+                        $errors[] = i::__('Todas as colunas devem ter um nome configurado');
+                    }
+
+                    if($column['type'] == 'select' && trim($column['options']) === '') {
+                        $errors[] = i::__('O campo de seleção deve ter pelo menos uma opção');
+                    }
+                }
+            }
+        });
+
         // Validação de @location: lista de subcampos obrigatórios vem do banco.
         // Suporta config separada (requiredAddressFieldsBrazil / requiredAddressFieldsOther) ou legado (requiredAddressFields).
         $module = $this;
@@ -283,6 +302,38 @@ class Module extends \MapasCulturais\Module
                     if (!in_array($msg, $errorsResult[$field_name])) {
                         $errorsResult[$field_name][] = $msg;
                     }
+                }
+            }
+        });
+
+        $app->hook("entity(Registration).sendValidationErrors", function(&$errorsResult) use($module) {
+            /** @var Registration $this */
+            $registration = $this;
+            $opportunity = $registration->opportunity;
+
+            foreach ($opportunity->registrationFieldConfigurations as $field) {
+                if ($field->fieldType !== 'custom-table') {
+                    continue;
+                }
+                if (!$registration->isFieldVisisble($field)) {
+                    continue;
+                }
+
+                $prop_name = $field->getFieldName();
+                $val = $registration->$prop_name;
+
+                if (!is_array($val)) {
+                    continue;
+                }
+
+                $field_name = 'field_' . $field->id;
+                $cellErrors = $module->validateCustomTableCells($field->config['columns'] ?? [], $val);
+
+                if (!empty($cellErrors)) {
+                    if (!isset($errorsResult[$field_name])) {
+                        $errorsResult[$field_name] = [];
+                    }
+                    $errorsResult[$field_name] = array_merge($errorsResult[$field_name], $cellErrors);
                 }
             }
         });
@@ -406,6 +457,12 @@ class Module extends \MapasCulturais\Module
             }
             return;
         });
+
+        // Faz a normalização dos dados no campo de tabela
+        $app->hook("entity(registration).fieldConfiguration(custom-table).<<insert|update>>:before", function() use($module) {
+            /** @var RegistrationFieldConfiguration $this */
+            $module->normalizeAndValidateCustomTableConfig($this);
+        });
     }
 
     public function register()
@@ -417,6 +474,76 @@ class Module extends \MapasCulturais\Module
         foreach ($this->getRegistrationFieldTypesDefinitions() as $definition) {
             $app->registerRegistrationFieldType(new RegistrationFieldType($definition));
         }
+    }
+
+    function validateCustomTableCells(array $columns, array $rows): array
+    {
+        $errors = [];
+
+        foreach ($rows as $rowIndex => $row) {
+            if (!is_array($row)) {
+                continue;
+            }
+
+            foreach ($columns as $colIndex => $column) {
+                $cellValue = $row["col{$colIndex}"] ?? null;
+                $columnName = $column['name'] ?? "Coluna {$colIndex}";
+                $columnType = $column['type'] ?? 'text';
+                $isRequired = ($column['required'] ?? '') === 'true';
+
+                if ($isRequired && ($cellValue === null || $cellValue === '')) {
+                    $errors[] = sprintf(i::__('Campo "%s" (linha %d) é obrigatório'), $columnName, $rowIndex + 1);
+                    continue;
+                }
+
+                if ($cellValue === null || $cellValue === '') {
+                    continue;
+                }
+
+                $cellOk = true;
+                $cellErrorMsg = '';
+
+                switch ($columnType) {
+                    case 'cpf':
+                        $cellOk = \Respect\Validation\Validator::cpf()->validate($cellValue);
+                        $cellErrorMsg = sprintf(i::__('CPF inválido no campo "%s" (linha %d)'), $columnName, $rowIndex + 1);
+                        break;
+                    case 'email':
+                        $cellOk = \Respect\Validation\Validator::email()->validate($cellValue);
+                        $cellErrorMsg = sprintf(i::__('E-mail inválido no campo "%s" (linha %d)'), $columnName, $rowIndex + 1);
+                        break;
+                    case 'number':
+                        $cellOk = \Respect\Validation\Validator::numericVal()->validate($cellValue);
+                        $cellErrorMsg = sprintf(i::__('Número inválido no campo "%s" (linha %d)'), $columnName, $rowIndex + 1);
+                        break;
+                }
+
+                if (!$cellOk) {
+                    $errors[] = $cellErrorMsg;
+                }
+            }
+        }
+
+        return $errors;
+    }
+
+    function normalizeAndValidateCustomTableConfig(RegistrationFieldConfiguration $field): void
+    {
+        $config = is_array($field->config) ? $field->config : [];
+
+        if (array_key_exists('minRows', $config)) {
+            $config['minRows'] = ($config['minRows'] === null || $config['minRows'] === '' || $config['minRows'] === false)
+                ? 0
+                : (int) $config['minRows'];
+        }
+
+        if (array_key_exists('maxRows', $config)) {
+            $config['maxRows'] = ($config['maxRows'] === null || $config['maxRows'] === '' || $config['maxRows'] === false)
+                ? null
+                : (int) $config['maxRows'];
+        }
+
+        $field->config = $config;
     }
 
     function register_agent_field() {
@@ -962,6 +1089,49 @@ class Module extends \MapasCulturais\Module
                     }
 
                     return $links;
+                }
+            ],
+            [
+                'slug' => 'custom-table',
+                'name' => \MapasCulturais\i::__('Tabela Customizável'),
+                'viewTemplate' => 'registration-field-types/custom-table',
+                'configTemplate' => 'registration-field-types/custom-table-config',
+                'validations' => [],
+                'serialize' => function($value) {
+                    // Se já é string, retorna direto (evita double encoding)
+                    if(is_string($value)) {
+                        return $value;
+                    }
+                    
+                    // Limpar propriedades internas do Vue (que começam com $$)
+                    if(is_array($value)){
+                        foreach($value as &$row){
+                            if(is_object($row)) {
+                                foreach($row as $key => $v){
+                                    if(substr($key, 0, 2) == '$$'){
+                                        unset($row->$key);
+                                    }
+                                }
+                            } elseif(is_array($row)) {
+                                foreach($row as $key => $v){
+                                    if(substr($key, 0, 2) == '$$'){
+                                        unset($row[$key]);
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+                    return json_encode($value);
+                },
+                'unserialize' => function($value) {
+                    $rows = json_decode($value ?: "", true);
+
+                    if(!is_array($rows)){
+                        $rows = [];
+                    }
+
+                    return $rows;
                 }
             ],
             [

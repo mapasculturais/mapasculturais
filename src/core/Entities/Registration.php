@@ -10,6 +10,7 @@ use MapasCulturais\App;
 use MapasCulturais\Exceptions\PermissionDenied;
 use MapasCulturais\EvaluationMethod;
 use MapasCulturais\GuestUser;
+use Respect\Validation\Validator as v;
 
 /**
  * Registration
@@ -1525,6 +1526,7 @@ class Registration extends \MapasCulturais\Entity
                         }
                     }
                 }
+
             }
 
             if ($errors) {
