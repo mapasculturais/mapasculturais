@@ -138,6 +138,14 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 <a name="770-funarte"></a>
 2. <small>Melhoria desenvolvida pela Funarte (Fundação Nacional de Artes) para a Rede das Artes</small>
 
+## [7.6.57] - 2026-03-10
+### Correções
+- Aplica verificação para evitar a criação de sessões sem critérios de avaliação no método de avaliação técnica.
+- Ajusta a exibição da aba de avaliação na oportunidade para o avaliador do edital.
+
+### Melhorias
+- Inclui nova área de atuação "Cultura do Povo Tupiniquin"
+
 ## [7.6.56] - 2026-03-06
 ### Correções
 - Corrige endpoint createAppealPhaseRegistration para verificar se já existe inscrição do proponente na fase de recurso

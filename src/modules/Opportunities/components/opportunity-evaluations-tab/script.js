@@ -21,12 +21,9 @@ app.component('opportunity-evaluations-tab', {
             }
             
             let result = false;
-            this.phases.forEach(phase => {
-                if(phase.currentUserPermissions.evaluateOnTime){
-                    result = true;
-                    return;
-                }
-            });
+            if($MAPAS.config.opportunityEvaluationsTab.isEvaluator){
+                result = true;
+            };
 
             return result;
         }
