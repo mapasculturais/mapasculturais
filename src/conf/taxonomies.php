@@ -147,6 +147,7 @@ return array(
             i::__('Cultura do Povo Timbira'),
             i::__('Cultura do Povo Tukano'),
             i::__('Cultura do Povo Tupi'),
+            i::__('Cultura do Povo Tupiniquin'),
             i::__('Cultura do Povo Wai Wai'),
             i::__('Cultura do Povo Waimiri-Atroari'),
             i::__('Cultura do Povo Xavante'),

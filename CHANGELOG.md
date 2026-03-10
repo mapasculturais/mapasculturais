@@ -9,6 +9,9 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 ### Correções
 - Aplica verificação para evitar a criação de sessões sem critérios de avaliação no método de avaliação técnica.
 
+### Melhorias
+- Inclui nova área de atuação "Cultura do Povo Tupiniquin"
+
 ## [7.6.56] - 2026-03-06
 ### Correções
 - Corrige endpoint createAppealPhaseRegistration para verificar se já existe inscrição do proponente na fase de recurso
