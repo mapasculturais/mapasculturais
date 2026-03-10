@@ -4,11 +4,41 @@ namespace MapasCulturais\Traits;
 use MapasCulturais\App;
 use MapasCulturais\Entity;
 
+/**
+ * Trait para gerenciamento de modelos de oportunidades
+ * 
+ * Este trait fornece funcionalidades para criar, clonar e gerenciar modelos
+ * de oportunidades e suas fases no sistema Mapas Culturais.
+ * 
+ * @package MapasCulturais\Traits
+ */
 trait EntityManagerModel {
 
+    /**
+     * @var \MapasCulturais\Entities\Opportunity Entidade de oportunidade original
+     * @access private
+     */
     private $entityOpportunity;
+    
+    /**
+     * @var \MapasCulturais\Entities\Opportunity Modelo de oportunidade gerado
+     * @access private
+     */
     private $entityOpportunityModel;
 
+    /**
+     * Gera um modelo a partir de uma oportunidade existente
+     * 
+     * Este método cria uma cópia da oportunidade como modelo, incluindo
+     * todos os métodos de avaliação, fases, termos, metadados, campos de
+     * inscrição, arquivos e relações com selos.
+     * 
+     * @api ALL generatemodel
+     * @return void Retorna JSON da entidade (AJAX) ou redireciona
+     * 
+     * @throws \MapasCulturais\Exceptions\PermissionDenied Se o usuário não tiver permissão
+     * @requiresAuthentication
+     */
     function ALL_generatemodel(){
         $app = App::i();
 
@@ -33,6 +63,19 @@ trait EntityManagerModel {
         }
     }
 
+    /**
+     * Gera uma nova oportunidade a partir de um modelo
+     * 
+     * Este método cria uma nova oportunidade baseada em um modelo existente,
+     * desabilitando temporariamente o controle de acesso para permitir
+     * a criação completa da estrutura.
+     * 
+     * @api ALL generateopportunity
+     * @return void Retorna JSON da nova oportunidade gerada
+     * 
+     * @throws \MapasCulturais\Exceptions\PermissionDenied Se o usuário não tiver permissão
+     * @requiresAuthentication
+     */
     function ALL_generateopportunity(){
         $app = App::i();
 
@@ -56,6 +99,16 @@ trait EntityManagerModel {
         $this->json($this->entityOpportunityModel); 
     }
 
+    /**
+     * Encontra todos os modelos de oportunidades disponíveis
+     * 
+     * Este método busca todas as oportunidades marcadas como modelos
+     * e retorna informações sobre elas, incluindo número de fases,
+     * descrição, tempo estimado e se são modelos oficiais.
+     * 
+     * @api GET findOpportunitiesModels
+     * @return array Lista de modelos de oportunidades
+     */
     function GET_findOpportunitiesModels()
     {
         $app = App::i();
@@ -98,6 +151,17 @@ trait EntityManagerModel {
         $this->json($dataModels);
     }
 
+    /**
+     * Define se um modelo é público ou não
+     * 
+     * Este método altera a visibilidade pública de um modelo de oportunidade.
+     * 
+     * @api POST modelpublic
+     * @return bool Valor definido para isModelPublic
+     * 
+     * @throws \MapasCulturais\Exceptions\PermissionDenied Se o usuário não tiver permissão
+     * @requiresAuthentication
+     */
     function POST_modelpublic(){
         $app = App::i();
 
@@ -113,6 +177,12 @@ trait EntityManagerModel {
         $this->json($isModelPublic); 
     }
 
+    /**
+     * Gera um novo modelo clonando a oportunidade atual
+     * 
+     * @return \MapasCulturais\Entities\Opportunity Modelo gerado
+     * @access private
+     */
     private function generateModel()
     {
         $app = App::i();
@@ -145,6 +215,12 @@ trait EntityManagerModel {
         
     }
 
+    /**
+     * Gera uma nova oportunidade a partir do modelo atual
+     * 
+     * @return \MapasCulturais\Entities\Opportunity Oportunidade gerada
+     * @access private
+     */
     private function generateOpportunity()
     {
         $app = App::i();
@@ -175,6 +251,13 @@ trait EntityManagerModel {
         return $this->entityOpportunityModel;
     }
 
+    /**
+     * Altera o tipo de objeto da oportunidade no banco de dados
+     * 
+     * @param int $id ID da oportunidade
+     * @return void
+     * @access private
+     */
     private function changeObjectType($id)
     {
         $app = App::i();
@@ -192,6 +275,12 @@ trait EntityManagerModel {
         }
     }
 
+    /**
+     * Duplica os métodos de avaliação da oportunidade original para o modelo
+     * 
+     * @return void
+     * @access private
+     */
     private function generateEvaluationMethods() : void
     {
         $app = App::i();
@@ -213,6 +302,12 @@ trait EntityManagerModel {
         }
     }
 
+    /**
+     * Duplica as fases da oportunidade original para o modelo
+     * 
+     * @return void
+     * @access private
+     */
     private function generatePhases() : void
     {
         $app = App::i();
@@ -287,6 +382,14 @@ trait EntityManagerModel {
     }
 
 
+    /**
+     * Duplica os metadados da oportunidade original para o modelo
+     * 
+     * @param int $isModel Define se é um modelo (padrão: 1)
+     * @param int $isModelPublic Define se o modelo é público (padrão: 0)
+     * @return void
+     * @access private
+     */
     private function generateMetadata($isModel = 1, $isModelPublic = 0) : void
     {
         $app = App::i();
@@ -312,6 +415,14 @@ trait EntityManagerModel {
         $this->entityOpportunityModel->saveTerms();
     }
 
+    /**
+     * Duplica as configurações de campos e arquivos de inscrição
+     * 
+     * @param \MapasCulturais\Entities\Opportunity $opportunityCurrent Oportunidade original
+     * @param \MapasCulturais\Entities\Opportunity $opportunityNew Oportunidade nova/modelo
+     * @return void
+     * @access private
+     */
     private function generateRegistrationFieldsAndFiles($opportunityCurrent, $opportunityNew) : void
     {
         foreach ($opportunityCurrent->getRegistrationFieldConfigurations() as $registrationFieldConfiguration) {
@@ -327,6 +438,12 @@ trait EntityManagerModel {
         }
     }
 
+    /**
+     * Duplica as relações com selos da oportunidade original para o modelo
+     * 
+     * @return void
+     * @access private
+     */
     private function generateSealsRelations() : void
     {
         foreach ($this->entityOpportunity->getSealRelations() as $sealRelation) {
@@ -334,6 +451,12 @@ trait EntityManagerModel {
         }
     }
 
+    /**
+     * Duplica os termos (áreas e tags) da oportunidade original para o modelo
+     * 
+     * @return void
+     * @access private
+     */
     private function generateTerms() : void
     {
         $original_terms = $this->entityOpportunity->getTerms();

@@ -238,6 +238,14 @@ class Registration extends EntityController {
         $this->json($result);
     }
 
+    /**
+    * Exclui uma inscrição (apenas se estiver com status rascunho)
+    * 
+    * Esta ação requer autenticação e permissão 'remove' na inscrição.
+    * Apenas inscrições com status 0 (rascunho) podem ser excluídas.
+    * 
+    * @return void
+    */
     public function POST_deleteRegistration()
     {
         $this->requireAuthentication();
@@ -257,6 +265,15 @@ class Registration extends EntityController {
         $this->json($result);
     }
 
+    /**
+    * Reabre uma avaliação para edição
+    * 
+    * Esta ação requer autenticação e permite que um avaliador reabra
+    * uma avaliação que já foi enviada, desde que ainda esteja dentro
+    * do período de avaliação.
+    * 
+    * @return void
+    */
     public function POST_reopenEvaluation()
     {
         $this->requireAuthentication();
@@ -287,6 +304,14 @@ class Registration extends EntityController {
         }
     }
 
+    /**
+    * Envia uma avaliação
+    * 
+    * Esta ação requer autenticação e permite que um avaliador envie
+    * sua avaliação, desde que ainda esteja dentro do período de avaliação.
+    * 
+    * @return void
+    */
     public function POST_sendEvaluation(){
         $this->requireAuthentication();
 
@@ -313,6 +338,16 @@ class Registration extends EntityController {
         }
     }
 
+    /**
+    * Cria URL para ações do controlador
+    * 
+    * Sobrescreve o método padrão para mapear ações 'single' e 'edit'
+    * para a ação 'view'.
+    * 
+    * @param string $actionName Nome da ação
+    * @param array $data Dados para a URL
+    * @return string URL gerada
+    */
     public function createUrl($actionName, array $data = array()) {
         if($actionName == 'single' || $actionName == 'edit'){
             $actionName = 'view';
@@ -535,6 +570,15 @@ class Registration extends EntityController {
         }
     }
 
+    /**
+    * Obtém os menores status de um conjunto de avaliações
+    * 
+    * Processa um array de avaliações e retorna um array com os menores
+    * status encontrados para cada ID de inscrição.
+    * 
+    * @param array $registrations Array de avaliações
+    * @return array Array com os menores status por ID de inscrição
+    */
     private function getSmallerStatuses($registrations) {
         if (is_array($registrations)) {
             $filtered = [];
@@ -926,6 +970,15 @@ class Registration extends EntityController {
         }
     }
 
+    /**
+    * Gera PDF a partir de HTML
+    * 
+    * Utiliza DomPDF para converter HTML em PDF.
+    * 
+    * @param string $html Conteúdo HTML
+    * @param \MapasCulturais\Entities\Registration $registration Inscrição
+    * @return string Conteúdo do PDF gerado
+    */
     private function generatePDFFromHTML($html, $registration) {
         $options = new \Dompdf\Options();
         $options->set('isRemoteEnabled', true);
@@ -940,6 +993,14 @@ class Registration extends EntityController {
         return $dompdf->output();
     }
 
+    /**
+    * Coleta anexos PDF de uma inscrição
+    * 
+    * Percorre os arquivos da inscrição e coleta os que são PDF.
+    * 
+    * @param \MapasCulturais\Entities\Registration $registration Inscrição
+    * @return array Array com caminhos dos arquivos PDF
+    */
     private function collectPDFAttachments($registration) {
         $pdfs = [];
         
@@ -958,6 +1019,15 @@ class Registration extends EntityController {
         return $pdfs;
     }
 
+    /**
+    * Mescla múltiplos PDFs em um único PDF
+    * 
+    * Utiliza FPDI para mesclar o PDF principal com os anexos.
+    * 
+    * @param string $mainPdfContent Conteúdo do PDF principal
+    * @param array $attachmentPaths Caminhos dos PDFs anexos
+    * @return string Conteúdo do PDF mesclado
+    */
     private function mergePDFs($mainPdfContent, $attachmentPaths) {
         $pdf = new \setasign\Fpdi\Fpdi();
         
@@ -999,6 +1069,14 @@ class Registration extends EntityController {
         return $pdf->Output('S'); // Retorna como string
     }
 
+    /**
+    * Sanitiza nome de arquivo
+    * 
+    * Remove caracteres inválidos de nomes de arquivo.
+    * 
+    * @param string $str String original
+    * @return string String sanitizada
+    */
     private function sanitizeFilename($str) {
         return preg_replace('/[^a-zA-Z0-9_\-]/', '_', $str);
     }

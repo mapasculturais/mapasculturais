@@ -5,31 +5,59 @@ use MapasCulturais\App;
 use MapasCulturais\Entities;
 
 /**
- * This class defines an Evaluation Method
+ * Esta classe define um Método de Avaliação
  *
- * @property-read string $name 
- * @property-read string $slug 
- * @property-read string $description 
- * @property-read bool $internal 
+ * @property-read string $name Nome do método de avaliação
+ * @property-read string $slug Slug do método de avaliação
+ * @property-read string $description Descrição do método de avaliação
+ * @property-read bool $internal Indica se é um método interno
  * 
- * @property-read string $evaluationMethodClassName 
- * @property-read MapasCulturais\EvaluationMethod $evaluationMethod 
+ * @property-read string $evaluationMethodClassName Nome da classe do método de avaliação
+ * @property-read \MapasCulturais\EvaluationMethod $evaluationMethod Instância do método de avaliação
  */
 class EvaluationMethod extends \MapasCulturais\Definition {
 
     /**
-     * The Evaluation Method
-     * @var \MapasCuturais\EvaluationMethod
+     * Instância do método de avaliação
+     * @var \MapasCulturais\EvaluationMethod
      */
     public $evaluationMethod;
+    
+    /**
+     * Nome da classe do método de avaliação
+     * @var string
+     */
     public $evaluationMethodClassName;
     
+    /**
+     * Slug do método de avaliação
+     * @var string
+     */
     public $slug;
+    
+    /**
+     * Nome do método de avaliação
+     * @var string
+     */
     public $name;
+    
+    /**
+     * Descrição do método de avaliação
+     * @var string
+     */
     public $description;
 
+    /**
+     * Indica se é um método interno
+     * @var bool
+     */
     public $internal = false;
     
+    /**
+     * Construtor da classe
+     * 
+     * @param \MapasCulturais\EvaluationMethod $evaluation_method Instância do método de avaliação
+     */
     public function __construct(\MapasCulturais\EvaluationMethod $evaluation_method) {
         $this->evaluationMethod = $evaluation_method;
         $this->evaluationMethodClassName = get_class($evaluation_method);
@@ -41,6 +69,11 @@ class EvaluationMethod extends \MapasCulturais\Definition {
         $this->internal = $evaluation_method->internal ?? false;
     }
 
+    /**
+     * Serializa o objeto para JSON
+     * 
+     * @return array
+     */
     function jsonSerialize(): array {
         return [
             'slug' => $this->slug,

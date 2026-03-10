@@ -4,7 +4,10 @@ namespace MapasCulturais;
 use MapasCulturais\Traits;
 
 /**
- * @property-read array $config array de configuração
+ * Classe base para módulos do MapasCulturais
+ * 
+ * @property-read array $config Array de configuração do módulo
+ * 
  * @package MapasCulturais
  */
 abstract class Module {
@@ -12,16 +15,36 @@ abstract class Module {
         Traits\MagicSetter,
         Traits\RegisterFunctions;
     
+    /**
+     * Configuração do módulo
+     * @var array
+     */
     protected $_config;
     
+    /**
+     * Inicialização do módulo (método abstrato)
+     */
     abstract function _init();
     
+    /**
+     * Registro do módulo (método abstrato)
+     */
     abstract function register();
 
+    /**
+     * Indica se o módulo é um plugin
+     * 
+     * @return bool
+     */
     static function isPlugin() {
         return false;
     }
     
+    /**
+     * Construtor do módulo
+     * 
+     * @param array $config Configuração do módulo
+     */
     function __construct(array $config = []) {
         $this->_config = $config;
         
@@ -58,10 +81,21 @@ abstract class Module {
         $app->applyHookBoundTo($this, "module({$class}).init:after");
     }
     
+    /**
+     * Retorna a configuração do módulo
+     * 
+     * @return array
+     */
     function getConfig(){
         return $this->_config;
     }
 
+    /**
+     * Retorna o caminho do diretório do módulo
+     * 
+     * @param string $subfolder Subdiretório opcional
+     * @return string
+     */
     static function getPath($subfolder = '') {
         $app = App::i();
 
