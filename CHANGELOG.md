@@ -5,6 +5,15 @@ Todas as mudanças notáveis no projeto serão documentadas neste arquivo.
 O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/)
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [7.7.15] - 2026-03-10
+### Correções
+- Aplica verificação para evitar a criação de sessões sem critérios de avaliação no método de avaliação técnica.
+- Ajusta a exibição da aba de avaliação na oportunidade para o avaliador do edital.
+
+### Melhorias
+- Inclui nova área de atuação "Cultura do Povo Tupiniquin"
+- Melhorias na documentação PHP DOC do sistema
+
 ## [7.7.14] - 2026-03-06
 ### Correções
 - Corrige endpoint createAppealPhaseRegistration para verificar se já existe inscrição do proponente na fase de recurso
