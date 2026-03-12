@@ -448,6 +448,15 @@ $this->import('
 
                         <div class="field__group">
                             <label class="field__checkbox">
+                                <input type="checkbox" v-model="entity.workplan_monitoringInformNumberOfParticipants" @click="autoSave()" /><?= i::__("Informar número de participantes executado") ?> {{ `da ${pluralParaSingular(getDeliveryLabelDefault)}` }}
+                            </label>
+                            <label v-if="entity.workplan_monitoringInformNumberOfParticipants" class="field__checkbox field__checkbox--sub">
+                                <input type="checkbox" v-model="entity.workplan_monitoringRequireNumberOfParticipants" @click="autoSave()" /><?= i::__("Obrigatório") ?>
+                            </label>
+                        </div>
+
+                        <div class="field__group">
+                            <label class="field__checkbox">
                                 <input type="checkbox" v-model="entity.workplan_monitoringInformThePriorityAudience" @click="autoSave()" /><?= i::__("Informar os territórios prioritários") ?> {{ `da ${pluralParaSingular(getDeliveryLabelDefault)}` }}
                             </label>
                             <label v-if="entity.workplan_monitoringInformThePriorityAudience" class="field__checkbox field__checkbox--sub">
@@ -464,6 +473,15 @@ $this->import('
                             </label>
                             <label v-if="entity.workplan_monitoringReportExecutedRevenue" class="field__checkbox field__checkbox--sub">
                                 <input type="checkbox" v-model="entity.workplan_monitoringRequireExecutedRevenue" @click="autoSave()" /><?= i::__("Obrigatório") ?>
+                            </label>
+                        </div>
+
+                        <div class="field__group">
+                            <label class="field__checkbox">
+                                <input type="checkbox" v-model="entity.workplan_monitoringInformRevenueType" @click="autoSave()" /><?= i::__("Informar tipo de receita executada") ?> {{ `da ${pluralParaSingular(getDeliveryLabelDefault)}` }}
+                            </label>
+                            <label v-if="entity.workplan_monitoringInformRevenueType" class="field__checkbox field__checkbox--sub">
+                                <input type="checkbox" v-model="entity.workplan_monitoringRequireRevenueType" @click="autoSave()" /><?= i::__("Obrigatório") ?>
                             </label>
                         </div>
 
@@ -542,6 +560,75 @@ $this->import('
                             </label>
                             <label v-if="entity.workplan_monitoringInformCommunicationChannels" class="field__checkbox field__checkbox--sub">
                                 <input type="checkbox" v-model="entity.workplan_monitoringRequireCommunicationChannels" @click="autoSave()" /><?= i::__("Obrigatório") ?>
+                            </label>
+                        </div>
+
+                        <div class="field__group">
+                            <label class="field__checkbox">
+                                <input type="checkbox" v-model="entity.workplan_monitoringInformSegmentDelivery" @click="autoSave()" /><?= i::__("Informar segmento artístico-cultural executado") ?> {{ `da ${pluralParaSingular(getDeliveryLabelDefault)}` }}
+                            </label>
+                            <label v-if="entity.workplan_monitoringInformSegmentDelivery" class="field__checkbox field__checkbox--sub">
+                                <input type="checkbox" v-model="entity.workplan_monitoringRequireSegmentDelivery" @click="autoSave()" /><?= i::__("Obrigatório") ?>
+                            </label>
+                        </div>
+
+                        <div class="field__group">
+                            <label class="field__checkbox">
+                                <input type="checkbox" v-model="entity.workplan_monitoringInformCommunityCoauthors" @click="autoSave()" /><?= i::__("Informar coautoria/coexecução executada com comunidades/coletivos") ?> {{ `da ${pluralParaSingular(getDeliveryLabelDefault)}` }}
+                            </label>
+                            <label v-if="entity.workplan_monitoringInformCommunityCoauthors" class="field__checkbox field__checkbox--sub">
+                                <input type="checkbox" v-model="entity.workplan_monitoringRequireCommunityCoauthorsDetail" @click="autoSave()" /><?= i::__("Obrigatório (detalhamento)") ?>
+                            </label>
+                        </div>
+
+                        <div class="field__group">
+                            <label class="field__checkbox">
+                                <input type="checkbox" v-model="entity.workplan_monitoringInformTransInclusion" @click="autoSave()" /><?= i::__("Informar estratégias executadas de inclusão Trans e Travestis") ?> {{ `da ${pluralParaSingular(getDeliveryLabelDefault)}` }}
+                            </label>
+                            <label v-if="entity.workplan_monitoringInformTransInclusion" class="field__checkbox field__checkbox--sub">
+                                <input type="checkbox" v-model="entity.workplan_monitoringRequireTransInclusionActions" @click="autoSave()" /><?= i::__("Obrigatório (ações)") ?>
+                            </label>
+                        </div>
+
+                        <div class="field__group">
+                            <label class="field__checkbox">
+                                <input type="checkbox" v-model="entity.workplan_monitoringInformAccessibilityPlan" @click="autoSave()" /><?= i::__("Informar medidas de acessibilidade executadas") ?> {{ `da ${pluralParaSingular(getDeliveryLabelDefault)}` }}
+                            </label>
+                            <label v-if="entity.workplan_monitoringInformAccessibilityPlan" class="field__checkbox field__checkbox--sub">
+                                <input type="checkbox" v-model="entity.workplan_monitoringRequireExpectedAccessibilityMeasures" @click="autoSave()" /><?= i::__("Obrigatório (medidas)") ?>
+                            </label>
+                        </div>
+
+                        <div class="field__group">
+                            <label class="field__checkbox">
+                                <input type="checkbox" v-model="entity.workplan_monitoringInformEnvironmentalPractices" @click="autoSave()" /><?= i::__("Informar práticas socioambientais executadas") ?> {{ `da ${pluralParaSingular(getDeliveryLabelDefault)}` }}
+                            </label>
+                            <label v-if="entity.workplan_monitoringInformEnvironmentalPractices" class="field__checkbox field__checkbox--sub">
+                                <input type="checkbox" v-model="entity.workplan_monitoringRequireEnvironmentalPracticesDescription" @click="autoSave()" /><?= i::__("Obrigatório (detalhamento)") ?>
+                            </label>
+                        </div>
+
+                        <div class="field__group">
+                            <label class="field__checkbox">
+                                <input type="checkbox" v-model="entity.workplan_monitoringInformPressStrategy" @click="autoSave()" /><?= i::__("Informar estratégia executada de relacionamento com imprensa") ?> {{ `da ${pluralParaSingular(getDeliveryLabelDefault)}` }}
+                            </label>
+                        </div>
+
+                        <div class="field__group">
+                            <label class="field__checkbox">
+                                <input type="checkbox" v-model="entity.workplan_monitoringInformInnovation" @click="autoSave()" /><?= i::__("Informar ações executadas de experimentação/inovação") ?> {{ `da ${pluralParaSingular(getDeliveryLabelDefault)}` }}
+                            </label>
+                            <label v-if="entity.workplan_monitoringInformInnovation" class="field__checkbox field__checkbox--sub">
+                                <input type="checkbox" v-model="entity.workplan_monitoringRequireInnovationTypes" @click="autoSave()" /><?= i::__("Obrigatório (tipos)") ?>
+                            </label>
+                        </div>
+
+                        <div class="field__group">
+                            <label class="field__checkbox">
+                                <input type="checkbox" v-model="entity.workplan_monitoringInformDocumentationTypes" @click="autoSave()" /><?= i::__("Informar tipos de documentação produzida") ?> {{ `da ${pluralParaSingular(getDeliveryLabelDefault)}` }}
+                            </label>
+                            <label v-if="entity.workplan_monitoringInformDocumentationTypes" class="field__checkbox field__checkbox--sub">
+                                <input type="checkbox" v-model="entity.workplan_monitoringRequireDocumentationTypes" @click="autoSave()" /><?= i::__("Obrigatório") ?>
                             </label>
                         </div>
                     </div>

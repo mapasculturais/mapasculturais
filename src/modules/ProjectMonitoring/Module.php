@@ -368,7 +368,13 @@ class Module extends \MapasCulturais\Module {
             'type' => 'integer',
             'validations' => [
                 'v::intVal()->min(0)' => i::__('Deve ser um número maior ou igual a zero')
-            ]
+            ],
+            'should_validate' => function($entity) {
+                if($entity->isMetadataRequired('executedNumberOfCities')) {
+                    return i::__('Campo obrigatório');
+                }
+                return false;
+            }
         ]);
         $app->registerMetadata($executedNumberOfCities, Delivery::class);
 
@@ -378,7 +384,13 @@ class Module extends \MapasCulturais\Module {
             'type' => 'integer',
             'validations' => [
                 'v::intVal()->min(0)' => i::__('Deve ser um número maior ou igual a zero')
-            ]
+            ],
+            'should_validate' => function($entity) {
+                if($entity->isMetadataRequired('executedNumberOfNeighborhoods')) {
+                    return i::__('Campo obrigatório');
+                }
+                return false;
+            }
         ]);
         $app->registerMetadata($executedNumberOfNeighborhoods, Delivery::class);
 
@@ -388,7 +400,13 @@ class Module extends \MapasCulturais\Module {
             'type' => 'integer',
             'validations' => [
                 'v::intVal()->min(0)' => i::__('Deve ser um número maior ou igual a zero')
-            ]
+            ],
+            'should_validate' => function($entity) {
+                if($entity->isMetadataRequired('executedMediationActions')) {
+                    return i::__('Campo obrigatório');
+                }
+                return false;
+            }
         ]);
         $app->registerMetadata($executedMediationActions, Delivery::class);
 
@@ -398,14 +416,26 @@ class Module extends \MapasCulturais\Module {
             'type' => 'integer',
             'validations' => [
                 'v::intVal()->min(0)' => i::__('Deve ser um número maior ou igual a zero')
-            ]
+            ],
+            'should_validate' => function($entity) {
+                if($entity->isMetadataRequired('executedCommercialUnits')) {
+                    return i::__('Campo obrigatório');
+                }
+                return false;
+            }
         ]);
         $app->registerMetadata($executedCommercialUnits, Delivery::class);
 
         // Valor unitário executado
         $executedUnitPrice = new Metadata('executedUnitPrice', [
             'label' => i::__('Valor unitário praticado (R$)'),
-            'type' => 'currency'
+            'type' => 'currency',
+            'should_validate' => function($entity) {
+                if($entity->isMetadataRequired('executedUnitPrice')) {
+                    return i::__('Campo obrigatório');
+                }
+                return false;
+            }
         ]);
         $app->registerMetadata($executedUnitPrice, Delivery::class);
 
@@ -418,6 +448,12 @@ class Module extends \MapasCulturais\Module {
             },
             'unserialize' => function($val) {
                 return json_decode((string) $val, true);
+            },
+            'should_validate' => function($entity) {
+                if($entity->isMetadataRequired('executedPaidStaffByRole')) {
+                    return i::__('Campo obrigatório');
+                }
+                return false;
             }
         ]);
         $app->registerMetadata($executedPaidStaffByRole, Delivery::class);
@@ -431,6 +467,12 @@ class Module extends \MapasCulturais\Module {
             },
             'unserialize' => function($val) {
                 return json_decode((string) $val, true);
+            },
+            'should_validate' => function($entity) {
+                if($entity->isMetadataRequired('executedTeamCompositionGender')) {
+                    return i::__('Campo obrigatório');
+                }
+                return false;
             }
         ]);
         $app->registerMetadata($executedTeamCompositionGender, Delivery::class);
@@ -444,9 +486,323 @@ class Module extends \MapasCulturais\Module {
             },
             'unserialize' => function($val) {
                 return json_decode((string) $val, true);
+            },
+            'should_validate' => function($entity) {
+                if($entity->isMetadataRequired('executedTeamCompositionRace')) {
+                    return i::__('Campo obrigatório');
+                }
+                return false;
             }
         ]);
         $app->registerMetadata($executedTeamCompositionRace, Delivery::class);
+
+        $executedArtChainLink = new Metadata('executedArtChainLink', [
+            'label' => i::__('Principal elo das artes acionado (executado)'),
+            'type' => 'select',
+            'options' => [
+                i::__('Acesso'),
+                i::__('Criação'),
+                i::__('Produção'),
+                i::__('Difusão'),
+                i::__('Circulação'),
+                i::__('Internacionalização'),
+                i::__('Formação'),
+                i::__('Fruição'),
+                i::__('Memória/Preservação'),
+                i::__('Pesquisa'),
+                i::__('Reflexão'),
+                i::__('Gestão Cultural'),
+            ],
+            'should_validate' => function($entity) {
+                if($entity->isMetadataRequired('executedArtChainLink')) {
+                    return i::__('Campo obrigatório');
+                }
+                return false;
+            }
+        ]);
+        $app->registerMetadata($executedArtChainLink, Delivery::class);
+
+        $executedCommunicationChannels = new Metadata('executedCommunicationChannels', [
+            'label' => i::__('Canais de comunicação utilizados (executado)'),
+            'type' => 'multiselect',
+            'options' => [
+                i::__('Instagram'),
+                i::__('Facebook'),
+                i::__('TikTok'),
+                i::__('YouTube'),
+                i::__('X/Twitter'),
+                i::__('WhatsApp (listas/grupos)'),
+                i::__('Telegram (canais/grupos)'),
+                i::__('Site/página oficial do projeto'),
+                i::__('E-mail marketing/newsletter'),
+                i::__('Plataformas de eventos/inscrição (ex.: Sympla/Shotgun/Eventbrite)'),
+                i::__('Portais, blogs e influenciadores/as locais'),
+                i::__('Rádio comunitária'),
+                i::__('Rádio comercial'),
+                i::__('TV local'),
+                i::__('Mídia impressa'),
+                i::__('Cartazes e materiais impressos'),
+                i::__('Carro de som'),
+                i::__('Outros'),
+            ],
+            'should_validate' => function($entity) {
+                if($entity->isMetadataRequired('executedCommunicationChannels')) {
+                    return i::__('Campo obrigatório');
+                }
+                return false;
+            }
+        ]);
+        $app->registerMetadata($executedCommunicationChannels, Delivery::class);
+
+        $executedRevenueType = new Metadata('executedRevenueType', [
+            'label' => i::__('Qual o tipo de receita executada?'),
+            'type' => 'multiselect',
+            'options' => [
+                i::__('Venda de ingressos'),
+                i::__('Venda de produtos'),
+                i::__('Patrocínio privado'),
+                i::__('Apoio cultural'),
+                i::__('Doações'),
+                i::__('Cachê'),
+                i::__('Prestação de serviços'),
+                i::__('Direitos autorais'),
+                i::__('Licenciamento'),
+                i::__('Não haverá receita'),
+                i::__('Outros'),
+            ],
+            'should_validate' => function($entity) {
+                if($entity->isMetadataRequired('executedRevenueType')) {
+                    return i::__('Campo obrigatório');
+                }
+                return false;
+            }
+        ]);
+        $app->registerMetadata($executedRevenueType, Delivery::class);
+
+        $executedSegmentDelivery = new Metadata('executedSegmentDelivery', [
+            'label' => i::__('Segmento artístico-cultural executado da entrega'),
+            'type' => 'select',
+            'options' => [
+                i::__('Artes Visuais'),
+                i::__('Artesanato'),
+                i::__('Audiovisual e Mídias Interativas'),
+                i::__('Circo'),
+                i::__('Culturas Tradicionais e Populares'),
+                i::__('Culturas dos Povos Originários'),
+                i::__('Dança'),
+                i::__('Design e Serviços Criativos'),
+                i::__('Economia, Produção e Áreas Técnicas da Cultura'),
+                i::__('Festas Populares'),
+                i::__('Humanidades'),
+                i::__('Livro, Leitura e Literatura'),
+                i::__('Música'),
+                i::__('Patrimônio Cultural Imaterial'),
+                i::__('Patrimônio Cultural Material'),
+                i::__('Performance'),
+                i::__('Produção e Áreas Técnicas da Cultura'),
+                i::__('Teatro'),
+                i::__('Transversalidades')
+            ],
+            'should_validate' => function($entity) {
+                if($entity->isMetadataRequired('executedSegmentDelivery')) {
+                    return i::__('Campo obrigatório');
+                }
+                return false;
+            }
+        ]);
+        $app->registerMetadata($executedSegmentDelivery, Delivery::class);
+
+        $executedHasCommunityCoauthors = new Metadata('executedHasCommunityCoauthors', [
+            'label' => i::__('A atividade executada contou com envolvimento de comunidades/coletivos como coautores/coexecutores?'),
+            'type' => 'select',
+            'options' => [
+                'true' => i::__('Sim'),
+                'false' => i::__('Não'),
+            ],
+        ]);
+        $app->registerMetadata($executedHasCommunityCoauthors, Delivery::class);
+
+        $executedCommunityCoauthorsDetail = new Metadata('executedCommunityCoauthorsDetail', [
+            'label' => i::__('Descreva o envolvimento executado das comunidades/coletivos como coautores/coexecutores'),
+            'type' => 'text',
+            'should_validate' => function($entity) {
+                if($entity->isMetadataRequired('executedCommunityCoauthorsDetail')) {
+                    return i::__('Campo obrigatório');
+                }
+                return false;
+            }
+        ]);
+        $app->registerMetadata($executedCommunityCoauthorsDetail, Delivery::class);
+
+        $executedHasTransInclusionStrategy = new Metadata('executedHasTransInclusionStrategy', [
+            'label' => i::__('A atividade executada contou com estratégias voltadas à promoção do acesso de pessoas Trans e Travestis?'),
+            'type' => 'select',
+            'options' => [
+                'true' => i::__('Sim'),
+                'false' => i::__('Não'),
+            ],
+        ]);
+        $app->registerMetadata($executedHasTransInclusionStrategy, Delivery::class);
+
+        $executedTransInclusionActions = new Metadata('executedTransInclusionActions', [
+            'label' => i::__('Quais ações executadas promoveram o acesso de pessoas Trans e Travestis?'),
+            'type' => 'text',
+            'should_validate' => function($entity) {
+                if($entity->isMetadataRequired('executedTransInclusionActions')) {
+                    return i::__('Campo obrigatório');
+                }
+                return false;
+            }
+        ]);
+        $app->registerMetadata($executedTransInclusionActions, Delivery::class);
+
+        $executedHasAccessibilityPlan = new Metadata('executedHasAccessibilityPlan', [
+            'label' => i::__('A atividade executada contou com medidas de acessibilidade?'),
+            'type' => 'select',
+            'options' => [
+                'true' => i::__('Sim'),
+                'false' => i::__('Não'),
+            ],
+        ]);
+        $app->registerMetadata($executedHasAccessibilityPlan, Delivery::class);
+
+        $executedExpectedAccessibilityMeasures = new Metadata('executedExpectedAccessibilityMeasures', [
+            'label' => i::__('Quais medidas de acessibilidade foram executadas na atividade?'),
+            'type' => 'multiselect',
+            'options' => [
+                i::__('Rotas acessíveis, com espaço de manobra para cadeira de rodas'),
+                i::__('Palco acessível'),
+                i::__('Camarim acessível'),
+                i::__('Piso tátil'),
+                i::__('Rampas'),
+                i::__("Elevadores adequados para PCD's"),
+                i::__('Corrimãos e guarda-corpos'),
+                i::__("Banheiros adaptados para PCD's"),
+                i::__('Área de alimentação preferencial identificada'),
+                i::__("Vagas de estacionamento para PCD's reservadas"),
+                i::__("Assentos para pessoas obesas, pessoas com mobilidade reduzida, PCD's e pessoas idosas reservadas"),
+                i::__('Filas preferenciais identificadas'),
+                i::__('Iluminação adequada'),
+                i::__('Livro e/ou similares em braile'),
+                i::__('Audiolivro'),
+                i::__('Uso Língua Brasileira de Sinais - Libras'),
+                i::__('Sistema Braille em materiais impressos'),
+                i::__('Sistema de sinalização ou comunicação tátil'),
+                i::__('Audiodescrição'),
+                i::__('Legendas para surdos e ensurdecidos'),
+                i::__('Linguagem simples'),
+                i::__('Textos adaptados para software de leitor de tela'),
+                i::__('Capacitação em acessibilidade para equipes atuantes nos projetos culturais'),
+                i::__('Contratação de profissionais especializados em acessibilidade cultural'),
+                i::__('Contratação de profissionais com deficiência'),
+                i::__('Formação e sensibilização de agentes culturais sobre acessibilidade'),
+                i::__('Formação e sensibilização de públicos da cadeia produtiva cultural sobre acessibilidade'),
+                i::__("Envolvimento de PCD's na concepção do projeto"),
+                i::__('Outras'),
+            ],
+            'should_validate' => function($entity) {
+                if($entity->isMetadataRequired('executedExpectedAccessibilityMeasures')) {
+                    return i::__('Campo obrigatório');
+                }
+                return false;
+            }
+        ]);
+        $app->registerMetadata($executedExpectedAccessibilityMeasures, Delivery::class);
+
+        $executedHasEnvironmentalPractices = new Metadata('executedHasEnvironmentalPractices', [
+            'label' => i::__('A atividade executada contou com medidas ou práticas socioambientais?'),
+            'type' => 'select',
+            'options' => [
+                'true' => i::__('Sim'),
+                'false' => i::__('Não'),
+            ],
+        ]);
+        $app->registerMetadata($executedHasEnvironmentalPractices, Delivery::class);
+
+        $executedEnvironmentalPracticesDescription = new Metadata('executedEnvironmentalPracticesDescription', [
+            'label' => i::__('Quais medidas e práticas socioambientais foram executadas na atividade?'),
+            'type' => 'text',
+            'should_validate' => function($entity) {
+                if($entity->isMetadataRequired('executedEnvironmentalPracticesDescription')) {
+                    return i::__('Campo obrigatório');
+                }
+                return false;
+            }
+        ]);
+        $app->registerMetadata($executedEnvironmentalPracticesDescription, Delivery::class);
+
+        $executedHasPressStrategy = new Metadata('executedHasPressStrategy', [
+            'label' => i::__('A atividade executada contou com estratégia de relacionamento com a imprensa?'),
+            'type' => 'select',
+            'options' => [
+                'true' => i::__('Sim'),
+                'false' => i::__('Não'),
+            ],
+        ]);
+        $app->registerMetadata($executedHasPressStrategy, Delivery::class);
+
+        $executedHasInnovationAction = new Metadata('executedHasInnovationAction', [
+            'label' => i::__('A atividade executada contou com ação de experimentação/inovação?'),
+            'type' => 'select',
+            'options' => [
+                'true' => i::__('Sim'),
+                'false' => i::__('Não'),
+            ],
+        ]);
+        $app->registerMetadata($executedHasInnovationAction, Delivery::class);
+
+        $executedInnovationTypes = new Metadata('executedInnovationTypes', [
+            'label' => i::__('Quais tipos de experimentação/inovação foram executados?'),
+            'type' => 'multiselect',
+            'options' => [
+                i::__('Uso de novas tecnologias (AR, VR, IA, etc.)'),
+                i::__('Novas linguagens artísticas'),
+                i::__('Fusão de linguagens'),
+                i::__('Metodologias participativas inovadoras'),
+                i::__('Novos modelos de gestão cultural'),
+                i::__('Economia criativa e novos modelos de negócio'),
+                i::__('Sustentabilidade e práticas ambientais inovadoras'),
+                i::__('Inclusão e acessibilidade de forma inovadora'),
+                i::__('Experimentação em espaços não convencionais'),
+                i::__('Coprodução/cocriação com públicos'),
+                i::__('Outros'),
+            ],
+            'should_validate' => function($entity) {
+                if($entity->isMetadataRequired('executedInnovationTypes')) {
+                    return i::__('Campo obrigatório');
+                }
+                return false;
+            }
+        ]);
+        $app->registerMetadata($executedInnovationTypes, Delivery::class);
+
+        $executedDocumentationTypes = new Metadata('executedDocumentationTypes', [
+            'label' => i::__('Tipo de documentação produzida (executado)'),
+            'type' => 'multiselect',
+            'options' => [
+                i::__('Fotografia'),
+                i::__('Vídeo'),
+                i::__('Áudio'),
+                i::__('Relatório textual'),
+                i::__('Caderno de processo'),
+                i::__('Publicação impressa'),
+                i::__('Publicação digital'),
+                i::__('Website/Plataforma online'),
+                i::__('Redes sociais'),
+                i::__('Depoimentos'),
+                i::__('Registros de processo'),
+                i::__('Acervo digitalizado'),
+                i::__('Não haverá documentação específica'),
+                i::__('Outros'),
+            ],
+            'should_validate' => function($entity) {
+                if($entity->isMetadataRequired('executedDocumentationTypes')) {
+                    return i::__('Campo obrigatório');
+                }
+                return false;
+            }
+        ]);
+        $app->registerMetadata($executedDocumentationTypes, Delivery::class);
 
         // Medidas de acessibilidade executadas (já existe accessibilityMeasures)
         // Este campo já existe e será usado para os dados executados
@@ -523,6 +879,22 @@ class Module extends \MapasCulturais\Module {
                         $delivery->executedPaidStaffByRole       = $data['executedPaidStaffByRole'] ?? null;
                         $delivery->executedTeamCompositionGender = $data['executedTeamCompositionGender'] ?? null;
                         $delivery->executedTeamCompositionRace   = $data['executedTeamCompositionRace'] ?? null;
+                        $delivery->executedArtChainLink          = $data['executedArtChainLink'] ?? null;
+                        $delivery->executedCommunicationChannels = $data['executedCommunicationChannels'] ?? null;
+                        $delivery->executedRevenueType           = $data['executedRevenueType'] ?? null;
+                        $delivery->executedSegmentDelivery       = $data['executedSegmentDelivery'] ?? null;
+                        $delivery->executedHasCommunityCoauthors = $data['executedHasCommunityCoauthors'] ?? null;
+                        $delivery->executedCommunityCoauthorsDetail = $data['executedCommunityCoauthorsDetail'] ?? null;
+                        $delivery->executedHasTransInclusionStrategy = $data['executedHasTransInclusionStrategy'] ?? null;
+                        $delivery->executedTransInclusionActions = $data['executedTransInclusionActions'] ?? null;
+                        $delivery->executedHasAccessibilityPlan  = $data['executedHasAccessibilityPlan'] ?? null;
+                        $delivery->executedExpectedAccessibilityMeasures = $data['executedExpectedAccessibilityMeasures'] ?? null;
+                        $delivery->executedHasEnvironmentalPractices = $data['executedHasEnvironmentalPractices'] ?? null;
+                        $delivery->executedEnvironmentalPracticesDescription = $data['executedEnvironmentalPracticesDescription'] ?? null;
+                        $delivery->executedHasPressStrategy      = $data['executedHasPressStrategy'] ?? null;
+                        $delivery->executedHasInnovationAction   = $data['executedHasInnovationAction'] ?? null;
+                        $delivery->executedInnovationTypes       = $data['executedInnovationTypes'] ?? null;
+                        $delivery->executedDocumentationTypes    = $data['executedDocumentationTypes'] ?? null;
                     }
 
                     $app->hook('entity(Registration).save:finish', function() use ($goals, $deliveries, $first_phase, $app) {
@@ -600,6 +972,22 @@ class Module extends \MapasCulturais\Module {
                             'executedPaidStaffByRole'       => $delivery->executedPaidStaffByRole,
                             'executedTeamCompositionGender' => $delivery->executedTeamCompositionGender,
                             'executedTeamCompositionRace'   => $delivery->executedTeamCompositionRace,
+                            'executedArtChainLink'          => $delivery->executedArtChainLink,
+                            'executedCommunicationChannels' => $delivery->executedCommunicationChannels,
+                            'executedRevenueType'           => $delivery->executedRevenueType,
+                            'executedSegmentDelivery'       => $delivery->executedSegmentDelivery,
+                            'executedHasCommunityCoauthors' => $delivery->executedHasCommunityCoauthors,
+                            'executedCommunityCoauthorsDetail' => $delivery->executedCommunityCoauthorsDetail,
+                            'executedHasTransInclusionStrategy' => $delivery->executedHasTransInclusionStrategy,
+                            'executedTransInclusionActions' => $delivery->executedTransInclusionActions,
+                            'executedHasAccessibilityPlan'  => $delivery->executedHasAccessibilityPlan,
+                            'executedExpectedAccessibilityMeasures' => $delivery->executedExpectedAccessibilityMeasures,
+                            'executedHasEnvironmentalPractices' => $delivery->executedHasEnvironmentalPractices,
+                            'executedEnvironmentalPracticesDescription' => $delivery->executedEnvironmentalPracticesDescription,
+                            'executedHasPressStrategy'      => $delivery->executedHasPressStrategy,
+                            'executedHasInnovationAction'   => $delivery->executedHasInnovationAction,
+                            'executedInnovationTypes'       => $delivery->executedInnovationTypes,
+                            'executedDocumentationTypes'    => $delivery->executedDocumentationTypes,
                         ];
                     }
 

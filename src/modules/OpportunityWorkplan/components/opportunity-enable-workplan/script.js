@@ -135,6 +135,9 @@ app.component('opportunity-enable-workplan', {
         'entity.workplan_monitoringProvideTheProfileOfParticipants'(_new) {
             if (!_new) this.entity.workplan_monitoringRequireParticipantProfile = false;
         },
+        'entity.workplan_monitoringInformNumberOfParticipants'(_new) {
+            if (!_new) this.entity.workplan_monitoringRequireNumberOfParticipants = false;
+        },
         'entity.workplan_monitoringInformThePriorityAudience'(_new) {
             if (!_new) this.entity.workplan_monitoringRequirePriorityAudience = false;
         },
@@ -171,6 +174,30 @@ app.component('opportunity-enable-workplan', {
         },
         'entity.workplan_monitoringInformCommunicationChannels'(_new) {
             if (!_new) this.entity.workplan_monitoringRequireCommunicationChannels = false;
+        },
+        'entity.workplan_monitoringInformRevenueType'(_new) {
+            if (!_new) this.entity.workplan_monitoringRequireRevenueType = false;
+        },
+        'entity.workplan_monitoringInformCommunityCoauthors'(_new) {
+            if (!_new) this.entity.workplan_monitoringRequireCommunityCoauthorsDetail = false;
+        },
+        'entity.workplan_monitoringInformTransInclusion'(_new) {
+            if (!_new) this.entity.workplan_monitoringRequireTransInclusionActions = false;
+        },
+        'entity.workplan_monitoringInformAccessibilityPlan'(_new) {
+            if (!_new) this.entity.workplan_monitoringRequireExpectedAccessibilityMeasures = false;
+        },
+        'entity.workplan_monitoringInformEnvironmentalPractices'(_new) {
+            if (!_new) this.entity.workplan_monitoringRequireEnvironmentalPracticesDescription = false;
+        },
+        'entity.workplan_monitoringInformInnovation'(_new) {
+            if (!_new) this.entity.workplan_monitoringRequireInnovationTypes = false;
+        },
+        'entity.workplan_monitoringInformDocumentationTypes'(_new) {
+            if (!_new) this.entity.workplan_monitoringRequireDocumentationTypes = false;
+        },
+        'entity.workplan_monitoringInformSegmentDelivery'(_new) {
+            if (!_new) this.entity.workplan_monitoringRequireSegmentDelivery = false;
         },
     },
     computed: {
@@ -277,6 +304,8 @@ app.component('opportunity-enable-workplan', {
             this.entity.workplan_monitoringRequireAccessibilityMeasures = false;
             this.entity.workplan_monitoringProvideTheProfileOfParticipants = false;
             this.entity.workplan_monitoringRequireParticipantProfile = false;
+            this.entity.workplan_monitoringInformNumberOfParticipants = false;
+            this.entity.workplan_monitoringRequireNumberOfParticipants = false;
             this.entity.workplan_monitoringInformThePriorityAudience = false;
             this.entity.workplan_monitoringRequirePriorityAudience = false;
             this.entity.workplan_monitoringReportExecutedRevenue = false;
@@ -301,6 +330,23 @@ app.component('opportunity-enable-workplan', {
             this.entity.workplan_monitoringRequireArtChainLink = false;
             this.entity.workplan_monitoringInformCommunicationChannels = false;
             this.entity.workplan_monitoringRequireCommunicationChannels = false;
+            this.entity.workplan_monitoringInformRevenueType = false;
+            this.entity.workplan_monitoringRequireRevenueType = false;
+            this.entity.workplan_monitoringInformCommunityCoauthors = false;
+            this.entity.workplan_monitoringRequireCommunityCoauthorsDetail = false;
+            this.entity.workplan_monitoringInformTransInclusion = false;
+            this.entity.workplan_monitoringRequireTransInclusionActions = false;
+            this.entity.workplan_monitoringInformAccessibilityPlan = false;
+            this.entity.workplan_monitoringRequireExpectedAccessibilityMeasures = false;
+            this.entity.workplan_monitoringInformEnvironmentalPractices = false;
+            this.entity.workplan_monitoringRequireEnvironmentalPracticesDescription = false;
+            this.entity.workplan_monitoringInformPressStrategy = false;
+            this.entity.workplan_monitoringInformInnovation = false;
+            this.entity.workplan_monitoringRequireInnovationTypes = false;
+            this.entity.workplan_monitoringInformDocumentationTypes = false;
+            this.entity.workplan_monitoringRequireDocumentationTypes = false;
+            this.entity.workplan_monitoringInformSegmentDelivery = false;
+            this.entity.workplan_monitoringRequireSegmentDelivery = false;
         },
         pluralParaSingular(texto) {
             const palavras = texto.split(' ');

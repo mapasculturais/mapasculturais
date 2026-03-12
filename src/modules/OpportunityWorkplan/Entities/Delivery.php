@@ -147,7 +147,7 @@ class Delivery extends \MapasCulturais\Entity {
                 'require' => 'workplan_monitoringRequireAvailabilityType'
             ],
             'numberOfParticipants' => [
-                'inform' => 'workplan_registrationReportTheNumberOfParticipants',
+                'inform' => 'workplan_monitoringInformNumberOfParticipants',
                 'require' => 'workplan_monitoringRequireNumberOfParticipants'
             ],
             'participantProfile' => [
@@ -288,6 +288,43 @@ class Delivery extends \MapasCulturais\Entity {
             'executedCommunicationChannels' => [
                 'inform' => 'workplan_monitoringInformCommunicationChannels',
                 'require' => 'workplan_monitoringRequireCommunicationChannels'
+            ],
+            'executedRevenueType' => [
+                'inform' => 'workplan_monitoringInformRevenueType',
+                'require' => 'workplan_monitoringRequireRevenueType'
+            ],
+            'executedSegmentDelivery' => [
+                'inform' => 'workplan_monitoringInformSegmentDelivery',
+                'require' => 'workplan_monitoringRequireSegmentDelivery'
+            ],
+            'executedCommunityCoauthorsDetail' => [
+                'inform' => 'workplan_monitoringInformCommunityCoauthors',
+                'require' => 'workplan_monitoringRequireCommunityCoauthorsDetail',
+                'gate' => 'executedHasCommunityCoauthors'
+            ],
+            'executedTransInclusionActions' => [
+                'inform' => 'workplan_monitoringInformTransInclusion',
+                'require' => 'workplan_monitoringRequireTransInclusionActions',
+                'gate' => 'executedHasTransInclusionStrategy'
+            ],
+            'executedExpectedAccessibilityMeasures' => [
+                'inform' => 'workplan_monitoringInformAccessibilityPlan',
+                'require' => 'workplan_monitoringRequireExpectedAccessibilityMeasures',
+                'gate' => 'executedHasAccessibilityPlan'
+            ],
+            'executedEnvironmentalPracticesDescription' => [
+                'inform' => 'workplan_monitoringInformEnvironmentalPractices',
+                'require' => 'workplan_monitoringRequireEnvironmentalPracticesDescription',
+                'gate' => 'executedHasEnvironmentalPractices'
+            ],
+            'executedInnovationTypes' => [
+                'inform' => 'workplan_monitoringInformInnovation',
+                'require' => 'workplan_monitoringRequireInnovationTypes',
+                'gate' => 'executedHasInnovationAction'
+            ],
+            'executedDocumentationTypes' => [
+                'inform' => 'workplan_monitoringInformDocumentationTypes',
+                'require' => 'workplan_monitoringRequireDocumentationTypes'
             ],
         ];
 

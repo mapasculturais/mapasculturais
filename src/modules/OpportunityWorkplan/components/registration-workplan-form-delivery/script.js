@@ -111,8 +111,17 @@ app.component('registration-workplan-form-delivery', {
         artChainLinkOptions () {
             return Vue.markRaw($DESCRIPTIONS.delivery.artChainLink?.options ?? []);
         },
+        booleanOptions () {
+            return Vue.markRaw($DESCRIPTIONS.delivery.hasCommunityCoauthors?.options ?? {
+                true: 'Sim',
+                false: 'Não',
+            });
+        },
         communicationChannelsOptions () {
             return Vue.markRaw($DESCRIPTIONS.delivery.communicationChannels?.options ?? {});
+        },
+        documentationTypeOptions () {
+            return Vue.markRaw($DESCRIPTIONS.delivery.documentationTypes?.options ?? {});
         },
         executedCommunicationChannels: {
             get () {
@@ -123,6 +132,50 @@ app.component('registration-workplan-form-delivery', {
             },
             set (value) {
                 this.proxy.executedCommunicationChannels = value;
+            },
+        },
+        executedDocumentationTypes: {
+            get () {
+                const val = this.proxy.executedDocumentationTypes;
+                if (!val) return [];
+                if (typeof val === 'string') return JSON.parse(val) ?? [];
+                return val;
+            },
+            set (value) {
+                this.proxy.executedDocumentationTypes = value;
+            },
+        },
+        executedExpectedAccessibilityMeasures: {
+            get () {
+                const val = this.proxy.executedExpectedAccessibilityMeasures;
+                if (!val) return [];
+                if (typeof val === 'string') return JSON.parse(val) ?? [];
+                return val;
+            },
+            set (value) {
+                this.proxy.executedExpectedAccessibilityMeasures = value;
+            },
+        },
+        executedInnovationTypes: {
+            get () {
+                const val = this.proxy.executedInnovationTypes;
+                if (!val) return [];
+                if (typeof val === 'string') return JSON.parse(val) ?? [];
+                return val;
+            },
+            set (value) {
+                this.proxy.executedInnovationTypes = value;
+            },
+        },
+        executedRevenueType: {
+            get () {
+                const val = this.proxy.executedRevenueType;
+                if (!val) return [];
+                if (typeof val === 'string') return JSON.parse(val) ?? [];
+                return val;
+            },
+            set (value) {
+                this.proxy.executedRevenueType = value;
             },
         },
         executedTeamCompositionGender: {
@@ -160,9 +213,21 @@ app.component('registration-workplan-form-delivery', {
             const g = this.executedTeamCompositionGender;
             return Object.values(g).some(v => Number(v) > 0);
         },
+        hasExecutedDocumentationTypes () {
+            return this.executedDocumentationTypes.length > 0;
+        },
+        hasExecutedExpectedAccessibilityMeasures () {
+            return this.executedExpectedAccessibilityMeasures.length > 0;
+        },
+        hasExecutedInnovationTypes () {
+            return this.executedInnovationTypes.length > 0;
+        },
         hasExecutedRaceData () {
             const r = this.executedTeamCompositionRace;
             return Object.values(r).some(v => Number(v) > 0);
+        },
+        hasExecutedRevenueType () {
+            return this.executedRevenueType.length > 0;
         },
         executedPaidStaffByRole: {
             get () {
@@ -180,6 +245,18 @@ app.component('registration-workplan-form-delivery', {
         paidStaffRoleOptions () {
             return Vue.markRaw($DESCRIPTIONS.delivery.paidStaffByRole?.options ?? []);
         },
+        revenueTypeOptions () {
+            return Vue.markRaw($DESCRIPTIONS.delivery.revenueType?.options ?? {});
+        },
+        segmentDeliveryOptions () {
+            return Vue.markRaw($DESCRIPTIONS.delivery.segmentDelivery?.options ?? {});
+        },
+        accessibilityPlanOptions () {
+            return Vue.markRaw($DESCRIPTIONS.delivery.expectedAccessibilityMeasures?.options ?? {});
+        },
+        innovationTypeOptions () {
+            return Vue.markRaw($DESCRIPTIONS.delivery.innovationTypes?.options ?? {});
+        },
     },
     methods: {
         convertToCurrency(field) {
@@ -191,6 +268,34 @@ app.component('registration-workplan-form-delivery', {
             if (idx >= 0) arr.splice(idx, 1);
             else arr.push(item);
             this.executedCommunicationChannels = arr;
+        },
+        toggleExecutedDocumentationType (item) {
+            const idx = this.executedDocumentationTypes.indexOf(item);
+            const arr = [...this.executedDocumentationTypes];
+            if (idx >= 0) arr.splice(idx, 1);
+            else arr.push(item);
+            this.executedDocumentationTypes = arr;
+        },
+        toggleExecutedExpectedAccessibilityMeasure (item) {
+            const idx = this.executedExpectedAccessibilityMeasures.indexOf(item);
+            const arr = [...this.executedExpectedAccessibilityMeasures];
+            if (idx >= 0) arr.splice(idx, 1);
+            else arr.push(item);
+            this.executedExpectedAccessibilityMeasures = arr;
+        },
+        toggleExecutedInnovationType (item) {
+            const idx = this.executedInnovationTypes.indexOf(item);
+            const arr = [...this.executedInnovationTypes];
+            if (idx >= 0) arr.splice(idx, 1);
+            else arr.push(item);
+            this.executedInnovationTypes = arr;
+        },
+        toggleExecutedRevenueType (item) {
+            const idx = this.executedRevenueType.indexOf(item);
+            const arr = [...this.executedRevenueType];
+            if (idx >= 0) arr.splice(idx, 1);
+            else arr.push(item);
+            this.executedRevenueType = arr;
         },
         calculateGenderTotal (composition) {
             if (!composition) return 0;

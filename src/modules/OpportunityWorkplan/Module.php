@@ -194,6 +194,64 @@ class Module extends \MapasCulturais\Module{
                                         }
                                     }
 
+                                    $monitoring_simple_fields = [
+                                        'availabilityType',
+                                        'participantProfile',
+                                        'numberOfParticipants',
+                                        'executedRevenue',
+                                        'executedNumberOfCities',
+                                        'executedNumberOfNeighborhoods',
+                                        'executedMediationActions',
+                                        'executedCommercialUnits',
+                                        'executedUnitPrice',
+                                        'executedArtChainLink',
+                                        'executedSegmentDelivery',
+                                        'executedCommunityCoauthorsDetail',
+                                        'executedTransInclusionActions',
+                                        'executedEnvironmentalPracticesDescription',
+                                    ];
+                                    foreach ($monitoring_simple_fields as $field) {
+                                        if ($delivery->isMetadataRequired($field) && !self::validateSelectField($delivery, $field)) {
+                                            $label = self::getFieldLabel($field);
+                                            $errors['delivery'][] = i::__("Campo '{$label}' obrigatório na entrega '{$delivery->name}'");
+                                        }
+                                    }
+
+                                    $monitoring_json_array_fields = ['executedPaidStaffByRole'];
+                                    foreach ($monitoring_json_array_fields as $field) {
+                                        if ($delivery->isMetadataRequired($field) && !self::validateJsonArrayField($delivery, $field)) {
+                                            $label = self::getFieldLabel($field);
+                                            $errors['delivery'][] = i::__("Campo '{$label}' obrigatório na entrega '{$delivery->name}'");
+                                        }
+                                    }
+
+                                    $monitoring_json_object_fields = [
+                                        'executedTeamCompositionGender',
+                                        'executedTeamCompositionRace',
+                                    ];
+                                    foreach ($monitoring_json_object_fields as $field) {
+                                        if ($delivery->isMetadataRequired($field) && !self::validateJsonObjectField($delivery, $field)) {
+                                            $label = self::getFieldLabel($field);
+                                            $errors['delivery'][] = i::__("Campo '{$label}' obrigatório na entrega '{$delivery->name}'");
+                                        }
+                                    }
+
+                                    $monitoring_multiselect_fields = [
+                                        'accessibilityMeasures',
+                                        'priorityAudience',
+                                        'executedCommunicationChannels',
+                                        'executedRevenueType',
+                                        'executedExpectedAccessibilityMeasures',
+                                        'executedInnovationTypes',
+                                        'executedDocumentationTypes',
+                                    ];
+                                    foreach ($monitoring_multiselect_fields as $field) {
+                                        if ($delivery->isMetadataRequired($field) && !self::validateMultiselectField($delivery, $field)) {
+                                            $label = self::getFieldLabel($field);
+                                            $errors['delivery'][] = i::__("Campo '{$label}' obrigatório na entrega '{$delivery->name}'");
+                                        }
+                                    }
+
                                 }
                             }
                         }
@@ -383,6 +441,12 @@ class Module extends \MapasCulturais\Module{
             'default_value' => false
         ]);
 
+        $this->registerOpportunityMetadata('workplan_monitoringInformNumberOfParticipants', [
+            'label' => i::__('Informar número de participantes executado'),
+            'type' => 'boolean',
+            'default_value' => false
+        ]);
+
         $this->registerOpportunityMetadata('workplan_monitoringReportExecutedRevenue', [
             'label' => i::__('Informar receita executada'),
             'type' => 'boolean',
@@ -531,6 +595,60 @@ class Module extends \MapasCulturais\Module{
 
         $this->registerOpportunityMetadata('workplan_monitoringInformTeamComposition', [
             'label' => i::__('Informar composição da equipe executada (gênero e raça/cor)'),
+            'type' => 'boolean',
+            'default_value' => false
+        ]);
+
+        $this->registerOpportunityMetadata('workplan_monitoringInformRevenueType', [
+            'label' => i::__('Informar tipo de receita executada'),
+            'type' => 'boolean',
+            'default_value' => false
+        ]);
+
+        $this->registerOpportunityMetadata('workplan_monitoringInformCommunityCoauthors', [
+            'label' => i::__('Informar envolvimento executado de comunidades/coletivos como coautores/coexecutores'),
+            'type' => 'boolean',
+            'default_value' => false
+        ]);
+
+        $this->registerOpportunityMetadata('workplan_monitoringInformTransInclusion', [
+            'label' => i::__('Informar estratégias executadas de inclusão Trans e Travestis'),
+            'type' => 'boolean',
+            'default_value' => false
+        ]);
+
+        $this->registerOpportunityMetadata('workplan_monitoringInformAccessibilityPlan', [
+            'label' => i::__('Informar plano de acessibilidade executado'),
+            'type' => 'boolean',
+            'default_value' => false
+        ]);
+
+        $this->registerOpportunityMetadata('workplan_monitoringInformEnvironmentalPractices', [
+            'label' => i::__('Informar práticas socioambientais executadas'),
+            'type' => 'boolean',
+            'default_value' => false
+        ]);
+
+        $this->registerOpportunityMetadata('workplan_monitoringInformPressStrategy', [
+            'label' => i::__('Informar estratégia executada de relacionamento com imprensa'),
+            'type' => 'boolean',
+            'default_value' => false
+        ]);
+
+        $this->registerOpportunityMetadata('workplan_monitoringInformInnovation', [
+            'label' => i::__('Informar ações executadas de experimentação/inovação'),
+            'type' => 'boolean',
+            'default_value' => false
+        ]);
+
+        $this->registerOpportunityMetadata('workplan_monitoringInformDocumentationTypes', [
+            'label' => i::__('Informar tipos de documentação produzida (executado)'),
+            'type' => 'boolean',
+            'default_value' => false
+        ]);
+
+        $this->registerOpportunityMetadata('workplan_monitoringInformSegmentDelivery', [
+            'label' => i::__('Informar segmento artístico-cultural executado da entrega'),
             'type' => 'boolean',
             'default_value' => false
         ]);
@@ -750,6 +868,54 @@ class Module extends \MapasCulturais\Module{
 
         $this->registerOpportunityMetadata('workplan_monitoringRequireTeamCompositionRace', [
             'label' => i::__('Composição da equipe executada por raça/cor é obrigatória'),
+            'type' => 'boolean',
+            'default_value' => false
+        ]);
+
+        $this->registerOpportunityMetadata('workplan_monitoringRequireRevenueType', [
+            'label' => i::__('Tipo de receita executada é obrigatório'),
+            'type' => 'boolean',
+            'default_value' => false
+        ]);
+
+        $this->registerOpportunityMetadata('workplan_monitoringRequireCommunityCoauthorsDetail', [
+            'label' => i::__('Detalhamento de coautoria/coexecução executada é obrigatório'),
+            'type' => 'boolean',
+            'default_value' => false
+        ]);
+
+        $this->registerOpportunityMetadata('workplan_monitoringRequireTransInclusionActions', [
+            'label' => i::__('Ações executadas de inclusão Trans e Travestis são obrigatórias'),
+            'type' => 'boolean',
+            'default_value' => false
+        ]);
+
+        $this->registerOpportunityMetadata('workplan_monitoringRequireExpectedAccessibilityMeasures', [
+            'label' => i::__('Medidas de acessibilidade executadas são obrigatórias'),
+            'type' => 'boolean',
+            'default_value' => false
+        ]);
+
+        $this->registerOpportunityMetadata('workplan_monitoringRequireEnvironmentalPracticesDescription', [
+            'label' => i::__('Práticas socioambientais executadas são obrigatórias'),
+            'type' => 'boolean',
+            'default_value' => false
+        ]);
+
+        $this->registerOpportunityMetadata('workplan_monitoringRequireInnovationTypes', [
+            'label' => i::__('Tipos de experimentação/inovação executados são obrigatórios'),
+            'type' => 'boolean',
+            'default_value' => false
+        ]);
+
+        $this->registerOpportunityMetadata('workplan_monitoringRequireDocumentationTypes', [
+            'label' => i::__('Tipos de documentação produzida são obrigatórios'),
+            'type' => 'boolean',
+            'default_value' => false
+        ]);
+
+        $this->registerOpportunityMetadata('workplan_monitoringRequireSegmentDelivery', [
+            'label' => i::__('Segmento artístico-cultural executado é obrigatório'),
             'type' => 'boolean',
             'default_value' => false
         ]);
@@ -1601,6 +1767,20 @@ class Module extends \MapasCulturais\Module{
             'participantProfile' => 'Perfil do público',
             'priorityAudience' => 'Territórios prioritários',
             'executedRevenue' => 'Receita executada',
+            'executedRevenueType' => 'Tipo de receita executada',
+            'executedSegmentDelivery' => 'Segmento artístico-cultural executado',
+            'executedHasCommunityCoauthors' => 'Envolvimento executado de comunidades',
+            'executedCommunityCoauthorsDetail' => 'Detalhamento executado de coautoria',
+            'executedHasTransInclusionStrategy' => 'Estratégia executada de inclusão Trans/Travestis',
+            'executedTransInclusionActions' => 'Ações executadas de inclusão Trans/Travestis',
+            'executedHasAccessibilityPlan' => 'Plano de acessibilidade executado',
+            'executedExpectedAccessibilityMeasures' => 'Medidas de acessibilidade executadas',
+            'executedHasEnvironmentalPractices' => 'Práticas socioambientais executadas',
+            'executedEnvironmentalPracticesDescription' => 'Descrição de práticas socioambientais executadas',
+            'executedHasPressStrategy' => 'Estratégia executada de relacionamento com imprensa',
+            'executedHasInnovationAction' => 'Ação executada de experimentação/inovação',
+            'executedInnovationTypes' => 'Tipos de experimentação/inovação executados',
+            'executedDocumentationTypes' => 'Tipos de documentação produzida',
         ];
 
         return $labels[$field] ?? $field;
