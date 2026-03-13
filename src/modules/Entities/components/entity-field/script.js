@@ -366,8 +366,8 @@ app.component('entity-field', {
 
         is(type) {
             if (type == 'location') {
-                let fieldConfig = this.description.registrationFieldConfiguration.config;
-                return fieldConfig.entityField == '@location';
+                let fieldConfig = this.description.registrationFieldConfiguration?.config;
+                return fieldConfig?.entityField == '@location';
             }
             return this.fieldType == type;
         },
