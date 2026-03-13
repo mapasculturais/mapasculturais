@@ -5,6 +5,13 @@ Todas as mudanças notáveis no projeto serão documentadas neste arquivo.
 O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/)
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [7.6.58] - 2026-03-13
+### Melhorias
+- Aplica melhoria para que possamos forçar o save em métodos PUT via header
+
+### Correções
+- Corrije erro no componente entity-field
+
 ## [7.6.57] - 2026-03-10
 ### Correções
 - Aplica verificação para evitar a criação de sessões sem critérios de avaliação no método de avaliação técnica.
