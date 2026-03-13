@@ -311,14 +311,16 @@ class Module extends \MapasCulturais\Module{
             $query = $app->em->createQuery("
                 SELECT o
                 FROM MapasCulturais\Entities\Opportunity o
-                LEFT JOIN o.__metadata om WITH om.key = 'isAppealPhase'
+                LEFT JOIN o.__metadata om  WITH om.key  = 'isAppealPhase'
+                LEFT JOIN o.__metadata om2 WITH om2.key = 'isExecutionPhase'
                 WHERE
                     {$complement}
                     (
                         o.id = :parent OR
                         (o.parent = :parent AND o.id <> :this)
                     )
-                    AND om.value IS NULL
+                    AND om.value  IS NULL
+                    AND om2.value IS NULL
                 ORDER BY o.id DESC");
 
             $query->setMaxResults(1);
@@ -1392,12 +1394,13 @@ class Module extends \MapasCulturais\Module{
             return;
         });
 
-        // Não permite a criação de inscrições em fases fora da importaçao entre fases
+        // Não permite a criação de inscrições em fases fora da importaçao entre fases.
+        // Exceção: fase de execução (isExecutionPhase) — o agente abre pedidos manualmente.
         $app->hook('POST(registration.index):before', function() use($app) {
             $opportunity_id = $this->data['opportunityId'] ?? $this->data['opportunity'] ?? -1;
             $opportunity = $app->repo('Opportunity')->find($opportunity_id);
 
-            if($opportunity->isOpportunityPhase){
+            if($opportunity->isOpportunityPhase && !$opportunity->isExecutionPhase){
                 throw new Exceptions\PermissionDenied($app->user, $opportunity, 'register');
             }
         });
