@@ -213,9 +213,8 @@ class OpportunityExecutionPhaseTest extends TestCase
             ->save()
             ->getInstance();
 
-        $execution_phase_builder = $this->opportunityBuilder->addExecutionPhase();
-        $execution_phase_builder->reset($first_phase);
-        $execution_phase_builder->instance = $execution_phase;
+        $execution_phase_builder = $this->opportunityBuilder->addExecutionPhase()
+            ->withInstance($execution_phase);
 
         $pedido1 = $execution_phase_builder->createRequest($approved, 'Alteração de planilha orçamentária');
         $pedido2 = $execution_phase_builder->createRequest($approved, 'Prorrogação');

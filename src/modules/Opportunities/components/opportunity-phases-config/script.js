@@ -53,6 +53,10 @@ app.component('opportunity-phases-config', {
         lastPhaseIndex() {
             return this.phases.findLastIndex((phase) => phase.isLastPhase);
         },
+
+        hasExecutionPhase() {
+            return this.phases.some(p => p.isExecutionPhase);
+        },
     },
     
     methods: {
@@ -63,6 +67,10 @@ app.component('opportunity-phases-config', {
         addReportingPhases (event) {
             const { collectionPhase, evaluationPhase } = event;
             this.phases.splice(this.phases.length, 0, collectionPhase, evaluationPhase);
+        },
+
+        addExecutionPhases ({ collectionPhase, evaluationPhase }) {
+            this.phases.splice(this.lastPhaseIndex + 1, 0, collectionPhase, evaluationPhase);
         },
 
         showPublishTimestamp(phase) {

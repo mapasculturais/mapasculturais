@@ -3,6 +3,7 @@
 namespace OpportunityExecution;
 
 use MapasCulturais\App;
+use MapasCulturais\Entities\EvaluationMethodConfiguration;
 use MapasCulturais\Entities\Opportunity;
 use MapasCulturais\Entities\Registration;
 use MapasCulturais\Exceptions;

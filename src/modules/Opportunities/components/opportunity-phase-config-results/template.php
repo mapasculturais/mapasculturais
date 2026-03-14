@@ -9,7 +9,6 @@ $this->import('
     opportunity-phase-config-status
     opportunity-phase-publish-date-config
     opportunity-appeal-phase-config
-    opportunity-execution-phase-config
     seals-certifier
 ');
 ?>
@@ -19,7 +18,6 @@ $this->import('
 
         <opportunity-phase-publish-date-config :phase="phase" :phases="phases" hide-description hide-button useSealsCertification></opportunity-phase-publish-date-config>
         <opportunity-appeal-phase-config :phase="phase" :phases="phases" :tab="tab"></opportunity-appeal-phase-config>
-        <opportunity-execution-phase-config :phase="phase" :phases="phases" :tab="tab"></opportunity-execution-phase-config>
 
         <seals-certifier :entity="firstPhase" :editable="seals.length > 0"></seals-certifier>
 
