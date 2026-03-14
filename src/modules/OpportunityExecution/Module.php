@@ -28,6 +28,20 @@ class Module extends \MapasCulturais\Module
         $app = App::i();
 
         // ----------------------------------------------------------------
+        // Remove as restrições de data que exigem que a fase seja anterior
+        // ao publishTimestamp da lastPhase. A fase de execução ocorre APÓS
+        // a publicação do resultado, então essas regras não se aplicam.
+        // ----------------------------------------------------------------
+        $app->hook('entity(Opportunity).validations', function (&$validations) {
+            /** @var Opportunity $this */
+            if (!$this->isExecutionPhase) {
+                return;
+            }
+            unset($validations['registrationFrom']);
+            unset($validations['registrationTo']);
+        }, 999); // alta prioridade: roda depois do hook do OpportunityPhases
+
+        // ----------------------------------------------------------------
         // Permite criação de inscrições (pedidos) na fase de execução,
         // sobrescrevendo o bloqueio genérico do OpportunityPhases que
         // impede POST em qualquer fase filha (isOpportunityPhase).
