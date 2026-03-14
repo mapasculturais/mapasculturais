@@ -30,29 +30,37 @@ app.component('opportunity-create-execution-phase', {
         },
 
         async save(modal) {
+            const api = new API('opportunity');
+            const url = this.opportunity.getUrl('createExecutionPhase');
+            const data = {
+                collectionPhase: this.collectionPhase,
+                evaluationPhase: this.evaluationPhase,
+            };
+
             modal.loading(true);
             try {
-                const data = await this.opportunity.invoke('createExecutionPhase', {
-                    collectionPhase: this.collectionPhase,
-                    evaluationPhase: this.evaluationPhase,
-                });
+                const res = await api.POST(url, data);
+                if (res.ok) {
+                    const responseData = await res.json();
 
-                const collectionPhase = Vue.reactive(new Entity('opportunity'));
-                collectionPhase.populate(data.collectionPhase);
-                const evaluationPhase = Vue.reactive(new Entity('evaluationmethodconfiguration'));
-                evaluationPhase.populate(data.evaluationPhase);
+                    const collectionPhase = Vue.reactive(new Entity('opportunity'));
+                    collectionPhase.populate(responseData.collectionPhase);
+                    const evaluationPhase = Vue.reactive(new Entity('evaluationmethodconfiguration'));
+                    evaluationPhase.populate(responseData.evaluationPhase);
 
-                this.$emit('create', { collectionPhase, evaluationPhase });
-                modal.close();
+                    this.$emit('create', { collectionPhase, evaluationPhase });
+                    modal.close();
+                    modal.loading(false);
+                } else {
+                    const { collectionErrors, evaluationErrors } = await res.json();
+                    this.collectionPhase.__validationErrors = collectionErrors ?? [];
+                    this.evaluationPhase.__validationErrors = evaluationErrors ?? [];
+                    modal.loading(false);
+                }
             } catch (err) {
-                if (err.collectionErrors) {
-                    this.collectionPhase.__validationErrors = err.collectionErrors;
-                }
-                if (err.evaluationErrors) {
-                    this.evaluationPhase.__validationErrors = err.evaluationErrors;
-                }
+                console.error(err);
+                modal.loading(false);
             }
-            modal.loading(false);
         },
     },
 });

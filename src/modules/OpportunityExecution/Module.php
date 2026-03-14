@@ -142,7 +142,17 @@ class Module extends \MapasCulturais\Module
         }, 20); // prioridade: roda depois do hook base do OpportunityPhases (priority 10)
 
         // ----------------------------------------------------------------
+        // Garante que isExecutionPhase aparece nos dados simplificados
+        // da fase retornados pelo getter phases (para $MAPAS.opportunityPhases).
+        // ----------------------------------------------------------------
+        $app->hook('module(OpportunityPhases).dataCollectionPhaseData', function (&$mout_simplify) {
+            $mout_simplify .= ',isExecutionPhase';
+        });
+
+        // ----------------------------------------------------------------
         // Endpoint: cria a fase de execução vinculada à oportunidade.
+        // Cria atomicamente a Opportunity (coleta) + EvaluationMethodConfiguration
+        // (tipo simple), seguindo o mesmo padrão de POST_reportingPhase.
         // ----------------------------------------------------------------
         $app->hook('POST(opportunity.createExecutionPhase)', function () use ($app) {
             /** @var \MapasCulturais\Controllers\Opportunity $this */
@@ -154,43 +164,66 @@ class Module extends \MapasCulturais\Module
             $root = $opportunity->isOpportunityPhase ? $opportunity->firstPhase : $opportunity;
 
             // Verifica se já existe uma fase de execução
-            $existing = null;
             foreach ($root->allPhases as $phase) {
                 if ($phase->isExecutionPhase) {
-                    $existing = $phase;
-                    break;
+                    $this->errorJson(i::__('Já existe uma fase de execução para esta oportunidade'), 403);
+                    return;
                 }
             }
 
-            if ($existing) {
-                $this->errorJson(i::__('Já existe uma fase de execução para esta oportunidade'), 403);
-            }
+            $data             = $this->data;
+            $collection_data  = $data['collectionPhase'] ?? [];
+            $evaluation_data  = $data['evaluationPhase']  ?? [];
 
-            $data = $this->data;
-            $class = $opportunity->getSpecializedClassName();
+            $class = $root->getSpecializedClassName();
 
             $execution_phase = new $class();
-            $execution_phase->parent             = $opportunity;
-            $execution_phase->status             = Opportunity::STATUS_PHASE; // -1
-            $execution_phase->name               = $data['name'] ?? i::__('Fase de Execução');
-            $execution_phase->type               = $opportunity->type;
-            $execution_phase->ownerEntity        = $opportunity->ownerEntity;
+            $execution_phase->parent             = $root;
+            $execution_phase->status             = Opportunity::STATUS_PHASE;
+            $execution_phase->name               = $collection_data['name'] ?? i::__('Fase de Execução');
+            $execution_phase->registrationFrom   = $collection_data['registrationFrom']['_date'] ?? null;
+            $execution_phase->registrationTo     = $collection_data['registrationTo']['_date'] ?? null;
+            $execution_phase->type               = $root->type;
+            $execution_phase->ownerEntity        = $root->ownerEntity;
             $execution_phase->isOpportunityPhase = true;
             $execution_phase->isDataCollection   = true;
             $execution_phase->isExecutionPhase   = true;
-            // Zera o limite por agente para permitir N pedidos por agente
             $execution_phase->registrationLimitPerOwner = 0;
-            // Pré-popula com categorias padrão; o gestor pode editar antes de publicar
             $execution_phase->registrationCategories = !empty($data['categories'])
                 ? $data['categories']
                 : self::DEFAULT_CATEGORIES;
 
+            $evaluation_phase = new EvaluationMethodConfiguration();
+            $evaluation_phase->opportunity    = $execution_phase;
+            $evaluation_phase->type           = 'simple';
+            $evaluation_phase->name           = $evaluation_data['name'] ?? i::__('Avaliação dos pedidos');
+            $evaluation_phase->evaluationFrom = $evaluation_data['evaluationFrom']['_date'] ?? null;
+            $evaluation_phase->evaluationTo   = $evaluation_data['evaluationTo']['_date'] ?? null;
+
+            $collection_errors = $execution_phase->getValidationErrors();
+            $evaluation_errors = $evaluation_phase->getValidationErrors();
+
+            if (!empty($collection_errors) || !empty($evaluation_errors)) {
+                $this->json([
+                    'errors'           => true,
+                    'collectionErrors' => $collection_errors,
+                    'evaluationErrors' => $evaluation_errors,
+                ], 400);
+                return;
+            }
+
             $execution_phase->save(true);
+            $evaluation_phase->save(true);
 
             $root->executionPhase = $execution_phase->id;
             $root->save(true);
 
-            $this->json($execution_phase);
+            $execution_phase->evaluationMethodConfiguration = $evaluation_phase;
+
+            $this->json([
+                'collectionPhase' => $execution_phase,
+                'evaluationPhase' => $evaluation_phase,
+            ]);
         });
 
         // ----------------------------------------------------------------
