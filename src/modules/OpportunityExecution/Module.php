@@ -138,7 +138,7 @@ class Module extends \MapasCulturais\Module
             }
 
             $values = $result;
-        }, 5); // prioridade baixa: roda depois do hook base do OpportunityPhases
+        }, 20); // prioridade: roda depois do hook base do OpportunityPhases (priority 10)
 
         // ----------------------------------------------------------------
         // Endpoint: cria a fase de execução vinculada à oportunidade.
@@ -149,13 +149,12 @@ class Module extends \MapasCulturais\Module
             $opportunity = $this->requestedEntity;
             $opportunity->checkPermission('@control');
 
-            if ($opportunity->isOpportunityPhase) {
-                $this->errorJson(i::__('A fase de execução deve ser criada na oportunidade principal'), 400);
-            }
+            // Garante que operamos sempre na oportunidade raiz
+            $root = $opportunity->isOpportunityPhase ? $opportunity->firstPhase : $opportunity;
 
             // Verifica se já existe uma fase de execução
             $existing = null;
-            foreach ($opportunity->firstPhase->allPhases as $phase) {
+            foreach ($root->allPhases as $phase) {
                 if ($phase->isExecutionPhase) {
                     $existing = $phase;
                     break;
@@ -187,8 +186,8 @@ class Module extends \MapasCulturais\Module
 
             $execution_phase->save(true);
 
-            $opportunity->executionPhase = $execution_phase->id;
-            $opportunity->save(true);
+            $root->executionPhase = $execution_phase->id;
+            $root->save(true);
 
             $this->json($execution_phase);
         });

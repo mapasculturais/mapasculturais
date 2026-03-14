@@ -29,6 +29,12 @@ class ExecutionPhaseBuilder extends Builder
 
     protected Opportunity $instance;
 
+    public function withInstance(Opportunity $phase): self
+    {
+        $this->instance = $phase;
+        return $this;
+    }
+
     function __construct(private OpportunityBuilder $opportunityBuilder)
     {
         parent::__construct();

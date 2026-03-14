@@ -214,7 +214,7 @@ class Module extends \MapasCulturais\Module{
         $registration_repository = $app->repo('Registration');
 
         $app->hook("entity(Registration).<<insert|send>>:before", function(){
-            if(!$this->opportunity->isDataCollection){
+            if($this->previousPhase && !$this->opportunity->isDataCollection){
               $this->sentTimestamp = $this->previousPhase->sentTimestamp;
             }
         });
@@ -951,8 +951,8 @@ class Module extends \MapasCulturais\Module{
         $app->hook('Entities\Opportunity::syncRegistrations', function($value, array $registrations = []) use($app) {
             /** @var Opportunity $this */
 
-            // Não deve sincronizar as inscrições da primeira fase ou fase de recurso
-            if ($this->isFirstPhase || $this->isAppealPhase) {
+            // Não deve sincronizar as inscrições da primeira fase, fase de recurso ou fase de execução
+            if ($this->isFirstPhase || $this->isAppealPhase || $this->isExecutionPhase) {
                 return false;
             }
 
@@ -986,7 +986,7 @@ class Module extends \MapasCulturais\Module{
         $app->hook('Entities\Opportunity::removeOrphanRegistrations', function($value, array $registrations = []) use($app) {
             /** @var Opportunity $this */
 
-            if ($this->isFirstPhase || $this->isLastPhase || $this->isAppealPhase) {
+            if ($this->isFirstPhase || $this->isLastPhase || $this->isAppealPhase || $this->isExecutionPhase) {
                 return;
             }
 
@@ -1769,7 +1769,7 @@ class Module extends \MapasCulturais\Module{
             // Adiciona os proponentes, as faixas e as categorias para as novas fases de coleta de dados criadas
             $app->hook('entity(Opportunity).insert:after', function() use ($app) {
                 /** @var Opportunity $this */
-                if($this->parent && $this->isDataCollection) {
+                if($this->parent && $this->isDataCollection && !$this->isExecutionPhase) {
                     $this->registrationCategories = $this->parent->registrationCategories;
                     $this->registrationProponentTypes = $this->parent->registrationProponentTypes;
                     $this->registrationRanges = $this->parent->registrationRanges;
