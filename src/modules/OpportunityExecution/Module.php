@@ -226,6 +226,22 @@ class Module extends \MapasCulturais\Module
         });
 
         // ----------------------------------------------------------------
+        // Exclusão em cascata: quando a EvaluationMethodConfiguration da fase
+        // de execução é removida diretamente, a fase de execução (Opportunity)
+        // também deve ser destruída. O sentido inverso (Opportunity destruída →
+        // EMC apagada) já é coberto pelo onDelete="CASCADE" no schema do banco.
+        // ----------------------------------------------------------------
+        $app->hook('entity(EvaluationMethodConfiguration).remove:after', function () use ($app) {
+            /** @var EvaluationMethodConfiguration $this */
+            $opportunity_id = $this->opportunity->id;
+            $app->em->clear();
+            $opportunity = $app->repo('Opportunity')->find($opportunity_id);
+            if ($opportunity && $opportunity->isExecutionPhase) {
+                $opportunity->destroy(true);
+            }
+        });
+
+        // ----------------------------------------------------------------
         // Endpoint: o agente abre um pedido (inscrição) na fase de execução.
         // Qualquer agente relacionado à inscrição aprovada pode abrir pedidos.
         // ----------------------------------------------------------------
