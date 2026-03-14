@@ -61,7 +61,7 @@ app.component('opportunity-execution-requests', {
 
             try {
                 const api = new API('registration');
-                const result = await api.find(`opportunity:${this.executionPhase.id},@opportunity:${this.opportunity.id}`);
+                const result = await api.find(`opportunity:${this.executionPhase.id}`);
                 this.requests = result.map(r => {
                     const e = new Entity('registration');
                     e.populate(r);

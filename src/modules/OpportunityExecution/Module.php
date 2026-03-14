@@ -164,8 +164,8 @@ class Module extends \MapasCulturais\Module
             $this->import('opportunity-execution-requests');
             ?>
             <opportunity-execution-requests
-                v-if="item.isLastPhase && registration?.status == 10"
-                :registration="registration"
+                v-if="item.isExecutionPhase && getRegistration(lastPhase)?.status == 10"
+                :registration="getRegistration(lastPhase)"
                 :phase="item"
                 :phases="phases">
             </opportunity-execution-requests>
