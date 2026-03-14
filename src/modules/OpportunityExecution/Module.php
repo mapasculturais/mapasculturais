@@ -11,18 +11,6 @@ use MapasCulturais\i;
 
 class Module extends \MapasCulturais\Module
 {
-    /**
-     * Categorias pré-definidas oferecidas ao gestor ao criar a fase.
-     * O gestor pode mantê-las, removê-las ou acrescentar outras.
-     */
-    const DEFAULT_CATEGORIES = [
-        'Alteração de planilha orçamentária',
-        'Alteração de ficha técnica',
-        'Aprovação de logomarca',
-        'Alteração de projeto',
-        'Prorrogação',
-    ];
-
     public function _init()
     {
         $app = App::i();
@@ -203,9 +191,6 @@ class Module extends \MapasCulturais\Module
             $execution_phase->isDataCollection   = true;
             $execution_phase->isExecutionPhase   = true;
             $execution_phase->registrationLimitPerOwner = 0;
-            $execution_phase->registrationCategories = !empty($data['categories'])
-                ? $data['categories']
-                : self::DEFAULT_CATEGORIES;
 
             $evaluation_phase = new EvaluationMethodConfiguration();
             $evaluation_phase->opportunity    = $execution_phase;
@@ -302,12 +287,9 @@ class Module extends \MapasCulturais\Module
                 return;
             }
 
-            $category = $data['category'] ?? null;
-
             $pedido = new Registration();
             $pedido->opportunity = $execution_phase;
             $pedido->owner       = $approved_registration->owner;
-            $pedido->category    = $category;
             // Vincula ao aprovado original para rastreabilidade
             $pedido->previousPhaseRegistrationId = $approved_registration->id;
 

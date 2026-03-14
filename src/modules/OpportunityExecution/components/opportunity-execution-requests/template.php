@@ -23,7 +23,7 @@ $this->import('
         <div v-for="req in requests" :key="req.id" class="opportunity-execution-requests__item item__dot-appeal-phase">
             <div class="item__dot-appeal-phase"><span class="dot"></span></div>
             <div class="item__content">
-                <div class="item__content--title"><?= i::__('[Pedido]') ?> {{ req.category }}</div>
+                <div class="item__content--title"><?= i::__('[Pedido]') ?> {{ req.number }}</div>
                 <div class="opportunity-phases-timeline__box">
                     <label class="semibold opportunity-phases-timeline__label"><?= i::__('Situação:') ?></label>
                     <div class="opportunity-phases-timeline__status">
@@ -39,28 +39,11 @@ $this->import('
     </div>
 
     <div v-if="executionPhase.registrationFrom && !executionPhase.registrationTo?.isPast()" class="opportunity-execution-requests__new">
-        <div v-if="!showForm && canOpenRequest" class="opportunity-execution-requests__open-button">
-            <button v-if="!processing" class="button button--primary button--primary-outline" @click="showForm = true">
-                <?= i::__('Abrir novo pedido') ?>
+        <div v-if="canOpenRequest" class="opportunity-execution-requests__open-button">
+            <button :disabled="processing" class="button button--primary button--primary-outline" @click="createRequest()">
+                <mc-loading v-if="processing" :condition="processing"><?= i::__('abrindo') ?></mc-loading>
+                <span v-else><?= i::__('Abrir novo pedido') ?></span>
             </button>
-        </div>
-
-        <div v-if="showForm" class="opportunity-execution-requests__form">
-            <h5 class="bold"><?= i::__('Novo pedido de alteração') ?></h5>
-            <div class="col-12">
-                <label class="semibold"><?= i::__('Categoria do pedido:') ?></label>
-                <select v-model="selectedCategory" class="col-12">
-                    <option value="" disabled><?= i::__('Selecione o tipo de pedido') ?></option>
-                    <option v-for="cat in executionPhase.registrationCategories" :key="cat" :value="cat">{{ cat }}</option>
-                </select>
-            </div>
-            <div class="col-12 opportunity-execution-requests__form-actions">
-                <button class="button button--secondary" @click="showForm = false; selectedCategory = ''"><?= i::__('Cancelar') ?></button>
-                <button class="button button--primary" :disabled="!selectedCategory || processing" @click="createRequest()">
-                    <mc-loading v-if="processing" :condition="processing"><?= i::__('enviando') ?></mc-loading>
-                    <span v-else><?= i::__('Enviar pedido') ?></span>
-                </button>
-            </div>
         </div>
     </div>
 </div>

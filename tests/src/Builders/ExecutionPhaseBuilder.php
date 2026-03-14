@@ -5,7 +5,6 @@ namespace Tests\Builders;
 use MapasCulturais\App;
 use MapasCulturais\Entities\Opportunity;
 use MapasCulturais\Entities\Registration;
-use OpportunityExecution\Module as ExecutionModule;
 use Tests\Abstract\Builder;
 use Tests\Interfaces\DataCollectionPeriodInterface;
 use Tests\Traits\Faker;
@@ -60,7 +59,6 @@ class ExecutionPhaseBuilder extends Builder
         $execution_phase->isDataCollection   = true;
         $execution_phase->isExecutionPhase   = true;
         $execution_phase->registrationLimitPerOwner = 0;
-        $execution_phase->registrationCategories    = ExecutionModule::DEFAULT_CATEGORIES;
 
         $this->instance = $execution_phase;
 
@@ -96,26 +94,17 @@ class ExecutionPhaseBuilder extends Builder
         return $this;
     }
 
-    public function setCategories(array $categories): self
-    {
-        $this->instance->registrationCategories = $categories;
-
-        return $this;
-    }
-
     /**
      * Cria e salva um pedido (inscrição) de um agente na fase de execução.
      * Vincula ao ID da inscrição aprovada na lastPhase para rastreabilidade.
      *
      * @param Registration $approved_registration Inscrição aprovada na lastPhase
-     * @param string|null  $category Categoria do pedido
      */
-    public function createRequest(Registration $approved_registration, ?string $category = null): Registration
+    public function createRequest(Registration $approved_registration): Registration
     {
         $pedido = new Registration();
         $pedido->opportunity = $this->instance;
         $pedido->owner       = $approved_registration->owner;
-        $pedido->category    = $category ?? ($this->instance->registrationCategories[0] ?? null);
         $pedido->previousPhaseRegistrationId = $approved_registration->id;
         $pedido->save(true);
 

@@ -4,7 +4,6 @@ namespace Test;
 
 use MapasCulturais\Entities\Opportunity;
 use MapasCulturais\Entities\Registration;
-use OpportunityExecution\Module as ExecutionModule;
 use Tests\Abstract\TestCase;
 use Tests\Builders\PhasePeriods\ConcurrentEndingAfter;
 use Tests\Builders\PhasePeriods\Open;
@@ -102,56 +101,6 @@ class OpportunityExecutionPhaseTest extends TestCase
             'registrationLimitPerOwner deve ser 0 para permitir N pedidos por agente');
     }
 
-    /**
-     * As categorias padrão devem ser pré-populadas ao criar a fase.
-     */
-    public function testExecutionPhaseHasDefaultCategories()
-    {
-        $admin = $this->userDirector->createUser('admin');
-        $this->login($admin);
-
-        $this->opportunityBuilder
-            ->reset(owner: $admin->profile, owner_entity: $admin->profile)
-            ->fillRequiredProperties()
-            ->save();
-
-        $execution_phase = $this->opportunityBuilder
-            ->addExecutionPhase()
-            ->save()
-            ->getInstance();
-
-        $this->assertEquals(
-            ExecutionModule::DEFAULT_CATEGORIES,
-            $execution_phase->registrationCategories,
-            'As categorias padrão devem estar pré-populadas na fase de execução'
-        );
-    }
-
-    /**
-     * O gestor deve conseguir sobrescrever as categorias da fase de execução.
-     */
-    public function testExecutionPhaseCustomCategories()
-    {
-        $admin = $this->userDirector->createUser('admin');
-        $this->login($admin);
-
-        $custom = ['Categoria A', 'Categoria B'];
-
-        $this->opportunityBuilder
-            ->reset(owner: $admin->profile, owner_entity: $admin->profile)
-            ->fillRequiredProperties()
-            ->save();
-
-        $execution_phase = $this->opportunityBuilder
-            ->addExecutionPhase()
-            ->setCategories($custom)
-            ->save()
-            ->getInstance();
-
-        $this->assertEquals($custom, $execution_phase->registrationCategories,
-            'O gestor deve poder configurar categorias personalizadas');
-    }
-
     // ----------------------------------------------------------------
     // Testes de posição em allPhases
     // ----------------------------------------------------------------
@@ -202,7 +151,7 @@ class OpportunityExecutionPhaseTest extends TestCase
 
     /**
      * Um agente com inscrição aprovada deve conseguir criar N pedidos
-     * na fase de execução com categorias diferentes.
+     * na fase de execução.
      */
     public function testAgentCanCreateMultipleRequests()
     {
@@ -216,25 +165,19 @@ class OpportunityExecutionPhaseTest extends TestCase
         $execution_phase_builder = $this->opportunityBuilder->addExecutionPhase()
             ->withInstance($execution_phase);
 
-        $pedido1 = $execution_phase_builder->createRequest($approved, 'Alteração de planilha orçamentária');
-        $pedido2 = $execution_phase_builder->createRequest($approved, 'Prorrogação');
-        $pedido3 = $execution_phase_builder->createRequest($approved, 'Alteração de planilha orçamentária');
+        $pedido1 = $execution_phase_builder->createRequest($approved);
+        $pedido2 = $execution_phase_builder->createRequest($approved);
+        $pedido3 = $execution_phase_builder->createRequest($approved);
 
         $this->assertEquals($approved->owner->id, $pedido1->owner->id);
         $this->assertEquals($approved->owner->id, $pedido2->owner->id);
         $this->assertEquals($approved->owner->id, $pedido3->owner->id);
 
-        $this->assertEquals('Alteração de planilha orçamentária', $pedido1->category);
-        $this->assertEquals('Prorrogação', $pedido2->category);
-
-        // O mesmo agente pode ter dois pedidos da mesma categoria simultaneamente
-        $this->assertEquals('Alteração de planilha orçamentária', $pedido3->category);
-
         $this->assertNotEquals($pedido1->number, $pedido2->number,
             'Cada pedido deve ter um number independente');
 
         $this->assertNotEquals($pedido1->number, $pedido3->number,
-            'Pedidos da mesma categoria também devem ter numbers distintos');
+            'Pedidos do mesmo agente também devem ter numbers distintos');
     }
 
     /**
@@ -253,7 +196,6 @@ class OpportunityExecutionPhaseTest extends TestCase
         $pedido = new Registration();
         $pedido->opportunity = $execution_phase;
         $pedido->owner       = $approved->owner;
-        $pedido->category    = 'Prorrogação';
         $pedido->previousPhaseRegistrationId = $approved->id;
         $pedido->save(true);
 
@@ -285,7 +227,6 @@ class OpportunityExecutionPhaseTest extends TestCase
         $pedido = new Registration();
         $pedido->opportunity = $execution_phase;
         $pedido->owner       = $approved->owner;
-        $pedido->category    = 'Prorrogação';
         $pedido->previousPhaseRegistrationId = $approved->id;
         $pedido->save(true);
 

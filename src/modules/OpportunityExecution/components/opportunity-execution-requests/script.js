@@ -24,8 +24,6 @@ app.component('opportunity-execution-requests', {
     data() {
         return {
             processing: false,
-            showForm: false,
-            selectedCategory: '',
             requests: [],
         };
     },
@@ -75,14 +73,11 @@ app.component('opportunity-execution-requests', {
         },
 
         async createRequest() {
-            if (!this.selectedCategory) return;
-
             this.processing = true;
             const messages = useMessages();
 
             try {
                 const data = await this.opportunity.invoke('createExecutionRequest', {
-                    category: this.selectedCategory,
                     registration_id: this.registration.id,
                 });
 
@@ -90,8 +85,6 @@ app.component('opportunity-execution-requests', {
                 entity.populate(data);
                 this.requests.push(entity);
 
-                this.showForm = false;
-                this.selectedCategory = '';
                 messages.success(this.text('Pedido criado com sucesso'));
 
                 window.location.href = Utils.createUrl('registration', 'view', [entity.id]);
