@@ -81,9 +81,9 @@ app.component('opportunity-execution-requests', {
             const messages = useMessages();
 
             try {
-                const data = await this.opportunity.POST('createExecutionRequest', {
+                const data = await this.opportunity.invoke('createExecutionRequest', {
                     category: this.selectedCategory,
-                    registration_id: this.registration._id,
+                    registration_id: this.registration.id,
                 });
 
                 const entity = new Entity('registration');

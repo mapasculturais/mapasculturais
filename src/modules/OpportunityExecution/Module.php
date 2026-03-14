@@ -263,31 +263,43 @@ class Module extends \MapasCulturais\Module
                 $this->errorJson(i::__('Fase de execução não encontrada'), 404);
             }
 
-            $profile = $app->user->profile;
+            // Recebe o ID da inscrição aprovada diretamente do frontend,
+            // seguindo o mesmo padrão do createAppealPhaseRegistration.
+            $registration_id = $data['registration_id'] ?? 0;
 
-            // Busca a inscrição aprovada: como owner OU como agente relacionado.
-            // Necessário para cobrir coletivos/organizações onde o usuário logado
-            // é membro relacionado, não o owner direto da inscrição.
-            $dql = "
-                SELECT r
-                FROM MapasCulturais\Entities\Registration r
-                LEFT JOIN r.__agentRelations ar
-                WHERE
-                    r.opportunity = :last_phase AND
-                    r.status      = :approved   AND
-                    (r.owner = :profile OR ar.agent = :profile)
-            ";
-            $query = $app->em->createQuery($dql);
-            $query->setParameters([
-                'last_phase' => $opportunity->lastPhase,
-                'approved'   => Registration::STATUS_APPROVED,
-                'profile'    => $profile,
-            ]);
-            $query->setMaxResults(1);
-            $approved_registration = $query->getOneOrNullResult();
+            if (!$registration_id) {
+                $this->errorJson(i::__('ID da inscrição é obrigatório'), 400);
+                return;
+            }
+
+            $approved_registration = $app->repo('Registration')->find($registration_id);
 
             if (!$approved_registration) {
-                $this->errorJson(i::__('Inscrição aprovada não encontrada para este agente'), 403);
+                $this->errorJson(i::__('Inscrição não encontrada'), 404);
+                return;
+            }
+
+            // Garante que a inscrição é da lastPhase desta oportunidade e está aprovada
+            if ($approved_registration->opportunity->id !== $first_phase->lastPhase->id
+                || $approved_registration->status !== Registration::STATUS_APPROVED) {
+                $this->errorJson(i::__('A inscrição não está aprovada na publicação final do resultado'), 403);
+                return;
+            }
+
+            // Garante que o usuário logado é dono ou agente relacionado da inscrição
+            $profile = $app->user->profile;
+            $is_owner = $approved_registration->owner->id === $profile->id;
+            $is_related = false;
+            foreach ($approved_registration->agentRelations as $ar) {
+                if ($ar->agent->id === $profile->id) {
+                    $is_related = true;
+                    break;
+                }
+            }
+
+            if (!$is_owner && !$is_related) {
+                $this->errorJson(i::__('Você não tem permissão para abrir pedidos nesta inscrição'), 403);
+                return;
             }
 
             $category = $data['category'] ?? null;
