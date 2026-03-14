@@ -152,6 +152,27 @@ class Module extends \MapasCulturais\Module
         });
 
         // ----------------------------------------------------------------
+        // Injeta o componente opportunity-execution-requests na timeline
+        // do proponente (opportunity-phases-timeline), ao final do item
+        // da lastPhase, quando a inscrição do usuário está aprovada (status=10).
+        // Fica aqui (e não em registration-status) para não depender de
+        // publishedRegistrations — a fase de execução deve estar acessível
+        // assim que a inscrição estiver aprovada e a fase de execução ativa.
+        // ----------------------------------------------------------------
+        $app->hook('component(opportunity-phases-timeline).item:end', function () {
+            /** @var \MapasCulturais\Themes\BaseV2\Theme $this */
+            $this->import('opportunity-execution-requests');
+            ?>
+            <opportunity-execution-requests
+                v-if="item.isLastPhase && registration?.status == 10"
+                :registration="registration"
+                :phase="item"
+                :phases="phases">
+            </opportunity-execution-requests>
+            <?php
+        });
+
+        // ----------------------------------------------------------------
         // Endpoint: cria a fase de execução vinculada à oportunidade.
         // Cria atomicamente a Opportunity (coleta) + EvaluationMethodConfiguration
         // (tipo simple), seguindo o mesmo padrão de POST_reportingPhase.

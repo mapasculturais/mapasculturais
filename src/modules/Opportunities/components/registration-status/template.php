@@ -10,7 +10,6 @@ $this->import('
     mc-icon
     registration-results
     mc-loading
-    opportunity-execution-requests
 ');
 ?>
 <div v-if="!phase.isLastPhase" class="opportunity-phases-timeline__box">
@@ -81,9 +80,3 @@ $this->import('
     </div>
 </div>
 
-<opportunity-execution-requests
-    v-if="phase.isLastPhase && registration.status == 10"
-    :registration="registration"
-    :phase="phase"
-    :phases="$parent.phases || []">
-</opportunity-execution-requests>
