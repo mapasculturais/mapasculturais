@@ -61,12 +61,14 @@ app.component('opportunity-execution-requests', {
 
             try {
                 const api = new API('registration');
-                const result = await api.find(`opportunity:${this.executionPhase.id}`);
-                this.requests = result.map(r => {
-                    const e = new Entity('registration');
-                    e.populate(r);
-                    return e;
+                const result = await api.find({
+                    'opportunity': `EQ(${this.executionPhase.id})`,
+                    '@select': 'id,number,status,editUrl,singleUrl',
+                    'status': 'GTE(0)',
+                    '@permissions': 'view',
+                    'user': 'EQ(@me)',
                 });
+                this.requests = result;
             } catch (e) {
                 // sem pedidos ainda — lista fica vazia
             }
@@ -102,22 +104,30 @@ app.component('opportunity-execution-requests', {
         statusColor(status) {
             switch (parseInt(status)) {
                 case 10:
-                case 1:
                     return 'success__color';
+                case 1:
+                case 8:
+                    return 'warning__color';
                 case 3:
                 case 2:
                 case 0:
                     return 'danger__color';
-                case 8:
-                    return 'warning__color';
                 default:
                     return '';
             }
         },
 
         statusLabel(status) {
-            const labels = this.executionPhase?.statusLabels || {};
-            return labels[status] ?? this.text('Status desconhecido');
+            const defaults = {
+                0:  this.text('Em preenchimento'),
+                1:  this.text('Pendente'),
+                2:  this.text('Inválida'),
+                3:  this.text('Não selecionada'),
+                8:  this.text('Suplente'),
+                10: this.text('Selecionada'),
+            };
+            const custom = this.executionPhase?.statusLabels || {};
+            return custom[status] ?? defaults[parseInt(status)] ?? this.text('Status desconhecido');
         },
     },
 });
