@@ -152,6 +152,62 @@ class Module extends \MapasCulturais\Module
         });
 
         // ----------------------------------------------------------------
+        // Injeta a seção de pedidos de execução na aba "Ficha de inscrição"
+        // da view single da inscrição, ao final do conteúdo de ficha.
+        // O hook registration-ficha-tab:end é adicionado no single.php
+        // da aba ficha, logo após o loop de fases de coleta de dados.
+        // ----------------------------------------------------------------
+        $app->hook('template(registration.view.registration-ficha-tab):end', function($entity) use ($app) {
+            /** @var \MapasCulturais\Themes\BaseV2\Theme $this */
+            /** @var \MapasCulturais\Entities\Registration $entity firstPhase registration */
+
+            // Localiza as fases de execução da oportunidade raiz
+            $first_phase_opp = $entity->opportunity->firstPhase ?? $entity->opportunity;
+            $execution_phases = array_filter($first_phase_opp->allPhases ?? [], fn($p) => $p->isExecutionPhase);
+
+            if (!$execution_phases) {
+                return;
+            }
+
+            // A lastPhase registration é o vínculo com os pedidos de execução
+            $last_phase_reg = $entity->lastPhase ?? $entity;
+
+            $conn = $app->em->getConnection();
+
+            foreach ($execution_phases as $exec_phase) {
+                $ids = $conn->fetchFirstColumn(
+                    "SELECT r.id FROM registration r
+                     INNER JOIN registration_meta m ON m.object_id = r.id
+                     WHERE r.opportunity_id = ?
+                       AND r.status > 0
+                       AND m.key = 'previousPhaseRegistrationId'
+                       AND m.value = ?",
+                    [$exec_phase->id, (string) $last_phase_reg->id]
+                );
+
+                if (!$ids) {
+                    continue;
+                }
+
+                $requests = $app->repo('Registration')->findBy(['id' => $ids]);
+
+                if (!$requests) {
+                    continue;
+                }
+
+                ?>
+                <h2><?= htmlspecialchars($exec_phase->name) ?></h2>
+                <?php
+                foreach ($requests as $request) {
+                    ?>
+                    <h3><?= $request->number ?></h3>
+                    <v1-embed-tool route="registrationview" :id="<?= $request->id ?>"></v1-embed-tool>
+                    <?php
+                }
+            }
+        });
+
+        // ----------------------------------------------------------------
         // Injeta o componente opportunity-execution-requests na timeline
         // do proponente (opportunity-phases-timeline), ao final do item
         // da lastPhase, quando a inscrição do usuário está aprovada (status=10).
