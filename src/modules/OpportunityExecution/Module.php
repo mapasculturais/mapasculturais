@@ -380,15 +380,19 @@ class Module extends \MapasCulturais\Module
                 return;
             }
 
-            $pedido = new Registration();
-            $pedido->opportunity = $execution_phase;
-            $pedido->owner       = $approved_registration->owner;
+            $new_registration = new Registration();
+            $new_registration->opportunity = $execution_phase;
+            $new_registration->owner       = $approved_registration->owner;
+            // Copia o number da inscrição aprovada — mesmo padrão do recurso.
+            // O apiFindRegistrations filtra resultados por number entre fases:
+            // sem isso, os pedidos nunca aparecem na lista do gestor.
+            $new_registration->number = $approved_registration->number;
             // Vincula ao aprovado original para rastreabilidade
-            $pedido->previousPhaseRegistrationId = $approved_registration->id;
+            $new_registration->previousPhaseRegistrationId = $approved_registration->id;
 
-            $pedido->save(true);
+            $new_registration->save(true);
 
-            $this->json($pedido);
+            $this->json($new_registration);
         });
     }
 
