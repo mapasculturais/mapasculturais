@@ -30,6 +30,23 @@ class Module extends \MapasCulturais\Module
         }, 999); // alta prioridade: roda depois do hook do OpportunityPhases
 
         // ----------------------------------------------------------------
+        // Remove as restrições de data da EMC da fase de execução.
+        // O getter EMC.nextPhase resolve para a lastPhase (pois não há fase
+        // seguinte), e a validação compararia evaluationTo com publishTimestamp
+        // da lastPhase — que já passou. A fase de execução não tem fase
+        // sequencial seguinte, então as restrições de data relativas não
+        // se aplicam.
+        // ----------------------------------------------------------------
+        $app->hook('entity(EvaluationMethodConfiguration).validations', function (&$validations) {
+            /** @var EvaluationMethodConfiguration $this */
+            if (!$this->opportunity->isExecutionPhase) {
+                return;
+            }
+            unset($validations['evaluationFrom']);
+            unset($validations['evaluationTo']);
+        }, 999); // alta prioridade: roda depois do hook do OpportunityPhases
+
+        // ----------------------------------------------------------------
         // Permite criação de inscrições (pedidos) na fase de execução,
         // sobrescrevendo o bloqueio genérico do OpportunityPhases que
         // impede POST em qualquer fase filha (isOpportunityPhase).
