@@ -5,6 +5,11 @@ Todas as mudanças notáveis no projeto serão documentadas neste arquivo.
 O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/)
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## UNRELEASED
+### Novas Funcionalidades
+
+- Módulo de **fase de execução** que permite ao gestor configurar uma fase de acompanhamento para os agentes contemplados após a publicação do resultado. Durante esta fase, o agente contemplado pode abrir múltiplos **pedidos de alteração** no projeto aprovado — troca de data, substituição de item de orçamento, mudança de local, entre outros. Cada pedido é avaliado individualmente por uma comissão configurada pelo gestor (mesmo modelo de avaliação simplificada já existente nas fases de seleção). Os pedidos ficam como registro histórico das alterações aprovadas durante a vigência do projeto e não interferem no fluxo das fases seguintes de prestação de informações.
+
 ## [7.7.16] - UNRELEASED
 ### Melhorias
 - Implementação de novo campo de tabaela para ser usado nos formulários de inscrições
