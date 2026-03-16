@@ -1819,7 +1819,13 @@ class Opportunity extends EntityController {
         $user->profile->checkPermission('@control');
 
         $opportunity_ids = $app->repo('Opportunity')->findValuerOpportunities($user->id, only_ids: true); 
-        
+
+        if (empty($opportunity_ids)) {
+            $this->apiAddHeaderMetadata($this->data, [], 0);
+            $this->apiResponse([]);
+            return;
+        }
+
         $query_params = $this->data;
         $query_params['id'] = API::IN($opportunity_ids);
 
