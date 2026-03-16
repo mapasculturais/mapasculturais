@@ -29,15 +29,10 @@ class WorkplanValidationTest extends TestCase
             ->firstPhase()
                 ->setRegistrationPeriod(new Open)
                 ->done()
-            ->save();
+            ->save()
+            ->enableWorkplan();
 
-        $opportunity = $opportunity_builder->getInstance();
-
-        $opportunity->enableWorkplan = true;
-        $opportunity->workplan_deliveryReportTheDeliveriesLinkedToTheGoals = true;
-        $opportunity->save(true);
-
-        return $opportunity;
+        return $opportunity_builder->getInstance();
     }
 
     public function testRequireWorkplanWhenEnabled(): void
@@ -60,8 +55,7 @@ class WorkplanValidationTest extends TestCase
         $opportunity = $this->createOpportunityWithWorkplanEnabled();
 
         /** @var Registration $registration */
-        $registration = $this->registrationDirector
-            ->createSentRegistrations($opportunity, 1)[0];
+        $registration = $this->registrationDirector->createSentRegistrations($opportunity, 1)[0];
 
         $workplan_service = new WorkplanService();
 
