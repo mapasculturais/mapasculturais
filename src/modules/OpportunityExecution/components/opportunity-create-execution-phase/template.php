@@ -18,24 +18,24 @@ $this->import('
 
             <div class="col-12 modal__title"><?= i::__("Fase de Execução") ?></div>
             <div class="col-12">
-                <entity-field :entity="collectionPhase" prop="name" label="<?= i::esc_attr_e("Defina um título") ?>" hideRequired></entity-field>
+                <entity-field :entity="collectionPhase" prop="name" label="<?= i::esc_attr__("Defina um título") ?>" hideRequired></entity-field>
             </div>
             <div class="col-6">
-                <entity-field :entity="collectionPhase" prop="registrationFrom" label="<?= i::esc_attr_e("Data de início") ?>" hideRequired></entity-field>
+                <entity-field :entity="collectionPhase" prop="registrationFrom" label="<?= i::esc_attr__("Data de início") ?>" hideRequired></entity-field>
             </div>
             <div class="col-6">
-                <entity-field :entity="collectionPhase" prop="registrationTo" label="<?= i::esc_attr_e("Data final") ?>" hideRequired></entity-field>
+                <entity-field :entity="collectionPhase" prop="registrationTo" label="<?= i::esc_attr__("Data final") ?>" hideRequired></entity-field>
             </div>
 
             <div class="col-12 modal__title"><?= i::__("Avaliação dos pedidos") ?></div>
             <div class="col-12">
-                <entity-field :entity="evaluationPhase" prop="name" label="<?= i::esc_attr_e("Defina um título") ?>" hideRequired></entity-field>
+                <entity-field :entity="evaluationPhase" prop="name" label="<?= i::esc_attr__("Defina um título") ?>" hideRequired></entity-field>
             </div>
             <div class="col-6">
-                <entity-field :entity="evaluationPhase" prop="evaluationFrom" label="<?= i::esc_attr_e("Data de início") ?>" hideRequired></entity-field>
+                <entity-field :entity="evaluationPhase" prop="evaluationFrom" label="<?= i::esc_attr__("Data de início") ?>" hideRequired></entity-field>
             </div>
             <div class="col-6">
-                <entity-field :entity="evaluationPhase" prop="evaluationTo" label="<?= i::esc_attr_e("Data final") ?>" hideRequired></entity-field>
+                <entity-field :entity="evaluationPhase" prop="evaluationTo" label="<?= i::esc_attr__("Data final") ?>" hideRequired></entity-field>
             </div>
         </div>
     </template>
