@@ -14,6 +14,7 @@ use MapasCulturais\Entities\RegistrationEvaluation;
 use MapasCulturais\Entities\EvaluationMethodConfiguration;
 use MapasCulturais\Entities\Opportunity as EntitiesOpportunity;
 use MapasCulturais\Utils;
+use Opportunities\Jobs\ImportFields;
 
 /**
  * Opportunity Controller
@@ -1519,12 +1520,16 @@ class Opportunity extends EntityController {
             /** @var Entities\Opportunity */
             $opportunity =  $app->repo("Opportunity")->find($opportunity_id);
 
-            $opportunity->importFields($importSource);
+            $app->enqueueOrReplaceJob(ImportFields::SLUG, [
+                'opportunity' => $opportunity,
+                'importSource' => $importSource,
+                'authenticatedUser' => $app->user,
+            ], 'now');
 
+            return $this->json(true);
         }
 
-        $url = $app->createUrl('opportunity', 'formBuilder', [$opportunity->id]);
-        $app->redirect($url);
+        return $this->json(false);
 
     }
 
