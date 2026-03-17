@@ -7,10 +7,9 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ## [7.7.16] - UNRELEASED
 ### Melhorias
-- Implementação de novo campo de tabaela para ser usado nos formulários de inscrições
+- Implementação de novo campo de tabela para ser usado nos formulários de inscrições
 - Atualiza pacotes pnpm
 - Implementa testes para a aplicação de resultados das avaliações
-
 
 ## [7.7.15] - 2026-03-10
 ### Correções
@@ -27,7 +26,7 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Corrige endpoint createAppealPhaseRegistration para verificar se já existe inscrição do proponente na fase de recurso
 - Ajusta a exibição dos avaliadores da fase de recurso na página individual da inscrição, permitindo selecionar a lista de inclusão e exclusão de avaliadores das fases avaliativas do recurso.
 - Implementa mc-update para fazer a normalização dos campos de CPF e CNPJ do registration_meta
-- Remove médodo que removia mascaras de cpf e cnpj no momento do envio da inscrições
+- Remove método que removia máscaras de CPF e CNPJ no momento do envio da inscrições
 - Implementa comportamento correto de fluxo contínuo com data final: inicializa publishTimestamp da última fase, inicializa datas da fase de avaliação e propaga automaticamente alterações do publishTimestamp para as fases de avaliação vinculadas
 
 ## [7.7.13] - 2026-03-06
@@ -167,7 +166,7 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 ### Correções
 - Corrige endpoint createAppealPhaseRegistration para verificar se já existe inscrição do proponente na fase de recurso
 - Ajusta a exibição dos avaliadores da fase de recurso na página individual da inscrição, permitindo selecionar a lista de inclusão e exclusão de avaliadores das fases avaliativas do recurso.
-- Implementa mc-update para fazer a normalização dos campos de CPF e NCPJ do registration_meta
+- Implementa mc-update para fazer a normalização dos campos de CPF e CNPJ do registration_meta
 - Remove médodo que removia mascaras de cpf e cnpj no momento do envio da inscrições
 
 ## [7.6.55] - 2026-03-04
