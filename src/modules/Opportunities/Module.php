@@ -41,6 +41,7 @@ class Module extends \MapasCulturais\Module{
         $app->registerJobType(new Jobs\PublishResult(Jobs\PublishResult::SLUG));
         $app->registerJobType(new Jobs\UpdateSummaryCaches(Jobs\UpdateSummaryCaches::SLUG));
         $app->registerJobType(new Jobs\RedistributeCommitteeRegistrations(Jobs\RedistributeCommitteeRegistrations::SLUG));
+        $app->registerJobType(new Jobs\ImportFields(Jobs\ImportFields::SLUG));
 
         $app->hook('mapas.printJsObject:before', function () {
             /** @var \MapasCulturais\Theme $this */
