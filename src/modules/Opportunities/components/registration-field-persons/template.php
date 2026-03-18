@@ -11,8 +11,8 @@ $this->import('
 ');
 ?>
 <div class="registration-field-persons" :data-field="prop">
-    <div class="registration-field-persons__list field">
-        <label> {{ title }} </label>
+    <div class="registration-field-persons__list field" :class="[{'error': registration.__validationErrors[prop]?.length}]">
+        <label> {{ title }} <span v-if="required" class="required">*<?= i::__('obrigatório') ?></span></label>
         <small class="field__description"> {{ description }} </small>
 
         <div v-for="(person, index) in registration[prop]" class="registration-field-persons__person">
