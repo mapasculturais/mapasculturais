@@ -69,8 +69,38 @@ app.component('registration-field-persons', {
             }, now ? 0 : this.debounce);
         },
     },
+
+    mounted() {
+        this.normalizePersonsDeficiencies();
+    },
     
     methods: {
+        normalizePersonsDeficiencies() {
+            const persons = this.registration?.[this.prop];
+            if (!Array.isArray(persons)) {
+                return;
+            }
+
+            persons.forEach((person) => {
+                if (!person) {
+                    return;
+                }
+
+                if (person.deficiencies === null || person.deficiencies === undefined) {
+                    person.deficiencies = {};
+                    return;
+                }
+
+                if (Array.isArray(person.deficiencies)) {
+                    const obj = {};
+                    Object.keys(person.deficiencies).forEach((k) => {
+                        obj[k] = person.deficiencies[k];
+                    });
+                    person.deficiencies = obj;
+                }
+            });
+        },
+
         removePerson(person) {
             const persons = this.registration[this.prop];
             this.registration[this.prop] = persons.filter( (_person) => { 
@@ -96,7 +126,7 @@ app.component('registration-field-persons', {
                 race: '',
                 gender: '',
                 sexualOrientation: '',
-                deficiencies: [],
+                deficiencies: {},
                 comunty: '',
                 area: [],
                 funcao: [],
