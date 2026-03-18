@@ -10,6 +10,7 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Corrige exibição do indicador de campo obrigatório (*obrigatório) no label do campo de listagem de endereços quando configurado como obrigatório pelo gestor.
 - Corrige exibição do indicador de campo obrigatório (*obrigatório) no label do campo de listagem de pessoas quando configurado como obrigatório pelo gestor.
 - Corrige expressão Angular inválida no `ng-if` do campo de deficiências na listagem de pessoas da ficha de inscrição
+- Corrige salvamento do campo de deficiências na listagem de pessoas da ficha de inscrição
 
 ## [7.7.16] - UNRELEASED
 ### Melhorias
