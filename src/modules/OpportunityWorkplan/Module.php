@@ -541,6 +541,12 @@ class Module extends \MapasCulturais\Module{
             'default_value' => false
         ]);
 
+        $this->registerOpportunityMetadata('workplan_deliveryRequireHasPressStrategy', [
+            'label' => i::__('Estratégias de comunicação são obrigatórias'),
+            'type' => 'boolean',
+            'default_value' => false
+        ]);
+
         $this->registerOpportunityMetadata('workplan_deliveryInformCommunicationChannels', [
             'label' => i::__('Informar canais de comunicação'),
             'type' => 'boolean',

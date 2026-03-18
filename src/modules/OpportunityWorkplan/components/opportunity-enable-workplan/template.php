@@ -381,6 +381,9 @@ $this->import('
                             <label class="field__checkbox">
                                 <input type="checkbox" v-model="entity.workplan_deliveryInformPressStrategy" @click="autoSave()" /><?= i::__("Informar estratégias de comunicação") ?> {{ `da ${pluralParaSingular(getDeliveryLabelDefault)}` }}
                             </label>
+                            <label v-if="entity.workplan_deliveryInformPressStrategy" class="field__checkbox field__checkbox--sub">
+                                <input type="checkbox" v-model="entity.workplan_deliveryRequireHasPressStrategy" @click="autoSave()" /><?= i::__("Obrigatório") ?>
+                            </label>
                         </div>
 
                         <div class="field__group">
