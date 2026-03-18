@@ -328,13 +328,19 @@ class Registrations extends SpreadsheetJob
                                 if (isset($field_config['deficiencies']) && $field_config['deficiencies'] === 'true') {
                                     $deficiencies_str = '';
                                     if (isset($person['deficiencies'])) {
-                                        if (is_array($person['deficiencies'])) {
-                                            $deficiencies_filtered = array_filter($person['deficiencies'], function($v) { return $v !== false && $v !== null && $v !== ''; });
+                                        $deficiencies = $person['deficiencies'];
+
+                                        if ($deficiencies instanceof \stdClass) {
+                                            $deficiencies = (array) $deficiencies;
+                                        }
+
+                                        if (is_array($deficiencies)) {
+                                            $deficiencies_filtered = array_filter($deficiencies, function($v) { return $v !== false && $v !== null && $v !== ''; });
                                             $deficiencies_str = !empty($deficiencies_filtered) 
-                                                ? implode(', ', array_keys($deficiencies_filtered)) 
+                                                ? implode(', ', array_keys($deficiencies_filtered))
                                                 : i::__('Não informado');
                                         } else {
-                                            $deficiencies_str = $person['deficiencies'] ?: i::__('Não informado');
+                                            $deficiencies_str = $deficiencies ?: i::__('Não informado');
                                         }
                                     } else {
                                         $deficiencies_str = i::__('Não informado');
