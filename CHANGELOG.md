@@ -5,6 +5,10 @@ Todas as mudanças notáveis no projeto serão documentadas neste arquivo.
 O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/)
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## UNRELEASED
+### Melhorias
+- Implementa novo botão na ação da tabela de avaliações para poder excluir um avaliador da inscrição
+
 ## [7.7.17] - 2026-03-19
 ### Correções
 - Corrige exibição do indicador de campo obrigatório (*obrigatório) no label do campo de listagem de endereços quando configurado como obrigatório pelo gestor.
