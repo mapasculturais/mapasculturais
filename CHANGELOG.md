@@ -5,6 +5,10 @@ Todas as mudanças notáveis no projeto serão documentadas neste arquivo.
 O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/)
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [7.6.61] - 2026-03-18
+### Correção
+- Corrige erro que impedia a distribuição de avaliações em inscrições de fases intermediárias.
+
 ## [7.6.60] - 2026-03-17
 ### Melhorias
 - Importação de campos do formulário agora é feita em segundo plano e um e-mail é enviado ao término informando o status da operação
