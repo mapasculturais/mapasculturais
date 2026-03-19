@@ -186,7 +186,7 @@ $this->import('
                             <!-- BLOCO 3 — Atividades, execução e receita -->
                             <div class="form-section">
                                 <h4 class="form-section__title">{{ getDeliveryLabelDefault }}, execução e receita</h4>
-                                <p class="form-section__description"><?= i::__('Detalhe como cada meta será executada: tipo de entrega, público esperado, localização, orçamento e equipe remunerada.') ?></p>
+                                <p class="form-section__description">{{ `Detalhe como cada ${getDeliveryLabelDefault} será executada: tipo de ${getDeliveryLabelDefault}, público esperado, localização, orçamento e equipe remunerada.` }}</p>
 
                                 <div class="field">
                                     <label>{{ `Nome da ${getDeliveryLabelDefault}` }}<span class="required">obrigatório*</span></label>
@@ -439,7 +439,7 @@ $this->import('
 
                                 <div v-if="opportunity.workplan_deliveryInformCommunityCoauthors">
                                     <div class="field">
-                                        <label>{{ `A ${getDeliveryLabelDefault} prevê envolvimento de comunidades/coletivos como coautores/coexecutores da ${getDeliveryLabelDefault}?` }}<span class="required">obrigatório*</span></label>
+                                        <label>{{ `A ${getDeliveryLabelDefault} prevê envolvimento de comunidades/coletivos como coautores/coexecutores}?` }}<span class="required">obrigatório*</span></label>
                                         <select v-model="delivery.hasCommunityCoauthors">
                                             <option value=""><?= i::esc_attr__('Selecione') ?></option>
                                             <option v-for="(n, i) in workplanFields.goal.delivery.hasCommunityCoauthors.options" :key="i" :value="i">{{ n }}</option>
@@ -456,7 +456,7 @@ $this->import('
 
                                 <div v-if="opportunity.workplan_deliveryInformTransInclusion">
                                     <div class="field">
-                                        <label>{{ `A ${getDeliveryLabelDefault} prevê estratégias voltadas à promoção do acesso de pessoas Trans e Travestis da ${getDeliveryLabelDefault}?` }}<span class="required">obrigatório*</span></label>
+                                        <label>{{ `A ${getDeliveryLabelDefault} prevê estratégias voltadas à promoção do acesso de pessoas Trans e Travestis?` }}<span class="required">obrigatório*</span></label>
                                         <select v-model="delivery.hasTransInclusionStrategy">
                                             <option value=""><?= i::esc_attr__('Selecione') ?></option>
                                             <option v-for="(n, i) in workplanFields.goal.delivery.hasTransInclusionStrategy.options" :key="i" :value="i">{{ n }}</option>
@@ -470,14 +470,17 @@ $this->import('
 
                                 <div v-if="opportunity.workplan_deliveryInformAccessibilityPlan">
                                     <div class="field">
-                                        <label>{{ `A ${getDeliveryLabelDefault} prevê medidas de acessibilidade da ${getDeliveryLabelDefault}?` }}<span class="required">obrigatório*</span></label>
+                                        <label>{{ `A ${getDeliveryLabelDefault} prevê medidas de acessibilidade?` }}<span class="required">obrigatório*</span></label>
                                         <select v-model="delivery.hasAccessibilityPlan">
                                             <option value=""><?= i::esc_attr__('Selecione') ?></option>
                                             <option v-for="(n, i) in workplanFields.goal.delivery.hasAccessibilityPlan.options" :key="i" :value="i">{{ n }}</option>
                                         </select>
                                     </div>
                                     <div v-if="delivery.hasAccessibilityPlan === 'true'" class="field">
-                                        <label>{{ `Quais medidas de acessibilidade estão previstas da ${getDeliveryLabelDefault}?` }}<span v-if="opportunity.workplan_deliveryRequireExpectedAccessibilityMeasures" class="required">obrigatório*</span></label>
+                                        <label>
+                                            {{ `Quais medidas de acessibilidade estão previstas` }}
+                                            <span v-if="opportunity.workplan_deliveryRequireExpectedAccessibilityMeasures" class="required">obrigatório*</span>
+                                        </label>
                                         <mc-multiselect :model="delivery.expectedAccessibilityMeasures" :items="workplanFields.goal.delivery.expectedAccessibilityMeasures.options" hide-filter hide-button></mc-multiselect>
                                         <mc-tag-list :tags="delivery.expectedAccessibilityMeasures" :labels="workplanFields.goal.delivery.expectedAccessibilityMeasures.options" classes="opportunity__background" @remove="toggleAccessibilityMeasures(delivery, $event)" editable></mc-tag-list>
                                     </div>
@@ -485,14 +488,17 @@ $this->import('
 
                                 <div v-if="opportunity.workplan_deliveryInformEnvironmentalPractices">
                                     <div class="field">
-                                        <label>{{ `A ${getDeliveryLabelDefault} prevê medidas ou práticas socioambientais da ${getDeliveryLabelDefault}?` }}<span class="required">obrigatório*</span></label>
+                                        <label>{{ `A ${getDeliveryLabelDefault} prevê medidas ou práticas socioambientais?` }}<span class="required">obrigatório*</span></label>
                                         <select v-model="delivery.hasEnvironmentalPractices">
                                             <option value=""><?= i::esc_attr__('Selecione') ?></option>
                                             <option v-for="(n, i) in workplanFields.goal.delivery.hasEnvironmentalPractices.options" :key="i" :value="i">{{ n }}</option>
                                         </select>
                                     </div>
                                     <div v-if="delivery.hasEnvironmentalPractices === 'true'" class="field">
-                                        <label>{{ `Quais medidas e práticas socioambientais estão previstas da ${getDeliveryLabelDefault}?` }}<span v-if="opportunity.workplan_deliveryRequireEnvironmentalPracticesDescription" class="required">obrigatório*</span></label>
+                                        <label>
+                                            {{ `Quais medidas e práticas socioambientais estão previstas` }}
+                                            <span v-if="opportunity.workplan_deliveryRequireEnvironmentalPracticesDescription" class="required">obrigatório*</span>
+                                        </label>
                                         <textarea v-model="delivery.environmentalPracticesDescription" rows="3"></textarea>
                                     </div>
                                 </div>
@@ -504,7 +510,7 @@ $this->import('
                                 <p class="form-section__description"><?= i::__('Estratégias de divulgação, canais de comunicação, ações de inovação e tipos de documentação previstos.') ?></p>
 
                                 <div v-if="opportunity.workplan_deliveryInformPressStrategy" class="field">
-                                    <label>Estratégias de comunicação<span v-if="opportunity.workplan_deliveryRequireHasPressStrategy" class="required">obrigatório*</span></label>
+                                    <label>{{ `A ${getDeliveryLabelDefault} contará com estratégias de comunicação?` }}<span v-if="opportunity.workplan_deliveryRequireHasPressStrategy" class="required">obrigatório*</span></label>
                                     <select v-model="delivery.hasPressStrategy">
                                         <option value=""><?= i::esc_attr__('Selecione') ?></option>
                                         <option v-for="(n, i) in workplanFields.goal.delivery.hasPressStrategy.options" :key="i" :value="i">{{ n }}</option>
@@ -519,21 +525,21 @@ $this->import('
 
                                 <div v-if="opportunity.workplan_deliveryInformInnovation">
                                     <div class="field">
-                                        <label>{{ `A ${getDeliveryLabelDefault} prevê ao menos uma ação de experimentação/inovação nesta ${getDeliveryLabelDefault}?` }}<span class="required">obrigatório*</span></label>
+                                        <label>{{ `A ${getDeliveryLabelDefault} prevê ao menos uma ação de experimentação/inovação?` }}<span class="required">obrigatório*</span></label>
                                         <select v-model="delivery.hasInnovationAction">
                                             <option value=""><?= i::esc_attr__('Selecione') ?></option>
                                             <option v-for="(n, i) in workplanFields.goal.delivery.hasInnovationAction.options" :key="i" :value="i">{{ n }}</option>
                                         </select>
                                     </div>
                                     <div v-if="delivery.hasInnovationAction === 'true'" class="field">
-                                        <label>{{ `Quais tipos de experimentação/inovação previstos nesta ${getDeliveryLabelDefault}?` }}<span v-if="opportunity.workplan_deliveryRequireInnovationTypes" class="required">obrigatório*</span></label>
+                                        <label>{{ `Quais tipos de experimentação/inovação previstos nesta ${getDeliveryLabelDefault} ?` }}<span v-if="opportunity.workplan_deliveryRequireInnovationTypes" class="required">obrigatório*</span></label>
                                         <mc-multiselect :model="delivery.innovationTypes" :items="workplanFields.goal.delivery.innovationTypes.options" hide-filter hide-button></mc-multiselect>
                                         <mc-tag-list :tags="delivery.innovationTypes" :labels="workplanFields.goal.delivery.innovationTypes.options" classes="opportunity__background" @remove="toggleInnovationTypes(delivery, $event)" editable></mc-tag-list>
                                     </div>
                                 </div>
 
                                 <div v-if="opportunity.workplan_deliveryInformDocumentationTypes" class="field">
-                                    <label>{{ `Tipo de documentação que será produzida nesta ${getDeliveryLabelDefault}` }}<span v-if="opportunity.workplan_deliveryRequireDocumentationTypes" class="required">obrigatório*</span></label>
+                                    <label>{{ `Tipo de documentação que será produzida nesta ${getDeliveryLabelDefault} ?` }}<span v-if="opportunity.workplan_deliveryRequireDocumentationTypes" class="required">obrigatório*</span></label>
                                     <mc-multiselect :model="delivery.documentationTypes" :items="workplanFields.goal.delivery.documentationTypes.options" hide-filter hide-button></mc-multiselect>
                                     <mc-tag-list :tags="delivery.documentationTypes" :labels="workplanFields.goal.delivery.documentationTypes.options" classes="opportunity__background" @remove="toggleDocumentationTypes(delivery, $event)" editable></mc-tag-list>
                                 </div>
