@@ -150,8 +150,7 @@ class Module extends \MapasCulturais\Module{
                                         'artChainLink', 'totalBudget', 'numberOfCities',
                                         'numberOfNeighborhoods', 'mediationActions',
                                         'commercialUnits', 'unitPrice', 'segmentDelivery',
-                                        'expectedNumberPeople', 'communityCoauthorsDetail',
-                                        'transInclusionActions', 'environmentalPracticesDescription',
+                                        'expectedNumberPeople',
                                     ];
 
                                     foreach ($simple_fields as $field) {
@@ -159,6 +158,17 @@ class Module extends \MapasCulturais\Module{
                                             $label = self::getFieldLabel($field);
                                             $errors['delivery'][] = i::__("Campo '{$label}' obrigatório na entrega '{$delivery->name}'");
                                         }
+                                    }
+
+                                    // Sub-campos condicionais: só obrigatórios quando o campo gate é 'true'
+                                    if ($delivery->hasCommunityCoauthors === 'true' && $delivery->isMetadataRequired('communityCoauthorsDetail') && !$delivery->communityCoauthorsDetail) {
+                                        $errors['delivery'][] = i::__("Campo 'Detalhamento do envolvimento de comunidades' obrigatório na entrega '{$delivery->name}'");
+                                    }
+                                    if ($delivery->hasTransInclusionStrategy === 'true' && $delivery->isMetadataRequired('transInclusionActions') && !$delivery->transInclusionActions) {
+                                        $errors['delivery'][] = i::__("Campo 'Ações de inclusão Trans e Travestis' obrigatório na entrega '{$delivery->name}'");
+                                    }
+                                    if ($delivery->hasEnvironmentalPractices === 'true' && $delivery->isMetadataRequired('environmentalPracticesDescription') && !$delivery->environmentalPracticesDescription) {
+                                        $errors['delivery'][] = i::__("Campo 'Descrição de práticas socioambientais' obrigatório na entrega '{$delivery->name}'");
                                     }
 
                                     // Campos JSON array de planejamento (paidStaffByRole)
@@ -183,15 +193,41 @@ class Module extends \MapasCulturais\Module{
 
                                     // Campos multiselect de planejamento
                                     $multiselect_fields = [
-                                        'revenueType', 'expectedAccessibilityMeasures',
-                                        'communicationChannels', 'innovationTypes',
-                                        'documentationTypes',
+                                        'revenueType', 'communicationChannels', 'documentationTypes',
                                     ];
                                     foreach ($multiselect_fields as $field) {
                                         if ($delivery->isMetadataRequired($field) && !self::validateMultiselectField($delivery, $field)) {
                                             $label = self::getFieldLabel($field);
                                             $errors['delivery'][] = i::__("Campo '{$label}' obrigatório na entrega '{$delivery->name}'");
                                         }
+                                    }
+                                    // Sub-campos multiselect condicionais ao gate
+                                    if ($delivery->hasAccessibilityPlan === 'true' && $delivery->isMetadataRequired('expectedAccessibilityMeasures') && !self::validateMultiselectField($delivery, 'expectedAccessibilityMeasures')) {
+                                        $errors['delivery'][] = i::__("Campo 'Medidas de acessibilidade previstas' obrigatório na entrega '{$delivery->name}'");
+                                    }
+                                    if ($delivery->hasInnovationAction === 'true' && $delivery->isMetadataRequired('innovationTypes') && !self::validateMultiselectField($delivery, 'innovationTypes')) {
+                                        $errors['delivery'][] = i::__("Campo 'Tipos de experimentação/inovação' obrigatório na entrega '{$delivery->name}'");
+                                    }
+
+                                    // Campos gate: obrigatórios (sim/não) quando o bloco Inform está ativo
+                                    // Não têm flag Require separado — o proponente deve sempre responder ao campo gate
+                                    if ($registration->opportunity->workplan_deliveryInformCommunityCoauthors && !$delivery->hasCommunityCoauthors) {
+                                        $errors['delivery'][] = i::__("Campo 'Envolvimento de comunidades como coautores' obrigatório na entrega '{$delivery->name}'");
+                                    }
+                                    if ($registration->opportunity->workplan_deliveryInformTransInclusion && !$delivery->hasTransInclusionStrategy) {
+                                        $errors['delivery'][] = i::__("Campo 'Estratégia de inclusão Trans/Travestis' obrigatório na entrega '{$delivery->name}'");
+                                    }
+                                    if ($registration->opportunity->workplan_deliveryInformAccessibilityPlan && !$delivery->hasAccessibilityPlan) {
+                                        $errors['delivery'][] = i::__("Campo 'Plano de acessibilidade' obrigatório na entrega '{$delivery->name}'");
+                                    }
+                                    if ($registration->opportunity->workplan_deliveryInformEnvironmentalPractices && !$delivery->hasEnvironmentalPractices) {
+                                        $errors['delivery'][] = i::__("Campo 'Práticas socioambientais' obrigatório na entrega '{$delivery->name}'");
+                                    }
+                                    if ($registration->opportunity->workplan_deliveryInformPressStrategy && $registration->opportunity->workplan_deliveryRequireHasPressStrategy && !$delivery->hasPressStrategy) {
+                                        $errors['delivery'][] = i::__("Campo 'Estratégias de comunicação' obrigatório na entrega '{$delivery->name}'");
+                                    }
+                                    if ($registration->opportunity->workplan_deliveryInformInnovation && !$delivery->hasInnovationAction) {
+                                        $errors['delivery'][] = i::__("Campo 'Previsão de ação de experimentação/inovação' obrigatório na entrega '{$delivery->name}'");
                                     }
 
                                     $monitoring_simple_fields = [

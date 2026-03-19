@@ -97,6 +97,12 @@ class WorkplanService
 
         $workplan = $app->repo(Workplan::class)->find($workplan->id);
 
+        // Força reload do banco para garantir que novas goals/deliveries
+        // (cujas collections ArrayCollection em memória estão vazias) sejam
+        // retornadas corretamente na serialização — corrige bug de entrega
+        // desaparecendo após salvar a meta.
+        $app->em->refresh($workplan);
+
         return $workplan;        
     }
 }
