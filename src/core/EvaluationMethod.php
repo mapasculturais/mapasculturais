@@ -993,7 +993,7 @@ abstract class EvaluationMethod extends Module implements \JsonSerializable{
             foreach($values as $val) {
                 $val = trim($val);
                 
-                if(strtolower((string)$registration->metadata[$field_name]) === strtolower($val)){
+                if(strtolower((string)($registration->$field_name)) === strtolower($val)){
                     $found_field = true;
                 }
             }
