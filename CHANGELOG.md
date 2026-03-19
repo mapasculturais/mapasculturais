@@ -5,12 +5,13 @@ Todas as mudanças notáveis no projeto serão documentadas neste arquivo.
 O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/)
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## UNRELEASED
+## [7.7.17] - 2026-03-19
 ### Correções
 - Corrige exibição do indicador de campo obrigatório (*obrigatório) no label do campo de listagem de endereços quando configurado como obrigatório pelo gestor.
 - Corrige exibição do indicador de campo obrigatório (*obrigatório) no label do campo de listagem de pessoas quando configurado como obrigatório pelo gestor.
 - Corrige expressão Angular inválida no `ng-if` do campo de deficiências na listagem de pessoas da ficha de inscrição
 - Corrige salvamento do campo de deficiências na listagem de pessoas da ficha de inscrição
+- Corrige erro que impedia a distribuição de avaliações em inscrições de fases intermediárias
 
 ## [7.7.16] - 2026-03-11
 ### Melhorias
@@ -160,6 +161,7 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 1. <small>Melhoria desenvolvida pelo Ministério das Cidades, através da Secretaria Nacional de Periferias, para o Prêmio Periferia Viva</small>
 <a name="770-funarte"></a>
 2. <small>Melhoria desenvolvida pela Funarte (Fundação Nacional de Artes) para a Rede das Artes</small>
+
 ## [7.6.61] - 2026-03-19
 ### Correção
 - Corrige erro que impedia a distribuição de avaliações em inscrições de fases intermediárias.
