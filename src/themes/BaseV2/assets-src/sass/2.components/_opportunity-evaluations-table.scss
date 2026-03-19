@@ -6,4 +6,10 @@
         display: flex;
         gap: size(20);
     }
+
+    &__delete-modal {
+        .modal__content {
+            text-align: left;
+        }
+    }
 }
