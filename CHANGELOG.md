@@ -12,12 +12,11 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Corrige expressão Angular inválida no `ng-if` do campo de deficiências na listagem de pessoas da ficha de inscrição
 - Corrige salvamento do campo de deficiências na listagem de pessoas da ficha de inscrição
 
-## [7.7.16] - UNRELEASED
+## [7.7.16] - 2026-03-11
 ### Melhorias
 - Implementação de novo campo de tabaela para ser usado nos formulários de inscrições
 - Atualiza pacotes pnpm
 - Implementa testes para a aplicação de resultados das avaliações
-
 
 ## [7.7.15] - 2026-03-10
 ### Correções
