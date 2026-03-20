@@ -8,6 +8,7 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 ## UNRELEASED
 ### Melhorias
 - Implementa novo botão na ação da tabela de avaliações para poder excluir um avaliador da inscrição
+- Melhora a configuração de inclusão e exclusão de avaliadores na inscrição (checkboxes), para que tenha efeito imediato, sem a necessidade de redistribuição
 
 ### Correções
 - Corrige erro no duplicador de oportunidade que impede a copia correta dos arquivos
