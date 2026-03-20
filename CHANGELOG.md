@@ -5,7 +5,7 @@ Todas as mudanças notáveis no projeto serão documentadas neste arquivo.
 O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/)
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## UNRELEASED
+## [7.7.18] - 2026-03-20
 ### Melhorias
 - Implementa novo botão na ação da tabela de avaliações para poder excluir um avaliador da inscrição
 - Melhora a configuração de inclusão e exclusão de avaliadores na inscrição (checkboxes), para que tenha efeito imediato, sem a necessidade de redistribuição
