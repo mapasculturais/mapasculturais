@@ -17,25 +17,20 @@ jobs:
         name: Checkout
         uses: actions/checkout@v3
       -
-        name: Setup PHP
-        uses: shivammathur/setup-php@v2
-        with:
-          php-version: "8.3"
-      -
-        name: Install dependencies
-        run: composer install --no-interaction --prefer-dist
-      -
-        name: Run automated tests
+        name: Run automated tests (docker)
         run: |
-          mkdir -p build
-          vendor/bin/phpunit tests/src --log-junit build/phpunit.junit.xml
+          docker compose -f tests/docker-compose.yml run --rm mapas phpunit /var/www/tests --log-junit /var/www/tests/phpunit.junit.xml
+      -
+        name: Shutdown test containers
+        if: always()
+        run: docker compose -f tests/docker-compose.yml down --remove-orphans
       -
         name: Upload PHPUnit report
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: phpunit-report
-          path: build/phpunit.junit.xml
+          path: tests/src/phpunit.junit.xml
 
   docker:
     needs: tests
