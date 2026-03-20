@@ -164,6 +164,14 @@ trait ControllerEntityActions {
 
         $app = App::i();
 
+        $force_save = false;
+
+        foreach($app->request->headers as $key => $value) {
+            if(strtolower($key) == 'mapas-force-save') {
+                $force_save = true;
+            }
+        }
+
         $app->applyHookBoundTo($this, "PUT({$this->id}.single):data", ['data' => &$data]);
 
         $entity = $this->requestedEntity;
@@ -181,6 +189,10 @@ trait ControllerEntityActions {
         $this->setEntityProperties($entity, $data);
 
         if($errors = $entity->validationErrors){
+            if($force_save){
+                $entity->save(true);
+            }
+            
             $this->errorJson($errors);
         }else{
             $this->_finishRequest($entity, true, $function);

@@ -13,7 +13,7 @@ $this->import('
     mc-export-spreadsheet
     mc-status
     entity-table
-    mc-confirm-button
+    mc-modal
 ')
 ?>
 <div :class="['opportunity-evaluations-table', 'grid-12', classes]">
@@ -124,21 +124,37 @@ $this->import('
                 </template>
 
                 <template #delete="{entity, refresh}">
-                    <mc-confirm-button 
-                        v-if="hasControl && entity.evaluation && (entity.evaluation.status === 0 || entity.evaluation.status === 1 || entity.evaluation.status === 2)"
-                        @confirm="deleteEvaluation(entity, refresh)">
+                    <mc-modal
+                        v-if="canDeleteEvaluation(entity)"
+                        classes="opportunity-evaluations-table__delete-modal"
+                        :title="'<?= i::__('Excluir avaliação') ?>'">
                         <template #button="modal">
-                            <button 
-                                @click="modal.open()"
+                            <button
+                                @click="openDeleteModal(entity, refresh, modal)"
                                 class="button button--icon button--text-danger button--sm"
                                 v-tooltip="'<?= i::__('Excluir avaliação') ?>'">
                                 <mc-icon name="trash"></mc-icon>
                             </button>
                         </template>
-                        <template #message="message">
+
+                        <div class="opportunity-evaluations-table__delete-modal-content">
                             <?= i::__('Tem certeza que deseja excluir esta avaliação?') ?>
+                        </div>
+
+                        <template #actions="{close}">
+                            <button class="button button--sm button--primary-outline" @click="cancelDelete(close)">
+                                <?= i::__('Cancelar') ?>
+                            </button>
+
+                            <button v-if="entity.evaluation && (entity.evaluation.status === 0 || entity.evaluation.status === 1 || entity.evaluation.status === 2)" class="button button--sm button--secondary" @click="confirmDeleteEvaluation(close)">
+                                <?= i::__('Excluir avaliação') ?>
+                            </button>
+
+                            <button class="button button--sm button--secondary" @click="confirmDeleteEvaluationAndValuer(close)">
+                                <?= i::__('Excluir avaliação e avaliador') ?>
+                            </button>
                         </template>
-                    </mc-confirm-button>
+                    </mc-modal>
                 </template>
 
                 <template #icon-text="popover">
