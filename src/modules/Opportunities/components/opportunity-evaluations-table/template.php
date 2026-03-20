@@ -127,7 +127,7 @@ $this->import('
                     <mc-modal
                         v-if="canDeleteEvaluation(entity)"
                         classes="opportunity-evaluations-table__delete-modal"
-                        :title="'<?= i::__('Excluir avaliação') ?>'">
+                        :title="`<?= i::esc_attr__('Excluir avaliação') ?> ${entity.number}`">
                         <template #button="modal">
                             <button
                                 @click="openDeleteModal(entity, refresh, modal)"
@@ -138,7 +138,19 @@ $this->import('
                         </template>
 
                         <div class="opportunity-evaluations-table__delete-modal-content">
-                            <?= i::__('Tem certeza que deseja excluir esta avaliação?') ?>
+                            <div class="opportunity-evaluations-table__delete-modal-description">
+                                <p v-if="entity.evaluation && (entity.evaluation.status === 0 || entity.evaluation.status === 1 || entity.evaluation.status === 2)">
+                                    <span class="bold"><?= i::__('Excluir avaliação') ?>:</span>
+                                    <?= i::__('remove apenas o registro da avaliação selecionada.') ?>
+                                </p>
+
+                                <p>
+                                    <span class="bold"><?= i::__('Excluir avaliação e avaliador') ?>:</span>
+                                    <?= i::__('remove também o avaliador vinculado NESTA AVALIAÇÃO.') ?>
+                                </p>
+
+                                <p class="semibold"><?= i::__('Após confirmar, a ação não pode ser desfeita.') ?></p>
+                            </div>
                         </div>
 
                         <template #actions="{close}">
