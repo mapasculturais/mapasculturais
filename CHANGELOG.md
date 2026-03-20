@@ -9,6 +9,9 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 ### Melhorias
 - Implementa novo botão na ação da tabela de avaliações para poder excluir um avaliador da inscrição
 
+### Correções
+- Corrige erro no duplicador de oportunidade que impede a copia correta dos arquivos
+
 ## [7.7.17] - 2026-03-19
 ### Correções
 - Corrige exibição do indicador de campo obrigatório (*obrigatório) no label do campo de listagem de endereços quando configurado como obrigatório pelo gestor.

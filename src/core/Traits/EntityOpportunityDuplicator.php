@@ -227,15 +227,145 @@ trait EntityOpportunityDuplicator {
     private function duplicateFiles() : void
     {
         $app = App::i();
+        $sourceOpportunityId = (int) $this->entityOpportunity->id;
+        $targetOpportunityId = (int) $this->entityNewOpportunity->id;
+        $targetPrefix = "opportunity/{$targetOpportunityId}/";
 
         $opportunityFiles = $app->repo('OpportunityFile')->findBy([
             'owner' => $this->entityOpportunity
         ]);
 
+        $fileMap = [];
+
         foreach ($opportunityFiles as $opportunityFile) {
+            $group = (string) $opportunityFile->getGroup();
+            if (str_starts_with($group, 'img:')) {
+                continue;
+            }
+
             $newMethodOpportunityFile = clone $opportunityFile;
             $newMethodOpportunityFile->owner = $this->entityNewOpportunity;
             $newMethodOpportunityFile->save(true);
+            $fileMap[(int) $opportunityFile->id] = $newMethodOpportunityFile;
+        }
+
+        foreach ($opportunityFiles as $opportunityFile) {
+            $newMethodOpportunityFile = $fileMap[(int) $opportunityFile->id] ?? null;
+            if (!$newMethodOpportunityFile) {
+                continue;
+            }
+
+            $oldRelativePath = (string) $opportunityFile->getRelativePath();
+            $newRelativePath = preg_replace(
+                "#(^|/)opportunity/{$sourceOpportunityId}/#",
+                '$1' . $targetPrefix,
+                $oldRelativePath
+            );
+            if (!$newRelativePath || $newRelativePath === $oldRelativePath) {
+                $newRelativePath = $targetPrefix . basename($oldRelativePath);
+            }
+
+            // Relaciona transformações/derivados ao novo parent quando aplicável.
+            if ($opportunityFile->parent && isset($fileMap[(int) $opportunityFile->parent->id])) {
+                $newMethodOpportunityFile->parent = $fileMap[(int) $opportunityFile->parent->id];
+                $newMethodOpportunityFile->save(true);
+
+                $oldParentId = (int) $opportunityFile->parent->id;
+                $newParentId = (int) $newMethodOpportunityFile->parent->id;
+                $newRelativePath = preg_replace(
+                    "#/file/{$oldParentId}/#",
+                    "/file/{$newParentId}/",
+                    $newRelativePath
+                );
+            }
+
+            if ($newRelativePath !== $oldRelativePath) {
+                $app->em->getConnection()->update(
+                    'file',
+                    ['path' => $newRelativePath],
+                    ['id' => (int) $newMethodOpportunityFile->id]
+                );
+            }
+
+            $oldFullPath = $opportunityFile->getPath();
+            $newFullPath = preg_replace(
+                "#(^|/)opportunity/{$sourceOpportunityId}/#",
+                '$1' . $targetPrefix,
+                $oldFullPath
+            );
+            if (!$newFullPath || $newFullPath === $oldFullPath) {
+                $newFullPath = str_replace($oldRelativePath, $newRelativePath, $oldFullPath);
+            }
+
+            if ($opportunityFile->parent && isset($fileMap[(int) $opportunityFile->parent->id])) {
+                $oldParentId = (int) $opportunityFile->parent->id;
+                $newParentId = (int) $newMethodOpportunityFile->parent->id;
+                $newFullPath = preg_replace(
+                    "#/file/{$oldParentId}/#",
+                    "/file/{$newParentId}/",
+                    $newFullPath
+                );
+            }
+
+            if (!file_exists($oldFullPath)) {
+                $app->log->warning("Arquivo não encontrado ao duplicar oportunidade: {$oldFullPath}");
+                continue;
+            }
+
+            $destinationDir = dirname($newFullPath);
+            if (!is_dir($destinationDir)) {
+                mkdir($destinationDir, 0775, true);
+            }
+
+            if (!copy($oldFullPath, $newFullPath)) {
+                $app->log->warning("Falha ao copiar arquivo da oportunidade: {$oldFullPath} -> {$newFullPath}");
+            }
+        }
+
+        $newOpportunityFiles = $app->repo('OpportunityFile')->findBy([
+            'owner' => $this->entityNewOpportunity
+        ]);
+
+        foreach ($newOpportunityFiles as $newOpportunityFile) {
+            $currentRelativePath = (string) $newOpportunityFile->getRelativePath();
+            $normalizedRelativePath = preg_replace(
+                "#(^|/)opportunity/\d+/#",
+                '$1' . $targetPrefix,
+                $currentRelativePath
+            );
+
+            if ($newOpportunityFile->parent) {
+                $normalizedRelativePath = preg_replace(
+                    "#/file/\d+/#",
+                    "/file/" . (int) $newOpportunityFile->parent->id . "/",
+                    $normalizedRelativePath,
+                    1
+                );
+            }
+
+            if (!$normalizedRelativePath || $normalizedRelativePath === $currentRelativePath) {
+                continue;
+            }
+
+            $currentFullPath = $newOpportunityFile->getPath();
+            $normalizedFullPath = str_replace($currentRelativePath, $normalizedRelativePath, $currentFullPath);
+
+            $app->em->getConnection()->update(
+                'file',
+                ['path' => $normalizedRelativePath],
+                ['id' => (int) $newOpportunityFile->id]
+            );
+
+            if (file_exists($currentFullPath)) {
+                $destinationDir = dirname($normalizedFullPath);
+                if (!is_dir($destinationDir)) {
+                    mkdir($destinationDir, 0775, true);
+                }
+
+                if (!file_exists($normalizedFullPath) && !copy($currentFullPath, $normalizedFullPath)) {
+                    $app->log->warning("Falha ao normalizar cópia de arquivo: {$currentFullPath} -> {$normalizedFullPath}");
+                }
+            }
         }
     }
 
