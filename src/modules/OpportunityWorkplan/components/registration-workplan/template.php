@@ -111,7 +111,7 @@ $this->import('
 
                         <div class="registration-workplan__goals-period">
                             <p>
-                                {{ `Especificação da ${getGoalLabelDefault}` }}
+                                <?= i::__('Especificação da') ?> {{ `${getGoalLabelDefault}` }}
                             </p>
                             <div class="registration-workplan__goals-months">
                                 <div class="field">
