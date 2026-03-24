@@ -167,7 +167,6 @@ $this->import('
                                         v-if="canManageColumnsGlobal"
                                         class="button button--sm button--primary button--icon"
                                         @click.prevent="saveGlobalColumnsConfig()">
-                                        <mc-icon name="save"></mc-icon>
                                         <?= i::__('Salvar padrão global') ?>
                                     </button>
                                 </div>
