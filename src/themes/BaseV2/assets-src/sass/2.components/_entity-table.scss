@@ -309,6 +309,26 @@
         font-size: var(--mc-font-size-xxs);
     }
 
+    &__columns-search {
+        position: sticky;
+        top: 0;
+        z-index: 2;
+        margin: size(8) 0 size(12);
+        padding-top: size(4);
+        background: var(--mc-white);
+
+        .field__input {
+            width: 100%;
+        }
+    }
+
+    &__columns-empty {
+        display: block;
+        margin-top: size(4);
+        color: var(--mc-gray-700);
+        font-size: var(--mc-font-size-xxs);
+    }
+
     &__column-row {
         margin-bottom: size(4);
     }

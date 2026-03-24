@@ -167,6 +167,7 @@ app.component('entity-table', {
             spaceTypes: $DESCRIPTIONS.space.type.options,
             seals,
             dragColumnSlug: null,
+            columnsSearchText: '',
             globalColumnsConfigs: $MAPAS.config.entityTable.columnsConfig?.tables || {},
             canManageColumnsGlobal: !!$MAPAS.config.entityTable.canManageColumnsGlobal,
         }
@@ -198,6 +199,19 @@ app.component('entity-table', {
 
         allHeadersActive() {
             return this.visibleColumns.length == this.columns.length;
+        },
+
+        filteredColumns() {
+            const search = (this.columnsSearchText || '').toLowerCase().trim();
+            if (!search) {
+                return this.columns;
+            }
+
+            return this.columns.filter(column => {
+                const label = (column.text || '').toString().toLowerCase();
+                const slug = (column.slug || '').toString().toLowerCase();
+                return label.includes(search) || slug.includes(search);
+            });
         },
 
         $description() {

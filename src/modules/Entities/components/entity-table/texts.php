@@ -47,4 +47,6 @@ return [
     'salvar padrao global' => i::__('Salvar padrão global'),
     'padrao global salvo' => i::__('Padrão global salvo'),
     'erro ao salvar padrao global' => i::__('Erro ao salvar padrão global'),
+    'buscar colunas' => i::__('Buscar colunas'),
+    'nenhuma coluna encontrada' => i::__('Nenhuma coluna encontrada'),
 ];
