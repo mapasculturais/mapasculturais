@@ -5,6 +5,14 @@ Todas as mudanças notáveis no projeto serão documentadas neste arquivo.
 O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/)
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [UNRELEASED]
+### Melhorias
+- Adiciona um campo de busca para encontrar colunas por palavra-chave na listagem por tabela nas entidades. 
+- Implementa a funcionalidade que permite ao saasSuperAdmin ordenar globalmente as colunas das tabelas que utilizam o entity-table, por meio de drag and drop.
+
+### Correções
+- Aplica texto de internacionalização faltante no componente opportunity-registration-table
+
 ## [7.7.18] - 2026-03-20
 ### Melhorias
 - Implementa novo botão na ação da tabela de avaliações para poder excluir um avaliador da inscrição
