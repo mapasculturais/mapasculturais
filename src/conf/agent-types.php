@@ -186,7 +186,7 @@ return array(
         ),
         'cpf' => array(
             'private' => true,
-            'label' => \MapasCulturais\i::__('CPF'),
+            'label' => \MapasCulturais\i::__('CPF / Carteira de Identidade Nacional (CIN)'),
             'type' => 'cpf',
             'serialize' => function($value, $entity = null) {
                 /**@var MapasCulturais\App $this */
