@@ -42,4 +42,9 @@ return [
     'acessibilidade' => i::__('Possui acessibilidade'),
     'sim' => i::__('Sim'),
     'nao' => i::__('Não'),
+    'reordenar colunas' => i::__('Reordenar colunas'),
+    'arraste para reordenar' => i::__('Arraste para reordenar'),
+    'salvar padrao global' => i::__('Salvar padrão global'),
+    'padrao global salvo' => i::__('Padrão global salvo'),
+    'erro ao salvar padrao global' => i::__('Erro ao salvar padrão global'),
 ];

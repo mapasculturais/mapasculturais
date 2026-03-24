@@ -140,10 +140,28 @@ $this->import('
                                 </label>
 
                                 <template v-for="column in columns">
-                                    <label v-if="column.text" class="field__checkbox">
-                                        <input :checked="column.visible" type="checkbox" :value="column.slug" @click="toggleHeaders($event)"> {{column.text}} 
+                                    <label
+                                        v-if="column.text"
+                                        class="field__checkbox entity-table__column-row"
+                                        :draggable="showIndex"
+                                        @dragstart="onColumnDragStart($event, column.slug)"
+                                        @dragover.prevent
+                                        @drop="onColumnDrop($event, column.slug)">
+                                        <input :checked="column.visible" type="checkbox" :value="column.slug" @click="toggleHeaders($event)"> {{column.text}}
                                     </label>
                                 </template>
+
+                                <div v-if="showIndex || canManageColumnsGlobal" class="entity-table__columns-actions">
+                                    <small v-if="showIndex" class="entity-table__columns-help"><?= i::__('Arraste para reordenar') ?></small>
+
+                                    <button
+                                        v-if="canManageColumnsGlobal"
+                                        class="button button--sm button--primary button--icon"
+                                        @click.prevent="saveGlobalColumnsConfig()">
+                                        <mc-icon name="save"></mc-icon>
+                                        <?= i::__('Salvar padrão global') ?>
+                                    </button>
+                                </div>
                             </div>
 
                             <template #button="popover">

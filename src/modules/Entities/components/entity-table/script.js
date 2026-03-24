@@ -6,7 +6,8 @@ app.component('entity-table', {
         const hasSlot = name => !!slots[name]
         const messages = useMessages();
         const text = Utils.getTexts('entity-table')
-        return { messages, text, hasSlot};
+        const global = useGlobalState();
+        return { messages, text, hasSlot, global };
     },
 
     props: {
@@ -73,18 +74,27 @@ app.component('entity-table', {
     },
 
     created() {
-        const visible = localStorage[this.sessionTitle] ? localStorage[this.sessionTitle].split(",") : this.visible instanceof Array ? this.visible : this.visible.split(",");
-        const required = this.required instanceof Array ? this.required : this.required.split(",");
+        const required = this.required instanceof Array ? this.required : this.required.split(",").filter(Boolean);
+        const localColumnsConfig = this.getLocalColumnsConfig();
+        const defaultVisible = this.visible instanceof Array ? this.visible : this.visible.split(",").filter(Boolean);
+        const globalConfig = this.globalColumnsConfig;
 
         this.originalQuery = JSON.parse(JSON.stringify(this.query));
-        for(let header of this.columns) {
+        for (let header of this.columns) {
             header.slug = this.parseSlug(header);
             header.required = required.includes(header.slug);
-            if (this.allHeaders) {
-                header.visible = true;
-            } else {
-                header.visible = visible.includes(header.slug) || required.includes(header.slug);
-            }
+        }
+
+        this.columns = this.resolveColumnOrder(this.columns, localColumnsConfig, globalConfig);
+        const visibleSet = this.resolveVisibleColumns({
+            required,
+            defaultVisible,
+            localColumnsConfig,
+            globalConfig
+        });
+
+        for (let header of this.columns) {
+            header.visible = this.allHeaders ? true : visibleSet.includes(header.slug) || required.includes(header.slug);
         }
     },
 
@@ -156,16 +166,15 @@ app.component('entity-table', {
             projectTypes: $DESCRIPTIONS.project.type.options,
             spaceTypes: $DESCRIPTIONS.space.type.options,
             seals,
+            dragColumnSlug: null,
+            globalColumnsConfigs: $MAPAS.config.entityTable.columnsConfig?.tables || {},
+            canManageColumnsGlobal: !!$MAPAS.config.entityTable.canManageColumnsGlobal,
         }
     },
 
     watch: {
         columns: {
             handler(){
-                if (this.showIndex) {
-                    localStorage.setItem(this.sessionTitle, this.visibleColumns.map((column) => column.slug));
-                }
-
                 if(this.$refs.contentTable) {
                     this.$refs.contentTable.style.width = 'auto';
                 }
@@ -178,6 +187,10 @@ app.component('entity-table', {
     },
 
     computed: {
+        globalColumnsKey() {
+            return this.controller || this.type;
+        },
+
         visibleColumns() {
             const columns = this.columns.filter((col) => col.visible);
             return columns;
@@ -189,6 +202,10 @@ app.component('entity-table', {
 
         $description() {
             return $DESCRIPTIONS[this.type];
+        },
+
+        globalColumnsConfig() {
+            return this.globalColumnsConfigs[this.globalColumnsKey] || this.globalColumnsConfigs[this.identifier] || null;
         },
 
         advancedFilters() {
@@ -306,6 +323,145 @@ app.component('entity-table', {
     },
 
     methods: {
+        normalizeHeaders(headers) {
+            const seen = new Set();
+            return headers.filter(obj => {
+                const key = obj.value || obj.slug;
+                return seen.has(key) ? false : seen.add(key);
+            });
+        },
+
+        getLocalColumnsConfig() {
+            const value = localStorage.getItem(this.sessionTitle);
+            if (!value) {
+                return null;
+            }
+
+            try {
+                const parsed = JSON.parse(value);
+                if (parsed?.userDefined === true && Array.isArray(parsed.visible)) {
+                    return {
+                        visible: parsed.visible,
+                        order: Array.isArray(parsed.order) ? parsed.order : [],
+                    };
+                }
+                localStorage.removeItem(this.sessionTitle);
+            } catch (error) {
+                // formato legado não representa override explícito do usuário
+                localStorage.removeItem(this.sessionTitle);
+            }
+
+            return null;
+        },
+
+        resolveColumnOrder(headers, localConfig, globalConfig) {
+            const normalized = this.normalizeHeaders(headers).map(header => ({ ...header }));
+            const currentSlugs = normalized.map(header => this.parseSlug(header));
+            const orderedSlugs = [];
+            const pushUnique = (slug) => {
+                if (currentSlugs.includes(slug) && !orderedSlugs.includes(slug)) {
+                    orderedSlugs.push(slug);
+                }
+            };
+
+            (localConfig?.order || []).forEach(pushUnique);
+            (globalConfig?.order || []).forEach(pushUnique);
+            currentSlugs.forEach(pushUnique);
+
+            const headerBySlug = {};
+            normalized.forEach(header => {
+                headerBySlug[this.parseSlug(header)] = header;
+            });
+
+            return orderedSlugs.map(slug => headerBySlug[slug]).filter(Boolean);
+        },
+
+        resolveVisibleColumns({ required, defaultVisible, localColumnsConfig, globalConfig }) {
+            let visible = [];
+            if (this.allHeaders) {
+                visible = this.columns.map(column => column.slug);
+            } else if (Array.isArray(localColumnsConfig?.visible) && localColumnsConfig.visible.length) {
+                visible = [...localColumnsConfig.visible];
+            } else if (Array.isArray(globalConfig?.visible) && globalConfig.visible.length) {
+                visible = [...globalConfig.visible];
+            } else {
+                visible = [...defaultVisible];
+            }
+
+            required.forEach(slug => {
+                if (!visible.includes(slug)) {
+                    visible.push(slug);
+                }
+            });
+
+            return visible;
+        },
+
+        persistLocalColumnsConfig() {
+            const data = {
+                order: this.columns.map(column => column.slug),
+                visible: this.visibleColumns.map(column => column.slug),
+                userDefined: true,
+                updatedAt: new Date().toISOString(),
+            };
+            localStorage.setItem(this.sessionTitle, JSON.stringify(data));
+        },
+
+        onColumnDragStart(event, slug) {
+            if (!this.showIndex) {
+                return;
+            }
+            this.dragColumnSlug = slug;
+            event.dataTransfer.effectAllowed = 'move';
+            event.dataTransfer.setData('text/plain', slug);
+        },
+
+        onColumnDrop(event, targetSlug) {
+            if (!this.showIndex) {
+                return;
+            }
+            const sourceSlug = this.dragColumnSlug || event.dataTransfer.getData('text/plain');
+            this.dragColumnSlug = null;
+            if (!sourceSlug || sourceSlug === targetSlug) {
+                return;
+            }
+
+            const sourceIndex = this.columns.findIndex(column => column.slug === sourceSlug);
+            const targetIndex = this.columns.findIndex(column => column.slug === targetSlug);
+            if (sourceIndex < 0 || targetIndex < 0) {
+                return;
+            }
+
+            const [sourceColumn] = this.columns.splice(sourceIndex, 1);
+            this.columns.splice(targetIndex, 0, sourceColumn);
+            this.persistLocalColumnsConfig();
+        },
+
+        async saveGlobalColumnsConfig() {
+            if (!this.canManageColumnsGlobal) {
+                return;
+            }
+
+            const api = new API(this.globalColumnsKey);
+            const payload = {
+                tableKey: this.globalColumnsKey,
+                order: this.columns.map(column => column.slug),
+                visible: this.visibleColumns.map(column => column.slug),
+                required: this.columns.filter(column => column.required).map(column => column.slug),
+                known: this.columns.map(column => column.slug),
+            };
+
+            const response = await api.POST('saveTableColumnsConfig', payload);
+            if (!response.ok) {
+                this.messages.error(this.text('erro ao salvar padrao global'));
+                return;
+            }
+
+            const data = await response.json();
+            this.globalColumnsConfigs[this.globalColumnsKey] = data.config || {};
+            this.messages.success(this.text('padrao global salvo'));
+        },
+
         keyword(entities) {
             entities.refresh()
         },
@@ -583,6 +739,7 @@ app.component('entity-table', {
         toggleHeaders(event) {
             const field = event.target.value;
             let column = null;
+            let changed = false;
 
             for (let header of this.columns) {
                 if (header.slug == field) {
@@ -593,12 +750,17 @@ app.component('entity-table', {
                         this.messages.error(this.text('item obrigatório') + ' ' + header.text);
                     } else {
                         header.visible = !header.visible;
+                        changed = true;
                     }
                 }
             }
 
             if (column && !column.visible) {
                 delete this.query[field];
+            }
+
+            if (changed) {
+                this.persistLocalColumnsConfig();
             }
         },
 
@@ -610,6 +772,7 @@ app.component('entity-table', {
                     header.visible = true;
                 }
             }
+            this.persistLocalColumnsConfig();
         },
 
         clearFilters(entities) {

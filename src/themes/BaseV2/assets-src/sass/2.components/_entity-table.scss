@@ -288,4 +288,28 @@
             border: var(--mc-border-hairline) var(--mc-gray-100); 
         }
     }
+
+    &__columns-actions {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: size(8);
+        position: sticky;
+        bottom: 0;
+        z-index: 2;
+        margin-top: size(12);
+        padding-top: size(8);
+        padding-bottom: size(4);
+        background: var(--mc-white);
+        border-top: var(--mc-border-hairline) var(--mc-gray-300);
+    }
+
+    &__columns-help {
+        color: var(--mc-gray-700);
+        font-size: var(--mc-font-size-xxs);
+    }
+
+    &__column-row {
+        margin-bottom: size(4);
+    }
 }
