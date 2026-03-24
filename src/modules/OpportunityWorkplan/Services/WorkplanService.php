@@ -101,7 +101,14 @@ class WorkplanService
         // (cujas collections ArrayCollection em memória estão vazias) sejam
         // retornadas corretamente na serialização — corrige bug de entrega
         // desaparecendo após salvar a meta.
+        // refresh($workplan) sozinho não basta: as goals ainda presentes na
+        // Identity Map conservam suas ArrayCollections vazias. É preciso
+        // refresh em cada goal para que a coleção deliveries seja
+        // reinicializada e recarregada do banco na serialização.
         $app->em->refresh($workplan);
+        foreach ($workplan->goals as $goal) {
+            $app->em->refresh($goal);
+        }
 
         return $workplan;        
     }
