@@ -69,7 +69,7 @@ $this->import('
                         </create-space>
                         <create-agent v-if="type=='agent'" teleport="body" :click-to-close="false" :initial-type="createNewType" @create="refreshEntities()">
                             <template #default="{modal}">
-                                <button class="button button--primary-outline button--large" @click="modal.open()"><?php i::_e('Criar agente') ?> </button>
+                                <button class="button button--primary-outline button--large" @click="modal.open(); close()"><?php i::_e('Criar agente') ?> </button>
                             </template>
                         </create-agent>
                     </div>
