@@ -73,6 +73,28 @@ class Module extends \MapasCulturais\Module
             $registration = $this;
             $opportunity = $registration->opportunity;
 
+            // Moeda obrigatória: máscara/front envia 0 quando o campo não foi preenchido
+            $required_msg = i::__('O campo é obrigatório.');
+            foreach ($opportunity->registrationFieldConfigurations as $field) {
+                if (!$field->required || ($field->fieldType ?? '') !== 'currency') {
+                    continue;
+                }
+                if (!$registration->isFieldVisisble($field)) {
+                    continue;
+                }
+                $val = $registration->{$field->getFieldName()};
+                if (!is_numeric($val) || (float) $val != 0.0) {
+                    continue;
+                }
+                $field_name = 'field_' . $field->id;
+                if (!isset($errorsResult[$field_name])) {
+                    $errorsResult[$field_name] = [];
+                }
+                if (!in_array($required_msg, $errorsResult[$field_name], true)) {
+                    $errorsResult[$field_name][] = $required_msg;
+                }
+            }
+
             foreach ($opportunity->registrationFieldConfigurations as $field) {
 
                 if (!$field->required) {
@@ -608,8 +630,21 @@ class Module extends \MapasCulturais\Module
                     'v::brCurrency()' => \MapasCulturais\i::__('O valor não está no formato de moeda real (R$)')
                 ],
                 'unserialize' => function($value) {
-                    if(is_string($value) && !is_numeric($value)) {
-                        return (float) str_replace(",",".", str_replace(".","", $value));
+                    if ($value === null || $value === '') {
+                        return null;
+                    }
+                    if (is_string($value) && trim($value) === '') {
+                        return null;
+                    }
+                    if (is_string($value) && !is_numeric($value)) {
+                        return (float) str_replace(",", ".", str_replace(".", "", $value));
+                    }
+
+                    return (float) $value;
+                },
+                'serialize' => function($value) {
+                    if ($value === null || $value === '' || $value === '0' || (is_numeric($value) && (float) $value == 0.0)) {
+                        return null;
                     }
 
                     return (float) $value;
