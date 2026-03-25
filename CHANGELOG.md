@@ -9,6 +9,7 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 ### Melhorias
 - Adiciona um campo de busca para encontrar colunas por palavra-chave na listagem por tabela nas entidades. 
 - Implementa a funcionalidade que permite ao saasSuperAdmin ordenar globalmente as colunas das tabelas que utilizam o entity-table, por meio de drag and drop.
+- Permite criar novo agente individual ou coletivo diretamente pelo seletor de agentes no fluxo de inscrição de oportunidades, sem precisar sair da tela.
 
 ### Correções
 - Aplica texto de internacionalização faltante no componente opportunity-registration-table
