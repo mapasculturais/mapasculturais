@@ -11,6 +11,7 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Implementa a funcionalidade que permite ao saasSuperAdmin ordenar globalmente as colunas das tabelas que utilizam o entity-table, por meio de drag and drop.
 - Suprime campo de RG do cadastro do agente e dos campos @ para prevalecer o uso do CIN (Carteira de  Identidade Nacional)
 - Ordena opções de tipos de campos da lista de campos @ em ordem alfabética
+- Faz ajuste para que os campos do tipo Moeda sejam validados corretamente corretamente quando obrigatorios
 
 ### Correções
 - Aplica texto de internacionalização faltante no componente opportunity-registration-table
@@ -179,6 +180,10 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 1. <small>Melhoria desenvolvida pelo Ministério das Cidades, através da Secretaria Nacional de Periferias, para o Prêmio Periferia Viva</small>
 <a name="770-funarte"></a>
 2. <small>Melhoria desenvolvida pela Funarte (Fundação Nacional de Artes) para a Rede das Artes</small>
+
+## [7.6.62] - 2026-03-25
+### Correções
+- Faz ajuste para que os campos do tipo Moeda sejam validados corretamente corretamente quando obrigatorios
 
 ## [7.6.61] - 2026-03-19
 ### Correção
