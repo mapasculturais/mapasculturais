@@ -785,7 +785,7 @@ class Module extends \MapasCulturais\Module
     {
         $app = App::i();
 
-        $agent_fields = ['name', 'shortDescription', 'longDescription', '@location', '@links', '@gallery', '@videos', '@downloads', '@bankFields'];
+        $agent_fields = ['name', 'shortDescription', 'longDescription', '@location', '@links', '@gallery', '@videos', '@downloads'];
         
         $taxonomies_fields = $this->taxonomiesOpportunityFields(true);
 
