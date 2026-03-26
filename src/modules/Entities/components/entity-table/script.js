@@ -308,7 +308,7 @@ app.component('entity-table', {
         spreadsheetQuery() {
             let spreadsheetQuery =  Object.assign({}, this.query);
 
-            spreadsheetQuery['@select'] = this.visibleColumns.map(column => column.slug).join(',');
+            spreadsheetQuery['@select'] = this.buildSpreadsheetExportSelect();
             spreadsheetQuery['@order'] = this.entitiesOrder;
 
             spreadsheetQuery = Object.fromEntries(
@@ -343,6 +343,57 @@ app.component('entity-table', {
                 const key = obj.value || obj.slug;
                 return seen.has(key) ? false : seen.add(key);
             });
+        },
+
+        /**
+         * Fragmentos de @select na mesma ordem das colunas visíveis (global + local + arraste).
+         * Em inscrições, normaliza owner?. e anexos para o formato esperado pelo export/job.
+         */
+        buildSpreadsheetExportSelect() {
+            const seen = new Set();
+            const fragments = [];
+
+            const pushFragment = (token) => {
+                const t = (token || '').toString().trim();
+                if (!t || seen.has(t)) {
+                    return;
+                }
+                seen.add(t);
+                fragments.push(t);
+            };
+
+            for (const column of this.visibleColumns) {
+                for (const part of this.columnToExportSelectFragments(column)) {
+                    pushFragment(part);
+                }
+            }
+
+            return fragments.join(',');
+        },
+
+        columnToExportSelectFragments(column) {
+            const raw = (column.value !== undefined && column.value !== null && String(column.value).trim() !== '')
+                ? String(column.value).trim()
+                : String(column.slug || '').trim();
+
+            if (!raw) {
+                return [];
+            }
+
+            if (this.type === 'registration') {
+                if (raw === 'attachments') {
+                    return ['files'];
+                }
+                if (raw === 'editable') {
+                    return ['editableUntil', 'editSentTimestamp'];
+                }
+                const ownerOptional = raw.match(/^owner\?\.(.+)$/);
+                if (ownerOptional) {
+                    return [`owner.{${ownerOptional[1]}}`];
+                }
+            }
+
+            return [raw];
         },
 
         getLocalColumnsConfig() {
