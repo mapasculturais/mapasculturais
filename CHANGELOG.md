@@ -12,6 +12,7 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Suprime campo de RG do cadastro do agente e dos campos @ para prevalecer o uso do CIN (Carteira de  Identidade Nacional)
 - Ordena opções de tipos de campos da lista de campos @ em ordem alfabética
 - Faz ajuste para que os campos do tipo Moeda sejam validados corretamente corretamente quando obrigatorios
+- Ajusta exportação da planilha para organizar as colunas segundo a ordem definida pelo superSaasAdmin
 
 ### Correções
 - Aplica texto de internacionalização faltante no componente opportunity-registration-table
