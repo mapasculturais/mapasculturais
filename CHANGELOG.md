@@ -24,6 +24,7 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ### Correções
 - Corrige erro no duplicador de oportunidade que impede a copia correta dos arquivos
+- Corrija um erro ao excluir a configuração de avaliação, garantindo que a exclusão das fases continue funcionando corretamente sem falhas.
 
 ## [7.7.17] - 2026-03-19
 ### Correções
