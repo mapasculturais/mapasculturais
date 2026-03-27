@@ -146,15 +146,14 @@ class EvaluationMethodConfiguration extends \MapasCulturais\Entity {
     }
 
     function validateEvaluationDates() {
-        if($this->registrationFrom && $this->registrationTo){
-            return $this->registrationFrom <= $this->registrationTo;
-
-        }elseif($this->registrationFrom || $this->registrationTo){
-            return false;
-
-        }else{
-            return true;
+        if ($this->evaluationFrom && $this->evaluationTo) {
+            return $this->evaluationFrom <= $this->evaluationTo;
         }
+        if ($this->evaluationFrom || $this->evaluationTo) {
+            return false;
+        }
+
+        return true;
     }
 
     function setType($value) {
