@@ -11,13 +11,18 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Implementa a funcionalidade que permite ao saasSuperAdmin ordenar globalmente as colunas das tabelas que utilizam o entity-table, por meio de drag and drop.
 - Suprime campo de RG do cadastro do agente e dos campos @ para prevalecer o uso do CIN (Carteira de  Identidade Nacional)
 - Ordena opções de tipos de campos da lista de campos @ em ordem alfabética
-- Faz ajuste para que os campos do tipo Moeda sejam validados corretamente corretamente quando obrigatorios
 - Ajusta exportação da planilha para organizar as colunas segundo a ordem definida pelo superSaasAdmin
 - Melhora a exibição do botão minha conta no header para exibir o nome do perfil do agente responsável logado
 
 ### Correções
 - Aplica texto de internacionalização faltante no componente opportunity-registration-table
 - Corrige acento faltante no texto "Gênero" na listagem de pessoas do formulário de inscrição
+
+## [7.7.19] - 2026-03-27
+### Correções
+- Faz ajuste para que os campos do tipo Moeda sejam validados corretamente corretamente quando obrigatorios
+- Corrija um erro ao excluir a configuração de avaliação, garantindo que a exclusão das fases continue funcionando corretamen
+te sem falhas
 
 ## [7.7.18] - 2026-03-20
 ### Melhorias
