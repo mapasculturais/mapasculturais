@@ -70,6 +70,28 @@ app.component('registration-edition', {
             return this.steps[this.stepIndex];
         },
 
+        collectiveRelations() {
+            const relations = this.entity.agentRelations.coletivo ?? [];
+
+            return relations.map((relation) => {
+                if (relation?.agent instanceof Entity) {
+                    return relation;
+                }
+
+                if (relation?.agent?.id) {
+                    const agent = new Entity('agent', relation.agent.id);
+                    agent.populate(relation.agent);
+
+                    return {
+                        ...relation,
+                        agent,
+                    };
+                }
+
+                return relation;
+            });
+        },
+
         collectiveAvatarRequired() {
             const avatarConfig = this.entity.opportunity.proponentAgentRelationAvatar ?? {};
             const relationConfig = this.entity.opportunity.proponentAgentRelation ?? {};

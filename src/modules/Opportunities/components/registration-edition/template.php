@@ -59,8 +59,8 @@ $this->import('
                             </div>
                         </div>
                     </div>
-                    <div class="card collective" v-if="!preview && entity.agentRelations.coletivo?.length > 0">
-                        <div class="card__content" v-for="agentCollective in entity.agentRelations.coletivo">
+                    <div class="card collective" v-if="!preview && collectiveRelations.length > 0">
+                        <div class="card__content" v-for="agentCollective in collectiveRelations">
                             <div class="collective">
                                 <mc-avatar v-if="!collectiveAvatarRequired" :entity="agentCollective.agent" size="small"></mc-avatar>
                                 <request-agent-avatar
