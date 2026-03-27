@@ -99,7 +99,7 @@ app.component('opportunity-execution-requests', {
         },
 
         fillForm(req) {
-            window.location.href = req.editUrl;
+            window.location.href = `${req.singleUrl}#ficha`;
         },
 
         statusColor(status) {
