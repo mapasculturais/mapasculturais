@@ -69,6 +69,12 @@ app.component('registration-edition', {
         step () {
             return this.steps[this.stepIndex];
         },
+
+        collectiveAvatarRequired() {
+            const avatarConfig = this.entity.opportunity.proponentAgentRelationAvatar ?? {};
+            const relationConfig = this.entity.opportunity.proponentAgentRelation ?? {};
+            return relationConfig[this.entity.proponentType] === true && avatarConfig[this.entity.proponentType] === true;
+        },
     },
 
     watch: {

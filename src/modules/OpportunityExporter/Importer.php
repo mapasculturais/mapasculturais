@@ -178,6 +178,10 @@ class Importer
             $this->opportunity->proponentAgentRelation = $data['proponentAgentRelation'];
         }
 
+        if (array_key_exists('proponentAgentRelationAvatar', $data)) {
+            $this->opportunity->proponentAgentRelationAvatar = $data['proponentAgentRelationAvatar'];
+        }
+
         $this->opportunity->save(true);
     }
 
