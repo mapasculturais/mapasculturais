@@ -64,6 +64,7 @@ app.component('opportunity-execution-requests', {
                 const result = await api.find({
                     'opportunity': `EQ(${this.executionPhase.id})`,
                     '@select': 'id,number,status,editUrl,singleUrl',
+                    '@order': 'createTimestamp ASC, id ASC',
                     'status': 'GTE(0)',
                     '@permissions': 'view',
                     'user': 'EQ(@me)',

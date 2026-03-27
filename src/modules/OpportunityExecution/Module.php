@@ -206,7 +206,10 @@ class Module extends \MapasCulturais\Module
                     continue;
                 }
 
-                $requests = $app->repo('Registration')->findBy(['id' => $ids]);
+                $requests = $app->repo('Registration')->findBy(
+                    ['id' => $ids],
+                    ['createTimestamp' => 'ASC', 'id' => 'ASC']
+                );
 
                 if (!$requests) {
                     continue;
