@@ -5,7 +5,6 @@ use MapasCulturais\App;
 use OpportunityWorkplan\Entities\Workplan;
 use OpportunityWorkplan\Entities\Goal;
 use OpportunityWorkplan\Entities\Delivery;
-use Tests\Abstract\TestCase;
 use Tests\Traits\UserDirector;
 use Tests\Traits\OpportunityDirector;
 use Tests\Traits\RegistrationDirector;
@@ -16,7 +15,7 @@ use Tests\Traits\RegistrationDirector;
  * Execução:
  * docker exec -it mapas-dev-mapas vendor/bin/phpunit tests/src/OpportunityWorkplanRequireFieldsTest.php
  */
-class OpportunityWorkplanRequireFieldsTest extends TestCase
+class OpportunityWorkplanRequireFieldsTest extends \MapasCulturais_TestCase
 {
     use UserDirector;
     use OpportunityDirector;
@@ -214,6 +213,38 @@ class OpportunityWorkplanRequireFieldsTest extends TestCase
         $this->assertTrue($hasError, 'Título obrigatório vazio deveria gerar erro');
     }
 
+    /**
+     * Testa campos monetários obrigatórios aceitam zero como preenchido
+     */
+    public function testRequiredMoneyFieldsAcceptZero()
+    {
+        $user = $this->userDirector->createUser();
+        $this->login($user);
+
+        $opportunity = $this->createOpportunityWithWorkplan([
+            'workplan_deliveryInformTotalBudget' => true,
+            'workplan_deliveryRequireTotalBudget' => true,
+            'workplan_deliveryInformCommercialUnits' => true,
+            'workplan_deliveryRequireUnitPrice' => true,
+            'workplan_deliveryRequireCommercialUnits' => false,
+        ]);
+
+        $registration = $this->createRegistrationWithWorkplan($opportunity, $user, [
+            'delivery' => [
+                'totalBudget' => 0,
+                'commercialUnits' => 0,
+                'unitPrice' => 0,
+            ]
+        ]);
+
+        $errors = $this->collectSendValidationErrors($registration);
+        $deliveryErrors = $errors['delivery'] ?? [];
+        $deliveryErrorsText = implode(' | ', $deliveryErrors);
+
+        $this->assertStringNotContainsString('Orçamento total', $deliveryErrorsText, $deliveryErrorsText);
+        $this->assertStringNotContainsString('Valor unitário', $deliveryErrorsText, $deliveryErrorsText);
+    }
+
     // =====================================
     // MÉTODOS AUXILIARES
     // =====================================
@@ -307,5 +338,13 @@ class OpportunityWorkplanRequireFieldsTest extends TestCase
         $delivery->save(true);
 
         return $registration;
+    }
+
+    private function collectSendValidationErrors($registration): array
+    {
+        $errors = [];
+        $this->app->applyHookBoundTo($registration, 'entity(Registration).sendValidationErrors', [&$errors]);
+
+        return $errors;
     }
 }

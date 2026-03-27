@@ -181,7 +181,7 @@ $this->import('
 
         <div class="field" v-if="opportunity.workplan_monitoringInformCommercialUnits && (editable || proxy.executedUnitPrice)">
             <label :for="`${vid}__executedUnitPrice`"><?= i::__('Valor unitário praticado (R$)') ?><span v-if="opportunity.workplan_monitoringRequireUnitPrice" class="required">obrigatório*</span></label>
-            <div v-if="delivery.unitPrice" class="field__note">
+            <div v-if="delivery.unitPrice !== null && delivery.unitPrice !== ''" class="field__note">
                 <strong><?= i::__('Previsto:') ?></strong> {{ convertToCurrency(delivery.unitPrice) }}
             </div>
             <input v-if="editable" :id="`${vid}__executedUnitPrice`" type="number" v-model.number="proxy.executedUnitPrice" min="0" step="0.01">

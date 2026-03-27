@@ -208,12 +208,12 @@ app.component('registration-workplan', {
                     if (!('monthInitial' in delivery)) delivery.monthInitial = null;
                     if (!('monthEnd' in delivery)) delivery.monthEnd = null;
                     if (!('artChainLink' in delivery)) delivery.artChainLink = null;
-                    if (!('totalBudget' in delivery)) delivery.totalBudget = null;
+                    if (!('totalBudget' in delivery)) delivery.totalBudget = '';
                     if (!('numberOfCities' in delivery)) delivery.numberOfCities = null;
                     if (!('numberOfNeighborhoods' in delivery)) delivery.numberOfNeighborhoods = null;
                     if (!('mediationActions' in delivery)) delivery.mediationActions = null;
                     if (!('commercialUnits' in delivery)) delivery.commercialUnits = null;
-                    if (!('unitPrice' in delivery)) delivery.unitPrice = null;
+                    if (!('unitPrice' in delivery)) delivery.unitPrice = '';
                     if (!('hasCommunityCoauthors' in delivery)) delivery.hasCommunityCoauthors = null;
                     if (!('communityCoauthorsDetail' in delivery)) delivery.communityCoauthorsDetail = null;
                     if (!('hasTransInclusionStrategy' in delivery)) delivery.hasTransInclusionStrategy = null;
@@ -291,7 +291,7 @@ app.component('registration-workplan', {
 
             // Novos campos de planejamento
             entityDelivery.artChainLink = null;
-            entityDelivery.totalBudget = null;
+            entityDelivery.totalBudget = '';
             entityDelivery.numberOfCities = null;
             entityDelivery.numberOfNeighborhoods = null;
             entityDelivery.mediationActions = null;
@@ -315,7 +315,7 @@ app.component('registration-workplan', {
             };
             entityDelivery.revenueType = [];
             entityDelivery.commercialUnits = null;
-            entityDelivery.unitPrice = null;
+            entityDelivery.unitPrice = '';
             entityDelivery.hasCommunityCoauthors = null;
             entityDelivery.communityCoauthorsDetail = null;
             entityDelivery.hasTransInclusionStrategy = null;
@@ -444,7 +444,7 @@ app.component('registration-workplan', {
 
                 // Novos campos configuráveis
                 if (this.opportunity.workplan_deliveryInformArtChainLink && this.opportunity.workplan_deliveryRequireArtChainLink && !delivery.artChainLink) emptyFields.push("Principal elo das artes acionado");
-                if (this.opportunity.workplan_deliveryInformTotalBudget && this.opportunity.workplan_deliveryRequireTotalBudget && !delivery.totalBudget) emptyFields.push("Orçamento total da atividade");
+                if (this.opportunity.workplan_deliveryInformTotalBudget && this.opportunity.workplan_deliveryRequireTotalBudget && (delivery.totalBudget === null || delivery.totalBudget === '')) emptyFields.push("Orçamento total da atividade");
                 if (this.opportunity.workplan_deliveryInformNumberOfCities && this.opportunity.workplan_deliveryRequireNumberOfCities && (delivery.numberOfCities === null || delivery.numberOfCities === '')) emptyFields.push("Número de municípios");
                 if (this.opportunity.workplan_deliveryInformNumberOfNeighborhoods && this.opportunity.workplan_deliveryRequireNumberOfNeighborhoods && (delivery.numberOfNeighborhoods === null || delivery.numberOfNeighborhoods === '')) emptyFields.push("Número de bairros");
                 if (this.opportunity.workplan_deliveryInformMediationActions && this.opportunity.workplan_deliveryRequireMediationActions && (delivery.mediationActions === null || delivery.mediationActions === '')) emptyFields.push("Ações de mediação/formação de público");
@@ -473,7 +473,7 @@ app.component('registration-workplan', {
                 if (this.opportunity.workplan_deliveryInformTeamComposition && this.opportunity.workplan_deliveryRequireTeamCompositionRace && (!delivery.teamCompositionRace || !this.calculateRaceTotal(delivery.teamCompositionRace))) emptyFields.push("Composição da equipe por raça/cor");
                 if (this.opportunity.workplan_deliveryInformRevenueType && this.opportunity.workplan_deliveryRequireRevenueType && (!Array.isArray(delivery.revenueType) || !delivery.revenueType.length)) emptyFields.push("Tipo de receita previsto");
                 if (this.opportunity.workplan_deliveryInformCommercialUnits && this.opportunity.workplan_deliveryRequireCommercialUnits && (delivery.commercialUnits === null || delivery.commercialUnits === '')) emptyFields.push("Quantidade de unidades para comercialização");
-                if (this.opportunity.workplan_deliveryInformCommercialUnits && this.opportunity.workplan_deliveryRequireUnitPrice && !delivery.unitPrice) emptyFields.push("Valor unitário previsto");
+                if (this.opportunity.workplan_deliveryInformCommercialUnits && this.opportunity.workplan_deliveryRequireUnitPrice && (delivery.unitPrice === null || delivery.unitPrice === '')) emptyFields.push("Valor unitário previsto");
                 if (this.opportunity.workplan_deliveryInformCommunityCoauthors && !delivery.hasCommunityCoauthors) emptyFields.push("Envolvimento de comunidades como coautores");
                 if (this.opportunity.workplan_deliveryInformCommunityCoauthors && delivery.hasCommunityCoauthors === 'true' && this.opportunity.workplan_deliveryRequireCommunityCoauthorsDetail && !delivery.communityCoauthorsDetail) emptyFields.push("Detalhamento do envolvimento de comunidades");
                 if (this.opportunity.workplan_deliveryInformTransInclusion && !delivery.hasTransInclusionStrategy) emptyFields.push("Estratégia de inclusão Trans/Travestis");

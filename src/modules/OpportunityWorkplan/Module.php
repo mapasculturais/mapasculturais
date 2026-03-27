@@ -154,7 +154,7 @@ class Module extends \MapasCulturais\Module{
                                     ];
 
                                     foreach ($simple_fields as $field) {
-                                        if ($delivery->isMetadataRequired($field) && !$delivery->$field) {
+                                        if ($delivery->isMetadataRequired($field) && !self::validateSelectField($delivery, $field)) {
                                             $label = self::getFieldLabel($field);
                                             $errors['delivery'][] = i::__("Campo '{$label}' obrigatório na entrega '{$delivery->name}'");
                                         }
