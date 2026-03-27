@@ -27,7 +27,7 @@ $this->import('
     <div v-for="req in requests" :key="req.id" class="opportunity-phases-timeline__request-appeal__box">
         <div class="item__dot-appeal-phase"><span class="dot"></span></div>
         <div class="item__content">
-            <div class="item__content--title"><?= i::__('[Pedido]') ?> {{ req.number }}</div>
+            <div class="item__content--title"><?= i::__('[Pedido]') ?> {{ req.id }}</div>
             <div class="opportunity-phases-timeline__box">
                 <div class="opportunity-phases-timeline__status">
                     <mc-icon name="circle" :class="statusColor(req.status)"></mc-icon>
