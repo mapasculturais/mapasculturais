@@ -17,6 +17,7 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ### Correções
 - Aplica texto de internacionalização faltante no componente opportunity-registration-table
+- Corrige acento faltante no texto "Gênero" na listagem de pessoas do formulário de inscrição
 
 ## [7.7.18] - 2026-03-20
 ### Melhorias
