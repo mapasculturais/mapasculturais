@@ -38,7 +38,7 @@ use MapasCulturais\i;
                             :checked="proponentAgentRelationAvatar['Coletivo']" 
                             @change="toggleAgentRelationAvatar($event, 'Coletivo')"
                         > 
-                        <?= i::__("Obrigar o upload da foto de perfil")?>
+                        <?= i::__("Habilitar solicitação de imagem de perfil")?>
                     </label>
                 </div>
 
@@ -57,7 +57,7 @@ use MapasCulturais\i;
                             :checked="proponentAgentRelationAvatar['Pessoa Jurídica']" 
                             @change="toggleAgentRelationAvatar($event, 'Pessoa Jurídica')"
                         > 
-                        <?= i::__("Obrigar o upload da foto de perfil")?>
+                        <?= i::__("Habilitar solicitação de imagem de perfil")?>
                     </label>
                 </div>
             </div>
