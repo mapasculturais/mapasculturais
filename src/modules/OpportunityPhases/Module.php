@@ -1617,6 +1617,9 @@ class Module extends \MapasCulturais\Module{
             // se a próxima fase for a última fase e a fase atual não for uma fase de coleta de dados, apaga a fase atual
             if ($next_phase->isLastPhase){
                 if (!$opportunity->isDataCollection) {
+                    if ($opportunity->evaluationMethodConfiguration && $opportunity->evaluationMethodConfiguration->id === $this->id) {
+                        $opportunity->evaluationMethodConfiguration = null;
+                    }
                     $opportunity->destroy();
                     $previous_phase->fixNextPhaseRegistrationIds();
                 }

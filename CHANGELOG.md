@@ -9,10 +9,21 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 ### Melhorias
 - Adiciona um campo de busca para encontrar colunas por palavra-chave na listagem por tabela nas entidades. 
 - Implementa a funcionalidade que permite ao saasSuperAdmin ordenar globalmente as colunas das tabelas que utilizam o entity-table, por meio de drag and drop.
+- Suprime campo de RG do cadastro do agente e dos campos @ para prevalecer o uso do CIN (Carteira de  Identidade Nacional)
+- Ordena opções de tipos de campos da lista de campos @ em ordem alfabética
+- Ajusta exportação da planilha para organizar as colunas segundo a ordem definida pelo superSaasAdmin
+- Melhora a exibição do botão minha conta no header para exibir o nome do perfil do agente responsável logado
 - Permite criar novo agente individual ou coletivo diretamente pelo seletor de agentes no fluxo de inscrição de oportunidades, sem precisar sair da tela.
 
 ### Correções
 - Aplica texto de internacionalização faltante no componente opportunity-registration-table
+- Corrige acento faltante no texto "Gênero" na listagem de pessoas do formulário de inscrição
+
+## [7.7.19] - 2026-03-27
+### Correções
+- Faz ajuste para que os campos do tipo Moeda sejam validados corretamente corretamente quando obrigatorios
+- Corrija um erro ao excluir a configuração de avaliação, garantindo que a exclusão das fases continue funcionando corretamen
+te sem falhas
 
 ## [7.7.18] - 2026-03-20
 ### Melhorias
@@ -21,6 +32,7 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ### Correções
 - Corrige erro no duplicador de oportunidade que impede a copia correta dos arquivos
+- Corrija um erro ao excluir a configuração de avaliação, garantindo que a exclusão das fases continue funcionando corretamente sem falhas.
 
 ## [7.7.17] - 2026-03-19
 ### Correções
@@ -178,6 +190,10 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 1. <small>Melhoria desenvolvida pelo Ministério das Cidades, através da Secretaria Nacional de Periferias, para o Prêmio Periferia Viva</small>
 <a name="770-funarte"></a>
 2. <small>Melhoria desenvolvida pela Funarte (Fundação Nacional de Artes) para a Rede das Artes</small>
+
+## [7.6.62] - 2026-03-25
+### Correções
+- Faz ajuste para que os campos do tipo Moeda sejam validados corretamente corretamente quando obrigatorios
 
 ## [7.6.61] - 2026-03-19
 ### Correção
