@@ -10,6 +10,7 @@ use MapasCulturais\i;
 $this->import('
     mc-icon
     mc-loading
+    registration-results
 ');
 ?>
 
@@ -29,15 +30,23 @@ $this->import('
         <div class="item__content">
             <div class="item__content--title"><?= i::__('[Pedido]') ?> {{ req.id }}</div>
             <div class="opportunity-phases-timeline__box">
-                <div class="opportunity-phases-timeline__status">
-                    <mc-icon name="circle" :class="statusColor(req.status)"></mc-icon>
-                    <p>{{ statusLabel(req.status) }}</p>
+                <div>
+                    <label v-if="req.status > 0" class="semibold opportunity-phases-timeline__label"><?= i::__('Resultado do pedido:') ?></label>
+                    <div class="opportunity-phases-timeline__status">
+                        <mc-icon name="circle" :class="statusColor(req.status)"></mc-icon>
+                        <p>{{ statusLabel(req.status) }}</p>
+                    </div>
                 </div>
                 <div class="opportunity-phases-timeline__buttons">
                     <button v-if="req.status > 0" class="button button--primary button--sm button--large" @click="fillForm(req)"><?= i::__('Visualizar pedido') ?></button>
                     <button v-else class="button button--primary button--sm button--large" @click="fillForm(req)"><?= i::__('Preencher formulário') ?></button>
                 </div>
             </div>
+            <registration-results
+                v-if="req.status > 0 && executionEvaluationPhase"
+                :registration="req"
+                :phase="executionEvaluationPhase">
+            </registration-results>
         </div>
     </div>
 </div>

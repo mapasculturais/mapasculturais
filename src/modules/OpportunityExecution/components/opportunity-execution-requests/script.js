@@ -49,6 +49,10 @@ app.component('opportunity-execution-requests', {
             return this.phases.find(p => p.isExecutionPhase) || null;
         },
 
+        executionEvaluationPhase() {
+            return this.executionPhase?.evaluationMethodConfiguration || null;
+        },
+
         canOpenRequest() {
             // só agentes com inscrição aprovada podem abrir pedidos
             return this.registration?.status == 10;
