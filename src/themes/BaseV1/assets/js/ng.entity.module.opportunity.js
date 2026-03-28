@@ -540,25 +540,29 @@ module.controller('RegistrationConfigurationsController', ['$scope', '$rootScope
 
             // ao reordenar, atualiza displayOrder dos campos e salva
             stop: function(e, ui) {
-
-                var ii = 1;
-
-                var _fields = [];
-
-                $.each(fields, function(i,f) {
-                    f.displayOrder = ii;
-                    _fields.push({id: f.id, displayOrder: ii, fieldType: f.fieldType});
-                    ii++;
-                });
-
-                var url = new UrlService('opportunity');
-                var saveOrderUrl = url.create('saveFieldsOrder', MapasCulturais.entity.id);
-                // requisição para salvar ordem
-                $http.post(saveOrderUrl, {fields: _fields}).success(function(){
-                    MapasCulturais.Messages.success(labels['changesSaved']);
-                });
+                persistFieldsOrder(true);
             }
         };
+
+        function persistFieldsOrder(showSuccessMessage) {
+            var ii = 1;
+            var reorderedFields = [];
+
+            $.each(fields, function(i, f) {
+                f.displayOrder = ii;
+                reorderedFields.push({id: f.id, displayOrder: ii, fieldType: f.fieldType});
+                ii++;
+            });
+
+            var url = new UrlService('opportunity');
+            var saveOrderUrl = url.create('saveFieldsOrder', MapasCulturais.entity.id);
+
+            return $http.post(saveOrderUrl, {fields: reorderedFields}).success(function(){
+                if (showSuccessMessage) {
+                    MapasCulturais.Messages.success(labels['changesSaved']);
+                }
+            });
+        }
 
         $scope.data = {
             fieldSpinner: false,
@@ -785,6 +789,48 @@ module.controller('RegistrationConfigurationsController', ['$scope', '$rootScope
                     }
                 });
             }
+        };
+
+        $scope.duplicateFieldConfiguration = function(field, index) {
+            var duplicatedField = angular.copy(field);
+
+            delete duplicatedField.id;
+            delete duplicatedField.fieldName;
+            delete duplicatedField.step;
+
+            duplicatedField.ownerId = MapasCulturais.entity.id;
+            duplicatedField.displayOrder = $scope.data.fields.length + 1;
+            duplicatedField.categories = duplicatedField.categories || [];
+            duplicatedField.registrationRanges = duplicatedField.registrationRanges || [];
+            duplicatedField.proponentTypes = duplicatedField.proponentTypes || [];
+            duplicatedField.config = duplicatedField.config || {};
+            duplicatedField.step = field.step?.id ?? null;
+
+            $scope.data.fieldSpinner = true;
+
+            fieldService.create(duplicatedField).then(function(response) {
+                $scope.data.fieldSpinner = false;
+
+                if (response.error) {
+                    if (response.data && typeof response.data === 'object' && response.data.message) {
+                        MapasCulturais.Messages.error(response.data.message);
+                    } else {
+                        validationErrors(response);
+                    }
+                    return;
+                }
+
+                response = processFieldConfiguration(response);
+                $scope.data.fields.push(response);
+
+                var newIndex = $scope.data.fields.length - 1;
+                var movedField = $scope.data.fields.splice(newIndex, 1)[0];
+                $scope.data.fields.splice(index + 1, 0, movedField);
+
+                persistFieldsOrder(false).then(function() {
+                    MapasCulturais.Messages.success(labels['fieldDuplicated']);
+                });
+            });
         };
 
         $scope.editFieldConfiguration = function(attrs) {

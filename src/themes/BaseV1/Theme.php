@@ -2095,6 +2095,7 @@ class Theme extends MapasCulturais\Theme {
             'allCategories' => i::__('Todas as categorias'),
             'selectFieldType' =>  i::__('Selecione o tipo de campo'),
             'fieldCreated' =>  i::__('Campo criado.'),
+            'fieldDuplicated' => i::__('Campo duplicado.'),
             'fieldRemoved' =>  i::__('Campo removido.'),
             'changesSaved' =>  i::__('Alterações Salvas.'),
             'attachmentCreated' =>  i::__('Anexo criado.'),
