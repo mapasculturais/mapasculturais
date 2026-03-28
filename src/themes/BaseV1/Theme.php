@@ -2099,6 +2099,7 @@ class Theme extends MapasCulturais\Theme {
             'fieldRemoved' =>  i::__('Campo removido.'),
             'changesSaved' =>  i::__('Alterações Salvas.'),
             'attachmentCreated' =>  i::__('Anexo criado.'),
+            'attachmentDuplicated' => i::__('Anexo duplicado.'),
             'attachmentRemoved' =>  i::__('Anexo removido.'),
             'confirmAttachmentRemoved' =>  i::__('Deseja remover este anexo?'),
             'confirmRemoveModel' =>  i::__('Deseja remover este modelo?'),

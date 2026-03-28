@@ -1010,6 +1010,38 @@ module.controller('RegistrationConfigurationsController', ['$scope', '$rootScope
             }
         };
 
+        $scope.duplicateFileConfiguration = function(file, index) {
+            $scope.data.uploadSpinner = true;
+
+            $http.post(fileService.getUrl('duplicate', file.id)).then(function(result) {
+                var response = result.data;
+                $scope.data.uploadSpinner = false;
+
+                if (response.error) {
+                    if (response.data && typeof response.data === 'object' && response.data.message) {
+                        MapasCulturais.Messages.error(response.data.message);
+                    } else {
+                        validationErrors(response);
+                    }
+                    return;
+                }
+
+                response = processFileConfiguration(response);
+                $scope.data.fields.push(response);
+
+                var newIndex = $scope.data.fields.length - 1;
+                var movedFile = $scope.data.fields.splice(newIndex, 1)[0];
+                $scope.data.fields.splice(index + 1, 0, movedFile);
+
+                persistFieldsOrder(false).then(function() {
+                    MapasCulturais.Messages.success(labels['attachmentDuplicated']);
+                });
+            }, function(response) {
+                $scope.data.uploadSpinner = false;
+                validationErrors(response);
+            });
+        };
+
         $scope.editFileConfiguration = function(attrs) {
             $scope.data.uploadSpinner = true;
             var model = $scope.data.fields[attrs.index];
