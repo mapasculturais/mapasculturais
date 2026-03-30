@@ -105,6 +105,18 @@ class OpportunityBuilder extends Builder
         return $this;
     }
 
+    public function enableWorkplan(bool $deliveryReportLinkedToGoals = true, bool $save = true, bool $flush = true): self
+    {
+        $this->instance->enableWorkplan = true;
+        $this->instance->workplan_deliveryReportTheDeliveriesLinkedToTheGoals = $deliveryReportLinkedToGoals;
+
+        if ($save) {
+            $this->instance->save($flush);
+        }
+
+        return $this;
+    }
+
     /**
      * Número de vagas da oportunidade
      * 

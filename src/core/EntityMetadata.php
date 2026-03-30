@@ -49,6 +49,9 @@ class EntityMetadata extends Entity {
         ]);
 
         if ($has_metadata) {
+            // Se já existe, carrega o ID e marca como não-novo para poder atualizar
+            $this->id = (int) $has_metadata;
+            parent::save($flush);
             return;
         }
         

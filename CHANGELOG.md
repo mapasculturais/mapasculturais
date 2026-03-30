@@ -21,7 +21,70 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - PHP atualizado para versão 8.4
 - Doctrine atualizado para versão 2.20.x
 
-## [7.7.12] - UNRELEASED
+## [UNRELEASED - 7.X]
+### Melhorias
+- Adiciona um campo de busca para encontrar colunas por palavra-chave na listagem por tabela nas entidades. 
+- Implementa a funcionalidade que permite ao saasSuperAdmin ordenar globalmente as colunas das tabelas que utilizam o entity-table, por meio de drag and drop.
+- Suprime campo de RG do cadastro do agente e dos campos @ para prevalecer o uso do CIN (Carteira de  Identidade Nacional)
+- Ordena opções de tipos de campos da lista de campos @ em ordem alfabética
+- Ajusta exportação da planilha para organizar as colunas segundo a ordem definida pelo superSaasAdmin
+- Melhora a exibição do botão minha conta no header para exibir o nome do perfil do agente responsável logado
+
+### Correções
+- Aplica texto de internacionalização faltante no componente opportunity-registration-table
+- Corrige acento faltante no texto "Gênero" na listagem de pessoas do formulário de inscrição
+
+## [7.7.19] - 2026-03-27
+### Correções
+- Faz ajuste para que os campos do tipo Moeda sejam validados corretamente corretamente quando obrigatorios
+- Corrija um erro ao excluir a configuração de avaliação, garantindo que a exclusão das fases continue funcionando corretamen
+te sem falhas
+
+## [7.7.18] - 2026-03-20
+### Melhorias
+- Implementa novo botão na ação da tabela de avaliações para poder excluir um avaliador da inscrição
+- Melhora a configuração de inclusão e exclusão de avaliadores na inscrição (checkboxes), para que tenha efeito imediato, sem a necessidade de redistribuição
+
+### Correções
+- Corrige erro no duplicador de oportunidade que impede a copia correta dos arquivos
+- Corrija um erro ao excluir a configuração de avaliação, garantindo que a exclusão das fases continue funcionando corretamente sem falhas.
+
+## [7.7.17] - 2026-03-19
+### Correções
+- Corrige exibição do indicador de campo obrigatório (*obrigatório) no label do campo de listagem de endereços quando configurado como obrigatório pelo gestor.
+- Corrige exibição do indicador de campo obrigatório (*obrigatório) no label do campo de listagem de pessoas quando configurado como obrigatório pelo gestor.
+- Corrige expressão Angular inválida no `ng-if` do campo de deficiências na listagem de pessoas da ficha de inscrição
+- Corrige salvamento do campo de deficiências na listagem de pessoas da ficha de inscrição
+- Corrige erro que impedia a distribuição de avaliações em inscrições de fases intermediárias
+
+## [7.7.16] - 2026-03-11
+### Melhorias
+- Implementação de novo campo de tabaela para ser usado nos formulários de inscrições
+- Atualiza pacotes pnpm
+- Implementa testes para a aplicação de resultados das avaliações
+
+## [7.7.15] - 2026-03-10
+### Correções
+- Aplica verificação para evitar a criação de sessões sem critérios de avaliação no método de avaliação técnica.
+- Ajusta a exibição da aba de avaliação na oportunidade para o avaliador do edital.
+- Corrige erro ao formatar a data no método _logMailMessage()
+
+### Melhorias
+- Inclui nova área de atuação "Cultura do Povo Tupiniquin"
+- Melhorias na documentação PHP DOC do sistema
+
+## [7.7.14] - 2026-03-06
+### Correções
+- Corrige endpoint createAppealPhaseRegistration para verificar se já existe inscrição do proponente na fase de recurso
+- Ajusta a exibição dos avaliadores da fase de recurso na página individual da inscrição, permitindo selecionar a lista de inclusão e exclusão de avaliadores das fases avaliativas do recurso.
+- Implementa mc-update para fazer a normalização dos campos de CPF e NCPJ do registration_meta
+- Remove médodo que removia mascaras de cpf e cnpj no momento do envio da inscrições
+
+## [7.7.13] - 2026-03-06
+### Correções
+- Ajusta filtro de arquivo na api para possibitar valores vazios
+
+## [7.7.12] - 2026-03-04
 ### Melhorias
 - Adiciona filtro de selos na tela de busca de eventos, ativável via variável de ambiente `EVENTS_FILTER_SEALS`
 - Adiciona filtro de estado e cidade na tela de busca de eventos, ativável via variável de ambiente `EVENTS_FILTER_STATES_AND_CITIES`
@@ -142,6 +205,47 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 1. <small>Melhoria desenvolvida pelo Ministério das Cidades, através da Secretaria Nacional de Periferias, para o Prêmio Periferia Viva</small>
 <a name="770-funarte"></a>
 2. <small>Melhoria desenvolvida pela Funarte (Fundação Nacional de Artes) para a Rede das Artes</small>
+
+## [7.6.62] - 2026-03-25
+### Correções
+- Faz ajuste para que os campos do tipo Moeda sejam validados corretamente corretamente quando obrigatorios
+
+## [7.6.61] - 2026-03-19
+### Correção
+- Corrige erro que impedia a distribuição de avaliações em inscrições de fases intermediárias.
+
+## [7.6.60] - 2026-03-17
+### Melhorias
+- Importação de campos do formulário agora é feita em segundo plano e um e-mail é enviado ao término informando o status da operação
+
+### Correções
+- Corrige erro que impedia a listagem de inscrições em rascunho no painel "Minhas inscrições" quando o período de inscrição do edital estava encerrado
+
+## [7.6.59] - 2026-03-16
+### Melhorias
+- Atualiza pacotes pnpm
+
+## [7.6.58] - 2026-03-13
+### Melhorias
+- Aplica melhoria para que possamos forçar o save em métodos PUT via header
+
+### Correções
+- Corrije erro no componente entity-field
+
+## [7.6.57] - 2026-03-10
+### Correções
+- Aplica verificação para evitar a criação de sessões sem critérios de avaliação no método de avaliação técnica.
+- Ajusta a exibição da aba de avaliação na oportunidade para o avaliador do edital.
+
+### Melhorias
+- Inclui nova área de atuação "Cultura do Povo Tupiniquin"
+
+## [7.6.56] - 2026-03-06
+### Correções
+- Corrige endpoint createAppealPhaseRegistration para verificar se já existe inscrição do proponente na fase de recurso
+- Ajusta a exibição dos avaliadores da fase de recurso na página individual da inscrição, permitindo selecionar a lista de inclusão e exclusão de avaliadores das fases avaliativas do recurso.
+- Implementa mc-update para fazer a normalização dos campos de CPF e NCPJ do registration_meta
+- Remove médodo que removia mascaras de cpf e cnpj no momento do envio da inscrições
 
 ## [7.6.55] - 2026-03-04
 ### Correções

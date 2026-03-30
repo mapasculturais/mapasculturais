@@ -28,8 +28,32 @@ $sort_options = [
 
 $this->applyTemplateHook('entityTableSortOptions', args: [&$sort_options]);
 
+$columnConfig = ['version' => 1, 'tables' => []];
+$columnConfigDir = BASE_PATH . 'entity-table-columns/';
+if (is_dir($columnConfigDir)) {
+    $files = glob($columnConfigDir . '*.json') ?: [];
+    foreach ($files as $file) {
+        $tableKey = basename($file, '.json');
+        if (!preg_match('/^[a-zA-Z0-9_\-]+$/', $tableKey)) {
+            continue;
+        }
+        $decoded = json_decode(file_get_contents($file), true);
+        if (!is_array($decoded)) {
+            continue;
+        }
+        $columnConfig['tables'][$tableKey] = [
+            'order' => $decoded['order'] ?? [],
+            'visible' => $decoded['visible'] ?? [],
+            'updatedAt' => $decoded['updatedAt'] ?? null,
+            'updatedBy' => $decoded['updatedBy'] ?? null,
+        ];
+    }
+}
+
 $this->jsObject['config']['entityTable'] =[
     'sortOptions' => $sort_options,
     'seals' => $querySeals->getFindResult(),
-    'fromToStatus' => $from_toStatus
+    'fromToStatus' => $from_toStatus,
+    'columnsConfig' => $columnConfig,
+    'canManageColumnsGlobal' => $app->user && $app->user->is('saasSuperAdmin'),
 ];
