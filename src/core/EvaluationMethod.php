@@ -1203,7 +1203,7 @@ abstract class EvaluationMethod extends Module implements \JsonSerializable{
         foreach($filter_configuration as $field_name => $values){
             $found_field = false;
 
-            $field_value = $registration->metadata[$field_name] ?? null;
+            $field_value = $registration->$field_name ?? null;
 
             if (!is_array($field_value) && is_string($field_value)) {
                 $trimmed = ltrim($field_value);

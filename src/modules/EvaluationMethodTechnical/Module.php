@@ -320,6 +320,38 @@ class Module extends \MapasCulturais\EvaluationMethod
             }
         });
 
+        // Remove seções sem critérios antes de salvar a configuração técnica
+        $app->hook('entity(EvaluationMethodConfiguration).save:before', function() use($app) {
+            /** @var EvaluationMethodConfiguration $this */
+            if (!$this->definition || $this->definition->slug !== 'technical') {
+                return;
+            }
+
+            $sections = is_array($this->sections) ? $this->sections : [];
+            $criteria = is_array($this->criteria) ? $this->criteria : [];
+
+            if (empty($sections)) {
+                return;
+            }
+
+            $section_ids_with_criteria = [];
+            foreach ($criteria as $cri) {
+                if ($sid = ($cri->sid ?? null)) {
+                    $section_ids_with_criteria[$sid] = true;
+                }
+            }
+
+            $clean_sections = array_values(array_filter($sections, function ($section) use ($section_ids_with_criteria) {
+                return isset($section->id) && isset($section_ids_with_criteria[$section->id]);
+            }));
+
+            if (count($clean_sections) !== count($sections)) {
+                $app->disableAccessControl();
+                $this->sections = $clean_sections;
+                $app->enableAccessControl();
+            }
+        });
+
         // Define o valor da coluna eligible
         $app->hook('entity(Registration).<<save|send>>:before', function() use($app){
             /** @var Registration $this */

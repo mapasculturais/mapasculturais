@@ -2161,7 +2161,10 @@ class Theme extends MapasCulturais\Theme {
             'providingAccount' => i::__('Ao enviar a prestação de contas, não será mais permitido editar os campos. tem certeza que deseja continuar?'),
             'disableColumns' => i::__('Não é permitido desabilitar todas as colunas da tabela'),
             'columnDisabling' => i::__('Não é permitido desabilitar a coluna'),
-            'fileTooBig' => i::__('O tamanho do arquivo excede o limite estabelecido')
+            'fileTooBig' => i::__('O tamanho do arquivo excede o limite estabelecido'),
+            'processingError' => i::__('Erro ao processar a solicitação'),
+            'validationProcessingError' => i::__('Erro ao processar validationErrors:'),
+            'validationError' => i::__('Erro de validação')
         ]);
 
         $this->enqueueScript('app', 'entity.module.subsiteAdmins', 'js/ng.entity.module.subsiteAdmins.js', array('ng-mapasculturais'));

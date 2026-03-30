@@ -5,6 +5,7 @@ namespace Test;
 use MapasCulturais\App;
 use MapasCulturais\Controllers\Opportunity as OpportunityController;
 use MapasCulturais\Entities\Opportunity;
+use MapasCulturais\Entities\Registration;
 use MapasCulturais\Entities\User;
 use Tests\Abstract\TestCase;
 use Tests\Builders\PhasePeriods\ConcurrentEndingAfter;
@@ -13,6 +14,8 @@ use Tests\Directors\QuotaRegistrationDirector;
 use Tests\Enums\EvaluationMethods;
 use Tests\Enums\ProponentTypes;
 use Tests\Fixtures;
+use MapasCulturais\API;
+use MapasCulturais\ApiQuery;
 use Tests\Traits\OpportunityBuilder;
 use Tests\Traits\RegistrationDirector;
 use Tests\Traits\UserDirector;
@@ -22,13 +25,99 @@ class EvaluationMethodTechnicalTest extends TestCase
     use OpportunityBuilder,
         RegistrationDirector,
         UserDirector;
-
     protected QuotaRegistrationDirector $quotaRegistrationDirector;
 
     protected function setUp(): void
     {
         parent::setUp();
         $this->quotaRegistrationDirector = new QuotaRegistrationDirector($this->opportunityBuilder, $this->registrationDirector);
+    }
+
+    private function updateRegistrationStatus(array $ids, int $status): void
+    {
+        $app = App::i();
+        $conn = $app->em->getConnection();
+        
+        foreach ($ids as $id) {
+            $conn->update('registration', ['status' => $status], ['id' => $id]);
+        }
+    }
+
+    private function applyResultByScore(Opportunity $opportunity, float $min, float $max, int $new_status): void
+    {
+        $app = App::i();
+        
+        $statusIn = API::IN([1,3,8,10]);
+        $statusNotEqual = API::NOT_EQ($new_status);
+
+        $query_params = [
+            '@select' => 'id,score',
+            'opportunity' => "EQ({$opportunity->id})",
+            '@order' => 'score DESC',
+            'status' => "AND($statusNotEqual, $statusIn)",
+            'score' => "AND(GTE({$min}), LTE({$max}))",
+        ];
+
+        $query = new ApiQuery(Registration::class, $query_params);
+        $ids = $query->findIds();
+
+        $this->updateRegistrationStatus($ids, $new_status);
+
+        $app->em->clear();
+    }
+
+    private function applyResultByClassification(Opportunity $opportunity, float $cutoff_score, int $quantity_vacancies, bool $consider_quotas, bool $early_registrations, bool $wait_list, bool $invalidate_registrations): void {
+        $app = App::i();
+        
+        $statusIn = API::IN([1,3,8,10]);
+        $query_params = [
+            '@select' => 'id,score',
+            'opportunity' => "EQ({$opportunity->id})",
+            '@order' => 'score DESC',
+            'status' => $statusIn,
+        ];
+
+        if($consider_quotas) {
+            $query_params['@order'] = '@quota';
+            $query_params['__enableQuota'] = true;
+        }
+
+        $query = new ApiQuery(Registration::class, $query_params);
+        $registrations = $query->getFindResult();
+
+        $approved_ids = [];
+        $waitlist_ids = [];
+        $not_approved_ids = [];
+
+        if($early_registrations) {
+            for($i = 0; $i < $quantity_vacancies; $i++) {
+                if($registrations[$i]['score'] >= $cutoff_score) {
+                    $approved_ids[] = $registrations[$i]['id'];
+                }
+            }
+        }
+
+        if($wait_list) {
+            for($i = $quantity_vacancies; $i < count($registrations); $i++) {
+                if($registrations[$i]['score'] >= $cutoff_score) {
+                    $waitlist_ids[] = $registrations[$i]['id'];
+                }
+            }
+        }
+
+        if($invalidate_registrations) {
+            foreach($registrations as $reg) {
+                if($reg['score'] < $cutoff_score) {
+                    $not_approved_ids[] = $reg['id'];
+                }
+            }
+        }
+
+        $this->updateRegistrationStatus($approved_ids, Registration::STATUS_APPROVED);
+        $this->updateRegistrationStatus($waitlist_ids, Registration::STATUS_WAITLIST);
+        $this->updateRegistrationStatus($not_approved_ids, Registration::STATUS_NOTAPPROVED);
+
+        $app->em->clear();
     }
 
 
@@ -3025,5 +3114,154 @@ class EvaluationMethodTechnicalTest extends TestCase
         $this->assertGreaterThanOrEqual(4, $capital_count, "[PAGINAÇÃO] A Capital deve ter pelo menos 4 inscrições");
         $this->assertGreaterThanOrEqual(2, $coastal_count, "[PAGINAÇÃO] O Litoral deve ter pelo menos 2 inscrições");
         $this->assertGreaterThanOrEqual($cutoff_score, $lowest_score, "[PAGINAÇÃO] A menor nota deve ser >= {$cutoff_score} (nota de corte)");
+    }
+
+    public function testApplyResultsByScore()
+    {
+        $admin = $this->userDirector->createUser('admin');
+        $this->login($admin);
+
+        $opportunity = $this->createOpportunityWithQuotas($admin);
+
+        // Cria inscrições com diferentes pontuações
+        $this->quotaRegistrationDirector->idealQuotasScenario($opportunity);
+
+        $app = App::i();
+        /** @var OpportunityController $opportunity_controller */
+        $opportunity_controller = $app->controller('opportunity');
+
+        // Captura scores e status atuais antes de aplicar o resultado
+        $query_result = $opportunity_controller->apiFindRegistrations($opportunity, [
+            '@select' => 'id,score,status',
+            '@order' => 'score DESC',
+        ], true);
+
+        $scores = [];
+        $before_status = [];
+        foreach ($query_result->registrations as $registration) {
+            $scores[$registration['id']] = $registration['score'];
+            $before_status[$registration['id']] = $registration['status'];
+        }
+
+        $from_min = 80.0;
+        $from_max = 100.0;
+
+        $inside_range = array_filter($scores, fn ($score) => $score >= $from_min && $score <= $from_max);
+        $outside_range = array_filter($scores, fn ($score) => $score < $from_min || $score > $from_max);
+
+        // Garante que o cenário de teste é válido
+        $this->assertNotEmpty($inside_range, 'Deve haver inscrições dentro da faixa selecionada');
+        $this->assertNotEmpty($outside_range, 'Deve haver inscrições fora da faixa selecionada');
+
+        $this->applyResultByScore($opportunity, $from_min, $from_max, Registration::STATUS_APPROVED);
+
+        $app = App::i();
+        /** @var OpportunityController $opportunity_controller */
+        $opportunity_controller = $app->controller('opportunity');
+
+        $query_result = $opportunity_controller->apiFindRegistrations($opportunity, [
+            '@select' => 'id,score,status',
+            '@order' => 'score DESC',
+        ], true);
+
+        // Garante que todas as inscrições dentro da faixa foram aprovadas
+        foreach ($query_result->registrations as $registration) {
+            $id = $registration['id'];
+            $score = $registration['score'];
+            $status = $registration['status'];
+
+            if ($score >= $from_min && $score <= $from_max) {
+                $this->assertEquals(
+                    Registration::STATUS_APPROVED,
+                    $status,
+                    "Inscrições dentro da faixa de pontuação devem ser marcadas como aprovadas"
+                );
+            }
+        }
+    }
+
+    public function testApplyResultsByClassification()
+    {
+        $admin = $this->userDirector->createUser('admin');
+        $this->login($admin);
+
+        $opportunity = $this->createOpportunityWithQuotas($admin);
+
+        $this->quotaRegistrationDirector->idealQuotasScenario($opportunity);
+
+        $cutoff_score = $opportunity->evaluationMethodConfiguration->cutoffScore;
+        $vacancies = $opportunity->vacancies;
+
+        $app = App::i();
+        /** @var OpportunityController $opportunity_controller */
+        $opportunity_controller = $app->controller('opportunity');
+
+        $before_result = $opportunity_controller->apiFindRegistrations($opportunity, [
+            '@select' => 'id,score',
+            '@order' => '@quota',
+        ], true);
+
+        $total_registrations = count($before_result->registrations);
+        $this->assertEquals(40, $total_registrations, 'Deve haver 40 inscrições criadas pelo cenário');
+
+        $expected_approved = 0;
+        $expected_waitlist = 0;
+        $expected_not_approved = 0;
+
+        foreach ($before_result->registrations as $i => $reg) {
+            if ($i < $vacancies && $reg['score'] >= $cutoff_score) {
+                $expected_approved++;
+            } elseif ($i >= $vacancies && $reg['score'] >= $cutoff_score) {
+                $expected_waitlist++;
+            }
+            if ($reg['score'] < $cutoff_score) {
+                $expected_not_approved++;
+            }
+        }
+
+        $this->assertGreaterThan(0, $expected_approved, 'O cenário deve ter inscrições elegíveis para aprovação');
+        $this->assertGreaterThan(0, $expected_waitlist, 'O cenário deve ter inscrições elegíveis para suplência');
+        $this->assertGreaterThan(0, $expected_not_approved, 'O cenário deve ter inscrições abaixo da nota de corte');
+
+        $this->applyResultByClassification(
+            $opportunity,
+            $cutoff_score,
+            $vacancies,
+            consider_quotas: true,
+            early_registrations: true,
+            wait_list: true,
+            invalidate_registrations: true,
+        );
+
+        $after_result = $opportunity_controller->apiFindRegistrations($opportunity, [
+            '@select' => 'id,score,status',
+            '@order' => '@quota',
+        ], true);
+
+        $approved_count = 0;
+        $waitlist_count = 0;
+        $not_approved_count = 0;
+
+        foreach ($after_result->registrations as $registration) {
+            $status = $registration['status'];
+
+            if ($status === Registration::STATUS_APPROVED) {
+                $approved_count++;
+            } elseif ($status === Registration::STATUS_WAITLIST) {
+                $waitlist_count++;
+            } elseif ($status === Registration::STATUS_NOTAPPROVED) {
+                $not_approved_count++;
+            }
+        }
+
+        $this->assertEquals($expected_approved, $approved_count, "Inscrições aprovadas devem corresponder às {$expected_approved} primeiras com nota >= corte");
+        $this->assertEquals($expected_waitlist, $waitlist_count, "Inscrições suplentes devem corresponder às {$expected_waitlist} com nota >= corte fora das vagas");
+        $this->assertEquals($expected_not_approved, $not_approved_count, "Inscrições não selecionadas devem corresponder às {$expected_not_approved} com nota < corte");
+
+        $this->assertEquals(
+            $total_registrations,
+            $approved_count + $waitlist_count + $not_approved_count,
+            'Todas as inscrições devem ter um status definido após aplicar resultados'
+        );
     }
 }
