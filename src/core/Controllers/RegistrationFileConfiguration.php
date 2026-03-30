@@ -22,7 +22,7 @@ use MapasCulturais\Traits;
 class RegistrationFileConfiguration extends EntityController {
     use Traits\ControllerUploads;
 
-    function POST_duplicate() {
+    public function POST_duplicate() {
         $this->requireAuthentication();
 
         $app = App::i();
