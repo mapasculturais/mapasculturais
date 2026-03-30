@@ -5,6 +5,10 @@ Todas as mudanças notáveis no projeto serão documentadas neste arquivo.
 O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/)
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [UNRELEASED]
+### Melhorias
+- Implementa visualização das datas de recurso no step vertical de fases
+
 ## [7.7.19] - 2026-03-27
 ### Correções
 - Faz ajuste para que os campos do tipo Moeda sejam validados corretamente corretamente quando obrigatorios
