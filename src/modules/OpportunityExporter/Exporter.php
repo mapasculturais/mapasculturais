@@ -344,6 +344,11 @@ class Exporter
     public function exportFormFields(Opportunity $phase): array
     {
         $result = [];
+        $field_ids_by_name = [];
+
+        foreach ($phase->registrationFieldConfigurations as $field) {
+            $field_ids_by_name[$field->fieldName] = $field->id;
+        }
 
         foreach ($phase->registrationFieldConfigurations as $field) {
             $field_id = "FIELD(" . base_convert($field->id, 10, 36) . ")";
@@ -368,8 +373,9 @@ class Exporter
                 'conditional' => false,
             ];
 
-            if ($field->conditional && $field->conditionalField && preg_match('#field_(\d+)#', $field->conditionalField, $matches)) {
-                $conditional_field = "FIELD(" . base_convert($matches[1], 10, 36) . ")";
+            if ($field->conditional && $field->conditionalField && isset($field_ids_by_name[$field->conditionalField])) {
+                $conditional_id = $field_ids_by_name[$field->conditionalField];
+                $conditional_field = "FIELD(" . base_convert($conditional_id, 10, 36) . ")";
                 $field_result = [
                     ...$field_result,
                     'conditional' => true,
@@ -387,6 +393,11 @@ class Exporter
     public function exportFormAttachments(Opportunity $phase): array
     {
         $result = [];
+        $field_ids_by_name = [];
+
+        foreach ($phase->registrationFieldConfigurations as $field) {
+            $field_ids_by_name[$field->fieldName] = $field->id;
+        }
 
         foreach ($phase->registrationFileConfigurations as $rfc) {
             $rfc_id = "FILE(" . base_convert($rfc->id, 10, 36) . ")";
@@ -405,8 +416,9 @@ class Exporter
                 'conditional' => false,
             ];
 
-            if ($rfc->conditional && $rfc->conditionalField && preg_match('#field_(\d+)#', $rfc->conditionalField, $matches)) {
-                $conditional_field = "FIELD(" . base_convert($matches[1], 10, 36) . ")";
+            if ($rfc->conditional && $rfc->conditionalField && isset($field_ids_by_name[$rfc->conditionalField])) {
+                $conditional_id = $field_ids_by_name[$rfc->conditionalField];
+                $conditional_field = "FIELD(" . base_convert($conditional_id, 10, 36) . ")";
                 $rfc_result = [
                     ...$rfc_result,
                     'conditional' => true,
