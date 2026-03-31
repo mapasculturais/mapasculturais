@@ -3253,5 +3253,104 @@ $$
         $app->log->debug("Migração concluída! Atualizados: {$updated} | Sem relations: {$skipped}");
         return true;
     },
-    
+
+    'migra chaves de metadados de campos de agente para field_owner/field_collective' => function() use ($app, $conn) {
+        $normalize_entity_field = function (?string $entity_field, int $field_id): string {
+            $entity_field = (string) ($entity_field ?? '');
+            $entity_field = preg_replace('/^@terms:/', '', $entity_field);
+            $entity_field = preg_replace('/^@/', '', $entity_field);
+            $entity_field = preg_replace('/[^a-zA-Z0-9_]+/', '_', $entity_field);
+            $entity_field = trim((string) $entity_field, '_');
+            return $entity_field ?: (string) $field_id;
+        };
+
+        $rows = $conn->fetchAllAssociative("
+            SELECT id, opportunity_id, field_type, config::text AS config
+            FROM registration_field_configuration
+            WHERE field_type IN ('agent-owner-field', 'agent-collective-field')
+        ");
+
+        $migrated = 0;
+        foreach ($rows as $row) {
+            $field_id = (int) $row['id'];
+            $opportunity_id = (int) $row['opportunity_id'];
+            $field_type = $row['field_type'];
+
+            $config = json_decode($row['config'] ?? '{}', true) ?: [];
+            $entity_field = $normalize_entity_field($config['entityField'] ?? null, $field_id);
+
+            $old_key = "field_{$field_id}";
+            $new_key = $field_type === 'agent-owner-field'
+                ? "field_owner_{$entity_field}"
+                : "field_collective_{$entity_field}";
+
+            if ($old_key === $new_key) {
+                continue;
+            }
+
+            $conn->executeQuery(
+                "UPDATE registration_meta SET key = :new_key WHERE key = :old_key",
+                ['new_key' => $new_key, 'old_key' => $old_key]
+            );
+
+            $conn->executeQuery(
+                "UPDATE registration_field_configuration
+                 SET conditional_field = :new_key
+                 WHERE opportunity_id = :opportunity_id AND conditional_field = :old_key",
+                ['new_key' => $new_key, 'old_key' => $old_key, 'opportunity_id' => $opportunity_id]
+            );
+
+            $conn->executeQuery(
+                "UPDATE registration_file_configuration
+                 SET conditional_field = :new_key
+                 WHERE opportunity_id = :opportunity_id AND conditional_field = :old_key",
+                ['new_key' => $new_key, 'old_key' => $old_key, 'opportunity_id' => $opportunity_id]
+            );
+
+            $available_eval = $conn->fetchOne(
+                "SELECT avaliable_evaluation_fields::text FROM opportunity WHERE id = :id",
+                ['id' => $opportunity_id]
+            );
+            $available_eval = json_decode($available_eval ?: '{}', true) ?: [];
+            if (isset($available_eval[$old_key]) && !isset($available_eval[$new_key])) {
+                $available_eval[$new_key] = $available_eval[$old_key];
+                unset($available_eval[$old_key]);
+                $conn->executeQuery(
+                    "UPDATE opportunity SET avaliable_evaluation_fields = :fields WHERE id = :id",
+                    ['fields' => json_encode($available_eval), 'id' => $opportunity_id]
+                );
+            }
+
+            $relations = $conn->fetchAllAssociative(
+                "SELECT id, metadata::text AS metadata
+                 FROM agent_relation
+                 WHERE object_type = 'MapasCulturais\\Entities\\Opportunity'
+                   AND object_id = :opportunity_id",
+                ['opportunity_id' => $opportunity_id]
+            );
+
+            foreach ($relations as $relation) {
+                $metadata = json_decode($relation['metadata'] ?: '{}', true) ?: [];
+                $permissions = $metadata['registrationPermissions'] ?? null;
+                if (!is_array($permissions) || !isset($permissions[$old_key]) || isset($permissions[$new_key])) {
+                    continue;
+                }
+
+                $permissions[$new_key] = $permissions[$old_key];
+                unset($permissions[$old_key]);
+                $metadata['registrationPermissions'] = $permissions;
+
+                $conn->executeQuery(
+                    "UPDATE agent_relation SET metadata = :metadata WHERE id = :id",
+                    ['metadata' => json_encode($metadata), 'id' => $relation['id']]
+                );
+            }
+
+            $migrated++;
+            $app->log->debug("migrou chave {$old_key} => {$new_key}");
+        }
+
+        $app->log->debug("migração de metadados finalizada. Campos migrados: {$migrated}");
+    },
+
 ] + $updates ;   
