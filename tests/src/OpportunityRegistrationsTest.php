@@ -390,6 +390,105 @@ class OpportunityRegistrationsTest extends TestCase
         }
     }
 
+    function testAgentOwnerMetaKey(): void
+    {
+        $admin = $this->userDirector->createUser('admin');
+        $this->login($admin);
+
+        /** @var Opportunity */
+        $opportunity = $this->opportunityBuilder
+            ->reset(owner: $admin->profile, owner_entity: $admin->profile)
+            ->fillRequiredProperties()
+            ->save()
+            ->firstPhase()
+                ->setRegistrationPeriod(new Open)
+                ->createStep('etapa')
+                ->createOwnerField('campo-owner-escolaridade', 'escolaridade', 'Escolaridade', required: false)
+                ->createField('campo-texto-livre', 'text', 'Texto', required: false)
+                ->done()
+            ->save()
+            ->refresh()
+            ->getInstance();
+
+        $field_owner = $this->opportunityBuilder->getFieldName('campo-owner-escolaridade');
+        $field_plain = $this->opportunityBuilder->getFieldName('campo-texto-livre');
+
+        $this->assertSame('field_owner_escolaridade', $field_owner, 'Certificando que o campo de agente responsável usa a chave field_owner_{entityField}');
+        $this->assertMatchesRegularExpression('/^field_\d+$/', $field_plain, 'Certificando que um campo comum continua usando a chave field_{id}');
+
+        $registrations = $this->registrationDirector->createSentRegistrations(
+            $opportunity,
+            number_of_registrations: 1
+        );
+        $registration = $registrations[0];
+        $registration->$field_owner = 'Ensino Médio Completo';
+        $registration->$field_plain = 'nota qualquer';
+        $registration->save(true);
+
+        $keys = array_column(
+            $this->app->conn->fetchAllAssociative(
+                'SELECT key FROM registration_meta WHERE object_id = :id ORDER BY key',
+                ['id' => $registration->id]
+            ),
+            'key'
+        );
+
+        $this->assertContains($field_owner, $keys, 'Certificando que o registration_meta contém a chave field_owner_*');
+        $this->assertContains($field_plain, $keys, 'Certificando que o registration_meta contém field_{id} para campo comum');
+    }
+
+    function testAgentCollectiveMetaKey(): void
+    {
+        $admin = $this->userDirector->createUser('admin');
+        $this->login($admin);
+
+        /** @var Opportunity */
+        $opportunity = $this->opportunityBuilder
+            ->reset(owner: $admin->profile, owner_entity: $admin->profile)
+            ->fillRequiredProperties()
+            ->save()
+            ->firstPhase()
+                ->setRegistrationPeriod(new Open)
+                ->createStep('etapa')
+                ->createCollectiveField('campo-coll-escolaridade', 'escolaridade', 'Escolaridade coletivo', required: false)
+                ->done()
+            ->save()
+            ->refresh()
+            ->getInstance();
+
+        $field_collective = $this->opportunityBuilder->getFieldName('campo-coll-escolaridade');
+        $this->assertSame('field_collective_escolaridade', $field_collective, 'Certificando que o campo de agente coletivo usa a chave field_collective_{entityField}');
+
+        $registrations = $this->registrationDirector->createSentRegistrations(
+            $opportunity,
+            number_of_registrations: 1
+        );
+        $registration = $registrations[0];
+
+        $collective_agent = $this->agentDirector->createAgent(
+            $registration->owner->user,
+            type: 2,
+            save: true,
+            flush: false
+        );
+        $collective_agent->escolaridade = 'Ensino Superior Completo';
+        $collective_agent->save(true);
+        $registration->createAgentRelation($collective_agent, 'coletivo');
+
+        $registration->$field_collective = 'Ensino Superior Completo';
+        $registration->save(true);
+
+        $keys = array_column(
+            $this->app->conn->fetchAllAssociative(
+                'SELECT key FROM registration_meta WHERE object_id = :id ORDER BY key',
+                ['id' => $registration->id]
+            ),
+            'key'
+        );
+
+        $this->assertContains($field_collective, $keys, 'Certificando que o registration_meta contém a chave field_collective_*');
+    }
+
     function testSendRegistration() 
     {
         $admin = $this->userDirector->createUser('admin');
