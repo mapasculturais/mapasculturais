@@ -952,7 +952,7 @@ abstract class Theme {
                     $query->setParameter('id', $e['id'] ?? 0);
                     $opportunity = $query->getSingleResult();
                 }
-                $e['opportunity'] = $opportunity->simplify('id,name,type,files,terms,seals');
+                $e['opportunity'] = $opportunity->simplify('id,name,registrationFrom,registrationTo,type,files,terms,seals');
                 if($opportunity->parent){
                     $e['opportunity']->parent = $opportunity->parent->simplify('id,name,type,files,terms,seals');
                 }
