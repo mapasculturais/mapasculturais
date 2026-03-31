@@ -179,6 +179,21 @@ class RegistrationFieldConfiguration extends \MapasCulturais\Entity {
     }
 
     public function getFieldName(){
+        if (in_array($this->fieldType, ['agent-owner-field', 'agent-collective-field'], true)) {
+            $entity_field = $this->config['entityField'] ?? '';
+            $entity_field = preg_replace('/^@terms:/', '', (string) $entity_field);
+            $entity_field = preg_replace('/^@/', '', $entity_field);
+            $entity_field = preg_replace('/[^a-zA-Z0-9_]+/', '_', $entity_field);
+            $entity_field = trim((string) $entity_field, '_');
+            $entity_field = $entity_field ?: (string) $this->id;
+
+            if ($this->fieldType === 'agent-owner-field') {
+                return 'field_owner_' . $entity_field;
+            }
+
+            return 'field_collective_' . $entity_field;
+        }
+
         return 'field_' . $this->id;
     }
 
