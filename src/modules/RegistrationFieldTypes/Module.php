@@ -306,7 +306,7 @@ class Module extends \MapasCulturais\Module
                     continue;
                 }
 
-                $field_name = 'field_' . $field->id;
+                $field_name = $field->getFieldName();
                 if (!isset($errorsResult[$field_name])) {
                     $errorsResult[$field_name] = [];
                 }
