@@ -102,8 +102,8 @@ class Module extends \MapasCulturais\Module
                         if( $relation->metadata) {
                             $userAllowedFields = $relation->metadata['registrationPermissions'];
                             foreach($result as $key => $field){
-                                $field = "field_".$field->id;
-                                if(!isset($userAllowedFields[$field])){
+                                $field_name = $field->getFieldName();
+                                if(!isset($userAllowedFields[$field_name])){
                                     unset($result[$key]);
                                 }
                             }
