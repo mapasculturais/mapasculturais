@@ -70,7 +70,7 @@ $this->import('
             <opportunity-phase-config-results :phases="phases" :phase="item" :tab="tab"></opportunity-phase-config-results>
         </template>
     </template>
-    <template #after-li="{index, item}">
+    <template #after-li="{index, item, step}">
         <template v-if="phases[index + 1]?.isLastPhase">
             <div v-if="showButtons() && entity.registrationFrom && entity.registrationTo" class="add-phase grid-12">
                 <div class="add-phase__evaluation col-12">
@@ -107,5 +107,36 @@ $this->import('
                 </div>
             </div>
         </template>
+        <div v-if="!step?.active && item.__objectType === 'evaluationmethodconfiguration' && item?.opportunity?.appealPhase" class="appeal-phase-info">
+           <div class="data-collection">
+                <div>
+                    <small><strong><?= i::__("Recurso") ?></strong></small>
+                </div>
+                <div class="data-collection-dates">
+                    <small>
+                        {{item?.opportunity?.appealPhase?.registrationFrom?.date('2-digit year')}} {{item?.opportunity?.appealPhase?.registrationFrom?.time('numeric')}}
+                    </small>
+                    <small><strong><?= i::__("à") ?></strong></small>
+                    <small>
+                        {{item?.opportunity?.appealPhase?.registrationTo?.date('2-digit year')}} {{item?.opportunity?.appealPhase?.registrationTo?.time('numeric')}}
+                    </small>
+                </div>
+           </div>
+
+           <div class="evaluation">
+                <div>
+                    <small><strong><?= i::__("Avaliação do recurso") ?></strong></small>
+                </div>
+                <div class="evaluation-dates">
+                    <small>
+                        {{item?.opportunity?.appealPhase?.evaluationMethodConfiguration?.evaluationFrom?.date('2-digit year')}} {{item?.opportunity?.appealPhase?.evaluationMethodConfiguration?.evaluationFrom?.time('numeric')}}
+                    </small>
+                    <small><strong><?= i::__("à") ?></strong></small>
+                    <small>
+                        {{item?.opportunity?.appealPhase?.evaluationMethodConfiguration?.evaluationTo?.date('2-digit year')}} {{item?.opportunity?.appealPhase?.evaluationMethodConfiguration?.evaluationTo?.time('numeric')}}
+                    </small>
+                </div>
+           </div>
+        </div>
     </template>
 </mc-stepper-vertical>
