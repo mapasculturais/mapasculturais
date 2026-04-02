@@ -1,0 +1,143 @@
+.oc-complementary {
+    .entities-tabs {
+        border-bottom: solid 1px #1e1e1e2e;
+    }
+
+
+    .stage {
+        display: block;
+    }
+
+    .content {
+        background-color: $white;
+    }
+
+    .oc-dialog {
+        .content {
+            width: 55%;
+            background-color: $gray;  
+        }
+    }
+
+    .complementary-tabs {
+        .content {
+            .stage {
+                .tabs {
+                    .default {
+                        display: flex;
+                        justify-content: space-between;
+                        gap: 270px;
+
+                        .left {
+                            display: flex;
+                            flex-direction: column;
+                            gap: 20px;
+
+                            .color-item {
+                                border: solid 1px #00000038;
+                                display: flex;
+                                align-items: center;
+                                padding: 5px;
+                                gap: 60px;
+                                border-radius: 6px;
+
+                                .polygon1 {
+                                    width: 15px;
+                                    height: 40px;
+                                    clip-path: polygon(0% 40%, 100% 10%, 100% 70%, 0% 100%);
+                                }
+
+                                .polygon2 {
+                                    width: 15px;
+                                    height: 40px;
+                                    clip-path: polygon(0% 10%, 100% 40%, 100% 100%, 0% 70%);
+                                }
+
+                                .polygon3 {
+                                    width: 15px;
+                                    height: 40px;
+                                    clip-path: polygon(0% 40%, 100% 10%, 100% 70%, 0% 100%);
+                                }
+
+                                .polygon4 {
+                                    width: 15px;
+                                    height: 40px;
+                                    clip-path: polygon(0% 10%, 100% 40%, 100% 100%, 0% 70%);
+                                }
+
+                                .color-field {
+                                    position: relative;
+
+                                    input[id="colorInput1"] {
+                                        opacity: 0;
+                                        position: absolute;
+                                        width: 0;
+                                        height: 0;
+                                    }
+
+                                    input[id="colorInput2"] {
+                                        opacity: 0;
+                                        position: absolute;
+                                        width: 0;
+                                        height: 0;
+                                    }
+
+                                    input[id="colorInput3"] {
+                                        opacity: 0;
+                                        position: absolute;
+                                        width: 0;
+                                        height: 0;
+                                    }
+
+                                    input[id="colorInput4"] {
+                                        opacity: 0;
+                                        position: absolute;
+                                        width: 0;
+                                        height: 0;
+                                    }
+
+                                    label {
+                                        cursor: pointer;
+                                        // Ajuste o tamanho do label ou do ícone conforme necessário
+                                    }
+
+                                    .iconify {
+                                        font-size: 35px;
+                                    }
+                                }
+
+                            }
+                        }
+
+                        .right {
+                            width: 100%;
+                            display: flex;
+                            flex-direction: column;
+                            gap: 26px;
+                        }
+                    }
+                }
+
+                .logo {
+                    .actions {
+                        background-color: $white;
+                        display: flex;
+                        flex-direction: column;
+                        gap: 15px;
+
+                        .field {
+                            display: flex;
+                            flex-direction: row;
+                            justify-content: flex-start;
+                            gap: 120px;
+
+                            .input__radioLabel {
+                                align-items: center;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

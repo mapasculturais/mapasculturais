@@ -1,0 +1,32 @@
+ul {
+    padding: 0;
+    margin: 0;
+    list-style-type: none
+}
+
+.form-style {
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+}
+
+.color-red {
+    color: $red;
+}
+
+.w100 {
+    width: 100%;
+}
+
+.fbold {
+    font-weight: bold
+}
+
+.btn-entity-actions {
+    background-color: #fff;
+    padding: 0px;
+    margin-top: 30px;
+    &__complement {
+        margin-top: 150px;
+    }
+}

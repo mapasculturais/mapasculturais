@@ -1,0 +1,31 @@
+.oc-text-image {
+    .oc-dialog {
+        .content {
+            width: 66%;
+        }
+    }
+
+    .sub-menu {
+        .oc-tabs {
+            justify-content: flex-end;
+            gap: 20px;
+        }
+
+        .content {
+            padding: 0px;
+            background-color: $white;
+        }
+
+        .oc-dialog {
+            .content {
+                width: 76%;
+                padding: 20px;
+                background-color: #F5F5F5;
+            }
+        }
+    }
+
+    .stage {
+        display: block;
+    }
+}

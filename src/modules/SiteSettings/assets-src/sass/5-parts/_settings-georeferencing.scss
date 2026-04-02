@@ -1,0 +1,52 @@
+.settings-georeferencing {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+
+    .oc-map {
+        margin: 20px;
+
+        label {
+            font-weight: bold;
+        }
+
+        .location {
+            margin-bottom: 15px;
+
+
+
+            form {
+                margin-top: 10px;
+                display: flex;
+                gap: 5px;
+            }
+
+            .filter-result {
+                ul {
+                    width: auto;
+                    border: solid 1px #0000002e;
+                    border-radius: 4px;
+                    max-width: 40%;
+
+                    li {
+                        border-bottom: solid 1px #00000029;
+                        padding: 5px;
+
+                        &:hover {
+                            cursor: pointer;
+                            background-color: $gray-dark;
+                        }
+                    }
+                }
+            }
+        }
+
+        .actions {
+            background-color: $white;
+            margin: 15px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+    }
+}

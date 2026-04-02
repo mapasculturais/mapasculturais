@@ -1,0 +1,15 @@
+.text-image-banner {
+    width: 100%;
+
+    .upload-area {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+
+        .alert {
+            .text {
+                font-size: 13px;
+            }
+        }
+    }
+}

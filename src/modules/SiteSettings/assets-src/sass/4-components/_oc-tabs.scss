@@ -1,0 +1,48 @@
+.oc-tabs {
+    display: flex;
+    justify-content: space-evenly;
+    margin: 0 auto;
+    max-width: 61.125rem;
+    position: relative;
+    width: 100%;
+
+    .item {
+        position: relative;
+
+        &.active {
+            font-weight: bold;
+
+            &::before {
+                background-color: $active-menu;
+                border-radius: 3px;
+                bottom: -2px;
+                content: "";
+                height: 4px;
+                left: 0;
+                position: absolute;
+                right: 0;
+            }
+        }
+
+        &:hover {
+            cursor: pointer;
+        }
+    }
+}
+
+.content {
+    background-color: $gray;
+    padding: 10px;
+    width: 100%;
+
+    .stage {
+        padding: 10px;
+        border-radius: 5px;
+        background-color: $white;
+        display: flex;
+        justify-content: flex-start;
+        margin: 0 auto;
+        max-width: 61.125rem;
+        width: 100%;
+    }
+}

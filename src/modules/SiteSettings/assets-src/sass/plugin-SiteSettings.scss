@@ -1,0 +1,36 @@
+/* ----- 1: SETTINGS ------- */
+@import '1-settings/s-variables';
+@import '1-settings/global';
+
+
+/* ----- 2: ATOMS ------- */
+@import '2-atoms/a-mixins';
+
+
+/* ----- 3: LAYOUT ------- */
+
+
+/* ----- 4: COMPONENTS ------- */
+@import '4-components/_configuration-steps';
+@import '4-components/_oc-header';
+@import '4-components/_oc-steps';
+@import '4-components/_oc-tabs';
+@import '4-components/_oc-dialog';
+@import '4-components/_oc-actions';
+@import '4-components/_oc-popover';
+@import '4-components/_oc-georeferencing';
+@import '4-components/_oc-socialmedia';
+@import '4-components/_oc-text-image';
+@import '4-components/_oc-upload';
+@import '4-components/_oc-entities.scss';
+@import '4-components/_oc-complementary.scss';
+
+
+/* ----- 5: AREAS ------- */
+@import '5-parts/_settings-email';
+@import '5-parts/_settings-recaptcha';
+@import '5-parts/_settings-georeferencing';
+@import '5-parts/_settings-socialmedia';
+@import '5-parts/_text-image-banner';
+@import '5-parts/_text-image-entities';
+@import '5-parts/_colors';

@@ -98,7 +98,7 @@ class Entity {
                 };
             }
             if(JSON.stringify(this[prop]) != JSON.stringify(val)) {
-                if(!preserveValues || this[prop] == undefined) {
+                if(!preserveValues || this[prop] == undefined || val === null) {
                     this[prop] = val;
                 }
             }

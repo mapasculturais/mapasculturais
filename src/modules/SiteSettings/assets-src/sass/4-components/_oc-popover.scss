@@ -1,0 +1,90 @@
+.oc-popover {
+    position: relative;
+    display: flex;
+    justify-content: flex-end;
+
+    .content {
+        display: inline-block; // Ajusta automaticamente ao conteúdo
+        position: absolute;
+        z-index: 999;
+        background: $gray-dark;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        padding: 1rem;
+        transform: translateY(-10px);
+        transition: opacity 0.3s ease, transform 0.3s ease;
+
+        &::after {
+            content: '';
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background: $gray-dark;
+            transform: rotate(45deg);
+            z-index: 1;
+        }
+
+        &.position-bottom {
+            top: 100%;
+            left: 50%;
+            transform: translate(-50%, 10px);
+
+            &::after {
+                top: -6px;
+                left: 50%;
+                transform: translateX(-50%) rotate(45deg);
+            }
+        }
+
+        &.position-top {
+            bottom: 100%;
+            left: 50%;
+            transform: translate(-50%, -10px);
+
+            &::after {
+                bottom: -6px;
+                left: 50%;
+                transform: translateX(-50%) rotate(45deg);
+            }
+        }
+
+        &.position-left {
+            right: 100%;
+            top: 50%;
+            transform: translate(-10px, -50%);
+
+            &::after {
+                top: 50%;
+                right: -6px;
+                transform: translateY(-50%) rotate(45deg);
+            }
+        }
+
+        &.position-right {
+            left: 100%;
+            top: 50%;
+            transform: translate(10px, -50%);
+
+            &::after {
+                top: 50%;
+                left: -6px;
+                transform: translateY(-50%) rotate(45deg);
+            }
+        }
+    }
+
+    .fade-enter-active,
+    .fade-leave-active {
+        transition: opacity 0.3s ease, transform 0.3s ease;
+    }
+
+    .fade-enter-from,
+    .fade-leave-to {
+        opacity: 0;
+    }
+
+    .fade-enter-to,
+    .fade-leave-from {
+        opacity: 1;
+    }
+}

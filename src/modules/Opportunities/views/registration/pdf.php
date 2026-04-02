@@ -9,9 +9,13 @@
 $logoUrl = '';
 $logoImage = $app->config['logo.image'] ?? '';
 if ($logoImage) {
-    $logoPath = $app->view->resolveFilename('assets', $logoImage);
-    if (file_exists($logoPath)) {
-        $logoUrl = $logoPath;
+    if (preg_match('#^(https?:)?//#i', $logoImage)) {
+        $logoUrl = $logoImage;
+    } else {
+        $logoPath = $app->view->resolveFilename('assets', $logoImage);
+        if ($logoPath && file_exists($logoPath)) {
+            $logoUrl = $logoPath;
+        }
     }
 }
 

@@ -1,0 +1,23 @@
+.oc-georeferencing {
+    .geodivisions {
+        margin: 20px;
+        width: 100%;
+        display: flex;
+        gap: 30px;
+        flex-direction: column;
+        
+        label {
+            font-weight: bold;
+        }
+
+        .options {
+            margin-top: 10px;
+            display: flex;
+            gap: 10px;
+        }
+
+        .mc-multiselect {
+            width: auto;
+        }
+    }
+}

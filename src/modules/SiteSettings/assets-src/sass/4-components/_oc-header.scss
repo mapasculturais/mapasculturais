@@ -1,0 +1,20 @@
+.header {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-bottom: 40px;
+
+    .title {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+
+        .iconify {
+            font-size: 2em;
+            background-color: $black;
+            color: $white;
+            border-radius: 50px;
+            padding: 3px;
+        }
+    }
+}

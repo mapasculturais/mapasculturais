@@ -1,0 +1,123 @@
+.steps {
+    z-index: 2;
+    width: 100%;
+    position: relative;
+
+    ul {
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+        padding: 0;
+        margin: 0;
+        list-style: none;
+
+        &::before {
+            content: "";
+            position: absolute;
+            top: 50%;
+            left: 20%;
+            right: 20%;
+            height: 2px;
+            background-color: #ddd;
+            z-index: -1;
+            transform: translateY(-50%);
+        }
+
+        &.has-active {
+            &::before {
+                left: 20%;
+                right: 20%;
+            }
+        }
+
+        li {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+
+            .item {
+                width: 90px;
+                height: 90px;
+                background-color: $bg-step-circle;
+                color: $white;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                border-radius: 50%;
+                position: relative;
+
+                .icon {
+                    position: absolute;
+
+                    .iconify {
+                        font-size: 4em;
+                        color: $white;
+                    }
+
+                    &.two-icons {
+                        .iconify {
+                            font-size: 2.3em;
+                        }
+                    }
+                }
+
+                .label {
+                    font-weight: bold;
+                    font-size: 15px;
+                    position: relative;
+                    top: 74px;
+                    color: $bg-step-circle;
+                    white-space: nowrap;
+
+                    @media (max-width: 450px) {
+                        white-space: normal;
+                    }
+                }
+
+                &.active {
+                    width: 120px;
+                    height: 120px;
+
+                    .icon {
+                        .iconify {
+                            font-size: 5em;
+                        }
+
+                        &.two-icons {
+                            .iconify {
+                                font-size: 3em;
+                            }
+                        }
+                    }
+
+                    .label {
+                        top: 110px;
+                    }
+                }
+            }
+
+            &:hover {
+                cursor: pointer;
+            }
+        }
+    }
+}
+
+.menu {
+    margin-top: 5rem;
+    display: flex;
+    width: 100%;
+    justify-content: space-around;
+    flex-direction: column;
+
+    .tabs-component__panels {
+        margin: 0px;
+    }
+
+    .tabs-component__button--active::after {
+        background-color: $active-menu;
+    }
+}

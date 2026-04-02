@@ -1,0 +1,17 @@
+{
+  "name": "site-settings",
+  "version": "1.0.0",
+  "description": "Plugin que possibilita fazer configurações do tema do MapasCulturais",
+  "scripts": {
+    "dev": "mix --mix-config=node_modules/@mapas/scripts/webpack.mix.js",
+    "build": "mix --mix-config=node_modules/@mapas/scripts/webpack.mix.js --production",
+    "watch": "mix watch --mix-config=node_modules/@mapas/scripts/webpack.mix.js"
+  },
+
+  "devDependencies": {
+    "@mapas/scripts": "workspace:0.0.0",
+    "laravel-mix": "^6.0.49",
+    "sass": "^1.77.2",
+    "sass-loader": "^12.6.0"
+  }
+}

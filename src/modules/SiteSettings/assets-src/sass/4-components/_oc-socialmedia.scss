@@ -1,0 +1,23 @@
+.oc-social-media {
+    display: flex;
+    flex-direction: column;
+    gap: 36px;
+
+    .options {
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .fields {
+        display: flex;
+        flex-direction: column;
+        width: 40%;
+        gap: 16px;
+    }
+
+    .no-data {
+        width: 100%;
+        text-align: center;
+        font-weight: bold;
+    }
+}

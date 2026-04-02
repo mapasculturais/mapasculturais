@@ -1,0 +1,21 @@
+#main-app.config-steps-active .container {
+    padding: 0px;
+    display: block;
+}
+
+.configuration-steps {
+    align-items: center;
+    display: flex;
+    flex-wrap: wrap;
+    gap: .625rem;
+    height: auto;
+    justify-content: space-between;
+    margin: 0 auto;
+    max-width: 66.125rem;
+    padding: 0 1rem;
+}
+
+.actions {
+    background-color: $gray;
+    padding: 10px;
+}

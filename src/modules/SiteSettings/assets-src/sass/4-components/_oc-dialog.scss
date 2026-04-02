@@ -1,0 +1,72 @@
+.oc-dialog {
+    position: relative;
+
+    .iconify {
+        position: relative;
+        top: 19%;
+        font-size: 22px;
+    }
+
+    .triangle {
+        width: 0;
+        height: 0;
+        border-top: 7px solid transparent;
+        border-bottom: 7px solid transparent;
+        border-right: 26px solid #f5f5f5;
+        border-left: 0;
+        position: absolute;
+        top: 20%;
+        left: 3%;
+        opacity: 0;
+        visibility: hidden;
+
+        @media (max-width: 450px) {
+            left: 6%;
+        }
+
+        transition: opacity 0.3s ease,
+        visibility 0.3s ease;
+    }
+
+    .content {
+        // display: flex;
+        background-color: $gray;
+        width: 50%;
+        position: absolute;
+        left: 45px;
+        border-radius: 12px;
+        opacity: 0;
+        transform: translateY(-10px);
+        transition: opacity 0.3s ease, transform 0.3s ease;
+
+        .close {
+            font-size: 20px;
+            position: absolute;
+            top: 2px;
+            right: 3px;
+            z-index: 1000;
+        }
+    }
+
+    &.active {
+        .triangle {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .content {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    transition: height 0.3s ease;
+
+    &.active {
+        height: 12rem;
+    }
+
+    &:not(.active) {
+        height: 3rem;
+    }
+}
