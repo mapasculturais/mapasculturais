@@ -60,12 +60,12 @@ app.component('opportunity-phase-config-data-collection' , {
             let date;
 
             // se a data inicial da fase está definida, a data final não pode ser menor que a data inicial
-            if (this.phase.registraionFrom) {
-                date = this.phase.registraionFrom;
+            if (this.phase.registrationFrom) {
+                date = this.phase.registrationFrom;
 
             // senão, a data inicial não pode ser enor que a data inicial da fase anterior
             } else if(this.previousPhase) {
-                date = this.previousPhase.registrationfrom || this.previousPhase.evaluationfrom;
+                date = this.previousPhase.registrationFrom || this.previousPhase.evaluationFrom;
             }
 
             return date;
