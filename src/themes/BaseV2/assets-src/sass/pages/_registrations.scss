@@ -74,6 +74,47 @@
                     gap: size(35);
                     margin: size(32) auto;
                     padding: 0 size(16);
+
+                    .mc-accordion {
+                        width: 100%;
+
+                        &__header,
+                        &__content {
+                            max-width: none;
+                            width: 100%;
+                        }
+
+                        &__header {
+                            grid-template-columns: 1fr auto;
+                        }
+
+                        &__title {
+                            margin: 0;
+                        }
+
+                        &__icon {
+                            align-items: center;
+                            display: flex;
+                            gap: size(6);
+                            justify-content: flex-end;
+                            min-width: size(88);
+                            white-space: nowrap;
+
+                            label {
+                                color: var(--mc-gray-700);
+                                font-size: size(12);
+                                line-height: 1;
+                                margin: 0;
+                            }
+
+                            .iconify {
+                                color: var(--mc-primary-500);
+                                font-size: size(14);
+                                flex-shrink: 0;
+                            }
+                        }
+                    }
+
                     .mc-card {
                         border-radius: var(--mc-border-radius-xs);
                         padding: size(17) size(24);

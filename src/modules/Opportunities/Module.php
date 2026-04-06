@@ -651,6 +651,32 @@ class Module extends \MapasCulturais\Module{
             });
 
             $this->jsObject['registrationFields'] = $fields;
+
+            $registration = $requested_entity instanceof Registration ? $requested_entity : null;
+            if (!$registration && $this->controller->requestedEntity instanceof Registration) {
+                $registration = $this->controller->requestedEntity;
+            }
+
+            if ($registration instanceof Registration) {
+                $registrations = $app->repo('Registration')->findBy(['number' => $registration->number]);
+                $fields_by_opportunity = [];
+
+                foreach ($registrations as $reg) {
+                    $opp = $reg->opportunity;
+                    $phase_fields = array_merge(
+                        (array) $opp->registrationFileConfigurations,
+                        (array) $opp->registrationFieldConfigurations
+                    );
+
+                    usort($phase_fields, function ($a, $b) {
+                        return $a->displayOrder <=> $b->displayOrder;
+                    });
+
+                    $fields_by_opportunity[(string) $opp->id] = $phase_fields;
+                }
+
+                $this->jsObject['registrationFieldsByOpportunity'] = $fields_by_opportunity;
+            }
         });
 
         $app->hook('mapas.printJsObject:before', function() use($app) {
