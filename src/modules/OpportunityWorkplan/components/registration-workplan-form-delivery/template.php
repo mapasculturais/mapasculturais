@@ -420,7 +420,7 @@ $this->import('
         </div>
 
         <div class="field" v-if="opportunity.workplan_monitoringInformCommunityCoauthors && (editable || proxy.executedHasCommunityCoauthors || proxy.executedCommunityCoauthorsDetail)">
-            <label :for="`${vid}__executedHasCommunityCoauthors`"><?= i::__('Houve coautoria/coexecução com comunidades/coletivos?') ?></label>
+            <label :for="`${vid}__executedHasCommunityCoauthors`"><?= i::__('Houve coautoria/coexecução com comunidades/coletivos?') ?><span v-if="opportunity.workplan_monitoringRequireHasCommunityCoauthors" class="required">obrigatório*</span></label>
             <div v-if="delivery.hasCommunityCoauthors" class="field__note">
                 <strong><?= i::__('Previsto:') ?></strong> {{ booleanOptions[delivery.hasCommunityCoauthors] ?? delivery.hasCommunityCoauthors }}
             </div>
@@ -443,7 +443,7 @@ $this->import('
         </div>
 
         <div class="field" v-if="opportunity.workplan_monitoringInformTransInclusion && (editable || proxy.executedHasTransInclusionStrategy || proxy.executedTransInclusionActions)">
-            <label :for="`${vid}__executedHasTransInclusionStrategy`"><?= i::__('Houve estratégias executadas de inclusão Trans e Travestis?') ?></label>
+            <label :for="`${vid}__executedHasTransInclusionStrategy`"><?= i::__('Houve estratégias executadas de inclusão Trans e Travestis?') ?><span v-if="opportunity.workplan_monitoringRequireHasTransInclusionStrategy" class="required">obrigatório*</span></label>
             <div v-if="delivery.hasTransInclusionStrategy" class="field__note">
                 <strong><?= i::__('Previsto:') ?></strong> {{ booleanOptions[delivery.hasTransInclusionStrategy] ?? delivery.hasTransInclusionStrategy }}
             </div>
@@ -466,7 +466,7 @@ $this->import('
         </div>
 
         <div class="field" v-if="opportunity.workplan_monitoringInformAccessibilityPlan && (editable || proxy.executedHasAccessibilityPlan || hasExecutedExpectedAccessibilityMeasures)">
-            <label :for="`${vid}__executedHasAccessibilityPlan`"><?= i::__('Houve medidas de acessibilidade executadas?') ?></label>
+            <label :for="`${vid}__executedHasAccessibilityPlan`"><?= i::__('Houve medidas de acessibilidade executadas?') ?><span v-if="opportunity.workplan_monitoringRequireHasAccessibilityPlan" class="required">obrigatório*</span></label>
             <div v-if="delivery.hasAccessibilityPlan" class="field__note">
                 <strong><?= i::__('Previsto:') ?></strong> {{ booleanOptions[delivery.hasAccessibilityPlan] ?? delivery.hasAccessibilityPlan }}
             </div>
@@ -493,7 +493,7 @@ $this->import('
         </div>
 
         <div class="field" v-if="opportunity.workplan_monitoringInformEnvironmentalPractices && (editable || proxy.executedHasEnvironmentalPractices || proxy.executedEnvironmentalPracticesDescription)">
-            <label :for="`${vid}__executedHasEnvironmentalPractices`"><?= i::__('Houve medidas ou práticas socioambientais executadas?') ?></label>
+            <label :for="`${vid}__executedHasEnvironmentalPractices`"><?= i::__('Houve medidas ou práticas socioambientais executadas?') ?><span v-if="opportunity.workplan_monitoringRequireHasEnvironmentalPractices" class="required">obrigatório*</span></label>
             <div v-if="delivery.hasEnvironmentalPractices" class="field__note">
                 <strong><?= i::__('Previsto:') ?></strong> {{ booleanOptions[delivery.hasEnvironmentalPractices] ?? delivery.hasEnvironmentalPractices }}
             </div>
@@ -516,7 +516,7 @@ $this->import('
         </div>
 
         <div class="field" v-if="opportunity.workplan_monitoringInformPressStrategy && (editable || proxy.executedHasPressStrategy)">
-            <label :for="`${vid}__executedHasPressStrategy`"><?= i::__('Houve estratégia de relacionamento com a imprensa?') ?></label>
+            <label :for="`${vid}__executedHasPressStrategy`"><?= i::__('Houve estratégia de relacionamento com a imprensa?') ?><span v-if="opportunity.workplan_monitoringRequireHasPressStrategy" class="required">obrigatório*</span></label>
             <div v-if="delivery.hasPressStrategy" class="field__note">
                 <strong><?= i::__('Previsto:') ?></strong> {{ booleanOptions[delivery.hasPressStrategy] ?? delivery.hasPressStrategy }}
             </div>
@@ -529,7 +529,7 @@ $this->import('
         </div>
 
         <div class="field" v-if="opportunity.workplan_monitoringInformInnovation && (editable || proxy.executedHasInnovationAction || hasExecutedInnovationTypes)">
-            <label :for="`${vid}__executedHasInnovationAction`"><?= i::__('Houve ação de experimentação/inovação executada?') ?></label>
+            <label :for="`${vid}__executedHasInnovationAction`"><?= i::__('Houve ação de experimentação/inovação executada?') ?><span v-if="opportunity.workplan_monitoringRequireHasInnovationAction" class="required">obrigatório*</span></label>
             <div v-if="delivery.hasInnovationAction" class="field__note">
                 <strong><?= i::__('Previsto:') ?></strong> {{ booleanOptions[delivery.hasInnovationAction] ?? delivery.hasInnovationAction }}
             </div>

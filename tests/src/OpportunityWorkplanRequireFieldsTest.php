@@ -245,6 +245,102 @@ class OpportunityWorkplanRequireFieldsTest extends \MapasCulturais_TestCase
         $this->assertStringNotContainsString('Valor unitário', $deliveryErrorsText, $deliveryErrorsText);
     }
 
+    public function testMonitoringRevenueTypeRequiredWhenConfigured()
+    {
+        $app = $this->app;
+        $user = $this->userDirector->createUser();
+        $this->login($user);
+
+        $opportunity = $this->createOpportunityWithWorkplan([
+            'workplan_monitoringInformRevenueType' => true,
+            'workplan_monitoringRequireRevenueType' => true,
+        ]);
+
+        $registration = $this->createRegistrationWithWorkplan($opportunity, $user, [
+            'delivery' => [
+                'executedRevenueType' => null,
+            ]
+        ]);
+
+        $workplan = $app->repo(Workplan::class)->findOneBy(['registration' => $registration->id]);
+        $delivery = $workplan->goals[0]->deliveries[0];
+
+        $this->assertTrue($delivery->isMetadataRequired('executedRevenueType'));
+    }
+
+    public function testMonitoringCommunityCoauthorsDetailOptionalWhenGateIsFalse()
+    {
+        $app = $this->app;
+        $user = $this->userDirector->createUser();
+        $this->login($user);
+
+        $opportunity = $this->createOpportunityWithWorkplan([
+            'workplan_monitoringInformCommunityCoauthors' => true,
+            'workplan_monitoringRequireCommunityCoauthorsDetail' => true,
+        ]);
+
+        $registration = $this->createRegistrationWithWorkplan($opportunity, $user, [
+            'delivery' => [
+                'executedHasCommunityCoauthors' => 'false',
+                'executedCommunityCoauthorsDetail' => null,
+            ]
+        ]);
+
+        $workplan = $app->repo(Workplan::class)->findOneBy(['registration' => $registration->id]);
+        $delivery = $workplan->goals[0]->deliveries[0];
+
+        $this->assertFalse($delivery->isMetadataRequired('executedCommunityCoauthorsDetail'));
+    }
+
+    public function testMonitoringCommunityCoauthorsDetailRequiredWhenGateIsTrue()
+    {
+        $app = $this->app;
+        $user = $this->userDirector->createUser();
+        $this->login($user);
+
+        $opportunity = $this->createOpportunityWithWorkplan([
+            'workplan_monitoringInformCommunityCoauthors' => true,
+            'workplan_monitoringRequireCommunityCoauthorsDetail' => true,
+        ]);
+
+        $registration = $this->createRegistrationWithWorkplan($opportunity, $user, [
+            'delivery' => [
+                'executedHasCommunityCoauthors' => 'true',
+                'executedCommunityCoauthorsDetail' => null,
+            ]
+        ]);
+
+        $workplan = $app->repo(Workplan::class)->findOneBy(['registration' => $registration->id]);
+        $delivery = $workplan->goals[0]->deliveries[0];
+
+        $this->assertTrue($delivery->isMetadataRequired('executedCommunityCoauthorsDetail'));
+    }
+
+    public function testMonitoringNumberOfParticipantsUsesMonitoringFlagsOnly()
+    {
+        $app = $this->app;
+        $user = $this->userDirector->createUser();
+        $this->login($user);
+
+        $opportunity = $this->createOpportunityWithWorkplan([
+            'workplan_registrationReportTheNumberOfParticipants' => false,
+            'workplan_deliveryRequireExpectedNumberPeople' => false,
+            'workplan_monitoringInformNumberOfParticipants' => true,
+            'workplan_monitoringRequireNumberOfParticipants' => true,
+        ]);
+
+        $registration = $this->createRegistrationWithWorkplan($opportunity, $user, [
+            'delivery' => [
+                'numberOfParticipants' => null,
+            ]
+        ]);
+
+        $workplan = $app->repo(Workplan::class)->findOneBy(['registration' => $registration->id]);
+        $delivery = $workplan->goals[0]->deliveries[0];
+
+        $this->assertTrue($delivery->isMetadataRequired('numberOfParticipants'));
+    }
+
     // =====================================
     // MÉTODOS AUXILIARES
     // =====================================

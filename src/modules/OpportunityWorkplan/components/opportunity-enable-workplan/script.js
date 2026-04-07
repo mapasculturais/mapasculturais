@@ -179,19 +179,37 @@ app.component('opportunity-enable-workplan', {
             if (!_new) this.entity.workplan_monitoringRequireRevenueType = false;
         },
         'entity.workplan_monitoringInformCommunityCoauthors'(_new) {
-            if (!_new) this.entity.workplan_monitoringRequireCommunityCoauthorsDetail = false;
+            if (!_new) {
+                this.entity.workplan_monitoringRequireHasCommunityCoauthors = false;
+                this.entity.workplan_monitoringRequireCommunityCoauthorsDetail = false;
+            }
         },
         'entity.workplan_monitoringInformTransInclusion'(_new) {
-            if (!_new) this.entity.workplan_monitoringRequireTransInclusionActions = false;
+            if (!_new) {
+                this.entity.workplan_monitoringRequireHasTransInclusionStrategy = false;
+                this.entity.workplan_monitoringRequireTransInclusionActions = false;
+            }
         },
         'entity.workplan_monitoringInformAccessibilityPlan'(_new) {
-            if (!_new) this.entity.workplan_monitoringRequireExpectedAccessibilityMeasures = false;
+            if (!_new) {
+                this.entity.workplan_monitoringRequireHasAccessibilityPlan = false;
+                this.entity.workplan_monitoringRequireExpectedAccessibilityMeasures = false;
+            }
         },
         'entity.workplan_monitoringInformEnvironmentalPractices'(_new) {
-            if (!_new) this.entity.workplan_monitoringRequireEnvironmentalPracticesDescription = false;
+            if (!_new) {
+                this.entity.workplan_monitoringRequireHasEnvironmentalPractices = false;
+                this.entity.workplan_monitoringRequireEnvironmentalPracticesDescription = false;
+            }
+        },
+        'entity.workplan_monitoringInformPressStrategy'(_new) {
+            if (!_new) this.entity.workplan_monitoringRequireHasPressStrategy = false;
         },
         'entity.workplan_monitoringInformInnovation'(_new) {
-            if (!_new) this.entity.workplan_monitoringRequireInnovationTypes = false;
+            if (!_new) {
+                this.entity.workplan_monitoringRequireHasInnovationAction = false;
+                this.entity.workplan_monitoringRequireInnovationTypes = false;
+            }
         },
         'entity.workplan_monitoringInformDocumentationTypes'(_new) {
             if (!_new) this.entity.workplan_monitoringRequireDocumentationTypes = false;
@@ -333,15 +351,21 @@ app.component('opportunity-enable-workplan', {
             this.entity.workplan_monitoringInformRevenueType = false;
             this.entity.workplan_monitoringRequireRevenueType = false;
             this.entity.workplan_monitoringInformCommunityCoauthors = false;
+            this.entity.workplan_monitoringRequireHasCommunityCoauthors = false;
             this.entity.workplan_monitoringRequireCommunityCoauthorsDetail = false;
             this.entity.workplan_monitoringInformTransInclusion = false;
+            this.entity.workplan_monitoringRequireHasTransInclusionStrategy = false;
             this.entity.workplan_monitoringRequireTransInclusionActions = false;
             this.entity.workplan_monitoringInformAccessibilityPlan = false;
+            this.entity.workplan_monitoringRequireHasAccessibilityPlan = false;
             this.entity.workplan_monitoringRequireExpectedAccessibilityMeasures = false;
             this.entity.workplan_monitoringInformEnvironmentalPractices = false;
+            this.entity.workplan_monitoringRequireHasEnvironmentalPractices = false;
             this.entity.workplan_monitoringRequireEnvironmentalPracticesDescription = false;
             this.entity.workplan_monitoringInformPressStrategy = false;
+            this.entity.workplan_monitoringRequireHasPressStrategy = false;
             this.entity.workplan_monitoringInformInnovation = false;
+            this.entity.workplan_monitoringRequireHasInnovationAction = false;
             this.entity.workplan_monitoringRequireInnovationTypes = false;
             this.entity.workplan_monitoringInformDocumentationTypes = false;
             this.entity.workplan_monitoringRequireDocumentationTypes = false;
