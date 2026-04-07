@@ -5,6 +5,10 @@ Todas as mudanças notáveis no projeto serão documentadas neste arquivo.
 O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/)
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+##[7.7.22] - 2026-04-07
+### Correções
+- Faz correçao na criaçao e utilizaçao de modelos que ocasionava erros na criaçao dos steps do formulario de inscriçao
+
 ##[7.7.21] - 2026-04-02
 ### Correções
 - Corrige um erro que impedia a exibição do formulário de avaliação contínua do recurso
