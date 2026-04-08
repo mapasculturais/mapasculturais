@@ -7,6 +7,7 @@ use MapasCulturais\i;
 
 $this->import('
     mc-popover
+    mc-alert
 ');
 ?>
 <div class="opportunity-form-import" :class="classes">
@@ -41,5 +42,12 @@ $this->import('
             </template>
         </mc-popover>
     </div>
-
+    <br>
+    <mc-alert type="warning">
+        <p><?php i::_e("Atenção! Antes de importar o formulário:") ?></p>
+        <ul>
+            <li><?php i::_e("Certifique-se de que a oportunidade de origem está totalmente configurada antes de gerar e importar o arquivo.") ?></li>
+            <li><?php i::_e("Utilize apenas um arquivo TXT com todas as informações necessárias, pois a importação de múltiplos arquivos pode sobrescrever os campos do formulário.") ?></li>
+        </ul>
+    </mc-alert>
 </div>
