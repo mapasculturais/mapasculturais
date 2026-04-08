@@ -42,6 +42,46 @@ class Module extends \MapasCulturais\Module{
                     $workplan = $app->repo(Workplan::class)->findOneBy(['registration' => $registration->id]);
 
                     $errors = [];
+                    $appendUniqueError = function (string $bucket, string $message) use (&$errors): void {
+                        if (!isset($errors[$bucket])) {
+                            $errors[$bucket] = [];
+                        }
+
+                        if (!in_array($message, $errors[$bucket], true)) {
+                            $errors[$bucket][] = $message;
+                        }
+                    };
+
+                    $appendStructuredError = function (string $entity, int $id, string $field, array $messages) use (&$errors): void {
+                        if (!isset($errors['workplanProxy'])) {
+                            $errors['workplanProxy'] = [
+                                'goals' => [],
+                                'deliveries' => [],
+                            ];
+                        }
+
+                        foreach ($messages as $message) {
+                            if (!isset($errors['workplanProxy'][$entity][$id][$field])) {
+                                $errors['workplanProxy'][$entity][$id][$field] = [];
+                            }
+
+                            if (!in_array($message, $errors['workplanProxy'][$entity][$id][$field], true)) {
+                                $errors['workplanProxy'][$entity][$id][$field][] = $message;
+                            }
+                        }
+                    };
+
+                    $appendEntityValidationSummary = function (string $bucket, string $entity, int $id, string $field, string $name, array $messages) use ($appendStructuredError, $appendUniqueError): void {
+                        if (!$messages) {
+                            return;
+                        }
+
+                        $label = self::getFieldLabel($field);
+                        $message = i::__("Campo '{$label}' obrigatório na {$entity} '{$name}'");
+
+                        $appendUniqueError($bucket, $message);
+                        $appendStructuredError($bucket === 'goal' ? 'goals' : 'deliveries', $id, $field, [$message]);
+                    };
 
                     if (!$workplan) {
                         $errors['workplan'] = [i::__('Plano de metas obrigatório.')];
@@ -230,9 +270,9 @@ class Module extends \MapasCulturais\Module{
                                         $errors['delivery'][] = i::__("Campo 'Previsão de ação de experimentação/inovação' obrigatório na entrega '{$delivery->name}'");
                                     }
 
-                                    $addMonitoringDeliveryError = function (string $field, string $message) use (&$errors, $delivery) {
-                                        $errors['delivery'][] = $message;
-                                        $errors['workplanProxy']['deliveries'][$delivery->id][$field][] = $message;
+                                    $addMonitoringDeliveryError = function (string $field, string $message) use ($appendStructuredError, $appendUniqueError, $delivery) {
+                                        $appendUniqueError('delivery', $message);
+                                        $appendStructuredError('deliveries', $delivery->id, $field, [$message]);
                                     };
 
                                     $monitoring_simple_fields = [
@@ -332,6 +372,20 @@ class Module extends \MapasCulturais\Module{
                                         }
                                     }
 
+                                }
+
+                                foreach ($goal->validationErrors as $field => $messages) {
+                                    $goal_name = $goal->title ?: i::__('Meta sem título');
+                                    $appendEntityValidationSummary('goal', 'meta', $goal->id, $field, $goal_name, $messages);
+                                }
+                            }
+                        }
+
+                        foreach ($workplan->goals as $goal) {
+                            foreach ($goal->deliveries as $delivery) {
+                                foreach ($delivery->validationErrors as $field => $messages) {
+                                    $delivery_name = $delivery->name ?: i::__('Entrega sem nome');
+                                    $appendEntityValidationSummary('delivery', 'entrega', $delivery->id, $field, $delivery_name, $messages);
                                 }
                             }
                         }
@@ -1940,6 +1994,8 @@ class Module extends \MapasCulturais\Module{
             'hasInnovationAction' => 'Experimentação/inovação',
             'segmentDelivery' => 'Segmento artístico-cultural',
             'expectedNumberPeople' => 'Número previsto de pessoas',
+            'executionDetail' => 'Detalhamento da execução da meta',
+            'status' => 'Status',
             // Monitoramento
             'executedNumberOfCities' => 'Municípios executados',
             'executedNumberOfNeighborhoods' => 'Bairros executados',

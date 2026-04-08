@@ -8,6 +8,7 @@ use MapasCulturais\Entities;
 use MapasCulturais\i;
 use OpportunityWorkplan\Entities\Delivery;
 use OpportunityWorkplan\Entities\Goal;
+use OpportunityWorkplan\Module as OpportunityWorkplanModule;
 
 class Module extends \MapasCulturais\Module {
 
@@ -169,11 +170,36 @@ class Module extends \MapasCulturais\Module {
                 'deliveries' => [],
             ];
             $has_errors = false;
+            $appendError = function (string $field, string $message) use (&$errors) {
+                if (!isset($errors[$field])) {
+                    $errors[$field] = [];
+                }
+
+                if (!in_array($message, $errors[$field], true)) {
+                    $errors[$field][] = $message;
+                }
+            };
 
             foreach ($goals as $goal) {
                 if ($goal_errors = $goal->validationErrors) {
                     $workplan_errors['goals'][$goal->id] = $goal_errors;
                     $has_errors = true;
+
+                    foreach ($goal_errors as $field => $messages) {
+                        $label = OpportunityWorkplanModule::getFieldLabel($field);
+                        foreach ((array) $messages as $message) {
+                            if (!is_string($message) || $message === '') {
+                                continue;
+                            }
+
+                            $appendError('goal', sprintf(
+                                i::__('Meta "%s": %s. %s'),
+                                $goal->title,
+                                $label,
+                                $message
+                            ));
+                        }
+                    }
                 }
             }
 
@@ -181,6 +207,22 @@ class Module extends \MapasCulturais\Module {
                 if ($delivery_errors = $delivery->validationErrors) {
                     $workplan_errors['deliveries'][$delivery->id] = $delivery_errors;
                     $has_errors = true;
+
+                    foreach ($delivery_errors as $field => $messages) {
+                        $label = OpportunityWorkplanModule::getFieldLabel($field);
+                        foreach ((array) $messages as $message) {
+                            if (!is_string($message) || $message === '') {
+                                continue;
+                            }
+
+                            $appendError('delivery', sprintf(
+                                i::__('Entrega "%s": %s. %s'),
+                                $delivery->name,
+                                $label,
+                                $message
+                            ));
+                        }
+                    }
                 }
             }
 
