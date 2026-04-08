@@ -4,6 +4,7 @@ namespace SiteSettings;
 
 use DateTime;
 use Exception;
+use Throwable;
 use MapasCulturais\i;
 use MapasCulturais\App;
 use SiteSettings\Entities\Settings;
@@ -76,6 +77,7 @@ class Module extends \MapasCulturais\Module
                 $settings = $self->getSettings();
 
                 if ($settings) {
+                    $self->setSiteNameSettings($settings, $app);
                     $self->setEmailSettings($settings, $app);
                     $self->setRecaptchaSettings($settings, $app);
                     $self->setGeoSettings($settings, $app);
@@ -106,6 +108,11 @@ class Module extends \MapasCulturais\Module
                 ]
             ];
         });
+
+        // Título da aba do navegador: a ação "steps" não tem entrada em routes.readableNames
+        $app->hook('view.title(settings.steps)', function (&$title) use ($app) {
+            $title = i::__('Configurações do site') . ' — ' . i::__('Editor') . ' - ' . $app->siteName;
+        });
     }
 
     /**
@@ -130,6 +137,22 @@ class Module extends \MapasCulturais\Module
         include __DIR__ . "/registereds/metadata.php";
         foreach ($metadata as $key => $cfg) {
             $this->registerMetadata('SiteSettings\\Entities\\Settings', $key, $cfg);
+        }
+    }
+
+    /**
+     * @param null|Settings $settings
+     * @param App $app
+     * @return void
+     */
+    public function setSiteNameSettings(?Settings $settings, App $app): void
+    {
+        if (!$settings) {
+            return;
+        }
+        $name = is_string($settings->siteName ?? null) ? trim($settings->siteName) : '';
+        if ($name !== '') {
+            $app->config['app.siteName'] = $name;
         }
     }
 
@@ -633,19 +656,70 @@ class Module extends \MapasCulturais\Module
 
 
     /**
+     * Resolve o registro de {@see Settings} do contexto atual (subsite da requisição).
+     *
+     * - Site principal (`subsite` nulo): usa `subsite_id` nulo; se não existir, cai no registro `id = 1`.
+     * - Subsite com `id = 1`: não cria linha nova; reutiliza o registro global `id = 1` se não houver linha com `subsite_id = 1`.
+     * - Outros subsites: se não houver linha para aquele `subsite_id`, cria registro com metadados padrão (mesmo conjunto do seed).
+     *
      * @return Settings|null
      */
     public function getSettings(): ?Settings
     {
         $app = App::i();
+        $repo = $app->repo(Settings::class);
 
         $subsiteId = $app->subsite ? $app->subsite->id : null;
 
-        if (!$settings = $app->repo('SiteSettings\\Entities\\Settings')->findOneBy(['subsiteId' => $subsiteId])) {
-            $settings = $app->repo('SiteSettings\\Entities\\Settings')->findOneBy(['id' => 1]);
+        if ($settings = $repo->findOneBy(['subsiteId' => $subsiteId])) {
+            return $settings;
         }
 
-        return $settings;
+        if ($subsiteId !== null && (int) $subsiteId !== 1) {
+            if ($settings = $this->createDefaultSettingsForSubsite($app, (int) $subsiteId)) {
+                return $settings;
+            }
+        }
+
+        return $repo->findOneBy(['id' => 1]);
+    }
+
+    /**
+     * Cria `setting` + `setting_meta` padrão para um subsite que ainda não possui configuração.
+     *
+     * Chamado tipicamente com controle de acesso desligado (ex.: hook `app.register:after` no módulo).
+     */
+    private function createDefaultSettingsForSubsite(App $app, int $subsiteId): ?Settings
+    {
+        $repo = $app->repo(Settings::class);
+        if ($existing = $repo->findOneBy(['subsiteId' => $subsiteId])) {
+            return $existing;
+        }
+
+        $defaultsPath = __DIR__ . '/registereds/default-metadata-values.php';
+        if (!is_readable($defaultsPath)) {
+            $app->log->error('SiteSettings: default-metadata-values.php não encontrado ou ilegível.');
+            return null;
+        }
+
+        /** @var array<string, string> $defaults */
+        $defaults = include $defaultsPath;
+
+        try {
+            $settings = new Settings();
+            $settings->subsiteId = $subsiteId;
+            $settings->status = Settings::STATUS_ACTIVE;
+
+            foreach ($defaults as $key => $value) {
+                $settings->setMetadata($key, $value);
+            }
+
+            $settings->save(true);
+            return $settings;
+        } catch (Throwable $e) {
+            $app->log->error('SiteSettings: falha ao criar Settings para subsite ' . $subsiteId . ': ' . $e->getMessage());
+            return $repo->findOneBy(['subsiteId' => $subsiteId]);
+        }
     }
 
     /**

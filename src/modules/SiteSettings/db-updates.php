@@ -40,6 +40,7 @@ return [
         }
     },
 
+    // Metadados padrão: espelhar registereds/default-metadata-values.php (usado na criação em runtime).
     'site settings: insert default values' => function () {
         __exec("INSERT INTO setting (id, status, metadata, create_timestamp, update_timestamp, subsite_id) VALUES (nextval('oc_setting_id_seq'::regclass), 1, '{}', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, null)");
 

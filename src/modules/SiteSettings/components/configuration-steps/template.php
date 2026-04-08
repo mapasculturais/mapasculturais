@@ -33,6 +33,10 @@ $this->import('
                 <?php $this->part('settings-email') ?>
             </template>
 
+            <template #siteName="{tab}">
+                <?php $this->part('settings-site-name') ?>
+            </template>
+
             <template #recaptcha="{tab}">
                 <?php $this->part('settings-recaptcha') ?>
             </template>

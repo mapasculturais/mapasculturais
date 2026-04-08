@@ -19,6 +19,7 @@ app.component('configuration-steps', {
         let tabGroups = {
             'settings': [
                 { label: 'Email', isActive: true, submenu: [], ref: "email", useActions: true },
+                { label: 'Nome do site', isActive: false, submenu: [], ref: "siteName", useActions: true },
                 { label: 'reCaptcha', isActive: false, submenu: [], ref: "recaptcha", useActions: true },
                 { label: 'Georreferenciamento', isActive: false, submenu: [], ref: "georeferencing", useActions: true },
                 { label: 'Redes sociais', isActive: false, submenu: [], ref: "socialmedia", useActions: true },
