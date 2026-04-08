@@ -15,10 +15,18 @@ $this->import('
 
 <div class="registration-field-view">
     <mc-tabs sync-hash>
-        <mc-tab v-for="(step, index) in stepTabs" :label="`${index + 1}. ${step.label}`" :slug="`ficha-${step.slug}`">
+        <mc-tab v-for="(step, index) in stepTabs" :key="`step-${step.slug}-${index}`" :label="`${index + 1}. ${step.label}`" :slug="`ficha-${step.slug}`">
             <div class="registration-field-view__step">
                 <ul class="attachment-list registration-field-view__list">
-                    <li v-for="field in step.fields" class="attachment-list-item registration-view-mode registration-field-view__item">
+                    <li
+                        v-for="field in step.fields"
+                        :key="fieldDomId(field) || getFieldVisibilityKey(field) || field.title || ''"
+                        :id="fieldDomId(field)"
+                        :data-field-id="getFieldId(field)"
+                        :data-field-type="getFieldType(field)"
+                        :class="fieldClasses(field)"
+                        @click="handleFieldClick(field)"
+                    >
                 <template v-if="field.fieldType === 'section'">
                     <h4 class="registration-field-view__section-title">{{ field.title }}</h4>
                 </template>

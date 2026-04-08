@@ -17,7 +17,36 @@ app.component('registration-field-view', {
         return { text };
     },
 
+    data() {
+        return {
+            selectedFieldId: null,
+            documentaryStatusByFieldId: {},
+        };
+    },
+
+    mounted() {
+        window.addEventListener('message', this.handleDocumentaryMessage);
+        this.hydrateDocumentaryStatuses();
+    },
+
+    beforeUnmount() {
+        window.removeEventListener('message', this.handleDocumentaryMessage);
+    },
+
     computed: {
+        isDocumentaryEvaluation() {
+            return this.registration?.opportunity?.evaluationMethod?.slug === 'documentary' ||
+                !!$MAPAS?.config?.documentaryEvaluationForm;
+        },
+
+        isEvaluationContext() {
+            return !!this.registration?.currentUserPermissions?.evaluate || !!$MAPAS?.viewUserEvaluation;
+        },
+
+        isOpportunityControl() {
+            return !!this.registration?.opportunity?.currentUserPermissions?.['@control'];
+        },
+
         phase() {
             const targetId = Number(this.phaseId);
 
@@ -84,14 +113,19 @@ app.component('registration-field-view', {
                 formConfig.files ||
                 phase.opportunity?.registrationFileConfigurations ||
                 [];
-            const files = fileConfigs.map((file) => ({
+            const normalizedFieldConfigs = (fieldConfigs || []).filter((field) => !!field);
+            const normalizedFileConfigs = (fileConfigs || []).filter((file) => !!file);
+
+            const files = normalizedFileConfigs.map((file) => ({
                 ...file,
                 fieldType: 'file',
                 file: this.getFileForGroup(phase, file.groupName),
                 step: file.step || null,
             }));
 
-            const allFields = [...fieldConfigs, ...files].sort((a, b) => (a.displayOrder || 0) - (b.displayOrder || 0));
+            const allFields = [...normalizedFieldConfigs, ...files]
+                .filter((field) => !!field)
+                .sort((a, b) => (a.displayOrder || 0) - (b.displayOrder || 0));
             return allFields.filter((field) => this.showField(field));
         },
 
@@ -128,6 +162,175 @@ app.component('registration-field-view', {
     },
 
     methods: {
+        isTruthyEvaluationField(value) {
+            return value === true || value === 'true' || value === 1 || value === '1';
+        },
+
+        getEvaluationVisibilityMaps(registrationPhase) {
+            const currentOpportunityMap = this.registration?.opportunity?.avaliableEvaluationFields;
+            const phaseMap = registrationPhase?.opportunity?.avaliableEvaluationFields;
+            const globalMap = $MAPAS?.avaliableEvaluationFields;
+            const normalizedCurrent = (currentOpportunityMap && typeof currentOpportunityMap === 'object') ? currentOpportunityMap : {};
+            const normalizedGlobal = (globalMap && typeof globalMap === 'object') ? globalMap : {};
+            const normalizedPhase = (phaseMap && typeof phaseMap === 'object') ? phaseMap : {};
+
+            return {
+                phase: normalizedPhase,
+                current: normalizedCurrent,
+                global: normalizedGlobal,
+            };
+        },
+
+        hasOwnKey(map, key) {
+            return Object.prototype.hasOwnProperty.call(map || {}, key);
+        },
+
+        resolveVisibilityByKeys(keys, registrationPhase) {
+            const maps = this.getEvaluationVisibilityMaps(registrationPhase);
+            const orderedMaps = [maps.phase, maps.current, maps.global];
+
+            for (const map of orderedMaps) {
+                const existingKeys = keys.filter((key) => this.hasOwnKey(map, key));
+                if (!existingKeys.length) {
+                    continue;
+                }
+
+                return existingKeys.some((key) => this.isTruthyEvaluationField(map[key]));
+            }
+
+            return false;
+        },
+
+        hydrateDocumentaryStatuses() {
+            if (!this.isDocumentaryEvaluation) {
+                return;
+            }
+
+            const persisted =
+                $MAPAS?.config?.documentaryEvaluationForm?.evaluationData?.evaluationData || {};
+
+            const statusByFieldId = {};
+            this.fields.forEach((field) => {
+                const fieldId = this.getFieldId(field);
+                if (fieldId == null) {
+                    return;
+                }
+
+                const saved = persisted[String(fieldId)] || persisted[fieldId];
+                const status = saved?.evaluation;
+                if (status === 'valid' || status === 'invalid' || status === 'empty') {
+                    statusByFieldId[String(fieldId)] = status;
+                }
+            });
+
+            this.documentaryStatusByFieldId = statusByFieldId;
+        },
+
+        getFieldId(field) {
+            return field?.id ?? field?._id ?? null;
+        },
+
+        getFieldType(field) {
+            if (field?.fieldType) {
+                return field.fieldType;
+            }
+            if (field?.groupName) {
+                return 'file';
+            }
+            return 'field';
+        },
+
+        getFieldVisibilityKey(field) {
+            if (this.getFieldType(field) === 'file') {
+                return field?.groupName || field?.ref || null;
+            }
+
+            return field?.fieldName || field?.ref || null;
+        },
+
+        getFieldVisibilityKeys(field) {
+            const keys = [];
+            const id = this.getFieldId(field);
+
+            if (field?.fieldName) {
+                keys.push(field.fieldName);
+            }
+            if (field?.groupName) {
+                keys.push(field.groupName);
+            }
+            if (field?.ref) {
+                keys.push(field.ref);
+            }
+            if (id != null) {
+                keys.push(`field_${id}`);
+            }
+
+            return keys
+                .filter(Boolean)
+                .filter((key, index, arr) => arr.indexOf(key) === index);
+        },
+
+        fieldDomId(field) {
+            const fieldId = this.getFieldId(field);
+            return fieldId != null ? `field_${fieldId}` : null;
+        },
+
+        fieldClasses(field) {
+            const fieldId = String(this.getFieldId(field) ?? '');
+            
+            return [
+                'attachment-list-item',
+                'registration-view-mode',
+                'registration-field-view__item',
+                this.isDocumentaryEvaluation && this.getFieldType(field) !== 'section' ? 'js-field' : null,
+                this.isDocumentaryEvaluation && this.getFieldType(field) !== 'section' ? 'registration-field-view__item--clickable' : null,
+                this.selectedFieldId === fieldId ? 'field-shadow' : null,
+                this.documentaryStatusByFieldId[fieldId] ? `evaluation-${this.documentaryStatusByFieldId[fieldId]}` : null,
+            ];
+        },
+
+        handleFieldClick(field) {
+            const fieldIdRaw = this.getFieldId(field);
+            if (!this.isDocumentaryEvaluation || this.getFieldType(field) === 'section' || fieldIdRaw == null) {
+                return;
+            }
+
+            const fieldId = String(fieldIdRaw);
+            const wasSelected = this.selectedFieldId === fieldId;
+            this.selectedFieldId = wasSelected ? null : fieldId;
+
+            window.dispatchEvent(new CustomEvent('documentaryData', {
+                detail: {
+                    type: wasSelected ? 'evaluationForm.closeForm' : 'evaluationForm.openForm',
+                    fieldName: this.fieldDomId(field),
+                    fieldId: fieldId,
+                    fieldType: this.getFieldType(field),
+                    fieldLabel: String(field?.title || '').trim(),
+                },
+            }));
+        },
+
+        handleDocumentaryMessage(event) {
+            if (!this.isDocumentaryEvaluation) {
+                return;
+            }
+
+            switch (event?.data?.type) {
+                case 'evaluationRegistration.setClass': {
+                    const status = String(event.data.className || '').replace('evaluation-', '');
+                    const fieldId = String(event.data.fieldId || this.selectedFieldId || '');
+                    if (!fieldId || !status) {
+                        return;
+                    }
+                    this.documentaryStatusByFieldId[fieldId] = status;
+                    break;
+                }
+                case 'evaluationRegistration.clearStyles':
+                    this.selectedFieldId = null;
+                    break;
+            }
+        },
+
         getFileForGroup(phase, groupName) {
             const phaseFile = phase?.files?.[groupName];
             if (phaseFile) {
@@ -178,7 +381,14 @@ app.component('registration-field-view', {
         },
 
         showField(field) {
+            if (!field) {
+                return false;
+            }
+
             const reg = this.phase;
+            if (!reg) {
+                return false;
+            }
             if (field.categories?.length && !field.categories.includes(reg.category)) {
                 return false;
             }
@@ -200,6 +410,16 @@ app.component('registration-field-view', {
                     return currentValue === true || currentValue === 'true';
                 }
                 return currentValue == fieldValue;
+            }
+
+            if (this.isEvaluationContext && !this.isOpportunityControl) {
+                const fieldKeys = this.getFieldVisibilityKeys(field);
+                if (fieldKeys.length) {
+                    const isVisible = this.resolveVisibilityByKeys(fieldKeys, reg);
+                    if (!isVisible) {
+                        return false;
+                    }
+                }
             }
 
             return true;

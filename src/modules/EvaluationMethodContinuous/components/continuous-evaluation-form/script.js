@@ -53,6 +53,10 @@ app.component('continuous-evaluation-form', {
     },
 
     computed: {
+        currentEvaluationRaw() {
+            return $MAPAS?.config?.continuousEvaluationForm?.currentEvaluation || null;
+        },
+
         statusList() {
             return $MAPAS.config.continuousEvaluationForm.statusList;
         },
@@ -63,14 +67,17 @@ app.component('continuous-evaluation-form', {
 
         evaluationData() {
             return {
-                data: $MAPAS.config.continuousEvaluationForm.currentEvaluation?.evaluationData
+                data: this.currentEvaluationRaw?.evaluationData
             };
         },
 
         currentEvaluation() {
+            if (!this.currentEvaluationRaw?.id) {
+                return null;
+            }
             const api = new API('registrationevaluation');
-            const evaluation = api.getEntityInstance($MAPAS.config.continuousEvaluationForm.currentEvaluation.id);
-            evaluation.populate($MAPAS.config.continuousEvaluationForm.currentEvaluation);
+            const evaluation = api.getEntityInstance(this.currentEvaluationRaw.id);
+            evaluation.populate(this.currentEvaluationRaw);
             return evaluation;
         },
 
@@ -123,7 +130,9 @@ app.component('continuous-evaluation-form', {
         },
 
         removeEvaluationAttachment(file) {
-            this.currentEvaluation.files.evaluationAttachment = undefined;
+            if (this.currentEvaluation?.files) {
+                this.currentEvaluation.files.evaluationAttachment = undefined;
+            }
         },
 
         statusToString(status) {
