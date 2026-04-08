@@ -1,6 +1,8 @@
 <?php
 namespace Tests;
 
+require_once __DIR__ . '/bootstrap.php';
+
 use OpportunityWorkplan\Entities\Delivery;
 use OpportunityWorkplan\Entities\Goal;
 use OpportunityWorkplan\Entities\Workplan;
@@ -96,6 +98,42 @@ class OpportunityWorkplanMonitoringValidationTest extends \MapasCulturais_TestCa
         $requiredDeliveryErrors = $requiredErrors['workplanProxy']['deliveries'][$requiredDelivery->id] ?? [];
 
         $this->assertArrayHasKey('executedHasCommunityCoauthors', $requiredDeliveryErrors);
+    }
+
+    public function testMonitoringValidationAddsStructuredErrorsForExclusiveExecutedFields()
+    {
+        $app = $this->app;
+        $user = $this->userDirector->createUser();
+        $this->login($user);
+
+        $opportunity = $this->createOpportunityWithWorkplan([
+            'workplan_monitoringInformExecutedDeliveryPeriod' => true,
+            'workplan_monitoringRequireExecutedDeliveryPeriod' => true,
+            'workplan_monitoringInformExecutedTotalBudget' => true,
+            'workplan_monitoringRequireExecutedTotalBudget' => true,
+            'workplan_monitoringInformExecutedCommunicationStrategies' => true,
+            'workplan_monitoringRequireExecutedCommunicationStrategies' => true,
+        ]);
+
+        $registration = $this->createRegistrationWithWorkplan($opportunity, $user, [
+            'delivery' => [
+                'executedMonthInitial' => null,
+                'executedMonthEnd' => null,
+                'executedTotalBudget' => null,
+                'executedCommunicationStrategies' => null,
+            ]
+        ]);
+
+        $workplan = $app->repo(Workplan::class)->findOneBy(['registration' => $registration->id]);
+        $delivery = $workplan->goals[0]->deliveries[0];
+
+        $errors = $this->collectSendValidationErrors($registration);
+        $deliveryErrors = $errors['workplanProxy']['deliveries'][$delivery->id] ?? [];
+
+        $this->assertArrayHasKey('executedMonthInitial', $deliveryErrors);
+        $this->assertArrayHasKey('executedMonthEnd', $deliveryErrors);
+        $this->assertArrayHasKey('executedTotalBudget', $deliveryErrors);
+        $this->assertArrayHasKey('executedCommunicationStrategies', $deliveryErrors);
     }
 
     private function createOpportunityWithWorkplan(array $metadata = [])

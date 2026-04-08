@@ -144,6 +144,12 @@ app.component('opportunity-enable-workplan', {
         'entity.workplan_monitoringReportExecutedRevenue'(_new) {
             if (!_new) this.entity.workplan_monitoringRequireExecutedRevenue = false;
         },
+        'entity.workplan_monitoringInformExecutedDeliveryPeriod'(_new) {
+            if (!_new) this.entity.workplan_monitoringRequireExecutedDeliveryPeriod = false;
+        },
+        'entity.workplan_monitoringInformExecutedTotalBudget'(_new) {
+            if (!_new) this.entity.workplan_monitoringRequireExecutedTotalBudget = false;
+        },
         // Monitoramento - Novos campos
         'entity.workplan_monitoringInformNumberOfCities'(_new) {
             if (!_new) this.entity.workplan_monitoringRequireNumberOfCities = false;
@@ -204,6 +210,9 @@ app.component('opportunity-enable-workplan', {
         },
         'entity.workplan_monitoringInformPressStrategy'(_new) {
             if (!_new) this.entity.workplan_monitoringRequireHasPressStrategy = false;
+        },
+        'entity.workplan_monitoringInformExecutedCommunicationStrategies'(_new) {
+            if (!_new) this.entity.workplan_monitoringRequireExecutedCommunicationStrategies = false;
         },
         'entity.workplan_monitoringInformInnovation'(_new) {
             if (!_new) {
@@ -328,6 +337,10 @@ app.component('opportunity-enable-workplan', {
             this.entity.workplan_monitoringRequirePriorityAudience = false;
             this.entity.workplan_monitoringReportExecutedRevenue = false;
             this.entity.workplan_monitoringRequireExecutedRevenue = false;
+            this.entity.workplan_monitoringInformExecutedDeliveryPeriod = false;
+            this.entity.workplan_monitoringRequireExecutedDeliveryPeriod = false;
+            this.entity.workplan_monitoringInformExecutedTotalBudget = false;
+            this.entity.workplan_monitoringRequireExecutedTotalBudget = false;
 
             // Monitoramento - Novos campos
             this.entity.workplan_monitoringInformNumberOfCities = false;
@@ -364,6 +377,8 @@ app.component('opportunity-enable-workplan', {
             this.entity.workplan_monitoringRequireEnvironmentalPracticesDescription = false;
             this.entity.workplan_monitoringInformPressStrategy = false;
             this.entity.workplan_monitoringRequireHasPressStrategy = false;
+            this.entity.workplan_monitoringInformExecutedCommunicationStrategies = false;
+            this.entity.workplan_monitoringRequireExecutedCommunicationStrategies = false;
             this.entity.workplan_monitoringInformInnovation = false;
             this.entity.workplan_monitoringRequireHasInnovationAction = false;
             this.entity.workplan_monitoringRequireInnovationTypes = false;

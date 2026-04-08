@@ -481,6 +481,24 @@ $this->import('
 
                         <div class="field__group">
                             <label class="field__checkbox">
+                                <input type="checkbox" v-model="entity.workplan_monitoringInformExecutedDeliveryPeriod" @click="autoSave()" /><?= i::__("Informar período executado de realização") ?> {{ `da ${pluralParaSingular(getDeliveryLabelDefault)}` }}
+                            </label>
+                            <label v-if="entity.workplan_monitoringInformExecutedDeliveryPeriod" class="field__checkbox field__checkbox--sub">
+                                <input type="checkbox" v-model="entity.workplan_monitoringRequireExecutedDeliveryPeriod" @click="autoSave()" /><?= i::__("Obrigatório") ?>
+                            </label>
+                        </div>
+
+                        <div class="field__group">
+                            <label class="field__checkbox">
+                                <input type="checkbox" v-model="entity.workplan_monitoringInformExecutedTotalBudget" @click="autoSave()" /><?= i::__("Informar orçamento total executado") ?> {{ `da ${pluralParaSingular(getDeliveryLabelDefault)}` }}
+                            </label>
+                            <label v-if="entity.workplan_monitoringInformExecutedTotalBudget" class="field__checkbox field__checkbox--sub">
+                                <input type="checkbox" v-model="entity.workplan_monitoringRequireExecutedTotalBudget" @click="autoSave()" /><?= i::__("Obrigatório") ?>
+                            </label>
+                        </div>
+
+                        <div class="field__group">
+                            <label class="field__checkbox">
                                 <input type="checkbox" v-model="entity.workplan_monitoringInformRevenueType" @click="autoSave()" /><?= i::__("Informar tipo de receita executada") ?> {{ `da ${pluralParaSingular(getDeliveryLabelDefault)}` }}
                             </label>
                             <label v-if="entity.workplan_monitoringInformRevenueType" class="field__checkbox field__checkbox--sub">
@@ -629,6 +647,15 @@ $this->import('
                             </label>
                             <label v-if="entity.workplan_monitoringInformPressStrategy" class="field__checkbox field__checkbox--sub">
                                 <input type="checkbox" v-model="entity.workplan_monitoringRequireHasPressStrategy" @click="autoSave()" /><?= i::__("Obrigatório") ?>
+                            </label>
+                        </div>
+
+                        <div class="field__group">
+                            <label class="field__checkbox">
+                                <input type="checkbox" v-model="entity.workplan_monitoringInformExecutedCommunicationStrategies" @click="autoSave()" /><?= i::__("Informar estratégias de comunicação executadas") ?> {{ `da ${pluralParaSingular(getDeliveryLabelDefault)}` }}
+                            </label>
+                            <label v-if="entity.workplan_monitoringInformExecutedCommunicationStrategies" class="field__checkbox field__checkbox--sub">
+                                <input type="checkbox" v-model="entity.workplan_monitoringRequireExecutedCommunicationStrategies" @click="autoSave()" /><?= i::__("Obrigatório") ?>
                             </label>
                         </div>
 

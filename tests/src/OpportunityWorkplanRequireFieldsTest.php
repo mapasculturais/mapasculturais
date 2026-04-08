@@ -1,6 +1,8 @@
 <?php
 namespace Tests;
 
+require_once __DIR__ . '/bootstrap.php';
+
 use MapasCulturais\App;
 use OpportunityWorkplan\Entities\Workplan;
 use OpportunityWorkplan\Entities\Goal;
@@ -339,6 +341,77 @@ class OpportunityWorkplanRequireFieldsTest extends \MapasCulturais_TestCase
         $delivery = $workplan->goals[0]->deliveries[0];
 
         $this->assertTrue($delivery->isMetadataRequired('numberOfParticipants'));
+    }
+
+    public function testMonitoringExecutedDeliveryPeriodFieldsRequiredWhenConfigured()
+    {
+        $app = $this->app;
+        $user = $this->userDirector->createUser();
+        $this->login($user);
+
+        $opportunity = $this->createOpportunityWithWorkplan([
+            'workplan_monitoringInformExecutedDeliveryPeriod' => true,
+            'workplan_monitoringRequireExecutedDeliveryPeriod' => true,
+        ]);
+
+        $registration = $this->createRegistrationWithWorkplan($opportunity, $user, [
+            'delivery' => [
+                'executedMonthInitial' => null,
+                'executedMonthEnd' => null,
+            ]
+        ]);
+
+        $workplan = $app->repo(Workplan::class)->findOneBy(['registration' => $registration->id]);
+        $delivery = $workplan->goals[0]->deliveries[0];
+
+        $this->assertTrue($delivery->isMetadataRequired('executedMonthInitial'));
+        $this->assertTrue($delivery->isMetadataRequired('executedMonthEnd'));
+    }
+
+    public function testMonitoringExecutedTotalBudgetRequiredWhenConfigured()
+    {
+        $app = $this->app;
+        $user = $this->userDirector->createUser();
+        $this->login($user);
+
+        $opportunity = $this->createOpportunityWithWorkplan([
+            'workplan_monitoringInformExecutedTotalBudget' => true,
+            'workplan_monitoringRequireExecutedTotalBudget' => true,
+        ]);
+
+        $registration = $this->createRegistrationWithWorkplan($opportunity, $user, [
+            'delivery' => [
+                'executedTotalBudget' => null,
+            ]
+        ]);
+
+        $workplan = $app->repo(Workplan::class)->findOneBy(['registration' => $registration->id]);
+        $delivery = $workplan->goals[0]->deliveries[0];
+
+        $this->assertTrue($delivery->isMetadataRequired('executedTotalBudget'));
+    }
+
+    public function testMonitoringExecutedCommunicationStrategiesRequiredWhenConfigured()
+    {
+        $app = $this->app;
+        $user = $this->userDirector->createUser();
+        $this->login($user);
+
+        $opportunity = $this->createOpportunityWithWorkplan([
+            'workplan_monitoringInformExecutedCommunicationStrategies' => true,
+            'workplan_monitoringRequireExecutedCommunicationStrategies' => true,
+        ]);
+
+        $registration = $this->createRegistrationWithWorkplan($opportunity, $user, [
+            'delivery' => [
+                'executedCommunicationStrategies' => null,
+            ]
+        ]);
+
+        $workplan = $app->repo(Workplan::class)->findOneBy(['registration' => $registration->id]);
+        $delivery = $workplan->goals[0]->deliveries[0];
+
+        $this->assertTrue($delivery->isMetadataRequired('executedCommunicationStrategies'));
     }
 
     // =====================================

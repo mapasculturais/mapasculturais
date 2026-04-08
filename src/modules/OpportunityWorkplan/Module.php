@@ -240,6 +240,9 @@ class Module extends \MapasCulturais\Module{
                                         'participantProfile',
                                         'numberOfParticipants',
                                         'executedRevenue',
+                                        'executedMonthInitial',
+                                        'executedMonthEnd',
+                                        'executedTotalBudget',
                                         'executedNumberOfCities',
                                         'executedNumberOfNeighborhoods',
                                         'executedMediationActions',
@@ -247,6 +250,7 @@ class Module extends \MapasCulturais\Module{
                                         'executedUnitPrice',
                                         'executedArtChainLink',
                                         'executedSegmentDelivery',
+                                        'executedCommunicationStrategies',
                                         'executedCommunityCoauthorsDetail',
                                         'executedTransInclusionActions',
                                         'executedEnvironmentalPracticesDescription',
@@ -687,6 +691,18 @@ class Module extends \MapasCulturais\Module{
             'default_value' => false
         ]);
 
+        $this->registerOpportunityMetadata('workplan_monitoringInformExecutedDeliveryPeriod', [
+            'label' => i::__('Informar período executado de realização da entrega'),
+            'type' => 'boolean',
+            'default_value' => false
+        ]);
+
+        $this->registerOpportunityMetadata('workplan_monitoringInformExecutedTotalBudget', [
+            'label' => i::__('Informar orçamento total executado da entrega'),
+            'type' => 'boolean',
+            'default_value' => false
+        ]);
+
         $this->registerOpportunityMetadata('workplan_monitoringInformCommunityCoauthors', [
             'label' => i::__('Informar envolvimento executado de comunidades/coletivos como coautores/coexecutores'),
             'type' => 'boolean',
@@ -713,6 +729,12 @@ class Module extends \MapasCulturais\Module{
 
         $this->registerOpportunityMetadata('workplan_monitoringInformPressStrategy', [
             'label' => i::__('Informar estratégia executada de relacionamento com imprensa'),
+            'type' => 'boolean',
+            'default_value' => false
+        ]);
+
+        $this->registerOpportunityMetadata('workplan_monitoringInformExecutedCommunicationStrategies', [
+            'label' => i::__('Informar estratégias de comunicação executadas'),
             'type' => 'boolean',
             'default_value' => false
         ]);
@@ -899,6 +921,18 @@ class Module extends \MapasCulturais\Module{
             'default_value' => false
         ]);
 
+        $this->registerOpportunityMetadata('workplan_monitoringRequireExecutedDeliveryPeriod', [
+            'label' => i::__('Período executado da entrega é obrigatório'),
+            'type' => 'boolean',
+            'default_value' => false
+        ]);
+
+        $this->registerOpportunityMetadata('workplan_monitoringRequireExecutedTotalBudget', [
+            'label' => i::__('Orçamento total executado é obrigatório'),
+            'type' => 'boolean',
+            'default_value' => false
+        ]);
+
         // MONITORAMENTO - Novos campos executados
         $this->registerOpportunityMetadata('workplan_monitoringRequireNumberOfCities', [
             'label' => i::__('Número de municípios executados é obrigatório'),
@@ -1010,6 +1044,12 @@ class Module extends \MapasCulturais\Module{
 
         $this->registerOpportunityMetadata('workplan_monitoringRequireHasPressStrategy', [
             'label' => i::__('Estratégia executada de relacionamento com imprensa é obrigatória'),
+            'type' => 'boolean',
+            'default_value' => false
+        ]);
+
+        $this->registerOpportunityMetadata('workplan_monitoringRequireExecutedCommunicationStrategies', [
+            'label' => i::__('Estratégias de comunicação executadas são obrigatórias'),
             'type' => 'boolean',
             'default_value' => false
         ]);
@@ -1743,6 +1783,36 @@ class Module extends \MapasCulturais\Module{
         ]);
         $app->registerMetadata($communicationChannels, Delivery::class);
 
+        $executedMonthInitial = new Metadata('executedMonthInitial', [
+            'label' => \MapasCulturais\i::__('Mês inicial executado da entrega'),
+            'type' => 'integer',
+            'validations' => [
+                'v::intVal()->min(1)' => \MapasCulturais\i::__('Deve ser um número maior ou igual a um')
+            ]
+        ]);
+        $app->registerMetadata($executedMonthInitial, Delivery::class);
+
+        $executedMonthEnd = new Metadata('executedMonthEnd', [
+            'label' => \MapasCulturais\i::__('Mês final executado da entrega'),
+            'type' => 'integer',
+            'validations' => [
+                'v::intVal()->min(1)' => \MapasCulturais\i::__('Deve ser um número maior ou igual a um')
+            ]
+        ]);
+        $app->registerMetadata($executedMonthEnd, Delivery::class);
+
+        $executedTotalBudget = new Metadata('executedTotalBudget', [
+            'label' => \MapasCulturais\i::__('Qual o orçamento total executado da atividade?'),
+            'type' => 'currency'
+        ]);
+        $app->registerMetadata($executedTotalBudget, Delivery::class);
+
+        $executedCommunicationStrategies = new Metadata('executedCommunicationStrategies', [
+            'label' => \MapasCulturais\i::__('Quais estratégias de comunicação foram efetivamente executadas?'),
+            'type' => 'text'
+        ]);
+        $app->registerMetadata($executedCommunicationStrategies, Delivery::class);
+
         // Experimentação/inovação (boolean)
         $hasInnovationAction = new Metadata('hasInnovationAction', [
             'label' => \MapasCulturais\i::__('A atividade prevê ao menos uma ação de experimentação/inovação?'),
@@ -1886,7 +1956,11 @@ class Module extends \MapasCulturais\Module{
             'priorityAudience' => 'Territórios prioritários',
             'executedRevenue' => 'Receita executada',
             'executedRevenueType' => 'Tipo de receita executada',
+            'executedMonthInitial' => 'Mês inicial executado',
+            'executedMonthEnd' => 'Mês final executado',
+            'executedTotalBudget' => 'Orçamento total executado',
             'executedSegmentDelivery' => 'Segmento artístico-cultural executado',
+            'executedCommunicationStrategies' => 'Estratégias de comunicação executadas',
             'executedHasCommunityCoauthors' => 'Envolvimento executado de comunidades',
             'executedCommunityCoauthorsDetail' => 'Detalhamento executado de coautoria',
             'executedHasTransInclusionStrategy' => 'Estratégia executada de inclusão Trans/Travestis',

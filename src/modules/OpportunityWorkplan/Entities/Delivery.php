@@ -293,9 +293,25 @@ class Delivery extends \MapasCulturais\Entity {
                 'inform' => 'workplan_monitoringInformRevenueType',
                 'require' => 'workplan_monitoringRequireRevenueType'
             ],
+            'executedMonthInitial' => [
+                'inform' => 'workplan_monitoringInformExecutedDeliveryPeriod',
+                'require' => 'workplan_monitoringRequireExecutedDeliveryPeriod'
+            ],
+            'executedMonthEnd' => [
+                'inform' => 'workplan_monitoringInformExecutedDeliveryPeriod',
+                'require' => 'workplan_monitoringRequireExecutedDeliveryPeriod'
+            ],
+            'executedTotalBudget' => [
+                'inform' => 'workplan_monitoringInformExecutedTotalBudget',
+                'require' => 'workplan_monitoringRequireExecutedTotalBudget'
+            ],
             'executedSegmentDelivery' => [
                 'inform' => 'workplan_monitoringInformSegmentDelivery',
                 'require' => 'workplan_monitoringRequireSegmentDelivery'
+            ],
+            'executedCommunicationStrategies' => [
+                'inform' => 'workplan_monitoringInformExecutedCommunicationStrategies',
+                'require' => 'workplan_monitoringRequireExecutedCommunicationStrategies'
             ],
             'executedCommunityCoauthorsDetail' => [
                 'inform' => 'workplan_monitoringInformCommunityCoauthors',

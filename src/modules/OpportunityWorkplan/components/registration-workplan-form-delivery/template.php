@@ -123,6 +123,36 @@ $this->import('
             <small class="field__error" v-if="validationErrors.executedRevenue">{{ validationErrors.executedRevenue.join('; ') }}</small>
         </div>
 
+        <div class="field" v-if="opportunity.workplan_monitoringInformExecutedDeliveryPeriod && (editable || proxy.executedMonthInitial || proxy.executedMonthEnd)">
+            <label><?= i::__('Período executado de realização') ?><span v-if="opportunity.workplan_monitoringRequireExecutedDeliveryPeriod" class="required">obrigatório*</span></label>
+            <div v-if="delivery.monthInitial || delivery.monthEnd" class="field__note">
+                <strong><?= i::__('Previsto:') ?></strong> <?= i::__('mês') ?> {{ delivery.monthInitial }} <?= i::__('a') ?> {{ delivery.monthEnd }}
+            </div>
+            <div v-if="editable" class="grid-12">
+                <div class="col-6 sm:col-12 field">
+                    <label :for="`${vid}__executedMonthInitial`"><?= i::__('Mês inicial executado') ?></label>
+                    <input :id="`${vid}__executedMonthInitial`" type="number" min="1" v-model.number="proxy.executedMonthInitial">
+                    <small class="field__error" v-if="validationErrors.executedMonthInitial">{{ validationErrors.executedMonthInitial.join('; ') }}</small>
+                </div>
+                <div class="col-6 sm:col-12 field">
+                    <label :for="`${vid}__executedMonthEnd`"><?= i::__('Mês final executado') ?></label>
+                    <input :id="`${vid}__executedMonthEnd`" type="number" min="1" v-model.number="proxy.executedMonthEnd">
+                    <small class="field__error" v-if="validationErrors.executedMonthEnd">{{ validationErrors.executedMonthEnd.join('; ') }}</small>
+                </div>
+            </div>
+            <span v-else><?= i::__('mês') ?> {{ proxy.executedMonthInitial }} <?= i::__('a') ?> {{ proxy.executedMonthEnd }}</span>
+        </div>
+
+        <div class="field" v-if="opportunity.workplan_monitoringInformExecutedTotalBudget && (editable || proxy.executedTotalBudget !== null && proxy.executedTotalBudget !== '')">
+            <label :for="`${vid}__executedTotalBudget`"><?= i::__('Orçamento total executado') ?><span v-if="opportunity.workplan_monitoringRequireExecutedTotalBudget" class="required">obrigatório*</span></label>
+            <div v-if="delivery.totalBudget !== null && delivery.totalBudget !== ''" class="field__note">
+                <strong><?= i::__('Previsto:') ?></strong> {{ convertToCurrency(delivery.totalBudget) }}
+            </div>
+            <input v-if="editable" :id="`${vid}__executedTotalBudget`" type="number" min="0" step="0.01" v-model.number="proxy.executedTotalBudget">
+            <span v-else>{{ convertToCurrency(proxy.executedTotalBudget) }}</span>
+            <small class="field__error" v-if="validationErrors.executedTotalBudget">{{ validationErrors.executedTotalBudget.join('; ') }}</small>
+        </div>
+
         <div class="field" v-if="opportunity.workplan_monitoringInformRevenueType && (editable || hasExecutedRevenueType)">
             <label :for="`${vid}__executedRevenueType`"><?= i::__('Tipo de receita executada') ?><span v-if="opportunity.workplan_monitoringRequireRevenueType" class="required">obrigatório*</span></label>
             <div v-if="delivery.revenueType && delivery.revenueType.length > 0" class="field__note">
@@ -526,6 +556,16 @@ $this->import('
             </select>
             <span v-else>{{ booleanOptions[proxy.executedHasPressStrategy] ?? proxy.executedHasPressStrategy }}</span>
             <small class="field__error" v-if="validationErrors.executedHasPressStrategy">{{ validationErrors.executedHasPressStrategy.join('; ') }}</small>
+        </div>
+
+        <div class="field" v-if="opportunity.workplan_monitoringInformExecutedCommunicationStrategies && (editable || proxy.executedCommunicationStrategies)">
+            <label :for="`${vid}__executedCommunicationStrategies`"><?= i::__('Estratégias de comunicação executadas') ?><span v-if="opportunity.workplan_monitoringRequireExecutedCommunicationStrategies" class="required">obrigatório*</span></label>
+            <div v-if="delivery.hasPressStrategy" class="field__note">
+                <strong><?= i::__('Previsto:') ?></strong> {{ booleanOptions[delivery.hasPressStrategy] ?? delivery.hasPressStrategy }}
+            </div>
+            <textarea v-if="editable" :id="`${vid}__executedCommunicationStrategies`" v-model="proxy.executedCommunicationStrategies" rows="3"></textarea>
+            <span v-else>{{ proxy.executedCommunicationStrategies }}</span>
+            <small class="field__error" v-if="validationErrors.executedCommunicationStrategies">{{ validationErrors.executedCommunicationStrategies.join('; ') }}</small>
         </div>
 
         <div class="field" v-if="opportunity.workplan_monitoringInformInnovation && (editable || proxy.executedHasInnovationAction || hasExecutedInnovationTypes)">
