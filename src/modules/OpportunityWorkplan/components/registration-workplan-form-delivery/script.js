@@ -83,6 +83,30 @@ app.component('registration-workplan-form-delivery', {
         opportunity () {
             return this.registration.opportunity.parent ?? this.registration.opportunity;
         },
+        plannedCommunicationChannels () {
+            return this.normalizeArray(this.delivery.communicationChannels);
+        },
+        plannedDocumentationTypes () {
+            return this.normalizeArray(this.delivery.documentationTypes);
+        },
+        plannedExpectedAccessibilityMeasures () {
+            return this.normalizeArray(this.delivery.expectedAccessibilityMeasures);
+        },
+        plannedInnovationTypes () {
+            return this.normalizeArray(this.delivery.innovationTypes);
+        },
+        plannedPaidStaffByRole () {
+            return this.normalizeArray(this.delivery.paidStaffByRole);
+        },
+        plannedRevenueType () {
+            return this.normalizeArray(this.delivery.revenueType);
+        },
+        plannedTeamCompositionGender () {
+            return this.normalizeObject(this.delivery.teamCompositionGender);
+        },
+        plannedTeamCompositionRace () {
+            return this.normalizeObject(this.delivery.teamCompositionRace);
+        },
         priorityAudience: {
             get () {
                 if (!this.proxy.priorityAudience) {
@@ -264,6 +288,28 @@ app.component('registration-workplan-form-delivery', {
     methods: {
         convertToCurrency(field) {
             return new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(Number(field));
+        },
+        normalizeArray(value) {
+            if (!value) return [];
+            if (typeof value === 'string') {
+                try {
+                    value = JSON.parse(value);
+                } catch (e) {
+                    return [];
+                }
+            }
+            return Array.isArray(value) ? value : [];
+        },
+        normalizeObject(value) {
+            if (!value) return null;
+            if (typeof value === 'string') {
+                try {
+                    value = JSON.parse(value);
+                } catch (e) {
+                    return null;
+                }
+            }
+            return value && typeof value === 'object' && !Array.isArray(value) ? value : null;
         },
         toggleExecutedCommunicationChannel (item) {
             const idx = this.executedCommunicationChannels.indexOf(item);
