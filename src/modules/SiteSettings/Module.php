@@ -113,6 +113,21 @@ class Module extends \MapasCulturais\Module
         $app->hook('view.title(settings.steps)', function (&$title) use ($app) {
             $title = i::__('Configurações do site') . ' — ' . i::__('Editor') . ' - ' . $app->siteName;
         });
+
+        // Nome do site no rodapé/cabeçalho dos e-mails: reaplica settings do subsite no momento do render (CLI/jobs).
+        $app->hook('app.renderMustacheTemplate:before', function () use ($self, $app) {
+            $self->setSiteNameSettings($self->getSettings(), $app);
+        });
+
+        // E-mail: resolve a URL aqui (lazy), não só em app.register:after — filas CLI não rodavam esse bloco
+        // e, em jobs, o subsite só existe depois do bootstrap; getSettings() usa o contexto atual.
+        $app->hook('mustacheTemplate(<<*>>).headerData', function (&$headerData) use ($app, $self) {
+            $url = $self->resolveMailHeaderImageUrl($app);
+            if (!$url) {
+                $url = $app->view->asset('img/mail-image.png', false);
+            }
+            $headerData->mailHeaderImage = $url;
+        });
     }
 
     /**
@@ -546,6 +561,23 @@ class Module extends \MapasCulturais\Module
     }
 
     /**
+     * URL pública da imagem de cabeçalho dos e-mails para o subsite/contexto atual.
+     * Usado no render do Mustache (inclui CLI/jobs) e alinhado ao que está em settings_meta.
+     */
+    public function resolveMailHeaderImageUrl(App $app): ?string
+    {
+        $settings = $this->getSettings();
+        if (!$settings || !($mailImageData = $settings->mailImageData)) {
+            return null;
+        }
+        $path = $mailImageData->path ?? '';
+        if ($path === '' || !is_readable($path)) {
+            return null;
+        }
+        return self::resolvePublicAssetUrl($app, $path, 'img/' . basename($path));
+    }
+
+    /**
      * @param null|Settings $settings 
      * @param App $app 
      * @return void 
@@ -553,14 +585,22 @@ class Module extends \MapasCulturais\Module
      */
     public function setMailImage(?Settings $settings, App $app): void
     {
-        $public_mail_image = null;
-        if ($mailImageData = $settings->mailImageData) {
-            $path = $mailImageData->path ?? '';
-            if ($path !== '' && file_exists($path)) {
-                $public_mail_image = $this->siteSettingsPublicOrThemeAssetUrl($app, $path, 'img/' . basename($path));
-            }
-            $app->view->jsObject['config']['settingsEditorUploads']['mail-image'] = $public_mail_image;
+        if (!$settings) {
+            return;
         }
+
+        $public_mail_image = $this->resolveMailHeaderImageUrl($app);
+
+        if ($public_mail_image) {
+            $app->config['mailer.headerImage'] = $public_mail_image;
+        } else {
+            unset($app->config['mailer.headerImage']);
+        }
+
+        if (!isset($app->view->jsObject['config']['settingsEditorUploads'])) {
+            $app->view->jsObject['config']['settingsEditorUploads'] = [];
+        }
+        $app->view->jsObject['config']['settingsEditorUploads']['mail-image'] = $public_mail_image;
     }
 
     /**

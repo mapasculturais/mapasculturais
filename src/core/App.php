@@ -1870,6 +1870,9 @@ class App
 
         $template_data = (object) $template_data;
 
+        // Permite módulos (ex.: SiteSettings) alinhar app.siteName ao subsite/contexto atual antes do footer/cabeçalho (CLI/jobs inclusos).
+        $this->applyHookBoundTo($this, 'app.renderMustacheTemplate:before');
+
         if ($this->view->version >= 2) {
             $template_data->siteName = $this->siteName;
             $template_data->siteDescription = $this->siteDescription;
