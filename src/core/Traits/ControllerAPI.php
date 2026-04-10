@@ -39,9 +39,11 @@ trait ControllerAPI{
      * @param array $options Opções da consulta
      * @return array Resultado da consulta
      */
-    public function apiQuery(array $api_params, array $options = []){        
+    public function apiQuery(array $api_params, array $options = []){
         $app = App::i();
         $findOne =  key_exists('findOne', $options) ? $options['findOne'] : false;
+        $distinct = key_exists('distinct', $options) ? $options['distinct'] : false;
+        $countGrouped = key_exists('countGrouped', $options) ? $options['countGrouped'] : false;
         $counting = key_exists('@count', $api_params);
         if($counting){
             unset($api_params['@count']);
@@ -53,7 +55,11 @@ trait ControllerAPI{
         
         $app->applyHookBoundTo($this, "API.query($this->id)", [&$query, $api_params]);
         
-        if($counting){
+        if($distinct){
+            $result = $query->getDistinctResult();
+        } elseif($countGrouped){
+            $result = $query->getCountGroupedResult();
+        } elseif($counting){
             $result = $query->getCountResult();
         } elseif( $findOne ) {
             $result = $query->getFindOneResult();
@@ -236,6 +242,16 @@ trait ControllerAPI{
      */
     public function API_find(){
         $data = $this->apiQuery($this->getData);
+        $this->apiResponse($data);
+    }
+
+    public function API_distinct(){
+        $data = $this->apiQuery($this->getData, ['distinct' => true]);
+        $this->apiResponse($data);
+    }
+
+    public function API_countGrouped(){
+        $data = $this->apiQuery($this->getData, ['countGrouped' => true]);
         $this->apiResponse($data);
     }
 

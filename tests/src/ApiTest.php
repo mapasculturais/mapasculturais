@@ -5,6 +5,7 @@ namespace Test;
 use MapasCulturais\API;
 use MapasCulturais\ApiQuery;
 use MapasCulturais\Entities\Agent;
+use MapasCulturais\Exceptions\Api\InvalidArgument;
 use MapasCulturais\Entities\Space;
 use MapasCulturais\Entities\User;
 use Tests\Abstract\TestCase;
@@ -337,5 +338,513 @@ class ApiTest extends TestCase
                 $this->assertEmpty($returned_not_allowed_metadata, "Certificando que a api de {$api_name} NÃO retorna os metadados não permitidos");
             }
         }
+    }
+
+    // ================================================================
+    // distinct() tests
+    // ================================================================
+
+    function testDistinctSingleProperty()
+    {
+        $this->app->disableAccessControl();
+
+        $names = ['Fulano', 'Fulano', 'Ciclano'];
+        $ids = [];
+        foreach ($names as $name) {
+            $user = $this->userDirector->createUser();
+            $user->profile->name = $name;
+            $user->profile->save(true);
+            $ids[] = $user->profile->id;
+        }
+
+        $this->processPCache();
+
+        $query = new ApiQuery(Agent::class, [
+            '@select' => 'name',
+            '@order' => 'name ASC',
+            'id' => API::IN($ids),
+        ]);
+
+        $result = $query->distinct();
+
+        $this->assertTrue(is_array($result) && !empty($result), 'Certificando que distinct retorna um array não vazio');
+        $this->assertFalse(isset($result[0]['name']), 'Certificando que distinct com campo único retorna array simples, não de arrays');
+        $this->assertEquals(['Ciclano', 'Fulano'], array_values($result), 'Certificando que distinct com campo único retorna valores distintos ordenados');
+
+        $this->app->enableAccessControl();
+    }
+
+    function testDistinctMultipleProperties()
+    {
+        $this->app->disableAccessControl();
+
+        $agents = [
+            ['name' => 'Fulano', 'status' => 1],
+            ['name' => 'Fulano', 'status' => -5],
+            ['name' => 'Ciclano', 'status' => 1],
+        ];
+        $ids = [];
+        foreach ($agents as $data) {
+            $user = $this->userDirector->createUser();
+            $user->profile->name = $data['name'];
+            $user->profile->status = $data['status'];
+            $user->profile->save(true);
+            $ids[] = $user->profile->id;
+        }
+
+        $this->processPCache();
+
+        $query = new ApiQuery(Agent::class, [
+            '@select' => 'name,status',
+            '@order' => 'name ASC',
+            'id' => API::IN($ids),
+            'status' => 'GTE(-10)',
+        ]);
+
+        $result = $query->distinct();
+
+        $this->assertCount(3, $result, 'Certificando que distinct com múltiplos campos retorna combinações distintas');
+        $this->assertArrayHasKey('name', $result[0], 'Certificando que cada resultado tem a chave name');
+        $this->assertArrayHasKey('status', $result[0], 'Certificando que cada resultado tem a chave status');
+
+        $combinations = array_map(fn($r) => $r['name'] . ':' . $r['status'], $result);
+        $this->assertCount(3, array_unique($combinations), 'Certificando que todas combinações são únicas');
+
+        $this->app->enableAccessControl();
+    }
+
+    function testDistinctWithMetadata()
+    {
+        $this->app->disableAccessControl();
+
+        $user1 = $this->userDirector->createUser();
+        $user1->profile->pessoaDeficiente = ['Auditiva', 'Visual'];
+        $user1->profile->save(true);
+
+        $user2 = $this->userDirector->createUser();
+        $user2->profile->pessoaDeficiente = ['Auditiva'];
+        $user2->profile->save(true);
+
+        $user3 = $this->userDirector->createUser();
+        $user3->profile->pessoaDeficiente = ['Visual'];
+        $user3->profile->save(true);
+
+        $this->processPCache();
+
+        $query = new ApiQuery(Agent::class, [
+            '@select' => 'pessoaDeficiente',
+        ]);
+
+        $result = $query->distinct();
+
+        $this->assertTrue(is_array($result), 'Certificando que distinct com metadado retorna array');
+        $this->assertGreaterThanOrEqual(1, count($result), 'Certificando que distinct com metadado retorna pelo menos 1 resultado');
+
+        $this->app->enableAccessControl();
+    }
+
+    function testDistinctWithPropertyAndMetadata()
+    {
+        $this->app->disableAccessControl();
+
+        $ids = [];
+
+        $user1 = $this->userDirector->createUser();
+        $user1->profile->name = 'Fulano';
+        $user1->profile->pessoaDeficiente = ['Auditiva'];
+        $user1->profile->save(true);
+        $ids[] = $user1->profile->id;
+
+        $user2 = $this->userDirector->createUser();
+        $user2->profile->name = 'Ciclano';
+        $user2->profile->pessoaDeficiente = ['Visual'];
+        $user2->profile->save(true);
+        $ids[] = $user2->profile->id;
+
+        $this->processPCache();
+
+        $query = new ApiQuery(Agent::class, [
+            '@select' => 'name,pessoaDeficiente',
+            '@order' => 'name ASC',
+            'id' => API::IN($ids),
+        ]);
+
+        $result = $query->distinct();
+
+        $this->assertCount(2, $result, 'Certificando que distinct com propriedade + metadado retorna combinações distintas');
+        $this->assertArrayHasKey('name', $result[0], 'Certificando que resultado tem name');
+        $this->assertArrayHasKey('pessoaDeficiente', $result[0], 'Certificando que resultado tem pessoaDeficiente');
+
+        $this->app->enableAccessControl();
+    }
+
+    function testDistinctWithFilters()
+    {
+        $this->app->disableAccessControl();
+
+        $names = ['Fulano', 'Fulano', 'Ciclano', 'Beltrano'];
+        foreach ($names as $name) {
+            $user = $this->userDirector->createUser();
+            $user->profile->name = $name;
+            $user->profile->save(true);
+        }
+
+        $this->processPCache();
+
+        $query = new ApiQuery(Agent::class, [
+            '@select' => 'name',
+            'name' => 'ILIKE(Fulano%)',
+            '@order' => 'name ASC'
+        ]);
+
+        $result = $query->distinct();
+
+        $this->assertEquals(['Fulano'], $result, 'Certificando que distinct com filtro retorna apenas valores que match o filtro');
+
+        $this->app->enableAccessControl();
+    }
+
+    function testDistinctInvalidFieldThrowsError()
+    {
+        $this->app->disableAccessControl();
+
+        $this->expectException(InvalidArgument::class);
+
+        $query = new ApiQuery(Agent::class, [
+            '@select' => 'files',
+        ]);
+
+        $query->distinct();
+
+        $this->app->enableAccessControl();
+    }
+
+    function testDistinctWithType()
+    {
+        $this->app->disableAccessControl();
+
+        $ids = [];
+        for ($i = 0; $i < 3; $i++) {
+            $user = $this->userDirector->createUser();
+            $ids[] = $user->profile->id;
+        }
+
+        $this->processPCache();
+
+        $query = new ApiQuery(Agent::class, [
+            '@select' => 'type',
+            '@order' => 'type ASC',
+            'id' => API::IN($ids),
+        ]);
+
+        $result = $query->distinct();
+
+        $this->assertTrue(is_array($result), 'Certificando que distinct com type retorna array');
+        $this->assertGreaterThanOrEqual(1, count($result), 'Certificando que distinct com type retorna pelo menos 1 resultado');
+        foreach ($result as $val) {
+            $this->assertIsNumeric($val, 'Certificando que valores de type sao numericos');
+        }
+
+        $this->app->enableAccessControl();
+    }
+
+    function testDistinctWithOrder()
+    {
+        $this->app->disableAccessControl();
+
+        $names = ['Beltrano', 'Fulano', 'Ciclano'];
+        $ids = [];
+        foreach ($names as $name) {
+            $user = $this->userDirector->createUser();
+            $user->profile->name = $name;
+            $user->profile->save(true);
+            $ids[] = $user->profile->id;
+        }
+
+        $this->processPCache();
+
+        $query = new ApiQuery(Agent::class, [
+            '@select' => 'name',
+            '@order' => 'name DESC',
+            'id' => API::IN($ids),
+        ]);
+
+        $result = $query->distinct();
+
+        $this->assertEquals(['Fulano', 'Ciclano', 'Beltrano'], array_values($result), 'Certificando que distinct respeita @order DESC');
+
+        $this->app->enableAccessControl();
+    }
+
+    // ================================================================
+    // countGrouped() tests
+    // ================================================================
+
+    function testCountGroupedSingleProperty()
+    {
+        $this->app->disableAccessControl();
+
+        $names = ['Fulano', 'Fulano', 'Fulano', 'Ciclano', 'Ciclano', 'Beltrano'];
+        $ids = [];
+        foreach ($names as $name) {
+            $user = $this->userDirector->createUser();
+            $user->profile->name = $name;
+            $user->profile->save(true);
+            $ids[] = $user->profile->id;
+        }
+
+        $this->processPCache();
+
+        $query = new ApiQuery(Agent::class, [
+            '@select' => 'name',
+            '@order' => 'name ASC',
+            'id' => API::IN($ids),
+        ]);
+
+        $result = $query->countGrouped();
+
+        $this->assertTrue(is_array($result), 'Certificando que countGrouped retorna array');
+        $this->assertEquals(3, $result['Fulano'], 'Certificando que countGrouped conta Fulano corretamente');
+        $this->assertEquals(2, $result['Ciclano'], 'Certificando que countGrouped conta Ciclano corretamente');
+        $this->assertEquals(1, $result['Beltrano'], 'Certificando que countGrouped conta Beltrano corretamente');
+
+        $this->app->enableAccessControl();
+    }
+
+    function testCountGroupedSinglePropertyNumeric()
+    {
+        $this->app->disableAccessControl();
+
+        $ids = [];
+        for ($i = 0; $i < 3; $i++) {
+            $user = $this->userDirector->createUser();
+            $ids[] = $user->profile->id;
+        }
+
+        $this->processPCache();
+
+        $query = new ApiQuery(Agent::class, [
+            '@select' => 'type',
+            '@order' => 'type ASC',
+            'id' => API::IN($ids),
+        ]);
+
+        $result = $query->countGrouped();
+
+        $this->assertTrue(is_array($result), 'Certificando que countGrouped com type retorna array');
+        $total = array_sum($result);
+        $this->assertEquals(3, $total, 'Certificando que countGrouped com type soma 3');
+
+        $this->app->enableAccessControl();
+    }
+
+    function testCountGroupedMultipleProperties()
+    {
+        $this->app->disableAccessControl();
+
+        $agents = [
+            ['name' => 'Fulano', 'status' => 1],
+            ['name' => 'Fulano', 'status' => 1],
+            ['name' => 'Fulano', 'status' => -5],
+            ['name' => 'Ciclano', 'status' => 1],
+        ];
+        $ids = [];
+        foreach ($agents as $data) {
+            $user = $this->userDirector->createUser();
+            $user->profile->name = $data['name'];
+            $user->profile->status = $data['status'];
+            $user->profile->save(true);
+            $ids[] = $user->profile->id;
+        }
+
+        $this->processPCache();
+
+        $query = new ApiQuery(Agent::class, [
+            '@select' => 'name,status',
+            '@order' => 'name ASC',
+            'id' => API::IN($ids),
+            'status' => 'GTE(-10)',
+        ]);
+
+        $result = $query->countGrouped();
+
+        $this->assertCount(3, $result, 'Certificando que countGrouped com múltiplos campos retorna 3 grupos distintos');
+
+        $fulano_s1 = array_filter($result, fn($r) => $r['name'] === 'Fulano' && $r['status'] === 1);
+        $this->assertCount(1, $fulano_s1, 'Certificando que existe grupo Fulano+status=1');
+        $fulano_s1 = array_values($fulano_s1)[0];
+        $this->assertEquals(2, $fulano_s1['@count'], 'Certificando que Fulano+status=1 tem @count=2');
+
+        $fulano_sm5 = array_filter($result, fn($r) => $r['name'] === 'Fulano' && $r['status'] === -5);
+        $this->assertCount(1, $fulano_sm5, 'Certificando que existe grupo Fulano+status=-5');
+        $fulano_sm5 = array_values($fulano_sm5)[0];
+        $this->assertEquals(1, $fulano_sm5['@count'], 'Certificando que Fulano+status=-5 tem @count=1');
+
+        $this->app->enableAccessControl();
+    }
+
+    function testCountGroupedWithMetadata()
+    {
+        $this->app->disableAccessControl();
+
+        $user1 = $this->userDirector->createUser();
+        $user1->profile->pessoaDeficiente = ['Auditiva'];
+        $user1->profile->save(true);
+
+        $user2 = $this->userDirector->createUser();
+        $user2->profile->pessoaDeficiente = ['Auditiva'];
+        $user2->profile->save(true);
+
+        $user3 = $this->userDirector->createUser();
+        $user3->profile->pessoaDeficiente = ['Visual'];
+        $user3->profile->save(true);
+
+        $this->processPCache();
+
+        $query = new ApiQuery(Agent::class, [
+            '@select' => 'pessoaDeficiente',
+        ]);
+
+        $result = $query->countGrouped();
+
+        $this->assertTrue(is_array($result), 'Certificando que countGrouped com metadado retorna array');
+
+        $this->app->enableAccessControl();
+    }
+
+    function testCountGroupedWithOrderCountDesc()
+    {
+        $this->app->disableAccessControl();
+
+        $names = ['Beltrano', 'Fulano', 'Fulano', 'Fulano', 'Ciclano', 'Ciclano'];
+        $ids = [];
+        foreach ($names as $name) {
+            $user = $this->userDirector->createUser();
+            $user->profile->name = $name;
+            $user->profile->save(true);
+            $ids[] = $user->profile->id;
+        }
+
+        $this->processPCache();
+
+        $query = new ApiQuery(Agent::class, [
+            '@select' => 'name',
+            '@order' => '@count DESC',
+            'id' => API::IN($ids),
+        ]);
+
+        $result = $query->countGrouped();
+
+        $keys = array_keys($result);
+        $this->assertEquals('Fulano', $keys[0], 'Certificando que @count DESC coloca Fulano (3) primeiro');
+        $this->assertEquals('Ciclano', $keys[1], 'Certificando que @count DESC coloca Ciclano (2) segundo');
+        $this->assertEquals('Beltrano', $keys[2], 'Certificando que @count DESC coloca Beltrano (1) terceiro');
+
+        $this->app->enableAccessControl();
+    }
+
+    function testCountGroupedWithOrderCountAsc()
+    {
+        $this->app->disableAccessControl();
+
+        $names = ['Beltrano', 'Fulano', 'Fulano', 'Fulano', 'Ciclano', 'Ciclano'];
+        $ids = [];
+        foreach ($names as $name) {
+            $user = $this->userDirector->createUser();
+            $user->profile->name = $name;
+            $user->profile->save(true);
+            $ids[] = $user->profile->id;
+        }
+
+        $this->processPCache();
+
+        $query = new ApiQuery(Agent::class, [
+            '@select' => 'name',
+            '@order' => '@count ASC',
+            'id' => API::IN($ids),
+        ]);
+
+        $result = $query->countGrouped();
+
+        $keys = array_keys($result);
+        $this->assertEquals('Beltrano', $keys[0], 'Certificando que @count ASC coloca Beltrano (1) primeiro');
+        $this->assertEquals('Ciclano', $keys[1], 'Certificando que @count ASC coloca Ciclano (2) segundo');
+        $this->assertEquals('Fulano', $keys[2], 'Certificando que @count ASC coloca Fulano (3) terceiro');
+
+        $this->app->enableAccessControl();
+    }
+
+    function testCountGroupedInvalidFieldThrowsError()
+    {
+        $this->app->disableAccessControl();
+
+        $this->expectException(InvalidArgument::class);
+
+        $query = new ApiQuery(Agent::class, [
+            '@select' => 'terms',
+        ]);
+
+        $query->countGrouped();
+
+        $this->app->enableAccessControl();
+    }
+
+    function testCountGroupedDefaultOrderIsCountDesc()
+    {
+        $this->app->disableAccessControl();
+
+        $names = ['Beltrano', 'Fulano', 'Fulano', 'Fulano', 'Ciclano', 'Ciclano'];
+        $ids = [];
+        foreach ($names as $name) {
+            $user = $this->userDirector->createUser();
+            $user->profile->name = $name;
+            $user->profile->save(true);
+            $ids[] = $user->profile->id;
+        }
+
+        $this->processPCache();
+
+        $query = new ApiQuery(Agent::class, [
+            '@select' => 'name',
+            'id' => API::IN($ids),
+        ]);
+
+        $result = $query->countGrouped();
+
+        $keys = array_keys($result);
+        $this->assertEquals('Fulano', $keys[0], 'Certificando que default order é @count DESC (Fulano primeiro)');
+        $this->assertEquals('Ciclano', $keys[1], 'Certificando que default order é @count DESC (Ciclano segundo)');
+        $this->assertEquals('Beltrano', $keys[2], 'Certificando que default order é @count DESC (Beltrano terceiro)');
+
+        $this->app->enableAccessControl();
+    }
+
+    function testCountGroupedWithFilters()
+    {
+        $this->app->disableAccessControl();
+
+        $names = ['Fulano', 'Fulano', 'Ciclano'];
+        $ids = [];
+        foreach ($names as $name) {
+            $user = $this->userDirector->createUser();
+            $user->profile->name = $name;
+            $user->profile->save(true);
+            $ids[] = $user->profile->id;
+        }
+
+        $this->processPCache();
+
+        $query = new ApiQuery(Agent::class, [
+            '@select' => 'name',
+            'name' => 'ILIKE(Fulano%)',
+            'id' => API::IN($ids),
+        ]);
+
+        $result = $query->countGrouped();
+
+        $this->assertCount(1, $result, 'Certificando que countGrouped com filtro retorna apenas 1 grupo');
+        $this->assertEquals(2, $result['Fulano'], 'Certificando que countGrouped com filtro conta corretamente');
+
+        $this->app->enableAccessControl();
     }
 }
