@@ -4136,4 +4136,393 @@ class ApiQuery {
         }
     }
 
+    protected function _getAggregationFilterJoins(): string
+    {
+        $joins = $this->joins;
+        $joins = str_replace(
+            'LEFT JOIN e.__metadata ',
+            "LEFT JOIN {$this->metadataClassName} ",
+            $joins
+        );
+        $joins = preg_replace(
+            '/LEFT JOIN ' . preg_quote($this->metadataClassName, '/') . ' (\w+) WITH (\1)\.key/',
+            "LEFT JOIN {$this->metadataClassName} \$1 WITH IDENTITY(\$1.owner) = e.{$this->pk} AND \$1.key",
+            $joins
+        );
+        return $joins;
+    }
+
+    protected function _getMultiselectFields(array $valid_fields): array
+    {
+        $result = [];
+        foreach ($valid_fields as $prop) {
+            if (in_array($prop, $this->_selectingMetadata)) {
+                $def = $this->registeredMetadataDefinitions[$prop] ?? null;
+                if ($def && in_array($def->type, ['multiselect', 'array', 'json'])) {
+                    $result[] = $prop;
+                }
+            }
+        }
+        return $result;
+    }
+
+    protected function _parseJsonValue($value)
+    {
+        if ($value === null || $value === '') {
+            return [];
+        }
+        $decoded = json_decode($value, true);
+        if (is_array($decoded)) {
+            return $decoded;
+        }
+        return [$value];
+    }
+
+    protected function _explodeDistinctResult(array $result, array $multiselect_fields): array
+    {
+        if (empty($multiselect_fields)) {
+            return $result;
+        }
+
+        if (count($multiselect_fields) === 1 && count($result) > 0 && !is_array($result[0] ?? null)) {
+            $exploded = [];
+            foreach ($result as $val) {
+                foreach ($this->_parseJsonValue($val) as $v) {
+                    $exploded[] = $v;
+                }
+            }
+            return array_values(array_unique($exploded, SORT_REGULAR));
+        }
+
+        $exploded = [];
+        foreach ($result as $row) {
+            $rows = [[]];
+            foreach ($multiselect_fields as $field) {
+                $values = $this->_parseJsonValue($row[$field] ?? null);
+                $new_rows = [];
+                foreach ($rows as $existing) {
+                    foreach ($values as $v) {
+                        $new_row = $existing;
+                        $new_row[$field] = $v;
+                        $new_rows[] = $new_row;
+                    }
+                }
+                $rows = $new_rows;
+            }
+            foreach ($rows as $expanded) {
+                foreach ($row as $k => $v) {
+                    if (!isset($expanded[$k])) {
+                        $expanded[$k] = $v;
+                    }
+                }
+                $exploded[] = $expanded;
+            }
+        }
+
+        $unique = [];
+        foreach ($exploded as $row) {
+            $key = serialize($row);
+            $unique[$key] = $row;
+        }
+
+        return array_values($unique);
+    }
+
+    protected function _explodeCountGroupedResult(array $result, array $multiselect_fields): array
+    {
+        if (empty($multiselect_fields)) {
+            return $result;
+        }
+
+        $is_single = !isset($result[0]['@count']);
+
+        if ($is_single) {
+            $merged = [];
+            foreach ($result as $key => $count) {
+                $values = $this->_parseJsonValue($key);
+                foreach ($values as $v) {
+                    $vk = (string) $v;
+                    $merged[$vk] = ($merged[$vk] ?? 0) + $count;
+                }
+            }
+            return $merged;
+        }
+
+        $merged = [];
+        foreach ($result as $row) {
+            $rows = [[]];
+            foreach ($multiselect_fields as $field) {
+                $values = $this->_parseJsonValue($row[$field] ?? null);
+                $new_rows = [];
+                foreach ($rows as $existing) {
+                    foreach ($values as $v) {
+                        $new_row = $existing;
+                        $new_row[$field] = $v;
+                        $new_rows[] = $new_row;
+                    }
+                }
+                $rows = $new_rows;
+            }
+            foreach ($rows as $expanded) {
+                foreach ($row as $k => $v) {
+                    if ($k !== '@count' && !isset($expanded[$k])) {
+                        $expanded[$k] = $v;
+                    }
+                }
+                $expanded['@count'] = $row['@count'];
+                $key = serialize(array_filter($expanded, fn($k) => $k !== '@count', ARRAY_FILTER_USE_KEY));
+                if (isset($merged[$key])) {
+                    $merged[$key]['@count'] += $row['@count'];
+                } else {
+                    $merged[$key] = $expanded;
+                }
+            }
+        }
+
+        return array_values($merged);
+    }
+
+    protected function _validateSelectForAggregation()
+    {
+        $valid_fields = [];
+        foreach ($this->_selecting as $prop) {
+            if (!$prop || $prop[0] === '#') {
+                continue;
+            }
+            if (in_array($prop, $this->entityProperties)) {
+                $valid_fields[] = $prop;
+            } elseif ($prop === 'type' && $this->usesTypes) {
+                $valid_fields[] = $prop;
+            } elseif (in_array($prop, $this->_selectingMetadata)) {
+                $valid_fields[] = $prop;
+            } else {
+                throw new Exceptions\Api\InvalidArgument("Aggregation queries (distinct/countGrouped) only support entity properties and metadata. '{$prop}' is not supported.");
+            }
+        }
+        if (empty($valid_fields)) {
+            throw new Exceptions\Api\InvalidArgument("At least one valid field must be selected for aggregation queries.");
+        }
+        return $valid_fields;
+    }
+
+    protected function _getAggregationFields(array $valid_fields): array
+    {
+        $fields = [];
+        $joins = '';
+        $metadata_joined = [];
+
+        foreach ($valid_fields as $prop) {
+            if ($prop === 'type' && $this->usesTypes) {
+                $fields[] = ['dql' => 'e._type', 'alias' => 'type'];
+            } elseif (in_array($prop, $this->_selectingMetadata)) {
+                $meta_alias = $this->getAlias('agg_meta_' . $prop);
+                $fields[] = ['dql' => "{$meta_alias}.value", 'alias' => $prop];
+                if (!isset($metadata_joined[$prop])) {
+                    $joins .= "\n\tLEFT JOIN {$this->metadataClassName} {$meta_alias} WITH IDENTITY({$meta_alias}.owner) = e.{$this->pk} AND {$meta_alias}.key = '{$prop}'";
+                    $metadata_joined[$prop] = true;
+                }
+            } else {
+                $fields[] = ['dql' => "e.{$prop}", 'alias' => $prop];
+            }
+        }
+
+        return ['fields' => $fields, 'joins' => $joins];
+    }
+
+    protected function _getAggregationOrder(array $agg_fields, string $default_order = ''): string
+    {
+        $order = '';
+        if ($this->_order) {
+            $order_parts = [];
+            foreach (explode(',', $this->_order) as $part) {
+                $part = trim($part);
+                $key = trim(preg_replace('#\s+(ASC|DESC)#i', '', $part));
+                $direction = stripos($part, 'DESC') !== false ? 'DESC' : 'ASC';
+
+                if ($key === '@count') {
+                    $order_parts[] = "__count {$direction}";
+                } else {
+                    foreach ($agg_fields as $f) {
+                        if ($f['alias'] === $key) {
+                            $order_parts[] = "{$f['dql']} {$direction}";
+                            break;
+                        }
+                    }
+                }
+            }
+            $order = implode(', ', $order_parts);
+        }
+
+        if (!$order && $default_order) {
+            $order = $default_order;
+        }
+
+        return $order;
+    }
+
+    public function getDistinctDQL(): string
+    {
+        $valid_fields = $this->_validateSelectForAggregation();
+        $agg = $this->_getAggregationFields($valid_fields);
+        $where = $this->generateWhere();
+
+        $select_parts = [];
+        foreach ($agg['fields'] as $field) {
+            $select_parts[] = "{$field['dql']} AS {$field['alias']}";
+        }
+        $select = 'DISTINCT ' . implode(', ', $select_parts);
+
+        $field_aliases = array_map(fn($f) => $f['alias'], $agg['fields']);
+        $default_order = implode(', ', array_map(fn($f) => "{$f['dql']} ASC", $agg['fields']));
+        $order = $this->_getAggregationOrder($agg['fields'], $default_order);
+
+        $dql = "SELECT\n\t{$select}\nFROM \n\t{$this->entityClassName} e {$this->_getAggregationFilterJoins()}{$agg['joins']}";
+        if ($where) {
+            $dql .= "\nWHERE\n\t{$where}";
+        }
+        if ($order) {
+            $dql .= "\n\nORDER BY {$order}";
+        }
+
+        return $dql;
+    }
+
+    public function getDistinctResult(): array
+    {
+        $app = App::i();
+
+        $cache_key = $this->getCacheKey(__METHOD__);
+
+        if ($this->__useDQLCache && $app->rcache->contains($cache_key)) {
+            return $app->rcache->fetch($cache_key);
+        }
+
+        $dql = $this->getDistinctDQL();
+        $q = $this->em->createQuery($dql);
+        if ($this->__useDQLCache) {
+            $q->enableResultCache($this->__cacheTLS);
+        }
+
+        $params = $this->getDqlParams();
+        $q->setParameters($params);
+        $this->logDql($dql, __FUNCTION__, $params);
+
+        $raw = $q->getResult(Query::HYDRATE_ARRAY);
+
+        $valid_fields = $this->_validateSelectForAggregation();
+        $is_single = count($valid_fields) === 1;
+
+        if ($is_single) {
+            $alias = $valid_fields[0];
+            $result = array_map(fn($row) => $row[$alias], $raw);
+        } else {
+            $result = $raw;
+        }
+
+        $multiselect_fields = $this->_getMultiselectFields($valid_fields);
+        $result = $this->_explodeDistinctResult($result, $multiselect_fields);
+
+        $app->applyHookBoundTo($this, "{$this->hookPrefix}.distinctResult", [&$result]);
+
+        if ($this->__useDQLCache) {
+            $app->rcache->save($cache_key, $result);
+        }
+
+        return $result;
+    }
+
+    public function distinct(): array
+    {
+        return $this->getDistinctResult();
+    }
+
+    public function getCountGroupedDQL(): string
+    {
+        $valid_fields = $this->_validateSelectForAggregation();
+        $agg = $this->_getAggregationFields($valid_fields);
+        $where = $this->generateWhere();
+
+        $select_parts = [];
+        $group_parts = [];
+        foreach ($agg['fields'] as $field) {
+            $select_parts[] = "{$field['dql']} AS {$field['alias']}";
+            $group_parts[] = $field['dql'];
+        }
+        $select_parts[] = "COUNT(e.{$this->pk}) AS __count";
+
+        $select = implode(', ', $select_parts);
+        $group = implode(', ', $group_parts);
+
+        $order = $this->_getAggregationOrder($agg['fields'], '__count DESC');
+
+        $dql = "SELECT\n\t{$select}\nFROM \n\t{$this->entityClassName} e {$this->_getAggregationFilterJoins()}{$agg['joins']}";
+        if ($where) {
+            $dql .= "\nWHERE\n\t{$where}";
+        }
+        $dql .= "\nGROUP BY {$group}";
+        if ($order) {
+            $dql .= "\n\nORDER BY {$order}";
+        }
+
+        return $dql;
+    }
+
+    public function getCountGroupedResult(): array
+    {
+        $app = App::i();
+
+        $cache_key = $this->getCacheKey(__METHOD__);
+
+        if ($this->__useDQLCache && $app->rcache->contains($cache_key)) {
+            return $app->rcache->fetch($cache_key);
+        }
+
+        $dql = $this->getCountGroupedDQL();
+        $q = $this->em->createQuery($dql);
+        if ($this->__useDQLCache) {
+            $q->enableResultCache($this->__cacheTLS);
+        }
+
+        $params = $this->getDqlParams();
+        $q->setParameters($params);
+        $this->logDql($dql, __FUNCTION__, $params);
+
+        $raw = $q->getResult(Query::HYDRATE_ARRAY);
+
+        $valid_fields = $this->_validateSelectForAggregation();
+        $is_single = count($valid_fields) === 1;
+
+        if ($is_single) {
+            $alias = $valid_fields[0];
+            $result = [];
+            foreach ($raw as $row) {
+                $key = $row[$alias];
+                $result[$key] = (int) $row['__count'];
+            }
+        } else {
+            $result = [];
+            foreach ($raw as $row) {
+                $row['@count'] = (int) $row['__count'];
+                unset($row['__count']);
+                $result[] = $row;
+            }
+        }
+
+        $multiselect_fields = $this->_getMultiselectFields($valid_fields);
+        $result = $this->_explodeCountGroupedResult($result, $multiselect_fields);
+
+        $app->applyHookBoundTo($this, "{$this->hookPrefix}.countGroupedResult", [&$result]);
+
+        if ($this->__useDQLCache) {
+            $app->rcache->save($cache_key, $result);
+        }
+
+        return $result;
+    }
+
+    public function countGrouped(): array
+    {
+        return $this->getCountGroupedResult();
+    }
+
 }

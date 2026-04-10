@@ -23,7 +23,7 @@ $this->import('
         <div class="mc-header-menu-user__desktop">
             <a class="user" @click="toggle()">
                 <div class="user__name">
-                    <?= $app->user->profile->name ?: i::_e('Minha conta') ?>
+                    <?= $app->user?->profile?->name ?: i::_e('Minha conta') ?>
                 </div>
                 <div class="user__avatar">
                     <user-profile-avatar></user-profile-avatar>

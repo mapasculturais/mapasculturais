@@ -62,15 +62,21 @@ app.component('continuous-evaluation-form', {
         },
 
         evaluationData() {
+            const currentEvalConfig = $MAPAS.config.continuousEvaluationForm.currentEvaluation;
             return {
-                data: $MAPAS.config.continuousEvaluationForm.currentEvaluation?.evaluationData
+                data: currentEvalConfig?.evaluationData || {}
             };
         },
 
         currentEvaluation() {
+            const currentEvalConfig = $MAPAS.config.continuousEvaluationForm.currentEvaluation;
+            if (!currentEvalConfig) {
+                return null;
+            }
+            
             const api = new API('registrationevaluation');
-            const evaluation = api.getEntityInstance($MAPAS.config.continuousEvaluationForm.currentEvaluation.id);
-            evaluation.populate($MAPAS.config.continuousEvaluationForm.currentEvaluation);
+            const evaluation = api.getEntityInstance(currentEvalConfig.id);
+            evaluation.populate(currentEvalConfig);
             return evaluation;
         },
 
@@ -119,11 +125,18 @@ app.component('continuous-evaluation-form', {
         },
 
         handleCurrentEvaluationForm() {
-            return this.currentEvaluation?.status > 0 ? this.isEditable = false : this.isEditable = this.editable;
+            if (!this.currentEvaluation) {
+                this.isEditable = this.editable;
+                return;
+            }
+            
+            return this.currentEvaluation.status > 0 ? this.isEditable = false : this.isEditable = this.editable;
         },
 
         removeEvaluationAttachment(file) {
-            this.currentEvaluation.files.evaluationAttachment = undefined;
+            if (this.currentEvaluation && this.currentEvaluation.files) {
+                this.currentEvaluation.files.evaluationAttachment = undefined;
+            }
         },
 
         statusToString(status) {

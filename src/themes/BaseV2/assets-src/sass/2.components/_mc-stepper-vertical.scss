@@ -359,6 +359,50 @@ ol.mc-stepper-vertical>li.active::before {
         p {
             font-weight: 600;
         }
+
+        .appeal-phase-info {
+            display: flex;
+            flex-direction: row;
+            align-items: flex-start;
+            margin: calc(size(24) * -1) size(8) size(12);
+            padding: size(6) size(10);
+            border: 0;
+            border-radius: 0 0 size(15) size(15);
+            background: var(--mc-white);
+            position: relative;
+            z-index: 0;
+            width: 90%;
+            justify-content: space-between;
+
+            &::before {
+                content: '';
+                position: absolute;
+                top: 0;
+                left: 0;
+                right: 0;
+                height: 1px;
+                background: transparent;
+                opacity: .45;
+            }
+
+            .data-collection {
+                .data-collection-dates {
+                    display: flex;
+                    flex-direction: row;
+                    gap: size(4);
+                    justify-content: space-between;
+                }
+            }
+
+            .evaluation {
+                .evaluation-dates {
+                    display: flex;
+                    flex-direction: row;
+                    gap: size(4);
+                    justify-content: space-between;
+                }
+            }
+        }
     }
 
     .stepper-step {
@@ -585,4 +629,50 @@ ol.mc-stepper-vertical>li.active::before {
             flex-wrap: wrap;
         }
     }
+
+    .appeal-phase-info {
+        display: flex;
+        flex-direction: row;
+        align-items: flex-start;
+        margin: calc(size(24) * -1) size(8) size(12);
+        padding: size(6) size(10);
+        border: 0;
+        border-radius: 0 0 size(15) size(15);
+        background: var(--mc-white);
+        position: relative;
+        z-index: 0;
+        width: 90%;
+        justify-content: space-between;
+
+        &::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: transparent;
+            opacity: .45;
+        }
+
+        .data-collection {
+            .data-collection-dates {
+                display: flex;
+                flex-direction: row;
+                gap: size(4);
+                justify-content: space-between;
+            }
+        }
+
+        .evaluation {
+            .evaluation-dates {
+                display: flex;
+                flex-direction: row;
+                gap: size(4);
+                justify-content: space-between;
+            }
+        }
+    }
+
+    
 }

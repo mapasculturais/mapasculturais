@@ -1082,12 +1082,15 @@ class EvaluationsDistributionTest extends TestCase
             ->getInstance();
 
 
-        /** @var EvaluationMethodConfigurationAgentRelation[] */
-        $valuers = $opportunity->evaluationMethodConfiguration->agentRelations;
+        /** @var iterable<EvaluationMethodConfigurationAgentRelation> */
+        $valuerByAgentName = [];
+        foreach ($opportunity->evaluationMethodConfiguration->agentRelations as $relation) {
+            $valuerByAgentName[$relation->agent->name] = $relation;
+        }
 
-        $fulano = $valuers[0];
-        $ciclano = $valuers[1];
-        $beltrano = $valuers[2];
+        $fulano = $valuerByAgentName['fulano'];
+        $ciclano = $valuerByAgentName['ciclano'];
+        $beltrano = $valuerByAgentName['beltrano'];
 
         /** @var Connection */
         $conn = $this->app->em->getConnection();
