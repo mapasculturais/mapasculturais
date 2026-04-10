@@ -1204,6 +1204,12 @@ class ApiQuery {
     function getKeywordSubDQL(){
         $subdql = '';
         if($this->_keyword){
+            // Verifica se o repository suporta keyword
+            $repositoryClass = get_class($this->entityRepository);
+            if (!method_exists($repositoryClass, 'usesKeyword') || !$repositoryClass::usesKeyword()) {
+                return ''; // Repository não suporta keyword
+            }
+            
             $dqls = [];
             $keywords = explode(';', $this->_keyword);
             $alias = $this->getAlias('kword');

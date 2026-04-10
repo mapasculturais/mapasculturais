@@ -23,7 +23,10 @@ trait MagicCallers {
 
         $class = get_called_class();
         if(method_exists($class,'getClassName')){
-            $class = $class::getClassName();
+            $reflection = new \ReflectionMethod($class, 'getClassName');
+            if ($reflection->isStatic()) {
+                $class = $class::getClassName();
+            }
         }
         $classes = class_parents($class);
         array_unshift($classes, $class);
