@@ -13,7 +13,7 @@ $this->import('
 ');
 ?>
 
-<mc-tab label="<?php i::esc_attr_e('Cores e estilos') ?>" slug="style">
+<mc-tab label="<?php i::esc_attr_e('Cores e estilos') ?>" slug="themestyle">
     <div class="theme-customizer">
         <mc-alert small type="warning">
             <b><?= i::__('Atenção!') ?></b> <?= i::__('As modificações só serão aplicadas no sistema após atualizar a página.') ?>
