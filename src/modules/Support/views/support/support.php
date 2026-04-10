@@ -12,10 +12,10 @@ $this->addOpportunityPhasesToJs($entity);
 
 $this->import('
     mc-breadcrumb
-    v1-embed-tool
     opportunity-header
     mc-link
     opportunity-phase-header
+    opportunity-registrations-table
 ')
 ?>
 <div class="main-app opportunity-registrations">
@@ -29,6 +29,12 @@ $this->import('
     <div class="opportunity-registrations__container">
         <span class="title"> <?= i::__('Suporte') ?> </span>
         <opportunity-phase-header :phase="entity"></opportunity-phase-header>
-        <v1-embed-tool route="sopportlist" :id="entity.id" min-height="600px"></v1-embed-tool>
+        <opportunity-registrations-table
+            identifier="supportRegistrationsList"
+            :phase="entity"
+            status-not-editable
+            hide-actions
+            :visible-columns='<?= json_encode(['agent', 'status', 'category', 'consolidatedResult', 'updateTimestamp', 'sentTimestamp', 'createTimestamp']) ?>'
+        ></opportunity-registrations-table>
     </div>
 </div>
