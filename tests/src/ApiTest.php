@@ -17,7 +17,9 @@ use Tests\Traits\UserDirector;
 class ApiTest extends TestCase
 {
     use UserDirector,
-        SpaceDirector;
+        SpaceDirector,
+        OpportunityBuilder,
+        RegistrationDirector;
 
     function testInMultiselectMetadata()
     {
@@ -846,5 +848,387 @@ class ApiTest extends TestCase
         $this->assertEquals(2, $result['Fulano'], 'Certificando que countGrouped com filtro conta corretamente');
 
         $this->app->enableAccessControl();
+    }
+
+    // ================================================================
+    // Entity relation tests (distinct/countGrouped with owner.name etc.)
+    // ================================================================
+
+    private function createSpacesWithOwners(array $owner_names): array
+    {
+        $this->app->disableAccessControl();
+        $space_ids = [];
+        foreach ($owner_names as $name) {
+            $user = $this->userDirector->createUser();
+            $user->profile->name = $name;
+            $user->profile->save(true);
+            $space = $this->spaceDirector->createSpace($user->profile);
+            $space_ids[] = $space->id;
+        }
+        $this->processPCache();
+        $this->app->enableAccessControl();
+        return $space_ids;
+    }
+
+    function testDistinctEntityRelation()
+    {
+        $space_ids = $this->createSpacesWithOwners(['Alice', 'Alice', 'Bob']);
+
+        $query = new ApiQuery(Space::class, [
+            '@select' => 'owner.name',
+            '@order' => 'owner.name ASC',
+            'id' => API::IN($space_ids),
+        ]);
+
+        $result = $query->distinct();
+
+        $this->assertTrue(is_array($result) && !empty($result), 'distinct com owner.name retorna array');
+        $this->assertFalse(isset($result[0]['owner.name']), 'distinct com campo único de relação retorna array simples');
+        $this->assertEquals(['Alice', 'Bob'], array_values($result), 'distinct com owner.name retorna valores corretos');
+    }
+
+    function testDistinctEntityRelationMixedFields()
+    {
+        $this->app->disableAccessControl();
+        $space_ids = [];
+
+        $user1 = $this->userDirector->createUser();
+        $user1->profile->name = 'Alice';
+        $user1->profile->save(true);
+
+        $space_a = $this->spaceDirector->createSpace($user1->profile);
+        $space_a->name = 'Espaço A';
+        $space_a->save(true);
+        $space_ids[] = $space_a->id;
+
+        $space_b = $this->spaceDirector->createSpace($user1->profile);
+        $space_b->name = 'Espaço B';
+        $space_b->save(true);
+        $space_ids[] = $space_b->id;
+
+        $user2 = $this->userDirector->createUser();
+        $user2->profile->name = 'Bob';
+        $user2->profile->save(true);
+
+        $space_c = $this->spaceDirector->createSpace($user2->profile);
+        $space_c->name = 'Espaço A';
+        $space_c->save(true);
+        $space_ids[] = $space_c->id;
+
+        $this->processPCache();
+        $this->app->enableAccessControl();
+
+        $query = new ApiQuery(Space::class, [
+            '@select' => 'name,owner.name',
+            '@order' => 'name ASC,owner.name ASC',
+            'id' => API::IN($space_ids),
+        ]);
+
+        $result = $query->distinct();
+
+        $this->assertCount(3, $result, 'distinct com campos mistos retorna combinações corretas');
+        $this->assertEquals('Espaço A', $result[0]['name']);
+        $this->assertEquals('Alice', $result[0]['owner.name']);
+    }
+
+    function testDistinctEntityRelationInvalidRelation()
+    {
+        $this->expectException(InvalidArgument::class);
+        $query = new ApiQuery(Space::class, [
+            '@select' => 'nonExistentRelation.name',
+        ]);
+        $query->distinct();
+    }
+
+    function testDistinctEntityRelationInvalidField()
+    {
+        $this->expectException(InvalidArgument::class);
+        $query = new ApiQuery(Space::class, [
+            '@select' => 'owner.nonExistentField',
+        ]);
+        $query->distinct();
+    }
+
+    function testCountGroupedEntityRelation()
+    {
+        $space_ids = $this->createSpacesWithOwners(['Alice', 'Alice', 'Bob']);
+
+        $query = new ApiQuery(Space::class, [
+            '@select' => 'owner.name',
+            'id' => API::IN($space_ids),
+        ]);
+
+        $result = $query->countGrouped();
+
+        $this->assertTrue(is_array($result), 'countGrouped com owner.name retorna array');
+        $this->assertEquals(2, $result['Alice'], 'Alice tem 2 espaços');
+        $this->assertEquals(1, $result['Bob'], 'Bob tem 1 espaço');
+    }
+
+    function testCountGroupedEntityRelationMultipleFields()
+    {
+        $this->app->disableAccessControl();
+        $space_ids = [];
+
+        $user1 = $this->userDirector->createUser();
+        $user1->profile->name = 'Alice';
+        $user1->profile->save(true);
+
+        $space_a = $this->spaceDirector->createSpace($user1->profile);
+        $space_a->name = 'Espaço A';
+        $space_a->save(true);
+        $space_ids[] = $space_a->id;
+
+        $space_b = $this->spaceDirector->createSpace($user1->profile);
+        $space_b->name = 'Espaço B';
+        $space_b->save(true);
+        $space_ids[] = $space_b->id;
+
+        $user2 = $this->userDirector->createUser();
+        $user2->profile->name = 'Bob';
+        $user2->profile->save(true);
+
+        $space_c = $this->spaceDirector->createSpace($user2->profile);
+        $space_c->name = 'Espaço A';
+        $space_c->save(true);
+        $space_ids[] = $space_c->id;
+
+        $this->processPCache();
+        $this->app->enableAccessControl();
+
+        $query = new ApiQuery(Space::class, [
+            '@select' => 'name,owner.name',
+            'id' => API::IN($space_ids),
+        ]);
+
+        $result = $query->countGrouped();
+
+        $this->assertCount(3, $result, 'countGrouped com múltiplos campos incluindo relação retorna 3 grupos');
+        $found = false;
+        foreach ($result as $row) {
+            if ($row['name'] === 'Espaço A' && $row['owner.name'] === 'Alice') {
+                $this->assertEquals(1, $row['@count']);
+                $found = true;
+            }
+        }
+        $this->assertTrue($found, 'Encontrou grupo Espaço A / Alice');
+    }
+
+    function testCountGroupedEntityRelationOrderByRelationField()
+    {
+        $space_ids = $this->createSpacesWithOwners(['Zebra', 'Alice', 'Alice']);
+
+        $query = new ApiQuery(Space::class, [
+            '@select' => 'owner.name',
+            '@order' => 'owner.name ASC',
+            'id' => API::IN($space_ids),
+        ]);
+
+        $result = $query->countGrouped();
+
+        $keys = array_keys($result);
+        $this->assertEquals('Alice', $keys[0], 'Primeiro key é Alice (ASC)');
+        $this->assertEquals('Zebra', $keys[1], 'Segundo key é Zebra (ASC)');
+    }
+
+    function testCountGroupedEntityRelationOrderByCount()
+    {
+        $space_ids = $this->createSpacesWithOwners(['Alice', 'Alice', 'Alice', 'Bob', 'Bob']);
+
+        $query = new ApiQuery(Space::class, [
+            '@select' => 'owner.name',
+            '@order' => '@count ASC',
+            'id' => API::IN($space_ids),
+        ]);
+
+        $result = $query->countGrouped();
+
+        $keys = array_keys($result);
+        $this->assertEquals('Bob', $keys[0], 'Bob tem menos espaços (ASC)');
+        $this->assertEquals('Alice', $keys[1], 'Alice tem mais espaços (ASC)');
+    }
+
+    function testDistinctEntityRelationWithFilters()
+    {
+        $space_ids = $this->createSpacesWithOwners(['Alice', 'Alice', 'Bob']);
+
+        $query = new ApiQuery(Space::class, [
+            '@select' => 'owner.name',
+            'id' => API::IN(array_slice($space_ids, 0, 2)),
+        ]);
+
+        $result = $query->distinct();
+
+        $this->assertEquals(['Alice'], array_values($result), 'distinct com filtro por ID retorna apenas Alice');
+    }
+
+    // ================================================================
+    // @limit / @offset / @page tests
+    // ================================================================
+
+    function testDistinctWithLimit()
+    {
+        $this->app->disableAccessControl();
+        $ids = [];
+        foreach (['A', 'B', 'C', 'D', 'E'] as $name) {
+            $user = $this->userDirector->createUser();
+            $user->profile->name = $name;
+            $user->profile->save(true);
+            $ids[] = $user->profile->id;
+        }
+        $this->processPCache();
+        $this->app->enableAccessControl();
+
+        $query = new ApiQuery(Agent::class, [
+            '@select' => 'name',
+            '@order' => 'name ASC',
+            '@limit' => 3,
+            'id' => API::IN($ids),
+        ]);
+
+        $result = $query->distinct();
+
+        $this->assertCount(3, $result, 'distinct com @limit retorna 3 resultados');
+        $this->assertEquals(['A', 'B', 'C'], array_values($result));
+    }
+
+    function testDistinctWithOffset()
+    {
+        $this->app->disableAccessControl();
+        $ids = [];
+        foreach (['A', 'B', 'C', 'D', 'E'] as $name) {
+            $user = $this->userDirector->createUser();
+            $user->profile->name = $name;
+            $user->profile->save(true);
+            $ids[] = $user->profile->id;
+        }
+        $this->processPCache();
+        $this->app->enableAccessControl();
+
+        $query = new ApiQuery(Agent::class, [
+            '@select' => 'name',
+            '@order' => 'name ASC',
+            '@limit' => 2,
+            '@offset' => 2,
+            'id' => API::IN($ids),
+        ]);
+
+        $result = $query->distinct();
+
+        $this->assertCount(2, $result, 'distinct com @offset retorna 2 resultados');
+        $this->assertEquals(['C', 'D'], array_values($result));
+    }
+
+    function testDistinctWithPage()
+    {
+        $this->app->disableAccessControl();
+        $ids = [];
+        foreach (['A', 'B', 'C', 'D', 'E'] as $name) {
+            $user = $this->userDirector->createUser();
+            $user->profile->name = $name;
+            $user->profile->save(true);
+            $ids[] = $user->profile->id;
+        }
+        $this->processPCache();
+        $this->app->enableAccessControl();
+
+        $query = new ApiQuery(Agent::class, [
+            '@select' => 'name',
+            '@order' => 'name ASC',
+            '@limit' => 2,
+            '@page' => 2,
+            'id' => API::IN($ids),
+        ]);
+
+        $result = $query->distinct();
+
+        $this->assertCount(2, $result, 'distinct com @page=2 retorna 2 resultados');
+        $this->assertEquals(['C', 'D'], array_values($result));
+    }
+
+    function testCountGroupedWithLimit()
+    {
+        $this->app->disableAccessControl();
+        $ids = [];
+        foreach (['A', 'A', 'B', 'B', 'C'] as $name) {
+            $user = $this->userDirector->createUser();
+            $user->profile->name = $name;
+            $user->profile->save(true);
+            $ids[] = $user->profile->id;
+        }
+        $this->processPCache();
+        $this->app->enableAccessControl();
+
+        $query = new ApiQuery(Agent::class, [
+            '@select' => 'name',
+            '@order' => 'name ASC',
+            '@limit' => 2,
+            'id' => API::IN($ids),
+        ]);
+
+        $result = $query->countGrouped();
+
+        $this->assertCount(2, $result, 'countGrouped com @limit retorna 2 grupos');
+        $keys = array_keys($result);
+        $this->assertEquals('A', $keys[0]);
+        $this->assertEquals('B', $keys[1]);
+    }
+
+    function testCountGroupedWithOffset()
+    {
+        $this->app->disableAccessControl();
+        $ids = [];
+        foreach (['A', 'A', 'B', 'B', 'C'] as $name) {
+            $user = $this->userDirector->createUser();
+            $user->profile->name = $name;
+            $user->profile->save(true);
+            $ids[] = $user->profile->id;
+        }
+        $this->processPCache();
+        $this->app->enableAccessControl();
+
+        $query = new ApiQuery(Agent::class, [
+            '@select' => 'name',
+            '@order' => 'name ASC',
+            '@limit' => 2,
+            '@offset' => 1,
+            'id' => API::IN($ids),
+        ]);
+
+        $result = $query->countGrouped();
+
+        $this->assertCount(2, $result, 'countGrouped com @offset retorna 2 grupos');
+        $keys = array_keys($result);
+        $this->assertEquals('B', $keys[0]);
+        $this->assertEquals('C', $keys[1]);
+    }
+
+    function testCountGroupedWithPage()
+    {
+        $this->app->disableAccessControl();
+        $ids = [];
+        foreach (['A', 'A', 'B', 'B', 'C'] as $name) {
+            $user = $this->userDirector->createUser();
+            $user->profile->name = $name;
+            $user->profile->save(true);
+            $ids[] = $user->profile->id;
+        }
+        $this->processPCache();
+        $this->app->enableAccessControl();
+
+        $query = new ApiQuery(Agent::class, [
+            '@select' => 'name',
+            '@order' => 'name ASC',
+            '@limit' => 2,
+            '@page' => 1,
+            'id' => API::IN($ids),
+        ]);
+
+        $result = $query->countGrouped();
+
+        $this->assertCount(2, $result, 'countGrouped com @page=1 retorna 2 grupos');
+        $keys = array_keys($result);
+        $this->assertEquals('A', $keys[0]);
+        $this->assertEquals('B', $keys[1]);
     }
 }
