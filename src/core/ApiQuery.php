@@ -521,6 +521,8 @@ class ApiQuery {
     
     protected $_accessControlEnabled = true;
 
+    protected $_aggregationTerms = [];
+
     /**
      * @var string prefixo dos hooks 
      */
@@ -4152,6 +4154,42 @@ class ApiQuery {
         return $joins;
     }
 
+    protected function _renameAggregationAliases(array $result, array $valid_fields): array
+    {
+        $alias_map = [];
+        foreach ($valid_fields as $prop) {
+            if (preg_match('#^terms\.(\w+)$#', $prop, $m)) {
+                $alias_map['terms_' . $m[1]] = $prop;
+            } elseif (isset($this->_aggregationRelations[$prop])) {
+                $rel = $this->_aggregationRelations[$prop];
+                $alias_map[$rel['relation'] . '_' . $rel['field']] = $prop;
+            }
+        }
+        if (empty($alias_map)) {
+            return $result;
+        }
+
+        $is_single = count($valid_fields) === 1 && isset($alias_map[key($alias_map)]);
+
+        if ($is_single && !isset($result[0])) {
+            return $result;
+        }
+
+        if ($is_single) {
+            return $result;
+        }
+
+        return array_map(function ($row) use ($alias_map) {
+            foreach ($alias_map as $old => $new) {
+                if (array_key_exists($old, $row)) {
+                    $row[$new] = $row[$old];
+                    unset($row[$old]);
+                }
+            }
+            return $row;
+        }, $result);
+    }
+
     protected function _getMultiselectFields(array $valid_fields): array
     {
         $result = [];
@@ -4282,9 +4320,35 @@ class ApiQuery {
         return array_values($merged);
     }
 
+    protected $_aggregationRelations = [];
+
     protected function _validateSelectForAggregation()
     {
         $valid_fields = [];
+        $this->_aggregationTerms = [];
+        $this->_aggregationRelations = [];
+
+        if (isset($this->apiParams['@select'])) {
+            $raw_select = str_replace(' ', '', $this->apiParams['@select']);
+
+            if ($this->usesTaxonomies) {
+                if (preg_match_all('#terms\.(\w+)#', $raw_select, $matches)) {
+                    foreach ($matches[1] as $taxonomy_slug) {
+                        $taxonomy_key = 'term:' . $taxonomy_slug;
+                        if (isset($this->registeredTaxonomies[$taxonomy_key])) {
+                            $prop = 'terms.' . $taxonomy_slug;
+                            $valid_fields[] = $prop;
+                            $this->_aggregationTerms[] = $prop;
+                        } else {
+                            throw new Exceptions\Api\InvalidArgument("Aggregation queries: taxonomy '{$taxonomy_slug}' is not registered.");
+                        }
+                    }
+                }
+            }
+
+            $this->_validateEntityRelationFields($raw_select, $valid_fields);
+        }
+
         foreach ($this->_selecting as $prop) {
             if (!$prop || $prop[0] === '#') {
                 continue;
@@ -4295,8 +4359,12 @@ class ApiQuery {
                 $valid_fields[] = $prop;
             } elseif (in_array($prop, $this->_selectingMetadata)) {
                 $valid_fields[] = $prop;
+            } elseif (preg_match('#^terms\.(\w+)$#', $prop)) {
+                continue;
+            } elseif (preg_match('#^(\w+)\.(\w+)$#', $prop) && isset($this->_aggregationRelations[$prop])) {
+                continue;
             } else {
-                throw new Exceptions\Api\InvalidArgument("Aggregation queries (distinct/countGrouped) only support entity properties and metadata. '{$prop}' is not supported.");
+                throw new Exceptions\Api\InvalidArgument("Aggregation queries (distinct/countGrouped) only support entity properties, metadata and registered taxonomy terms. '{$prop}' is not supported.");
             }
         }
         if (empty($valid_fields)) {
@@ -4305,15 +4373,57 @@ class ApiQuery {
         return $valid_fields;
     }
 
+    protected function _validateEntityRelationFields(string $raw_select, array &$valid_fields): void
+    {
+        $known_prefixes = ['terms'];
+        if (preg_match_all('#(\w+)\.(\w+)#', $raw_select, $matches, PREG_SET_ORDER)) {
+            foreach ($matches as $m) {
+                $relation_name = $m[1];
+                $field_name = $m[2];
+                if (in_array($relation_name, $known_prefixes)) {
+                    continue;
+                }
+                if (!isset($this->entityRelations[$relation_name])) {
+                    throw new Exceptions\Api\InvalidArgument("Aggregation queries: relation '{$relation_name}' does not exist on entity.");
+                }
+                $mapping = $this->entityRelations[$relation_name];
+                if (!$mapping['isOwningSide'] || !in_array($mapping['type'], [1, 2])) {
+                    throw new Exceptions\Api\InvalidArgument("Aggregation queries: relation '{$relation_name}' is not a ManyToOne or owning-side OneToOne.");
+                }
+                $target_class = $mapping['targetEntity'];
+                $target_meta = $this->em->getClassMetadata($target_class);
+                $target_fields = array_keys($target_meta->fieldMappings);
+                if (!in_array($field_name, $target_fields)) {
+                    throw new Exceptions\Api\InvalidArgument("Aggregation queries: field '{$field_name}' does not exist on relation '{$relation_name}'.");
+                }
+                $prop = "{$relation_name}.{$field_name}";
+                $valid_fields[] = $prop;
+                $this->_aggregationRelations[$prop] = [
+                    'relation' => $relation_name,
+                    'field' => $field_name,
+                    'targetEntity' => $target_class,
+                ];
+            }
+        }
+    }
+
     protected function _getAggregationFields(array $valid_fields): array
     {
         $fields = [];
         $joins = '';
         $metadata_joined = [];
+        $relation_joined = [];
 
         foreach ($valid_fields as $prop) {
             if ($prop === 'type' && $this->usesTypes) {
                 $fields[] = ['dql' => 'e._type', 'alias' => 'type'];
+            } elseif (preg_match('#^terms\.(\w+)$#', $prop, $m)) {
+                $taxonomy_slug = $m[1];
+                $tr_alias = $this->getAlias('agg_tr_' . $taxonomy_slug);
+                $t_alias = $this->getAlias('agg_t_' . $taxonomy_slug);
+                $alias = 'terms_' . $taxonomy_slug;
+                $fields[] = ['dql' => "{$t_alias}.term", 'alias' => $alias, 'original' => $prop];
+                $joins .= "\n\tLEFT JOIN e.__termRelations {$tr_alias} LEFT JOIN {$tr_alias}.term {$t_alias} WITH {$t_alias}.taxonomy = '{$taxonomy_slug}'";
             } elseif (in_array($prop, $this->_selectingMetadata)) {
                 $meta_alias = $this->getAlias('agg_meta_' . $prop);
                 $fields[] = ['dql' => "{$meta_alias}.value", 'alias' => $prop];
@@ -4321,6 +4431,18 @@ class ApiQuery {
                     $joins .= "\n\tLEFT JOIN {$this->metadataClassName} {$meta_alias} WITH IDENTITY({$meta_alias}.owner) = e.{$this->pk} AND {$meta_alias}.key = '{$prop}'";
                     $metadata_joined[$prop] = true;
                 }
+            } elseif (isset($this->_aggregationRelations[$prop])) {
+                $rel = $this->_aggregationRelations[$prop];
+                $relation_name = $rel['relation'];
+                $field_name = $rel['field'];
+                if (!isset($relation_joined[$relation_name])) {
+                    $rel_alias = $this->getAlias('agg_rel_' . $relation_name);
+                    $relation_joined[$relation_name] = $rel_alias;
+                    $joins .= "\n\tLEFT JOIN e.{$relation_name} {$rel_alias}";
+                }
+                $rel_alias = $relation_joined[$relation_name];
+                $alias = $relation_name . '_' . $field_name;
+                $fields[] = ['dql' => "{$rel_alias}.{$field_name}", 'alias' => $alias, 'original' => $prop];
             } else {
                 $fields[] = ['dql' => "e.{$prop}", 'alias' => $prop];
             }
@@ -4343,7 +4465,7 @@ class ApiQuery {
                     $order_parts[] = "__count {$direction}";
                 } else {
                     foreach ($agg_fields as $f) {
-                        if ($f['alias'] === $key) {
+                        if ($f['alias'] === $key || (isset($f['original']) && $f['original'] === $key)) {
                             $order_parts[] = "{$f['dql']} {$direction}";
                             break;
                         }
@@ -4391,7 +4513,7 @@ class ApiQuery {
     {
         $app = App::i();
 
-        $cache_key = $this->getCacheKey(__METHOD__);
+        $cache_key = $this->getCacheKey(__METHOD__, limit: $this->_limit, offset: $this->getOffset());
 
         if ($this->__useDQLCache && $app->rcache->contains($cache_key)) {
             return $app->rcache->fetch($cache_key);
@@ -4405,15 +4527,20 @@ class ApiQuery {
 
         $params = $this->getDqlParams();
         $q->setParameters($params);
+        if ($this->_limit) {
+            $q->setMaxResults($this->_limit);
+            $q->setFirstResult($this->getOffset());
+        }
         $this->logDql($dql, __FUNCTION__, $params);
 
         $raw = $q->getResult(Query::HYDRATE_ARRAY);
 
         $valid_fields = $this->_validateSelectForAggregation();
+        $agg = $this->_getAggregationFields($valid_fields);
         $is_single = count($valid_fields) === 1;
 
         if ($is_single) {
-            $alias = $valid_fields[0];
+            $alias = $agg['fields'][0]['alias'];
             $result = array_map(fn($row) => $row[$alias], $raw);
         } else {
             $result = $raw;
@@ -4421,6 +4548,7 @@ class ApiQuery {
 
         $multiselect_fields = $this->_getMultiselectFields($valid_fields);
         $result = $this->_explodeDistinctResult($result, $multiselect_fields);
+        $result = $this->_renameAggregationAliases($result, $valid_fields);
 
         $app->applyHookBoundTo($this, "{$this->hookPrefix}.distinctResult", [&$result]);
 
@@ -4471,7 +4599,7 @@ class ApiQuery {
     {
         $app = App::i();
 
-        $cache_key = $this->getCacheKey(__METHOD__);
+        $cache_key = $this->getCacheKey(__METHOD__, limit: $this->_limit, offset: $this->getOffset());
 
         if ($this->__useDQLCache && $app->rcache->contains($cache_key)) {
             return $app->rcache->fetch($cache_key);
@@ -4485,15 +4613,20 @@ class ApiQuery {
 
         $params = $this->getDqlParams();
         $q->setParameters($params);
+        if ($this->_limit) {
+            $q->setMaxResults($this->_limit);
+            $q->setFirstResult($this->getOffset());
+        }
         $this->logDql($dql, __FUNCTION__, $params);
 
         $raw = $q->getResult(Query::HYDRATE_ARRAY);
 
         $valid_fields = $this->_validateSelectForAggregation();
+        $agg = $this->_getAggregationFields($valid_fields);
         $is_single = count($valid_fields) === 1;
 
         if ($is_single) {
-            $alias = $valid_fields[0];
+            $alias = $agg['fields'][0]['alias'];
             $result = [];
             foreach ($raw as $row) {
                 $key = $row[$alias];
@@ -4510,6 +4643,7 @@ class ApiQuery {
 
         $multiselect_fields = $this->_getMultiselectFields($valid_fields);
         $result = $this->_explodeCountGroupedResult($result, $multiselect_fields);
+        $result = $this->_renameAggregationAliases($result, $valid_fields);
 
         $app->applyHookBoundTo($this, "{$this->hookPrefix}.countGroupedResult", [&$result]);
 
