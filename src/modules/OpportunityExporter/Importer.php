@@ -400,6 +400,7 @@ class Importer
             $rfc->categories = $rfc_data['categories'];
             $rfc->registrationRanges = $rfc_data['registrationRanges'];
             $rfc->proponentTypes = $rfc_data['proponentTypes'];
+            $rfc->allowedFileTypes = $rfc_data['allowedFileTypes'] ?? [];
             $rfc->conditional = $conditional;
 
             if ($rfc->conditional && $conditional_field) {
