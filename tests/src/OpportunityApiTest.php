@@ -7,6 +7,7 @@ use MapasCulturais\Entities\Opportunity;
 use Tests\Abstract\TestCase;
 use Tests\Builders\PhasePeriods\Open;
 use Tests\Traits\OpportunityBuilder;
+use Tests\Traits\RequestFactory;
 use Tests\Traits\RegistrationDirector;
 use Tests\Traits\SpaceDirector;
 use Tests\Traits\UserDirector;
@@ -14,6 +15,7 @@ use Tests\Traits\UserDirector;
 class OpportunityApiTest extends TestCase
 {
     use OpportunityBuilder,
+        RequestFactory,
         RegistrationDirector,
         UserDirector,
         SpaceDirector;
@@ -114,5 +116,73 @@ class OpportunityApiTest extends TestCase
                 $this->assertEquals($opportunity->id, $result[$i], "[findIds] Certificando que na página {$page} a oportunidade de posição {$i} tem o valor correto");
             }
         }
+    }
+
+    function testDuplicateOpportunity()
+    {
+        $admin = $this->userDirector->createUser('admin');
+        $this->login($admin);
+
+        /** @var Opportunity */
+        $opportunity = $this->opportunityBuilder
+            ->reset(owner: $admin->profile, owner_entity: $admin->profile)
+            ->fillRequiredProperties()
+            ->setCategories(['Categoria A', 'Categoria B'])
+            ->setProponentTypes(['Pessoa Física', 'Pessoa Jurídica'])
+            ->setRanges([
+                ['label' => 'Faixa 1', 'limit' => 10, 'value' => 1]
+            ])
+            ->save()
+            ->firstPhase()
+                ->setRegistrationPeriod(new Open)
+                ->createStep('etapa principal')
+                ->createField('cor', 'select', title: 'Campo Cor', required: true, options: ['Azul', 'Vermelho'])
+                ->createField('resumo', 'text', title: 'Campo Resumo', required: false)
+                ->done()
+            ->save()
+            ->refresh()
+            ->getInstance();
+
+        $opportunity->registrationCategTitle = 'Categorias de teste';
+        $opportunity->save(true);
+
+        $latest_before = $this->app->repo('Opportunity')->findBy([], ['id' => 'DESC'], 1);
+        $max_id_before = $latest_before ? $latest_before[0]->id : 0;
+
+        $request = $this->requestFactory->POST(
+            controller_id: 'opportunity',
+            action: 'duplicate',
+            url_params: [$opportunity->id],
+            ajax: true
+        );
+        $this->assertStatus200($request, 'Garantindo status 200 ao duplicar oportunidade');
+
+        $this->app->em->clear();
+
+        $opportunities = $this->app->repo('Opportunity')->findBy([], ['id' => 'DESC']);
+
+        /** @var Opportunity */
+        $duplicated = null;
+        foreach ($opportunities as $item) {
+            if ($item->id > $max_id_before && str_contains((string) $item->name, '[Cópia]')) {
+                $duplicated = $item;
+                break;
+            }
+        }
+
+        $this->assertNotNull($duplicated, 'Certificando que a oportunidade duplicada foi encontrada');
+        $this->assertEquals(Opportunity::STATUS_DRAFT, $duplicated->status, 'Certificando que a cópia inicia como rascunho');
+        $this->assertEquals($admin->profile->id, $duplicated->owner->id, 'Certificando que o dono da cópia é o usuário autenticado');
+        $this->assertStringContainsString($opportunity->name, $duplicated->name, 'Certificando que o nome original é preservado no nome da cópia');
+        $this->assertStringContainsString('[Cópia]', $duplicated->name, 'Certificando que o sufixo de cópia é adicionado no nome');
+        $this->assertEquals($opportunity->registrationCategories, $duplicated->registrationCategories, 'Certificando que categorias de inscrição foram duplicadas');
+        
+        $duplicated_field_titles = array_map(
+            fn($field) => $field->title,
+            $duplicated->getRegistrationFieldConfigurations()
+        );
+
+        $this->assertContains('Campo Cor', $duplicated_field_titles, 'Certificando que o campo "Campo Cor" foi duplicado');
+        $this->assertContains('Campo Resumo', $duplicated_field_titles, 'Certificando que o campo "Campo Resumo" foi duplicado');
     }
 }

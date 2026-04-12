@@ -43,6 +43,95 @@ class Module extends \MapasCulturais\Module{
         $app->registerJobType(new Jobs\RedistributeCommitteeRegistrations(Jobs\RedistributeCommitteeRegistrations::SLUG));
         $app->registerJobType(new Jobs\ImportFields(Jobs\ImportFields::SLUG));
 
+        $app->hook('request.finish', function($data, $status) use ($app) {
+            if ((int) $status !== 200) {
+                return;
+            }
+
+            if (!($data instanceof Registration)) {
+                return;
+            }
+
+            $postData = $this->postData ?? [];
+            if (!is_array($postData)) {
+                return;
+            }
+
+            $hasValuerChange = array_key_exists('valuersIncludeList', $postData) ||
+                               array_key_exists('valuersExcludeList', $postData) ||
+                               array_key_exists('valuers', $postData);
+            if (!$hasValuerChange) {
+                return;
+            }
+
+            $desiredValuers = (array) ($postData['valuers'] ?? []);
+
+            $registrationId = (int) $data->id;
+
+            $conn = $app->em->getConnection();
+
+            $row = $conn->fetchAssociative(
+                'SELECT valuers, valuers_exceptions_list FROM registration WHERE id = ?',
+                [$registrationId]
+            );
+            $valuers = $row ? (array) json_decode($row['valuers'], true) : [];
+            $exceptions = $row ? (array) json_decode($row['valuers_exceptions_list'], true) : [];
+
+            $storedIncludeList = array_map('intval', (array) ($exceptions['include'] ?? []));
+            $storedExcludeList = array_map('intval', (array) ($exceptions['exclude'] ?? []));
+
+            $includeList = array_key_exists('valuersIncludeList', $postData)
+                ? array_map('intval', (array) $postData['valuersIncludeList'])
+                : $storedIncludeList;
+            $excludeList = array_key_exists('valuersExcludeList', $postData)
+                ? array_map('intval', (array) $postData['valuersExcludeList'])
+                : $storedExcludeList;
+
+            $changed = false;
+
+            foreach ($excludeList as $userId) {
+                if (isset($valuers[$userId]) || isset($valuers[(string) $userId])) {
+                    unset($valuers[$userId], $valuers[(string) $userId]);
+                    $changed = true;
+                }
+            }
+
+            $desiredUserIds = array_map('intval', array_keys($desiredValuers));
+            $candidateUserIds = array_unique(array_merge($includeList, $desiredUserIds));
+
+            foreach ($candidateUserIds as $userId) {
+                if (in_array($userId, $excludeList, true)) {
+                    continue;
+                }
+
+                $group = $desiredValuers[$userId] ?? $desiredValuers[(string) $userId] ?? null;
+
+                if ($group) {
+                    $currentGroup = $valuers[$userId] ?? $valuers[(string) $userId] ?? null;
+                    if ($currentGroup !== $group) {
+                        unset($valuers[(string) $userId]);
+                        $valuers[$userId] = $group;
+                        $changed = true;
+                    }
+                }
+            }
+
+
+            if ($changed) {
+                $conn->update(
+                    'registration',
+                    ['valuers' => json_encode((object) $valuers)],
+                    ['id' => $registrationId]
+                );
+
+                $app->em->clear();
+                $fresh = $app->repo('Registration')->find($registrationId);
+                if ($fresh) {
+                    $this->json($fresh, $status);
+                }
+            }
+        });
+
         $app->hook('mapas.printJsObject:before', function () {
             /** @var \MapasCulturais\Theme $this */
             $this->jsObject['EntitiesDescription']['registrationstep'] = \MapasCulturais\Entities\RegistrationStep::getPropertiesMetadata();
