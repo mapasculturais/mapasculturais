@@ -53,6 +53,7 @@ A plataforma já está em uso em diversos municipios, estados, no governo federa
 - Petrolina - https://mapacultural.petrolina.pe.gov.br/
 - Ribeirão das Neves - http://mapaculturaneves.com.br/
 - Santa Luzia - http://mapacultural.santaluzia.mg.gov.br/
+- Santo Anastácio - https://cultura.santoanastacio.sp.gov.br/
 - Santo André - https://culturaz.santoandre.sp.gov.br/
 - São Gonçalo do Amarante - https://mapacultural.saogoncalodoamarante.ce.gov.br/
 - São Bernardo - https://mapacultural.saobernardo.sp.gov.br/
