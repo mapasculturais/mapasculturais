@@ -54,12 +54,12 @@ class Goal extends \MapasCulturais\Entity {
     protected $workplan;
 
     /**
-    * @ORM\OneToMany(targetEntity=\OpportunityWorkplan\Entities\Delivery::class, mappedBy="goal", cascade={"persist", "remove"}, orphanRemoval=true)
+    * @ORM\OneToMany(targetEntity=\OpportunityWorkplan\Entities\Delivery::class, mappedBy="goal", cascade={"persist", "remove"})
     */
     protected $deliveries;
 
     /**
-    * @ORM\OneToMany(targetEntity=\OpportunityWorkplan\Entities\GoalMeta::class, mappedBy="owner", cascade={"remove","persist"}, orphanRemoval=true, fetch="EAGER")
+    * @ORM\OneToMany(targetEntity=\OpportunityWorkplan\Entities\GoalMeta::class, mappedBy="owner", cascade={"remove","persist"}, fetch="EAGER")
     */
     protected $__metadata;
 
