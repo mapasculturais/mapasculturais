@@ -30,7 +30,7 @@ class EvaluationMethodConfigurationAgentRelation extends AgentRelation {
     /**
      * @var \MapasCulturais\Entities\EvaluationMethodConfiguration
      *
-     * @ORM\ManyToOne(targetEntity="MapasCulturais\Entities\EvaluationMethodConfiguration")
+     * @ORM\ManyToOne(targetEntity="MapasCulturais\Entities\EvaluationMethodConfiguration", cascade={"persist"})
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="object_id", referencedColumnName="id", onDelete="CASCADE")
      * })
