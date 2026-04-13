@@ -112,6 +112,53 @@ class Module extends \MapasCulturais\Module{
     }
 
     /**
+     * Próxima fase na sequência do edital para validação de datas, ignorando fases de recurso.
+     * (Recursos são laterais à linha principal; não devem limitar o término das avaliações anteriores.)
+     */
+    public static function getNextPhaseForDateValidation(EvaluationMethodConfiguration $emc): EvaluationMethodConfiguration|Opportunity|null
+    {
+        $phase = $emc->opportunity;
+        $value = null;
+        while (!$value && ($phase = $phase->nextPhase)) {
+            if ($phase->isAppealPhase) {
+                continue;
+            }
+            if ($phase->isDataCollection || $phase->isLastPhase) {
+                $value = $phase;
+            } elseif ($childEmc = $phase->evaluationMethodConfiguration) {
+                $value = $childEmc;
+            }
+        }
+
+        return $value;
+    }
+
+    /**
+     * Data de término usada como limite superior na validação entre fases (fim de avaliação ou de coleta, conforme existir).
+     *
+     * @param Opportunity|EvaluationMethodConfiguration|null $phase
+     */
+    public static function getPhaseEndUpperBoundForValidation(EvaluationMethodConfiguration|Opportunity|null $phase): ?\DateTime
+    {
+        if ($phase === null) {
+            return null;
+        }
+        if ($phase instanceof EvaluationMethodConfiguration) {
+            return $phase->evaluationTo;
+        }
+        if ($phase->isLastPhase) {
+            return $phase->publishTimestamp;
+        }
+        if ($emc = $phase->evaluationMethodConfiguration) {
+            if ($emc->evaluationTo) {
+                return $emc->evaluationTo;
+            }
+        }
+
+        return $phase->registrationTo;
+    }
+
+    /**
      * Retorna a fase atual
      * @param Opportunity $base_opportunity
      * @return Opportunity
@@ -1411,7 +1458,18 @@ class Module extends \MapasCulturais\Module{
                 return;
             }
 
-            if ($next = $this->evaluationMethodConfiguration ?: $this->nextPhase ){
+            $next = $this->evaluationMethodConfiguration;
+            if (!$next) {
+                $walker = $this;
+                while ($n = $walker->nextPhase) {
+                    if (!$n->isAppealPhase) {
+                        $next = $n;
+                        break;
+                    }
+                    $walker = $n;
+                }
+            }
+            if ($next) {
                 if ($next->isLastPhase) {
                     $next_date_from = $next->publishTimestamp;
                     $next_date_to = $next->publishTimestamp;
@@ -1528,17 +1586,11 @@ class Module extends \MapasCulturais\Module{
                 $next_phase = $this->opportunity->lastPhase;
                 $error_message = i::__('A data final deve ser menor que a data de final de publicação dos resultados');
             } else {
-                $next_phase = $this->nextPhase;
+                $next_phase = self::getNextPhaseForDateValidation($this);
                 $error_message = i::__('A data final deve ser menor que a data de término da próxima fase');
             }
 
-            $date_to = null;
-
-            if($next_phase instanceof Opportunity) {
-                $date_to = $next_phase->isLastPhase ? $next_phase->publishTimestamp :  $next_phase->registrationTo;
-            } else if(is_object($next_phase)) {
-                $date_to = $next_phase->evaluationTo;
-            }
+            $date_to = self::getPhaseEndUpperBoundForValidation($next_phase);
 
             if($date_to) {
                 $date_to = $date_to->format('Y-m-d H:i:s');
