@@ -5,6 +5,10 @@ Todas as mudanças notáveis no projeto serão documentadas neste arquivo.
 O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/)
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+##[7.7.24] - 2026-04-13
+### Correções
+- Corrige erros durante a execução das migraçoes mc-updates e db-updates
+
 ##[7.7.23] - 2026-04-12
 - Corrige deleção indevida de roles, agents e procurations ao salvar entidades. Os mapeamentos ManyToOne de Agent, Role e Procuration não declaravam inversedBy, impedindo o Doctrine de sincronizar as coleções OneToMany do User, o que causava orphanRemoval durante computeChangeSets() no flush
 
