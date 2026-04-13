@@ -18,6 +18,9 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Aplica texto de internacionalização faltante no componente opportunity-registration-table
 - Corrige acento faltante no texto "Gênero" na listagem de pessoas do formulário de inscrição
 
+##[7.7.23] - 2026-04-12
+- Corrige deleção indevida de roles, agents e procurations ao salvar entidades. Os mapeamentos ManyToOne de Agent, Role e Procuration não declaravam inversedBy, impedindo o Doctrine de sincronizar as coleções OneToMany do User, o que causava orphanRemoval durante computeChangeSets() no flush
+
 ##[7.7.22] - 2026-04-07
 ### Correções
 - Faz correçao na criaçao e utilizaçao de modelos que ocasionava erros na criaçao dos steps do formulario de inscriçao
