@@ -165,21 +165,21 @@ class Space extends \MapasCulturais\Entity
     /**
      * @var \MapasCulturais\Entities\SpaceOpportunity[] Opportunities
      *
-     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\SpaceOpportunity", mappedBy="ownerEntity", cascade={"remove"}, orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\SpaceOpportunity", mappedBy="ownerEntity", cascade={"remove"})
      * @ORM\JoinColumn(name="id", referencedColumnName="object_id", onDelete="CASCADE")
     */
     protected $_relatedOpportunities;
 
 
     /**
-    * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\SpaceMeta", mappedBy="owner", cascade={"remove","persist"}, orphanRemoval=true, fetch="EAGER")
+    * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\SpaceMeta", mappedBy="owner", cascade={"remove","persist"}, fetch="EAGER")
     */
     protected $__metadata;
 
     /**
      * @var \MapasCulturais\Entities\SpaceFile[] Files
      *
-     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\SpaceFile", fetch="EXTRA_LAZY", mappedBy="owner", cascade={"remove"}, orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\SpaceFile", fetch="EXTRA_LAZY", mappedBy="owner", cascade={"remove"})
      * @ORM\JoinColumn(name="id", referencedColumnName="object_id", onDelete="CASCADE")
     */
     protected $__files;
@@ -187,7 +187,7 @@ class Space extends \MapasCulturais\Entity
     /**
      * @var \MapasCulturais\Entities\SpaceAgentRelation[] Agent Relations
      *
-     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\SpaceAgentRelation", mappedBy="owner", cascade={"remove"}, orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\SpaceAgentRelation", mappedBy="owner", cascade={"remove"})
      * @ORM\JoinColumn(name="id", referencedColumnName="object_id", onDelete="CASCADE")
     */
     protected $__agentRelations;
@@ -195,7 +195,7 @@ class Space extends \MapasCulturais\Entity
     /**
      * @var \MapasCulturais\Entities\SpaceTermRelation[] TermRelation
      *
-     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\SpaceTermRelation", fetch="LAZY", mappedBy="owner", cascade={"remove"}, orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\SpaceTermRelation", fetch="LAZY", mappedBy="owner", cascade={"remove"})
      * @ORM\JoinColumn(name="id", referencedColumnName="object_id", onDelete="CASCADE")
     */
     protected $__termRelations;
@@ -204,13 +204,13 @@ class Space extends \MapasCulturais\Entity
     /**
      * @var \MapasCulturais\Entities\SpaceSealRelation[] SpaceSealRelation
      *
-     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\SpaceSealRelation", fetch="LAZY", mappedBy="owner", cascade={"remove"}, orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\SpaceSealRelation", fetch="LAZY", mappedBy="owner", cascade={"remove"})
      * @ORM\JoinColumn(name="id", referencedColumnName="object_id", onDelete="CASCADE")
     */
     protected $__sealRelations;
     
     /**
-     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\SpacePermissionCache", mappedBy="owner", cascade={"remove"}, orphanRemoval=true, fetch="EXTRA_LAZY")
+     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\SpacePermissionCache", mappedBy="owner", cascade={"remove"}, fetch="EXTRA_LAZY")
      */
     protected $__permissionsCache;
 
