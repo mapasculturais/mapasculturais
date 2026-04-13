@@ -74,7 +74,7 @@ class Event extends \MapasCulturais\Entity
     #[ORM\Column(name: "status", type: "smallint", nullable: false)]
     protected $status = self::STATUS_ENABLED;
 
-    #[ORM\OneToMany(targetEntity: "MapasCulturais\Entities\EventOccurrence", mappedBy: "event", cascade: ["remove"], orphanRemoval: true)]
+    #[ORM\OneToMany(targetEntity: "MapasCulturais\Entities\EventOccurrence", mappedBy: "event", cascade: ["remove"])]
     protected $occurrences = [];
 
     #[ORM\ManyToOne(targetEntity: "MapasCulturais\Entities\Project", fetch: "LAZY")]

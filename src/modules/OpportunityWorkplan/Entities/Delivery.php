@@ -46,7 +46,7 @@ class Delivery extends \MapasCulturais\Entity {
 
     /**
     */
-    #[ORM\OneToMany(targetEntity: \OpportunityWorkplan\Entities\DeliveryMeta::class, mappedBy: "owner", cascade: ["remove", "persist"], orphanRemoval: true)]
+    #[ORM\OneToMany(targetEntity: \OpportunityWorkplan\Entities\DeliveryMeta::class, mappedBy: "owner", cascade: ["remove", "persist"])]
     protected $__metadata;
 
     /**
@@ -70,7 +70,7 @@ class Delivery extends \MapasCulturais\Entity {
     /**
      * @var \OpportunityWorkplan\Entities\DeliveryFile[] Files
      */
-    #[ORM\OneToMany(targetEntity: "OpportunityWorkplan\Entities\DeliveryFile", mappedBy: "owner", cascade: ["remove"], orphanRemoval: true)]
+    #[ORM\OneToMany(targetEntity: "OpportunityWorkplan\Entities\DeliveryFile", mappedBy: "owner", cascade: ["remove"])]
     #[ORM\JoinColumn(name: "id", referencedColumnName: "object_id", onDelete: "CASCADE")]
     protected $__files;
 
