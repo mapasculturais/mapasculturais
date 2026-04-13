@@ -18,6 +18,15 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Aplica texto de internacionalização faltante no componente opportunity-registration-table
 - Corrige acento faltante no texto "Gênero" na listagem de pessoas do formulário de inscrição
 
+##[7.7.25] - 2026-04-13
+### Correções
+- Corrige deleção indevida de roles, agents e procurations ao salvar entidades. Os mapeamentos ManyToOne de Agent, Role e Procuration não declaravam inversedBy, impedindo o Doctrine de sincronizar as coleções OneToMany do User, o que causava orphanRemoval durante computeChangeSets() no flush
+- Corrige detached entity ao deletar Job após execução em lotes
+- Corrige incompatibilidade de assinatura em EvaluationSimpleBuilder::setStatus
+
+### Refatoração
+- Remove orphanRemoval=true de todos os mapeamentos OneToMany. Deletes são controlados pelo método delete() das entidades, e cascade={"remove"} + onDelete="CASCADE" garantem a deleção em cascata
+
 ##[7.7.24] - 2026-04-13
 ### Correções
 - Corrige erros durante a execução das migraçoes mc-updates e db-updates

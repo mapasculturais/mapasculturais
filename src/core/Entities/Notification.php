@@ -85,13 +85,13 @@ class Notification extends \MapasCulturais\Entity{
     protected $request;
 
     /**
-     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\NotificationMeta", mappedBy="owner", cascade={"remove","persist"}, orphanRemoval=true, fetch="EAGER")
+     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\NotificationMeta", mappedBy="owner", cascade={"remove","persist"}, fetch="EAGER")
      */
     protected $__metadata;
     
     
     /**
-     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\NotificationPermissionCache", mappedBy="owner", cascade={"remove"}, orphanRemoval=true, fetch="EXTRA_LAZY")
+     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\NotificationPermissionCache", mappedBy="owner", cascade={"remove"}, fetch="EXTRA_LAZY")
      */
     protected $__permissionsCache;
 

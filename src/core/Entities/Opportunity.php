@@ -164,7 +164,7 @@ abstract class Opportunity extends \MapasCulturais\Entity
     /**
      * @var MapasCulturais\Entities\RegistrationStep[]
      * 
-     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\RegistrationStep", mappedBy="opportunity", cascade={"remove"}, orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\RegistrationStep", mappedBy="opportunity", cascade={"remove"})
      */
     protected $registrationSteps;
 
@@ -252,14 +252,14 @@ abstract class Opportunity extends \MapasCulturais\Entity
     protected $evaluationMethodConfiguration;
 
     /**
-    * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\OpportunityMeta", mappedBy="owner", cascade={"remove","persist"}, orphanRemoval=true, fetch="EAGER")
+    * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\OpportunityMeta", mappedBy="owner", cascade={"remove","persist"}, fetch="EAGER")
     */
     protected $__metadata;
 
     /**
      * @var OpportunityFile[] Files
      *
-     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\OpportunityFile", mappedBy="owner", cascade={"remove"}, orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\OpportunityFile", mappedBy="owner", cascade={"remove"})
      * @ORM\JoinColumn(name="id", referencedColumnName="object_id", onDelete="CASCADE")
     */
     protected $__files;
@@ -267,7 +267,7 @@ abstract class Opportunity extends \MapasCulturais\Entity
     /**
      * @var OpportunityAgentRelation[] Agent Relations
      *
-     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\OpportunityAgentRelation", mappedBy="owner", cascade={"remove"}, orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\OpportunityAgentRelation", mappedBy="owner", cascade={"remove"})
      * @ORM\JoinColumn(name="id", referencedColumnName="object_id", onDelete="CASCADE")
     */
     protected $__agentRelations;
@@ -276,7 +276,7 @@ abstract class Opportunity extends \MapasCulturais\Entity
     /**
      * @var OpportunityTermRelation[] TermRelation
      *
-     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\OpportunityTermRelation", fetch="LAZY", mappedBy="owner", cascade={"remove"}, orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\OpportunityTermRelation", fetch="LAZY", mappedBy="owner", cascade={"remove"})
      * @ORM\JoinColumn(name="id", referencedColumnName="object_id", onDelete="CASCADE")
     */
     protected $__termRelations;
@@ -285,13 +285,13 @@ abstract class Opportunity extends \MapasCulturais\Entity
     /**
      * @var OpportunitySealRelation[] OpportunitySealRelation
      *
-     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\OpportunitySealRelation", fetch="LAZY", mappedBy="owner", cascade={"remove"}, orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\OpportunitySealRelation", fetch="LAZY", mappedBy="owner", cascade={"remove"})
      * @ORM\JoinColumn(name="id", referencedColumnName="object_id", onDelete="CASCADE")
     */
     protected $__sealRelations;
 
     /**
-     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\OpportunityPermissionCache", mappedBy="owner", cascade={"remove"}, orphanRemoval=true, fetch="EXTRA_LAZY")
+     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\OpportunityPermissionCache", mappedBy="owner", cascade={"remove"}, fetch="EXTRA_LAZY")
      */
     protected $__permissionsCache;
 
