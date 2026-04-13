@@ -85,7 +85,7 @@ class Agent extends \MapasCulturais\Entity
     #[ORM\Column(name: "status", type: "smallint", nullable: false)]
     protected $status = self::STATUS_ENABLED;
 
-    #[ORM\ManyToOne(targetEntity: "MapasCulturais\Entities\User")]
+    #[ORM\ManyToOne(targetEntity: "MapasCulturais\Entities\User", inversedBy: "agents")]
     #[ORM\JoinColumn(name: "user_id", referencedColumnName: "id", onDelete: "CASCADE")]
     protected $user;
 
