@@ -162,7 +162,7 @@ class Agent extends \MapasCulturais\Entity
     /**
      * @var \MapasCulturais\Entities\User
      *
-     * @ORM\ManyToOne(targetEntity="MapasCulturais\Entities\User", fetch="LAZY")
+     * @ORM\ManyToOne(targetEntity="MapasCulturais\Entities\User", inversedBy="agents", fetch="LAZY")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="user_id", referencedColumnName="id", onDelete="CASCADE")
      * })
