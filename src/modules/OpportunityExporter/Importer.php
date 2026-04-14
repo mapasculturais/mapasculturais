@@ -17,6 +17,7 @@ use MapasCulturais\Entities\RegistrationFileConfiguration;
 use MapasCulturais\Entities\RegistrationStep;
 use MapasCulturais\Entities\Space;
 use MapasCulturais\Entity;
+use MapasCulturais\i;
 
 class Importer
 {
@@ -318,6 +319,10 @@ class Importer
 
     public function importForm(Opportunity $phase, array $data)
     {
+        $this->stepsMap = [];
+        $this->fieldsMap = [];
+        $this->attachmentsMap = [];
+
         $this->importFormSteps($phase, $data['steps'] ?? []);
         $this->importFormFields($phase, $data['fields'] ?? []);
         $this->importFormAttachments($phase, $data['attachments'] ?? []);
@@ -341,46 +346,78 @@ class Importer
 
     public function importFormFields(Opportunity $phase, array $data)
     {
-        $next_round = [];
-        foreach ($data as $id => $field_data) {
-            $conditional = $field_data['conditional'] ?? false;
-            $conditional_field = $field_data['conditionalField'] ?? null;
+        $pending = $data;
 
-            if ($conditional && $conditional_field && !isset($this->fieldsMap[$conditional_field])) {
-                $next_round[$id] = $field_data;
-                continue;
+        while ($pending !== []) {
+            $next_round = [];
+            $imported_count = 0;
+
+            foreach ($pending as $id => $field_data) {
+                $conditional = $field_data['conditional'] ?? false;
+                $conditional_field = $field_data['conditionalField'] ?? null;
+
+                if ($conditional && $conditional_field && !isset($this->fieldsMap[$conditional_field])) {
+                    $next_round[$id] = $field_data;
+                    continue;
+                }
+
+                $this->persistImportedRegistrationField($phase, $id, $field_data);
+                $imported_count++;
             }
 
-            $field = new RegistrationFieldConfiguration;
-            $field->owner = $phase;
-            $field->step = $this->stepsMap[$field_data['step']];
-
-            $field->title = $field_data['title'];
-            $field->description = $field_data['description'];
-            $field->maxSize = $field_data['maxSize'];
-            $field->required = $field_data['required'];
-            $field->fieldType = $field_data['fieldType'];
-            $field->displayOrder = $field_data['displayOrder'];
-            $field->fieldOptions = $field_data['fieldOptions'];
-            $field->config = $field_data['config'];
-            $field->categories = $field_data['categories'];
-            $field->registrationRanges = $field_data['registrationRanges'];
-            $field->proponentTypes = $field_data['proponentTypes'];
-            $field->conditional = $conditional;
-
-            if ($field->conditional && $conditional_field) {
-                $field->conditionalField = $this->fieldsMap[$conditional_field]->fieldName;
-                $field->conditionalValue = $field_data['conditionalValue'];
+            if ($next_round === []) {
+                break;
             }
 
-            $field->save(true);
+            if ($imported_count === 0) {
+                foreach ($next_round as $id => $field_data) {
+                    $field_data['conditional'] = false;
+                    $field_data['conditionalField'] = null;
+                    unset($field_data['conditionalValue']);
+                    $this->persistImportedRegistrationField($phase, $id, $field_data);
+                }
 
-            $this->fieldsMap[$id] = $field;
+                App::i()->log->warning(i::__(
+                    'Importação de oportunidade: alguns campos tinham condição apontando para outro campo inexistente ou em dependência circular; a condição foi ignorada para permitir concluir a importação.'
+                ));
+
+                break;
+            }
+
+            $pending = $next_round;
+        }
+    }
+
+    protected function persistImportedRegistrationField(Opportunity $phase, string|int $id, array $field_data): void
+    {
+        $conditional = $field_data['conditional'] ?? false;
+        $conditional_field = $field_data['conditionalField'] ?? null;
+
+        $field = new RegistrationFieldConfiguration;
+        $field->owner = $phase;
+        $field->step = $this->stepsMap[$field_data['step']];
+
+        $field->title = $field_data['title'];
+        $field->description = $field_data['description'];
+        $field->maxSize = $field_data['maxSize'];
+        $field->required = $field_data['required'];
+        $field->fieldType = $field_data['fieldType'];
+        $field->displayOrder = $field_data['displayOrder'];
+        $field->fieldOptions = $field_data['fieldOptions'];
+        $field->config = $field_data['config'];
+        $field->categories = $field_data['categories'];
+        $field->registrationRanges = $field_data['registrationRanges'];
+        $field->proponentTypes = $field_data['proponentTypes'];
+        $field->conditional = $conditional;
+
+        if ($field->conditional && $conditional_field) {
+            $field->conditionalField = $this->fieldsMap[$conditional_field]->fieldName;
+            $field->conditionalValue = $field_data['conditionalValue'];
         }
 
-        if ($next_round) {
-            $this->importFormFields($phase, $next_round);
-        }
+        $field->save(true);
+
+        $this->fieldsMap[$id] = $field;
     }
 
     public function importFormAttachments(Opportunity $phase, array $data)
@@ -403,8 +440,17 @@ class Importer
             $rfc->conditional = $conditional;
 
             if ($rfc->conditional && $conditional_field) {
-                $rfc->conditionalField = $this->fieldsMap[$conditional_field]->fieldName;
-                $rfc->conditionalValue = $rfc_data['conditionalValue'];
+                if (isset($this->fieldsMap[$conditional_field])) {
+                    $rfc->conditionalField = $this->fieldsMap[$conditional_field]->fieldName;
+                    $rfc->conditionalValue = $rfc_data['conditionalValue'];
+                } else {
+                    $rfc->conditional = false;
+                    App::i()->log->warning(i::__(
+                        'Importação de oportunidade: anexo com condição apontando para o campo '
+                        . $conditional_field
+                        . ', que não existe nesta importação; a condição foi ignorada.'
+                    ));
+                }
             }
 
             $rfc->save(true);
