@@ -1561,6 +1561,54 @@ module.controller('RegistrationFieldsController', ['$scope', '$rootScope', '$int
     $scope.data.editableEntity = {
         id: MapasCulturais.registration.id
     };
+
+    $scope.isDateField = function(field) {
+        if (!field) {
+            return false;
+        }
+
+        if (field.fieldType === 'date') {
+            return true;
+        }
+
+        const relatedFieldType = field?.fieldType;
+        const entityField = field?.config?.entityField;
+
+        if (!entityField) {
+            return false;
+        }
+
+        if (['agent-owner-field', 'agent-collective-field'].includes(relatedFieldType)) {
+            return MapasCulturais.EntitiesDescription.agent?.[entityField]?.type === 'date';
+        }
+
+        if (relatedFieldType === 'space-field') {
+            return MapasCulturais.EntitiesDescription.space?.[entityField]?.type === 'date';
+        }
+
+        return false;
+    }
+
+    $scope.normalizeDateFieldValue = function(field, value) {
+        if (!$scope.isDateField(field) || value === undefined || value === null || value === '') {
+            return value;
+        }
+
+        if (value instanceof Date) {
+            return moment(value).format('YYYY-MM-DD');
+        }
+
+        if (value?._date) {
+            return moment(value._date).format('YYYY-MM-DD');
+        }
+
+        if (typeof value === 'string' && moment(value, moment.ISO_8601, true).isValid()) {
+            return moment(value).format('YYYY-MM-DD');
+        }
+
+        return value;
+    }
+
     $scope.saveField = function (field, value, delay) {
 
         if(field.fieldType === "agent-owner-field") {
@@ -1570,6 +1618,7 @@ module.controller('RegistrationFieldsController', ['$scope', '$rootScope', '$int
             }
         }
 
+        value = $scope.normalizeDateFieldValue(field, value);
 
         delete field.error;
 
