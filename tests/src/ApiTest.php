@@ -5,10 +5,14 @@ namespace Test;
 use MapasCulturais\API;
 use MapasCulturais\ApiQuery;
 use MapasCulturais\Entities\Agent;
-use MapasCulturais\Exceptions\Api\InvalidArgument;
+use MapasCulturais\Entities\Opportunity;
+use MapasCulturais\Entities\Registration;
 use MapasCulturais\Entities\Space;
 use MapasCulturais\Entities\User;
+use MapasCulturais\Exceptions\Api\InvalidArgument;
+use MapasCulturais\Exceptions\Api\PropertyDoesNotExists;
 use Tests\Abstract\TestCase;
+use Tests\Builders\PhasePeriods\Open;
 use Tests\Traits\OpportunityBuilder;
 use Tests\Traits\RegistrationDirector;
 use Tests\Traits\SpaceDirector;
@@ -1230,5 +1234,177 @@ class ApiTest extends TestCase
         $keys = array_keys($result);
         $this->assertEquals('A', $keys[0]);
         $this->assertEquals('B', $keys[1]);
+    }
+
+    // ================================================================
+    // Filter by entity relation property tests
+    // ================================================================
+
+    function testFilterByRelationName()
+    {
+        $space_ids = $this->createSpacesWithOwners(['Alice Silva', 'Alice Souza', 'Bob Santos']);
+
+        $query = new ApiQuery(Space::class, [
+            '@select' => 'id',
+            'owner.name' => 'ILIKE(Alice%)',
+            'id' => API::IN($space_ids),
+        ]);
+
+        $result = $query->find();
+        $this->assertCount(2, $result, 'Certificando que filtro por owner.name com ILIKE retorna espaços de agentes chamados Alice');
+    }
+
+    function testFilterByRelationId()
+    {
+        $this->app->disableAccessControl();
+
+        $user1 = $this->userDirector->createUser();
+        $space1 = $this->spaceDirector->createSpace($user1->profile);
+
+        $user2 = $this->userDirector->createUser();
+        $space2 = $this->spaceDirector->createSpace($user2->profile);
+
+        $space_ids = [$space1->id, $space2->id];
+
+        $this->processPCache();
+        $this->app->enableAccessControl();
+
+        $query = new ApiQuery(Space::class, [
+            '@select' => 'id',
+            'owner.id' => 'EQ(' . $user1->profile->id . ')',
+            'id' => API::IN($space_ids),
+        ]);
+
+        $result = $query->find();
+        $this->assertCount(1, $result, 'Certificando que filtro por owner.id retorna apenas o espaço do agente correto');
+        $this->assertEquals($space1->id, $result[0]['id'], 'Certificando que o espaço retornado pertence ao owner filtrado');
+    }
+
+    function testFilterByRegistrationOpportunityId()
+    {
+        $this->app->disableAccessControl();
+        $admin = $this->userDirector->createUser('admin');
+        $this->login($admin);
+
+        $opp1 = $this->opportunityBuilder
+            ->reset(owner: $admin->profile, owner_entity: $admin->profile)
+            ->fillRequiredProperties()
+            ->firstPhase()
+                ->setRegistrationPeriod(new Open)
+                ->done()
+            ->save()
+            ->getInstance();
+
+        $opp2 = $this->opportunityBuilder
+            ->reset(owner: $admin->profile, owner_entity: $admin->profile)
+            ->fillRequiredProperties()
+            ->firstPhase()
+                ->setRegistrationPeriod(new Open)
+                ->done()
+            ->save()
+            ->getInstance();
+
+        $this->registrationDirector->createSentRegistrations($opp1, 2);
+        $this->registrationDirector->createSentRegistrations($opp2, 3);
+
+        $this->processPCache();
+
+        $query = new ApiQuery(Registration::class, [
+            '@select' => 'id',
+            'opportunity.id' => 'EQ(' . $opp1->id . ')',
+        ]);
+
+        $result = $query->find();
+        $this->assertCount(2, $result, 'Certificando que filtro por opportunity.id retorna as inscrições da oportunidade correta');
+
+        $query2 = new ApiQuery(Registration::class, [
+            '@select' => 'id',
+            'opportunity.id' => 'EQ(' . $opp2->id . ')',
+        ]);
+
+        $result2 = $query2->find();
+        $this->assertCount(3, $result2, 'Certificando que filtro por opportunity.id retorna as inscrições da segunda oportunidade');
+
+        $this->app->enableAccessControl();
+    }
+
+    function testFilterByRelationInvalidRelation()
+    {
+        $this->expectException(PropertyDoesNotExists::class);
+        new ApiQuery(Space::class, [
+            '@select' => 'id',
+            'nonExistentRelation.name' => 'EQ(test)',
+        ]);
+    }
+
+    function testFilterByRelationInvalidProperty()
+    {
+        $this->expectException(PropertyDoesNotExists::class);
+        new ApiQuery(Space::class, [
+            '@select' => 'id',
+            'owner.nonExistentProperty' => 'EQ(test)',
+        ]);
+    }
+
+    function testFilterByRelationWithUnderscoreKey()
+    {
+        $space_ids = $this->createSpacesWithOwners(['Alice', 'Alice', 'Bob']);
+
+        $query = new ApiQuery(Space::class, [
+            '@select' => 'id',
+            'owner_name' => 'ILIKE(Alice%)',
+            'id' => API::IN($space_ids),
+        ]);
+
+        $result = $query->find();
+        $this->assertCount(2, $result, 'Certificando que filtro com underscore (owner_name) funciona como alias de owner.name');
+    }
+
+    function testFilterByRegistrationOpportunityType()
+    {
+        $this->app->disableAccessControl();
+        $admin = $this->userDirector->createUser('admin');
+        $this->login($admin);
+
+        $opp_type_9 = $this->opportunityBuilder
+            ->reset(owner: $admin->profile, owner_entity: $admin->profile)
+            ->fillRequiredProperties()
+            ->setType(9)
+            ->firstPhase()
+                ->setRegistrationPeriod(new Open)
+                ->done()
+            ->save()
+            ->getInstance();
+
+        $opp_type_23 = $this->opportunityBuilder
+            ->reset(owner: $admin->profile, owner_entity: $admin->profile)
+            ->fillRequiredProperties()
+            ->setType(23)
+            ->firstPhase()
+                ->setRegistrationPeriod(new Open)
+                ->done()
+            ->save()
+            ->getInstance();
+
+        $this->registrationDirector->createSentRegistrations($opp_type_9, 2);
+        $this->registrationDirector->createSentRegistrations($opp_type_23, 3);
+
+        $this->processPCache();
+
+        $query_type_9 = new ApiQuery(Registration::class, [
+            '@select' => 'id',
+            'opportunity.type' => 'EQ(9)',
+        ]);
+        $result_type_9 = $query_type_9->find();
+        $this->assertCount(2, $result_type_9, 'Certificando que filtro por opportunity.type=EQ(9) retorna 2 inscrições de oportunidades do tipo Edital');
+
+        $query_type_23 = new ApiQuery(Registration::class, [
+            '@select' => 'id',
+            'opportunity.type' => 'EQ(23)',
+        ]);
+        $result_type_23 = $query_type_23->find();
+        $this->assertCount(3, $result_type_23, 'Certificando que filtro por opportunity.type=EQ(23) retorna 3 inscrições de oportunidades do tipo Curso');
+
+        $this->app->enableAccessControl();
     }
 }
