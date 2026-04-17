@@ -202,4 +202,68 @@ class OpportunityExporterTest extends TestCase
             }
         }
     }
+
+    function testExportImportOpportunityWithoutDatesDoesNotIncludeEvaluationPhaseDates()
+    {
+        $admin = $this->userDirector->createUser('admin');
+        $this->login($admin);
+
+        $this->opportunityBuilder
+            ->reset(owner: $admin->profile, owner_entity: $admin->profile)
+            ->fillRequiredProperties()
+            ->save()
+            ->firstPhase()
+                ->setRegistrationPeriod(new Open)
+                ->createStep('Informações')
+                ->done()
+            ->save()
+            ->addEvaluationPhase(EvaluationMethods::simple)
+                ->setEvaluationPeriod(new ConcurrentEndingAfter)
+                ->save()
+                ->done()
+            ->refresh();
+
+        $opportunity = $this->opportunityBuilder->getInstance();
+
+        $exporter = new Exporter(
+            $opportunity,
+            infos: true,
+            files: false,
+            images: false,
+            dates: false,
+            vacancyLimits: false,
+            workplan: false,
+            statusLabels: false,
+            appealPhases: false,
+            monitoringPhases: false
+        );
+
+        $data = json_decode($exporter->export(), true);
+        $exported_evaluation_phase = $data['phases'][0]['evaluationPhase'];
+
+        $this->assertArrayNotHasKey('evaluationFrom', $exported_evaluation_phase, 'Garantindo que a exportação sem datas não inclui a data inicial da fase de avaliação');
+        $this->assertArrayNotHasKey('evaluationTo', $exported_evaluation_phase, 'Garantindo que a exportação sem datas não inclui a data final da fase de avaliação');
+
+        $importOwner = $this->userDirector->createUser()->profile;
+
+        $importer = new Importer(
+            $importOwner,
+            $data,
+            files: false,
+            images: false,
+            dates: false,
+            vacancyLimits: false,
+            workplan: false,
+            statusLabels: false,
+            appealPhases: false,
+            monitoringPhases: false
+        );
+
+        $imported = $importer->import();
+        $imported->save(true);
+        $imported = $imported->refreshed();
+
+        $this->assertNull($imported->evaluationMethodConfiguration->evaluationFrom, 'Garantindo que a importação sem datas não define a data inicial da fase de avaliação');
+        $this->assertNull($imported->evaluationMethodConfiguration->evaluationTo, 'Garantindo que a importação sem datas não define a data final da fase de avaliação');
+    }
 }
