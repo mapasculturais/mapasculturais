@@ -2,16 +2,18 @@
 
 class OpportunityWorkplanMonitoringSummaryStaticTest extends \PHPUnit\Framework\TestCase
 {
-    public function testMonitoringValidationSummaryIsDerivedFromStructuredEntityErrors(): void
+    public function testMonitoringValidationIsGuardedByReportingPhase(): void
     {
         $module = file_get_contents(__DIR__ . '/../../src/modules/OpportunityWorkplan/Module.php');
 
-        $this->assertStringContainsString('foreach ($goal->validationErrors as $field => $messages)', $module);
-        $this->assertStringContainsString('foreach ($delivery->validationErrors as $field => $messages)', $module);
-        $this->assertStringContainsString("\$appendEntityValidationSummary('goal', 'meta'", $module);
-        $this->assertStringContainsString("\$appendEntityValidationSummary('delivery', 'entrega'", $module);
+        // Validação de monitoramento deve estar presente no hook sendValidationErrors
+        $this->assertStringContainsString('isReportingPhase', $module);
+        $this->assertStringContainsString('executedHasCommunityCoauthors', $module);
+        $this->assertStringContainsString('executedHasPressStrategy', $module);
+        // Validação via validationErrors da entidade foi removida (causa duplicação)
+        $this->assertStringNotContainsString('foreach ($delivery->validationErrors as $field => $messages)', $module);
+        // Labels de campo devem existir para formatação das mensagens
         $this->assertStringContainsString("'executionDetail' => 'Detalhamento da execução da meta'", $module);
-        $this->assertStringContainsString("'executedHasPressStrategy' => 'Estratégia executada de relacionamento com imprensa'", $module);
         $this->assertStringContainsString("'executedDocumentationTypes' => 'Tipos de documentação produzida'", $module);
     }
 }
