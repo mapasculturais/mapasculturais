@@ -3615,6 +3615,19 @@ class ApiQuery {
                 $this->_addFilterByEntityProperty($key, $value, '_type');
             } elseif ($key[0] !== '_' && strpos($key, '.') > 0) {
                 $this->_addFilterByEntityRelation($key, $value);
+            } elseif ($key[0] !== '_' && strpos($key, '_') > 0) {
+                $dotKey = preg_replace('/_(?=[^_]+$)/', '.', $key, 1);
+                if (isset($this->entityRelations[explode('.', $dotKey)[0]])) {
+                    $this->_addFilterByEntityRelation($dotKey, $value);
+                } elseif ($this->usesTaxonomies && isset($this->registeredTaxonomies[$key])) {
+                    $this->_addFilterByTermTaxonomy($key, $value);
+                } elseif ($this->usesMetadata && in_array($key, $this->registeredMetadata)) {
+                    $this->_addFilterByMetadata($key, $value);
+                } elseif ($this->usesFiles && in_array($key, $this->registeredFileGroups)) {
+                    $this->_addFilterByFileGroup($key, $value);
+                } elseif ($key != 'callback') {
+                    throw new Exceptions\Api\PropertyDoesNotExists("property $key does not exists");
+                }
             } elseif ($this->usesTaxonomies && isset($this->registeredTaxonomies[$key])) {
                 $this->_addFilterByTermTaxonomy($key, $value);
             } elseif ($this->usesMetadata && in_array($key, $this->registeredMetadata)) {
@@ -3763,7 +3776,48 @@ class ApiQuery {
      * @return void
      */
     protected function _addFilterByEntityRelation($key, $value) {
-        // @TODO: implementar
+        $parts = explode('.', $key, 2);
+        if (count($parts) !== 2) {
+            return;
+        }
+
+        [$relationName, $subProperty] = $parts;
+
+        if (!isset($this->entityRelations[$relationName])) {
+            throw new Exceptions\Api\PropertyDoesNotExists("property {$key} does not exists");
+        }
+
+        $relation = $this->entityRelations[$relationName];
+        $targetEntity = $relation['targetEntity'];
+
+        $subquery = new ApiQuery($targetEntity, [$subProperty => $value]);
+
+        if ($relation['isOwningSide']) {
+            $sub_property = 'id';
+            $main_property = $relationName;
+        } else {
+            $mappedBy = $relation['mappedBy'] ?? null;
+            if (!$mappedBy) {
+                throw new Exceptions\Api\PropertyDoesNotExists("property {$key} does not exists");
+            }
+            $sub_property = $mappedBy;
+            $main_property = $this->pk;
+        }
+
+        $property_type = $this->entityClassMetadata->fieldMappings[$main_property]['type'] ?? false;
+        $sub_dql = $subquery->getSubDQL($sub_property, $property_type);
+
+        $sub_params = $subquery->getDqlParams();
+        if (!empty($sub_params)) {
+            $sub_id = spl_object_id($subquery);
+            foreach ($sub_params as $pkey => $pval) {
+                $new_pkey = "sq{$sub_id}_{$pkey}";
+                $sub_dql = preg_replace('/:' . preg_quote($pkey, '/') . '(?!\w)/', ":{$new_pkey}", $sub_dql);
+                $this->_dqlParams[$new_pkey] = $pval;
+            }
+        }
+
+        $this->_whereDqls[] = "e.{$main_property} IN ({$sub_dql})";
     }
 
     /**
