@@ -72,7 +72,7 @@ class Subsite extends \MapasCulturais\Entity
     /**
      * @var \MapasCulturais\Entities\Role[] Role
      */
-    #[ORM\OneToMany(targetEntity: "MapasCulturais\Entities\Role", mappedBy: "subsite", cascade: ["remove"], orphanRemoval: true)]
+    #[ORM\OneToMany(targetEntity: "MapasCulturais\Entities\Role", mappedBy: "subsite", cascade: ["remove"])]
     #[ORM\JoinColumn(name: "id", referencedColumnName: "subsite_id", onDelete: "CASCADE")]
     protected $_roles;
 

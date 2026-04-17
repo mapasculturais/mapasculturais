@@ -118,7 +118,7 @@ abstract class Opportunity extends \MapasCulturais\Entity
     #[ORM\Column(name: "registration_categories", type: "json", nullable: true)]
     protected array $registrationCategories = [];
 
-    #[ORM\OneToMany(targetEntity: "MapasCulturais\Entities\RegistrationStep", mappedBy: "opportunity", cascade: ["remove"], orphanRemoval: true)]
+    #[ORM\OneToMany(targetEntity: "MapasCulturais\Entities\RegistrationStep", mappedBy: "opportunity", cascade: ["remove"])]
     protected $registrationSteps;
 
     #[ORM\Column(name: "create_timestamp", type: "datetime", nullable: false)]
