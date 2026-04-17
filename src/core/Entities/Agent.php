@@ -85,23 +85,23 @@ class Agent extends \MapasCulturais\Entity
     #[ORM\Column(name: "status", type: "smallint", nullable: false)]
     protected $status = self::STATUS_ENABLED;
 
-    #[ORM\ManyToOne(targetEntity: "MapasCulturais\Entities\User")]
+    #[ORM\ManyToOne(targetEntity: "MapasCulturais\Entities\User", inversedBy: "agents")]
     #[ORM\JoinColumn(name: "user_id", referencedColumnName: "id", onDelete: "CASCADE")]
     protected $user;
 
     #[ORM\Column(name: "user_id", type: "integer", nullable: false)]
     protected $userId;
 
-    #[ORM\OneToMany(targetEntity: "MapasCulturais\Entities\Space", mappedBy: "owner", cascade: ["remove"], orphanRemoval: true)]
+    #[ORM\OneToMany(targetEntity: "MapasCulturais\Entities\Space", mappedBy: "owner", cascade: ["remove"])]
     protected $_spaces;
 
-    #[ORM\OneToMany(targetEntity: "MapasCulturais\Entities\Project", mappedBy: "owner", cascade: ["remove"], orphanRemoval: true)]
+    #[ORM\OneToMany(targetEntity: "MapasCulturais\Entities\Project", mappedBy: "owner", cascade: ["remove"])]
     protected $_projects;
 
-    #[ORM\OneToMany(targetEntity: "MapasCulturais\Entities\AgentOpportunity", mappedBy: "owner", cascade: ["remove"], orphanRemoval: true)]
+    #[ORM\OneToMany(targetEntity: "MapasCulturais\Entities\AgentOpportunity", mappedBy: "owner", cascade: ["remove"])]
     protected $_ownedOpportunities;
 
-    #[ORM\OneToMany(targetEntity: "MapasCulturais\Entities\Event", mappedBy: "owner", cascade: ["remove"], orphanRemoval: true)]
+    #[ORM\OneToMany(targetEntity: "MapasCulturais\Entities\Event", mappedBy: "owner", cascade: ["remove"])]
     protected $_events;
 
     #[ORM\Column(name: "update_timestamp", type: "datetime", nullable: true)]

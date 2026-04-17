@@ -6,7 +6,7 @@ use Tests\Abstract\EvaluationBuilder;
 
 class EvaluationSimpleBuilder extends EvaluationBuilder
 {
-    public function setStatus(string $status, ?string $obs = null): self
+    public function setStatus(int|string $status, ?string $obs = null): static
     {
         $evaluation_data = [
             'status' => $status

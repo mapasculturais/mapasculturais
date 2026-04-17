@@ -164,7 +164,9 @@ class Job extends \MapasCulturais\Entity{
                     $app->log->info("Job {$this->slug}:{$this->id}: SUCCESSFUL and TERMINATED");
                 }
 
-                $this->delete(true);
+                $em = $app->em;
+                $job = $em->contains($this) ? $this : $em->getReference(static::class, $this->id);
+                $job->delete(true);
             } else {
                 $conn = $app->conn;
                 $conn->update('job', [

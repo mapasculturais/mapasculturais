@@ -38,10 +38,10 @@ class Goal extends \MapasCulturais\Entity {
     #[ORM\JoinColumn(name: "workplan_id", referencedColumnName: "id", nullable: false, onDelete: "CASCADE")]
     protected $workplan;
 
-    #[ORM\OneToMany(targetEntity: \OpportunityWorkplan\Entities\Delivery::class, mappedBy: "goal", cascade: ["persist", "remove"], orphanRemoval: true)]
+    #[ORM\OneToMany(targetEntity: \OpportunityWorkplan\Entities\Delivery::class, mappedBy: "goal", cascade: ["persist", "remove"])]
     protected $deliveries;
 
-    #[ORM\OneToMany(targetEntity: \OpportunityWorkplan\Entities\GoalMeta::class, mappedBy: "owner", cascade: ["remove", "persist"], orphanRemoval: true)]
+    #[ORM\OneToMany(targetEntity: \OpportunityWorkplan\Entities\GoalMeta::class, mappedBy: "owner", cascade: ["remove", "persist"])]
     protected $__metadata;
 
     /**
