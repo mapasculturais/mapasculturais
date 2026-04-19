@@ -56,6 +56,7 @@ class RegistrationPdfExportTest extends TestCase
         $this->assertStringContainsString('Parecer técnico do avaliador', $html);
         $this->assertStringContainsString('Campo complementar', $html);
         $this->assertStringContainsString('Valor complementar da inscrição', $html);
+        $this->assertStringNotContainsString('Pontuação máxima:', $html);
 
         $this->assertHtmlOrder(
             $html,
