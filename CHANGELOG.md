@@ -10,7 +10,8 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Novo status privado para as entidades
 
 ### Correções
-- Corrige a exportação PDF da ficha de inscrição para renderizar corretamente campos complexos, como listagens de pessoas, e incluir os dados das múltiplas fases da inscrição
+- Corrige a exportação PDF da ficha de inscrição para renderizar corretamente campos complexos, como listagens de pessoas, e incluir o histórico completo das fases da inscrição
+- Inclui no PDF da ficha o histórico das avaliações entre fases de coleta de dados, com status, resultado consolidado e detalhamento dos pareceres conforme o tipo de avaliação
 
 ### Melhorias não funcionais
 - Substituição do driver AnnotationDriver de mapeamendo do Doctrine para o AttributeDriver
@@ -21,6 +22,7 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Limpeza de código do tema BaseV1
 - Implementa ficha de inscrição utilizando VueJS
 - Implementa dados do formulário para o avaliador utilizando VueJS
+- Adiciona testes para a exportação PDF da ficha de inscrição cobrindo múltiplos tipos de avaliação e fluxos encadeados entre fases
 
 ### Atualizações de bibliiotecas
 - PHP atualizado para versão 8.4
