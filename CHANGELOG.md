@@ -9,6 +9,9 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 ### Novas Funcionalidades
 - Novo status privado para as entidades
 
+### Correções
+- Corrige a exportação PDF da ficha de inscrição para renderizar corretamente campos complexos, como listagens de pessoas, e incluir os dados das múltiplas fases da inscrição
+
 ### Melhorias não funcionais
 - Substituição do driver AnnotationDriver de mapeamendo do Doctrine para o AttributeDriver
 - Remoção dos fetch: EAGER para compatibilidade com o Doctrine 2.20
