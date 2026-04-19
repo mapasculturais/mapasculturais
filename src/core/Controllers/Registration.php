@@ -1083,22 +1083,38 @@ class Registration extends EntityController {
     * @param \MapasCulturais\Entities\Registration $registration Inscrição
     * @return array Array com caminhos dos arquivos PDF
     */
+    private function getPDFRegistrationPhases($registration) {
+        $phases = [];
+        $current = $registration->firstPhase ?? $registration;
+
+        while ($current) {
+            if ($current->opportunity && $current->opportunity->isDataCollection) {
+                $phases[] = $current;
+            }
+            $current = $current->nextPhase;
+        }
+
+        return $phases ?: [$registration];
+    }
+
     private function collectPDFAttachments($registration) {
         $pdfs = [];
-        
-        foreach ($registration->files as $group => $files) {
-            if (!is_array($files)) {
-                $files = [$files];
-            }
-            
-            foreach ($files as $file) {
-                if ($file->mimeType === 'application/pdf' && file_exists($file->path)) {
-                    $pdfs[] = $file->path;
+
+        foreach ($this->getPDFRegistrationPhases($registration) as $phaseRegistration) {
+            foreach ($phaseRegistration->files as $group => $files) {
+                if (!is_array($files)) {
+                    $files = [$files];
+                }
+
+                foreach ($files as $file) {
+                    if ($file->mimeType === 'application/pdf' && file_exists($file->path)) {
+                        $pdfs[] = $file->path;
+                    }
                 }
             }
         }
-        
-        return $pdfs;
+
+        return array_values(array_unique($pdfs));
     }
 
     /**
