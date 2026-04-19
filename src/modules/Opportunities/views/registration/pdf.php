@@ -17,17 +17,14 @@ if ($logoImage) {
 
 $siteName = $app->config['logo.title'] . ' ' . $app->config['logo.subtitle'];
 
-$registrationPhases = [];
-$phaseCursor = $registration->firstPhase ?? $registration;
-while ($phaseCursor) {
-    if ($phaseCursor->opportunity && $phaseCursor->opportunity->isDataCollection) {
-        $registrationPhases[] = $phaseCursor;
-    }
-    $phaseCursor = $phaseCursor->nextPhase;
-}
-
-if (!$registrationPhases) {
-    $registrationPhases[] = $registration;
+$historyItems = $historyItems ?? [];
+if (!$historyItems) {
+    $historyItems[] = [
+        'type' => 'data_collection',
+        'title' => ($registration->opportunity->isFirstPhase ?? false) ? 'Inscrição' : $registration->opportunity->name,
+        'opportunity' => $registration->opportunity,
+        'registration' => $registration,
+    ];
 }
 
 $escape = static function ($value): string {
@@ -187,6 +184,86 @@ $getPrimaryFile = static function ($phaseRegistration, string $groupName) {
     }
 
     return $file;
+};
+
+$formatNumber = static function ($value): string {
+    if ($value === null || $value === '') {
+        return '';
+    }
+
+    if (!is_numeric($value)) {
+        return (string) $value;
+    }
+
+    $formatted = number_format((float) $value, 2, ',', '.');
+    $formatted = preg_replace('/,00$/', '', $formatted);
+    $formatted = preg_replace('/(\,\d*[1-9])0$/', '$1', $formatted);
+
+    return $formatted;
+};
+
+$statusClassByValue = static function ($value): string {
+    return match ((string) $value) {
+        '1', 'valid' => 'success',
+        '-1', 'invalid' => 'danger',
+        default => 'neutral',
+    };
+};
+
+$statusLabelByValue = static function ($value): string {
+    return match ((string) $value) {
+        '1', 'valid' => 'Válido',
+        '-1', 'invalid' => 'Inválido',
+        default => (string) $value,
+    };
+};
+
+$formatQualificationResult = static function ($result) use ($normalizeValue): string {
+    $result = $normalizeValue($result);
+    if (!is_array($result)) {
+        return (string) $result;
+    }
+
+    $formatted = array_map(function ($value) {
+        return match ($value) {
+            'valid' => 'Atende',
+            'invalid' => 'Não atende',
+            'others' => null,
+            default => (string) $value,
+        };
+    }, $result);
+
+    $formatted = array_values(array_filter($formatted, fn ($value) => $value !== null && $value !== ''));
+
+    return implode(' / ', $formatted);
+};
+
+$renderStatusBadge = static function (string $label, string $class) use ($escape): string {
+    $normalizedClass = preg_replace('/[^a-z0-9_-]+/i', '', $class) ?: 'neutral';
+    return '<span class="status-badge status-badge--' . $normalizedClass . '">' . $escape($label) . '</span>';
+};
+
+$renderEvaluationAttachments = static function ($evaluation) use ($escape): string {
+    if (!$evaluation) {
+        return '';
+    }
+
+    $files = $evaluation->files['evaluationAttachment'] ?? null;
+    if (!$files) {
+        return '';
+    }
+
+    if (!is_array($files)) {
+        $files = [$files];
+    }
+
+    $html = '<div class="evaluation-subsection"><strong>Anexos da avaliação:</strong><ul>';
+    foreach ($files as $file) {
+        $html .= '<li>' . $escape($file->description ?: $file->name) . '</li>';
+    }
+    $html .= '</ul></div>';
+
+    return $html;
 };
 
 $bankConfig = $app->config['module.registrationFieldTypes'] ?? [];
@@ -387,6 +464,22 @@ $renderFieldValue = static function ($field, $value) use (
         .phase-title { margin: 25px 0 10px; font-size: 12pt; color: #222; }
         .attachment-icon { margin-right: 5px; }
         .attachment-link { text-decoration: underline; color: #0066cc; }
+        .history-item { margin-bottom: 24px; }
+        .history-item + .history-item { border-top: 1px solid #ddd; padding-top: 20px; }
+        .status-badge { display: inline-block; padding: 4px 8px; border-radius: 999px; font-size: 9pt; font-weight: bold; }
+        .status-badge--success { background: #e6f6ea; color: #1d6b35; }
+        .status-badge--danger { background: #fdeaea; color: #a12626; }
+        .status-badge--warning { background: #fff4db; color: #8a5a00; }
+        .status-badge--neutral { background: #ececec; color: #555; }
+        .evaluation-card { margin: 12px 0; padding: 12px; background: #f8f8f8; border: 1px solid #e1e1e1; }
+        .evaluation-card h4 { margin: 0 0 8px; font-size: 11pt; }
+        .evaluation-meta { margin: 6px 0 10px; }
+        .evaluation-meta p { margin: 4px 0; }
+        .evaluation-subsection { margin-top: 10px; }
+        .evaluation-subsection h5 { margin: 0 0 6px; font-size: 10pt; }
+        .evaluation-subsection p { margin: 4px 0; }
+        .evaluation-subsection ul { margin: 6px 0 0 18px; padding: 0; }
+        .evaluation-subsection li { margin: 4px 0; }
         table { width: 100%; border-collapse: collapse; margin: 10px 0; }
         th, td { padding: 8px; border: 1px solid #ddd; text-align: left; }
         th { background-color: #e9e9e9; font-weight: bold; }
@@ -449,78 +542,245 @@ $renderFieldValue = static function ($field, $value) use (
 <div class="info-block">
     <h2>Dados do Formulário</h2>
 
-    <?php foreach ($registrationPhases as $index => $phaseRegistration): ?>
+    <?php foreach ($historyItems as $index => $historyItem): ?>
         <?php
-        $opportunity = $phaseRegistration->opportunity;
-        $opportunity->registerRegistrationMetadata();
-
-        $allFields = [];
-
-        foreach ($opportunity->registrationFieldConfigurations as $field) {
-            $allFields[] = [
-                'type' => 'field',
-                'config' => $field,
-                'order' => $field->displayOrder ?? 999,
-            ];
-        }
-
-        foreach ($opportunity->registrationFileConfigurations as $fileConfig) {
-            $allFields[] = [
-                'type' => 'file',
-                'config' => $fileConfig,
-                'order' => $fileConfig->displayOrder ?? 999,
-            ];
-        }
-
-        usort($allFields, function ($a, $b) {
-            return $a['order'] <=> $b['order'];
-        });
-
-        $phaseTitle = ($index === 0 && ($opportunity->isFirstPhase ?? false)) ? 'Inscrição' : $opportunity->name;
+        $itemType = $historyItem['type'] ?? 'data_collection';
+        $phaseTitle = $historyItem['title'] ?? 'Etapa';
         ?>
 
-        <h3 class="phase-title"><?= $escape($phaseTitle) ?></h3>
+        <div class="history-item history-item--<?= $escape($itemType) ?>">
+            <h3 class="phase-title"><?= $escape($phaseTitle) ?></h3>
 
-        <?php foreach ($allFields as $item): ?>
-            <?php
-            $config = $item['config'];
-            if (!$shouldDisplayField($config, $phaseRegistration)) {
-                continue;
-            }
-
-            if ($item['type'] === 'file') {
-                $file = $getPrimaryFile($phaseRegistration, $config->fileGroupName);
-                if (!$file) {
-                    continue;
-                }
-                ?>
-                <div class="field">
-                    <span class="field-label"><?= $config->required ? '* ' : '' ?><?= $escape($config->title) ?>:</span>
-                    <div class="field-value">
-                        <span class="attachment-link"><span class="attachment-icon">▸</span><?= $escape($file->description ?: $file->name) ?></span>
-                    </div>
-                </div>
+            <?php if ($itemType === 'data_collection'): ?>
                 <?php
-                continue;
-            }
+                $phaseRegistration = $historyItem['registration'];
+                $opportunity = $historyItem['opportunity'];
+                $opportunity->registerRegistrationMetadata();
 
-            $fieldName = $config->fieldName;
-            $value = $phaseRegistration->$fieldName ?? null;
+                $allFields = [];
 
-            if (($config->fieldType ?? null) !== 'section' && !$hasValue($value)) {
-                continue;
-            }
-            ?>
+                foreach ($opportunity->registrationFieldConfigurations as $field) {
+                    $allFields[] = [
+                        'type' => 'field',
+                        'config' => $field,
+                        'order' => $field->displayOrder ?? 999,
+                    ];
+                }
 
-            <?php if (($config->fieldType ?? null) === 'section'): ?>
-                <h4 class="phase-title"><?= $escape($config->title) ?></h4>
+                foreach ($opportunity->registrationFileConfigurations as $fileConfig) {
+                    $allFields[] = [
+                        'type' => 'file',
+                        'config' => $fileConfig,
+                        'order' => $fileConfig->displayOrder ?? 999,
+                    ];
+                }
+
+                usort($allFields, function ($a, $b) {
+                    return $a['order'] <=> $b['order'];
+                });
+                ?>
+
+                <?php foreach ($allFields as $item): ?>
+                    <?php
+                    $config = $item['config'];
+                    if (!$shouldDisplayField($config, $phaseRegistration)) {
+                        continue;
+                    }
+
+                    if ($item['type'] === 'file') {
+                        $file = $getPrimaryFile($phaseRegistration, $config->fileGroupName);
+                        if (!$file) {
+                            continue;
+                        }
+                        ?>
+                        <div class="field">
+                            <span class="field-label"><?= $config->required ? '* ' : '' ?><?= $escape($config->title) ?>:</span>
+                            <div class="field-value">
+                                <span class="attachment-link"><span class="attachment-icon">▸</span><?= $escape($file->description ?: $file->name) ?></span>
+                            </div>
+                        </div>
+                        <?php
+                        continue;
+                    }
+
+                    $fieldName = $config->fieldName;
+                    $value = $phaseRegistration->$fieldName ?? null;
+
+                    if (($config->fieldType ?? null) !== 'section' && !$hasValue($value)) {
+                        continue;
+                    }
+                    ?>
+
+                    <?php if (($config->fieldType ?? null) === 'section'): ?>
+                        <h4 class="phase-title"><?= $escape($config->title) ?></h4>
+                    <?php else: ?>
+                        <div class="field">
+                            <span class="field-label"><?= $config->required ? '* ' : '' ?><?= $escape($config->title) ?>:</span>
+                            <div class="field-value"><?= $renderFieldValue($config, $value) ?></div>
+                        </div>
+                    <?php endif; ?>
+                <?php endforeach; ?>
             <?php else: ?>
+                <?php
+                $evaluationSlug = $historyItem['evaluationMethodSlug'] ?? '';
+                $consolidatedDetails = $normalizeValue($historyItem['consolidatedDetails'] ?? []);
+                $evaluations = $historyItem['evaluations'] ?? [];
+                ?>
+
                 <div class="field">
-                    <span class="field-label"><?= $config->required ? '* ' : '' ?><?= $escape($config->title) ?>:</span>
-                    <div class="field-value"><?= $renderFieldValue($config, $value) ?></div>
+                    <span class="field-label">Situação da fase:</span>
+                    <div class="field-value"><?= $renderStatusBadge($historyItem['statusLabel'] ?? 'Sem status', $historyItem['statusClass'] ?? 'neutral') ?></div>
                 </div>
+
+                <?php if (!empty($historyItem['showResults'])): ?>
+                    <?php if ($evaluationSlug === 'technical'): ?>
+                        <div class="field">
+                            <span class="field-label">Pontuação final:</span>
+                            <div class="field-value"><?= $escape($formatNumber($historyItem['consolidatedResult'] ?? '')) ?></div>
+                        </div>
+
+                        <?php if (!empty($consolidatedDetails['appliedPointReward'])): ?>
+                            <?php $policy = $normalizeValue($consolidatedDetails['appliedPointReward']); ?>
+                            <div class="evaluation-card">
+                                <h4>Bônus por pontuação</h4>
+                                <div class="evaluation-subsection">
+                                    <p><strong>Pontuação original:</strong> <?= $escape($formatNumber($policy['raw'] ?? '')) ?></p>
+                                    <p><strong>Percentual aplicado:</strong> <?= $escape($formatNumber($policy['percentage'] ?? '')) ?>%</p>
+                                    <?php if (!empty($policy['rules']) && is_array($policy['rules'])): ?>
+                                        <ul>
+                                            <?php foreach ($policy['rules'] as $rule): ?>
+                                                <?php $rule = $normalizeValue($rule); ?>
+                                                <li><?= $escape($rule['field']['title'] ?? 'Regra') ?>: <?= $escape((string) ($rule['value'] ?? '')) ?> (+<?= $escape($formatNumber($rule['percentage'] ?? '')) ?>%)</li>
+                                            <?php endforeach; ?>
+                                        </ul>
+                                    <?php endif; ?>
+                                </div>
+                            </div>
+                        <?php endif; ?>
+                    <?php else: ?>
+                        <?php $consolidatedLabel = $historyItem['consolidatedResultLabel'] ?? ''; ?>
+                        <?php if ($consolidatedLabel !== '' && $consolidatedLabel !== null): ?>
+                            <div class="field">
+                                <span class="field-label">Resultado consolidado:</span>
+                                <div class="field-value"><?= $escape((string) $consolidatedLabel) ?></div>
+                            </div>
+                        <?php endif; ?>
+                    <?php endif; ?>
+                <?php else: ?>
+                    <div class="field">
+                        <span class="field-label">Resultado da avaliação:</span>
+                        <div class="field-value"><em>Resultado indisponível no momento.</em></div>
+                    </div>
+                <?php endif; ?>
+
+                <?php if (!empty($historyItem['showDetails']) && $evaluations): ?>
+                    <?php foreach ($evaluations as $evaluationIndex => $evaluationItem): ?>
+                        <?php
+                        $detail = $normalizeValue($evaluationItem['detail'] ?? []);
+                        $evaluationEntity = $evaluationItem['evaluation'] ?? null;
+                        $valuerName = $evaluationItem['valuerName'] ?? ('Parecerista #' . ($evaluationIndex + 1));
+                        $evaluationResultLabel = $evaluationItem['resultLabel'] ?? '';
+                        ?>
+                        <div class="evaluation-card">
+                            <h4><?= $escape($valuerName) ?></h4>
+                            <div class="evaluation-meta">
+                                <p><strong>Status da avaliação:</strong> <?= $escape($evaluationItem['statusLabel'] ?? 'Sem status') ?></p>
+                                <?php if ($evaluationResultLabel !== ''): ?>
+                                    <p><strong>Resultado:</strong> <?= $escape((string) $evaluationResultLabel) ?></p>
+                                <?php endif; ?>
+                            </div>
+
+                            <?php if (!empty($detail['obs'])): ?>
+                                <div class="evaluation-subsection">
+                                    <h5><?= in_array($evaluationSlug, ['simple', 'continuous'], true) ? 'Justificativa' : 'Parecer' ?></h5>
+                                    <p><?= nl2br($escape($detail['obs'])) ?></p>
+                                </div>
+                            <?php endif; ?>
+
+                            <?php if ($evaluationSlug === 'technical' && !empty($detail['scores']) && is_array($detail['scores'])): ?>
+                                <div class="evaluation-subsection">
+                                    <h5>Detalhamento da pontuação</h5>
+                                    <ul>
+                                        <?php foreach ($detail['scores'] as $section): ?>
+                                            <?php $section = $normalizeValue($section); ?>
+                                            <li>
+                                                <?= $escape($section['name'] ?? 'Seção') ?>:
+                                                <strong><?= $escape($formatNumber($section['score'] ?? '')) ?></strong>
+                                                <?php if (isset($section['maxScore'])): ?>
+                                                    <em>(pontuação máxima: <?= $escape($formatNumber($section['maxScore'])) ?>)</em>
+                                                <?php endif; ?>
+                                                <?php if (!empty($section['criteria']) && is_array($section['criteria'])): ?>
+                                                    <ul>
+                                                        <?php foreach ($section['criteria'] as $criterion): ?>
+                                                            <?php $criterion = $normalizeValue($criterion); ?>
+                                                            <li>
+                                                                <?= $escape($criterion['title'] ?? $criterion['name'] ?? 'Critério') ?>:
+                                                                <strong><?= $escape($formatNumber($criterion['score'] ?? '')) ?></strong>
+                                                                <?php if (isset($criterion['maxScore'])): ?>
+                                                                    <em>(pontuação máxima: <?= $escape($formatNumber($criterion['maxScore'])) ?>)</em>
+                                                                <?php endif; ?>
+                                                            </li>
+                                                        <?php endforeach; ?>
+                                                    </ul>
+                                                <?php endif; ?>
+                                            </li>
+                                        <?php endforeach; ?>
+                                    </ul>
+                                </div>
+                            <?php endif; ?>
+
+                            <?php if ($evaluationSlug === 'qualification' && !empty($detail['scores']) && is_array($detail['scores'])): ?>
+                                <div class="evaluation-subsection">
+                                    <h5>Detalhamento da avaliação</h5>
+                                    <ul>
+                                        <?php foreach ($detail['scores'] as $section): ?>
+                                            <?php $section = $normalizeValue($section); ?>
+                                            <li>
+                                                <?= $escape($section['name'] ?? 'Seção') ?>
+                                                <?php if (!empty($section['criteria']) && is_array($section['criteria'])): ?>
+                                                    <ul>
+                                                        <?php foreach ($section['criteria'] as $criterion): ?>
+                                                            <?php $criterion = $normalizeValue($criterion); ?>
+                                                            <li>
+                                                                <?= $escape($criterion['name'] ?? $criterion['title'] ?? 'Critério') ?>:
+                                                                <strong><?= $escape($formatQualificationResult($criterion['result'] ?? [])) ?></strong>
+                                                            </li>
+                                                        <?php endforeach; ?>
+                                                    </ul>
+                                                <?php endif; ?>
+                                            </li>
+                                        <?php endforeach; ?>
+                                    </ul>
+                                </div>
+                            <?php endif; ?>
+
+                            <?php if ($evaluationSlug === 'documentary' && !empty($detail['evaluations']) && is_array($detail['evaluations'])): ?>
+                                <div class="evaluation-subsection">
+                                    <h5>Detalhamento</h5>
+                                    <?php foreach ($detail['evaluations'] as $documentaryItem): ?>
+                                        <?php $documentaryItem = $normalizeValue($documentaryItem); ?>
+                                        <div class="field-card">
+                                            <p><?= $renderStatusBadge($statusLabelByValue($documentaryItem['evaluation'] ?? ''), $statusClassByValue($documentaryItem['evaluation'] ?? '')) ?></p>
+                                            <p><strong><?= $escape($documentaryItem['label'] ?? 'Campo') ?></strong></p>
+                                            <?php if (!empty($documentaryItem['obs'])): ?>
+                                                <p><strong>Parecer:</strong> <?= nl2br($escape($documentaryItem['obs'])) ?></p>
+                                            <?php endif; ?>
+                                            <?php if (!empty($documentaryItem['obs_items'])): ?>
+                                                <p><strong>Detalhamento:</strong> <?= nl2br($escape($documentaryItem['obs_items'])) ?></p>
+                                            <?php endif; ?>
+                                        </div>
+                                    <?php endforeach; ?>
+                                </div>
+                            <?php endif; ?>
+
+                            <?php if (in_array($evaluationSlug, ['simple', 'continuous'], true)): ?>
+                                <?= $renderEvaluationAttachments($evaluationEntity) ?>
+                            <?php endif; ?>
+                        </div>
+                    <?php endforeach; ?>
+                <?php endif; ?>
             <?php endif; ?>
-        <?php endforeach; ?>
+        </div>
     <?php endforeach; ?>
 </div>
 <?php $this->applyTemplateHook('registration-pdf-fields', 'after'); ?>

@@ -1015,10 +1015,15 @@ class Registration extends EntityController {
         $entity->checkPermission('view');
         
         try {
+            $historyItems = $this->getPDFHistoryItems($entity);
+
             // 1. Renderizar HTML da ficha usando template
             $html = $app->view->partialRender(
                 __template: 'registration/pdf', 
-                __data: ['registration' => $entity],
+                __data: [
+                    'registration' => $entity,
+                    'historyItems' => $historyItems,
+                ],
                 _is_part: false
             );
             
@@ -1085,16 +1090,151 @@ class Registration extends EntityController {
     */
     private function getPDFRegistrationPhases($registration) {
         $phases = [];
-        $current = $registration->firstPhase ?? $registration;
-
-        while ($current) {
-            if ($current->opportunity && $current->opportunity->isDataCollection) {
-                $phases[] = $current;
+        foreach ($this->getPDFHistoryItems($registration) as $item) {
+            if ($item['type'] !== 'data_collection') {
+                continue;
             }
-            $current = $current->nextPhase;
+
+            $phaseRegistration = $item['registration'] ?? null;
+            if ($phaseRegistration) {
+                $phases[] = $phaseRegistration;
+            }
         }
 
         return $phases ?: [$registration];
+    }
+
+    private function getPDFRegistrationsByOpportunity(EntityRegistration $registration): array {
+        $registrations = App::i()->repo('Registration')->findBy(['number' => $registration->number]);
+        $result = [];
+
+        foreach ($registrations as $phaseRegistration) {
+            $result[(int) $phaseRegistration->opportunity->id] = $phaseRegistration;
+        }
+
+        return $result;
+    }
+
+    private function getPDFHistoryItems(EntityRegistration $registration): array {
+        $items = [];
+        $registrationsByOpportunity = $this->getPDFRegistrationsByOpportunity($registration);
+        $currentOpportunity = $registration->opportunity->firstPhase ?? $registration->opportunity;
+
+        while ($currentOpportunity) {
+            $phaseRegistration = $registrationsByOpportunity[(int) $currentOpportunity->id] ?? null;
+
+            if ($currentOpportunity->isDataCollection && $phaseRegistration) {
+                $items[] = [
+                    'type' => 'data_collection',
+                    'title' => $currentOpportunity->isFirstPhase ? i::__('Inscrição') : $currentOpportunity->name,
+                    'opportunity' => $currentOpportunity,
+                    'registration' => $phaseRegistration,
+                ];
+            }
+
+            if ($currentOpportunity->evaluationMethodConfiguration && $phaseRegistration) {
+                $items[] = $this->getPDFEvaluationHistoryItem($phaseRegistration);
+            }
+
+            $currentOpportunity = $currentOpportunity->nextPhase;
+        }
+
+        return $items;
+    }
+
+    private function getPDFEvaluationHistoryItem(EntityRegistration $registration): array {
+        $opportunity = $registration->opportunity;
+        $evaluationConfiguration = $opportunity->evaluationMethodConfiguration;
+        $evaluationMethod = $evaluationConfiguration->getEvaluationMethod();
+        $canDisplayResults = $this->canDisplayPDFEvaluationResults($registration);
+        $canDisplayDetails = $this->canDisplayPDFEvaluationDetails($registration);
+        $evaluations = [];
+
+        if ($canDisplayDetails) {
+            foreach ($registration->sentEvaluations as $evaluation) {
+                $detail = $evaluationMethod->getEvaluationDetails($evaluation);
+
+                if ($evaluationConfiguration->publishValuerNames) {
+                    $detail['valuer'] = $evaluation->user->profile->simplify('id,name,singleUrl');
+                }
+
+                $evaluations[] = [
+                    'detail' => $detail,
+                    'statusLabel' => $evaluation->getStatusString(),
+                    'resultLabel' => $evaluationMethod->evaluationToString($evaluation),
+                    'valuerName' => $detail['valuer']->name ?? null,
+                    'evaluation' => $evaluation,
+                ];
+            }
+        }
+
+        return [
+            'type' => 'evaluation',
+            'title' => $evaluationConfiguration->name,
+            'opportunity' => $opportunity,
+            'registration' => $registration,
+            'evaluationMethodConfiguration' => $evaluationConfiguration,
+            'evaluationMethodSlug' => $evaluationConfiguration->getDefinition()->slug,
+            'statusLabel' => $this->getPDFRegistrationStatusLabel($registration),
+            'statusClass' => $this->getPDFRegistrationStatusClass($registration),
+            'showResults' => $canDisplayResults,
+            'showDetails' => $canDisplayDetails,
+            'consolidatedResult' => $canDisplayResults ? $registration->consolidatedResult : null,
+            'consolidatedResultLabel' => $canDisplayResults ? $evaluationMethod->valueToString($registration->consolidatedResult) : null,
+            'consolidatedDetails' => $canDisplayDetails ? $evaluationMethod->getConsolidatedDetails($registration) : [],
+            'evaluations' => $evaluations,
+        ];
+    }
+
+    private function canDisplayPDFEvaluationResults(EntityRegistration $registration): bool {
+        $app = App::i();
+        $opportunity = $registration->opportunity;
+        $user = $app->user;
+
+        if ($user && ($registration->canUser('evaluate', $user) || $opportunity->canUser('@control', $user))) {
+            return true;
+        }
+
+        return (bool) ($opportunity->publishedRegistrations || $opportunity->allow_proponent_response);
+    }
+
+    private function canDisplayPDFEvaluationDetails(EntityRegistration $registration): bool {
+        $app = App::i();
+        $opportunity = $registration->opportunity;
+        $evaluationConfiguration = $opportunity->evaluationMethodConfiguration;
+        $user = $app->user;
+
+        if (!$evaluationConfiguration) {
+            return false;
+        }
+
+        if ($user && ($registration->canUser('evaluate', $user) || $opportunity->canUser('@control', $user))) {
+            return true;
+        }
+
+        return $this->canDisplayPDFEvaluationResults($registration) &&
+            (bool) ($evaluationConfiguration->publishEvaluationDetails || $opportunity->allow_proponent_response);
+    }
+
+    private function getPDFRegistrationStatusLabel(EntityRegistration $registration): string {
+        if ($registration->status == 0) {
+            return i::__('Não enviada');
+        }
+
+        if ($registration->status == 1) {
+            return i::__('Enviada');
+        }
+
+        return $registration->opportunity->statusLabels[$registration->status] ?? (string) $registration->status;
+    }
+
+    private function getPDFRegistrationStatusClass(EntityRegistration $registration): string {
+        return match ((int) $registration->status) {
+            10, 1 => 'success',
+            2, 0, 3 => 'danger',
+            8 => 'warning',
+            default => 'neutral',
+        };
     }
 
     private function collectPDFAttachments($registration) {
