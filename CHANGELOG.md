@@ -5,7 +5,7 @@ Todas as mudanças notáveis no projeto serão documentadas neste arquivo.
 O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/)
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-##[UNRELEASED]
+##[7.7.27] - 2026-04-16
 ### Correções
 - Corrige erro que impedia enviar a inscrição devido a ero na data de nascimento
 - Corrige carregamento do componente request-agent-avatar
