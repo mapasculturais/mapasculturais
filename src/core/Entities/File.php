@@ -165,7 +165,7 @@ abstract class File extends \MapasCulturais\Entity
         $app = App::i();
         
         $not_allowed_mime_types = $app->config['app.not_allowed_mime_types'];
-        $pattern = '#'. $not_allowed_mime_types . '$#';
+        $pattern = '#(?:^|[\/\-\.+])(?:' . $not_allowed_mime_types . ')(?:$|[\/\-\.+])#i';
 
         $validations = [
             'mimeType' => [
