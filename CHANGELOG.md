@@ -5,6 +5,10 @@ Todas as mudanças notáveis no projeto serão documentadas neste arquivo.
 O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/)
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+##[7.6.64] - 2026-04-22
+### Correções
+- Corrige erro no upload de arquivos xlsx no grupo de downloads das entidades
+
 ## [7.6.63] - 2026-04-20
 ## Melhorias
 - Melhora validação de tipos de arquivo, impedindo que sejam feitos uploads de arquivos potencialmente perigosos
