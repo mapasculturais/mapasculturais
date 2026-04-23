@@ -18,6 +18,39 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Aplica texto de internacionalização faltante no componente opportunity-registration-table
 - Corrige acento faltante no texto "Gênero" na listagem de pessoas do formulário de inscrição
 
+##[7.7.29] - 2026-04-22
+### Correções
+- Corrige erro no upload de arquivos xlsx no grupo de downloads das entidades
+
+## [7.7.28] - 2026-04-20
+## Melhorias
+- Melhora validação de tipos de arquivo, impedindo que sejam feitos uploads de arquivos potencialmente perigosos
+
+##[7.7.27] - 2026-04-16
+### Correções
+- Corrige erro que impedia enviar a inscrição devido a ero na data de nascimento
+- Corrige carregamento do componente request-agent-avatar
+
+##[7.7.26] - 2026-04-14
+### Correções
+- Corrige importação de oportunidades para evitar referência curcular
+
+##[7.7.25] - 2026-04-13
+### Correções
+- Corrige deleção indevida de roles, agents e procurations ao salvar entidades. Os mapeamentos ManyToOne de Agent, Role e Procuration não declaravam inversedBy, impedindo o Doctrine de sincronizar as coleções OneToMany do User, o que causava orphanRemoval durante computeChangeSets() no flush
+- Corrige detached entity ao deletar Job após execução em lotes
+- Corrige incompatibilidade de assinatura em EvaluationSimpleBuilder::setStatus
+
+### Refatoração
+- Remove orphanRemoval=true de todos os mapeamentos OneToMany. Deletes são controlados pelo método delete() das entidades, e cascade={"remove"} + onDelete="CASCADE" garantem a deleção em cascata
+
+##[7.7.24] - 2026-04-13
+### Correções
+- Corrige erros durante a execução das migraçoes mc-updates e db-updates
+
+##[7.7.23] - 2026-04-12
+- Corrige deleção indevida de roles, agents e procurations ao salvar entidades. Os mapeamentos ManyToOne de Agent, Role e Procuration não declaravam inversedBy, impedindo o Doctrine de sincronizar as coleções OneToMany do User, o que causava orphanRemoval durante computeChangeSets() no flush
+
 ##[7.7.22] - 2026-04-07
 ### Correções
 - Faz correçao na criaçao e utilizaçao de modelos que ocasionava erros na criaçao dos steps do formulario de inscriçao

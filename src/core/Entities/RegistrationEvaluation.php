@@ -128,7 +128,7 @@ class RegistrationEvaluation extends \MapasCulturais\Entity {
     /**
      * @var \MapasCulturais\Entities\RegistrationEvaluationFile[] Files
      *
-     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\RegistrationEvaluationFile", mappedBy="owner", cascade={"remove"}, orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\RegistrationEvaluationFile", mappedBy="owner", cascade={"remove"})
      * @ORM\JoinColumn(name="id", referencedColumnName="object_id", onDelete="CASCADE")
     */
     protected $__files;
