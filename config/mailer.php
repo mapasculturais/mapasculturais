@@ -33,4 +33,7 @@ return [
     /* campos dos emails enviados, separados por vírgula, que deverão ser salvos no log. Deixar vazio para não salvar log. */
     'mailer.logMessages' => env('MAILER_LOG_MESSAGES', 'to,subject'),
 
+    /* URL da imagem do cabeçalho dos e-mails; sobrescrita pelo ThemeCustomizer por subsite quando houver arquivo em mailImage. */
+    'mailer.header_image_url' => env('MAILER_HEADER_IMAGE_URL', ''),
+
 ];

@@ -13,12 +13,16 @@ app.component('logo-customizer', {
 
     computed: {
         colors() {
+            const originals =
+                ($MAPAS.config.logoCustomizer && $MAPAS.config.logoCustomizer.originalColors) ||
+                this.default_colors ||
+                [];
             if (!!!this.subsite.custom_colors) {
                 return {
-                    first: $MAPAS.config.logoCustomizer.originalColors[0],
-                    second: $MAPAS.config.logoCustomizer.originalColors[1],
-                    third: $MAPAS.config.logoCustomizer.originalColors[2],
-                    fourth: $MAPAS.config.logoCustomizer.originalColors[3],
+                    first: originals[0],
+                    second: originals[1],
+                    third: originals[2],
+                    fourth: originals[3],
                 }
             } else {
                 return {

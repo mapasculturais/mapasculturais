@@ -210,6 +210,15 @@ class Subsite extends \MapasCulturais\Entity
         return $this->_share;
     }
 
+    protected $_mailHeaderImage;
+
+    function getMailHeaderImage(){
+        if(!$this->_mailHeaderImage)
+            $this->_mailHeaderImage = $this->getFile('mailImage');
+
+        return $this->_mailHeaderImage;
+    }
+
     protected $_background;
 
     function getBackground(){

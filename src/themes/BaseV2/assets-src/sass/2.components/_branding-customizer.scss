@@ -1,0 +1,56 @@
+@use '../0.settings/mixins' as *;
+
+.branding-customizer {
+    border: var(--mc-border-hairline);
+    border-radius: var(--mc-border-radius-sm);
+    margin-top: size(24);
+    padding: size(10) size(25) size(25);
+
+    &__legend {
+        padding: 0 size(10);
+    }
+
+    &__hint {
+        color: var(--mc-gray-700);
+        font-size: size(14);
+        margin-bottom: size(16);
+        max-width: size(800);
+    }
+
+    &__fields {
+        margin-bottom: size(24);
+    }
+
+    &__images {
+        gap: size(24);
+    }
+
+    &__image-title {
+        font-size: size(16);
+        margin: 0 0 size(6);
+    }
+
+    &__image-desc {
+        color: var(--mc-gray-700);
+        font-size: size(13);
+        margin: 0 0 size(12);
+    }
+
+    &__uploader-wrapper {
+        max-width: size(400);
+    }
+
+    &__uploader-content {
+        align-items: center;
+        display: flex;
+        justify-content: center;
+        min-height: size(120);
+    }
+
+    &__preview-img {
+        display: block;
+        max-height: size(200);
+        max-width: 100%;
+        object-fit: contain;
+    }
+}

@@ -45,16 +45,43 @@ class Module extends \MapasCulturais\Module
             $app->view->enqueueScript('components', 'subsite-init', 'js/subsite-init.js', ['components-utils']);
         });
 
+        $app->hook('subsite.applyConfigurations:after', function () use ($app) {
+            $subsite = $app->subsite;
+            if (!$subsite) {
+                return;
+            }
+
+            if ($site_name = trim((string) $subsite->site_name)) {
+                $app->config['app.siteName'] = $site_name;
+            }
+
+            if ($site_description = trim((string) $subsite->site_description)) {
+                $app->config['app.siteDescription'] = $site_description;
+            }
+
+            if ($share = $subsite->getShareImage()) {
+                $app->config['share.image'] = $share->url;
+                $app->config['share.image_twitter'] = $share->url;
+            }
+
+
+            if ($mail = $subsite->getMailHeaderImage()) {
+                $app->config['mailer.header_image_url'] = $mail->url;
+            }
+        });
+
         $app->hook('app.register:after', function () use($app) {
 
             if ($subsite = $app->subsite) {
                 $cache_id = $subsite->getSassCacheId();
 
+                // Sempre guardar cores base do tema para o logo-customizer (Vue), mesmo quando o
+                // cache Sass já existe — o return abaixo pularia esta atribuição e quebrava a UI.
+                Module::$originalColors = $app->config['logo.colors'];
+
                 if($app->mscache->contains($cache_id)) {
                     return;
                 }
-                
-                Module::$originalColors = $app->config['logo.colors'];
 
                 if ($subsite->custom_colors) {
                     if ($color1 = $subsite->logo_color1) {
@@ -192,6 +219,16 @@ class Module extends \MapasCulturais\Module
                 'type' => 'string',
             ]);
 
+            $this->view->registerMetadata(\MapasCulturais\Entities\Subsite::class, 'site_name', [
+                'label' => i::__('Nome do site'),
+                'type' => 'string',
+            ]);
+
+            $this->view->registerMetadata(\MapasCulturais\Entities\Subsite::class, 'site_description', [
+                'label' => i::__('Texto de compartilhamento em redes sociais (ex: Facebook, Twitter, Instagram, etc.)'),
+                'type' => 'textarea',
+            ]);
+
             $this->view->registerMetadata(\MapasCulturais\Entities\Subsite::class, 'logo_color1', [
                 'label' => i::__("Cor #1"),
                 'type' => 'color',
@@ -276,6 +313,7 @@ class Module extends \MapasCulturais\Module
             $this->registerFileGroup('subsite', new Definitions\FileGroup('logo',['^image/(jpeg|png)$'], i::__('O arquivo enviado não é uma imagem válida.'), true));
             $this->registerFileGroup('subsite', new Definitions\FileGroup('background',['^image/(jpeg|png)$'], i::__('O arquivo enviado não é uma imagem válida.'),true));
             $this->registerFileGroup('subsite', new Definitions\FileGroup('share',['^image/(jpeg|png)$'], i::__('O arquivo enviado não é uma imagem válida.'),true));
+            $this->registerFileGroup('subsite', new Definitions\FileGroup('mailImage',['^image/(jpeg|png)$'], i::__('O arquivo enviado não é uma imagem válida.'), true));
             $this->registerFileGroup('subsite', new Definitions\FileGroup('institute',['^image/(jpeg|png)$'], i::__('O arquivo enviado não é uma imagem válida.'), true));
             $this->registerFileGroup('subsite', new Definitions\FileGroup('favicon',['^image/(jpeg|png|x-icon|vnd.microsoft.icon)$'], i::__('O arquivo enviado não é uma imagem válida.'), true));
             

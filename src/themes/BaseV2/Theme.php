@@ -55,8 +55,10 @@ class Theme extends \MapasCulturais\Theme
         $entity = $this->controller->requestedEntity;
 
         $site_name = $app->siteName;
-        $image_url_twitter = $app->view->asset($app->config['share.image_twitter'], false);
-        $image_url = $app->view->asset($app->config['share.image'], false);
+        $image_url_twitter = $this->shareImageConfigUrl(
+            $app->config['share.image_twitter'],
+        );
+        $image_url = $this->shareImageConfigUrl($app->config['share.image']);
 
         $title = $app->view->getTitle($entity);
         if ($entity) {
@@ -100,5 +102,18 @@ class Theme extends \MapasCulturais\Theme
             // @TODO: modified time is not implemented
             // $this->documentMeta[] = array( "property" => 'og:modified_time',   'content' => $entity->modifiedTimestamp->format('Y-m-d'));
         }
+    }
+
+    /**
+     * URL para meta de compartilhamento: aceita caminho de asset ou URL absoluta (ex.: arquivo do subsite).
+     */
+    private function shareImageConfigUrl(mixed $path): string
+    {
+        $path = (string) $path;
+        if (preg_match('#^https?://#', $path)) {
+            return $path;
+        }
+
+        return $this->asset($path, false);
     }
 }

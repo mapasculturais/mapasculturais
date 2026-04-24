@@ -10,6 +10,7 @@ $this->import('
     mc-tab
     colors-customizer
     logo-customizer
+    branding-customizer
 ');
 ?>
 
@@ -21,5 +22,6 @@ $this->import('
     
         <colors-customizer></colors-customizer>
         <logo-customizer></logo-customizer>
+        <branding-customizer></branding-customizer>
     </div>
 </mc-tab>

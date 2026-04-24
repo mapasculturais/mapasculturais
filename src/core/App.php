@@ -1889,6 +1889,12 @@ class App
 
         $template_data->baseUrl = $this->getBaseUrl();
 
+        $header_image_url = $this->config["mailer.header_image_url"] ?? "";
+        $template_data->mailHeaderImageUrl =
+            is_string($header_image_url) && $header_image_url !== ""
+                ? $header_image_url
+                : $this->view->asset("img/mail-image.png", false);
+
         if (
             !($footer_name = $this->view->resolveFileName(
                 "templates/" . i::get_locale(),
