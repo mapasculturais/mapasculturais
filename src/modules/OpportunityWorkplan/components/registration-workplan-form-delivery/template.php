@@ -9,6 +9,7 @@ use MapasCulturais\i;
 
 $this->import('
     entity-files-list
+    mc-currency-input
     mc-icon
     mc-links-field
     mc-multiselect
@@ -118,7 +119,7 @@ $this->import('
 
         <div class="field" v-if="opportunity.workplan_monitoringReportExecutedRevenue && (editable || executedRevenue)">
             <label :for="`${vid}__executedRevenue`"><?= i::__('Receita executada') ?><span v-if="opportunity.workplan_monitoringRequireExecutedRevenue" class="required">obrigatório*</span></label>
-            <input v-if="editable" :id="`${vid}__executedRevenue`" type="number" v-model.number="executedRevenue">
+            <mc-currency-input v-if="editable" :id="`${vid}__executedRevenue`" v-model="executedRevenue"></mc-currency-input>
             <span v-else>{{ convertToCurrency(executedRevenue) }}</span>
             <small class="field__error" v-if="validationErrors.executedRevenue">{{ validationErrors.executedRevenue.join('; ') }}</small>
         </div>
@@ -148,7 +149,7 @@ $this->import('
             <div v-if="delivery.totalBudget !== null && delivery.totalBudget !== ''" class="field__note">
                 <strong><?= i::__('Previsto:') ?></strong> {{ convertToCurrency(delivery.totalBudget) }}
             </div>
-            <input v-if="editable" :id="`${vid}__executedTotalBudget`" type="number" min="0" step="0.01" v-model.number="proxy.executedTotalBudget">
+            <mc-currency-input v-if="editable" :id="`${vid}__executedTotalBudget`" v-model="proxy.executedTotalBudget"></mc-currency-input>
             <span v-else>{{ convertToCurrency(proxy.executedTotalBudget) }}</span>
             <small class="field__error" v-if="validationErrors.executedTotalBudget">{{ validationErrors.executedTotalBudget.join('; ') }}</small>
         </div>
@@ -214,7 +215,7 @@ $this->import('
             <div v-if="delivery.unitPrice !== null && delivery.unitPrice !== ''" class="field__note">
                 <strong><?= i::__('Previsto:') ?></strong> {{ convertToCurrency(delivery.unitPrice) }}
             </div>
-            <input v-if="editable" :id="`${vid}__executedUnitPrice`" type="number" v-model.number="proxy.executedUnitPrice" min="0" step="0.01">
+            <mc-currency-input v-if="editable" :id="`${vid}__executedUnitPrice`" v-model="proxy.executedUnitPrice"></mc-currency-input>
             <span v-else>{{ convertToCurrency(proxy.executedUnitPrice) }}</span>
             <small class="field__error" v-if="validationErrors.executedUnitPrice">{{ validationErrors.executedUnitPrice.join('; ') }}</small>
         </div>
