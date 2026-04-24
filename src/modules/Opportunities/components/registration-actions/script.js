@@ -114,7 +114,7 @@ app.component('registration-actions', {
         },
 
         confirmButtonTitle() {
-            return this.registration.opportunity.isAppealPhase 
+            return this.registration.opportunity?.isAppealPhase 
                 ? this.text('Quer enviar seu recurso?') 
                 : this.text('Quer enviar sua inscrição?');
         },
@@ -372,7 +372,7 @@ app.component('registration-actions', {
         },
 
         exit() {
-            window.location.href = this.registration.opportunity.singleUrl;
+            window.location.href = this.registration.opportunity?.singleUrl ?? '';
         },
 
         goToField(stepIndex, fieldName) {

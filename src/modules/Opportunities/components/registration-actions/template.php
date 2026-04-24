@@ -38,7 +38,7 @@ $term_url = $app->createUrl('site', 'termoAdesao');
 
         <div class="registration-actions__validation">
             <template v-if="!isValidated">
-                <div v-if="!registration.opportunity.registrationTo.isPast() && registration.status == 0" class="registration-actions__alert">
+                <div v-if="!registration.opportunity?.registrationTo?.isPast() && registration.status == 0" class="registration-actions__alert">
                     <div  class="registration-actions__alert-header">
                         <mc-icon name="exclamation"></mc-icon>
                         <span class="bold"><?= i::__('Atenção aos campos obrigatórios') ?></span>
@@ -48,9 +48,9 @@ $term_url = $app->createUrl('site', 'termoAdesao');
                     </div>
                 </div>
 
-                 <div v-if="!canSeeAction() && registration.opportunity.registrationTo.isPast()" class="registration-actions__alert">
+                 <div v-if="!canSeeAction() && registration.opportunity?.registrationTo?.isPast()" class="registration-actions__alert">
                     <div class="registration-actions__alert-content">
-                        <span><?= i::__("O período para envio desta inscrição terminou em") ?> <strong>{{registration.opportunity.registrationTo.date('numeric year')}} <?= i::__("às") ?> {{registration.opportunity.registrationTo.time('2-digit')}}</strong></span>
+                        <span><?= i::__("O período para envio desta inscrição terminou em") ?> <strong>{{registration.opportunity.registrationTo?.date('numeric year')}} <?= i::__("às") ?> {{registration.opportunity.registrationTo?.time('2-digit')}}</strong></span>
                     </div>
                 </div>
 
@@ -76,7 +76,7 @@ $term_url = $app->createUrl('site', 'termoAdesao');
                         <mc-icon name="send"></mc-icon>
                     </button>
                 </template>
-                <template v-if="registration.opportunity.isAppealPhase" #message="message">
+                <template v-if="registration.opportunity?.isAppealPhase" #message="message">
                     <?php i::_e('Ao enviá-lo você poderá acompanhá-lo clicando em Minhas Inscrições.') ?>
                 </template>
                 <template v-else #message="message">
