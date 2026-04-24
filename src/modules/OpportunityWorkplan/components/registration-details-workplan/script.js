@@ -9,6 +9,10 @@ app.component('registration-details-workplan', {
             type: Entity,
             required: true
         },
+        evaluationFields: {
+            type: Object,
+            default: null
+        },
     },
     data() {
         this.getWorkplan();
@@ -31,6 +35,15 @@ app.component('registration-details-workplan', {
         getDeliveryLabelDefault() {
             const label = this.opportunity.deliveryLabelDefault ? this.opportunity.deliveryLabelDefault : $MAPAS.EntitiesDescription.opportunity.deliveryLabelDefault.default_value;
             return this.pluralParaSingular(label);
+        },
+        fields() {
+            return this.evaluationFields || this.opportunity.avaliableEvaluationFields || {};
+        },
+        showField() {
+            return (fieldName) => {
+                if (!this.evaluationFields) return true;
+                return this.fields[fieldName] === "true";
+            };
         },
     },
     methods: {

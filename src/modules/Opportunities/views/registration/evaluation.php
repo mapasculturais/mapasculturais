@@ -22,6 +22,7 @@ $this->import('
     registration-evaluation-actions
     registration-evaluation-info
     registration-info
+    registration-details-workplan
     registration-workplan-form
     v1-embed-tool
 ');
@@ -127,6 +128,30 @@ if (isset($this->controller->data['user']) && $entity->opportunity->canUser("@co
                             <?php endif; ?>
                         </div>
                     </section>
+
+                    <?php
+                    $firstPhase = $entity->opportunity->firstPhase;
+                    $showWorkplan = false;
+                    if ($firstPhase && $firstPhase->enableWorkplan && !$entity->opportunity->isReportingPhase) {
+                        $avaliableFields = $entity->opportunity->avaliableEvaluationFields ?? [];
+                        foreach ($avaliableFields as $key => $val) {
+                            if (str_starts_with($key, 'workplan_') && $val === "true") {
+                                $showWorkplan = true;
+                                break;
+                            }
+                        }
+                    }
+                    ?>
+                    <?php if ($showWorkplan): ?>
+                    <section class="col-12 grid-12 section">
+                        <h3 class="col-12"><?= i::__('Plano de trabalho') ?></h3>
+                        <div class="section__content col-12">
+                            <div class="card owner">
+                                <registration-details-workplan :registration="entity"></registration-details-workplan>
+                            </div>
+                        </div>
+                    </section>
+                    <?php endif; ?>
                 </div>
             </main>
 
