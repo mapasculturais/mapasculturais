@@ -124,6 +124,19 @@ $this->import('
             <small class="field__error" v-if="validationErrors.executedRevenue">{{ validationErrors.executedRevenue.join('; ') }}</small>
         </div>
 
+        <div class="field" v-if="opportunity.workplan_monitoringInformSegmentDelivery && (editable || proxy.executedSegmentDelivery)">
+            <label :for="`${vid}__executedSegmentDelivery`"><?= i::__('Segmento artístico-cultural executado') ?><span v-if="opportunity.workplan_monitoringRequireSegmentDelivery" class="required">obrigatório*</span></label>
+            <div v-if="delivery.segmentDelivery" class="field__note">
+                <strong><?= i::__('Previsto:') ?></strong> {{ delivery.segmentDelivery }}
+            </div>
+            <select v-if="editable" :id="`${vid}__executedSegmentDelivery`" v-model="proxy.executedSegmentDelivery">
+                <option value=""><?= i::esc_attr__('Selecione') ?></option>
+                <option v-for="opt in segmentDeliveryOptions" :key="opt" :value="opt">{{ opt }}</option>
+            </select>
+            <span v-else>{{ proxy.executedSegmentDelivery }}</span>
+            <small class="field__error" v-if="validationErrors.executedSegmentDelivery">{{ validationErrors.executedSegmentDelivery.join('; ') }}</small>
+        </div>
+
         <div class="field" v-if="opportunity.workplan_monitoringInformExecutedDeliveryPeriod && (editable || proxy.executedMonthInitial || proxy.executedMonthEnd)">
             <label><?= i::__('Período executado de realização') ?><span v-if="opportunity.workplan_monitoringRequireExecutedDeliveryPeriod" class="required">obrigatório*</span></label>
             <div v-if="delivery.monthInitial || delivery.monthEnd" class="field__note">
@@ -144,6 +157,20 @@ $this->import('
             <span v-else><?= i::__('mês') ?> {{ proxy.executedMonthInitial }} <?= i::__('a') ?> {{ proxy.executedMonthEnd }}</span>
         </div>
 
+        <!-- Elo das artes executado -->
+        <div class="field" v-if="opportunity.workplan_monitoringInformArtChainLink && (editable || proxy.executedArtChainLink)">
+            <label :for="`${vid}__executedArtChainLink`"><?= i::__('Principal elo das artes acionado (executado)') ?><span v-if="opportunity.workplan_monitoringRequireArtChainLink" class="required">obrigatório*</span></label>
+            <div v-if="delivery.artChainLink" class="field__note">
+                <strong><?= i::__('Previsto:') ?></strong> {{ delivery.artChainLink }}
+            </div>
+            <select v-if="editable" :id="`${vid}__executedArtChainLink`" v-model="proxy.executedArtChainLink">
+                <option value=""><?= i::esc_attr__('Selecione') ?></option>
+                <option v-for="opt in artChainLinkOptions" :key="opt" :value="opt">{{ opt }}</option>
+            </select>
+            <span v-else>{{ proxy.executedArtChainLink }}</span>
+            <small class="field__error" v-if="validationErrors.executedArtChainLink">{{ validationErrors.executedArtChainLink.join('; ') }}</small>
+        </div>
+
         <div class="field" v-if="opportunity.workplan_monitoringInformExecutedTotalBudget && (editable || proxy.executedTotalBudget !== null && proxy.executedTotalBudget !== '')">
             <label :for="`${vid}__executedTotalBudget`"><?= i::__('Orçamento total executado') ?><span v-if="opportunity.workplan_monitoringRequireExecutedTotalBudget" class="required">obrigatório*</span></label>
             <div v-if="delivery.totalBudget !== null && delivery.totalBudget !== ''" class="field__note">
@@ -154,22 +181,6 @@ $this->import('
             <small class="field__error" v-if="validationErrors.executedTotalBudget">{{ validationErrors.executedTotalBudget.join('; ') }}</small>
         </div>
 
-        <div class="field" v-if="opportunity.workplan_monitoringInformRevenueType && (editable || hasExecutedRevenueType)">
-            <label :for="`${vid}__executedRevenueType`"><?= i::__('Tipo de receita executada') ?><span v-if="opportunity.workplan_monitoringRequireRevenueType" class="required">obrigatório*</span></label>
-            <div v-if="plannedRevenueType.length > 0" class="field__note">
-                <strong><?= i::__('Previsto:') ?></strong>
-                <mc-tag-list :tags="plannedRevenueType" :labels="revenueTypeOptions" classes="opportunity__background" :editable="false"></mc-tag-list>
-            </div>
-            <template v-if="editable">
-                <mc-multiselect :id="`${vid}__executedRevenueType`" :model="executedRevenueType" :items="revenueTypeOptions" hide-filter hide-button></mc-multiselect>
-                <mc-tag-list :tags="executedRevenueType" :labels="revenueTypeOptions" classes="opportunity__background" @remove="toggleExecutedRevenueType($event)" editable></mc-tag-list>
-            </template>
-            <mc-tag-list v-else :tags="executedRevenueType" :labels="revenueTypeOptions" classes="opportunity__background" :editable="false"></mc-tag-list>
-            <small class="field__error" v-if="validationErrors.executedRevenueType">{{ validationErrors.executedRevenueType.join('; ') }}</small>
-        </div>
-
-        <!-- NOVOS CAMPOS DE MONITORAMENTO (EXECUTADOS) -->
-        
         <div class="field" v-if="opportunity.workplan_monitoringInformNumberOfCities && (editable || proxy.executedNumberOfCities)">
             <label :for="`${vid}__executedNumberOfCities`"><?= i::__('Municípios realizados') ?><span v-if="opportunity.workplan_monitoringRequireNumberOfCities" class="required">obrigatório*</span></label>
             <div v-if="delivery.numberOfCities" class="field__note">
@@ -198,6 +209,20 @@ $this->import('
             <input v-if="editable" :id="`${vid}__executedMediationActions`" type="number" v-model.number="proxy.executedMediationActions" min="0">
             <span v-else>{{ proxy.executedMediationActions }}</span>
             <small class="field__error" v-if="validationErrors.executedMediationActions">{{ validationErrors.executedMediationActions.join('; ') }}</small>
+        </div>
+
+        <div class="field" v-if="opportunity.workplan_monitoringInformRevenueType && (editable || hasExecutedRevenueType)">
+            <label :for="`${vid}__executedRevenueType`"><?= i::__('Tipo de receita executada') ?><span v-if="opportunity.workplan_monitoringRequireRevenueType" class="required">obrigatório*</span></label>
+            <div v-if="plannedRevenueType.length > 0" class="field__note">
+                <strong><?= i::__('Previsto:') ?></strong>
+                <mc-tag-list :tags="plannedRevenueType" :labels="revenueTypeOptions" classes="opportunity__background" :editable="false"></mc-tag-list>
+            </div>
+            <template v-if="editable">
+                <mc-multiselect :id="`${vid}__executedRevenueType`" :model="executedRevenueType" :items="revenueTypeOptions" hide-filter hide-button></mc-multiselect>
+                <mc-tag-list :tags="executedRevenueType" :labels="revenueTypeOptions" classes="opportunity__background" @remove="toggleExecutedRevenueType($event)" editable></mc-tag-list>
+            </template>
+            <mc-tag-list v-else :tags="executedRevenueType" :labels="revenueTypeOptions" classes="opportunity__background" :editable="false"></mc-tag-list>
+            <small class="field__error" v-if="validationErrors.executedRevenueType">{{ validationErrors.executedRevenueType.join('; ') }}</small>
         </div>
 
         <div class="field" v-if="opportunity.workplan_monitoringInformCommercialUnits && (editable || proxy.executedCommercialUnits)">
@@ -408,48 +433,6 @@ $this->import('
             <small class="field__error" v-if="validationErrors.executedTeamCompositionRace">{{ validationErrors.executedTeamCompositionRace.join('; ') }}</small>
         </div>
 
-        <!-- Elo das artes executado -->
-        <div class="field" v-if="opportunity.workplan_monitoringInformArtChainLink && (editable || proxy.executedArtChainLink)">
-            <label :for="`${vid}__executedArtChainLink`"><?= i::__('Principal elo das artes acionado (executado)') ?><span v-if="opportunity.workplan_monitoringRequireArtChainLink" class="required">obrigatório*</span></label>
-            <div v-if="delivery.artChainLink" class="field__note">
-                <strong><?= i::__('Previsto:') ?></strong> {{ delivery.artChainLink }}
-            </div>
-            <select v-if="editable" :id="`${vid}__executedArtChainLink`" v-model="proxy.executedArtChainLink">
-                <option value=""><?= i::esc_attr__('Selecione') ?></option>
-                <option v-for="opt in artChainLinkOptions" :key="opt" :value="opt">{{ opt }}</option>
-            </select>
-            <span v-else>{{ proxy.executedArtChainLink }}</span>
-            <small class="field__error" v-if="validationErrors.executedArtChainLink">{{ validationErrors.executedArtChainLink.join('; ') }}</small>
-        </div>
-
-        <!-- Canais de comunicação executados -->
-        <div class="field" v-if="opportunity.workplan_monitoringInformCommunicationChannels && (editable || executedCommunicationChannels.length > 0)">
-            <label :for="`${vid}__executedCommunicationChannels`"><?= i::__('Canais de comunicação utilizados (executado)') ?><span v-if="opportunity.workplan_monitoringRequireCommunicationChannels" class="required">obrigatório*</span></label>
-            <div v-if="plannedCommunicationChannels.length > 0" class="field__note">
-                <strong><?= i::__('Previsto:') ?></strong>
-                <mc-tag-list :tags="plannedCommunicationChannels" :labels="communicationChannelsOptions" classes="opportunity__background" :editable="false"></mc-tag-list>
-            </div>
-            <template v-if="editable">
-                <mc-multiselect :id="`${vid}__executedCommunicationChannels`" :model="executedCommunicationChannels" :items="communicationChannelsOptions" hide-filter hide-button></mc-multiselect>
-                <mc-tag-list :tags="executedCommunicationChannels" :labels="communicationChannelsOptions" classes="opportunity__background" @remove="toggleExecutedCommunicationChannel($event)" editable></mc-tag-list>
-            </template>
-            <mc-tag-list v-else :tags="executedCommunicationChannels" :labels="communicationChannelsOptions" classes="opportunity__background" :editable="false"></mc-tag-list>
-            <small class="field__error" v-if="validationErrors.executedCommunicationChannels">{{ validationErrors.executedCommunicationChannels.join('; ') }}</small>
-        </div>
-
-        <div class="field" v-if="opportunity.workplan_monitoringInformSegmentDelivery && (editable || proxy.executedSegmentDelivery)">
-            <label :for="`${vid}__executedSegmentDelivery`"><?= i::__('Segmento artístico-cultural executado') ?><span v-if="opportunity.workplan_monitoringRequireSegmentDelivery" class="required">obrigatório*</span></label>
-            <div v-if="delivery.segmentDelivery" class="field__note">
-                <strong><?= i::__('Previsto:') ?></strong> {{ delivery.segmentDelivery }}
-            </div>
-            <select v-if="editable" :id="`${vid}__executedSegmentDelivery`" v-model="proxy.executedSegmentDelivery">
-                <option value=""><?= i::esc_attr__('Selecione') ?></option>
-                <option v-for="opt in segmentDeliveryOptions" :key="opt" :value="opt">{{ opt }}</option>
-            </select>
-            <span v-else>{{ proxy.executedSegmentDelivery }}</span>
-            <small class="field__error" v-if="validationErrors.executedSegmentDelivery">{{ validationErrors.executedSegmentDelivery.join('; ') }}</small>
-        </div>
-
         <div class="field" v-if="opportunity.workplan_monitoringInformCommunityCoauthors && (editable || proxy.executedHasCommunityCoauthors || proxy.executedCommunityCoauthorsDetail)">
             <label :for="`${vid}__executedHasCommunityCoauthors`"><?= i::__('Houve coautoria/coexecução com comunidades/coletivos?') ?><span v-if="opportunity.workplan_monitoringRequireHasCommunityCoauthors" class="required">obrigatório*</span></label>
             <div v-if="delivery.hasCommunityCoauthors" class="field__note">
@@ -567,6 +550,21 @@ $this->import('
             <textarea v-if="editable" :id="`${vid}__executedCommunicationStrategies`" v-model="proxy.executedCommunicationStrategies" rows="3"></textarea>
             <span v-else>{{ proxy.executedCommunicationStrategies }}</span>
             <small class="field__error" v-if="validationErrors.executedCommunicationStrategies">{{ validationErrors.executedCommunicationStrategies.join('; ') }}</small>
+        </div>
+
+        <!-- Canais de comunicação executados -->
+        <div class="field" v-if="opportunity.workplan_monitoringInformCommunicationChannels && (editable || executedCommunicationChannels.length > 0)">
+            <label :for="`${vid}__executedCommunicationChannels`"><?= i::__('Canais de comunicação utilizados (executado)') ?><span v-if="opportunity.workplan_monitoringRequireCommunicationChannels" class="required">obrigatório*</span></label>
+            <div v-if="plannedCommunicationChannels.length > 0" class="field__note">
+                <strong><?= i::__('Previsto:') ?></strong>
+                <mc-tag-list :tags="plannedCommunicationChannels" :labels="communicationChannelsOptions" classes="opportunity__background" :editable="false"></mc-tag-list>
+            </div>
+            <template v-if="editable">
+                <mc-multiselect :id="`${vid}__executedCommunicationChannels`" :model="executedCommunicationChannels" :items="communicationChannelsOptions" hide-filter hide-button></mc-multiselect>
+                <mc-tag-list :tags="executedCommunicationChannels" :labels="communicationChannelsOptions" classes="opportunity__background" @remove="toggleExecutedCommunicationChannel($event)" editable></mc-tag-list>
+            </template>
+            <mc-tag-list v-else :tags="executedCommunicationChannels" :labels="communicationChannelsOptions" classes="opportunity__background" :editable="false"></mc-tag-list>
+            <small class="field__error" v-if="validationErrors.executedCommunicationChannels">{{ validationErrors.executedCommunicationChannels.join('; ') }}</small>
         </div>
 
         <div class="field" v-if="opportunity.workplan_monitoringInformInnovation && (editable || proxy.executedHasInnovationAction || hasExecutedInnovationTypes)">
