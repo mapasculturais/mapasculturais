@@ -175,7 +175,7 @@ class Module extends \MapasCulturais\Module {
 
         // Metadados para Goal (Meta)
         $executionDetail = new Metadata('executionDetail', [
-            'label' => i::__('Detalhamento da execução da meta')
+            'label' => i::__('Detalhamento da execução')
         ]);
         $app->registerMetadata($executionDetail, Goal::class);
 
