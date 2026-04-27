@@ -291,6 +291,274 @@ class Module extends \MapasCulturais\Module{
                 $this->jsObject['EntitiesDescription']['workplan']['goal'] = Goal::getPropertiesMetadata();
                 $this->jsObject['EntitiesDescription']['workplan']['goal']['delivery'] = Delivery::getPropertiesMetadata();
             });
+
+            // FALTA-1: Export workplan data in registration spreadsheets
+            $app->hook("SpreadsheetJob(registrations-spreadsheets).getHeader:after", function($job, &$result) use($app) {
+                $opportunity = $job->owner;
+                $firstPhase = $opportunity->firstPhase ?: $opportunity;
+                if (!$firstPhase->enableWorkplan) {
+                    return;
+                }
+
+                $workplanLabel = $firstPhase->workplanLabelDefault ?: i::__('Plano de metas');
+                $goalLabel = $firstPhase->goalLabelDefault ?: i::__('Metas');
+                $deliveryLabel = $firstPhase->deliveryLabelDefault ?: i::__('Entregas');
+
+                $result['workplan_projectDuration'] = $workplanLabel . ' - ' . i::__('Duração do projeto (meses)');
+                $result['workplan_culturalArtisticSegment'] = $workplanLabel . ' - ' . i::__('Segmento artístico-cultural');
+
+                $result['workplan_goalMonthInitial'] = $goalLabel . ' - ' . i::__('Mês inicial');
+                $result['workplan_goalMonthEnd'] = $goalLabel . ' - ' . i::__('Mês final');
+                $result['workplan_goalTitle'] = $goalLabel . ' - ' . i::__('Título');
+                $result['workplan_goalDescription'] = $goalLabel . ' - ' . i::__('Descrição');
+                $result['workplan_goalCulturalMakingStage'] = $goalLabel . ' - ' . i::__('Etapa do fazer cultural');
+
+                $result['workplan_deliveryName'] = $deliveryLabel . ' - ' . i::__('Nome');
+                $result['workplan_deliveryDescription'] = $deliveryLabel . ' - ' . i::__('Descrição');
+                $result['workplan_deliveryTypeDelivery'] = $deliveryLabel . ' - ' . i::__('Tipo de entrega');
+                $result['workplan_deliverySegmentDelivery'] = $deliveryLabel . ' - ' . i::__('Segmento artístico cultural');
+                $result['workplan_deliveryExpectedNumberPeople'] = $deliveryLabel . ' - ' . i::__('Número previsto de pessoas');
+                $result['workplan_deliveryGeneraterRevenue'] = $deliveryLabel . ' - ' . i::__('Irá gerar receita?');
+                $result['workplan_deliveryRevenueDetails'] = $deliveryLabel . ' - ' . i::__('Detalhamento de receita (quantidade e valores)');
+                $result['workplan_deliveryPeriod'] = $deliveryLabel . ' - ' . i::__('Período de realização');
+                $result['workplan_deliveryArtChainLink'] = $deliveryLabel . ' - ' . i::__('Principal elo das artes');
+                $result['workplan_deliveryTotalBudget'] = $deliveryLabel . ' - ' . i::__('Orçamento total');
+                $result['workplan_deliveryNumberOfCities'] = $deliveryLabel . ' - ' . i::__('Número de municípios');
+                $result['workplan_deliveryNumberOfNeighborhoods'] = $deliveryLabel . ' - ' . i::__('Número de bairros');
+                $result['workplan_deliveryMediationActions'] = $deliveryLabel . ' - ' . i::__('Ações de mediação previstas');
+                $result['workplan_deliveryRevenueType'] = $deliveryLabel . ' - ' . i::__('Tipo de receita');
+                $result['workplan_deliveryCommercialUnits'] = $deliveryLabel . ' - ' . i::__('Unidades para comercialização');
+                $result['workplan_deliveryPaidStaffByRole'] = $deliveryLabel . ' - ' . i::__('Pessoas remuneradas por função');
+                $result['workplan_deliveryTeamComposition'] = $deliveryLabel . ' - ' . i::__('Composição da equipe (gênero e raça/cor)');
+                $result['workplan_deliveryCommunityCoauthors'] = $deliveryLabel . ' - ' . i::__('Envolvimento de comunidades como coautores');
+                $result['workplan_deliveryTransInclusion'] = $deliveryLabel . ' - ' . i::__('Estratégias de inclusão Trans e Travestis');
+                $result['workplan_deliveryAccessibilityPlan'] = $deliveryLabel . ' - ' . i::__('Medidas de acessibilidade previstas');
+                $result['workplan_deliveryEnvironmentalPractices'] = $deliveryLabel . ' - ' . i::__('Práticas socioambientais');
+                $result['workplan_deliveryPressStrategy'] = $deliveryLabel . ' - ' . i::__('Estratégia de imprensa');
+                $result['workplan_deliveryCommunicationChannels'] = $deliveryLabel . ' - ' . i::__('Canais de comunicação');
+                $result['workplan_deliveryInnovation'] = $deliveryLabel . ' - ' . i::__('Experimentação/inovação');
+                $result['workplan_deliveryDocumentationTypes'] = $deliveryLabel . ' - ' . i::__('Tipos de documentação');
+            });
+
+            $app->hook("SpreadsheetJob(registrations-spreadsheets).getBatch:after", function($job, &$result) use($app) {
+                $opportunity = $job->owner;
+                $firstPhase = $opportunity->firstPhase ?: $opportunity;
+                if (!$firstPhase->enableWorkplan) {
+                    return;
+                }
+
+                if (empty($result)) {
+                    return;
+                }
+
+                $regIds = array_map(function($row) { return $row['id']; }, $result);
+
+                $em = $app->em;
+                $workplans = $em->createQuery(
+                    'SELECT w, g, d FROM OpportunityWorkplan\Entities\Workplan w ' .
+                    'LEFT JOIN w.goals g LEFT JOIN g.deliveries d ' .
+                    'WHERE w.registration IN (:regIds)'
+                )->setParameter('regIds', $regIds)->getResult();
+
+                $workplanMap = [];
+                foreach ($workplans as $wp) {
+                    $regId = $wp->registration->id;
+                    $workplanMap[$regId] = $wp;
+                }
+
+                $formatValue = function($val) {
+                    if ($val === null || $val === '') return '';
+                    if (is_bool($val)) return $val ? 'Sim' : 'Não';
+                    if (is_string($val)) {
+                        $lower = strtolower($val);
+                        if ($lower === 'true') return 'Sim';
+                        if ($lower === 'false') return 'Não';
+                        $decoded = json_decode($val, true);
+                        if (is_array($decoded)) {
+                            $parts = [];
+                            foreach ($decoded as $k => $v) {
+                                $parts[] = is_int($k) ? (string) $v : "$k: $v";
+                            }
+                            return implode(', ', $parts);
+                        }
+                    }
+                    return (string) $val;
+                };
+
+                $formatBool = function($val) {
+                    if ($val === null || $val === '') return 'Não';
+                    if (is_bool($val)) return $val ? 'Sim' : 'Não';
+                    $lower = strtolower((string) $val);
+                    return $lower === 'true' ? 'Sim' : 'Não';
+                };
+
+                $workplanFields = [
+                    'workplan_projectDuration', 'workplan_culturalArtisticSegment',
+                    'workplan_goalMonthInitial', 'workplan_goalMonthEnd', 'workplan_goalTitle',
+                    'workplan_goalDescription', 'workplan_goalCulturalMakingStage',
+                    'workplan_deliveryName', 'workplan_deliveryDescription', 'workplan_deliveryTypeDelivery',
+                    'workplan_deliverySegmentDelivery', 'workplan_deliveryExpectedNumberPeople',
+                    'workplan_deliveryGeneraterRevenue', 'workplan_deliveryRevenueDetails',
+                    'workplan_deliveryPeriod', 'workplan_deliveryArtChainLink', 'workplan_deliveryTotalBudget',
+                    'workplan_deliveryNumberOfCities', 'workplan_deliveryNumberOfNeighborhoods',
+                    'workplan_deliveryMediationActions', 'workplan_deliveryRevenueType',
+                    'workplan_deliveryCommercialUnits', 'workplan_deliveryPaidStaffByRole',
+                    'workplan_deliveryTeamComposition', 'workplan_deliveryCommunityCoauthors',
+                    'workplan_deliveryTransInclusion', 'workplan_deliveryAccessibilityPlan',
+                    'workplan_deliveryEnvironmentalPractices', 'workplan_deliveryPressStrategy',
+                    'workplan_deliveryCommunicationChannels', 'workplan_deliveryInnovation',
+                    'workplan_deliveryDocumentationTypes',
+                ];
+
+                foreach ($result as &$row) {
+                    $regId = $row['id'];
+                    $workplan = $workplanMap[$regId] ?? null;
+
+                    if (!$workplan) {
+                        foreach ($workplanFields as $field) {
+                            $row[$field] = '';
+                        }
+                        continue;
+                    }
+
+                    // Workplan-level fields
+                    $row['workplan_projectDuration'] = $formatValue($workplan->projectDuration);
+                    $row['workplan_culturalArtisticSegment'] = $formatValue($workplan->culturalArtisticSegment);
+
+                    // Aggregate goal fields
+                    $goalTitles = [];
+                    $goalDescriptions = [];
+                    $goalMonthInitial = [];
+                    $goalMonthEnd = [];
+                    $goalCulturalMakingStage = [];
+
+                    // Aggregate delivery fields
+                    $deliveryNames = [];
+                    $deliveryDescriptions = [];
+                    $deliveryTypeDelivery = [];
+                    $deliverySegmentDelivery = [];
+                    $deliveryExpectedNumberPeople = [];
+                    $deliveryGeneraterRevenue = [];
+                    $deliveryRevenueDetails = [];
+                    $deliveryPeriod = [];
+                    $deliveryArtChainLink = [];
+                    $deliveryTotalBudget = [];
+                    $deliveryNumberOfCities = [];
+                    $deliveryNumberOfNeighborhoods = [];
+                    $deliveryMediationActions = [];
+                    $deliveryRevenueType = [];
+                    $deliveryCommercialUnits = [];
+                    $deliveryPaidStaffByRole = [];
+                    $deliveryTeamComposition = [];
+                    $deliveryCommunityCoauthors = [];
+                    $deliveryTransInclusion = [];
+                    $deliveryAccessibilityPlan = [];
+                    $deliveryEnvironmentalPractices = [];
+                    $deliveryPressStrategy = [];
+                    $deliveryCommunicationChannels = [];
+                    $deliveryInnovation = [];
+                    $deliveryDocumentationTypes = [];
+
+                    foreach ($workplan->goals as $goal) {
+                        $goalTitles[] = $formatValue($goal->title);
+                        $goalDescriptions[] = $formatValue($goal->description);
+                        $goalMonthInitial[] = $formatValue($goal->monthInitial);
+                        $goalMonthEnd[] = $formatValue($goal->monthEnd);
+                        $goalCulturalMakingStage[] = $formatValue($goal->culturalMakingStage);
+
+                        foreach ($goal->deliveries as $delivery) {
+                            $deliveryNames[] = $formatValue($delivery->name);
+                            $deliveryDescriptions[] = $formatValue($delivery->description);
+                            $deliveryTypeDelivery[] = $formatValue($delivery->typeDelivery);
+                            $deliverySegmentDelivery[] = $formatValue($delivery->segmentDelivery);
+                            $deliveryExpectedNumberPeople[] = $formatValue($delivery->expectedNumberPeople);
+                            $deliveryGeneraterRevenue[] = $formatBool($delivery->generaterRevenue);
+
+                            $qtd = $formatValue($delivery->renevueQtd);
+                            $unitVal = $formatValue($delivery->unitValueForecast);
+                            $deliveryRevenueDetails[] = ($qtd !== '' && $unitVal !== '') ? "$qtd x $unitVal" : '';
+
+                            $mInit = $formatValue($delivery->monthInitial);
+                            $mEnd = $formatValue($delivery->monthEnd);
+                            $deliveryPeriod[] = ($mInit !== '' && $mEnd !== '') ? "$mInit - $mEnd" : '';
+
+                            $deliveryArtChainLink[] = $formatValue($delivery->artChainLink);
+                            $deliveryTotalBudget[] = $formatValue($delivery->totalBudget);
+                            $deliveryNumberOfCities[] = $formatValue($delivery->numberOfCities);
+                            $deliveryNumberOfNeighborhoods[] = $formatValue($delivery->numberOfNeighborhoods);
+                            $deliveryMediationActions[] = $formatValue($delivery->mediationActions);
+                            $deliveryRevenueType[] = $formatValue($delivery->revenueType);
+                            $deliveryCommercialUnits[] = $formatValue($delivery->commercialUnits);
+                            $deliveryPaidStaffByRole[] = $formatValue($delivery->paidStaffByRole);
+
+                            $gender = $formatValue($delivery->teamCompositionGender);
+                            $race = $formatValue($delivery->teamCompositionRace);
+                            $deliveryTeamComposition[] = ($gender !== '' && $race !== '') ? "$gender ($race)" : $formatValue($delivery->teamCompositionGender);
+
+                            $hasCA = $formatBool($delivery->hasCommunityCoauthors);
+                            $detailCA = $formatValue($delivery->communityCoauthorsDetail);
+                            $deliveryCommunityCoauthors[] = ($hasCA === 'Sim' && $detailCA !== '') ? "Sim: $detailCA" : $hasCA;
+
+                            $hasTrans = $formatBool($delivery->hasTransInclusionStrategy);
+                            $transActions = $formatValue($delivery->transInclusionActions);
+                            $deliveryTransInclusion[] = ($hasTrans === 'Sim' && $transActions !== '') ? "Sim: $transActions" : $hasTrans;
+
+                            $hasAccess = $formatBool($delivery->hasAccessibilityPlan);
+                            $accessMeasures = $formatValue($delivery->expectedAccessibilityMeasures);
+                            $deliveryAccessibilityPlan[] = ($hasAccess === 'Sim' && $accessMeasures !== '') ? "Sim: $accessMeasures" : $hasAccess;
+
+                            $hasEnv = $formatBool($delivery->hasEnvironmentalPractices);
+                            $envDesc = $formatValue($delivery->environmentalPracticesDescription);
+                            $deliveryEnvironmentalPractices[] = ($hasEnv === 'Sim' && $envDesc !== '') ? "Sim: $envDesc" : $hasEnv;
+
+                            $hasPress = $formatBool($delivery->hasPressStrategy);
+                            $channels = $formatValue($delivery->communicationChannels);
+                            $deliveryPressStrategy[] = ($hasPress === 'Sim' && $channels !== '') ? "Sim: $channels" : $hasPress;
+
+                            $deliveryCommunicationChannels[] = $formatValue($delivery->communicationChannels);
+
+                            $hasInnov = $formatBool($delivery->hasInnovationAction);
+                            $innovTypes = $formatValue($delivery->innovationTypes);
+                            $deliveryInnovation[] = ($hasInnov === 'Sim' && $innovTypes !== '') ? "Sim: $innovTypes" : $hasInnov;
+
+                            $deliveryDocumentationTypes[] = $formatValue($delivery->documentationTypes);
+                        }
+                    }
+
+                    $row['workplan_goalTitle'] = implode(' | ', array_filter($goalTitles)) ?: '';
+                    $row['workplan_goalDescription'] = implode(' | ', array_filter($goalDescriptions)) ?: '';
+                    $row['workplan_goalMonthInitial'] = implode(' | ', array_filter($goalMonthInitial)) ?: '';
+                    $row['workplan_goalMonthEnd'] = implode(' | ', array_filter($goalMonthEnd)) ?: '';
+                    $row['workplan_goalCulturalMakingStage'] = implode(' | ', array_filter($goalCulturalMakingStage)) ?: '';
+
+                    $row['workplan_deliveryName'] = implode(' | ', array_filter($deliveryNames)) ?: '';
+                    $row['workplan_deliveryDescription'] = implode(' | ', array_filter($deliveryDescriptions)) ?: '';
+                    $row['workplan_deliveryTypeDelivery'] = implode(' | ', array_filter($deliveryTypeDelivery)) ?: '';
+                    $row['workplan_deliverySegmentDelivery'] = implode(' | ', array_filter($deliverySegmentDelivery)) ?: '';
+                    $row['workplan_deliveryExpectedNumberPeople'] = implode(' | ', array_filter($deliveryExpectedNumberPeople)) ?: '';
+                    $row['workplan_deliveryGeneraterRevenue'] = implode(' | ', array_filter($deliveryGeneraterRevenue)) ?: '';
+                    $row['workplan_deliveryRevenueDetails'] = implode(' | ', array_filter($deliveryRevenueDetails)) ?: '';
+                    $row['workplan_deliveryPeriod'] = implode(' | ', array_filter($deliveryPeriod)) ?: '';
+                    $row['workplan_deliveryArtChainLink'] = implode(' | ', array_filter($deliveryArtChainLink)) ?: '';
+                    $row['workplan_deliveryTotalBudget'] = implode(' | ', array_filter($deliveryTotalBudget)) ?: '';
+                    $row['workplan_deliveryNumberOfCities'] = implode(' | ', array_filter($deliveryNumberOfCities)) ?: '';
+                    $row['workplan_deliveryNumberOfNeighborhoods'] = implode(' | ', array_filter($deliveryNumberOfNeighborhoods)) ?: '';
+                    $row['workplan_deliveryMediationActions'] = implode(' | ', array_filter($deliveryMediationActions)) ?: '';
+                    $row['workplan_deliveryRevenueType'] = implode(' | ', array_filter($deliveryRevenueType)) ?: '';
+                    $row['workplan_deliveryCommercialUnits'] = implode(' | ', array_filter($deliveryCommercialUnits)) ?: '';
+                    $row['workplan_deliveryPaidStaffByRole'] = implode(' | ', array_filter($deliveryPaidStaffByRole)) ?: '';
+                    $row['workplan_deliveryTeamComposition'] = implode(' | ', array_filter($deliveryTeamComposition)) ?: '';
+                    $row['workplan_deliveryCommunityCoauthors'] = implode(' | ', array_filter($deliveryCommunityCoauthors)) ?: '';
+                    $row['workplan_deliveryTransInclusion'] = implode(' | ', array_filter($deliveryTransInclusion)) ?: '';
+                    $row['workplan_deliveryAccessibilityPlan'] = implode(' | ', array_filter($deliveryAccessibilityPlan)) ?: '';
+                    $row['workplan_deliveryEnvironmentalPractices'] = implode(' | ', array_filter($deliveryEnvironmentalPractices)) ?: '';
+                    $row['workplan_deliveryPressStrategy'] = implode(' | ', array_filter($deliveryPressStrategy)) ?: '';
+                    $row['workplan_deliveryCommunicationChannels'] = implode(' | ', array_filter($deliveryCommunicationChannels)) ?: '';
+                    $row['workplan_deliveryInnovation'] = implode(' | ', array_filter($deliveryInnovation)) ?: '';
+                    $row['workplan_deliveryDocumentationTypes'] = implode(' | ', array_filter($deliveryDocumentationTypes)) ?: '';
+                }
+                unset($row);
+            });
         });
     }
 
