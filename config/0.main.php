@@ -112,6 +112,25 @@ return [
     'app.redirect_profile_validate' => env('APP_REDIRECT_PROFILE_VALIDATE', false),
     
     /* Lista de MIME types bloqueados */
-    'app.not_allowed_mime_types' => env('APP_NOT_ALLOWED_MIME_TYPES', "html|php|javascript|css|executable|msdownload|bat|cmd|installer|bash|diskimage|android|java|octet-stream"),
+    'app.not_allowed_mime_types' => env('APP_NOT_ALLOWED_MIME_TYPES', "html|php|php3|php4|php5|php7|php8|phtml|phar|x-httpd-php|javascript|css|executable|msdownload|bat|cmd|installer|bash|diskimage|android|java|octet-stream|x-python|x-perl|x-sh|x-csh|x-shockwave-flash|x-msdos-program|x-msi|svg\+xml|xml|yaml|x-yaml|environment|sql|ini|log"),
+
+    /* Lista de extensões de arquivo bloqueadas */
+    'app.not_allowed_extensions' => env('APP_NOT_ALLOWED_EXTENSIONS', 'php,phtml,php3,php4,php5,php7,php8,phar,cgi,pl,py,sh,bash,exe,dll,so,bin,bat,cmd,msi,jar,class,jsp,asp,aspx,js,css,html,htm,shtml,svg,xml,yaml,yml,env,ini,log,sql,bak,old,tmp,swp,exp,apk'),
+
+    /* Whitelist padrão de MIME types (regex) usada quando o grupo de arquivo não define validações próprias.
+       Pode ser sobrescrita via env var APP_DEFAULT_ALLOWED_MIME_TYPES (JSON array de strings regex). */
+    'app.default_allowed_mime_types' => json_decode(env('APP_DEFAULT_ALLOWED_MIME_TYPES', json_encode([
+        '^image/(jpeg|png|gif|webp|bmp|tiff)$',
+        '^application/pdf$',
+        '^application/msword$',
+        '^application/vnd\.openxmlformats-officedocument\..*$',
+        '^application/vnd\.ms-(word|excel|powerpoint).*$',
+        '^application/vnd\.oasis\.opendocument\..*$',
+        '^audio/(mpeg|wav|ogg|flac|aac|webm)$',
+        '^video/(mp4|mpeg|webm|quicktime|avi|x-msvideo)$',
+        '^application/(zip|x-zip-compressed|x-rar-compressed|x-rar|x-7z-compressed|gzip)$',
+        '^text/(plain|csv|rtf)$',
+        '^application/rtf$',
+    ]))),
 
 ];
