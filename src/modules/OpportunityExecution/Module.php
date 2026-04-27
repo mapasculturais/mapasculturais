@@ -6,7 +6,6 @@ use MapasCulturais\App;
 use MapasCulturais\Entities\EvaluationMethodConfiguration;
 use MapasCulturais\Entities\Opportunity;
 use MapasCulturais\Entities\Registration;
-use MapasCulturais\Exceptions;
 use MapasCulturais\i;
 
 class Module extends \MapasCulturais\Module
@@ -15,6 +14,18 @@ class Module extends \MapasCulturais\Module
     {
         $app = App::i();
 
+        $this->registerValidationHooks($app);
+        $this->registerRegistrationCreationHook($app);
+        $this->registerRegistrationSyncHooks($app);
+        $this->registerPhaseHooks($app);
+        $this->registerTemplateHooks($app);
+        $this->registerCreateExecutionPhaseEndpoint($app);
+        $this->registerExecutionPhaseRemovalHook($app);
+        $this->registerCreateExecutionRequestEndpoint($app);
+    }
+
+    private function registerValidationHooks(App $app)
+    {
         // ----------------------------------------------------------------
         // Remove as restrições de data que exigem que a fase seja anterior
         // ao publishTimestamp da lastPhase. A fase de execução ocorre APÓS
@@ -45,7 +56,10 @@ class Module extends \MapasCulturais\Module
             unset($validations['evaluationFrom']);
             unset($validations['evaluationTo']);
         }, 999); // alta prioridade: roda depois do hook do OpportunityPhases
+    }
 
+    private function registerRegistrationCreationHook(App $app)
+    {
         // ----------------------------------------------------------------
         // Permite criação de inscrições (pedidos) na fase de execução,
         // sobrescrevendo o bloqueio genérico do OpportunityPhases que
@@ -64,7 +78,10 @@ class Module extends \MapasCulturais\Module
                 return;
             }
         }, 1000); // prioridade alta para rodar antes do hook de bloqueio
+    }
 
+    private function registerRegistrationSyncHooks(App $app)
+    {
         // ----------------------------------------------------------------
         // Exclui a fase de execução da sincronização automática de
         // inscrições entre fases (sync, enqueue, import, removeOrphan).
@@ -96,68 +113,19 @@ class Module extends \MapasCulturais\Module
                 return;
             }
         });
+    }
+
+    private function registerPhaseHooks(App $app)
+    {
+        $self = $this;
 
         // ----------------------------------------------------------------
         // Posiciona a fase de execução após a lastPhase e antes das fases
         // de prestação de informações na lista allPhases.
         // ----------------------------------------------------------------
-        $app->hook('entity(Opportunity).get(allPhases)', function (&$values) {
+        $app->hook('entity(Opportunity).get(allPhases)', function (&$values) use ($self) {
             /** @var Opportunity $this */
-            if (!$values) {
-                return;
-            }
-
-            $execution_phases = [];
-            $remaining = [];
-
-            foreach ($values as $phase) {
-                if ($phase->isExecutionPhase) {
-                    $execution_phases[] = $phase;
-                } else {
-                    $remaining[] = $phase;
-                }
-            }
-
-            if (!$execution_phases) {
-                return;
-            }
-
-            // Insere as fases de execução após a lastPhase e antes das reporting phases
-            $result = [];
-            $last_phase_inserted = false;
-
-            foreach ($remaining as $phase) {
-                $result[] = $phase;
-                if ($phase->isLastPhase && !$last_phase_inserted) {
-                    foreach ($execution_phases as $ep) {
-                        $result[] = $ep;
-                    }
-                    $last_phase_inserted = true;
-                }
-            }
-
-            // Caso não haja lastPhase na lista (edge case), insere antes das reporting
-            if (!$last_phase_inserted) {
-                $final = [];
-                $reporting_inserted = false;
-                foreach ($result as $phase) {
-                    if ($phase->isReportingPhase && !$reporting_inserted) {
-                        foreach ($execution_phases as $ep) {
-                            $final[] = $ep;
-                        }
-                        $reporting_inserted = true;
-                    }
-                    $final[] = $phase;
-                }
-                if (!$reporting_inserted) {
-                    foreach ($execution_phases as $ep) {
-                        $final[] = $ep;
-                    }
-                }
-                $result = $final;
-            }
-
-            $values = $result;
+            $values = $self->sortExecutionPhases($values);
         }, 20); // prioridade: roda depois do hook base do OpportunityPhases (priority 10)
 
         // ----------------------------------------------------------------
@@ -167,6 +135,11 @@ class Module extends \MapasCulturais\Module
         $app->hook('module(OpportunityPhases).dataCollectionPhaseData', function (&$mout_simplify) {
             $mout_simplify .= ',isExecutionPhase';
         });
+    }
+
+    private function registerTemplateHooks(App $app)
+    {
+        $self = $this;
 
         // ----------------------------------------------------------------
         // Injeta a seção de pedidos de execução na aba "Ficha de inscrição"
@@ -174,57 +147,10 @@ class Module extends \MapasCulturais\Module
         // O hook registration-ficha-tab:end é adicionado no single.php
         // da aba ficha, logo após o loop de fases de coleta de dados.
         // ----------------------------------------------------------------
-        $app->hook('template(registration.view.registration-ficha-tab):end', function($entity) use ($app) {
+        $app->hook('template(registration.view.registration-ficha-tab):end', function($entity) use ($self) {
             /** @var \MapasCulturais\Themes\BaseV2\Theme $this */
             /** @var \MapasCulturais\Entities\Registration $entity firstPhase registration */
-
-            // Localiza as fases de execução da oportunidade raiz
-            $first_phase_opp = $entity->opportunity->firstPhase ?? $entity->opportunity;
-            $execution_phases = array_filter($first_phase_opp->allPhases ?? [], fn($p) => $p->isExecutionPhase);
-
-            if (!$execution_phases) {
-                return;
-            }
-
-            // A lastPhase registration é o vínculo com os pedidos de execução
-            $last_phase_reg = $entity->lastPhase ?? $entity;
-
-            $conn = $app->em->getConnection();
-
-            foreach ($execution_phases as $exec_phase) {
-                $ids = $conn->fetchFirstColumn(
-                    "SELECT r.id FROM registration r
-                     INNER JOIN registration_meta m ON m.object_id = r.id
-                     WHERE r.opportunity_id = ?
-                       AND r.status > 0
-                       AND m.key = 'previousPhaseRegistrationId'
-                       AND m.value = ?",
-                    [$exec_phase->id, (string) $last_phase_reg->id]
-                );
-
-                if (!$ids) {
-                    continue;
-                }
-
-                $requests = $app->repo('Registration')->findBy(
-                    ['id' => $ids],
-                    ['createTimestamp' => 'ASC', 'id' => 'ASC']
-                );
-
-                if (!$requests) {
-                    continue;
-                }
-
-                ?>
-                <h2><?= htmlspecialchars($exec_phase->name) ?></h2>
-                <?php
-                foreach ($requests as $request) {
-                    ?>
-                    <h3><?= $request->number ?></h3>
-                    <v1-embed-tool route="registrationview" :id="<?= $request->id ?>"></v1-embed-tool>
-                    <?php
-                }
-            }
+            $self->renderExecutionRequestsOnRegistrationFicha($entity);
         });
 
         // ----------------------------------------------------------------
@@ -237,91 +163,27 @@ class Module extends \MapasCulturais\Module
         // ----------------------------------------------------------------
         $app->hook('component(opportunity-phases-timeline).item:end', function () {
             /** @var \MapasCulturais\Themes\BaseV2\Theme $this */
-            $this->import('opportunity-execution-requests');
-            ?>
-            <opportunity-execution-requests
-                v-if="item.isExecutionPhase && getRegistration(lastPhase)?.status == 10"
-                :registration="getRegistration(lastPhase)"
-                :phase="item"
-                :phases="phases">
-            </opportunity-execution-requests>
-            <?php
+            Module::renderOpportunityPhasesTimelineItem($this);
         });
+    }
+
+    private function registerCreateExecutionPhaseEndpoint(App $app)
+    {
+        $self = $this;
 
         // ----------------------------------------------------------------
         // Endpoint: cria a fase de execução vinculada à oportunidade.
         // Cria atomicamente a Opportunity (coleta) + EvaluationMethodConfiguration
         // (tipo simple), seguindo o mesmo padrão de POST_reportingPhase.
         // ----------------------------------------------------------------
-        $app->hook('POST(opportunity.createExecutionPhase)', function () use ($app) {
+        $app->hook('POST(opportunity.createExecutionPhase)', function () use ($self) {
             /** @var \MapasCulturais\Controllers\Opportunity $this */
-
-            $opportunity = $this->requestedEntity;
-            $opportunity->checkPermission('@control');
-
-            // Garante que operamos sempre na oportunidade raiz
-            $root = $opportunity->isOpportunityPhase ? $opportunity->firstPhase : $opportunity;
-
-            // Verifica se já existe uma fase de execução
-            foreach ($root->allPhases as $phase) {
-                if ($phase->isExecutionPhase) {
-                    $this->errorJson(i::__('Já existe uma fase de execução para esta oportunidade'), 403);
-                    return;
-                }
-            }
-
-            $data             = $this->data;
-            $collection_data  = $data['collectionPhase'] ?? [];
-            $evaluation_data  = $data['evaluationPhase']  ?? [];
-
-            $class = $root->getSpecializedClassName();
-
-            $execution_phase = new $class();
-            $execution_phase->parent             = $root;
-            $execution_phase->status             = Opportunity::STATUS_PHASE;
-            $execution_phase->name               = $collection_data['name'] ?? i::__('Fase de Execução');
-            $execution_phase->registrationFrom   = $collection_data['registrationFrom']['_date'] ?? null;
-            $execution_phase->registrationTo     = $collection_data['registrationTo']['_date'] ?? null;
-            $execution_phase->type               = $root->type;
-            $execution_phase->ownerEntity        = $root->ownerEntity;
-            $execution_phase->isOpportunityPhase = true;
-            $execution_phase->isDataCollection   = true;
-            $execution_phase->isExecutionPhase   = true;
-            $execution_phase->registrationLimitPerOwner = 0;
-
-            $evaluation_phase = new EvaluationMethodConfiguration();
-            $evaluation_phase->opportunity    = $execution_phase;
-            $evaluation_phase->type           = 'simple';
-            $evaluation_phase->name           = $evaluation_data['name'] ?? i::__('Avaliação dos pedidos');
-            $evaluation_phase->evaluationFrom = $evaluation_data['evaluationFrom']['_date'] ?? null;
-            $evaluation_phase->evaluationTo   = $evaluation_data['evaluationTo']['_date'] ?? null;
-
-            $collection_errors = $execution_phase->getValidationErrors();
-            $evaluation_errors = $evaluation_phase->getValidationErrors();
-
-            if (!empty($collection_errors) || !empty($evaluation_errors)) {
-                $this->json([
-                    'errors'           => true,
-                    'collectionErrors' => $collection_errors,
-                    'evaluationErrors' => $evaluation_errors,
-                ], 400);
-                return;
-            }
-
-            $execution_phase->save(true);
-            $evaluation_phase->save(true);
-
-            $root->executionPhase = $execution_phase->id;
-            $root->save(true);
-
-            $execution_phase->evaluationMethodConfiguration = $evaluation_phase;
-
-            $this->json([
-                'collectionPhase' => $execution_phase,
-                'evaluationPhase' => $evaluation_phase,
-            ]);
+            $self->createExecutionPhase($this);
         });
+    }
 
+    private function registerExecutionPhaseRemovalHook(App $app)
+    {
         // ----------------------------------------------------------------
         // Exclusão em cascata: quando a EvaluationMethodConfiguration da fase
         // de execução é removida diretamente, a fase de execução (Opportunity)
@@ -337,83 +199,350 @@ class Module extends \MapasCulturais\Module
                 $opportunity->destroy(true);
             }
         });
+    }
+
+    private function registerCreateExecutionRequestEndpoint(App $app)
+    {
+        $self = $this;
 
         // ----------------------------------------------------------------
         // Endpoint: o agente abre um pedido (inscrição) na fase de execução.
         // Qualquer agente relacionado à inscrição aprovada pode abrir pedidos.
         // ----------------------------------------------------------------
-        $app->hook('POST(opportunity.createExecutionRequest)', function () use ($app) {
+        $app->hook('POST(opportunity.createExecutionRequest)', function () use ($self) {
             /** @var \MapasCulturais\Controllers\Opportunity $this */
-
-            $opportunity = $this->requestedEntity;
-            $data        = $this->data;
-
-            $first_phase     = $opportunity->firstPhase;
-            $execution_phase = null;
-            foreach ($first_phase->allPhases as $phase) {
-                if ($phase->isExecutionPhase) {
-                    $execution_phase = $phase;
-                    break;
-                }
-            }
-
-            if (!$execution_phase) {
-                $this->errorJson(i::__('Fase de execução não encontrada'), 404);
-            }
-
-            // Recebe o ID da inscrição aprovada diretamente do frontend,
-            // seguindo o mesmo padrão do createAppealPhaseRegistration.
-            $registration_id = $data['registration_id'] ?? 0;
-
-            if (!$registration_id) {
-                $this->errorJson(i::__('ID da inscrição é obrigatório'), 400);
-                return;
-            }
-
-            $approved_registration = $app->repo('Registration')->find($registration_id);
-
-            if (!$approved_registration) {
-                $this->errorJson(i::__('Inscrição não encontrada'), 404);
-                return;
-            }
-
-            // Garante que a inscrição é da lastPhase desta oportunidade e está aprovada
-            if ($approved_registration->opportunity->id !== $first_phase->lastPhase->id
-                || $approved_registration->status !== Registration::STATUS_APPROVED) {
-                $this->errorJson(i::__('A inscrição não está aprovada na publicação final do resultado'), 403);
-                return;
-            }
-
-            // Garante que o usuário logado é dono ou agente relacionado da inscrição
-            $profile = $app->user->profile;
-            $is_owner = $approved_registration->owner->id === $profile->id;
-            $is_related = false;
-            foreach ($approved_registration->agentRelations as $ar) {
-                if ($ar->agent->id === $profile->id) {
-                    $is_related = true;
-                    break;
-                }
-            }
-
-            if (!$is_owner && !$is_related) {
-                $this->errorJson(i::__('Você não tem permissão para abrir pedidos nesta inscrição'), 403);
-                return;
-            }
-
-            $new_registration = new Registration();
-            $new_registration->opportunity = $execution_phase;
-            $new_registration->owner       = $approved_registration->owner;
-            // Copia o number da inscrição aprovada — mesmo padrão do recurso.
-            // O apiFindRegistrations filtra resultados por number entre fases:
-            // sem isso, os pedidos nunca aparecem na lista do gestor.
-            $new_registration->number = $approved_registration->number;
-            // Vincula ao aprovado original para rastreabilidade
-            $new_registration->previousPhaseRegistrationId = $approved_registration->id;
-
-            $new_registration->save(true);
-
-            $this->json($new_registration);
+            $self->createExecutionRequest($this);
         });
+    }
+
+    private function sortExecutionPhases($values)
+    {
+        if (!$values) {
+            return $values;
+        }
+
+        [$execution_phases, $remaining] = $this->splitExecutionPhases($values);
+
+        if (!$execution_phases) {
+            return $values;
+        }
+
+        $result = $this->insertExecutionPhasesAfterLastPhase($remaining, $execution_phases, $inserted);
+
+        if ($inserted) {
+            return $result;
+        }
+
+        return $this->insertExecutionPhasesBeforeReportingPhases($result, $execution_phases);
+    }
+
+    private function splitExecutionPhases($values)
+    {
+        $execution_phases = [];
+        $remaining = [];
+
+        foreach ($values as $phase) {
+            if ($phase->isExecutionPhase) {
+                $execution_phases[] = $phase;
+                continue;
+            }
+
+            $remaining[] = $phase;
+        }
+
+        return [$execution_phases, $remaining];
+    }
+
+    private function insertExecutionPhasesAfterLastPhase($phases, $execution_phases, &$inserted)
+    {
+        $result = [];
+        $inserted = false;
+
+        foreach ($phases as $phase) {
+            $result[] = $phase;
+
+            if ($phase->isLastPhase && !$inserted) {
+                $result = array_merge($result, $execution_phases);
+                $inserted = true;
+            }
+        }
+
+        return $result;
+    }
+
+    private function insertExecutionPhasesBeforeReportingPhases($phases, $execution_phases)
+    {
+        $result = [];
+        $inserted = false;
+
+        foreach ($phases as $phase) {
+            if ($phase->isReportingPhase && !$inserted) {
+                $result = array_merge($result, $execution_phases);
+                $inserted = true;
+            }
+
+            $result[] = $phase;
+        }
+
+        return $inserted ? $result : array_merge($result, $execution_phases);
+    }
+
+    private function renderExecutionRequestsOnRegistrationFicha($entity)
+    {
+        $first_phase_opp = $entity->opportunity->firstPhase ?? $entity->opportunity;
+        $execution_phases = array_filter($first_phase_opp->allPhases ?? [], fn($p) => $p->isExecutionPhase);
+
+        if (!$execution_phases) {
+            return;
+        }
+
+        $last_phase_reg = $entity->lastPhase ?? $entity;
+
+        foreach ($execution_phases as $exec_phase) {
+            $requests = $this->findExecutionRequests($exec_phase, $last_phase_reg);
+
+            if (!$requests) {
+                continue;
+            }
+
+            $this->renderExecutionRequestsGroup($exec_phase, $requests);
+        }
+    }
+
+    private function findExecutionRequests($exec_phase, $last_phase_reg)
+    {
+        $app = App::i();
+        $ids = $app->em->getConnection()->fetchFirstColumn(
+            "SELECT r.id FROM registration r
+             INNER JOIN registration_meta m ON m.object_id = r.id
+             WHERE r.opportunity_id = ?
+               AND r.status > 0
+               AND m.key = 'previousPhaseRegistrationId'
+               AND m.value = ?",
+            [$exec_phase->id, (string) $last_phase_reg->id]
+        );
+
+        if (!$ids) {
+            return [];
+        }
+
+        return $app->repo('Registration')->findBy(
+            ['id' => $ids],
+            ['createTimestamp' => 'ASC', 'id' => 'ASC']
+        );
+    }
+
+    private function renderExecutionRequestsGroup($exec_phase, $requests)
+    {
+        ?>
+        <h2><?= htmlspecialchars($exec_phase->name) ?></h2>
+        <?php
+        foreach ($requests as $request) {
+            ?>
+            <h3><?= $request->number ?></h3>
+            <v1-embed-tool route="registrationview" :id="<?= $request->id ?>"></v1-embed-tool>
+            <?php
+        }
+    }
+
+    private static function renderOpportunityPhasesTimelineItem($theme)
+    {
+        $theme->import('opportunity-execution-requests');
+        ?>
+        <opportunity-execution-requests
+            v-if="item.isExecutionPhase && getRegistration(lastPhase)?.status == 10"
+            :registration="getRegistration(lastPhase)"
+            :phase="item"
+            :phases="phases">
+        </opportunity-execution-requests>
+        <?php
+    }
+
+    private function createExecutionPhase($controller)
+    {
+        $opportunity = $controller->requestedEntity;
+        $opportunity->checkPermission('@control');
+
+        $root = $opportunity->isOpportunityPhase ? $opportunity->firstPhase : $opportunity;
+
+        if ($this->hasExecutionPhase($root)) {
+            $controller->errorJson(i::__('Já existe uma fase de execução para esta oportunidade'), 403);
+            return;
+        }
+
+        $execution_phase = $this->buildExecutionPhase($root, $controller->data['collectionPhase'] ?? []);
+        $evaluation_phase = $this->buildExecutionEvaluationPhase($execution_phase, $controller->data['evaluationPhase'] ?? []);
+
+        if ($this->sendExecutionPhaseValidationErrors($controller, $execution_phase, $evaluation_phase)) {
+            return;
+        }
+
+        $execution_phase->save(true);
+        $evaluation_phase->save(true);
+
+        $root->executionPhase = $execution_phase->id;
+        $root->save(true);
+
+        $execution_phase->evaluationMethodConfiguration = $evaluation_phase;
+
+        $controller->json([
+            'collectionPhase' => $execution_phase,
+            'evaluationPhase' => $evaluation_phase,
+        ]);
+    }
+
+    private function hasExecutionPhase(Opportunity $root)
+    {
+        foreach ($root->allPhases as $phase) {
+            if ($phase->isExecutionPhase) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    private function buildExecutionPhase(Opportunity $root, array $data)
+    {
+        $class = $root->getSpecializedClassName();
+        $execution_phase = new $class();
+        $execution_phase->parent             = $root;
+        $execution_phase->status             = Opportunity::STATUS_PHASE;
+        $execution_phase->name               = $data['name'] ?? i::__('Fase de Execução');
+        $execution_phase->registrationFrom   = $data['registrationFrom']['_date'] ?? null;
+        $execution_phase->registrationTo     = $data['registrationTo']['_date'] ?? null;
+        $execution_phase->type               = $root->type;
+        $execution_phase->ownerEntity        = $root->ownerEntity;
+        $execution_phase->isOpportunityPhase = true;
+        $execution_phase->isDataCollection   = true;
+        $execution_phase->isExecutionPhase   = true;
+        $execution_phase->registrationLimitPerOwner = 0;
+
+        return $execution_phase;
+    }
+
+    private function buildExecutionEvaluationPhase(Opportunity $execution_phase, array $data)
+    {
+        $evaluation_phase = new EvaluationMethodConfiguration();
+        $evaluation_phase->opportunity    = $execution_phase;
+        $evaluation_phase->type           = 'simple';
+        $evaluation_phase->name           = $data['name'] ?? i::__('Avaliação dos pedidos');
+        $evaluation_phase->evaluationFrom = $data['evaluationFrom']['_date'] ?? null;
+        $evaluation_phase->evaluationTo   = $data['evaluationTo']['_date'] ?? null;
+
+        return $evaluation_phase;
+    }
+
+    private function sendExecutionPhaseValidationErrors($controller, Opportunity $execution_phase, EvaluationMethodConfiguration $evaluation_phase)
+    {
+        $collection_errors = $execution_phase->getValidationErrors();
+        $evaluation_errors = $evaluation_phase->getValidationErrors();
+
+        if (empty($collection_errors) && empty($evaluation_errors)) {
+            return false;
+        }
+
+        $controller->json([
+            'errors'           => true,
+            'collectionErrors' => $collection_errors,
+            'evaluationErrors' => $evaluation_errors,
+        ], 400);
+
+        return true;
+    }
+
+    private function createExecutionRequest($controller)
+    {
+        $app = App::i();
+        $opportunity = $controller->requestedEntity;
+        $first_phase = $opportunity->firstPhase;
+        $execution_phase = $this->findExecutionPhase($first_phase);
+
+        if (!$execution_phase) {
+            $controller->errorJson(i::__('Fase de execução não encontrada'), 404);
+            return;
+        }
+
+        $registration_id = $controller->data['registration_id'] ?? 0;
+
+        if (!$registration_id) {
+            $controller->errorJson(i::__('ID da inscrição é obrigatório'), 400);
+            return;
+        }
+
+        $approved_registration = $app->repo('Registration')->find($registration_id);
+
+        if (!$this->validateApprovedRegistration($controller, $approved_registration, $first_phase)) {
+            return;
+        }
+
+        if (!$this->canCreateExecutionRequest($approved_registration)) {
+            $controller->errorJson(i::__('Você não tem permissão para abrir pedidos nesta inscrição'), 403);
+            return;
+        }
+
+        $controller->json($this->saveExecutionRequest($execution_phase, $approved_registration));
+    }
+
+    private function findExecutionPhase(Opportunity $first_phase)
+    {
+        foreach ($first_phase->allPhases as $phase) {
+            if ($phase->isExecutionPhase) {
+                return $phase;
+            }
+        }
+
+        return null;
+    }
+
+    private function validateApprovedRegistration($controller, $approved_registration, Opportunity $first_phase)
+    {
+        if (!$approved_registration) {
+            $controller->errorJson(i::__('Inscrição não encontrada'), 404);
+            return false;
+        }
+
+        if ($approved_registration->opportunity->id === $first_phase->lastPhase->id
+            && $approved_registration->status === Registration::STATUS_APPROVED) {
+            return true;
+        }
+
+        $controller->errorJson(i::__('A inscrição não está aprovada na publicação final do resultado'), 403);
+        return false;
+    }
+
+    private function canCreateExecutionRequest(Registration $approved_registration)
+    {
+        $profile = App::i()->user->profile;
+
+        if ($approved_registration->owner->id === $profile->id) {
+            return true;
+        }
+
+        foreach ($approved_registration->agentRelations as $ar) {
+            if ($ar->agent->id === $profile->id) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    private function saveExecutionRequest(Opportunity $execution_phase, Registration $approved_registration)
+    {
+        $new_registration = new Registration();
+        $new_registration->opportunity = $execution_phase;
+        $new_registration->owner       = $approved_registration->owner;
+        // Copia o number da inscrição aprovada — mesmo padrão do recurso.
+        // O apiFindRegistrations filtra resultados por number entre fases:
+        // sem isso, os pedidos nunca aparecem na lista do gestor.
+        $new_registration->number = $approved_registration->number;
+        // Vincula ao aprovado original para rastreabilidade.
+        $new_registration->previousPhaseRegistrationId = $approved_registration->id;
+
+        $new_registration->save(true);
+
+        return $new_registration;
     }
 
     public function register()
