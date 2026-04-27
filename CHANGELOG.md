@@ -13,6 +13,7 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Ordena opções de tipos de campos da lista de campos @ em ordem alfabética
 - Ajusta exportação da planilha para organizar as colunas segundo a ordem definida pelo superSaasAdmin
 - Melhora a exibição do botão minha conta no header para exibir o nome do perfil do agente responsável logado
+- Exibe o detalhamento da avaliação da fase anterior para avaliadores da fase de recurso
 
 ### Correções
 - Aplica texto de internacionalização faltante no componente opportunity-registration-table
