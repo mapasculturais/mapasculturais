@@ -19,6 +19,7 @@ $this->import('
     registration-related-project
     registration-steps
     registration-workplan-form
+    request-agent-avatar
 ');
 
 ?>

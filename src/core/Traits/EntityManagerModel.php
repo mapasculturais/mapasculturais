@@ -3,6 +3,8 @@ namespace MapasCulturais\Traits;
 
 use MapasCulturais\App;
 use MapasCulturais\Entity;
+use MapasCulturais\Entities\Opportunity;
+use MapasCulturais\Entities\RegistrationStep;
 
 /**
  * Trait para gerenciamento de modelos de oportunidades
@@ -53,7 +55,9 @@ trait EntityManagerModel {
         $this->generateRegistrationFieldsAndFiles($this->entityOpportunity, $this->entityOpportunityModel);
         $this->generateSealsRelations();
 
+        $this->entityOpportunity = $this->entityOpportunity->refreshed();
         $this->entityOpportunityModel = $this->entityOpportunityModel->refreshed();
+        $this->syncRegistrationTaxonomiesFromSourceOntoModel();
         $this->entityOpportunityModel->save(true);
 
         if($this->isAjax()){
@@ -91,7 +95,9 @@ trait EntityManagerModel {
         $this->generateMetadata(0, 0);
         $this->generateRegistrationFieldsAndFiles($this->entityOpportunity, $this->entityOpportunityModel);
 
+        $this->entityOpportunity = $this->entityOpportunity->refreshed();
         $this->entityOpportunityModel = $this->entityOpportunityModel->refreshed();
+        $this->syncRegistrationTaxonomiesFromSourceOntoModel();
         $this->entityOpportunityModel->save(true);
 
         $app->enableAccessControl();
@@ -183,6 +189,17 @@ trait EntityManagerModel {
      * @return \MapasCulturais\Entities\Opportunity Modelo gerado
      * @access private
      */
+    /**
+     * Replica categorias, tipos de proponente e faixas da oportunidade de referência (origem ou modelo) para a nova.
+     * Necessário após o pipeline de cópia: saves/refreshes intermediários podem deixar a entidade destino sem esses JSON.
+     */
+    private function syncRegistrationTaxonomiesFromSourceOntoModel(): void
+    {
+        $this->entityOpportunityModel->registrationCategories = $this->entityOpportunity->registrationCategories;
+        $this->entityOpportunityModel->registrationProponentTypes = $this->entityOpportunity->registrationProponentTypes;
+        $this->entityOpportunityModel->registrationRanges = $this->entityOpportunity->registrationRanges;
+    }
+
     private function generateModel()
     {
         $app = App::i();
@@ -425,16 +442,141 @@ trait EntityManagerModel {
      */
     private function generateRegistrationFieldsAndFiles($opportunityCurrent, $opportunityNew) : void
     {
+        $stepMap = [];
+
+        $reusableQueue = $this->findReusableRegistrationStepsWithoutFieldsOrFiles($opportunityNew);
+
+        $existingSteps = [];
+        foreach ($opportunityNew->registrationSteps as $newStep) {
+            if ((int) $newStep->opportunity->id !== (int) $opportunityNew->id) {
+                continue;
+            }
+            $existingSteps[$newStep->id] = $newStep;
+        }
+
+        $oldSteps = $opportunityCurrent->registrationSteps->toArray();
+        usort($oldSteps, function ($a, $b) {
+            $c = $a->displayOrder <=> $b->displayOrder;
+
+            return $c !== 0 ? $c : $a->id <=> $b->id;
+        });
+
+        foreach ($oldSteps as $oldStep) {
+            if ($reusableQueue !== []) {
+                $target = array_shift($reusableQueue);
+                $this->copyRegistrationStepPropertiesFromTo($oldStep, $target);
+                $stepMap[$oldStep->id] = $target;
+
+                continue;
+            }
+
+            $stepMap[$oldStep->id] = $existingSteps[$oldStep->id] ?? (function () use ($oldStep, $opportunityNew) {
+                $newStep = clone $oldStep;
+                $newStep->setOpportunity($opportunityNew);
+                $newStep->save(true);
+
+                return $newStep;
+            })();
+        }
+
         foreach ($opportunityCurrent->getRegistrationFieldConfigurations() as $registrationFieldConfiguration) {
             $fieldConfiguration = clone $registrationFieldConfiguration;
             $fieldConfiguration->setOwnerId($opportunityNew->id);
+
+            if ($registrationFieldConfiguration->step && isset($stepMap[$registrationFieldConfiguration->step->id])) {
+                $fieldConfiguration->setStep($stepMap[$registrationFieldConfiguration->step->id]);
+            }
+
             $fieldConfiguration->save(true);
         }
 
         foreach ($opportunityCurrent->getRegistrationFileConfigurations() as $registrationFileConfiguration) {
             $fileConfiguration = clone $registrationFileConfiguration;
             $fileConfiguration->setOwnerId($opportunityNew->id);
+
+            if ($registrationFileConfiguration->step && isset($stepMap[$registrationFileConfiguration->step->id])) {
+                $fileConfiguration->setStep($stepMap[$registrationFileConfiguration->step->id]);
+            }
+
             $fileConfiguration->save(true);
+        }
+
+        $this->deleteOrphanEmptyRegistrationSteps($opportunityNew, $stepMap);
+    }
+
+    /**
+     * Etapas da oportunidade sem campos nem anexos (ex.: criadas pelo hook insert:after), em ordem estável.
+     *
+     * @return RegistrationStep[]
+     */
+    private function findReusableRegistrationStepsWithoutFieldsOrFiles(Opportunity $opportunity): array
+    {
+        $app = App::i();
+        $conn = $app->em->getConnection();
+        $oppId = (int) $opportunity->id;
+
+        $ids = $conn->fetchFirstColumn(
+            'SELECT rs.id FROM registration_step rs
+             WHERE rs.opportunity_id = ?
+             AND NOT EXISTS (SELECT 1 FROM registration_field_configuration rfc WHERE rfc.step_id = rs.id)
+             AND NOT EXISTS (SELECT 1 FROM registration_file_configuration rfile WHERE rfile.step_id = rs.id)
+             ORDER BY rs.display_order ASC, rs.id ASC',
+            [$oppId]
+        );
+
+        $steps = [];
+        foreach ($ids as $id) {
+            $step = $app->repo('RegistrationStep')->find((int) $id);
+            if ($step && (int) $step->opportunity->id === $oppId) {
+                $steps[] = $step;
+            }
+        }
+
+        return $steps;
+    }
+
+    private function copyRegistrationStepPropertiesFromTo(RegistrationStep $from, RegistrationStep $to): void
+    {
+        $to->name = $from->name;
+        $to->displayOrder = $from->displayOrder;
+        $meta = $from->metadata;
+        $to->metadata = is_object($meta)
+            ? json_decode(json_encode($meta), false) ?: new \stdClass()
+            : new \stdClass();
+        $to->save(true);
+    }
+
+    /**
+     * Remove etapas vazias que não foram usadas no mapa (ex.: sobra de múltiplos placeholders).
+     *
+     * @param array<int, RegistrationStep> $stepMap
+     */
+    private function deleteOrphanEmptyRegistrationSteps(Opportunity $opportunity, array $stepMap): void
+    {
+        $app = App::i();
+        $usedIds = [];
+        foreach ($stepMap as $step) {
+            $usedIds[(int) $step->id] = true;
+        }
+
+        $conn = $app->em->getConnection();
+        $rows = $conn->fetchAllAssociative(
+            'SELECT rs.id FROM registration_step rs
+             WHERE rs.opportunity_id = ?
+             AND NOT EXISTS (SELECT 1 FROM registration_field_configuration rfc WHERE rfc.step_id = rs.id)
+             AND NOT EXISTS (SELECT 1 FROM registration_file_configuration rfile WHERE rfile.step_id = rs.id)',
+            [(int) $opportunity->id]
+        );
+
+        foreach ($rows as $row) {
+            $id = (int) $row['id'];
+            if (isset($usedIds[$id])) {
+                continue;
+            }
+            $orphan = $app->repo('RegistrationStep')->find($id);
+            if ($orphan) {
+                $orphan->delete(true);
+            }
         }
     }
 
