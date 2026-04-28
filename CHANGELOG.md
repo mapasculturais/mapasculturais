@@ -231,6 +231,10 @@ te sem falhas
 <a name="770-funarte"></a>
 2. <small>Melhoria desenvolvida pela Funarte (Fundação Nacional de Artes) para a Rede das Artes</small>
 
+##[7.6.66] - 2026-04-28
+### Correções
+- Garante que campos de anexo permaneçam desabilitados no formulário quando o agente de suporte possui permissão somente de leitura
+
 ##[7.6.65] - 2026-04-28
 ### Correções
 - Corrige erro que permitia aos agentes de suporte editarem campos, mesmo com permissões apenas de visualização
