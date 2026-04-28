@@ -5,6 +5,10 @@ Todas as mudanças notáveis no projeto serão documentadas neste arquivo.
 O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/)
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+##[7.6.65] - 2026-04-28
+### Correções
+- Corrige erro que permitia aos agentes de suporte editarem campos, mesmo com permissões apenas de visualização
+
 ##[7.6.64] - 2026-04-22
 ### Correções
 - Corrige erro no upload de arquivos xlsx no grupo de downloads das entidades
