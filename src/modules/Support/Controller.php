@@ -171,6 +171,7 @@ class Controller extends \MapasCulturais\Controller
                 if ($agent_relation->group === '@support' && $agent_relation->agent->user->equals($app->user)) {
                     $support_fields = $agent_relation->metadata['registrationPermissions'] ?? [];
                     $this->jsObject['requestedEntity']['editableFields'] = [];
+                    $this->jsObject['requestedEntity']['allowedFields'] = array_keys($support_fields);
 
                     foreach ($support_fields as $support_field => $permission) {
                         if ($permission === 'rw') {
