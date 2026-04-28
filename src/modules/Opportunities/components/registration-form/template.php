@@ -60,7 +60,7 @@
                         titleModal="<?php i::_e('Adicionar anexo') ?>" 
                         :title="field.title" 
                         :description="field.description"
-                        editable
+                        :editable="!isDisabled(field)"
                         :required="field.required"
                         :default-file="field?.template"
                         :allowed-file-types="field.allowedFileTypes || []"></entity-file>
