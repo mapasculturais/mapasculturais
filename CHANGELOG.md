@@ -18,6 +18,10 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Aplica texto de internacionalização faltante no componente opportunity-registration-table
 - Corrige acento faltante no texto "Gênero" na listagem de pessoas do formulário de inscrição
 
+## [7.7.31] - 2026-04-28
+### Correções
+- Corrige salvamento de avaliadores da inscrição por administradores da oportunidade
+
 ##[7.7.30] - 2026-04-28
 ### Correções
 - Corrije erro que redireciona o usuário admin sempre para a tela de suporte ao acessar a single de inscriçao
@@ -240,6 +244,10 @@ te sem falhas
 1. <small>Melhoria desenvolvida pelo Ministério das Cidades, através da Secretaria Nacional de Periferias, para o Prêmio Periferia Viva</small>
 <a name="770-funarte"></a>
 2. <small>Melhoria desenvolvida pela Funarte (Fundação Nacional de Artes) para a Rede das Artes</small>
+
+##[7.6.66] - 2026-04-28
+### Correções
+- Garante que campos de anexo permaneçam desabilitados no formulário quando o agente de suporte possui permissão somente de leitura
 
 ##[7.6.65] - 2026-04-28
 ### Correções

@@ -192,6 +192,12 @@ app.component('registration-form', {
                 }
             }
 
+            // Se estamos no modo suporte (allowedFields definido), desabilita campos 
+            // que estão em allowedFields mas não em editableFields
+            if (Array.isArray(this.allowedFields) && this.allowedFields.length > 0) {
+                return !this.editableFields.includes(fieldName);
+            }
+
             return this.editableFields.length > 0 ? !this.editableFields.includes(fieldName) : false;
         },
 
