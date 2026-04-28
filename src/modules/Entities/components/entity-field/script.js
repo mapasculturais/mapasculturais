@@ -396,8 +396,16 @@ app.component('entity-field', {
 
             if(this.entity.__objectType == "registration") {
                 const editableFields = this.entity.editableFields || [];
+                const allowedFields = this.entity.allowedFields;
 
-                if(editableFields.length > 0 && !editableFields.includes(this.prop) && !userPermission) {
+                // Se estamos no modo suporte (allowedFields definido), marca como readonly
+                // campos que estão em allowedFields mas não em editableFields
+                if (Array.isArray(allowedFields) && allowedFields.length > 0) {
+                    if (allowedFields.includes(this.prop) && !editableFields.includes(this.prop) && !userPermission) {
+                        this.readonly = true;
+                        return this.readonly;
+                    }
+                } else if(editableFields.length > 0 && !editableFields.includes(this.prop) && !userPermission) {
                     this.readonly = true;
                     return this.readonly;
                 }

@@ -32,6 +32,7 @@ class Entity {
             'terms', 'seals', , 'currentUserPermissions', 
             'relatedAgents', 'agentRelations',
             'relatedSpaces', 'spaceRelations',
+            'editableFields', 'allowedFields',
         ];
         
         this.populateId(obj);

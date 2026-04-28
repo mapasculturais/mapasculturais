@@ -15,7 +15,18 @@ $this->import('
 ');
 ?>
 
-<div v-if="file || editable" :class="['entity-file', {'entity-file--disabled' : disabled}, classes]" :data-field="groupName?.replace('rfc_', 'file_')">
+<div v-if="file || editable || showEmpty" :class="['entity-file', {'entity-file--disabled' : disabled}, classes]" :data-field="groupName?.replace('rfc_', 'file_')">
+
+    <div v-if="!file && !editable && showEmpty" class="entity-file__empty">
+        <label v-if="title" class="entity-file__title">
+            {{title}}
+            <span v-if="required" class="required">*<?php i::_e('obrigatório') ?></span>
+        </label>
+        <small v-if="description" class="field__description">{{description}}</small>
+        <p class="entity-file__no-file"><?php i::_e('Nenhum arquivo anexado') ?></p>
+    </div>
+
+    <template v-else>
 
     <label v-if="title" class="entity-file__title">
         {{title}}
@@ -106,4 +117,5 @@ $this->import('
             <button class="col-6 button button--primary" type="submit" @click.prevent="submit(modal)"> <?php i::_e("Enviar") ?> </button>
         </template>
     </mc-modal>
+    </template>
 </div>

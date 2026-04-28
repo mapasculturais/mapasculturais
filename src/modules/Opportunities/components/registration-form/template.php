@@ -61,6 +61,7 @@
                         :title="field.title" 
                         :description="field.description"
                         :editable="!isDisabled(field)"
+                        showEmpty
                         :required="field.required"
                         :default-file="field?.template"></entity-file>
 
