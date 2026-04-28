@@ -221,6 +221,22 @@ te sem falhas
 <a name="770-funarte"></a>
 2. <small>Melhoria desenvolvida pela Funarte (Fundação Nacional de Artes) para a Rede das Artes</small>
 
+##[7.6.65] - 2026-04-28
+### Correções
+- Corrige erro que permitia aos agentes de suporte editarem campos, mesmo com permissões apenas de visualização
+
+##[7.6.64] - 2026-04-22
+### Correções
+- Corrige erro no upload de arquivos xlsx no grupo de downloads das entidades
+
+## [7.6.63] - 2026-04-20
+## Melhorias
+- Melhora validação de tipos de arquivo, impedindo que sejam feitos uploads de arquivos potencialmente perigosos
+
+## [7.6.62] - 2026-03-25
+### Correções
+- Faz ajuste para que os campos do tipo Moeda sejam validados corretamente corretamente quando obrigatorios
+
 ## [7.6.61] - 2026-03-19
 ### Correção
 - Corrige erro que impedia a distribuição de avaliações em inscrições de fases intermediárias.

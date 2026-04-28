@@ -22,10 +22,12 @@ app.component('registration-form', {
 
     data() {
         const editableFields = this.registration.editableFields ?? [];
+        const allowedFields = this.registration.allowedFields;
         const registrationSnapshot = Object.assign({}, this.registration)
 
         return {
             editableFields,
+            allowedFields,
             registrationSnapshot,
         }
     },
@@ -59,6 +61,13 @@ app.component('registration-form', {
             fields.sort((a,b) => a.displayOrder - b.displayOrder);
 
             return fields.filter((field) => {
+                const fieldName = field.fieldName || field.groupName;
+
+                // Suporte: se a lista de campos permitidos for informada, apenas esses campos devem aparecer.
+                if (Array.isArray(this.allowedFields) && !this.allowedFields.includes(fieldName)) {
+                    return false;
+                }
+
                 if (field.categories?.length && !field.categories.includes(registration.category)) {
                     return false;
                 }
