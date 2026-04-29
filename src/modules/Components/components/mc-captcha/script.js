@@ -23,11 +23,11 @@ app.component('mc-captcha', {
     },
 
     data() {
-        const config = $MAPAS.mcCaptchaConfig;
+        const config = $MAPAS.mcCaptchaConfig || {};
 
         return {
-            provider: config?.captcha?.provider,
-            key: config?.captcha.key,
+            provider: config?.captcha?.provider || null,
+            key: config?.captcha?.key || null,
             recaptchaResponse: '',
             containerId: `container-captcha-${Math.random().toString(36).slice(2)}`,
             widgetId: null
