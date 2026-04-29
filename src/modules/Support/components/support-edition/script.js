@@ -36,7 +36,7 @@ app.component('support-edition', {
         },
 
         steps () {
-            const steps = this.registration.opportunity.registrationSteps ?? [];
+            const steps = this.registration.opportunity?.registrationSteps ?? [];
             const { category, proponentType, range } = this.registration;
 
             const filteredSteps = steps.filter((step) => {
