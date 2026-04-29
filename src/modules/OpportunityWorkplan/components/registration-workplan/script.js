@@ -20,7 +20,7 @@ app.component('registration-workplan', {
         entityWorkplan.culturalArtisticSegment = null;
         entityWorkplan.goals = [];
 
-        const enableWorkplanInStep = this.registration.opportunity.registrationSteps.length > 1 ? false : true;
+        const enableWorkplanInStep = this.registration.opportunity?.registrationSteps?.length > 1 ? false : true;
 
 
         return {
@@ -55,10 +55,10 @@ app.component('registration-workplan', {
             const hash = window.location.hash;
             const stepMatch = hash.match(/#etapa_(\d+)/);
 
-            if (this.registration.opportunity.registrationSteps.length > 1) {
+            if (this.registration.opportunity?.registrationSteps?.length > 1) {
                 if (stepMatch && stepMatch[1]) {
                     const stepNumber = parseInt(stepMatch[1], 10); 
-                    this.enableWorkplanInStep = stepNumber === this.registration.opportunity.registrationSteps.length;
+                    this.enableWorkplanInStep = stepNumber === this.registration.opportunity?.registrationSteps?.length;
     
                 } else {
                     this.enableWorkplanInStep = false;

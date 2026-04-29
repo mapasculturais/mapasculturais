@@ -47,7 +47,7 @@ app.component('registration-workplan-form-delivery', {
             return Vue.markRaw($DESCRIPTIONS.delivery.availabilityType.options);
         },
         deliveriesLabel () {
-            const opportunity = this.registration.opportunity.parent ?? this.registration.opportunity;
+            const opportunity = this.registration.opportunity?.parent ?? this.registration.opportunity;
             return opportunity.deliveryLabelDefault ?? Vue.markRaw($MAPAS.EntitiesDescription.opportunity.deliveryLabelDefault.default_value);
         },
         dummyEntity () {
