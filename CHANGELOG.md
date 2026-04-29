@@ -21,6 +21,7 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Corrige a chave de internacionalização do texto "Elegível para cotas" no componente de listagem de inscrições
 - Evita erro ao hidratar campos de data inválidos em entidades
 - Corrige a importação de formulários de inscrição para preservar os formatos aceitos configurados nos campos de anexo
+- Corrige erro ao reordenar etapas na configuração do formulário de oportunidades
 
 ## [7.7.31] - 2026-04-28
 ### Correções
