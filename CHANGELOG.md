@@ -21,6 +21,21 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 ### Correções
 - Aplica texto de internacionalização faltante no componente opportunity-registration-table
 - Corrige acento faltante no texto "Gênero" na listagem de pessoas do formulário de inscrição
+- Corrige a exibição do nome do agente coletivo nos cards da tela Minhas inscrições
+- Corrige a chave de internacionalização do texto "Elegível para cotas" no componente de listagem de inscrições
+- Evita erro ao hidratar campos de data inválidos em entidades
+- Corrige a importação de formulários de inscrição para preservar os formatos aceitos configurados nos campos de anexo
+- Corrige erro ao reordenar etapas na configuração do formulário de oportunidades
+
+## [7.7.31] - 2026-04-28
+### Correções
+- Corrige salvamento de avaliadores da inscrição por administradores da oportunidade
+
+##[7.7.30] - 2026-04-28
+### Correções
+- Corrije erro que redireciona o usuário admin sempre para a tela de suporte ao acessar a single de inscriçao
+- Corrige erro que quebra o recurso devido à falta de datas configuradas nas fases avaliativas
+- Corrige o carregamento dos detalhes do recurso quando o step vertical está fechado.
 
 ##[7.7.29] - 2026-04-22
 ### Correções
@@ -238,6 +253,22 @@ te sem falhas
 1. <small>Melhoria desenvolvida pelo Ministério das Cidades, através da Secretaria Nacional de Periferias, para o Prêmio Periferia Viva</small>
 <a name="770-funarte"></a>
 2. <small>Melhoria desenvolvida pela Funarte (Fundação Nacional de Artes) para a Rede das Artes</small>
+
+##[7.6.66] - 2026-04-28
+### Correções
+- Garante que campos de anexo permaneçam desabilitados no formulário quando o agente de suporte possui permissão somente de leitura
+
+##[7.6.65] - 2026-04-28
+### Correções
+- Corrige erro que permitia aos agentes de suporte editarem campos, mesmo com permissões apenas de visualização
+
+##[7.6.64] - 2026-04-22
+### Correções
+- Corrige erro no upload de arquivos xlsx no grupo de downloads das entidades
+
+## [7.6.63] - 2026-04-20
+## Melhorias
+- Melhora validação de tipos de arquivo, impedindo que sejam feitos uploads de arquivos potencialmente perigosos
 
 ## [7.6.62] - 2026-03-25
 ### Correções
