@@ -3,6 +3,7 @@
 namespace Test;
 
 use MapasCulturais\Entities\Opportunity;
+use MapasCulturais\Entities\EvaluationMethodConfiguration;
 use MapasCulturais\Entities\Registration;
 use Tests\Abstract\TestCase;
 use Tests\Builders\PhasePeriods\ConcurrentEndingAfter;
@@ -99,6 +100,53 @@ class OpportunityExecutionPhaseTest extends TestCase
 
         $this->assertEquals(0, (int) $execution_phase->registrationLimitPerOwner,
             'registrationLimitPerOwner deve ser 0 para permitir N pedidos por agente');
+    }
+
+    public function testExecutionPhaseCannotStartBeforeFinalResultPublicationDate()
+    {
+        $admin = $this->userDirector->createUser('admin');
+        $this->login($admin);
+
+        $first_phase = $this->opportunityBuilder
+            ->reset(owner: $admin->profile, owner_entity: $admin->profile)
+            ->fillRequiredProperties()
+            ->firstPhase()
+                ->setRegistrationPeriod(new Open)
+                ->done()
+            ->save()
+            ->getInstance();
+
+        $last_phase = $first_phase->lastPhase;
+        $last_phase->publishTimestamp = new \DateTime('+ 10 days');
+        $last_phase->save(true);
+
+        $execution_phase = $this->opportunityBuilder
+            ->addExecutionPhase()
+            ->getInstance();
+
+        $execution_phase->registrationFrom = new \DateTime('+ 1 day');
+        $execution_phase->registrationTo = new \DateTime('+ 2 days');
+
+        $evaluation_phase = new EvaluationMethodConfiguration();
+        $evaluation_phase->opportunity = $execution_phase;
+        $evaluation_phase->type = 'simple';
+        $evaluation_phase->name = 'Avaliação dos pedidos';
+        $evaluation_phase->evaluationFrom = new \DateTime('+ 2 days');
+        $evaluation_phase->evaluationTo = new \DateTime('+ 3 days');
+
+        $this->assertArrayHasKey('registrationFrom', $execution_phase->getValidationErrors(),
+            'A fase de execução não deve começar antes da publicação final do resultado');
+
+        $execution_phase->registrationFrom = new \DateTime('+ 11 days');
+        $execution_phase->registrationTo = new \DateTime('+ 12 days');
+        $evaluation_phase->evaluationFrom = new \DateTime('+ 12 days');
+        $evaluation_phase->evaluationTo = new \DateTime('+ 13 days');
+
+        $this->assertEmpty($execution_phase->getValidationErrors(),
+            'A fase de execução deve poder começar depois da publicação final do resultado');
+
+        $this->assertEmpty($evaluation_phase->getValidationErrors(),
+            'A avaliação da execução deve poder terminar depois da publicação final do resultado');
     }
 
     // ----------------------------------------------------------------

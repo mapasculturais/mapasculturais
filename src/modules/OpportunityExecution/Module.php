@@ -27,35 +27,91 @@ class Module extends \MapasCulturais\Module
     private function registerValidationHooks(App $app)
     {
         // ----------------------------------------------------------------
-        // Remove as restrições de data que exigem que a fase seja anterior
-        // ao publishTimestamp da lastPhase. A fase de execução ocorre APÓS
-        // a publicação do resultado, então essas regras não se aplicam.
+        // A fase de execução ocorre depois da publicação final do resultado.
+        // Como ela é uma fase fora da sequência seletiva normal, reconstruímos
+        // suas validações para manter as regras básicas e o mesmo piso de datas
+        // da prestação de informações, sem aplicar o teto <= publishTimestamp.
         // ----------------------------------------------------------------
         $app->hook('entity(Opportunity).validations', function (&$validations) {
             /** @var Opportunity $this */
             if (!$this->isExecutionPhase) {
                 return;
             }
-            unset($validations['registrationFrom']);
-            unset($validations['registrationTo']);
+
+            $validations['registrationFrom'] = [
+                '$this->validateDate($value)' => i::__('O valor informado não é uma data válida'),
+            ];
+
+            $validations['registrationTo'] = [
+                '$this->validateDate($value)' => i::__('O valor informado não é uma data válida'),
+                '$this->validateRegistrationDates()' => i::__('A data final das inscrições deve ser maior ou igual a data inicial'),
+            ];
+
+            $publish_timestamp = Module::getFinalResultPublicationDate($this);
+            if ($publish_timestamp) {
+                $date = $publish_timestamp->format('Y-m-d H:i:s');
+                $message = i::__('A data deve ser posterior à data de publicação final do resultado');
+
+                $validations['registrationFrom']["\$value >= new DateTime('$date')"] = $message;
+                $validations['registrationTo']["\$value >= new DateTime('$date')"] = $message;
+            }
         }, 999); // alta prioridade: roda depois do hook do OpportunityPhases
 
         // ----------------------------------------------------------------
-        // Remove as restrições de data da EMC da fase de execução.
-        // O getter EMC.nextPhase resolve para a lastPhase (pois não há fase
-        // seguinte), e a validação compararia evaluationTo com publishTimestamp
-        // da lastPhase — que já passou. A fase de execução não tem fase
-        // sequencial seguinte, então as restrições de data relativas não
-        // se aplicam.
+        // A avaliação dos pedidos de execução acompanha a fase de execução:
+        // deve respeitar as datas da coleta dos pedidos, mas não deve ter a
+        // publicação final como limite superior.
         // ----------------------------------------------------------------
         $app->hook('entity(EvaluationMethodConfiguration).validations', function (&$validations) {
             /** @var EvaluationMethodConfiguration $this */
             if (!$this->opportunity->isExecutionPhase) {
                 return;
             }
-            unset($validations['evaluationFrom']);
-            unset($validations['evaluationTo']);
+
+            $validations['evaluationFrom'] = [
+                'required' => i::__('A data inicial das avaliações é obrigatória'),
+                '$this->validateDate($value)' => i::__('O valor informado não é uma data válida'),
+            ];
+
+            $validations['evaluationTo'] = [
+                'required' => i::__('A data final das avaliações é obrigatória'),
+                '$this->validateDate($value)' => i::__('O valor informado não é uma data válida'),
+                '$this->validateEvaluationDates()' => i::__('A data final das avaliações deve ser maior ou igual a data inicial'),
+            ];
+
+            $registration_from = $this->opportunity->registrationFrom;
+            if ($registration_from) {
+                $date = $registration_from->format('Y-m-d H:i:s');
+                $validations['evaluationFrom']["\$value >= new DateTime('$date')"] = i::__('A data inicial deve ser maior ou igual a data de inicio da fase anterior');
+            }
+
+            $registration_to = $this->opportunity->registrationTo;
+            if ($registration_to) {
+                $date = $registration_to->format('Y-m-d H:i:s');
+                $validations['evaluationTo']["\$value >= new DateTime('$date')"] = i::__('A data final deve ser maior ou igual a data de término da fase anterior');
+            }
         }, 999); // alta prioridade: roda depois do hook do OpportunityPhases
+    }
+
+    private static function getFinalResultPublicationDate(Opportunity $phase): ?\DateTime
+    {
+        $root = $phase->parent ?: $phase->firstPhase;
+        if (!$root || !$root->id) {
+            return null;
+        }
+
+        $value = App::i()->em->getConnection()->fetchOne(
+            "SELECT o.publish_timestamp
+             FROM opportunity o
+             INNER JOIN opportunity_meta m ON m.object_id = o.id
+             WHERE o.parent_id = :parent_id
+               AND m.key = 'isLastPhase'
+               AND m.value = '1'
+             LIMIT 1",
+            ['parent_id' => $root->id]
+        );
+
+        return $value ? new \DateTime($value) : null;
     }
 
     private function registerRegistrationCreationHook(App $app)
