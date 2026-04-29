@@ -29,7 +29,8 @@ class Subsite extends \MapasCulturais\Entity
         Traits\EntityGeoLocation,
         Traits\EntitySoftDelete,
         Traits\EntityDraft,
-        Traits\EntityArchive;
+        Traits\EntityArchive,
+        Traits\EntityPermissionCache;
         
     protected $__enableMagicGetterHook = true;
 
@@ -100,8 +101,15 @@ class Subsite extends \MapasCulturais\Entity
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="id", referencedColumnName="subsite_id", onDelete="CASCADE")
      * })
-    */
+     */
     protected $_roles;
+
+    /**
+     * @var \MapasCulturais\Entities\SubsitePermissionCache[]
+     *
+     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\SubsitePermissionCache", mappedBy="owner", cascade={"remove"}, fetch="EXTRA_LAZY")
+     */
+    protected $permissionsCache;
 
     /**
      * @var string
@@ -428,7 +436,7 @@ class Subsite extends \MapasCulturais\Entity
     }
 
     protected function canUserModify($user) {
-        return $user->is('superAdmin', $this->id);
+        return $user->is('saasSuperAdmin') || $user->is('superAdmin', $this->id);
     }
 
     function clearCache(){

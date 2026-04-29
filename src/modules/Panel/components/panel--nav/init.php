@@ -48,9 +48,15 @@ $nav_items = [
                     return $app->isEnabled('projects');
                 },
             ],
+            [
+                'route' => 'panel/subsites', 'icon' => 'subsite', 'label' => i::__('Meus Subsites'),
+                'condition' => function () use ($app) {
+                    return $app->isEnabled('subsite') && ($app->user->is('saasSuperAdmin') || $app->user->is('superAdmin'));
+                },
+            ],
         ],
         'condition' => function () use ($app) {
-            return $app->isEnabled('agents') || $app->isEnabled('spaces') || $app->isEnabled('events') || $app->isEnabled('projects');
+            return $app->isEnabled('agents') || $app->isEnabled('spaces') || $app->isEnabled('events') || $app->isEnabled('projects') || $app->isEnabled('subsite');
         },
     ],
 

@@ -103,6 +103,17 @@ class Subsite extends EntityController {
         },1000);
     }
 
+    public function getRequestedEntity(): ?\MapasCulturais\Entity {
+        $app = App::i();
+        $requested_entity = parent::getRequestedEntity();
+        
+        if($app->auth->isUserAuthenticated() && $requested_entity && !$app->isEntityPermissionCacheRecreated($requested_entity)) {
+            $requested_entity->recreatePermissionCache([$app->user]);
+        }
+
+        return $requested_entity;
+    }
+
     /**
      * Creates a new Subsite
      *
@@ -124,11 +135,7 @@ class Subsite extends EntityController {
     }
 
    
-    function GET_single(){
-        $app = App::i();
-        $app->view->editable = true;
-        parent::GET_edit();
-    }
+
     
     function ALL_deleteCache(){
         $this->requireAuthentication();

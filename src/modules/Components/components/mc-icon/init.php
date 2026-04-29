@@ -127,6 +127,7 @@ $iconset = [
     'settings' => 'bxs:cog',
     'sort' => 'mdi:sort',
     'spaces' => 'clarity:building-line',
+    'subsite' => 'dashicons:admin-site',
     'sync' => 'material-symbols:sync',
     'table-view' => 'ic:outline-table-view',
     'text' => 'ic:sharp-text-fields',

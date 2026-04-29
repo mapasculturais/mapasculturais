@@ -40,4 +40,9 @@ class Controller extends \MapasCulturais\Controller
         $this->requireAuthentication();
         $this->render('terms');
     }
+
+    function GET_subsites() {
+        $this->requireAuthentication();
+        $this->render('subsites');
+    }
 }
