@@ -29,15 +29,13 @@ $this->import('
 
     <div class="branding-customizer__images grid-12">
         <div class="branding-customizer__image col-12">
-            <h4 class="branding-customizer__image-title"> <?= i::__('Imagem de compartilhamento (Open Graph / redes sociais)') ?> </h4>
-            <p class="branding-customizer__image-desc"> <?= i::__('Sugestão: proporção próxima de 1200×630 pixels. Substitui as imagens configuradas em sharing.php para este subsite.') ?> </p>
+            <h4 class="branding-customizer__image-title"> <?= i::__('Imagem de compartilhamento (ex: Facebook, Twitter, Instagram, etc.)') ?> </h4>
+            <p class="branding-customizer__image-desc"> <?= i::__('Aqui você pode definir uma imagem de compartilhamento para o seu subsite. A imagem deve ter uma proporção próxima de 1200×630 pixels.') ?> </p>
             <mc-image-uploader class="branding-customizer__uploader" :entity="subsite" group="share" :aspect-ratio="1200/630" deleteFile>
                 <template #default="modal">
-                    <div class="branding-customizer__uploader-wrapper">
-                        <div class="branding-customizer__uploader-content">
-                            <img v-if="subsite.files.share" :src="subsite.files.share?.url" class="branding-customizer__preview-img" alt="" />
-                            <mc-icon v-if="!subsite.files.share" name="image"></mc-icon>
-                        </div>
+                    <div class="branding-customizer__uploader-content">
+                        <img v-if="subsite.files.share" :src="subsite.files.share?.url" class="select-profileImg__img--img" alt="" />
+                        <mc-icon v-if="!subsite.files.share" name="image"></mc-icon>
                     </div>
                 </template>
             </mc-image-uploader>
@@ -48,11 +46,9 @@ $this->import('
             <p class="branding-customizer__image-desc"> <?= i::__('Exibida nos e-mails transacionais deste subsite (ex.: notificações de inscrição em oportunidades).') ?> </p>
             <mc-image-uploader class="branding-customizer__uploader" :entity="subsite" group="mailImage" :aspect-ratio="3/1" deleteFile>
                 <template #default="modal">
-                    <div class="branding-customizer__uploader-wrapper">
-                        <div class="branding-customizer__uploader-content">
-                            <img v-if="subsite.files.mailImage" :src="subsite.files.mailImage?.url" class="branding-customizer__preview-img" alt="" />
-                            <mc-icon v-if="!subsite.files.mailImage" name="image"></mc-icon>
-                        </div>
+                    <div class="branding-customizer__uploader-content">
+                        <img v-if="subsite.files.mailImage" :src="subsite.files.mailImage?.url" class="select-profileImg__img--img" alt="" />
+                        <mc-icon v-if="!subsite.files.mailImage" name="image"></mc-icon>
                     </div>
                 </template>
             </mc-image-uploader>

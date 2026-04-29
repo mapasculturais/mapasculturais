@@ -7,5 +7,5 @@ use MapasCulturais\App;
 $app = App::i();
 
 $this->jsObject['config']['logoCustomizer'] = [
-    'originalColors' => ThemeCustomizer\Module::$originalColors,
+    'originalColors' => ThemeCustomizer\Module::$originalColors ?? [],
 ];

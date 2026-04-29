@@ -18,6 +18,7 @@ app.component('logo-customizer', {
                 this.default_colors ||
                 [];
             if (!!!this.subsite.custom_colors) {
+                let originalColors = $MAPAS.config.logoCustomizer?.originalColors || [];
                 return {
                     first: originals[0],
                     second: originals[1],

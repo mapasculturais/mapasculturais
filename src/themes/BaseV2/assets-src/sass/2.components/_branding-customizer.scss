@@ -36,21 +36,25 @@
         margin: 0 0 size(12);
     }
 
-    &__uploader-wrapper {
-        max-width: size(400);
-    }
-
     &__uploader-content {
         align-items: center;
+        border: size(1) dashed var(--mc-gray-500);
+        border-radius: var(--mc-border-radius-sm);
+        color: var(--mc-gray-500);
+        cursor: pointer;
         display: flex;
         justify-content: center;
+        max-width: size(400);
         min-height: size(120);
-    }
+        overflow: hidden;
+        
+        &:hover {
+            background-color: var(--mc-gray-300);
+            color: var(--mc-gray-700);
+        }
 
-    &__preview-img {
-        display: block;
-        max-height: size(200);
-        max-width: 100%;
-        object-fit: contain;
+        img {
+            width: 100%;
+        }
     }
 }
