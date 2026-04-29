@@ -8,6 +8,7 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 ## [unreleased]
 ### Correções
 - Adiciona optional chaining em propriedades de opportunity para evitar erros
+- Corrige warning no carregamento do recaptcha quando ainda nao esta configurado
 
 ### Melhorias
 - Unifica estilo visual das áreas de upload no personalizador de tema
