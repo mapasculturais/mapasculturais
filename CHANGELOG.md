@@ -11,6 +11,7 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ### Melhorias
 - Unifica estilo visual das áreas de upload no personalizador de tema
+- Implementa interface para o saasSuperAdmin gerenciar subsites
 
 ## [7.7.31] - 2026-04-28
 ### Correções
