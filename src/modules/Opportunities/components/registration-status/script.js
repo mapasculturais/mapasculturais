@@ -48,7 +48,7 @@ app.component('registration-status', {
         },
 
         canShowAppeal() {
-            if (this.registration.opportunity.isReportingPhase) {
+            if (this.registration.opportunity?.isReportingPhase) {
                 return false;
             }
 
@@ -56,7 +56,7 @@ app.component('registration-status', {
                 return false;
             }
 
-            if(this.registration.opportunity.appealPhase && (this.appealRegistration || this?.registration?.opportunity?.appealPhase?.registrationFrom?.isFuture() || this?.registration?.opportunity?.appealPhase?.registrationTo?.isPast())) {
+            if(this.registration.opportunity?.appealPhase && (this.appealRegistration || this?.registration?.opportunity?.appealPhase?.registrationFrom?.isFuture() || this?.registration?.opportunity?.appealPhase?.registrationTo?.isPast())) {
                 return false;
             }
 
@@ -74,7 +74,7 @@ app.component('registration-status', {
 
         showRegistrationResults() {
             const { isReportingPhase, __objectType, publishEvaluationDetails } = this.phase;
-            const { allow_proponent_response } = this.registration.opportunity;
+            const { allow_proponent_response } = this.registration.opportunity || {};
 
             if (isReportingPhase === '1' && __objectType === 'opportunity' && allow_proponent_response) {
                 return false;
@@ -84,7 +84,7 @@ app.component('registration-status', {
         },
 
         statuses() {
-            return this.registration.opportunity.statusLabels;
+            return this.registration.opportunity?.statusLabels;
         }
     },
 
@@ -211,7 +211,7 @@ app.component('registration-status', {
                return this.phase.opportunity.statusLabels[registration.status];
             }
             
-            if(registration.opportunity.isAppealPhase) {
+            if(registration.opportunity?.isAppealPhase) {
                 return this.shouldDisplayEvaluationResults(registration) ? this.phase.appealPhase.statusLabels[registration.status] : this.phase.appealPhase.statusLabels[1];
             }
 

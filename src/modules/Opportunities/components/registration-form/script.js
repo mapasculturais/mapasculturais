@@ -106,15 +106,15 @@ app.component('registration-form', {
         },
 
         hasCategory () {
-            return Boolean(this.registration.opportunity.registrationCategories?.length)
+            return Boolean(this.registration.opportunity?.registrationCategories?.length)
         },
 
         hasProponentType () {
-            return Boolean(this.registration.opportunity.registrationProponentTypes?.length)
+            return Boolean(this.registration.opportunity?.registrationProponentTypes?.length)
         },
 
         hasRange () {
-            return Boolean(this.registration.opportunity.registrationRanges?.length)
+            return Boolean(this.registration.opportunity?.registrationRanges?.length)
         },
 
         isValid () {

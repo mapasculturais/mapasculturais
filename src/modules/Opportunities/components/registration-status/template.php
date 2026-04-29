@@ -36,7 +36,7 @@ $this->import('
         </div>
 
         <div class="opportunity-phases-timeline__buttons">
-            <div class="registration-results" v-if="registration.opportunity.isReportingPhase === '1' || registration.opportunity.isFinalReportingPhase === '1'">
+            <div class="registration-results" v-if="registration.opportunity?.isReportingPhase === '1' || registration.opportunity?.isFinalReportingPhase === '1'">
                 <button class="button button--primary button--sm button--large" @click="redirectToRegistrationForm()"><?php i::_e('Visualizar relatório') ?></button>
             </div>
             <registration-results v-if="showRegistrationResults" :registration="registration" :phase="phase"></registration-results>
