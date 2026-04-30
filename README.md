@@ -30,6 +30,7 @@ A plataforma já está em uso em diversos municipios, estados, no governo federa
 - Tocantins - https://mapadacultura.secult.to.gov.br/
 
 ### Instalações municipais
+- Anápolis - https://culturaemrede.anapolis.go.gov.br/
 - Aparecida de Goiânia - https://portaldacultura.aparecida.go.gov.br/
 - Apucarana - https://cultura.apucarana.pr.gov.br/
 - Aracaju - http://mapa.cultura.aracaju.se.gov.br/
