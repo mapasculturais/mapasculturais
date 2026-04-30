@@ -395,7 +395,7 @@ class Module extends \MapasCulturais\Module
         <?php
         foreach ($requests as $request) {
             ?>
-            <h3><?= $request->number ?></h3>
+            <h3><?= sprintf(i::__('Pedido #%s'), $request->id) ?></h3>
             <v1-embed-tool route="registrationview" :id="<?= $request->id ?>"></v1-embed-tool>
             <?php
         }
