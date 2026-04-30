@@ -70,6 +70,14 @@ $this->import('
                 </div>
 
                 <div class="create-modal__fields">
+                    <div class="field">
+                        <label><?= i::__('Status da oportunidade importada') ?></label>
+                        <select v-model.number="importStatus">
+                            <option :value="1"><?= i::__('Publicada') ?></option>
+                            <option :value="0"><?= i::__('Rascunho') ?></option>
+                        </select>
+                    </div>
+
                     <template v-if="shouldOverrideInfos">
                         <entity-field :entity="infos" hide-required :editable="true" label="<?php i::esc_attr_e('Selecione o tipo da oportunidade') ?>" prop="type"></entity-field>
 

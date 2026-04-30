@@ -15,6 +15,7 @@ app.component('opportunity-importer', {
             filters: this.createFilters(),
             infos: this.createInfos(),
             opportunity: null,
+            importStatus: 0,
         }
     },
 
@@ -50,6 +51,7 @@ app.component('opportunity-importer', {
             modal.close()
             this.infos = this.createInfos()
             this.opportunity = null
+            this.importStatus = 0
         },
 
         createFilters () {
@@ -88,6 +90,7 @@ app.component('opportunity-importer', {
                     }
                 const data = {
                     filters: this.filters,
+                    status: this.importStatus,
                     opportunity: {
                         ...this.opportunity,
                         infos,

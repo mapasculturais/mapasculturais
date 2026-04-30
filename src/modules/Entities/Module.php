@@ -70,7 +70,7 @@ class Module extends \MapasCulturais\Module{
             $className = $this->getClassName();
 
             $requiredAvatarConfig = isset($app->config['module.Entities']) ? $app->config['module.Entities']['requiredAvatar'] : [];
-            if($requiredAvatarConfig){  
+            if($requiredAvatarConfig && !$this->isNew()){  
                 $isConfiguredClass = array_key_exists($className, $requiredAvatarConfig);
                 $isAvatarRequired = $isConfiguredClass && (bool) $requiredAvatarConfig[$className];
 
