@@ -133,4 +133,6 @@ return [
         '^application/rtf$',
     ]))),
 
+    /* Define o header proxy para o IP */
+    'app.proxyHeader' => env('PROXY_HEADER', ''),
 ];
