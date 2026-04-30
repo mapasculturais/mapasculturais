@@ -27,6 +27,7 @@ A plataforma já está em uso em diversos municipios, estados, no governo federa
 - Pernambuco - https://www.mapacultural.pe.gov.br/
 - Paraíba - https://mapacultural.pb.gov.br/
 - Piauí - https://www.mapadacultura.pi.gov.br/
+- Sergipe - https://mapacultural.se.gov.br/
 - Tocantins - https://mapadacultura.secult.to.gov.br/
 
 ### Instalações municipais
