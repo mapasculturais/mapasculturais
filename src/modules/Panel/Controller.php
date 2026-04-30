@@ -43,6 +43,12 @@ class Controller extends \MapasCulturais\Controller
 
     function GET_subsites() {
         $this->requireAuthentication();
+        
+        $app = App::i();
+        if (!$app->user->is('saasSuperAdmin')) {
+            throw new \MapasCulturais\Exceptions\PermissionDenied($app->user, action: \MapasCulturais\i::__('Apenas super administradores do SaaS podem acessar esta página'));
+        }
+        
         $this->render('subsites');
     }
 }

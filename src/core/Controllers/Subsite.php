@@ -127,6 +127,10 @@ class Subsite extends EntityController {
     public function POST_index($data = null) {
         $app = App::i();
 
+        if (!$app->user->is('saasSuperAdmin')) {
+            throw new \MapasCulturais\Exceptions\PermissionDenied($app->user, action: i::__('Apenas super administradores do SaaS podem criar subsites'));
+        }
+
         $app->hook('entity(subsite).insert:before', function() use($app) {
             $this->owner = $app->user->profile;
         });

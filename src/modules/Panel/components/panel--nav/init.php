@@ -51,7 +51,7 @@ $nav_items = [
             [
                 'route' => 'panel/subsites', 'icon' => 'subsite', 'label' => i::__('Meus Subsites'),
                 'condition' => function () use ($app) {
-                    return $app->isEnabled('subsite') && ($app->user->is('saasSuperAdmin') || $app->user->is('superAdmin'));
+                    return $app->isEnabled('subsite') && ($app->user->is('saasSuperAdmin'));
                 },
             ],
         ],
