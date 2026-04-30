@@ -369,6 +369,20 @@ class Module extends \MapasCulturais\Module{
                 $formatValue = function($val) {
                     if ($val === null || $val === '') return '';
                     if (is_bool($val)) return $val ? 'Sim' : 'Não';
+                    if (is_array($val)) {
+                        $parts = [];
+                        foreach ($val as $k => $v) {
+                            if (is_array($v)) {
+                                // Flatten nested arrays (e.g., multiselect from API returns arrays of arrays)
+                                foreach ($v as $item) {
+                                    $parts[] = is_int($k) ? (string) $item : "$item";
+                                }
+                            } else {
+                                $parts[] = is_int($k) ? (string) $v : "$k: $v";
+                            }
+                        }
+                        return implode(', ', array_filter($parts));
+                    }
                     if (is_string($val)) {
                         $lower = strtolower($val);
                         if ($lower === 'true') return 'Sim';
@@ -377,9 +391,15 @@ class Module extends \MapasCulturais\Module{
                         if (is_array($decoded)) {
                             $parts = [];
                             foreach ($decoded as $k => $v) {
-                                $parts[] = is_int($k) ? (string) $v : "$k: $v";
+                                if (is_array($v)) {
+                                    foreach ($v as $item) {
+                                        $parts[] = (string) $item;
+                                    }
+                                } else {
+                                    $parts[] = is_int($k) ? (string) $v : "$k: $v";
+                                }
                             }
-                            return implode(', ', $parts);
+                            return implode(', ', array_filter($parts));
                         }
                     }
                     return (string) $val;
