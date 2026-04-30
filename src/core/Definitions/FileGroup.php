@@ -21,6 +21,15 @@ class FileGroup extends \MapasCulturais\Definition{
 
     public $_blockedExtensions = [];
 
+    /**
+     *
+     * @param string $name The group name
+     * @param array $validations An array with regex to validate file mime type
+     * @param string $error_message The error message to display if the file mime type is not valid
+     * @param bool $unique If this group contains just one file for each owner. If this is set to true the uploaded file always replaces the existent file. 
+     * @param null|int $max_files Maximum files in this group.
+     * @param bool $private Wether files in this group are private and can only be accessed by user with the right permissions.
+     */
     function __construct($name, array $validations = [], $error_message = '', $unique = false, $max_files = null, $private = false, array $blocked_extensions = []) {
         $this->name = $name;
         $this->_validations = $validations;
@@ -70,7 +79,11 @@ class FileGroup extends \MapasCulturais\Definition{
         }
         return [];
     }
-
+    
+    /**
+     * Validates the file and if it is not valid returns the error message
+     *
+     */
     function getError(\MapasCulturais\Entities\File $file): string {
         $validations = !empty($this->_validations)
             ? $this->_validations

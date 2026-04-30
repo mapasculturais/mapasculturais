@@ -10,7 +10,8 @@ app.component('registration-evaluation-tab', {
 
     setup() {
         const text = Utils.getTexts('registration-evaluation-tab');
-        return { text };
+        const messages = useMessages();
+        return { text, messages };
     },
 
     data() {
@@ -249,10 +250,66 @@ app.component('registration-evaluation-tab', {
             this.valuersExcludeList = this.valuersExcludeList.filter(id => id !== valuerId);
         },
 
-        saveLists() {
-            this.entity.valuersIncludeList = this.valuersIncludeList;
-            this.entity.valuersExcludeList = this.valuersExcludeList;
-            this.entity.save();
+        async saveLists() {
+            const api = new API('registration');
+            const url = this.entity.getUrl('valuersExceptionsList');
+            const previousValuers = { ...this.entity.valuers };
+            const previousIncludeList = [...this.valuersIncludeList];
+            const previousExcludeList = [...this.valuersExcludeList];
+            
+            const data = {
+                valuersIncludeList: this.valuersIncludeList,
+                valuersExcludeList: this.valuersExcludeList,
+                valuers: this.entity.valuers || {}
+            };
+
+            try {
+                const response = await api.PATCH(url, data);
+                if (response.ok) {
+                    const result = await response.json();
+                    
+                    // Atualiza a entidade com os dados retornados pelo servidor
+                    if (result.valuers) {
+                        this.entity.valuers = result.valuers;
+                    }
+                    if (result.valuersIncludeList) {
+                        this.entity.valuersIncludeList = result.valuersIncludeList;
+                        this.valuersIncludeList = result.valuersIncludeList;
+                    }
+                    if (result.valuersExcludeList) {
+                        this.entity.valuersExcludeList = result.valuersExcludeList;
+                        this.valuersExcludeList = result.valuersExcludeList;
+                    }
+                    
+                    // Atualiza a lista de avaliadores distribuídos
+                    this.updateGroupedValuers();
+                    
+                    // Mostra mensagem de sucesso
+                    this.messages.success(this.text('Modificações salvas'));
+                } else {
+                    const error = await response.json();
+                    
+                    // Reverte as alterações locais em caso de erro
+                    this.entity.valuers = previousValuers;
+                    this.valuersIncludeList = previousIncludeList;
+                    this.valuersExcludeList = previousExcludeList;
+                    this.updateGroupedValuers();
+                    
+                    // Mostra mensagem de erro
+                    this.messages.error(this.text('Erro ao salvar avaliadores'));
+                    console.error(__('Erro ao salvar avaliadores', 'registration-evaluation-tab'), error);
+                }
+            } catch (error) {
+                // Reverte as alterações locais em caso de erro
+                this.entity.valuers = previousValuers;
+                this.valuersIncludeList = previousIncludeList;
+                this.valuersExcludeList = previousExcludeList;
+                this.updateGroupedValuers();
+                
+                // Mostra mensagem de erro
+                this.messages.error(this.text('Erro ao salvar avaliadores'));
+                console.error(__('Erro ao salvar avaliadores', 'registration-evaluation-tab'), error);
+            }
         },
 
         async deleteEvaluation(evaluationId, userId) {

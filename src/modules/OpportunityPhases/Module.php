@@ -619,9 +619,11 @@ class Module extends \MapasCulturais\Module{
                             $item->opportunity->appealPhase = (object) $appeal_phase->jsonSerialize();
                             $item->opportunity->appealPhase->relatedAgents = $appeal_phase->relatedAgents;
                             $item->opportunity->appealPhase->agentRelations = $appeal_phase->agentRelations;
-                            $item->opportunity->appealPhase->evaluationMethodConfiguration = (object) $appeal_phase->evaluationMethodConfiguration->jsonSerialize();
-                            $item->opportunity->appealPhase->evaluationMethodConfiguration->relatedAgents = $appeal_phase->evaluationMethodConfiguration->relatedAgents;
-                            $item->opportunity->appealPhase->evaluationMethodConfiguration->agentRelations = $appeal_phase->evaluationMethodConfiguration->agentRelations;
+                            if ($appeal_phase->evaluationMethodConfiguration) {
+                                $item->opportunity->appealPhase->evaluationMethodConfiguration = (object) $appeal_phase->evaluationMethodConfiguration->jsonSerialize();
+                                $item->opportunity->appealPhase->evaluationMethodConfiguration->relatedAgents = $appeal_phase->evaluationMethodConfiguration->relatedAgents;
+                                $item->opportunity->appealPhase->evaluationMethodConfiguration->agentRelations = $appeal_phase->evaluationMethodConfiguration->agentRelations;
+                            }
                         }
                         
 
