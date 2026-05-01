@@ -149,6 +149,45 @@ class OpportunityExecutionPhaseTest extends TestCase
             'A avaliação da execução deve poder terminar depois da publicação final do resultado');
     }
 
+    public function testExecutionEvaluationDatesIgnoreSecondsWhenComparingWithCollectionDates()
+    {
+        $admin = $this->userDirector->createUser('admin');
+        $this->login($admin);
+
+        $first_phase = $this->opportunityBuilder
+            ->reset(owner: $admin->profile, owner_entity: $admin->profile)
+            ->fillRequiredProperties()
+            ->firstPhase()
+                ->setRegistrationPeriod(new Open)
+                ->done()
+            ->save()
+            ->getInstance();
+
+        $last_phase = $first_phase->lastPhase;
+        $last_phase->publishTimestamp = new \DateTime('2030-01-01 10:00:45');
+        $last_phase->save(true);
+
+        $execution_phase = $this->opportunityBuilder
+            ->addExecutionPhase()
+            ->getInstance();
+
+        $execution_phase->registrationFrom = new \DateTime('2030-01-02 10:30:45');
+        $execution_phase->registrationTo = new \DateTime('2030-01-03 18:00:45');
+
+        $evaluation_phase = new EvaluationMethodConfiguration();
+        $evaluation_phase->opportunity = $execution_phase;
+        $evaluation_phase->type = 'simple';
+        $evaluation_phase->name = 'Avaliação dos pedidos';
+        $evaluation_phase->evaluationFrom = new \DateTime('2030-01-02 10:30:00');
+        $evaluation_phase->evaluationTo = new \DateTime('2030-01-03 18:00:00');
+
+        $this->assertEmpty($execution_phase->getValidationErrors(),
+            'A fase de execução deve ignorar segundos ao comparar com a publicação final');
+
+        $this->assertEmpty($evaluation_phase->getValidationErrors(),
+            'A avaliação da execução deve aceitar o mesmo dia, hora e minuto da coleta');
+    }
+
     // ----------------------------------------------------------------
     // Testes de posição em allPhases
     // ----------------------------------------------------------------

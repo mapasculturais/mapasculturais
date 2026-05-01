@@ -49,7 +49,7 @@ class Module extends \MapasCulturais\Module
 
             $publish_timestamp = Module::getFinalResultPublicationDate($this);
             if ($publish_timestamp) {
-                $date = $publish_timestamp->format('Y-m-d H:i:s');
+                $date = Module::formatDateTimeIgnoringSeconds($publish_timestamp);
                 $message = i::__('A data deve ser posterior à data de publicação final do resultado');
 
                 $validations['registrationFrom']["\$value >= new DateTime('$date')"] = $message;
@@ -81,16 +81,21 @@ class Module extends \MapasCulturais\Module
 
             $registration_from = $this->opportunity->registrationFrom;
             if ($registration_from) {
-                $date = $registration_from->format('Y-m-d H:i:s');
+                $date = Module::formatDateTimeIgnoringSeconds($registration_from);
                 $validations['evaluationFrom']["\$value >= new DateTime('$date')"] = i::__('A data inicial deve ser maior ou igual a data de inicio da fase anterior');
             }
 
             $registration_to = $this->opportunity->registrationTo;
             if ($registration_to) {
-                $date = $registration_to->format('Y-m-d H:i:s');
+                $date = Module::formatDateTimeIgnoringSeconds($registration_to);
                 $validations['evaluationTo']["\$value >= new DateTime('$date')"] = i::__('A data final deve ser maior ou igual a data de término da fase anterior');
             }
         }, 999); // alta prioridade: roda depois do hook do OpportunityPhases
+    }
+
+    private static function formatDateTimeIgnoringSeconds(\DateTimeInterface $date): string
+    {
+        return $date->format('Y-m-d H:i:00');
     }
 
     private static function getFinalResultPublicationDate(Opportunity $phase): ?\DateTime
