@@ -9,10 +9,15 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 ### Correções
 - Adiciona optional chaining em propriedades de opportunity para evitar erros
 - Corrige warning no carregamento do recaptcha quando ainda nao esta configurado
+- Corrige persistência de título, subtítulo e cores do logo que voltavam ao padrão após refresh
+- Corrige erro 500 ao aplicar logo.image antes da inicialização do storage
 
 ### Melhorias
 - Unifica estilo visual das áreas de upload no personalizador de tema
 - Implementa interface para o saasSuperAdmin gerenciar subsites
+- Adiciona opção de usar imagem personalizada no lugar do logo CSS no ThemeCustomizer
+- Adiciona controle para ocultar título e subtítulo do logo no ThemeCustomizer
+- Remove configurações de aparência redundantes da tela de edição de subsites
 
 ## [7.7.32] - 2026-05-04
 ### Correções
