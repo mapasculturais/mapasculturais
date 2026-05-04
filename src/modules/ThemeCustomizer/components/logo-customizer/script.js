@@ -42,5 +42,16 @@ app.component('logo-customizer', {
         subtitle() {
             return this.subsite.logo_subtitle;
         },
+
+        logoImg() {
+            if (this.subsite.logo_use_image === 'image' && this.subsite.files?.logo) {
+                return this.subsite.files.logo.url;
+            }
+            return null;
+        },
+
+        hideLabel() {
+            return this.subsite.logo_hide_label == '1';
+        },
     },
 });
