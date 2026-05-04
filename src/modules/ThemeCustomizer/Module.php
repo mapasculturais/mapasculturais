@@ -68,6 +68,18 @@ class Module extends \MapasCulturais\Module
             if ($mail = $subsite->getMailHeaderImage()) {
                 $app->config['mailer.header_image_url'] = $mail->url;
             }
+
+            // Aplica logo image do subsite se configurado para usar imagem
+            if ($subsite->logo_use_image === 'image') {
+                if ($logoFile = $subsite->getFile('logo')) {
+                    $app->config['logo.image'] = $logoFile->url;
+                }
+            } else {
+                $app->config['logo.image'] = '';
+            }
+
+            // Aplica ocultação do label do logo
+            $app->config['logo.hideLabel'] = ($subsite->logo_hide_label == '1');
         });
 
         $app->hook('app.register:after', function () use($app) {
@@ -79,10 +91,7 @@ class Module extends \MapasCulturais\Module
                 // cache Sass já existe — o return abaixo pularia esta atribuição e quebrava a UI.
                 Module::$originalColors = $app->config['logo.colors'];
 
-                if($app->mscache->contains($cache_id)) {
-                    return;
-                }
-
+                // Aplica configurações de logo (sempre, independente do cache)
                 if ($subsite->custom_colors) {
                     if ($color1 = $subsite->logo_color1) {
                         $app->config['logo.colors'][0] = $color1;
@@ -109,81 +118,92 @@ class Module extends \MapasCulturais\Module
                     $app->config['logo.subtitle'] = $subtitle;
                 }
 
-                $css_map = [
-                    'primary',
-                    'secondary',
-                    'seals',
-                    'agents',
-                    'events',
-                    'opportunities',
-                    'projects',
-                    'spaces',
-                ];
-
-                $variable_part = [];
-                $root_part = [];
-
-                foreach ($css_map as $var) {
-                    $color = $subsite->{"color_$var"};
-                    
-                    if ($color) {
-                        $variable_part[] = "
-                            \$$var-500: $color !default;
-                            \$$var-300: lighten(\$$var-500, \$lightness-300) !default;
-                            \$$var-700: darken(\$$var-500, \$lightness-700) !default;
-                        ";
-
-                        $root_part[] = "
-                            --mc-$var-500: #{\$$var-500};
-                            --mc-$var-300: #{\$$var-300};
-                            --mc-$var-700: #{\$$var-700};
-                        ";
-                    }
-                }
-
-
-                if (!empty($variable_part) && !empty($root_part)) {
-                    $variable_part = implode("\n", $variable_part);
-                    $root_part = implode("\n", $root_part);
-                    
-                    $saas = "
-                        @use 'sass:color';
-
-                        // Default lightness deltas
-                        \$lightness-300: 25% !default;
-                        \$lightness-700: 25% !default;
-
-                        $variable_part
-
-                        :root {
-                            $root_part
-                        }
-                    ";
-                    
-                    $scss_filename = tempnam(sys_get_temp_dir(), 'subsite-').'.scss';
-                    $css_filename = tempnam(sys_get_temp_dir(), 'subsite-').'.css';
-                    
-                    
-                    file_put_contents($scss_filename, $saas);
-                    exec("sass $scss_filename $css_filename --no-source-map");
-                    
-                    $css = file_get_contents($css_filename);
-                    
-                    $app->hook('template(<<*>>.body):after', function () use ($css) {
-                        echo "
-                            <style> $css </style>
-                        ";
-                    });
-                }
-                if($app->subsite->homeTexts) {
-                    foreach($app->subsite->homeTexts as $slug => $text){
+                // Aplica homeTexts (sempre, independente do cache)
+                if($subsite->homeTexts) {
+                    foreach($subsite->homeTexts as $slug => $text){
                         if(!empty($text)){
                             $app->config["text:$slug"] = $text;
                         }
                     }
                 }
 
-                $app->mscache->save($cache_id, 1);
+                // Geração de CSS
+                $css = null;
+                
+                if(!$app->mscache->contains($cache_id)) {
+                    $css_map = [
+                        'primary',
+                        'secondary',
+                        'seals',
+                        'agents',
+                        'events',
+                        'opportunities',
+                        'projects',
+                        'spaces',
+                    ];
+
+                    $variable_part = [];
+                    $root_part = [];
+
+                    foreach ($css_map as $var) {
+                        $color = $subsite->{"color_$var"};
+                        
+                        if ($color) {
+                            $variable_part[] = "
+                                \$$var-500: $color !default;
+                                \$$var-300: lighten(\$$var-500, \$lightness-300) !default;
+                                \$$var-700: darken(\$$var-500, \$lightness-700) !default;
+                            ";
+
+                            $root_part[] = "
+                                --mc-$var-500: #{\$$var-500};
+                                --mc-$var-300: #{\$$var-300};
+                                --mc-$var-700: #{\$$var-700};
+                            ";
+                        }
+                    }
+
+                    if (!empty($variable_part) && !empty($root_part)) {
+                        $variable_part = implode("\n", $variable_part);
+                        $root_part = implode("\n", $root_part);
+                        
+                        $saas = "
+                            @use 'sass:color';
+
+                            // Default lightness deltas
+                            \$lightness-300: 25% !default;
+                            \$lightness-700: 25% !default;
+
+                            $variable_part
+
+                            :root {
+                                $root_part
+                            }
+                        ";
+                        
+                        $scss_filename = tempnam(sys_get_temp_dir(), 'subsite-').'.scss';
+                        $css_filename = tempnam(sys_get_temp_dir(), 'subsite-').'.css';
+                        
+                        
+                        file_put_contents($scss_filename, $saas);
+                        exec("sass $scss_filename $css_filename --no-source-map");
+                        
+                        $css = file_get_contents($css_filename);
+                    }
+
+                    $app->mscache->save($cache_id, $css);
+                } else {
+                    $css = $app->mscache->fetch($cache_id);
+                }
+
+                // Sempre injeta o CSS se existir
+                if ($css) {
+                    $app->hook('template(<<*>>.body):after', function () use ($css) {
+                        echo "
+                            <style> $css </style>
+                        ";
+                    });
+                }
             }
         });
 
@@ -251,6 +271,31 @@ class Module extends \MapasCulturais\Module
                 'label' => i::__("Cor #4"),
                 'type' => 'color',
                 'default' => null,
+            ]);
+
+            $this->view->registerMetadata(\MapasCulturais\Entities\Subsite::class, 'logo_use_image', [
+                'label' => i::__("Tipo de logo"),
+                'type' => 'radio',
+                'options' => [
+                    'css' => i::__('Usar logo padrão (CSS)'),
+                    'image' => i::__('Usar imagem personalizada'),
+                ],
+                'default' => 'css',
+            ]);
+
+            $this->view->registerMetadata(\MapasCulturais\Entities\Subsite::class, 'logo_hide_label', [
+                'label' => i::__("Ocultar título e subtítulo"),
+                'type' => 'boolean',
+                'options' => [
+                    '1' => i::__('Sim'),
+                    '0' => i::__('Não'),
+                ],
+                'serialize' => function ($value) {
+                    return $value  ? '1' : '0';
+                },
+                'unserialize' => function ($value) {
+                    return $value == '1' ? true : false;
+                },
             ]);
 
 
