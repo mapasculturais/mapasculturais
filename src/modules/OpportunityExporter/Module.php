@@ -6,6 +6,7 @@ use MapasCulturais\App;
 use MapasCulturais\Controllers\Opportunity as OpportunityController;
 use MapasCulturais\Entities;
 use MapasCulturais\Entities\Opportunity;
+use MapasCulturais\Entity;
 use MapasCulturais\i;
 
 class Module extends MapasCulturaisModule {
@@ -88,10 +89,10 @@ class Module extends MapasCulturaisModule {
                 $this->errorJson(['ownerEntity' => [i::__('A entidade vinculada é obrigatória')]], 400);
             }
 
-            $status = $this->data['status'] ?? Opportunity::STATUS_DRAFT;
+            $status = $this->data['status'] ?? Entity::STATUS_DRAFT;
             $allowed_statuses = [
-                Opportunity::STATUS_ENABLED,
-                Opportunity::STATUS_DRAFT,
+                Entity::STATUS_ENABLED,
+                Entity::STATUS_DRAFT,
             ];
 
             if (!in_array((int) $status, $allowed_statuses, true)) {
@@ -118,17 +119,21 @@ class Module extends MapasCulturaisModule {
             }
 
             $importer = new Importer(
-                $owner_entity,
-                $data,
-                $filters['files'] ?? false,
-                $filters['images'] ?? false,
-                $filters['dates'] ?? false,
-                $filters['vacancyLimits'] ?? false,
-                $filters['workplan'] ?? false,
-                $filters['statusLabels'] ?? false,
-                $filters['appealPhases'] ?? false,
-                $filters['monitoringPhases'] ?? false,
-                (int) $status,
+                onwerEntity: $owner_entity,
+                data: $data,
+                files: $filters['files'] ?? false,
+                images: $filters['images'] ?? false,
+
+                dates: $filters['dates'] ?? false,
+
+                vacancyLimits: $filters['vacancyLimits'] ?? false,
+
+                workplan: $filters['workplan'] ?? false,
+
+                statusLabels: $filters['statusLabels'] ?? false,
+                appealPhases: $filters['appealPhases'] ?? false,
+                monitoringPhases: $filters['monitoringPhases'] ?? false,
+                status: (int) $status,
             );
 
             $app->conn->beginTransaction();

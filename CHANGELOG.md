@@ -9,7 +9,11 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 ### Novas Funcionalidades
 - Implementa configuração que permide definir a imagem de avatar de qualquer entidade como obrigatória
 
-##[7.7.31] - 2026-04-28
+## [7.7.32] - 2026-05-04
+### Correções
+## Possibilita que, no importador de oportunidades, o usuário possa escolher entre importar a oportunidade já publicada ou em rascunho.
+
+## [7.7.31] - 2026-04-28
 ### Correções
 - Corrige salvamento de avaliadores da inscrição por administradores da oportunidade
 

@@ -16,6 +16,7 @@ app.component('opportunity-importer', {
             infos: this.createInfos(),
             opportunity: null,
             importStatus: 0,
+            importing: false,
         }
     },
 
@@ -80,32 +81,74 @@ app.component('opportunity-importer', {
                 return
             }
 
-            try {
-                const infos = !this.shouldOverrideInfos
-                    ? this.opportunity.infos
-                    : {
-                        name: this.infos.name,
-                        terms: this.infos.terms,
-                        type: this.infos.type,
-                    }
-                const data = {
-                    filters: this.filters,
-                    status: this.importStatus,
-                    opportunity: {
-                        ...this.opportunity,
-                        infos,
-                        ownerEntity: {
-                            __objectType: this.infos.ownerEntity.__objectType,
-                            _id: this.infos.ownerEntity._id,
-                        },
-                    },
+            const infos = !this.shouldOverrideInfos
+                ? this.opportunity.infos
+                : {
+                    name: this.infos.name,
+                    terms: this.infos.terms,
+                    type: this.infos.type,
                 }
+            const data = {
+                filters: this.filters,
+                status: this.importStatus,
+                opportunity: {
+                    ...this.opportunity,
+                    infos,
+                    ownerEntity: {
+                        __objectType: this.infos.ownerEntity.__objectType,
+                        _id: this.infos.ownerEntity._id,
+                    },
+                },
+            }
+
+            this.importing = true
+            modal.loading(true)
+
+            try {
                 const api = new API('opportunity')
-                const imported = await api.POST('import', data)
+                const res = await api.POST('import', data)
+                let payload = {}
+                try {
+                    payload = await res.json()
+                } catch (e) {
+                    payload = {}
+                }
+
+                if (!res.ok) {
+                    const errEntity = new Entity('opportunity')
+                    errEntity.catchErrors(res, payload)
+                    return
+                }
+
+                if (payload == null || payload.id == null) {
+                    useMessages().error(this.text('erroAoImportar'))
+                    return
+                }
+
+                const entity = api.getEntityInstance(payload.id)
+                entity.populate(payload)
+                Utils.pushEntityToList(entity)
+
+                const messages = useMessages()
+                messages.success(this.text('importacaoRealizadaComSucesso'))
+
+                const tabSlug = this.importStatus === 1 ? 'publish' : 'draft'
+                if (window.location.hash.slice(1) !== tabSlug) {
+                    window.location.hash = '#' + tabSlug
+                }
+
                 modal.close()
-                this.$emit('imported', imported)
+                this.infos = this.createInfos()
+                this.opportunity = null
+                this.importStatus = 0
+                this.$emit('imported', entity)
             } catch (err) {
                 console.error(err)
+                const messages = useMessages()
+                messages.error(this.text('erroAoImportar'))
+            } finally {
+                this.importing = false
+                modal.loading(false)
             }
         },
 
