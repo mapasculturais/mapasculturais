@@ -5,6 +5,10 @@ Todas as mudanças notáveis no projeto serão documentadas neste arquivo.
 O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/)
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [7.7.32] - 2026-05-04
+### Correções
+## Possibilita que, no importador de oportunidades, o usuário possa escolher entre importar a oportunidade já publicada ou em rascunho.
+
 ## [7.7.31] - 2026-04-28
 ### Correções
 - Corrige salvamento de avaliadores da inscrição por administradores da oportunidade
