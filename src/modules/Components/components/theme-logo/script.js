@@ -36,13 +36,21 @@ app.component('theme-logo', {
             type: String,
             default: null,
         },
+        logoImg: {
+            type: String,
+            default: null,
+        },
+        hideLabel: {
+            type: Boolean,
+            default: null,
+        },
     },
 
     data() {
         return {
             colors: $MAPAS.config.logo.colors,
-            logoImg: $MAPAS.config.logo.image,
-            hideLabel: $MAPAS.config.logo.hideLabel,
+            defaultLogoImg: $MAPAS.config.logo.image,
+            defaultHideLabel: $MAPAS.config.logo.hideLabel,
         }
     },
 
@@ -69,6 +77,14 @@ app.component('theme-logo', {
 
         fourth_color() {
             return this.bg4 ?? this.colors[3] ?? colors[1];
+        },
+
+        logo_image() {
+            return this.logoImg ?? this.defaultLogoImg;
+        },
+
+        logo_hide_label() {
+            return this.hideLabel ?? this.defaultHideLabel;
         },
     },
 });
