@@ -51,19 +51,7 @@ $this->breadcrumb = [
                 </mc-card>
                 
                 <main>
-                    <mc-card>
-                        <template #title>
-                            <h3 class="bold"><?php i::_e("Configurações") ?></h3>
-                        </template>
-                        <template #content>
-                            <div class="grid-12">
-                                <entity-field :entity="entity" classes="col-12" prop="site_name" label="<?php i::_e('Nome do Site') ?>"></entity-field>
-                                <entity-field :entity="entity" classes="col-12" prop="site_description" label="<?php i::_e('Descrição do Site') ?>"></entity-field>
-                                <entity-field :entity="entity" classes="col-12" prop="color_primary" label="<?php i::_e('Cor Primária') ?>"></entity-field>
-                                <entity-field :entity="entity" classes="col-12" prop="color_secondary" label="<?php i::_e('Cor Secundária') ?>"></entity-field>
-                            </div>
-                        </template>
-                    </mc-card>
+                    <!-- Configurações de aparência movidas para o ThemeCustomizer -->
                 </main>
                 
                 <aside>
