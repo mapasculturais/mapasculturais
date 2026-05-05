@@ -1310,85 +1310,88 @@ class Registration extends \MapasCulturais\Entity
             }
         }       
 
-        // validate attachments
-        foreach($opportunity->registrationFileConfigurations as $rfc){
+        // Se não tem formulário, pula validação de campos e arquivos
+        if (!$opportunity->noRegistrationForm) {
+            // validate attachments
+            foreach($opportunity->registrationFileConfigurations as $rfc){
 
-            if(!$this->isFieldVisisble($rfc)){
-                continue;
-            }
-
-            $field_required = $rfc->required;
-
-            $errors = [];
-            if($field_required){
-                if(!isset($this->files[$rfc->fileGroupName])){
-                    $errors[] = i::__('O arquivo é obrigatório.');
+                if(!$this->isFieldVisisble($rfc)){
+                    continue;
                 }
-            }
-            if($errors){
-                $errorsResult[$file_prefix . $rfc->id] = $errors;
-            }
-        }
 
-        // validate fields
-        foreach ($opportunity->registrationFieldConfigurations as $field) {
+                $field_required = $rfc->required;
 
-            if (!$this->isFieldVisisble($field)) {
-                continue;
-            }
-
-            $metadata_definition = isset($metadata_definitions[$field->fieldName]) ? 
-                $metadata_definitions[$field->fieldName] : null;
-
-
-            $field_name = $field_prefix . $field->id;
-            $field_required = $field->required;
-
-            $errors = [];
-            $prop_name = $field->getFieldName();
-            $val = $this->$prop_name;
-
-            $empty = false;
-
-            if(is_array($val)){
-                if(count($val) === 0) {
-                    $empty = true;
-                }
-            } else if (is_object($val)){
-                if($val == (object) []) {
-                    $empty = true;
-                }
-            } else {
-                $empty = trim((string) $val) === '';
-            }
-
-            if ($empty) {
-                if($field_required) {
-                    $errors[] = i::__('O campo é obrigatório.');
-                }
-            } else {
-                
-                $validations = isset($metadata_definition->config['validations']) ? 
-                    $metadata_definition->config['validations']: [];
-
-                foreach($validations as $validation => $error_message){
-                    if(strpos($validation,'v::') === 0){
-
-                        $validator = str_replace('v::', 'Respect\Validation\Validator::', $validation);
-                        $validator .= "->validate(\$val)";
-                        
-                        eval("\$ok = $validator;");
-
-                        if (!$ok) {
-                            $errors[] = $error_message;
-                        }
+                $errors = [];
+                if($field_required){
+                    if(!isset($this->files[$rfc->fileGroupName])){
+                        $errors[] = i::__('O arquivo é obrigatório.');
                     }
                 }
-
+                if($errors){
+                    $errorsResult[$file_prefix . $rfc->id] = $errors;
+                }
             }
 
-            if ($errors) {
-                $errorsResult[$field_name] = $errors;
+            // validate fields
+            foreach ($opportunity->registrationFieldConfigurations as $field) {
+
+                if (!$this->isFieldVisisble($field)) {
+                    continue;
+                }
+
+                $metadata_definition = isset($metadata_definitions[$field->fieldName]) ? 
+                    $metadata_definitions[$field->fieldName] : null;
+
+
+                $field_name = $field_prefix . $field->id;
+                $field_required = $field->required;
+
+                $errors = [];
+                $prop_name = $field->getFieldName();
+                $val = $this->$prop_name;
+
+                $empty = false;
+
+                if(is_array($val)){
+                    if(count($val) === 0) {
+                        $empty = true;
+                    }
+                } else if (is_object($val)){
+                    if($val == (object) []) {
+                        $empty = true;
+                    }
+                } else {
+                    $empty = trim((string) $val) === '';
+                }
+
+                if ($empty) {
+                    if($field_required) {
+                        $errors[] = i::__('O campo é obrigatório.');
+                    }
+                } else {
+                    
+                    $validations = isset($metadata_definition->config['validations']) ? 
+                        $metadata_definition->config['validations']: [];
+
+                    foreach($validations as $validation => $error_message){
+                        if(strpos($validation,'v::') === 0){
+
+                            $validator = str_replace('v::', 'Respect\Validation\Validator::', $validation);
+                            $validator .= "->validate(\$val)";
+                            
+                            eval("\$ok = $validator;");
+
+                            if (!$ok) {
+                                $errors[] = $error_message;
+                            }
+                        }
+                    }
+
+                }
+
+                if ($errors) {
+                    $errorsResult[$field_name] = $errors;
+                }
             }
         }
         // @TODO: validar o campo projectName
