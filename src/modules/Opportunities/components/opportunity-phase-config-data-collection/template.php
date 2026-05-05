@@ -76,7 +76,9 @@ $this->import('
         <?php $this->applyTemplateHook('opportunity-data-collection-config-form','before')?>
         <div class="col-12 grid-12 opportunity-data-collection__config-button">
             <?php $this->applyTemplateHook('opportunity-data-collection-config-form','begin')?>
-            <mc-link :entity="phase" route='formBuilder' class="config-phase__info-button button--primary button col-6" icon="external" right-icon>
+            <entity-field :entity="phase" type="checkbox" prop="noRegistrationForm" label="<?php i::esc_attr_e('Esta oportunidade não possui formulário de inscrição') ?>" :autosave="3000" classes="col-12"></entity-field>
+            <entity-field :entity="phase" type="checkbox" prop="disableRegistrationEmail" label="<?php i::esc_attr_e('Desabilitar o envio do email de confirmação de inscrição') ?>" :autosave="3000" classes="col-12"></entity-field>
+            <mc-link v-if="!phase.noRegistrationForm" :entity="phase" route='formBuilder' class="config-phase__info-button button--primary button col-6" icon="external" right-icon>
             <?= i::__("Configurar formulário") ?>
             </mc-link>
             <?php $this->applyTemplateHook('opportunity-data-collection-config-form','end')?>
