@@ -19,6 +19,16 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Adiciona controle para ocultar título e subtítulo do logo no ThemeCustomizer
 - Remove configurações de aparência redundantes da tela de edição de subsites
 
+## [7.7.33] - 2026-05-06
+### Correções
+- Corrige getters de fases para ignorar fases deletadas (status > -10) em previousPhase, previousPhases, nextPhase, nextPhases e lastPhase
+- Corrige condição de corrida em EntityTaxonomies::addTerm ao criar termos de taxonomia simultaneamente
+- Corrige erro de optional chaining em affirmative-policies--quota-configuration
+
+### Testes
+- Adiciona teste de deleção de fase intermediária em oportunidades
+- Corrige testes flaky em EvaluationsDistributionTest, OpportunityExporterTest e EvaluationMethodTechnicalTest
+
 ## [7.7.32] - 2026-05-04
 ### Correções
 ## Possibilita que, no importador de oportunidades, o usuário possa escolher entre importar a oportunidade já publicada ou em rascunho.
@@ -248,6 +258,10 @@ te sem falhas
 1. <small>Melhoria desenvolvida pelo Ministério das Cidades, através da Secretaria Nacional de Periferias, para o Prêmio Periferia Viva</small>
 <a name="770-funarte"></a>
 2. <small>Melhoria desenvolvida pela Funarte (Fundação Nacional de Artes) para a Rede das Artes</small>
+
+## [7.7.67] - 2026-05-06
+### Correções
+- Faz implementaçao para que a ficha de inscriçao do recurso tambems eja exibida na single
 
 ##[7.6.66] - 2026-04-28
 ### Correções

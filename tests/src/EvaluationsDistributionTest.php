@@ -1085,9 +1085,23 @@ class EvaluationsDistributionTest extends TestCase
         /** @var EvaluationMethodConfigurationAgentRelation[] */
         $valuers = $opportunity->evaluationMethodConfiguration->agentRelations;
 
-        $fulano = $valuers[0];
-        $ciclano = $valuers[1];
-        $beltrano = $valuers[2];
+        $fulano = null;
+        $ciclano = null;
+        $beltrano = null;
+
+        foreach ($valuers as $valuer) {
+            if ($valuer->agent->name === 'fulano') {
+                $fulano = $valuer;
+            } elseif ($valuer->agent->name === 'ciclano') {
+                $ciclano = $valuer;
+            } elseif ($valuer->agent->name === 'beltrano') {
+                $beltrano = $valuer;
+            }
+        }
+
+        $this->assertNotNull($fulano, 'Garantindo que o avaliador fulano foi encontrado');
+        $this->assertNotNull($ciclano, 'Garantindo que o avaliador ciclano foi encontrado');
+        $this->assertNotNull($beltrano, 'Garantindo que o avaliador beltrano foi encontrado');
 
         /** @var Connection */
         $conn = $this->app->em->getConnection();

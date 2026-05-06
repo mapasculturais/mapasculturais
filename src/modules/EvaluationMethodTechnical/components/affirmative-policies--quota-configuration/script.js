@@ -67,7 +67,7 @@ app.component('affirmative-policies--quota-configuration', {
 
         proponentTypes() {
             const firstPhase = this.firstPhase;
-            const result = firstPhase.registrationProponentTypes.length ? firstPhase.registrationProponentTypes : ["default"];
+            const result = firstPhase.registrationProponentTypes?.length ? firstPhase.registrationProponentTypes : ["default"];
             return result;
         }
     },
