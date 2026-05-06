@@ -5,6 +5,16 @@ Todas as mudanças notáveis no projeto serão documentadas neste arquivo.
 O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/)
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+### Correções
+- Corrige getters de fases para ignorar fases deletadas (status > -10) em previousPhase, previousPhases, nextPhase, nextPhases e lastPhase
+- Corrige condição de corrida em EntityTaxonomies::addTerm ao criar termos de taxonomia simultaneamente
+- Corrige erro de optional chaining em affirmative-policies--quota-configuration
+
+### Testes
+- Adiciona teste de deleção de fase intermediária em oportunidades
+- Corrige testes flaky em EvaluationsDistributionTest, OpportunityExporterTest e EvaluationMethodTechnicalTest
+
 ## [7.7.32] - 2026-05-04
 ### Correções
 ## Possibilita que, no importador de oportunidades, o usuário possa escolher entre importar a oportunidade já publicada ou em rascunho.
