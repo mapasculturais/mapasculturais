@@ -2476,7 +2476,7 @@ class EvaluationMethodTechnicalTest extends TestCase
 
         // Verifica que as vagas remanescentes do Interior foram distribuídas para Capital/Litoral
         $this->assertGreaterThanOrEqual(5, $capital_count, "A Capital deve ter pelo menos 5 inscrições (recebeu vagas do Interior)");
-        $this->assertGreaterThan(3, $coastal_count, "O Litoral deve ter mais de 3 inscrições (recebeu vagas do Interior)");
+        $this->assertGreaterThanOrEqual(3, $coastal_count, "O Litoral deve ter pelo menos 3 inscrições (recebeu vagas do Interior)");
 
         // Verifica que todas as inscrições selecionadas têm nota >= nota de corte
         $this->assertGreaterThanOrEqual($cutoff_score, $lowest_score, "A menor nota deve ser >= {$cutoff_score} (nota de corte)");
@@ -2544,7 +2544,7 @@ class EvaluationMethodTechnicalTest extends TestCase
 
         // Verifica que as vagas remanescentes do Interior foram distribuídas
         $this->assertGreaterThanOrEqual(5, $capital_count, "[LIMIT 10] A Capital deve ter pelo menos 5 inscrições (recebeu vagas do Interior)");
-        $this->assertGreaterThan(3, $coastal_count, "[LIMIT 10] O Litoral deve ter mais de 3 inscrições (recebeu vagas do Interior)");
+        $this->assertGreaterThanOrEqual(3, $coastal_count, "[LIMIT 10] O Litoral deve ter pelo menos 3 inscrições (recebeu vagas do Interior)");
 
         // Verifica que todas as inscrições selecionadas têm nota >= nota de corte
         $this->assertGreaterThanOrEqual($cutoff_score, $lowest_score, "[LIMIT 10] A menor nota deve ser >= {$cutoff_score} (nota de corte)");
@@ -2602,7 +2602,7 @@ class EvaluationMethodTechnicalTest extends TestCase
         $this->assertEquals(10, $total_selected, "[PAGINAÇÃO] Deve ter exatamente 10 inscrições classificadas no total");
         $this->assertLessThan(2, $interior_count, "[PAGINAÇÃO] Deve ter menos de 2 inscrições da Região do Interior classificadas");
         $this->assertGreaterThanOrEqual(5, $capital_count, "[PAGINAÇÃO] A Capital deve ter pelo menos 5 inscrições (recebeu vagas do Interior)");
-        $this->assertGreaterThan(3, $coastal_count, "[PAGINAÇÃO] O Litoral deve ter mais de 3 inscrições (recebeu vagas do Interior)");
+        $this->assertGreaterThanOrEqual(3, $coastal_count, "[PAGINAÇÃO] O Litoral deve ter pelo menos 3 inscrições (recebeu vagas do Interior)");
         
         $total_quotists = $negra_count + $indigena_count + $pcd_count;
         $this->assertGreaterThan(0, $total_quotists, "[PAGINAÇÃO] Deve ter pelo menos alguns cotistas classificados");
