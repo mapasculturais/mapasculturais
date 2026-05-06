@@ -11,6 +11,7 @@ $this->import('
     mc-link
     panel--entity-actions
     panel--entity-tabs
+    personal-access-token--list
     user-mail
     user-management--ownership-tabs
     user-accepted-terms
@@ -72,5 +73,7 @@ $this->import('
         <?php $this->applyTemplateHook('config', 'after') ?>
 
         <user-accepted-terms :user="entity"></user-accepted-terms>
+
+        <personal-access-token--list></personal-access-token--list>
     </div>
 </mc-entity>

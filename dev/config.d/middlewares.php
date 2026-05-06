@@ -2,6 +2,6 @@
 return [
     'middlewares' => [
         MapasCulturais\Middlewares\ExecutionTime::class,
-        Apps\Middleware\JWTAuthMiddleware::class
+        PersonalAccessToken\Middleware\APIAuthMiddleware::class
     ]
 ];
