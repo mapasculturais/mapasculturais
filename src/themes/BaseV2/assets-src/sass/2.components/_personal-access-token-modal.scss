@@ -1,0 +1,12 @@
+@use '../0.settings/mixins' as *;
+
+.pat-entity-levels {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0 size(20);
+}
+
+.pat-level-hint {
+    display: block;
+    margin: size(4) 0 size(12) size(24);
+}

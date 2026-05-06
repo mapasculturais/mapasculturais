@@ -13,6 +13,8 @@ app.component('personal-access-token--modal', {
             plainTextToken: '',
             copied: false,
             permissionsList: $MAPAS.EntityPermissionsList || {},
+            globalLevel: '',
+            entityLevels: {},
         };
     },
 
@@ -25,7 +27,56 @@ app.component('personal-access-token--modal', {
         },
     },
 
+    watch: {
+        globalLevel(level) {
+            if (!this.entity) return;
+
+            if (level === 'full') {
+                this.entity.permissions = ['*'];
+            } else if (level === 'readonly') {
+                this.entity.permissions = this.buildReadonlyPermissions();
+            } else if (level === 'granular') {
+                this.entity.permissions = [];
+            }
+        },
+    },
+
     methods: {
+        buildReadonlyPermissions() {
+            const perms = [];
+            for (const entitySlug in this.permissionsList) {
+                perms.push(entitySlug + '.view');
+                perms.push(entitySlug + '.viewPrivateData');
+                perms.push(entitySlug + '.viewPrivateFiles');
+            }
+            return perms;
+        },
+
+        setEntityLevel(entitySlug, level) {
+            this.entityLevels[entitySlug] = level;
+            this.rebuildGranularPermissions();
+        },
+
+        rebuildGranularPermissions() {
+            const perms = [];
+            for (const entitySlug in this.entityLevels) {
+                const level = this.entityLevels[entitySlug];
+                if (level === 'full') {
+                    perms.push(entitySlug + '.*');
+                } else if (level === 'readonly') {
+                    perms.push(entitySlug + '.view');
+                    perms.push(entitySlug + '.viewPrivateData');
+                    perms.push(entitySlug + '.viewPrivateFiles');
+                }
+            }
+            const granularPerms = this.entity.permissions.filter(p => {
+                const idx = p.indexOf('.');
+                const slug = p.substring(0, idx);
+                return this.entityLevels[slug] === 'granular';
+            });
+            this.entity.permissions = [...perms, ...granularPerms];
+        },
+
         createEntity() {
             this.entity = Vue.ref(new Entity('personal-access-token'));
             this.entity.permissions = [];
@@ -33,6 +84,12 @@ app.component('personal-access-token--modal', {
             this.entity.expiresAt = '';
             this.plainTextToken = '';
             this.copied = false;
+            this.globalLevel = '';
+            const levels = {};
+            for (const slug in this.permissionsList) {
+                levels[slug] = 'none';
+            }
+            this.entityLevels = levels;
         },
 
         destroyEntity() {

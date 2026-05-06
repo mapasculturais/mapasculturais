@@ -17,11 +17,48 @@ $this->import('
                 <input type="date" v-model="entity.expiresAt" class="field__input" />
             </div>
             <div class="field">
-                <label><?php i::_e('Permissões') ?></label>
-                <small><?php i::_e('Selecione as permissões que este token terá.') ?></small>
+                <label><?php i::_e('Nível de acesso') ?></label>
+                <div class="pat-entity-levels">
+                    <label class="system-roles-modal__label">
+                        <input type="radio" v-model="globalLevel" name="globalLevel" value="full" />
+                        <?php i::_e('Acesso completo') ?>
+                    </label>
+                    <label class="system-roles-modal__label">
+                        <input type="radio" v-model="globalLevel" name="globalLevel" value="readonly" />
+                        <?php i::_e('Somente leitura') ?>
+                    </label>
+                    <label class="system-roles-modal__label">
+                        <input type="radio" v-model="globalLevel" name="globalLevel" value="granular" />
+                        <?php i::_e('Permissões granulares') ?>
+                    </label>
+                </div>
+                <small v-if="globalLevel === 'full'" class="pat-level-hint"><?php i::_e('O token terá acesso total a todas as funcionalidades.') ?></small>
+                <small v-if="globalLevel === 'readonly'" class="pat-level-hint"><?php i::_e('O token poderá apenas visualizar dados, sem criar ou modificar nada.') ?></small>
+                <small v-if="globalLevel === 'granular'" class="pat-level-hint"><?php i::_e('Configure o nível de acesso para cada tipo de entidade.') ?></small>
+            </div>
+            <div v-if="globalLevel === 'granular'" class="field">
+                <label><?php i::_e('Permissões por entidade') ?></label>
                 <section v-for="(entityPermissions, entitySlug) in permissionsList" :key="entitySlug" class="system-roles-modal__section">
                     <h4 class="system-roles-modal__title">{{ entitySlug }}</h4>
-                    <ul class="system-roles-modal__list">
+                    <div class="pat-entity-levels">
+                        <label class="system-roles-modal__label" @click="setEntityLevel(entitySlug, 'full')">
+                            <input type="radio" :name="'level-' + entitySlug" value="full" v-model="entityLevels[entitySlug]" @change="setEntityLevel(entitySlug, 'full')" />
+                            <?php i::_e('Acesso completo') ?>
+                        </label>
+                        <label class="system-roles-modal__label" @click="setEntityLevel(entitySlug, 'readonly')">
+                            <input type="radio" :name="'level-' + entitySlug" value="readonly" v-model="entityLevels[entitySlug]" @change="setEntityLevel(entitySlug, 'readonly')" />
+                            <?php i::_e('Somente leitura') ?>
+                        </label>
+                        <label class="system-roles-modal__label" @click="setEntityLevel(entitySlug, 'granular')">
+                            <input type="radio" :name="'level-' + entitySlug" value="granular" v-model="entityLevels[entitySlug]" @change="setEntityLevel(entitySlug, 'granular')" />
+                            <?php i::_e('Permissões granulares') ?>
+                        </label>
+                        <label class="system-roles-modal__label" @click="setEntityLevel(entitySlug, 'none')">
+                            <input type="radio" :name="'level-' + entitySlug" value="none" v-model="entityLevels[entitySlug]" @change="setEntityLevel(entitySlug, 'none')" />
+                            <?php i::_e('Sem permissão') ?>
+                        </label>
+                    </div>
+                    <ul v-if="entityLevels[entitySlug] === 'granular'" class="system-roles-modal__list">
                         <li v-for="perm in entityPermissions" :key="perm.permission" class="system-roles-modal__item">
                             <label class="system-roles-modal__label">
                                 <input type="checkbox" :value="entitySlug + '.' + perm.permission" v-model="entity.permissions" />
@@ -58,7 +95,7 @@ $this->import('
     </template>
 
     <template v-if="entity && !entity.id" #actions="modal">
-        <button class="button button--primary" @click="save(modal)"><?php i::_e('Criar') ?></button>
+        <button class="button button--primary" :disabled="!globalLevel || entity.permissions.length === 0" @click="save(modal)"><?php i::_e('Criar') ?></button>
         <button class="button button--text button--text-del" @click="modal.close()"><?php i::_e('Cancelar') ?></button>
     </template>
 
