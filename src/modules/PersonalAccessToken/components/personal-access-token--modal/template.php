@@ -8,7 +8,7 @@ $this->import('
     mc-icon
 ');
 ?>
-<mc-modal :title="modalTitle" classes="create-modal create-personal-access-token" button-label="<?php i::_e('Criar Token')?>" @open="createEntity()" @close="destroyEntity()">
+<mc-modal :title="modalTitle" classes="create-modal system-roles-modal" button-label="<?php i::_e('Criar Token')?>" @open="createEntity()" @close="destroyEntity()">
     <template v-if="entity && !entity.id" #default>
         <div class="create-modal__fields">
             <entity-field :entity="entity" label="<?php i::esc_attr_e('Nome do token')?>" prop="name"></entity-field>
@@ -19,17 +19,17 @@ $this->import('
             <div class="field">
                 <label><?php i::_e('Permissões') ?></label>
                 <small><?php i::_e('Selecione as permissões que este token terá.') ?></small>
-                <div v-if="permissionsList" class="pat-permissions-list">
-                    <template v-for="(permissions, entityType) in permissionsList" :key="entityType">
-                        <div class="pat-permissions-group">
-                            <strong>{{ entityType }}</strong>
-                            <label v-for="perm in permissions" :key="perm.permission" class="pat-permission-item">
-                                <input type="checkbox" :value="entityType + '.' + perm.permission" v-model="entity.permissions" />
+                <section v-for="(entityPermissions, entitySlug) in permissionsList" :key="entitySlug" class="system-roles-modal__section">
+                    <h4 class="system-roles-modal__title">{{ entitySlug }}</h4>
+                    <ul class="system-roles-modal__list">
+                        <li v-for="perm in entityPermissions" :key="perm.permission" class="system-roles-modal__item">
+                            <label class="system-roles-modal__label">
+                                <input type="checkbox" :value="entitySlug + '.' + perm.permission" v-model="entity.permissions" />
                                 {{ perm.label || perm.permission }}
                             </label>
-                        </div>
-                    </template>
-                </div>
+                        </li>
+                    </ul>
+                </section>
             </div>
         </div>
     </template>
