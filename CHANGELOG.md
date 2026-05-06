@@ -5,7 +5,7 @@ Todas as mudanças notáveis no projeto serão documentadas neste arquivo.
 O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/)
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
+## [7.7.33] - 2026-05-06
 ### Correções
 - Corrige getters de fases para ignorar fases deletadas (status > -10) em previousPhase, previousPhases, nextPhase, nextPhases e lastPhase
 - Corrige condição de corrida em EntityTaxonomies::addTerm ao criar termos de taxonomia simultaneamente
