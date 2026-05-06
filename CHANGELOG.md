@@ -245,6 +245,10 @@ te sem falhas
 <a name="770-funarte"></a>
 2. <small>Melhoria desenvolvida pela Funarte (Fundação Nacional de Artes) para a Rede das Artes</small>
 
+## [7.7.67] - 2026-05-06
+### Correções
+- Faz implementaçao para que a ficha de inscriçao do recurso tambems eja exibida na single
+
 ##[7.6.66] - 2026-04-28
 ### Correções
 - Garante que campos de anexo permaneçam desabilitados no formulário quando o agente de suporte possui permissão somente de leitura
