@@ -45,7 +45,7 @@ app.component('panel--registration-tabs', {
                     this.query['user'] = 'EQ(@me)';
                     break;
                 case 'withControl':
-                    this.query['status'] = 'EQ(0)';
+                    this.query['status'] = 'GTE(0)';
                     this.query['@permissions'] = '@control';
                     this.query['user'] = '!EQ(@me)';
                     break;
