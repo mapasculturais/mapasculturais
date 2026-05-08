@@ -5,12 +5,13 @@ Todas as mudanças notáveis no projeto serão documentadas neste arquivo.
 O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/)
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
+## [7.7.34] - 2026-05-08
 ### Melhorias
 - Permite configurar a quantidade de itens exibidos por página nas abas de entidades, como agentes, espaços e projetos.
 - Adiciona nova aba "Com permissão" na tela de minhas inscrições, para visualizar inscrições onde você tem permissão de gestão.
 - Exibe apenas as inscrições do próprio usuário na tela "Minhas inscrições", evitando confusão com inscrições de outros.
 - Melhora a gestão de entidades dos usuários ao incluir a aba "Concedido" e ajustar a quantidade de itens exibidos por página.
+- Faz organizaçao no CHANGELOG.md
 
 ## [7.7.33] - 2026-05-06
 ### Correções
