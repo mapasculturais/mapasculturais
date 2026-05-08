@@ -9,6 +9,14 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 ### Novas Funcionalidades
 - Implementa configuração que permide definir a imagem de avatar de qualquer entidade como obrigatória
 
+## [7.7.34] - 2026-05-08
+### Melhorias
+- Permite configurar a quantidade de itens exibidos por página nas abas de entidades, como agentes, espaços e projetos.
+- Adiciona nova aba "Com permissão" na tela de minhas inscrições, para visualizar inscrições onde você tem permissão de gestão.
+- Exibe apenas as inscrições do próprio usuário na tela "Minhas inscrições", evitando confusão com inscrições de outros.
+- Melhora a gestão de entidades dos usuários ao incluir a aba "Concedido" e ajustar a quantidade de itens exibidos por página.
+- Faz organizaçao no CHANGELOG.md
+
 ## [7.7.33] - 2026-05-06
 ### Correções
 - Corrige getters de fases para ignorar fases deletadas (status > -10) em previousPhase, previousPhases, nextPhase, nextPhases e lastPhase
@@ -21,19 +29,19 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ## [7.7.32] - 2026-05-04
 ### Correções
-## Possibilita que, no importador de oportunidades, o usuário possa escolher entre importar a oportunidade já publicada ou em rascunho.
+- Possibilita que, no importador de oportunidades, o usuário possa escolher entre importar a oportunidade já publicada ou em rascunho.
 
 ## [7.7.31] - 2026-04-28
 ### Correções
 - Corrige salvamento de avaliadores da inscrição por administradores da oportunidade
 
-##[7.7.30] - 2026-04-28
+## [7.7.30] - 2026-04-28
 ### Correções
 - Corrije erro que redireciona o usuário admin sempre para a tela de suporte ao acessar a single de inscriçao
 - Corrige erro que quebra o recurso devido à falta de datas configuradas nas fases avaliativas
 - Corrige o carregamento dos detalhes do recurso quando o step vertical está fechado.
 
-##[7.7.29] - 2026-04-22
+## [7.7.29] - 2026-04-22
 ### Correções
 - Corrige erro no upload de arquivos xlsx no grupo de downloads das entidades
 
@@ -41,16 +49,16 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 ## Melhorias
 - Melhora validação de tipos de arquivo, impedindo que sejam feitos uploads de arquivos potencialmente perigosos
 
-##[7.7.27] - 2026-04-16
+## [7.7.27] - 2026-04-16
 ### Correções
 - Corrige erro que impedia enviar a inscrição devido a ero na data de nascimento
 - Corrige carregamento do componente request-agent-avatar
 
-##[7.7.26] - 2026-04-14
+## [7.7.26] - 2026-04-14
 ### Correções
 - Corrige importação de oportunidades para evitar referência curcular
 
-##[7.7.25] - 2026-04-13
+## [7.7.25] - 2026-04-13
 ### Correções
 - Corrige deleção indevida de roles, agents e procurations ao salvar entidades. Os mapeamentos ManyToOne de Agent, Role e Procuration não declaravam inversedBy, impedindo o Doctrine de sincronizar as coleções OneToMany do User, o que causava orphanRemoval durante computeChangeSets() no flush
 - Corrige detached entity ao deletar Job após execução em lotes
@@ -59,18 +67,18 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 ### Refatoração
 - Remove orphanRemoval=true de todos os mapeamentos OneToMany. Deletes são controlados pelo método delete() das entidades, e cascade={"remove"} + onDelete="CASCADE" garantem a deleção em cascata
 
-##[7.7.24] - 2026-04-13
+## [7.7.24] - 2026-04-13
 ### Correções
 - Corrige erros durante a execução das migraçoes mc-updates e db-updates
 
 ##[7.7.23] - 2026-04-12
 - Corrige deleção indevida de roles, agents e procurations ao salvar entidades. Os mapeamentos ManyToOne de Agent, Role e Procuration não declaravam inversedBy, impedindo o Doctrine de sincronizar as coleções OneToMany do User, o que causava orphanRemoval durante computeChangeSets() no flush
 
-##[7.7.22] - 2026-04-07
+## [7.7.22] - 2026-04-07
 ### Correções
 - Faz correçao na criaçao e utilizaçao de modelos que ocasionava erros na criaçao dos steps do formulario de inscriçao
 
-##[7.7.21] - 2026-04-02
+## [7.7.21] - 2026-04-02
 ### Correções
 - Corrige um erro que impedia a exibição do formulário de avaliação contínua do recurso
 

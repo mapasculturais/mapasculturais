@@ -56,6 +56,10 @@ app.component('panel--entity-tabs', {
             type: String,
             default: "publish,draft,granted,mymodels,trash,archived"
         },
+        limit: {
+            type: Number,
+            default: 50,
+        },
 
     },
     methods: {
