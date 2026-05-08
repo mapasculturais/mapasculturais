@@ -21,6 +21,8 @@ app.component('panel--registration-tabs', {
 
         return {
             query,
+            /** Itens por página em cada aba (mc-entities pagina com “Carregar mais”). */
+            pageLimit: 20,
             totalDrafts: $MAPAS.config.panelRegistrationTabs.totalDrafts,
             showAlert: false,
         }
