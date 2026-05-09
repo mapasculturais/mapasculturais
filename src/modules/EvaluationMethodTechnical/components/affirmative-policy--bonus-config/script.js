@@ -9,159 +9,226 @@ app.component("affirmative-policy--bonus-config", {
   },
 
   setup() {
-    // os textos estão localizados no arquivo texts.php deste componente
     const messages = useMessages();
     const text = Utils.getTexts("affirmative-policy--bonus-config");
     return { text, messages };
   },
 
-  updated () {
-    this.autoSave(true, 200);
-  },
-
   data() {
-    const config = this.entity.affirmativePolicyBonusConfig || {};
+    const normalized = this._normalizeConfig(this.entity.pointReward);
     return {
       fields: this.entity.opportunity.id
-        ? $MAPAS.config.affirmativePolicyBonusConfig.fields[
-            this.entity.opportunity.id
-          ]
+        ? $MAPAS.config.affirmativePolicyBonusConfig.fields[this.entity.opportunity.id]
         : [],
-      criteria: Object.assign({}, config),
-      percent: 0,
+      bonusType: normalized.type,
+      normalizedRules: normalized.rules,
     };
   },
-  computed: {
-    sections() {
-      let sections = this.phase.sections.map((section) => {
-        const all_criteria = this.phase.criteria;
-        section.criteria = [];
-        Object.values(all_criteria).forEach((criterion) => {
-          if (criterion.sid == section.id) {
-            section.criteria.push(criterion);
-          }
-        });
-        return section;
-      });
 
-      return sections;
+  computed: {
+    hasRules() {
+      return this.normalizedRules && this.normalizedRules.length > 0;
     },
   },
+
   methods: {
+    // ----------------------------------------------------------------
+    // Normalização (espelha a lógica PHP para uso local)
+    // ----------------------------------------------------------------
+
+    _normalizeConfig(config) {
+      const empty = { type: "percentage", rules: [] };
+
+      if (!config) return empty;
+
+      // Formato legado: array de regras
+      if (Array.isArray(config)) {
+        return {
+          type: "percentage",
+          rules: config.map((rule) => this._normalizeRule(rule)),
+        };
+      }
+
+      if (typeof config !== "object") return empty;
+
+      const type = config.type === "fixed" ? "fixed" : "percentage";
+      const rules = Array.isArray(config.rules)
+        ? config.rules.map((rule) => this._normalizeRule(rule))
+        : [];
+
+      return { type, rules };
+    },
+
+    _normalizeRule(rule) {
+      const r = { ...rule };
+      // Deriva bonusValue de fieldPercent quando ausente (legado)
+      if (r.bonusValue === undefined && r.fieldPercent !== undefined) {
+        r.bonusValue = r.fieldPercent;
+      }
+      if (r.bonusValue === undefined) {
+        r.bonusValue = 0;
+      }
+      if (r.value === undefined) {
+        r.value = {};
+      }
+      return r;
+    },
+
+    // ----------------------------------------------------------------
+    // Serialização para salvar no entity.pointReward
+    // ----------------------------------------------------------------
+
+    _serializeConfig() {
+      return {
+        type: this.bonusType,
+        rules: (this.normalizedRules || []).map((rule) => {
+          const r = {
+            field: rule.field,
+            value: rule.value,
+            bonusValue: rule.bonusValue ?? 0,
+          };
+          if (rule.fieldName !== undefined) r.fieldName = rule.fieldName;
+          if (rule.valuesList !== undefined) r.valuesList = rule.valuesList;
+          if (rule.viewDataValues !== undefined) r.viewDataValues = rule.viewDataValues;
+          if (rule.eligibleValues !== undefined) r.eligibleValues = rule.eligibleValues;
+          return r;
+        }),
+      };
+    },
+
+    // ----------------------------------------------------------------
+    // Troca de tipo com confirmação quando há regras cadastradas
+    // ----------------------------------------------------------------
+
+    onTypeChange() {
+      if (this.normalizedRules && this.normalizedRules.length > 0) {
+        const confirmed = confirm(this.text("confirmTypeChange"));
+        if (!confirmed) {
+          // Reverte para o tipo salvo
+          const saved = this._normalizeConfig(this.entity.pointReward);
+          this.bonusType = saved.type;
+          return;
+        }
+      }
+      this._syncAndSave();
+    },
+
+    // ----------------------------------------------------------------
+    // Campos
+    // ----------------------------------------------------------------
+
     getField(quota) {
       const id = quota.field ?? quota.fieldName;
       if (Array.isArray(this?.fields)) {
-        const field = this?.fields?.find((field) => field.id == id);
-        return field;
-      } else {
-        const fieldsArray = Object.keys(this?.fields).map(
-          (id) => this?.fields[id]
-        );
-        return fieldsArray.find((field) => field.id == id);
+        return this?.fields?.find((field) => field.id == id);
       }
+      const fieldsArray = Object.keys(this?.fields).map((id) => this?.fields[id]);
+      return fieldsArray.find((field) => field.id == id);
     },
 
     getFieldType(quota) {
-      const field = this.getField(quota);
-      return field?.fieldType;
+      return this.getField(quota)?.fieldType;
     },
 
     hasField(quota) {
       if (quota?.field === "") return false;
-      const field = this.getField(quota);
-
-      return !!field;
-    },
-
-    checkCriterionType(criterion, allowedTypes = []) {
-      return criterion.selected
-        ? !!allowedTypes.includes(criterion.selected.fieldType)
-        : false;
+      return !!this.getField(quota);
     },
 
     getFieldOptions(quota) {
-      const field = this.getField(quota);
-      return field?.fieldOptions;
+      return this.getField(quota)?.fieldOptions;
     },
 
     setFieldName(option, quota) {
-      field = this.getField({ field: option.value });
+      const field = this.getField({ field: option.value });
       quota.field = option.value;
       quota.valuesList = field.fieldOptions;
-      quota.value = "";
+      quota.value = {};
       quota.viewDataValues = field.fieldType;
     },
+
     checkboxUpdate(event, quota) {
       if (event.target.checked) {
         quota.value =
           typeof quota.value === "object"
-            ? {
-                ...quota.value,
-                [event.target.value]: String(event.target.checked),
-              }
-            : {
-                [event.target.value]: String(event.target.checked),
-              };
+            ? { ...quota.value, [event.target.value]: String(event.target.checked) }
+            : { [event.target.value]: String(event.target.checked) };
       } else {
         delete quota.value[event.target.value];
       }
     },
 
+    optionValue(option) {
+      return option.split(":")[0];
+    },
+
+    optionLabel(option) {
+      const parts = option.split(":");
+      return parts.length > 1 ? parts[1] : parts[0];
+    },
+
+    // ----------------------------------------------------------------
+    // Adicionar / remover regras
+    // ----------------------------------------------------------------
+
     addConfig() {
-      if(this.entity.opportunity.affirmativePoliciesEligibleFields.length == 0) {
-        this.messages.error(this.text('emptyAffimativePolicies'));
+      if (this.entity.opportunity.affirmativePoliciesEligibleFields.length === 0) {
+        this.messages.error(this.text("emptyAffimativePolicies"));
         return;
       }
 
-      if (!this.entity.pointReward) {
-        this.entity.pointReward = [{}];
-      } else {
-        this.entity.pointReward.push({});
+      if (!this.normalizedRules) {
+        this.normalizedRules = [];
       }
+      this.normalizedRules.push({ field: "", value: {}, bonusValue: 0 });
 
       if (!this.entity.isActivePointReward) {
         this.entity.isActivePointReward = true;
       }
+
+      this._syncAndSave();
     },
 
-    removeConfig(item) {
-      this.entity.pointReward = this.entity.pointReward.filter(function (
-        value,
-        key
-      ) {
-        return item != key;
-      });
-      if (!this.entity.pointReward.length) {
+    removeConfig(index) {
+      this.normalizedRules = this.normalizedRules.filter((_, key) => key !== index);
+      if (!this.normalizedRules.length) {
         this.entity.isActivePointReward = false;
       }
-      this.autoSave(true, 200);
+      this._syncAndSave(true, 200);
     },
 
-    optionValue(option) {
-      let _option = option.split(':');
-      return _option[0];
-    },
+    // ----------------------------------------------------------------
+    // Sincronização e autosave
+    // ----------------------------------------------------------------
 
-    optionLabel(option) {
-      let _option = option.split(':');
-      return _option.length > 1 ? _option[1] : _option[0];
+    _syncAndSave(updated = false, time = 3000) {
+      this.entity.pointReward = this._serializeConfig();
+      this.autoSave(updated, time);
     },
 
     autoSave(updated = false, time = 3000) {
-      const filled = Object.values(this.entity.pointReward).filter(
-        pointReward => {
-            return pointReward.field !== undefined 
-                && pointReward.field 
-                && (pointReward.value !== "" || pointReward.eligibleValues !== undefined)
-                && (pointReward.value || pointReward.eligibleValues)
-                && pointReward.fieldPercent !== undefined
-                && pointReward.fieldPercent 
-        }
+      const filled = (this.normalizedRules || []).filter(
+        (rule) =>
+          rule.field !== undefined &&
+          rule.field !== "" &&
+          (rule.value !== "" || rule.eligibleValues !== undefined) &&
+          (rule.value || rule.eligibleValues) &&
+          rule.bonusValue !== undefined &&
+          rule.bonusValue !== null
       );
-      
-      if(filled.length || updated) {
+
+      if (filled.length || updated) {
         this.entity.save(time);
       }
+    },
+  },
+
+  watch: {
+    normalizedRules: {
+      deep: true,
+      handler() {
+        this._syncAndSave(true, 500);
+      },
     },
   },
 });

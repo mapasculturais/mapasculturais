@@ -3230,5 +3230,86 @@ $$
         $app->log->debug("Migração concluída! Atualizados: {$updated} | Sem relations: {$skipped}");
         return true;
     },
+
+    'normaliza metadado pointReward para tipo configuravel' => function() use ($conn, $app) {
+        $metas = $conn->fetchAll(
+            "SELECT id, object_id, value FROM evaluationmethodconfiguration_meta WHERE key = 'pointReward'"
+        );
+
+        $total        = count($metas);
+        $migrados     = 0;
+        $normalizados = 0;
+        $ignorados    = 0;
+
+        foreach ($metas as $meta) {
+            $raw = $meta['value'];
+
+            if ($raw === null || $raw === '') {
+                $ignorados++;
+                continue;
+            }
+
+            $decoded = json_decode($raw, true);
+
+            if (json_last_error() !== JSON_ERROR_NONE) {
+                $ignorados++;
+                $app->log->debug("pointReward id={$meta['id']} ignorado: JSON inválido");
+                continue;
+            }
+
+            // Array legado de regras
+            if (is_array($decoded) && array_values($decoded) === $decoded) {
+                $rules = array_map(function ($rule) {
+                    if (!isset($rule['bonusValue']) && isset($rule['fieldPercent'])) {
+                        $rule['bonusValue'] = $rule['fieldPercent'];
+                    }
+                    return $rule;
+                }, $decoded);
+
+                $normalized = ['type' => 'percentage', 'rules' => $rules];
+                $conn->executeQuery(
+                    "UPDATE evaluationmethodconfiguration_meta SET value = :value WHERE id = :id",
+                    ['value' => json_encode($normalized), 'id' => $meta['id']]
+                );
+                $migrados++;
+                continue;
+            }
+
+            // Objeto
+            if (is_array($decoded)) {
+                $type = $decoded['type'] ?? 'percentage';
+                if (!in_array($type, ['percentage', 'fixed'], true)) {
+                    $app->log->debug("pointReward id={$meta['id']}: type '{$type}' inválido, definindo como percentage");
+                    $type = 'percentage';
+                }
+
+                $rules = array_map(function ($rule) {
+                    if (!isset($rule['bonusValue']) && isset($rule['fieldPercent'])) {
+                        $rule['bonusValue'] = $rule['fieldPercent'];
+                    }
+                    return $rule;
+                }, $decoded['rules'] ?? []);
+
+                $needsUpdate = !isset($decoded['type']) || $decoded['type'] !== $type || $decoded['rules'] !== $rules;
+
+                if ($needsUpdate) {
+                    $normalized = array_merge($decoded, ['type' => $type, 'rules' => $rules]);
+                    $conn->executeQuery(
+                        "UPDATE evaluationmethodconfiguration_meta SET value = :value WHERE id = :id",
+                        ['value' => json_encode($normalized), 'id' => $meta['id']]
+                    );
+                    $migrados++;
+                } else {
+                    $normalizados++;
+                }
+
+                continue;
+            }
+
+            $ignorados++;
+        }
+
+        $app->log->debug("normaliza pointReward: total={$total}, migrados={$migrados}, já normalizados={$normalizados}, ignorados={$ignorados}");
+    },
     
 ] + $updates ;   
