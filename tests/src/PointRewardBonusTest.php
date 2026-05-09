@@ -41,6 +41,7 @@ class PointRewardBonusTest extends TestCase
         $evaluation_phase_builder = $this->opportunityBuilder
             ->reset(owner: $admin->profile, owner_entity: $admin->profile)
             ->fillRequiredProperties()
+            ->save()
             ->firstPhase()
                 ->setRegistrationPeriod(new Open)
                 ->createStep('Dados')
@@ -55,13 +56,12 @@ class PointRewardBonusTest extends TestCase
             ->addEvaluationPhase(EvaluationMethods::technical)
                 ->setEvaluationPeriod(new ConcurrentEndingAfter)
                 ->setCommitteeValuersPerRegistration('Comissão', 1)
-                ->save()
-                ->addValuers(1, 'Comissão')
                 ->config()
                     ->addSection('s1', 'Qualidade')
                     ->addCriterion('c1', 's1', 'Critério 1', min: 0, max: 10, weight: 1)
                     ->done()
-                ->done();
+                ->save()
+                ->addValuers(1, 'Comissão');
 
         $opportunity = $this->opportunityBuilder
             ->save()
@@ -615,7 +615,7 @@ class PointRewardBonusTest extends TestCase
     {
         $app = App::i();
         /** @var \EvaluationMethodTechnical\Module $module */
-        $module = $app->getModule('EvaluationMethodTechnical');
+        $module = $app->modules['EvaluationMethodTechnical'];
 
         $legacy = [
             (object) ['field' => 1, 'value' => (object) ['Preta' => 'true'], 'fieldPercent' => 10],
@@ -636,7 +636,7 @@ class PointRewardBonusTest extends TestCase
     public function testNormalizeObjectWithoutTypeBecomesPercentage(): void
     {
         $app = App::i();
-        $module = $app->getModule('EvaluationMethodTechnical');
+        $module = $app->modules['EvaluationMethodTechnical'];
 
         $config = (object) [
             'rules' => [
@@ -655,7 +655,7 @@ class PointRewardBonusTest extends TestCase
     public function testNormalizeObjectWithFixedTypeIsPreserved(): void
     {
         $app = App::i();
-        $module = $app->getModule('EvaluationMethodTechnical');
+        $module = $app->modules['EvaluationMethodTechnical'];
 
         $config = (object) [
             'type'  => 'fixed',
@@ -676,7 +676,7 @@ class PointRewardBonusTest extends TestCase
     public function testNormalizeDerivesBonusValueFromFieldPercent(): void
     {
         $app = App::i();
-        $module = $app->getModule('EvaluationMethodTechnical');
+        $module = $app->modules['EvaluationMethodTechnical'];
 
         $config = (object) [
             'type'  => 'percentage',
@@ -696,7 +696,7 @@ class PointRewardBonusTest extends TestCase
     public function testNormalizeEmptyConfigReturnsPercentageDefault(): void
     {
         $app = App::i();
-        $module = $app->getModule('EvaluationMethodTechnical');
+        $module = $app->modules['EvaluationMethodTechnical'];
 
         $this->assertEquals('percentage', $module->normalizePointRewardConfig([])->type);
         $this->assertEquals('percentage', $module->normalizePointRewardConfig(null)->type);
