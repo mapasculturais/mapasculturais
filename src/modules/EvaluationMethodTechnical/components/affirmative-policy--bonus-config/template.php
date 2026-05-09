@@ -22,19 +22,13 @@ $this->import('
 
             <div class="affirmative-policy--bonus-config__field field">
                 <label><?= i::__('Tipo de bônus:') ?></label>
-                <div class="affirmative-policy--bonus-config__type-selector">
-                    <label>
-                        <input type="radio" value="percentage" v-model="bonusType" @change="onTypeChange" />
-                        <?= i::__('Percentual') ?>
-                    </label>
-                    <label>
-                        <input type="radio" value="fixed" v-model="bonusType" @change="onTypeChange" />
-                        <?= i::__('Ponto fixo') ?>
-                    </label>
-                </div>
+                <select v-model="bonusType" @change="onTypeChange">
+                    <option value="percentage"><?= i::__('Percentual') ?></option>
+                    <option value="fixed"><?= i::__('Ponto fixo') ?></option>
+                </select>
             </div>
 
-            <div class="affirmative-policy--bonus-config__field field">
+            <div class="affirmative-policy--bonus-config__field affirmative-policy--bonus-config__field--roof field">
                 <label>
                     <span v-if="bonusType === 'percentage'"><?= i::__('Percentual máximo de bônus:') ?></span>
                     <span v-else><?= i::__('Pontuação máxima de bônus:') ?></span>

@@ -10,20 +10,16 @@ use MapasCulturais\i;
     <section ng-if="data.isActivePointReward">
         <header>
             <div class="policy-type">
-                <label>
-                    <input type="radio" ng-model="data.bonusType" value="percentage" ng-change="save()">
-                    <?php i::_e('Percentual') ?>
-                </label>
-                &nbsp;
-                <label>
-                    <input type="radio" ng-model="data.bonusType" value="fixed" ng-change="save()">
-                    <?php i::_e('Ponto fixo') ?>
-                </label>
+                <label><?php i::_e('Tipo de bônus') ?></label>
+                <select ng-model="data.bonusType" ng-change="save()">
+                    <option value="percentage"><?php i::_e('Percentual') ?></option>
+                    <option value="fixed"><?php i::_e('Ponto fixo') ?></option>
+                </select>
             </div>
             <div class="policy-roof">
                 <p ng-if="data.bonusType === 'percentage'"> <?php i::_e('Porcentagem total a ser aplicada') ?> </p>
                 <p ng-if="data.bonusType === 'fixed'"> <?php i::_e('Bônus máximo a ser aplicado') ?> </p>
-                <input ng-model="data.pointRewardRoof" ng-change="save()" type="number" step="0.01" value="0.00" min="0.00" placeholder="0,00" class="affirmative_policies-roof edit">
+                <input ng-model="data.pointRewardRoof" ng-change="save()" type="number" step="0.01" value="0.00" min="0.00" placeholder="0,00" class="affirmative_policies-roof edit" style="width:120px;">
                 <span ng-if="data.bonusType === 'percentage'">%</span>
                 <span ng-if="data.bonusType === 'fixed'"><?php i::_e('pt(s)') ?></span>
                 <span class="detail"><?php i::_e('(0 = Sem limitações)') ?></span>

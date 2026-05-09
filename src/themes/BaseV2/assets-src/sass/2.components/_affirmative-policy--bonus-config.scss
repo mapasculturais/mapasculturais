@@ -22,14 +22,19 @@
   }
 
   &__field {
-    max-width: 120px;
     display: flex;
+    flex-direction: column;
+    align-items: flex-start;
     span {
       display: flex;
       justify-content: center;
       gap: 9px;
       align-items: center;
     }
+  }
+
+  &__field--roof {
+    max-width: 220px;
   }
 
   &__header {
