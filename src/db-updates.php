@@ -3233,9 +3233,7 @@ $$
 
     'normaliza metadado pointReward para tipo configuravel' => function() use ($conn, $app) {
         $normalizeRule = function(array $rule): array {
-            if (!isset($rule['bonusValue']) && isset($rule['fieldPercent'])) {
-                $rule['bonusValue'] = $rule['fieldPercent'];
-            }
+            $rule['bonusValue'] = $rule['bonusValue'] ?? $rule['fieldPercent'] ?? 0;
             return $rule;
         };
 
