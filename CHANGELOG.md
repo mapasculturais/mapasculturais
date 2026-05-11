@@ -9,6 +9,14 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 ### Novas Funcionalidades
 - Implementa configuração que permide definir a imagem de avatar de qualquer entidade como obrigatória
 
+## [7.7.36] - 2026-05-08
+### Correções
+- Corrige exibiçao das abas com permissão na aba minhas inscrições e no gerênciamento de usuários
+
+## [7.7.35] - 2026-05-08
+### Correções
+- Implementa paginaçao no na área de minhas inscriçoes
+
 ## [7.7.34] - 2026-05-08
 ### Melhorias
 - Permite configurar a quantidade de itens exibidos por página nas abas de entidades, como agentes, espaços e projetos.

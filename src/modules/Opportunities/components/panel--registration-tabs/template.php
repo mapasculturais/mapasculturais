@@ -16,7 +16,7 @@ $this->import('
 ?>
 <mc-tabs :class="{'hasDrafts': this.totalDrafts>0}" @changed="changed($event)">
     <mc-tab label="<?= i::_e('Não enviadas') ?>" slug="notSent" name="tem">
-        <mc-entities name="registrationsList" type="registration" endpoint="find" :query="query" :order="query['@order']" select="status,proponentType,range,number,category,createTimestamp,sentTimestamp,owner.{name,files.avatar},opportunity.{name,files.avatar,isOpportunityPhase,parent.{name,files.avatar}},agentRelations">
+        <mc-entities name="registrationsList" type="registration" endpoint="find" :query="query" :order="query['@order']" :limit="pageLimit" select="status,proponentType,range,number,category,createTimestamp,sentTimestamp,owner.{name,files.avatar},opportunity.{name,files.avatar,isOpportunityPhase,parent.{name,files.avatar}},agentRelations">
             <template #header="{entities}">
                 <div class="registrations__filter">
                     <form class="form" @submit="entities.refresh(); $event.preventDefault();">
@@ -42,7 +42,7 @@ $this->import('
         </mc-entities>
     </mc-tab>
     <mc-tab label="<?= i::_e('Enviadas') ?>" class="tabs_sent" slug="sent">
-        <mc-entities name="registrationsList" type="registration" endpoint="find" :query="query" :order="query['@order']" select="status,range,proponentType,name,number,category,createTimestamp,sentTimestamp,owner.{name,files.avatar},opportunity.{name,files.avatar,isOpportunityPhase,parent.{name,files.avatar}},agentRelations">            
+        <mc-entities name="registrationsList" type="registration" endpoint="find" :query="query" :order="query['@order']" :limit="pageLimit" select="status,range,proponentType,name,number,category,createTimestamp,sentTimestamp,owner.{name,files.avatar},opportunity.{name,files.avatar,isOpportunityPhase,parent.{name,files.avatar}},agentRelations">            
             <template #header="{entities}">
                 <div class="registrations__filter">
                     <form class="form" @submit="entities.refresh(); $event.preventDefault();">
@@ -72,7 +72,7 @@ $this->import('
     </mc-tab>
 
     <mc-tab label="<?= i::_e('Com permissão') ?>" class="tabs_sent" slug="withControl">
-        <mc-entities name="registrationsList" type="registration" endpoint="find" :query="query" :order="query['@order']" select="status,range,proponentType,name,number,category,createTimestamp,sentTimestamp,owner.{name,files.avatar},opportunity.{name,files.avatar,isOpportunityPhase,parent.{name,files.avatar}},agentRelations">            
+        <mc-entities name="registrationsList" type="registration" endpoint="find" :query="query" :order="query['@order']" :limit="pageLimit" select="status,range,proponentType,name,number,category,createTimestamp,sentTimestamp,owner.{name,files.avatar},opportunity.{name,files.avatar,isOpportunityPhase,parent.{name,files.avatar}},agentRelations">            
             <template #header="{entities}">
                 <div class="registrations__filter">
                     <form class="form" @submit="entities.refresh(); $event.preventDefault();">
