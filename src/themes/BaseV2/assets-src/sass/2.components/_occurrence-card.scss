@@ -27,21 +27,45 @@
 		}
 	}
 
+	&__virtual {
+		flex-direction: column;
+		align-items: flex-start;
+		gap: size(4);
+	}
+
+	&__virtual-header {
+		display: flex;
+		align-items: center;
+		gap: size(8);
+	}
+
 	.virtual-links {
 		display: flex;
-		flex-direction: column;
-		gap: size(4);
-		margin-top: size(4);
+		flex-wrap: wrap;
+		gap: size(8);
+		padding-left: size(28);
 	}
 
 	.virtual-link {
+		display: inline-flex;
+		align-items: center;
+		gap: size(6);
+		padding: size(6) size(12);
+		background-color: var(--mc-gray-100);
+		border-radius: var(--mc-border-radius-pill);
 		color: var(--mc-primary-500);
-		text-decoration: none;
 		font-size: size(14);
-		word-break: break-all;
+		font-weight: 600;
+		text-decoration: none;
+		transition: background-color .2s ease;
 		
 		&:hover {
-			text-decoration: underline;
+			background-color: var(--mc-primary-100);
+		}
+
+		.iconify {
+			width: size(14);
+			height: size(14);
 		}
 	}
 

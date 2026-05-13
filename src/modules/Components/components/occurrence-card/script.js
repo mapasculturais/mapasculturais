@@ -40,6 +40,9 @@ app.component('occurrence-card', {
         seals() {
             return (this.occurrence.event.seals.length > 0 ? this.occurrence.event.seals.slice(0, 2) : false);
         },
+        seals() {
+            return (this.occurrence.event.seals.length > 0 ? this.occurrence.event.seals.slice(0, 2) : false);
+        },
         areas() {
             return (Array.isArray(this.occurrence.event.terms.area) ? this.occurrence.event.terms.area.join(", ") : false);
         },
@@ -52,5 +55,19 @@ app.component('occurrence-card', {
     },
     
     methods: {
+        formatPlatform(platform) {
+            const map = {
+                'youtube': 'YouTube',
+                'tiktok': 'TikTok',
+                'instagram': 'Instagram',
+                'zoom': 'Zoom',
+                'google-meet': 'Google Meet',
+                'facebook': 'Facebook',
+                'twitch': 'Twitch',
+                'teams': 'Microsoft Teams',
+                'outros': 'Link'
+            };
+            return map[platform] || 'Link';
+        },
     },
 });
