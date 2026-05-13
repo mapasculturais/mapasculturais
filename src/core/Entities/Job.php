@@ -165,7 +165,7 @@ class Job extends \MapasCulturais\Entity{
                 }
 
                 $em = $app->em;
-                $job = $em->contains($this) ? $this : $em->getReference(static::class, $this->id);
+                $job = $em->contains($this) ? $this : $em->getReference(static::class, $this->pk);
                 $job->delete(true);
             } else {
                 $conn = $app->conn;
