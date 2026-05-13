@@ -25,6 +25,7 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Evita erro ao hidratar campos de data inválidos em entidades
 - Corrige a importação de formulários de inscrição para preservar os formatos aceitos configurados nos campos de anexo
 - Corrige erro ao reordenar etapas na configuração do formulário de oportunidades
+- Corrige o cálculo ponderado dos subtotais na tela de avaliação técnica
 
 ## [7.7.36] - 2026-05-08
 ### Correções
