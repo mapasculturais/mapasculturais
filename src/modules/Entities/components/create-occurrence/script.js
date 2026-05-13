@@ -38,9 +38,10 @@ app.component('create-occurrence', {
             },
             days: {},
             until: null,
-            description: null,
-            price: null,
-            priceInfo: null
+            description: '',
+            price: '',
+            priceInfo: '',
+            links: ['']
         }
     },
 
@@ -52,6 +53,10 @@ app.component('create-occurrence', {
         occurrence: {
             type: Entity,
             default: null
+        },
+        occurrenceType: {
+            type: String,
+            default: 'in-person'
         }
     },
 
@@ -66,6 +71,15 @@ app.component('create-occurrence', {
     },
 
     computed: {
+        title() {
+            return 'Inserir ocorrência no evento';
+        },
+        buttonLabel() {
+            if (this.occurrenceType === 'virtual') {
+                return 'Inserir ocorrência online';
+            }
+            return 'Inserir ocorrência presencial';
+        },
         updateDescription() {
             const { start, end } = this.dateRange || { start: '', end: '' };
 
@@ -182,9 +196,24 @@ app.component('create-occurrence', {
 
         // Criação da ocorrência
         create(modal) {
+            if (!this.newOccurrence) {
+                this.newOccurrence = new Entity('eventoccurrence');
+            }
             this.newOccurrence.eventId = this.entity.id;
-            this.newOccurrence.spaceId = this.space ? this.space.id : '';
-            this.newOccurrence.space = this.space;
+            this.newOccurrence.type = this.occurrenceType;
+            
+            if (this.occurrenceType === 'in-person') {
+                if (this.space) {
+                    this.newOccurrence.spaceId = this.space.id;
+                    this.newOccurrence.space = this.space;
+                }
+            } else if (this.occurrenceType === 'virtual') {
+                this.newOccurrence.spaceId = 0;
+                const validLinks = this.links.filter(link => link.trim() !== '');
+                if (validLinks.length > 0) {
+                    this.newOccurrence.metadata = { links: validLinks };
+                }
+            }
             
             if (this.frequency) {
                 this.newOccurrence['frequency'] = this.frequency;
@@ -229,9 +258,9 @@ app.component('create-occurrence', {
                 this.newOccurrence['endsAt'] = String(this.endsAt.hours).padStart(2, "0") + ':' + String(this.endsAt.minutes).padStart(2, "0");
             }
 
-            this.newOccurrence['description'] = this.description ?? '';
-            this.newOccurrence['price'] = this.free ? __('Gratuito', 'create-occurrence') : this.price;
-            this.newOccurrence['priceInfo'] = this.priceInfo ?? '';
+            this.newOccurrence['description'] = this.description || '';
+            this.newOccurrence['price'] = this.free ? __('Gratuito', 'create-occurrence') : (this.price || '');
+            this.newOccurrence['priceInfo'] = this.priceInfo || '';
            
             this.newOccurrence.save().then(() => {
                 modal.close();
@@ -257,9 +286,21 @@ app.component('create-occurrence', {
             };
             this.days = {};
             this.until = null;
-            this.description = null;
-            this.price = null;
-            this.priceInfo = null;
+            this.description = '';
+            this.price = '';
+            this.priceInfo = '';
+            this.links = [''];
+        },
+
+        addLink() {
+            this.links.push('');
+        },
+
+        removeLink(index) {
+            this.links.splice(index, 1);
+            if (this.links.length === 0) {
+                this.links.push('');
+            }
         },
 
         cancel(modal) {

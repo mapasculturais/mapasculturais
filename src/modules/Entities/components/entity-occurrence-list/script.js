@@ -33,6 +33,18 @@ app.component('entity-occurrence-list', {
         }
     },
 
+    computed: {
+        eventType() {
+            return this.entity.type?.id || this.entity._type || 1;
+        },
+        showInPersonButton() {
+            return this.eventType === 1 || this.eventType === 2;
+        },
+        showVirtualButton() {
+            return this.eventType === 2 || this.eventType === 3;
+        }
+    },
+
     methods: {
         toggleMap(event) {
             this.showMap = !this.showMap;

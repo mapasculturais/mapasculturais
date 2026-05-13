@@ -18,50 +18,71 @@ $this->import('
     <template #default>
         <div class="grid-12">
             <div :class="['col-12', 'create-occurrence__section', {'active' : step==0}]">
-                <label v-if="!space" class="create-occurrence__section--title"> <?= i::_e('Vincular um espaço para o evento') ?> </label>
-                <label v-if="space" class="create-occurrence__section--title"> <?= i::_e('Espaço vinculado:') ?> </label>
+                <template v-if="occurrenceType === 'in-person'">
+                    <label v-if="!space" class="create-occurrence__section--title"> <?= i::_e('Vincular um espaço para o evento') ?> </label>
+                    <label v-if="space" class="create-occurrence__section--title"> <?= i::_e('Espaço vinculado:') ?> </label>
 
-                <div v-if="!space" class="create-occurrence__section--link-space">
-                    <!-- Seletor de entidades - espaços -->
-                    <select-entity type="space" openside="down-right" permissions="" select="name,files.avatar,endereco,location" @select="selectSpace($event)"> <!-- @select="addAgent(groupName, $event)" :query="queries[groupName]" -->
-                        <template #button="{ toggle }">
-                            <button class="button button--icon button--text-outline" @click="toggle()"> <mc-icon name="add"></mc-icon> <?= i::_e('Adicionar') ?> </button>
-                        </template>
-                    </select-entity>
-
-                    <?= i::_e('ou') ?>
-
-                    <!-- create space -->
-                    <create-space #default="{modal}" @create="selectSpace">
-                        <button @click="modal.open()" editable class="button button--icon button--primary-outline"> 
-                            <mc-icon name="add"></mc-icon> <?= i::_e('Crie um novo espaço') ?> 
-                        </button>
-                    </create-space>
-                </div>
-
-                <div v-if="space" class="create-occurrence__section--link-space space-info">
-                    <div class="space-info__space">
-                        <div class="space-info__space--title">
-                            <mc-icon name="pin"></mc-icon> {{space.name}}
-                            <a class="remove" @click="removeSpace()"> 
-                                <mc-icon name="trash"></mc-icon>
-                            </a>
-                        </div>
-                        <div v-if="space.endereco" class="space-info__space--address"> {{space.endereco}} </div>
-                        <div v-if="!space.endereco" z   class="space-info__space--address"> <?= i::_e('Sem endereço') ?> </div>
-                    </div>
-
-                    <div class="space-info__new">
-                        <select-entity type="space" openside="down-right" @select="selectSpace($event)">
+                    <div v-if="!space" class="create-occurrence__section--link-space">
+                        <select-entity type="space" openside="down-right" permissions="" select="name,files.avatar,endereco,location" @select="selectSpace($event)">
                             <template #button="{ toggle }">
-                                <button class="button button--icon button--primary-outline" @click="toggle()"> <mc-icon name="add"></mc-icon> <?= i::_e('Alterar espaço selecionado') ?> </button>
+                                <button class="button button--icon button--text-outline" @click="toggle()"> <mc-icon name="add"></mc-icon> <?= i::_e('Adicionar') ?> </button>
                             </template>
-                        </select-entity>  
-                    </div>
-                </div>
+                        </select-entity>
 
-                <small class="field__error" v-if="this.newOccurrence.__validationErrors['space']">        
-                    {{this.newOccurrence.__validationErrors['space'].join('; ')}}
+                        <?= i::_e('ou') ?>
+
+                        <create-space #default="{modal}" @create="selectSpace">
+                            <button @click="modal.open()" editable class="button button--icon button--primary-outline"> 
+                                <mc-icon name="add"></mc-icon> <?= i::_e('Crie um novo espaço') ?> 
+                            </button>
+                        </create-space>
+                    </div>
+
+                    <div v-if="space" class="create-occurrence__section--link-space space-info">
+                        <div class="space-info__space">
+                            <div class="space-info__space--title">
+                                <mc-icon name="pin"></mc-icon> {{space.name}}
+                                <a class="remove" @click="removeSpace()"> 
+                                    <mc-icon name="trash"></mc-icon>
+                                </a>
+                            </div>
+                            <div v-if="space.endereco" class="space-info__space--address"> {{space.endereco}} </div>
+                            <div v-if="!space.endereco" class="space-info__space--address"> <?= i::_e('Sem endereço') ?> </div>
+                        </div>
+
+                        <div class="space-info__new">
+                            <select-entity type="space" openside="down-right" @select="selectSpace($event)">
+                                <template #button="{ toggle }">
+                                    <button class="button button--icon button--primary-outline" @click="toggle()"> <mc-icon name="add"></mc-icon> <?= i::_e('Alterar espaço selecionado') ?> </button>
+                                </template>
+                            </select-entity>  
+                        </div>
+                    </div>
+                </template>
+
+                <template v-if="occurrenceType === 'virtual'">
+                    <label class="create-occurrence__section--title"> <?= i::_e('Links do evento online') ?> </label>
+                    
+                    <div class="create-occurrence__links">
+                        <div v-for="(link, index) in links" :key="index" class="create-occurrence__link-item">
+                            <input 
+                                type="url" 
+                                v-model="links[index]" 
+                                placeholder="https://..."
+                                class="create-occurrence__link-input"
+                            />
+                            <button class="button button--icon button--text-danger" @click="removeLink(index)">
+                                <mc-icon name="trash"></mc-icon>
+                            </button>
+                        </div>
+                        <button class="button button--icon button--primary-outline" @click="addLink()">
+                            <mc-icon name="add"></mc-icon> <?= i::_e('Adicionar link') ?>
+                        </button>
+                    </div>
+                </template>
+
+                <small class="field__error" v-if="newOccurrence && newOccurrence.__validationErrors && newOccurrence.__validationErrors['space']">        
+                    {{newOccurrence.__validationErrors['space'].join('; ')}}
                 </small>
             </div>
 
@@ -87,8 +108,8 @@ $this->import('
                     <label class="create-occurrence__section--fields-field"><input v-model="days[5]" type="checkbox" true-value="on" :false-value="undefined"> <?= i::_e('Sexta') ?> </label>
                     <label class="create-occurrence__section--fields-field"><input v-model="days[6]" type="checkbox" true-value="on" :false-value="undefined"> <?= i::_e('Sabado') ?> </label>
                 </div>
-                <small class="field__error" v-if="this.newOccurrence.__validationErrors['frequency']">        
-                    {{this.newOccurrence.__validationErrors['frequency'].join('; ')}}
+                <small class="field__error" v-if="newOccurrence && newOccurrence.__validationErrors && newOccurrence.__validationErrors['frequency']">        
+                    {{newOccurrence.__validationErrors['frequency'].join('; ')}}
                 </small>
             </div>
 
@@ -107,8 +128,8 @@ $this->import('
                             </mc-datepicker>
                         </div>
 
-                        <small class="field__error" v-if="this.newOccurrence.__validationErrors['startsOn']">        
-                            {{this.newOccurrence.__validationErrors['startsOn'].join('; ')}}
+                        <small class="field__error" v-if="newOccurrence && newOccurrence.__validationErrors && newOccurrence.__validationErrors['startsOn']">        
+                            {{newOccurrence.__validationErrors['startsOn'].join('; ')}}
                         </small>
                     </div>
                     
@@ -124,8 +145,8 @@ $this->import('
                                     >    
                                 </mc-datepicker>
 
-                                <small class="field__error" v-if="this.newOccurrence.__validationErrors['until']">        
-                                    {{this.newOccurrence.__validationErrors['until'].join('; ')}}
+                                <small class="field__error" v-if="newOccurrence && newOccurrence.__validationErrors && newOccurrence.__validationErrors['until']">        
+                                    {{newOccurrence.__validationErrors['until'].join('; ')}}
                                 </small>
                             </div>
                         </div>
@@ -140,8 +161,8 @@ $this->import('
                                     >
                                 </mc-datepicker>
 
-                                <small class="field__error" v-if="this.newOccurrence.__validationErrors['endsOn']">        
-                                    {{this.newOccurrence.__validationErrors['endsOn'].join('; ')}}
+                                <small class="field__error" v-if="newOccurrence && newOccurrence.__validationErrors && newOccurrence.__validationErrors['endsOn']">        
+                                    {{newOccurrence.__validationErrors['endsOn'].join('; ')}}
                                 </small>
                             </div>
                         </div>
@@ -165,8 +186,8 @@ $this->import('
                                 >
                             </mc-datepicker>
 
-                            <small class="field__error" v-if="this.newOccurrence.__validationErrors['startsAt']">        
-                                {{this.newOccurrence.__validationErrors['startsAt'].join('; ')}}
+                            <small class="field__error" v-if="newOccurrence && newOccurrence.__validationErrors && newOccurrence.__validationErrors['startsAt']">        
+                                {{newOccurrence.__validationErrors['startsAt'].join('; ')}}
                             </small>
                         </div>
                     </div>
@@ -182,8 +203,8 @@ $this->import('
                                 >
                             </mc-datepicker>
 
-                            <small class="field__error" v-if="this.newOccurrence.__validationErrors['endsAt']">        
-                                {{this.newOccurrence.__validationErrors['endsAt'].join('; ')}}
+                            <small class="field__error" v-if="newOccurrence && newOccurrence.__validationErrors && newOccurrence.__validationErrors['endsAt']">        
+                                {{newOccurrence.__validationErrors['endsAt'].join('; ')}}
                             </small>                            
                         </div>
                     </div>
@@ -208,8 +229,8 @@ $this->import('
                             <div class="create-occurrence__section--field">
                                 <span class="label"><?= i::_e('Valor da entrada:') ?></span>
                                 <input type="text" @input="priceMask" v-model="price" />
-                                <small class="field__error" v-if="this.newOccurrence.__validationErrors['price']">        
-                                    {{this.newOccurrence.__validationErrors['price'].join('; ')}}
+                                <small class="field__error" v-if="newOccurrence && newOccurrence.__validationErrors && newOccurrence.__validationErrors['price']">        
+                                    {{newOccurrence.__validationErrors['price'].join('; ')}}
                                 </small>  
                             </div>
                         </div>
@@ -232,8 +253,8 @@ $this->import('
                         <div class="col-12">
                             <div class="create-occurrence__section--field">
                                 <input v-model="description" type="text" name="description" placeholder="<?= i::_e('Preencha aqui o resumo customizado') ?>" />
-                                <small class="field__error" v-if="this.newOccurrence.__validationErrors['description']">        
-                                    {{this.newOccurrence.__validationErrors['description'].join('; ')}}
+                                <small class="field__error" v-if="newOccurrence && newOccurrence.__validationErrors && newOccurrence.__validationErrors['description']">        
+                                    {{newOccurrence.__validationErrors['description'].join('; ')}}
                                 </small>  
                             </div>
                         </div>
@@ -245,7 +266,7 @@ $this->import('
     </template>
 
     <template #button="modal">
-        <button class="button button--primary" @click="modal.open"><?php i::_e('Inserir nova ocorrência') ?></button>
+        <button class="button button--primary" @click="modal.open">{{buttonLabel}}</button>
     </template>
 
     <template #actions="modal">

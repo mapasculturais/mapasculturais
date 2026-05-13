@@ -27,6 +27,16 @@ app.component('occurrence-card', {
     },
 
     computed: {
+        isVirtual() {
+            // Check occurrence type or if space is the virtual space (id=0)
+            return this.occurrence.type === 'virtual' || (this.space && this.space.id === 0);
+        },
+        virtualLinks() {
+            if (this.occurrence.metadata && this.occurrence.metadata.links) {
+                return this.occurrence.metadata.links;
+            }
+            return [];
+        },
         seals() {
             return (this.occurrence.event.seals.length > 0 ? this.occurrence.event.seals.slice(0, 2) : false);
         },

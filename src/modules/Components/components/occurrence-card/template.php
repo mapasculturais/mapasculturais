@@ -37,14 +37,24 @@ $this->import('
         <div class="entity-card__content--occurrence-data">
             <mc-icon name="event"></mc-icon> {{occurrence.starts.date('long')}} <?= i::_e('às') ?> {{occurrence.starts.time()}}
         </div>
-        <div v-if="!hideSpace" class="entity-card__content--occurrence-space">
+        <div v-if="!hideSpace && !isVirtual" class="entity-card__content--occurrence-space">
             <div class="link"><mc-icon class="link space__color" name="pin"></mc-icon></div>
             <div class="space-adress">
                 <mc-link :entity="space">
                     <span class="space-adress__name space__color">{{space.name}}</span>
                 </mc-link>
                 <span class="space-adress__adress" v-if="space.endereco">- {{space.endereco}}</span>
-
+            </div>
+        </div>
+        <div v-if="isVirtual" class="entity-card__content--occurrence-space">
+            <div class="link"><mc-icon class="link space__color" name="link"></mc-icon></div>
+            <div class="space-adress">
+                <span class="space-adress__name space__color"><?= i::_e('Evento Online') ?></span>
+                <div v-if="virtualLinks.length > 0" class="virtual-links">
+                    <a v-for="(link, index) in virtualLinks" :key="index" :href="link.url || link" target="_blank" rel="noopener noreferrer" class="space-adress__adress virtual-link">
+                        {{link.url || link}}
+                    </a>
+                </div>
             </div>
         </div>
         <div class="entity-card__content--occurrence-info">
