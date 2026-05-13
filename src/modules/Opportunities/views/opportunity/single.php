@@ -27,7 +27,6 @@ $this->import('
     entity-seals
     entity-social-media
     entity-terms
-    evaluations-list
     mc-breadcrumb
     mc-container
     mc-share-links

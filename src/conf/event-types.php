@@ -5,6 +5,11 @@ use MapasCulturais\Utils;
  * See https://github.com/Respect/Validation to know how to write validations
  */
 return array(
+    'items' => array(
+        1 => array('name' => \MapasCulturais\i::__('Presencial')),
+        2 => array('name' => \MapasCulturais\i::__('Híbrido')),
+        3 => array('name' => \MapasCulturais\i::__('Online')),
+    ),
     'metadata' => array(
         'subTitle' => array(
             'label' => \MapasCulturais\i::__('Sub-Título'),
@@ -200,9 +205,6 @@ return array(
             ]
         ),
     ),
-    'items' => array(
-        1 =>  array('name' => \MapasCulturais\i::__('Padrão')),
-    )
 
     /* EXEMPLOS DE METADADOS:
 

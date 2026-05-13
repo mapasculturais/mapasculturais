@@ -21,9 +21,9 @@ $this->import('
     opportunity-header
     registration-evaluation-actions
     registration-evaluation-info
+    registration-field-view
     registration-info
     registration-workplan-form
-    v1-embed-tool
 ');
 
 $referer = $app->request->getReferer();
@@ -78,7 +78,6 @@ if (isset($this->controller->data['user']) && $entity->opportunity->canUser("@co
 
             <aside class="col-3">
                 <opportunity-evaluations-list text-button="<?= i::__("Lista de avaliações") ?>" :entity="entity" user-evaluator-id="<?=$userEvaluator->id?>">
-                    <v1-embed-tool route="sidebarleftevaluations" :id="entity.id"></v1-embed-tool>
                 </opportunity-evaluations-list>
             </aside>
 
@@ -100,7 +99,7 @@ if (isset($this->controller->data['user']) && $entity->opportunity->canUser("@co
                         <div class="section__content col-12">
                             <div class="card owner">
                                 <?php $this->applyTemplateHook("registration-appealPhase-evaluation-view", 'before', ['entity' => $entity]) ?>
-                                    <v1-embed-tool route="registrationevaluationtionformview" iframe-id="evaluation-registration" :id="entity.id"></v1-embed-tool>
+                                    <registration-field-view :registration="entity" :phase-id="entity.id"></registration-field-view>
                                 <?php $this->applyTemplateHook("registration-appealPhase-evaluation-view", 'after', ['entity' => $entity]) ?>
                             </div>
                         </div>
@@ -115,9 +114,9 @@ if (isset($this->controller->data['user']) && $entity->opportunity->canUser("@co
                             <div class="card owner">
                             <?php $this->applyTemplateHook("registration-evaluation-view", 'before', ['entity' => $entity]) ?>
                                 <?php if ($entity->opportunity->isAppealPhase): ?>
-                                    <v1-embed-tool route="registrationevaluationtionformview" iframe-id="evaluation-registration" id="<?= $parent_registration->id ?>"></v1-embed-tool>
+                                    <registration-field-view :registration="entity" :phase-id="<?= (int) $parent_registration->id ?>"></registration-field-view>
                                 <?php else: ?>
-                                    <v1-embed-tool route="registrationevaluationtionformview" iframe-id="evaluation-registration" :id="entity.id"></v1-embed-tool>
+                                    <registration-field-view :registration="entity" :phase-id="entity.id"></registration-field-view>
                                 <?php endif; ?>
                             <?php $this->applyTemplateHook("registration-evaluation-view", 'after', ['entity' => $entity]) ?>
                             </div>

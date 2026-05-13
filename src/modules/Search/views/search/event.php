@@ -22,7 +22,7 @@ $this->breadcrumb = [
     ['label' => i::__('Eventos'), 'url' => $app->createUrl('events')],
 ];
 ?>
-<search page-title="<?= htmlspecialchars($this->text('title', i::__('Eventos'))) ?>" entity-type="event" :initial-pseudo-query="{'event:term:linguagem':[],'event:term:linguagem':[], 'event:classificacaoEtaria': []}">
+<search page-title="<?= htmlspecialchars($this->text('title', i::__('Eventos'))) ?>" entity-type="event" :initial-pseudo-query="{'event:term:linguagem':[],'event:term:linguagem':[], 'event:classificacaoEtaria': [], 'event:type': []}">
     <template v-if="global.auth.isLoggedIn" #create-button>
         <create-event #default="{modal}">
             <button @click="modal.open()" class="button button--primary button--icon">

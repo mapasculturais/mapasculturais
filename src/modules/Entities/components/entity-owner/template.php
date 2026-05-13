@@ -14,9 +14,9 @@ $this->import('
     select-entity
 ');
 ?>
-<div v-if="entity != owner" class="entity-owner" :class="classes">
+<div v-if="owner && entity != owner" class="entity-owner" :class="classes">
     <h4 class="bold">{{title}}</h4>
-    <a class="entity-owner__owner" :href="owner.singleUrl" :title="owner.shortDescription">
+    <a class="entity-owner__owner" :href="owner?.singleUrl" :title="owner?.shortDescription">
         <div class="entity-owner__owner--img">
             <mc-avatar :entity="owner" size="xsmall"></mc-avatar>
         </div>

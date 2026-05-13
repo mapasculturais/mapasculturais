@@ -53,6 +53,10 @@ app.component('continuous-evaluation-form', {
     },
 
     computed: {
+        currentEvaluationRaw() {
+            return $MAPAS?.config?.continuousEvaluationForm?.currentEvaluation || null;
+        },
+
         statusList() {
             return $MAPAS.config.continuousEvaluationForm.statusList;
         },

@@ -10,6 +10,12 @@
         display: flex;
         flex-direction: column;
 
+        .button-group {
+            display: flex;
+            gap: size(12);
+            flex-wrap: wrap;
+        }
+
         &--title {
             font-size: size(24);
             font-weight: 700;
@@ -101,6 +107,36 @@
                             font-size: size(12);
                             line-height: size(16);
                         }
+                    }
+                }
+
+                .occurrence__links {
+                    display: flex;
+                    flex-wrap: wrap;
+                    gap: size(8);
+                    margin-top: size(12);
+                }
+
+                .occurrence__link {
+                    display: inline-flex;
+                    align-items: center;
+                    gap: size(6);
+                    padding: size(6) size(12);
+                    background-color: var(--mc-gray-100);
+                    border-radius: var(--mc-border-radius-pill);
+                    color: var(--mc-primary-500);
+                    font-size: size(14);
+                    font-weight: 600;
+                    text-decoration: none;
+                    transition: background-color .2s ease;
+
+                    &:hover {
+                        background-color: var(--mc-primary-100);
+                    }
+
+                    .iconify {
+                        width: size(14);
+                        height: size(14);
                     }
                 }
 

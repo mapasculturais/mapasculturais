@@ -1422,16 +1422,20 @@ abstract class Opportunity extends \MapasCulturais\Entity
         $app = App::i();
 
         $registered_metadata = $app->getRegisteredMetadata(Registration::class);
+        $processed_field_names = array_fill_keys(array_keys($registered_metadata), true);
 
         if (!isset($registered_metadata['projectName']) && $this->projectName){
             $cfg = [ 'label' => \MapasCulturais\i::__('Nome do Projeto') ];
 
             $metadata = new MetadataDefinition('projectName', $cfg);
             $app->registerMetadata($metadata, Registration::class);
+            $processed_field_names['projectName'] = true;
         }
 
         foreach($this->registrationFieldConfigurations as $field){
-            if (isset($registered_metadata[$field->getFieldName()])) {
+            $field_name = $field->getFieldName();
+
+            if (isset($processed_field_names[$field_name])) {
                 continue;
             }
             $field_validations = [];
@@ -1518,9 +1522,10 @@ abstract class Opportunity extends \MapasCulturais\Entity
 
             $app->applyHookBoundTo($this, "controller(opportunity).registerFieldType({$field->fieldType})", [$field, &$cfg]);
 
-            $metadata = new MetadataDefinition ($field->fieldName, $cfg);
+            $metadata = new MetadataDefinition($field_name, $cfg);
 
             $app->registerMetadata($metadata, Registration::class);
+            $processed_field_names[$field_name] = true;
         }
 
         $app->applyHookBoundTo($this, "{$this->hookPrefix}.registrationMetadata");

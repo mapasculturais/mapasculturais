@@ -312,6 +312,85 @@ class Module extends \MapasCulturais\Module{
             }
         });
 
+        $app->hook('entity(Registration).insert:after', function() use ($app) {
+            /** @var Registration $this */
+            if ($this->opportunity->noRegistrationForm) {
+                $agent = $this->owner;
+                
+                // Pega todos os metadados preenchidos do agente owner
+                $agent_metadata = $agent->getRegisteredMetadata();
+                
+                foreach ($agent_metadata as $key => $def) {
+                    $value = $agent->$key;
+                    
+                    // Só preenche se tiver valor
+                    if ($value === null || $value === '' || (is_array($value) && empty($value))) {
+                        continue;
+                    }
+                    
+                    // Se for objeto, converte para JSON
+                    if (is_object($value)) {
+                        if ($value instanceof \DateTime) {
+                            $value = $value->format('Y-m-d H:i:s');
+                        } else {
+                            $value = json_encode($value);
+                        }
+                    }
+                    
+                    // Se for array, converte para JSON
+                    if (is_array($value)) {
+                        $value = json_encode($value);
+                    }
+                    
+                    $field_name = 'field_owner_' . $key;
+                    
+                    // Registra o metadata na Registration dinamicamente se ainda não existir
+                    $registered = $app->getRegisteredMetadata(Registration::class);
+                    if (!isset($registered[$field_name])) {
+                        $metadata_def = new \MapasCulturais\Definitions\Metadata($field_name, [
+                            'label' => $def->label ?? $key,
+                            'type' => $def->type ?? 'text',
+                            'private' => true,
+                        ]);
+                        $app->registerMetadata($metadata_def, Registration::class);
+                    }
+                    
+                    $this->setMetadata($field_name, $value);
+                }
+                
+                // Também preenche propriedades diretas do agente (não metadados)
+                $direct_properties = [
+                    'nomeCompleto' => 'text',
+                    'emailPublico' => 'text', 
+                    'telefonePublico' => 'text',
+                    'documento' => 'text',
+                    'shortDescription' => 'textarea',
+                    'longDescription' => 'textarea',
+                ];
+                
+                foreach ($direct_properties as $prop => $type) {
+                    if (isset($agent->$prop) && $agent->$prop !== '') {
+                        $field_name = 'field_owner_' . $prop;
+                        
+                        // Registra o metadata dinamicamente se necessário
+                        $registered = $app->getRegisteredMetadata(Registration::class);
+                        if (!isset($registered[$field_name])) {
+                            $metadata_def = new \MapasCulturais\Definitions\Metadata($field_name, [
+                                'label' => $prop,
+                                'type' => $type,
+                                'private' => true,
+                            ]);
+                            $app->registerMetadata($metadata_def, Registration::class);
+                        }
+                        
+                        $this->setMetadata($field_name, $agent->$prop);
+                    }
+                }
+                
+                $this->send();
+            }
+        });
+
         $app->hook("entity(Registration).status(<<*>>)", function() use ($app, $distribute_execution_time) {
             if($this->evaluationMethodConfiguration){
                 $distribution_config = $this->evaluationMethodConfiguration->distributionConfiguration ?? 'deactivate';
@@ -662,6 +741,32 @@ class Module extends \MapasCulturais\Module{
             });
 
             $this->jsObject['registrationFields'] = $fields;
+
+            $registration = $requested_entity instanceof Registration ? $requested_entity : null;
+            if (!$registration && $this->controller->requestedEntity instanceof Registration) {
+                $registration = $this->controller->requestedEntity;
+            }
+
+            if ($registration instanceof Registration) {
+                $registrations = $app->repo('Registration')->findBy(['number' => $registration->number]);
+                $fields_by_opportunity = [];
+
+                foreach ($registrations as $reg) {
+                    $opp = $reg->opportunity;
+                    $phase_fields = array_merge(
+                        (array) $opp->registrationFileConfigurations,
+                        (array) $opp->registrationFieldConfigurations
+                    );
+
+                    usort($phase_fields, function ($a, $b) {
+                        return $a->displayOrder <=> $b->displayOrder;
+                    });
+
+                    $fields_by_opportunity[(string) $opp->id] = $phase_fields;
+                }
+
+                $this->jsObject['registrationFieldsByOpportunity'] = $fields_by_opportunity;
+            }
         });
 
         $app->hook('mapas.printJsObject:before', function() use($app) {
@@ -1225,6 +1330,18 @@ class Module extends \MapasCulturais\Module{
 
         $this->registerOpportunityMetadata('publicityOnly', [
             'label' => i::__('Oportunidade apenas para divulgação'),
+            'type' => 'boolean',
+            'default' => false,
+        ]);
+
+        $this->registerOpportunityMetadata('noRegistrationForm', [
+            'label' => i::__('Esta oportunidade não possui formulário de inscrição'),
+            'type' => 'boolean',
+            'default' => false,
+        ]);
+
+        $this->registerOpportunityMetadata('disableRegistrationEmail', [
+            'label' => i::__('Desabilitar o envio do email de confirmação de inscrição'),
             'type' => 'boolean',
             'default' => false,
         ]);

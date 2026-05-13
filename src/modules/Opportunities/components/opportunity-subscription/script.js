@@ -247,7 +247,11 @@ app.component('opportunity-subscription' , {
                         registration.addRelatedAgent('coletivo', this.agentCollective);
                         registration.save();
                     }
-                    window.location.href = registration.editUrl;
+                    if (this.entity.noRegistrationForm) {
+                        window.location.href = registration.singleUrl;
+                    } else {
+                        window.location.href = registration.editUrl;
+                    }
                 });    
             } catch (error) {
                 if (error.error) {
