@@ -75,7 +75,7 @@ $this->import('
                                 <mc-icon name="trash"></mc-icon>
                             </button>
                         </div>
-                        <button class="button button--icon button--primary-outline" @click="addLink()">
+                        <button class="button button--icon button--primary-outline create-occurrence__add-link" @click="addLink()">
                             <mc-icon name="add"></mc-icon> <?= i::_e('Adicionar link') ?>
                         </button>
                     </div>
@@ -235,10 +235,10 @@ $this->import('
                             </div>
                         </div>
 
-                        <div class="col-6 sm:col-12">
+                        <div class="col-6 sm:col-12 create-occurrence__price-info">
                             <div class="create-occurrence__section--field">
                                 <span class="label"><?= i::_e('Informações adicionais sobre a entrada:') ?></span>
-                                <input type="text" v-model="priceInfo" />
+                                <textarea v-model="priceInfo" rows="3"></textarea>
                             </div>
                         </div>
                     </div>
