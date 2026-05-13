@@ -38,7 +38,18 @@ if($class == Registration::class) {
         foreach ($evaluations as $eval) {
             $detail = $em->shouldDisplayEvaluationResults($reg) ? $em->getEvaluationDetails($eval) : [];
             $emc = $reg->opportunity->evaluationMethodConfiguration;
-            if ($emc->publishValuerNames){
+            $user = $app->user;
+            
+            // Busca número sequencial do avaliador (sempre que disponível)
+            $valuerRelation = $emc->getUserRelation($eval->user);
+            if ($valuerRelation) {
+                $detail['committeeSequentialNumber'] = $valuerRelation->getCommitteeSequentialNumber();
+            }
+            
+            // Administradores/gestores sempre veem nome e ID do avaliador
+            if ($reg->opportunity->canUser('@control', $user)) {
+                $detail['valuer'] = $eval->user->profile->simplify('id,name,singleUrl');
+            } elseif ($emc->publishValuerNames) {
                 $detail['valuer'] = $eval->user->profile->simplify('id,name,singleUrl');
             }
             $data['evaluationsDetails'][] = $detail;
