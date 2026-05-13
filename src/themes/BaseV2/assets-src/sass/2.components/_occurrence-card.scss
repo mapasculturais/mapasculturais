@@ -27,4 +27,22 @@
 		}
 	}
 
+	.virtual-links {
+		display: flex;
+		flex-direction: column;
+		gap: size(4);
+		margin-top: size(4);
+	}
+
+	.virtual-link {
+		color: var(--mc-primary-500);
+		text-decoration: none;
+		font-size: size(14);
+		word-break: break-all;
+		
+		&:hover {
+			text-decoration: underline;
+		}
+	}
+
 }
