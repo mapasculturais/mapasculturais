@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - "dev/**"
+      - "develop-8.0"
 
 jobs:
   docker:
@@ -13,17 +14,20 @@ jobs:
         name: Checkout
         uses: actions/checkout@v3
 
-      - 
+      -
         name: Extract branch tag
         id: tag
         run: |
           BRANCH=${{ github.ref_name }}
-          if [[ ! "$BRANCH" =~ ^dev/ ]]; then
-            echo "Branch não é do tipo dev/*. Saindo."
+          if [[ "$BRANCH" == "develop-8.0" ]]; then
+            echo "tag=v8.0-RC" >> $GITHUB_OUTPUT
+          elif [[ "$BRANCH" =~ ^dev/ ]]; then
+            TAG="${BRANCH/dev\//}"
+            echo "tag=$TAG" >> $GITHUB_OUTPUT
+          else
+            echo "Branch não suportada por este workflow."
             exit 1
           fi
-          TAG="${BRANCH/dev\//}"
-          echo "tag=$TAG" >> $GITHUB_OUTPUT
           echo "BRANCH=$BRANCH" >> $GITHUB_OUTPUT
       -
         name: Docker meta
@@ -58,18 +62,21 @@ jobs:
 
       -
         name: Configure kubectl
+        if: startsWith(github.ref_name, 'dev/')
         uses: azure/setup-kubectl@v3
         with:
-          version: 'latest'  
+          version: 'latest'
 
       -
         name: Configure Kubernetes credentials
+        if: startsWith(github.ref_name, 'dev/')
         uses: azure/k8s-set-context@v3
         with:
-          kubeconfig: ${{ secrets.KUBE_CONFIG }}  
+          kubeconfig: ${{ secrets.KUBE_CONFIG }}
 
       -
         name: Deploy to Kubernetes
+        if: startsWith(github.ref_name, 'dev/')
         run: |
           IMAGE="docker.io/hacklab/mapasculturais:${{ steps.tag.outputs.tag }}"
           echo "============================================"
