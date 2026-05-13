@@ -56,7 +56,7 @@ $this->applyComponentHook('.sortOptions', [&$tabs]);
         <mc-entities :name="type + ':<?=$status?>'" :type="type" 
             :select="select"
             :query="queries['<?=$status?>']" 
-            :limit="50" 
+            :limit="limit" 
             :order="queries['<?=$status?>']['@order']"
             watch-query>
             <template #header="{entities}">

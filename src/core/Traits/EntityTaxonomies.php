@@ -243,7 +243,18 @@ trait EntityTaxonomies {
                 $t->taxonomy = $definition->slug;
                 $t->description = $description;
 
-                $t->save($flush);
+                try {
+                    $t->save($flush);
+                } catch (\Exception $e) {
+                    // Se o termo já foi criado por outro processo (deadlock/constraint unique),
+                    // busca o termo existente e continua
+                    $existing_term = $app->repo('Term')->findOneBy(['taxonomy' => $definition->slug, 'term' => $term]);
+                    if ($existing_term) {
+                        $t = $existing_term;
+                    } else {
+                        throw $e;
+                    }
+                }
 
                 /** @var TermRelation */
                 $tr = new $term_relation_class;

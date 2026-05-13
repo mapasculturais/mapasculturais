@@ -274,9 +274,30 @@ app.component('registration-actions', {
             const keys = new Set(['category', 'proponentType', 'range', 'projectName']);
             (this.fields || []).forEach(f => { if (f.fieldName) keys.add(f.fieldName); });
             (this.additionalValidateFields || []).forEach(k => keys.add(k));
+
+            const normalizeValueForValidation = (val) => {
+                // Datas no front usam McDate, mas o validateEntity espera string "Y-m-d"
+                if (val instanceof McDate) {
+                    return val.sql('date');
+                }
+
+                // Quando um McDate é serializado por JSON vira { locale, _date: <string|Date> }
+                if (val && typeof val === 'object' && ('_date' in val)) {
+                    const raw = val._date;
+                    if (raw instanceof Date) {
+                        return new McDate(raw).sql('date');
+                    }
+                    if (typeof raw === 'string' && raw) {
+                        return new McDate(raw).sql('date');
+                    }
+                }
+
+                return val;
+            };
+
             keys.forEach(key => {
                 if (!Object.prototype.hasOwnProperty.call(r, key) || key.indexOf('$$') === 0) return;
-                const val = r[key];
+                const val = normalizeValueForValidation(r[key]);
                 if (val === undefined) return;
                 payload[key] = (typeof val === 'object' && val !== null) ? JSON.parse(JSON.stringify(val)) : val;
             });

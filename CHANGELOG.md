@@ -21,7 +21,10 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - PHP atualizado para versão 8.4
 - Doctrine atualizado para versão 2.20.x
 
-## [UNRELEASED - 7.X]
+## [UNRELEASED - 7.8.0]
+### Novas Funcionalidades
+- Implementa configuração que permide definir a imagem de avatar de qualquer entidade como obrigatória
+
 ### Melhorias
 - Adiciona um campo de busca para encontrar colunas por palavra-chave na listagem por tabela nas entidades. 
 - Implementa a funcionalidade que permite ao saasSuperAdmin ordenar globalmente as colunas das tabelas que utilizam o entity-table, por meio de drag and drop.
@@ -33,8 +36,70 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 ### Correções
 - Aplica texto de internacionalização faltante no componente opportunity-registration-table
 - Corrige acento faltante no texto "Gênero" na listagem de pessoas do formulário de inscrição
+- Corrige a exibição do nome do agente coletivo nos cards da tela Minhas inscrições
+- Corrige a chave de internacionalização do texto "Elegível para cotas" no componente de listagem de inscrições
+- Evita erro ao hidratar campos de data inválidos em entidades
+- Corrige a importação de formulários de inscrição para preservar os formatos aceitos configurados nos campos de anexo
+- Corrige erro ao reordenar etapas na configuração do formulário de oportunidades
 
-##[7.7.25] - 2026-04-13
+## [7.7.36] - 2026-05-08
+### Correções
+- Corrige exibiçao das abas com permissão na aba minhas inscrições e no gerênciamento de usuários
+
+## [7.7.35] - 2026-05-08
+### Correções
+- Implementa paginaçao no na área de minhas inscriçoes
+
+## [7.7.34] - 2026-05-08
+### Melhorias
+- Permite configurar a quantidade de itens exibidos por página nas abas de entidades, como agentes, espaços e projetos.
+- Adiciona nova aba "Com permissão" na tela de minhas inscrições, para visualizar inscrições onde você tem permissão de gestão.
+- Exibe apenas as inscrições do próprio usuário na tela "Minhas inscrições", evitando confusão com inscrições de outros.
+- Melhora a gestão de entidades dos usuários ao incluir a aba "Concedido" e ajustar a quantidade de itens exibidos por página.
+- Faz organizaçao no CHANGELOG.md
+
+## [7.7.33] - 2026-05-06
+### Correções
+- Corrige getters de fases para ignorar fases deletadas (status > -10) em previousPhase, previousPhases, nextPhase, nextPhases e lastPhase
+- Corrige condição de corrida em EntityTaxonomies::addTerm ao criar termos de taxonomia simultaneamente
+- Corrige erro de optional chaining em affirmative-policies--quota-configuration
+
+### Testes
+- Adiciona teste de deleção de fase intermediária em oportunidades
+- Corrige testes flaky em EvaluationsDistributionTest, OpportunityExporterTest e EvaluationMethodTechnicalTest
+
+## [7.7.32] - 2026-05-04
+### Correções
+- Possibilita que, no importador de oportunidades, o usuário possa escolher entre importar a oportunidade já publicada ou em rascunho.
+
+## [7.7.31] - 2026-04-28
+### Correções
+- Corrige salvamento de avaliadores da inscrição por administradores da oportunidade
+
+## [7.7.30] - 2026-04-28
+### Correções
+- Corrije erro que redireciona o usuário admin sempre para a tela de suporte ao acessar a single de inscriçao
+- Corrige erro que quebra o recurso devido à falta de datas configuradas nas fases avaliativas
+- Corrige o carregamento dos detalhes do recurso quando o step vertical está fechado.
+
+## [7.7.29] - 2026-04-22
+### Correções
+- Corrige erro no upload de arquivos xlsx no grupo de downloads das entidades
+
+## [7.7.28] - 2026-04-20
+### Melhorias
+- Melhora validação de tipos de arquivo, impedindo que sejam feitos uploads de arquivos potencialmente perigosos
+
+## [7.7.27] - 2026-04-16
+### Correções
+- Corrige erro que impedia enviar a inscrição devido a ero na data de nascimento
+- Corrige carregamento do componente request-agent-avatar
+
+## [7.7.26] - 2026-04-14
+### Correções
+- Corrige importação de oportunidades para evitar referência curcular
+
+## [7.7.25] - 2026-04-13
 ### Correções
 - Corrige deleção indevida de roles, agents e procurations ao salvar entidades. Os mapeamentos ManyToOne de Agent, Role e Procuration não declaravam inversedBy, impedindo o Doctrine de sincronizar as coleções OneToMany do User, o que causava orphanRemoval durante computeChangeSets() no flush
 - Corrige detached entity ao deletar Job após execução em lotes
@@ -43,18 +108,18 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 ### Refatoração
 - Remove orphanRemoval=true de todos os mapeamentos OneToMany. Deletes são controlados pelo método delete() das entidades, e cascade={"remove"} + onDelete="CASCADE" garantem a deleção em cascata
 
-##[7.7.24] - 2026-04-13
+## [7.7.24] - 2026-04-13
 ### Correções
 - Corrige erros durante a execução das migraçoes mc-updates e db-updates
 
-##[7.7.23] - 2026-04-12
+## [7.7.23] - 2026-04-12
 - Corrige deleção indevida de roles, agents e procurations ao salvar entidades. Os mapeamentos ManyToOne de Agent, Role e Procuration não declaravam inversedBy, impedindo o Doctrine de sincronizar as coleções OneToMany do User, o que causava orphanRemoval durante computeChangeSets() no flush
 
-##[7.7.22] - 2026-04-07
+## [7.7.22] - 2026-04-07
 ### Correções
-- Faz correçao na criaçao e utilizaçao de modelos que ocasionava erros na criaçao dos steps do formulario de inscriçao
+- Faz correção na criação e utilização de modelos que ocasionavam erros na criação das etapas do formulário de inscrição
 
-##[7.7.21] - 2026-04-02
+## [7.7.21] - 2026-04-02
 ### Correções
 - Corrige um erro que impedia a exibição do formulário de avaliação contínua do recurso
 
@@ -65,8 +130,7 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 ## [7.7.19] - 2026-03-27
 ### Correções
 - Faz ajuste para que os campos do tipo Moeda sejam validados corretamente corretamente quando obrigatorios
-- Corrija um erro ao excluir a configuração de avaliação, garantindo que a exclusão das fases continue funcionando corretamen
-te sem falhas
+- Corrige um erro ao excluir a configuração de avaliação, garantindo que a exclusão das fases continue funcionando corretamente sem falhas
 
 ## [7.7.18] - 2026-03-20
 ### Melhorias
@@ -74,8 +138,8 @@ te sem falhas
 - Melhora a configuração de inclusão e exclusão de avaliadores na inscrição (checkboxes), para que tenha efeito imediato, sem a necessidade de redistribuição
 
 ### Correções
-- Corrige erro no duplicador de oportunidade que impede a copia correta dos arquivos
-- Corrija um erro ao excluir a configuração de avaliação, garantindo que a exclusão das fases continue funcionando corretamente sem falhas.
+- Corrige erro no duplicador de oportunidade que impede a cópia correta dos arquivos
+- Corrige um erro ao excluir a configuração de avaliação, garantindo que a exclusão das fases continue funcionando corretamente sem falhas
 
 ## [7.7.17] - 2026-03-19
 ### Correções
@@ -87,7 +151,7 @@ te sem falhas
 
 ## [7.7.16] - 2026-03-11
 ### Melhorias
-- Implementação de novo campo de tabaela para ser usado nos formulários de inscrições
+- Implementação de novo campo de tabela para ser usado nos formulários de inscrições
 - Atualiza pacotes pnpm
 - Implementa testes para a aplicação de resultados das avaliações
 
@@ -105,21 +169,21 @@ te sem falhas
 ### Correções
 - Corrige endpoint createAppealPhaseRegistration para verificar se já existe inscrição do proponente na fase de recurso
 - Ajusta a exibição dos avaliadores da fase de recurso na página individual da inscrição, permitindo selecionar a lista de inclusão e exclusão de avaliadores das fases avaliativas do recurso.
-- Implementa mc-update para fazer a normalização dos campos de CPF e NCPJ do registration_meta
-- Remove médodo que removia mascaras de cpf e cnpj no momento do envio da inscrições
+- Implementa mc-update para fazer a normalização dos campos de CPF e CNPJ do registration_meta
+- Remove método que removia máscaras de CPF e CNPJ no momento do envio da inscrições
+- Implementa comportamento correto de fluxo contínuo com data final: inicializa publishTimestamp da última fase, inicializa datas da fase de avaliação e propaga automaticamente alterações do publishTimestamp para as fases de avaliação vinculadas
 
 ## [7.7.13] - 2026-03-06
-### Correções
-- Ajusta filtro de arquivo na api para possibitar valores vazios
-
-## [7.7.12] - 2026-03-04
 ### Melhorias
 - Adiciona filtro de selos na tela de busca de eventos, ativável via variável de ambiente `EVENTS_FILTER_SEALS`
 - Adiciona filtro de estado e cidade na tela de busca de eventos, ativável via variável de ambiente `EVENTS_FILTER_STATES_AND_CITIES`
 
 ### Correções
+- Ajusta filtro de arquivo na api para possibitar valores vazios
+
+## [7.7.12] - 2026-03-04
+### Correções
 - Faz ajuste no campo dataDeNascimento para que o formato de data seja interpretado corretamente.
-- Implementa comportamento correto de fluxo contínuo com data final: inicializa publishTimestamp da última fase, inicializa datas da fase de avaliação e propaga automaticamente alterações do publishTimestamp para as fases de avaliação vinculadas
 - Corrige exibição de campos na fase de recurso nas opções da configuração filtro de inscrição para avaliadores/comissão
 - Corrige endpoint createAppealPhaseRegistration para verificar se já existe inscrição do proponente na fase de recurso
 
@@ -234,6 +298,26 @@ te sem falhas
 <a name="770-funarte"></a>
 2. <small>Melhoria desenvolvida pela Funarte (Fundação Nacional de Artes) para a Rede das Artes</small>
 
+## [7.7.67] - 2026-05-06
+### Correções
+- Faz implementaçao para que a ficha de inscriçao do recurso tambems eja exibida na single
+
+##[7.6.66] - 2026-04-28
+### Correções
+- Garante que campos de anexo permaneçam desabilitados no formulário quando o agente de suporte possui permissão somente de leitura
+
+##[7.6.65] - 2026-04-28
+### Correções
+- Corrige erro que permitia aos agentes de suporte editarem campos, mesmo com permissões apenas de visualização
+
+##[7.6.64] - 2026-04-22
+### Correções
+- Corrige erro no upload de arquivos xlsx no grupo de downloads das entidades
+
+## [7.6.63] - 2026-04-20
+## Melhorias
+- Melhora validação de tipos de arquivo, impedindo que sejam feitos uploads de arquivos potencialmente perigosos
+
 ## [7.6.62] - 2026-03-25
 ### Correções
 - Faz ajuste para que os campos do tipo Moeda sejam validados corretamente corretamente quando obrigatorios
@@ -272,7 +356,7 @@ te sem falhas
 ### Correções
 - Corrige endpoint createAppealPhaseRegistration para verificar se já existe inscrição do proponente na fase de recurso
 - Ajusta a exibição dos avaliadores da fase de recurso na página individual da inscrição, permitindo selecionar a lista de inclusão e exclusão de avaliadores das fases avaliativas do recurso.
-- Implementa mc-update para fazer a normalização dos campos de CPF e NCPJ do registration_meta
+- Implementa mc-update para fazer a normalização dos campos de CPF e CNPJ do registration_meta
 - Remove médodo que removia mascaras de cpf e cnpj no momento do envio da inscrições
 
 ## [7.6.55] - 2026-03-04

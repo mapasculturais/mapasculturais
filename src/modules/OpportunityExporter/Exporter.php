@@ -412,6 +412,7 @@ class Exporter
                 'categories' => $rfc->categories,
                 'registrationRanges' => $rfc->registrationRanges,
                 'proponentTypes' => $rfc->proponentTypes,
+                'allowedFileTypes' => $rfc->allowedFileTypes,
 
                 'conditional' => false,
             ];

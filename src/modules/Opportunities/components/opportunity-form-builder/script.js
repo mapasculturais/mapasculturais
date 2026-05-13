@@ -27,12 +27,19 @@ app.component('opportunity-form-builder' , {
     },
 
     computed: {
-        stepsWithSlugs: {
+        draggableSteps: {
             get () {
-                return this.steps.map((step) => ({ slug: `section-${step.id}`, step }));
+                return this.steps.map((step) => ({
+                    id: step.id,
+                    name: step.name ?? '',
+                    slug: `section-${step.id}`,
+                }));
             },
             set (value) {
-                this.steps = value.map((step) => step.step);
+                const stepsById = new Map(this.steps.map((step) => [step.id, step]));
+                this.steps = value
+                    .map((item) => stepsById.get(item.id))
+                    .filter(Boolean);
             },
         }
     },
@@ -41,8 +48,7 @@ app.component('opportunity-form-builder' , {
         steps () {
             this.steps.forEach(async (step, index) => {
                 if (index !== step.displayOrder) {
-                    const entity = new Entity('registrationstep');
-                    entity.populate(step);
+                    const entity = new Entity('registrationstep', step.id);
                     entity.displayOrder = index;
                     await entity.save();
                 }

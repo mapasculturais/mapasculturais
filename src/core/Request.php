@@ -212,11 +212,24 @@ class Request {
     }
 
     /**
-     * Retorna o endereço IP do cliente
-     * 
+     * Retorna o endereço IP do cliente.
+     *
+     * O nome do cabeçalho HTTP vem de `app.proxyHeader` (variável de ambiente `PROXY_HEADER`).
+     * Se estiver definido como string não vazia, o valor retornado é o conteúdo desse cabeçalho
+     * na requisição — cabe ao ambiente (proxy reverso / load balancer) enviá-lo de forma correta
+     * e confiável.
+     *
+     * Se `app.proxyHeader` estiver vazio (padrão), não se lê cabeçalho de proxy; usa-se o
+     * atributo PSR-7 `ip_address`, normalmente preenchido pelo middleware de IP da aplicação.
+     *
      * @return string
      */
-    public function getIp() {
-        return $this->psr7request->getAttribute('ip_address');
+    public function getIp(): string {
+        $proxyHeader = App::i()->config['app.proxyHeader'] ?? '';
+        if (is_string($proxyHeader) && $proxyHeader !== '') {
+            return (string) ($this->psr7request->getHeaderLine($proxyHeader) ?? '');
+        }
+
+        return (string) ($this->psr7request->getAttribute('ip_address') ?? '');
     }
 }

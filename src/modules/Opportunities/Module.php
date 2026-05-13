@@ -116,6 +116,17 @@ class Module extends \MapasCulturais\Module{
                 }
             }
 
+            // Remove avaliadores do banco que não estão mais em desiredValuers nem em includeList
+            foreach (array_keys($valuers) as $userId) {
+                $userIdInt = is_int($userId) ? $userId : (int) $userId;
+                $isInDesired = isset($desiredValuers[$userId]) || isset($desiredValuers[(string) $userId]);
+                $isInInclude = in_array($userIdInt, $includeList, true);
+
+                if (!$isInDesired && !$isInInclude) {
+                    unset($valuers[$userId]);
+                    $changed = true;
+                }
+            }
 
             if ($changed) {
                 $conn->update(

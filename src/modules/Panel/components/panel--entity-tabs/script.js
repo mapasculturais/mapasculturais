@@ -29,13 +29,27 @@ app.component('panel--entity-tabs', {
             // queryGetModel.user = `EQ(${this.user})`
         }
 
+        const viewingOtherUserProfile = this.user != null && `${this.user}` !== '@me'
+        const grantedOwnerNotUser = viewingOtherUserProfile
+            ? `!EQ(${this.user})`
+            : '!EQ(@me)'
+        const grantedQuery = {
+            ...query,
+            '@permissions': '@control',
+            status: 'GTE(0)',
+            user: grantedOwnerNotUser,
+        }
+        if (viewingOtherUserProfile) {
+            grantedQuery['@permissionsUser'] = this.user
+        }
+
         return {
             description: $DESCRIPTIONS[this.type],
             queries: {
                 publish: { status: 'GTE(1)', ...query },
                 private: { status: 'EQ(-100)', ...query },
                 draft: { status: 'EQ(0)', ...query },
-                granted: { ...query, '@permissions': '@control', status: 'GTE(0)', user: '!EQ(@me)' },
+                granted: grantedQuery,
                 mymodels: { status: 'EQ(-1)', isModel: 'EQ(1)', ...queryGetModel },
                 trash: { status: 'EQ(-10)', ...query },
                 archived: { status: 'EQ(-2)', ...query },
@@ -56,6 +70,10 @@ app.component('panel--entity-tabs', {
         tabs: {
             type: String,
             default: "publish,private,draft,granted,mymodels,trash,archived"
+        },
+        limit: {
+            type: Number,
+            default: 50,
         },
 
     },
