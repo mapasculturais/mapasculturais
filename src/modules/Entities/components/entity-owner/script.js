@@ -50,7 +50,8 @@ app.component('entity-owner', {
 
     computed: {
         owner() {
-            return this.entity.owner || this.entity.parent;
+            // `||` trata id 0 numérico como "sem owner"; `??` só cai para parent se owner for null/undefined
+            return this.entity.owner ?? this.entity.parent;
         },
     },
 

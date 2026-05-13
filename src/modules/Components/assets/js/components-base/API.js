@@ -210,7 +210,8 @@ class API {
             throw new Error('o updateMethod deve ser PUT ou PATCH');
         }
 
-        if (!entity[this.$PK]) {
+        const pk = entity[this.$PK];
+        if (pk === undefined || pk === null) {
             let url = Utils.createUrl(this.objectType, 'index');
             return this.POST(url, entity.data())
             
@@ -220,49 +221,57 @@ class API {
     }
 
     async deleteEntity(entity) {
-        if (entity[this.$PK]) {
+        const pk = entity[this.$PK];
+        if (pk !== undefined && pk !== null) {
             return this.DELETE(entity.singleUrl);   
         }
     }
 
     async undeleteEntity(entity) {
-        if (entity[this.$PK]) {
+        const pk = entity[this.$PK];
+        if (pk !== undefined && pk !== null) {
             return this.POST(entity.getUrl('undelete'));   
         }
     }
 
     async destroyEntity(entity) {
-        if (entity[this.$PK]) {
+        const pk = entity[this.$PK];
+        if (pk !== undefined && pk !== null) {
             return this.DELETE(entity.getUrl('destroy'));   
         }
     }
 
     async publishEntity(entity) {
-        if (entity[this.$PK]) {
+        const pk = entity[this.$PK];
+        if (pk !== undefined && pk !== null) {
             return this.POST(entity.getUrl('publish'));   
         }
     }
 
     async archiveEntity(entity) {
-        if (entity[this.$PK]) {
+        const pk = entity[this.$PK];
+        if (pk !== undefined && pk !== null) {
             return this.POST(entity.getUrl('archive'));   
         }
     }
 
     async duplicateEntity(entity) {
-        if (entity[this.$PK]) {
+        const pk = entity[this.$PK];
+        if (pk !== undefined && pk !== null) {
             return this.POST(entity.getUrl('duplicate'));   
         }
     }
 
     async unpublishEntity(entity) {
-        if (entity[this.$PK]) {
+        const pk = entity[this.$PK];
+        if (pk !== undefined && pk !== null) {
             return this.POST(entity.getUrl('unpublish'));
         }
     }
 
     async makeEntityPrivate(entity) {
-        if (entity[this.$PK]) {
+        const pk = entity[this.$PK];
+        if (pk !== undefined && pk !== null) {
             return this.POST(entity.getUrl('makePrivate'));
         }
     }

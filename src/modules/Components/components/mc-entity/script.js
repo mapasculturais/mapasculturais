@@ -41,7 +41,7 @@ app.component('mc-entity', {
     },
 
     mounted() {
-        if (this.id) {
+        if (this.id !== undefined && this.id !== null) {
             this.getDataFromApi();
         } else if($MAPAS.requestedEntity) {
             const entity = $MAPAS.requestedEntity;
