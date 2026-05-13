@@ -62,10 +62,10 @@ $this->import('
                             <p>{{occurrence.space?.endereco}}</p>
                         </div>
                         <div class="occurrence__links" v-if="occurrence.type === 'virtual' && occurrence.metadata?.links">
-                            <div v-for="link in occurrence.metadata.links" :key="link.url" class="occurrence__link">
+                            <a v-for="link in occurrence.metadata.links" :key="link.url" :href="link.url" target="_blank" rel="noopener noreferrer" class="occurrence__link">
                                 <mc-icon name="link"></mc-icon>
-                                <a :href="link.url" target="_blank" rel="noopener noreferrer">{{link.platform || 'Link'}}</a>
-                            </div>
+                                {{formatPlatform(link.platform)}}
+                            </a>
                         </div>
                         <div class="content">
                             <div class="content__ticket">

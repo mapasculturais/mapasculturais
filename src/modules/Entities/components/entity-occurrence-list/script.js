@@ -61,6 +61,21 @@ app.component('entity-occurrence-list', {
             }
         },
 
+        formatPlatform(platform) {
+            const map = {
+                'youtube': 'YouTube',
+                'tiktok': 'TikTok',
+                'instagram': 'Instagram',
+                'zoom': 'Zoom',
+                'google-meet': 'Google Meet',
+                'facebook': 'Facebook',
+                'twitch': 'Twitch',
+                'teams': 'Microsoft Teams',
+                'outros': 'Link'
+            };
+            return map[platform] || 'Link';
+        },
+
         addToOccurrenceList(occurrence) {
             /* const api = new API('eventoccurrence'); */
             const lists = useEntitiesLists();
