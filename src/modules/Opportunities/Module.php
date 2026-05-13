@@ -245,6 +245,57 @@ class Module extends \MapasCulturais\Module{
             }
         };
 
+        /**
+         * Gera número sequencial para avaliadores da comissão
+         */
+        $app->hook('entity(EvaluationMethodConfigurationAgentRelation).save:before', function() use($app) {
+            /** @var EvaluationMethodConfigurationAgentRelation $this */
+
+            if (!$this->isNew() || $this->getCommitteeSequentialNumber()) {
+                return;
+            }
+
+            $opportunity = $this->owner->opportunity;
+            $firstPhase = $opportunity->firstPhase;
+            $phases = $firstPhase->allPhases;
+
+            $agentId = $this->agent->id;
+            $existingNumber = null;
+            $maxNumber = 0;
+
+            foreach ($phases as $phase) {
+                if (!$phase->evaluationMethodConfiguration) {
+                    continue;
+                }
+
+                // Usa query direta no banco para garantir dados atualizados
+                $conn = $app->em->getConnection();
+                $emcId = $phase->evaluationMethodConfiguration->id;
+                
+                $relations = $conn->fetchAllAssociative("SELECT ar.metadata, ar.agent_id FROM agent_relation ar WHERE ar.object_type = 'MapasCulturais\\Entities\\EvaluationMethodConfiguration' AND ar.object_id = :emcId AND ar.status > 0", ['emcId' => $emcId]);
+
+                foreach ($relations as $relation) {
+                    $metadata = json_decode($relation['metadata'] ?: '{}', true);
+                    $number = $metadata['committeeSequentialNumber'] ?? null;
+                    
+                    if ($number && $number > $maxNumber) {
+                        $maxNumber = $number;
+                    }
+
+                    if ((int)$relation['agent_id'] == (int)$agentId && $number) {
+                        $existingNumber = $number;
+                        break 2;
+                    }
+                }
+            }
+
+            if ($existingNumber) {
+                $this->setCommitteeSequentialNumber($existingNumber);
+            } else {
+                $this->setCommitteeSequentialNumber($maxNumber + 1);
+            }
+        });
+
         /** 
          * Enfileiramento dos JOBs de distribuição de avaliadores
          */
@@ -725,7 +776,19 @@ class Module extends \MapasCulturais\Module{
 
                     foreach($evaluations as $eval) {
                         $detail = $em->getEvaluationDetails($eval);
-                        if ($evaluation_configuration->publishValuerNames){
+                        $user = $app->user;
+                        
+                        // Busca número sequencial do avaliador (sempre que disponível)
+                        $valuerRelation = $evaluation_configuration->getUserRelation($eval->user);
+                        if ($valuerRelation) {
+                            $detail['committeeSequentialNumber'] = $valuerRelation->getCommitteeSequentialNumber();
+                        }
+                        
+                        // Administradores/gestores sempre veem nome e ID do avaliador
+                        if ($this->opportunity->canUser('@control', $user)) {
+                            $detail['valuer'] = $eval->user->profile->simplify('id,name,singleUrl');
+                        } elseif ($evaluation_configuration->publishValuerNames) {
+                            // Proponente com publicação ativada
                             $detail['valuer'] = $eval->user->profile->simplify('id,name,singleUrl');
                         }
                         $data['evaluationsDetails'][] = $detail;
