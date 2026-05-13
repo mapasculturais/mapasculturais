@@ -28,6 +28,7 @@ return [
             'edicao-de-usuario'           => ['user', 'edit'],
             'edicao-de-agente'            => ['agent', 'edit'],
             'edicao-de-espaco'            => ['space', 'edit'],
+            'edicao-de-eventos-virtuais'  => ['space', 'edit', [0]],
             'edicao-de-projeto'           => ['project', 'edit'],
             'edicao-de-selo'              => ['seal', 'edit'],
             'gestao-de-oportunidade'      => ['opportunity', 'edit'],
