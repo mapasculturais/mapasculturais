@@ -7,6 +7,7 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ## [UNRELEASED]
 ### Novas Funcionalidades
+- Implementa configuração que permite definir a imagem de avatar de qualquer entidade como obrigatória
 - Adiciona suporte a bônus de pontuação por tipo configurável (percentual ou ponto fixo) no método de avaliação técnica, com normalização retrocompatível de configurações legadas
 
 ### Melhorias
@@ -26,6 +27,22 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Corrige a importação de formulários de inscrição para preservar os formatos aceitos configurados nos campos de anexo
 - Corrige erro ao reordenar etapas na configuração do formulário de oportunidades
 
+## [7.7.36] - 2026-05-08
+### Correções
+- Corrige exibiçao das abas com permissão na aba minhas inscrições e no gerênciamento de usuários
+
+## [7.7.35] - 2026-05-08
+### Correções
+- Implementa paginaçao no na área de minhas inscriçoes
+
+## [7.7.34] - 2026-05-08
+### Melhorias
+- Permite configurar a quantidade de itens exibidos por página nas abas de entidades, como agentes, espaços e projetos.
+- Adiciona nova aba "Com permissão" na tela de minhas inscrições, para visualizar inscrições onde você tem permissão de gestão.
+- Exibe apenas as inscrições do próprio usuário na tela "Minhas inscrições", evitando confusão com inscrições de outros.
+- Melhora a gestão de entidades dos usuários ao incluir a aba "Concedido" e ajustar a quantidade de itens exibidos por página.
+- Faz organizaçao no CHANGELOG.md
+
 ## [7.7.33] - 2026-05-06
 ### Correções
 - Corrige getters de fases para ignorar fases deletadas (status > -10) em previousPhase, previousPhases, nextPhase, nextPhases e lastPhase
@@ -38,13 +55,13 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ## [7.7.32] - 2026-05-04
 ### Correções
-## Possibilita que, no importador de oportunidades, o usuário possa escolher entre importar a oportunidade já publicada ou em rascunho.
+- Possibilita que, no importador de oportunidades, o usuário possa escolher entre importar a oportunidade já publicada ou em rascunho.
 
 ## [7.7.31] - 2026-04-28
 ### Correções
 - Corrige salvamento de avaliadores da inscrição por administradores da oportunidade
 
-##[7.7.30] - 2026-04-28
+## [7.7.30] - 2026-04-28
 ### Correções
 - Corrije erro que redireciona o usuário admin sempre para a tela de suporte ao acessar a single de inscriçao
 - Corrige erro que quebra o recurso devido à falta de datas configuradas nas fases avaliativas
