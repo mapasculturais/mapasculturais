@@ -110,6 +110,7 @@ app.component('search-filter-event', {
         this.pseudoQuery['event:term:linguagem'] = this.pseudoQuery['event:term:linguagem'] || [];
         this.pseudoQuery['event:classificacaoEtaria'] = this.pseudoQuery['event:classificacaoEtaria'] || [];
         this.pseudoQuery['event:@seals'] = this.pseudoQuery['event:@seals'] || [];
+        this.pseudoQuery['event:type'] = this.pseudoQuery['event:type'] || [];
         this.pseudoQuery['space:En_Estado'] = this.pseudoQuery['space:En_Estado'] || [];
         this.pseudoQuery['space:En_Municipio'] = this.pseudoQuery['space:En_Municipio'] || [];
     },
@@ -164,6 +165,16 @@ app.component('search-filter-event', {
             date: [this.defaultDateFrom, this.defaultDateTo],
             presetRanges: presetRanges,
             ageRating: $DESCRIPTIONS.event.classificacaoEtaria.optionsOrder,
+            eventTypes: [
+                { value: '1', label: this.text('Presencial') },
+                { value: '2', label: this.text('Híbrido') },
+                { value: '3', label: this.text('Online') },
+            ],
+            eventTypesLabels: {
+                '1': this.text('Presencial'),
+                '2': this.text('Híbrido'),
+                '3': this.text('Online'),
+            },
             sealsFilterEnabled: filterConfig.sealsFilterEnabled ?? false,
             statesAndCitiesFilterEnabled: filterConfig.statesAndCitiesFilterEnabled ?? false,
             hasStatesAndCities: !!$MAPAS.config.statesAndCities,

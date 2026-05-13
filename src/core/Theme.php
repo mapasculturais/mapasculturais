@@ -888,11 +888,12 @@ abstract class Theme {
 
     function addRequestedEntityToJs(?string $entity_class_name = null, ?int $entity_id = null, ?Entity $entity = null, $disable_access_control = false){
         $entity_class_name = $entity_class_name ?: $this->controller->entityClassName ?? null;
-        $entity_id = $entity_id ?: $this->controller->data['id'] ?? null;
+        // Usar ?? em vez de ?:: id 0 é PK válida; ?: e "if ($id)" tratam 0 como "sem id" e quebram singles/API no front.
+        $entity_id = $entity_id ?? $this->controller->data['id'] ?? null;
         
         $_entity = $entity_class_name::getHookClassPath();
 
-        if ($entity_class_name && $entity_id) {
+        if ($entity_class_name && $entity_id !== null) {
             $app = App::i();
 
             if (!$entity) {

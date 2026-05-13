@@ -33,6 +33,18 @@ app.component('entity-occurrence-list', {
         }
     },
 
+    computed: {
+        eventType() {
+            return this.entity.type?.id || this.entity._type || 1;
+        },
+        showInPersonButton() {
+            return this.eventType === 1 || this.eventType === 2;
+        },
+        showVirtualButton() {
+            return this.eventType === 2 || this.eventType === 3;
+        }
+    },
+
     methods: {
         toggleMap(event) {
             this.showMap = !this.showMap;
@@ -47,6 +59,21 @@ app.component('entity-occurrence-list', {
             } else {
                 return newPrice;
             }
+        },
+
+        formatPlatform(platform) {
+            const map = {
+                'youtube': 'YouTube',
+                'tiktok': 'TikTok',
+                'instagram': 'Instagram',
+                'zoom': 'Zoom',
+                'google-meet': 'Google Meet',
+                'facebook': 'Facebook',
+                'twitch': 'Twitch',
+                'teams': 'Microsoft Teams',
+                'outros': 'Link'
+            };
+            return map[platform] || 'Link';
         },
 
         addToOccurrenceList(occurrence) {

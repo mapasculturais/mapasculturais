@@ -13,6 +13,7 @@ $this->addRegistrationPhasesToJs();
 
 $this->import('
     mc-alert
+    mc-accordion
     mc-avatar
     mc-breadcrumb
     mc-card
@@ -23,8 +24,8 @@ $this->import('
     opportunity-phases-timeline
     registration-print
     registration-workplan-form
-    v1-embed-tool
     registration-evaluation-tab
+    registration-field-view
 ');
 
 $this->breadcrumb = [
@@ -44,6 +45,55 @@ if($all_registrations = $app->repo('Registration')->findBy(['number' => $entity-
         $result[$reg->id] = $em ? $em->shouldDisplayEvaluationResults($reg) : false;
     }
 }
+
+$ficha_phases = [];
+$ficha_phase_ids = [];
+$phase_cursor = $entity;
+while ($phase_cursor) {
+    $ficha_phases[] = $phase_cursor;
+    $ficha_phase_ids[(int) $phase_cursor->id] = true;
+    $phase_cursor = $phase_cursor->nextPhase;
+}
+
+if (!empty($all_registrations)) {
+    foreach ($all_registrations as $reg) {
+        $reg_id = (int) $reg->id;
+        if (!isset($ficha_phase_ids[$reg_id])) {
+            $ficha_phases[] = $reg;
+            $ficha_phase_ids[$reg_id] = true;
+        }
+    }
+}
+
+$phase_order = [];
+$phase_order_cursor = $entity;
+$phase_order_index = 0;
+while ($phase_order_cursor) {
+    $phase_order[(int) $phase_order_cursor->opportunity->id] = $phase_order_index++;
+    $phase_order_cursor = $phase_order_cursor->nextPhase;
+}
+
+usort($ficha_phases, function($a, $b) use ($phase_order) {
+    $a_opp = $a->opportunity;
+    $b_opp = $b->opportunity;
+
+    $a_anchor = ($a_opp->isAppealPhase && $a_opp->parent) ? $a_opp->parent : $a_opp;
+    $b_anchor = ($b_opp->isAppealPhase && $b_opp->parent) ? $b_opp->parent : $b_opp;
+
+    $a_anchor_order = $phase_order[(int) $a_anchor->id] ?? PHP_INT_MAX;
+    $b_anchor_order = $phase_order[(int) $b_anchor->id] ?? PHP_INT_MAX;
+    if ($a_anchor_order !== $b_anchor_order) {
+        return $a_anchor_order <=> $b_anchor_order;
+    }
+
+    $a_is_appeal = $a_opp->isAppealPhase ? 1 : 0;
+    $b_is_appeal = $b_opp->isAppealPhase ? 1 : 0;
+    if ($a_is_appeal !== $b_is_appeal) {
+        return $a_is_appeal <=> $b_is_appeal;
+    }
+
+    return (int) $a->id <=> (int) $b->id;
+});
     
 $this->jsObject['config']['registrationResults']['shouldDisplayEvaluationResults'] = $result;
 
@@ -266,84 +316,69 @@ $today = new DateTime();
                     </template>
                 </mc-card>
 
-                <?php $phase = $entity;
-                while($phase): $opportunity = $phase->opportunity;?>
+                <?php foreach($ficha_phases as $phase): $opportunity = $phase->opportunity;?>
                     <?php if($opportunity->isDataCollection && $phase->canUser('view')):?>
-                        <?php if($opportunity->isFirstPhase):?>
-                            <h2><?= i::__('Inscrição') ?></h2>
-                        <?php else: ?>
-                            <h2><?= $opportunity->name ?></h2>
-                        <?php endif ?>
-                        <?php if($phase->status < 1 && !$opportunity->isFirstPhase && $today <= $opportunity->registrationTo): ?>
-                            <mc-alert type="warning">
-                                <?= i::__('Nesta etapa, é necessário inserir informações. Por favor, clique no botão para acessar o formulário e preenchê-lo') ?> <br>
-                                <?= i::__('dentro do período de') ?>  <?=$phase->opportunity->registrationFrom->format("d/m/Y")?> <?= i::__('à') ?> <?=$phase->opportunity->registrationTo->format("d/m/Y H:i:s")?>
-                            </mc-alert>
-                            <div class="grid-12">
-                                <div class="col-3 sm:col-12">
-                                    <a class="button button--primary" href="<?=$app->createUrl("registration", "edit", [$phase->id])?>"><?= i::__('Preencher formulário') ?></a>
-                                </div>
-                            </div>
-                            <?php else: ?>
-                                <?php if($phase->status === 0):?>
-                                    <?php if($today > $opportunity->registrationTo):?>
-                                        <mc-alert type="warning">
-                                            <?= i::__("Você não enviou o formulário desta fase") ?> <br>
-                                            <small><?= i::__("O prazo para envio dessa inscrição foi até {$opportunity->registrationTo->format('d/m/Y H:i:s')}") ?></small> <br>
-                                        </mc-alert>
-                                    <?php else: ?>
-                                        <mc-alert type="warning">
-                                            <?= i::__("Você não enviou o formulário desta fase") ?> <br>
-                                        </mc-alert>
-                                        <div class="grid-12">
-                                            <div class="col-3 sm:col-12">
-                                                <a class="button button--primary" href="<?=$app->createUrl("registration", "edit", [$phase->id])?>"><?= i::__('Acessar formulário') ?></a>
-                                            </div>
-                                        </div>
-                                    <?php endif ?>
+                        <mc-accordion with-text>
+                            <template #title>
+                                <?php if($opportunity->isFirstPhase):?>
+                                    <?= i::__('Inscrição') ?>
                                 <?php else: ?>
+                                    <?= $opportunity->name ?>
+                                <?php endif ?>
+                            </template>
+                            <template #content>
+                                <?php if($phase->status < 1 && !$opportunity->isFirstPhase && $today <= $opportunity->registrationTo): ?>
+                                    <mc-alert type="warning">
+                                        <?= i::__('Nesta etapa, é necessário inserir informações. Por favor, clique no botão para acessar o formulário e preenchê-lo') ?> <br>
+                                        <?= i::__('dentro do período de') ?>  <?=$phase->opportunity->registrationFrom->format("d/m/Y")?> <?= i::__('à') ?> <?=$phase->opportunity->registrationTo->format("d/m/Y H:i:s")?>
+                                    </mc-alert>
+                                    <div class="grid-12">
+                                        <div class="col-3 sm:col-12">
+                                            <a class="button button--primary" href="<?=$app->createUrl("registration", "edit", [$phase->id])?>"><?= i::__('Preencher formulário') ?></a>
+                                        </div>
+                                    </div>
                                     <?php $this->applyTemplateHook("registration-form-view", 'before', [$phase]) ?>
-                                    <v1-embed-tool route="registrationview" :id="<?=$phase->id?>"></v1-embed-tool>
+                                    <registration-field-view :registration="entity" :phase-id="<?= (int) $phase->id ?>"></registration-field-view>
                                     <?php if ($opportunity->isReportingPhase && $opportunity->parent->enableWorkplan): ?>
                                         <registration-workplan-form :phase-id="<?= $opportunity->id ?>"></registration-workplan-form>
                                     <?php endif; ?>
                                     <?php $this->applyTemplateHook("registration-form-view", 'after', [$phase]) ?>
-                                <?php endif ?>
-                                
-                            
-                        <?php endif ?>
-                    <?php endif ?>
-                    <?php if ($appeal_phase = $opportunity->appealPhase): ?>
-                        <?php $appeal_registration = $app->repo('Registration')->findOneBy(['opportunity' => $appeal_phase, 'number' => $entity->number]); ?>
-                        <?php if ($appeal_registration && $appeal_registration->canUser('view')): ?>
-                            <div class="registration-appeal-phase">
-                                <h2><?= $appeal_phase->name ?> <span class="appeal-badge"><?= i::__('Recurso') ?></span></h2>
-                                <?php if($appeal_registration->status === 0):?>
-                                    <?php if($today > $appeal_phase->registrationTo):?>
-                                        <mc-alert type="warning">
-                                            <?= i::__("Você não enviou o formulário desta fase") ?> <br>
-                                            <small><?= i::__("O prazo para envio dessa inscrição foi até {$appeal_phase->registrationTo->format('d/m/Y H:i:s')}") ?></small> <br>
-                                        </mc-alert>
-                                    <?php else: ?>
-                                        <mc-alert type="warning">
-                                            <?= i::__("Você não enviou o formulário desta fase") ?> <br>
-                                        </mc-alert>
-                                        <div class="grid-12">
-                                            <div class="col-3 sm:col-12">
-                                                <a class="button button--primary" href="<?=$app->createUrl("registration", "edit", [$appeal_registration->id])?>"><?= i::__('Acessar formulário') ?></a>
-                                            </div>
-                                        </div>
-                                    <?php endif ?>
                                 <?php else: ?>
-                                    <?php $this->applyTemplateHook("registration-appeal-phase-form-view", 'before', [$appeal_registration]) ?>
-                                    <v1-embed-tool route="registrationview" :id="<?=$appeal_registration->id?>"></v1-embed-tool>
-                                    <?php $this->applyTemplateHook("registration-appeal-phase-form-view", 'after', [$appeal_registration]) ?>
+                                    <?php if($phase->status === 0):?>
+                                        <?php if($today > $opportunity->registrationTo):?>
+                                            <mc-alert type="warning">
+                                                <?= i::__("Você não enviou o formulário desta fase") ?> <br>
+                                                <small><?= i::__("O prazo para envio dessa inscrição foi até {$opportunity->registrationTo->format('d/m/Y H:i:s')}") ?></small> <br>
+                                            </mc-alert>
+                                        <?php else: ?>
+                                            <mc-alert type="warning">
+                                                <?= i::__("Você não enviou o formulário desta fase") ?> <br>
+                                            </mc-alert>
+                                            <div class="grid-12">
+                                                <div class="col-3 sm:col-12">
+                                                    <a class="button button--primary" href="<?=$app->createUrl("registration", "edit", [$phase->id])?>"><?= i::__('Acessar formulário') ?></a>
+                                                </div>
+                                            </div>
+                                        <?php endif ?>
+                                        <?php $this->applyTemplateHook("registration-form-view", 'before', [$phase]) ?>
+                                        <registration-field-view :registration="entity" :phase-id="<?= (int) $phase->id ?>"></registration-field-view>
+                                        <?php if ($opportunity->isReportingPhase && $opportunity->parent->enableWorkplan): ?>
+                                            <registration-workplan-form :phase-id="<?= $opportunity->id ?>"></registration-workplan-form>
+                                        <?php endif; ?>
+                                        <?php $this->applyTemplateHook("registration-form-view", 'after', [$phase]) ?>
+                                    <?php else: ?>
+                                        <?php $this->applyTemplateHook("registration-form-view", 'before', [$phase]) ?>
+                                        <registration-field-view :registration="entity" :phase-id="<?= (int) $phase->id ?>"></registration-field-view>
+                                        <?php if ($opportunity->isReportingPhase && $opportunity->parent->enableWorkplan): ?>
+                                            <registration-workplan-form :phase-id="<?= $opportunity->id ?>"></registration-workplan-form>
+                                        <?php endif; ?>
+                                        <?php $this->applyTemplateHook("registration-form-view", 'after', [$phase]) ?>
+                                    <?php endif ?>
                                 <?php endif ?>
-                            </div>
-                        <?php endif; ?>
-                    <?php endif; ?>
-                    <?php $phase = $phase->nextPhase; ?>
-                <?php endwhile ?>
+                            </template>
+                        </mc-accordion>
+                    <?php endif ?>
+                <?php endforeach ?>
             </div>
         </mc-tab>
 

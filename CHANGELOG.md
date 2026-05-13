@@ -8,6 +8,7 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 ## [UNRELEASED - 8.0]
 ### Novas Funcionalidades
 - Novo status privado para as entidades
+- Adiciona opções de criação de eventos online e híbrido
 
 ### Melhorias não funcionais
 - Substituição do driver AnnotationDriver de mapeamendo do Doctrine para o AttributeDriver
@@ -16,6 +17,8 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Refatoração dos traits de entidades para incluir as propriedades de mapeamento do doctrine utilizadas pelo trait
 - Possibilidade de configuração da pasta que contém as visões de um controller
 - Limpeza de código do tema BaseV1
+- Implementa ficha de inscrição utilizando VueJS
+- Implementa dados do formulário para o avaliador utilizando VueJS
 
 ### Atualizações de bibliiotecas
 - PHP atualizado para versão 8.4

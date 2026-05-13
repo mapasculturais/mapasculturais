@@ -80,13 +80,14 @@ app.component('documentary-evaluation-form', {
             this.fieldName = this.fieldType === 'file' ? data.detail.fieldName.replace('field_', 'rfc_') : data.detail.fieldName;
             this.enableForm = data.detail.type === 'evaluationForm.openForm';
             this.fieldId = data.detail.fieldId;
+            const fallbackLabel = String(data?.detail?.fieldLabel || '').trim();
             
             if (this.enableForm) {
                 this.getEvaluationData();
 
                 this.formData.uid = this.userId;
                 this.formData.data[this.fieldId] = {
-                    label: $MAPAS.config.documentaryEvaluationForm.fieldsInfo[this.fieldName]?.label || '',
+                    label: $MAPAS.config.documentaryEvaluationForm.fieldsInfo[this.fieldName]?.label || fallbackLabel,
                     obsItems: this.evaluationData[this.fieldId]?.obsItems ?? '',
                     obs: this.evaluationData[this.fieldId]?.obs ?? '',
                     evaluation: this.evaluationData[this.fieldId]?.evaluation ?? '',

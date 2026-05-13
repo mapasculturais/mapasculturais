@@ -58,14 +58,26 @@ class EventOccurrence extends EntityController {
         if (isset($this->postData['priceInfo'])) {
             $occurrence->priceInfo = $this->postData['priceInfo'];
         }
+
+        if (isset($this->postData['type'])) {
+            $occurrence->type = $this->postData['type'];
+        }
+
+        if (isset($this->postData['metadata'])) {
+            $occurrence->metadata = $this->_validate_metadata($this->postData['metadata']);
+        }
         
         if (@$this->postData['spaceId']) {
             $occurrence->space = $app->repo('Space')->find($this->postData['spaceId']);
+        } elseif ($occurrence->type === 'virtual') {
+            $occurrence->space = $app->repo('Space')->find(0);
         }
         
-        $postData = $this->postData;
-        unset($postData['eventId']);
-        $occurrence->rule = $postData;
+        $post_data = $this->postData;
+        unset($post_data['eventId']);
+        unset($post_data['type']);
+        unset($post_data['metadata']);
+        $occurrence->rule = $post_data;
 
         if ($errors = $occurrence->validationErrors) {
             $this->errorJson($errors);
@@ -81,13 +93,25 @@ class EventOccurrence extends EntityController {
         $app->applyHookBoundTo($this, "POST({$this->id}.edit):data", ['data' => &$data]);
         
         $occurrence = $this->requestedEntity;
-        $postData = $this->postData;
-        unset($postData['eventId']);
+        $post_data = $this->postData;
+        unset($post_data['eventId']);
 
-        $occurrence->rule = $postData;
+        if (isset($post_data['type'])) {
+            $occurrence->type = $post_data['type'];
+            unset($post_data['type']);
+        }
+
+        if (isset($post_data['metadata'])) {
+            $occurrence->metadata = $this->_validate_metadata($post_data['metadata']);
+            unset($post_data['metadata']);
+        }
+
+        $occurrence->rule = $post_data;
 
         if (@$this->postData['spaceId']) {
             $occurrence->space = $app->repo('Space')->find($this->postData['spaceId']);
+        } elseif ($occurrence->type === 'virtual') {
+            $occurrence->space = $app->repo('Space')->find(0);
         }
 
         if ($errors = $occurrence->validationErrors) {
@@ -95,6 +119,44 @@ class EventOccurrence extends EntityController {
         } else {
             $this->_finishRequest($occurrence);
         }
+    }
+
+    private function _validate_metadata($metadata) {
+        if (isset($metadata['links']) && is_array($metadata['links'])) {
+            $validated_links = [];
+            foreach ($metadata['links'] as $url) {
+                $url = filter_var(trim($url), FILTER_VALIDATE_URL);
+                if ($url) {
+                    $validated_links[] = [
+                        'url' => $url,
+                        'platform' => $this->_detect_platform($url)
+                    ];
+                }
+            }
+            $metadata['links'] = $validated_links;
+        }
+        return $metadata;
+    }
+
+    private function _detect_platform($url) {
+        $patterns = [
+            'youtube'     => '/youtube\.com|youtu\.be/i',
+            'tiktok'      => '/tiktok\.com/i',
+            'instagram'   => '/instagram\.com/i',
+            'zoom'        => '/zoom\.us/i',
+            'google-meet' => '/meet\.google\.com/i',
+            'facebook'    => '/facebook\.com|fb\.watch/i',
+            'twitch'      => '/twitch\.tv/i',
+            'teams'       => '/teams\.microsoft\.com/i',
+        ];
+        
+        foreach ($patterns as $platform => $pattern) {
+            if (preg_match($pattern, $url)) {
+                return $platform;
+            }
+        }
+        
+        return 'outros';
     }
 
 }

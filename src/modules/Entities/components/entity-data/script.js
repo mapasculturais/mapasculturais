@@ -4,7 +4,7 @@ app.component('entity-data', {
     props: {
         entity: {
             type: Entity,
-            required: true
+            required: true,
         },
 
         prop: {
@@ -14,7 +14,17 @@ app.component('entity-data', {
 
         label: {
             type: String,
-        }
+        },
+
+        showRequiredMark: {
+            type: Boolean,
+            default: false,
+        },
+
+        fieldRequired: {
+            type: Boolean,
+            default: false,
+        },
     },
 
     setup(props, { slots }) {
@@ -39,15 +49,80 @@ app.component('entity-data', {
         },
 
         propertyData() {
-            return this.entity[this.prop];
+            return this.normalizeData(this.entity[this.prop]);
         },
 
         propertyType() {
             return this.description.type;
         },
+
+        shouldShowValueBlock() {
+            const type = this.description?.type;
+            const raw = this.entity[this.prop];
+            if (type === 'checkbox' || type === 'boolean') {
+                return raw !== null && raw !== undefined && raw !== '';
+            }
+            const data = this.normalizeData(raw);
+            if (data === null || data === undefined || data === '') {
+                return false;
+            }
+            if (Array.isArray(data) && data.length === 0) {
+                return false;
+            }
+            if (typeof data === 'object' && !Array.isArray(data) && Object.keys(data).length === 0) {
+                return false;
+            }
+            return true;
+        },
     },
 
     methods: {
+        getCheckboxValue(data) {
+            return data ? this.text('Marcado') : this.text('Desmarcado');
+        },
+
+        normalizeData(data) {
+            if (typeof data === 'string') {
+                const trimmed = data.trim();
+                if ((trimmed.startsWith('[') && trimmed.endsWith(']')) || (trimmed.startsWith('{') && trimmed.endsWith('}'))) {
+                    try {
+                        return JSON.parse(trimmed);
+                    } catch (e) {
+                        return data;
+                    }
+                }
+            }
+            return data;
+        },
+
+        normalizeList(data) {
+            const normalized = this.normalizeData(data);
+            if (Array.isArray(normalized)) {
+                return normalized;
+            }
+            if (typeof normalized === 'string' && normalized.includes(';')) {
+                return normalized.split(';').map((item) => item.trim()).filter(Boolean);
+            }
+            return [normalized].filter(Boolean);
+        },
+
+        normalizeText(data) {
+            const normalized = this.normalizeData(data);
+            if (Array.isArray(normalized)) {
+                return normalized.join(', ');
+            }
+            if (normalized && typeof normalized === 'object') {
+                return Object.keys(normalized).filter((key) => normalized[key]).join(', ');
+            }
+            return normalized;
+        },
+
+        selectOptionLabel() {
+            const opts = this.description?.options || {};
+            const val = this.propertyData;
+            return opts[val] ?? opts[String(val)] ?? val;
+        },
+
         getAddress(address) {
             if (typeof address === 'string') {
                 address = JSON.parse(address);
@@ -119,9 +194,7 @@ app.component('entity-data', {
                 }
             }
 
-            console.log('getAddress', fullAddress);
             return fullAddress;
         },
-    }
-    
+    },
 });

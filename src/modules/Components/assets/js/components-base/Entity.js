@@ -161,7 +161,8 @@ class Entity {
         const type = prop?.['@entityType'] || this.$RELATIONS[key]?.targetEntity?.toLocaleLowerCase();
         const id = typeof prop == 'number' ? prop : prop?.id 
 
-        if (type && id) {
+        // id 0 é PK válida; `if (id)` descartava relações (ex.: owner) e quebrava templates (.singleUrl)
+        if (type && id !== undefined && id !== null && id !== '') {
             const propAPI = new API(type, this.__scope);
             const instance = propAPI.getEntityInstance(id);
             if(typeof prop != 'number') {
@@ -521,7 +522,7 @@ class Entity {
             }
         }
 
-        if(!this.id) {
+        if(this.id === undefined || this.id === null) {
             preserveValues = false;
         }
         
@@ -550,7 +551,7 @@ class Entity {
 
                     const res = await this.API.persistEntity(this, forceSave, updateMethod);                    
                     this.doPromise(res, (entity) => {
-                        if (this.id) {
+                        if (this.id !== undefined && this.id !== null) {
                             this.sendMessage(this.text('modificacoes salvas'));
                         } else {
                             this.sendMessage(this.text('entidade salva'));

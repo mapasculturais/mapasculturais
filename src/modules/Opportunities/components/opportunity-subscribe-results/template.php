@@ -13,7 +13,6 @@ $this->import('
     opportunity-appeal-phase-config
     opportunity-phase-status
     opportunity-phase-list-evaluation
-    v1-embed-tool
 ');
 ?>
 <mc-stepper-vertical :items="phases" allow-multiple>
@@ -54,9 +53,6 @@ $this->import('
     <template #header-actions="{step, item}">     
         <div class="stepper-header__actions">
             <mc-modal title="<?= i::esc_attr__('Configurações de suporte')?>" classes="modalEmbedTools" v-if="item.__objectType == 'opportunity' && !item.isLastPhase">
-                <template #default="modal">
-                    <!-- <v1-embed-tool route="supportbuilder" :id="item.id"></v1-embed-tool> -->
-                </template>
                 <template #button="modal">
                     <mc-link class="button button--icon" route="suporte/configuracao" :params="[item.id]" icon="external" right-icon> <?= i::__('Suporte') ?> </mc-link>
                 </template>

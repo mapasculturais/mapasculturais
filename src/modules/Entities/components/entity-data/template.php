@@ -13,9 +13,11 @@ $this->import('
 ');
 ?>
 <div class="entity-data">
-    <div class="entity-data__label">{{propertyLabel}}</div>
+    <div class="entity-data__label">
+        <span v-if="showRequiredMark && fieldRequired" class="entity-data__required" aria-hidden="true">*</span> {{ propertyLabel }}
+    </div>
 
-    <div class="entity-data__data" v-if="propertyData">
+    <div class="entity-data__data" v-if="shouldShowValueBlock">
         <!-- #region entity-data__value -->
         <div v-if="propertyType == 'date'" class="entity-data__value">
             {{propertyData.date('2-digit year')}}
@@ -25,20 +27,24 @@ $this->import('
             {{propertyData.date('2-digit year')}} <?= i::__('às') ?> {{propertyData.time('numeric')}}
         </div>
         
-        <div v-else-if="propertyType == 'multiselect'">
-            <mc-tag-list classes="space__background" :tags="propertyData"></mc-tag-list>
+        <div v-else-if="propertyType == 'multiselect' || propertyType == 'checklist'">
+            <mc-tag-list classes="space__background" :tags="normalizeList(propertyData)"></mc-tag-list>
         </div>
         
         <div v-else-if="propertyType == 'radio' || propertyType == 'select'" class="entity-data__value">
-            {{description.options[propertyData] || propertyData}}
+            {{ selectOptionLabel() }}
         </div>
 
         <div v-else-if="propertyType == 'location' || propertyType == 'addresses'" class="entity-data__data">
             {{getAddress(propertyData)}}
         </div>
+
+        <div v-else-if="propertyType == 'checkbox' || propertyType == 'boolean'" class="entity-data__value">
+            {{getCheckboxValue(propertyData)}}
+        </div>
         
         <div v-else class="entity-data__value">
-            {{propertyData}}
+            {{normalizeText(propertyData)}}
         </div>
         <!-- #endregion entity-data__value -->
 
@@ -49,7 +55,7 @@ $this->import('
 
     <div v-else class="entity-data__data">
         <div class="entity-data__value">
-            <small v-if="!propertyData" class="bold">
+            <small class="bold">
                 <?= i::__('Não informado') ?>
             </small>
         </div>

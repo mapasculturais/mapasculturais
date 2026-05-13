@@ -27,6 +27,16 @@ class Space extends EntityController {
         Traits\ControllerLock,
         Traits\ControllerOpportunities;
 
+    public function __construct() {
+        parent::__construct();
+        $app = App::i();
+        $app->hook('ApiQuery(Space).params', function(&$params) {
+            if(!isset($params['id'])) {
+                $params['type'] = 'GT(0)';
+            }
+        });
+    }
+
     /**
      * @api {GET} /api/space/describe Recuperar descrição da entidade Espaço
      * @apiUse APIdescribe
@@ -138,6 +148,14 @@ class Space extends EntityController {
      * @apiExample {curl} Exemplo de utilização:
      *   curl -i http://localhost/api/space/findByEvents?@from=2016-05-01&@to=2016-05-31&@select=*
      */
+    public function API_find(){
+        if(!isset($this->getData['id'])) {
+            $this->getData['type'] = 'GT(0)';
+        }
+        $data = $this->apiQuery($this->getData);
+        $this->apiResponse($data);
+    }
+
     function API_findByEvents(){
         $eventController = App::i()->controller('event');
         $query_data = $this->getData;
