@@ -60,6 +60,10 @@ trait EntityManagerModel {
         $this->syncRegistrationTaxonomiesFromSourceOntoModel();
         $this->entityOpportunityModel->save(true);
 
+        // Re-hidrata a coleção registrationSteps para evitar que o clone compartilhe a coleção da entidade original
+        $steps = $app->repo('RegistrationStep')->findBy(['opportunity' => $this->entityOpportunityModel]);
+        $this->entityOpportunityModel->registrationSteps = new \Doctrine\Common\Collections\ArrayCollection($steps);
+
         if($this->isAjax()){
             $this->json($this->entityOpportunity);
         }else{
@@ -99,6 +103,10 @@ trait EntityManagerModel {
         $this->entityOpportunityModel = $this->entityOpportunityModel->refreshed();
         $this->syncRegistrationTaxonomiesFromSourceOntoModel();
         $this->entityOpportunityModel->save(true);
+
+        // Re-hidrata a coleção registrationSteps para evitar que o clone compartilhe a coleção da entidade original
+        $steps = $app->repo('RegistrationStep')->findBy(['opportunity' => $this->entityOpportunityModel]);
+        $this->entityOpportunityModel->registrationSteps = new \Doctrine\Common\Collections\ArrayCollection($steps);
 
         $app->enableAccessControl();
 
@@ -221,7 +229,7 @@ trait EntityManagerModel {
         $app->em->persist($this->entityOpportunityModel);
         $app->em->flush();
 
-        // necessário adicionar as categorias, proponetes e ranges após salvar devido a trigger public.fn_propagate_opportunity_insert
+        // necessário adicionar as categorias, proponentes e ranges após salvar devido a trigger public.fn_propagate_opportunity_insert
         $this->entityOpportunityModel->registrationCategories = $this->entityOpportunity->registrationCategories;
         $this->entityOpportunityModel->registrationProponentTypes = $this->entityOpportunity->registrationProponentTypes;
         $this->entityOpportunityModel->registrationRanges = $this->entityOpportunity->registrationRanges;

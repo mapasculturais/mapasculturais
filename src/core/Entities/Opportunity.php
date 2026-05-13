@@ -97,6 +97,10 @@ abstract class Opportunity extends \MapasCulturais\Entity
     #[ORM\SequenceGenerator(sequenceName: "opportunity_id_seq", allocationSize: 1, initialValue: 1)]
     public $id;
 
+    public function __clone() {
+        $this->id = null;
+    }
+
     #[ORM\Column(name: "type", type: "smallint", nullable: false)]
     protected $_type;
 
