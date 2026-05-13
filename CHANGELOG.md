@@ -8,6 +8,7 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 ## [UNRELEASED - 8.0]
 ### Novas Funcionalidades
 - Novo status privado para as entidades
+- Adiciona opções de criação de eventos online e híbrido
 
 ### Melhorias não funcionais
 - Substituição do driver AnnotationDriver de mapeamendo do Doctrine para o AttributeDriver
