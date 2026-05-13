@@ -167,6 +167,24 @@ class Module extends \MapasCulturais\Module{
                 'config' => $config,
             ]);
         });
+
+        // Verifica se a imagem de perfil é obrigatória
+        $app->hook("entity(<<Agent|Project|Space|Event|Opportunity>>).validationErrors", function (&$errors) use ($app) {
+            $className = $this->getClassName();
+
+            $requiredAvatarConfig = isset($app->config['module.Entities']) ? $app->config['module.Entities']['requiredAvatar'] : [];
+            if($requiredAvatarConfig && !$this->isNew()){  
+                $isConfiguredClass = array_key_exists($className, $requiredAvatarConfig);
+                $isAvatarRequired = $isConfiguredClass && (bool) $requiredAvatarConfig[$className];
+
+                $files = $this->files;
+                $hasAvatar = is_array($files) && array_key_exists("avatar", $files) && !empty($files["avatar"]);
+
+                if ($isAvatarRequired && !$hasAvatar) {
+                    $errors["file:avatar"][] = \MapasCulturais\i::__("A imagem do perfil é obrigatória.");
+                }
+            }
+        });
     }
 
     function register(){

@@ -151,6 +151,10 @@ class OpportunityExporterTest extends TestCase
 
         $imported = null;
 
+        $app = App::i();
+        $original_log_handlers = $app->log->getHandlers();
+        $app->log->setHandlers([]);
+
         try {
             $imported = $importer->import();
             $imported->save(true);
@@ -217,6 +221,7 @@ class OpportunityExporterTest extends TestCase
                 }
             }
         } finally {
+            $app->log->setHandlers($original_log_handlers);
             if ($imported) {
                 $this->cleanupImportedOpportunityFiles($imported);
             }
