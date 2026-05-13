@@ -18,6 +18,7 @@ return [
             'usuario'           => ['user', 'single'],
             'agente'            => ['agent', 'single'],
             'espaco'            => ['space', 'single'],
+            'eventos-virtuais'  => ['space', 'single', [0]],
             'projeto'           => ['project', 'single'],
             'selo'              => ['seal', 'single'],
             'oportunidade'      => ['opportunity', 'single'],

@@ -3353,4 +3353,26 @@ $$
         $app->log->debug("migração de metadados finalizada. Campos migrados: {$migrated}");
     },
 
+    'Adiciona a coluna type na tabela event_occurrence' => function() {
+        if(!__column_exists('event_occurrence', 'type')) {
+            __exec("ALTER TABLE event_occurrence ADD COLUMN type TEXT NOT NULL DEFAULT 'in-person';");
+        }
+    },
+
+    'Adiciona a coluna metadata na tabela event_occurrence' => function() {
+        if(!__column_exists('event_occurrence', 'metadata')) {
+            __exec("ALTER TABLE event_occurrence ADD COLUMN metadata JSON DEFAULT NULL;");
+        }
+    },
+    
+    'Cria espaço default Internet (id=0) para eventos virtuais' => function() use($conn) {
+        if(!$conn->fetchAll("SELECT id FROM space WHERE id = 0")) {
+            $agent_id = $conn->fetchScalar("select profile_id from usr where id = (select min(usr_id) from role where name = 'superAdmin')");
+            $conn->executeQuery("
+                INSERT INTO space (id, name, status, type, public, location) 
+                VALUES (0, 'Internet', 1, 0, true, point(0, 0))
+            ");
+        }
+    },
+
 ] + $updates ;   
