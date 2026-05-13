@@ -67,6 +67,11 @@ $this->import('
             </mc-states-and-cities>
         </div>
         <div class="field">
+            <label> <?php i::_e('Tipo de evento') ?></label>
+            <mc-multiselect :model="pseudoQuery['event:type']" placeholder="<?php i::_e('Selecione o tipo') ?>" :items="eventTypes" hide-filter hide-button></mc-multiselect>
+            <mc-tag-list editable :tags="pseudoQuery['event:type']" :labels="eventTypesLabels" classes="event__background event__color"></mc-tag-list>
+        </div>
+        <div class="field">
             <label> <?php i::_e('Classificação Etária') ?></label>
             <mc-multiselect :model="pseudoQuery['event:classificacaoEtaria']" placeholder="<?php i::_e('Classificação Etária')?>" :items="ageRating" hide-filter hide-button></mc-multiselect>
             <mc-tag-list editable :tags="pseudoQuery['event:classificacaoEtaria']" classes="event__background event__color"></mc-tag-list>
