@@ -9,6 +9,9 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 ### Correçoes
 - Corrige erro que impedia a ordenaçao por cotas funcionar corretamente
 
+### Melhorias
+- Permite que o avaliador do recurso visualize o detalhamento da avaliação anterior diretamente na tela de avaliação do recurso
+
 ## [7.7.37] - 2026-05-14
 ### Correçoes
 - Remove style inline na single da registration
