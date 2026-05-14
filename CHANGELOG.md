@@ -18,6 +18,7 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Melhora a exibição do botão minha conta no header para exibir o nome do perfil do agente responsável logado
 - Adiciona configuração para exibir ou ocultar o detalhamento da avaliação anterior na fase de recurso
 - Exibe o detalhamento da avaliação da fase anterior para avaliadores da fase de recurso
+- Adiciona configuração para exigir foto de perfil do agente coletivo vinculado na inscrição para proponentes do tipo coletivo e pessoa jurídica
 
 ### Correções
 - Aplica texto de internacionalização faltante no componente opportunity-registration-table

@@ -188,6 +188,7 @@ class Exporter
             'registrationProponentTypes' => $this->opportunity->registrationProponentTypes ?: [],
             'useAgentRelationColetivo' => $this->opportunity->useAgentRelationColetivo,
             'proponentAgentRelation' => $this->opportunity->proponentAgentRelation,
+            'proponentAgentRelationAvatar' => $this->opportunity->proponentAgentRelationAvatar,
         ];
 
         return $result;
