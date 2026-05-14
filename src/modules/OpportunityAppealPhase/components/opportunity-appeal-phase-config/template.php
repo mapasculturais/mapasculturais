@@ -137,6 +137,7 @@ $this->import('
                 </div>
                 <div class="opportunity-appeal-phase-config__checkboxes field">
                     <entity-field :entity="entity" hide-required  :editable="true" prop="allow_proponent_response" :autosave="3000"></entity-field>
+                    <entity-field :entity="entity" hide-required :editable="true" prop="showPreviousPhaseEvaluationDetails" :autosave="3000"></entity-field>
                 </div> 
 
                 <mc-alert v-if="entity.allow_proponent_response" type="warning" class="entity-owner-pending">
