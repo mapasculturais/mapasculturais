@@ -26,6 +26,17 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Corrige a importação de formulários de inscrição para preservar os formatos aceitos configurados nos campos de anexo
 - Corrige erro ao reordenar etapas na configuração do formulário de oportunidades
 
+## [7.7.38] - 2026-05-14
+### Correçoes
+- Corrige erro que impedia a ordenaçao por cotas funcionar corretamente
+
+### Melhorias
+- Permite que o avaliador do recurso visualize o detalhamento da avaliação anterior diretamente na tela de avaliação do recurso
+
+## [7.7.37] - 2026-05-14
+### Correçoes
+- Remove style inline na single da registration
+
 ## [7.7.36] - 2026-05-08
 ### Correções
 - Corrige exibiçao das abas com permissão na aba minhas inscrições e no gerênciamento de usuários
