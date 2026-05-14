@@ -344,6 +344,8 @@ $today = new DateTime();
                     <?php endif; ?>
                     <?php $phase = $phase->nextPhase; ?>
                 <?php endwhile ?>
+
+                <?php $this->applyTemplateHook('registration-ficha-tab', 'end', [$entity]) ?>
             </div>
         </mc-tab>
 
