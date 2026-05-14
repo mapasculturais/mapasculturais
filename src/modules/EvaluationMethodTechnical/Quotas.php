@@ -258,6 +258,34 @@ class Quotas {
         return $fields;
     }
 
+    protected function enrichRegistrationFromFirstPhase(object $registration): object {
+        if (!isset($registration->id) || $this->phase->id === $this->firstPhase->id) {
+            return $registration;
+        }
+
+        $registration_entity = App::i()->repo('Registration')->find($registration->id);
+        if (!$registration_entity) {
+            return $registration;
+        }
+
+        $source_registration = $registration_entity->firstPhase;
+        if (!$source_registration || $source_registration->id === $registration_entity->id) {
+            return $registration;
+        }
+
+        foreach ($this->fields as $field_name) {
+            if (empty($registration->$field_name ?? null) && isset($source_registration->$field_name)) {
+                $registration->$field_name = $source_registration->$field_name;
+            }
+        }
+
+        if (empty($registration->appliedForQuota ?? null)) {
+            $registration->appliedForQuota = $source_registration->appliedForQuota;
+        }
+
+        return $registration;
+    }
+
     /**
      * Retorna lista de inscrições para a ordenação das inscrições considerando as cotas, 
      * contendo todos os campos que serão utilizados.
@@ -279,12 +307,93 @@ class Quotas {
             return (object) $reg; 
         }, $result->registrations);
 
+        // Buscar campos privados da primeira fase diretamente do banco
+        $this->enrichRegistrationsFromFirstPhase($registrations);
+
         foreach($registrations as $registration) {
             $this->getRegistrationQuotas($registration);
             $this->getRegistrationRegion($registration);
         }
 
         return $registrations;
+    }
+
+    /**
+     * Enriquece as inscrições com campos da primeira fase que podem ser privados
+     * e não são retornados pela ApiQuery normalmente.
+     * 
+     * @param array $registrations
+     * @return void
+     */
+    protected function enrichRegistrationsFromFirstPhase(array $registrations): void {
+        if ($this->phase->id === $this->firstPhase->id) {
+            return;
+        }
+
+        $app = App::i();
+        $registration_ids = array_map(fn($reg) => $reg->id, $registrations);
+        
+        if (empty($registration_ids)) {
+            return;
+        }
+
+        // Buscar previousPhaseRegistrationId para mapear inscrições
+        $conn = $app->em->getConnection();
+        $placeholders = implode(',', array_fill(0, count($registration_ids), '?'));
+        
+        $sql = "SELECT object_id, value 
+                FROM registration_meta 
+                WHERE object_id IN ($placeholders) 
+                AND key = 'previousPhaseRegistrationId'";
+        
+        $stmt = $conn->executeQuery($sql, $registration_ids);
+        $previous_phase_map = [];
+        while ($row = $stmt->fetchAssociative()) {
+            $previous_phase_map[$row['object_id']] = $row['value'];
+        }
+
+        if (empty($previous_phase_map)) {
+            return;
+        }
+
+        // Buscar campos de quota da primeira fase
+        $first_phase_ids = array_values($previous_phase_map);
+        $placeholders = implode(',', array_fill(0, count($first_phase_ids), '?'));
+        
+        $quota_fields = array_diff($this->fields, ['appliedForQuota']);
+        if (empty($quota_fields)) {
+            return;
+        }
+
+        $field_placeholders = implode(',', array_fill(0, count($quota_fields), '?'));
+        
+        $sql = "SELECT object_id, key, value 
+                FROM registration_meta 
+                WHERE object_id IN ($placeholders) 
+                AND key IN ($field_placeholders)";
+        
+        $params = array_merge($first_phase_ids, $quota_fields);
+        $stmt = $conn->executeQuery($sql, $params);
+        
+        $first_phase_data = [];
+        while ($row = $stmt->fetchAssociative()) {
+            if (!isset($first_phase_data[$row['object_id']])) {
+                $first_phase_data[$row['object_id']] = [];
+            }
+            $first_phase_data[$row['object_id']][$row['key']] = $row['value'];
+        }
+
+        // Aplicar dados da primeira fase às inscrições atuais
+        foreach ($registrations as $registration) {
+            $first_phase_id = $previous_phase_map[$registration->id] ?? null;
+            if ($first_phase_id && isset($first_phase_data[$first_phase_id])) {
+                foreach ($first_phase_data[$first_phase_id] as $field => $value) {
+                    if (empty($registration->$field ?? null)) {
+                        $registration->$field = $value;
+                    }
+                }
+            }
+        }
     }
 
 
@@ -296,6 +405,7 @@ class Quotas {
      */
     function getRegistrationRegion($registration): string {
         $app = App::i();
+        $registration = $this->enrichRegistrationFromFirstPhase($registration);
 
         $registration_proponent_type = $registration->proponentType ?: 'default';
 
@@ -492,7 +602,7 @@ class Quotas {
                             break;
                         }
                         $registration = $_result[$i];
-                        
+
                         if($this->isRegistrationEligibleForQuota($registration, $quota_slug)) {
                             $avaliable_quota_vacancies--;
                             $this->setRegistrationAsQuota($registration, $quota_slug);
@@ -581,6 +691,7 @@ class Quotas {
 
     public function setRegistrationAsQuota(object $registration, string $quota_slug, object $replaced_registration = null) {
         $registration->usingQuota = true;
+
         if ($replaced_registration) {
             $this->registrationFields[$registration->id]['usingQuota'] = $quota_slug . "\n" . sprintf(i::__("(substituindo %s)"), $replaced_registration->number);
         } else {
@@ -611,6 +722,8 @@ class Quotas {
      * @return array
      */
     protected function getRegistrationQuotas(object $registration): array {
+        $registration = $this->enrichRegistrationFromFirstPhase($registration);
+
         $result = [];
         $quotas = [];
         if($registration->eligible) {
@@ -671,6 +784,28 @@ class Quotas {
         return '';
     }
 
+    protected function getTiebreakerSelected(object $tiebreaker): ?object {
+        if (isset($tiebreaker->selected)) {
+            return $tiebreaker->selected;
+        }
+
+        $criterion_type = $tiebreaker->criterionType ?? null;
+        if (!$criterion_type || !str_starts_with($criterion_type, 'field_')) {
+            return null;
+        }
+
+        foreach ($this->firstPhase->registrationFieldConfigurations as $field) {
+            if ($field->fieldName === $criterion_type) {
+                return (object) [
+                    'title' => $field->title,
+                    'fieldType' => $field->fieldType,
+                ];
+            }
+        }
+
+        return null;
+    }
+
     private function saveRegistrationTiebreaker($registration, $tiebreaker, $value = null) {
         $this->registrationFields[$registration->id] = $this->registrationFields[$registration->id] ?? [];
         $this->registrationFields[$registration->id]['tiebreaker'] = $this->registrationFields[$registration->id]['tiebreaker'] ?? [];
@@ -685,7 +820,8 @@ class Quotas {
             $value = $registration->sentTimestamp;
     
         } else {
-            $key = $tiebreaker->selected->title;
+            $selected = $this->getTiebreakerSelected($tiebreaker);
+            $key = $selected->title ?: $tiebreaker->criterionType;
             
             if (property_exists($registration, $tiebreaker->criterionType)) {
                 $value = $registration->{$tiebreaker->criterionType};
@@ -757,6 +893,8 @@ class Quotas {
                             }
                         }
                     }
+
+                    continue;
                 }
                 
                 if(isset($tiebreaker->criterionType) && $tiebreaker->criterionType == 'criterion') {
@@ -769,6 +907,8 @@ class Quotas {
                     if($registration1Has != $registration2Has) {
                         return $registration2Has <=> $registration1Has;
                     }
+
+                    continue;
                 }
                 
                 if(isset($tiebreaker->criterionType) && $tiebreaker->criterionType == 'sectionCriteria') {
@@ -781,9 +921,11 @@ class Quotas {
                     if($registration1Has != $registration2Has) {
                         return $registration2Has <=> $registration1Has;
                     }
+
+                    continue;
                 }
 
-                $selected = $tiebreaker->selected;
+                $selected = $this->getTiebreakerSelected($tiebreaker);
                 if(is_null($selected)) {
                     continue;
                 }
