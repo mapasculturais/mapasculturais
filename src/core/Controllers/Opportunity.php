@@ -1837,5 +1837,106 @@ class Opportunity extends EntityController {
         $this->apiAddHeaderMetadata($query_params, $result, $query->count());
         $this->apiResponse($result);
     }
+
+    /**
+    * Recalcula o campo eligible das inscrições de uma oportunidade
+    * 
+    * Esta ação requer autenticação e permissão '@control' na oportunidade.
+    * Recalcula o campo eligible para todas as inscrições da primeira fase
+    * baseado na configuração atual de políticas afirmativas/cotas.
+    * 
+    * @return void
+    */
+    public function API_recalculateEligible(): void {
+        $this->requireAuthentication();
+
+        $app = App::i();
+        $opportunity_id = (int) ($this->data['id'] ?? $this->data['@opportunity'] ?? 0);
+        $opportunity = $this->_getOpportunity($opportunity_id);
+        $opportunity->checkPermission('@control');
+
+        $first_phase = $opportunity->firstPhase;
+        $em = $opportunity->evaluationMethodConfiguration;
+
+        if (!$em || $em->type->id !== 'technical') {
+            $this->errorJson(i::__('Esta oportunidade não possui avaliação técnica configurada.'), 400);
+            return;
+        }
+
+        $quota_config = $em->quotaConfiguration;
+        if (!$quota_config || !($quota_config->rules ?? [])) {
+            $this->errorJson(i::__('Esta oportunidade não possui cotas configuradas.'), 400);
+            return;
+        }
+
+        $app->disableAccessControl();
+
+        $first_phase->registerRegistrationMetadata();
+
+        $query = new ApiQuery(Registration::class, [
+            'opportunity' => API::EQ($first_phase->id),
+            '@select' => 'id',
+            'status' => API::GTE(0),
+        ]);
+        $registrations = $query->find();
+
+        $updated = 0;
+        $eligible_count = 0;
+        $connection = $app->em->getConnection();
+
+        foreach ($registrations as $reg_data) {
+            $registration = $app->repo('Registration')->find($reg_data['id']);
+            if (!$registration) {
+                continue;
+            }
+
+            $eligible = false;
+            $proponent_type = $registration->proponentType ?: 'default';
+
+            foreach ($quota_config->rules as $rule) {
+                $field_name = $rule->fields->$proponent_type->fieldName ?? null;
+                if (!$field_name) {
+                    continue;
+                }
+
+                $field_value = (array) ($registration->$field_name ?? []);
+                $eligible_values = (array) ($rule->fields->$proponent_type->eligibleValues ?? []);
+
+                if (array_intersect($field_value, $eligible_values)) {
+                    $eligible = true;
+                    break;
+                }
+            }
+
+            $eligible_str = $eligible ? 'true' : 'false';
+
+            $connection->executeQuery(
+                "UPDATE registration SET eligible = :eligible WHERE id = :id",
+                ['eligible' => $eligible_str, 'id' => $registration->id]
+            );
+
+            $updated++;
+            if ($eligible) {
+                $eligible_count++;
+            }
+
+            if ($registration->nextPhase) {
+                $connection->executeQuery(
+                    "UPDATE registration SET eligible = :eligible WHERE id = :id",
+                    ['eligible' => $eligible_str, 'id' => $registration->nextPhase->id]
+                );
+            }
+        }
+
+        $app->enableAccessControl();
+
+        $this->apiResponse([
+            'success' => true,
+            'message' => i::__('Campo eligible recalculado com sucesso.'),
+            'total' => $updated,
+            'eligible' => $eligible_count,
+            'notEligible' => $updated - $eligible_count,
+        ]);
+    }
     
 }

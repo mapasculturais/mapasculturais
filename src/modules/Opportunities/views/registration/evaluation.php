@@ -9,6 +9,7 @@ use MapasCulturais\i;
 $this->layout = 'registrations';
 $this->import('
     evaluation-form
+    appeal-previous-evaluation-results
     mc-alert
     mc-breadcrumb
     mc-container
@@ -104,6 +105,8 @@ if (isset($this->controller->data['user']) && $entity->opportunity->canUser("@co
                             </div>
                         </div>
                     </section>
+
+                    <appeal-previous-evaluation-results></appeal-previous-evaluation-results>
 
                     <section class="col-12  grid-12 section">
                         <h3 class="col-12"><?= i::__('Dados informados no formulário') ?></h3>
