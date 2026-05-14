@@ -16,7 +16,7 @@ if (!$entity->canUser('viewUserEvaluation') && !$entity->canUser('@control')) {
     return;
 }
 
-if (in_array($entity->showPreviousPhaseEvaluationDetails, [false, 0, '0'], true)) {
+if (in_array($entity->opportunity->showPreviousPhaseEvaluationDetails, [false, 0, '0'], true)) {
     return;
 }
 
@@ -60,10 +60,23 @@ try {
 
 $registration_data['evaluationsDetails'] = [];
 
+$current_user = $app->user;
+$is_appeal_evaluator = false;
+
+$appeal_evaluation_config = $entity->opportunity->evaluationMethodConfiguration;
+if ($appeal_evaluation_config) {
+    $valuer_user_ids = $appeal_evaluation_config->getValuerUserIds();
+    $is_appeal_evaluator = in_array($current_user->id, $valuer_user_ids);
+}
+
+$can_view_valuer_names = $entity->opportunity->canUser('@control') || 
+                          $is_appeal_evaluator || 
+                          $evaluation_configuration->publishValuerNames;
+
 foreach ($sent_evaluations as $evaluation) {
     $detail = $evaluation_method->getEvaluationDetails($evaluation);
 
-    if ($evaluation_configuration->publishValuerNames) {
+    if ($can_view_valuer_names) {
         $detail['valuer'] = $evaluation->user->profile->simplify('id,name,singleUrl');
     }
 

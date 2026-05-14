@@ -3,6 +3,7 @@
 namespace Tests\Builders;
 
 use MapasCulturais\Entities\EvaluationMethodConfiguration;
+use MapasCulturais\Entities\Opportunity;
 use Tests\Abstract\Builder;
 use Tests\Enums\ProponentTypes;
 
@@ -37,6 +38,8 @@ class QuotaBuilder extends Builder
 
     public function done(): EvaluationMethodTechnicalBuilder
     {
+        $this->instance->save(true);
+
         return $this->evaluationMethodBuilder;
     }
 
@@ -68,13 +71,18 @@ class QuotaBuilder extends Builder
         return $this;
     }
 
+    private function getOpportunityForFields(): Opportunity
+    {
+        return $this->instance->opportunity->firstPhase;
+    }
+
     public function addRuleField(string $field_identifier, array|string $values, ProponentTypes $proponent_type = ProponentTypes::DEFAULT): self
     {
         if(is_string($values)) {
             $values = [$values];
         }
 
-        $field_name = $this->opportunityBuilder->getFieldName($field_identifier, $this->instance->opportunity);
+        $field_name = $this->opportunityBuilder->getFieldName($field_identifier, $this->getOpportunityForFields());
 
         $current_rule = &$this->currentRule;
 
@@ -163,7 +171,7 @@ class QuotaBuilder extends Builder
         
         // Se não for 'geo', tenta converter o identifier em field_name
         if ($field != 'geo') {
-            $field = $this->opportunityBuilder->getFieldName($field, $this->instance->opportunity) ?: $field;
+            $field = $this->opportunityBuilder->getFieldName($field, $this->getOpportunityForFields()) ?: $field;
         }
         
         $fields->{$proponent_type->value} = $field;
