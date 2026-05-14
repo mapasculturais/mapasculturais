@@ -62,11 +62,14 @@ class Importer
         protected bool $statusLabels = false, // exportado a cada fase
         protected bool $appealPhases = false, // exportado a cada fase
         protected bool $monitoringPhases = false,
+
+        protected int $status = Entity::STATUS_ENABLED,
     ) {
         $opportunity_class = $this->onwerEntity->opportunityClassName;
 
         $opportunity = new $opportunity_class;
         $opportunity->ownerEntity = $this->onwerEntity;
+        $opportunity->status = $this->status;
 
         $this->opportunity = $opportunity;
     }

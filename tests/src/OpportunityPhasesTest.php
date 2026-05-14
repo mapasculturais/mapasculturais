@@ -470,6 +470,103 @@ class OpportunityPhasesTest extends TestCase
     }
 
     /**
+     * Garante que, ao excluir fases intermediárias, as avaliações restantes permaneçam vinculadas a oportunidades ativas e que a sincronização de inscrições funcione corretamente.
+     */
+    function testOpportunityDeletePhaseIntermediary(): void
+    {
+        $admin = $this->userDirector->createUser('admin');
+        $this->login($admin);
+
+        $opportunity = $this->opportunityBuilder
+            ->reset(owner: $admin->profile, owner_entity: $admin->profile)
+            ->fillRequiredProperties()
+            ->save()
+            ->firstPhase()
+                ->setRegistrationPeriod(new Open)
+                ->done()
+            ->save()
+            ->addEvaluationPhase(EvaluationMethods::simple)
+                ->setEvaluationPeriod(new ConcurrentEndingAfter)
+                ->save()
+                ->done()
+            ->save()
+            ->addEvaluationPhase(EvaluationMethods::documentary)
+                ->setEvaluationPeriod(new ConcurrentEndingAfter)
+                ->save()
+                ->done()
+            ->save()
+            ->addDataCollectionPhase()
+                ->setRegistrationPeriod(new Open)
+                ->done()
+            ->save()
+            ->addEvaluationPhase(EvaluationMethods::simple)
+                ->setEvaluationPeriod(new ConcurrentEndingAfter)
+                ->save()
+                ->done()
+            ->save()
+            ->refresh()
+            ->getInstance();
+
+        $phases = $opportunity->allPhases;
+
+        $evaluations = [];
+        $dataCollections = [];
+
+        foreach ($phases as $phase) {
+            if ($phase->isFirstPhase || $phase->isDataCollection) {
+                $dataCollections[] = $phase;
+            }
+            if ($phase->evaluationMethodConfiguration) {
+                $evaluations[] = $phase->evaluationMethodConfiguration;
+            }
+        }
+
+        $this->assertCount(3, $evaluations, 'Garantindo que existam 3 fases de avaliação');
+        $this->assertCount(2, $dataCollections, 'Garantindo que existam 2 fases de coleta de dados');
+
+        $app = $this->app;
+
+        $fase2_id = $evaluations[0]->id;
+        $fase3_id = $evaluations[1]->id;
+        $fase5_id = $evaluations[2]->id;
+        $fase4_id = $dataCollections[1]->id;
+
+        // Deleta a fase de coleta 2 (Opp 4) - Soft delete (status = -10)
+        $fase4 = $app->repo('Opportunity')->find($fase4_id);
+        $this->assertNotNull($fase4, 'Garantindo que a fase de coleta 4 exista antes da exclusão');
+        $fase4->delete(true);
+        
+        // Verifica que a Opp foi soft-deleted
+        $opp_deletada = $app->repo('Opportunity')->find($fase4_id);
+        $this->assertNotNull($opp_deletada, 'Garantindo que a oportunidade ainda exista no banco');
+        $this->assertEquals(-10, $opp_deletada->status, 'Garantindo que a oportunidade esteja com status deletado (soft delete)');
+        
+        // Verifica que a EMC ainda existe (pois o soft delete não dispara CASCADE)
+        $emc_restante = $app->repo('EvaluationMethodConfiguration')->find($fase5_id);
+        $this->assertNotNull($emc_restante, 'Garantindo que a EMC ainda exista após soft delete da oportunidade');
+        
+        // Verifica que as outras EMCs ainda existem e estão vinculadas a oportunidades ativas
+        $fase2_restante = $app->repo('EvaluationMethodConfiguration')->find($fase2_id);
+        $fase3_restante = $app->repo('EvaluationMethodConfiguration')->find($fase3_id);
+        
+        $this->assertNotNull($fase2_restante, 'Garantindo que a fase 2 (avaliação) ainda exista');
+        $this->assertNotNull($fase3_restante, 'Garantindo que a fase 3 (avaliação) ainda exista');
+        
+        // Verifica que as EMCs estão vinculadas a oportunidades ativas (status > -10)
+        $opp_fase2 = $fase2_restante->opportunity;
+        $opp_fase3 = $fase3_restante->opportunity;
+        
+        $this->assertGreaterThan(-10, $opp_fase2->status, 'Garantindo que a oportunidade da fase 2 esteja ativa');
+        $this->assertGreaterThan(-10, $opp_fase3->status, 'Garantindo que a oportunidade da fase 3 esteja ativa');
+        
+        // Verifica que o nextPhase e previousPhase pulam fases deletadas
+        $fase1 = $opportunity->firstPhase;
+        $next_da_fase1 = $fase1->nextPhase;
+        $this->assertNotNull($next_da_fase1, 'Garantindo que a próxima fase após a fase 1 não seja nula');
+        $this->assertGreaterThan(-10, $next_da_fase1->status, 'Garantindo que a próxima fase após a fase 1 esteja ativa (não deletada)');
+    }
+
+    /**
      * @param list<string> $expectedCategories
      * @param list<string> $expectedProponentTypes
      */

@@ -368,6 +368,7 @@ class Module extends \MapasCulturais\Module{
                     )
                     AND om.value IS NULL
                     AND om2.value IS NULL
+                    AND o.status > -10
                 ORDER BY o.id DESC");
 
             $query->setMaxResults(1);
@@ -411,16 +412,18 @@ class Module extends \MapasCulturais\Module{
                     SELECT o
                     FROM $class o
                     WHERE
-                        o.id = :parent OR
-                        (o.parent = :parent AND o.id <> :this)
+                        (o.id = :parent OR
+                        (o.parent = :parent AND o.id <> :this))
+                        AND o.status > -10
                     ORDER BY CASE WHEN o.registrationFrom IS NULL THEN 1 ELSE 0 END ASC, o.registrationFrom ASC, o.id ASC");
             } else {
                 $query = $app->em->createQuery("
                     SELECT o
                     FROM $class o
                     WHERE
-                        o.id = :parent OR
-                        (o.parent = :parent AND o.registrationFrom <= (SELECT this.registrationFrom FROM $class this WHERE this.id = :this) AND o.id <> :this)
+                        (o.id = :parent OR
+                        (o.parent = :parent AND o.registrationFrom <= (SELECT this.registrationFrom FROM $class this WHERE this.id = :this) AND o.id <> :this))
+                        AND o.status > -10
                     ORDER BY o.registrationFrom ASC");
             }
                 
@@ -459,7 +462,8 @@ class Module extends \MapasCulturais\Module{
                 WHERE
                     o.parent = :parent AND
                     o.id > :this AND
-                    o.id <> :lastPhase
+                    o.id <> :lastPhase AND
+                    o.status > -10
                 ORDER BY o.id ASC");
 
             $query->setMaxResults(1);
@@ -504,7 +508,8 @@ class Module extends \MapasCulturais\Module{
                 WHERE
                     o.parent = :parent AND
                     o.id > :this AND
-                    o.id <> :lastPhase
+                    o.id <> :lastPhase AND
+                    o.status > -10
                 ORDER BY o.id ASC");
 
             $query->setParameters([
@@ -688,7 +693,7 @@ class Module extends \MapasCulturais\Module{
                  SELECT o
                  FROM $class o
                  JOIN o.__metadata m WITH m.key = 'isLastPhase' AND m.value = '1'
-                 WHERE o.parent = :parent"
+                 WHERE o.parent = :parent AND o.status > -10"
                 );
 
              $query->setMaxResults(1);

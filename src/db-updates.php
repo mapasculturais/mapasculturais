@@ -2403,7 +2403,7 @@ $$
         $fileName = "dbupdate_RegistrationFieldConfiguration.txt";
         $dir = PRIVATE_FILES_PATH . "dbupdate_documento";
         if (!file_exists($dir)) {
-            mkdir($dir, 775);
+            mkdir($dir, 0775);
         }
 
         $path = $dir . "/" . $fileName;
