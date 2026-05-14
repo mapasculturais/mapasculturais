@@ -16,6 +16,10 @@ if (!$entity->canUser('viewUserEvaluation') && !$entity->canUser('@control')) {
     return;
 }
 
+if (in_array($entity->showPreviousPhaseEvaluationDetails, [false, 0, '0'], true)) {
+    return;
+}
+
 $parent_opportunity = $entity->opportunity->parent;
 
 if (!$parent_opportunity || !$parent_opportunity->evaluationMethodConfiguration) {
