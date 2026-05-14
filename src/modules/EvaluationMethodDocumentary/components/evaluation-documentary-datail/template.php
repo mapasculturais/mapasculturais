@@ -12,7 +12,7 @@ use MapasCulturais\i;
     <div class="registration-results__card-header">
         <div class="registration-results__card-title">
             <h4 v-if="detail.valuer" class="registration-results__opinion-title bold">
-                <?= i::__('Parecerista: ') ?> {{detail.valuer.name}}
+                <?= i::__('Parecerista: ') ?> #{{index+1}} ({{detail.valuer.id}} - {{detail.valuer.name}})
             </h4>
             <h4 v-else class="registration-results__opinion-title bold">
                 <?= i::__('Parecerista: ') ?> #{{index+1}}
