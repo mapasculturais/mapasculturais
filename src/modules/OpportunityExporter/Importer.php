@@ -299,8 +299,12 @@ class Importer
         $evaluation_phase->opportunity = $phase;
         $evaluation_phase->name = $replaced_data['name'];
         $evaluation_phase->type = $replaced_data['type'];
-        $evaluation_phase->evaluationFrom = $replaced_data['evaluationFrom'];
-        $evaluation_phase->evaluationTo = $replaced_data['evaluationTo'];
+
+        if ($this->dates) {
+            $evaluation_phase->evaluationFrom = $replaced_data['evaluationFrom'] ?? null;
+            $evaluation_phase->evaluationTo = $replaced_data['evaluationTo'] ?? null;
+        }
+
         $evaluation_phase->save(true);
 
         $evaluation_phase->evaluationMethod->import($evaluation_phase, $replaced_data);
