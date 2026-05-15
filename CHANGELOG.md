@@ -5,6 +5,10 @@ Todas as mudanças notáveis no projeto serão documentadas neste arquivo.
 O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/)
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [7.7.39] - 2026-05-15
+### Correçoes
+- Ajusta exibiçao do nome e id do avaliador nas fases de recurso e normais no exbir detalhamento
+
 ## [7.7.38] - 2026-05-14
 ### Correçoes
 - Corrige erro que impedia a ordenaçao por cotas funcionar corretamente
