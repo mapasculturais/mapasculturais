@@ -50,7 +50,11 @@ app.component('entity-owner', {
 
     computed: {
         owner() {
-            return this.entity.owner || this.entity.parent;
+            const o = this.entity?.owner || this.entity?.parent;
+            if (o == null || typeof o !== 'object') {
+                return null;
+            }
+            return o;
         },
     },
 

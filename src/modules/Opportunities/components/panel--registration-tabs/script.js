@@ -21,6 +21,8 @@ app.component('panel--registration-tabs', {
 
         return {
             query,
+            /** Itens por página em cada aba (mc-entities pagina com “Carregar mais”). */
+            pageLimit: 20,
             totalDrafts: $MAPAS.config.panelRegistrationTabs.totalDrafts,
             showAlert: false,
         }
@@ -40,6 +42,12 @@ app.component('panel--registration-tabs', {
                 case 'notSent':
                     this.query['status'] = 'EQ(0)';
                     this.query['@permissions'] = 'view';
+                    this.query['user'] = 'EQ(@me)';
+                    break;
+                case 'withControl':
+                    this.query['status'] = 'GTE(0)';
+                    this.query['@permissions'] = '@control';
+                    this.query['user'] = '!EQ(@me)';
                     break;
             }
         },
