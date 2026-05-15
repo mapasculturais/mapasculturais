@@ -21,8 +21,8 @@
         </div>
     </div>
 
-    <div v-if="registration.consolidatedDetails.appliedPointReward" 
-         v-for="policy in [registration.consolidatedDetails.appliedPointReward]" class="registration-results__card-content">                    
+    <div v-if="registration.consolidatedDetails.appliedPointReward"
+         v-for="policy in [registration.consolidatedDetails.appliedPointReward]" class="registration-results__card-content">
         <div class="registration-results__opinion registration-results__opinion--document">
             <h5 class="registration-results__opinion-title bold">
                 <?= i::__('Bônus por pontuação') ?>
@@ -32,17 +32,41 @@
                 <p><label><?= i::__('Pontuação original: ') ?></label> <strong>{{policy.raw}}</strong></p>
                 <p><label><?= i::__('Acréscimos:') ?></label></p>
                 <ul>
-                    <li v-for="rule in policy.rules">{{rule.field.title}}: <em>{{rule.value}}</em> <strong>(+{{rule.percentage}}%)</strong></li>
+                    <template v-if="policy.type === 'fixed'">
+                        <li v-for="rule in policy.rules">
+                            {{rule.field.title}}: <em>{{rule.value}}</em>
+                            <strong>(+{{rule.bonusValue ?? rule.percentage}} <?= i::__('ponto(s)') ?>)</strong>
+                        </li>
+                    </template>
+                    <template v-else>
+                        <li v-for="rule in policy.rules">
+                            {{rule.field.title}}: <em>{{rule.value}}</em>
+                            <strong>(+{{rule.bonusValue ?? rule.percentage}}%)</strong>
+                        </li>
+                    </template>
                 </ul>
-                <p>
-                    <label><?= i::__('Acréscimo total na pontuação:') ?> </label> 
-                    <strong>{{parseFloat(policy.raw) / 100 * parseFloat(policy.percentage)}}
-                        <em>({{policy.percentage}}%)</em></strong>
-                </p>
-                <p v-if="parseFloat(policy.percentage) >= parseFloat(policy.roof)">
-                    <label><?= i::__('Percentual máximo que pode ser acrescido:') ?></label>
-                    <strong>{{policy.roof}}%</strong>
-                </p>
+
+                <template v-if="policy.type === 'fixed'">
+                    <p>
+                        <label><?= i::__('Acréscimo total na pontuação:') ?> </label>
+                        <strong>+{{policy.fixed ?? 0}} <?= i::__('ponto(s)') ?></strong>
+                    </p>
+                    <p v-if="parseFloat(policy.roof) > 0 && parseFloat(policy.fixed) >= parseFloat(policy.roof)">
+                        <label><?= i::__('Pontuação máxima de bônus:') ?></label>
+                        <strong>{{policy.roof}} <?= i::__('ponto(s)') ?></strong>
+                    </p>
+                </template>
+                <template v-else>
+                    <p>
+                        <label><?= i::__('Acréscimo total na pontuação:') ?> </label>
+                        <strong>{{parseFloat(policy.raw) / 100 * parseFloat(policy.percentage)}}
+                            <em>({{policy.percentage}}%)</em></strong>
+                    </p>
+                    <p v-if="parseFloat(policy.roof) > 0 && parseFloat(policy.percentage) >= parseFloat(policy.roof)">
+                        <label><?= i::__('Percentual máximo que pode ser acrescido:') ?></label>
+                        <strong>{{policy.roof}}%</strong>
+                    </p>
+                </template>
             </div>
         </div>
     </div>
