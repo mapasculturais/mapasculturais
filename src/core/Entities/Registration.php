@@ -1239,6 +1239,9 @@ class Registration extends \MapasCulturais\Entity
             $errorsResult['avatar'] = [sprintf(\MapasCulturais\i::__('A imagem avatar do agente "%s" é obrigatório.'),$this->owner->name)];
         }
 
+        $proponent_agent_relation = $this->opportunity->proponentAgentRelation ?? null;
+        $proponent_agent_relation_avatar = $this->opportunity->proponentAgentRelationAvatar ?? null;
+
         $definitionsWithAgents = $this->_getDefinitionsWithAgents();
         
         // validate agents
@@ -1273,6 +1276,17 @@ class Registration extends \MapasCulturais\Entity
             }
 
             if($def->agent){
+                $requires_avatar = false;
+                if ($proponent_agent_relation && $proponent_agent_relation_avatar) {
+                    $requires_avatar = ($proponent_agent_relation->{$this->proponentType} ?? false)
+                        && ($proponent_agent_relation_avatar->{$this->proponentType} ?? false);
+                }
+
+                if ($group_name === 'coletivo' && $requires_avatar && !array_key_exists('avatar', $def->agent->files)) {
+                    $errorsResult[$agent_prefix . $def->agentRelationGroupName . '_avatar'] = [
+                        sprintf(i::__('A imagem avatar do agente "%s" é obrigatório.'), $def->agent->name)
+                    ];
+                }
 
                 if($def->relationStatus < 0){
                     $errors[] = sprintf(i::__('O agente %s ainda não confirmou sua participação neste projeto.'), $def->agent->name);

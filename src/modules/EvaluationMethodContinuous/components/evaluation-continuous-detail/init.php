@@ -25,24 +25,29 @@ if($class == Registration::class) {
         }
     }
    
-    $result = [];
-    foreach($registrations as $reg) {
-        $em = $reg->evaluationMethod;
-        $data = [
-            'consolidatedDetails' => $em->shouldDisplayEvaluationResults($reg) ? $em->getConsolidatedDetails($reg) : [],
-            'evaluationsDetails' => []
-        ];
-
-        $evaluations = $reg->sentEvaluations;
-    
-        foreach ($evaluations as $eval) {
-            $detail = $em->shouldDisplayEvaluationResults($reg) ? $em->getEvaluationDetails($eval) : [];
+        $result = [];
+        foreach($registrations as $reg) {
+            $em = $reg->evaluationMethod;
             $emc = $reg->opportunity->evaluationMethodConfiguration;
-            if ($emc->publishValuerNames){
-                $detail['valuer'] = $eval->user->profile->simplify('id,name,singleUrl');
+            
+            // Verifica se o usuário pode ver os nomes dos avaliadores
+            $can_view_valuer_names = $reg->opportunity->canUser('@control') || 
+                                      $emc->publishValuerNames;
+            
+            $data = [
+                'consolidatedDetails' => $em->shouldDisplayEvaluationResults($reg) ? $em->getConsolidatedDetails($reg) : [],
+                'evaluationsDetails' => []
+            ];
+
+            $evaluations = $reg->sentEvaluations;
+        
+            foreach ($evaluations as $eval) {
+                $detail = $em->shouldDisplayEvaluationResults($reg) ? $em->getEvaluationDetails($eval) : [];
+                if ($can_view_valuer_names){
+                    $detail['valuer'] = $eval->user->profile->simplify('id,name,singleUrl');
+                }
+                $data['evaluationsDetails'][] = $detail;
             }
-            $data['evaluationsDetails'][] = $detail;
-        }
 
         $data['shouldDisplayEvaluationResults'] = $em->shouldDisplayEvaluationResults($reg);
         $result[$reg->id] = $data;

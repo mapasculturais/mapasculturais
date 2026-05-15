@@ -32,6 +32,14 @@ use MapasCulturais\i;
                         > 
                         <?= i::__("Habilitar a vinculação de agente coletivo")?>
                     </label>
+                    <label v-if="proponentAgentRelation['Coletivo']">
+                        <input 
+                            type="checkbox" 
+                            :checked="proponentAgentRelationAvatar['Coletivo']" 
+                            @change="toggleAgentRelationAvatar($event, 'Coletivo')"
+                        > 
+                        <?= i::__("Habilitar solicitação de imagem de perfil")?>
+                    </label>
                 </div>
 
                 <div class="opportunity-proponent-types__field field__legal" v-if="showJuridicaBinding && optionValue === '<?= i::__('Pessoa Jurídica') ?>'">
@@ -42,6 +50,14 @@ use MapasCulturais\i;
                             @change="toggleAgentRelation($event, 'Pessoa Jurídica')"
                         > 
                         <?= i::__("Habilitar a vinculação de agente coletivo")?>
+                    </label>
+                    <label v-if="proponentAgentRelation['Pessoa Jurídica']">
+                        <input 
+                            type="checkbox" 
+                            :checked="proponentAgentRelationAvatar['Pessoa Jurídica']" 
+                            @change="toggleAgentRelationAvatar($event, 'Pessoa Jurídica')"
+                        > 
+                        <?= i::__("Habilitar solicitação de imagem de perfil")?>
                     </label>
                 </div>
             </div>

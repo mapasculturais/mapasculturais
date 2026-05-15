@@ -37,7 +37,10 @@ if($class == Registration::class) {
     }
     
     $data = [];
-    if ($needs_tiebreaker && $is_minerva_group && $enable_external_reviews) {
+    $can_view_valuer_names = $opportunity->canUser('@control') || 
+                             ($needs_tiebreaker && $is_minerva_group && $enable_external_reviews);
+    
+    if ($can_view_valuer_names) {
         $em = $evaluation_configuration->evaluationMethod;
         $data['consolidatedDetails'] = $em->getConsolidatedDetails($entity);
         $data['evaluationsDetails'] = [];

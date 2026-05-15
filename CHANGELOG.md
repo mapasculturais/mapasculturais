@@ -27,6 +27,8 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 ## [UNRELEASED - 7.8.0]
 ### Novas Funcionalidades
 - Implementa configuração que permide definir a imagem de avatar de qualquer entidade como obrigatória
+- Adiciona botão para duplicar campos do formulário de inscrição, criando a cópia logo abaixo do campo original
+- Adiciona botão para duplicar anexos do formulário de inscrição, incluindo a cópia do arquivo modelo e inserindo o novo anexo logo abaixo do original
 
 ### Melhorias
 - Adiciona um campo de busca para encontrar colunas por palavra-chave na listagem por tabela nas entidades. 
@@ -37,6 +39,7 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Melhora a exibição do botão minha conta no header para exibir o nome do perfil do agente responsável logado
 - Adiciona configuração para exibir ou ocultar o detalhamento da avaliação anterior na fase de recurso
 - Exibe o detalhamento da avaliação da fase anterior para avaliadores da fase de recurso
+- Adiciona configuração para exigir foto de perfil do agente coletivo vinculado na inscrição para proponentes do tipo coletivo e pessoa jurídica
 
 ### Correções
 - Aplica texto de internacionalização faltante no componente opportunity-registration-table
@@ -46,6 +49,17 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Evita erro ao hidratar campos de data inválidos em entidades
 - Corrige a importação de formulários de inscrição para preservar os formatos aceitos configurados nos campos de anexo
 - Corrige erro ao reordenar etapas na configuração do formulário de oportunidades
+- Corrige a exportação de oportunidades para não incluir datas das fases de avaliação quando a opção de exportar datas das fases estiver desmarcada
+- Corrige o cálculo ponderado dos subtotais na tela de avaliação técnica
+
+## [7.7.40] - 2026-05-15
+- ### Correçoes
+- Corrige erro de estouro de memória durante a ordenaçao por cota
+- Corrige erro que impedia a sincronização de inscriçoes entre fases
+
+## [7.7.39] - 2026-05-15
+### Correçoes
+- Ajusta exibiçao do nome e id do avaliador nas fases de recurso e normais no exbir detalhamento
 
 ## [7.7.38] - 2026-05-14
 ### Correçoes
