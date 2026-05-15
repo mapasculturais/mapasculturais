@@ -1081,7 +1081,7 @@ class Module extends \MapasCulturais\EvaluationMethod
         } while($reg = $reg->previousPhase);
         
         $affirmativePoliciesConfig = $registration->opportunity->evaluationMethodConfiguration->pointReward;
-        $pointRewardRoof = $registration->opportunity->evaluationMethodConfiguration->pointRewardRoof;
+        $pointRewardRoof = (float) $registration->opportunity->evaluationMethodConfiguration->pointRewardRoof;
         $isActivePointReward = filter_var($registration->opportunity->evaluationMethodConfiguration->isActivePointReward, FILTER_VALIDATE_BOOL);
         $metadata = $registration->getRegisteredMetadata();
        
@@ -1137,7 +1137,7 @@ class Module extends \MapasCulturais\EvaluationMethod
             }
         
             if($applied){
-                $totalPercent += $rules->fieldPercent;
+                $totalPercent += (float) $rules->fieldPercent;
                 $field = $app->repo('RegistrationFieldConfiguration')->find($rules->field);
                 $appliedPolicies[] = [
                     'field' => [
@@ -1171,7 +1171,7 @@ class Module extends \MapasCulturais\EvaluationMethod
 
     private function percentCalc($value, $percent)
     {
-        return (($value * $percent) /100) + $value;
+        return (($value * (float) $percent) / 100) + $value;
     }
 
     /**
