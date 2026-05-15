@@ -7,6 +7,9 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ## [UNRELEASED]
 ### Novas Funcionalidades
+- Implementa configuração que permide definir a imagem de avatar de qualquer entidade como obrigatória
+- Adiciona botão para duplicar campos do formulário de inscrição, criando a cópia logo abaixo do campo original
+- Adiciona botão para duplicar anexos do formulário de inscrição, incluindo a cópia do arquivo modelo e inserindo o novo anexo logo abaixo do original
 - Implementa configuração que permite definir a imagem de avatar de qualquer entidade como obrigatória
 - Adiciona suporte a bônus de pontuação por tipo configurável (percentual ou ponto fixo) no método de avaliação técnica, com normalização retrocompatível de configurações legadas
 
@@ -17,6 +20,9 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Ordena opções de tipos de campos da lista de campos @ em ordem alfabética
 - Ajusta exportação da planilha para organizar as colunas segundo a ordem definida pelo superSaasAdmin
 - Melhora a exibição do botão minha conta no header para exibir o nome do perfil do agente responsável logado
+- Adiciona configuração para exibir ou ocultar o detalhamento da avaliação anterior na fase de recurso
+- Exibe o detalhamento da avaliação da fase anterior para avaliadores da fase de recurso
+- Adiciona configuração para exigir foto de perfil do agente coletivo vinculado na inscrição para proponentes do tipo coletivo e pessoa jurídica
 
 ### Correções
 - Aplica texto de internacionalização faltante no componente opportunity-registration-table
@@ -26,6 +32,19 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Evita erro ao hidratar campos de data inválidos em entidades
 - Corrige a importação de formulários de inscrição para preservar os formatos aceitos configurados nos campos de anexo
 - Corrige erro ao reordenar etapas na configuração do formulário de oportunidades
+- Corrige a exportação de oportunidades para não incluir datas das fases de avaliação quando a opção de exportar datas das fases estiver desmarcada
+- Corrige o cálculo ponderado dos subtotais na tela de avaliação técnica
+
+## [7.7.38] - 2026-05-14
+### Correçoes
+- Corrige erro que impedia a ordenaçao por cotas funcionar corretamente
+
+### Melhorias
+- Permite que o avaliador do recurso visualize o detalhamento da avaliação anterior diretamente na tela de avaliação do recurso
+
+## [7.7.37] - 2026-05-14
+### Correçoes
+- Remove style inline na single da registration
 
 ## [7.7.36] - 2026-05-08
 ### Correções

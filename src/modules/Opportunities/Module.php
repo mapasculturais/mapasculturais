@@ -1235,6 +1235,12 @@ class Module extends \MapasCulturais\Module{
             'description' => i::__('Armazena se a vinculação de agente coletivo está habilitada para Coletivo ou Pessoa Jurídica'),
         ]);
 
+        $this->registerOpportunityMetadata('proponentAgentRelationAvatar', [
+            'label' => i::__('Solicitação de avatar do Agente coletivo para tipos de proponente'),
+            'type' => 'object',
+            'description' => i::__('Armazena se o avatar do agente coletivo é obrigatório para Coletivo ou Pessoa Jurídica'),
+        ]);
+
         $this->registerEvauationMethodConfigurationMetadata('fetchFields', [
             'label' => i::__('Configuração filtro de inscrição para avaliadores/comissão'),
             'type' => 'object',
