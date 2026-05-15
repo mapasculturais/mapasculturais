@@ -94,6 +94,8 @@ if (isset($this->controller->data['user']) && $entity->opportunity->canUser("@co
                     <registration-info :registration="entity" classes="col-12"></registration-info>
                     <mc-summary-agent-info :entity="entity" classes="col-12"></mc-summary-agent-info>
 
+                    <appeal-previous-evaluation-results></appeal-previous-evaluation-results>
+
                     <!-- Caso seja uma fase de recurso -->
                     <section v-if="entity.opportunity?.isAppealPhase" class="col-12 grid-12 section">
                         <h3 class="col-12"><?= i::__('Recurso') ?></h3>
@@ -107,7 +109,6 @@ if (isset($this->controller->data['user']) && $entity->opportunity->canUser("@co
                         </div>
                     </section>
 
-                    <appeal-previous-evaluation-results></appeal-previous-evaluation-results>
 
                     <section class="col-12  grid-12 section">
                         <h3 class="col-12"><?= i::__('Dados informados no formulário') ?></h3>
