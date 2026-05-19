@@ -1137,7 +1137,57 @@ class Registration extends \MapasCulturais\Entity
         }
     }
 
+    function hasBlockingSubsequentPhase(): bool {
+        $app = App::i();
+
+        $phases = $this->opportunity->firstPhase->allPhases ?: [$this->opportunity];
+
+        // Encontra o índice da fase atual
+        $currentPhaseIndex = -1;
+        foreach ($phases as $index => $phase) {
+            if ($phase->id == $this->opportunity->id) {
+                $currentPhaseIndex = $index;
+                break;
+            }
+        }
+
+        // Se não encontrou ou é a última fase, não há bloqueios
+        if ($currentPhaseIndex < 0 || $currentPhaseIndex >= count($phases) - 1) {
+            return false;
+        }
+
+        // Verifica apenas fases POSTERIORES
+        for ($i = $currentPhaseIndex + 1; $i < count($phases); $i++) {
+            $phase = $phases[$i];
+
+            // Ignora a fase de publicação de resultados
+            if ($phase->isLastPhase) {
+                continue;
+            }
+
+            $registration = $app->repo('Registration')->findOneBy([
+                'opportunity' => $phase,
+                'number' => $this->number
+            ]);
+
+            if ($registration) {
+                // Bloqueia se status não é rascunho ou pendente
+                if ($registration->status !== self::STATUS_DRAFT && $registration->status !== self::STATUS_SENT) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+
     function setStatusToDraft($flush = true){
+        if ($this->status !== self::STATUS_DRAFT && $this->status !== self::STATUS_SENT) {
+            if ($this->hasBlockingSubsequentPhase()) {
+                throw new Exception(i::__('Ops! Não é possível alterar o status para RASCUNHO porque a inscrição já foi avaliada ou já avançou para a fase posterior. Para alterá-la para RASCUNHO nessa fase, é necessário alterar os status da fase seguinte. ATENÇÂO! Essa alteração apagará as avalições feitas nessa inscrição.'));
+            }
+        }
+
         $this->_setStatusTo(self::STATUS_DRAFT, $flush);
         App::i()->applyHookBoundTo($this, 'entity(Registration).status(draft)');
     }
@@ -1179,6 +1229,12 @@ class Registration extends \MapasCulturais\Entity
     }
 
     function setStatusToSent($flush = true){
+        if ($this->status !== self::STATUS_DRAFT && $this->status !== self::STATUS_SENT) {
+            if ($this->hasBlockingSubsequentPhase()) {
+                throw new Exception(i::__('Ops! Não é possível alterar o status para RASCUNHO porque a inscrição já foi avaliada ou já avançou para a fase posterior. Para alterá-la para RASCUNHO nessa fase, é necessário alterar os status da fase seguinte. ATENÇÂO! Essa alteração apagará as avalições feitas nessa inscrição.'));
+            }
+        }
+
         $this->_setStatusTo(self::STATUS_SENT, $flush);
         App::i()->applyHookBoundTo($this, 'entity(Registration).status(sent)');
     }
