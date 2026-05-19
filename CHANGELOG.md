@@ -285,6 +285,10 @@ te sem falhas
 <a name="770-funarte"></a>
 2. <small>Melhoria desenvolvida pela Funarte (Fundação Nacional de Artes) para a Rede das Artes</small>
 
+## [7.7.68] - UNRELEASED
+### Correções
+- Impedimento de mudança de status da inscrição para rascunho ou pendente quando existem fases posteriores com status definido
+
 ## [7.7.67] - 2026-05-06
 ### Correções
 - Faz implementaçao para que a ficha de inscriçao do recurso tambems eja exibida na single
