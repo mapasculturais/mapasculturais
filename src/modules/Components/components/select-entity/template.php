@@ -23,7 +23,7 @@ $this->import('
 
         <template #default="{ close }">
             <div class="select-entity">
-                <mc-entities :type="type" :select="select" :query="query" :limit="limit" order="name ASC" :scope="scope" :permissions="permissions" @fetch="fetch($event)" watch-query>
+                <mc-entities ref="entitiesList" :type="type" :select="select" :query="query" :limit="limit" order="name ASC" :scope="scope" :permissions="permissions" @fetch="fetch($event)" watch-query>
                     <template #header="{entities}">
                         <form class="select-entity__form" @submit="entities.refresh(); $event.preventDefault();">
                             <input ref="searchKeyword" v-model="entities.query['@keyword']" type="text" class="select-entity__form--input" name="searchKeyword" :placeholder="placeholder" @keyup="entities.refresh(500)"/>
@@ -67,9 +67,9 @@ $this->import('
                                 <button class="button button--primary-outline button--large" @click="modal.open()"><?php i::_e('Criar espaço') ?> </button>
                             </template>
                         </create-space>
-                        <create-agent v-if="type=='agent'">
+                        <create-agent v-if="type=='agent'" teleport="body" :click-to-close="false" :initial-type="createNewType" @create="refreshEntities()">
                             <template #default="{modal}">
-                                <button class="button button--primary-outline button--large" @click="modal.open()"><?php i::_e('Criar agente') ?> </button>
+                                <button class="button button--primary-outline button--large" @click="modal.open(); close()"><?php i::_e('Criar agente') ?> </button>
                             </template>
                         </create-agent>
                     </div>

@@ -25,6 +25,18 @@ app.component('create-agent', {
             type: Boolean,
             default: true
         },
+        clickToClose: {
+            type: Boolean,
+            default: true
+        },
+        initialType: {
+            type: Number,
+            default: 1
+        },
+        teleport: {
+            type: null,
+            default: false
+        },
     },
 
     computed: {
@@ -69,7 +81,7 @@ app.component('create-agent', {
         },
         createEntity() {
             this.entity = Vue.ref(new Entity('agent'));
-            this.entity.type = 1;
+            this.entity.type = this.initialType;
             this.entity.terms = { area: [] }
         },
         createDraft(modal) {
