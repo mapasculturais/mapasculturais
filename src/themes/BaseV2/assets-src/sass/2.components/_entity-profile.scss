@@ -52,5 +52,18 @@
         }
 
     }
+
+    &--required {
+        .entity-profile__profile--img {
+            border: size(2) dashed var(--mc-danger-500);
+        }
+
+        .entity-profile__profile--label-required {
+            color: var(--mc-danger-500);
+            font-weight: 700;
+            font-size: size(12);
+            line-height: size(16);
+        }
+    }
     
 }    

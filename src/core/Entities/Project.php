@@ -147,20 +147,20 @@ class Project extends \MapasCulturais\Entity
     /**
      * @var \MapasCulturais\Entities\ProjectOpportunity[] Opportunities
      *
-     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\ProjectOpportunity", mappedBy="ownerEntity", cascade={"remove"}, orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\ProjectOpportunity", mappedBy="ownerEntity", cascade={"remove"})
      * @ORM\JoinColumn(name="id", referencedColumnName="object_id", onDelete="CASCADE")
     */
     protected $_relatedOpportunities;
 
     /**
-    * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\ProjectMeta", mappedBy="owner", cascade={"remove","persist"}, orphanRemoval=true, fetch="EAGER")
+    * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\ProjectMeta", mappedBy="owner", cascade={"remove","persist"}, fetch="EAGER")
     */
     protected $__metadata;
 
     /**
      * @var \MapasCulturais\Entities\ProjectFile[] Files
      *
-     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\ProjectFile", mappedBy="owner", cascade={"remove"}, orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\ProjectFile", mappedBy="owner", cascade={"remove"})
      * @ORM\JoinColumn(name="id", referencedColumnName="object_id", onDelete="CASCADE")
     */
     protected $__files;
@@ -168,7 +168,7 @@ class Project extends \MapasCulturais\Entity
     /**
      * @var \MapasCulturais\Entities\ProjectAgentRelation[] Agent Relations
      *
-     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\ProjectAgentRelation", mappedBy="owner", cascade={"remove"}, orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\ProjectAgentRelation", mappedBy="owner", cascade={"remove"})
      * @ORM\JoinColumn(name="id", referencedColumnName="object_id", onDelete="CASCADE")
     */
     protected $__agentRelations;
@@ -177,7 +177,7 @@ class Project extends \MapasCulturais\Entity
     /**
      * @var \MapasCulturais\Entities\ProjectTermRelation[] TermRelation
      *
-     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\ProjectTermRelation", fetch="LAZY", mappedBy="owner", cascade={"remove"}, orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\ProjectTermRelation", fetch="LAZY", mappedBy="owner", cascade={"remove"})
      * @ORM\JoinColumn(name="id", referencedColumnName="object_id", onDelete="CASCADE")
     */
     protected $__termRelations;
@@ -186,13 +186,13 @@ class Project extends \MapasCulturais\Entity
     /**
      * @var \MapasCulturais\Entities\ProjectSealRelation[] ProjectSealRelation
      *
-     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\ProjectSealRelation", fetch="LAZY", mappedBy="owner", cascade={"remove"}, orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\ProjectSealRelation", fetch="LAZY", mappedBy="owner", cascade={"remove"})
      * @ORM\JoinColumn(name="id", referencedColumnName="object_id", onDelete="CASCADE")
     */
     protected $__sealRelations;
 
     /**
-     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\ProjectPermissionCache", mappedBy="owner", cascade={"remove"}, orphanRemoval=true, fetch="EXTRA_LAZY")
+     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\ProjectPermissionCache", mappedBy="owner", cascade={"remove"}, fetch="EXTRA_LAZY")
      */
     protected $__permissionsCache;
 

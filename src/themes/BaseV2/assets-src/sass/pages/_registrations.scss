@@ -340,6 +340,25 @@
             }
         }
 
+        .registration-appeal-phase {
+            margin-top: 2rem;
+            padding-top: 2rem;
+            border-top: 2px dashed var(--mc-gray-300);
+        }
+
+        .appeal-badge {
+            display: inline-block;
+            background-color: var(--mc-warning-500, #f59e0b);
+            color: white;
+            font-size: 0.75rem;
+            font-weight: 600;
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            margin-left: 0.5rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
         &.edit {
             .registration {
                 &__title {

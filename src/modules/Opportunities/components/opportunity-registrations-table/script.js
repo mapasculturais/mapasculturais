@@ -39,7 +39,7 @@ app.component('opportunity-registrations-table', {
             readonly: true,
             type: "array",
             length: 255,
-            label: text("Elegível para as cotas"),
+            label: text("Elegível para cotas"),
             isPK: false
         };
 

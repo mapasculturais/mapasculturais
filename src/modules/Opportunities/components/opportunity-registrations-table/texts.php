@@ -36,5 +36,6 @@ return [
     'pontuação final' => i::__('pontuação final'),
     'Range' => i::__('Faixa/Linha'),
     'aguardando desempate' => i::__('Aguardando desempate'),
-    'Elegível para as cotas' => i::__('Elegível para as cotas'),
+    'Elegível para cotas' => i::__('Elegível para cotas'),
+    'Elegível para as cotas' => i::__('Elegível para cotas'),
 ];

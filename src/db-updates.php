@@ -2403,7 +2403,7 @@ $$
         $fileName = "dbupdate_RegistrationFieldConfiguration.txt";
         $dir = PRIVATE_FILES_PATH . "dbupdate_documento";
         if (!file_exists($dir)) {
-            mkdir($dir, 775);
+            mkdir($dir, 0775);
         }
 
         $path = $dir . "/" . $fileName;
@@ -3209,7 +3209,10 @@ $$
 
                 if (empty($new_data)) continue;
 
-                $metadata = json_decode($ar['metadata'], true) ?: [];
+                $metaRaw = $ar['metadata'];
+                $metadata = (is_string($metaRaw) && $metaRaw !== '')
+                    ? (json_decode($metaRaw, true) ?: [])
+                    : [];
                 $metadata = array_merge($metadata, $new_data);
                 $metadata['summary'] ??= ["pending" => 0, "started" => 0, "completed" => 0, "sent" => 0];
 

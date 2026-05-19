@@ -91,10 +91,11 @@ trait ControllerUploads{
                     if(is_array($file) && $upload_group->unique){
                         continue;
 
-                    // else if multiple files was uploaded and this group accepts multiple files, set the group to this files and add them to $files array
                     }elseif(is_array($file) && !$upload_group->unique){
                         foreach($file as $f){
-                            if($error = $upload_group->getError($f)){
+                            if($ext_error = $upload_group->getExtensionError($f)){
+                                $files[] = ['error' => $ext_error, 'group' => $upload_group];
+                            }elseif($error = $upload_group->getError($f)){
                                 $files[] = ['error' => $error, 'group' => $upload_group];
                             }else{
                                 $f->group = $group_name;
@@ -102,19 +103,20 @@ trait ControllerUploads{
                             }
                         }
 
-                    // else if a single file was uploaded, add the group to this file and add this file to $files array
                     }else{
                         if(key_exists('description', $this->data) && is_array($this->data['description']) && key_exists($group_name, $this->data['description']))
                             $file->description = $this->data['description'][$group_name];
 
-                        if($errors = $file->getValidationErrors()){                            
+                        if($ext_error = $upload_group->getExtensionError($file)){
+                            $files[$group_name] = ['error' => $ext_error, 'group' => $upload_group];
+                        }elseif($errors = $file->getValidationErrors()){                            
                             $error_messages = [];
                             foreach($errors as $_errors){
                                 $error_messages = array_merge(array_values($_errors), $error_messages);
                             }
                             $files[$group_name] = ['error' => implode(', ', $error_messages), 'group' => $upload_group];
 
-                        } else if ($error = $upload_group->getError($file)){
+                        } elseif ($error = $upload_group->getError($file)){
                             $files[] = ['error' => $error, 'group' => $upload_group];
                         }else{
                             $file->group = $group_name;
