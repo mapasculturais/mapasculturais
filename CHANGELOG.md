@@ -7,7 +7,7 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ## [7.7.41]
 ### Correções 
-- Corrige erro que impedia o botao exibir detal;hamento de aparecer na tela do avaliador do recuro
+- Corrige erro que impedia o botão exibir detalhamento de aparecer na tela do avaliador do recurso
 
 ## [7.7.40] - 2026-05-15
 - ### Correçoes
