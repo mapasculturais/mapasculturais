@@ -7,7 +7,7 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ## [7.7.42] - 2026-05-20
 ### Correções 
-- Corrige erro que impedia o botão exibir detalhamento de aparecer na tela do avaliador do recurso
+- Melhora performace do sistema de criaçao de cache de permissão
 
 ## [7.7.41] - 2026-05-19
 ### Correções 
