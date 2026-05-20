@@ -8,8 +8,11 @@ if [ -z "$NUM_PROCESSES" ]; then
 fi
 
 bash_pid=$$
+renice +19 -p "$bash_pid" 2>/dev/null
+ionice -c 3 -p "$bash_pid" 2>/dev/null
 
 while [ true ]; do
+    /var/www/scripts/lower-pcache-priority.sh 2>/dev/null
     children=`ps -eo ppid | grep -w $bash_pid`
     NUM_CHILDREN=`echo $children | wc -w`
     
