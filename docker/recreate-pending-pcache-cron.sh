@@ -8,8 +8,8 @@ if [ -z "$NUM_PROCESSES" ]; then
 fi
 
 bash_pid=$$
-renice +19 -p "$bash_pid" 2>/dev/null
-ionice -c 3 -p "$bash_pid" 2>/dev/null
+renice +19 -p "$bash_pid" >/dev/null 2>&1
+ionice -c 3 -p "$bash_pid" >/dev/null 2>&1
 
 while [ true ]; do
     /var/www/scripts/lower-pcache-priority.sh 2>/dev/null
