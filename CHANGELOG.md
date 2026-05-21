@@ -5,7 +5,19 @@ Todas as mudanças notáveis no projeto serão documentadas neste arquivo.
 O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/)
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [7.7.41]
+## [7.7.43]
+### Correções
+- Remove mensagens repetitivas nos logs do servidor sobre prioridade dos processos de atualização de permissões
+- Ao abrir uma ficha de avaliação, o sistema deixa de colocar o edital inteiro na fila de atualização de permissões em segundo plano
+- A página de avaliação abre bem mais rápido: o plano de trabalho só é carregado nas fases de prestação de contas que realmente usam esse formulário
+- Reduz a quantidade de informações enviadas ao navegador ao exibir as etapas do formulário de inscrição
+- Evita reprocessar os mesmos campos do formulário de inscrição várias vezes ao montar a página
+
+## [7.7.42] - 2026-05-20
+### Correções 
+- Melhora performace do sistema de criaçao de cache de permissão
+
+## [7.7.41] - 2026-05-19
 ### Correções 
 - Corrige erro que impedia o botão exibir detalhamento de aparecer na tela do avaliador do recurso
 
