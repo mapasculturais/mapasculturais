@@ -519,6 +519,7 @@ class Module extends \MapasCulturais\EvaluationMethod
                 Module::$quotaData->enrichFieldsOnly = !$order_by_quota;
 
                 if (Module::$quotaData->enrichFieldsOnly) {
+                    $params['@select'] .= ",eligible,proponentType";
                     return;
                 }
 

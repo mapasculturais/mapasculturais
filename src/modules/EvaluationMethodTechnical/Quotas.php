@@ -722,7 +722,7 @@ class Quotas {
      * @param object $registration 
      * @return array
      */
-    protected function getRegistrationQuotas(object $registration): array {
+    public function getRegistrationQuotas(object $registration): array {
         $registration = $this->enrichRegistrationFromFirstPhase($registration);
 
         $result = [];
