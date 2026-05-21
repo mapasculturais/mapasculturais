@@ -661,7 +661,10 @@ class Module extends \MapasCulturais\Module{
                 return $a->displayOrder <=> $b->displayOrder;
             });
 
-            $this->jsObject['registrationFields'] = $fields;
+            $this->jsObject['registrationFields'] = array_map(
+                fn ($field) => $field->jsonSerialize(),
+                $fields
+            );
         });
 
         $app->hook('mapas.printJsObject:before', function() use($app) {
