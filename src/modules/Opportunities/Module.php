@@ -637,15 +637,21 @@ class Module extends \MapasCulturais\Module{
         });
 
 
-        $app->hook('Theme::addOpportunityPhasesToJs', function ($unused, ?Entity $requested_entity = null) use ($app) {
+        $app->hook('Theme::addOpportunityPhasesToJs', function ($unused, ?Entity $requested_entity = null, bool $light = false) use ($app) {
             /** @var \MapasCulturais\Themes\BaseV2\Theme $this */
 
             $requested_entity = $requested_entity ?: $this->controller->requestedEntity;
 
             $opportunity = $this->getOpportunityFromEntity($requested_entity);
             $this->useOpportunityAPI();
-           
-            $this->jsObject['opportunityPhases'] = $opportunity->firstPhase->phases;
+
+            $prev = $app->config['opportunityPhases.jsLight'] ?? false;
+            $app->config['opportunityPhases.jsLight'] = $light;
+            try {
+                $this->jsObject['opportunityPhases'] = $opportunity->firstPhase->phases;
+            } finally {
+                $app->config['opportunityPhases.jsLight'] = $prev;
+            }
         });
 
         $app->hook('Theme::addRegistrationFieldsToJs', function ($unused, ?Entity $requested_entity = null) use ($app) {

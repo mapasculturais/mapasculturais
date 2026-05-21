@@ -9,7 +9,7 @@ use MapasCulturais\i;
 
 $this->layout = 'entity';
 
-$this->addOpportunityPhasesToJs($entity);
+$this->addOpportunityPhasesToJs($entity, true);
 $this->useOpportunityAPI();
 
 $this->import('

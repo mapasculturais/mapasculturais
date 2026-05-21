@@ -29,11 +29,11 @@ if ($MAPAS.opportunity) {
     } 
 }
 
-if ($MAPAS.opportunityPhases) {
+const processOpportunityPhases = (phases) => {
     const APIs = {
-        opportunity: new API('opportunity'), 
-        evaluationmethodconfiguration: new API('evaluationmethodconfiguration'), 
-    }
+        opportunity: new API('opportunity'),
+        evaluationmethodconfiguration: new API('evaluationmethodconfiguration'),
+    };
 
     const rawProcessor = (item) => {
         const entityType = item['@entityType'];
@@ -43,9 +43,19 @@ if ($MAPAS.opportunityPhases) {
         return instance;
     };
 
-    $MAPAS.opportunityPhases = $MAPAS.opportunityPhases.map(rawProcessor);
+    const processed = phases.map(rawProcessor);
+    if (processed[0]) {
+        processed[0].isFirstPhase = true;
+    }
+    return processed;
+};
 
-    $MAPAS.opportunityPhases[0].isFirstPhase = true;
+if ($MAPAS.opportunityPhases) {
+    $MAPAS.opportunityPhases = processOpportunityPhases($MAPAS.opportunityPhases);
+}
+
+if ($MAPAS.evaluationPhases) {
+    $MAPAS.evaluationPhases = processOpportunityPhases($MAPAS.evaluationPhases);
 }
 
 if ($MAPAS.registrationPhases) {

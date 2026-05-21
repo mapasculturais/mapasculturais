@@ -8,10 +8,7 @@ app.component('opportunity-evaluations-tab', {
     },
 
     data() {
-        phases = $MAPAS.opportunityPhases;
-        return {
-            phases
-         }
+        return {}
     },
 
     computed: { 

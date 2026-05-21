@@ -34,7 +34,7 @@ app.component('opportunity-subscription' , {
 
         if($MAPAS.opportunityPhases && $MAPAS.opportunityPhases.length > 0) {
             phases = $MAPAS.opportunityPhases;
-        } 
+        }
 
         return {
             agent,
@@ -53,6 +53,13 @@ app.component('opportunity-subscription' , {
             totalRegistrationsPerUser: $MAPAS.config.opportunitySubscription.totalRegistrationsPerUser,
             registrationProponentTypes: this.entity.registrationProponentTypes || [],
             registrationRanges: this.entity.registrationRanges || [],
+        }
+    },
+
+    async created() {
+        if (!this.phases) {
+            const api = new OpportunitiesAPI();
+            this.phases = await api.getPhases(this.entity.id);
         }
     },
 
@@ -117,12 +124,11 @@ app.component('opportunity-subscription' , {
             }
         },
         isPublished() {
-            let _actualDate = new Date();
-
-            if (this.lastPhase.publishTimestamp?._date < _actualDate) {
-                return true;
+            if (!this.lastPhase?.publishTimestamp?._date) {
+                return false;
             }
-            return false;
+
+            return this.lastPhase.publishTimestamp._date < new Date();
         },
         registrationLimit() {
             if (this.entity.registrationLimit) {
@@ -149,8 +155,7 @@ app.component('opportunity-subscription' , {
             return this.dateEnd?.time();
         },
         lastPhase () {
-            const phase = this.phases.find(item => item.isLastPhase);
-            return phase;
+            return this.phases?.find(item => item.isLastPhase) ?? null;
         },
 
         proponentAgentRelation() {
