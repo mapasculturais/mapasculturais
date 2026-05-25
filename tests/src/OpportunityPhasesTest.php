@@ -4,8 +4,10 @@ namespace Test;
 
 use Laminas\Diactoros\Response;
 use MapasCulturais\Controllers\Opportunity as OpportunityController;
+use MapasCulturais\Entities\EvaluationMethodConfiguration;
 use MapasCulturais\Entities\Opportunity;
 use MapasCulturais\Exceptions\Halt;
+use Opportunities\Module as OpportunitiesModule;
 use Tests\Abstract\TestCase;
 use Tests\Builders\PhasePeriods\ConcurrentEndingAfter;
 use Tests\Builders\PhasePeriods\Open;
@@ -926,5 +928,138 @@ class OpportunityPhasesTest extends TestCase
             $numbers[$relation->agent->name] = $relation->getCommitteeSequentialNumber();
         }
         $this->assertEquals(['João' => 1, 'Pedro' => 2], $numbers, 'Garantindo que os números na fase 1 estejam corretos após re-adicionar Pedro');
+    }
+
+    /**
+     * Testa se o número sequencial considera a fase de recurso na sequência global do edital
+     */
+    function testCommitteeSequentialNumberIncludesAppealPhase(): void
+    {
+        $admin = $this->userDirector->createUser('admin');
+        $this->login($admin);
+
+        /** @var Opportunity */
+        $opportunity = $this->opportunityBuilder
+            ->reset(owner: $admin->profile, owner_entity: $admin->profile)
+            ->fillRequiredProperties()
+            ->firstPhase()
+                ->setRegistrationPeriod(new Open)
+                ->done()
+            ->save()
+            ->addEvaluationPhase(EvaluationMethods::simple)
+                ->setEvaluationPeriod(new ConcurrentEndingAfter)
+                ->save()
+                ->addValuers(2, 'committee 1')
+                ->done()
+            ->refresh()
+            ->getInstance();
+
+        $eval_emc = $opportunity->evaluationMethodConfiguration;
+        $eval_opp = $eval_emc->opportunity;
+
+        $eval_relations = $eval_emc->getAgentRelations();
+        $this->assertCount(2, $eval_relations, 'Garantindo que existam 2 avaliadores na fase de avaliação');
+        $this->assertEquals(2, max(array_map(fn($r) => $r->getCommitteeSequentialNumber(), $eval_relations)), 'Garantindo que o maior número na fase de avaliação seja 2');
+
+        $class_name = $eval_opp->getSpecializedClassName();
+        $appeal_phase = new $class_name();
+        $appeal_phase->parent = $eval_opp;
+        $appeal_phase->status = Opportunity::STATUS_APPEAL_PHASE;
+        $appeal_phase->name = 'Recurso teste';
+        $appeal_phase->ownerEntity = $eval_opp->ownerEntity;
+        $appeal_phase->registrationCategories = $eval_opp->registrationCategories;
+        $appeal_phase->registrationRanges = $eval_opp->registrationRanges;
+        $appeal_phase->registrationProponentTypes = $eval_opp->registrationProponentTypes;
+        $appeal_phase->isDataCollection = true;
+        $appeal_phase->isAppealPhase = true;
+        $appeal_phase->save(true);
+
+        $eval_opp->appealPhase = $appeal_phase;
+        $eval_opp->save(true);
+
+        $appeal_emc = new EvaluationMethodConfiguration();
+        $appeal_emc->opportunity = $appeal_phase;
+        $appeal_emc->type = 'continuous';
+        $appeal_emc->publishEvaluationDetails = true;
+        $appeal_emc->save(true);
+
+        $appeal_phase->evaluationMethodConfiguration = $appeal_emc;
+        $appeal_phase->save(true);
+
+        $appeal_valuer = $this->agentDirector->createAgent($this->userDirector->createUser());
+        $appeal_valuer->name = 'Avaliador Recurso';
+        $appeal_valuer->save(true);
+
+        $appeal_relation = $appeal_emc->createAgentRelation($appeal_valuer, 'committee 1', true);
+        $appeal_relation->save(true);
+
+        $this->assertEquals(3, $appeal_relation->getCommitteeSequentialNumber(), 'Garantindo que o avaliador da fase de recurso receba o número 3');
+
+        $existing_eval_relation = $eval_relations[0];
+        $existing_agent = $existing_eval_relation->agent;
+        $existing_number = $existing_eval_relation->getCommitteeSequentialNumber();
+
+        $readded_relation = $appeal_emc->createAgentRelation($existing_agent, 'committee 1', true);
+        $readded_relation->save(true);
+
+        $this->assertEquals($existing_number, $readded_relation->getCommitteeSequentialNumber(), 'Garantindo que o mesmo avaliador mantenha o número ao ser adicionado na fase de recurso');
+
+        $emc_ids = OpportunitiesModule::getEvaluationMethodConfigurationIdsForCommitteeSequentialNumber($eval_opp->firstPhase);
+        $this->assertContains($eval_emc->id, $emc_ids, 'Garantindo que o EMC da fase de avaliação esteja no escopo');
+        $this->assertContains($appeal_emc->id, $emc_ids, 'Garantindo que o EMC da fase de recurso esteja no escopo');
+    }
+
+    /**
+     * Testa o backfill de números sequenciais para relações existentes sem número
+     */
+    function testCommitteeSequentialNumberBackfill(): void
+    {
+        $admin = $this->userDirector->createUser('admin');
+        $this->login($admin);
+
+        /** @var Opportunity */
+        $opportunity = $this->opportunityBuilder
+            ->reset(owner: $admin->profile, owner_entity: $admin->profile)
+            ->fillRequiredProperties()
+            ->firstPhase()
+                ->setRegistrationPeriod(new Open)
+                ->done()
+            ->save()
+            ->addEvaluationPhase(EvaluationMethods::simple)
+                ->setEvaluationPeriod(new ConcurrentEndingAfter)
+                ->save()
+                ->addValuers(3, 'committee 1')
+                ->done()
+            ->refresh()
+            ->getInstance();
+
+        $eval_emc = $opportunity->evaluationMethodConfiguration;
+        $first_phase = $eval_emc->opportunity->firstPhase;
+        $conn = $this->app->em->getConnection();
+
+        foreach ($eval_emc->getAgentRelations() as $relation) {
+            $metadata = json_decode($conn->fetchOne('SELECT metadata FROM agent_relation WHERE id = ?', [$relation->id]) ?: '{}', true) ?: [];
+            unset($metadata['committeeSequentialNumber']);
+            $conn->executeStatement(
+                'UPDATE agent_relation SET metadata = ? WHERE id = ?',
+                [json_encode($metadata), $relation->id]
+            );
+        }
+
+        $this->app->em->clear();
+
+        $result = OpportunitiesModule::backfillCommitteeSequentialNumbers($this->app, $first_phase->id);
+        $this->assertGreaterThan(0, $result['relations_updated'], 'Garantindo que o backfill atualize relações');
+
+        $eval_emc = $this->app->repo('EvaluationMethodConfiguration')->find($eval_emc->id);
+        $numbers = [];
+        foreach ($eval_emc->getAgentRelations() as $relation) {
+            $number = $relation->getCommitteeSequentialNumber();
+            $this->assertNotNull($number, 'Garantindo que cada avaliador tenha número após o backfill');
+            $numbers[] = $number;
+        }
+
+        sort($numbers);
+        $this->assertEquals([1, 2, 3], $numbers, 'Garantindo que o backfill atribua números sequenciais 1, 2, 3');
     }
 }
