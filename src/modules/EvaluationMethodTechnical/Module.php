@@ -484,6 +484,11 @@ class Module extends \MapasCulturais\EvaluationMethod
         $app->hook('ApiQuery(registration).params', function(&$params) use($app) {
             /** @var ApiQuery $this */
 
+            if($params['__supplementaryPhaseQuery'] ?? false) {
+                unset($params['__supplementaryPhaseQuery']);
+                return;
+            }
+
             if($params['__enableQuota'] ?? false) {
                 Module::$quotaData = null;
                 unset($params['__enableQuota']);
