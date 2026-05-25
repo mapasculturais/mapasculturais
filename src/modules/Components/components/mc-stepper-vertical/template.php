@@ -14,7 +14,7 @@ $this->import('
 <?php $this->applyTemplateHook('mc-stepper-vertical:before'); ?>
     <ol class="mc-stepper-vertical">
         <?php $this->applyTemplateHook('mc-stepper-vertical:begin'); ?>
-        <template v-for="(step, index) in steps">
+        <template v-for="(step, index) in steps" :key="step.item?.id ?? index">
             <li :class="{active: step.active}">
                 <section class="stepper-step">
                     <header :class="['stepper-header', {'open':step.active}]">

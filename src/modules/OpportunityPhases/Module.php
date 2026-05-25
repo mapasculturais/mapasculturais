@@ -595,11 +595,15 @@ class Module extends \MapasCulturais\Module{
                         $app->applyHook('module(OpportunityPhases).dataCollectionPhaseData', [&$mout_simplify]);
 
                         $item = $opportunity->simplify("{$mout_simplify},type,publishedRegistrations,publishTimestamp,registrationFrom,registrationTo,isDataCollection,isFirstPhase,isLastPhase,isReportingPhase,isLastReportingPhase,files,statusLabels");
-                        if ($opportunity->appealPhase) {
-                            $item->appealPhase = $opportunity->appealPhase->simplify('id,name,isAppealPhase,status');
-                        }
 
-                        if (!$light) {
+                        if ($light) {
+                            if ($opportunity->appealPhase) {
+                                $item->appealPhase = $opportunity->appealPhase->simplify('id,name,isAppealPhase,status');
+                            }
+                        } else {
+                            // mantém a estrutura completa esperada pela edit page
+                            $item->appealPhase = $opportunity->appealPhase;
+
                             $item->registrationSteps = [];
                             foreach ($opportunity->registrationSteps as $step) {
                                 $simplifiedStep = $step->simplify("id,name,displayOrder,metadata");
@@ -609,8 +613,12 @@ class Module extends \MapasCulturais\Module{
 
                         if($emc){
                             $item->evaluationMethodConfiguration = $emc->simplify("id,name,evaluationFrom,evaluationTo,useCommitteeGroups,evaluateSelfApplication");
-                            if ($emc->appealPhase) {
-                                $item->evaluationMethodConfiguration->appealPhase = $emc->appealPhase->simplify('id,name,isAppealPhase,status');
+                            if ($light) {
+                                if ($emc->appealPhase) {
+                                    $item->evaluationMethodConfiguration->appealPhase = $emc->appealPhase->simplify('id,name,isAppealPhase,status');
+                                }
+                            } else {
+                                $item->evaluationMethodConfiguration->appealPhase = $emc->appealPhase;
                             }
                         }
 
@@ -625,31 +633,46 @@ class Module extends \MapasCulturais\Module{
 
                         $app->applyHook('module(OpportunityPhases).evaluationPhaseData', [&$mout_simplify]);
 
-                        $evaluation_props = $light
-                            ? "{$mout_simplify},type,opportunity,infos,evaluationFrom,evaluationTo"
-                            : "{$mout_simplify},type,opportunity,infos,evaluationFrom,evaluationTo,relatedAgents,agentRelations";
+                        if ($light) {
+                            $item = $emc->simplify("{$mout_simplify},type,opportunity,infos,evaluationFrom,evaluationTo");
 
-                        $item = $emc->simplify($evaluation_props);
+                            if ($evaluation_method = $emc->getDefinition()) {
+                                $item->type = (object) [
+                                    'id' => $evaluation_method->slug,
+                                    'name' => $evaluation_method->name,
+                                ];
+                            }
 
-                        if ($evaluation_method = $emc->getDefinition()) {
-                            $item->type = (object) [
-                                'id' => $evaluation_method->slug,
-                                'name' => $evaluation_method->name,
-                            ];
-                        }
+                            if ($appeal_phase = $emc->appealPhase) {
+                                $item->appealPhase = $appeal_phase->simplify('id,name,isAppealPhase,status');
+                                $item->opportunity = $opportunity->simplify('id,isFirstPhase,isLastPhase,isReportingPhase,isLastReportingPhase,publishedRegistrations,publishTimestamp,registrationFrom,registrationTo,statusLabels,allow_proponent_response');
+                                $item->opportunity->appealPhase = $appeal_phase->simplify('id,name,isAppealPhase,status');
+                                if ($appeal_phase->evaluationMethodConfiguration) {
+                                    $item->opportunity->appealPhase->evaluationMethodConfiguration = $appeal_phase->evaluationMethodConfiguration->simplify('id,name,type,evaluationFrom,evaluationTo');
+                                }
+                            }
+                        } else {
+                            // estrutura completa esperada pela edit page (compatível com versões anteriores)
+                            $item = $emc->simplify("{$mout_simplify},opportunity,infos,evaluationFrom,evaluationTo,relatedAgents,agentRelations");
 
-                        if($appeal_phase = $emc->appealPhase) {
-                            $item->appealPhase = $appeal_phase->simplify('id,name,isAppealPhase,status');
-                            $opportunity_props = $light
-                                ? 'id,isFirstPhase,isLastPhase,isReportingPhase,isLastReportingPhase,publishedRegistrations,publishTimestamp,registrationFrom,registrationTo,statusLabels,allow_proponent_response'
-                                : 'id,isFirstPhase,isLastPhase,isReportingPhase,isLastReportingPhase,files,statusLabels,relatedAgents,agentRelations';
-                            $item->opportunity = $opportunity->simplify($opportunity_props);
-                            $appeal_simplify = $light
-                                ? 'id,name,isAppealPhase,status'
-                                : 'id,name,isAppealPhase,status,registrationFrom,registrationTo';
-                            $item->opportunity->appealPhase = $appeal_phase->simplify($appeal_simplify);
-                            if ($appeal_phase->evaluationMethodConfiguration) {
-                                $item->opportunity->appealPhase->evaluationMethodConfiguration = $appeal_phase->evaluationMethodConfiguration->simplify('id,name,type,evaluationFrom,evaluationTo');
+                            if ($evaluation_method = $emc->getDefinition()) {
+                                $item->type = (object) [
+                                    'id' => $evaluation_method->slug,
+                                    'name' => $evaluation_method->name,
+                                ];
+                            }
+
+                            if ($appeal_phase = $emc->appealPhase) {
+                                $item->appealPhase = $appeal_phase;
+                                $item->opportunity = $opportunity->simplify('id,isFirstPhase,isLastPhase,isReportingPhase,isLastReportingPhase,files,statusLabels,relatedAgents,agentRelations');
+                                $item->opportunity->appealPhase = (object) $appeal_phase->jsonSerialize();
+                                $item->opportunity->appealPhase->relatedAgents = $appeal_phase->relatedAgents;
+                                $item->opportunity->appealPhase->agentRelations = $appeal_phase->agentRelations;
+                                if ($appeal_phase->evaluationMethodConfiguration) {
+                                    $item->opportunity->appealPhase->evaluationMethodConfiguration = (object) $appeal_phase->evaluationMethodConfiguration->jsonSerialize();
+                                    $item->opportunity->appealPhase->evaluationMethodConfiguration->relatedAgents = $appeal_phase->evaluationMethodConfiguration->relatedAgents;
+                                    $item->opportunity->appealPhase->evaluationMethodConfiguration->agentRelations = $appeal_phase->evaluationMethodConfiguration->agentRelations;
+                                }
                             }
                         }
 
