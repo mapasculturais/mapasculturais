@@ -1,6 +1,10 @@
 <?php
 set_time_limit(0);
 ini_set('memory_limit', '2048M');
+
+if (function_exists('proc_nice')) {
+    @proc_nice(19);
+}
 unset($_ENV['LOG_HOOK']);
 require __DIR__ . '/../../public/bootstrap.php';
 

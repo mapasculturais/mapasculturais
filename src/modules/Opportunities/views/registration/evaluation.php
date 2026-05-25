@@ -24,8 +24,16 @@ $this->import('
     registration-evaluation-info
     registration-field-view
     registration-info
-    registration-workplan-form
+    v1-embed-tool
 ');
+
+$showWorkplanForm = $entity->opportunity->isReportingPhase
+    && $entity->opportunity->parent
+    && $entity->opportunity->parent->enableWorkplan;
+
+if ($showWorkplanForm) {
+    $this->import('registration-workplan-form');
+}
 
 $referer = $app->request->getReferer();
 
@@ -125,7 +133,7 @@ if (isset($this->controller->data['user']) && $entity->opportunity->canUser("@co
                             <?php $this->applyTemplateHook("registration-evaluation-view", 'after', ['entity' => $entity]) ?>
                             </div>
 
-                            <?php if ($entity->opportunity->isReportingPhase && $entity->opportunity->parent->enableWorkplan): ?>
+                            <?php if ($showWorkplanForm): ?>
                                 <registration-workplan-form :phase-id="<?= $entity->opportunity->id ?>"></registration-workplan-form>
                             <?php endif; ?>
                         </div>

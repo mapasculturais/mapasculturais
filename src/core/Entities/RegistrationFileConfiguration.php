@@ -168,7 +168,7 @@ class RegistrationFileConfiguration extends \MapasCulturais\Entity {
             'registrationRanges' => $this->registrationRanges ?: [],
             'proponentTypes' => $this->proponentTypes ?: [],
             'allowedFileTypes' => $this->allowedFileTypes ?: [],
-            'step' => $this->step ?? null,
+            'step' => $this->step ? $this->step->simplify('id,name,displayOrder,metadata') : null,
         ];
 
         $app = App::i();

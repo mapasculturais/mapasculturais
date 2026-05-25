@@ -967,14 +967,20 @@ abstract class Theme {
                     $e['opportunity']->parent = $opportunity->parent->simplify('id,name,type,files,terms,seals');
                 }
                 if ($opportunity->registrationSteps) {
-                    $e['opportunity']->registrationSteps = $opportunity->registrationSteps->toArray();
+                    $e['opportunity']->registrationSteps = array_map(
+                        fn ($step) => $step->simplify('id,name,displayOrder,metadata'),
+                        $opportunity->registrationSteps->toArray()
+                    );
                 }
             }
             
             if ($entity_class_name == Entities\Opportunity::class) {
                 $opportunity = $app->repo("Opportunity")->find($entity_id);
 
-                $e['registrationSteps'] = $opportunity->registrationSteps->toArray();
+                $e['registrationSteps'] = array_map(
+                    fn ($step) => $step->simplify('id,name,displayOrder,metadata'),
+                    $opportunity->registrationSteps->toArray()
+                );
             }
             
             if ($entity_class_name == Entities\Agent::class) {

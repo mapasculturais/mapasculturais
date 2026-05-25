@@ -225,7 +225,7 @@ class RegistrationFieldConfiguration extends \MapasCulturais\Entity {
         'conditionalValue' => $this->conditionalValue,
         'registrationRanges' => $this->registrationRanges ?: [],
         'proponentTypes' => $this->proponentTypes ?: [],
-        'step' => $this->step ?? null,
+        'step' => $this->step ? $this->step->simplify('id,name,displayOrder,metadata') : null,
         ];
 
         $app = App::i();

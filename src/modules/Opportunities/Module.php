@@ -740,7 +740,10 @@ class Module extends \MapasCulturais\Module{
                 return $a->displayOrder <=> $b->displayOrder;
             });
 
-            $this->jsObject['registrationFields'] = $fields;
+            $this->jsObject['registrationFields'] = array_map(
+                fn ($field) => $field->jsonSerialize(),
+                $fields
+            );
 
             $registration = $requested_entity instanceof Registration ? $requested_entity : null;
             if (!$registration && $this->controller->requestedEntity instanceof Registration) {
@@ -762,7 +765,10 @@ class Module extends \MapasCulturais\Module{
                         return $a->displayOrder <=> $b->displayOrder;
                     });
 
-                    $fields_by_opportunity[(string) $opp->id] = $phase_fields;
+                    $fields_by_opportunity[(string) $opp->id] = array_map(
+                        fn ($field) => $field->jsonSerialize(),
+                        $phase_fields
+                    );
                 }
 
                 $this->jsObject['registrationFieldsByOpportunity'] = $fields_by_opportunity;
