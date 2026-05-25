@@ -21,7 +21,7 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Adiciona configuração para exibir ou ocultar o detalhamento da avaliação anterior na fase de recurso
 - Exibe o detalhamento da avaliação da fase anterior para avaliadores da fase de recurso
 - Adiciona configuração para exigir foto de perfil do agente coletivo vinculado na inscrição para proponentes do tipo coletivo e pessoa jurídica
-- Permite criar novo agente individual ou coletivo diretamente pelo seletor de agentes no fluxo de inscrição de oportunidades, sem precisar sair da tela.
+- Permite criar agentes no fluxo de inscrição de oportunidades respeitando as permissões: agente individual apenas para administradores e agente coletivo para usuários comuns quando exigido pela inscrição.
 
 ### Correções
 - Aplica texto de internacionalização faltante no componente opportunity-registration-table

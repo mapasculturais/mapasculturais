@@ -67,9 +67,10 @@ $this->import('
                                 <button class="button button--primary-outline button--large" @click="modal.open()"><?php i::_e('Criar espaço') ?> </button>
                             </template>
                         </create-space>
-                        <create-agent v-if="type=='agent'" teleport="body" :click-to-close="false" :initial-type="createNewType" @create="refreshEntities()">
+                        <create-agent v-if="type=='agent'" teleport="body" :click-to-close="false" :initial-type="createNewType" :lock-type="createNewType == 2" @create="refreshEntities()">
                             <template #default="{modal}">
-                                <button class="button button--primary-outline button--large" @click="modal.open(); close()"><?php i::_e('Criar agente') ?> </button>
+                                <button v-if="createNewType == 2" class="button button--primary-outline button--large" @click="modal.open(); close()"><?php i::_e('Criar agente coletivo') ?> </button>
+                                <button v-if="createNewType != 2" class="button button--primary-outline button--large" @click="modal.open(); close()"><?php i::_e('Criar agente') ?> </button>
                             </template>
                         </create-agent>
                     </div>

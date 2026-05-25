@@ -51,7 +51,7 @@ $this->import('
 			<!-- Logado -->
 			<form class="logged__form grid-12" @submit.prevent>
 				<div class="col-6 sm:col-12 opportunity-subscription__selectAgents" v-if="entitiesLength > 1">
-					<select-entity type="agent" openside="down-right" :createNew="true" :create-new-type="1" :query="{'type': 'EQ(1)'}" select="name,files.avatar,endereco,location" @fetch="fetch($event)" @select="selectAgent($event)" classes="opportunity-subscription__popover">
+					<select-entity type="agent" openside="down-right" :createNew="canCreateIndividualAgent" :create-new-type="1" :query="{'type': 'EQ(1)'}" select="name,files.avatar,endereco,location" @fetch="fetch($event)" @select="selectAgent($event)" classes="opportunity-subscription__popover">
 						<template #button="{ toggle }">
 							<span v-if="!agent" class="fakeInput" @click="toggle()">
 								<div class="fakeInput__img">
