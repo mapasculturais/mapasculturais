@@ -19,24 +19,49 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Adiciona controle para ocultar título e subtítulo do logo no ThemeCustomizer
 - Remove configurações de aparência redundantes da tela de edição de subsites
 
+## [7.7.45] - 2026-05-26
+### Correções
+- Ajuste estrutura de Quotas para evitar estouro de memoria
+
+## [7.7.44] - 2026-05-25
+### Correções
+- Evita estouro de memória ao listar inscrições em editais com várias fases
+- Melhora performance do cálculo e exibição de cotas
+
+## [7.7.43] - 2026-05-21
+### Correções
+- Remove mensagens repetitivas nos logs do servidor sobre prioridade dos processos de atualização de permissões
+- Ao abrir uma ficha de avaliação, o sistema deixa de colocar o edital inteiro na fila de atualização de permissões em segundo plano
+- A página de avaliação abre bem mais rápido: o plano de trabalho só é carregado nas fases de prestação de contas que realmente usam esse formulário
+- Reduz a quantidade de informações enviadas ao navegador ao exibir as etapas do formulário de inscrição
+- Evita reprocessar os mesmos campos do formulário de inscrição várias vezes ao montar a página
+
+## [7.7.42] - 2026-05-20
+### Correções 
+- Melhora performace do sistema de criaçao de cache de permissão
+
+## [7.7.41] - 2026-05-19
+### Correções 
+- Corrige erro que impedia o botão exibir detalhamento de aparecer na tela do avaliador do recurso
+
 ## [7.7.40] - 2026-05-15
 - ### Correçoes
 - Corrige erro de estouro de memória durante a ordenaçao por cota
 - Corrige erro que impedia a sincronização de inscriçoes entre fases
 
 ## [7.7.39] - 2026-05-15
-### Correçoes
+### Correções
 - Ajusta exibiçao do nome e id do avaliador nas fases de recurso e normais no exbir detalhamento
 
 ## [7.7.38] - 2026-05-14
-### Correçoes
+### Correções
 - Corrige erro que impedia a ordenaçao por cotas funcionar corretamente
 
 ### Melhorias
 - Permite que o avaliador do recurso visualize o detalhamento da avaliação anterior diretamente na tela de avaliação do recurso
 
 ## [7.7.37] - 2026-05-14
-### Correçoes
+### Correções
 - Remove style inline na single da registration
 
 ## [7.7.36] - 2026-05-08
