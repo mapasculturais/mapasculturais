@@ -33,8 +33,8 @@ app.component('opportunity-create-execution-phase', {
             const api = new API('opportunity');
             const url = this.opportunity.getUrl('createExecutionPhase');
             const data = {
-                collectionPhase: this.collectionPhase,
-                evaluationPhase: this.evaluationPhase,
+                collectionPhase: this.collectionPhase.data(),
+                evaluationPhase: this.evaluationPhase.data(),
             };
 
             modal.loading(true);

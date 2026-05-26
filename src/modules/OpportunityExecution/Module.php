@@ -98,6 +98,22 @@ class Module extends \MapasCulturais\Module
         return $date->format('Y-m-d H:i:00');
     }
 
+    private static function parseDateTimeIgnoringSeconds($value): ?\DateTime
+    {
+        if (is_array($value)) {
+            $value = $value['_date'] ?? $value['date'] ?? null;
+        }
+
+        if (!$value) {
+            return null;
+        }
+
+        $date = $value instanceof \DateTimeInterface ? \DateTime::createFromInterface($value) : new \DateTime($value);
+        $date->setTime((int) $date->format('H'), (int) $date->format('i'), 0);
+
+        return $date;
+    }
+
     private static function getFinalResultPublicationDate(Opportunity $phase): ?\DateTime
     {
         $root = $phase->parent ?: $phase->firstPhase;
@@ -470,8 +486,8 @@ class Module extends \MapasCulturais\Module
         $execution_phase->parent             = $root;
         $execution_phase->status             = Opportunity::STATUS_PHASE;
         $execution_phase->name               = $data['name'] ?? i::__('Fase de Execução');
-        $execution_phase->registrationFrom   = $data['registrationFrom']['_date'] ?? null;
-        $execution_phase->registrationTo     = $data['registrationTo']['_date'] ?? null;
+        $execution_phase->registrationFrom   = self::parseDateTimeIgnoringSeconds($data['registrationFrom'] ?? null);
+        $execution_phase->registrationTo     = self::parseDateTimeIgnoringSeconds($data['registrationTo'] ?? null);
         $execution_phase->type               = $root->type;
         $execution_phase->ownerEntity        = $root->ownerEntity;
         $execution_phase->isOpportunityPhase = true;
@@ -488,8 +504,8 @@ class Module extends \MapasCulturais\Module
         $evaluation_phase->opportunity    = $execution_phase;
         $evaluation_phase->type           = 'simple';
         $evaluation_phase->name           = $data['name'] ?? i::__('Avaliação dos pedidos');
-        $evaluation_phase->evaluationFrom = $data['evaluationFrom']['_date'] ?? null;
-        $evaluation_phase->evaluationTo   = $data['evaluationTo']['_date'] ?? null;
+        $evaluation_phase->evaluationFrom = self::parseDateTimeIgnoringSeconds($data['evaluationFrom'] ?? null);
+        $evaluation_phase->evaluationTo   = self::parseDateTimeIgnoringSeconds($data['evaluationTo'] ?? null);
 
         return $evaluation_phase;
     }
