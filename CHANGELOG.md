@@ -52,6 +52,10 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Corrige a exportação de oportunidades para não incluir datas das fases de avaliação quando a opção de exportar datas das fases estiver desmarcada
 - Corrige o cálculo ponderado dos subtotais na tela de avaliação técnica
 
+## [7.7.45] - 2026-05-26
+### Correções
+- Ajuste estrutura de Quotas para evitar estouro de memoria
+
 ## [7.7.44] - 2026-05-25
 ### Correções
 - Evita estouro de memória ao listar inscrições em editais com várias fases
