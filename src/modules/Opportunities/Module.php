@@ -661,7 +661,10 @@ class Module extends \MapasCulturais\Module{
                 return $a->displayOrder <=> $b->displayOrder;
             });
 
-            $this->jsObject['registrationFields'] = $fields;
+            $this->jsObject['registrationFields'] = array_map(
+                fn ($field) => $field->jsonSerialize(),
+                $fields
+            );
         });
 
         $app->hook('mapas.printJsObject:before', function() use($app) {
@@ -722,10 +725,14 @@ class Module extends \MapasCulturais\Module{
                     $data['evaluationsDetails'] = [];
 
                     $evaluations = $this->sentEvaluations;
+                    
+                    // Verifica se o usuário pode ver os nomes dos avaliadores
+                    $can_view_valuer_names = $opportunity->canUser('@control') || 
+                                              $evaluation_configuration->publishValuerNames;
 
                     foreach($evaluations as $eval) {
                         $detail = $em->getEvaluationDetails($eval);
-                        if ($evaluation_configuration->publishValuerNames){
+                        if ($can_view_valuer_names){
                             $detail['valuer'] = $eval->user->profile->simplify('id,name,singleUrl');
                         }
                         $data['evaluationsDetails'][] = $detail;
@@ -1233,6 +1240,12 @@ class Module extends \MapasCulturais\Module{
             'label' => i::__('Vinculação de Agente coletivo para tipos de proponente'),
             'type' => 'object',
             'description' => i::__('Armazena se a vinculação de agente coletivo está habilitada para Coletivo ou Pessoa Jurídica'),
+        ]);
+
+        $this->registerOpportunityMetadata('proponentAgentRelationAvatar', [
+            'label' => i::__('Solicitação de avatar do Agente coletivo para tipos de proponente'),
+            'type' => 'object',
+            'description' => i::__('Armazena se o avatar do agente coletivo é obrigatório para Coletivo ou Pessoa Jurídica'),
         ]);
 
         $this->registerEvauationMethodConfigurationMetadata('fetchFields', [

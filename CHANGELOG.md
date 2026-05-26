@@ -9,6 +9,8 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 ### Novas Funcionalidades
 - Módulo de **fase de execução** que permite ao gestor configurar uma fase de acompanhamento para os agentes contemplados após a publicação do resultado. Durante esta fase, o agente contemplado pode abrir múltiplos **pedidos de alteração** no projeto aprovado — troca de data, substituição de item de orçamento, mudança de local, entre outros. Cada pedido é avaliado individualmente por uma comissão configurada pelo gestor (mesmo modelo de avaliação simplificada já existente nas fases de seleção). Os pedidos ficam como registro histórico das alterações aprovadas durante a vigência do projeto e não interferem no fluxo das fases seguintes de prestação de informações.
 - Implementa configuração que permide definir a imagem de avatar de qualquer entidade como obrigatória
+- Adiciona botão para duplicar campos do formulário de inscrição, criando a cópia logo abaixo do campo original
+- Adiciona botão para duplicar anexos do formulário de inscrição, incluindo a cópia do arquivo modelo e inserindo o novo anexo logo abaixo do original
 
 ### Melhorias
 - Adiciona um campo de busca para encontrar colunas por palavra-chave na listagem por tabela nas entidades.
@@ -18,6 +20,9 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Ajusta exportação da planilha para organizar as colunas segundo a ordem definida pelo superSaasAdmin
 - Melhora a exibição do botão minha conta no header para exibir o nome do perfil do agente responsável logado
 - Implementa visualização das datas de recurso no step vertical de fases
+- Adiciona configuração para exibir ou ocultar o detalhamento da avaliação anterior na fase de recurso
+- Exibe o detalhamento da avaliação da fase anterior para avaliadores da fase de recurso
+- Adiciona configuração para exigir foto de perfil do agente coletivo vinculado na inscrição para proponentes do tipo coletivo e pessoa jurídica
 
 ### Correções
 - Aplica texto de internacionalização faltante no componente opportunity-registration-table
@@ -27,6 +32,49 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Evita erro ao hidratar campos de data inválidos em entidades
 - Corrige a importação de formulários de inscrição para preservar os formatos aceitos configurados nos campos de anexo
 - Corrige erro ao reordenar etapas na configuração do formulário de oportunidades
+- Corrige a exportação de oportunidades para não incluir datas das fases de avaliação quando a opção de exportar datas das fases estiver desmarcada
+- Corrige o cálculo ponderado dos subtotais na tela de avaliação técnica
+
+## [7.7.44] - 2026-05-25
+### Correções
+- Evita estouro de memória ao listar inscrições em editais com várias fases
+- Melhora performance do cálculo e exibição de cotas
+
+## [7.7.43] - 2026-05-21
+### Correções
+- Remove mensagens repetitivas nos logs do servidor sobre prioridade dos processos de atualização de permissões
+- Ao abrir uma ficha de avaliação, o sistema deixa de colocar o edital inteiro na fila de atualização de permissões em segundo plano
+- A página de avaliação abre bem mais rápido: o plano de trabalho só é carregado nas fases de prestação de contas que realmente usam esse formulário
+- Reduz a quantidade de informações enviadas ao navegador ao exibir as etapas do formulário de inscrição
+- Evita reprocessar os mesmos campos do formulário de inscrição várias vezes ao montar a página
+
+## [7.7.42] - 2026-05-20
+### Correções
+- Melhora performace do sistema de criaçao de cache de permissão
+
+## [7.7.41] - 2026-05-19
+### Correções
+- Corrige erro que impedia o botão exibir detalhamento de aparecer na tela do avaliador do recurso
+
+## [7.7.40] - 2026-05-15
+- ### Correçoes
+- Corrige erro de estouro de memória durante a ordenaçao por cota
+- Corrige erro que impedia a sincronização de inscriçoes entre fases
+
+## [7.7.39] - 2026-05-15
+### Correções
+- Ajusta exibiçao do nome e id do avaliador nas fases de recurso e normais no exbir detalhamento
+
+## [7.7.38] - 2026-05-14
+### Correções
+- Corrige erro que impedia a ordenaçao por cotas funcionar corretamente
+
+### Melhorias
+- Permite que o avaliador do recurso visualize o detalhamento da avaliação anterior diretamente na tela de avaliação do recurso
+
+## [7.7.37] - 2026-05-14
+### Correções
+- Remove style inline na single da registration
 
 ## [7.7.36] - 2026-05-08
 ### Correções
