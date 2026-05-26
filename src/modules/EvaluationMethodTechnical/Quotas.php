@@ -265,6 +265,11 @@ class Quotas {
             return $registration;
         }
 
+        // Já enriquecido em batch (loadRegistrationsForQuotaSorting + enrichRegistrationsFromFirstPhase)
+        if (!empty($registration->_firstPhaseEnriched)) {
+            return $registration;
+        }
+
         $registration_entity = App::i()->repo('Registration')->find($registration->id);
         if (!$registration_entity) {
             return $registration;
@@ -284,6 +289,8 @@ class Quotas {
         if ($this->isQuotaFieldValueEmpty($registration->appliedForQuota ?? null)) {
             $registration->appliedForQuota = $source_registration->appliedForQuota;
         }
+
+        $registration->_firstPhaseEnriched = true;
 
         App::i()->em->detach($registration_entity);
 
@@ -388,6 +395,7 @@ class Quotas {
                     }
                 }
             }
+            $registration->_firstPhaseEnriched = true;
         }
     }
 
