@@ -17,4 +17,5 @@ src/plugins/*
 .zed
 public/assets
 public/evaluators-default-profiles
+public/files
 public/files/distributionslog
