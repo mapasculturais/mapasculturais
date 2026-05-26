@@ -5,6 +5,13 @@ Todas as mudanças notáveis no projeto serão documentadas neste arquivo.
 O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/)
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [7.7.46] - 2026-05-26
+### Correções
+- Oculta aba 'Eventos' em espaços sem eventos cadastrados
+
+### Melhorias
+- Adiciona a opção 'Inscrições' no tipo de contato
+
 ## [7.7.45] - 2026-05-26
 ### Correções
 - Ajuste estrutura de Quotas para evitar estouro de memoria
