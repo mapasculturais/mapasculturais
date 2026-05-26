@@ -20,7 +20,7 @@ $this->import('
 
     <template v-if="!isFuture()">
         <div class="col-12">
-            <entity-table controller="opportunity" show-index :select="defaultSelect" :raw-processor="rawProcessor" :identifier="identifier" endpoint="findEvaluations" type="registration" :headers="headers" :phase="phase" :visible="['agent', 'number', 'result', 'status', 'evaluator', 'coletivo', 'goalStatuses']" :query="query" :limit="100" @clear-filters="clearFilters" @remove-filter="removeFilter($event)" :filtersDictComplement="filtersDictComplement"> 
+            <entity-table controller="opportunity" show-index :select="defaultSelect" :raw-processor="rawProcessor" :identifier="identifier" endpoint="findEvaluations" type="registration" :headers="headers" :phase="phase" required="number,committeeSequentialNumber,valuerUserId,valuerAgentId,evaluator,result,status,delete" :visible="['agent', 'number', 'committeeSequentialNumber', 'valuerUserId', 'valuerAgentId', 'evaluator', 'result', 'status', 'coletivo', 'goalStatuses']" :query="query" :limit="100" @clear-filters="clearFilters" @remove-filter="removeFilter($event)" :filtersDictComplement="filtersDictComplement"> 
                 <template #title>
                     <h2 v-if="isPast()"><?= i::__("As avaliações já estão encerradas") ?></h2>
                     <h2 v-if="isHappening()"><?= i::__("As avaliações estão em andamento") ?></h2>
@@ -51,7 +51,7 @@ $this->import('
                                     :param="phase.opportunity.id"><?= i::__("Enviar avaliações") ?></mc-link>
                             </div>
                             <div v-if="user == 'all'">
-                                <mc-export-spreadsheet :owner="phase.opportunity" endpoint="evaluations" :params="{entityType: 'registrationEvaluation', '@select': 'projectName,category,owner.{name},number,score,proponentType,range,eligible,goalStatuses,user,result,status,evaluationData', query}" group="evaluations-spreadsheets"></mc-export-spreadsheet>
+                                <mc-export-spreadsheet :owner="phase.opportunity" endpoint="evaluations" :params="{entityType: 'registrationEvaluation', '@select': 'projectName,category,owner.{name},number,score,proponentType,range,eligible,goalStatuses,committeeSequentialNumber,valuerUserId,valuerAgentId,user,result,status,evaluationData', query}" group="evaluations-spreadsheets"></mc-export-spreadsheet>
                             </div>
                         </div>
                     </div>
@@ -104,6 +104,19 @@ $this->import('
 
                 <template #number="{entity}">
                     <a :href="createUrl(entity)">{{entity.number}}</a>
+                </template>
+
+                <template #committeeSequentialNumber="{entity}">
+                    <span v-if="entity.valuer?.committeeSequentialNumber">#{{ entity.valuer.committeeSequentialNumber }}</span>
+                    <span v-else>-</span>
+                </template>
+
+                <template #valuerUserId="{entity}">
+                    {{ entity.valuer?.user ?? '-' }}
+                </template>
+
+                <template #valuerAgentId="{entity}">
+                    {{ entity.valuer?.id ?? '-' }}
                 </template>
 
                 <template #result="{entity}">

@@ -22,14 +22,11 @@ abstract class EvaluationsSpreadsheetJob extends SpreadsheetJob
         $query = $job->query;
         $properties = explode(',', $query['@select']);
         
-        $column_registration_info = $this->slug == 'continuous-spreadsheets' ? 'A1:I1' : 'A1:H1';
-        $column_evaluator_info = $this->slug == 'continuous-spreadsheets' ? 'J1' : 'I1';
+        $evaluator_fields = ['committeeSequentialNumber', 'valuerUserId', 'valuerAgentId', 'user'];
+        $evaluator_col_start = null;
+        $evaluator_col_end = null;
 
-        $header = [
-            $column_registration_info => i::__('Informações sobre as inscrições e proponentes'), 
-            $column_evaluator_info => i::__('Informações sobre o avaliador'),
-        ];
-
+        $header = [];
         $sub_header = [];
         $total_properties = 0;
         $job->owner->registerRegistrationMetadata(true);
@@ -37,6 +34,13 @@ abstract class EvaluationsSpreadsheetJob extends SpreadsheetJob
             if (!in_array($property, ['result', 'status', 'evaluationData'])) {
                 if($this->slug !== 'continuous-spreadsheets' && $property === 'goalStatuses') {
                     continue;
+                }
+
+                if (in_array($property, $evaluator_fields, true)) {
+                    if ($evaluator_col_start === null) {
+                        $evaluator_col_start = $total_properties + 1;
+                    }
+                    $evaluator_col_end = $total_properties + 1;
                 }
 
                 $total_properties++;
@@ -56,15 +60,44 @@ abstract class EvaluationsSpreadsheetJob extends SpreadsheetJob
                     }
                     continue;
                 }
+
+                if($property === 'committeeSequentialNumber') {
+                    $sub_header[$property] = i::__('Nº sequencial do avaliador');
+                    continue;
+                }
+
+                if($property === 'valuerUserId') {
+                    $sub_header[$property] = i::__('ID do usuário do avaliador');
+                    continue;
+                }
+
+                if($property === 'valuerAgentId') {
+                    $sub_header[$property] = i::__('ID do agente avaliador');
+                    continue;
+                }
                 
                 if($property === 'user') {
-                    $sub_header[$property] = i::__('Nome');
+                    $sub_header[$property] = i::__('Nome do avaliador');
                     continue;
                 }
 
                 $sub_header[$property] = $registration_class_name::getPropertyLabel($property) ?: $property;
             }
         }
+
+        $registration_col_end = ($evaluator_col_start ?? $total_properties + 1) - 1;
+        $column_registration_info = $registration_col_end >= 1
+            ? "A1:{$this->getSpreadsheetColumnName($registration_col_end)}1"
+            : 'A1:A1';
+
+        $column_evaluator_info = ($evaluator_col_start && $evaluator_col_end)
+            ? "{$this->getSpreadsheetColumnName($evaluator_col_start)}1:{$this->getSpreadsheetColumnName($evaluator_col_end)}1"
+            : "{$this->getSpreadsheetColumnName($total_properties)}1";
+
+        $header = [
+            $column_registration_info => i::__('Informações sobre as inscrições e proponentes'),
+            $column_evaluator_info => i::__('Informações sobre o avaliador'),
+        ];
 
         // Parte dos dados da avaliação
         $data_header = $this->getEvaluationDataHeader($job, $total_properties);
@@ -123,6 +156,34 @@ abstract class EvaluationsSpreadsheetJob extends SpreadsheetJob
             }
         }
         return $sheet;
+    }
+
+    protected function getEvaluatorSpreadsheetColumns(?array $valuer): array
+    {
+        if (!$valuer) {
+            return [
+                'committeeSequentialNumber' => '',
+                'valuerUserId' => '',
+                'valuerAgentId' => '',
+                'user' => '',
+            ];
+        }
+
+        $user = $valuer['user'] ?? null;
+        if (is_array($user)) {
+            $user_id = $user['id'] ?? null;
+        } elseif (is_object($user)) {
+            $user_id = $user->id ?? null;
+        } else {
+            $user_id = $user;
+        }
+
+        return [
+            'committeeSequentialNumber' => $valuer['committeeSequentialNumber'] ?? '',
+            'valuerUserId' => $user_id ?? '',
+            'valuerAgentId' => $valuer['id'] ?? '',
+            'user' => $valuer['name'] ?? '',
+        ];
     }
 
     function statusName($status) {
