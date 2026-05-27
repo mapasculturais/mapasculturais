@@ -33,7 +33,8 @@ return array(
                 "1" => \MapasCulturais\i::__("Crítica"),
                 "2" => \MapasCulturais\i::__("Comentários"),
                 "3" => \MapasCulturais\i::__("Reclamações"),
-                "4" => \MapasCulturais\i::__("Outros")
+                "4" => \MapasCulturais\i::__("Outros"),
+                "5" => \MapasCulturais\i::__("Inscrições")
             )
         ]
     )
