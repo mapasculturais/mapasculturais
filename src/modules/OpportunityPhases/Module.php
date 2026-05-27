@@ -1828,7 +1828,7 @@ class Module extends \MapasCulturais\Module{
             // Adiciona os proponentes, as faixas e as categorias para as novas fases de coleta de dados criadas
             $app->hook('entity(Opportunity).insert:after', function() use ($app) {
                 /** @var Opportunity $this */
-                if($this->parent && $this->isDataCollection) {
+                if ($this->parent && $this->isDataCollection && !$this->isAppealPhase) {
                     $this->registrationCategories = $this->parent->registrationCategories;
                     $this->registrationProponentTypes = $this->parent->registrationProponentTypes;
                     $this->registrationRanges = $this->parent->registrationRanges;
@@ -1838,7 +1838,7 @@ class Module extends \MapasCulturais\Module{
 
             $app->hook('entity(Opportunity).insert:after', function() use ($app) {
                 /** @var Opportunity $this */
-                if($this->parent && $this->firstPhase->isContinuousFlow) {
+                if ($this->parent && $this->firstPhase->isContinuousFlow && !$this->isAppealPhase) {
                     $this->isContinuousFlow = true;
                     $this->save(true);
                 }

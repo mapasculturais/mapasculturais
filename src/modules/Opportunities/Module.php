@@ -149,6 +149,10 @@ class Module extends \MapasCulturais\Module{
         });
 
         $app->hook('entity(Opportunity).insert:after', function() {
+            if ($this->isAppealPhase) {
+                return;
+            }
+
             if ($this->registrationSteps && count($this->registrationSteps) > 0) {
                 return;
             }
