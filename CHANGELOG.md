@@ -8,6 +8,13 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 ## [UNRELEASED]
 ### Correçõesrante que uma fase de recurso não seja criada de forma incompleta, faltando metadados ou informações que a definam corretamente como uma fase de recurso
 
+## [7.7.46] - 2026-05-26
+### Correções
+- Oculta aba 'Eventos' em espaços sem eventos cadastrados
+
+### Melhorias
+- Adiciona a opção 'Inscrições' no tipo de contato
+
 ## [7.7.45] - 2026-05-26
 ### Correções
 - Ajuste estrutura de Quotas para evitar estouro de memoria
