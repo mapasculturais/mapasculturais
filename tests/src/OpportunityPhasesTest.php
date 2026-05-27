@@ -538,4 +538,79 @@ class OpportunityPhasesTest extends TestCase
         );
         $this->assertSame(0, $badFiles, 'Garantindo que cada anexo de inscrição aponte para registration_step da mesma oportunidade');
     }
+
+    /**
+     * Garante que uma falha durante a criação da fase de recurso não deixa
+     * fase órfã no banco (sem metadado appealPhase).
+     */
+    function testCreateAppealPhaseFailureRollsBackOrphanPhase(): void
+    {
+        $app = $this->app;
+        $admin = $this->userDirector->createUser('admin');
+        $this->login($admin);
+
+        // Cria uma oportunidade com fase de avaliação
+        /** @var Opportunity $opportunity */
+        $opportunity = $this->opportunityBuilder
+            ->reset(owner: $admin->profile, owner_entity: $admin->profile)
+            ->fillRequiredProperties()
+            ->firstPhase()
+                ->setRegistrationPeriod(new Open)
+                ->done()
+            ->save()
+            ->addEvaluationPhase(EvaluationMethods::simple)
+                ->setEvaluationPeriod(new ConcurrentEndingAfter)
+                ->save()
+                ->done()
+            ->refresh()
+            ->getInstance();
+
+        $opportunityId = $opportunity->id;
+
+        // Adiciona um hook que simula uma falha (timeout/erro) durante o save
+        // da oportunidade principal, APÓS a fase de recurso ser criada mas ANTES
+        // do metadado appealPhase ser persistido.
+        $shouldFail = true;
+        $app->hook('entity(Opportunity).save:before', function() use ($opportunityId, &$shouldFail) {
+            /** @var Opportunity $this */
+            if (!$shouldFail || $this->id != $opportunityId || $this->isAppealPhase || !$this->appealPhase) {
+                return;
+            }
+
+            $shouldFail = false;
+            throw new \RuntimeException('Simulação de falha ao persistir metadado appealPhase');
+        });
+
+        // Tenta criar a fase de recurso via endpoint
+        $app->request = $this->requestFactory->mapasPOST('opportunity', 'createAppealPhase', [$opportunityId], ['id' => $opportunityId]);
+        $app->response = new Response();
+
+        /** @var OpportunityController $controller */
+        $controller = $app->controller('opportunity');
+        $controller->setRequestData(['id' => $opportunityId]);
+
+        try {
+            $controller->callAction('POST', 'createAppealPhase', []);
+            $this->fail('Garantindo que a criação da fase de recurso lance exceção quando o save falha');
+        } catch (Halt) {
+            $this->fail('Garantindo que a criação da fase de recurso não conclua com sucesso quando o save falha');
+        } catch (\Throwable) {
+        }
+
+        $app->em->clear();
+
+        $orphanPhaseCount = (int) $app->em->getConnection()->fetchOne(
+            'SELECT COUNT(*) FROM opportunity WHERE parent_id = :parent_id AND status = :status',
+            ['parent_id' => $opportunityId, 'status' => Opportunity::STATUS_APPEAL_PHASE]
+        );
+
+        $this->assertSame(0, $orphanPhaseCount, 'Garantindo que nenhuma fase de recurso órfã permaneça no banco após falha');
+
+        $appealPhaseMeta = $app->repo('OpportunityMeta')->findOneBy([
+            'owner' => $app->repo('Opportunity')->find($opportunityId),
+            'key' => 'appealPhase',
+        ]);
+
+        $this->assertNull($appealPhaseMeta, 'Garantindo que o metadado appealPhase não foi salvo parcialmente no edital');
+    }
 }
