@@ -521,10 +521,10 @@ app.component('entity-table', {
                             val = val?.address ? val.address : val?.endereco ? val.endereco : null;
                             break;
                         case 'boolean':
-                            if(prop == "publicLocation") {
-                                val = val ? this.text('sim') : this.text('nao');
+                            if (prop === 'publicLocation' || prop === 'eligible' || prop === 'public') {
+                                val = val ? this.text('sim') : (val === false || val === 'false' || val === 0) ? this.text('nao') : '';
                             } else {
-                                val = val
+                                val = val;
                             }
                             break;
                         
