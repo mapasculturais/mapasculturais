@@ -524,6 +524,10 @@ class Module extends \MapasCulturais\EvaluationMethod
                 Module::$quotaData->enrichFieldsOnly = !$order_by_quota;
 
                 if (Module::$quotaData->enrichFieldsOnly) {
+                    $select = $params['@select'] ?? '';
+                    if ($select !== '*' && !preg_match('/\beligible\b/', $select)) {
+                        $params['@select'] = $select === '' ? 'eligible' : "{$select},eligible";
+                    }
                     return;
                 }
 
