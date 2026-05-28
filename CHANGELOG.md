@@ -19,6 +19,21 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Adiciona controle para ocultar título e subtítulo do logo no ThemeCustomizer
 - Remove configurações de aparência redundantes da tela de edição de subsites
 
+## [7.7.47] - 2026-05-28
+### Correções
+- garante que uma fase de recurso não seja criada de forma incompleta, faltando metadados ou informações que a definam corretamente como uma fase de recurso
+- Implementa mecanismo para encerrar editais de fluxo contínuos, sendo possível definir uma data de término
+- Ajustar a coluna Elegível na tabela de inscritos para que exiba 'Sim' ou 'Não' ao invés de um valor booleano
+- Faz ajuste para que o valor do eligible seja retornado corretamente no endpoint findRegistration
+- Faz ajuste no carregamento de quotas para que o carregamento ocorra de forma performática.
+
+## [7.7.46] - 2026-05-26
+### Correções
+- Oculta aba 'Eventos' em espaços sem eventos cadastrados
+
+### Melhorias
+- Adiciona a opção 'Inscrições' no tipo de contato
+
 ## [7.7.45] - 2026-05-26
 ### Correções
 - Ajuste estrutura de Quotas para evitar estouro de memoria
