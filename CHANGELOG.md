@@ -35,6 +35,14 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Corrige a exportação de oportunidades para não incluir datas das fases de avaliação quando a opção de exportar datas das fases estiver desmarcada
 - Corrige o cálculo ponderado dos subtotais na tela de avaliação técnica
 
+## [7.7.47] - 2026-05-28
+### Correções
+- garante que uma fase de recurso não seja criada de forma incompleta, faltando metadados ou informações que a definam corretamente como uma fase de recurso
+- Implementa mecanismo para encerrar editais de fluxo contínuos, sendo possível definir uma data de término
+- Ajustar a coluna Elegível na tabela de inscritos para que exiba 'Sim' ou 'Não' ao invés de um valor booleano
+- Faz ajuste para que o valor do eligible seja retornado corretamente no endpoint findRegistration
+- Faz ajuste no carregamento de quotas para que o carregamento ocorra de forma performática.
+
 ## [7.7.46] - 2026-05-26
 ### Correções
 - Oculta aba 'Eventos' em espaços sem eventos cadastrados
