@@ -398,7 +398,9 @@ class Delivery extends \MapasCulturais\Entity {
      */
     protected function validateJsonArrayField(string $field): bool {
         $value = $this->$field;
-        if (!$value) return false;
+        if (!$value) {
+            return false;
+        }
 
         $decoded = is_string($value) ? json_decode($value, true) : $value;
         return is_array($decoded) && count($decoded) > 0;
@@ -413,7 +415,9 @@ class Delivery extends \MapasCulturais\Entity {
      */
     protected function validateJsonObjectField(string $field): bool {
         $value = $this->$field;
-        if (!$value) return false;
+        if (!$value) {
+            return false;
+        }
 
         $decoded = is_string($value) ? json_decode($value, true) : $value;
         return is_array($decoded) && count($decoded) > 0;
@@ -427,7 +431,9 @@ class Delivery extends \MapasCulturais\Entity {
      */
     protected function validateMultiselectField(string $field): bool {
         $value = $this->$field;
-        if (!$value) return false;
+        if (!$value) {
+            return false;
+        }
 
         $array = is_string($value) ? json_decode($value, true) : $value;
         return is_array($array) && count($array) > 0;
