@@ -13,6 +13,7 @@ use OpportunityWorkplan\Entities\Delivery;
 
 class Module extends \MapasCulturais\Module{
     private const REQUIRED_FIELD_MESSAGE_PREFIX = "Campo '";
+    private const ACCESSIBILITY_MEASURES_LABEL = 'Medidas de acessibilidade';
 
     function _init(){
         $app = App::i();
@@ -2174,14 +2175,14 @@ class Module extends \MapasCulturais\Module{
             'unitPrice' => 'Valor unitário',
             'communityCoauthorsDetail' => 'Detalhamento de coautoria',
             'transInclusionActions' => 'Ações de inclusão Trans/Travestis',
-            'expectedAccessibilityMeasures' => 'Medidas de acessibilidade',
+            'expectedAccessibilityMeasures' => self::ACCESSIBILITY_MEASURES_LABEL,
             'environmentalPracticesDescription' => 'Práticas socioambientais',
             'communicationChannels' => 'Canais de comunicação',
             'innovationTypes' => 'Tipos de experimentação/inovação',
             'documentationTypes' => 'Tipos de documentação',
             'hasCommunityCoauthors' => 'Envolvimento de comunidades',
             'hasTransInclusionStrategy' => 'Estratégia de inclusão Trans/Travestis',
-            'hasAccessibilityPlan' => 'Medidas de acessibilidade',
+            'hasAccessibilityPlan' => self::ACCESSIBILITY_MEASURES_LABEL,
             'hasEnvironmentalPractices' => 'Práticas socioambientais',
             'hasPressStrategy' => 'Estratégia de imprensa',
             'hasInnovationAction' => 'Experimentação/inovação',
@@ -2199,7 +2200,7 @@ class Module extends \MapasCulturais\Module{
             'executedTeamCompositionGender' => 'Composição executada por gênero',
             'executedTeamCompositionRace' => 'Composição executada por raça/cor',
             'availabilityType' => 'Forma de disponibilização',
-            'accessibilityMeasures' => 'Medidas de acessibilidade',
+            'accessibilityMeasures' => self::ACCESSIBILITY_MEASURES_LABEL,
             'numberOfParticipants' => 'Número de participantes',
             'participantProfile' => 'Perfil do público',
             'priorityAudience' => 'Territórios prioritários',
