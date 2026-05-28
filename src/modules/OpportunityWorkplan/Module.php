@@ -76,10 +76,8 @@ class Module extends \MapasCulturais\Module{
                         $errors['projectDuration'] = [i::__('Plano de metas - Duração do projeto (meses) obrigatório.')];
                     }
 
-                    if ($opp->workplan_dataProjectInformCulturalArtisticSegment) {
-                        if (($opp->workplan_dataProjectRequireCulturalArtisticSegment ?? false) && !$workplan?->culturalArtisticSegment) {
-                            $errors['culturalArtisticSegment'] = [i::__('Plano de metas - Segmento artístico-cultural obrigatório.')];
-                        }
+                    if ($opp->workplan_dataProjectInformCulturalArtisticSegment && ($opp->workplan_dataProjectRequireCulturalArtisticSegment ?? false) && !$workplan?->culturalArtisticSegment) {
+                        $errors['culturalArtisticSegment'] = [i::__('Plano de metas - Segmento artístico-cultural obrigatório.')];
                     }
 
                     if ($workplan?->goals->isEmpty()) {
