@@ -10,6 +10,9 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Implementa configuração que permide definir a imagem de avatar de qualquer entidade como obrigatória
 - Adiciona botão para duplicar campos do formulário de inscrição, criando a cópia logo abaixo do campo original
 - Adiciona botão para duplicar anexos do formulário de inscrição, incluindo a cópia do arquivo modelo e inserindo o novo anexo logo abaixo do original
+- Atualiza os módulos de Plano de Trabalho (Metas) e Monitoramento com novos campos configuráveis para planejamento e execução das entregas
+- Permite exibir campos do plano de trabalho na ficha de avaliação
+- Adiciona os novos campos do plano de trabalho e monitoramento na exportação das inscrições
 
 ### Melhorias
 - Adiciona um campo de busca para encontrar colunas por palavra-chave na listagem por tabela nas entidades. 
@@ -23,6 +26,9 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Adiciona configuração para exigir foto de perfil do agente coletivo vinculado na inscrição para proponentes do tipo coletivo e pessoa jurídica
 - Adiciona números sequenciais nos avaliadores das comissões
 - Permite criar agentes no fluxo de inscrição de oportunidades respeitando as permissões: agente individual apenas para administradores e agente coletivo para usuários comuns quando exigido pela inscrição.
+- Reorganiza os campos de entrega do plano de trabalho e monitoramento para manter a mesma ordem entre inscrição, visualização e avaliação
+- Melhora a validação de campos obrigatórios do plano de trabalho e monitoramento conforme as configurações da oportunidade
+- Utiliza o componente de moeda nos campos monetários do monitoramento
 
 ### Correções
 - Aplica texto de internacionalização faltante no componente opportunity-registration-table
@@ -34,6 +40,8 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Corrige erro ao reordenar etapas na configuração do formulário de oportunidades
 - Corrige a exportação de oportunidades para não incluir datas das fases de avaliação quando a opção de exportar datas das fases estiver desmarcada
 - Corrige o cálculo ponderado dos subtotais na tela de avaliação técnica
+- Corrige avisos de validação do monitoramento que apareciam indevidamente na fase de inscrição
+- Corrige exportação de campos multiselect do plano de trabalho para evitar valores "Array | Array"
 
 ## [7.7.46] - 2026-05-26
 ### Correções
