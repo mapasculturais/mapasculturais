@@ -28,15 +28,28 @@ class Module extends \MapasCulturais\Module {
 
             $opportunity->checkPermission('@control');
 
-            $has_appeal_phase = $app->repo("Opportunity")->findOneBy(['parent' => $opportunity->id, 'status' => Opportunity::STATUS_APPEAL_PHASE]);
+            $existing_appeal_phase = $app->repo('Opportunity')->findOneBy([
+                'parent' => $opportunity->id,
+                'status' => Opportunity::STATUS_APPEAL_PHASE,
+            ]);
 
-            if ($has_appeal_phase) {
-                $this->errorJson(sprintf(i::__('Já existe uma fase de recurso para %s'), $opportunity->name), 403);
+            if ($existing_appeal_phase) {
+                $appeal_phase_meta = $app->repo('OpportunityMeta')->findOneBy([
+                    'owner' => $opportunity,
+                    'key' => 'appealPhase',
+                ]);
+
+                if ($appeal_phase_meta) {
+                    $this->errorJson(sprintf(i::__('Já existe uma fase de recurso para %s'), $opportunity->name), 403);
+                }
+
+                $existing_appeal_phase->delete(true);
+                $opportunity = $opportunity->refreshed();
             }
 
             $class_name = $opportunity->getSpecializedClassName();
 
-            $phase_name = $opportunity->evaluationMethodConfiguration ? 
+            $phase_name = $opportunity->evaluationMethodConfiguration ?
                 $opportunity->evaluationMethodConfiguration->name : $opportunity->name;
             $appeal_phase = new $class_name();
             $appeal_phase->parent = $opportunity;
@@ -49,19 +62,47 @@ class Module extends \MapasCulturais\Module {
             $appeal_phase->isDataCollection = true;
             $appeal_phase->isAppealPhase = true;
             $appeal_phase->showPreviousPhaseEvaluationDetails = true;
-            $appeal_phase->save(true);
-            
-            $opportunity->appealPhase = $appeal_phase;
-            $opportunity->save(true);
-    
-            $evaluationMethodConfiguration = new EvaluationMethodConfiguration();
-            $evaluationMethodConfiguration->opportunity = $appeal_phase;
-            $evaluationMethodConfiguration->type = 'continuous';
-            $evaluationMethodConfiguration->publishEvaluationDetails = true;
-            $evaluationMethodConfiguration->save(true);
 
-            $appeal_phase->evaluationMethodConfiguration = $evaluationMethodConfiguration;
-            
+            $conn = $app->conn;
+            $conn->beginTransaction();
+
+            try {
+                $appeal_phase->save(true);
+
+                $opportunity->appealPhase = $appeal_phase;
+                $opportunity->save(true);
+
+                $evaluationMethodConfiguration = new EvaluationMethodConfiguration();
+                $evaluationMethodConfiguration->opportunity = $appeal_phase;
+                $evaluationMethodConfiguration->type = 'continuous';
+                $evaluationMethodConfiguration->publishEvaluationDetails = true;
+                $evaluationMethodConfiguration->save(true);
+
+                $appeal_phase->evaluationMethodConfiguration = $evaluationMethodConfiguration;
+
+                $conn->commit();
+            } catch (\Throwable $e) {
+                if ($conn->isTransactionActive()) {
+                    $conn->rollBack();
+                }
+
+                $orphan = $app->repo('Opportunity')->findOneBy([
+                    'parent' => $opportunity->id,
+                    'status' => Opportunity::STATUS_APPEAL_PHASE,
+                ]);
+
+                if ($orphan && !$app->repo('OpportunityMeta')->findOneBy([
+                    'owner' => $opportunity,
+                    'key' => 'appealPhase',
+                ])) {
+                    $orphan->delete(true);
+                }
+
+                $app->em->clear();
+
+                throw $e;
+            }
+
             $this->json($appeal_phase);
         });
 

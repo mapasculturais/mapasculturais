@@ -724,12 +724,12 @@ class Quotas {
      * @param object $registration 
      * @return array
      */
-    protected function getRegistrationQuotas(object $registration): array {
+    public function getRegistrationQuotas(object $registration): array {
         $registration = $this->enrichRegistrationFromFirstPhase($registration);
 
         $result = [];
         $quotas = [];
-        if($registration->eligible) {
+        if (isset($registration->eligible) && $registration->eligible) {
             $proponent_type = $registration->proponentType ?? 'default';
 
             foreach($this->quotaRules as $rule) {

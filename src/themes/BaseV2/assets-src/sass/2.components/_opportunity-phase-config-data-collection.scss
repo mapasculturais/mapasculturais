@@ -8,6 +8,18 @@
         gap: size(40) size(20);
     }
 
+    &__enable-end-date {
+        display: flex;
+        flex-direction: column;
+        gap: size(16);
+        margin-top: size(8);
+        margin-bottom: size(8);
+
+        .mc-alert {
+            margin-bottom: 0;
+        }
+    }
+
     &__horizontal-line {
         max-width: size(1038);
         border-bottom: 1px solid var(--mc-gray-100);
