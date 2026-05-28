@@ -367,8 +367,12 @@ class Module extends \MapasCulturais\Module{
                 }
 
                 $formatValue = function($val) {
-                    if ($val === null || $val === '') return '';
-                    if (is_bool($val)) return $val ? 'Sim' : 'Não';
+                    if ($val === null || $val === '') {
+                        return '';
+                    }
+                    if (is_bool($val)) {
+                        return $val ? 'Sim' : 'Não';
+                    }
                     if (is_array($val)) {
                         $parts = [];
                         foreach ($val as $k => $v) {
@@ -385,8 +389,12 @@ class Module extends \MapasCulturais\Module{
                     }
                     if (is_string($val)) {
                         $lower = strtolower($val);
-                        if ($lower === 'true') return 'Sim';
-                        if ($lower === 'false') return 'Não';
+                        if ($lower === 'true') {
+                            return 'Sim';
+                        }
+                        if ($lower === 'false') {
+                            return 'Não';
+                        }
                         $decoded = json_decode($val, true);
                         if (is_array($decoded)) {
                             $parts = [];
@@ -406,8 +414,12 @@ class Module extends \MapasCulturais\Module{
                 };
 
                 $formatBool = function($val) {
-                    if ($val === null || $val === '') return 'Não';
-                    if (is_bool($val)) return $val ? 'Sim' : 'Não';
+                    if ($val === null || $val === '') {
+                        return 'Não';
+                    }
+                    if (is_bool($val)) {
+                        return $val ? 'Sim' : 'Não';
+                    }
                     $lower = strtolower((string) $val);
                     return $lower === 'true' ? 'Sim' : 'Não';
                 };
@@ -2102,7 +2114,9 @@ class Module extends \MapasCulturais\Module{
      */
     public static function validateJsonArrayField($delivery, string $field): bool {
         $value = $delivery->$field;
-        if (!$value) return false;
+        if (!$value) {
+            return false;
+        }
 
         $decoded = is_string($value) ? json_decode($value, true) : $value;
         return is_array($decoded) && count($decoded) > 0;
@@ -2113,7 +2127,9 @@ class Module extends \MapasCulturais\Module{
      */
     public static function validateJsonObjectField($delivery, string $field): bool {
         $value = $delivery->$field;
-        if (!$value) return false;
+        if (!$value) {
+            return false;
+        }
 
         $decoded = is_string($value) ? json_decode($value, true) : $value;
         return is_array($decoded) && count($decoded) > 0;
@@ -2124,7 +2140,9 @@ class Module extends \MapasCulturais\Module{
      */
     public static function validateMultiselectField($delivery, string $field): bool {
         $value = $delivery->$field;
-        if (!$value) return false;
+        if (!$value) {
+            return false;
+        }
 
         $array = is_string($value) ? json_decode($value, true) : $value;
         return is_array($array) && count($array) > 0;
