@@ -9,7 +9,7 @@ class EvaluationSimpleBuilder extends EvaluationBuilder
     public function setStatus(int|string $status, ?string $obs = null): static
     {
         $evaluation_data = [
-            'status' => $status
+            'status' => (string) $status
         ];
 
         if ($obs !== null) {

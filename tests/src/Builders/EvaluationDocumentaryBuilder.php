@@ -47,7 +47,8 @@ class EvaluationDocumentaryBuilder extends EvaluationBuilder
         $evaluation_data[$field_id] = [
             'label' => $label,
             'fieldId' => $field_id,
-            'evaluation' => $evaluation
+            'evaluation' => $evaluation,
+            'obsItems' => null,
         ];
 
         if ($obs !== null) {
