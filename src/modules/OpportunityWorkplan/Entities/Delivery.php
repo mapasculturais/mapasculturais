@@ -127,9 +127,47 @@ class Delivery extends \MapasCulturais\Entity {
      * @return bool Se o campo é obrigatório
      */
     public function isMetadataRequired(string $metadata_key):bool {
-        // Mapeamento completo: campo → [inform, require]
-        $metadata_map = [
-            // MONITORAMENTO - Campos originais
+        $metadata_map = self::getMetadataRequirementMap();
+
+        if (!isset($metadata_map[$metadata_key])) {
+            return false;
+        }
+
+        $config = $metadata_map[$metadata_key];
+        $opportunity = $this->goal->workplan->registration->opportunity->firstPhase;
+
+        if (!($opportunity->{$config['inform']} ?? false)) {
+            return false;
+        }
+
+        if (isset($config['gate'])) {
+            $gate_value = $this->{$config['gate']} ?? null;
+            if ($gate_value !== 'true') {
+                return false;
+            }
+        }
+
+        if ($config['require'] === null) {
+            return true;
+        }
+
+        if ($this->$metadata_key) {
+            return true;
+        }
+
+        return $opportunity->{$config['require']} ?? false;
+    }
+
+    private static function getMetadataRequirementMap(): array {
+        return array_merge(
+            self::getOriginalMonitoringMetadataRequirements(),
+            self::getPlanningMetadataRequirements(),
+            self::getExecutedMonitoringMetadataRequirements()
+        );
+    }
+
+    private static function getOriginalMonitoringMetadataRequirements(): array {
+        return [
             'accessibilityMeasures' => [
                 'inform' => 'workplan_monitoringInformAccessibilityMeasures',
                 'require' => 'workplan_monitoringRequireAccessibilityMeasures'
@@ -154,8 +192,11 @@ class Delivery extends \MapasCulturais\Entity {
                 'inform' => 'workplan_monitoringProvideTheProfileOfParticipants',
                 'require' => 'workplan_monitoringRequireParticipantProfile'
             ],
+        ];
+    }
 
-            // PLANEJAMENTO - Campos originais
+    private static function getPlanningMetadataRequirements(): array {
+        return [
             'segmentDelivery' => [
                 'inform' => 'workplan_registrationInformCulturalArtisticSegment',
                 'require' => 'workplan_deliveryRequireSegment'
@@ -247,8 +288,11 @@ class Delivery extends \MapasCulturais\Entity {
                 'inform' => 'workplan_deliveryInformDocumentationTypes',
                 'require' => 'workplan_deliveryRequireDocumentationTypes'
             ],
+        ];
+    }
 
-            // MONITORAMENTO - Novos campos executados
+    private static function getExecutedMonitoringMetadataRequirements(): array {
+        return [
             'executedNumberOfCities' => [
                 'inform' => 'workplan_monitoringInformNumberOfCities',
                 'require' => 'workplan_monitoringRequireNumberOfCities'
@@ -343,41 +387,6 @@ class Delivery extends \MapasCulturais\Entity {
                 'require' => 'workplan_monitoringRequireDocumentationTypes'
             ],
         ];
-
-        // Campo não está no mapa → não é obrigatório
-        if (!isset($metadata_map[$metadata_key])) {
-            return false;
-        }
-
-        $config = $metadata_map[$metadata_key];
-        $opportunity = $this->goal->workplan->registration->opportunity->firstPhase;
-
-        // Se campo não está habilitado → não é obrigatório
-        if (!($opportunity->{$config['inform']} ?? false)) {
-            return false;
-        }
-
-        // Se campo tem gate, verifica se gate está ativo
-        if (isset($config['gate'])) {
-            $gate_value = $this->{$config['gate']} ?? null;
-            // Se gate não for 'true' (string), o detail não é obrigatório
-            if ($gate_value !== 'true') {
-                return false;
-            }
-        }
-
-        // Se é um campo gate (require = null), sempre é obrigatório quando habilitado
-        if ($config['require'] === null) {
-            return true;
-        }
-
-        // Se campo já tem valor preenchido, considera satisfeito
-        if ($this->$metadata_key) {
-            return true;
-        }
-
-        // Verifica configuração de obrigatoriedade
-        return $opportunity->{$config['require']} ?? false;
     }
 
     /**
