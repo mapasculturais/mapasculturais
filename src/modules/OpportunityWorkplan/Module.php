@@ -12,6 +12,8 @@ use MapasCulturais\Themes\BaseV2\Theme;
 use OpportunityWorkplan\Entities\Delivery;
 
 class Module extends \MapasCulturais\Module{
+    private const REQUIRED_FIELD_MESSAGE_PREFIX = "Campo '";
+
     function _init(){
         $app = App::i();
 
@@ -146,7 +148,7 @@ class Module extends \MapasCulturais\Module{
 
                                     foreach (['artChainLink', 'totalBudget', 'numberOfCities', 'numberOfNeighborhoods', 'mediationActions', 'commercialUnits', 'unitPrice', 'segmentDelivery', 'expectedNumberPeople'] as $field) {
                                         if ($delivery->isMetadataRequired($field) && !self::validateSelectField($delivery, $field)) {
-                                            $errors['delivery'][] = i::__("Campo '" . self::getFieldLabel($field) . "' obrigatório na entrega '{$delivery->name}'");
+                                            $errors['delivery'][] = i::__(self::REQUIRED_FIELD_MESSAGE_PREFIX . self::getFieldLabel($field) . "' obrigatório na entrega '{$delivery->name}'");
                                         }
                                     }
 
@@ -162,19 +164,19 @@ class Module extends \MapasCulturais\Module{
 
                                     foreach (['paidStaffByRole'] as $field) {
                                         if ($delivery->isMetadataRequired($field) && !self::validateJsonArrayField($delivery, $field)) {
-                                            $errors['delivery'][] = i::__("Campo '" . self::getFieldLabel($field) . "' obrigatório na entrega '{$delivery->name}'");
+                                            $errors['delivery'][] = i::__(self::REQUIRED_FIELD_MESSAGE_PREFIX . self::getFieldLabel($field) . "' obrigatório na entrega '{$delivery->name}'");
                                         }
                                     }
 
                                     foreach (['teamCompositionGender', 'teamCompositionRace'] as $field) {
                                         if ($delivery->isMetadataRequired($field) && !self::validateJsonObjectField($delivery, $field)) {
-                                            $errors['delivery'][] = i::__("Campo '" . self::getFieldLabel($field) . "' obrigatório na entrega '{$delivery->name}'");
+                                            $errors['delivery'][] = i::__(self::REQUIRED_FIELD_MESSAGE_PREFIX . self::getFieldLabel($field) . "' obrigatório na entrega '{$delivery->name}'");
                                         }
                                     }
 
                                     foreach (['revenueType', 'communicationChannels', 'documentationTypes'] as $field) {
                                         if ($delivery->isMetadataRequired($field) && !self::validateMultiselectField($delivery, $field)) {
-                                            $errors['delivery'][] = i::__("Campo '" . self::getFieldLabel($field) . "' obrigatório na entrega '{$delivery->name}'");
+                                            $errors['delivery'][] = i::__(self::REQUIRED_FIELD_MESSAGE_PREFIX . self::getFieldLabel($field) . "' obrigatório na entrega '{$delivery->name}'");
                                         }
                                     }
 
@@ -237,25 +239,25 @@ class Module extends \MapasCulturais\Module{
 
                                     foreach (['availabilityType', 'participantProfile', 'numberOfParticipants', 'executedRevenue', 'executedMonthInitial', 'executedMonthEnd', 'executedTotalBudget', 'executedNumberOfCities', 'executedNumberOfNeighborhoods', 'executedMediationActions', 'executedCommercialUnits', 'executedUnitPrice', 'executedArtChainLink', 'executedSegmentDelivery', 'executedCommunicationStrategies', 'executedCommunityCoauthorsDetail', 'executedTransInclusionActions', 'executedEnvironmentalPracticesDescription'] as $field) {
                                         if ($delivery->isMetadataRequired($field) && !self::validateSelectField($delivery, $field)) {
-                                            $addMonitoringDeliveryError($field, i::__("Campo '" . self::getFieldLabel($field) . "' obrigatório na entrega '{$delivery->name}'"));
+                                            $addMonitoringDeliveryError($field, i::__(self::REQUIRED_FIELD_MESSAGE_PREFIX . self::getFieldLabel($field) . "' obrigatório na entrega '{$delivery->name}'"));
                                         }
                                     }
 
                                     foreach (['executedPaidStaffByRole'] as $field) {
                                         if ($delivery->isMetadataRequired($field) && !self::validateJsonArrayField($delivery, $field)) {
-                                            $addMonitoringDeliveryError($field, i::__("Campo '" . self::getFieldLabel($field) . "' obrigatório na entrega '{$delivery->name}'"));
+                                            $addMonitoringDeliveryError($field, i::__(self::REQUIRED_FIELD_MESSAGE_PREFIX . self::getFieldLabel($field) . "' obrigatório na entrega '{$delivery->name}'"));
                                         }
                                     }
 
                                     foreach (['executedTeamCompositionGender', 'executedTeamCompositionRace'] as $field) {
                                         if ($delivery->isMetadataRequired($field) && !self::validateJsonObjectField($delivery, $field)) {
-                                            $addMonitoringDeliveryError($field, i::__("Campo '" . self::getFieldLabel($field) . "' obrigatório na entrega '{$delivery->name}'"));
+                                            $addMonitoringDeliveryError($field, i::__(self::REQUIRED_FIELD_MESSAGE_PREFIX . self::getFieldLabel($field) . "' obrigatório na entrega '{$delivery->name}'"));
                                         }
                                     }
 
                                     foreach (['accessibilityMeasures', 'priorityAudience', 'executedCommunicationChannels', 'executedRevenueType', 'executedExpectedAccessibilityMeasures', 'executedInnovationTypes', 'executedDocumentationTypes'] as $field) {
                                         if ($delivery->isMetadataRequired($field) && !self::validateMultiselectField($delivery, $field)) {
-                                            $addMonitoringDeliveryError($field, i::__("Campo '" . self::getFieldLabel($field) . "' obrigatório na entrega '{$delivery->name}'"));
+                                            $addMonitoringDeliveryError($field, i::__(self::REQUIRED_FIELD_MESSAGE_PREFIX . self::getFieldLabel($field) . "' obrigatório na entrega '{$delivery->name}'"));
                                         }
                                     }
 
@@ -268,7 +270,7 @@ class Module extends \MapasCulturais\Module{
                                         'executedHasInnovationAction'        => ['inform' => 'workplan_monitoringInformInnovation',             'require' => 'workplan_monitoringRequireHasInnovationAction'],
                                     ] as $field => $config) {
                                         if (($opp->{$config['inform']} ?? false) && ($opp->{$config['require']} ?? false) && !self::validateSelectField($delivery, $field)) {
-                                            $addMonitoringDeliveryError($field, i::__("Campo '" . self::getFieldLabel($field) . "' obrigatório na entrega '{$delivery->name}'"));
+                                            $addMonitoringDeliveryError($field, i::__(self::REQUIRED_FIELD_MESSAGE_PREFIX . self::getFieldLabel($field) . "' obrigatório na entrega '{$delivery->name}'"));
                                         }
                                     }
                                 }
