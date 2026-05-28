@@ -10,6 +10,7 @@ use MapasCulturais\Entities\Registration as EntityRegistration;
 use MapasCulturais\Entities\OpportunityMeta;
 use MapasCulturais\Entities\RegistrationEvaluation;
 use MapasCulturais\Entities\RegistrationSpaceRelation as RegistrationSpaceRelationEntity;
+use MapasCulturais\i;
 
 /**
  * Registration Controller
@@ -727,6 +728,87 @@ class Registration extends EntityController {
         $this->_finishRequest($registration);
         $app->enableAccessControl();
     
+    }
+
+    function POST_deleteEvaluationAndRemoveValuer() {
+        $app = App::i();
+        $registration = $this->getRequestedEntity();
+        if(!$registration) {
+            $this->errorJson(['message' => [i::__('Inscrição não encontrada.')]], 400);
+            return;
+        }
+
+        $registration->checkPermission('modifyValuers');
+
+        $valuer_user_id = (int) ($this->data['valuerUserId'] ?? 0);
+        $valuer_committee = (string) ($this->data['committee'] ?? '');
+        $evaluation_id = (int) ($this->data['evaluationId'] ?? 0);
+
+        if ($valuer_user_id <= 0) {
+            $this->errorJson(['valuerUserId' => i::__('O id do avaliador é obrigatório.')], 400);
+            return;
+        }
+
+        $exclude = array_map('intval', (array) $registration->valuersExcludeList);
+        $include = array_map('intval', (array) $registration->valuersIncludeList);
+
+        if (!in_array($valuer_user_id, $exclude, true)) {
+            $exclude[] = $valuer_user_id;
+        }
+
+        $include = array_values(array_filter($include, fn($id) => (int) $id !== $valuer_user_id));
+        $exclude = array_values(array_unique($exclude));
+
+        $registration->setValuersIncludeList($include);
+        $registration->setValuersExcludeList($exclude);
+
+        $valuer_key = (string) $valuer_user_id;
+        $conn = $app->em->getConnection();
+        $conn->executeQuery(
+            "UPDATE registration
+                SET valuers = CASE
+                    WHEN COALESCE(valuers->>:valuer_key, '') = :valuer_committee THEN valuers - :valuer_key
+                    ELSE valuers
+                END
+              WHERE id = :registration_id",
+            [
+                'valuer_key' => $valuer_key,
+                'valuer_committee' => $valuer_committee,
+                'registration_id' => $registration->id,
+            ]
+        );
+
+        $evaluation = null;
+        if ($evaluation_id > 0) {
+            $evaluation = $app->repo('RegistrationEvaluation')->find($evaluation_id);
+        }
+
+        if (
+            !$evaluation &&
+            $valuer_committee !== ''
+        ) {
+            $evaluation = $app->repo('RegistrationEvaluation')->findOneBy([
+                'registration' => $registration->id,
+                'user' => $valuer_user_id,
+                'committee' => $valuer_committee,
+            ]);
+        }
+
+        if (!$evaluation) {
+            $evaluation = $app->repo('RegistrationEvaluation')->findOneBy([
+                'registration' => $registration->id,
+                'user' => $valuer_user_id,
+            ]);
+        }
+
+        if ($evaluation instanceof RegistrationEvaluation) {
+            $evaluation->checkPermission('remove');
+            $evaluation->delete(true);
+        } else {
+            $app->em->flush();
+        }
+
+        $this->json(['success' => true]);
     }
 
     /**

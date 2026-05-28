@@ -4,6 +4,8 @@ namespace MapasCulturais\Traits;
 use DateTime;
 use MapasCulturais\App;
 use MapasCulturais\Entity;
+use MapasCulturais\Entities\Opportunity;
+use MapasCulturais\Entities\RegistrationStep;
 
 trait EntityOpportunityDuplicator {
 
@@ -169,14 +171,34 @@ trait EntityOpportunityDuplicator {
    
     private function duplicateRegistrationFieldsAndFiles(): void
     {
-        // Criando um mapa de steps originais para os novos steps
         $stepMap = [];
 
-        // Mapeando os steps existentes na nova Oportunidade
-        $existingSteps = array_column($this->entityNewOpportunity->registrationSteps->toArray(), null, 'id');
+        $reusableQueue = $this->findReusableRegistrationStepsWithoutFieldsOrFilesForDuplicator($this->entityNewOpportunity);
 
-        foreach ($this->entityOpportunity->registrationSteps as $oldStep) {
-            // Reutilizando step existente ou criar um novo
+        $existingSteps = [];
+        foreach ($this->entityNewOpportunity->registrationSteps as $newStep) {
+            if ((int) $newStep->opportunity->id !== (int) $this->entityNewOpportunity->id) {
+                continue;
+            }
+            $existingSteps[$newStep->id] = $newStep;
+        }
+
+        $oldSteps = $this->entityOpportunity->registrationSteps->toArray();
+        usort($oldSteps, function ($a, $b) {
+            $c = $a->displayOrder <=> $b->displayOrder;
+
+            return $c !== 0 ? $c : $a->id <=> $b->id;
+        });
+
+        foreach ($oldSteps as $oldStep) {
+            if ($reusableQueue !== []) {
+                $target = array_shift($reusableQueue);
+                $this->copyRegistrationStepPropertiesFromToForDuplicator($oldStep, $target);
+                $stepMap[$oldStep->id] = $target;
+
+                continue;
+            }
+
             $stepMap[$oldStep->id] = $existingSteps[$oldStep->id] ?? (function () use ($oldStep) {
                 $newStep = clone $oldStep;
                 $newStep->setOpportunity($this->entityNewOpportunity);
@@ -191,7 +213,7 @@ trait EntityOpportunityDuplicator {
             $fieldConfiguration->setOwnerId($this->entityNewOpportunity->id);
 
             // Atualizando o Step garantindo a correspondência correta
-            if (isset($stepMap[$registrationFieldConfiguration->step->id])) {
+            if ($registrationFieldConfiguration->step && isset($stepMap[$registrationFieldConfiguration->step->id])) {
                 $fieldConfiguration->setStep($stepMap[$registrationFieldConfiguration->step->id]);
             }
 
@@ -204,11 +226,85 @@ trait EntityOpportunityDuplicator {
             $fileConfiguration->setOwnerId($this->entityNewOpportunity->id);
 
             // Atualizando o Step garantindo a correspondência correta
-            if (isset($stepMap[$registrationFileConfiguration->step->id])) {
+            if ($registrationFileConfiguration->step && isset($stepMap[$registrationFileConfiguration->step->id])) {
                 $fileConfiguration->setStep($stepMap[$registrationFileConfiguration->step->id]);
             }
 
             $fileConfiguration->save(true);
+        }
+
+        $this->deleteOrphanEmptyRegistrationStepsForDuplicator($this->entityNewOpportunity, $stepMap);
+    }
+
+    /**
+     * @return RegistrationStep[]
+     */
+    private function findReusableRegistrationStepsWithoutFieldsOrFilesForDuplicator(Opportunity $opportunity): array
+    {
+        $app = App::i();
+        $conn = $app->em->getConnection();
+        $oppId = (int) $opportunity->id;
+
+        $ids = $conn->fetchFirstColumn(
+            'SELECT rs.id FROM registration_step rs
+             WHERE rs.opportunity_id = ?
+             AND NOT EXISTS (SELECT 1 FROM registration_field_configuration rfc WHERE rfc.step_id = rs.id)
+             AND NOT EXISTS (SELECT 1 FROM registration_file_configuration rfile WHERE rfile.step_id = rs.id)
+             ORDER BY rs.display_order ASC, rs.id ASC',
+            [$oppId]
+        );
+
+        $steps = [];
+        foreach ($ids as $id) {
+            $step = $app->repo('RegistrationStep')->find((int) $id);
+            if ($step && (int) $step->opportunity->id === $oppId) {
+                $steps[] = $step;
+            }
+        }
+
+        return $steps;
+    }
+
+    private function copyRegistrationStepPropertiesFromToForDuplicator(RegistrationStep $from, RegistrationStep $to): void
+    {
+        $to->name = $from->name;
+        $to->displayOrder = $from->displayOrder;
+        $meta = $from->metadata;
+        $to->metadata = is_object($meta)
+            ? json_decode(json_encode($meta), false) ?: new \stdClass()
+            : new \stdClass();
+        $to->save(true);
+    }
+
+    /**
+     * @param array<int, RegistrationStep> $stepMap
+     */
+    private function deleteOrphanEmptyRegistrationStepsForDuplicator(Opportunity $opportunity, array $stepMap): void
+    {
+        $app = App::i();
+        $usedIds = [];
+        foreach ($stepMap as $step) {
+            $usedIds[(int) $step->id] = true;
+        }
+
+        $conn = $app->em->getConnection();
+        $rows = $conn->fetchAllAssociative(
+            'SELECT rs.id FROM registration_step rs
+             WHERE rs.opportunity_id = ?
+             AND NOT EXISTS (SELECT 1 FROM registration_field_configuration rfc WHERE rfc.step_id = rs.id)
+             AND NOT EXISTS (SELECT 1 FROM registration_file_configuration rfile WHERE rfile.step_id = rs.id)',
+            [(int) $opportunity->id]
+        );
+
+        foreach ($rows as $row) {
+            $id = (int) $row['id'];
+            if (isset($usedIds[$id])) {
+                continue;
+            }
+            $orphan = $app->repo('RegistrationStep')->find($id);
+            if ($orphan) {
+                $orphan->delete(true);
+            }
         }
     }
 
@@ -227,15 +323,145 @@ trait EntityOpportunityDuplicator {
     private function duplicateFiles() : void
     {
         $app = App::i();
+        $sourceOpportunityId = (int) $this->entityOpportunity->id;
+        $targetOpportunityId = (int) $this->entityNewOpportunity->id;
+        $targetPrefix = "opportunity/{$targetOpportunityId}/";
 
         $opportunityFiles = $app->repo('OpportunityFile')->findBy([
             'owner' => $this->entityOpportunity
         ]);
 
+        $fileMap = [];
+
         foreach ($opportunityFiles as $opportunityFile) {
+            $group = (string) $opportunityFile->getGroup();
+            if (str_starts_with($group, 'img:')) {
+                continue;
+            }
+
             $newMethodOpportunityFile = clone $opportunityFile;
             $newMethodOpportunityFile->owner = $this->entityNewOpportunity;
             $newMethodOpportunityFile->save(true);
+            $fileMap[(int) $opportunityFile->id] = $newMethodOpportunityFile;
+        }
+
+        foreach ($opportunityFiles as $opportunityFile) {
+            $newMethodOpportunityFile = $fileMap[(int) $opportunityFile->id] ?? null;
+            if (!$newMethodOpportunityFile) {
+                continue;
+            }
+
+            $oldRelativePath = (string) $opportunityFile->getRelativePath();
+            $newRelativePath = preg_replace(
+                "#(^|/)opportunity/{$sourceOpportunityId}/#",
+                '$1' . $targetPrefix,
+                $oldRelativePath
+            );
+            if (!$newRelativePath || $newRelativePath === $oldRelativePath) {
+                $newRelativePath = $targetPrefix . basename($oldRelativePath);
+            }
+
+            // Relaciona transformações/derivados ao novo parent quando aplicável.
+            if ($opportunityFile->parent && isset($fileMap[(int) $opportunityFile->parent->id])) {
+                $newMethodOpportunityFile->parent = $fileMap[(int) $opportunityFile->parent->id];
+                $newMethodOpportunityFile->save(true);
+
+                $oldParentId = (int) $opportunityFile->parent->id;
+                $newParentId = (int) $newMethodOpportunityFile->parent->id;
+                $newRelativePath = preg_replace(
+                    "#/file/{$oldParentId}/#",
+                    "/file/{$newParentId}/",
+                    $newRelativePath
+                );
+            }
+
+            if ($newRelativePath !== $oldRelativePath) {
+                $app->em->getConnection()->update(
+                    'file',
+                    ['path' => $newRelativePath],
+                    ['id' => (int) $newMethodOpportunityFile->id]
+                );
+            }
+
+            $oldFullPath = $opportunityFile->getPath();
+            $newFullPath = preg_replace(
+                "#(^|/)opportunity/{$sourceOpportunityId}/#",
+                '$1' . $targetPrefix,
+                $oldFullPath
+            );
+            if (!$newFullPath || $newFullPath === $oldFullPath) {
+                $newFullPath = str_replace($oldRelativePath, $newRelativePath, $oldFullPath);
+            }
+
+            if ($opportunityFile->parent && isset($fileMap[(int) $opportunityFile->parent->id])) {
+                $oldParentId = (int) $opportunityFile->parent->id;
+                $newParentId = (int) $newMethodOpportunityFile->parent->id;
+                $newFullPath = preg_replace(
+                    "#/file/{$oldParentId}/#",
+                    "/file/{$newParentId}/",
+                    $newFullPath
+                );
+            }
+
+            if (!file_exists($oldFullPath)) {
+                $app->log->warning("Arquivo não encontrado ao duplicar oportunidade: {$oldFullPath}");
+                continue;
+            }
+
+            $destinationDir = dirname($newFullPath);
+            if (!is_dir($destinationDir)) {
+                mkdir($destinationDir, 0775, true);
+            }
+
+            if (!copy($oldFullPath, $newFullPath)) {
+                $app->log->warning("Falha ao copiar arquivo da oportunidade: {$oldFullPath} -> {$newFullPath}");
+            }
+        }
+
+        $newOpportunityFiles = $app->repo('OpportunityFile')->findBy([
+            'owner' => $this->entityNewOpportunity
+        ]);
+
+        foreach ($newOpportunityFiles as $newOpportunityFile) {
+            $currentRelativePath = (string) $newOpportunityFile->getRelativePath();
+            $normalizedRelativePath = preg_replace(
+                "#(^|/)opportunity/\d+/#",
+                '$1' . $targetPrefix,
+                $currentRelativePath
+            );
+
+            if ($newOpportunityFile->parent) {
+                $normalizedRelativePath = preg_replace(
+                    "#/file/\d+/#",
+                    "/file/" . (int) $newOpportunityFile->parent->id . "/",
+                    $normalizedRelativePath,
+                    1
+                );
+            }
+
+            if (!$normalizedRelativePath || $normalizedRelativePath === $currentRelativePath) {
+                continue;
+            }
+
+            $currentFullPath = $newOpportunityFile->getPath();
+            $normalizedFullPath = str_replace($currentRelativePath, $normalizedRelativePath, $currentFullPath);
+
+            $app->em->getConnection()->update(
+                'file',
+                ['path' => $normalizedRelativePath],
+                ['id' => (int) $newOpportunityFile->id]
+            );
+
+            if (file_exists($currentFullPath)) {
+                $destinationDir = dirname($normalizedFullPath);
+                if (!is_dir($destinationDir)) {
+                    mkdir($destinationDir, 0775, true);
+                }
+
+                if (!file_exists($normalizedFullPath) && !copy($currentFullPath, $normalizedFullPath)) {
+                    $app->log->warning("Falha ao normalizar cópia de arquivo: {$currentFullPath} -> {$normalizedFullPath}");
+                }
+            }
         }
     }
 

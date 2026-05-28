@@ -10,7 +10,8 @@ app.component('registration-evaluation-tab', {
 
     setup() {
         const text = Utils.getTexts('registration-evaluation-tab');
-        return { text };
+        const messages = useMessages();
+        return { text, messages };
     },
 
     data() {
@@ -32,17 +33,39 @@ app.component('registration-evaluation-tab', {
             }
             for (const userId in phaseValuers) {
                 const valuer = phaseValuers[userId];
-
                 result.push({
                     id: valuer.id,
                     userId: parseInt(userId),
                     phaseId: parseInt(phaseId),
                     name: valuer.name,
+                    groups: Array.isArray(valuer.groups) ? valuer.groups : (valuer.group ? [valuer.group] : []),
                     ...valuer
                 });
             }
-
             result.sort((a, b) => a.name.localeCompare(b.name));
+            return result;
+        },
+
+        valuersByGroup() {
+            const result = {};
+            this.allValuers.forEach((valuer) => {
+                const groups = Array.isArray(valuer.groups) ? valuer.groups : [];
+                groups.forEach((groupName) => {
+                    if (!result[groupName]) {
+                        result[groupName] = [];
+                    }
+                    result[groupName].push({
+                        ...valuer,
+                        group: groupName,
+                        valuerKey: `${valuer.userId}::${groupName}`,
+                    });
+                });
+            });
+
+            Object.keys(result).forEach((groupName) => {
+                result[groupName].sort((a, b) => a.name.localeCompare(b.name));
+            });
+
             return result;
         },
 
@@ -104,9 +127,15 @@ app.component('registration-evaluation-tab', {
                 }
             });
 
+            const seenByGroup = {};
             this.allValuers.forEach(valuer => {
                 const groupName = this.entity.valuers[valuer.userId];
                 if (groupName && groups[groupName]) {
+                    seenByGroup[groupName] = seenByGroup[groupName] || new Set();
+                    if (seenByGroup[groupName].has(valuer.userId)) {
+                        return;
+                    }
+                    seenByGroup[groupName].add(valuer.userId);
                     groups[groupName].valuers.push({
                         ...valuer,
                     });
@@ -117,14 +146,23 @@ app.component('registration-evaluation-tab', {
         },
 
         getValuerCommittees(valuer) {
-            const committees = [];
-            for (const [userId, groupName] of Object.entries(this.entity.valuers)) {
-                if (parseInt(userId) === valuer.userId) {
-                    committees.push(groupName === '@tiebreaker' ? this.text('Voto de minerva') : groupName);
+            const groups = Array.isArray(valuer.groups) ? valuer.groups : [];
+            const committees = groups.map((groupName) => {
+                return groupName === '@tiebreaker' ? this.text('Voto de minerva') : groupName;
+            });
+
+            if (!committees.length) {
+                for (const [userId, groupName] of Object.entries(this.entity.valuers || {})) {
+                    if (parseInt(userId) === valuer.userId) {
+                        committees.push(groupName === '@tiebreaker' ? this.text('Voto de minerva') : groupName);
+                    }
                 }
             }
-
             return committees.join(', ');
+        },
+
+        getGroupName(groupName) {
+            return groupName === '@tiebreaker' ? this.text('Voto de minerva') : groupName;
         },
 
         getStatusClass(statusText) {
@@ -140,27 +178,48 @@ app.component('registration-evaluation-tab', {
             return statusMap[statusText] || '';
         },
 
-        isIncluded(valuerId) {
-            return this.valuersIncludeList.includes(valuerId);
+        isIncluded(valuer, groupName = null) {
+            const valuerId = parseInt(valuer.userId, 10);
+            const inIncludeList = this.valuersIncludeList.includes(valuerId);
+            if (!inIncludeList) return false;
+
+            const currentGroup = groupName || valuer.group;
+            const selectedGroup = this.entity?.valuers?.[valuerId] ?? this.entity?.valuers?.[String(valuerId)];
+            return selectedGroup === currentGroup;
         },
 
-        isExcluded(valuerId) {
+        isExcluded(valuer, groupName = null) {
+            const valuerId = parseInt(valuer.userId, 10);
             return this.valuersExcludeList.includes(valuerId);
         },
 
-        toggleValuer(valuer, isChecked, listType) {
-            console.log(valuer);
+        toggleValuer(valuer, isChecked, listType, groupName = null) {
             const valuerId = valuer.userId;
+            const valuerGroup = groupName || valuer.group;
+
+            if (!this.entity.valuers || typeof this.entity.valuers !== 'object') {
+                this.entity.valuers = {};
+            }
 
             if (listType === 'include') {
                 if (isChecked) {
+                    this.removeValuerExclude(valuerId);
                     this.addValuerInclude(valuerId);
+                    this.entity.valuers[valuerId] = valuerGroup;
                 } else {
-                    this.removeValuerInclude(valuerId);
+                    const currentSelected = this.entity.valuers[valuerId] ?? this.entity.valuers[String(valuerId)];
+                    if (currentSelected === valuerGroup) {
+                        delete this.entity.valuers[valuerId];
+                        delete this.entity.valuers[String(valuerId)];
+                        this.removeValuerInclude(valuerId);
+                    }
                 }
             } else {
                 if (isChecked) {
+                    this.removeValuerInclude(valuerId);
                     this.addValuerExclude(valuerId);
+                    delete this.entity.valuers[valuerId];
+                    delete this.entity.valuers[String(valuerId)];
                 } else {
                     this.removeValuerExclude(valuerId);
                 }
@@ -191,10 +250,66 @@ app.component('registration-evaluation-tab', {
             this.valuersExcludeList = this.valuersExcludeList.filter(id => id !== valuerId);
         },
 
-        saveLists() {
-            this.entity.valuersIncludeList = this.valuersIncludeList;
-            this.entity.valuersExcludeList = this.valuersExcludeList;
-            this.entity.save();
+        async saveLists() {
+            const api = new API('registration');
+            const url = this.entity.getUrl('valuersExceptionsList');
+            const previousValuers = { ...this.entity.valuers };
+            const previousIncludeList = [...this.valuersIncludeList];
+            const previousExcludeList = [...this.valuersExcludeList];
+            
+            const data = {
+                valuersIncludeList: this.valuersIncludeList,
+                valuersExcludeList: this.valuersExcludeList,
+                valuers: this.entity.valuers || {}
+            };
+
+            try {
+                const response = await api.PATCH(url, data);
+                if (response.ok) {
+                    const result = await response.json();
+                    
+                    // Atualiza a entidade com os dados retornados pelo servidor
+                    if (result.valuers) {
+                        this.entity.valuers = result.valuers;
+                    }
+                    if (result.valuersIncludeList) {
+                        this.entity.valuersIncludeList = result.valuersIncludeList;
+                        this.valuersIncludeList = result.valuersIncludeList;
+                    }
+                    if (result.valuersExcludeList) {
+                        this.entity.valuersExcludeList = result.valuersExcludeList;
+                        this.valuersExcludeList = result.valuersExcludeList;
+                    }
+                    
+                    // Atualiza a lista de avaliadores distribuídos
+                    this.updateGroupedValuers();
+                    
+                    // Mostra mensagem de sucesso
+                    this.messages.success(this.text('Modificações salvas'));
+                } else {
+                    const error = await response.json();
+                    
+                    // Reverte as alterações locais em caso de erro
+                    this.entity.valuers = previousValuers;
+                    this.valuersIncludeList = previousIncludeList;
+                    this.valuersExcludeList = previousExcludeList;
+                    this.updateGroupedValuers();
+                    
+                    // Mostra mensagem de erro
+                    this.messages.error(this.text('Erro ao salvar avaliadores'));
+                    console.error(__('Erro ao salvar avaliadores', 'registration-evaluation-tab'), error);
+                }
+            } catch (error) {
+                // Reverte as alterações locais em caso de erro
+                this.entity.valuers = previousValuers;
+                this.valuersIncludeList = previousIncludeList;
+                this.valuersExcludeList = previousExcludeList;
+                this.updateGroupedValuers();
+                
+                // Mostra mensagem de erro
+                this.messages.error(this.text('Erro ao salvar avaliadores'));
+                console.error(__('Erro ao salvar avaliadores', 'registration-evaluation-tab'), error);
+            }
         },
 
         async deleteEvaluation(evaluationId, userId) {

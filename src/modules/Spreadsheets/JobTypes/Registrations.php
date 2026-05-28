@@ -46,12 +46,22 @@ class Registrations extends SpreadsheetJob
         /*if($job->owner_properties) {
             $query['@select'] .= ",owner.{{$job->owner_properties}}";
         }*/
-        $query['@select'] .= ',projectName,owner.{name}';
+        $select = $query['@select'] ?? '';
+        if ($select === '' || !preg_match('/(^|,)projectName($|,)/', $select)) {
+            $select .= ($select === '' ? '' : ',') . 'projectName';
+        }
+        if (!preg_match('/owner\.\{[^}]*\bname\b[^}]*\}/', $select)) {
+            $select .= ',owner.{name}';
+        }
+        $query['@select'] = $select;
         $properties = FieldParser::parse($query['@select']);
 
         foreach(array_keys($properties) as $property) {
-            if(str_starts_with($property, 'field_')) {
-                continue;
+            if (str_starts_with($property, 'field_')) {
+                $etf = $this->is_entity_type_field($property);
+                if ($etf['status']) {
+                    continue;
+                }
             }
             if($property == 'singleUrl') {
                 $header[$property] = i::__('Link da inscrição');
@@ -168,24 +178,36 @@ class Registrations extends SpreadsheetJob
                 if($entity_type_field['status']) {
                      
                     if($entity_type_field['ft'] == '@location') {
-                        $header['UF'] = i::__('UF');
-                        $header['Municipio'] = i::__('Município');
+                        if (!isset($header['UF'])) {
+                            $header['UF'] = i::__('UF');
+                        }
+                        if (!isset($header['Municipio'])) {
+                            $header['Municipio'] = i::__('Município');
+                        }
                     }
 
                     if($entity_type_field['ft'] == '@links') {
-                        $header['Links'] = i::__('Links');
+                        if (!isset($header['Links'])) {
+                            $header['Links'] = i::__('Links');
+                        }
                     }
 
                     if($entity_type_field['ft'] == 'pessoaDeficiente') {
-                        $header[$field->fieldName] = $field->title;
+                        if (!isset($header[$field->fieldName])) {
+                            $header[$field->fieldName] = $field->title;
+                        }
                     }
 
                     if($entity_type_field['ft'] == 'persons') {
-                        $header[$field->fieldName] = $field->title;
+                        if (!isset($header[$field->fieldName])) {
+                            $header[$field->fieldName] = $field->title;
+                        }
                     }
                     
                 } else {
-                    $header[$field->fieldName] = $field->title;
+                    if (!isset($header[$field->fieldName])) {
+                        $header[$field->fieldName] = $field->title;
+                    }
                 }
             }
         } while($opportunity = $opportunity->previousPhase);
@@ -328,13 +350,19 @@ class Registrations extends SpreadsheetJob
                                 if (isset($field_config['deficiencies']) && $field_config['deficiencies'] === 'true') {
                                     $deficiencies_str = '';
                                     if (isset($person['deficiencies'])) {
-                                        if (is_array($person['deficiencies'])) {
-                                            $deficiencies_filtered = array_filter($person['deficiencies'], function($v) { return $v !== false && $v !== null && $v !== ''; });
+                                        $deficiencies = $person['deficiencies'];
+
+                                        if ($deficiencies instanceof \stdClass) {
+                                            $deficiencies = (array) $deficiencies;
+                                        }
+
+                                        if (is_array($deficiencies)) {
+                                            $deficiencies_filtered = array_filter($deficiencies, function($v) { return $v !== false && $v !== null && $v !== ''; });
                                             $deficiencies_str = !empty($deficiencies_filtered) 
-                                                ? implode(', ', array_keys($deficiencies_filtered)) 
+                                                ? implode(', ', array_keys($deficiencies_filtered))
                                                 : i::__('Não informado');
                                         } else {
-                                            $deficiencies_str = $person['deficiencies'] ?: i::__('Não informado');
+                                            $deficiencies_str = $deficiencies ?: i::__('Não informado');
                                         }
                                     } else {
                                         $deficiencies_str = i::__('Não informado');

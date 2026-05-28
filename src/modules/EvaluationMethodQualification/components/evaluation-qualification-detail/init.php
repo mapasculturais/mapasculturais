@@ -6,6 +6,7 @@
  */
 
 use MapasCulturais\Entities\Registration;
+use Opportunities\Module as OpportunitiesModule;
 
 $entity = $this->controller->requestedEntity;
 
@@ -38,7 +39,10 @@ if ($class == Registration::class) {
     }
 
     $data = [];
-    if ($needs_tiebreaker && $is_minerva_group && $enable_external_reviews) {
+    $can_view_valuer_names = $opportunity->canUser('@control') || 
+                             ($needs_tiebreaker && $is_minerva_group && $enable_external_reviews);
+    
+    if ($can_view_valuer_names) {
         $em = $evaluation_configuration->evaluationMethod;
         $data['consolidatedDetails'] = $em->getConsolidatedDetails($entity);
         $data['evaluationsDetails'] = [];
@@ -47,7 +51,7 @@ if ($class == Registration::class) {
 
         foreach ($evaluations as $eval) {
             $detail = $em->getEvaluationDetails($eval);
-            $detail['valuer'] = $eval->user->profile->simplify('id,name,singleUrl');
+            OpportunitiesModule::enrichEvaluationDetailWithValuerInfo($detail, $entity, $evaluation_configuration, $eval, $app);
             $data['evaluationsDetails'][] = $detail;
         }
     }

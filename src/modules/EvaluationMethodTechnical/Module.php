@@ -484,6 +484,11 @@ class Module extends \MapasCulturais\EvaluationMethod
         $app->hook('ApiQuery(registration).params', function(&$params) use($app) {
             /** @var ApiQuery $this */
 
+            if($params['__supplementaryPhaseQuery'] ?? false) {
+                unset($params['__supplementaryPhaseQuery']);
+                return;
+            }
+
             if($params['__enableQuota'] ?? false) {
                 Module::$quotaData = null;
                 unset($params['__enableQuota']);
@@ -503,43 +508,34 @@ class Module extends \MapasCulturais\EvaluationMethod
                 Quotas::instance($phase_id) : null;
             
             if($phase_id && $quota && is_null(Module::$quotaData)) {
-                Module::$quotaData = (object) [];                
+                $order_by_quota = ($order === '@quota');
+                $needs_quota_fields = Quotas::selectRequiresQuotaFields($params['@select'] ?? '');
+
+                if (!$order_by_quota && !$needs_quota_fields) {
+                    return;
+                }
+
+                Module::$quotaData = (object) [];
 
                 Module::$quotaData->objectId = spl_object_id($this);
                 Module::$quotaData->params = $params;
                 Module::$quotaData->quota = $quota;
-                Module::$quotaData->orderByQuota = $order == '@quota';
+                Module::$quotaData->orderByQuota = $order_by_quota;
+                Module::$quotaData->enrichFieldsOnly = !$order_by_quota;
 
-                $quota_order = Module::$quotaData->quota->getRegistrationsOrderByScoreConsideringQuotas($params);
+                if (Module::$quotaData->enrichFieldsOnly) {
+                    return;
+                }
+
+                $quota_order = Module::$quotaData->quota->getRegistrationsOrderByScoreConsideringQuotas();
 
                 $opportunity = $app->repo('Opportunity')->find($phase_id);
                 $opportunity->registerRegistrationMetadata();
                 
                 if(Module::$quotaData->orderByQuota && $limit = (int) ($params['@limit'] ?? 0)) {
                     unset($params['@order']);
-                    $ids_params = $params;
-                    unset(
-                        $ids_params['@limit'], 
-                        $ids_params['@order'], 
-                        $ids_params['@page'],
-                        $ids_params['oppotunity'],
-                    );
-                    $ids_params['@select'] = 'id';
 
-                    /** @var ControllersOpportunity $opportunity_controller */
-                    $opportunity_controller = $app->controller('opportunity');
-                    $result = $opportunity_controller->apiFindRegistrations($opportunity, $ids_params);
-                    $_ids = [];
-                    foreach($result->registrations as $reg) {
-                        $_ids[$reg['id']] = $reg['id'];
-                    }
-
-                    $ids = [];
-                    foreach($quota_order as $reg) {
-                        if(isset($_ids[$reg->id])) {
-                            $ids[] = $reg->id;
-                        }
-                    }
+                    $ids = Module::$quotaData->quota->filterRegistrationIdsMatchingParams($params, $quota_order);
 
                     Module::$quotaData->foundIds = $ids;
 
@@ -570,6 +566,18 @@ class Module extends \MapasCulturais\EvaluationMethod
         $app->hook('ApiQuery(registration).findResult', function(&$result) {
             /** @var ApiQuery $this */
             if((Module::$quotaData->objectId ?? false) == spl_object_id($this)) {
+                if (Module::$quotaData->enrichFieldsOnly ?? false) {
+                    $quota = Module::$quotaData->quota;
+                    foreach ($result as &$registration) {
+                        $reg = (object) $registration;
+                        $quota->getRegistrationQuotas($reg);
+                        $quota->getRegistrationRegion($reg);
+                        $registration = array_merge($registration, $quota->registrationFields[$reg->id] ?? []);
+                    }
+                    unset($registration);
+                    return;
+                }
+
                 $app = App::i();
                 $_new_result = [];
                 $quota_fields = Module::$quotaData->quota->registrationFields;
@@ -592,6 +600,9 @@ class Module extends \MapasCulturais\EvaluationMethod
 
         $app->hook('ApiQuery(registration).countResult', function(&$result) {
             if((Module::$quotaData->objectId ?? false) == spl_object_id($this)) {
+                if (Module::$quotaData->enrichFieldsOnly ?? false) {
+                    return;
+                }
                 $result = count(Module::$quotaData->foundIds);
             }
         });
@@ -601,7 +612,7 @@ class Module extends \MapasCulturais\EvaluationMethod
             /** @var Controller $this */
             $params = $this->data;
             
-            if(Module::$quotaData && API::EQ($params['@opportunity'] ?? 0) ==  Module::$quotaData->params['opportunity']) {
+            if(Module::$quotaData && empty(Module::$quotaData->enrichFieldsOnly) && API::EQ($params['@opportunity'] ?? 0) ==  Module::$quotaData->params['opportunity']) {
                 $params['opportunity'] = API::EQ($params['@opportunity']);
 
                 $count_query = new ApiQuery(Registration::class, Module::$quotaData->params);
@@ -1081,7 +1092,7 @@ class Module extends \MapasCulturais\EvaluationMethod
         } while($reg = $reg->previousPhase);
         
         $affirmativePoliciesConfig = $registration->opportunity->evaluationMethodConfiguration->pointReward;
-        $pointRewardRoof = $registration->opportunity->evaluationMethodConfiguration->pointRewardRoof;
+        $pointRewardRoof = (float) $registration->opportunity->evaluationMethodConfiguration->pointRewardRoof;
         $isActivePointReward = filter_var($registration->opportunity->evaluationMethodConfiguration->isActivePointReward, FILTER_VALIDATE_BOOL);
         $metadata = $registration->getRegisteredMetadata();
        
@@ -1137,7 +1148,7 @@ class Module extends \MapasCulturais\EvaluationMethod
             }
         
             if($applied){
-                $totalPercent += $rules->fieldPercent;
+                $totalPercent += (float) $rules->fieldPercent;
                 $field = $app->repo('RegistrationFieldConfiguration')->find($rules->field);
                 $appliedPolicies[] = [
                     'field' => [
@@ -1171,7 +1182,7 @@ class Module extends \MapasCulturais\EvaluationMethod
 
     private function percentCalc($value, $percent)
     {
-        return (($value * $percent) /100) + $value;
+        return (($value * (float) $percent) / 100) + $value;
     }
 
     /**

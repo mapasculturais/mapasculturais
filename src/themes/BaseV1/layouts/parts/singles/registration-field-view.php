@@ -49,10 +49,8 @@
             <div ng-if="field.config.race && person.race"><strong><?php \MapasCulturais\i::_e("Raça/Cor"); ?>: </strong>{{person.race}}</div>
             <div ng-if="field.config.gender && person.gender"><strong><?php \MapasCulturais\i::_e("Gênero"); ?>: </strong>{{person.gender}}</div>
             <div ng-if="field.config.sexualOrientation && person.sexualOrientation"><strong><?php \MapasCulturais\i::_e("Orientação sexual"); ?>: </strong>{{person.sexualOrientation}}</div>
-            <div ng-if="field.config.deficiencies && person.deficiencies && (typeof person.deficiencies === 'object' ? Object.keys(person.deficiencies).filter(function(k) { return person.deficiencies[k]; }).length > 0 : person.deficiencies)">
-                <strong><?php \MapasCulturais\i::_e("Deficiências"); ?>: </strong>
-                <span ng-if="typeof person.deficiencies === 'object'">{{Object.keys(person.deficiencies).filter(function(k) { return person.deficiencies[k]; }).join(', ')}}</span>
-                <span ng-if="typeof person.deficiencies !== 'object'">{{person.deficiencies}}</span>
+            <div ng-if="field.config.deficiencies && person.deficiencies && formatPersonArrayField(person.deficiencies)">
+                <strong><?php \MapasCulturais\i::_e("Deficiências"); ?>: </strong>{{formatPersonArrayField(person.deficiencies)}}
             </div>
             <div ng-if="field.config.comunty && person.comunty"><strong><?php \MapasCulturais\i::_e("Comunidade tradicional"); ?>: </strong>{{person.comunty}}</div>
             <div ng-if="field.config.area && person.area && formatPersonArrayField(person.area)">

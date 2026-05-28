@@ -15,10 +15,10 @@ app.component('logo-customizer', {
         colors() {
             if (!!!this.subsite.custom_colors) {
                 return {
-                    first: $MAPAS.config.logoCustomizer.originalColors[0],
-                    second: $MAPAS.config.logoCustomizer.originalColors[1],
-                    third: $MAPAS.config.logoCustomizer.originalColors[2],
-                    fourth: $MAPAS.config.logoCustomizer.originalColors[3],
+                    first: $MAPAS.config.logoCustomizer.originalColors?.[0],
+                    second: $MAPAS.config.logoCustomizer.originalColors?.[1],
+                    third: $MAPAS.config.logoCustomizer.originalColors?.[2],
+                    fourth: $MAPAS.config.logoCustomizer.originalColors?.[3],
                 }
             } else {
                 return {

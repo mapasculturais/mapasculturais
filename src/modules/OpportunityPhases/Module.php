@@ -112,6 +112,53 @@ class Module extends \MapasCulturais\Module{
     }
 
     /**
+     * Próxima fase na sequência do edital para validação de datas, ignorando fases de recurso.
+     * (Recursos são laterais à linha principal; não devem limitar o término das avaliações anteriores.)
+     */
+    public static function getNextPhaseForDateValidation(EvaluationMethodConfiguration $emc): EvaluationMethodConfiguration|Opportunity|null
+    {
+        $phase = $emc->opportunity;
+        $value = null;
+        while (!$value && ($phase = $phase->nextPhase)) {
+            if ($phase->isAppealPhase) {
+                continue;
+            }
+            if ($phase->isDataCollection || $phase->isLastPhase) {
+                $value = $phase;
+            } elseif ($childEmc = $phase->evaluationMethodConfiguration) {
+                $value = $childEmc;
+            }
+        }
+
+        return $value;
+    }
+
+    /**
+     * Data de término usada como limite superior na validação entre fases (fim de avaliação ou de coleta, conforme existir).
+     *
+     * @param Opportunity|EvaluationMethodConfiguration|null $phase
+     */
+    public static function getPhaseEndUpperBoundForValidation(EvaluationMethodConfiguration|Opportunity|null $phase): ?\DateTime
+    {
+        if ($phase === null) {
+            return null;
+        }
+        if ($phase instanceof EvaluationMethodConfiguration) {
+            return $phase->evaluationTo;
+        }
+        if ($phase->isLastPhase) {
+            return $phase->publishTimestamp;
+        }
+        if ($emc = $phase->evaluationMethodConfiguration) {
+            if ($emc->evaluationTo) {
+                return $emc->evaluationTo;
+            }
+        }
+
+        return $phase->registrationTo;
+    }
+
+    /**
      * Retorna a fase atual
      * @param Opportunity $base_opportunity
      * @return Opportunity
@@ -319,6 +366,7 @@ class Module extends \MapasCulturais\Module{
                         (o.parent = :parent AND o.id <> :this)
                     )
                     AND om.value IS NULL
+                    AND o.status > -10
                 ORDER BY o.id DESC");
 
             $query->setMaxResults(1);
@@ -362,16 +410,18 @@ class Module extends \MapasCulturais\Module{
                     SELECT o
                     FROM $class o
                     WHERE
-                        o.id = :parent OR
-                        (o.parent = :parent AND o.id <> :this)
+                        (o.id = :parent OR
+                        (o.parent = :parent AND o.id <> :this))
+                        AND o.status > -10
                     ORDER BY CASE WHEN o.registrationFrom IS NULL THEN 1 ELSE 0 END ASC, o.registrationFrom ASC, o.id ASC");
             } else {
                 $query = $app->em->createQuery("
                     SELECT o
                     FROM $class o
                     WHERE
-                        o.id = :parent OR
-                        (o.parent = :parent AND o.registrationFrom <= (SELECT this.registrationFrom FROM $class this WHERE this.id = :this) AND o.id <> :this)
+                        (o.id = :parent OR
+                        (o.parent = :parent AND o.registrationFrom <= (SELECT this.registrationFrom FROM $class this WHERE this.id = :this) AND o.id <> :this))
+                        AND o.status > -10
                     ORDER BY o.registrationFrom ASC");
             }
                 
@@ -410,7 +460,8 @@ class Module extends \MapasCulturais\Module{
                 WHERE
                     o.parent = :parent AND
                     o.id > :this AND
-                    o.id <> :lastPhase
+                    o.id <> :lastPhase AND
+                    o.status > -10
                 ORDER BY o.id ASC");
 
             $query->setMaxResults(1);
@@ -455,7 +506,8 @@ class Module extends \MapasCulturais\Module{
                 WHERE
                     o.parent = :parent AND
                     o.id > :this AND
-                    o.id <> :lastPhase
+                    o.id <> :lastPhase AND
+                    o.status > -10
                 ORDER BY o.id ASC");
 
             $query->setParameters([
@@ -572,9 +624,11 @@ class Module extends \MapasCulturais\Module{
                             $item->opportunity->appealPhase = (object) $appeal_phase->jsonSerialize();
                             $item->opportunity->appealPhase->relatedAgents = $appeal_phase->relatedAgents;
                             $item->opportunity->appealPhase->agentRelations = $appeal_phase->agentRelations;
-                            $item->opportunity->appealPhase->evaluationMethodConfiguration = (object) $appeal_phase->evaluationMethodConfiguration->jsonSerialize();
-                            $item->opportunity->appealPhase->evaluationMethodConfiguration->relatedAgents = $appeal_phase->evaluationMethodConfiguration->relatedAgents;
-                            $item->opportunity->appealPhase->evaluationMethodConfiguration->agentRelations = $appeal_phase->evaluationMethodConfiguration->agentRelations;
+                            if ($appeal_phase->evaluationMethodConfiguration) {
+                                $item->opportunity->appealPhase->evaluationMethodConfiguration = (object) $appeal_phase->evaluationMethodConfiguration->jsonSerialize();
+                                $item->opportunity->appealPhase->evaluationMethodConfiguration->relatedAgents = $appeal_phase->evaluationMethodConfiguration->relatedAgents;
+                                $item->opportunity->appealPhase->evaluationMethodConfiguration->agentRelations = $appeal_phase->evaluationMethodConfiguration->agentRelations;
+                            }
                         }
                         
 
@@ -637,7 +691,7 @@ class Module extends \MapasCulturais\Module{
                  SELECT o
                  FROM $class o
                  JOIN o.__metadata m WITH m.key = 'isLastPhase' AND m.value = '1'
-                 WHERE o.parent = :parent"
+                 WHERE o.parent = :parent AND o.status > -10"
                 );
 
              $query->setMaxResults(1);
@@ -1411,7 +1465,18 @@ class Module extends \MapasCulturais\Module{
                 return;
             }
 
-            if ($next = $this->evaluationMethodConfiguration ?: $this->nextPhase ){
+            $next = $this->evaluationMethodConfiguration;
+            if (!$next) {
+                $walker = $this;
+                while ($n = $walker->nextPhase) {
+                    if (!$n->isAppealPhase) {
+                        $next = $n;
+                        break;
+                    }
+                    $walker = $n;
+                }
+            }
+            if ($next) {
                 if ($next->isLastPhase) {
                     $next_date_from = $next->publishTimestamp;
                     $next_date_to = $next->publishTimestamp;
@@ -1528,17 +1593,11 @@ class Module extends \MapasCulturais\Module{
                 $next_phase = $this->opportunity->lastPhase;
                 $error_message = i::__('A data final deve ser menor que a data de final de publicação dos resultados');
             } else {
-                $next_phase = $this->nextPhase;
+                $next_phase = self::getNextPhaseForDateValidation($this);
                 $error_message = i::__('A data final deve ser menor que a data de término da próxima fase');
             }
 
-            $date_to = null;
-
-            if($next_phase instanceof Opportunity) {
-                $date_to = $next_phase->isLastPhase ? $next_phase->publishTimestamp :  $next_phase->registrationTo;
-            } else if(is_object($next_phase)) {
-                $date_to = $next_phase->evaluationTo;
-            }
+            $date_to = self::getPhaseEndUpperBoundForValidation($next_phase);
 
             if($date_to) {
                 $date_to = $date_to->format('Y-m-d H:i:s');
@@ -1617,6 +1676,9 @@ class Module extends \MapasCulturais\Module{
             // se a próxima fase for a última fase e a fase atual não for uma fase de coleta de dados, apaga a fase atual
             if ($next_phase->isLastPhase){
                 if (!$opportunity->isDataCollection) {
+                    if ($opportunity->evaluationMethodConfiguration && $opportunity->evaluationMethodConfiguration->id === $this->id) {
+                        $opportunity->evaluationMethodConfiguration = null;
+                    }
                     $opportunity->destroy();
                     $previous_phase->fixNextPhaseRegistrationIds();
                 }

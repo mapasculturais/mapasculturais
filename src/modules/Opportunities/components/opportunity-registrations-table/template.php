@@ -47,12 +47,12 @@ $entity = $this->controller->requestedEntity;
                 </template>
                 
                 <?php $this->applyTemplateHook('registration-list-actions-entity-table', 'before', ['entity' => $entity]); ?>
-                <template v-if="!hideActions" #actions="{entities,filters}">
+                <template v-if="!hideActions" #actions="{entities,filters,spreadsheetQuery}">
                     <div class="opportunity-registration-table__actions">
                         <h4 class="bold"><?= i::__('Ações:') ?></h4>
                         <div class="opportunity-registration-table__actions-buttons">
                         <?php $this->applyTemplateHook('registration-list-actions-entity-table', 'begin', ['entity' => $entity]); ?>
-                            <mc-export-spreadsheet :owner="phase" endpoint="registrations" :params="{entityType: 'registration', '@select': select, '@order': order, query}" group="registrations-spreadsheets"></mc-export-spreadsheet>
+                            <mc-export-spreadsheet :owner="phase" endpoint="registrations" :params="{entityType: 'registration', '@select': spreadsheetQuery['@select'], '@order': spreadsheetQuery['@order'], query: spreadsheetQuery}" group="registrations-spreadsheets"></mc-export-spreadsheet>
                         <?php $this->applyTemplateHook('registration-list-actions-entity-table', 'end', ['entity' => $entity]); ?>
                         </div>
                     </div>

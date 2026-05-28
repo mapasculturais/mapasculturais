@@ -403,6 +403,7 @@ class Module extends \MapasCulturais\EvaluationMethod
         });
 
         $app->hook('entity(Opportunity).get(avaliableEvaluationFields)', function(&$value) use ($app) {
+            $this->enableCacheGetterResult('avaliableEvaluationFields');
             // Verificar se a fase ($this) tem uma fase de recurso ($this->appealPhase);
             // Se o usuário logado é avaliador do recurso
             // Caso seja, Adiciona todos os campos dessa fase até a primeira ($this->previousPhase)

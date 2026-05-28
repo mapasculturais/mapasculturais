@@ -101,18 +101,18 @@ class EvaluationMethodConfiguration extends \MapasCulturais\Entity {
     /**
      * @var \MapasCulturais\Entities\EvaluationMethodConfigurationAgentRelation[] Agent Relations
      *
-     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\EvaluationMethodConfigurationAgentRelation", mappedBy="owner", cascade={"remove"}, orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\EvaluationMethodConfigurationAgentRelation", mappedBy="owner", cascade={"remove"})
      * @ORM\JoinColumn(name="id", referencedColumnName="object_id", onDelete="CASCADE")
      */
     protected $__agentRelations;
 
     /**
-     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\EvaluationMethodConfigurationMeta", mappedBy="owner", cascade={"remove","persist"}, orphanRemoval=true, fetch="EAGER")
+     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\EvaluationMethodConfigurationMeta", mappedBy="owner", cascade={"remove","persist"}, fetch="EAGER")
      */
     protected $__metadata;
 
     /**
-     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\EvaluationMethodConfigurationPermissionCache", mappedBy="owner", cascade={"remove"}, orphanRemoval=true, fetch="EXTRA_LAZY")
+     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\EvaluationMethodConfigurationPermissionCache", mappedBy="owner", cascade={"remove"}, fetch="EXTRA_LAZY")
      */
     protected $__permissionsCache;
     
@@ -146,15 +146,14 @@ class EvaluationMethodConfiguration extends \MapasCulturais\Entity {
     }
 
     function validateEvaluationDates() {
-        if($this->registrationFrom && $this->registrationTo){
-            return $this->registrationFrom <= $this->registrationTo;
-
-        }elseif($this->registrationFrom || $this->registrationTo){
-            return false;
-
-        }else{
-            return true;
+        if ($this->evaluationFrom && $this->evaluationTo) {
+            return $this->evaluationFrom <= $this->evaluationTo;
         }
+        if ($this->evaluationFrom || $this->evaluationTo) {
+            return false;
+        }
+
+        return true;
     }
 
     function setType($value) {

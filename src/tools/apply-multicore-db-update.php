@@ -146,7 +146,15 @@ class DB_UPDATE {
                         $app->disableAccessControl();
 
                         try{
+                            // echo "\n #" . PROCESS_NUM . ' - ' . self::$current_update;
+
+                            if(\env('HIDE_MC_LOGS')) {
+                                ob_start();
+                            }
                             $__callback($entity);
+                            if(\env('HIDE_MC_LOGS')) {
+                                $output = ob_get_clean();
+                            }
                         } catch (\Error $e){
                             echo "$e";
                             self::$exceptions[] = [

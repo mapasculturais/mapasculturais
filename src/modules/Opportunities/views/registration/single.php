@@ -167,7 +167,7 @@ $today = new DateTime();
                                 <span>{{entity.agentsData.owner?.raca}}</span>
                             </span>                            
                             <span class="info" v-if="entity.agentsData.owner?.genero"> 
-                                <strong> <?= i::__('Genero') ?>: </strong> 
+                                <strong> <?= i::__('Gênero') ?>: </strong> 
                                 <span>{{entity.agentsData.owner?.genero}}</span>
                             </span>                            
                             <span class="info" v-if="entity.agentsData.owner?.endereco"> 
@@ -313,6 +313,35 @@ $today = new DateTime();
                             
                         <?php endif ?>
                     <?php endif ?>
+                    <?php if ($appeal_phase = $opportunity->appealPhase): ?>
+                        <?php $appeal_registration = $app->repo('Registration')->findOneBy(['opportunity' => $appeal_phase, 'number' => $entity->number]); ?>
+                        <?php if ($appeal_registration && $appeal_registration->canUser('view')): ?>
+                            <div class="registration-appeal-phase">
+                                <h2><?= $appeal_phase->name ?> <span class="appeal-badge"><?= i::__('Recurso') ?></span></h2>
+                                <?php if($appeal_registration->status === 0):?>
+                                    <?php if($today > $appeal_phase->registrationTo):?>
+                                        <mc-alert type="warning">
+                                            <?= i::__("Você não enviou o formulário desta fase") ?> <br>
+                                            <small><?= i::__("O prazo para envio dessa inscrição foi até {$appeal_phase->registrationTo->format('d/m/Y H:i:s')}") ?></small> <br>
+                                        </mc-alert>
+                                    <?php else: ?>
+                                        <mc-alert type="warning">
+                                            <?= i::__("Você não enviou o formulário desta fase") ?> <br>
+                                        </mc-alert>
+                                        <div class="grid-12">
+                                            <div class="col-3 sm:col-12">
+                                                <a class="button button--primary" href="<?=$app->createUrl("registration", "edit", [$appeal_registration->id])?>"><?= i::__('Acessar formulário') ?></a>
+                                            </div>
+                                        </div>
+                                    <?php endif ?>
+                                <?php else: ?>
+                                    <?php $this->applyTemplateHook("registration-appeal-phase-form-view", 'before', [$appeal_registration]) ?>
+                                    <v1-embed-tool route="registrationview" :id="<?=$appeal_registration->id?>"></v1-embed-tool>
+                                    <?php $this->applyTemplateHook("registration-appeal-phase-form-view", 'after', [$appeal_registration]) ?>
+                                <?php endif ?>
+                            </div>
+                        <?php endif; ?>
+                    <?php endif; ?>
                     <?php $phase = $phase->nextPhase; ?>
                 <?php endwhile ?>
             </div>

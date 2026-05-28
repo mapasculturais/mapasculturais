@@ -143,7 +143,7 @@ class RegistrationFileConfiguration extends \MapasCulturais\Entity {
     /**
      * @var \MapasCulturais\Entities\AgentFile[] Files
      *
-     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\RegistrationFileConfigurationFile", mappedBy="owner", cascade={"remove"}, orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\RegistrationFileConfigurationFile", mappedBy="owner", cascade={"remove"})
      * @ORM\JoinColumn(name="id", referencedColumnName="object_id", onDelete="CASCADE")
     */
     protected $__files;
@@ -238,7 +238,7 @@ class RegistrationFileConfiguration extends \MapasCulturais\Entity {
             'registrationRanges' => $this->registrationRanges ?: [],
             'proponentTypes' => $this->proponentTypes ?: [],
             'allowedFileTypes' => $this->allowedFileTypes ?: [],
-            'step' => $this->step ?? null,
+            'step' => $this->step ? $this->step->simplify('id,name,displayOrder,metadata') : null,
         ];
 
         $app = App::i();

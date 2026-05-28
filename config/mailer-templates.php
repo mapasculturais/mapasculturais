@@ -67,6 +67,14 @@ return [
             'title' => i::__("Houve um erro com o arquivo"),
             'template' => 'export_spreadsheet_error.html'
         ],
+        'import_fields_success' => [
+            'title' => i::__("Importação de formulário concluída"),
+            'template' => 'import_fields_success.html'
+        ],
+        'import_fields_error' => [
+            'title' => i::__("Erro na importação de formulário"),
+            'template' => 'import_fields_error.html'
+        ],
         'send_registration' => [
             'title' => i::__("Inscrição enviada"),
             'template' => 'send_registration.html'

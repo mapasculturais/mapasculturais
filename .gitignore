@@ -18,3 +18,4 @@ src/plugins/*
 public/assets
 public/evaluators-default-profiles
 public/files/distributionslog
+public/entity-table-columns

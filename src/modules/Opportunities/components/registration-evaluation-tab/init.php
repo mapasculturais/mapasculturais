@@ -56,17 +56,46 @@ $addPhaseValuers = function ($phaseOrEmc, $opportunity, &$phase_valuers, &$phase
                 $evaluation_data = null;
             }
 
-            $agentData = method_exists($agent, 'simplify') ? $agent->simplify() : (object) [
-                'id' => $agent->id ?? $user->profile->id ?? null,
-                'name' => $agent->name ?? $user->profile->name ?? '',
-            ];
-            $phase_valuers[$oppId][$user->id] = $agentData;
+            $agentData = method_exists($agent, 'simplify')
+                ? $agent->simplify()
+                : (object) [
+                    'id' => $agent->id ?? $user->profile->id ?? null,
+                    'name' => $agent->name ?? $user->profile->name ?? '',
+                ];
+
+            $existing = $phase_valuers[$oppId][$user->id] ?? null;
+            if ($existing) {
+                if (is_array($existing)) {
+                    $groups = (array) ($existing['groups'] ?? []);
+                    if (!in_array($group, $groups, true)) {
+                        $groups[] = $group;
+                    }
+                    $existing['groups'] = $groups;
+                } else if (is_object($existing)) {
+                    $groups = (array) ($existing->groups ?? []);
+                    if (!in_array($group, $groups, true)) {
+                        $groups[] = $group;
+                    }
+                    $existing->groups = $groups;
+                }
+                $phase_valuers[$oppId][$user->id] = $existing;
+            } else {
+                if (is_array($agentData)) {
+                    $agentData['group'] = $group;
+                    $agentData['groups'] = [$group];
+                } else if (is_object($agentData)) {
+                    $agentData->group = $group;
+                    $agentData->groups = [$group];
+                }
+                $phase_valuers[$oppId][$user->id] = $agentData;
+            }
             $phase_evaluations[$oppId][$user->id] = [
                 'status' => $status,
                 'resultString' => $result_string,
                 'id' => $evaluation_id,
                 'statusNumber' => $evaluation_status,
                 'evaluation' => $evaluation_data,
+                'group' => $group,
             ];
         }
     }

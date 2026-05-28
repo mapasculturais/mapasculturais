@@ -14,6 +14,7 @@ use MapasCulturais\Entities\RegistrationEvaluation;
 use MapasCulturais\Entities\EvaluationMethodConfiguration;
 use MapasCulturais\Entities\Opportunity as EntitiesOpportunity;
 use MapasCulturais\Utils;
+use Opportunities\Jobs\ImportFields;
 
 /**
  * Opportunity Controller
@@ -513,7 +514,7 @@ class Opportunity extends EntityController {
 
         $query_select = array_map(function ($item) { return trim($item); }, explode(',', $data['@select'] ?? ''));
 
-        $previous_phase_result = null;
+        $phase_builds = [];
 
         foreach($opportunity_tree as $phase){
             /** @var EntitiesOpportunity $phase */
@@ -526,7 +527,8 @@ class Opportunity extends EntityController {
 
             $current_phase_query_params = [
                 'opportunity' => API::EQ($phase->id),
-                '__enableQuota' => $enalble_quota
+                // Cotas só na fase solicitada; fases anteriores são consulta complementar de merge.
+                '__enableQuota' => $enalble_quota && $phase->equals($opportunity),
             ];
             
             // $phase é a fase que foi informada no parâmetro @opportunity
@@ -616,37 +618,193 @@ class Opportunity extends EntityController {
                 $current_phase_query_params['@order'] = 'id ASC';
             }
 
-            $current_phase_query = new ApiQuery(Registration::class, $current_phase_query_params);
-            if(isset($previous_phase_query) && !$phase->isLastPhase) {
+            $phase_builds[] = [
+                'phase' => $phase,
+                'params' => $current_phase_query_params,
+                'evaluation_method' => $current_evaluation_method,
+            ];
+        }
+
+        $opportunity->registerRegistrationMetadata();
+
+        // Com paginação em edital multi-fase: consulta a fase alvo primeiro e busca fases anteriores só pelos numbers da página.
+        $use_paginated_phase_load = count($opportunity_tree) > 1
+            && isset($data['@limit'])
+            && !isset($data['number']);
+
+        if ($use_paginated_phase_load) {
+            $target_build = null;
+            $previous_builds = [];
+
+            foreach ($phase_builds as $build) {
+                if ($build['phase']->equals($opportunity)) {
+                    $target_build = $build;
+                } else {
+                    $previous_builds[] = $build;
+                }
+            }
+
+            // Encadeia fases anteriores (como no legado) para filtros de campos do formulário e demais critérios.
+            $previous_phase_query = null;
+            $preceding_phases_have_filters = false;
+
+            foreach ($previous_builds as $build) {
+                /** @var EntitiesOpportunity $phase */
+                $phase = $build['phase'];
+                $params = $build['params'];
+                $params['__supplementaryPhaseQuery'] = true;
+                unset($params['__enableQuota'], $params['@limit'], $params['@page']);
+                $params['@select'] = 'number';
+
+                if ($this->phaseParamsHasUserFilters($params)) {
+                    $preceding_phases_have_filters = true;
+                }
+
+                $phase_query = new ApiQuery(Registration::class, $params);
+                if ($previous_phase_query && !$phase->isLastPhase) {
+                    $phase_query->addFilterByApiQuery($previous_phase_query, 'number', 'number');
+                }
+                $previous_phase_query = $phase_query;
+            }
+
+            $current_phase_query = new ApiQuery(Registration::class, $target_build['params']);
+            if ($previous_phase_query) {
+                $chain_target = !$opportunity->isLastPhase || $preceding_phases_have_filters;
+                if ($chain_target) {
+                    $current_phase_query->addFilterByApiQuery($previous_phase_query, 'number', 'number');
+                }
+            }
+
+            $current_phase_result = $current_phase_query->find();
+
+            $registrations_by_number = [];
+            foreach ($current_phase_result as $registration) {
+                $registrations_by_number[$registration['number']] = $registration;
+            }
+
+            $numbers = array_keys($registrations_by_number);
+
+            if ($numbers) {
+                foreach ($previous_builds as $build) {
+                    /** @var EntitiesOpportunity $phase */
+                    $phase = $build['phase'];
+                    $params = $build['params'];
+                    $params['number'] = API::IN($numbers);
+                    $params['__supplementaryPhaseQuery'] = true;
+
+                    $phase_query = new ApiQuery(Registration::class, $params);
+                    $phase_result = $phase_query->find();
+
+                    $evaluation_method = $build['evaluation_method'];
+                    if ($evaluation_method) {
+                        foreach ($phase_result as &$reg) {
+                            if (in_array('consolidatedResult', $phase_query->selecting)) {
+                                $reg['evaluationResultString'] = $evaluation_method->valueToString($reg['consolidatedResult']);
+                            }
+                        }
+                        unset($reg);
+                    }
+
+                    foreach ($phase_result as $registration) {
+                        $registration_number = $registration['number'];
+                        if (isset($registrations_by_number[$registration_number])) {
+                            $registrations_by_number[$registration_number] += $registration;
+                        }
+                    }
+
+                    if (count($opportunity_tree) > 1 && $phase->id != $opportunity_tree[0]->id) {
+                        $phase->unregisterRegistrationMetadata();
+                    }
+                }
+            }
+
+            $ordered_result = [];
+            foreach ($current_phase_result as $registration) {
+                $ordered_result[] = $registrations_by_number[$registration['number']];
+            }
+
+            $target_evaluation_method = $target_build['evaluation_method'];
+            if ($target_evaluation_method) {
+                foreach ($ordered_result as &$reg) {
+                    if (in_array('consolidatedResult', $current_phase_query->selecting)) {
+                        $reg['evaluationResultString'] = $target_evaluation_method->valueToString($reg['consolidatedResult']);
+                    }
+                }
+                unset($reg);
+            }
+
+            return (object) [
+                'count' => $current_phase_query->count(),
+                'registrations' => $ordered_result,
+            ];
+        }
+
+        $previous_phase_result = null;
+        $previous_phase_query = null;
+        $current_phase_query = null;
+        $current_phase_result = [];
+
+        foreach ($phase_builds as $build) {
+            /** @var EntitiesOpportunity $phase */
+            $phase = $build['phase'];
+            $current_evaluation_method = $build['evaluation_method'];
+
+            $current_phase_query = new ApiQuery(Registration::class, $build['params']);
+            if (isset($previous_phase_query) && !$phase->isLastPhase) {
                 $current_phase_query->addFilterByApiQuery($previous_phase_query, 'number', 'number');
             }
             $previous_phase_query = $current_phase_query;
             $current_phase_result = $current_phase_query->find();
 
             $new_previous_phase_result = [];
-            foreach($current_phase_result as &$registration) {
+            foreach ($current_phase_result as &$registration) {
                 $registration += $previous_phase_result[$registration['number']] ?? [];
                 $new_previous_phase_result[$registration['number']] = $registration;
             }
 
             $previous_phase_result = $new_previous_phase_result;
 
-            if(count($opportunity_tree) > 1 && $phase->id != $opportunity_tree[0]->id) {
+            if (count($opportunity_tree) > 1 && $phase->id != $opportunity_tree[0]->id) {
                 $phase->unregisterRegistrationMetadata();
             }
 
-            if($current_evaluation_method){
-                foreach($current_phase_result as &$reg) {
-                    if(in_array('consolidatedResult', $current_phase_query->selecting)){
+            if ($current_evaluation_method) {
+                foreach ($current_phase_result as &$reg) {
+                    if (in_array('consolidatedResult', $current_phase_query->selecting)) {
                         $reg['evaluationResultString'] = $current_evaluation_method->valueToString($reg['consolidatedResult']);
                     }
                 }
+                unset($reg);
             }
         }
 
-        $opportunity->registerRegistrationMetadata();
-
         return (object) ['count' => $current_phase_query->count(), 'registrations' => $current_phase_result,];
+    }
+
+    /**
+     * Indica se os parâmetros de uma fase incluem filtros definidos pelo usuário (não só defaults da consulta).
+     */
+    protected function phaseParamsHasUserFilters(array $params): bool {
+        static $ignore = [
+            'opportunity',
+            '__enableQuota',
+            '__supplementaryPhaseQuery',
+            '@select',
+            '@permissions',
+            '@permission',
+        ];
+
+        foreach ($params as $key => $value) {
+            if (in_array($key, $ignore, true)) {
+                continue;
+            }
+            if ($key === '@order' && in_array($value, ['id ASC', 'id DESC'], true)) {
+                continue;
+            }
+            return true;
+        }
+
+        return false;
     }
 
     /**
@@ -694,12 +852,18 @@ class Opportunity extends EntityController {
         }
 
         $committee_relations = [];
+        $sequential_by_agent = [];
         if($relations = $app->repo('EvaluationMethodConfigurationAgentRelation')->findBy(['owner' => $opportunity->evaluationMethodConfiguration->id])) {
             foreach($relations as $relation) {
+                if ($relation->status <= 0) {
+                    continue;
+                }
+                $agent_id = (int) $relation->agent->id;
                 $committee_relations[] = [
                     'id' => $relation->id,
-                    'agent' => $relation->agent->id,
+                    'agent' => $agent_id,
                 ];
+                $sequential_by_agent[$agent_id] = $relation->getCommitteeSequentialNumber();
             }
         }
 
@@ -734,7 +898,15 @@ class Opportunity extends EntityController {
             $committee = [];
         }
 
-        return $committee;
+        $enriched_committee = [];
+        foreach ($committee as $valuer) {
+            $row = is_object($valuer) ? $valuer->jsonSerialize() : (array) $valuer;
+            $agent_id = (int) ($row['id'] ?? 0);
+            $row['committeeSequentialNumber'] = $sequential_by_agent[$agent_id] ?? null;
+            $enriched_committee[] = $row;
+        }
+
+        return $enriched_committee;
     }
 
     /**
@@ -1519,12 +1691,16 @@ class Opportunity extends EntityController {
             /** @var Entities\Opportunity */
             $opportunity =  $app->repo("Opportunity")->find($opportunity_id);
 
-            $opportunity->importFields($importSource);
+            $app->enqueueOrReplaceJob(ImportFields::SLUG, [
+                'opportunity' => $opportunity,
+                'importSource' => $importSource,
+                'authenticatedUser' => $app->user,
+            ], 'now');
 
+            return $this->json(true);
         }
 
-        $url = $app->createUrl('opportunity', 'formBuilder', [$opportunity->id]);
-        $app->redirect($url);
+        return $this->json(false);
 
     }
 
@@ -1819,7 +1995,13 @@ class Opportunity extends EntityController {
         $user->profile->checkPermission('@control');
 
         $opportunity_ids = $app->repo('Opportunity')->findValuerOpportunities($user->id, only_ids: true); 
-        
+
+        if (empty($opportunity_ids)) {
+            $this->apiAddHeaderMetadata($this->data, [], 0);
+            $this->apiResponse([]);
+            return;
+        }
+
         $query_params = $this->data;
         $query_params['id'] = API::IN($opportunity_ids);
 
@@ -1830,6 +2012,107 @@ class Opportunity extends EntityController {
 
         $this->apiAddHeaderMetadata($query_params, $result, $query->count());
         $this->apiResponse($result);
+    }
+
+    /**
+    * Recalcula o campo eligible das inscrições de uma oportunidade
+    * 
+    * Esta ação requer autenticação e permissão '@control' na oportunidade.
+    * Recalcula o campo eligible para todas as inscrições da primeira fase
+    * baseado na configuração atual de políticas afirmativas/cotas.
+    * 
+    * @return void
+    */
+    public function API_recalculateEligible(): void {
+        $this->requireAuthentication();
+
+        $app = App::i();
+        $opportunity_id = (int) ($this->data['id'] ?? $this->data['@opportunity'] ?? 0);
+        $opportunity = $this->_getOpportunity($opportunity_id);
+        $opportunity->checkPermission('@control');
+
+        $first_phase = $opportunity->firstPhase;
+        $em = $opportunity->evaluationMethodConfiguration;
+
+        if (!$em || $em->type->id !== 'technical') {
+            $this->errorJson(i::__('Esta oportunidade não possui avaliação técnica configurada.'), 400);
+            return;
+        }
+
+        $quota_config = $em->quotaConfiguration;
+        if (!$quota_config || !($quota_config->rules ?? [])) {
+            $this->errorJson(i::__('Esta oportunidade não possui cotas configuradas.'), 400);
+            return;
+        }
+
+        $app->disableAccessControl();
+
+        $first_phase->registerRegistrationMetadata();
+
+        $query = new ApiQuery(Registration::class, [
+            'opportunity' => API::EQ($first_phase->id),
+            '@select' => 'id',
+            'status' => API::GTE(0),
+        ]);
+        $registrations = $query->find();
+
+        $updated = 0;
+        $eligible_count = 0;
+        $connection = $app->em->getConnection();
+
+        foreach ($registrations as $reg_data) {
+            $registration = $app->repo('Registration')->find($reg_data['id']);
+            if (!$registration) {
+                continue;
+            }
+
+            $eligible = false;
+            $proponent_type = $registration->proponentType ?: 'default';
+
+            foreach ($quota_config->rules as $rule) {
+                $field_name = $rule->fields->$proponent_type->fieldName ?? null;
+                if (!$field_name) {
+                    continue;
+                }
+
+                $field_value = (array) ($registration->$field_name ?? []);
+                $eligible_values = (array) ($rule->fields->$proponent_type->eligibleValues ?? []);
+
+                if (array_intersect($field_value, $eligible_values)) {
+                    $eligible = true;
+                    break;
+                }
+            }
+
+            $eligible_str = $eligible ? 'true' : 'false';
+
+            $connection->executeQuery(
+                "UPDATE registration SET eligible = :eligible WHERE id = :id",
+                ['eligible' => $eligible_str, 'id' => $registration->id]
+            );
+
+            $updated++;
+            if ($eligible) {
+                $eligible_count++;
+            }
+
+            if ($registration->nextPhase) {
+                $connection->executeQuery(
+                    "UPDATE registration SET eligible = :eligible WHERE id = :id",
+                    ['eligible' => $eligible_str, 'id' => $registration->nextPhase->id]
+                );
+            }
+        }
+
+        $app->enableAccessControl();
+
+        $this->apiResponse([
+            'success' => true,
+            'message' => i::__('Campo eligible recalculado com sucesso.'),
+            'total' => $updated,
+            'eligible' => $eligible_count,
+            'notEligible' => $updated - $eligible_count,
+        ]);
     }
     
 }

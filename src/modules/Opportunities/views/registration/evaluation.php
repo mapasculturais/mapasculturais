@@ -9,6 +9,7 @@ use MapasCulturais\i;
 $this->layout = 'registrations';
 $this->import('
     evaluation-form
+    appeal-previous-evaluation-results
     mc-alert
     mc-breadcrumb
     mc-container
@@ -26,6 +27,14 @@ $this->import('
     registration-workplan-form
     v1-embed-tool
 ');
+
+$showWorkplanForm = $entity->opportunity->isReportingPhase
+    && $entity->opportunity->parent
+    && $entity->opportunity->parent->enableWorkplan;
+
+if ($showWorkplanForm) {
+    $this->import('registration-workplan-form');
+}
 
 $referer = $app->request->getReferer();
 
@@ -94,6 +103,8 @@ if (isset($this->controller->data['user']) && $entity->opportunity->canUser("@co
                     <registration-info :registration="entity" classes="col-12"></registration-info>
                     <mc-summary-agent-info :entity="entity" classes="col-12"></mc-summary-agent-info>
 
+                    <appeal-previous-evaluation-results></appeal-previous-evaluation-results>
+
                     <!-- Caso seja uma fase de recurso -->
                     <section v-if="entity.opportunity?.isAppealPhase" class="col-12 grid-12 section">
                         <h3 class="col-12"><?= i::__('Recurso') ?></h3>
@@ -106,6 +117,7 @@ if (isset($this->controller->data['user']) && $entity->opportunity->canUser("@co
                             </div>
                         </div>
                     </section>
+
 
                     <section class="col-12  grid-12 section">
                         <h3 class="col-12"><?= i::__('Dados informados no formulário') ?></h3>
@@ -123,7 +135,7 @@ if (isset($this->controller->data['user']) && $entity->opportunity->canUser("@co
                             <?php $this->applyTemplateHook("registration-evaluation-view", 'after', ['entity' => $entity]) ?>
                             </div>
 
-                            <?php if ($entity->opportunity->isReportingPhase && $entity->opportunity->parent->enableWorkplan): ?>
+                            <?php if ($showWorkplanForm): ?>
                                 <registration-workplan-form :phase-id="<?= $entity->opportunity->id ?>"></registration-workplan-form>
                             <?php endif; ?>
                         </div>

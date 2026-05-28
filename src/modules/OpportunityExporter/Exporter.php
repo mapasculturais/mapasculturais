@@ -188,6 +188,7 @@ class Exporter
             'registrationProponentTypes' => $this->opportunity->registrationProponentTypes ?: [],
             'useAgentRelationColetivo' => $this->opportunity->useAgentRelationColetivo,
             'proponentAgentRelation' => $this->opportunity->proponentAgentRelation,
+            'proponentAgentRelationAvatar' => $this->opportunity->proponentAgentRelationAvatar,
         ];
 
         return $result;
@@ -401,6 +402,7 @@ class Exporter
                 'categories' => $rfc->categories,
                 'registrationRanges' => $rfc->registrationRanges,
                 'proponentTypes' => $rfc->proponentTypes,
+                'allowedFileTypes' => $rfc->allowedFileTypes,
 
                 'conditional' => false,
             ];
@@ -432,9 +434,6 @@ class Exporter
         $result = [
             'name' => $phase->name,
             'type' => $phase->type->id,
-            'evaluationFrom' => $phase->evaluationFrom ? $phase->evaluationFrom->format('Y-m-d H:i:s') : null,
-            'evaluationTo' => $phase->evaluationTo ? $phase->evaluationTo->format('Y-m-d H:i:s') : null,
-
             ...$result,
 
             'infos' => $phase->infos,
@@ -444,6 +443,11 @@ class Exporter
 
             'avaliableEvaluationFields' => $phase->opportunity->avaliableEvaluationFields,
         ];
+
+        if ($this->dates) {
+            $result['evaluationFrom'] = $phase->evaluationFrom ? $phase->evaluationFrom->format('Y-m-d H:i:s') : null;
+            $result['evaluationTo'] = $phase->evaluationTo ? $phase->evaluationTo->format('Y-m-d H:i:s') : null;
+        }
 
         $result_json = json_encode($result);
 

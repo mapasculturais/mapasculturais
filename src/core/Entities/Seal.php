@@ -118,14 +118,14 @@ class Seal extends \MapasCulturais\Entity
 
 
     /**
-    * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\SealMeta", mappedBy="owner", cascade={"remove","persist"}, orphanRemoval=true, fetch="EAGER")
+    * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\SealMeta", mappedBy="owner", cascade={"remove","persist"}, fetch="EAGER")
     */
     protected $__metadata;
 
     /**
      * @var \MapasCulturais\Entities\SealFile[] Files
      *
-     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\SealFile", mappedBy="owner", cascade={"remove"}, orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\SealFile", mappedBy="owner", cascade={"remove"})
      * @ORM\JoinColumn(name="id", referencedColumnName="object_id", onDelete="CASCADE")
      */
     protected $__files;
@@ -133,13 +133,13 @@ class Seal extends \MapasCulturais\Entity
     /**
      * @var \MapasCulturais\Entities\SealAgentRelation[] Agent Relations
      *
-     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\SealAgentRelation", mappedBy="owner", cascade={"remove"}, orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\SealAgentRelation", mappedBy="owner", cascade={"remove"})
      * @ORM\JoinColumn(name="id", referencedColumnName="object_id", onDelete="CASCADE")
      */
     protected $__agentRelations;
     
     /**
-     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\SealPermissionCache", mappedBy="owner", cascade={"remove"}, orphanRemoval=true, fetch="EXTRA_LAZY")
+     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\SealPermissionCache", mappedBy="owner", cascade={"remove"}, fetch="EXTRA_LAZY")
      */
     protected $__permissionsCache;
 

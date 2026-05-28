@@ -40,6 +40,7 @@ app.component('opportunity-evaluations-table', {
             evaluatiorFilter: null,
             defaultHeaders,
             defaultSelect,
+            deleteContext: null,
         }
     },
 
@@ -103,6 +104,19 @@ app.component('opportunity-evaluations-table', {
     },
     
     methods: {
+        canDeleteEvaluation(entity) {
+            if (!this.hasControl) {
+                return false;
+            }
+
+            if (!entity?.evaluation) {
+                return true;
+            }
+
+            const status = entity.evaluation.status;
+            return [0, 1, 2, '0', '1', '2'].includes(status);
+        },
+
         valuersMetadata() {
             if(this.user != "all") {
                 return $MAPAS.config.opportunityEvaluationsTable.valuersMetadata[this.user]
@@ -158,6 +172,10 @@ app.component('opportunity-evaluations-table', {
             
             let reg = {};
             reg = {...registration};
+
+            reg._id = rawData.registration.id;
+            reg.id = rawData.registration.id;
+            reg.registration_id = rawData.registration.id;
 
             reg.evaluation = rawData.evaluation;
             reg.valuer = rawData.valuer;
@@ -264,6 +282,50 @@ app.component('opportunity-evaluations-table', {
             }
         },
 
+        openDeleteModal(entity, refresh, modal) {
+            this.deleteContext = {
+                entity,
+                refresh,
+            };
+
+            modal.open();
+        },
+
+        cancelDelete(close) {
+            close();
+            this.deleteContext = null;
+        },
+
+        async confirmDeleteEvaluation(close) {
+            if (!this.deleteContext) {
+                return;
+            }
+
+            if (!this.deleteContext.entity?.evaluation) {
+                close();
+                this.deleteContext = null;
+                return;
+            }
+
+            const success = await this.deleteEvaluation(this.deleteContext.entity, this.deleteContext.refresh);
+            if (success) {
+                close();
+                this.deleteContext = null;
+            }
+        },
+
+        async confirmDeleteEvaluationAndValuer(close) {
+            if (!this.deleteContext) {
+                return;
+            }
+
+            const success = await this.deleteEvaluationAndValuer(this.deleteContext.entity, this.deleteContext.refresh);
+            if (success) {
+                close();
+                this.deleteContext = null;
+            }
+        },
+
         async deleteEvaluation(entity, refresh) {
             if (!entity.evaluation || !entity.evaluation.id) {
                 return;
@@ -277,8 +339,55 @@ app.component('opportunity-evaluations-table', {
                 await evaluation.delete();
                 
                 refresh();
+                return true;
             } catch (error) {
                 console.error(__('Erro ao excluir avaliação', 'opportunity-evaluations-table'), error);
+                return false;
+            }
+        },
+
+        async deleteEvaluationAndValuer(entity, refresh) {
+            try {
+                const registrationApi = new API('registration');
+
+                const registrationIdCandidate =
+                    entity?._id ??
+                    entity?.id ??
+                    entity?.registration_id ??
+                    entity?.registration?.id;
+
+                const registrationId = parseInt(registrationIdCandidate, 10);
+                if (!registrationId || Number.isNaN(registrationId)) {
+                    return false;
+                }
+
+                const valuerUserIdCandidate =
+                    entity?.evaluation?.user ??
+                    entity?.valuer?.user ??
+                    entity?.valuer?.userId ??
+                    entity?.valuer?.id ??
+                    null;
+
+                const valuerUserId = parseInt(valuerUserIdCandidate, 10);
+
+                const url = registrationApi.createUrl('deleteEvaluationAndRemoveValuer', [registrationId]);
+                const payload = {
+                    valuerUserId: Number.isNaN(valuerUserId) ? null : valuerUserId,
+                    committee: entity?.committee ?? null,
+                    evaluationId: entity?.evaluation?.id ?? null,
+                };
+
+                const res = await registrationApi.POST(url, payload);
+                if(!res.ok) {
+                    const err = await res.json().catch(() => ({}));
+                    throw err;
+                }
+
+                refresh();
+                return true;
+            } catch (error) {
+                console.error(__('Erro ao excluir avaliação', 'opportunity-evaluations-table'), error);
+                return false;
             }
         }
     }
