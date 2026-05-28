@@ -149,6 +149,10 @@ class Module extends \MapasCulturais\Module{
         });
 
         $app->hook('entity(Opportunity).insert:after', function() {
+            if ($this->isAppealPhase) {
+                return;
+            }
+
             if ($this->registrationSteps && count($this->registrationSteps) > 0) {
                 return;
             }
@@ -661,7 +665,10 @@ class Module extends \MapasCulturais\Module{
                 return $a->displayOrder <=> $b->displayOrder;
             });
 
-            $this->jsObject['registrationFields'] = $fields;
+            $this->jsObject['registrationFields'] = array_map(
+                fn ($field) => $field->jsonSerialize(),
+                $fields
+            );
         });
 
         $app->hook('mapas.printJsObject:before', function() use($app) {
