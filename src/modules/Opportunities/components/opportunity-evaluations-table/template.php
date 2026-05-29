@@ -136,6 +136,22 @@ $this->import('
                     <a v-if="entity.goalStatuses" :href="entity.singleUrl + '#ficha'" class="entity-table__goals">{{entity.goalStatuses['10']}}/{{entity.goalStatuses.numGoals}} <?= i::__('concluídas') ?></a>
                 </template>
 
+                <template #appliedPointReward="{entity}">
+                    <template v-if="entity.appliedPointReward && entity.appliedPointReward.raw != null">
+                        <div class="entity-table__applied-point-reward">
+                            <template v-if="entity.appliedPointReward.type === 'fixed'">
+                                <span v-if="entity.appliedPointReward.fixed > 0">+{{ entity.appliedPointReward.fixed }} pt(s)</span>
+                                <span v-else>&nbsp;</span>
+                            </template>
+                            <template v-else>
+                                <span v-if="entity.appliedPointReward.percentage > 0">{{ entity.appliedPointReward.percentage }}%</span>
+                                <span v-else>&nbsp;</span>
+                            </template>
+                        </div>
+                    </template>
+                    <span v-else>&nbsp;</span>
+                </template>
+
                 <template #delete="{entity, refresh}">
                     <mc-modal
                         v-if="canDeleteEvaluation(entity)"
