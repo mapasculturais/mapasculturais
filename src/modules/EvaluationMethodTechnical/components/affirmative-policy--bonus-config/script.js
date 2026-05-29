@@ -21,6 +21,7 @@ app.component("affirmative-policy--bonus-config", {
         ? $MAPAS.config.affirmativePolicyBonusConfig.fields[this.entity.opportunity.id]
         : [],
       bonusType: normalized.type,
+      pendingBonusType: null,
       normalizedRules: normalized.rules,
     };
   },
@@ -100,17 +101,35 @@ app.component("affirmative-policy--bonus-config", {
     // Troca de tipo com confirmação quando há regras cadastradas
     // ----------------------------------------------------------------
 
-    onTypeChange() {
-      if (this.normalizedRules && this.normalizedRules.length > 0) {
-        const confirmed = confirm(this.text("confirmTypeChange"));
-        if (!confirmed) {
-          // Reverte para o tipo salvo
-          const saved = this._normalizeConfig(this.entity.pointReward);
-          this.bonusType = saved.type;
-          return;
-        }
+    onTypeChange(event, openConfirm) {
+      const selectedType = event.target.value;
+
+      if (selectedType === this.bonusType) {
+        return;
       }
+
+      if (!this.hasRules) {
+        this.bonusType = selectedType;
+        this._syncAndSave();
+        return;
+      }
+
+      this.pendingBonusType = selectedType;
+      event.target.value = this.bonusType;
+      openConfirm();
+    },
+
+    confirmTypeChange() {
+      if (this.pendingBonusType) {
+        this.bonusType = this.pendingBonusType;
+        this.pendingBonusType = null;
+      }
+
       this._syncAndSave();
+    },
+
+    cancelTypeChange() {
+      this.pendingBonusType = null;
     },
 
     // ----------------------------------------------------------------

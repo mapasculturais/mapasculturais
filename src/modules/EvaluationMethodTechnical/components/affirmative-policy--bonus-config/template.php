@@ -8,8 +8,8 @@ use MapasCulturais\i;
  */
 
 $this->import('
+    mc-confirm-button
     mc-icon
-    mc-modal
     mc-select
 ');
 ?>
@@ -20,13 +20,17 @@ $this->import('
         <div class="affirmative-policy--bonus-config__header">
             <h4 class="bold"><?= i::__('Configuração do bônus de pontuação') ?></h4>
 
-            <div class="affirmative-policy--bonus-config__field field">
-                <label><?= i::__('Tipo de bônus:') ?></label>
-                <select v-model="bonusType" @change="onTypeChange">
-                    <option value="percentage"><?= i::__('Percentual') ?></option>
-                    <option value="fixed"><?= i::__('Ponto fixo') ?></option>
-                </select>
-            </div>
+            <mc-confirm-button :message="text('confirmTypeChange')" @confirm="confirmTypeChange" @cancel="cancelTypeChange">
+                <template #button="{open}">
+                    <div class="affirmative-policy--bonus-config__field field">
+                        <label><?= i::__('Tipo de bônus:') ?></label>
+                        <select :value="bonusType" @change="onTypeChange($event, open)">
+                            <option value="percentage"><?= i::__('Percentual') ?></option>
+                            <option value="fixed"><?= i::__('Ponto fixo') ?></option>
+                        </select>
+                    </div>
+                </template>
+            </mc-confirm-button>
 
             <div class="affirmative-policy--bonus-config__field affirmative-policy--bonus-config__field--roof field">
                 <label>
