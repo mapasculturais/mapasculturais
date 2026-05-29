@@ -258,7 +258,7 @@ app.component('entity-field-datepicker', {
 
         normalizeMcDate(value) {
             if (!value) {
-                return '';
+                return null;
             }
 
             if (value instanceof McDate) {
@@ -277,7 +277,7 @@ app.component('entity-field-datepicker', {
                 return new McDate(value.date);
             }
 
-            return '';
+            return null;
         },
 
         initializeModels() {
@@ -286,7 +286,7 @@ app.component('entity-field-datepicker', {
 
             this.model = mcdate?._date;
             this.modelDate = mcdate?._date;
-            if (mcdate?.time('full')) {
+            if (typeof mcdate?.time === 'function' && mcdate.time('full')) {
                 let time = mcdate.time('full').split(':');
                 this.modelTime = {
                     hours: time[0],
@@ -297,8 +297,8 @@ app.component('entity-field-datepicker', {
                 this.modelTime = '';
             }
 
-            this.timeInput = mcdate?.time('full');
-            this.dateInput = mcdate?.date('2-digit year');
+            this.timeInput = typeof mcdate?.time === 'function' ? mcdate.time('full') : '';
+            this.dateInput = typeof mcdate?.date === 'function' ? mcdate.date('2-digit year') : '';
         },
     }
 });
