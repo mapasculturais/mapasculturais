@@ -145,8 +145,9 @@ $entity = $this->controller->requestedEntity;
                 </template>
 
                 <template #eligible="{entity}">
-                    <span v-if="entity.eligible"><?= i::__('Sim') ?></span>
-                    <span v-else> &nbsp; </span>
+                    <span v-if="entity.eligible === true || entity.eligible === 'true' || entity.eligible === 1"><?= i::__('Sim') ?></span>
+                    <span v-else-if="entity.eligible === false || entity.eligible === 'false' || entity.eligible === 0"><?= i::__('Não') ?></span>
+                    <span v-else>&nbsp;</span>
                 </template>
 
                 <template #editable={entity}>

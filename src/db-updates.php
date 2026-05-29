@@ -3255,7 +3255,7 @@ $$
                 $type = 'percentage';
             }
             $rules = array_map($normalizeRule, $decoded['rules'] ?? []);
-            if (isset($decoded['type']) && $decoded['type'] === $type && $decoded['rules'] === $rules) {
+            if (isset($decoded['type']) && $decoded['type'] === $type && ($decoded['rules'] ?? []) === $rules) {
                 return false;
             }
             $updateMeta($id, array_merge($decoded, ['type' => $type, 'rules' => $rules]));
@@ -3287,6 +3287,17 @@ $$
         }
 
         $app->log->debug("normaliza pointReward: total={$total}, migrados={$migrados}, já normalizados={$normalizados}, ignorados={$ignorados}");
+        return true;
+    },
+
+    "Backfill committeeSequentialNumber para avaliadores da comissão" => function () use ($app) {
+        $result = \Opportunities\Module::backfillCommitteeSequentialNumbers($app);
+        $app->log->debug(sprintf(
+            'Backfill committeeSequentialNumber: %d editais processados, %d relações atualizadas',
+            $result['opportunities'],
+            $result['relations_updated']
+        ));
+        return true;
     },
     
 ] + $updates ;   

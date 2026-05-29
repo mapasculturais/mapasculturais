@@ -42,6 +42,7 @@ A plataforma já está em uso em diversos municipios, estados, no governo federa
 - Camaçari - https://mapacultural.camacari.ba.gov.br/
 - Campinas - https://mapacultural.campinas.sp.gov.br/
 - Chorozinho - https://mapacultural.chorozinho.ce.gov.br/
+- Cianorte - https://cultura.cianorte.pr.gov.br/
 - Gravataí - https://mapacultural.gravatai.rs.gov.br/
 - Iguatu - http://mapacultural.iguatu.ce.gov.br/
 - João Pessoa - https://jpcultura.joaopessoa.pb.gov.br/

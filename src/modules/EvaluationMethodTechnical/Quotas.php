@@ -281,12 +281,12 @@ class Quotas {
         }
 
         foreach ($this->fields as $field_name) {
-            if (empty($registration->$field_name ?? null) && isset($source_registration->$field_name)) {
+            if ($this->isQuotaFieldValueEmpty($registration->$field_name ?? null) && isset($source_registration->$field_name)) {
                 $registration->$field_name = $source_registration->$field_name;
             }
         }
 
-        if (empty($registration->appliedForQuota ?? null)) {
+        if ($this->isQuotaFieldValueEmpty($registration->appliedForQuota ?? null)) {
             $registration->appliedForQuota = $source_registration->appliedForQuota;
         }
 
@@ -311,6 +311,7 @@ class Quotas {
         $this->enrichRegistrationsFromFirstPhase($registrations);
 
         foreach($registrations as $registration) {
+            $this->applyAgentOwnerFieldsFromAgentsData($registration);
             $this->getRegistrationQuotas($registration);
             $this->getRegistrationRegion($registration);
         }
@@ -349,7 +350,7 @@ class Quotas {
         $stmt = $conn->executeQuery($sql, $registration_ids);
         $previous_phase_map = [];
         while ($row = $stmt->fetchAssociative()) {
-            $previous_phase_map[$row['object_id']] = $row['value'];
+            $previous_phase_map[(int) $row['object_id']] = (int) $this->decodeMetaValue($row['value']);
         }
 
         if (empty($previous_phase_map)) {
@@ -357,7 +358,7 @@ class Quotas {
         }
 
         // Buscar campos de quota da primeira fase
-        $first_phase_ids = array_values($previous_phase_map);
+        $first_phase_ids = array_values(array_unique($previous_phase_map));
         $placeholders = implode(',', array_fill(0, count($first_phase_ids), '?'));
         
         $quota_fields = array_diff($this->fields, ['appliedForQuota']);
@@ -377,10 +378,11 @@ class Quotas {
         
         $first_phase_data = [];
         while ($row = $stmt->fetchAssociative()) {
-            if (!isset($first_phase_data[$row['object_id']])) {
-                $first_phase_data[$row['object_id']] = [];
+            $object_id = (int) $row['object_id'];
+            if (!isset($first_phase_data[$object_id])) {
+                $first_phase_data[$object_id] = [];
             }
-            $first_phase_data[$row['object_id']][$row['key']] = $row['value'];
+            $first_phase_data[$object_id][$row['key']] = $this->decodeMetaValue($row['value']);
         }
 
         // Aplicar dados da primeira fase às inscrições atuais
@@ -388,7 +390,7 @@ class Quotas {
             $first_phase_id = $previous_phase_map[$registration->id] ?? null;
             if ($first_phase_id && isset($first_phase_data[$first_phase_id])) {
                 foreach ($first_phase_data[$first_phase_id] as $field => $value) {
-                    if (empty($registration->$field ?? null)) {
+                    if ($this->isQuotaFieldValueEmpty($registration->$field ?? null)) {
                         $registration->$field = $value;
                     }
                 }
@@ -722,12 +724,12 @@ class Quotas {
      * @param object $registration 
      * @return array
      */
-    protected function getRegistrationQuotas(object $registration): array {
+    public function getRegistrationQuotas(object $registration): array {
         $registration = $this->enrichRegistrationFromFirstPhase($registration);
 
         $result = [];
         $quotas = [];
-        if($registration->eligible) {
+        if (isset($registration->eligible) && $registration->eligible) {
             $proponent_type = $registration->proponentType ?? 'default';
 
             foreach($this->quotaRules as $rule) {
@@ -736,7 +738,7 @@ class Quotas {
                     continue;
                 }
 
-                $field_value = (array) $registration->$field_name;
+                $field_value = $this->normalizeQuotaFieldValue($registration->$field_name ?? null);
                 if(array_intersect($field_value, $rule->fields->$proponent_type->eligibleValues)) {
                     $result[] = $this->getQuotaTypeSlugByRule($rule);
                     $quotas[] = $rule->title;
@@ -1156,8 +1158,7 @@ class Quotas {
      * @return array<object>
      */
     protected function loadRegistrationsForQuotaSorting(): array {
-        $app = App::i();
-        $conn = $app->em->getConnection();
+        $conn = App::i()->em->getConnection();
 
         $rows = $conn->fetchAllAssociative(
             'SELECT r.id, r.number, r.score, r.range, r.proponent_type AS "proponentType",
@@ -1195,10 +1196,85 @@ class Quotas {
                 $registration->$key = $value;
             }
 
+            $this->applyAgentOwnerFieldsFromAgentsData($registration);
+
             $registrations[] = $registration;
         }
 
         return $registrations;
+    }
+
+    /**
+     * Preenche campos de agente (ex.: pessoaDeficiente, raca) a partir de agentsData quando não estão no meta.
+     */
+    protected function applyAgentOwnerFieldsFromAgentsData(object $registration): void {
+        $agents_data = $registration->agentsData ?? [];
+        if (!$agents_data) {
+            return;
+        }
+
+        $app = App::i();
+        $proponent_types_map = $app->config['registration.proponentTypesToAgentsMap'] ?? [];
+        $proponent_type = $registration->proponentType ?? 'default';
+        $agent_key = $proponent_types_map[$proponent_type] ?? 'owner';
+        $agent_data = $agents_data[$agent_key] ?? $agents_data['owner'] ?? null;
+
+        if (!$agent_data) {
+            return;
+        }
+
+        foreach ($this->firstPhase->registrationFieldConfigurations as $field) {
+            $field_name = $field->fieldName;
+            if (!in_array($field_name, $this->fields, true)) {
+                continue;
+            }
+            if (!in_array($field->fieldType, ['agent-owner-field', 'agent-collective-field'], true)) {
+                continue;
+            }
+
+            $entity_field = $field->config['entityField'] ?? null;
+            if (!$entity_field || !isset($agent_data[$entity_field])) {
+                continue;
+            }
+
+            if ($this->isQuotaFieldValueEmpty($registration->$field_name ?? null)) {
+                $registration->$field_name = $agent_data[$entity_field];
+            }
+        }
+    }
+
+    protected function isQuotaFieldValueEmpty(mixed $value): bool {
+        if ($value === null || $value === '') {
+            return true;
+        }
+
+        return is_array($value) && count($value) === 0;
+    }
+
+    protected function normalizeQuotaFieldValue(mixed $value): array {
+        if ($value === null || $value === '') {
+            return [];
+        }
+
+        if (is_array($value)) {
+            return $value;
+        }
+
+        if (is_string($value)) {
+            $decoded = json_decode($value, true);
+            if (json_last_error() === JSON_ERROR_NONE && is_array($decoded)) {
+                return $decoded;
+            }
+
+            $unserialized = @unserialize($value);
+            if (is_array($unserialized)) {
+                return $unserialized;
+            }
+
+            return [$value];
+        }
+
+        return [(string) $value];
     }
 
     /**
@@ -1262,7 +1338,7 @@ class Quotas {
     }
 
     /**
-     * Filtra ids da ordem por cotas conforme parâmetros da listagem (ApiQuery só com id, sem cotas).
+     * Filtra ids da ordem por cotas conforme parâmetros da listagem (ApiQuery só com id).
      *
      * @param array $params
      * @param array<object> $quota_order

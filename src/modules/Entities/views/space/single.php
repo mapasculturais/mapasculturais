@@ -98,6 +98,7 @@ $this->breadcrumb = [
                 </mc-container>
             </div>
         </mc-tab>
+        <?php if($entity->eventOccurrences && $entity->eventOccurrences->count()): ?>
         <mc-tab icon="event" label="<?= i::_e('Eventos') ?>" slug="eventos">
             <div class="search__tabs--list">
                 <search-list-event 
@@ -111,6 +112,7 @@ $this->breadcrumb = [
                 />
             </div>
         </mc-tab>
+        <?php endif; ?>
         <?php $this->applyTemplateHook('tabs','end') ?>
     </mc-tabs>
     <entity-actions :entity="entity"></entity-actions>

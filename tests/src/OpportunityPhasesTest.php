@@ -5,14 +5,17 @@ namespace Test;
 use Laminas\Diactoros\Response;
 use MapasCulturais\App;
 use MapasCulturais\Controllers\Opportunity as OpportunityController;
+use MapasCulturais\Entities\EvaluationMethodConfiguration;
 use MapasCulturais\Entities\Opportunity;
 use MapasCulturais\Exceptions\Halt;
+use Opportunities\Module as OpportunitiesModule;
 use Tests\Abstract\TestCase;
 use Tests\Builders\PhasePeriods\After;
 use Tests\Builders\PhasePeriods\ConcurrentEndingAfter;
 use Tests\Builders\PhasePeriods\Open;
 use Tests\Enums\EvaluationMethods;
 use Tests\Enums\ProponentTypes;
+use Tests\Traits\AgentDirector;
 use Tests\Traits\OpportunityBuilder;
 use Tests\Traits\RegistrationDirector;
 use Tests\Traits\RequestFactory;
@@ -20,7 +23,8 @@ use Tests\Traits\UserDirector;
 
 class OpportunityPhasesTest extends TestCase
 {
-    use OpportunityBuilder,
+    use AgentDirector,
+        OpportunityBuilder,
         RegistrationDirector,
         RequestFactory,
         UserDirector;
@@ -664,4 +668,601 @@ class OpportunityPhasesTest extends TestCase
         );
         $this->assertSame(0, $badFiles, 'Garantindo que cada anexo de inscrição aponte para registration_step da mesma oportunidade');
     }
+
+    /**
+     * Testa se o número sequencial é atribuído ao adicionar avaliadores
+     */
+    function testCommitteeSequentialNumberIsAssignedOnAdd(): void
+    {
+        $admin = $this->userDirector->createUser('admin');
+        $this->login($admin);
+
+        /** @var Opportunity */
+        $opportunity = $this->opportunityBuilder
+            ->reset(owner: $admin->profile, owner_entity: $admin->profile)
+            ->fillRequiredProperties()
+            ->firstPhase()
+                ->setRegistrationPeriod(new Open)
+                ->done()
+            ->save()
+            ->addEvaluationPhase(EvaluationMethods::simple)
+                ->setEvaluationPeriod(new ConcurrentEndingAfter)
+                ->save()
+                ->addValuers(3, 'committee 1')
+                ->done()
+            ->refresh()
+            ->getInstance();
+
+        $evalPhase = $opportunity->evaluationMethodConfiguration;
+        $this->assertNotNull($evalPhase, 'Garantindo que a fase de avaliação exista');
+
+        $relations = $evalPhase->getAgentRelations();
+        $this->assertCount(3, $relations, 'Garantindo que existam 3 avaliadores');
+
+        $numbers = [];
+        foreach ($relations as $relation) {
+            $number = $relation->getCommitteeSequentialNumber();
+            $this->assertNotNull($number, 'Garantindo que cada avaliador tenha um número sequencial');
+            $this->assertGreaterThan(0, $number, 'Garantindo que o número seja maior que zero');
+            $numbers[] = $number;
+        }
+
+        $this->assertEquals([1, 2, 3], $numbers, 'Garantindo que os números sejam sequenciais 1, 2, 3');
+    }
+
+    /**
+     * Testa se o número do avaliador é igual em todas as fases de avaliação
+     */
+    function testCommitteeSequentialNumberIsConsistentAcrossPhases(): void
+    {
+        $admin = $this->userDirector->createUser('admin');
+        $this->login($admin);
+
+        // Cria agentes manualmente para reusar entre fases
+        $joao = $this->agentDirector->createAgent($this->userDirector->createUser());
+        $joao->name = 'João';
+        $joao->save(true);
+        
+        $maria = $this->agentDirector->createAgent($this->userDirector->createUser());
+        $maria->name = 'Maria';
+        $maria->save(true);
+        
+        $pedro = $this->agentDirector->createAgent($this->userDirector->createUser());
+        $pedro->name = 'Pedro';
+        $pedro->save(true);
+        
+        $caio = $this->agentDirector->createAgent($this->userDirector->createUser());
+        $caio->name = 'Caio';
+        $caio->save(true);
+        
+        $ana = $this->agentDirector->createAgent($this->userDirector->createUser());
+        $ana->name = 'Ana';
+        $ana->save(true);
+
+        /** @var Opportunity */
+        $opportunity = $this->opportunityBuilder
+            ->reset(owner: $admin->profile, owner_entity: $admin->profile)
+            ->fillRequiredProperties()
+            ->firstPhase()
+                ->setRegistrationPeriod(new Open)
+                ->done()
+            ->save()
+            ->addEvaluationPhase(EvaluationMethods::simple)
+                ->setEvaluationPeriod(new ConcurrentEndingAfter)
+                ->save()
+                ->addValuer('committee 1', 'João', $joao)
+                    ->done()
+                ->addValuer('committee 1', 'Maria', $maria)
+                    ->done()
+                ->addValuer('committee 1', 'Pedro', $pedro)
+                    ->done()
+                ->done()
+            ->save()
+            ->refresh()
+            ->addEvaluationPhase(EvaluationMethods::simple)
+                ->setEvaluationPeriod(new ConcurrentEndingAfter)
+                ->save()
+                ->addValuer('committee 1', 'Pedro', $pedro)
+                    ->done()
+                ->addValuer('committee 1', 'Caio', $caio)
+                    ->done()
+                ->addValuer('committee 1', 'Ana', $ana)
+                    ->done()
+                ->done()
+            ->refresh()
+            ->getInstance();
+
+        $phases = $opportunity->allPhases;
+        $evalPhases = array_values(array_filter($phases, fn($p) => $p->evaluationMethodConfiguration !== null));
+
+        $this->assertCount(2, $evalPhases, 'Garantindo que existam 2 fases de avaliação');
+
+        // Primeira fase: João=1, Maria=2, Pedro=3
+        $phase1Relations = $evalPhases[0]->evaluationMethodConfiguration->getAgentRelations();
+        $this->assertCount(3, $phase1Relations, 'Garantindo que a fase 1 tenha 3 avaliadores');
+
+        $expectedPhase1 = ['João' => 1, 'Maria' => 2, 'Pedro' => 3];
+        foreach ($phase1Relations as $relation) {
+            $name = $relation->agent->name;
+            $expectedNumber = $expectedPhase1[$name] ?? null;
+            $this->assertNotNull($expectedNumber, "Garantindo que {$name} esteja na fase 1");
+            $this->assertEquals($expectedNumber, $relation->getCommitteeSequentialNumber(), "Garantindo que {$name} tenha o número {$expectedNumber} na fase 1");
+        }
+
+        // Segunda fase: Pedro=3 (reuso), Caio=4, Ana=5
+        $phase2Relations = $evalPhases[1]->evaluationMethodConfiguration->getAgentRelations();
+        $this->assertCount(3, $phase2Relations, 'Garantindo que a fase 2 tenha 3 avaliadores');
+
+        $expectedPhase2 = ['Pedro' => 3, 'Caio' => 4, 'Ana' => 5];
+        foreach ($phase2Relations as $relation) {
+            $name = $relation->agent->name;
+            $expectedNumber = $expectedPhase2[$name] ?? null;
+            $this->assertNotNull($expectedNumber, "Garantindo que {$name} esteja na fase 2");
+            $this->assertEquals($expectedNumber, $relation->getCommitteeSequentialNumber(), "Garantindo que {$name} tenha o número {$expectedNumber} na fase 2");
+        }
+    }
+
+    /**
+     * Testa se ao deletar um avaliador e adicionar outro, o número segue a sequência
+     */
+    function testCommitteeSequentialNumberContinuesAfterDeletion(): void
+    {
+        $admin = $this->userDirector->createUser('admin');
+        $this->login($admin);
+
+        /** @var Opportunity */
+        $opportunity = $this->opportunityBuilder
+            ->reset(owner: $admin->profile, owner_entity: $admin->profile)
+            ->fillRequiredProperties()
+            ->firstPhase()
+                ->setRegistrationPeriod(new Open)
+                ->done()
+            ->save()
+            ->addEvaluationPhase(EvaluationMethods::simple)
+                ->setEvaluationPeriod(new ConcurrentEndingAfter)
+                ->save()
+                ->addValuer('committee 1', 'João')
+                    ->done()
+                ->addValuer('committee 1', 'Maria')
+                    ->done()
+                ->addValuer('committee 1', 'Pedro')
+                    ->done()
+                ->done()
+            ->refresh()
+            ->getInstance();
+
+        $evalPhase = $opportunity->evaluationMethodConfiguration;
+        $relations = $evalPhase->getAgentRelations();
+        $this->assertCount(3, $relations, 'Garantindo que existam 3 avaliadores inicialmente');
+
+        // Encontra e deleta o avaliador Maria (número 2)
+        $mariaRelation = null;
+        foreach ($relations as $relation) {
+            if ($relation->agent->name === 'Maria') {
+                $mariaRelation = $relation;
+                break;
+            }
+        }
+        $this->assertNotNull($mariaRelation, 'Garantindo que Maria foi encontrada');
+        $this->assertEquals(2, $mariaRelation->getCommitteeSequentialNumber(), 'Garantindo que Maria tenha o número 2');
+
+        $mariaRelation->delete(true);
+
+        // Atualiza e verifica que só restam 2 avaliadores
+        $evalPhase = $evalPhase->refreshed();
+        $relations = $evalPhase->getAgentRelations();
+        $this->assertCount(2, $relations, 'Garantindo que restem 2 avaliadores após deletar Maria');
+
+        // Adiciona um novo avaliador (Sandro)
+        $sandroUser = $this->userDirector->createUser();
+        $sandroUser->profile->name = 'Sandro';
+        $sandroUser->profile->save(true);
+        $newValuer = $evalPhase->createAgentRelation(
+            agent: $sandroUser->profile,
+            group: 'committee 1',
+            has_control: true
+        );
+        $newValuer->save(true);
+
+        // Verifica se o novo avaliador recebeu o número 4 (não o 2)
+        $this->assertEquals(4, $newValuer->getCommitteeSequentialNumber(), 'Garantindo que o novo avaliador receba o número 4, não o 2');
+
+        // Verifica que os números existentes são 1, 3, 4
+        $evalPhase = $evalPhase->refreshed();
+        $relations = $evalPhase->getAgentRelations();
+        $numbers = [];
+        foreach ($relations as $relation) {
+            $numbers[$relation->agent->name] = $relation->getCommitteeSequentialNumber();
+        }
+
+        $this->assertEquals(['João' => 1, 'Pedro' => 3, 'Sandro' => 4], $numbers, 'Garantindo que os números sejam 1, 3, 4 após substituição');
+    }
+
+    /**
+     * Testa se ao deletar todos os avaliadores, os números são removidos
+     */
+    function testCommitteeSequentialNumbersAreRemovedOnDeleteAll(): void
+    {
+        $admin = $this->userDirector->createUser('admin');
+        $this->login($admin);
+
+        /** @var Opportunity */
+        $opportunity = $this->opportunityBuilder
+            ->reset(owner: $admin->profile, owner_entity: $admin->profile)
+            ->fillRequiredProperties()
+            ->firstPhase()
+                ->setRegistrationPeriod(new Open)
+                ->done()
+            ->save()
+            ->addEvaluationPhase(EvaluationMethods::simple)
+                ->setEvaluationPeriod(new ConcurrentEndingAfter)
+                ->save()
+                ->addValuers(3, 'committee 1')
+                ->done()
+            ->refresh()
+            ->getInstance();
+
+        $evalPhase = $opportunity->evaluationMethodConfiguration;
+        $relations = $evalPhase->getAgentRelations();
+        $this->assertCount(3, $relations, 'Garantindo que existam 3 avaliadores inicialmente');
+
+        // Deleta todos os avaliadores
+        foreach ($relations as $relation) {
+            $relation->delete(true);
+        }
+
+        // Verifica que não existem mais avaliadores
+        $evalPhase = $evalPhase->refreshed();
+        $relations = $evalPhase->getAgentRelations();
+        $this->assertCount(0, $relations, 'Garantindo que não existam avaliadores após deletar todos');
+
+        // Verifica no banco se os números foram removidos
+        $conn = $this->app->em->getConnection();
+        $count = (int) $conn->fetchOne(
+            "SELECT COUNT(*) FROM agent_relation 
+             WHERE object_type = 'MapasCulturais\\Entities\\EvaluationMethodConfiguration' 
+             AND object_id = ?",
+            [$evalPhase->id]
+        );
+        $this->assertEquals(0, $count, 'Garantindo que não existam registros de agent_relation no banco');
+    }
+
+    /**
+     * Testa se ao deletar um avaliador de uma fase, as outras fases mantêm o número dele
+     * e se ele for re-adicionado, recebe o mesmo número
+     */
+    function testCommitteeSequentialNumberPersistsInOtherPhasesAfterDeletion(): void
+    {
+        $admin = $this->userDirector->createUser('admin');
+        $this->login($admin);
+
+        // Cria agentes manualmente para reusar entre fases
+        $joao = $this->agentDirector->createAgent($this->userDirector->createUser());
+        $joao->name = 'João';
+        $joao->save(true);
+
+        $pedro = $this->agentDirector->createAgent($this->userDirector->createUser());
+        $pedro->name = 'Pedro';
+        $pedro->save(true);
+
+        $caio = $this->agentDirector->createAgent($this->userDirector->createUser());
+        $caio->name = 'Caio';
+        $caio->save(true);
+
+        /** @var Opportunity */
+        $opportunity = $this->opportunityBuilder
+            ->reset(owner: $admin->profile, owner_entity: $admin->profile)
+            ->fillRequiredProperties()
+            ->firstPhase()
+                ->setRegistrationPeriod(new Open)
+                ->done()
+            ->save()
+            ->addEvaluationPhase(EvaluationMethods::simple)
+                ->setEvaluationPeriod(new ConcurrentEndingAfter)
+                ->save()
+                ->addValuer('committee 1', 'João', $joao)
+                    ->done()
+                ->addValuer('committee 1', 'Pedro', $pedro)
+                    ->done()
+                ->done()
+            ->save()
+            ->refresh()
+            ->addEvaluationPhase(EvaluationMethods::simple)
+                ->setEvaluationPeriod(new ConcurrentEndingAfter)
+                ->save()
+                ->addValuer('committee 1', 'João', $joao)
+                    ->done()
+                ->addValuer('committee 1', 'Pedro', $pedro)
+                    ->done()
+                ->addValuer('committee 1', 'Caio', $caio)
+                    ->done()
+                ->done()
+            ->refresh()
+            ->getInstance();
+
+        $phases = $opportunity->allPhases;
+        $evalPhases = array_values(array_filter($phases, fn($p) => $p->evaluationMethodConfiguration !== null));
+        $this->assertCount(2, $evalPhases, 'Garantindo que existam 2 fases de avaliação');
+
+        $phase1 = $evalPhases[0]->evaluationMethodConfiguration;
+        $phase2 = $evalPhases[1]->evaluationMethodConfiguration;
+
+        // Verifica números iniciais
+        $phase1Relations = $phase1->getAgentRelations();
+        $phase2Relations = $phase2->getAgentRelations();
+
+        $this->assertCount(2, $phase1Relations, 'Garantindo que a fase 1 tenha 2 avaliadores');
+        $this->assertCount(3, $phase2Relations, 'Garantindo que a fase 2 tenha 3 avaliadores');
+
+        // Pedro tem número 2 em ambas as fases
+        $pedroPhase1 = null;
+        foreach ($phase1Relations as $relation) {
+            if ($relation->agent->name === 'Pedro') {
+                $pedroPhase1 = $relation;
+                break;
+            }
+        }
+        $this->assertNotNull($pedroPhase1, 'Garantindo que Pedro está na fase 1');
+        $this->assertEquals(2, $pedroPhase1->getCommitteeSequentialNumber(), 'Garantindo que Pedro tenha número 2 na fase 1');
+
+        $pedroPhase2 = null;
+        foreach ($phase2Relations as $relation) {
+            if ($relation->agent->name === 'Pedro') {
+                $pedroPhase2 = $relation;
+                break;
+            }
+        }
+        $this->assertNotNull($pedroPhase2, 'Garantindo que Pedro está na fase 2');
+        $this->assertEquals(2, $pedroPhase2->getCommitteeSequentialNumber(), 'Garantindo que Pedro tenha número 2 na fase 2');
+
+        // Deleta Pedro da fase 1
+        $pedroPhase1->delete(true);
+
+        // Verifica que Pedro foi removido da fase 1
+        $phase1 = $phase1->refreshed();
+        $phase1Relations = $phase1->getAgentRelations();
+        $this->assertCount(1, $phase1Relations, 'Garantindo que a fase 1 tenha 1 avaliador após deletar Pedro');
+
+        // Verifica que Pedro ainda existe na fase 2 com o mesmo número
+        $phase2 = $phase2->refreshed();
+        $phase2Relations = $phase2->getAgentRelations();
+        $this->assertCount(3, $phase2Relations, 'Garantindo que a fase 2 ainda tenha 3 avaliadores');
+
+        $pedroPhase2AfterDelete = null;
+        foreach ($phase2Relations as $relation) {
+            if ($relation->agent->name === 'Pedro') {
+                $pedroPhase2AfterDelete = $relation;
+                break;
+            }
+        }
+        $this->assertNotNull($pedroPhase2AfterDelete, 'Garantindo que Pedro ainda está na fase 2 após deleção da fase 1');
+        $this->assertEquals(2, $pedroPhase2AfterDelete->getCommitteeSequentialNumber(), 'Garantindo que Pedro mantém o número 2 na fase 2');
+
+        // Re-adiciona Pedro na fase 1 - deve receber o mesmo número 2
+        $newPedroRelation = $phase1->createAgentRelation($pedro, 'committee 1', true);
+        $newPedroRelation->save(true);
+
+        $this->assertEquals(2, $newPedroRelation->getCommitteeSequentialNumber(), 'Garantindo que Pedro receba o mesmo número 2 ao ser re-adicionado na fase 1');
+
+        // Verifica que a fase 1 agora tem João (1) e Pedro (2) novamente
+        $phase1 = $phase1->refreshed();
+        $phase1Relations = $phase1->getAgentRelations();
+        $this->assertCount(2, $phase1Relations, 'Garantindo que a fase 1 tenha 2 avaliadores após re-adicionar Pedro');
+
+        $numbers = [];
+        foreach ($phase1Relations as $relation) {
+            $numbers[$relation->agent->name] = $relation->getCommitteeSequentialNumber();
+        }
+        $this->assertEquals(['João' => 1, 'Pedro' => 2], $numbers, 'Garantindo que os números na fase 1 estejam corretos após re-adicionar Pedro');
+    }
+
+    /**
+     * Testa se o número sequencial considera a fase de recurso na sequência global do edital
+     */
+    function testCommitteeSequentialNumberIncludesAppealPhase(): void
+    {
+        $admin = $this->userDirector->createUser('admin');
+        $this->login($admin);
+
+        /** @var Opportunity */
+        $opportunity = $this->opportunityBuilder
+            ->reset(owner: $admin->profile, owner_entity: $admin->profile)
+            ->fillRequiredProperties()
+            ->firstPhase()
+                ->setRegistrationPeriod(new Open)
+                ->done()
+            ->save()
+            ->addEvaluationPhase(EvaluationMethods::simple)
+                ->setEvaluationPeriod(new ConcurrentEndingAfter)
+                ->save()
+                ->addValuers(2, 'committee 1')
+                ->done()
+            ->refresh()
+            ->getInstance();
+
+        $eval_emc = $opportunity->evaluationMethodConfiguration;
+        $eval_opp = $eval_emc->opportunity;
+
+        $eval_relations = $eval_emc->getAgentRelations();
+        $this->assertCount(2, $eval_relations, 'Garantindo que existam 2 avaliadores na fase de avaliação');
+        $this->assertEquals(2, max(array_map(fn($r) => $r->getCommitteeSequentialNumber(), $eval_relations)), 'Garantindo que o maior número na fase de avaliação seja 2');
+
+        $class_name = $eval_opp->getSpecializedClassName();
+        $appeal_phase = new $class_name();
+        $appeal_phase->parent = $eval_opp;
+        $appeal_phase->status = Opportunity::STATUS_APPEAL_PHASE;
+        $appeal_phase->name = 'Recurso teste';
+        $appeal_phase->ownerEntity = $eval_opp->ownerEntity;
+        $appeal_phase->registrationCategories = $eval_opp->registrationCategories;
+        $appeal_phase->registrationRanges = $eval_opp->registrationRanges;
+        $appeal_phase->registrationProponentTypes = $eval_opp->registrationProponentTypes;
+        $appeal_phase->isDataCollection = true;
+        $appeal_phase->isAppealPhase = true;
+        $appeal_phase->save(true);
+
+        $eval_opp->appealPhase = $appeal_phase;
+        $eval_opp->save(true);
+
+        $appeal_emc = new EvaluationMethodConfiguration();
+        $appeal_emc->opportunity = $appeal_phase;
+        $appeal_emc->type = 'continuous';
+        $appeal_emc->publishEvaluationDetails = true;
+        $appeal_emc->save(true);
+
+        $appeal_phase->evaluationMethodConfiguration = $appeal_emc;
+        $appeal_phase->save(true);
+
+        $appeal_valuer = $this->agentDirector->createAgent($this->userDirector->createUser());
+        $appeal_valuer->name = 'Avaliador Recurso';
+        $appeal_valuer->save(true);
+
+        $appeal_relation = $appeal_emc->createAgentRelation($appeal_valuer, 'committee 1', true);
+        $appeal_relation->save(true);
+
+        $this->assertEquals(3, $appeal_relation->getCommitteeSequentialNumber(), 'Garantindo que o avaliador da fase de recurso receba o número 3');
+
+        $existing_eval_relation = $eval_relations[0];
+        $existing_agent = $existing_eval_relation->agent;
+        $existing_number = $existing_eval_relation->getCommitteeSequentialNumber();
+
+        $readded_relation = $appeal_emc->createAgentRelation($existing_agent, 'committee 1', true);
+        $readded_relation->save(true);
+
+        $this->assertEquals($existing_number, $readded_relation->getCommitteeSequentialNumber(), 'Garantindo que o mesmo avaliador mantenha o número ao ser adicionado na fase de recurso');
+
+        $emc_ids = OpportunitiesModule::getEvaluationMethodConfigurationIdsForCommitteeSequentialNumber($eval_opp->firstPhase);
+        $this->assertContains($eval_emc->id, $emc_ids, 'Garantindo que o EMC da fase de avaliação esteja no escopo');
+        $this->assertContains($appeal_emc->id, $emc_ids, 'Garantindo que o EMC da fase de recurso esteja no escopo');
+    }
+
+    /**
+     * Testa o backfill de números sequenciais para relações existentes sem número
+     */
+    function testCommitteeSequentialNumberBackfill(): void
+    {
+        $admin = $this->userDirector->createUser('admin');
+        $this->login($admin);
+
+        /** @var Opportunity */
+        $opportunity = $this->opportunityBuilder
+            ->reset(owner: $admin->profile, owner_entity: $admin->profile)
+            ->fillRequiredProperties()
+            ->firstPhase()
+                ->setRegistrationPeriod(new Open)
+                ->done()
+            ->save()
+            ->addEvaluationPhase(EvaluationMethods::simple)
+                ->setEvaluationPeriod(new ConcurrentEndingAfter)
+                ->save()
+                ->addValuers(3, 'committee 1')
+                ->done()
+            ->refresh()
+            ->getInstance();
+
+        $eval_emc = $opportunity->evaluationMethodConfiguration;
+        $first_phase = $eval_emc->opportunity->firstPhase;
+        $conn = $this->app->em->getConnection();
+
+        foreach ($eval_emc->getAgentRelations() as $relation) {
+            $metadata = json_decode($conn->fetchOne('SELECT metadata FROM agent_relation WHERE id = ?', [$relation->id]) ?: '{}', true) ?: [];
+            unset($metadata['committeeSequentialNumber']);
+            $conn->executeStatement(
+                'UPDATE agent_relation SET metadata = ? WHERE id = ?',
+                [json_encode($metadata), $relation->id]
+            );
+        }
+
+        $this->app->em->clear();
+
+        $result = OpportunitiesModule::backfillCommitteeSequentialNumbers($this->app, $first_phase->id);
+        $this->assertGreaterThan(0, $result['relations_updated'], 'Garantindo que o backfill atualize relações');
+
+        $eval_emc = $this->app->repo('EvaluationMethodConfiguration')->find($eval_emc->id);
+        $numbers = [];
+        foreach ($eval_emc->getAgentRelations() as $relation) {
+            $number = $relation->getCommitteeSequentialNumber();
+            $this->assertNotNull($number, 'Garantindo que cada avaliador tenha número após o backfill');
+            $numbers[] = $number;
+        }
+
+        sort($numbers);
+        $this->assertEquals([1, 2, 3], $numbers, 'Garantindo que o backfill atribua números sequenciais 1, 2, 3');
+    }
+
+
+    /**
+     * Garante que uma falha durante a criação da fase de recurso não deixa
+     * fase órfã no banco (sem metadado appealPhase).
+     */
+    function testCreateAppealPhaseFailureRollsBackOrphanPhase(): void
+    {
+        $app = $this->app;
+        $admin = $this->userDirector->createUser('admin');
+        $this->login($admin);
+
+        // Cria uma oportunidade com fase de avaliação
+        /** @var Opportunity $opportunity */
+        $opportunity = $this->opportunityBuilder
+            ->reset(owner: $admin->profile, owner_entity: $admin->profile)
+            ->fillRequiredProperties()
+            ->firstPhase()
+                ->setRegistrationPeriod(new Open)
+                ->done()
+            ->save()
+            ->addEvaluationPhase(EvaluationMethods::simple)
+                ->setEvaluationPeriod(new ConcurrentEndingAfter)
+                ->save()
+                ->done()
+            ->refresh()
+            ->getInstance();
+
+        $opportunityId = $opportunity->id;
+
+        // Adiciona um hook que simula uma falha (timeout/erro) durante o save
+        // da oportunidade principal, APÓS a fase de recurso ser criada mas ANTES
+        // do metadado appealPhase ser persistido.
+        $shouldFail = true;
+        $app->hook('entity(Opportunity).save:before', function() use ($opportunityId, &$shouldFail) {
+            /** @var Opportunity $this */
+            if (!$shouldFail || $this->id != $opportunityId || $this->isAppealPhase || !$this->appealPhase) {
+                return;
+            }
+
+            $shouldFail = false;
+            throw new \RuntimeException('Simulação de falha ao persistir metadado appealPhase');
+        });
+
+        // Tenta criar a fase de recurso via endpoint
+        $app->request = $this->requestFactory->mapasPOST('opportunity', 'createAppealPhase', [$opportunityId], ['id' => $opportunityId]);
+        $app->response = new Response();
+
+        /** @var OpportunityController $controller */
+        $controller = $app->controller('opportunity');
+        $controller->setRequestData(['id' => $opportunityId]);
+
+        try {
+            $controller->callAction('POST', 'createAppealPhase', []);
+            $this->fail('Garantindo que a criação da fase de recurso lance exceção quando o save falha');
+        } catch (Halt) {
+            $this->fail('Garantindo que a criação da fase de recurso não conclua com sucesso quando o save falha');
+        } catch (\Throwable) {
+        }
+
+        $app->em->clear();
+
+        $orphanPhaseCount = (int) $app->em->getConnection()->fetchOne(
+            'SELECT COUNT(*) FROM opportunity WHERE parent_id = :parent_id AND status = :status',
+            ['parent_id' => $opportunityId, 'status' => Opportunity::STATUS_APPEAL_PHASE]
+        );
+
+        $this->assertSame(0, $orphanPhaseCount, 'Garantindo que nenhuma fase de recurso órfã permaneça no banco após falha');
+
+        $appealPhaseMeta = $app->repo('OpportunityMeta')->findOneBy([
+            'owner' => $app->repo('Opportunity')->find($opportunityId),
+            'key' => 'appealPhase',
+        ]);
+
+        $this->assertNull($appealPhaseMeta, 'Garantindo que o metadado appealPhase não foi salvo parcialmente no edital');
+    }
+
 }
