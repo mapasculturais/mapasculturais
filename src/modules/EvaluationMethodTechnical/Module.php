@@ -16,6 +16,8 @@ use MapasCulturais\Controllers\Opportunity as ControllersOpportunity;
 
 class Module extends \MapasCulturais\EvaluationMethod
 {
+    private array $pendingPointRewardRecalculation = [];
+
     protected function _export(EvaluationMethodConfiguration $evaluation_method_configuration): array 
     {
         $result = [
@@ -357,6 +359,18 @@ class Module extends \MapasCulturais\EvaluationMethod
                 $this->sections = $clean_sections;
                 $app->enableAccessControl();
             }
+        });
+
+        $app->hook('entity(EvaluationMethodConfiguration).save:before', function() use($self) {
+            /** @var EvaluationMethodConfiguration $this */
+            if ($self->shouldReapplyPointRewardOnSave($this)) {
+                $self->schedulePointRewardRecalculation($this);
+            }
+        });
+
+        $app->hook('entity(EvaluationMethodConfiguration).save:finish', function() use($self) {
+            /** @var EvaluationMethodConfiguration $this */
+            $self->reapplyScheduledPointReward($this);
         });
 
         // Define o valor da coluna eligible
@@ -1168,6 +1182,91 @@ class Module extends \MapasCulturais\EvaluationMethod
         return $rule;
     }
 
+    private function shouldReapplyPointRewardOnSave(EvaluationMethodConfiguration $evaluation_method_configuration): bool
+    {
+        if (!$evaluation_method_configuration->definition || $evaluation_method_configuration->definition->slug !== 'technical') {
+            return false;
+        }
+
+        $changed_metadata = array_keys($evaluation_method_configuration->getChangedMetadata());
+        $point_reward_metadata = ['pointReward', 'pointRewardRoof', 'isActivePointReward'];
+
+        return !empty(array_intersect($point_reward_metadata, $changed_metadata));
+    }
+
+    private function schedulePointRewardRecalculation(EvaluationMethodConfiguration $evaluation_method_configuration): void
+    {
+        if ($evaluation_method_configuration->id) {
+            $this->pendingPointRewardRecalculation[$evaluation_method_configuration->id] = true;
+        }
+    }
+
+    private function reapplyScheduledPointReward(EvaluationMethodConfiguration $evaluation_method_configuration): void
+    {
+        if (!$evaluation_method_configuration->id || empty($this->pendingPointRewardRecalculation[$evaluation_method_configuration->id])) {
+            return;
+        }
+
+        unset($this->pendingPointRewardRecalculation[$evaluation_method_configuration->id]);
+        $this->reapplyPointRewardForEvaluatedRegistrations($evaluation_method_configuration);
+    }
+
+    public function reapplyPointRewardForEvaluatedRegistrations(EvaluationMethodConfiguration $evaluation_method_configuration): int
+    {
+        $app = App::i();
+
+        if (!$evaluation_method_configuration->opportunity || !$evaluation_method_configuration->definition || $evaluation_method_configuration->definition->slug !== 'technical') {
+            return 0;
+        }
+
+        $conn = $app->em->getConnection();
+        $rows = $conn->fetchAllAssociative(
+            "SELECT DISTINCT r.id
+                FROM registration r
+                INNER JOIN registration_evaluation e ON e.registration_id = r.id
+                WHERE r.opportunity_id = :opportunity_id
+                    AND e.status = :sent_status
+                    AND r.consolidated_result IS NOT NULL
+                    AND r.consolidated_result <> ''
+                ORDER BY r.id",
+            [
+                'opportunity_id' => $evaluation_method_configuration->opportunity->id,
+                'sent_status' => Entities\RegistrationEvaluation::STATUS_SENT,
+            ]
+        );
+
+        $updated = 0;
+        $app->disableAccessControl();
+
+        try {
+            foreach ($rows as $row) {
+                $registration = $app->repo('Registration')->find($row['id']);
+                if (!$registration) {
+                    continue;
+                }
+
+                $registration->consolidateResult(true, $evaluation_method_configuration);
+                $updated++;
+            }
+        } finally {
+            $app->enableAccessControl();
+        }
+
+        return $updated;
+    }
+
+    private function clearAppliedPointReward(Registration $registration): void
+    {
+        $applied_point_reward = $registration->appliedPointReward;
+
+        if (!$applied_point_reward || (($applied_point_reward->raw ?? null) === null && empty($applied_point_reward->rules ?? []))) {
+            return;
+        }
+
+        $registration->appliedPointReward = null;
+        $registration->save(true);
+    }
+
     public function applyPointReward($result, \MapasCulturais\Entities\Registration $registration)
     {
         $app = App::i();
@@ -1181,6 +1280,7 @@ class Module extends \MapasCulturais\EvaluationMethod
         $isActivePointReward = filter_var($emc->isActivePointReward, FILTER_VALIDATE_BOOL);
 
         if (!$isActivePointReward) {
+            $this->clearAppliedPointReward($registration);
             return $result;
         }
 
@@ -1189,6 +1289,7 @@ class Module extends \MapasCulturais\EvaluationMethod
         $metadata     = $registration->getRegisteredMetadata();
 
         if (empty($config->rules)) {
+            $this->clearAppliedPointReward($registration);
             return $result;
         }
 

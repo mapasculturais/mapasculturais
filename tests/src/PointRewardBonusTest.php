@@ -273,6 +273,105 @@ class PointRewardBonusTest extends TestCase
         }
     }
 
+    /**
+     * Alterar a configuração do bônus recalcula inscrições já consolidadas.
+     */
+    public function testPointRewardReappliesWhenConfigurationChanges(): void
+    {
+        [$opportunity, $eval_builder, $field] = $this->createOpportunityWithBonusField();
+
+        $emc = $opportunity->evaluationMethodConfiguration;
+        $emc->isActivePointReward = true;
+        $emc->pointRewardRoof = 0;
+        $emc->pointReward = (object) [
+            'type'  => 'percentage',
+            'rules' => [
+                (object) [
+                    'field'      => $field->id,
+                    'value'      => (object) ['Preta' => 'true'],
+                    'bonusValue' => 10,
+                ],
+            ],
+        ];
+        $emc->save(true);
+
+        $registration = $this->createRegistrationWithRacaPreta($opportunity, $field);
+        $this->sendTechnicalEvaluation($eval_builder, $registration, 8.0);
+
+        $app = App::i();
+        $app->disableAccessControl();
+        $registration = $registration->refreshed();
+        $registration->consolidateResult();
+        $app->enableAccessControl();
+
+        $registration = $registration->refreshed();
+        $this->assertEquals('8.80', $registration->score, 'Bônus inicial de 10% deve ser aplicado');
+
+        $emc = $opportunity->evaluationMethodConfiguration->refreshed();
+        $emc->pointReward = (object) [
+            'type'  => 'percentage',
+            'rules' => [
+                (object) [
+                    'field'      => $field->id,
+                    'value'      => (object) ['Preta' => 'true'],
+                    'bonusValue' => 20,
+                ],
+            ],
+        ];
+        $emc->save(true);
+
+        $registration = $registration->refreshed();
+
+        // score = 8 + (8 * 20 / 100) = 9.60
+        $this->assertEquals('9.60', $registration->score, 'Alteração do bônus deve recalcular inscrição já consolidada');
+        $this->assertEquals(20, $registration->appliedPointReward->percentage, 'appliedPointReward deve refletir nova configuração');
+    }
+
+    /**
+     * Desativar o bônus recalcula a nota e limpa o bônus aplicado anteriormente.
+     */
+    public function testPointRewardReappliesAndClearsAppliedBonusWhenDisabled(): void
+    {
+        [$opportunity, $eval_builder, $field] = $this->createOpportunityWithBonusField();
+
+        $emc = $opportunity->evaluationMethodConfiguration;
+        $emc->isActivePointReward = true;
+        $emc->pointRewardRoof = 0;
+        $emc->pointReward = (object) [
+            'type'  => 'percentage',
+            'rules' => [
+                (object) [
+                    'field'      => $field->id,
+                    'value'      => (object) ['Preta' => 'true'],
+                    'bonusValue' => 10,
+                ],
+            ],
+        ];
+        $emc->save(true);
+
+        $registration = $this->createRegistrationWithRacaPreta($opportunity, $field);
+        $this->sendTechnicalEvaluation($eval_builder, $registration, 8.0);
+
+        $app = App::i();
+        $app->disableAccessControl();
+        $registration = $registration->refreshed();
+        $registration->consolidateResult();
+        $app->enableAccessControl();
+
+        $registration = $registration->refreshed();
+        $this->assertEquals('8.80', $registration->score, 'Bônus inicial deve ser aplicado');
+        $this->assertEquals(10, $registration->appliedPointReward->percentage);
+
+        $emc = $opportunity->evaluationMethodConfiguration->refreshed();
+        $emc->isActivePointReward = false;
+        $emc->save(true);
+
+        $registration = $registration->refreshed();
+
+        $this->assertEquals('8.00', $registration->score, 'Desativar bônus deve restaurar a nota sem acréscimo');
+        $this->assertNull($registration->appliedPointReward->raw, 'Bônus aplicado antigo deve ser limpo');
+    }
+
     // =====================================================================
     // 3. PONTO FIXO
     // =====================================================================
