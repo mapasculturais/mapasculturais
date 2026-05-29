@@ -8,6 +8,7 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 ## [7.7.48] - UNRELEASED
 ### Correções
 - Ajusta layout do mobile da listagem de oportunidades
+- Adiciona o botão "Ver mais" e limita a descrição dos cards das entidades a no máximo 3 linhas no mobile.
 
 ## [7.7.47] - 2026-05-28
 ### Correções
