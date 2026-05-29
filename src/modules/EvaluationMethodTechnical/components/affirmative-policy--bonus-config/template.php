@@ -20,28 +20,30 @@ $this->import('
         <div class="affirmative-policy--bonus-config__header">
             <h4 class="bold"><?= i::__('Configuração do bônus de pontuação') ?></h4>
 
-            <mc-confirm-button :message="text('confirmTypeChange')" @confirm="confirmTypeChange" @cancel="cancelTypeChange">
-                <template #button="{open}">
-                    <div class="affirmative-policy--bonus-config__field field">
-                        <label><?= i::__('Tipo de bônus:') ?></label>
-                        <select :value="bonusType" @change="onTypeChange($event, open)">
-                            <option value="percentage"><?= i::__('Percentual') ?></option>
-                            <option value="fixed"><?= i::__('Ponto fixo') ?></option>
-                        </select>
-                    </div>
-                </template>
-            </mc-confirm-button>
+            <div class="affirmative-policy--bonus-config__header-fields">
+                <mc-confirm-button :message="text('confirmTypeChange')" @confirm="confirmTypeChange" @cancel="cancelTypeChange">
+                    <template #button="{open}">
+                        <div class="affirmative-policy--bonus-config__field field">
+                            <label><?= i::__('Tipo de bônus:') ?></label>
+                            <select :value="bonusType" @change="onTypeChange($event, open)">
+                                <option value="percentage"><?= i::__('Percentual') ?></option>
+                                <option value="fixed"><?= i::__('Ponto fixo') ?></option>
+                            </select>
+                        </div>
+                    </template>
+                </mc-confirm-button>
 
-            <div class="affirmative-policy--bonus-config__field affirmative-policy--bonus-config__field--roof field">
-                <label>
-                    <span v-if="bonusType === 'percentage'"><?= i::__('Percentual máximo de bônus:') ?></span>
-                    <span v-else><?= i::__('Pontuação máxima de bônus:') ?></span>
-                </label>
-                <span>
-                    <input type="number" v-model="entity.pointRewardRoof" @change="autoSave(true)" min="0" />
-                    <span v-if="bonusType === 'percentage'">%</span>
-                    <span v-else><?= i::__('pt(s)') ?></span>
-                </span>
+                <div class="affirmative-policy--bonus-config__field affirmative-policy--bonus-config__field--roof field">
+                    <label>
+                        <span v-if="bonusType === 'percentage'"><?= i::__('Percentual máximo de bônus:') ?></span>
+                        <span v-else><?= i::__('Pontuação máxima de bônus:') ?></span>
+                    </label>
+                    <span>
+                        <input type="number" v-model="entity.pointRewardRoof" @change="autoSave(true)" min="0" />
+                        <span v-if="bonusType === 'percentage'">%</span>
+                        <span v-else><?= i::__('pt(s)') ?></span>
+                    </span>
+                </div>
             </div>
         </div>
 

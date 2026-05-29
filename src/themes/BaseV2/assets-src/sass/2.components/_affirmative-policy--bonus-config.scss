@@ -22,23 +22,31 @@
   }
 
   &__field {
+    align-items: flex-start;
     display: flex;
     flex-direction: column;
-    align-items: flex-start;
+    width: 100%;
+
+    select {
+      width: 100%;
+    }
+
     span {
-      display: flex;
-      justify-content: center;
-      gap: 9px;
       align-items: center;
+      display: flex;
+      gap: 9px;
+      justify-content: center;
     }
   }
 
   &__field--roof {
-    max-width: 220px;
+    input {
+      max-width: 11rem;
+    }
   }
 
   &__header {
-    align-items: center;
+    align-items: flex-start;
     display: flex;
     gap: size(8);
     padding: size(13) size(23);
@@ -50,6 +58,14 @@
     h4 {
       width: 100%;
     }
+  }
+
+  &__header-fields {
+    align-items: end;
+    display: grid;
+    gap: size(16);
+    grid-template-columns: minmax(size(260), 1fr) minmax(size(220), size(280));
+    width: 100%;
   }
 
   &__quota {
@@ -104,5 +120,13 @@
   &__footer {
     display: flex;
     justify-content: space-between;
+  }
+}
+
+@media (max-width: 50rem) {
+  .affirmative-policy--bonus-config {
+    &__header-fields {
+      grid-template-columns: 1fr;
+    }
   }
 }
