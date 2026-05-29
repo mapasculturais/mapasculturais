@@ -9,6 +9,11 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 ### Novas Funcionalidades
 - Implementa configuração que permide definir a imagem de avatar de qualquer entidade como obrigatória
 
+## [7.7.48] - 2026-05-29
+### Correções
+- Ajusta layout do mobile da listagem de oportunidades
+- Adiciona o botão "Ver mais" e limita a descrição dos cards das entidades a no máximo 3 linhas no mobile.
+
 ## [7.7.47] - 2026-05-28
 ### Correções
 - garante que uma fase de recurso não seja criada de forma incompleta, faltando metadados ou informações que a definam corretamente como uma fase de recurso
