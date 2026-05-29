@@ -5,7 +5,7 @@ Todas as mudanças notáveis no projeto serão documentadas neste arquivo.
 O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/)
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [7.7.48] - UNRELEASED
+## [7.7.48] - 2026-05-29
 ### Correções
 - Ajusta layout do mobile da listagem de oportunidades
 - Adiciona o botão "Ver mais" e limita a descrição dos cards das entidades a no máximo 3 linhas no mobile.
