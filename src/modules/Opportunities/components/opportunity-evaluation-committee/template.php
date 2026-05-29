@@ -66,6 +66,7 @@ $this->import('
                 <div class="opportunity-evaluation-committee__card-header-content">
                     <div class="opportunity-evaluation-committee__card-header-content-info">
                         <small>
+                            <strong><?= i::__('Nº Avaliador')?>:</strong> #{{infoReviewer.metadata.committeeSequentialNumber || '-'}} | 
                             <strong><?= i::__('E-mail')?>:</strong> {{infoReviewer.agent.user.email}} | 
                             <strong><?= i::__('ID Agente')?>:</strong> #{{infoReviewer.agent.id}} | 
                             <strong><?= i::__('ID Usuário')?>:</strong> #{{infoReviewer.agent.user.id}}

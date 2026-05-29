@@ -27,6 +27,19 @@ $this->import('
             <entity-field v-if="!firstPhase?.isContinuousFlow || firstPhase?.hasEndDate" :entity="phase" prop="registrationTo" :autosave="3000"  classes="col-6 sm:col-12"></entity-field>
             <entity-field v-if="phase.isReportingPhase" :entity="phase" prop="includesWorkPlan" classes="col-12"></entity-field>
 
+            <div v-if="phase.isFirstPhase && firstPhase?.isContinuousFlow && !firstPhase?.hasEndDate" class="col-12 opportunity-data-collection__enable-end-date">
+                <mc-alert type="warning">
+                    <p>{{ text('alerta fluxo continuo sem data final') }}</p>
+                </mc-alert>
+                <mc-confirm-button :message="text('confirmar habilitar data final')" @confirm="enableEndDate()">
+                    <template #button="modal">
+                        <button type="button" class="button button--primary-outline" :disabled="enablingEndDate" @click="modal.open()">
+                            {{ text('habilitar data final das inscricoes') }}
+                        </button>
+                    </template>
+                </mc-confirm-button>
+            </div>
+
             <?php $this->applyTemplateHook('opportunity-data-collection-config','end')?>
         </div>
         <div class="opportunity-data-collection__limits col-12" v-if="phase.isFirstPhase">

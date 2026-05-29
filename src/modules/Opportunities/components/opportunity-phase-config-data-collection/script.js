@@ -17,6 +17,12 @@ app.component('opportunity-phase-config-data-collection' , {
         }
     },
 
+    data() {
+        return {
+            enablingEndDate: false,
+        };
+    },
+
     computed: {
         index() {
             return this.phases.indexOf(this.phase);
@@ -98,9 +104,95 @@ app.component('opportunity-phase-config-data-collection' , {
         seals() {
             return $MAPAS.config?.opportunityPhaseConfigDataCollection?.seals;
         },
+
+        canEnableEndDate() {
+            return this.phase.isFirstPhase
+                && this.firstPhase?.isContinuousFlow
+                && !this.firstPhase?.hasEndDate;
+        },
     },
 
     methods: {
+        incrementRegistrationTo() {
+            const registrationFrom = this.firstPhase.registrationFrom;
+            if (!registrationFrom?._date) {
+                return null;
+            }
+
+            const newDate = new Date(registrationFrom._date);
+            newDate.setDate(newDate.getDate() + 2);
+
+            return new McDate(newDate);
+        },
+
+        isContinuousFlowPlaceholderDate(date) {
+            if (!date?._date) {
+                return true;
+            }
+
+            return date._date.getFullYear() >= 2100;
+        },
+
+        async syncEvaluationPhasesEndDate(targetEndDate) {
+            if (!targetEndDate) {
+                return;
+            }
+
+            for (const phase of this.phases) {
+                if (phase.__objectType !== 'evaluationmethodconfiguration') {
+                    continue;
+                }
+
+                if (this.isContinuousFlowPlaceholderDate(phase.evaluationTo)) {
+                    phase.evaluationTo = targetEndDate;
+                }
+
+                await phase.save();
+            }
+        },
+
+        async enableEndDate() {
+            if (!this.canEnableEndDate || this.enablingEndDate) {
+                return;
+            }
+
+            const messages = useMessages();
+            const firstPhase = this.firstPhase;
+
+            this.enablingEndDate = true;
+
+            try {
+                firstPhase.hasEndDate = true;
+                firstPhase.continuousFlow = null;
+                firstPhase.publishedRegistrations = false;
+                firstPhase.registrationTo = null;
+
+                if (firstPhase.registrationFrom?._date) {
+                    firstPhase.registrationTo = this.incrementRegistrationTo();
+                }
+
+                await firstPhase.save();
+
+                for (const phase of this.phases) {
+                    phase.hasEndDate = true;
+
+                    if (phase.__objectType === 'opportunity') {
+                        phase.continuousFlow = null;
+                    } else if (phase.__objectType === 'evaluationmethodconfiguration' && phase.opportunity) {
+                        phase.opportunity.hasEndDate = true;
+                        phase.opportunity.continuousFlow = null;
+                    }
+                }
+
+                await this.syncEvaluationPhasesEndDate(firstPhase.registrationTo);
+
+                messages.success(this.text('data final habilitada com sucesso'));
+            } catch (e) {
+                messages.error(this.text('nao foi possivel habilitar data final'));
+            } finally {
+                this.enablingEndDate = false;
+            }
+        },
         removeEvaluationPhase (item) {
             if (item.evaluationMethodConfiguration?.id) {
                 const evaluationId = item.evaluationMethodConfiguration.id;
