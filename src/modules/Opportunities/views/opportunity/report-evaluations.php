@@ -3,6 +3,22 @@ $columns_counter = $status_order = 0;
 $columns = [];
 
 $sum = count($cfg["registration"]->columns) + count($cfg["committee"]->columns);
+
+$get_pending_registration_value = function(array $registration, string $column) {
+    if ($column === 'owner') {
+        return $registration['owner']['name'] ?? '--';
+    }
+
+    return $registration[$column] ?? '--';
+};
+
+$get_pending_committee_value = function(array $valuer, string $column) {
+    if ($column === 'evaluator') {
+        return $valuer['name'] ?? '--';
+    }
+
+    return $valuer[$column] ?? '--';
+};
 ?>
 <table width="100%">
     <thead>
@@ -80,28 +96,24 @@ $sum = count($cfg["registration"]->columns) + count($cfg["committee"]->columns);
 
             if (is_array($valuer_pending) && is_null($valuer_pending["evaluation"])) {
                 echo '<tr>';
-                foreach ($valuer_pending["valuer"] as $key => $v) {
-                    if ($key === "name") {
-                        if (isset($cfg["registration"]->columns['category'])) { ?>
-                            <td style="text-align: center;"> <?php echo ($valuer_pending["registration"]["category"]) ?? "--"; ?> </td>
-                        <?php } ?>
-                        <td style="text-align: center;"> <?php echo $valuer_pending["registration"]["owner"]["name"] ?> </td>
-                        <td style="text-align: center;"> <?php echo $valuer_pending["registration"]["number"] ?> </td>
-                        <td style="text-align: center;"> <?php echo $valuer_pending["valuer"][$key]; ?> </td>
+                foreach ($cfg["registration"]->columns as $key => $column) { ?>
+                    <td style="text-align: center;"> <?php echo $get_pending_registration_value($valuer_pending["registration"], $key); ?> </td>
+                <?php }
 
-                        <?php for($i=0; $i < $total; $i++) { ?>
-                            <td style="text-align: center; font-style: italic;">
-                                <?php
-                                if ($i + $sum === $status_order) {
-                                    echo "Não avaliado";
-                                } else {
-                                    echo "--";
-                                } ?>
-                            </td>
-                    <?php
-                        } // for
-                    }
-                }
+                foreach ($cfg["committee"]->columns as $key => $column) { ?>
+                    <td style="text-align: center;"> <?php echo $get_pending_committee_value($valuer_pending["valuer"], $key); ?> </td>
+                <?php }
+
+                for($i=0; $i < $total; $i++) { ?>
+                    <td style="text-align: center; font-style: italic;">
+                        <?php
+                        if ($i + $sum === $status_order) {
+                            echo "Não avaliado";
+                        } else {
+                            echo "--";
+                        } ?>
+                    </td>
+                <?php }
                 echo '</tr>';
             }            
         endforeach;

@@ -235,6 +235,15 @@ abstract class EvaluationMethod extends Module implements \JsonSerializable{
             ];
         }
 
+        if($opportunity->registrationRanges){
+            $registration_columns['range'] = (object) [
+                'label' => i::__('Faixa/Linha'),
+                'getValue' => function(Entities\RegistrationEvaluation $evaluation){
+                    return $evaluation->registration->range;
+                }
+            ];
+        }
+
         $registration_columns = $registration_columns + [
             'owner' => (object) [
                 'label' => i::__('Agente Responsável'),
