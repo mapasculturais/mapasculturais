@@ -851,9 +851,24 @@ abstract class Opportunity extends \MapasCulturais\Entity
     function setRegistrationCategories(string|array $categories) {
         $app = App::i();
 
-        $new_categories = $categories;
-        if(is_string($categories) && trim($categories)){
-            $new_categories = Utils::nl2array($categories);
+        if (is_string($categories)) {
+            $new_categories = trim($categories) ? Utils::nl2array($categories) : [];
+        } else {
+            $new_categories = [];
+
+            foreach ($categories as $category) {
+                if (!is_string($category)) {
+                    continue;
+                }
+
+                $category = trim($category);
+
+                if ($category !== '') {
+                    $new_categories[] = $category;
+                }
+            }
+            
+            $new_categories = array_values(array_unique($new_categories));
         }
 
         $removed_categories = array_filter(array_diff($this->registrationCategories, $new_categories));
