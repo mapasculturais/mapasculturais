@@ -23,6 +23,7 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Adiciona configuração para exigir foto de perfil do agente coletivo vinculado na inscrição para proponentes do tipo coletivo e pessoa jurídica
 - Adiciona números sequenciais nos avaliadores das comissões
 - Permite criar agentes no fluxo de inscrição de oportunidades respeitando as permissões: agente individual apenas para administradores e agente coletivo para usuários comuns quando exigido pela inscrição.
+- Adiciona campos de CNPJ e mini currículo à listagem de pessoas dos formulários de inscrição, com validação de CPF e CNPJ.
 
 ### Correções
 - Aplica texto de internacionalização faltante no componente opportunity-registration-table
