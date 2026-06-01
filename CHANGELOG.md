@@ -8,6 +8,7 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 ## [7.7.50] - UNRELEASED
 ### Correções
 - Ajusta criação de categorias para impossibilitar salvamento de espaço
+- Ajusta exibição do resultado da fase na tela de acompanhamento quando o status é pendente
 
 ## [7.7.49] - 2026-05-29
 ### Melhorias
