@@ -7,6 +7,7 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ## [UNRELEASED]
 ### Novas Funcionalidades
+- Módulo de **fase de execução** que permite ao gestor configurar uma fase de acompanhamento para os agentes contemplados após a publicação do resultado. Durante esta fase, o agente contemplado pode abrir múltiplos **pedidos de alteração** no projeto aprovado — troca de data, substituição de item de orçamento, mudança de local, entre outros. Cada pedido é avaliado individualmente por uma comissão configurada pelo gestor (mesmo modelo de avaliação simplificada já existente nas fases de seleção). Os pedidos ficam como registro histórico das alterações aprovadas durante a vigência do projeto e não interferem no fluxo das fases seguintes de prestação de informações.
 - Implementa configuração que permide definir a imagem de avatar de qualquer entidade como obrigatória
 - Adiciona botão para duplicar campos do formulário de inscrição, criando a cópia logo abaixo do campo original
 - Adiciona botão para duplicar anexos do formulário de inscrição, incluindo a cópia do arquivo modelo e inserindo o novo anexo logo abaixo do original
@@ -15,12 +16,13 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Adiciona os novos campos do plano de trabalho e monitoramento na exportação das inscrições
 
 ### Melhorias
-- Adiciona um campo de busca para encontrar colunas por palavra-chave na listagem por tabela nas entidades. 
+- Adiciona um campo de busca para encontrar colunas por palavra-chave na listagem por tabela nas entidades.
 - Implementa a funcionalidade que permite ao saasSuperAdmin ordenar globalmente as colunas das tabelas que utilizam o entity-table, por meio de drag and drop.
 - Suprime campo de RG do cadastro do agente e dos campos @ para prevalecer o uso do CIN (Carteira de  Identidade Nacional)
 - Ordena opções de tipos de campos da lista de campos @ em ordem alfabética
 - Ajusta exportação da planilha para organizar as colunas segundo a ordem definida pelo superSaasAdmin
 - Melhora a exibição do botão minha conta no header para exibir o nome do perfil do agente responsável logado
+- Implementa visualização das datas de recurso no step vertical de fases
 - Adiciona configuração para exibir ou ocultar o detalhamento da avaliação anterior na fase de recurso
 - Exibe o detalhamento da avaliação da fase anterior para avaliadores da fase de recurso
 - Adiciona configuração para exigir foto de perfil do agente coletivo vinculado na inscrição para proponentes do tipo coletivo e pessoa jurídica
@@ -42,6 +44,19 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Corrige o cálculo ponderado dos subtotais na tela de avaliação técnica
 - Corrige avisos de validação do monitoramento que apareciam indevidamente na fase de inscrição
 - Corrige exportação de campos multiselect do plano de trabalho para evitar valores "Array | Array"
+
+## [7.7.48] - 2026-05-29
+### Correções
+- Ajusta layout do mobile da listagem de oportunidades
+- Adiciona o botão "Ver mais" e limita a descrição dos cards das entidades a no máximo 3 linhas no mobile.
+
+## [7.7.47] - 2026-05-28
+### Correções
+- garante que uma fase de recurso não seja criada de forma incompleta, faltando metadados ou informações que a definam corretamente como uma fase de recurso
+- Implementa mecanismo para encerrar editais de fluxo contínuos, sendo possível definir uma data de término
+- Ajustar a coluna Elegível na tabela de inscritos para que exiba 'Sim' ou 'Não' ao invés de um valor booleano
+- Faz ajuste para que o valor do eligible seja retornado corretamente no endpoint findRegistration
+- Faz ajuste no carregamento de quotas para que o carregamento ocorra de forma performática.
 
 ## [7.7.46] - 2026-05-26
 ### Correções
@@ -68,11 +83,11 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Evita reprocessar os mesmos campos do formulário de inscrição várias vezes ao montar a página
 
 ## [7.7.42] - 2026-05-20
-### Correções 
+### Correções
 - Melhora performace do sistema de criaçao de cache de permissão
 
 ## [7.7.41] - 2026-05-19
-### Correções 
+### Correções
 - Corrige erro que impedia o botão exibir detalhamento de aparecer na tela do avaliador do recurso
 
 ## [7.7.40] - 2026-05-15

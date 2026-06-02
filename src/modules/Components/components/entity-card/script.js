@@ -10,7 +10,9 @@ app.component('entity-card', {
     },
 
     data() {
-        return {}
+        return {
+            expandedDescription: false
+        }
     },
 
     props: {
@@ -43,7 +45,7 @@ app.component('entity-card', {
         showShortDescription() {
             if (this.entity.shortDescription) {
                 if (this.entity.shortDescription.length > 400) {
-                    return this.entity.shortDescription.substring(0, 400) + '...';
+                    return this.entity.shortDescription.substring(0, 400);
                 } else {
                     return this.entity.shortDescription;
                 }

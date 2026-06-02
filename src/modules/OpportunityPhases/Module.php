@@ -261,7 +261,7 @@ class Module extends \MapasCulturais\Module{
         $registration_repository = $app->repo('Registration');
 
         $app->hook("entity(Registration).<<insert|send>>:before", function(){
-            if(!$this->opportunity->isDataCollection){
+            if($this->previousPhase && !$this->opportunity->isDataCollection){
               $this->sentTimestamp = $this->previousPhase->sentTimestamp;
             }
         });
@@ -359,6 +359,7 @@ class Module extends \MapasCulturais\Module{
                 SELECT o
                 FROM MapasCulturais\Entities\Opportunity o
                 LEFT JOIN o.__metadata om WITH om.key = 'isAppealPhase'
+                LEFT JOIN o.__metadata om2 WITH om2.key = 'isExecutionPhase'
                 WHERE
                     {$complement}
                     (
@@ -366,6 +367,7 @@ class Module extends \MapasCulturais\Module{
                         (o.parent = :parent AND o.id <> :this)
                     )
                     AND om.value IS NULL
+                    AND om2.value IS NULL
                     AND o.status > -10
                 ORDER BY o.id DESC");
 
@@ -592,7 +594,7 @@ class Module extends \MapasCulturais\Module{
                     if($opportunity->isDataCollection || $opportunity->isFirstPhase || $opportunity->isLastPhase){
                         $app->applyHook('module(OpportunityPhases).dataCollectionPhaseData', [&$mout_simplify]);
 
-                        $item = $opportunity->simplify("{$mout_simplify},type,publishedRegistrations,publishTimestamp,registrationFrom,registrationTo,isDataCollection,isFirstPhase,isLastPhase,isReportingPhase,isLastReportingPhase,files,statusLabels");
+                        $item = $opportunity->simplify("{$mout_simplify},type,publishedRegistrations,publishTimestamp,registrationFrom,registrationTo,isContinuousFlow,hasEndDate,isDataCollection,isFirstPhase,isLastPhase,isReportingPhase,isLastReportingPhase,files,statusLabels");
                         $item->appealPhase = $opportunity->appealPhase;
 
                         $item->registrationSteps = [];
@@ -620,7 +622,7 @@ class Module extends \MapasCulturais\Module{
                         $item = $emc->simplify("{$mout_simplify},opportunity,infos,evaluationFrom,evaluationTo,relatedAgents,agentRelations");
                         if($appeal_phase = $emc->appealPhase) {
                             $item->appealPhase = $appeal_phase;
-                            $item->opportunity = $opportunity->simplify('id,isFirstPhase,isLastPhase,isReportingPhase,isLastReportingPhase,files,statusLabels,relatedAgents,agentRelations');
+                            $item->opportunity = $opportunity->simplify('id,isFirstPhase,isLastPhase,isReportingPhase,isLastReportingPhase,isContinuousFlow,hasEndDate,files,statusLabels,relatedAgents,agentRelations');
                             $item->opportunity->appealPhase = (object) $appeal_phase->jsonSerialize();
                             $item->opportunity->appealPhase->relatedAgents = $appeal_phase->relatedAgents;
                             $item->opportunity->appealPhase->agentRelations = $appeal_phase->agentRelations;
@@ -1003,8 +1005,8 @@ class Module extends \MapasCulturais\Module{
         $app->hook('Entities\Opportunity::syncRegistrations', function($value, array $registrations = []) use($app) {
             /** @var Opportunity $this */
 
-            // Não deve sincronizar as inscrições da primeira fase ou fase de recurso
-            if ($this->isFirstPhase || $this->isAppealPhase) {
+            // Não deve sincronizar as inscrições da primeira fase, fase de recurso ou fase de execução
+            if ($this->isFirstPhase || $this->isAppealPhase || $this->isExecutionPhase) {
                 return false;
             }
 
@@ -1038,7 +1040,7 @@ class Module extends \MapasCulturais\Module{
         $app->hook('Entities\Opportunity::removeOrphanRegistrations', function($value, array $registrations = []) use($app) {
             /** @var Opportunity $this */
 
-            if ($this->isFirstPhase || $this->isLastPhase || $this->isAppealPhase) {
+            if ($this->isFirstPhase || $this->isLastPhase || $this->isAppealPhase || $this->isExecutionPhase) {
                 return;
             }
 
@@ -1447,11 +1449,12 @@ class Module extends \MapasCulturais\Module{
         });
 
         // Não permite a criação de inscrições em fases fora da importaçao entre fases
+        // Exceção: fase de execução (isExecutionPhase) — o agente abre pedidos manualmente.
         $app->hook('POST(registration.index):before', function() use($app) {
             $opportunity_id = $this->data['opportunityId'] ?? $this->data['opportunity'] ?? -1;
             $opportunity = $app->repo('Opportunity')->find($opportunity_id);
 
-            if($opportunity->isOpportunityPhase){
+            if($opportunity->isOpportunityPhase && !$opportunity->isExecutionPhase){
                 throw new Exceptions\PermissionDenied($app->user, $opportunity, 'register');
             }
         });
@@ -1828,7 +1831,7 @@ class Module extends \MapasCulturais\Module{
             // Adiciona os proponentes, as faixas e as categorias para as novas fases de coleta de dados criadas
             $app->hook('entity(Opportunity).insert:after', function() use ($app) {
                 /** @var Opportunity $this */
-                if($this->parent && $this->isDataCollection) {
+                if ($this->parent && $this->isDataCollection && !$this->isExecutionPhase && !$this->isAppealPhase) {
                     $this->registrationCategories = $this->parent->registrationCategories;
                     $this->registrationProponentTypes = $this->parent->registrationProponentTypes;
                     $this->registrationRanges = $this->parent->registrationRanges;
@@ -1838,9 +1841,75 @@ class Module extends \MapasCulturais\Module{
 
             $app->hook('entity(Opportunity).insert:after', function() use ($app) {
                 /** @var Opportunity $this */
-                if($this->parent && $this->firstPhase->isContinuousFlow) {
+                if ($this->parent && $this->firstPhase->isContinuousFlow && !$this->isAppealPhase) {
                     $this->isContinuousFlow = true;
                     $this->save(true);
+                }
+            });
+
+            /**
+             * Propaga hasEndDate para todas as fases quando a primeira fase de fluxo contínuo
+             * passa a ter data final de inscrições habilitada.
+             */
+            $app->hook('entity(Opportunity).save:after', function() use ($app) {
+                /** @var Opportunity $this */
+
+                static $propagating_has_end_date = false;
+
+                if ($propagating_has_end_date || !$this->isFirstPhase || !$this->isContinuousFlow || !$this->hasEndDate) {
+                    return;
+                }
+
+                $propagating_has_end_date = true;
+
+                try {
+                    $app->disableAccessControl();
+
+                    $resetEvaluationTo = function (EvaluationMethodConfiguration $emc) use ($app) {
+                        if (!$this->registrationTo || !$emc->evaluationTo) {
+                            return;
+                        }
+
+                        if ((int) $emc->evaluationTo->format('Y') >= 2100) {
+                            $emc->evaluationTo = $this->registrationTo;
+                            $emc->save(true);
+                        }
+                    };
+
+                    if ($emc = $this->evaluationMethodConfiguration) {
+                        $resetEvaluationTo($emc);
+                    }
+
+                    foreach ($this->allPhases as $phase) {
+                        if ($phase->isAppealPhase) {
+                            continue;
+                        }
+
+                        $needs_save = false;
+
+                        if ($phase->id !== $this->id) {
+                            if (!$phase->hasEndDate) {
+                                $phase->hasEndDate = true;
+                                $needs_save = true;
+                            }
+
+                            if ($phase->continuousFlow !== null) {
+                                $phase->setContinuousFlow(null);
+                                $needs_save = true;
+                            }
+
+                            if ($needs_save) {
+                                $phase->save(true);
+                            }
+                        }
+
+                        if ($emc = $phase->evaluationMethodConfiguration) {
+                            $resetEvaluationTo($emc);
+                        }
+                    }
+                } finally {
+                    $propagating_has_end_date = false;
+                    $app->enableAccessControl();
                 }
             });
 
