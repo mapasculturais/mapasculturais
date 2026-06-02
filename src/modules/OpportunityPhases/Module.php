@@ -261,7 +261,7 @@ class Module extends \MapasCulturais\Module{
         $registration_repository = $app->repo('Registration');
 
         $app->hook("entity(Registration).<<insert|send>>:before", function(){
-            if(!$this->opportunity->isDataCollection){
+            if($this->previousPhase && !$this->opportunity->isDataCollection){
               $this->sentTimestamp = $this->previousPhase->sentTimestamp;
             }
         });
@@ -359,6 +359,7 @@ class Module extends \MapasCulturais\Module{
                 SELECT o
                 FROM MapasCulturais\Entities\Opportunity o
                 LEFT JOIN o.__metadata om WITH om.key = 'isAppealPhase'
+                LEFT JOIN o.__metadata om2 WITH om2.key = 'isExecutionPhase'
                 WHERE
                     {$complement}
                     (
@@ -366,6 +367,7 @@ class Module extends \MapasCulturais\Module{
                         (o.parent = :parent AND o.id <> :this)
                     )
                     AND om.value IS NULL
+                    AND om2.value IS NULL
                     AND o.status > -10
                 ORDER BY o.id DESC");
 
@@ -1003,8 +1005,8 @@ class Module extends \MapasCulturais\Module{
         $app->hook('Entities\Opportunity::syncRegistrations', function($value, array $registrations = []) use($app) {
             /** @var Opportunity $this */
 
-            // Não deve sincronizar as inscrições da primeira fase ou fase de recurso
-            if ($this->isFirstPhase || $this->isAppealPhase) {
+            // Não deve sincronizar as inscrições da primeira fase, fase de recurso ou fase de execução
+            if ($this->isFirstPhase || $this->isAppealPhase || $this->isExecutionPhase) {
                 return false;
             }
 
@@ -1038,7 +1040,7 @@ class Module extends \MapasCulturais\Module{
         $app->hook('Entities\Opportunity::removeOrphanRegistrations', function($value, array $registrations = []) use($app) {
             /** @var Opportunity $this */
 
-            if ($this->isFirstPhase || $this->isLastPhase || $this->isAppealPhase) {
+            if ($this->isFirstPhase || $this->isLastPhase || $this->isAppealPhase || $this->isExecutionPhase) {
                 return;
             }
 
@@ -1447,11 +1449,12 @@ class Module extends \MapasCulturais\Module{
         });
 
         // Não permite a criação de inscrições em fases fora da importaçao entre fases
+        // Exceção: fase de execução (isExecutionPhase) — o agente abre pedidos manualmente.
         $app->hook('POST(registration.index):before', function() use($app) {
             $opportunity_id = $this->data['opportunityId'] ?? $this->data['opportunity'] ?? -1;
             $opportunity = $app->repo('Opportunity')->find($opportunity_id);
 
-            if($opportunity->isOpportunityPhase){
+            if($opportunity->isOpportunityPhase && !$opportunity->isExecutionPhase){
                 throw new Exceptions\PermissionDenied($app->user, $opportunity, 'register');
             }
         });
@@ -1828,7 +1831,7 @@ class Module extends \MapasCulturais\Module{
             // Adiciona os proponentes, as faixas e as categorias para as novas fases de coleta de dados criadas
             $app->hook('entity(Opportunity).insert:after', function() use ($app) {
                 /** @var Opportunity $this */
-                if ($this->parent && $this->isDataCollection && !$this->isAppealPhase) {
+                if ($this->parent && $this->isDataCollection && !$this->isExecutionPhase && !$this->isAppealPhase) {
                     $this->registrationCategories = $this->parent->registrationCategories;
                     $this->registrationProponentTypes = $this->parent->registrationProponentTypes;
                     $this->registrationRanges = $this->parent->registrationRanges;
