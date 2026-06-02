@@ -5,6 +5,10 @@ Todas as mudanças notáveis no projeto serão documentadas neste arquivo.
 O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/)
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [unreleased]
+### Correções
+- Corrige o breadcrumb da página de detalhes (single) de oportunidades
+
 ## [7.7.50] - 2026-06-01
 ### Correções
 - Ajusta criação de categorias para impossibilitar salvamento de espaço
