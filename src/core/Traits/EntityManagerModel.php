@@ -118,42 +118,78 @@ trait EntityManagerModel {
     function GET_findOpportunitiesModels()
     {
         $app = App::i();
-        $dataModels = [];
-        
-        $opportunities = $app->em->createQuery("
-            SELECT 
-                o.id
-            FROM
-                MapasCulturais\Entities\OpportunityMeta om
-                JOIN MapasCulturais\Entities\Opportunity o WITH om.owner=o
-            WHERE om.key = 'isModel' AND om.value = '1'
+        $conn = $app->em->getConnection();
+        $verifiedSealIds = $app->config['app.verifiedSealsIds'] ?? [];
+
+        $rows = $conn->fetchAllAssociative("
+            SELECT
+                o.id,
+                o.short_description,
+                o.registration_from,
+                (
+                    SELECT COUNT(*)
+                    FROM opportunity child
+                    LEFT JOIN opportunity_meta om_last
+                        ON om_last.object_id = child.id AND om_last.key = 'isLastPhase'
+                    WHERE child.parent_id = o.id
+                      AND (om_last.value IS NULL OR om_last.value != '1')
+                ) AS numero_fases,
+                (
+                    SELECT lp.publish_timestamp
+                    FROM opportunity lp
+                    JOIN opportunity_meta om_lp
+                        ON om_lp.object_id = lp.id AND om_lp.key = 'isLastPhase' AND om_lp.value = '1'
+                    WHERE lp.parent_id = o.id
+                    LIMIT 1
+                ) AS last_phase_publish_timestamp,
+                (
+                    SELECT om_rpt.value
+                    FROM opportunity_meta om_rpt
+                    WHERE om_rpt.object_id = o.id AND om_rpt.key = 'registrationProponentTypes'
+                ) AS tipo_agente
+            FROM opportunity o
+            JOIN opportunity_meta om_model
+                ON om_model.object_id = o.id AND om_model.key = 'isModel' AND om_model.value = '1'
+            WHERE o.status != -10
         ");
 
-        foreach ($opportunities->getResult() as $opportunity) {
-            $opp = $app->repo('Opportunity')->find($opportunity['id']);
-            $phases = $opp->phases;
-
-            $lastPhase = array_pop($phases);
-
+        $dataModels = [];
+        foreach ($rows as $row) {
             $modelIsOfficial = false;
-            foreach ($opp->getSealRelations() as $sealRelation) {
-                if ( in_array($sealRelation->seal->id, $app->config['app.verifiedSealsIds'])) {
-                    $modelIsOfficial = true;
-                }
+            if (!empty($verifiedSealIds)) {
+                $placeholders = implode(',', array_fill(0, count($verifiedSealIds), '?'));
+                $hasSeal = $conn->fetchOne(
+                    "SELECT 1 FROM seal_relation sr
+                     WHERE sr.object_id = ? AND sr.object_type = 'MapasCulturais\\Entities\\Opportunity'
+                       AND sr.seal_id IN ($placeholders) LIMIT 1",
+                    array_merge([(int) $row['id']], $verifiedSealIds)
+                );
+                $modelIsOfficial = (bool) $hasSeal;
             }
-            
-            $days = !is_null($opp->registrationFrom) && !is_null($lastPhase->publishTimestamp) ? $lastPhase->publishTimestamp->diff($opp->registrationFrom)->days . " Dia(s)" : 'N/A';
-            $tipoAgente = $opp->registrationProponentTypes ? implode(', ', $opp->registrationProponentTypes) : 'N/A';
+
+            $days = 'N/A';
+            if ($row['registration_from'] && $row['last_phase_publish_timestamp']) {
+                $regFrom = new \DateTime($row['registration_from']);
+                $pubTs   = new \DateTime($row['last_phase_publish_timestamp']);
+                $days    = $pubTs->diff($regFrom)->days . ' Dia(s)';
+            }
+
+            $tipoAgente = 'N/A';
+            if ($row['tipo_agente']) {
+                $decoded    = json_decode($row['tipo_agente'], true);
+                $tipoAgente = is_array($decoded) ? implode(', ', $decoded) : $row['tipo_agente'];
+            }
+
             $dataModels[] = [
-                'id' => $opp->id,
-                'numeroFases' => count($opp->phases),
-                'descricao' => $opp->shortDescription,
-                'tempoEstimado' => $days,
-                'tipoAgente'   =>  $tipoAgente,
-                'modelIsOfficial' => $modelIsOfficial
+                'id'             => (int) $row['id'],
+                'numeroFases'    => (int) $row['numero_fases'],
+                'descricao'      => $row['short_description'],
+                'tempoEstimado'  => $days,
+                'tipoAgente'     => $tipoAgente,
+                'modelIsOfficial'=> $modelIsOfficial,
             ];
         }
-        
+
         $this->json($dataModels);
     }
 
