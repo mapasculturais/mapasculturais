@@ -38,6 +38,12 @@ class Module extends \MapasCulturais\Module{
                 }
             });
 
+            $app->hook("template(registration.single.registration-ficha-tab):end", function($registration) {
+                if ($registration->opportunity->isFirstPhase && $registration->opportunity->enableWorkplan && !$registration->opportunity->firstPhase->isContinuousFlow) {
+                    $this->part('registration-details-workplan');
+                }
+            });
+
             $app->hook("entity(Registration).sendValidationErrors", function (&$errorsResult) use($app) {
                 $registration = $this;
 
