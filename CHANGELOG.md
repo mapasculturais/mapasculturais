@@ -9,6 +9,7 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 ### Correções
 - Corrige o breadcrumb da página de detalhes (single) de oportunidades
 - Ajusta exibição do campo @ agente coletivo na configuração de formulário apenas quando a vinculação estiver ativa
+- Ajusta importação de campos para importar apenas campos em fases secundárias sem categorias/faixas/tipos
 
 ## [7.7.50] - 2026-06-01
 ### Correções
