@@ -120,6 +120,21 @@ trait EntityManagerModel {
         $app = App::i();
         $conn = $app->em->getConnection();
         $verifiedSealIds = $app->config['app.verifiedSealsIds'] ?? [];
+        $verifiedSealIds = is_array($verifiedSealIds) ? $verifiedSealIds : [$verifiedSealIds];
+        $verifiedSealIds = array_values(array_filter($verifiedSealIds, fn($id) => is_numeric($id)));
+        $modelIsOfficialSql = 'FALSE AS model_is_official';
+
+        if (!empty($verifiedSealIds)) {
+            $placeholders = implode(',', array_fill(0, count($verifiedSealIds), '?'));
+            $modelIsOfficialSql = "EXISTS (
+                SELECT 1
+                FROM seal_relation sr
+                WHERE sr.object_id = o.id
+                  AND sr.object_type = 'MapasCulturais\\Entities\\Opportunity'
+                  AND sr.seal_id IN ($placeholders)
+                LIMIT 1
+            ) AS model_is_official";
+        }
 
         $rows = $conn->fetchAllAssociative("
             SELECT
@@ -127,6 +142,7 @@ trait EntityManagerModel {
                 o.short_description,
                 o.registration_from,
                 o.registration_proponent_types,
+                $modelIsOfficialSql,
                 (
                     SELECT COUNT(*)
                     FROM opportunity child
@@ -148,22 +164,10 @@ trait EntityManagerModel {
             JOIN opportunity_meta om_model
                 ON om_model.object_id = o.id AND om_model.key = 'isModel' AND om_model.value = '1'
             WHERE o.status != -10
-        ");
+        ", $verifiedSealIds);
 
         $dataModels = [];
         foreach ($rows as $row) {
-            $modelIsOfficial = false;
-            if (!empty($verifiedSealIds)) {
-                $placeholders = implode(',', array_fill(0, count($verifiedSealIds), '?'));
-                $hasSeal = $conn->fetchOne(
-                    "SELECT 1 FROM seal_relation sr
-                     WHERE sr.object_id = ? AND sr.object_type = 'MapasCulturais\\Entities\\Opportunity'
-                       AND sr.seal_id IN ($placeholders) LIMIT 1",
-                    array_merge([(int) $row['id']], $verifiedSealIds)
-                );
-                $modelIsOfficial = (bool) $hasSeal;
-            }
-
             $days = 'N/A';
             if ($row['registration_from'] && $row['last_phase_publish_timestamp']) {
                 $regFrom = new \DateTime($row['registration_from']);
@@ -175,6 +179,7 @@ trait EntityManagerModel {
             if ($row['registration_proponent_types']) {
                 $decoded    = json_decode($row['registration_proponent_types'], true);
                 $tipoAgente = is_array($decoded) ? implode(', ', $decoded) : $row['registration_proponent_types'];
+                $tipoAgente = $tipoAgente ?: 'N/A';
             }
 
             $dataModels[] = [
@@ -183,7 +188,7 @@ trait EntityManagerModel {
                 'descricao'      => $row['short_description'],
                 'tempoEstimado'  => $days,
                 'tipoAgente'     => $tipoAgente,
-                'modelIsOfficial'=> $modelIsOfficial,
+                'modelIsOfficial'=> (bool) $row['model_is_official'],
             ];
         }
 
