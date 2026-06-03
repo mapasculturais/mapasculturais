@@ -226,6 +226,7 @@ $app->applyHookBoundTo($this, 'opportunity.blockedFields', [$entity]);
                     </edit-box>
                     <div ng-if="data.entity.canUserModifyRegistrationFields && !isBlockedFields(field.id)" class="btn-group">
                         <a ng-click="openFieldConfigurationEditBox(field.id, $index, $event);" class="btn btn-default edit hltip" title="<?php i::esc_attr_e("editar campo"); ?>"></a>
+                        <a ng-click="duplicateFieldConfiguration(field, $index)" class="btn btn-default add hltip" title="<?php i::esc_attr_e("duplicar campo"); ?>" aria-label="<?php i::esc_attr_e("duplicar campo"); ?>"></a>
                         <a ng-click="removeFieldConfiguration(field.id, $index)" data-href="{{field.deleteUrl}}" class="btn btn-default delete hltip" title="<?php i::esc_attr_e("excluir campo"); ?>"></a>
                     </div>
                     <div style="color: red;">
@@ -374,6 +375,7 @@ $app->applyHookBoundTo($this, 'opportunity.blockedFields', [$entity]);
 
                     <div ng-if="data.entity.canUserModifyRegistrationFields && !isBlockedFields(field.id)" class="btn-group">
                         <a ng-click="openFileConfigurationEditBox(field.id, $index, $event);" class="btn btn-default edit hltip" title="<?php i::esc_attr_e("editar anexo"); ?>"></a>
+                        <a ng-click="duplicateFileConfiguration(field, $index)" class="btn btn-default add hltip" title="<?php i::esc_attr_e("duplicar anexo"); ?>" aria-label="<?php i::esc_attr_e("duplicar anexo"); ?>"></a>
                         <a ng-if="!field.template" ng-click="openFileConfigurationTemplateEditBox(field.id, $index, $event);" class="btn btn-default send hltip" title="<?php i::esc_attr_e("enviar modelo"); ?>"></a>
                         <a ng-click="removeFileConfiguration(field.id, $index)" data-href="{{field.deleteUrl}}" class="btn btn-default delete hltip" title="<?php i::esc_attr_e("excluir anexo"); ?>"></a>
                     </div>

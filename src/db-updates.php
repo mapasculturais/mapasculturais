@@ -3230,5 +3230,15 @@ $$
         $app->log->debug("Migração concluída! Atualizados: {$updated} | Sem relations: {$skipped}");
         return true;
     },
+
+    "Backfill committeeSequentialNumber para avaliadores da comissão" => function () use ($app) {
+        $result = \Opportunities\Module::backfillCommitteeSequentialNumbers($app);
+        $app->log->debug(sprintf(
+            'Backfill committeeSequentialNumber: %d editais processados, %d relações atualizadas',
+            $result['opportunities'],
+            $result['relations_updated']
+        ));
+        return true;
+    },
     
 ] + $updates ;   

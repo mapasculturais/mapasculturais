@@ -1295,6 +1295,7 @@ abstract class Opportunity extends \MapasCulturais\Entity
                 $newFile->displayOrder = $file->displayOrder;
                 $newFile->conditional = $file->conditional;
                 $newFile->conditionalValue = $file->conditionalValue;
+                $newFile->allowedFileTypes = $file->allowedFileTypes ?? [];
                 $newFile->step = $step->id;
 
                 if ($this->isFirstPhase) {

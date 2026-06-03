@@ -249,6 +249,21 @@ class Module extends \MapasCulturais\Module{
             }
         };
 
+        /**
+         * Gera número sequencial para avaliadores da comissão
+         */
+        $app->hook('entity(EvaluationMethodConfigurationAgentRelation).save:before', function() use($app) {
+            /** @var EvaluationMethodConfigurationAgentRelation $this */
+
+            if (!$this->isNew() || $this->getCommitteeSequentialNumber()) {
+                return;
+            }
+
+            $firstPhase = $this->owner->opportunity->firstPhase;
+            $number = self::resolveCommitteeSequentialNumber($app, $firstPhase, (int) $this->agent->id);
+            $this->setCommitteeSequentialNumber($number);
+        });
+
         /** 
          * Enfileiramento dos JOBs de distribuição de avaliadores
          */
@@ -750,9 +765,7 @@ class Module extends \MapasCulturais\Module{
 
                     foreach($evaluations as $eval) {
                         $detail = $em->getEvaluationDetails($eval);
-                        if ($can_view_valuer_names){
-                            $detail['valuer'] = $eval->user->profile->simplify('id,name,singleUrl');
-                        }
+                        self::enrichEvaluationDetailWithValuerInfo($detail, $this, $evaluation_configuration, $eval, $app);
                         $data['evaluationsDetails'][] = $detail;
                     }
                 }
@@ -1260,6 +1273,12 @@ class Module extends \MapasCulturais\Module{
             'description' => i::__('Armazena se a vinculação de agente coletivo está habilitada para Coletivo ou Pessoa Jurídica'),
         ]);
 
+        $this->registerOpportunityMetadata('proponentAgentRelationAvatar', [
+            'label' => i::__('Solicitação de avatar do Agente coletivo para tipos de proponente'),
+            'type' => 'object',
+            'description' => i::__('Armazena se o avatar do agente coletivo é obrigatório para Coletivo ou Pessoa Jurídica'),
+        ]);
+
         $this->registerEvauationMethodConfigurationMetadata('fetchFields', [
             'label' => i::__('Configuração filtro de inscrição para avaliadores/comissão'),
             'type' => 'object',
@@ -1348,5 +1367,215 @@ class Module extends \MapasCulturais\Module{
                 }
             }
         }
+    }
+
+    /**
+     * IDs de EvaluationMethodConfiguration do edital (fases de avaliação + fases de recurso).
+     *
+     * @return int[]
+     */
+    public static function getEvaluationMethodConfigurationIdsForCommitteeSequentialNumber(Opportunity $firstPhase): array
+    {
+        $emc_ids = [];
+
+        foreach ($firstPhase->allPhases as $phase) {
+            if ($emc = $phase->evaluationMethodConfiguration) {
+                $emc_ids[$emc->id] = (int) $emc->id;
+            }
+
+            if ($appeal = $phase->appealPhase) {
+                if ($appeal_emc = $appeal->evaluationMethodConfiguration) {
+                    $emc_ids[$appeal_emc->id] = (int) $appeal_emc->id;
+                }
+            }
+        }
+
+        return array_values($emc_ids);
+    }
+
+    /**
+     * Define o número sequencial para uma nova relação de avaliador.
+     */
+    public static function resolveCommitteeSequentialNumber(App $app, Opportunity $firstPhase, int $agentId): int
+    {
+        $conn = $app->em->getConnection();
+        $existing_number = null;
+        $max_number = 0;
+
+        foreach (self::getEvaluationMethodConfigurationIdsForCommitteeSequentialNumber($firstPhase) as $emc_id) {
+            $relations = $conn->fetchAllAssociative(
+                "SELECT ar.metadata, ar.agent_id FROM agent_relation ar
+                 WHERE ar.object_type = 'MapasCulturais\\Entities\\EvaluationMethodConfiguration'
+                 AND ar.object_id = :emcId AND ar.status > 0",
+                ['emcId' => $emc_id]
+            );
+
+            foreach ($relations as $relation) {
+                $metadata = json_decode($relation['metadata'] ?: '{}', true);
+                $number = isset($metadata['committeeSequentialNumber']) ? (int) $metadata['committeeSequentialNumber'] : null;
+
+                if ($number && $number > $max_number) {
+                    $max_number = $number;
+                }
+
+                if ((int) $relation['agent_id'] === $agentId && $number) {
+                    $existing_number = $number;
+                    break 2;
+                }
+            }
+        }
+
+        return $existing_number ?? ($max_number + 1);
+    }
+
+    /**
+     * Preenche committeeSequentialNumber e valuer em um detalhe de avaliação conforme permissões.
+     */
+    public static function enrichEvaluationDetailWithValuerInfo(
+        array &$detail,
+        Registration $registration,
+        EvaluationMethodConfiguration $emc,
+        RegistrationEvaluation $eval,
+        App $app
+    ): void {
+        $valuer_relation = $emc->getUserRelation($eval->user);
+        if ($valuer_relation) {
+            $detail['committeeSequentialNumber'] = $valuer_relation->getCommitteeSequentialNumber();
+        }
+
+        $user = $app->user;
+        if ($registration->opportunity->canUser('@control', $user)) {
+            $detail['valuer'] = $eval->user->profile->simplify('id,name,singleUrl');
+        } elseif ($emc->publishValuerNames) {
+            $detail['valuer'] = $eval->user->profile->simplify('id,name,singleUrl');
+        }
+    }
+
+    /**
+     * Backfill de committeeSequentialNumber por edital (firstPhase), mantendo o mesmo número por agent_id.
+     *
+     * @return array{opportunities: int, relations_updated: int}
+     */
+    public static function backfillCommitteeSequentialNumbers(App $app, ?int $first_phase_id = null): array
+    {
+        $conn = $app->em->getConnection();
+        $emc_repo = $app->repo('EvaluationMethodConfiguration');
+
+        if ($first_phase_id) {
+            $first_phase = $app->repo('Opportunity')->find($first_phase_id);
+            $first_phases = $first_phase ? [$first_phase] : [];
+        } else {
+            $emc_rows = $conn->fetchAllAssociative(
+                "SELECT DISTINCT ar.object_id AS emc_id FROM agent_relation ar
+                 WHERE ar.object_type = 'MapasCulturais\\Entities\\EvaluationMethodConfiguration'
+                 AND ar.status > 0"
+            );
+
+            $first_phases_by_id = [];
+            foreach ($emc_rows as $row) {
+                $emc = $emc_repo->find($row['emc_id']);
+                if (!$emc || !$emc->opportunity) {
+                    continue;
+                }
+                $fp = $emc->opportunity->firstPhase;
+                if ($fp && $fp->id) {
+                    $first_phases_by_id[$fp->id] = $fp;
+                }
+            }
+            $first_phases = array_values($first_phases_by_id);
+        }
+
+        $opportunities_processed = 0;
+        $relations_updated = 0;
+
+        foreach ($first_phases as $first_phase) {
+            $emc_ids = self::getEvaluationMethodConfigurationIdsForCommitteeSequentialNumber($first_phase);
+            if (!$emc_ids) {
+                continue;
+            }
+
+            $agents = [];
+            $max_number = 0;
+
+            foreach ($emc_ids as $emc_id) {
+                $relations = $conn->fetchAllAssociative(
+                    "SELECT ar.id, ar.metadata, ar.agent_id, ar.create_timestamp
+                     FROM agent_relation ar
+                     WHERE ar.object_type = 'MapasCulturais\\Entities\\EvaluationMethodConfiguration'
+                     AND ar.object_id = :emcId AND ar.status > 0",
+                    ['emcId' => $emc_id]
+                );
+
+                foreach ($relations as $relation) {
+                    $agent_id = (int) $relation['agent_id'];
+                    $metadata = json_decode($relation['metadata'] ?: '{}', true) ?: [];
+                    $number = isset($metadata['committeeSequentialNumber']) ? (int) $metadata['committeeSequentialNumber'] : null;
+
+                    if ($number && $number > $max_number) {
+                        $max_number = $number;
+                    }
+
+                    if (!isset($agents[$agent_id])) {
+                        $agents[$agent_id] = [
+                            'canonical' => null,
+                            'min_created_at' => $relation['create_timestamp'],
+                            'relations' => [],
+                        ];
+                    }
+
+                    $agents[$agent_id]['relations'][] = [
+                        'id' => (int) $relation['id'],
+                        'metadata' => $metadata,
+                    ];
+
+                    if ($relation['create_timestamp'] < $agents[$agent_id]['min_created_at']) {
+                        $agents[$agent_id]['min_created_at'] = $relation['create_timestamp'];
+                    }
+
+                    if ($number) {
+                        $canonical = $agents[$agent_id]['canonical'];
+                        if ($canonical === null || $number < $canonical) {
+                            $agents[$agent_id]['canonical'] = $number;
+                        }
+                    }
+                }
+            }
+
+            $unnumbered = [];
+            foreach ($agents as $agent_id => $data) {
+                if ($data['canonical'] === null) {
+                    $unnumbered[$agent_id] = $data['min_created_at'];
+                }
+            }
+
+            asort($unnumbered);
+            $next_number = $max_number + 1;
+            foreach (array_keys($unnumbered) as $agent_id) {
+                $agents[$agent_id]['canonical'] = $next_number++;
+            }
+
+            foreach ($agents as $data) {
+                $canonical = $data['canonical'];
+                foreach ($data['relations'] as $relation) {
+                    if (($relation['metadata']['committeeSequentialNumber'] ?? null) == $canonical) {
+                        continue;
+                    }
+                    $metadata = $relation['metadata'];
+                    $metadata['committeeSequentialNumber'] = $canonical;
+                    $conn->executeStatement(
+                        'UPDATE agent_relation SET metadata = :metadata WHERE id = :id',
+                        ['metadata' => json_encode($metadata), 'id' => $relation['id']]
+                    );
+                    $relations_updated++;
+                }
+            }
+
+            $opportunities_processed++;
+        }
+
+        return [
+            'opportunities' => $opportunities_processed,
+            'relations_updated' => $relations_updated,
+        ];
     }
 }

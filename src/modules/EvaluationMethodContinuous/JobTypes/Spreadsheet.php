@@ -73,7 +73,7 @@ class Spreadsheet extends EvaluationsSpreadsheetJob
                 'proponentType' => $registration_data['proponentType'],
                 'eligible' => $registration_data['eligible'],
                 'goalStatuses' => $goal_statuses,
-                'user' => $evaluation['valuer']['name'],
+            ] + $this->getEvaluatorSpreadsheetColumns($evaluation['valuer'] ?? null) + [
                 'result' => $evaluation['evaluation']['resultString'],
                 'status' => $this->statusName($registration_data['status']),
                 'obs' => $evaluation['evaluation']['evaluationData']['obs']

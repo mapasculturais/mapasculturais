@@ -28,4 +28,7 @@ return [
 
         'publishFolderCommand' => 'cp -R {IN} {PUBLISH_PATH}{FILENAME}'
     ],
+
+    /* Define o header proxy para o IP */
+    'app.proxyHeader' => env('PROXY_HEADER', ''),
 ];
