@@ -318,6 +318,48 @@ class Module extends \MapasCulturais\Module {
         // NOVOS CAMPOS DE MONITORAMENTO (EXECUTADOS)
         // ============================================
 
+        $executedMonthInitial = new Metadata('executedMonthInitial', [
+            'label' => i::__('Mês inicial executado da entrega'),
+            'type' => 'integer',
+            'validations' => [
+                'v::intVal()->min(1)' => i::__('Deve ser um número maior ou igual a um')
+            ],
+            'should_validate' => function($entity) {
+                if($entity->isMetadataRequired('executedMonthInitial')) {
+                    return i::__('Campo obrigatório');
+                }
+                return false;
+            }
+        ]);
+        $app->registerMetadata($executedMonthInitial, Delivery::class);
+
+        $executedMonthEnd = new Metadata('executedMonthEnd', [
+            'label' => i::__('Mês final executado da entrega'),
+            'type' => 'integer',
+            'validations' => [
+                'v::intVal()->min(1)' => i::__('Deve ser um número maior ou igual a um')
+            ],
+            'should_validate' => function($entity) {
+                if($entity->isMetadataRequired('executedMonthEnd')) {
+                    return i::__('Campo obrigatório');
+                }
+                return false;
+            }
+        ]);
+        $app->registerMetadata($executedMonthEnd, Delivery::class);
+
+        $executedTotalBudget = new Metadata('executedTotalBudget', [
+            'label' => i::__('Qual o orçamento total executado da atividade?'),
+            'type' => 'currency',
+            'should_validate' => function($entity) {
+                if($entity->isMetadataRequired('executedTotalBudget')) {
+                    return i::__('Campo obrigatório');
+                }
+                return false;
+            }
+        ]);
+        $app->registerMetadata($executedTotalBudget, Delivery::class);
+
         // Municípios executados
         $executedNumberOfCities = new Metadata('executedNumberOfCities', [
             'label' => i::__('Em quantos municípios a atividade foi realizada?'),
@@ -567,6 +609,18 @@ class Module extends \MapasCulturais\Module {
             }
         ]);
         $app->registerMetadata($executedSegmentDelivery, Delivery::class);
+
+        $executedCommunicationStrategies = new Metadata('executedCommunicationStrategies', [
+            'label' => i::__('Quais estratégias de comunicação foram efetivamente executadas?'),
+            'type' => 'text',
+            'should_validate' => function($entity) {
+                if($entity->isMetadataRequired('executedCommunicationStrategies')) {
+                    return i::__('Campo obrigatório');
+                }
+                return false;
+            }
+        ]);
+        $app->registerMetadata($executedCommunicationStrategies, Delivery::class);
 
         $executedHasCommunityCoauthors = new Metadata('executedHasCommunityCoauthors', [
             'label' => i::__('A atividade executada contou com envolvimento de comunidades/coletivos como coautores/coexecutores?'),
@@ -825,8 +879,12 @@ class Module extends \MapasCulturais\Module {
                         $delivery->numberOfParticipants  = $data['numberOfParticipants'];
                         $delivery->participantProfile    = $data['participantProfile'];
                         $delivery->priorityAudience      = $data['priorityAudience'];
+                        $delivery->status                = $data['status'] ?? $delivery->status;
                         
                         // Novos campos executados
+                        $delivery->executedMonthInitial         = $data['executedMonthInitial'] ?? null;
+                        $delivery->executedMonthEnd             = $data['executedMonthEnd'] ?? null;
+                        $delivery->executedTotalBudget          = $data['executedTotalBudget'] ?? null;
                         $delivery->executedNumberOfCities        = $data['executedNumberOfCities'] ?? null;
                         $delivery->executedNumberOfNeighborhoods = $data['executedNumberOfNeighborhoods'] ?? null;
                         $delivery->executedMediationActions      = $data['executedMediationActions'] ?? null;
@@ -839,6 +897,7 @@ class Module extends \MapasCulturais\Module {
                         $delivery->executedCommunicationChannels = $data['executedCommunicationChannels'] ?? null;
                         $delivery->executedRevenueType           = $data['executedRevenueType'] ?? null;
                         $delivery->executedSegmentDelivery       = $data['executedSegmentDelivery'] ?? null;
+                        $delivery->executedCommunicationStrategies = $data['executedCommunicationStrategies'] ?? null;
                         $delivery->executedHasCommunityCoauthors = $data['executedHasCommunityCoauthors'] ?? null;
                         $delivery->executedCommunityCoauthorsDetail = $data['executedCommunityCoauthorsDetail'] ?? null;
                         $delivery->executedHasTransInclusionStrategy = $data['executedHasTransInclusionStrategy'] ?? null;
@@ -920,6 +979,9 @@ class Module extends \MapasCulturais\Module {
                             'status'                => $delivery->status,
                             
                             // Novos campos executados
+                            'executedMonthInitial'         => $delivery->executedMonthInitial,
+                            'executedMonthEnd'             => $delivery->executedMonthEnd,
+                            'executedTotalBudget'          => $delivery->executedTotalBudget,
                             'executedNumberOfCities'        => $delivery->executedNumberOfCities,
                             'executedNumberOfNeighborhoods' => $delivery->executedNumberOfNeighborhoods,
                             'executedMediationActions'      => $delivery->executedMediationActions,
@@ -932,6 +994,7 @@ class Module extends \MapasCulturais\Module {
                             'executedCommunicationChannels' => $delivery->executedCommunicationChannels,
                             'executedRevenueType'           => $delivery->executedRevenueType,
                             'executedSegmentDelivery'       => $delivery->executedSegmentDelivery,
+                            'executedCommunicationStrategies' => $delivery->executedCommunicationStrategies,
                             'executedHasCommunityCoauthors' => $delivery->executedHasCommunityCoauthors,
                             'executedCommunityCoauthorsDetail' => $delivery->executedCommunityCoauthorsDetail,
                             'executedHasTransInclusionStrategy' => $delivery->executedHasTransInclusionStrategy,
