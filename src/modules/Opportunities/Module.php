@@ -273,6 +273,20 @@ class Module extends \MapasCulturais\Module{
             $this->owner->mustRedistributeCommitteeRegistrations = true;
         });
 
+        // Validação backend: impede valores negativos em valuersPerRegistration
+        $app->hook('entity(EvaluationMethodConfiguration).save:before', function() {
+            /** @var EvaluationMethodConfiguration $this */
+            if ($this->valuersPerRegistration) {
+                $valuersPerRegistration = $this->valuersPerRegistration;
+                foreach ($valuersPerRegistration as $committee => $value) {
+                    if ((int)$value < 0) {
+                        $valuersPerRegistration->$committee = 0;
+                    }
+                }
+                $this->valuersPerRegistration = $valuersPerRegistration;
+            }
+        });
+
         $app->hook('entity(EvaluationMethodConfiguration).save:finish', function () use($app, $distribute_execution_time) {
             /** @var EvaluationMethodConfiguration $this */
             if ($this->mustRedistributeCommitteeRegistrations) {

@@ -101,7 +101,7 @@ $this->import('
                             label="<?= i::__('Limitar número de avaliadores por inscrição') ?>"
                         />
                         <input v-if="entity.valuersPerRegistration[groupName] !== undefined" 
-                            v-model="entity.valuersPerRegistration[groupName]" type="number" @change="autoSave()"/>
+                            v-model="entity.valuersPerRegistration[groupName]" type="number" min="0" @change="validateAndSave($event, groupName)"/>
 
                         <div v-if="entity.valuersPerRegistration[groupName] !== undefined" class="has-info">
                             <mc-toggle 
