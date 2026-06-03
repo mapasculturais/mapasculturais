@@ -33,6 +33,34 @@ class Module extends \MapasCulturais\Module{
 
         $self = $this;
 
+        $evaluator_agent_search = false;
+
+        $app->hook('ApiQuery(agent).params', function (&$api_params) use (&$evaluator_agent_search) {
+            $evaluator_agent_search = !empty($api_params['_evaluatorSearch']);
+            unset($api_params['_evaluatorSearch']);
+        });
+
+        $app->hook('repo(agent).getIdsByKeywordDQL.where', function (&$where, $keyword, $alias) use (&$evaluator_agent_search) {
+            if (!$evaluator_agent_search) {
+                return;
+            }
+
+            $raw_keyword = trim(str_replace('%', '', $keyword));
+
+            if (ctype_digit($raw_keyword)) {
+                $where .= "\n OR e.id = " . (int) $raw_keyword;
+            }
+
+            if (str_contains($raw_keyword, '@')) {
+                $where .= "
+                    OR IDENTITY(e.user) IN (
+                        SELECT evaluation_committee_user.id
+                        FROM MapasCulturais\\Entities\\User evaluation_committee_user
+                        WHERE lower(evaluation_committee_user.email) LIKE lower(:{$alias})
+                    )";
+            }
+        });
+
         // Registro de Jobs
         $app->registerJobType(new Jobs\StartEvaluationPhase(Jobs\StartEvaluationPhase::SLUG));
         $app->registerJobType(new Jobs\StartDataCollectionPhase(Jobs\StartDataCollectionPhase::SLUG));
