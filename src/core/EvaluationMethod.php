@@ -671,6 +671,61 @@ abstract class EvaluationMethod extends Module implements \JsonSerializable{
         file_put_contents($log_filename, $log);
     }
 
+    /**
+     * Calcula a distribuição de quotas de avaliações por avaliador para uma comissão
+     * 
+     * Regras:
+     * 1. Avaliadores com limite (maxRegistrations) recebem até o limite
+     * 2. Avaliadores sem limite dividem o restante igualmente
+     * 3. Se houver resto na divisão, distribui 1 a mais para os primeiros
+     * 
+     * @param array $users Lista de usuários avaliadores
+     * @param int $total_registrations Total de inscrições na comissão
+     * @param int $max_valuers Máximo de avaliadores por inscrição
+     * @param array $registrations_per_valuer Limites por avaliador [user_id => max]
+     * @return array [user_id => quota_de_avaliações]
+     */
+    private function calculateDistributionQuotas(array $users, int $total_registrations, ?int $max_valuers, array $registrations_per_valuer): array {
+        $total_evaluations_needed = $total_registrations * $max_valuers;
+        $quotas = [];
+        $remaining = $total_evaluations_needed;
+        
+        // Passo 1: Aloca o máximo para quem tem limite configurado
+        foreach ($users as $user) {
+            $max = $registrations_per_valuer[$user->id] ?? null;
+            if ($max !== null && $max > 0) {
+                // O limite não pode ser maior que o total de inscrições
+                $allocation = min($max, $total_registrations);
+                $quotas[$user->id] = $allocation;
+                $remaining -= $allocation;
+            } else {
+                $quotas[$user->id] = 0;
+            }
+        }
+        
+        // Passo 2: Distribui o restante entre quem não tem limite
+        $users_without_limit = array_filter($users, function($user) use ($registrations_per_valuer) {
+            $max = $registrations_per_valuer[$user->id] ?? null;
+            return $max === null || $max === 0;
+        });
+        
+        if (count($users_without_limit) > 0 && $remaining > 0) {
+            $base = intdiv($remaining, count($users_without_limit));
+            $extra = $remaining % count($users_without_limit);
+            
+            // Embaralha para aleatoriedade no desempate
+            shuffle($users_without_limit);
+            
+            $i = 0;
+            foreach ($users_without_limit as $user) {
+                $quotas[$user->id] = $base + ($i < $extra ? 1 : 0);
+                $i++;
+            }
+        }
+        
+        return $quotas;
+    }
+
     public function redistributeRegistrations(Entities\Opportunity $opportunity) {        
         ini_set('max_execution_time', 0);
         $start_time = microtime(true);
@@ -798,6 +853,7 @@ abstract class EvaluationMethod extends Module implements \JsonSerializable{
         $opportunity->registerRegistrationMetadata();
 
         // obtém a lista de inscrições e das avaliações já feitas
+        // Query corrigida: usa apenas um LEFT JOIN para evitar duplicatas
         $sql = "
                 SELECT 
                     r.id, 
@@ -808,11 +864,9 @@ abstract class EvaluationMethod extends Module implements \JsonSerializable{
                     v.user_id,
                     v.is_tiebreaker,
                     v.committee,
-                    count(e.id) AS num 
+                    count(v.id) AS num 
                 FROM 
                     registration r 
-                LEFT JOIN 
-                    registration_evaluation e ON e.registration_id = r.id
                 LEFT JOIN 
                     registration_evaluation v ON v.registration_id = r.id
                 WHERE 
@@ -825,7 +879,57 @@ abstract class EvaluationMethod extends Module implements \JsonSerializable{
         /**
          * Lista de inscrições que devem ser distribuidas 
          * @var array */
-        $registration_evaluations = $conn->fetchAllAssociative($sql);
+        $registration_evaluations_raw = $conn->fetchAllAssociative($sql);
+        
+        // Remove duplicatas da query (que retorna uma linha por avaliação existente)
+        // Mantém apenas a primeira ocorrência de cada inscrição
+        $registration_evaluations = [];
+        $seen_ids = [];
+        foreach($registration_evaluations_raw as $reg) {
+            if(!isset($seen_ids[$reg['id']])) {
+                $seen_ids[$reg['id']] = true;
+                $registration_evaluations[] = $reg;
+            }
+        }
+        
+        /**
+         * Quotas de avaliações por comissão e avaliador
+         * [committee_name => [user_id => quota]]
+         * @var array */
+        $committee_quotas = [];
+        
+        // Calcula as quotas de distribuição para cada comissão
+        foreach($committees as $committee_name => $users) {
+            $max_valuers = $valuers_per_registration->$committee_name ?? null;
+            if(!$max_valuers) {
+                continue;
+            }
+            
+            // Conta quantas inscrições esta comissão deve avaliar
+            $committee_registrations_count = 0;
+            foreach($registration_evaluations as $reg) {
+                if($reg['status'] != 1) {
+                    continue;
+                }
+                $registration = $repo->find($reg['id']);
+                if($registration && $this->mustBeEvaluatedByCommittee($evaluation_config, $registration, $committee_name)) {
+                    $committee_registrations_count++;
+                }
+            }
+            
+            if($committee_registrations_count > 0) {
+                $committee_quotas[$committee_name] = $this->calculateDistributionQuotas(
+                    $users,
+                    $committee_registrations_count,
+                    $max_valuers,
+                    $registrations_per_valuer[$committee_name] ?? []
+                );
+                
+                if($is_log_active) {
+                    $app->log->debug("Comitê {$committee_name}: {$committee_registrations_count} inscrições × {$max_valuers} = " . ($committee_registrations_count * $max_valuers) . " avaliações, quotas: " . json_encode($committee_quotas[$committee_name]));
+                }
+            }
+        }
         
         /** Número de verificações
          * @var int */
@@ -949,7 +1053,7 @@ abstract class EvaluationMethod extends Module implements \JsonSerializable{
                     }
                 }
 
-                usort($users, function($u1, $u2) use ($registration, $registration_lists_per_valuer, $registration_list_exclusive_per_valuer, $committee_name, $valuers_total_registrations_count) {
+                usort($users, function($u1, $u2) use ($registration, $registration_lists_per_valuer, $registration_list_exclusive_per_valuer, $committee_name, $valuers_committee_registrations_count, $committee_quotas) {
                     $registration_number = $registration->number;
 
                     $list1 = $registration_lists_per_valuer[$committee_name][$u1->id] ?? [];
@@ -971,12 +1075,31 @@ abstract class EvaluationMethod extends Module implements \JsonSerializable{
                         $priority2 = 1 + ($exclusive2 ? 2 : 0);
                     }
 
-                    // Quem tiver prioridade maior vem antes; em empate, segue o balanceamento.
+                    // Quem tiver prioridade maior vem antes; em empate, segue as quotas.
                     if($priority1 !== $priority2) {
                         return $priority2 <=> $priority1;
                     }
 
-                    return $valuers_total_registrations_count[$u1->id] <=> $valuers_total_registrations_count[$u2->id];
+                    // Se há quotas calculadas para esta comissão, ordena por espaço restante na quota
+                    if(isset($committee_quotas[$committee_name])) {
+                        $current1 = $valuers_committee_registrations_count[$committee_name][$u1->id] ?? 0;
+                        $current2 = $valuers_committee_registrations_count[$committee_name][$u2->id] ?? 0;
+                        $quota1 = $committee_quotas[$committee_name][$u1->id] ?? 0;
+                        $quota2 = $committee_quotas[$committee_name][$u2->id] ?? 0;
+                        
+                        // Quem ainda tem mais espaço na quota vem primeiro
+                        $remaining1 = $quota1 - $current1;
+                        $remaining2 = $quota2 - $current2;
+                        
+                        if($remaining1 !== $remaining2) {
+                            return $remaining2 <=> $remaining1;
+                        }
+                    }
+                    
+                    // Fallback: ordena por contagem na comissão (quem tem menos vem primeiro)
+                    $count1 = $valuers_committee_registrations_count[$committee_name][$u1->id] ?? 0;
+                    $count2 = $valuers_committee_registrations_count[$committee_name][$u2->id] ?? 0;
+                    return $count1 <=> $count2;
                 });
                 
                 // adiciona os avaliadores da comissão na inscrição
