@@ -111,7 +111,7 @@ $this->applyComponentHook('.sortOptions', [&$tabs]);
                             <slot name="entity-actions-right" :entity="entity"></slot>
                         </template>
                     </panel--entity-card>
-                    <panel--entity-models-card v-if="entity.__objectType == 'opportunity' && entity.isModel == 1" :key="entity.id" :entity="entity"></panel--entity-models-card>
+                    <panel--entity-models-card v-if="entity.__objectType == 'opportunity' && entity.isModel == 1" :key="entity.id" :entity="entity" :models="opportunitiesModels"></panel--entity-models-card>
                 </slot>
                 <slot name='after-list' :entities="entities" :query="queries['<?=$status?>']"></slot>
             </template>
