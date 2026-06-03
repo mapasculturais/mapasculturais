@@ -6,6 +6,9 @@ O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [UNRELEASED]
+### Melhorias
+- Melhora a performance da listagem de modelos de oportunidades ao evitar consultas repetidas para identificar modelos oficiais.
+
 ### Correções
 - Corrige a listagem de avaliações para exibir fases de recurso na tela Minhas avaliações
 - Corrige importação de formulários via TXT para que não deixa de importar os filtros por categoria, tipo de proponente e faixa nos campos
