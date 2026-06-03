@@ -2067,6 +2067,69 @@ class Module extends \MapasCulturais\Module{
         ]);
         $app->registerMetadata($executedCommunicationStrategies, Delivery::class);
 
+        $registerDeliveryMetadata = function (string $field, string $label, array $config = []) use ($app) {
+            $metadata = new Metadata($field, array_merge([
+                'label' => \MapasCulturais\i::__($label),
+            ], $config));
+            $app->registerMetadata($metadata, Delivery::class);
+        };
+
+        $jsonConfig = [
+            'type' => 'json',
+            'serialize' => function ($val) {
+                return json_encode($val);
+            },
+            'unserialize' => function($val) {
+                return json_decode((string) $val, true);
+            }
+        ];
+
+        $integerConfig = [
+            'type' => 'integer',
+            'validations' => [
+                'v::intVal()->min(0)' => \MapasCulturais\i::__('Deve ser um número maior ou igual a zero')
+            ]
+        ];
+
+        $booleanSelectConfig = [
+            'type' => 'select',
+            'options' => [
+                'true' => \MapasCulturais\i::__('Sim'),
+                'false' => \MapasCulturais\i::__('Não'),
+            ],
+        ];
+
+        $registerDeliveryMetadata('availabilityType', 'Forma de disponibilização', ['type' => 'select']);
+        $registerDeliveryMetadata('accessibilityMeasures', self::ACCESSIBILITY_MEASURES_LABEL, ['type' => 'multiselect']);
+        $registerDeliveryMetadata('participantProfile', 'Perfil dos participantes', ['type' => 'text']);
+        $registerDeliveryMetadata('priorityAudience', 'Territórios prioritários', ['type' => 'multiselect']);
+        $registerDeliveryMetadata('numberOfParticipants', 'Número de participantes', $integerConfig);
+        $registerDeliveryMetadata('executedRevenue', 'Receita executada', ['type' => 'currency']);
+        $registerDeliveryMetadata('executedNumberOfCities', 'Municípios realizados', $integerConfig);
+        $registerDeliveryMetadata('executedNumberOfNeighborhoods', 'Bairros realizados', $integerConfig);
+        $registerDeliveryMetadata('executedMediationActions', 'Ações de mediação realizadas', $integerConfig);
+        $registerDeliveryMetadata('executedCommercialUnits', 'Unidades comercializadas', $integerConfig);
+        $registerDeliveryMetadata('executedUnitPrice', 'Valor unitário praticado', ['type' => 'currency']);
+        $registerDeliveryMetadata('executedArtChainLink', 'Principal elo das artes acionado (executado)', ['type' => 'select']);
+        $registerDeliveryMetadata('executedSegmentDelivery', 'Segmento artístico-cultural executado', ['type' => 'select']);
+        $registerDeliveryMetadata('executedPaidStaffByRole', 'Pessoas remuneradas por função (executado)', $jsonConfig);
+        $registerDeliveryMetadata('executedTeamCompositionGender', 'Composição da equipe por gênero (executado)', $jsonConfig);
+        $registerDeliveryMetadata('executedTeamCompositionRace', 'Composição da equipe por raça/cor (executado)', $jsonConfig);
+        $registerDeliveryMetadata('executedCommunicationChannels', 'Canais de comunicação utilizados (executado)', ['type' => 'multiselect']);
+        $registerDeliveryMetadata('executedRevenueType', 'Tipo de receita executada', ['type' => 'multiselect']);
+        $registerDeliveryMetadata('executedHasCommunityCoauthors', 'Houve coautoria/coexecução com comunidades/coletivos?', $booleanSelectConfig);
+        $registerDeliveryMetadata('executedCommunityCoauthorsDetail', 'Coautoria/coexecução realizada', ['type' => 'text']);
+        $registerDeliveryMetadata('executedHasTransInclusionStrategy', 'Houve estratégias executadas de inclusão Trans e Travestis?', $booleanSelectConfig);
+        $registerDeliveryMetadata('executedTransInclusionActions', 'Ações executadas de inclusão Trans e Travestis', ['type' => 'text']);
+        $registerDeliveryMetadata('executedHasAccessibilityPlan', 'Houve medidas de acessibilidade executadas?', $booleanSelectConfig);
+        $registerDeliveryMetadata('executedExpectedAccessibilityMeasures', 'Medidas de acessibilidade executadas', ['type' => 'multiselect']);
+        $registerDeliveryMetadata('executedHasEnvironmentalPractices', 'Houve medidas ou práticas socioambientais executadas?', $booleanSelectConfig);
+        $registerDeliveryMetadata('executedEnvironmentalPracticesDescription', 'Práticas socioambientais executadas', ['type' => 'text']);
+        $registerDeliveryMetadata('executedHasPressStrategy', 'Houve estratégia de relacionamento com a imprensa?', $booleanSelectConfig);
+        $registerDeliveryMetadata('executedHasInnovationAction', 'Houve ação de experimentação/inovação executada?', $booleanSelectConfig);
+        $registerDeliveryMetadata('executedInnovationTypes', 'Tipos de experimentação/inovação executados', ['type' => 'multiselect']);
+        $registerDeliveryMetadata('executedDocumentationTypes', 'Tipos de documentação produzida', ['type' => 'multiselect']);
+
         // Experimentação/inovação (boolean)
         $hasInnovationAction = new Metadata('hasInnovationAction', [
             'label' => \MapasCulturais\i::__('A atividade prevê ao menos uma ação de experimentação/inovação?'),

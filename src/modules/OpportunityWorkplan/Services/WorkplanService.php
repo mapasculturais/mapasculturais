@@ -90,6 +90,47 @@ class WorkplanService
                     $delivery->hasInnovationAction = $d['hasInnovationAction'] ?? null;
                     $delivery->innovationTypes = $d['innovationTypes'] ?? null;
                     $delivery->documentationTypes = $d['documentationTypes'] ?? null;
+
+                    foreach ([
+                        'availabilityType',
+                        'accessibilityMeasures',
+                        'participantProfile',
+                        'priorityAudience',
+                        'numberOfParticipants',
+                        'executedRevenue',
+                        'executedMonthInitial',
+                        'executedMonthEnd',
+                        'executedTotalBudget',
+                        'executedNumberOfCities',
+                        'executedNumberOfNeighborhoods',
+                        'executedMediationActions',
+                        'executedCommercialUnits',
+                        'executedUnitPrice',
+                        'executedArtChainLink',
+                        'executedSegmentDelivery',
+                        'executedCommunicationStrategies',
+                        'executedPaidStaffByRole',
+                        'executedTeamCompositionGender',
+                        'executedTeamCompositionRace',
+                        'executedCommunicationChannels',
+                        'executedRevenueType',
+                        'executedHasCommunityCoauthors',
+                        'executedCommunityCoauthorsDetail',
+                        'executedHasTransInclusionStrategy',
+                        'executedTransInclusionActions',
+                        'executedHasAccessibilityPlan',
+                        'executedExpectedAccessibilityMeasures',
+                        'executedHasEnvironmentalPractices',
+                        'executedEnvironmentalPracticesDescription',
+                        'executedHasPressStrategy',
+                        'executedHasInnovationAction',
+                        'executedInnovationTypes',
+                        'executedDocumentationTypes',
+                    ] as $field) {
+                        if (array_key_exists($field, $d)) {
+                            $delivery->$field = $d[$field];
+                        }
+                    }
                     
                     $delivery->goal = $goal;
                     $delivery->save(true);

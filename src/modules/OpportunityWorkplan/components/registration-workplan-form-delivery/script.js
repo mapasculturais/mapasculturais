@@ -219,11 +219,25 @@ app.component('registration-workplan-form-delivery', {
                 if (typeof val === 'string') {
                     try { val = JSON.parse(val); } catch (e) { val = null; }
                 }
-                return val && typeof val === 'object' ? val : {
+                if (val && typeof val === 'object') {
+                    if (this.editable && this.proxy.executedTeamCompositionGender !== val) {
+                        this.proxy.executedTeamCompositionGender = val;
+                    }
+
+                    return val;
+                }
+
+                const defaultValue = {
                     cisgenderWoman: 0, cisgenderMan: 0,
                     transgenderWoman: 0, transgenderMan: 0,
                     nonBinary: 0, otherGenderIdentity: 0, preferNotToSay: 0
                 };
+
+                if (this.editable) {
+                    this.proxy.executedTeamCompositionGender = defaultValue;
+                }
+
+                return defaultValue;
             },
             set (value) {
                 this.proxy.executedTeamCompositionGender = value;
@@ -235,10 +249,24 @@ app.component('registration-workplan-form-delivery', {
                 if (typeof val === 'string') {
                     try { val = JSON.parse(val); } catch (e) { val = null; }
                 }
-                return val && typeof val === 'object' ? val : {
+                if (val && typeof val === 'object') {
+                    if (this.editable && this.proxy.executedTeamCompositionRace !== val) {
+                        this.proxy.executedTeamCompositionRace = val;
+                    }
+
+                    return val;
+                }
+
+                const defaultValue = {
                     white: 0, black: 0, brown: 0,
                     indigenous: 0, asian: 0, notDeclared: 0
                 };
+
+                if (this.editable) {
+                    this.proxy.executedTeamCompositionRace = defaultValue;
+                }
+
+                return defaultValue;
             },
             set (value) {
                 this.proxy.executedTeamCompositionRace = value;
