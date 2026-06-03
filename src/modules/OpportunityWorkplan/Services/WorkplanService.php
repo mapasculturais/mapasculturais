@@ -57,6 +57,8 @@ class WorkplanService
                     $delivery->name = $d['name'] ?? null;
                     $delivery->description = $d['description'] ?? null;
                     $delivery->typeDelivery = $d['typeDelivery'] ?? null;
+                    $delivery->monthInitial = $d['monthInitial'] ?? null;
+                    $delivery->monthEnd = $d['monthEnd'] ?? null;
                     $delivery->segmentDelivery = $d['segmentDelivery'] ?? null;
                     $delivery->expectedNumberPeople = $d['expectedNumberPeople'] ?? null;
                     $delivery->generaterRevenue = $d['generaterRevenue'] ?? null;

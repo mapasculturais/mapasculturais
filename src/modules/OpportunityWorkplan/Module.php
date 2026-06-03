@@ -1416,6 +1416,12 @@ class Module extends \MapasCulturais\Module{
         $type = new Metadata('type', ['label' => \MapasCulturais\i::__('Tipo de entrega')]);
         $app->registerMetadata($type, Delivery::class);
 
+        $monthInitial = new Metadata('monthInitial', ['label' => \MapasCulturais\i::__('Mês inicial')]);
+        $app->registerMetadata($monthInitial, Delivery::class);
+
+        $monthEnd = new Metadata('monthEnd', ['label' => \MapasCulturais\i::__('Mês final')]);
+        $app->registerMetadata($monthEnd, Delivery::class);
+
         
         $typeDelivery = new Metadata('typeDelivery', [
             'label' => \MapasCulturais\i::__('Tipo entrega'),
