@@ -63,6 +63,21 @@ app.component('registration-details-workplan', {
                 currency: "BRL"
               }).format(field);
         },
+        parseJson(value) {
+            if (!value) {
+                return null;
+            }
+
+            if (Array.isArray(value) || typeof value === 'object') {
+                return value;
+            }
+
+            try {
+                return JSON.parse(value);
+            } catch (error) {
+                return null;
+            }
+        },
         pluralParaSingular(texto) {
             const palavras = texto.split(' ');
         
