@@ -126,12 +126,14 @@ trait EntityManagerModel {
                 o.id,
                 o.short_description,
                 o.registration_from,
+                o.registration_proponent_types,
                 (
                     SELECT COUNT(*)
                     FROM opportunity child
                     LEFT JOIN opportunity_meta om_last
                         ON om_last.object_id = child.id AND om_last.key = 'isLastPhase'
                     WHERE child.parent_id = o.id
+                      AND child.status != -10
                       AND (om_last.value IS NULL OR om_last.value != '1')
                 ) AS numero_fases,
                 (
@@ -141,12 +143,7 @@ trait EntityManagerModel {
                         ON om_lp.object_id = lp.id AND om_lp.key = 'isLastPhase' AND om_lp.value = '1'
                     WHERE lp.parent_id = o.id
                     LIMIT 1
-                ) AS last_phase_publish_timestamp,
-                (
-                    SELECT om_rpt.value
-                    FROM opportunity_meta om_rpt
-                    WHERE om_rpt.object_id = o.id AND om_rpt.key = 'registrationProponentTypes'
-                ) AS tipo_agente
+                ) AS last_phase_publish_timestamp
             FROM opportunity o
             JOIN opportunity_meta om_model
                 ON om_model.object_id = o.id AND om_model.key = 'isModel' AND om_model.value = '1'
@@ -175,9 +172,9 @@ trait EntityManagerModel {
             }
 
             $tipoAgente = 'N/A';
-            if ($row['tipo_agente']) {
-                $decoded    = json_decode($row['tipo_agente'], true);
-                $tipoAgente = is_array($decoded) ? implode(', ', $decoded) : $row['tipo_agente'];
+            if ($row['registration_proponent_types']) {
+                $decoded    = json_decode($row['registration_proponent_types'], true);
+                $tipoAgente = is_array($decoded) ? implode(', ', $decoded) : $row['registration_proponent_types'];
             }
 
             $dataModels[] = [
