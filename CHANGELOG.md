@@ -13,7 +13,6 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Adiciona botão para duplicar anexos do formulário de inscrição, incluindo a cópia do arquivo modelo e inserindo o novo anexo logo abaixo do original
 
 ### Melhorias
-- Melhora a performance da listagem de modelos de oportunidades ao evitar consultas repetidas para identificar modelos oficiais.
 - Adiciona um campo de busca para encontrar colunas por palavra-chave na listagem por tabela nas entidades.
 - Implementa a funcionalidade que permite ao saasSuperAdmin ordenar globalmente as colunas das tabelas que utilizam o entity-table, por meio de drag and drop.
 - Suprime campo de RG do cadastro do agente e dos campos @ para prevalecer o uso do CIN (Carteira de  Identidade Nacional)
@@ -26,6 +25,7 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Adiciona configuração para exigir foto de perfil do agente coletivo vinculado na inscrição para proponentes do tipo coletivo e pessoa jurídica
 - Adiciona números sequenciais nos avaliadores das comissões
 - Permite criar agentes no fluxo de inscrição de oportunidades respeitando as permissões: agente individual apenas para administradores e agente coletivo para usuários comuns quando exigido pela inscrição.
+- Melhora a performance da listagem de modelos de oportunidades ao evitar consultas repetidas para identificar modelos oficiais.
 
 ### Correções
 - Aplica texto de internacionalização faltante no componente opportunity-registration-table
