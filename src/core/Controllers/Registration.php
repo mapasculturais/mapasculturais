@@ -484,7 +484,15 @@ class Registration extends EntityController {
                     'number' => $entity->number
                 ]);
 
-                $app->redirect($parent_registration->singleUrl);
+                // Fallback para fases sem vínculo por number (ex: fase de execução):
+                // redireciona para a inscrição linkada via previousPhaseRegistrationId.
+                if (!$parent_registration && $entity->previousPhaseRegistrationId) {
+                    $parent_registration = $app->repo('Registration')->find($entity->previousPhaseRegistrationId);
+                }
+
+                if ($parent_registration) {
+                    $app->redirect($parent_registration->singleUrl);
+                }
             }
             parent::GET_single();
         }

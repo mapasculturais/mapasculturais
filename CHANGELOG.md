@@ -31,17 +31,19 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ## [UNRELEASED - 7.8.0]
 ### Novas Funcionalidades
+- Módulo de **fase de execução** que permite ao gestor configurar uma fase de acompanhamento para os agentes contemplados após a publicação do resultado. Durante esta fase, o agente contemplado pode abrir múltiplos **pedidos de alteração** no projeto aprovado — troca de data, substituição de item de orçamento, mudança de local, entre outros. Cada pedido é avaliado individualmente por uma comissão configurada pelo gestor (mesmo modelo de avaliação simplificada já existente nas fases de seleção). Os pedidos ficam como registro histórico das alterações aprovadas durante a vigência do projeto e não interferem no fluxo das fases seguintes de prestação de informações.
 - Implementa configuração que permide definir a imagem de avatar de qualquer entidade como obrigatória
 - Adiciona botão para duplicar campos do formulário de inscrição, criando a cópia logo abaixo do campo original
 - Adiciona botão para duplicar anexos do formulário de inscrição, incluindo a cópia do arquivo modelo e inserindo o novo anexo logo abaixo do original
 
 ### Melhorias
-- Adiciona um campo de busca para encontrar colunas por palavra-chave na listagem por tabela nas entidades. 
+- Adiciona um campo de busca para encontrar colunas por palavra-chave na listagem por tabela nas entidades.
 - Implementa a funcionalidade que permite ao saasSuperAdmin ordenar globalmente as colunas das tabelas que utilizam o entity-table, por meio de drag and drop.
 - Suprime campo de RG do cadastro do agente e dos campos @ para prevalecer o uso do CIN (Carteira de  Identidade Nacional)
 - Ordena opções de tipos de campos da lista de campos @ em ordem alfabética
 - Ajusta exportação da planilha para organizar as colunas segundo a ordem definida pelo superSaasAdmin
 - Melhora a exibição do botão minha conta no header para exibir o nome do perfil do agente responsável logado
+- Implementa visualização das datas de recurso no step vertical de fases
 - Adiciona configuração para exibir ou ocultar o detalhamento da avaliação anterior na fase de recurso
 - Exibe o detalhamento da avaliação da fase anterior para avaliadores da fase de recurso
 - Adiciona configuração para exigir foto de perfil do agente coletivo vinculado na inscrição para proponentes do tipo coletivo e pessoa jurídica
@@ -58,6 +60,23 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Corrige erro ao reordenar etapas na configuração do formulário de oportunidades
 - Corrige a exportação de oportunidades para não incluir datas das fases de avaliação quando a opção de exportar datas das fases estiver desmarcada
 - Corrige o cálculo ponderado dos subtotais na tela de avaliação técnica
+
+## [7.7.51] - 2026-06-03
+### Correções
+- Corrige distribuição de avaliadores para respeitar quotas por comissão independentemente, sem balanceamento global entre comissões
+- Impede salvamento de valores negativos no campo "Limitar número de avaliadores por inscrição" com validação no frontend e backend
+- Corrige o breadcrumb da página de detalhes (single) de oportunidades
+- Ajusta exibição do campo @ agente coletivo na configuração de formulário apenas quando a vinculação estiver ativa
+- Ajusta importação de campos para importar apenas campos em fases secundárias sem categorias/faixas/tipos
+
+## [7.7.50] - 2026-06-01
+### Correções
+- Ajusta criação de categorias para impossibilitar salvamento de espaço
+- Ajusta exibição do resultado da fase na tela de acompanhamento quando o status é pendente
+
+## [7.7.49] - 2026-05-29
+### Melhorias
+- Aplicação de função `text` no titulo da página de Termos e Condições
 
 ## [7.7.48] - 2026-05-29
 ### Correções
@@ -97,11 +116,11 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Evita reprocessar os mesmos campos do formulário de inscrição várias vezes ao montar a página
 
 ## [7.7.42] - 2026-05-20
-### Correções 
+### Correções
 - Melhora performace do sistema de criaçao de cache de permissão
 
 ## [7.7.41] - 2026-05-19
-### Correções 
+### Correções
 - Corrige erro que impedia o botão exibir detalhamento de aparecer na tela do avaliador do recurso
 
 ## [7.7.40] - 2026-05-15

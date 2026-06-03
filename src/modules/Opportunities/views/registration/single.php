@@ -379,6 +379,8 @@ $today = new DateTime();
                         </mc-accordion>
                     <?php endif ?>
                 <?php endforeach ?>
+
+                <?php $this->applyTemplateHook('registration-ficha-tab', 'end', [$entity]) ?>
             </div>
         </mc-tab>
 

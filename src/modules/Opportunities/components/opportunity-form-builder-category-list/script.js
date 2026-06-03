@@ -24,10 +24,25 @@ app.component('opportunity-category-list' , {
       };
     },
     methods: {
-      addCategory () {
-          this.entity.registrationCategories.push(this.category.trim());
-          this.clear();
-      },
+        enabledButton() {
+            const value = (this.category ?? '').trim();
+            return value !== '';
+        },
+        addCategory () {
+            const value = (this.category ?? '').trim();
+
+            if (!value) {
+                return;
+            }
+
+            if (this.entity.registrationCategories.includes(value)) {
+                this.clear();
+                return;
+            }
+            
+            this.entity.registrationCategories.push(value);
+            this.clear();
+        },
 
       clear () {
           this.category = null;
