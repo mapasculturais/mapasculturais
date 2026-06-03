@@ -344,7 +344,11 @@ abstract class EvaluationMethod extends Module implements \JsonSerializable{
     function getTiebreakerEvaluation(Entities\Registration $registration) {
         $app = App::i();
 
-        $tiebreaker_evaluations = $app->repo('RegistrationEvaluation')->findOneBy(['registration' => $registration, 'isTiebreaker' => true]);
+        $tiebreaker_evaluations = $app->repo('RegistrationEvaluation')->findOneBy([
+            'registration' => $registration,
+            'isTiebreaker' => true,
+            'status' => RegistrationEvaluation::STATUS_SENT
+        ]);
 
         if(empty($tiebreaker_evaluations)){
             return null;
