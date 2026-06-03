@@ -18,7 +18,7 @@ $this->import('
 
     <div class="opportunity-category-list__add-category">
         <div class="field">
-            <input v-model="category" type="text" name="AddNewCategory" @keyup.enter="addCategory();autoSave()" placeholder="<?= i::__("Escreva aqui a categoria. Ex: Artes visuais") ?>" />
+            <input v-model="category" type="text" name="AddNewCategory" @keyup.enter="enabledButton() && (addCategory(), autoSave())" placeholder="<?= i::__("Escreva aqui a categoria. Ex: Artes visuais") ?>" />
         </div>
 
         <button @click="addCategory();autoSave()" class="button button--primary button--icon" :class="!enabledButton() ? 'disabled' : ''">

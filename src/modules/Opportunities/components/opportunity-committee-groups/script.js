@@ -441,6 +441,15 @@ app.component('opportunity-committee-groups', {
             return entity.save();
         },
 
+        validateAndSave(event, group) {
+            const value = parseInt(event.target.value);
+            if (value < 0) {
+                this.entity.valuersPerRegistration[group] = 0;
+                event.target.value = 0;
+            }
+            this.autoSave();
+        },
+
         changeGroupFlag() {
             this.hasGroupsFlag = true;
         },
