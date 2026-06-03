@@ -7,6 +7,8 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ## [unreleased]
 ### Correções
+- Corrige distribuição de avaliadores para respeitar quotas por comissão independentemente, sem balanceamento global entre comissões
+- Impede salvamento de valores negativos no campo "Limitar número de avaliadores por inscrição" com validação no frontend e backend
 - Corrige o breadcrumb da página de detalhes (single) de oportunidades
 
 ## [7.7.50] - 2026-06-01
