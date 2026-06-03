@@ -6,6 +6,15 @@ O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [unreleased]
+## [7.7.51] - 2026-06-03
+### Correções
+- Corrige distribuição de avaliadores para respeitar quotas por comissão independentemente, sem balanceamento global entre comissões
+- Impede salvamento de valores negativos no campo "Limitar número de avaliadores por inscrição" com validação no frontend e backend
+- Corrige o breadcrumb da página de detalhes (single) de oportunidades
+- Ajusta exibição do campo @ agente coletivo na configuração de formulário apenas quando a vinculação estiver ativa
+- Ajusta importação de campos para importar apenas campos em fases secundárias sem categorias/faixas/tipos
+
+## [7.7.50] - 2026-06-01
 ### Correções
 - Adiciona optional chaining em propriedades de opportunity para evitar erros
 - Corrige warning no carregamento do recaptcha quando ainda nao esta configurado
