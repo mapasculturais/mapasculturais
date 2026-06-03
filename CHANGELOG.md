@@ -5,7 +5,7 @@ Todas as mudanças notáveis no projeto serão documentadas neste arquivo.
 O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/)
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [unreleased]
+## [7.7.51] - 2026-06-03
 ### Correções
 - Corrige distribuição de avaliadores para respeitar quotas por comissão independentemente, sem balanceamento global entre comissões
 - Impede salvamento de valores negativos no campo "Limitar número de avaliadores por inscrição" com validação no frontend e backend
