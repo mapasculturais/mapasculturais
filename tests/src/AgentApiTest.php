@@ -61,7 +61,7 @@ class AgentApiTest extends TestCase
 
             $id_query = new ApiQuery(Agent::class, [
                 '@select' => 'id,name',
-                '@keyword' => (string) $profile->id,
+                '@keyword' => "#{$profile->id}",
                 '_evaluatorSearch' => '1',
                 'type' => 'EQ(1)',
                 'parent' => 'NULL()',
@@ -72,7 +72,7 @@ class AgentApiTest extends TestCase
             $this->assertContains(
                 $profile->id,
                 array_column($id_result, 'id'),
-                'A busca de avaliadores deve encontrar agentes individuais pelo ID do agente.'
+                'A busca de avaliadores deve encontrar agentes individuais pelo ID do agente informado com #.'
             );
         } finally {
             $app->enableAccessControl();

@@ -47,8 +47,8 @@ class Module extends \MapasCulturais\Module{
 
             $raw_keyword = trim(str_replace('%', '', $keyword));
 
-            if (ctype_digit($raw_keyword)) {
-                $where .= "\n OR e.id = " . (int) $raw_keyword;
+            if (preg_match('/^#(\d+)$/', $raw_keyword, $matches)) {
+                $where .= "\n OR e.id = " . (int) $matches[1];
             }
 
             if (str_contains($raw_keyword, '@')) {
