@@ -9,6 +9,10 @@ app.component('registration-workplan-form-delivery', {
             type: Object,
             required: true,
         },
+        goal: {
+            type: Object,
+            required: true,
+        },
         registration: {
             type: Entity,
             required: true,
@@ -279,6 +283,19 @@ app.component('registration-workplan-form-delivery', {
         hasExecutedDocumentationTypes () {
             return this.executedDocumentationTypes.length > 0;
         },
+        executedMonthInitialOptions () {
+            return this.range(this.goalMonthInitial, this.goalMonthEnd);
+        },
+        executedMonthEndOptions () {
+            const start = parseInt(this.proxy.executedMonthInitial) || this.goalMonthInitial;
+            return this.range(start, this.goalMonthEnd);
+        },
+        goalMonthInitial () {
+            return parseInt(this.goal.monthInitial) || parseInt(this.delivery.monthInitial) || 1;
+        },
+        goalMonthEnd () {
+            return parseInt(this.goal.monthEnd) || parseInt(this.delivery.monthEnd) || this.goalMonthInitial;
+        },
         hasExecutedExpectedAccessibilityMeasures () {
             return this.executedExpectedAccessibilityMeasures.length > 0;
         },
@@ -337,6 +354,18 @@ app.component('registration-workplan-form-delivery', {
         hasValue(value) {
             return value !== null && value !== undefined && value !== '';
         },
+        normalizeExecutedMonthEnd() {
+            if (!this.hasValue(this.proxy.executedMonthEnd)) {
+                return;
+            }
+
+            const monthInitial = parseInt(this.proxy.executedMonthInitial);
+            const monthEnd = parseInt(this.proxy.executedMonthEnd);
+
+            if (monthInitial && monthEnd && monthEnd < monthInitial) {
+                this.proxy.executedMonthEnd = '';
+            }
+        },
         normalizeArray(value) {
             if (!value) return [];
             if (typeof value === 'string') {
@@ -358,6 +387,16 @@ app.component('registration-workplan-form-delivery', {
                 }
             }
             return value && typeof value === 'object' && !Array.isArray(value) ? value : null;
+        },
+        range(start, end) {
+            start = parseInt(start);
+            end = parseInt(end);
+
+            if (!start || !end || start > end) {
+                return [];
+            }
+
+            return Array.from({ length: end - start + 1 }, (_, i) => start + i);
         },
         toggleExecutedCommunicationChannel (item) {
             const idx = this.executedCommunicationChannels.indexOf(item);

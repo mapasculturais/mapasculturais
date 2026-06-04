@@ -165,12 +165,18 @@ $this->import('
             <div v-if="editable" class="grid-12">
                 <div class="col-6 sm:col-12 field">
                     <label :for="`${vid}__executedMonthInitial`"><?= i::__('Mês inicial executado') ?></label>
-                    <input :id="`${vid}__executedMonthInitial`" type="number" min="1" v-model.number="proxy.executedMonthInitial">
+                    <select :id="`${vid}__executedMonthInitial`" v-model.number="proxy.executedMonthInitial" @change="normalizeExecutedMonthEnd()">
+                        <option value=""><?= i::esc_attr__('Selecione') ?></option>
+                        <option v-for="n in executedMonthInitialOptions" :key="n" :value="n">{{ n }}</option>
+                    </select>
                     <small class="field__error" v-if="validationErrors.executedMonthInitial">{{ validationErrors.executedMonthInitial.join('; ') }}</small>
                 </div>
                 <div class="col-6 sm:col-12 field">
                     <label :for="`${vid}__executedMonthEnd`"><?= i::__('Mês final executado') ?></label>
-                    <input :id="`${vid}__executedMonthEnd`" type="number" min="1" v-model.number="proxy.executedMonthEnd">
+                    <select :id="`${vid}__executedMonthEnd`" v-model.number="proxy.executedMonthEnd">
+                        <option value=""><?= i::esc_attr__('Selecione') ?></option>
+                        <option v-for="n in executedMonthEndOptions" :key="n" :value="n">{{ n }}</option>
+                    </select>
                     <small class="field__error" v-if="validationErrors.executedMonthEnd">{{ validationErrors.executedMonthEnd.join('; ') }}</small>
                 </div>
             </div>

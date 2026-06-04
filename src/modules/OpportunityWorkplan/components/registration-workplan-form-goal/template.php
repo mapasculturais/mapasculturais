@@ -62,7 +62,7 @@ $this->import('
             <small class="field__error" v-if="validationErrors.executionDetail">{{ validationErrors.executionDetail.join('; ') }}</small>
         </div>
 
-        <registration-workplan-form-delivery v-for="delivery in goal.deliveries" :delivery="delivery" :editable="editable" :key="delivery.id" :registration="registration">
+        <registration-workplan-form-delivery v-for="delivery in goal.deliveries" :delivery="delivery" :editable="editable" :goal="goal" :key="delivery.id" :registration="registration">
         </registration-workplan-form-delivery>
     </template>
 </div>
