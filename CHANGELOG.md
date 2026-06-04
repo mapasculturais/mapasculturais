@@ -7,7 +7,7 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ## [UNRELEASED]
 ### Novas Funcionalidades
-- Atualiza os módulos de Plano de Trabalho (Metas) e Monitoramento com novos campos configuráveis para planejamento e execução das entregas
+- Módulo de **Plano de Metas e Monitoramento** que permite ao gestor configurar campos do plano de trabalho para orientar o preenchimento das metas e entregas previstas na inscrição, incluindo período, orçamento, segmento artístico-cultural, composição de equipe, estratégias de comunicação, acessibilidade, comunidades, receita e evidências. Na etapa de monitoramento, o agente informa os dados executados das entregas a partir do que foi planejado, com campos equivalentes para acompanhamento da execução, validações de obrigatoriedade conforme a configuração da oportunidade e exibição organizada entre formulário, ficha de inscrição, avaliação e exportação.
 - Permite exibir campos do plano de trabalho na ficha de avaliação
 - Adiciona os novos campos do plano de trabalho e monitoramento na exportação das inscrições
 
