@@ -33,6 +33,34 @@ class Module extends \MapasCulturais\Module{
 
         $self = $this;
 
+        $evaluator_agent_search = false;
+
+        $app->hook('ApiQuery(agent).params', function (&$api_params) use (&$evaluator_agent_search) {
+            $evaluator_agent_search = !empty($api_params['_evaluatorSearch']);
+            unset($api_params['_evaluatorSearch']);
+        });
+
+        $app->hook('repo(agent).getIdsByKeywordDQL.where', function (&$where, $keyword, $alias) use (&$evaluator_agent_search) {
+            if (!$evaluator_agent_search) {
+                return;
+            }
+
+            $raw_keyword = trim(str_replace('%', '', $keyword));
+
+            if (preg_match('/^#(\d+)$/', $raw_keyword, $matches)) {
+                $where .= "\n OR e.id = " . (int) $matches[1];
+            }
+
+            if (str_contains($raw_keyword, '@')) {
+                $where .= "
+                    OR IDENTITY(e.user) IN (
+                        SELECT evaluation_committee_user.id
+                        FROM MapasCulturais\\Entities\\User evaluation_committee_user
+                        WHERE lower(evaluation_committee_user.email) LIKE lower(:{$alias})
+                    )";
+            }
+        });
+
         // Registro de Jobs
         $app->registerJobType(new Jobs\StartEvaluationPhase(Jobs\StartEvaluationPhase::SLUG));
         $app->registerJobType(new Jobs\StartDataCollectionPhase(Jobs\StartDataCollectionPhase::SLUG));
@@ -286,6 +314,20 @@ class Module extends \MapasCulturais\Module{
         $app->hook("entity(EvaluationMethodConfiguration).meta(<<{$_metadata_list}>>).<<insert|update|delete>>:after", function() use($app) {
             /** @var EvaluationMethodConfigurationMeta $this */
             $this->owner->mustRedistributeCommitteeRegistrations = true;
+        });
+
+        // Validação backend: impede valores negativos em valuersPerRegistration
+        $app->hook('entity(EvaluationMethodConfiguration).save:before', function() {
+            /** @var EvaluationMethodConfiguration $this */
+            if ($this->valuersPerRegistration) {
+                $valuersPerRegistration = $this->valuersPerRegistration;
+                foreach ($valuersPerRegistration as $committee => $value) {
+                    if ((int)$value < 0) {
+                        $valuersPerRegistration->$committee = 0;
+                    }
+                }
+                $this->valuersPerRegistration = $valuersPerRegistration;
+            }
         });
 
         $app->hook('entity(EvaluationMethodConfiguration).save:finish', function () use($app, $distribute_execution_time) {

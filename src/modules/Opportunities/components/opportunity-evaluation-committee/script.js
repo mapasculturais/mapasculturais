@@ -24,6 +24,7 @@ app.component('opportunity-evaluation-committee', {
                 '@order': 'id ASC',
                 '@limit': '25',
                 '@page': '1',
+                '_evaluatorSearch': '1',
                 'type': 'EQ(1)',
                 'parent': 'NULL()'
             };

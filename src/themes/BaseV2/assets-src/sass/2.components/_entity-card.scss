@@ -190,6 +190,34 @@
 		&-shortDescription {
 			word-break:break-word;
 			font-size: size(14);
+
+			@media (max-width: size(800)) {
+				line-height: size(19);
+				
+				small {
+					display: -webkit-box;
+					-webkit-line-clamp: 3;
+					-webkit-box-orient: vertical;
+					overflow: hidden;
+				}
+
+				&.expanded small {
+					-webkit-line-clamp: unset;
+					overflow: visible;
+				}
+			}
+
+			.entity-card__toggle-description {
+				background: none;
+				border: none;
+				color: var(--mc-primary-500);
+				cursor: pointer;
+				font-size: size(14);
+				font-weight: 700;
+				margin-top: size(4);
+				padding: 0;
+				text-decoration: underline;
+			}
 		}
 
 		&--occurrence {
