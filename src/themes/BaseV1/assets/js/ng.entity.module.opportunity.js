@@ -403,7 +403,10 @@ module.controller('RegistrationConfigurationsController', ['$scope', '$rootScope
     fieldTypes.forEach(function(e){
         fieldTypesBySlug[e.slug] = e;
         if (e.slug === 'agent-collective-field') {
-            e.disabled = $scope.data.entity.object.useAgentRelationColetivo === 'dontUse';
+            var entity = $scope.data.entity.object;
+            var firstPhase = entity.firstPhase || entity;
+            
+            e.disabled = firstPhase.useAgentRelationColetivo === 'dontUse';
         }
     });
 

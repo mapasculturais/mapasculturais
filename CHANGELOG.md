@@ -25,6 +25,7 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Adiciona configuração para exigir foto de perfil do agente coletivo vinculado na inscrição para proponentes do tipo coletivo e pessoa jurídica
 - Adiciona números sequenciais nos avaliadores das comissões
 - Permite criar agentes no fluxo de inscrição de oportunidades respeitando as permissões: agente individual apenas para administradores e agente coletivo para usuários comuns quando exigido pela inscrição.
+- Permite buscar avaliadores por ID do agente no formato #ID e e-mail do usuário ao adicioná-los ou substituí-los nas comissões de avaliação.
 - Melhora a performance da listagem de modelos de oportunidades ao evitar consultas repetidas para identificar modelos oficiais.
 
 ### Correções
@@ -37,6 +38,23 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Corrige erro ao reordenar etapas na configuração do formulário de oportunidades
 - Corrige a exportação de oportunidades para não incluir datas das fases de avaliação quando a opção de exportar datas das fases estiver desmarcada
 - Corrige o cálculo ponderado dos subtotais na tela de avaliação técnica
+
+## [7.7.51] - 2026-06-03
+### Correções
+- Corrige distribuição de avaliadores para respeitar quotas por comissão independentemente, sem balanceamento global entre comissões
+- Impede salvamento de valores negativos no campo "Limitar número de avaliadores por inscrição" com validação no frontend e backend
+- Corrige o breadcrumb da página de detalhes (single) de oportunidades
+- Ajusta exibição do campo @ agente coletivo na configuração de formulário apenas quando a vinculação estiver ativa
+- Ajusta importação de campos para importar apenas campos em fases secundárias sem categorias/faixas/tipos
+
+## [7.7.50] - 2026-06-01
+### Correções
+- Ajusta criação de categorias para impossibilitar salvamento de espaço
+- Ajusta exibição do resultado da fase na tela de acompanhamento quando o status é pendente
+
+## [7.7.49] - 2026-05-29
+### Melhorias
+- Aplicação de função `text` no titulo da página de Termos e Condições
 
 ## [7.7.48] - 2026-05-29
 ### Correções

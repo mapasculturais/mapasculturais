@@ -33,7 +33,7 @@ $this->import('
                 <span class="icon">
                     <mc-avatar :entity="entity" size="xsmall"></mc-avatar>
                 </span>
-                <span class="label"> #{{entity.id}} - {{entity.name}}</span>
+                <span class="label"> #{{entity.id}} - {{entity.name}}<template v-if="entity.user?.email"> - {{entity.user.email}}</template></span>
             </template>
         </select-entity>
         <?php $this->applyComponentHook('select-entity', 'end'); ?>
@@ -178,7 +178,7 @@ $this->import('
                                 <span class="icon">
                                     <mc-avatar :entity="entity" size="xsmall"></mc-avatar>
                                 </span>
-                                <span class="label"> #{{entity.id}} - {{entity.name}}</span>
+                                <span class="label"> #{{entity.id}} - {{entity.name}}<template v-if="entity.user?.email"> - {{entity.user.email}}</template></span>
                             </template>
                         </select-entity>
                         <mc-confirm-button v-if="infoReviewer.metadata?.summary.sent > 0" @confirm="reopenEvaluations(infoReviewer.agentUserId)">
@@ -244,7 +244,7 @@ $this->import('
                 <span class="icon">
                     <mc-avatar :entity="entity" size="xsmall"></mc-avatar>
                 </span>
-                <span class="label"> #{{entity.id}} - {{entity.name}}</span>
+                <span class="label"> #{{entity.id}} - {{entity.name}}<template v-if="entity.user?.email"> - {{entity.user.email}}</template></span>
             </template>
         </select-entity>
     </div>
