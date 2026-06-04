@@ -8,11 +8,11 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 ## [UNRELEASED]
 ### Novas Funcionalidades
 - Módulo de **fase de execução** que permite ao gestor configurar uma fase de acompanhamento para os agentes contemplados após a publicação do resultado. Durante esta fase, o agente contemplado pode abrir múltiplos **pedidos de alteração** no projeto aprovado — troca de data, substituição de item de orçamento, mudança de local, entre outros. Cada pedido é avaliado individualmente por uma comissão configurada pelo gestor (mesmo modelo de avaliação simplificada já existente nas fases de seleção). Os pedidos ficam como registro histórico das alterações aprovadas durante a vigência do projeto e não interferem no fluxo das fases seguintes de prestação de informações.
+- **Bônus de pontuação configurável** no método de avaliação técnica, permitindo ao gestor definir regras de bonificação por políticas afirmativas em percentual ou ponto fixo. A configuração permite controlar o valor máximo do bônus, aplicar o acréscimo às inscrições elegíveis, exibir corretamente o bônus nas tabelas e exportações, reaplicar a pontuação quando as regras forem alteradas e manter compatibilidade com configurações legadas por meio de normalização automática.
 - Implementa configuração que permide definir a imagem de avatar de qualquer entidade como obrigatória
 - Adiciona botão para duplicar campos do formulário de inscrição, criando a cópia logo abaixo do campo original
 - Adiciona botão para duplicar anexos do formulário de inscrição, incluindo a cópia do arquivo modelo e inserindo o novo anexo logo abaixo do original
 - Implementa configuração que permite definir a imagem de avatar de qualquer entidade como obrigatória
-- Adiciona suporte a bônus de pontuação por tipo configurável (percentual ou ponto fixo) no método de avaliação técnica, com normalização retrocompatível de configurações legadas
 
 ### Melhorias
 - Adiciona um campo de busca para encontrar colunas por palavra-chave na listagem por tabela nas entidades.
