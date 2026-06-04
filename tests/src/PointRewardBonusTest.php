@@ -4,6 +4,7 @@ namespace Test;
 
 use MapasCulturais\App;
 use MapasCulturais\Entities\Registration;
+use MapasCulturais\Exceptions\PermissionDenied;
 use Tests\Abstract\TestCase;
 use Tests\Builders\PhasePeriods\ConcurrentEndingAfter;
 use Tests\Builders\PhasePeriods\Open;
@@ -370,6 +371,57 @@ class PointRewardBonusTest extends TestCase
 
         $this->assertEquals('8.00', $registration->score, 'Desativar bônus deve restaurar a nota sem acréscimo');
         $this->assertNull($registration->appliedPointReward->raw, 'Bônus aplicado antigo deve ser limpo');
+    }
+
+    /**
+     * Após a publicação do resultado da fase, o bônus não pode ser alterado.
+     */
+    public function testPointRewardCannotBeChangedAfterResultsArePublished(): void
+    {
+        [$opportunity, $eval_builder, $field] = $this->createOpportunityWithBonusField();
+
+        $emc = $opportunity->evaluationMethodConfiguration;
+        $emc->isActivePointReward = true;
+        $emc->pointRewardRoof = 0;
+        $emc->pointReward = (object) [
+            'type'  => 'percentage',
+            'rules' => [
+                (object) [
+                    'field'      => $field->id,
+                    'value'      => (object) ['Preta' => 'true'],
+                    'bonusValue' => 10,
+                ],
+            ],
+        ];
+        $emc->save(true);
+
+        $opportunity->publishRegistrations();
+        $opportunity = $opportunity->refreshed();
+        $this->assertTrue($opportunity->publishedRegistrations);
+
+        $this->assertException(PermissionDenied::class, function() use($opportunity, $field) {
+            $emc = $opportunity->evaluationMethodConfiguration->refreshed();
+            $emc->pointReward = (object) [
+                'type'  => 'percentage',
+                'rules' => [
+                    (object) [
+                        'field'      => $field->id,
+                        'value'      => (object) ['Preta' => 'true'],
+                        'bonusValue' => 20,
+                    ],
+                ],
+            ];
+        });
+
+        $this->assertException(PermissionDenied::class, function() use($opportunity) {
+            $emc = $opportunity->evaluationMethodConfiguration->refreshed();
+            $emc->pointRewardRoof = 5;
+        });
+
+        $this->assertException(PermissionDenied::class, function() use($opportunity) {
+            $emc = $opportunity->evaluationMethodConfiguration->refreshed();
+            $emc->isActivePointReward = false;
+        });
     }
 
     // =====================================================================

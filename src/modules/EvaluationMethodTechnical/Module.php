@@ -329,6 +329,22 @@ class Module extends \MapasCulturais\EvaluationMethod
             }
         });
 
+        $app->hook('entity(EvaluationMethodConfiguration).set(<<pointReward|pointRewardRoof|isActivePointReward>>)', function(&$value, string $metadata) use($app, $self) {
+            /** @var EvaluationMethodConfiguration $this */
+            if (!$this->definition || $this->definition->slug !== 'technical' || !$this->opportunity?->publishedRegistrations) {
+                return;
+            }
+
+            if (!$self->pointRewardMetadataHasChanged($metadata, $this->$metadata, $value)) {
+                return;
+            }
+
+            throw new PermissionDenied(
+                $app->user,
+                message: i::__('Não é possível alterar o bônus de pontuação após a publicação do resultado da fase.')
+            );
+        });
+
         // Remove seções sem critérios antes de salvar a configuração técnica
         $app->hook('entity(EvaluationMethodConfiguration).save:before', function() use($app) {
             /** @var EvaluationMethodConfiguration $this */
@@ -1180,6 +1196,51 @@ class Module extends \MapasCulturais\EvaluationMethod
         }
 
         return $rule;
+    }
+
+    private function pointRewardMetadataHasChanged(string $metadata, mixed $current_value, mixed $new_value): bool
+    {
+        if ($metadata === 'isActivePointReward') {
+            return (bool) $current_value !== (bool) $new_value;
+        }
+
+        if ($metadata === 'pointRewardRoof') {
+            return (float) ($current_value ?: 0) !== (float) ($new_value ?: 0);
+        }
+
+        return $this->normalizeComparablePointRewardValue($current_value) !== $this->normalizeComparablePointRewardValue($new_value);
+    }
+
+    private function normalizeComparablePointRewardValue(mixed $value): string
+    {
+        if (is_object($value)) {
+            $value = get_object_vars($value);
+        }
+
+        if (is_array($value)) {
+            $value = $this->sortComparablePointRewardArray($value);
+        }
+
+        return (string) json_encode($value);
+    }
+
+    private function sortComparablePointRewardArray(array $value): array
+    {
+        foreach ($value as $key => $item) {
+            if (is_object($item)) {
+                $item = get_object_vars($item);
+            }
+
+            if (is_array($item)) {
+                $value[$key] = $this->sortComparablePointRewardArray($item);
+            }
+        }
+
+        if (array_keys($value) !== range(0, count($value) - 1)) {
+            ksort($value);
+        }
+
+        return $value;
     }
 
     private function shouldReapplyPointRewardOnSave(EvaluationMethodConfiguration $evaluation_method_configuration): bool

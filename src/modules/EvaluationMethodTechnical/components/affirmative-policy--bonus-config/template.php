@@ -15,7 +15,7 @@ $this->import('
 ?>
 
 
-<div class="affirmative-policy--bonus-config">
+<div class="affirmative-policy--bonus-config" :class="{'affirmative-policy--bonus-config--locked': isLocked}">
     <div class="affirmative-policy--bonus-config__card" v-if="hasRules || entity.isActivePointReward">
         <div class="affirmative-policy--bonus-config__header">
             <h4 class="bold"><?= i::__('Configuração do bônus de pontuação') ?></h4>
@@ -25,7 +25,7 @@ $this->import('
                     <template #button="{open}">
                         <div class="affirmative-policy--bonus-config__field field">
                             <label><?= i::__('Tipo de bônus:') ?></label>
-                            <select :value="bonusType" @change="onTypeChange($event, open)">
+                            <select :value="bonusType" @change="onTypeChange($event, open)" :disabled="isLocked">
                                 <option value="percentage"><?= i::__('Percentual') ?></option>
                                 <option value="fixed"><?= i::__('Ponto fixo') ?></option>
                             </select>
@@ -39,19 +39,23 @@ $this->import('
                         <span v-else><?= i::__('Pontuação máxima de bônus:') ?></span>
                     </label>
                     <span>
-                        <input type="number" v-model="entity.pointRewardRoof" @change="autoSave(true)" min="0" />
+                        <input type="number" v-model="entity.pointRewardRoof" @change="autoSave(true)" min="0" :disabled="isLocked" />
                         <span v-if="bonusType === 'percentage'">%</span>
                         <span v-else><?= i::__('pt(s)') ?></span>
                     </span>
                 </div>
             </div>
+
+            <p v-if="isLocked" class="affirmative-policy--bonus-config__locked-message">
+                <?= i::__('O bônus de pontuação não pode ser alterado porque o resultado da fase já foi publicado.') ?>
+            </p>
         </div>
 
         <div class="affirmative-policy--bonus-config__quota" v-if="normalizedRules" v-for="(quota, index) in normalizedRules" :key="index">
             <div class="affirmative-policy--bonus-config__column">
                 <h5 class="field__title--semibold"><?= i::__('Bônus') ?> {{index+1}}</h5>
 
-                <mc-select @change-option="setFieldName($event, quota)" :default-value="quota.field" placeholder="<?= i::esc_attr__('Selecione um campo') ?>" show-filter>
+                <mc-select @change-option="setFieldName($event, quota)" :default-value="quota.field" placeholder="<?= i::esc_attr__('Selecione um campo') ?>" :disabled="isLocked" show-filter>
                     <option v-for="(item, index) in entity.opportunity.affirmativePoliciesEligibleFields" :value="item.id">{{ '#' + item.id + ' - ' + item.title }}</option>
                 </mc-select>
 
@@ -61,7 +65,7 @@ $this->import('
                     </div>
                     <div class="field affirmative-policy--bonus-config__row" v-if="getFieldType(quota) === 'select' || getFieldType(quota) === 'multiselect'">
                         <label v-for="option in getFieldOptions(quota)">
-                            <input class="input" type="checkbox" :value="optionValue(option)" v-model="quota.value[option]" @change="checkboxUpdate($event, quota)">
+                            <input class="input" type="checkbox" :value="optionValue(option)" v-model="quota.value[option]" @change="checkboxUpdate($event, quota)" :disabled="isLocked">
                             {{optionLabel(option)}}
                         </label>
                     </div>
@@ -69,7 +73,7 @@ $this->import('
                     <div v-if="getFieldType(quota) === 'checkboxes'" class="field">
                         <div class="field field--horizontal">
                             <label v-for="option in getFieldOptions(quota)">
-                                <input type="checkbox" :value="option" :true-value="[]" v-model="quota.eligibleValues" />
+                                <input type="checkbox" :value="option" :true-value="[]" v-model="quota.eligibleValues" :disabled="isLocked" />
                                 <span>{{option}}</span>
                             </label>
                         </div>
@@ -77,11 +81,11 @@ $this->import('
 
                     <div class="field__column" v-if="getFieldType(quota) === 'checkbox' || getFieldType(quota) === 'boolean'">
                         <label>
-                            <input class="input" type="radio" :name="quota.fieldName + ':' + index" :value="true" v-model="quota.value">
+                            <input class="input" type="radio" :name="quota.fieldName + ':' + index" :value="true" v-model="quota.value" :disabled="isLocked">
                             <?= i::__('Sim / Marcado') ?>
                         </label>
                         <label>
-                            <input class="input" type="radio" :name="quota.fieldName + ':' + index" :value="false" v-model="quota.value">
+                            <input class="input" type="radio" :name="quota.fieldName + ':' + index" :value="false" v-model="quota.value" :disabled="isLocked">
                             <?= i::__('Não / Desmarcado') ?>
                         </label>
                     </div>
@@ -93,7 +97,7 @@ $this->import('
                     <span v-if="bonusType === 'percentage'"><?= i::__('Percentual') ?></span>
                     <span v-else><?= i::__('Pontos') ?></span>
                     <div>
-                        <input type="number" v-model="quota.bonusValue" min="0">
+                        <input type="number" v-model="quota.bonusValue" min="0" :disabled="isLocked">
                         <span v-if="bonusType === 'percentage'">%</span>
                         <span v-else><?= i::__('pt(s)') ?></span>
                     </div>
@@ -103,7 +107,7 @@ $this->import('
             <div class="quota__trash">
                 <mc-confirm-button @confirm="removeConfig(index)">
                     <template #button="{open}">
-                        <button class="field__trash button button--md button--text-danger button-icon" @click="open()">
+                        <button class="field__trash button button--md button--text-danger button-icon" @click="open()" :disabled="isLocked">
                             <mc-icon class="danger__color" name="trash"></mc-icon>
                         </button>
                     </template>
@@ -116,7 +120,7 @@ $this->import('
     </div>
 
     <div class="affirmative-policy--bonus-config__footer">
-        <button @click="addConfig();" class="button button--primary button--icon">
+        <button @click="addConfig();" class="button button--primary button--icon" :disabled="isLocked">
             <mc-icon name="add"></mc-icon>
             <label v-if="hasRules || entity.isActivePointReward">
                 <?php i::_e("Adicionar categoria") ?>

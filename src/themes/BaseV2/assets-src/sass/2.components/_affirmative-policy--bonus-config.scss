@@ -68,6 +68,16 @@
     width: 100%;
   }
 
+  &__locked-message {
+    background: var(--mc-warning-300);
+    border-left: size(4) solid var(--mc-warning-500);
+    border-radius: var(--mc-border-radius-xs);
+    color: var(--mc-gray-700);
+    margin: 0;
+    padding: size(8) size(12);
+    width: 100%;
+  }
+
   &__quota {
     align-items: start;
     border-bottom: var(--mc-border-hairline) var(--mc-gray-300);
@@ -120,6 +130,13 @@
   &__footer {
     display: flex;
     justify-content: space-between;
+  }
+
+  &--locked {
+    .mc-select {
+      opacity: 0.65;
+      pointer-events: none;
+    }
   }
 }
 

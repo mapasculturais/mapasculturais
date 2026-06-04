@@ -6,4 +6,5 @@ return [
     'limitQuota' => i::__('Não foi possível salvar. Limite de cota excedido'),
     'emptyAffimativePolicies' => i::__('Nenhum campo para políticas afirmativas configurado'),
     'confirmTypeChange' => i::__('Ao trocar o tipo de bônus, os valores cadastrados serão mantidos, mas passarão a ser interpretados na nova unidade. Deseja continuar?'),
+    'locked' => i::__('O bônus de pontuação não pode ser alterado porque o resultado da fase já foi publicado.'),
 ];

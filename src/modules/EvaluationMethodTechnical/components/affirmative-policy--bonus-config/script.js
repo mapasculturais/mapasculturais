@@ -30,6 +30,10 @@ app.component("affirmative-policy--bonus-config", {
     hasRules() {
       return this.normalizedRules && this.normalizedRules.length > 0;
     },
+
+    isLocked() {
+      return !!this.entity?.opportunity?.publishedRegistrations;
+    },
   },
 
   methods: {
@@ -104,6 +108,11 @@ app.component("affirmative-policy--bonus-config", {
     onTypeChange(event, openConfirm) {
       const selectedType = event.target.value;
 
+      if (this.isLocked) {
+        event.target.value = this.bonusType;
+        return;
+      }
+
       if (selectedType === this.bonusType) {
         return;
       }
@@ -159,6 +168,10 @@ app.component("affirmative-policy--bonus-config", {
     },
 
     setFieldName(option, quota) {
+      if (this.isLocked) {
+        return;
+      }
+
       const field = this.getField({ field: option.value });
       quota.field = option.value;
       quota.valuesList = field.fieldOptions;
@@ -167,6 +180,11 @@ app.component("affirmative-policy--bonus-config", {
     },
 
     checkboxUpdate(event, quota) {
+      if (this.isLocked) {
+        event.target.checked = !event.target.checked;
+        return;
+      }
+
       if (event.target.checked) {
         quota.value =
           typeof quota.value === "object"
@@ -191,6 +209,11 @@ app.component("affirmative-policy--bonus-config", {
     // ----------------------------------------------------------------
 
     addConfig() {
+      if (this.isLocked) {
+        this.messages.error(this.text("locked"));
+        return;
+      }
+
       if (this.entity.opportunity.affirmativePoliciesEligibleFields.length === 0) {
         this.messages.error(this.text("emptyAffimativePolicies"));
         return;
@@ -209,6 +232,11 @@ app.component("affirmative-policy--bonus-config", {
     },
 
     removeConfig(index) {
+      if (this.isLocked) {
+        this.messages.error(this.text("locked"));
+        return;
+      }
+
       this.normalizedRules = this.normalizedRules.filter((_, key) => key !== index);
       if (!this.normalizedRules.length) {
         this.entity.isActivePointReward = false;
@@ -221,11 +249,19 @@ app.component("affirmative-policy--bonus-config", {
     // ----------------------------------------------------------------
 
     _syncAndSave(updated = false, time = 3000) {
+      if (this.isLocked) {
+        return;
+      }
+
       this.entity.pointReward = this._serializeConfig();
       this.autoSave(updated, time);
     },
 
     autoSave(updated = false, time = 3000) {
+      if (this.isLocked) {
+        return;
+      }
+
       const filled = (this.normalizedRules || []).filter(
         (rule) =>
           rule.field !== undefined &&
