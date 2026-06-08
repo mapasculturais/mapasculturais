@@ -10,6 +10,10 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Melhorar controle de permissões para exclusão de fases
 - Corrigir validação de campos de inscrição configurados incorretamente
 
+## [7.7.52] - 2026-06-05
+### Correções
+- Corrige exibição do botão 'Ver mais' para aparecer apenas no mobile
+
 ## [7.7.51] - 2026-06-03
 ### Correções
 - Corrige distribuição de avaliadores para respeitar quotas por comissão independentemente, sem balanceamento global entre comissões
