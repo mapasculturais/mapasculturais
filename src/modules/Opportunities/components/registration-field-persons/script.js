@@ -119,6 +119,8 @@ app.component('registration-field-persons', {
                 fullName: '',
                 socialName: '',
                 cpf: '',
+                cnpj: '',
+                miniCurriculum: '',
                 income: '',
                 education: '',
                 telephone: '',
@@ -139,6 +141,8 @@ app.component('registration-field-persons', {
                 'fullName': 'Nome Completo',
                 'socialName': 'Nome Social',
                 'cpf': 'CPF',
+                'cnpj': 'CNPJ',
+                'miniCurriculum': 'Mini currículo',
                 'income': 'Renda',
                 'education': 'Escolaridade',
                 'telephone': 'Telefone do representante',
@@ -153,7 +157,14 @@ app.component('registration-field-persons', {
             };
 
             const errors = this.registration.__validationErrors[this.prop];
-            return (errors?.some(str => str.toLowerCase().includes(fieldNames[field])) && person[field] == '') ?? false;
+            const needle = fieldNames[field]?.toLowerCase();
+            const hasError = needle && errors?.some(str => str.toLowerCase().includes(needle));
+
+            if (!hasError) {
+                return false;
+            }
+
+            return ['cpf', 'cnpj'].includes(field) || person[field] == '';
         },
 
         save() {
