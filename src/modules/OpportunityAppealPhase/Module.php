@@ -170,7 +170,7 @@ class Module extends \MapasCulturais\Module {
                     $new_registration->owner->emailPublico ??
                     $new_registration->ownerUser->email);
                 
-                $self->sendEmail($opportunity, $new_registration, $registration_email);
+                $self->sendEmail($opportunity, $new_registration, $registration_email, 'proponent');
                 $self->sendSystemNotification($opportunity, $new_registration);
                 
                 // Disparo para os gestores da oportunidade
@@ -181,7 +181,7 @@ class Module extends \MapasCulturais\Module {
                             $relation->agent->emailPublico ??
                             $relation->agent->user->email);
 
-                        $self->sendEmail($opportunity, $new_registration, $user_email);
+                        $self->sendEmail($opportunity, $new_registration, $user_email, 'manager');
                         $self->sendSystemNotification($opportunity, $relation);
                     }
                 }
@@ -206,7 +206,7 @@ class Module extends \MapasCulturais\Module {
                         $relation->agent->emailPublico ??
                         $relation->agent->user->email);
 
-                    $self->sendEmail($opportunity, $this, $user_email, true);
+                    $self->sendEmail($opportunity, $this, $user_email, 'evaluator');
                     $self->sendSystemNotification($opportunity, $relation, true);
                 }
             }
@@ -290,22 +290,38 @@ class Module extends \MapasCulturais\Module {
      *
      * @param Opportunity $opportunity
      * @param Registration $registration
-     * @param string $email
-     * @param bool $evaluator
+     * @param string|null $email
+     * @param string $recipientType
      */
-    function sendEmail(Opportunity $opportunity, Registration $registration, string $email, $evaluator = false) {
+    function sendEmail(Opportunity $opportunity, Registration $registration, ?string $email, string $recipientType = 'manager') {
         $app = App::i();
+
+        if (!$email) {
+            return;
+        }
        
         $template = "opportunityappealphase/appeal-phase.html";
+        $appeal_phase = $registration->opportunity;
+        $original_opportunity = $appeal_phase->parent ?: $opportunity;
+        $is_evaluator = $recipientType === 'evaluator';
 
-        $subject = $evaluator ? sprintf(i::__("Aviso sobre uma nova avaliação de recurso em " ."%s"), $opportunity->name) : sprintf(i::__("Aviso sobre um novo recurso em " ."%s"), $opportunity->appealPhase->name);
-        $message = $evaluator ? sprintf(i::__("Um novo recurso para avaliação foi gerado em " ."%s"), $opportunity->name) : sprintf(i::__("Uma nova solicitação de recurso foi feita em " ."%s"), $opportunity->appealPhase->name) ;
+        $subject = $is_evaluator ? sprintf(i::__("Aviso sobre uma nova avaliação de recurso em %s"), $appeal_phase->name) : sprintf(i::__("Aviso sobre um novo recurso em %s"), $appeal_phase->name);
+        $message = $is_evaluator ? sprintf(i::__("Um novo recurso para avaliação foi gerado em %s"), $appeal_phase->name) : sprintf(i::__("Uma nova solicitação de recurso foi feita em %s"), $appeal_phase->name);
         
         $params = [
             "siteName" => $app->siteName,
-            "user" => $registration->owner->name,
-            "baseUrl" => $registration->singleUrl,
-            "message" => $message
+            "message" => $message,
+            "requesterName" => $registration->owner->name,
+            "registrationId" => $registration->id,
+            "registrationNumber" => $registration->number,
+            "registrationUrl" => $registration->singleUrl,
+            "opportunityName" => $original_opportunity->name,
+            "opportunityUrl" => $original_opportunity->singleUrl,
+            "phaseName" => $appeal_phase->name,
+            "phaseUrl" => $appeal_phase->singleUrl,
+            "isEvaluator" => $is_evaluator,
+            "isProponent" => $recipientType === 'proponent',
+            "isManager" => $recipientType === 'manager',
         ];
         $email_params = [
             "from" => $app->config["mailer.from"],
@@ -313,9 +329,6 @@ class Module extends \MapasCulturais\Module {
             "subject" => $subject,
             "body" => $app->renderMustacheTemplate($template, $params)
         ];
-        if (!isset($email_params["to"])) {
-            return;
-        }
         $app->createAndSendMailMessage($email_params);
     }
     /**
@@ -328,14 +341,17 @@ class Module extends \MapasCulturais\Module {
         $app = App::i();
 
         $template = "opportunityappealphase/update-status.html";
+        $original_opportunity = $opportunity->parent ?: $opportunity;
         $params = [
             "siteName" => $app->siteName,
             "user" => $registration->owner->name,
-            "baseUrl" => $registration->singleUrl,
-            "opportunityId" => $opportunity->id,
-            "opportunityTitle" => $opportunity->name,
+            "opportunityTitle" => $original_opportunity->name,
+            "opportunityUrl" => $original_opportunity->singleUrl,
+            "phaseTitle" => $opportunity->name,
             "registrationId" => $registration->id,
-            "registrationUrl" => $registration->singleUrl
+            "registrationNumber" => $registration->number,
+            "registrationUrl" => $registration->singleUrl,
+            "statusTitle" => $registration->getStatusNameById($registration->status),
         ];
         $email_params = [
             "from" => $app->config["mailer.from"],
@@ -361,7 +377,7 @@ class Module extends \MapasCulturais\Module {
      * @param bool $evaluator
      */
     function sendSystemNotification(Opportunity $opportunity, $recipient, $evaluator = false) {
-        $message = $evaluator ? i::__('Um novo recurso para avaliação foi gerado em ' . $opportunity->name) : i::__('Uma nova solicitação de recurso foi feita em ' . $opportunity->name);
+        $message = $evaluator ? sprintf(i::__('Um novo recurso para avaliação foi gerado em %s'), $opportunity->name) : sprintf(i::__('Uma nova solicitação de recurso foi feita em %s'), $opportunity->name);
 
         $notification = new Notification;
         $notification->user = $recipient->ownerUser;
@@ -376,7 +392,7 @@ class Module extends \MapasCulturais\Module {
      * @param $recipient
      */
     function sendNotificationNewStatus(Opportunity $opportunity, $recipient) {
-        $message = i::__('O status da sua inscrição na fase de recurso ' . $opportunity->name . ' foi alterado.');
+        $message = sprintf(i::__('O status da sua inscrição na fase de recurso %s foi alterado.'), $opportunity->name);
 
         $notification = new Notification;
         $notification->user = $recipient->ownerUser;
