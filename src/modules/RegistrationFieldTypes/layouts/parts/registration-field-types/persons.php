@@ -19,6 +19,14 @@ use MapasCulturais\i; ?>
             <?php i::_e('CPF') ?>: <br>
             <input ng-model="person.cpf" ng-blur="saveField(field, entity[fieldName])" js-mask="999.999.999-99" placeholder="___.___.___-__" required>
         </label>
+        <label ng-if="::field.config.cnpj" style="display:inline-block">
+            <?php i::_e('CNPJ') ?>: <br>
+            <input ng-model="person.cnpj" ng-blur="saveField(field, entity[fieldName])" js-mask="99.999.999/9999-99" placeholder="__.___.___/____-__" required>
+        </label>
+        <label ng-if="::field.config.miniCurriculum" style="display:block">
+            <?php i::_e('Mini currículo') ?>: <br>
+            <textarea ng-model="person.miniCurriculum" ng-blur="saveField(field, entity[fieldName])" required></textarea>
+        </label>
         <label ng-if="::field.config.function" style="display:inline-block">
             <?php i::_e('Função') ?>: <br>
             <input ng-model="person.function" ng-blur="saveField(field, entity[fieldName])" required>
