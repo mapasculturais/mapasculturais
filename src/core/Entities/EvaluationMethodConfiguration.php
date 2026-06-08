@@ -609,6 +609,12 @@ class EvaluationMethodConfiguration extends \MapasCulturais\Entity {
     }
 
     protected function canUserRemove($user){
+        if($this->opportunity->isContinuousFlow) {
+            if($this->opportunity->canUser('@control') && !$this->getCommittee()) {
+                return true;
+            }
+        }
+        
         if ($this->opportunity->publishedRegistrations) {
             return false;
         }
