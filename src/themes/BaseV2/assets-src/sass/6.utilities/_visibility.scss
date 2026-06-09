@@ -1,0 +1,32 @@
+// ============================================================================
+// Visibility & Layout Utilities — Migrated from 0.settings/_atoms.scss
+// ============================================================================
+@use '../0.settings/mixins' as *;
+
+.hide-desktop {
+    @include desktop {
+        display: none;
+    }
+}
+
+.hide-mobile {
+    @include mobile {
+        display: none;
+    }
+}
+
+.sr-only {
+    @include sr-only;
+}
+
+.justify-between {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+
+    @include mobile {
+        & > * + * {
+            margin-top: size(16);
+        }
+    }
+}

@@ -23,17 +23,17 @@
 			text-transform: none;
 		}
 		&--icon {
-			color: #0074C1;
+			color: var(--mc-helper-500);
 		}
 	}
 
 	&__content {
-		background: #FFFFFF;
+		background: var(--mc-white);
 		border-radius: 8px;
 		width: 100%;
 
 		&--top {
-			background: #0074C1;
+			background: var(--mc-helper-500);
 			width: 100%;
 			height: 145px;
 			position: relative;
@@ -56,7 +56,7 @@
 				font-size: 24px;
 				line-height: 28px;
 				text-align: center;
-				color: #000000;
+				color: var(--mc-low-500);
 			}
 			p {
 				font-weight: 400;

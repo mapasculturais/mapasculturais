@@ -16,7 +16,7 @@
         min-height: size(510);
         
         .content__description {
-            text-shadow: .1rem .1rem .1rem #222;
+            text-shadow: .1rem .1rem .1rem var(--mc-low-500);
         }
           
         &::before {

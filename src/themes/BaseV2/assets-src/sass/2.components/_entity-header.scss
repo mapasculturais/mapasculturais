@@ -162,7 +162,7 @@
                 .button {
                     color: var(--mc-gray-700);
                     padding: size(10);
-                    color: #3E3E3E;
+                    color: var(--mc-gray-700);
 
                     .iconify {
                         font-size: size(18);
@@ -183,7 +183,7 @@
                 gap: size(40);
 
                 &__id {
-                    font-family: 'Open Sans';
+                    font-family: var(--mc-font-body);
                     font-style: normal;
                     font-weight: 600;
                     font-size: size(14);
@@ -215,8 +215,8 @@
                     margin: 0;
 
                     @include mobile {
-                        font-size: size(12) !important;
-                        line-height: size(16) !important;
+                        font-size: size(12);
+                        line-height: size(16);
                     }
                 }
 

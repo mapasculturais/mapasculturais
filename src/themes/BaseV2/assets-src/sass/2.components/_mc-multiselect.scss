@@ -9,7 +9,7 @@
         background: url(https://api.iconify.design/ic/baseline-arrow-drop-down.svg) no-repeat right size(16) center/contain;
         background-color: var(--mc-white);
         background-size: size(24);
-        padding-right: size(40) !important;
+        padding-right: size(40);
         text-overflow: ellipsis;
 
         &--open {

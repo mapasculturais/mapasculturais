@@ -36,7 +36,7 @@ body.base-v2.controller-site.action-error {
 
             .message-error {
                 .text {
-                    font-family: 'Open Sans';
+                    font-family: var(--mc-font-body);
                     font-style: normal;
                     font-weight: 600;
                     font-size: 12px;
@@ -68,7 +68,7 @@ body.base-v2.controller-site.action-error {
                     .btn {
                         button {
                             padding: size(19) size(33);
-                            font-family: 'Open Sans';
+                            font-family: var(--mc-font-body);
                             font-style: normal;
                             font-weight: 700;
                             font-size: size(24);
@@ -86,7 +86,7 @@ body.base-v2.controller-site.action-error {
                             }
 
                             label {
-                                font-family: 'Open Sans';
+                                font-family: var(--mc-font-body);
                                 font-style: normal;
                                 font-weight: 700;
                                 font-size: 16px;
@@ -116,7 +116,7 @@ body.base-v2.controller-site.action-error {
                 }
 
                 &__content {
-                    font-family: 'Open Sans';
+                    font-family: var(--mc-font-body);
                     font-style: normal;
                     font-weight: 600;
                     font-size: size(18);
@@ -128,7 +128,7 @@ body.base-v2.controller-site.action-error {
                 }
 
                 .left__warning {
-                    font-family: 'Open Sans';
+                    font-family: var(--mc-font-body);
                     font-style: normal;
                     font-weight: 700;
                     font-size: 72px;
@@ -137,7 +137,7 @@ body.base-v2.controller-site.action-error {
 
                     @media (max-width: size(600)) {
                         padding-top: size(24);
-                        font-family: 'Open Sans';
+                        font-family: var(--mc-font-body);
                         font-style: normal;
                         font-weight: 700;
                         font-size: size(32);
@@ -148,7 +148,7 @@ body.base-v2.controller-site.action-error {
 
                 &__title {
                     padding-top: size(24);
-                    font-family: 'Open Sans';
+                    font-family: var(--mc-font-body);
                     font-style: normal;
                     font-weight: 700;
                     font-size: size(40);
@@ -163,11 +163,11 @@ body.base-v2.controller-site.action-error {
                     font-size: size(64);
                     line-height: size(50);
                     font-weight: 700;
-                    font-family: "Open Sans";
+                    font-family: var(--mc-font-body);
                     font-style: normal;
 
                     @media (max-width: size(600)) {
-                        font-family: "Open Sans";
+                        font-family: var(--mc-font-body);
                         font-style: normal;
                         font-weight: 700;
                         font-size: 32px;

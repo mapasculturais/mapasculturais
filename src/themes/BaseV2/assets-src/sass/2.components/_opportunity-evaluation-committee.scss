@@ -139,19 +139,19 @@
         }
 
         &--sent {
-            background-color: #BFE88B;
+            background-color: var(--mc-eval-approved);
         }
 
         &--pending {
-            background-color: #FFB5B5
+            background-color: var(--mc-eval-rejected)
         }
 
         &--started {
-            background-color: #FFCF8F;
+            background-color: var(--mc-eval-not-eval);
         }
 
         &--completed {
-            background-color: #99D6FF;
+            background-color: var(--mc-eval-pending);
         }
     }
 

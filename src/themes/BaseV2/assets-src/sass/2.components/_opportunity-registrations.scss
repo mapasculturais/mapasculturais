@@ -1,7 +1,7 @@
 @use '../0.settings/mixins' as *;
 
 .opportunity-registrations {
-  background-color: #F5F5F5;
+  background-color: var(--mc-gray-100);
 
   &__container {
     // max-width: size(1200);
@@ -23,7 +23,7 @@
   .mc-breadcrumb {
     &__hasCover  ul {
       background: transparent;
-      color: #000;
+      color: var(--mc-low-500);
       padding: size(8) size(16) size(60);
 
       li::after {

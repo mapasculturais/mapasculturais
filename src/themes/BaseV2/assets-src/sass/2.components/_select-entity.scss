@@ -41,7 +41,7 @@
 
         &--button {
             align-items: center;
-            background: white;
+            background: var(--mc-white);
             border: size(1) solid var(--mc-gray-100);
             border-radius: 0 size(20) size(20) 0;
             border-left: 0;
@@ -82,7 +82,7 @@
 
             .icon {
                 align-items: center;
-                background-color: #4E4E4E;
+                    background-color: var(--mc-gray-700);
                 color: white;
                 display: flex;
                 height: 32px;

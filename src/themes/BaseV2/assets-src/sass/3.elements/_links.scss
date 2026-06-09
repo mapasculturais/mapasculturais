@@ -1,0 +1,10 @@
+// ============================================================================
+// Elements: Links — Migrated from 0.settings/_global.scss (Phase 3)
+// Duplicate a {} block (lines 66-68) eliminated — was strict subset.
+// ============================================================================
+
+a {
+    text-decoration: none;
+    color: var(--mc-primary-500);
+    font-weight: var(--mc-font-semibold);
+}

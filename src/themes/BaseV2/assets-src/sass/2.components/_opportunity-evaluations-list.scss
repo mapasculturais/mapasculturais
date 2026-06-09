@@ -1,7 +1,7 @@
 @use '../0.settings/mixins' as *;
 
 .opportunity-evaluations-list {
-    max-width: size(1824) !important;
+    max-width: size(1824);
     // position: absolute;
     height: 100%;
     z-index: 0;
@@ -24,7 +24,7 @@
         cursor: pointer;
        
         .label {
-            font-family: 'Open Sans';
+            font-family: var(--mc-font-body);
             font-style: normal;
             font-size: size(14);
             font-weight: 700;
@@ -111,19 +111,19 @@
                 background-color: var(--mc-white);
 
                 &.pending {
-                    border-top: solid #FFB5B5 4px;
+                    border-top: solid var(--mc-eval-rejected) 4px;
                 }
 
                 &.started {
-                    border-top: solid #FFCF8F 4px;
+                    border-top: solid var(--mc-eval-not-eval) 4px;
                 }
 
                 &.completed {
-                    border-top: solid #99D6FF 4px;
+                    border-top: solid var(--mc-eval-pending) 4px;
                 }
 
                 &.sent {
-                    border-top: solid #BFE88B 4px;
+                    border-top: solid var(--mc-eval-approved) 4px;
                 }
 
                 .owner-entity {
@@ -163,7 +163,7 @@
                         }
 
                         &__name {
-                            font-family: 'Open Sans';
+                            font-family: var(--mc-font-body);
                             font-style: normal;
                             font-weight: 700;
                             font-size: size(22);
@@ -182,7 +182,7 @@
                             flex-direction: column;
 
                             .subscribe {
-                                font-family: 'Open Sans';
+                                font-family: var(--mc-font-body);
                                 font-style: normal;
                                 font-weight: 600;
                                 font-size: 12px;
@@ -192,7 +192,7 @@
                             }
 
                             .value {
-                                font-family: 'Open Sans';
+                                font-family: var(--mc-font-body);
                                 font-style: normal;
                                 font-weight: 700;
                                 font-size: size(14);
@@ -219,7 +219,7 @@
                     }
                     .state,
                     &label {
-                        font-family: 'Open Sans';
+                        font-family: var(--mc-font-body);
                         font-style: normal;
                         font-weight: 600;
                         font-size: 12px;
@@ -238,7 +238,7 @@
                         
                         label {
                             color: var(--mc-low-700);
-                            font-family: 'Open Sans';
+                            font-family: var(--mc-font-body);
                             font-style: normal;
                             font-weight: 700;
                             font-size: size(12);
@@ -279,7 +279,7 @@
                     gap: size(8);
 
                     &--pending {
-                        background: #FFFFFF;
+                        background: var(--mc-white);
                         box-shadow: 0px 4px 4px -3px rgba(0, 0, 0, 0.16);
                         border-radius: 0px 4px 4px 0px;
 
@@ -291,7 +291,7 @@
                     }
 
                     &--label {
-                        font-family: 'Open Sans';
+                        font-family: var(--mc-font-body);
                         font-style: normal;
                         font-weight: 600;
                         font-size: 16px;
@@ -328,19 +328,19 @@
                         background-color: var(--mc-white);
 
                         &.pending {
-                            border-top: solid #FFB5B5 4px;
+                            border-top: solid var(--mc-eval-rejected) 4px;
                         }
 
                         &.started {
-                            border-top: solid #FFCF8F 4px;
+                            border-top: solid var(--mc-eval-not-eval) 4px;
                         }
 
                         &.completed {
-                            border-top: solid #99D6FF 4px;
+                            border-top: solid var(--mc-eval-pending) 4px;
                         }
 
                         &.sent {
-                            border-top: solid #BFE88B 4px;
+                            border-top: solid var(--mc-eval-approved) 4px;
                         }
 
                         .owner-entity {
@@ -380,7 +380,7 @@
                                 }
 
                                 &__name {
-                                    font-family: 'Open Sans';
+                                    font-family: var(--mc-font-body);
                                     font-style: normal;
                                     font-weight: 700;
                                     font-size: size(22);
@@ -399,7 +399,7 @@
                                     flex-direction: column;
 
                                     .subscribe {
-                                        font-family: 'Open Sans';
+                                        font-family: var(--mc-font-body);
                                         font-style: normal;
                                         font-weight: 600;
                                         font-size: 12px;
@@ -409,7 +409,7 @@
                                     }
 
                                     .value {
-                                        font-family: 'Open Sans';
+                                        font-family: var(--mc-font-body);
                                         font-style: normal;
                                         font-weight: 700;
                                         font-size: size(14);
@@ -439,7 +439,7 @@
 
                             .state,
                             &label {
-                                font-family: 'Open Sans';
+                                font-family: var(--mc-font-body);
                                 font-style: normal;
                                 font-weight: 600;
                                 font-size: 12px;
@@ -458,7 +458,7 @@
                                 
                                 label {
                                     color: var(--mc-low-700);
-                                    font-family: 'Open Sans';
+                                    font-family: var(--mc-font-body);
                                     font-style: normal;
                                     font-weight: 700;
                                     font-size: size(12);

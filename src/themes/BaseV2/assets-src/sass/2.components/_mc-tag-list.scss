@@ -3,13 +3,13 @@
 .mc-tag-list {
     display: flex;
     flex-direction: column;
-    gap: size(8);
+    gap: var(--mc-space-8);
     margin: 0;
 
     &__tagList {
         margin: 0;
         display: flex;
-        gap: size(10);
+        gap: var(--mc-space-10);
         padding: 0;
         flex-wrap: wrap;
 
@@ -25,17 +25,17 @@
         font-size: size(13);
         grid-template-columns: 1fr;
         font-weight: 600;
-        gap: size(10);
+        gap: var(--mc-space-10);
         justify-content: space-between;
         line-height: size(13);
         min-height: size(33);
-        padding: size(7) size(14);
+        padding: size(7) var(--mc-space-14);
         position: relative;
         text-align: center;
         word-break: break-word;
 
         &--editable {
-            grid-template-columns: 1fr size(16);
+            grid-template-columns: 1fr var(--mc-space-16);
         }
     }
 }

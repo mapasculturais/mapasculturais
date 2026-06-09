@@ -72,13 +72,13 @@
     &__buttons {
         &__saveafter, &__reopen {
             display: block;
-            background-color: #FFCF8F;
+            background-color: var(--mc-eval-not-eval);
             color: var(--mc-black);
-            border-color:  #FFCF8F;
+            border-color:  var(--mc-eval-not-eval);
             &:hover {
                 background-color:var(--mc-white);
                 color: var(--mc-black);
-                border-color:  #FFCF8F;
+                border-color:  var(--mc-eval-not-eval);
             }
 
             svg {
@@ -90,13 +90,13 @@
         &__send, &__finalcontinue {
             display: block;
             text-align: center;
-            background-color: #BFE88B;
+            background-color: var(--mc-eval-approved);
             color: var(--mc-black);
-            border-color: #BFE88B;
+            border-color: var(--mc-eval-approved);
             &:hover {
                 background-color: var(--mc-white);
                 color: var(--mc-black);
-                border-color: #BFE88B;
+                border-color: var(--mc-eval-approved);
             }
             .arrow-icon {
                 float: right;
@@ -111,13 +111,13 @@
 
         &__final {
             display: block;
-            background-color: #99D6FF;
+            background-color: var(--mc-eval-pending);
             color: var(--mc-black);
-            border-color: #99D6FF;
+            border-color: var(--mc-eval-pending);
             &:hover {
                 background-color: var(--mc-white);
                 color: var(--mc-black);
-                border-color: #99D6FF;
+                border-color: var(--mc-eval-pending);
             }
 
             svg {

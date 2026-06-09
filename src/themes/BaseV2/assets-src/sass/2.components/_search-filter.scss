@@ -58,7 +58,7 @@
     }
 
     &__filter {
-        background: #FFFFFF;
+        background: var(--mc-white);
         border-radius: var(--mc-border-radius-xs);
         box-shadow: var(--mc-shadow-lv1);
         display: none;
@@ -229,7 +229,7 @@
 
             // mandar para o componente responsável
             form {
-                background: #FFFFFF;
+                background: var(--mc-white);
                 border-radius: var(--mc-border-radius-xs);
                 padding: size(16);
                 max-height: size(600);
@@ -289,7 +289,7 @@
 
             .close {
                 align-items: center;
-                background-color: white;
+                background-color: var(--mc-white);
                 border-top: none;
                 box-shadow: var(--mc-shadow-lv1);
                 display: flex;
@@ -321,7 +321,7 @@
                 }
 
                 &:hover {
-                    background-color: white;
+                    background-color: var(--mc-white);
                     color: var(--mc-low-500);
                 }
 
@@ -362,7 +362,7 @@
                 }
 
                 form {
-                    background: #FFFFFF;
+                    background: var(--mc-white);
                     border-radius: var(--mc-border-radius-xs);
                     padding: size(16);
                 }

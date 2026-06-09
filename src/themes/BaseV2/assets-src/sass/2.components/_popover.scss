@@ -3,7 +3,7 @@
 .popover {
     &__content {
         position: relative;
-        padding: size(16) size(16);
+        padding: var(--mc-space-16);
         border-radius: var(--mc-border-radius-xs);
 
         .field,
@@ -16,9 +16,9 @@
                 border: 1px solid var(--mc-gray-100);
                 border-radius: var(--mc-border-radius-xs);
                 color: var(--mc-low);
-                font-size: size(16);
+                font-size: var(--mc-space-16);
                 outline: 0;
-                padding: size(14);
+                padding: var(--mc-space-14);
                 width: 100%;
                 min-width: size(213);
             }
@@ -26,13 +26,13 @@
 
         .actions {
             display: flex;
-            gap: size(10);
+            gap: var(--mc-space-10);
         }
     }
 }
 
 .v-popper__popper {
-    box-shadow: 0 0 size(10) 0 var(--mc-gray-700);
+    box-shadow: 0 0 var(--mc-space-10) 0 var(--mc-gray-700);
     border-radius: var(--mc-border-radius-xs);
         
     .v-popper__inner {

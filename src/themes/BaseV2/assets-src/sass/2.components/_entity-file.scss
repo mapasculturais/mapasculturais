@@ -145,7 +145,7 @@
     }
 
     .required {
-        font-family: Open Sans;
+        font-family: var(--mc-font-body);
         font-size: size(12);
         font-weight: 700;
         line-height: size(16);

@@ -1,0 +1,23 @@
+// ============================================================================
+// Typography Utilities — Migrated from 0.settings/_atoms.scss
+// ============================================================================
+
+.bold {
+    font-weight: var(--mc-font-bold);
+}
+
+.semibold {
+    font-weight: var(--mc-font-semibold);
+}
+
+.regular {
+    font-weight: var(--mc-font-regular);
+}
+
+.uppercase {
+    text-transform: var(--mc-font-transform-uppercase);
+}
+
+.lowercase {
+    text-transform: var(--mc-font-transform-lowercase);
+}

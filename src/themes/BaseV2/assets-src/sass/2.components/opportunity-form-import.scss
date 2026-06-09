@@ -7,7 +7,7 @@
         .popover__content {
             .header-import {
                 &__title {
-                    font-family: 'Open Sans';
+                    font-family: var(--mc-font-body);
                     font-style: normal;
                     font-weight: 600;
                     font-size: 14px;
@@ -16,7 +16,7 @@
 
                 &__label {
                     margin: 0;
-                    font-family: 'Open Sans';
+                    font-family: var(--mc-font-body);
                     font-style: normal;
                     font-weight: 400;
                     font-size: 12px;
@@ -40,7 +40,7 @@
         align-items: inherit;
         gap: size(32);
         max-height: size(48);
-        font-family: 'Open Sans';
+        font-family: var(--mc-font-body);
         font-style: normal;
         font-weight: 600;
         font-size: size(18);

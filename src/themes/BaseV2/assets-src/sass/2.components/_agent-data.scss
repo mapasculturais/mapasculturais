@@ -2,7 +2,7 @@
 
 .controller-agent.action-edit.Agent-2.Agent-1 {
     .data-subtitle {
-        font-family: 'Open Sans';
+        font-family: var(--mc-font-body);
         font-style: normal;
         font-weight: 600;
         font-size: size(14);
@@ -13,7 +13,7 @@
 .controller-agent.action-edit {
     .mc-card__title {
         p {
-            font-family: 'Open Sans';
+            font-family: var(--mc-font-body);
             font-style: normal;
             font-weight: 600;
             font-size: size(14);
@@ -31,7 +31,7 @@
     .input__label {
         display: flex;
         gap: size(8);
-        font-family: 'Open Sans';
+        font-family: var(--mc-font-body);
         font-style: normal;
         font-weight: 600;
         font-size: size(14);

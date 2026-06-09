@@ -54,7 +54,7 @@
     &__field {
         margin: 0;
         padding: size(9) size(20);
-        background: #E8E8E8;
+        background: var(--mc-gray-200);
         border-radius: size(4);
         display: flex;
         align-items: flex-start;

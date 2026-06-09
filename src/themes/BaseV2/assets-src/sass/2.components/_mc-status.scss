@@ -4,8 +4,8 @@
     width: fit-content;
     white-space: nowrap;
     margin: 0 auto;
-    grid-template-columns: size(16) 1fr;
-    gap: size(8);
+    grid-template-columns: var(--mc-space-16) 1fr;
+    gap: var(--mc-space-8);
     font-weight: var(--mc-font-bold);
     display: grid;
     align-items: center;
@@ -39,22 +39,22 @@
     }
 
     &--evaluation-pending {
-        color: #fe4f4f;
+        color: var(--mc-status-negative);
     }
 
     &--evaluation-started {
-        color: #faae4a;
+        color: var(--mc-status-warning);
     }
 
     &--evaluation-completed {
-        color: #3fb1fd;
+        color: var(--mc-status-info);
     }
 
     &--evaluation-sent {
-        color: #96df37;
+        color: var(--mc-status-positive);
     }
 
     .iconify {
-        font-size: size(16);
+        font-size: var(--mc-space-16);
     }
 }

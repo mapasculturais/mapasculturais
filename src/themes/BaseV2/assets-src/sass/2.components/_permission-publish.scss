@@ -4,7 +4,7 @@
     &__title {}
 
     &__label {
-        font-family: 'Open Sans';
+        font-family: var(--mc-font-body);
         font-style: normal;
         font-weight: 600;
         font-size: size(14);
@@ -35,7 +35,7 @@
 
                 .permission {
 
-                    font-family: 'Open Sans';
+                    font-family: var(--mc-font-body);
                     font-style: normal;
                     font-weight: 600;
                     font-size: size(14);

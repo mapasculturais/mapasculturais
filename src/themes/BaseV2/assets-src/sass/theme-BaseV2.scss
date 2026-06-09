@@ -7,10 +7,27 @@
 @import '0.settings/global';
 @import '0.settings/atoms';
 
+// TOOLS
+@import '1.tools/mixins';
+@import '1.tools/functions';
+@import '1.tools/responsive';
+
+// GENERIC
+@import '2.generic/reset';
+@import '2.generic/normalize';
+
+// ELEMENTS
+@import '3.elements/headings';
+@import '3.elements/links';
+@import '3.elements/paragraphs';
+@import '3.elements/forms';
+
 // OBJECTS
 @import '1.objects/load-more';
 @import '1.objects/mc-title';
+@import '1.objects/container';
 @import '1.objects/mc-avatar';
+@import '1.objects/stack';
 
 // COMPONENTS
 @import '2.components/affirmative-policies--geo-quota-configuration';
@@ -23,12 +40,13 @@
 @import '2.components/apply-evaluations';
 @import '2.components/button';
 @import '2.components/claim-support';
+@import '2.components/code';
 @import '2.components/colors-customizer';
 @import '2.components/complaint-suggestion';
-@import '2.components/container';
 @import '2.components/create-app';
 @import '2.components/create-modal';
 @import '2.components/create-occurrence';
+@import '2.components/change-password-other-providers';
 @import '2.components/data-table';
 @import '2.components/datepicker';
 @import '2.components/debug';
@@ -36,7 +54,7 @@
 @import '2.components/entity-actions';
 @import '2.components/entity-activity-card';
 @import '2.components/entity-card';
-@import '2.components/entity-models-card';
+// entity-models-card: consolidated into entity-card (Phase 5C deduplication)
 @import '2.components/entity-cover';
 @import '2.components/entity-data';
 @import '2.components/entity-file';
@@ -200,7 +218,6 @@
 @import '2.components/select-entity';
 @import '2.components/mc-share-links';
 @import '2.components/space-info';
-@import '2.components/stack';
 @import '2.components/space-table';
 @import '2.components/stepper';
 @import '2.components/subsite-config-map';
@@ -218,10 +235,16 @@
 @import '2.components/user-management';
 @import '2.components/_fields-visible-evaluators';
 
+// UTILITIES
+@import '6.utilities/visibility';
+@import '6.utilities/typography';
+@import '6.utilities/entity-colors';
+@import '6.utilities/scrollbar';
 
 // LAYOUTS
 @import 'layouts/entity-tabs';
 @import 'layouts/entity';
+@import 'layouts/main-app';
 @import 'layouts/main-header';
 @import 'layouts/main-footer';
 

@@ -29,7 +29,7 @@
         .field {
             &__title {
                 font-size: size(14);
-                font-family: Open Sans;
+                font-family: var(--mc-font-body);
                 font-style: normal;
                 font-weight: semibold;
                 line-height: normal;

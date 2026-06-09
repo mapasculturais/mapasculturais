@@ -1,0 +1,27 @@
+// ============================================================================
+// Object: Stack — Vertical spacing between sibling elements
+// Migrated from 2.components/_stack.scss (Phase 4)
+// ============================================================================
+
+.stack {
+    &--sm {
+        & > * + * {
+            margin-bottom: 0;
+            margin-top: var(--mc-space-10);
+        }
+    }
+
+    &--md {
+        & > * + * {
+            margin-bottom: 0;
+            margin-top: var(--mc-space-20);
+        }
+    }
+
+    &--lg {
+        & > * + * {
+            margin-bottom: 0;
+            margin-top: var(--mc-space-40);
+        }
+    }
+}

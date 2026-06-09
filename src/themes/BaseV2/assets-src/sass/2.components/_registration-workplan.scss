@@ -4,11 +4,11 @@
     &__goals {
         padding: size(12);
         margin-top: size(12);
-        background-color: #f7f7f7;
+        background-color: var(--mc-gray-100);
         border-radius: 4px 4px 4px 4px;
         -webkit-border-radius: 4px 4px 4px 4px;
         -moz-border-radius: 4px 4px 4px 4px;
-        border: 1px solid #ccc;
+        border: 1px solid var(--mc-gray-300);
     }
 
     &__header-goals {
@@ -31,7 +31,7 @@
 
     &__goals-period {
         margin-top: size(12);
-        border: 1px solid #ccc;
+        border: 1px solid var(--mc-gray-300);
         padding: size(12);
         p {
             font-weight: bold;
@@ -55,10 +55,10 @@
         border-radius: 4px 4px 4px 4px;
         -webkit-border-radius: 4px 4px 4px 4px;
         -moz-border-radius: 4px 4px 4px 4px;
-        border: 1px solid #ccc;
+        border: 1px solid var(--mc-gray-300);
         padding: size(24);
         margin-top: size(12);
-        background-color: #f3f3f3;
+        background-color: var(--mc-gray-100);
     }
 
     &__new-delivery {

@@ -15,7 +15,7 @@
 
 .stepper-evaluations {
     &__title {
-        font-family: 'Open Sans';
+        font-family: var(--mc-font-body);
         font-style: normal;
         font-weight: 700;
         font-size: size(18);
@@ -54,7 +54,7 @@
 
             &__content {
                 &--title {
-                    font-family: 'Open Sans';
+                    font-family: var(--mc-font-body);
                     font-style: normal;
                     font-weight: 700;
                     font-size: size(24);
@@ -80,7 +80,7 @@
                         &__title {
                             &--title {
                                 text-transform: uppercase;
-                                font-family: 'Open Sans';
+                                font-family: var(--mc-font-body);
                                 font-style: normal;
                                 font-weight: 400;
                                 font-size: 14px;
@@ -99,7 +99,7 @@
 
                         &__label {
                             text-transform: uppercase;
-                            font-family: "Open Sans";
+                            font-family: var(--mc-font-body);
                             font-style: normal;
                             font-weight: 400;
                             font-size: 14px;
@@ -141,7 +141,7 @@
     }
     
     .out-evalution {
-        font-family: 'Open Sans';
+        font-family: var(--mc-font-body);
         font-style: normal;
         font-weight: 400;
         font-size: size(16);

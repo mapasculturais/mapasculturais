@@ -32,19 +32,19 @@
     .pending {
 
         &.sent {
-            background-color: #BFE88B;
+            background-color: var(--mc-eval-approved);
         }
 
         &.pending {
-            background-color: #FFB5B5
+            background-color: var(--mc-eval-rejected)
         }
 
         &.started {
-            background-color: #FFCF8F;
+            background-color: var(--mc-eval-not-eval);
         }
 
         &.completed {
-            background-color: #99D6FF;
+            background-color: var(--mc-eval-pending);
         }
 
         padding: size(12);
@@ -72,13 +72,13 @@
             flex-direction: column;
             max-width: 100%;
             h4 {
-                font-family: "Open Sans";
+                font-family: var(--mc-font-body);
                 font-size: size(16);
                 font-weight: 700;
 
             }
             span {
-            font-family: "Open Sans";
+            font-family: var(--mc-font-body);
             font-size: size(16);
             font-weight: 400;
             }

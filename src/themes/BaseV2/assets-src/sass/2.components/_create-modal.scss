@@ -17,7 +17,7 @@
 
     .modal__action {
         .button--complete{
-            color: $white !important;
+            color: $white;
         }
     }
 
@@ -48,8 +48,8 @@
                     display: flex;
                     align-items: center;
                     height: size(48);
-                    background: #FFFFFF;
-                    border: size(1) solid #313131;
+                    background: var(--mc-white);
+                    border: size(1) solid var(--mc-low-500);
                     border-radius: size(4);
                     justify-content: space-between;
                     padding: 0 size(10);
@@ -197,7 +197,7 @@
             padding-bottom: 0;
 
             button {
-                border: size(2) solid #FF0000;
+                border: size(2) solid var(--mc-danger-500);
             }
         }
 
@@ -205,7 +205,7 @@
             font-family: var(--mc-font-headings);
             font-style: normal;
             font-weight: 600;
-            font-size: size(14) !important;
+            font-size: size(14);
             line-height: size(19);
             margin: 0 size(5);
         }

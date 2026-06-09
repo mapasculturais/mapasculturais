@@ -185,7 +185,7 @@
             }
             
             input {
-                background: #FFFFFF;
+                background: var(--mc-white);
                 border: var(--mc-border-hairline) var(--mc-gray-300);
                 border-radius: size(4);
                 font-size: size(12);
@@ -275,7 +275,7 @@
         grid-column-start: 1;
 
         textarea {
-            background: #FFFFFF;
+            background: var(--mc-white);
             border: var(--mc-border-hairline) var(--mc-gray-300);
             border-radius: size(4);
             font-size: size(12);
@@ -289,7 +289,7 @@
 
     &__link-input {
         flex: 1;
-        background: #FFFFFF;
+        background: var(--mc-white);
         border: var(--mc-border-hairline) var(--mc-gray-300);
         border-radius: var(--mc-border-radius-xs);
         font-size: size(14);

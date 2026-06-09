@@ -1,109 +1,13 @@
-// Let's try to keep it as leaner as possible
-@use './mixins' as *;
-
-*, *::before, *::after {
-    box-sizing: border-box;
-}
-
-html, body {
-    background-color: var(--mc-white);
-    min-height: 100%;
-    font-family: var(--mc-font-body);
-    font-size: 16px;
-    margin: 0;
-    max-width: 100vw;
-    width: 100%;
-    line-height: normal;
-}
-a {
-    text-decoration: none;
-    color: var(--mc-primary-500);
-    font-weight: 600;
-}
-
-h1, h2, h3, h4, h5, h6, p, small {
-    font-family: var(--mc-font-headings);
-    font-style: var(--mc-font-regular);
-    margin: 0;
-}
-
-h1 {
-    font-weight: var(--mc-font-bold);
-    font-size: $font-size-xl;
-}
-
-h2 {
-    font-weight: var(--mc-font-bold);
-    font-size: $font-size-lg;
-}
-
-h3 {
-    font-weight: var(--mc-font-bold);
-    font-size: $font-size-md;
-}
-
-h4 {
-    font-weight: var(--mc-font-regular);
-    font-size: $font-size-sm;
-}
-
-h5 {
-    font-weight: var(--mc-font-regular);
-    font-size: $font-size-xxs;
-}
-
-h6 {
-    font-weight: var(--mc-font-regular);
-    font-size: $font-size-xxs;
-}
-
-p {
-    font-weight: var(--mc-font-regular);
-    font-size: $font-size-xs;
-    line-height: size(22);
-}
- 
-a {
-    text-decoration: none;
-}
-
-small {
-    font-weight: var(--mc-font-regular);
-    font-size: $font-size-xxxs;
-    line-height: size(16);
-}
-
-.uppercase {
-    text-transform: uppercase;
-}
-
-.main-app {
-    position: relative;
-}
-
-.code {
-    background: #E8E8E8;
-    padding: 4px 8px;
-    font-weight: bold;
-    font-size: 12px;
-    border-radius: 15px;
-    border: none;
-    text-align: center;
-}
-
-.change_password_other_providers {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-
-    &--fakePassword {
-        display: flex;
-        .dot {
-            background: black;
-            border-radius: 50%;
-            height: 8px;
-            width: 8px;
-        }
-    }
-
-}
+// ============================================================================
+// GLOBAL — Migrated to proper ITCSS layers in Phase 3
+//
+// All content moved to:
+//   - 2.generic/_reset.scss               (box-sizing, html/body resets)
+//   - 3.elements/_headings.scss            (h1-h6 styles)
+//   - 3.elements/_links.scss               (a styles)
+//   - 3.elements/_paragraphs.scss          (p, small styles)
+//   - 6.utilities/_typography.scss         (.uppercase — already existed)
+//   - 2.components/_code.scss              (.code badge component)
+//   - 2.components/_change-password-other-providers.scss
+//   - layouts/_main-app.scss               (.main-app wrapper)
+// ============================================================================

@@ -1,4 +1,10 @@
+// ============================================================================
+// Object: Avatar
+// Reusable avatar component — structure + minimal skin
+// Tokenized in Phase 4
+// ============================================================================
 @use '../0.settings/mixins' as *;
+@use '../1.tools/responsive' as bp;
 
 .mc-avatar {
     align-items: center;
@@ -6,7 +12,7 @@
     border-radius: 50%;
     display: flex;
     justify-content: center;
-    min-width: size(48);
+    min-width: var(--mc-space-48);
     overflow: hidden;
     
     img {
@@ -14,7 +20,7 @@
     }
 
     .iconify {
-        font-size: size(24);
+        font-size: var(--mc-space-24);
         color: var(--mc-gray-700);
     }
 
@@ -23,17 +29,17 @@
     }
 
     &--xsmall {
-        width: size(40);
-        height: size(40);
-        min-width: size(40);
-        min-height: size(40);
+        width: var(--mc-space-40);
+        height: var(--mc-space-40);
+        min-width: var(--mc-space-40);
+        min-height: var(--mc-space-40);
     }
 
     &--small {
-        width: size(48);
-        height: size(48);
-        min-width: size(48);
-        min-height: size(48);
+        width: var(--mc-space-48);
+        height: var(--mc-space-48);
+        min-width: var(--mc-space-48);
+        min-height: var(--mc-space-48);
     }
 
     &--medium {
@@ -42,11 +48,11 @@
         min-width: size(72);
         min-height: size(72);
 
-        @media (max-width:size(600)) {
-            width: size(48);
-            height: size(48);
-            min-width: size(48);
-            min-height: size(48);
+        @include bp.respond-below('sm') {
+            width: var(--mc-space-48);
+            height: var(--mc-space-48);
+            min-width: var(--mc-space-48);
+            min-height: var(--mc-space-48);
         }
     }
 
@@ -56,8 +62,7 @@
         min-width: size(167);
         min-height: size(167);
 
-
-        @media (max-width:size(600)) {
+        @include bp.respond-below('sm') {
             width: size(113);
             height: size(113);
             min-width: size(113);

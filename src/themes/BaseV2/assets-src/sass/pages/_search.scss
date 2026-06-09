@@ -133,8 +133,8 @@
             }
 
             @media (max-width: size(800)) {
-                padding: size(63) size(16) size(8) !important;
-                height: size(111) !important;
+                padding: size(63) size(16) size(8);
+                height: size(111);
                 justify-content: center;
 
                 &--left {
@@ -549,17 +549,17 @@
                         gap: size(8);
 
                         &--formBtn {
-                            position: relative !important;
-                            bottom: unset !important;
+                            position: relative;
+                            bottom: unset;
                         }
                     }
 
                     &__filter {
-                        height: 100vh !important;
-                        position: fixed !important;
-                        right: 0 !important;
-                        top: 0 !important;
-                        width: 100vw !important;
+                        height: 100vh;
+                        position: fixed;
+                        right: 0;
+                        top: 0;
+                        width: 100vw;
                     }
                 }
 

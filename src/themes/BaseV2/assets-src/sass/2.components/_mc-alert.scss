@@ -4,12 +4,12 @@
     border-radius: var(--mc-border-radius-xs);
     display: flex;
     flex-wrap: wrap;
-    gap: size(8);
+    gap: var(--mc-space-8);
     justify-content: space-between;
-    padding: size(18);
+    padding: var(--mc-space-18);
 
     &--sm {
-        padding: size(8) size(18);
+        padding: var(--mc-space-8) var(--mc-space-18);
     }
 
     &.success {
@@ -32,13 +32,13 @@
     &__message {
         align-items: start;
         display: grid;
-        gap: size(10);
+        gap: var(--mc-space-10);
         grid-template-columns: 21px 1fr;
 
         .text {
-            font-size: size(16);
+            font-size: var(--mc-space-16);
             font-weight: 400;
-            line-height: size(22);
+            line-height: var(--mc-space-22);
             margin: 0;
         }
 
@@ -51,9 +51,9 @@
         background: none;
         border: none;
         cursor: pointer;
-        font-size: size(14);
+        font-size: var(--mc-space-14);
         font-weight: 700;
-        line-height: size(19);
+        line-height: var(--mc-space-19);
         margin-left: auto;
     }
 }

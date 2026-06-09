@@ -1,0 +1,39 @@
+// ============================================================================
+// Elements: Headings — Migrated from 0.settings/_global.scss (Phase 3)
+// ============================================================================
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: var(--mc-font-headings);
+    font-style: var(--mc-font-regular);
+    margin: 0;
+}
+
+h1 {
+    font-weight: var(--mc-font-bold);
+    font-size: var(--mc-font-size-xl);
+}
+
+h2 {
+    font-weight: var(--mc-font-bold);
+    font-size: var(--mc-font-size-lg);
+}
+
+h3 {
+    font-weight: var(--mc-font-bold);
+    font-size: var(--mc-font-size-md);
+}
+
+h4 {
+    font-weight: var(--mc-font-regular);
+    font-size: var(--mc-font-size-sm);
+}
+
+h5 {
+    font-weight: var(--mc-font-regular);
+    font-size: var(--mc-font-size-xxs);
+}
+
+h6 {
+    font-weight: var(--mc-font-regular);
+    font-size: var(--mc-font-size-xxs);
+}

@@ -25,7 +25,7 @@
     width: 100%;
 
     &__title {
-      font-family: 'Open Sans';
+      font-family: var(--mc-font-body);
       font-style: normal;
       font-weight: 700;
       font-size: size(24);

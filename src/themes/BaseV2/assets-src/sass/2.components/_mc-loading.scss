@@ -3,15 +3,15 @@
 .mc-loading {
     align-items: center;
     display: flex;
-    gap: size(12);
+    gap: var(--mc-space-12);
     font-weight: 700;
-    font-size: size(18);
-    line-height: size(25);
+    font-size: var(--mc-space-18);
+    line-height: var(--mc-space-25);
     margin: 0 auto;
     justify-content: center;
     
     .iconify {
-        font-size: size(40);
+        font-size: var(--mc-space-40);
     }
 
 }

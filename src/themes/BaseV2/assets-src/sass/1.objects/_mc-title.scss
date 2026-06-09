@@ -5,7 +5,7 @@
     font-size: var(--mc-font-size-sm);
 
     &--long {
-        font-size: size(20);
+        font-size: var(--mc-space-20);
     }
 
     &--short {

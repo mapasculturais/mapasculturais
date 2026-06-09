@@ -28,7 +28,7 @@
 
             .placeholder {
                 align-items: center;
-                background-color: #797979;
+                background-color: var(--mc-gray-600);
                 color: white;
                 display: flex;
                 font-size: size(25);
@@ -61,7 +61,7 @@
             padding-top: size(16);
             padding-bottom: size(16);
             .add-button {
-                font-family: "Open Sans";
+                font-family: var(--mc-font-body);
                 font-weight: 600;
 
                 svg {

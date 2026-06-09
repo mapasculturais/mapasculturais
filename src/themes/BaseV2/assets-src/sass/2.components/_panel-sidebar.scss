@@ -134,7 +134,7 @@
         padding: size(8) size(16);
         font-size: 14px;
         font-weight: 600;
-        font-family: 'Open Sans';
+        font-family: var(--mc-font-body);
         text-decoration: none;
 
         &:focus,

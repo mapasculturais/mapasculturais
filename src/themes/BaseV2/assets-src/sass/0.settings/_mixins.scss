@@ -1,17 +1,31 @@
 @use 'sass:math';
 
+// @deprecated Use respond-above('md') from 1.tools/_responsive.scss instead
 @mixin desktop {
     @media screen and (min-width: 50rem) {
         @content;
     }
 }
 
+// @deprecated Use respond-below('md') from 1.tools/_responsive.scss instead
 @mixin mobile {
     @media screen and (max-width: 50rem) {
         @content;
     }
 }
 
+// ============================================================================
+// @deprecated Use CSS custom properties instead of size()
+//
+// Migration guide:
+//   size(N)  →  var(--mc-space-N)   (if token exists)
+//   size(N)  →  #{N / 16}rem        (if no token)
+//
+// Available spacing tokens: --mc-space-{1,2,4,5,8,10,12,14,15,16,18,19,20,22,24,25,28,30,32,40,48,64,96}
+// Layout tokens: --mc-layout-container-{xs,sm,md,lg,xl}, --mc-layout-page-max
+// Breakpoint mixins: respond-above($bp), respond-below($bp), respond-between($lo, $hi)
+//   where $bp is one of: 'xs' (400px), 'sm' (600px), 'md' (800px), 'lg' (960px), 'xl' (1170px)
+// ============================================================================
 @function size($value, $unit: 'px') {
     @if $unit == 'rem' {
         @return #{$value}rem;

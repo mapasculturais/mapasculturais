@@ -1,0 +1,21 @@
+// ============================================================================
+// Elements: Paragraphs & Small — Migrated from 0.settings/_global.scss (Phase 3)
+// ============================================================================
+
+p, small {
+    font-family: var(--mc-font-headings);
+    font-style: var(--mc-font-regular);
+    margin: 0;
+}
+
+p {
+    font-weight: var(--mc-font-regular);
+    font-size: var(--mc-font-size-xs);
+    line-height: var(--mc-space-22);
+}
+
+small {
+    font-weight: var(--mc-font-regular);
+    font-size: var(--mc-font-size-xxxs);
+    line-height: var(--mc-space-16);
+}

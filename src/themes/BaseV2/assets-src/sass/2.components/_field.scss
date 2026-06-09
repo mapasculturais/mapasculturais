@@ -265,7 +265,7 @@
     &.error {
         input, textarea, select, .mc-select__selected-option {
             background: url(https://api.iconify.design/fa6-solid/circle-exclamation.svg?color=red) no-repeat right size(16) center / size(16);
-            border: size(2) solid #FF0000;
+            border: size(2) solid var(--mc-danger-500);
             padding-right: size(40);
         }
 

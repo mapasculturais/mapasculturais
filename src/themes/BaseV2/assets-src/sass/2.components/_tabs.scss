@@ -28,7 +28,7 @@
         }
 
         &::-webkit-scrollbar-thumb {
-            background-color: #6C6C6C;
+            background-color: var(--mc-gray-600);
             border-radius: var(--mc-border-radius-pill);
         }
 

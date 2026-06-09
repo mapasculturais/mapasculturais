@@ -191,7 +191,7 @@
     }
 
     &.mobile {
-        background: white;
+        background: var(--mc-white);
         gap: 0;
         height: 100vh;
         left: 0;
@@ -214,7 +214,7 @@
             width: 100%;
 
             li {
-                border-bottom: var(--mc-border-hairline) #BBBBBB;
+                border-bottom: var(--mc-border-hairline) var(--mc-gray-200);
     
                 &:last-child {
                     border-bottom: none;
@@ -247,7 +247,7 @@
 
         .close {
             align-items: center;
-            background-color: white;
+            background-color: var(--mc-white);
             border-top: none;
             box-shadow: var(--mc-shadow-lv1);
             display: flex;
@@ -287,7 +287,7 @@
             }
 
             &:hover {
-                background-color: white;
+                background-color: var(--mc-white);
                 color: var(--mc-low-500);
             }
 

@@ -127,21 +127,21 @@
         position: relative;
 
         &--input {
-            background: #FFFFFF;
+            background: var(--mc-white);
             background: url(https://api.iconify.design/ic/baseline-search.svg) no-repeat right 12px center / 18px;
-            border: size(1) solid #BBBBBB;
+            border: size(1) solid var(--mc-gray-200);
             border-radius: size(68);
             font-weight: 400;
             font-size: size(16);
             line-height: size(19);
-            color: #666666;
+            color: var(--mc-gray-600);
             padding: size(11) size(16);
             min-width: size(265);
             width: 100%;
         }
 
         &--list {
-            background: #FFFFFF;
+            background: var(--mc-white);
             display: flex;
             flex-direction: column;
             list-style: none;
@@ -152,7 +152,7 @@
             padding: 0;
             z-index: 0;
             gap: size(16);
-            border-bottom: size(1) solid #BBBBBB;
+            border-bottom: size(1) solid var(--mc-gray-200);
 
             &-item {
                 cursor: pointer;
@@ -167,7 +167,7 @@
         padding-bottom: 0;
 
         button {
-            border: size(2) solid #FF0000;
+            border: size(2) solid var(--mc-danger-500);
         }
     }
 

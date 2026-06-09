@@ -7,12 +7,12 @@
     border-radius: var(--mc-border-radius-sm);
     cursor: pointer;
     display: inline-flex;
-    font-size: size(16);
+    font-size: var(--mc-space-16);
     font-weight: 600;
-    font-family: 'Open Sans';
+    font-family: var(--mc-font-body);
     justify-content: center;
-    line-height: size(18);
-    padding: size(9) size(19);
+    line-height: var(--mc-space-18);
+    padding: size(9) var(--mc-space-19);
     position: relative;
     text-decoration: none;
 
@@ -34,7 +34,7 @@
     }
 
     &--left-icon, &--right-icon {
-        padding-inline: size(32);
+        padding-inline: var(--mc-space-32);
 
         .iconify {
             position: absolute;
@@ -44,23 +44,23 @@
     &--left-icon {
 
         .iconify {
-            left: size(8);
+            left: var(--mc-space-8);
         }
     }
 
     &--right-icon {
 
         .iconify {
-            right: size(8);
+            right: var(--mc-space-8);
         }
     }
 
     &--icon {
-        gap: size(12);
+        gap: var(--mc-space-12);
 
         .iconify {
-            font-size: size(16);
-            min-width: size(16);
+            font-size: var(--mc-space-16);
+            min-width: var(--mc-space-16);
         }
     }
 
@@ -73,44 +73,44 @@
     // tamanhos
 
     &--xbg {
-        font-size: size(24);
+        font-size: var(--mc-space-24);
         font-weight: 700;
-        line-height: size(28);
-        padding: size(20) size(32);
+        line-height: var(--mc-space-28);
+        padding: var(--mc-space-20) var(--mc-space-32);
 
         .iconify {
-            font-size: size(18);
+            font-size: var(--mc-space-18);
         }
     }
 
     &--bg {
-        font-size: size(18);
+        font-size: var(--mc-space-18);
         font-weight: 700;
-        line-height: size(25);
-        padding: size(17.5) size(32);
+        line-height: var(--mc-space-25);
+        padding: size(17.5) var(--mc-space-32);
 
         .iconify {
-            font-size: size(18);
+            font-size: var(--mc-space-18);
         }
     }
 
     &--md {
-        font-size: size(18);
+        font-size: var(--mc-space-18);
         font-weight: 600;
-        padding: size(12) size(24);
+        padding: var(--mc-space-12) var(--mc-space-24);
 
         .iconify {
-            font-size: size(18);
+            font-size: var(--mc-space-18);
         }
     }
 
     &--sm {
-        font-size: size(14);
-        padding: size(5) size(15);
+        font-size: var(--mc-space-14);
+        padding: var(--mc-space-5) var(--mc-space-15);
         gap: size(9);
 
         .iconify {
-            font-size: size(14);
+            font-size: var(--mc-space-14);
         }
     }
 
@@ -122,7 +122,7 @@
 
     &--outline {
         background-color: transparent;
-        border: size(2) solid var(--mc-gray-300);
+        border: var(--mc-space-2) solid var(--mc-gray-300);
         color: var(--mc-gray-500);
 
         &:hover {
@@ -133,7 +133,7 @@
 
     &--primary {
         background-color: var(--mc-primary-500);
-        border: size(2) solid var(--mc-primary-500);
+        border: var(--mc-space-2) solid var(--mc-primary-500);
         color: var(--mc-white);
 
         &:hover {
@@ -143,7 +143,7 @@
 
         &-outline {
             background-color: var(--mc-white);
-            border: size(2) solid var(--mc-primary-500);
+            border: var(--mc-space-2) solid var(--mc-primary-500);
             color: var(--mc-primary-500);
 
             &:hover {
@@ -155,7 +155,7 @@
 
         &-noborder {
             background-color: var(--mc-white);
-            border: size(2) solid var(--mc-white);
+            border: var(--mc-space-2) solid var(--mc-white);
             color: var(--mc-primary-500);
 
             &:hover {
@@ -168,7 +168,7 @@
 
     &--primarylight {
         background-color: var(--mc-primary-300);
-        border: size(2) solid var(--mc-primary-300);
+        border: var(--mc-space-2) solid var(--mc-primary-300);
         color: var(--mc-white);
 
         &:hover {
@@ -179,7 +179,7 @@
 
         &-outline {
             background-color: var(--mc-white);
-            border: size(2) solid var(--mc-primary-300);
+            border: var(--mc-space-2) solid var(--mc-primary-300);
             color: var(--mc-primary-300);
 
             &:hover {
@@ -192,7 +192,7 @@
 
     &--secondary {
         background-color: var(--mc-secondary-500);
-        border: size(2) solid var(--mc-secondary-500);
+        border: var(--mc-space-2) solid var(--mc-secondary-500);
         color: var(--mc-high-500);
 
         &:hover {
@@ -202,7 +202,7 @@
 
         &-outline {
             background-color: var(--mc-white);
-            border: size(2) solid var(--mc-secondary-500);
+            border: var(--mc-space-2) solid var(--mc-secondary-500);
             color: var(--mc-secondary-500);
 
             &:hover {
@@ -215,7 +215,7 @@
 
     &--secondarylight {
         background-color: var(--mc-secondary-300);
-        border: size(2) solid var(--mc-secondary-300);
+        border: var(--mc-space-2) solid var(--mc-secondary-300);
         color: var(--mc-low-500);
 
         &:hover {
@@ -226,7 +226,7 @@
 
         &-outline {
             background-color: var(--mc-white);
-            border: size(2) solid var(--mc-secondary-300);
+            border: var(--mc-space-2) solid var(--mc-secondary-300);
             color: var(--mc-secondary-300);
 
             &:hover {
@@ -239,7 +239,7 @@
 
     &--highlight {
         background-color: var(--mc-highlight-500);
-        border: size(2) solid var(--mc-highlight-500);
+        border: var(--mc-space-2) solid var(--mc-highlight-500);
         color: var(--mc-high-500);
 
         &:hover {
@@ -249,7 +249,7 @@
 
         &-outline {
             background-color: var(--mc-white);
-            border: size(2) solid var(--mc-highlight-500);
+            border: var(--mc-space-2) solid var(--mc-highlight-500);
             color: var(--mc-highlight-500);
 
             &:hover {
@@ -262,7 +262,7 @@
 
     &--solid {
         background-color: var(--mc-gray-300);
-        border: size(2) solid var(--mc-gray-300);
+        border: var(--mc-space-2) solid var(--mc-gray-300);
         color: var(--mc-black);
 
         &:hover {
@@ -272,7 +272,7 @@
 
         &-outline {
             background-color: var(--mc-white);
-            border: size(2) solid var(--mc-gray-300);
+            border: var(--mc-space-2) solid var(--mc-gray-300);
             color: var(--mc-black);
 
             &:hover {
@@ -283,14 +283,14 @@
         }
 
         &-dark {
-            background-color: #575757;
+            background-color: var(--mc-gray-600);
             color: var(--mc-white);
         }
     }
 
     &--text {
         background-color: var(--mc-white);
-        border: size(2) solid transparent;
+        border: var(--mc-space-2) solid transparent;
         color: var(--mc-black);
 
         &:hover {
@@ -300,7 +300,7 @@
 
         &-outline {
             background-color: var(--mc-white);
-            border: size(2) solid var(--mc-low-500);
+            border: var(--mc-space-2) solid var(--mc-low-500);
             color: var(--mc-low-500);
 
             &:hover {

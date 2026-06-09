@@ -6,13 +6,13 @@
       font-weight: 700;
       font-size: 12px;
       line-height: 16px;
-      color: #000000;
+      color: var(--mc-low-500);
     }
     &--link {
       font-weight: 700;
       font-size: 16px;
       line-height: 20px;
-      color: #0074C1;
+      color: var(--mc-helper-500);
       text-decoration: none;
     }
   }

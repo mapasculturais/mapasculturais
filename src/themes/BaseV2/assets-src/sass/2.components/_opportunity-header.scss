@@ -105,7 +105,7 @@
                         font-size: size(14);
                         gap: size(5);
                         line-height: size(19);
-                        font-family: 'Open Sans';
+                        font-family: var(--mc-font-body);
                         font-size: 14px;
                         align-items: baseline;
 
@@ -113,7 +113,7 @@
 
                             font-style: normal;
                             font-weight: 600;
-                            color: #3E3E3E;
+                            color: var(--mc-gray-700);
                             font-size: size(14);
                             line-height: size(19);
                             text-transform: uppercase;
@@ -138,7 +138,7 @@
                 @media (max-width: size(400)) {
                     &__info {
                         flex-direction: column;
-                        font-family: 'Open Sans';
+                        font-family: var(--mc-font-body);
                         font-style: normal;
                         font-weight: 600;
                         font-size: 14px;
