@@ -309,13 +309,18 @@ trait EntityManagerModel {
         foreach ($evaluationMethodConfigurations as $evaluationMethodConfiguration) {
             $newMethodConfiguration = clone $evaluationMethodConfiguration;
             $newMethodConfiguration->setOpportunity($this->entityOpportunityModel);
-            $newMethodConfiguration->save(true);
 
-            // duplica os metadados das configurações do modelo de avaliação
             foreach ($evaluationMethodConfiguration->getMetadata() as $metadataKey => $metadataValue) {
                 $newMethodConfiguration->setMetadata($metadataKey, $metadataValue);
-                $newMethodConfiguration->save(true);
             }
+
+            // acumula config + todos os metadados no UoW sem flush individual
+            $newMethodConfiguration->save(false);
+        }
+
+        // flush único para todos os eval configs e seus metadados
+        if (!empty($evaluationMethodConfigurations)) {
+            $app->em->flush();
         }
     }
 
@@ -334,26 +339,29 @@ trait EntityManagerModel {
             'parent' => $this->entityOpportunity
         ]);
         foreach ($phases as $phase) {
-            
+
             if (!$phase->getMetadata('isLastPhase')) {
                 $newPhase = clone $phase;
                 $newPhase->setParent($this->entityOpportunityModel);
                 $newPhase->owner = $app->user->profile;
 
-                foreach ($phase->getMetadata() as $metadataKey => $metadataValue) {
-                    if (!is_null($metadataValue) && $metadataValue != '') {
-                        $newPhase->setMetadata($metadataKey, $metadataValue);
-                        $newPhase->save(true);
-                    }
-                }
-
-                $this->generateRegistrationFieldsAndFiles($phase, $newPhase);
-
                 $now = new \DateTime('now');
                 $newPhase->createTimestamp = $now;
                 $newPhase->subsite = $phase->subsite;
 
+                // cria a fase no banco primeiro para que insert:finish possa criar o step com FK válida
                 $newPhase->save(true);
+
+                // acumula todos os metadados na memória sem flush individual
+                foreach ($phase->getMetadata() as $metadataKey => $metadataValue) {
+                    if (!is_null($metadataValue) && $metadataValue != '') {
+                        $newPhase->setMetadata($metadataKey, $metadataValue);
+                    }
+                }
+                // persiste metadata no UoW; o flush ocorre dentro de generateRegistrationFieldsAndFiles
+                $newPhase->saveMetadata(false);
+
+                $this->generateRegistrationFieldsAndFiles($phase, $newPhase);
 
                 $this->changeObjectType($newPhase->id);
 
@@ -364,13 +372,17 @@ trait EntityManagerModel {
                 foreach ($evaluationMethodConfigurations as $evaluationMethodConfiguration) {
                     $newMethodConfiguration = clone $evaluationMethodConfiguration;
                     $newMethodConfiguration->setOpportunity($newPhase);
-                    $newMethodConfiguration->save(true);
 
-                    // duplica os metadados das configurações do modelo de avaliação para a fase
                     foreach ($evaluationMethodConfiguration->getMetadata() as $metadataKey => $metadataValue) {
                         $newMethodConfiguration->setMetadata($metadataKey, $metadataValue);
-                        $newMethodConfiguration->save(true);
                     }
+
+                    // acumula config + todos os metadados no UoW sem flush individual
+                    $newMethodConfiguration->save(false);
+                }
+
+                if (!empty($evaluationMethodConfigurations)) {
+                    $app->em->flush();
                 }
             }
             
