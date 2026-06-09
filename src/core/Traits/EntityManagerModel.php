@@ -425,16 +425,12 @@ trait EntityManagerModel {
         $em = $app->em;
         $conn = $em->getConnection();
 
-        $sql = "
-            SELECT 
-                om.*
-            FROM
-                opportunity_meta om
-            WHERE om.object_id = {$this->entityOpportunity->id}
-        ";
-        $stmt = $conn->query($sql);
+        $rows = $conn->fetchAllAssociative(
+            'SELECT om.* FROM opportunity_meta om WHERE om.object_id = :id',
+            ['id' => $this->entityOpportunity->id]
+        );
 
-        while (($row = $stmt->fetchAssociative()) !== false) {
+        foreach ($rows as $row) {
             $this->entityOpportunityModel->setMetadata($row['key'], $row['value']);
         }
 
@@ -540,15 +536,20 @@ trait EntityManagerModel {
             [$oppId]
         );
 
-        $steps = [];
-        foreach ($ids as $id) {
-            $step = $app->repo('RegistrationStep')->find((int) $id);
-            if ($step && (int) $step->opportunity->id === $oppId) {
-                $steps[] = $step;
-            }
+        if (empty($ids)) {
+            return [];
         }
 
-        return $steps;
+        // uma query IN(...) em vez de N queries find() individuais
+        $steps = $app->repo('RegistrationStep')->findBy(
+            ['id' => array_map('intval', $ids)],
+            ['displayOrder' => 'ASC', 'id' => 'ASC']
+        );
+
+        return array_values(array_filter(
+            $steps,
+            fn($step) => (int) $step->opportunity->id === $oppId
+        ));
     }
 
     private function copyRegistrationStepPropertiesFromTo(RegistrationStep $from, RegistrationStep $to): void
