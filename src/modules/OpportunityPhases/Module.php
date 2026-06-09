@@ -111,6 +111,142 @@ class Module extends \MapasCulturais\Module{
         return $result;
     }
 
+    public static function isAppealPhaseOpportunity(Opportunity $phase): bool
+    {
+        return (bool) $phase->isAppealPhase || $phase->status === Opportunity::STATUS_APPEAL_PHASE;
+    }
+
+    /**
+     * Próxima fase na linha principal do edital, ignorando fases de recurso.
+     */
+    public static function getNextMainPhase(Opportunity $phase): ?Opportunity
+    {
+        $walker = $phase;
+        while ($next = $walker->nextPhase) {
+            if (self::isAppealPhaseOpportunity($next)) {
+                $walker = $next;
+                continue;
+            }
+            return $next;
+        }
+
+        return null;
+    }
+
+    /**
+     * Fases principais após a fase informada (coleta, mérito, publicação etc.), ignorando recursos.
+     *
+     * @return Opportunity[]
+     */
+    public static function getDownstreamMainPhases(Opportunity $phase): array
+    {
+        $phases = [];
+        $walker = $phase;
+
+        while ($next = self::getNextMainPhase($walker)) {
+            $phases[] = $next;
+            $walker = $next;
+        }
+
+        return $phases;
+    }
+
+    /**
+     * Remove inscrições do mesmo number em todas as fases principais posteriores à fase de origem.
+     * Usado ao abrir recurso para retirar a inscrição de coleta, mérito e publicação enquanto o recurso está em andamento.
+     */
+    public static function removeDownstreamRegistrations(Registration $parent_registration): void
+    {
+        $app = App::i();
+        $parent_phase = $parent_registration->opportunity;
+
+        $app->disableAccessControl();
+
+        try {
+            foreach (self::getDownstreamMainPhases($parent_phase) as $phase) {
+                $downstream = $app->repo('Registration')->findOneBy([
+                    'opportunity' => $phase,
+                    'number' => $parent_registration->number,
+                ]);
+
+                if (!$downstream) {
+                    continue;
+                }
+
+                if ($prev_id = $downstream->previousPhaseRegistrationId) {
+                    $prev = $app->repo('Registration')->find($prev_id);
+                    if ($prev) {
+                        $prev->nextPhaseRegistrationId = null;
+                        $prev->__skipQueuingPCacheRecreation = true;
+                        $prev->skipSync = true;
+                        $prev->save(true);
+                    }
+                }
+
+                if ($parent_registration->nextPhaseRegistrationId == $downstream->id) {
+                    $parent_registration->nextPhaseRegistrationId = null;
+                    $parent_registration->__skipQueuingPCacheRecreation = true;
+                    $parent_registration->skipSync = true;
+                    $parent_registration->save(true);
+                }
+
+                $downstream->skipSync = true;
+                $downstream->__skipQueuingPCacheRecreation = true;
+                $downstream->delete(true);
+                $app->em->clear();
+            }
+        } finally {
+            $app->enableAccessControl();
+        }
+    }
+
+    /**
+     * Condição DQL para inscrições da fase anterior que qualificam avanço à fase seguinte.
+     *
+     * Fase avaliativa com recurso:
+     * - bloqueia enquanto existir recurso pendente (status 0 ou 1);
+     * - deferido no recurso (status 10) qualifica independentemente do status na fase de origem;
+     * - indeferido/inválido no recurso qualifica apenas se a fase de origem tiver status 10;
+     * - sem recurso, qualifica com status 10 na fase de origem.
+     *
+     * Fase de coleta de dados (não recurso): qualifica com status > 0 (inscrição enviada).
+     *
+     * @return array{0: string, 1: array<string, Opportunity>}
+     */
+    public static function getPreviousPhaseQualificationDql(string $alias, Opportunity $previous_phase): array
+    {
+        if ($previous_phase->isDataCollection && !self::isAppealPhaseOpportunity($previous_phase)) {
+            return ["{$alias}.status > 0", []];
+        }
+
+        $params = [];
+        $appeal_phase = $previous_phase->appealPhase;
+
+        if (!$appeal_phase) {
+            return ["{$alias}.status = 10", []];
+        }
+
+        $params['appeal_phase'] = $appeal_phase;
+
+        $pending = "EXISTS (
+            SELECT ap_pending.id FROM MapasCulturais\Entities\Registration ap_pending
+            WHERE ap_pending.opportunity = :appeal_phase
+            AND ap_pending.number = {$alias}.number
+            AND ap_pending.status NOT IN (2, 3, 10)
+        )";
+
+        $deferred = "EXISTS (
+            SELECT ap_def.id FROM MapasCulturais\Entities\Registration ap_def
+            WHERE ap_def.opportunity = :appeal_phase
+            AND ap_def.number = {$alias}.number
+            AND ap_def.status = 10
+        )";
+
+        $condition = "NOT {$pending} AND ({$deferred} OR ({$alias}.status = 10 AND NOT {$deferred}))";
+
+        return [$condition, $params];
+    }
+
     /**
      * Próxima fase na sequência do edital para validação de datas, ignorando fases de recurso.
      * (Recursos são laterais à linha principal; não devem limitar o término das avaliações anteriores.)
@@ -987,7 +1123,7 @@ class Module extends \MapasCulturais\Module{
         $app->hook('Entities\Opportunity::enqueueRegistrationSync', function($value, array $registrations = []) use($app) {
             
             // Não deve sincronizar as inscrições em fase de recurso
-            if ($this->isAppealPhase) {
+            if (self::isAppealPhaseOpportunity($this)) {
                 return false;
             }
 
@@ -1004,7 +1140,7 @@ class Module extends \MapasCulturais\Module{
             /** @var Opportunity $this */
 
             // Não deve sincronizar as inscrições da primeira fase ou fase de recurso
-            if ($this->isFirstPhase || $this->isAppealPhase) {
+            if ($this->isFirstPhase || self::isAppealPhaseOpportunity($this)) {
                 return false;
             }
 
@@ -1028,7 +1164,9 @@ class Module extends \MapasCulturais\Module{
                 $result->deleted = $this->removeOrphanRegistrations($registrations);
             }
 
-            if($nextPhase = $this->nextPhase) {
+            // Propaga para a próxima fase principal (ignora recurso, inclui publicação final).
+            $nextPhase = self::getNextMainPhase($this);
+            if ($nextPhase) {
                 $nextPhase->syncRegistrations($registrations);
             }
             return $result;
@@ -1071,7 +1209,12 @@ class Module extends \MapasCulturais\Module{
             }
 
             // para a última fase vão todas as inscrições que não estejam como rascunho
-            $status = $this->isLastPhase || ($this->isReportingPhase && !$this->isFinalReportingPhase && !$previous_phase->isLastPhase) ? 'r2.status > 0' : 'r2.status = 10';
+            $appeal_params = [];
+            if ($this->isLastPhase || ($this->isReportingPhase && !$this->isFinalReportingPhase && !$previous_phase->isLastPhase)) {
+                $qualified_status_dql = 'r2.status > 0';
+            } else {
+                [$qualified_status_dql, $appeal_params] = self::getPreviousPhaseQualificationDql('r2', $previous_phase);
+            }
 
             $have_numbers_query = "";
             if(!$this->isReportingPhase) {
@@ -1093,7 +1236,7 @@ class Module extends \MapasCulturais\Module{
                                 MapasCulturais\Entities\Registration r2
                             WHERE
                                 r2.opportunity = :previous_opportunity AND
-                                {$status}
+                                {$qualified_status_dql}
                         )
                     ORDER BY r1.id ASC
                 ";
@@ -1106,7 +1249,7 @@ class Module extends \MapasCulturais\Module{
             $query->setParameters([
                 'previous_opportunity' => $previous_phase,
                 'target_opportunity' => $this,
-            ]);
+            ] + $appeal_params);
 
             $deleted_registrations = [];
             $count = 0;
@@ -1138,6 +1281,7 @@ class Module extends \MapasCulturais\Module{
             $lock_key = "importPreviousPhaseRegistrations:{$this->id}";
             $app->lock($lock_key, wait_for_unlock:10, expire_in:10 * MINUTE_IN_SECONDS);
 
+            try {
             $this->checkPermission('@control');
 
 
@@ -1344,6 +1488,8 @@ class Module extends \MapasCulturais\Module{
                     $app->em->clear();
                 }
             } else {
+                [$qualified_status_dql, $appeal_params] = self::getPreviousPhaseQualificationDql('r1', $previous_phase);
+
                 $dql = "
                     SELECT
                         r1
@@ -1352,7 +1498,7 @@ class Module extends \MapasCulturais\Module{
                     WHERE
                         r1.opportunity = :previous_opportunity AND
                         {$where_numbers}
-                        r1.status = 10 AND
+                        {$qualified_status_dql} AND
                         r1.number NOT IN (
                             SELECT
                                 r2.number
@@ -1369,7 +1515,7 @@ class Module extends \MapasCulturais\Module{
                 $query->setParameters([
                     'previous_opportunity' => $previous_phase,
                     'target_opportunity' => $this
-                ]);
+                ] + $appeal_params);
 
 
                 while ($registration = $query->getOneOrNullResult()) {
@@ -1393,8 +1539,10 @@ class Module extends \MapasCulturais\Module{
             $app->enqueueEntityToPCacheRecreation($this);
             $app->enableAccessControl();
 
-            $app->unlock($lock_key);
             return $new_registrations;
+            } finally {
+                $app->unlock($lock_key);
+            }
         });
 
 
@@ -1407,13 +1555,16 @@ class Module extends \MapasCulturais\Module{
             $current_phase = $this->opportunity;
 
             // Não deve sincronizar inscrições em fase de recursos
-            if ($current_phase->isAppealPhase) {
+            if (self::isAppealPhaseOpportunity($current_phase)) {
                 return;
             }
 
-            if($next_phase = $current_phase->nextPhase){
+            if ($next_phase = self::getNextMainPhase($current_phase)) {
                 $next_phase->enqueueRegistrationSync([$this]);
-                $last_phase = $current_phase->lastPhase;
+            }
+
+            $last_phase = $current_phase->lastPhase;
+            if ($last_phase && (!$next_phase || $last_phase->id !== $next_phase->id)) {
                 $last_phase->enqueueRegistrationSync([$this]);
             }
         });
