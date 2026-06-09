@@ -470,13 +470,14 @@ trait EntityManagerModel {
                 continue;
             }
 
-            $stepMap[$oldStep->id] = $existingSteps[$oldStep->id] ?? (function () use ($oldStep, $opportunityNew) {
+            $newStep = $existingSteps[$oldStep->id] ?? null;
+            if ($newStep === null) {
                 $newStep = clone $oldStep;
                 $newStep->setOpportunity($opportunityNew);
-                $newStep->save(true);
-
-                return $newStep;
-            })();
+            }
+            // save(false) acumula no UoW e já atribui ID via sequence (sem flush)
+            $newStep->save(false);
+            $stepMap[$oldStep->id] = $newStep;
         }
 
         foreach ($opportunityCurrent->getRegistrationFieldConfigurations() as $registrationFieldConfiguration) {
@@ -487,7 +488,7 @@ trait EntityManagerModel {
                 $fieldConfiguration->setStep($stepMap[$registrationFieldConfiguration->step->id]);
             }
 
-            $fieldConfiguration->save(true);
+            $fieldConfiguration->save(false);
         }
 
         foreach ($opportunityCurrent->getRegistrationFileConfigurations() as $registrationFileConfiguration) {
@@ -498,8 +499,11 @@ trait EntityManagerModel {
                 $fileConfiguration->setStep($stepMap[$registrationFileConfiguration->step->id]);
             }
 
-            $fileConfiguration->save(true);
+            $fileConfiguration->save(false);
         }
+
+        // Flush único para steps, campos e arquivos — substitui N saves(true) individuais
+        App::i()->em->flush();
 
         $this->deleteOrphanEmptyRegistrationSteps($opportunityNew, $stepMap);
     }
@@ -543,7 +547,7 @@ trait EntityManagerModel {
         $to->metadata = is_object($meta)
             ? json_decode(json_encode($meta), false) ?: new \stdClass()
             : new \stdClass();
-        $to->save(true);
+        $to->save(false);
     }
 
     /**
