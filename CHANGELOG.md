@@ -6,6 +6,12 @@ O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [unreleased]
+### Melhorias
+- Implementa fluxo LGPD de solicitação de exclusão de conta em Conta e Privacidade, com modais de confirmação, envio de e-mail ao responsável configurável (ou aos administradores do subsite / todos os usuários com papel administrativo quando não houver e-mail definido) e cópia opcional para o usuário
+- Adiciona configuração do e-mail destinatário em Gestão de usuários (global via PUBLIC_FILES ou por subsite)
+- Desativa exclusão direta de conta do módulo DeleteAccount em favor do fluxo de solicitação
+- Evita o carregamento indesejado de texto e botão ao utilizar o mc-modal
+
 ### Correções
 - Melhorar controle de permissões para exclusão de fases
 - Corrigir validação de campos de inscrição configurados incorretamente
