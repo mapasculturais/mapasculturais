@@ -87,6 +87,10 @@ return [
             'title' => i::__("Certificado de solicitação de recurso"),
             'template' => 'claim_certificate.html'
         ],
+        'request_account_deletion' => [
+            'title' => i::__('Solicitação de exclusão de conta'),
+            'template' => 'request_account_deletion.html'
+        ],
 
     ]
 ];
