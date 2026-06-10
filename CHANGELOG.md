@@ -40,6 +40,7 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Corrige a exportação de oportunidades para não incluir datas das fases de avaliação quando a opção de exportar datas das fases estiver desmarcada
 - Corrige o cálculo ponderado dos subtotais na tela de avaliação técnica
 - Corrige os templates de email da fase de recurso
+- Reduz o número de operações de escrita no banco durante a geração de edital a partir do modelo, acumulando escritas de fases, etapas, campos, arquivos e configurações de avaliação em lote e eliminando consultas N+1 na duplicação de formulários
 
 ## [7.7.51] - 2026-06-03
 ### Correções
