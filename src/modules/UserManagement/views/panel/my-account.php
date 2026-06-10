@@ -9,12 +9,11 @@ $this->import('
     mc-entity
     mc-icon
     mc-link
-    panel--entity-actions
     panel--entity-tabs
     user-mail
     user-management--ownership-tabs
     user-accepted-terms
-    user-management--delete
+    user-management--request-delete
 ');
 ?>
 <mc-entity #default='{entity}'>
@@ -38,7 +37,7 @@ $this->import('
                     <h3>{{entity.profile?.name}}</h3>
                     
                     <div class="user-management__user-delete">
-                        <panel--entity-actions :entity="entity"></panel--entity-actions>
+                        <user-management--request-delete :entity="entity"></user-management--request-delete>
                     </div>
                 </div>
 

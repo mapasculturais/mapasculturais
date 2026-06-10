@@ -1,0 +1,27 @@
+{{{_header}}}
+<table role="presentation" class="main">
+    <tr>
+        <td class="wrapper">
+            <table role="presentation" border="0" cellpadding="0" cellspacing="0">
+                <tr>
+                    <td>
+                        <p>Olá,</p>
+                        <p>Foi realizada uma nova solicitação de exclusão de conta na plataforma <strong>{{siteName}}</strong>.</p>
+
+                        <p><strong>Nome do usuário:</strong> {{userName}}</p>
+                        <p><strong>E-mail do usuário:</strong> {{userEmail}}</p>
+                        <p><strong>ID do usuário:</strong> {{userId}}</p>
+
+                        <p><strong>Mensagem de solicitação:</strong></p>
+                        <div style="background-color: #f5f5f5; padding: 16px; border-radius: 4px; margin: 16px 0;">
+                            <p style="white-space: pre-wrap; margin: 0;">{{message}}</p>
+                        </div>
+
+                        <p>Atenciosamente,<br>Equipe {{siteName}}</p>
+                    </td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+</table>
+{{{_footer}}}

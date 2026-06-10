@@ -270,9 +270,8 @@ class Module extends \MapasCulturais\Module
         $app->hook('entity(EvaluationMethodConfiguration).remove:after', function () use ($app) {
             /** @var EvaluationMethodConfiguration $this */
             $opportunity_id = $this->opportunity->id;
-            $app->em->clear();
             $opportunity = $app->repo('Opportunity')->find($opportunity_id);
-            if ($opportunity && $opportunity->isExecutionPhase) {
+            if ($opportunity && $opportunity->status > -10 && $opportunity->isExecutionPhase) {
                 $opportunity->destroy(true);
             }
         });

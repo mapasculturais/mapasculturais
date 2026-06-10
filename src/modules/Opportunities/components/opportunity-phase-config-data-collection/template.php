@@ -115,13 +115,30 @@ $this->import('
         <div class="opportunity-data-collection__delete col-12" v-if="!phase.isLastPhase && !phase.isFirstPhase">
             <mc-confirm-button :message="confirmDeleteMessage" @confirm="deletePhase(phase, index)">
                 <template #button="modal">
-                    <button :class="['phase-delete__trash button button--text button--sm', {'disabled' : !phase.currentUserPermissions.remove}]" @click="modal.open()">
+                    <button 
+                        :class="['phase-delete__trash button button--text button--sm', {'disabled' : !canDelete}]" 
+                        @click="modal.open()"
+                        v-tooltip="deleteTooltip"
+                    >
                         <div class="icon">
                             <mc-icon name="trash" class="secondary__color"></mc-icon> 
                         </div>
                         <h5 v-if="phase.isReportingPhase"><?= i::__("Excluir fase de prestação de informações") ?></h5>
                         <h5 v-else><?= i::__("Excluir fase de coleta de dados") ?></h5>
                     </button>
+                </template>
+                <template #message="message">
+                    <div class="grid-12">
+                        <div class="col-12">
+                            <p>{{ confirmDeleteMessage }}</p>
+                        </div>
+                        <div class="col-12" v-if="hasRegistrations">
+                            <mc-alert type="warning">
+                                <strong><?= i::__('ATENÇÃO') ?>: </strong> 
+                                <?= i::__('Esta fase possui inscrições realizadas. Não é possível excluir uma fase de coleta de dados que já possui inscrições.') ?>
+                            </mc-alert>
+                        </div>
+                    </div>
                 </template>
             </mc-confirm-button>
         </div>

@@ -8,6 +8,7 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 ## [UNRELEASED]
 ### Novas Funcionalidades
 - Módulo de **fase de execução** que permite ao gestor configurar uma fase de acompanhamento para os agentes contemplados após a publicação do resultado. Durante esta fase, o agente contemplado pode abrir múltiplos **pedidos de alteração** no projeto aprovado — troca de data, substituição de item de orçamento, mudança de local, entre outros. Cada pedido é avaliado individualmente por uma comissão configurada pelo gestor (mesmo modelo de avaliação simplificada já existente nas fases de seleção). Os pedidos ficam como registro histórico das alterações aprovadas durante a vigência do projeto e não interferem no fluxo das fases seguintes de prestação de informações.
+- **Bônus de pontuação configurável** no método de avaliação técnica, permitindo ao gestor definir regras de bonificação por políticas afirmativas em percentual ou ponto fixo. A configuração permite controlar o valor máximo do bônus, aplicar o acréscimo às inscrições elegíveis, exibir corretamente o bônus nas tabelas e exportações, reaplicar a pontuação quando as regras forem alteradas e manter compatibilidade com configurações legadas por meio de normalização automática.
 - Implementa configuração que permide definir a imagem de avatar de qualquer entidade como obrigatória
 - Adiciona botão para duplicar campos do formulário de inscrição, criando a cópia logo abaixo do campo original
 - Adiciona botão para duplicar anexos do formulário de inscrição, incluindo a cópia do arquivo modelo e inserindo o novo anexo logo abaixo do original
@@ -25,6 +26,9 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Adiciona configuração para exigir foto de perfil do agente coletivo vinculado na inscrição para proponentes do tipo coletivo e pessoa jurídica
 - Adiciona números sequenciais nos avaliadores das comissões
 - Permite criar agentes no fluxo de inscrição de oportunidades respeitando as permissões: agente individual apenas para administradores e agente coletivo para usuários comuns quando exigido pela inscrição.
+- Permite buscar avaliadores por ID do agente no formato #ID e e-mail do usuário ao adicioná-los ou substituí-los nas comissões de avaliação.
+- Adiciona campos de CNPJ e mini currículo à listagem de pessoas dos formulários de inscrição, com validação de CPF e CNPJ.
+- Melhora a performance da listagem de modelos de oportunidades ao evitar consultas repetidas para identificar modelos oficiais.
 
 ### Correções
 - Aplica texto de internacionalização faltante no componente opportunity-registration-table
@@ -36,6 +40,23 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Corrige erro ao reordenar etapas na configuração do formulário de oportunidades
 - Corrige a exportação de oportunidades para não incluir datas das fases de avaliação quando a opção de exportar datas das fases estiver desmarcada
 - Corrige o cálculo ponderado dos subtotais na tela de avaliação técnica
+- Corrige os templates de email da fase de recurso
+
+## [7.7.53] - 2026-06-09
+### Melhorias
+- Implementa fluxo LGPD de solicitação de exclusão de conta em Conta e Privacidade, com modais de confirmação, envio de e-mail ao responsável configurável (ou aos administradores do subsite / todos os usuários com papel administrativo quando não houver e-mail definido) e cópia opcional para o usuário
+- Adiciona configuração do e-mail destinatário em Gestão de usuários (global via PUBLIC_FILES ou por subsite)
+- Desativa exclusão direta de conta do módulo DeleteAccount em favor do fluxo de solicitação
+- Evita o carregamento indesejado de texto e botão ao utilizar o mc-modal
+
+### Correções
+- Melhorar controle de permissões para exclusão de fases
+- Corrigir validação de campos de inscrição configurados incorretamente
+- Corrige o sincronismo das inscrições na fase de recurso, garantindo que avancem normalmente entre as fases
+
+## [7.7.52] - 2026-06-05
+### Correções
+- Corrige exibição do botão 'Ver mais' para aparecer apenas no mobile
 
 ## [7.7.51] - 2026-06-03
 ### Correções

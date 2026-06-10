@@ -14,6 +14,71 @@ class AgentApiTest extends TestCase
     use UserDirector,
         AgentDirector;
 
+    function testEvaluationCommitteeSearchFindsAgentByUserEmailAndAgentIdWithoutChangingGlobalKeyword()
+    {
+        $app = App::i();
+        $app->disableAccessControl();
+
+        try {
+            $user = $this->userDirector->createUser();
+            $user->email = 'avaliador-busca-' . uniqid() . '@example.test';
+            $user->save(true);
+
+            $profile = $user->profile;
+            $profile->name = 'Pessoa Avaliadora Busca Escopada';
+            $profile->save(true);
+
+            $global_query = new ApiQuery(Agent::class, [
+                '@select' => 'id,name',
+                '@keyword' => $user->email,
+                'type' => 'EQ(1)',
+                'parent' => 'NULL()',
+                '@order' => 'id ASC',
+            ]);
+            $global_result = $global_query->find();
+
+            $this->assertNotContains(
+                $profile->id,
+                array_column($global_result, 'id'),
+                'A busca global de agentes por @keyword não deve buscar pelo email do usuário.'
+            );
+
+            $email_query = new ApiQuery(Agent::class, [
+                '@select' => 'id,name,user',
+                '@keyword' => $user->email,
+                '_evaluatorSearch' => '1',
+                'type' => 'EQ(1)',
+                'parent' => 'NULL()',
+                '@order' => 'id ASC',
+            ]);
+            $email_result = $email_query->find();
+
+            $this->assertContains(
+                $profile->id,
+                array_column($email_result, 'id'),
+                'A busca de avaliadores deve encontrar agentes individuais pelo email do usuário vinculado.'
+            );
+
+            $id_query = new ApiQuery(Agent::class, [
+                '@select' => 'id,name',
+                '@keyword' => "#{$profile->id}",
+                '_evaluatorSearch' => '1',
+                'type' => 'EQ(1)',
+                'parent' => 'NULL()',
+                '@order' => 'id ASC',
+            ]);
+            $id_result = $id_query->find();
+
+            $this->assertContains(
+                $profile->id,
+                array_column($id_result, 'id'),
+                'A busca de avaliadores deve encontrar agentes individuais pelo ID do agente informado com #.'
+            );
+        } finally {
+            $app->enableAccessControl();
+        }
+    }
+
     function testFilterAgentsByAvatar()
     {
         $app = App::i();

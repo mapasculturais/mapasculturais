@@ -24,6 +24,7 @@ app.component('opportunity-evaluation-committee', {
                 '@order': 'id ASC',
                 '@limit': '25',
                 '@page': '1',
+                '_evaluatorSearch': '1',
                 'type': 'EQ(1)',
                 'parent': 'NULL()'
             };
@@ -264,7 +265,7 @@ app.component('opportunity-evaluation-committee', {
                 this.messages.success(this.text('reviewerReplaced'));
                 this.loadReviewers();
                 this.loadFetchs();
-                
+                this.refreshEntityPermissions();
             });
         },
         
@@ -280,6 +281,7 @@ app.component('opportunity-evaluation-committee', {
             api.POST(url, this.agentData).then(res => res.json()).then(data => {
                 this.loadReviewers();
                 this.loadFetchs();
+                this.refreshEntityPermissions();
             });
         },
         
@@ -379,8 +381,19 @@ app.component('opportunity-evaluation-committee', {
                     this.delReviewerData(userId);
                 }
                 this.loadReviewers();
-                this.entity.save();
+                this.entity.save().then(() => {
+                    this.refreshEntityPermissions();
+                });
             });
+        },
+
+        async refreshEntityPermissions() {
+            try {
+                const refreshedEntity = await this.entity.API.findOne(this.entity.id);
+                this.entity.currentUserPermissions = refreshedEntity.currentUserPermissions;
+            } catch (error) {
+                console.error('Erro ao atualizar permissões da entidade:', error);
+            }
         },
 
         delReviewerData(userId) {
@@ -417,6 +430,7 @@ app.component('opportunity-evaluation-committee', {
 
             api.POST(url, relationData).then(res => res.json()).then(data => {
                 this.loadReviewers();
+                this.refreshEntityPermissions();
             });
         },
 
