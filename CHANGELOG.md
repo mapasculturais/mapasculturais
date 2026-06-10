@@ -8,6 +8,8 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 ## [UNRELEASED]
 ### Correções
 - Corrige exibição dos modelos criados para o saasAdmin
+- Corrige inclusão e exclusão de avaliadores na comissão de avaliação sem precisar recarregar a página
+- Protege o id da entidade em cache quando a API retorna erro no findOne e ao atualizar permissões das fases
 
 ## [7.7.53] - 2026-06-09
 ### Melhorias
