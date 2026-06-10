@@ -1008,6 +1008,24 @@ abstract class Opportunity extends \MapasCulturais\Entity
         return $registration ? true : false;
     }
 
+
+    /**
+     * Verifica se a oportunidade passada como parâmetro possui inscrições
+     */
+    public function hasRegistrations()
+    {
+        $app = App::i();
+        $conn = $app->em->getConnection();
+
+        $registrations = $conn->fetchAll("SELECT id FROM registration WHERE opportunity_id = $this->id");
+
+        if (count($registrations) >= 1) {
+            return true;
+        }
+
+        return false;
+    }
+
     protected function hasFieldOf (string $registration_field, string $value): bool {
 
         foreach($this->allPhases as $phase) {
@@ -1803,6 +1821,13 @@ abstract class Opportunity extends \MapasCulturais\Entity
     }
 
     protected function canUserRemove($user){
+
+        if($this->isContinuousFlow) {
+            if($this->canUser('@control') && !$this->hasRegistrations()) {
+                return true;
+            }
+        }
+        
         if ($this->publishedRegistrations) {
             return false;
         }

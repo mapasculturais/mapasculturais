@@ -106,12 +106,29 @@ $evaluation_methods = $app->getRegisteredEvaluationMethods();
         <div class="phase-delete col-12">
             <mc-confirm-button :message="confirmDeleteMessage" @confirm="deletePhase(phase, index)">
                 <template #button="modal">
-                    <button :class="['phase-delete__trash button button--text button--sm', {'disabled' : !phase.currentUserPermissions.remove}]" @click="modal.open()">
+                    <button 
+                        :class="['phase-delete__trash button button--text button--sm', {'disabled' : !phase.currentUserPermissions.remove}]" 
+                        @click="modal.open()"
+                        v-tooltip="!phase.currentUserPermissions.remove ? text('tooltip_nao_pode_excluir_avaliacao') : ''"
+                    >
                         <div class="icon">
                             <mc-icon name="trash" class="secondary__color"></mc-icon>
                         </div>
                         <h5><?= i::__("Excluir fase de avaliação") ?></h5>
                     </button>
+                </template>
+                <template #message="message">
+                    <div class="grid-12">
+                        <div class="col-12">
+                            <p>{{ confirmDeleteMessage }}</p>
+                        </div>
+                        <div class="col-12" v-if="Object.keys(phase.agentRelations || {}).length > 0">
+                            <mc-alert type="warning">
+                                <strong><?= i::__('ATENÇÃO') ?>: </strong> 
+                                <?= i::__('Esta fase possui avaliadores no comitê de avaliação. Remova todos os avaliadores do comitê antes de excluir a fase.') ?>
+                            </mc-alert>
+                        </div>
+                    </div>
                 </template>
             </mc-confirm-button>
         </div>

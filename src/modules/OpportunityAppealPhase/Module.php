@@ -164,6 +164,8 @@ class Module extends \MapasCulturais\Module {
                 
                 $new_registration->save(true);
 
+                \OpportunityPhases\Module::removeDownstreamRegistrations($registration);
+
                 // Cria notificação do sistema e disparo de e-mail para o proponente e gestores da oportunidade
                 // Disparo para o proponente
                 $registration_email = ($new_registration->owner->emailPrivado ??
@@ -220,6 +222,7 @@ class Module extends \MapasCulturais\Module {
             if($opportunity->status == Opportunity::STATUS_APPEAL_PHASE) {
                 $self->sendMailNewStatus($opportunity, $this);
                 $self->sendNotificationNewStatus($opportunity, $this);
+                $self->enqueueNextMainPhaseSync($app, $this, $opportunity);
             }
         });
 
@@ -231,6 +234,7 @@ class Module extends \MapasCulturais\Module {
             if($opportunity->status == Opportunity::STATUS_APPEAL_PHASE) {
                 $self->sendMailNewStatus($opportunity, $this);
                 $self->sendNotificationNewStatus($opportunity, $this);
+                $self->enqueueNextMainPhaseSync($app, $this, $opportunity);
             }
         });
 
@@ -242,6 +246,7 @@ class Module extends \MapasCulturais\Module {
             if($opportunity->status == Opportunity::STATUS_APPEAL_PHASE) {
                 $self->sendMailNewStatus($opportunity, $this);
                 $self->sendNotificationNewStatus($opportunity, $this);
+                $self->enqueueNextMainPhaseSync($app, $this, $opportunity);
             }
         });
 
@@ -283,6 +288,32 @@ class Module extends \MapasCulturais\Module {
                 return $evaluationMethodConfiguration->opportunity->appealPhase;
             }
         ]);
+    }
+
+    /**
+     * Sincroniza a inscrição com a próxima fase principal do edital após mudança de status no recurso.
+     * Não altera o status na fase avaliativa de origem; a importação considera o deferimento no recurso.
+     */
+    function enqueueNextMainPhaseSync(App $app, Registration $registration, Opportunity $appeal_phase): void
+    {
+        $parent_phase = $appeal_phase->parent;
+        if (!$parent_phase) {
+            return;
+        }
+
+        $next_main_phase = \OpportunityPhases\Module::getNextMainPhase($parent_phase);
+        if (!$next_main_phase) {
+            return;
+        }
+
+        $parent_registration = $app->repo('Registration')->findOneBy([
+            'opportunity' => $parent_phase,
+            'number' => $registration->number,
+        ]);
+
+        if ($parent_registration) {
+            $next_main_phase->enqueueRegistrationSync([$parent_registration]);
+        }
     }
 
     /**
