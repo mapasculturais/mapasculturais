@@ -42,6 +42,12 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Corrige o cálculo ponderado dos subtotais na tela de avaliação técnica
 - Corrige os templates de email da fase de recurso
 
+## [7.7.54] - 2026-06-10
+### Correções
+- Corrige exibição dos modelos criados para o saasAdmin
+- Corrige inclusão e exclusão de avaliadores na comissão de avaliação sem precisar recarregar a página
+- Protege o id da entidade em cache quando a API retorna erro no findOne e ao atualizar permissões das fases
+
 ## [7.7.53] - 2026-06-09
 ### Melhorias
 - Implementa fluxo LGPD de solicitação de exclusão de conta em Conta e Privacidade, com modais de confirmação, envio de e-mail ao responsável configurável (ou aos administradores do subsite / todos os usuários com papel administrativo quando não houver e-mail definido) e cópia opcional para o usuário

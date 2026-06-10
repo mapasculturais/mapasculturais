@@ -174,7 +174,9 @@ class Entity {
     }
 
     populateId(obj) {
-        this.id = obj[this.$PK];
+        if (obj[this.$PK] !== undefined && obj[this.$PK] !== null) {
+            this.id = obj[this.$PK];
+        }
     }
 
     populateFiles(files) {        

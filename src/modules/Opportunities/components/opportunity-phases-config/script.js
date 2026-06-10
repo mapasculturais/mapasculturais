@@ -60,35 +60,42 @@ app.component('opportunity-phases-config', {
     },
     
     methods: {
-        async addInPhases (phase) {
-            this.phases.splice(this.lastPhaseIndex, 0, phase);
-            
-            // Recarrega as permissões da fase recém-criada
+        async refreshPhasePermissions(phase) {
+            if (!phase?.id) {
+                return;
+            }
+
             try {
-                const refreshedPhase = await phase.API.findOne(phase.id);
-                phase.currentUserPermissions = refreshedPhase.currentUserPermissions;
+                if (phase.__objectType === 'evaluationmethodconfiguration') {
+                    const api = new OpportunitiesAPI();
+                    const phases = await api.getPhases(this.entity.id);
+                    const refreshed = phases.find((item) => {
+                        return item.__objectType === phase.__objectType && item.id === phase.id;
+                    });
+
+                    if (refreshed?.currentUserPermissions) {
+                        phase.currentUserPermissions = refreshed.currentUserPermissions;
+                    }
+                } else {
+                    const refreshedPhase = await phase.API.findOne(phase.id, 'currentUserPermissions');
+                    phase.currentUserPermissions = refreshedPhase.currentUserPermissions;
+                }
             } catch (error) {
                 console.error('Erro ao atualizar permissões da fase:', error);
             }
         },
 
+        async addInPhases (phase) {
+            this.phases.splice(this.lastPhaseIndex, 0, phase);
+            await this.refreshPhasePermissions(phase);
+        },
+
         async addReportingPhases (event) {
             const { collectionPhase, evaluationPhase } = event;
             this.phases.splice(this.phases.length, 0, collectionPhase, evaluationPhase);
-            
-            // Recarrega as permissões das fases recém-criadas
-            try {
-                if (collectionPhase.id) {
-                    const refreshedCollection = await collectionPhase.API.findOne(collectionPhase.id);
-                    collectionPhase.currentUserPermissions = refreshedCollection.currentUserPermissions;
-                }
-                if (evaluationPhase.id) {
-                    const refreshedEvaluation = await evaluationPhase.API.findOne(evaluationPhase.id);
-                    evaluationPhase.currentUserPermissions = refreshedEvaluation.currentUserPermissions;
-                }
-            } catch (error) {
-                console.error('Erro ao atualizar permissões das fases:', error);
-            }
+
+            await this.refreshPhasePermissions(collectionPhase);
+            await this.refreshPhasePermissions(evaluationPhase);
         },
 
         addExecutionPhases ({ collectionPhase, evaluationPhase }) {
