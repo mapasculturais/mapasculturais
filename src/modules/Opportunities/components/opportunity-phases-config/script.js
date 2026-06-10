@@ -60,13 +60,42 @@ app.component('opportunity-phases-config', {
     },
     
     methods: {
-        addInPhases (phase) {
-            this.phases.splice(this.lastPhaseIndex, 0, phase);
+        async refreshPhasePermissions(phase) {
+            if (!phase?.id) {
+                return;
+            }
+
+            try {
+                if (phase.__objectType === 'evaluationmethodconfiguration') {
+                    const api = new OpportunitiesAPI();
+                    const phases = await api.getPhases(this.entity.id);
+                    const refreshed = phases.find((item) => {
+                        return item.__objectType === phase.__objectType && item.id === phase.id;
+                    });
+
+                    if (refreshed?.currentUserPermissions) {
+                        phase.currentUserPermissions = refreshed.currentUserPermissions;
+                    }
+                } else {
+                    const refreshedPhase = await phase.API.findOne(phase.id, 'currentUserPermissions');
+                    phase.currentUserPermissions = refreshedPhase.currentUserPermissions;
+                }
+            } catch (error) {
+                console.error('Erro ao atualizar permissões da fase:', error);
+            }
         },
 
-        addReportingPhases (event) {
+        async addInPhases (phase) {
+            this.phases.splice(this.lastPhaseIndex, 0, phase);
+            await this.refreshPhasePermissions(phase);
+        },
+
+        async addReportingPhases (event) {
             const { collectionPhase, evaluationPhase } = event;
             this.phases.splice(this.phases.length, 0, collectionPhase, evaluationPhase);
+
+            await this.refreshPhasePermissions(collectionPhase);
+            await this.refreshPhasePermissions(evaluationPhase);
         },
 
         addExecutionPhases ({ collectionPhase, evaluationPhase }) {

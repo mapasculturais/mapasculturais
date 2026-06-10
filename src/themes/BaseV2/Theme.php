@@ -44,6 +44,10 @@ class Theme extends \MapasCulturais\Theme
         $app->hook('view.render(<<*>>):before', function() use($app) {
             $this->addDocumentMetas();
         });
+
+        $app->hook('app.init:after', function() use($app) {
+            $this->view->jsObject['isSaasAdmin'] = $app->user->is('saasAdmin');
+        });
     }
 
     function register()

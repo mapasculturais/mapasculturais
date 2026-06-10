@@ -7,6 +7,7 @@ $this->import('
     mc-link
     panel--card-user 
     panel--entity-tabs
+    user-management--account-deletion-config
 ');
 
 $profile = $app->user->profile;
@@ -24,6 +25,8 @@ $profile = $app->user->profile;
             <?= i::__('Gestão dos usuários do sistema') ?>
         </p>
     </header>
+
+    <user-management--account-deletion-config></user-management--account-deletion-config>
     
     <panel--entity-tabs type="user" user="" select="id,email,status,currentUserPermissions,profile.{id,name,type},roles.{id,name,subsite.{id,name}}">
         <template #filters-additional="{query, entities}">

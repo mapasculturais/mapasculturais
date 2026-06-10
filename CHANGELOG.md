@@ -52,6 +52,7 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Permite criar agentes no fluxo de inscrição de oportunidades respeitando as permissões: agente individual apenas para administradores e agente coletivo para usuários comuns quando exigido pela inscrição.
 - Permite buscar avaliadores por ID do agente no formato #ID e e-mail do usuário ao adicioná-los ou substituí-los nas comissões de avaliação.
 - Adiciona campos de CNPJ e mini currículo à listagem de pessoas dos formulários de inscrição, com validação de CPF e CNPJ.
+- Melhora a performance da listagem de modelos de oportunidades ao evitar consultas repetidas para identificar modelos oficiais.
 
 ### Correções
 - Aplica texto de internacionalização faltante no componente opportunity-registration-table
@@ -63,6 +64,29 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Corrige erro ao reordenar etapas na configuração do formulário de oportunidades
 - Corrige a exportação de oportunidades para não incluir datas das fases de avaliação quando a opção de exportar datas das fases estiver desmarcada
 - Corrige o cálculo ponderado dos subtotais na tela de avaliação técnica
+- Corrige os templates de email da fase de recurso
+
+## [7.7.54] - 2026-06-10
+### Correções
+- Corrige exibição dos modelos criados para o saasAdmin
+- Corrige inclusão e exclusão de avaliadores na comissão de avaliação sem precisar recarregar a página
+- Protege o id da entidade em cache quando a API retorna erro no findOne e ao atualizar permissões das fases
+
+## [7.7.53] - 2026-06-09
+### Melhorias
+- Implementa fluxo LGPD de solicitação de exclusão de conta em Conta e Privacidade, com modais de confirmação, envio de e-mail ao responsável configurável (ou aos administradores do subsite / todos os usuários com papel administrativo quando não houver e-mail definido) e cópia opcional para o usuário
+- Adiciona configuração do e-mail destinatário em Gestão de usuários (global via PUBLIC_FILES ou por subsite)
+- Desativa exclusão direta de conta do módulo DeleteAccount em favor do fluxo de solicitação
+- Evita o carregamento indesejado de texto e botão ao utilizar o mc-modal
+
+### Correções
+- Melhorar controle de permissões para exclusão de fases
+- Corrigir validação de campos de inscrição configurados incorretamente
+- Corrige o sincronismo das inscrições na fase de recurso, garantindo que avancem normalmente entre as fases
+
+## [7.7.52] - 2026-06-05
+### Correções
+- Corrige exibição do botão 'Ver mais' para aparecer apenas no mobile
 
 ## [7.7.51] - 2026-06-03
 ### Correções

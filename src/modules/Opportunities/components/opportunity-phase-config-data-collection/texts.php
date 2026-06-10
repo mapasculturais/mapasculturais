@@ -10,4 +10,5 @@ return [
     'confirmar habilitar data final' => i::esc_attr__('Ao confirmar, o edital passará a ter data final de inscrições em todas as fases. Você poderá editar as datas de término de cada fase. Deseja continuar?'),
     'data final habilitada com sucesso' => i::__('Data final das inscrições habilitada. Defina as datas de término das fases.'),
     'nao foi possivel habilitar data final' => i::__('Não foi possível habilitar a data final das inscrições'),
+    'tooltip_nao_pode_excluir_inscricoes' => i::esc_attr__('Não é possível excluir esta fase pois ela já possui inscrições realizadas.'),
 ];

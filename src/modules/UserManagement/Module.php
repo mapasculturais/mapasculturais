@@ -7,11 +7,156 @@ use MapasCulturais\App;
 use MapasCulturais\Entities as MapasEntities;
 use MapasCulturais\Definitions\Role;
 use MapasCulturais\Entities\User;
+use MapasCulturais\Exceptions\Halt;
 use MapasCulturais\Exceptions\PermissionDenied;
 use MapasCulturais\i;
 use MapasCulturais\Utils;
 
 class Module extends \MapasCulturais\Module {
+
+    private const GLOBAL_EMAIL_CONFIG_FILE = 'platform-config/account-deletion-email.json';
+
+    /**
+     * Retorna o e-mail configurado explicitamente para solicitações de exclusão de conta.
+     *
+     * Prioriza o metadado do subsite atual; sem subsite, lê de PUBLIC_FILES.
+     *
+     * @return string|null
+     */
+    public static function getAccountDeletionRecipientEmail(): ?string
+    {
+        $app = App::i();
+        $subsite = $app->getCurrentSubsite();
+
+        if ($subsite) {
+            $email = trim($subsite->email_exclusao_conta ?? '');
+            if ($email && filter_var($email, FILTER_VALIDATE_EMAIL)) {
+                return $email;
+            }
+        }
+
+        return self::getGlobalAccountDeletionEmailFromFile();
+    }
+
+    /**
+     * Retorna os destinatários da solicitação de exclusão de conta.
+     *
+     * Com e-mail configurado, envia somente para ele. Caso contrário, envia para
+     * os administradores do subsite atual ou, sem subsite, para todos os usuários
+     * com papel administrativo em qualquer nível (saasSuperAdmin, saasAdmin, superAdmin, admin).
+     *
+     * @return string[]
+     */
+    public static function getAccountDeletionRecipients(): array
+    {
+        $configured = self::getAccountDeletionRecipientEmail();
+        if ($configured) {
+            return [$configured];
+        }
+
+        $app = App::i();
+        $subsite_id = $app->getCurrentSubsiteId();
+
+        $admins = $subsite_id
+            ? $app->repo('User')->getAdmins($subsite_id)
+            : self::getAllPlatformAdminUsers();
+
+        $emails = [];
+        foreach ($admins as $admin) {
+            $email = trim($admin->email ?? '');
+            if ($email && filter_var($email, FILTER_VALIDATE_EMAIL)) {
+                $emails[] = $email;
+            }
+        }
+
+        return array_values(array_unique($emails));
+    }
+
+    /**
+     * Usuários com qualquer papel administrativo, independentemente do subsite da role.
+     *
+     * @return User[]
+     */
+    private static function getAllPlatformAdminUsers(): array
+    {
+        $app = App::i();
+
+        $dql = "
+            SELECT DISTINCT u
+            FROM MapasCulturais\Entities\User u
+            JOIN u.roles r
+            WITH r.name IN ('saasSuperAdmin', 'saasAdmin', 'superAdmin', 'admin')
+        ";
+
+        return $app->em->createQuery($dql)->getResult();
+    }
+
+    private static function getPublicFilesPath(): string
+    {
+        $path = env('PUBLIC_FILES_PATH', BASE_PATH . 'files');
+
+        return rtrim($path, '/') . '/';
+    }
+
+    private static function getGlobalEmailConfigFilePath(): string
+    {
+        return self::getPublicFilesPath() . self::GLOBAL_EMAIL_CONFIG_FILE;
+    }
+
+    /**
+     * Indica se o usuário logado pode alterar o e-mail de exclusão de conta.
+     * Administradores do subsite atual (ou globais, sem subsite) têm permissão.
+     *
+     * @return bool
+     */
+    public static function canUserConfigureAccountDeletionEmail(): bool
+    {
+        $app = App::i();
+
+        if ($app->user->is('guest')) {
+            return false;
+        }
+
+        if ($app->user->is('saasSuperAdmin') || $app->user->is('saasAdmin')) {
+            return true;
+        }
+
+        return $app->user->is('admin') || $app->user->is('superAdmin');
+    }
+
+    private static function getGlobalAccountDeletionEmailFromFile(): ?string
+    {
+        $file = self::getGlobalEmailConfigFilePath();
+        if (!is_file($file)) {
+            return null;
+        }
+
+        $data = json_decode((string) file_get_contents($file), true);
+        if (!is_array($data)) {
+            return null;
+        }
+
+        $email = trim($data['email'] ?? '');
+        if ($email && filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            return $email;
+        }
+
+        return null;
+    }
+
+    private static function saveGlobalAccountDeletionEmail(string $email): bool
+    {
+        $file = self::getGlobalEmailConfigFilePath();
+        $dir = dirname($file);
+
+        if (!is_dir($dir) && !mkdir($dir, 0755, true) && !is_dir($dir)) {
+            return false;
+        }
+
+        $content = json_encode(['email' => $email], JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
+        return file_put_contents($file, $content) !== false;
+    }
+
     function _init() {
         $app = App::i();
 
@@ -129,6 +274,12 @@ class Module extends \MapasCulturais\Module {
             }
 
             $this->jsObject['EntityPermissionsList'] = $result;
+
+            $this->jsObject['accountDeletion'] = [
+                'recipientEmail' => self::getAccountDeletionRecipientEmail(),
+                'canConfigure' => self::canUserConfigureAccountDeletionEmail(),
+                'hasSubsite' => $app->getCurrentSubsite() !== null,
+            ];
         });
 
         /**
@@ -270,17 +421,113 @@ class Module extends \MapasCulturais\Module {
         });
 
         /**
-         * Página para deletar conta de usuário
+         * Salva o e-mail destinatário das solicitações de exclusão de conta.
+         *
+         * Se houver subsite atual, salva no metadata do subsite.
+         * Caso contrário, persiste em PUBLIC_FILES (platform-config/account-deletion-email.json).
          */
-        $app->hook('GET(panel.delete-account)', function () use ($app) {
+        $app->hook('POST(panel.setAccountDeletionEmail)', function () use ($app) {
             /** @var \MapasCulturais\Controllers\Panel $this */
             $this->requireAuthentication();
 
-            if (!$app->user->is('admin')) {
-                throw new PermissionDenied($app->user, null, i::__('Gerenciar Usuários'));
+            if (!self::canUserConfigureAccountDeletionEmail()) {
+                $this->errorJson(i::__('Permissão negada.'), 403);
+                return;
             }
 
-            $this->render('delete-account');
+            $email = isset($this->data['email']) ? trim($this->data['email']) : '';
+            if ($email !== '' && !filter_var($email, FILTER_VALIDATE_EMAIL)) {
+                $this->errorJson(i::__('O e-mail informado é inválido.'), 400);
+                return;
+            }
+
+            $subsite = $app->getCurrentSubsite();
+            if ($subsite) {
+                $subsite->email_exclusao_conta = $email;
+                $subsite->save(true);
+                $this->json(['success' => true, 'email' => $email, 'scope' => 'subsite']);
+                return;
+            }
+
+            if (!self::saveGlobalAccountDeletionEmail($email)) {
+                $this->errorJson(i::__('Não foi possível salvar a configuração.'), 500);
+                return;
+            }
+
+            $this->json(['success' => true, 'email' => $email, 'scope' => 'global']);
+        });
+
+        /**
+         * Processa solicitação de exclusão de conta (LGPD).
+         */
+        $app->hook('POST(user.requestAccountDeletion)', function () use ($app) {
+            /** @var \MapasCulturais\Controllers\User $this */
+            $this->requireAuthentication();
+
+            $data = $this->data;
+            $message = isset($data['message']) ? trim($data['message']) : '';
+            $sendCopy = !empty($data['sendCopy']);
+            $copyEmail = isset($data['copyEmail']) ? trim($data['copyEmail']) : '';
+
+            if ($message === '') {
+                $this->errorJson(i::__('A mensagem de solicitação é obrigatória.'), 400);
+                return;
+            }
+
+            $recipients = self::getAccountDeletionRecipients();
+            if (!$recipients) {
+                $this->errorJson(i::__('Não foi possível identificar destinatários para a solicitação de exclusão de conta.'), 400);
+                return;
+            }
+
+            $user = $app->user;
+            $profile = $user->profile;
+
+            if ($sendCopy && $copyEmail === '') {
+                $copyEmail = trim($user->email);
+            }
+
+            $params = [
+                'siteName' => $app->siteName,
+                'baseUrl' => $app->getBaseUrl(),
+                'userName' => $profile ? $profile->name : $user->email,
+                'userEmail' => $user->email,
+                'userId' => $user->id,
+                'message' => nl2br(htmlspecialchars($message, ENT_QUOTES, 'UTF-8')),
+            ];
+
+            $rendered = $app->renderMailerTemplate('request_account_deletion', $params);
+
+            $emailParams = [
+                'from' => $app->config['mailer.from'],
+                'to' => $recipients,
+                'subject' => $rendered['title'],
+                'body' => $rendered['body'],
+            ];
+
+            try {
+                if (!$app->createAndSendMailMessage($emailParams)) {
+                    $this->errorJson(i::__('Não foi possível enviar a solicitação. Tente novamente mais tarde.'), 500);
+                    return;
+                }
+
+                if ($sendCopy && $copyEmail !== '' && filter_var($copyEmail, FILTER_VALIDATE_EMAIL)) {
+                    $app->createAndSendMailMessage([
+                        'from' => $app->config['mailer.from'],
+                        'to' => $copyEmail,
+                        'subject' => $rendered['title'],
+                        'body' => $rendered['body'],
+                    ]);
+                }
+            } catch (Halt $e) {
+                throw $e;
+            } catch (\Throwable $e) {
+                $app->log->error($e->getMessage());
+                $this->errorJson(i::__('Não foi possível enviar a solicitação. Tente novamente mais tarde.'), 500);
+                return;
+            }
+
+            $this->json(['success' => true, 'message' => i::__('Solicitação enviada com sucesso.')]);
         });
 
         /**

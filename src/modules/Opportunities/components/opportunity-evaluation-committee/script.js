@@ -198,7 +198,8 @@ app.component('opportunity-evaluation-committee', {
             fetchFields: this.entity.fetchFields,
             showRegistrationListFlag: {},
             evaluatorDistributionRules: {},
-            lastParentFilters: null
+            lastParentFilters: null,
+            allCommitteeRelations: []
         }
     },
     
@@ -265,7 +266,7 @@ app.component('opportunity-evaluation-committee', {
                 this.messages.success(this.text('reviewerReplaced'));
                 this.loadReviewers();
                 this.loadFetchs();
-                
+                this.refreshEntityPermissions();
             });
         },
         
@@ -281,6 +282,7 @@ app.component('opportunity-evaluation-committee', {
             api.POST(url, this.agentData).then(res => res.json()).then(data => {
                 this.loadReviewers();
                 this.loadFetchs();
+                this.refreshEntityPermissions();
             });
         },
         
@@ -295,7 +297,7 @@ app.component('opportunity-evaluation-committee', {
             const api = new API('opportunity');
             let url = api.createApiUrl('evaluationCommittee', args);
             
-            api.GET(url).then(res => res.json()).then(data => {
+            return api.GET(url).then(res => res.json()).then(data => {
                 const expandedIds = (this.infosReviewers || [])
                     .filter(reviewer => reviewer.isContentVisible)
                     .map(reviewer => reviewer.id);
@@ -357,16 +359,40 @@ app.component('opportunity-evaluation-committee', {
                 })
                 this.showReviewers = Object.keys(this.infosReviewers).length > 0;
                 this.ReviewerSelect = false;
-                this.entity.agentRelations = data;
+                this.allCommitteeRelations = data;
                 this.loadFetchs();
             });
+        },
+
+        saveReviewerDataRemoval() {
+            const api = new API();
+            const url = Utils.createUrl('evaluationMethodConfiguration', 'single', { id: this.entity.id });
+            const properties = [
+                'fetch',
+                'fetchSelectionFields',
+                'fetchRanges',
+                'fetchProponentTypes',
+                'fetchCategories'
+            ];
+            const args = {};
+
+            properties.forEach(property => {
+                if (this.entity[property]) {
+                    args[property] = this.entity[property];
+                }
+            });
+
+            return api.POST(url, args);
         },
 
         delReviewer(infoReviewer) {
             const agentId = infoReviewer.agent.id;
             const userId = infoReviewer.agentUserId;
 
-            let userGroups = this.entity.agentRelations.filter(relation => relation.agentUserId === userId);
+            const committeeRelations = this.allCommitteeRelations.length > 0
+                ? this.allCommitteeRelations
+                : (this.entity.agentRelations || []);
+            let userGroups = committeeRelations.filter(relation => relation.agentUserId === userId);
             
             const api = new API();
             let url = Utils.createUrl('evaluationMethodConfiguration', 'removeAgentRelation', {id: this.entity.id});
@@ -375,13 +401,37 @@ app.component('opportunity-evaluation-committee', {
                 agentId: agentId,
             }; 
 
-            api.POST(url, this.agentData).then(res => res.json()).then(data => {
+            api.POST(url, this.agentData).then(res => res.json()).then(async () => {
                 if (userGroups.length <= 1) {
                     this.delReviewerData(userId);
+                    await this.saveReviewerDataRemoval();
                 }
-                this.loadReviewers();
-                this.entity.save();
+                await this.loadReviewers();
+                await this.refreshEntityPermissions();
             });
+        },
+
+        async refreshEntityPermissions() {
+            try {
+                const opportunityId = this.entity.opportunity?.id;
+                if (!opportunityId) {
+                    return;
+                }
+
+                const api = new API('opportunity');
+                const url = api.createApiUrl('findOne', {
+                    id: `EQ(${opportunityId})`,
+                    '@select': 'evaluationMethodConfiguration.{currentUserPermissions}'
+                });
+                const res = await api.GET(url);
+                const data = await res.json();
+
+                if (res.ok && data?.evaluationMethodConfiguration?.currentUserPermissions) {
+                    this.entity.currentUserPermissions = data.evaluationMethodConfiguration.currentUserPermissions;
+                }
+            } catch (error) {
+                console.error('Erro ao atualizar permissões da entidade:', error);
+            }
         },
 
         delReviewerData(userId) {
@@ -418,6 +468,7 @@ app.component('opportunity-evaluation-committee', {
 
             api.POST(url, relationData).then(res => res.json()).then(data => {
                 this.loadReviewers();
+                this.refreshEntityPermissions();
             });
         },
 
