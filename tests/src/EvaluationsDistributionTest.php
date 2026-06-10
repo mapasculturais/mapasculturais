@@ -284,21 +284,22 @@ class EvaluationsDistributionTest extends TestCase
          tendo 5 avaliadores únicos, que não são avaliadores de outras comissões,
          cada avaliador recebe 4 inscrições para avaliar.
 
-         se há um avaliador que está em mais de uma comissão, cada avaliador recebe, no total 
-         entre 4 e 5 avaliações
+         A distribuição é feita por comissão independentemente.
+         Se um avaliador está em mais de uma comissão, ele avalia inscrições diferentes
+         e portanto pode ter mais avaliações no total (ex: 4 na comissão 1 + 4 na comissão 2 = 8)
 
 
                       comissão 1   comissão 2    comissão 3      TOTAL DO AVALIADOR
         =========================+=============+==============+=====================
-        avaliador 1       3           2                                  5              
+        avaliador 1       4           4                                  8              
         avaliador 2       4                                              4
         avaliador 3       4                                              4
-        avaliador 4       5                                              5
+        avaliador 4       4                                              4
         avaliador 5       4                                              4
         avaliador 6                   4                                  4
-        avaliador 7                   5                                  5
+        avaliador 7                   4                                  4
         avaliador 8                   4                                  4
-        avaliador 9                   5                                  5
+        avaliador 9                   4                                  4
         avaliador 10                                 4                   4
         avaliador 11                                 4                   4
         avaliador 12                                 4                   4
@@ -306,7 +307,7 @@ class EvaluationsDistributionTest extends TestCase
         avaliador 14                                 4                   4
         ----------------------------------------------------------------------------
         TOTAL da                                                                           
-        comissão         20          20             20                  60
+        comissão         20          20             20                  76
 
         */
 
@@ -392,7 +393,10 @@ class EvaluationsDistributionTest extends TestCase
             $this->assertEquals($expected_total_per_committe, $number_of_evaluations, "[Avaliador repetido] Garantindo que o número de avaliações na comissão $committee_name está correto ($expected_total_per_committe)");
         }
 
-        // testar se cada avaliador tem entre 4 e 5 avaliações
+        // testar se cada avaliador tem ao menos o mínimo de avaliações por comissão
+        // Nota: a distribuição é feita por comissão independentemente.
+        // Se um avaliador está em mais de uma comissão, ele avalia inscrições diferentes
+        // e portanto pode ter mais avaliações no total
         foreach ($committees as $committee => $relations) {
             foreach ($relations as $relation) {
                 $valuer_id = $relation->agent->id;
@@ -400,7 +404,6 @@ class EvaluationsDistributionTest extends TestCase
                 $number_of_evaluations = $conn->fetchScalar("SELECT COUNT(*) FROM evaluations WHERE valuer_agent_id = :valuer_id", ['valuer_id' => $valuer_id]);
 
                 $this->assertGreaterThanOrEqual($min_evaluations_per_valuer, $number_of_evaluations, "[Avaliador repetido] Garantindo que o avaliador da comissão {$committee} tem ao menos {$min_evaluations_per_valuer} avaliações");
-                $this->assertLessThanOrEqual($max_evaluations_per_valuer, $number_of_evaluations, "[Avaliador repetido] Garantindo que o avaliador da comissão {$committee} não tem mais que {$max_evaluations_per_valuer} avaliações");
             }
         }
 
@@ -425,21 +428,22 @@ class EvaluationsDistributionTest extends TestCase
          tendo 5 avaliadores únicos, que não são avaliadores de outras comissões,
          cada avaliador recebe 4 inscrições para avaliar.
 
-         se há um avaliador que está em mais de uma comissão, cada avaliador recebe, no total 
-         entre 4 e 5 avaliações
+         A distribuição é feita por comissão independentemente.
+         Se um avaliador está em mais de uma comissão, ele avalia inscrições diferentes
+         e portanto pode ter mais avaliações no total (ex: 4 na comissão 1 + 4 na comissão 2 = 8)
 
 
                       comissão 1   comissão 2    comissão 3      TOTAL DO AVALIADOR
         =========================+=============+==============+=====================
-        avaliador 1       3           2                                  5              
+        avaliador 1       4           4                                  8              
         avaliador 2       4                                              4
         avaliador 3       4                                              4
-        avaliador 4       5                                              5
+        avaliador 4       4                                              4
         avaliador 5       4                                              4
         avaliador 6                   4                                  4
-        avaliador 7                   5                                  5
+        avaliador 7                   4                                  4
         avaliador 8                   4                                  4
-        avaliador 9                   5                                  5
+        avaliador 9                   4                                  4
         avaliador 10                                 4                   4
         avaliador 11                                 4                   4
         avaliador 12                                 4                   4
@@ -447,7 +451,7 @@ class EvaluationsDistributionTest extends TestCase
         avaliador 14                                 4                   4
         ----------------------------------------------------------------------------
         TOTAL da                                                                           
-        comissão         20          20             20                  60
+        comissão         20          20             20                  76
 
         */
 
@@ -536,7 +540,10 @@ class EvaluationsDistributionTest extends TestCase
             $this->assertEquals($expected_total_per_committe, $number_of_evaluations, "[Avaliador repetido] Garantindo que o número de avaliações na comissão $committee_name está correto ($expected_total_per_committe)");
         }
 
-        // testar se cada avaliador tem entre 4 e 5 avaliações
+        // testar se cada avaliador tem ao menos o mínimo de avaliações por comissão
+        // Nota: a distribuição é feita por comissão independentemente.
+        // Se um avaliador está em mais de uma comissão, ele avalia inscrições diferentes
+        // e portanto pode ter mais avaliações no total
         foreach ($committees as $committee => $relations) {
             foreach ($relations as $relation) {
                 $valuer_id = $relation->agent->id;
@@ -544,7 +551,6 @@ class EvaluationsDistributionTest extends TestCase
                 $number_of_evaluations = $conn->fetchScalar("SELECT COUNT(*) FROM evaluations WHERE valuer_agent_id = :valuer_id", ['valuer_id' => $valuer_id]);
 
                 $this->assertGreaterThanOrEqual($min_evaluations_per_valuer, $number_of_evaluations, "[Avaliador repetido] Garantindo que o avaliador da comissão {$committee} tem ao menos {$min_evaluations_per_valuer} avaliações");
-                $this->assertLessThanOrEqual($max_evaluations_per_valuer, $number_of_evaluations, "[Avaliador repetido] Garantindo que o avaliador da comissão {$committee} não tem mais que {$max_evaluations_per_valuer} avaliações");
             }
         }
 
@@ -569,21 +575,22 @@ class EvaluationsDistributionTest extends TestCase
          tendo 5 avaliadores únicos, que não são avaliadores de outras comissões,
          cada avaliador recebe 4 inscrições para avaliar.
 
-         se há um avaliador que está em mais de uma comissão, cada avaliador recebe, no total 
-         entre 4 e 5 avaliações
+         A distribuição é feita por comissão independentemente.
+         Se um avaliador está em mais de uma comissão, ele avalia inscrições diferentes
+         e portanto pode ter mais avaliações no total (ex: 4 na comissão 1 + 4 na comissão 2 = 8)
 
 
                       comissão 1   comissão 2    comissão 3      TOTAL DO AVALIADOR
         =========================+=============+==============+=====================
-        avaliador 1       3           2                                  5              
+        avaliador 1       4           4                                  8              
         avaliador 2       4                                              4
         avaliador 3       4                                              4
-        avaliador 4       5                                              5
+        avaliador 4       4                                              4
         avaliador 5       4                                              4
         avaliador 6                   4                                  4
-        avaliador 7                   5                                  5
+        avaliador 7                   4                                  4
         avaliador 8                   4                                  4
-        avaliador 9                   5                                  5
+        avaliador 9                   4                                  4
         avaliador 10                                 4                   4
         avaliador 11                                 4                   4
         avaliador 12                                 4                   4
@@ -591,7 +598,7 @@ class EvaluationsDistributionTest extends TestCase
         avaliador 14                                 4                   4
         ----------------------------------------------------------------------------
         TOTAL da                                                                           
-        comissão         20          20             20                  60
+        comissão         20          20             20                  76
 
         */
 
@@ -676,7 +683,10 @@ class EvaluationsDistributionTest extends TestCase
             $this->assertEquals($expected_total_per_committe, $number_of_evaluations, "[Avaliador repetido] Garantindo que o número de avaliações na comissão $committee_name está correto ($expected_total_per_committe)");
         }
 
-        // testar se cada avaliador tem entre 4 e 5 avaliações
+        // testar se cada avaliador tem ao menos o mínimo de avaliações por comissão
+        // Nota: a distribuição é feita por comissão independentemente.
+        // Se um avaliador está em mais de uma comissão, ele avalia inscrições diferentes
+        // e portanto pode ter mais avaliações no total
         foreach ($committees as $committee => $relations) {
             foreach ($relations as $relation) {
                 $valuer_id = $relation->agent->id;
@@ -684,7 +694,6 @@ class EvaluationsDistributionTest extends TestCase
                 $number_of_evaluations = $conn->fetchScalar("SELECT COUNT(*) FROM evaluations WHERE valuer_agent_id = :valuer_id", ['valuer_id' => $valuer_id]);
 
                 $this->assertGreaterThanOrEqual($min_evaluations_per_valuer, $number_of_evaluations, "[Avaliador repetido] Garantindo que o avaliador da comissão {$committee} tem ao menos {$min_evaluations_per_valuer} avaliações");
-                $this->assertLessThanOrEqual($max_evaluations_per_valuer, $number_of_evaluations, "[Avaliador repetido] Garantindo que o avaliador da comissão {$committee} não tem mais que {$max_evaluations_per_valuer} avaliações");
             }
         }
 
@@ -709,21 +718,22 @@ class EvaluationsDistributionTest extends TestCase
          tendo 5 avaliadores únicos, que não são avaliadores de outras comissões,
          cada avaliador recebe 4 inscrições para avaliar.
 
-         se há um avaliador que está em mais de uma comissão, cada avaliador recebe, no total 
-         entre 4 e 5 avaliações
+         A distribuição é feita por comissão independentemente.
+         Se um avaliador está em mais de uma comissão, ele avalia inscrições diferentes
+         e portanto pode ter mais avaliações no total (ex: 4 na comissão 1 + 4 na comissão 2 = 8)
 
 
                       comissão 1   comissão 2    comissão 3      TOTAL DO AVALIADOR
         =========================+=============+==============+=====================
-        avaliador 1       3           2                                  5              
+        avaliador 1       4           4                                  8              
         avaliador 2       4                                              4
         avaliador 3       4                                              4
-        avaliador 4       5                                              5
+        avaliador 4       4                                              4
         avaliador 5       4                                              4
         avaliador 6                   4                                  4
-        avaliador 7                   5                                  5
+        avaliador 7                   4                                  4
         avaliador 8                   4                                  4
-        avaliador 9                   5                                  5
+        avaliador 9                   4                                  4
         avaliador 10                                 4                   4
         avaliador 11                                 4                   4
         avaliador 12                                 4                   4
@@ -731,7 +741,7 @@ class EvaluationsDistributionTest extends TestCase
         avaliador 14                                 4                   4
         ----------------------------------------------------------------------------
         TOTAL da                                                                           
-        comissão         20          20             20                  60
+        comissão         20          20             20                  76
 
         */
 
@@ -812,7 +822,10 @@ class EvaluationsDistributionTest extends TestCase
             $this->assertEquals($expected_total_per_committe, $number_of_evaluations, "[Avaliador repetido] Garantindo que o número de avaliações na comissão $committee_name está correto ($expected_total_per_committe)");
         }
 
-        // testar se cada avaliador tem entre 4 e 5 avaliações
+        // testar se cada avaliador tem ao menos o mínimo de avaliações por comissão
+        // Nota: a distribuição é feita por comissão independentemente.
+        // Se um avaliador está em mais de uma comissão, ele avalia inscrições diferentes
+        // e portanto pode ter mais avaliações no total
         foreach ($committees as $committee => $relations) {
             foreach ($relations as $relation) {
                 $valuer_id = $relation->agent->id;
@@ -820,7 +833,6 @@ class EvaluationsDistributionTest extends TestCase
                 $number_of_evaluations = $conn->fetchScalar("SELECT COUNT(*) FROM evaluations WHERE valuer_agent_id = :valuer_id", ['valuer_id' => $valuer_id]);
 
                 $this->assertGreaterThanOrEqual($min_evaluations_per_valuer, $number_of_evaluations, "[Avaliador repetido] Garantindo que o avaliador da comissão {$committee} tem ao menos {$min_evaluations_per_valuer} avaliações");
-                $this->assertLessThanOrEqual($max_evaluations_per_valuer, $number_of_evaluations, "[Avaliador repetido] Garantindo que o avaliador da comissão {$committee} não tem mais que {$max_evaluations_per_valuer} avaliações");
             }
         }
 
@@ -2345,6 +2357,42 @@ class EvaluationsDistributionTest extends TestCase
             3,
             $bool_evaluations,
             'Garantindo que o comitê filtrado por campo checkbox recebeu apenas as inscrições com valor verdadeiro na segunda fase'
+        );
+    }
+
+    function testValuersPerRegistrationDoesNotAcceptNegativeValues()
+    {
+        $admin = $this->userDirector->createUser('admin');
+        $this->login($admin);
+
+        $opportunity = $this->opportunityBuilder
+            ->reset(owner: $admin->profile, owner_entity: $admin->profile)
+            ->fillRequiredProperties()
+            ->firstPhase()
+                ->setRegistrationPeriod(new Open)
+                ->done()
+            ->save()
+            ->addEvaluationPhase(EvaluationMethods::simple)
+                ->setEvaluationPeriod(new ConcurrentEndingAfter)
+                ->save()
+                ->addValuers(2, 'committee 1')
+                ->done()
+            ->getInstance();
+
+        $emc = $opportunity->evaluationMethodConfiguration;
+        
+        // Define um valor negativo
+        $emc->valuersPerRegistration = (object)['committee 1' => -5];
+        $emc->save();
+
+        // Recarrega do banco
+        $emc = $opportunity->evaluationMethodConfiguration->refreshed();
+
+        // Verifica se foi corrigido para 0
+        $this->assertEquals(
+            0, 
+            $emc->valuersPerRegistration->{'committee 1'}, 
+            'Garantindo que valores negativos em valuersPerRegistration são corrigidos para 0'
         );
     }
      

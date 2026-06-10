@@ -81,8 +81,32 @@ class EvaluationMethodTechnicalBuilder extends EvaluationMethodConfigurationBuil
             'max' => $max,
             'weight' => $weight,
         ];
-        
+
         $this->instance->criteria = $criteria;
+        return $this;
+    }
+
+    public function activatePointReward(bool $active = true): self
+    {
+        $this->instance->isActivePointReward = $active;
+        return $this;
+    }
+
+    public function setPointRewardRoof(float $roof): self
+    {
+        $this->instance->pointRewardRoof = $roof;
+        return $this;
+    }
+
+    /**
+     * Define a configuração de bônus por pontuação.
+     *
+     * Aceita tanto o formato legado (array de regras com fieldPercent) quanto
+     * o novo formato (objeto com type e rules com bonusValue).
+     */
+    public function setPointReward(array|object $config): self
+    {
+        $this->instance->pointReward = $config;
         return $this;
     }
 }
