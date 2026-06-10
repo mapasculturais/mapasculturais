@@ -41,6 +41,7 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Corrige a exportação de oportunidades para não incluir datas das fases de avaliação quando a opção de exportar datas das fases estiver desmarcada
 - Corrige o cálculo ponderado dos subtotais na tela de avaliação técnica
 - Corrige os templates de email da fase de recurso
+- Corrige a exibição das opções de campos de seleção no formato radio para organizá-las verticalmente na ficha de inscrição
 
 ## [7.7.54] - 2026-06-10
 ### Correções
