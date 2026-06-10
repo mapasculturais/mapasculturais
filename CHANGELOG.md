@@ -5,6 +5,10 @@ Todas as mudanças notáveis no projeto serão documentadas neste arquivo.
 O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/)
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [UNRELEASED]
+### Correções
+- Corrige exibição dos modelos criados para o saasAdmin
+
 ## [7.7.53] - 2026-06-09
 ### Melhorias
 - Implementa fluxo LGPD de solicitação de exclusão de conta em Conta e Privacidade, com modais de confirmação, envio de e-mail ao responsável configurável (ou aos administradores do subsite / todos os usuários com papel administrativo quando não houver e-mail definido) e cópia opcional para o usuário
