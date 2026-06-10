@@ -23,7 +23,7 @@ $this->import('
     <header class="panel-home__header">
         <?php $this->applyTemplateHook('header', 'begin') ?>
         <?php $this->applyTemplateHook('header-title', 'before') ?>
-        <div class="panel-home__header--title">
+        <div class="panel-home__header__title">
             <?php $this->applyTemplateHook('header-title', 'begin') ?>
             <label class="title"> <?= i::_e('Painel de controle') ?> </label>
             <?php $this->applyTemplateHook('header-title', 'end') ?>
@@ -31,9 +31,9 @@ $this->import('
         <?php $this->applyTemplateHook('header-title', 'after') ?>
 
         <?php $this->applyTemplateHook('header-user', 'before') ?>
-        <div class="panel-home__header--user">
+        <div class="panel-home__header__user">
             <?php $this->applyTemplateHook('header-user', 'begin') ?>
-            <div class="panel-home__header--user-profile">
+            <div class="panel-home__header__user-profile">
                 <div class="avatar">
                     <user-profile-avatar></user-profile-avatar>
                 </div>
@@ -41,7 +41,7 @@ $this->import('
                     <?= i::_e('Olá, ') ?> <?= $app->user->profile->name ?>
                 </div>
             </div>
-            <div class="panel-home__header--user-button">
+            <div class="panel-home__header__user-button">
                 <?php $this->applyTemplateHook('header-user-button', 'before') ?>
                 <a href="<?= $app->user->profile->singleUrl ?>" class="button button--primary button--icon"> <mc-icon name="agent-1"></mc-icon> <?= i::_e('Acessar meu perfil') ?> </a>
                 <?php $this->applyTemplateHook('header-user-button', 'after') ?>
@@ -57,7 +57,7 @@ $this->import('
     <mc-tabs class="panel-home__tabs">
         <?php $this->applyTemplateHook('tabs', 'begin') ?>
         <mc-tab label="<?php i::esc_attr_e('Principal') ?>" slug="main">
-            <div class="panel-home__tabs--main">
+            <div class="panel-home__tabs__main">
 
                 <panel--entities-summary></panel--entities-summary>
 

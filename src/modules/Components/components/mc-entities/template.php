@@ -35,7 +35,7 @@ $this->import('
         :query="query"
         :refresh="refresh"
         >
-        <div class="panel__row noEntity">
+        <div class="panel__row create-modal__no-entity">
             <p>{{emptyTextType ? showEmptyText(type) : '<?= i::__('Nenhuma entidade encontrada') ?>'}}</p>
         </div>
     </slot>

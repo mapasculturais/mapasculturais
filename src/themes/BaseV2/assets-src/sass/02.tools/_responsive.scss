@@ -1,0 +1,59 @@
+// ============================================================================
+// Responsive Breakpoints — Canonical System (Phase 2.4)
+// ============================================================================
+//
+// Usage:
+//   @include respond-above('md')  { ... }
+//   @include respond-below('md')  { ... }
+//   @include respond-between('sm', 'lg') { ... }
+//
+// Legacy aliases desktop() / mobile() remain in 0.settings/_mixins.scss.
+// ============================================================================
+
+$mc-bp-xs:  25rem      !default;  // 400px
+$mc-bp-mob: 31.25rem   !default;  // 500px — small mobile
+$mc-bp-sm:  37.5rem    !default;  // 600px
+$mc-bp-md:  50rem      !default;  // 800px
+$mc-bp-ml:  56.25rem   !default;  // 900px — medium-large
+$mc-bp-lg:  60rem      !default;  // 960px
+$mc-bp-xl:  73.125rem  !default;  // 1170px
+
+$mc-breakpoints: (
+    'xs':  $mc-bp-xs,
+    'mob': $mc-bp-mob,
+    'sm':  $mc-bp-sm,
+    'md':  $mc-bp-md,
+    'ml':  $mc-bp-ml,
+    'lg':  $mc-bp-lg,
+    'xl':  $mc-bp-xl,
+) !default;
+
+@function _mc-get-bp($bp) {
+    @if map-has-key($mc-breakpoints, $bp) {
+        @return map-get($mc-breakpoints, $bp);
+    } @else {
+        @return $bp;
+    }
+}
+
+@mixin respond-above($bp) {
+    $value: _mc-get-bp($bp);
+    @media screen and (min-width: $value) {
+        @content;
+    }
+}
+
+@mixin respond-below($bp) {
+    $value: _mc-get-bp($bp);
+    @media screen and (max-width: $value) {
+        @content;
+    }
+}
+
+@mixin respond-between($lower, $upper) {
+    $lower-val: _mc-get-bp($lower);
+    $upper-val: _mc-get-bp($upper);
+    @media screen and (min-width: $lower-val) and (max-width: $upper-val) {
+        @content;
+    }
+}

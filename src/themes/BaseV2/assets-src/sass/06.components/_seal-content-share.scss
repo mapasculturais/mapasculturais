@@ -1,0 +1,69 @@
+@use '../01.settings/mixins' as *;
+
+.seal-content-share {
+
+	&__socialnetwork {
+		&--title {
+			font-weight: 600;
+			font-size: var(--mc-space-14);
+			line-height: var(--mc-space-19);
+			color: var(--mc-black);
+		}
+		&--icons {
+			display: flex;
+			flex-direction: row;
+			// NOTE-BEM: .icon is a template-dependent class — rename requires PHP template update
+			.icon {
+				border-radius: var(--mc-space-4);
+				padding: var(--mc-space-8);
+				margin-right: var(--mc-space-24);
+				display: flex;
+				align-self: center;
+				height: var(--mc-space-40);
+				a {
+					text-decoration: none;
+					color: inherit;
+					margin: 0;
+					padding: 0;
+				}
+			}
+		}
+	}
+
+	&__share {
+		&--label {
+			font-weight: 600;
+			font-size: var(--mc-space-14);
+			line-height: var(--mc-space-19);
+			color: var(--mc-low-500);
+		}
+		&--icon {
+			color: var(--mc-helper-500);
+		}
+		&--field {
+			background: var(--mc-gray-200);
+			border-radius: var(--mc-space-4);
+			padding: var(--mc-space-8);
+			span {
+				font-weight: 600;
+				font-size: var(--mc-space-12);
+				line-height: var(--mc-space-16);
+				color: var(--mc-black);
+			}
+		}
+		&--button {
+			font-weight: 600;
+			font-size: var(--mc-space-16);
+			color: var(--mc-helper-500);
+			float: right;
+			display: inline-block;
+			a {
+				color: var(--mc-helper-500);
+			}
+		}
+	}
+
+}
+
+
+

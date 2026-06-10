@@ -1,0 +1,67 @@
+// NOTE-BEM: .controller-seal is a page-level controller selector — framework convention, not BEM-scopable
+.controller-seal {
+  .tabs-component {
+    &__buttons {
+      gap: var(--mc-space-48);
+    }
+  }
+}
+
+
+.seal-locked-field {
+  max-width: size(1190);
+  margin: var(--mc-space-32) auto;
+  padding: 0 var(--mc-space-16);
+  display: grid;
+  gap: var(--mc-space-40);
+
+  &__title {
+    font-weight: 700;
+    font-size: var(--mc-space-16);
+    line-height: var(--mc-space-22);
+    margin: var(--mc-space-8) 0;
+  }
+
+  &__groups {
+    width: 100%;
+    display: grid;
+    gap: var(--mc-space-25);
+  }
+
+  &__group {
+    display: grid;
+    gap: var(--mc-space-15);
+  }
+
+  &__group-title {
+
+  }
+
+  &__group-inputs {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    width: 100%;
+  }
+
+  &__container {
+    padding: var(--mc-space-8);
+
+    h3 {
+      font-weight: 700;
+      font-size: var(--mc-space-18);
+      line-height: var(--mc-space-25);
+    }
+
+    h4 {
+      font-weight: 700;
+      font-size: var(--mc-space-16);
+      line-height: var(--mc-space-22);
+    }
+
+    h5 {
+      font-weight: 700;
+      font-size: var(--mc-space-14);
+      line-height: var(--mc-space-19);
+    }
+  }
+}

@@ -1,0 +1,80 @@
+@use '../01.settings/mixins' as *;
+
+
+.home-register {
+    padding: size(60) var(--mc-space-16);
+    position: relative;
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+
+    &__background {
+        position: absolute;
+        width: 100%;
+        left: 0;
+        display: flex;
+        justify-content: center;
+        height: 100%;
+        overflow: hidden;
+
+        &__img {
+            width: 100%;
+            object-fit: cover;
+            -o-object-fit: cover;
+        }
+
+        &__mask {
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            background-color: var(--mc-home-register);
+            mix-blend-mode: multiply;
+        }
+    }
+
+    &__content {
+        align-items: flex-start;
+        color: var(--mc-white);
+        display: flex;
+        flex-direction: column;
+        margin: 0 auto;
+        max-width: var(--mc-layout-container-xl);
+        z-index: 2;
+
+        &__title {
+            font-weight: 700;
+            font-size: var(--mc-space-32);
+            line-height: var(--mc-space-48);
+            @include respond-below('md') {
+                font-size: var(--mc-space-24);
+                line-height: var(--mc-space-28);
+            }
+        }
+
+        &__description{
+            margin: var(--mc-space-16) 0 var(--mc-space-25);
+            font-weight: 400;
+            font-size: var(--mc-space-18);
+            line-height: var(--mc-space-25);
+            @include respond-below('md') {
+                font-size: var(--mc-space-14);
+                line-height: var(--mc-space-19);
+            }
+        }
+
+        &__button {
+            background-color: var(--mc-high-500);
+            border-radius: var(--mc-border-radius-sm);
+            font-size: var(--mc-space-24);
+            line-height: var(--mc-space-28);
+            color: var(--mc-secondary-500);
+            display: flex;
+            justify-content: space-between;
+            max-width: size(544);
+            width: 100%;
+            .iconify {
+                font-size: var(--mc-space-28);
+            }
+        }  
+    } 
+}   

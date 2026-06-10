@@ -1,0 +1,26 @@
+@use '../01.settings/mixins' as *;
+
+.opportunity-registration-filter-configuration {
+    display: grid;
+    gap: var(--mc-space-8);
+    grid-template-columns: size(160) 1fr;
+
+    &__add-filter {
+        height: var(--mc-space-32);
+    }
+
+    &__related-input {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+
+        select {
+            background: none;
+        }
+    }
+
+    &__error {
+        color: var(--mc-error);
+        font-size: var(--mc-space-12);
+        margin-top: var(--mc-space-4);
+    }
+}

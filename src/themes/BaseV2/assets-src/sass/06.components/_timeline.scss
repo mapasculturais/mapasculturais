@@ -1,0 +1,161 @@
+@use '../01.settings/mixins'as *;
+
+.timeline {
+    display: flex;
+    flex-direction: column;
+    margin: var(--mc-space-16) 0;
+    position: relative;
+    text-align: left;
+
+    &.center {
+        margin: var(--mc-space-16) auto;
+    }
+
+    .item, &__item {
+        display: grid;
+        gap: var(--mc-space-5);
+        grid-template-columns: var(--mc-space-24) 1fr;
+        padding-bottom: var(--mc-space-28);
+        position: relative;
+
+        &__dot {
+            align-items: flex-start;
+            display: flex;
+            justify-content: center;
+
+            &::before {
+                background-color: var(--mc-gray-700);
+                content: "";
+                height: 100%;
+                position: absolute;
+                width: var(--mc-space-2);
+            }
+
+            .dot {
+                background-color: var(--mc-gray-700);
+                border-radius: var(--mc-border-radius-pill);
+                border: var(--mc-space-4) solid var(--mc-high-500);
+                height: var(--mc-space-24);
+                position: relative;
+                width: var(--mc-space-24);
+            }
+        }
+
+        &__content {
+            display: flex;
+            flex-direction: column;
+            gap: var(--mc-space-4);
+
+            &--title {
+                font-size: var(--mc-space-12);
+                font-weight: 700;
+                line-height: var(--mc-space-24);
+            }
+
+            &--description {
+                font-size: var(--mc-space-12);
+                font-weight: 600;
+            }
+        }
+
+        &:last-of-type, &:has(+ :not(.item)) {
+            padding: 0;
+
+            .item__dot::before {
+                content: unset;
+            }
+        }
+    }
+
+    &.big {
+    .item {
+            gap: 0;
+            grid-template-columns: size(70) 1fr;
+            padding-bottom: var(--mc-space-40);
+
+            &__dot {
+                .dot {
+                    border: var(--mc-space-7) solid var(--mc-high-500);
+                    height: var(--mc-space-40);
+                    width: var(--mc-space-40);
+                }
+            }
+
+            &__content {
+                gap: var(--mc-space-8);
+
+                &--title {
+                    font-size: var(--mc-space-18);
+                    // line-height: var(--mc-space-40);
+                    padding-top: var(--mc-space-10);
+                    line-height: normal;
+                }
+
+                &--description {
+                    font-size: var(--mc-space-16);
+                    line-height: var(--mc-space-22);
+                }
+            }
+
+            &:last-of-type, &:has(+ :not(.item)) {
+                padding: 0;
+            }
+
+            &.active {
+                .item {
+                    &__dot {
+                        .dot {
+                            background-color: var(--mc-opportunities-500);
+                            height: size(70);
+                            width: size(70);
+                        }
+                    }
+
+                    &__content {
+                        &--title {
+                            font-size: var(--mc-space-18);
+                            // line-height: size(70);
+                            padding-top: var(--mc-space-22);
+                            line-height: normal;
+                        }
+
+                        &--description {
+                            font-size: var(--mc-space-16);
+                            line-height: var(--mc-space-21);
+                        }
+                    }
+                    @include respond-below('xs') {
+                        &__title {
+                            font-size: var(--mc-space-14);
+                            line-height: var(--mc-space-19);
+                        }
+
+                    }
+                }
+            }
+
+            &.happened {
+                .item {
+                    &__dot {
+                        &::before {
+                            background-color: var(--mc-opportunities-500);
+                        } 
+
+                        .dot {
+                            background-color: var(--mc-opportunities-500);
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    .editable-fields {
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+        border: solid 1px var(--mc-gray-500);
+        padding: 15px;
+        border-radius: 5px;
+    }
+}

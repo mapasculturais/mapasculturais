@@ -1,0 +1,77 @@
+@use '../01.settings/mixins' as *;
+
+// Component: mc-toggle
+// Consumes toggle-switch Object (05.objects/_toggle-switch.scss).
+// Adds cosmetic properties (brand colors) on top of the structural pattern.
+// HTML: .mc-toggle > .mc-toggle__switch > input + .mc-toggle__slider
+
+.mc-toggle {
+    font-family: var(--mc-font-headings);
+    font-size: var(--mc-space-14);
+    font-style: normal;
+    font-weight: 600;
+    line-height: var(--mc-space-19);
+
+    &__switch {
+        // Structural tokens from toggle-switch Object
+        --toggle-switch-width: #{var(--mc-space-32)};
+        --toggle-switch-height: #{var(--mc-space-20)};
+        --toggle-switch-thumb-size: #{var(--mc-space-12)};
+        --toggle-switch-gap: #{var(--mc-space-4)};
+
+        align-items: center;
+        cursor: pointer;
+        display: grid;
+        grid-template-columns: var(--toggle-switch-width) 1fr;
+        gap: var(--mc-space-8);
+        position: relative;
+        width: fit-content;
+
+        input {
+            // Structural: toggle-switch__input pattern
+            height: 0;
+            opacity: 0;
+            position: absolute;
+            width: 0;
+
+            &:checked + .mc-toggle__slider {
+                // Cosmetic: checked track color
+                background-color: var(--mc-opportunities-500);
+            }
+
+            &:checked + .mc-toggle__slider::before {
+                // Structural: slide thumb to end
+                transform: translateY(-50%) translateX(
+                    calc(var(--toggle-switch-width) - var(--toggle-switch-thumb-size) - var(--toggle-switch-gap) * 2)
+                );
+            }
+        }
+    }
+
+    &__slider {
+        // Structural: toggle-switch__slider pattern
+        border-radius: calc(var(--toggle-switch-height) * 0.5);
+        cursor: pointer;
+        height: var(--toggle-switch-height);
+        position: absolute;
+        transition: background-color 0.2s ease, transform 0.2s ease;
+        width: var(--toggle-switch-width);
+
+        // Cosmetic: default track color
+        background-color: var(--mc-gray-300);
+
+        &::before {
+            // Structural: toggle-switch thumb pattern
+            background-color: var(--mc-white);
+            border-radius: 50%;
+            content: '';
+            height: var(--toggle-switch-thumb-size);
+            left: var(--toggle-switch-gap);
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            transition: transform 0.2s ease;
+            width: var(--toggle-switch-thumb-size);
+        }
+    }
+}

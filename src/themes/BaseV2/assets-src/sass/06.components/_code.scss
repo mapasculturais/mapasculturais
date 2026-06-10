@@ -1,0 +1,16 @@
+// ============================================================================
+// Component: Code Badge
+// Inline badge for placeholder tokens (used in seal templates)
+// Migrated from 0.settings/_global.scss (Phase 3)
+// ============================================================================
+
+.code {
+    // TODO (Phase 5): Tokenize border-radius (15px) as component token
+    background: var(--mc-gray-200);
+    padding: var(--mc-space-1) var(--mc-space-2);
+    font-weight: var(--mc-font-bold);
+    font-size: var(--mc-font-size-xxxs);
+    border-radius: 15px;
+    border: none;
+    text-align: center;
+}

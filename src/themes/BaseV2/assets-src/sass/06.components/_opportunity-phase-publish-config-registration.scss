@@ -1,0 +1,72 @@
+@use '../01.settings/mixins' as *;
+
+.opportunity-phase-publish-config-registration {
+    width: 100%;
+    &__registrationList {
+        display: flex;
+        flex-direction: column;
+        gap: var(--mc-space-8);
+        border: 1px solid var(--mc-gray-300);
+        padding: var(--mc-space-16);
+        border-radius: var(--mc-space-8);
+        margin-bottom: var(--mc-space-32);
+        align-items: flex-start;
+            .iconify{
+    
+                font-size: size(22.5);
+            }
+    }
+
+    .modal-confirm,
+    .opportunity-phase-publish-config-registration__modal-confirm {
+        .modal__content {
+            .message {
+                padding-top: var(--mc-space-16);
+            }
+
+        }
+    }
+
+    &--published {
+        width: 100%;
+        padding-top: var(--mc-space-16);
+    }
+
+    .notPublished,
+    .opportunity-phase-publish-config-registration--not-published {
+        border-bottom: 1px solid var(--mc-gray-100);
+        padding-bottom: var(--mc-space-32);
+
+    }
+
+    &__button {
+        width: 100%;
+
+        .button-config,
+        .opportunity-phase-publish-config-registration__button-config {
+            .button {
+                width: 100%;
+            }
+        }
+    }
+ 
+    &__line {
+        border-top: 1px solid var(--mc-gray-100);
+        padding-bottom: var(--mc-space-16);
+        min-height: var(--mc-space-16);
+        width: 100%;
+    }
+
+    &__checkbox {
+        flex-direction: row;
+        display: flex;
+        align-items: flex-end;
+        padding-bottom: var(--mc-space-13);
+
+        label {
+            display: flex;
+            flex-direction: row;
+            align-items: baseline;
+        }
+    }
+}

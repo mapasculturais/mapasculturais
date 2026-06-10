@@ -51,7 +51,7 @@ $this->breadcrumb = [
         <mc-tab label="<?= i::_e('Informações') ?>" slug="info">
             <mc-container>
                 <entity-status :entity="entity"></entity-status>
-                <mc-card class="feature">
+                <mc-card class="mc-card--feature">
                     <template #title>
                         <label><?php i::_e("Informações de Apresentação") ?></label>
                         <p><?php i::_e("Os dados inseridos abaixo serão exibidos para todos os usuários") ?></p>

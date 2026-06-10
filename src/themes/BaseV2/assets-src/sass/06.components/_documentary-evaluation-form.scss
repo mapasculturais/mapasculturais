@@ -1,0 +1,49 @@
+@use '../01.settings/mixins' as *;
+
+.documentary-evaluation-form {
+    &__content {
+        display: flex;
+        flex-direction: column;
+        gap: var(--mc-space-20);
+    }
+
+    &__title {
+        display: flex;
+        justify-content: center;
+        background-color: var(--mc-eval-not-eval);
+        height: size(58);
+        align-items: center;
+
+        h3 {
+            padding: var(--mc-space-10);
+            text-align: center;
+            font-weight: var(--mc-font-bold);
+            font-size: var(--mc-font-size-xxs);
+            line-height: 100%;
+            letter-spacing: 0%;
+            text-align: center;
+            vertical-align: middle;
+        }
+    }
+
+    &__textarea {
+        label {
+            flex-direction: column;
+        }
+    }
+
+    // NOTE-BEM: .field is a cross-component selector — owned by mc-field, cannot rename from here
+    .field {
+        textarea {
+            min-height: size(155);
+        }
+    }
+
+    &__verification {
+        &__seals-image {
+            display: flex;
+            gap: var(--mc-space-16);
+            flex-wrap: wrap;
+        }
+    }
+}

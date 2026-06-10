@@ -1,0 +1,6 @@
+@use '../01.settings/mixins' as *;
+
+.theme-customizer {
+    display: grid;
+    gap: var(--mc-space-30);
+}

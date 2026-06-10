@@ -1,0 +1,62 @@
+@use '../01.settings/mixins' as *;
+
+// @consumer: status-indicator — Icon + label grid pattern; consider consuming
+// the `status-indicator` Object from 02.tools when available.
+.mc-status {
+    width: fit-content;
+    white-space: nowrap;
+    margin: 0 auto;
+    grid-template-columns: var(--mc-space-16) 1fr;
+    gap: var(--mc-space-8);
+    font-weight: var(--mc-font-bold);
+    display: grid;
+    align-items: center;
+
+    &--draft {
+        color: var(--mc-low-300);
+    }
+
+    &--success {
+        color: var(--mc-success-500);
+    }
+
+    &--invalid {
+        color: var(--mc-danger-500);
+    }
+
+    &--error {
+        color: var(--mc-danger-500);
+    }
+
+    &--warning {
+        color: var(--mc-warning-500);
+    }
+
+    &--primary {
+        color: var(--mc-primary-500);
+    }
+
+    &--default {
+        color: var(--mc-low-500);
+    }
+
+    &--evaluation-pending {
+        color: var(--mc-status-negative);
+    }
+
+    &--evaluation-started {
+        color: var(--mc-status-warning);
+    }
+
+    &--evaluation-completed {
+        color: var(--mc-status-info);
+    }
+
+    &--evaluation-sent {
+        color: var(--mc-status-positive);
+    }
+
+    .iconify {
+        font-size: var(--mc-space-16);
+    }
+}

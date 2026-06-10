@@ -27,7 +27,7 @@ $this->import('
         </template>
     </opportunity-header>
 
-    <div class="opportunity-registrations__container opportunity-registrations__container--bound">
+    <div class="opportunity-registrations__container opportunity-registrations__container__bound">
         <opportunity-phase-header :phase="entity"></opportunity-phase-header>
         <opportunity-support-config :entity="entity"><opportunity-support-config>
     </div>

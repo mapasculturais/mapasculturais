@@ -13,9 +13,9 @@ $this->import('
 <?php $this->applyTemplateHook('entity-header', 'before'); ?>
 <header v-if="!editable" class="entity-header" :class="{ 'entity-header--no-image': !entity.files.header }">
     <?php $this->applyTemplateHook('entity-header', 'begin'); ?>
-    <div class="entity-header__single--cover" :style="{ '--url': url(entity.files.header?.url) }"></div>
-    <div class="entity-header__single--content">
-        <div class="leftSide">
+    <div class="entity-header__single-cover" :style="{ '--url': url(entity.files.header?.url) }"></div>
+    <div class="entity-header__single-content">
+        <div class="entity-header__avatar-side">
             <div class="avatar">
 
                 <mc-avatar :entity="entity" size="big"></mc-avatar>
@@ -60,13 +60,13 @@ $this->import('
                 </a>
             </nav>
         </div>
-        <div class="rightSide">
+        <div class="entity-header__info-side">
             <div class="data">
                 <mc-title tag="h1" size="big" class="entity-header__title"> {{entity.name}} </mc-title>
                 <div class="metadata">
                     <slot name="metadata">
                         <dl v-if="entity.id && global.showIds[entity.__objectType]" class="metadata__id">
-                            <dt class="metadata__id--id"><?= i::__('ID') ?></dt>
+                            <dt class="metadata__id__id"><?= i::__('ID') ?></dt>
                             <dd><strong>{{entity.id}}</strong></dd>
                         </dl>
                         <dl v-if="entity.type">
@@ -114,7 +114,7 @@ $this->import('
 <header v-if="editable" class="entity-header">
     <?php $this->applyTemplateHook('entity-header', 'begin'); ?>
     <div class="entity-header__edit">
-        <div class="entity-header__edit--content">
+        <div class="entity-header__edit-content">
             <div class="title">
                 <div :class="['icon', entity.__objectType+'__background']">
                     <mc-icon :entity="entity"></mc-icon>

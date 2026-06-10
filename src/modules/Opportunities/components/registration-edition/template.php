@@ -45,7 +45,7 @@ $this->import('
                                 <mc-avatar v-if="!entity.opportunity.requestAgentAvatar" :entity="entity.owner" size="small"></mc-avatar>
                                 <request-agent-avatar v-if="!preview && entity.opportunity.requestAgentAvatar" :entity="entity"></request-agent-avatar>
                                 <div class="owner__content">
-                                    <div class="owner__content--title">
+                                    <div class="owner__content__title">
                                         <h3 class="card__title">
                                             <?= i::__('Agente responsável') ?>
                                         </h3>
@@ -70,7 +70,7 @@ $this->import('
                                     :agent="agentCollective.agent"
                                     error-key="agent_coletivo_avatar"></request-agent-avatar>
                                 <div class="collective__content">
-                                    <div class="collective__content--title">
+                                    <div class="collective__content__title">
                                         <h3 class="card__title">
                                             <?= i::__('Agente coletivo') ?>
                                         </h3>

@@ -1,0 +1,153 @@
+@use '../01.settings/mixins' as *;
+
+.home-opportunities {
+	background-color: var(--mc-home-opportunities);
+	display: flex;
+	flex-direction: column;
+	gap: var(--mc-space-40);
+	margin: 0 auto;
+	padding: size(80) var(--mc-space-16);
+	position: relative;
+	width: 100%;
+
+	&__header,
+	&__content {
+		margin: 0 auto;
+		max-width: var(--mc-layout-container-xl);
+		width: 100%;
+	}
+
+	&__header {
+		&.title {
+			display: flex;
+			justify-content: space-between;
+			margin: 0;
+			max-width: calc(100% - 130px);
+
+			label {
+				font-size: var(--mc-space-32);
+				font-weight: 700;
+				line-height: var(--mc-space-48);
+
+				// TODO-BREAKPOINT: 500px is not a canonical breakpoint. Consider adding to $mc-breakpoints or using nearest canonical value.
+				@include respond-below('mob') {
+					font-size: var(--mc-space-24);
+					line-height: var(--mc-space-28);
+				}
+			}
+			@include respond-below('sm') {
+				width: 100%;
+			}
+		}
+
+		&.description {
+			font-size: var(--mc-space-16);
+			font-weight: 400;
+			line-height: var(--mc-space-22);
+			margin: 0;
+			max-width: calc(100% - 130px);
+			@include respond-below('sm') {
+				margin: unset;
+				max-width: 100%;
+			}
+		}
+	}
+
+	&__cards {
+		display: grid;
+		gap: var(--mc-space-32);
+		grid-template-columns: 1fr;
+
+		&--column {
+			align-items: start;
+			grid-template-columns: 1fr 1fr;
+			overflow-x: auto;
+			@include respond-below('sm') {
+				grid-template-columns: 1fr;
+			}
+		}
+		.entity-card {
+			&__header {
+				flex-direction: column;
+			}
+		}
+	}
+
+	&__content {
+		&.cards {
+			.carousel__track {
+				align-items: flex-start;
+			}
+			
+			.actions {
+				display: flex;
+				gap: var(--mc-space-24);
+				position: absolute;
+				right: 0;
+				top: size(-125);
+			}
+
+			.carousel {
+				margin-top: var(--mc-space-20);
+
+				&__prev {
+					// TODO: Replace hardcoded %23d50200 with token-derived value (approx --mc-secondary-500)
+					background: url('https://api.iconify.design/akar-icons/arrow-left.svg?color=%23d50200') no-repeat center center / var(--mc-space-28);
+					background-color: var(--mc-white);
+					cursor: pointer;
+
+					.carousel__icon {
+						display: none;
+					}
+				}
+
+				&__next {
+					// TODO: Replace hardcoded %23d50200 with token-derived value (approx --mc-secondary-500)
+					background: url('https://api.iconify.design/akar-icons/arrow-right.svg?color=%23d50200') no-repeat center center / var(--mc-space-28);
+					background-color: var(--mc-white);
+					cursor: pointer;
+
+					.carousel__icon {
+						display: none;
+					}
+				}
+
+				&__prev,
+				&__next {
+					align-items: center;
+					border: none;
+					border-radius: 50%;
+					display: flex;
+					height: var(--mc-space-48);
+					justify-content: center;
+					width: var(--mc-space-48);
+
+					&--in-active {
+						background-color: var(--mc-gray-100);
+						cursor: default;
+					}
+				}
+
+				&__viewport {
+					ol {
+						li{
+							justify-content: flex-start;
+							padding: 0 var(--mc-space-40) 0 0;
+							.entity-card.portrait {
+								.user-info.with-labels{
+									text-align: left;
+									.user-info__name{
+										font-size: var(--mc-space-18);
+									}
+								}
+							}
+							@include respond-below('sm') {
+								padding: 0 var(--mc-space-20);
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+}

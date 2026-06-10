@@ -15,11 +15,11 @@ $this->import('
 ?>
 <div class="grid-12 opportunity-subscription">
 	<div class="col-12 opportunity-subscription__info">
-		<p class="title">
+		<p class="opportunity-subscription__title">
 			<?= i::__("Período de inscrição") ?>
 		</p>
 
-		<div class="content">
+		<div class="opportunity-subscription__info-content">
 			<div class="content__description" v-html="infoRegistration"></div>
 		</div>
 	</div>
@@ -35,9 +35,9 @@ $this->import('
 	</div>
 
 	<div v-if="!entity.publicityOnly && isOpen && !isPublished && !registrationLimit && !registrationLimitPerOwner" class="col-12 opportunity-subscription__subscription">
-		<p class="title"> <?= i::__("Inscreva-se") ?> </p>
+		<p class="opportunity-subscription__title"> <?= i::__("Inscreva-se") ?> </p>
 
-		<div v-if="global.auth.isLoggedIn" class="logged">
+		<div v-if="global.auth.isLoggedIn" class="opportunity-subscription__logged">
 			<p v-if="numberFields > 1" class="logged__description">
 				<?= i::__('Selecione as opções abaixo e clique no botão para se inscrever') ?>
 			</p>
@@ -53,14 +53,14 @@ $this->import('
 				<div class="col-6 sm:col-12 opportunity-subscription__selectAgents" v-if="entitiesLength > 1">
 					<select-entity type="agent" openside="down-right" :createNew="canCreateIndividualAgent" :create-new-type="1" :query="{'type': 'EQ(1)'}" select="name,files.avatar,endereco,location" @fetch="fetch($event)" @select="selectAgent($event)" classes="opportunity-subscription__popover">
 						<template #button="{ toggle }">
-							<span v-if="!agent" class="fakeInput" @click="toggle()">
+							<span v-if="!agent" class="opportunity-subscription__fake-input" @click="toggle()">
 								<div class="fakeInput__img">
 									<mc-icon name="image"></mc-icon>
 								</div>
 								<?= i::_e('Agente Cultural') ?>
 							</span>
 
-							<span v-if="agent" class="fakeInput" @click="toggle()">
+							<span v-if="agent" class="opportunity-subscription__fake-input" @click="toggle()">
 								<mc-icon name="selected"></mc-icon>
 								<mc-avatar :entity="agent" size="xsmall"></mc-avatar>
 								{{agent.name}}
@@ -71,14 +71,14 @@ $this->import('
 				<div class="col-6 sm:col-12 opportunity-subscription__selectAgents" v-if="selectAgentRelationColetivo">
 					<select-entity type="agent" openside="down-right" :createNew="true" :create-new-type="2" :query="{'type': 'EQ(2)'}" select="name,files.avatar,endereco,location,type" @fetch="fetch($event)" @select="selectAgent($event)" classes="opportunity-subscription__popover">
 						<template #button="{ toggle }">
-							<span v-if="!agentCollective" class="fakeInput" @click="toggle()">
+							<span v-if="!agentCollective" class="opportunity-subscription__fake-input" @click="toggle()">
 								<div class="fakeInput__img">
 									<mc-icon name="image"></mc-icon>
 								</div>
 								<?= i::_e('Agente Coletivo') ?>
 							</span>
 
-							<span v-if="agentCollective" class="fakeInput" @click="toggle()">
+							<span v-if="agentCollective" class="opportunity-subscription__fake-input" @click="toggle()">
 								<mc-icon name="selected"></mc-icon>
 								<mc-avatar :entity="agentCollective" size="xsmall"></mc-avatar>
 									{{agentCollective.name}}
@@ -121,7 +121,7 @@ $this->import('
 		</div>
 
 		<!-- Deslogado -->
-		<div v-if="!global.auth.isLoggedIn" class="loggedOut">
+		<div v-if="!global.auth.isLoggedIn" class="opportunity-subscription__logged-out">
 			<p class="loggedOut__description">
 				<?= i::__("Você precisa acessar sua conta ou criar um cadastro na plataforma para poder se inscrever em editais ou oportunidades") ?>
 			</p>

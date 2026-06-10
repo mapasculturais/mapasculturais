@@ -1,0 +1,141 @@
+@use '../01.settings/mixins' as *;
+
+.link-opportunity {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--mc-space-16);
+
+    &__title {
+        font-size: size(--mc-font-size-md);
+    }
+
+    &__selection {
+        grid-template-columns: var(--mc-space-40) 1fr;
+    }
+
+    &__selected {
+        border-radius: 4px;
+        border: 0.5px solid var(--mc-gray-100);
+        max-width: size(296);
+        padding: var(--mc-space-16);
+
+    }
+
+    &__message {
+        font-size: var(--mc-space-12);
+    }
+
+    &__link {
+        font-size: var(--mc-space-14);
+        display: flex;
+        justify-content: space-evenly;
+
+        @include respond-below('xs') {
+            font-size: var(--mc-space-12);
+        }
+    }
+ 
+    &__header {
+        display: grid;
+        grid-template-columns: size(56) 1fr;
+        align-items: center;
+        gap: var(--mc-space-4);
+        border-radius: var(--mc-border-radius-xs);
+        padding: var(--mc-space-9) var(--mc-space-13) var(--mc-space-9) var(--mc-space-9);
+       
+    }
+
+    &__info {
+        padding-top: var(--mc-space-16);
+        display: flex;
+        flex-direction: column;
+        gap: var(--mc-space-16);
+    }
+
+    &__name {
+        font-size: 14px;
+        font-weight: 400;
+    }
+
+    &__closed {
+
+        bottom: 33px;
+        left: 191px;
+        position: relative;
+
+        @include respond-below('xs') {
+            left: size(170);
+        }
+
+    }
+
+    &__itemlabel {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        cursor: pointer;
+    }
+
+    // NOTE-BEM: .selectButton is a template-dependent camelCase class — rename requires PHP template update
+    .selectButton {
+        cursor: pointer;
+        color: var(--mc-primary-500);
+        font-weight: 700;
+        font-size: var(--mc-space-12);
+        line-height: var(--mc-space-16);
+        text-align: center;
+
+        &.disabled {
+            color: var(--mc-black);
+            cursor: default;
+            opacity: .3;
+            pointer-events: none;
+        }
+    }
+
+    &__inner {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+
+    }
+
+    &__change {
+        display: flex;
+        align-items: center;
+        gap: 4px;
+
+    }
+
+    &__option {
+        color: var(--mc-black);
+        border-radius: 4px;
+        border: 1px solid var(--mc-gray-700);
+        max-width: size(265);
+        width: 100%;
+        padding: var(--mc-space-12) var(--mc-space-7);
+    }
+
+
+    &__opt {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: var(--mc-space-8);
+        padding-top: var(--mc-space-16);
+    }
+
+    &__exchange {
+        display: flex;
+        align-items: center;
+        color: var(--mc-primary-500);
+        gap: var(--mc-space-4);
+    }
+
+    &__ownerEntity {
+        display: grid;
+        text-decoration: none;
+        align-items: center;
+        gap: var(--mc-space-8);
+    }
+
+}

@@ -26,8 +26,8 @@ $this->import('
                 <mc-entities ref="entitiesList" :type="type" :select="select" :query="query" :limit="limit" order="name ASC" :scope="scope" :permissions="permissions" @fetch="fetch($event)" watch-query>
                     <template #header="{entities}">
                         <form class="select-entity__form" @submit="entities.refresh(); $event.preventDefault();">
-                            <input ref="searchKeyword" v-model="entities.query['@keyword']" type="text" class="select-entity__form--input" name="searchKeyword" :placeholder="placeholder" @keyup="entities.refresh(500)"/>
-                            <button type="button" class="select-entity__form--button">
+                            <input ref="searchKeyword" v-model="entities.query['@keyword']" type="text" class="select-entity__form__input" name="searchKeyword" :placeholder="placeholder" @keyup="entities.refresh(500)"/>
+                            <button type="button" class="select-entity__form__button">
                                 <mc-icon name="search"></mc-icon>
                             </button>
                         </form>
@@ -38,7 +38,7 @@ $this->import('
                             <p v-if="entities.length > 0" class="select-entity__description"> {{itensText}} </p>
                         </slot>
                         <ul class="select-entity__results">
-                            <li v-for="entity in entities" class="select-entity__results--item" :class="type" @click="selectEntity(entity, close)">
+                            <li v-for="entity in entities" class="select-entity__results__item" :class="type" @click="selectEntity(entity, close)">
                                 <slot name="entityInfo" :entity="entity">
                                     <span class="icon">
                                         <mc-avatar :entity="entity" size="xsmall"></mc-avatar>

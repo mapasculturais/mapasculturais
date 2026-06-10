@@ -1,0 +1,43 @@
+@use '../01.settings/mixins' as *;
+
+.entity-field-seals {
+    align-items: center;
+    display: flex;
+    gap: var(--mc-space-4);
+    justify-content: flex-end;
+}
+
+.entity-field-seal {
+    line-height: 0;
+
+    &__image {
+
+        .mc-avatar--square {
+            border-radius: var(--mc-border-radius-xs);
+            height: var(--mc-space-32);
+            min-height: var(--mc-space-32);
+            min-width: var(--mc-space-32);
+            width: var(--mc-space-32);
+        }
+
+        &:not(:has(img)) {
+            align-items: center;
+            background: var(--mc-gray-300);
+            border-radius: var(--mc-border-radius-xs);
+            color: var(--mc-gray-700);
+            display: flex;
+            font-size: var(--mc-space-24);
+            height: var(--mc-space-32);
+            justify-content: center;
+            min-height: var(--mc-space-32);
+            min-width: var(--mc-space-32);
+            width: var(--mc-space-32);
+        }
+    }
+}
+
+.entity-field-seal-text {
+    font-size: var(--mc-space-12);
+    text-align: right;
+    width: 100%;
+}

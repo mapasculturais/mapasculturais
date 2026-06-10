@@ -18,7 +18,7 @@ use MapasCulturais\i;
 
     <!-- Tabela -->
     <div style="overflow-x: auto; margin-top: 15px;">
-        <table class="custom-table" style="width: 100%; border-collapse: collapse; border: 1px solid #ddd;">
+        <table class="entity-field__custom-table" style="width: 100%; border-collapse: collapse; border: 1px solid #ddd;">
             <thead>
                 <tr style="background-color: #f2f2f2;">
                     <th ng-repeat="column in field.config.columns" style="border: 1px solid #ddd; padding: 10px; text-align: left;">

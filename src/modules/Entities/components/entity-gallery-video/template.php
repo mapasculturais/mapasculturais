@@ -18,20 +18,20 @@ $this->import('
     <label class="entity-gallery__title"> {{title}} </label>
 
     <div v-if="entity.metalists?.videos" class="entity-gallery__list">   
-        <div v-for="(metalist, index) in videos" class="entity-gallery__list--video">
+        <div v-for="(metalist, index) in videos" class="entity-gallery__list__video">
             <div>
-                <div @click="openVideo(index); open()" class="entity-gallery__list--video-img">
+                <div @click="openVideo(index); open()" class="entity-gallery__list__video-img">
                     <img :src="metalist.video.thumbnail" />
                 </div>                
-                <p @click="openVideo(index); open()" class="entity-gallery__list--video-label"> {{metalist.title}} </p>
+                <p @click="openVideo(index); open()" class="entity-gallery__list__video-label"> {{metalist.title}} </p>
             </div>
-            <div v-if="editable" class="entity-gallery__list--video-actions">                
+            <div v-if="editable" class="entity-gallery__list__video-actions">                
                 <mc-popover  openside="down-right">
                     <template #button="popover">
                         <a @click="metalist.newData = {title: metalist.title, value: metalist.value}; popover.toggle()"> <mc-icon name="edit"></mc-icon> </a>
                     </template>
                     <template #default="popover">
-                        <form @submit="save(metalist, popover); $event.preventDefault()" class="entity-related-agents__addNew--newGroup">
+                        <form @submit="save(metalist, popover); $event.preventDefault()" class="entity-related-agents__addNew-group">
                             <div class="grid-12">
                                 <div class="col-12">
                                     <div class="field">
@@ -90,16 +90,16 @@ $this->import('
         </mc-popover>
     </div>
     <div class="entity-gallery__full" v-if="entity.metalists?.videos" :class="{ 'active': galleryOpen }">
-        <div @click="close" class="entity-gallery__full--overlay"> </div>
-        <div class="entity-gallery__full--video">
+        <div @click="close" class="entity-gallery__full__overlay"> </div>
+        <div class="entity-gallery__full__video">
             <mc-icon name="loading"></mc-icon>
             <iframe v-if="actualVideo?.video?.provider == 'youtube'" :src="'https://www.youtube.com/embed/'+actualVideo.video?.videoID" height="500"></iframe>
             <iframe v-if="actualVideo?.video?.provider == 'vimeo'" :src="'https://player.vimeo.com/video/'+actualVideo.video?.videoID" height="500" frameborder="0" allow="fullscreen" allowfullscreen></iframe>
             <p v-if="!actualVideo?.video?.provider == 'youtube'"> <?php i::_e("Sem vimeo por enquanto.")?> </p>
-            <div class="description">{{actualVideo?.title}}</div>
-            <div @click="prev" class="btnPrev"> <mc-icon name="previous"></mc-icon> </div>
-            <div @click="next" class="btnNext"> <mc-icon name="next"></mc-icon> </div>
-            <div @click="close" class="btnClose"> <mc-icon name="close"></mc-icon> </div>            
+            <div class="entity-gallery__full__video-description">{{actualVideo?.title}}</div>
+            <div @click="prev" class="entity-gallery__btn-prev"> <mc-icon name="previous"></mc-icon> </div>
+            <div @click="next" class="entity-gallery__btn-next"> <mc-icon name="next"></mc-icon> </div>
+            <div @click="close" class="entity-gallery__btn-close"> <mc-icon name="close"></mc-icon> </div>            
         </div>
     </div>
     <?php $this->applyTemplateHook('entity-gallery-video','end'); ?>

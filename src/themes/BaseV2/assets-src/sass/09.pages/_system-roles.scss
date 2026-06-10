@@ -1,0 +1,188 @@
+@use '../01.settings/mixins' as *;
+
+.controller-panel.action-system-roles {
+    .panel-entity-card {
+
+        &__header> :first-child {
+            grid-template-columns: 1fr;
+            align-items: start;
+            display: grid;
+        }
+
+        &__main {
+            display: grid;
+            grid-template-columns: 1fr;
+            justify-items: start;
+
+            .system-roles-card {
+                &__columns {
+                    columns: 3;
+                    column-gap: var(--mc-space-16);
+                }
+                // TODO-BREAKPOINT: 1180px is not a canonical breakpoint. Consider adding to $mc-breakpoints or using nearest canonical value.
+                @media (max-width: size(1180)) {
+                    &__columns {
+                        columns: 2;
+                    }
+                    &__column {
+                        break-inside: avoid;
+                        padding-right: var(--mc-space-40);
+                    }
+                }
+                // TODO-BREAKPOINT: 940px is not a canonical breakpoint. Consider adding to $mc-breakpoints or using nearest canonical value.
+                @media (max-width: size(940)) {
+                    &__columns {
+                        columns: 1;
+                    }
+                    &__column {
+                        break-inside: avoid;
+                        padding-right: 0;
+                    }
+                }
+                &__column {
+                    break-inside: avoid;
+                    padding-right: size(80);
+                }
+
+                &__info,
+                &__slug {
+
+                    font-size: var(--mc-space-12);
+                    font-style: normal;
+                    font-weight: normal;
+                    font-size: var(--mc-space-14);
+                    line-height: var(--mc-space-16);
+                }
+
+                &__slug {
+                    padding-top: var(--mc-space-9);
+                }
+
+                &__label {
+                    color: var(--mc-gray-700);
+                    font-size: var(--mc-space-12);
+                    font-style: normal;
+                    font-weight: normal;
+                    font-size: var(--mc-space-14);
+                    line-height: var(--mc-space-16);
+                    text-transform: uppercase
+                }
+
+                &__entityInfo {
+                    font-size: var(--mc-space-14);
+                    font-weight: 700;
+                    line-height: var(--mc-space-16);
+                    margin-left: var(--mc-space-5);
+                    font-size: 0.875rem;
+                }
+
+                &__content {
+                    background: var(--mc-gray-100);
+                    border-radius: var(--mc-space-8);
+                    padding: var(--mc-space-20);
+                    margin-top: var(--mc-space-32);
+                }
+
+                &__close,
+                &__expand {
+                    padding-top: var(--mc-space-21);
+                    align-items: center;
+                    color: var(--mc-primary-500);
+                    display: flex;
+                    gap: var(--mc-space-4);
+                    justify-content: flex-end;
+                    min-width: size(82);
+
+                    label {
+                        font-weight: 700;
+                        font-size: size(18.5);
+                        line-height: size(24.5);
+
+                    }
+                }
+
+                &__list {
+                    font-family: 'Open Sans';
+                    font-weight: 700;
+                    font-size: var(--mc-space-12);
+                    line-height: size(16.34);
+
+                }
+
+                &__users {
+                    font-family: 'Open Sans';
+                    font-style: normal;
+                    font-weight: 700;
+                    font-size: var(--mc-space-14);
+                    line-height: var(--mc-space-19);
+                }
+
+            }
+        }
+
+        &__header--picture {
+            display: none;
+        }
+
+        &__footer-actions {
+            display: flex;
+            justify-content: flex-end;
+            align-items: flex-end;
+
+            .button.delete {
+                display: flex;
+                align-items: flex-start;
+                padding: var(--mc-space-9) var(--mc-space-19);
+
+                span {
+                    font-family: 'Open Sans';
+                    font-style: normal;
+                    font-weight: 700;
+                    font-size: var(--mc-space-14);
+                    line-height: var(--mc-space-19);
+                }
+
+                svg {
+                    font-size: var(--mc-space-16);
+                }
+            }
+
+            // TODO-BREAKPOINT: 500px is not a canonical breakpoint. Consider adding to $mc-breakpoints or using nearest canonical value.
+            @include respond-below('mob') {
+
+                display: grid;
+                grid-template-columns: 1fr;
+
+                .button.delete {
+                    height: var(--mc-space-48);
+                    display: flex;
+                    align-items: center;
+
+                    span {
+                        font-family: 'Open Sans';
+                        font-style: normal;
+                        font-weight: 600;
+                        font-size: var(--mc-space-18);
+                        line-height: var(--mc-space-25);
+                    }
+                }
+
+
+                .right {
+                    .button {
+                        height: var(--mc-space-48);
+                        gap: calc(36%);
+                        align-items: center;
+                        justify-content: flex-start;
+                        font-family: 'Open Sans';
+                        font-style: normal;
+                        font-weight: 600;
+                        font-size: var(--mc-space-18);
+                        line-height: var(--mc-space-25);
+                    }
+                }
+            }
+
+        }
+    }
+}

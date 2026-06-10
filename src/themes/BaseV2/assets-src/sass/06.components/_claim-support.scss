@@ -1,0 +1,58 @@
+@use '../01.settings/mixins' as *;
+
+.opportunity-claim-form {
+  
+  @media print {
+    display: none !important;
+  }
+
+  &__buttonlabel {
+    max-width: size(259);
+    width: 100%;
+    color: var(--mc-primary-500);
+    background-color: var(--mc-high-500);
+    border: none;
+    text-align: left;
+    padding-left: 0;
+    padding-right: 0;
+  }
+  &__resource {
+    color: var(--mc-primary-500);
+  }
+
+  .modal {
+    max-width: 570px;
+    width: 100%;
+
+    &__title {
+      font-family: var(--mc-font-body);
+      font-style: normal;
+      font-weight: 700;
+      font-size: var(--mc-space-24);
+      line-height: var(--mc-space-28);
+      margin-left: var(--mc-space-16);
+      display: contents;
+    }
+
+    &__content {
+      margin-left: 0;
+      .opportunity-claim-form {
+        &__textarea {
+          width: size(570);
+          height: size(140);
+          border-radius: var(--mc-space-4);
+
+          @include respond-below('md') {
+            max-width: size(570);
+            width: 100%;
+          }
+        }
+
+        &__label {
+          padding-bottom: var(--mc-space-16);
+        }
+      }
+
+    }
+  }
+}

@@ -1,0 +1,232 @@
+@use '../01.settings/mixins'as *;
+
+.carousel {
+    &--panel & {
+        &__viewport {
+            @include respond-below('mob') {
+                .carousel__track {}
+            }
+        }
+
+        &__slide {
+            align-items: flex-start;
+            display: flex;
+            padding: 0 var(--mc-space-12);
+
+            &>* {
+                width: 100%;
+            }
+
+            &--active {
+                &.carousel__slide {
+                    &--active {
+                        min-width: 318px;
+                        max-width: 100%;
+                    }
+                }
+            }
+
+            .panel__row {
+                margin: 0;
+
+            }
+
+
+            .panel-entity-card {
+                border-radius: var(--mc-border-radius-xs);
+                min-height: size(224);
+                padding: var(--mc-space-16);
+                width: 100%;
+                display: flex;
+                gap: var(--mc-space-8);
+                flex-direction: column;
+                justify-content: space-between;
+                margin: 0 var(--mc-space-12);
+
+
+                .panel__row,
+                &.panel-entity-card,
+                &.card {
+                    @include respond-below('xs') {
+                        //background-color: red;
+                        margin-left: 0;
+                        max-width: 300px;
+                        width: 100%;
+
+                        .panel-entity-card__footer-actions.right .button-action {
+                            max-width: 75%;
+                            gap: 28%;
+                        }
+
+                        &.panel-home__tabs,
+                        &.tab-component {
+                            // padding-inline: 8px;
+                            background-color: var(--mc-gray-100);
+                        }
+
+                        .card {
+                            width: 318px;
+                        }
+                    }
+                }
+
+                &__header {
+                    &-actions {
+                        right: var(--mc-space-16);
+                        position: absolute;
+                    }
+
+                    &__picture {
+                        width: var(--mc-space-48);
+                        height: var(--mc-space-48);
+                        margin-right: var(--mc-space-8);
+
+                        img {
+                            width: var(--mc-space-48);
+                            height: var(--mc-space-48);
+                        }
+                    }
+
+                    &__info {
+                        display: block;
+                        line-height: var(--mc-space-21);
+                        text-align: left;
+
+                        &-subtitle {
+                            display: none;
+                        }
+                    }
+
+                    .left {
+                        display: grid;
+                        grid-template-columns: 1fr;
+                        flex-wrap: wrap;
+
+                        // TODO-BREAKPOINT: 956px is not a canonical breakpoint. Consider adding to $mc-breakpoints or using nearest canonical value.
+                        @include respond-below('lg') {
+                            display: flex;
+                            // gap: var(--mc-space-12);
+                            text-align: left;
+                        }
+                    }
+                }
+
+                &__main {
+                    font-weight: 400;
+                    font-size: var(--mc-space-12);
+                    line-height: var(--mc-space-16);
+                    text-align: left;
+                    padding: 0;
+
+                    span {
+                        word-break: break-word;
+                        white-space: pre-line;
+
+                    }
+
+                    @include respond-below('xs') {
+                        span {
+                            word-break: break-word;
+                        }
+                    }
+                }
+
+                &__footer {
+                    &-actions {
+
+                        // TODO-BREAKPOINT: 956px is not a canonical breakpoint. Consider adding to $mc-breakpoints or using nearest canonical value.
+                        @include respond-below('lg') {
+                            display: flex;
+                            justify-content: center;
+                            align-items: center;
+
+                            &.left {
+                                display: none;
+                            }
+
+                            &.right {
+                                gap: var(--mc-space-8);
+
+                                .content {
+                                    display: none;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        &__prev--in-active,
+        &__next--in-active {
+            cursor: default;
+            opacity: .3;
+            pointer-events: none;
+        }
+        
+    }
+
+    @include respond-below('xs') {
+        .actions {
+            margin-right: var(--mc-space-18);
+        }
+    }
+
+    .actions {
+        display: flex;
+        gap: var(--mc-space-18);
+        position: absolute;
+        right: 0;
+        top: size(-50);
+
+        button.carousel__prev {
+            background: url(https://api.iconify.design/akar-icons/arrow-left.svg?color=%230074C1) no-repeat center center / var(--mc-space-15);
+        }
+
+        button.carousel__next {
+            background: url(https://api.iconify.design/akar-icons/arrow-right.svg?color=%230074C1) no-repeat center center / var(--mc-space-15);
+        }
+
+        button.carousel__prev,
+        button.carousel__next {
+            background-color: var(--mc-high-500);
+            border: none;
+            border-radius: var(--mc-border-radius-pill);
+            height: var(--mc-space-40);
+            width: var(--mc-space-40);
+        }
+
+        .carousel__icon {
+            display: none;
+        }
+
+        @include respond-below('xs') {
+            margin-right: 0;
+
+            button.carousel__prev,
+            button.carousel__next {
+                background-color: var(--mc-high-500);
+                border: none;
+                border-radius: var(--mc-border-radius-pill);
+                height: var(--mc-space-32);
+                width: var(--mc-space-32);
+            }
+
+        }
+
+        // TODO-BREAKPOINT: 700px is not a canonical breakpoint. Consider adding to $mc-breakpoints or using nearest canonical value.
+        @media (max-width:size(700)) {
+
+            button.carousel__prev,
+            button.carousel__next {
+                background-color: var(--mc-high-500);
+                border: none;
+                border-radius: var(--mc-border-radius-pill);
+                height: var(--mc-space-32);
+                width: var(--mc-space-32);
+            }
+
+        }
+    }
+
+}

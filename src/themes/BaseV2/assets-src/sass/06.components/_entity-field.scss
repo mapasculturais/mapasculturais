@@ -1,0 +1,13 @@
+@use '../01.settings/mixins' as *;
+
+.custom-table, .entity-field__custom-table {
+    input.invalid-cell {
+        border-color: var(--mc-error) !important;
+        background-color: color-mix(in srgb, var(--mc-error) 5%, transparent) !important;
+
+        &:focus {
+            outline-color: var(--mc-error) !important;
+            box-shadow: 0 0 0 var(--mc-space-2) color-mix(in srgb, var(--mc-error) 10%, transparent) !important;
+        }
+    }
+}

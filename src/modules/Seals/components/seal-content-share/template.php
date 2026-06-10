@@ -15,10 +15,10 @@ $this->import('
 <mc-modal :title="modalTitle" classes="create-modal" button-label="<?= i::__('Compartilhar') ?>" @open="" @close="">
     <template #default>
         <div class="seal-content-share__socialnetwork">
-            <p class="seal-content-share__socialnetwork--title">
+            <p class="seal-content-share__socialnetwork__title">
               <?= i::__("Nas redes sociais") ?>
             </p>
-            <div class="seal-content-share__socialnetwork--icons">
+            <div class="seal-content-share__socialnetwork__icons">
                 <div class="icon" v-if="socialNetworks.instagram">
                     <a :href="socialNetworks.instagram"><mc-icon width="24px" name="instagram"></mc-icon></a>
                 </div>
@@ -34,13 +34,13 @@ $this->import('
             </div>
         </div>
         <div class="seal-content-share__share">
-            <p class="seal-content-share__share--label">
+            <p class="seal-content-share__share__label">
                 <?= i::__("Ou copie o link") ?>
             </p>
-            <div class="seal-content-share__share--field">
+            <div class="seal-content-share__share__field">
                 <span>l1nq.com/daMmQ</span>
-                <div class="seal-content-share__share--button">
-                    <mc-icon name="copy" class="seal-content-share__share--icon"></mc-icon>
+                <div class="seal-content-share__share__button">
+                    <mc-icon name="copy" class="seal-content-share__share__icon"></mc-icon>
                     <a href="#"><?= i::__("Copiar") ?></a>
                 </div>
             </div>

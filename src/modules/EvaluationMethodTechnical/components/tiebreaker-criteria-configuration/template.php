@@ -105,7 +105,7 @@ $this->import('
                     </template>
                 </div>
 
-                <div class="tiebreaker-criteria__column tiebreaker-criteria__column--center">
+                <div class="tiebreaker-criteria__column tiebreaker-criteria__column__center">
                     <mc-confirm-button @confirm="unsetCriterion(criterion.id)">
                         <template #button="modal">
                             <button class="button button--md button--text-danger button--icon" @click="modal.open()" >

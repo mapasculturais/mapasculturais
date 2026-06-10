@@ -12,12 +12,12 @@
         <div class="part4"></div>
     </div>
 
-    <div v-if="logoImg" class="theme-logo__logo--img">
+    <div v-if="logoImg" class="theme-logo__logo__img">
         <img :src="logoImg">
     </div>
     
     <div v-if="!hideLabel" class="theme-logo__text">
-        <span class="theme-logo__text--title">{{logo_title}}</span>
-        <small class="theme-logo__text--subtitle" v-if="logo_subtitle">{{logo_subtitle}}</small>
+        <span class="theme-logo__text__title">{{logo_title}}</span>
+        <small class="theme-logo__text__subtitle" v-if="logo_subtitle">{{logo_subtitle}}</small>
     </div>
 </a>

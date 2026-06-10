@@ -1,0 +1,46 @@
+@use '../01.settings/mixins' as *;
+
+.opportunity-phase-status {
+    width: 100%;
+
+    &__line {
+        width: 100%;
+        border-top: 1px solid var(--mc-gray-100);
+        margin: var(--mc-space-32) 0;
+        height: 1px;
+    }
+
+
+    // TODO: BEM-REFACTOR — `.subscribe_prev_phase` uses `_` separator instead of
+    // `__` and is deeply nested. Should become `&__subscribe-prev-phase` with
+    // `&__subscribe-prev-phase-message` flattened to `&__subscribe-message`.
+    // DEFERRED: requires PHP template class name changes.
+    .subscribe_prev_phase {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        &__message {
+            font-family: var(--mc-font-body);
+            font-style: normal;
+            font-weight: 600;
+            font-size: var(--mc-space-14);
+            line-height: var(--mc-space-19);
+        }
+    }
+
+    &__action {
+        .iconify {
+            font-size: size(22.5);
+        }
+    }
+
+    .iconify {
+        // No additional styles needed — font-size inherited or set at usage site
+    }
+
+    &--center {
+        display: flex;
+        justify-content: center;
+    }
+}

@@ -20,7 +20,7 @@ $this->import('
         <p><?= i::__('Algumas informações, como por exemplo as inscrições em editais continuarão acessíveis. Você pode escolher por transferir suas entidades para outro usuário, 
                                 que será questionado se deseja recebê-las. No caso do usuário se negar a receber as entidades, estas serão excluidas.') ?></p>
         <p><?= i::__('Se desejar escolha o usuário para receber suas entidades:') ?></p>
-        <div class="user-management__content--action">
+        <div class="user-management__content__action">
             <select-entity type="agent" @select="switchUser($event)">
                 <template #button="{ toggle }">
                     <button class="button button--sm button--icon button--primary" @click="toggle()">

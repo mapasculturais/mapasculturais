@@ -1,0 +1,71 @@
+@use '../01.settings/mixins' as *;
+
+// TODO-MC-MEDIA: &__entity uses figure(40px)+body grid — candidate for mc-media object
+
+.registration-related-entity {
+    align-items: center;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: var(--mc-space-15) var(--mc-space-10);
+    width: 100%;
+
+    &__entity {
+        align-items: center;
+        border-color: var(--mc-primary-500);
+        border-radius: var(--mc-border-radius-xs);
+        border: var(--mc-border-hairline);
+        display: grid;
+        gap: var(--mc-space-15);
+        max-width: size(520);
+        padding: var(--mc-space-8);
+        width: 100%;
+        grid-template-columns: var(--mc-space-40) 1fr;
+
+        // NOTE-BEM: .image, .name are template-dependent descendant selectors — rename requires PHP template update
+        .image {
+            @include avatar-circle(var(--mc-space-40));
+
+            .iconify {
+                color: var(--mc-high-500);
+                font-size: var(--mc-space-20);
+            }
+        }
+
+        .name {
+            color: var(--mc-primary-500);
+            font-size: var(--mc-space-14);
+            font-weight: 600;
+            line-height: var(--mc-space-19);
+        }
+    }
+
+    // NOTE-BEM: .button, .change, .delete are template-dependent classes — rename requires PHP template update
+    &__actions {
+        align-items: center;
+        display: flex;
+        flex-direction: row;
+        gap: var(--mc-space-5);
+
+        .button {
+            &.change {
+                color: var(--mc-primary-500);
+
+                .iconify {
+                    font-size: var(--mc-space-20);
+                }
+            }
+
+            &.delete {
+                .iconify {
+                    color: var(--mc-danger-500);
+                    font-size: var(--mc-space-18);
+                }
+            }
+        }
+    }
+
+    &__status {
+        @include status-badge;
+    }
+}

@@ -13,18 +13,18 @@ $this->import('
 ?>
 <mc-entities type="notification" name="notification-list" :query='query' #default='{entities, refresh}'>
     <mc-card :class="['notification-card', styleCss]" v-for="entity in entities" :key="entity.__objectId">
-        <div class="avatar">
+        <div class="notification-card__avatar">
             <img v-if="hasAvatar(entity)" :src="avatarUrl(entity)">
             <mc-icon v-if="!hasAvatar(entity)" name='agent-1'></mc-icon>
         </div>
-        <div class="content">
+        <div class="notification-card__content">
             
             <div class="content__header">
                 <span class="title" v-html='entity.message'></span>
                 <span class="subtitle">{{ entity.createTimestamp?.date('numeric year') }} - {{ entity.createTimestamp?.time() }}</span>
             </div>
 
-            <div class="content__groupButtons" v-if="!entity.request">
+            <div class="notification-card__content__group-buttons" v-if="!entity.request">
                 <div class="col-2">
                     <button class="button button--primary-outline" @click="ok(entity); refresh();">
                         <?= i::__('Ok') ?>
@@ -32,7 +32,7 @@ $this->import('
                 </div>
             </div>
 
-            <div class="content__groupButtons" v-else-if="entity.request?.requesterUser?.id === currentUserId">
+            <div class="notification-card__content__group-buttons" v-else-if="entity.request?.requesterUser?.id === currentUserId">
                 <div class="col-2">
                     <button class="button button--primary-outline" @click="cancel(entity); refresh();">
                         <?= i::__('Cancelar') ?>
@@ -45,7 +45,7 @@ $this->import('
                 </div>
             </div>
 
-            <div class="content__groupButtons" v-else-if="entity.request?.requesterUser?.id !== currentUserId">
+            <div class="notification-card__content__group-buttons" v-else-if="entity.request?.requesterUser?.id !== currentUserId">
                 <div class="col-2">
                     <button class="button button--primary-outline" @click="reject(entity); refresh();">
                         <?= i::__('Rejeitar') ?>

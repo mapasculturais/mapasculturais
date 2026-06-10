@@ -106,8 +106,8 @@ $this->import('
         </div>
 
         <template v-if="phases[index + 1]?.isLastPhase">
-            <div v-if="showButtons() && entity.registrationFrom && entity.registrationTo" class="add-phase grid-12">
-                <div class="add-phase__evaluation col-12">
+            <div v-if="showButtons() && entity.registrationFrom && entity.registrationTo" class="mc-stepper-vertical__add-phase grid-12">
+                <div class="mc-stepper-vertical__add-phase-evaluation col-12">
                     <opportunity-create-evaluation-phase :opportunity="entity" :previousPhase="item" :lastPhase="phases[index+1]" @create="addInPhases"></opportunity-create-evaluation-phase>
                 </div>
                 <p><label class="col-12"><?= i::__("ou") ?></label></p>
@@ -131,7 +131,7 @@ $this->import('
         </template>
 
         <template v-else-if="index === phases.length - 1">
-            <div class="add-phase grid-12">
+            <div class="mc-stepper-vertical__add-phase grid-12">
                 <div class="col-12" v-if="!hasExecutionPhase">
                     <mc-alert v-if="!firstPhase?.isContinuousFlow && !lastPhase?.publishTimestamp" type="warning">
                         <p><small class="required"><?= i::__("A data e hora da 'Publicação final' precisa estar preenchida para adicionar a fase de execução.") ?></small></p>

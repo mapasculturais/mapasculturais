@@ -59,7 +59,7 @@ $this->import('
     <?php $this->applyTemplateHook('header-menu-user--mobile', 'before'); ?>
     <div class="mc-header-menu-user__mobile">
         <?php $this->applyTemplateHook('header-menu-user--mobile', 'begin'); ?>
-        <div class="mc-header-menu-user__mobile--button">
+        <div class="mc-header-menu-user__mobile-button">
             <a href="#main-app" class="user" @click="toggleMobile()">
                 <div class="user__name">
                     <?= i::_e('Minha conta') ?>
@@ -69,7 +69,7 @@ $this->import('
                 </div>
             </a>
         </div>
-        <div v-if="open" class="mc-header-menu-user__mobile--list">
+        <div v-if="open" class="mc-header-menu-user__mobile-list">
             <div class="close">
                 <theme-logo href="<?= $app->createUrl('site', 'index') ?>"></theme-logo>
                 <a class="close__btn" href="#main-app" @click="toggleMobile()">

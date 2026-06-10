@@ -1,0 +1,88 @@
+@use '../01.settings/mixins' as *;
+
+.registration-evaluation-tab {
+    &__text {
+        font-style: italic;
+    }
+
+    &__distribution, &__include-list, &__exclude-list {
+        border-radius: var(--mc-border-radius-xs);
+        border: var(--mc-border-hairline) var(--mc-gray-300);
+        padding: var(--mc-space-17) var(--mc-space-24);
+        gap: var(--mc-space-16);
+    }
+
+    &__all-valuers {
+        gap: var(--mc-space-20) var(--mc-space-20);
+    } 
+
+    &__list {
+        gap: var(--mc-space-12);
+    }
+
+    // NOTE-BEM: .field, .valuers-list, .valuer-item, .valuer-content, .valuer-name,
+    // .valuer-status, .status-bullet are template-dependent classes — rename requires PHP template update
+    .field {
+        gap: var(--mc-space-16);
+        
+        label {
+            font-weight: var(--mc-font-semibold);
+        }
+    }
+
+    .valuers-list {
+        padding: 0;
+        list-style: none;
+    }
+
+    .valuer-item {
+        border: var(--mc-border-hairline) var(--mc-gray-300);
+        padding: var(--mc-space-8) var(--mc-space-16);
+        border-radius: var(--mc-border-radius-xs);
+        background-color: var(--mc-gray-100);
+    }
+
+    .valuer-content {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: var(--mc-space-16); 
+        flex-wrap: wrap;
+    }
+
+    .valuer-name {
+        min-width: size(500);
+    }
+    
+    .valuer-status {
+        display: flex;
+        justify-content: space-between;
+        gap: 16px;
+        min-width: size(285);
+        max-width: size(300);
+    }
+
+    .status-bullet {
+        display: inline-block;
+        width: var(--mc-space-10);
+        height: var(--mc-space-10);
+        border-radius: 50%;
+        margin-right: var(--mc-space-8);
+    }
+
+    .status-bullet.mc-status--evaluation-pending {
+        background-color: var(--mc-status-negative);
+    }
+
+    .status-bullet.mc-status--evaluation-started {
+        background-color: var(--mc-status-warning);
+    }
+
+    .status-bullet.mc-status--evaluation-completed {
+        background-color: var(--mc-status-info);
+    }
+
+    .status-bullet.mc-status--evaluation-sent {
+        background-color: var(--mc-status-positive);
+    }
+}

@@ -1,0 +1,7 @@
+@use '../01.settings/mixins' as *;
+
+.panel--entity-support {
+    &__title {
+        margin-bottom: var(--mc-space-16);
+    }
+}

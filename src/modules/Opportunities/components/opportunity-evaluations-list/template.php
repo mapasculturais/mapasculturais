@@ -29,7 +29,7 @@ $this->import('
                 <div v-if="!pending" class="label-evaluation">
                     <div class="label-evaluation__check">
                         <div class="field">
-                            <label class="label-evaluation__check--label">
+                            <label class="label-evaluation__check__label">
                                 <?= i::__('Selecione para filtrar') ?>
                             </label>
                             <select v-model="filterStatus">
@@ -53,7 +53,7 @@ $this->import('
                     <?= i::__('Não foram encontrados registros') ?>
                 </li>
 
-                <li v-if="evaluations.length > 0" v-for="evaluation in evaluations" :key="evaluation.registrationId" :class="[{'evaluation-list__card--modify': entity.id == evaluation.registrationid}, 'evaluation-list__card']">
+                <li v-if="evaluations.length > 0" v-for="evaluation in evaluations" :key="evaluation.registrationId" :class="[{'evaluation-list__card__modify': entity.id == evaluation.registrationid}, 'evaluation-list__card']">
                     <div :class="'evaluation-list__content '+colorByStatus(evaluation)">
                         <a :href="evaluation.url" class="link">
                             <div class="card-header">

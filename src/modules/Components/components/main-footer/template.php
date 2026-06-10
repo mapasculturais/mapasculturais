@@ -18,12 +18,12 @@ $config = $app->config['social-media'];
         <div class="main-footer__support">
             <?php $this->part('footer-support-message') ?>
         </div>
-        <div class="main-footer__content--logo">
-            <div class="main-footer__content--logo-img">
+        <div class="main-footer__content__logo">
+            <div class="main-footer__content__logo-img">
                 <theme-logo href="<?= $app->createUrl('site', 'index') ?>"></theme-logo>
             </div>
     
-            <div class="main-footer__content--logo-share">
+            <div class="main-footer__content__logo-share">
                 <?php foreach ($config as $meta => $conf) : ?>
                     <a target="_blank" href="<?= $conf['link'] ?>">
                         <mc-icon name='<?= $conf['icon'] ?>'></mc-icon>
@@ -34,10 +34,10 @@ $config = $app->config['social-media'];
         <?php $this->applyTemplateHook("main-footer-logo", "after")?>
     
         <?php $this->applyTemplateHook("main-footer-links", "before")?>
-        <div class="main-footer__content--links">
+        <div class="main-footer__content__links">
             <?php $this->applyTemplateHook("main-footer-links", "begin")?>
     
-            <ul class="main-footer__content--links-group">
+            <ul class="main-footer__content__links-group">
                 <li>
                     <a><?php i::_e("Acesse"); ?></a>
                 </li>
@@ -68,7 +68,7 @@ $config = $app->config['social-media'];
                 </li>
             </ul>
     
-            <ul class="main-footer__content--links-group">
+            <ul class="main-footer__content__links-group">
                 <li>
                     <a href="<?= $app->createUrl('panel', 'index') ?>"><?php i::_e('Painel'); ?></a>
                 </li>
@@ -91,7 +91,7 @@ $config = $app->config['social-media'];
                 <?php endif; ?>
             </ul>
     
-                <ul class="main-footer__content--links-group">
+                <ul class="main-footer__content__links-group">
                     <li>
                         <a><?php i::_e('Ajuda e privacidade'); ?></a>
                     </li>
@@ -118,7 +118,7 @@ $config = $app->config['social-media'];
     <?php $this->applyTemplateHook("main-footer-reg", "before")?>
     <div class="main-footer__reg">
         <?php $this->applyTemplateHook("main-footer-reg", "begin")?>
-        <div class="main-footer__reg-content">
+        <div class="main-footer__reg__content">
             <?php $this->part('main-footer/developed-by') ?>
 
             <a class="link" href="https://github.com/culturagovbr/mapadacultura">

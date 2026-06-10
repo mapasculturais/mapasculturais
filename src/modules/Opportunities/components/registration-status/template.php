@@ -45,7 +45,7 @@ $this->import('
 </div>
 
 <div v-if="canShowAppeal && appealPhase && !appealRegistration" class="opportunity-phases-timeline__request-appeal">
-    <h5 v-if="!processing" class="bold opportunity-phases-timeline__label--lowercase"><?= i::__('Discorda do resultado?')?></h5>
+    <h5 v-if="!processing" class="bold opportunity-phases-timeline__label__lowercase"><?= i::__('Discorda do resultado?')?></h5>
     <button v-if="!processing" class="button button--primary button--primary-outline" @click="createAppealPhaseRegistration()"><?= i::__('Solicitar recurso') ?></button>
 
     <div v-if="processing" class="col-12">
@@ -55,8 +55,8 @@ $this->import('
 <div v-if="appealRegistration?.id" class="opportunity-phases-timeline__request-appeal__box">
     <div class="item__dot-appeal-phase"> <span class="dot"></span> </div>
     <div class="item__content">
-        <div class="item__content--title"> <?= i::__('[Recurso]') ?> </div>
-        <div class="item__content--description">
+        <div class="item__content__title"> <?= i::__('[Recurso]') ?> </div>
+        <div class="item__content__description">
             <h5 class="semibold"><?= i::__('de') ?> <span v-if="dateFrom()">{{dateFrom()}}</span>
             <?= i::__('a') ?> <span v-if="dateTo()">{{dateTo()}}</span>
             <?= i::__('às') ?> <span v-if="hour()">{{hour()}}</span></h5>
@@ -73,7 +73,7 @@ $this->import('
             <registration-results :registration="appealRegistration" :phase="appealRegistration.opportunity.evaluationMethodConfiguration"></registration-results>
         </div>
         <div v-if="appealRegistration && appealRegistration.status == 0" class="opportunity-phases-timeline__request-appeal">
-            <h5 class="bold opportunity-phases-timeline__label--lowercase"><?= i::__('Finalize sua inscrição no recurso:')?></h5>
+            <h5 class="bold opportunity-phases-timeline__label__lowercase"><?= i::__('Finalize sua inscrição no recurso:')?></h5>
             <button class="button button--primary button--primary" @click="fillFormButton()"><?= i::__('Preencher formulário') ?></button>
         </div>
 

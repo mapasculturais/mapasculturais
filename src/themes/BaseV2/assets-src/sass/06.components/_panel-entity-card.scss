@@ -1,0 +1,296 @@
+@use '../01.settings/mixins' as *;
+
+// ================================================================
+// .panel-entity-card — PHP template (panel--entity-card)
+// .panel-entity-models-card — PHP template (panel--entity-models-card)
+// Deduplicated: ~260 lines of identical rules merged via shared selector
+// Unique models-specific rules live in _panel-entity-models-card.scss
+// ================================================================
+
+// ---------------------------------------------------------------
+// Shared panel-entity card base styles
+// ---------------------------------------------------------------
+.panel-entity-card,
+.panel-entity-models-card {
+	background-color: var(--mc-white);
+	border-radius: var(--mc-border-radius-sm);
+	padding: var(--mc-space-24);
+
+	&__header {
+		align-items: flex-start;
+		display: flex;
+		justify-content: space-between;
+
+		.left {
+			display: grid;
+			grid-template-columns: size(70) 1fr;
+			gap: var(--mc-space-7) var(--mc-space-16);
+		}
+
+		&> :first-child {
+			align-items: start;
+			display: grid;
+			grid-template-columns: 70px 1fr;
+			gap: var(--mc-space-7) var(--mc-space-16);
+
+			// TODO-BREAKPOINT: 500px is not a canonical breakpoint. Consider adding to $mc-breakpoints or using nearest canonical value.
+			@include respond-below('mob') {
+				display: flex;
+				flex-direction: column;
+				align-items: flex-start;
+			}
+		}
+
+		&__picture {
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			width: var(--mc-space-64);
+			height: var(--mc-space-64);
+			background-color: var(--mc-low-300);
+			border-radius: 50%;
+
+			svg {
+				font-size: var(--mc-space-32);
+			}
+
+			img {
+				border-radius: 50%;
+				width: 100%;
+			}
+
+			// TODO-BREAKPOINT: 500px is not a canonical breakpoint. Consider adding to $mc-breakpoints or using nearest canonical value.
+			@include respond-below('mob') {
+				height: var(--mc-space-32);
+				width: var(--mc-space-32);
+
+				svg {
+					font-size: var(--mc-space-16);
+				}
+			}
+		}
+
+		&__info {
+			align-self: center;
+			align-items: flex-start;
+			display: flex;
+			flex-direction: column;
+			gap: var(--mc-space-10);
+
+			&-title {
+				display: inline-block;
+				font-weight: 700;
+				font-size: var(--mc-space-24);
+				line-height: var(--mc-space-28);
+				text-align: left;
+				word-break: break-word;
+
+				.icon-app {
+					margin-left: var(--mc-space-17);
+
+					color: var(--mc-primary-500);
+
+				}
+			}
+
+			&-subtitle {
+				font-weight: 500;
+				font-size: var(--mc-space-14);
+				line-height: var(--mc-space-19);
+				margin: 0;
+				text-transform: uppercase;
+			}
+		}
+	}
+
+	&__header-actions {
+		display: flex;
+		flex-wrap: wrap-reverse;
+
+		button {
+			align-items: center;
+			appearance: none;
+			background-color: transparent;
+			border: none;
+			border-radius: var(--mc-border-radius-sm);
+			display: flex;
+			padding: var(--mc-space-8);
+			flex-direction: row;
+			align-items: center;
+			gap: var(--mc-space-8);
+
+			&:focus,
+			&:hover {
+				background-color: var(--mc-gray-100);
+			}
+
+			.iconify {
+				height: var(--mc-space-20);
+				width: var(--mc-space-20);
+			}
+
+			span {
+				font-size: var(--mc-space-12);
+				font-weight: bold;
+
+				@include respond-below('md') {
+					@include sr-only;
+				}
+			}
+		}
+	}
+
+	&__main {
+		display: flex;
+		flex-wrap: wrap;
+		padding: var(--mc-space-16);
+		min-height: size(57);
+
+		dl {
+			font-size: var(--mc-space-14);
+			margin: 0 var(--mc-space-40) var(--mc-space-16) 0;
+			text-transform: uppercase;
+		}
+
+		dt {
+			display: inline;
+			margin: 0 1ch 0 0;
+			padding: 0;
+
+			&::after {
+				content: ':';
+			}
+		}
+
+		dd {
+			display: inline;
+			font-weight: bold;
+			margin: 0;
+			padding: 0;
+		}
+
+		// TODO-BREAKPOINT: 500px is not a canonical breakpoint. Consider adding to $mc-breakpoints or using nearest canonical value.
+		@include respond-below('mob') {
+			padding: var(--mc-space-16) 0;
+		}
+	}
+
+	/* &__footer {
+		
+	} */
+
+	&__footer-actions {
+		display: flex;
+		justify-content: space-between;
+		align-items: flex-end;
+
+		.panel__entity-actions {
+			// TODO-BREAKPOINT: 500px is not a canonical breakpoint. Consider adding to $mc-breakpoints or using nearest canonical value.
+			@include respond-below('mob') {
+
+				display: flex;
+				padding-top: var(--mc-space-16);
+				justify-content: center;
+				flex-wrap: wrap;
+
+			}
+		}
+
+		// TODO-BREAKPOINT: 500px is not a canonical breakpoint. Consider adding to $mc-breakpoints or using nearest canonical value.
+		@include respond-below('mob') {
+			align-items: center;
+			flex-direction: column-reverse;
+		}
+
+		&.left {
+			.publish-archived.button {
+				color: var(--mc-primary-500);
+				border: none;
+				background-color: var(--mc-white);
+				font-weight: 700;
+				font-size: 14px;
+				line-height: 19px;
+			}
+		}
+
+		&.right {
+			display: flex;
+			gap: var(--mc-space-32);
+
+			// TODO-BREAKPOINT: 500px is not a canonical breakpoint. Consider adding to $mc-breakpoints or using nearest canonical value.
+			@include respond-below('mob') {
+				.button-action{
+					width: size(297);
+					max-width: 100%;
+					height: var(--mc-space-48);
+					display: flex;
+					justify-content: flex-end;
+					align-items: center;
+					flex-direction: row;
+					gap: size(100)
+				}
+
+				.editdraft {
+					justify-content: flex-start;
+				}
+
+				.recover {
+					justify-content: center;
+				}
+
+				.publish-archived {
+					justify-content: center;
+				}
+			}
+		}
+
+		button {
+			margin-left: var(--mc-space-4);
+		}
+
+		.button {
+			font-family: var(--mc-font-body);
+
+			&.archive {
+				color: var(--mc-low-500);
+				font-family: var(--mc-font-body);
+
+				.iconify {
+					color: var(--mc-warning);
+				}
+			}
+
+			&.delete {
+				color: var(--mc-low-500);
+
+				.iconify {
+					color: var(--mc-error);
+				}
+			}
+
+			@include respond-below('md') {
+				padding: var(--mc-space-8);
+
+				span {
+					// @include sr-only;
+
+				}
+			}
+		}
+	}
+}
+
+// ---------------------------------------------------------------
+// panel-entity-card: specific rules
+// ---------------------------------------------------------------
+.panel-entity-card {
+	// Mobile: hide __main inside first-child grid
+	&__header > :first-child {
+		// TODO-BREAKPOINT: 500px is not a canonical breakpoint. Consider adding to $mc-breakpoints or using nearest canonical value.
+		@include respond-below('mob') {
+			.panel-entity-card__main {
+				display: none;
+			}
+		}
+	}
+}

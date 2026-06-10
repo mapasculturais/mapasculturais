@@ -130,7 +130,7 @@ $this->import('
               <!-- SÓ O HEADER -->
             <div class="entity-table__table-header-wrapper" v-show="ready" ref="headerWrapper" @scroll="scroll($event)">
                 <div ref="fakeHeaderTable" class="entity-table__table-header">
-                    <div v-if="showIndex" class="entity-table__index sticky entity-table__show-columns" :style="{width: columnsWidth['-index'] ?? '', minHeight: headerHeight + 'px'}">
+                    <div v-if="showIndex" class="entity-table__index entity-table__sticky entity-table__show-columns" :style="{width: columnsWidth['-index'] ?? '', minHeight: headerHeight + 'px'}">
                         <mc-popover>
                             <div class="entity-table__popover">
                                 <label class="field__title bold"><?= i::__('Selecione as colunas que deseja exibir:')?></label>
@@ -193,7 +193,7 @@ $this->import('
                     <table class="entity-table__table" :style="{marginTop: (-headerHeight + 20) + 'px'}" ref="contentTable">
                         <thead class="table-thead" ref="headerTable">
                             <tr>
-                                <th v-if="showIndex" ref="column--index" class="entity-table__index sticky table-line">&nbsp;</th>
+                                <th v-if="showIndex" ref="column--index" class="entity-table__index entity-table__sticky table-line">&nbsp;</th>
                                 <template v-for="header in columns">
                                     <th  v-if="header.visible" :ref="'column-' + header.slug" :class="{sticky: header.sticky || header.stickyRight}" :style="headerStyle(header)">{{header.text}}</th>
                                 </template>
@@ -201,7 +201,7 @@ $this->import('
                         </thead>
                         <tbody >
                             <tr v-for="(entity, index) in entities" :key="entity.__objectId">
-                                <td v-if="showIndex" class="entity-table__index sticky table-line">{{index+1}}</td>
+                                <td v-if="showIndex" class="entity-table__index entity-table__sticky table-line">{{index+1}}</td>
                                 <template v-for="header in columns" :key="header.slug">
                                     <td v-if="header.visible" :class="{sticky: header.sticky || header.stickyRight}" :style="headerStyle(header)">
                                         <slot :name="header.slug" :entity="entity" :refresh="refresh">

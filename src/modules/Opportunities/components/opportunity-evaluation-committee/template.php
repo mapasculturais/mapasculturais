@@ -87,16 +87,16 @@ $this->import('
                                 <label class="status-label">{{ infoReviewer.metadata.summary.pending + infoReviewer.metadata.summary.started + infoReviewer.metadata.summary.completed + infoReviewer.metadata.summary.sent }} <?= i::__('inscrições para avaliar, estando:') ?></label>
                                 
                                 <div class="opportunity-evaluation-committee__summary">
-                                    <span class="opportunity-evaluation-committee__summary--pending semibold">
+                                    <span class="opportunity-evaluation-committee__summary__pending semibold">
                                         <mc-icon name="clock"></mc-icon> <?= i::_e('Pendentes') ?>: {{infoReviewer.metadata.summary.pending}}
                                     </span>
-                                    <span class="opportunity-evaluation-committee__summary--started semibold">
+                                    <span class="opportunity-evaluation-committee__summary__started semibold">
                                         <mc-icon name="clock"></mc-icon> <?= i::_e('Iniciadas') ?>: {{infoReviewer.metadata.summary.started}}
                                     </span>
-                                    <span class="opportunity-evaluation-committee__summary--completed semibold">
+                                    <span class="opportunity-evaluation-committee__summary__completed semibold">
                                         <mc-icon name="check"></mc-icon> <?= i::_e('Concluídas') ?>: {{infoReviewer.metadata.summary.completed}}
                                     </span>
-                                    <span class="opportunity-evaluation-committee__summary--sent semibold">
+                                    <span class="opportunity-evaluation-committee__summary__sent semibold">
                                         <mc-icon name="send"></mc-icon> <?= i::_e('Enviadas') ?>: {{infoReviewer.metadata.summary.sent}}
                                     </span>
                                 </div>

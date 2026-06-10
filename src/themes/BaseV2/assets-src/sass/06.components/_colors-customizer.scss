@@ -1,0 +1,88 @@
+@use '../01.settings/mixins' as *;
+
+.colors-customizer {
+    border: var(--mc-border-hairline);
+    border-radius: var(--mc-border-radius-sm);
+    padding: var(--mc-space-10) var(--mc-space-25) var(--mc-space-25);
+
+    &__legend {
+        padding: 0 var(--mc-space-10);
+    }
+
+    &__content {
+        display: grid;
+        gap: var(--mc-space-40);
+        padding: var(--mc-space-10) 0;
+    }
+
+    &__alert {
+        display: flex;
+        width: 100%;
+    }
+
+    &__previews {
+        display: grid;
+        grid-template-columns: 
+            calc(25% - var(--mc-space-3)) 
+            calc(25% - var(--mc-space-3)) 
+            calc(25% - var(--mc-space-3))
+            calc(25% - var(--mc-space-3));
+        justify-items: center;
+        justify-content: space-around;
+        gap: var(--mc-space-30) var(--mc-space-12);
+
+        // TODO-BREAKPOINT: 1000px is not a canonical breakpoint. Consider adding to $mc-breakpoints or using nearest canonical value.
+        @media (max-width: size(1000)) {
+            grid-template-columns: 
+                calc(30% - var(--mc-space-4)) 
+                calc(30% - var(--mc-space-4)) 
+                calc(30% - var(--mc-space-4));
+        }
+
+        // TODO-BREAKPOINT: 530px is not a canonical breakpoint. Consider adding to $mc-breakpoints or using nearest canonical value.
+        @media (max-width: size(530)) {
+            grid-template-columns: 
+                calc(50% - var(--mc-space-6)) 
+                calc(50% - var(--mc-space-6));
+        }
+    }
+
+    &__preview {
+        align-items: center;
+        cursor: pointer;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        gap: var(--mc-space-5);
+
+        .field {
+            align-items: center;
+        }
+    }
+
+    &__preview-item {
+        align-items: center;
+        border-radius: 50%;
+        color: var(--mc-white);
+        display: flex;
+        height: var(--mc-space-40);
+        justify-content: center;
+        width: var(--mc-space-40);
+
+        .iconify {
+            font-size: var(--mc-space-20);
+        }
+    }
+
+    &__preview-label {
+        color: var(--mc-black);
+        font-family: var(--mc-font-body);
+        font-size: var(--mc-space-14);
+        font-style: normal;
+        font-weight: 700;
+        letter-spacing: 0.05rem;
+        line-height: var(--mc-space-15);
+        margin: 0 0 var(--mc-space-8);
+        text-align: center;
+    }
+}

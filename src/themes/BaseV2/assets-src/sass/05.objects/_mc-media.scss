@@ -1,0 +1,34 @@
+// ============================================================================
+// Object: MC Media — structural figure+body layout (McMedia pattern)
+// Reuse sites: entity-card header, agent-data, registration-card,
+// seal-relation-view, event-info, entity-related-agents, etc.
+// Renamed from 'media' to avoid Bootstrap/HTML5 collision.
+// ============================================================================
+
+.mc-media {
+    // CSS custom properties for dimension variance
+    --mc-media-figure-size: var(--mc-space-64);
+    --mc-media-gap: var(--mc-space-12);
+
+    align-items: flex-start;
+    display: flex;
+    gap: var(--mc-media-gap);
+
+    &__figure {
+        flex-shrink: 0;
+        width: var(--mc-media-figure-size);
+        height: var(--mc-media-figure-size);
+    }
+
+    &__body {
+        flex: 1;
+        min-width: 0;
+    }
+
+    &__action {
+        flex-shrink: 0;
+        align-self: center;
+    }
+
+    // No cosmetic modifiers — those belong to consuming components
+}

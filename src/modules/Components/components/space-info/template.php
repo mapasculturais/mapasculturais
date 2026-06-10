@@ -16,7 +16,7 @@ $this->import('
 <div class="space-info grid-12">
     <div v-if="entity.horario" class="space-info__hour col-12">
         <span class="space-info--label"><?= i::_e("Horário de funcionamento"); ?></span>
-        <div class="space-info__hour--content">
+        <div class="space-info__hour__content">
             {{entity.horario}}
         </div>
     </div>
@@ -34,15 +34,15 @@ $this->import('
     <div v-if="entity.capacidade || entity.telefonePublico" class="space-info__infos col-12">
         <span class="space-info--label"><?php i::_e("Informações adicionais"); ?></span>
 
-        <div v-if="entity.capacidade" class="space-info__infos--capacidade">
+        <div v-if="entity.capacidade" class="space-info__infos__capacidade">
             <?php i::_e("Capacidade do espaço:"); ?> <span>{{entity.capacidade}}</span>
         </div>
 
-        <div v-if="entity.telefonePublico" class="space-info__infos--telefone">
+        <div v-if="entity.telefonePublico" class="space-info__infos__telefone">
             <?php i::_e("Telefone:"); ?> <span>{{entity.telefonePublico}}</span>
         </div>
 
-        <div v-if="entity.emailPublico" class="space-info__infos--email">
+        <div v-if="entity.emailPublico" class="space-info__infos__email">
             <?php i::_e("Email:"); ?> <span>{{entity.emailPublico}}</span>
         </div>
 

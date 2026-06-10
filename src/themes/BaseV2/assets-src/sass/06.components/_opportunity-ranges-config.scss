@@ -1,0 +1,68 @@
+@use '../01.settings/mixins' as *;
+
+.opportunity-ranges-config {
+    display: flex;
+    flex-direction: column;
+    gap: var(--mc-space-16);
+
+    &__header {
+        display: flex;
+        flex-direction: column;
+        margin-bottom: var(--mc-space-8);
+        gap: var(--mc-space-8);
+
+        & > h4 {
+            align-items: center;
+            display: flex;
+            gap: var(--mc-space-8);
+        }
+    }
+
+    &__content {
+        display: grid;
+        grid-template-columns:
+            calc(50% - var(--mc-space-24))
+            calc(20% - var(--mc-space-16))
+            calc(20% - var(--mc-space-16))
+            size(100);
+        gap: var(--mc-space-20) var(--mc-space-20);
+        border-top: 1px solid var(--mc-gray-300);
+        align-items: center;
+        justify-items: center;
+        padding-top: var(--mc-space-8);
+        width: 100%;
+        
+        .field {
+            &__input {
+                border: 0.0625rem solid var(--mc-gray-500);
+                border-radius: var(--mc-border-radius-xs);
+                padding: var(--mc-space-8);
+                font-family: var(--mc-font-body);
+                font-size: var(--mc-font-size-xxs);
+                line-height: normal;
+            }
+        }
+
+        // TODO-BREAKPOINT: 932px is not a canonical breakpoint. Consider adding to $mc-breakpoints or using nearest canonical value.
+        @media (max-width: 932px) {
+            grid-template-columns:
+                calc(40% - 1rem)
+                calc(30% - 1rem)
+                calc(15% - 1rem)
+                size(85);
+        }
+
+        // TODO-BREAKPOINT: 675px is not a canonical breakpoint. Consider adding to $mc-breakpoints or using nearest canonical value.
+        @media (max-width: 675px) {
+            grid-template-columns: 1fr;
+        }
+    }
+
+    &__button {
+        border-top: 1px solid var(--mc-gray-300);
+
+        &__add {
+            margin-top: var(--mc-space-8);
+        }
+    }
+}

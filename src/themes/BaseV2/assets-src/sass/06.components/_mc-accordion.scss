@@ -1,0 +1,47 @@
+@use '../01.settings/mixins' as *;
+
+// ============================================================================
+// Component: mc-accordion
+// CONSUMES: accordion-shell (expandable/collapsible header + content pattern)
+//   Structure mirrors accordion-shell: __header (trigger) + __content (panel).
+//   Consider applying accordion-shell base styles or extracting shared
+//   trigger/content/layout rules into the object.
+// ============================================================================
+
+.mc-accordion {
+    background-color: var(--mc-gray-100);
+    
+    &__title {
+        font-size: var(--mc-space-14);
+    }
+    &__header {
+        align-items: center;
+        background: var(--mc-white);
+        border-radius: var(--mc-space-4);
+        cursor: pointer;
+        display: grid;
+        gap: var(--mc-space-10);
+        grid-template-columns: 1fr var(--mc-space-30);
+        justify-content: center;
+        max-width: size(870);
+        padding: 18px 16px;
+
+        &--active{
+            border-radius: var(--mc-space-4) var(--mc-space-4) 0 0;
+        }
+    }
+    
+    &__content {
+        background: var(--mc-white);
+        border-top: 1px solid var(--mc-gray-100);
+        max-width: size(870);
+        padding: var(--mc-space-16);
+        
+    }
+
+    &__close {
+        align-items: center;
+        display: flex;
+        justify-content: center;
+    }
+}

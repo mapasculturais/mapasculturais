@@ -1,0 +1,165 @@
+@use 'sass:math';
+
+// @deprecated Use respond-above('md') from 1.tools/_responsive.scss instead
+@mixin desktop {
+    @media screen and (min-width: 50rem) {
+        @content;
+    }
+}
+
+// @deprecated Use respond-below('md') from 1.tools/_responsive.scss instead
+@mixin mobile {
+    @media screen and (max-width: 50rem) {
+        @content;
+    }
+}
+
+// ============================================================================
+// @deprecated Use CSS custom properties instead of size()
+//
+// Migration guide:
+//   size(N)  →  var(--mc-space-N)   (if token exists)
+//   size(N)  →  #{N / 16}rem        (if no token)
+//
+// Available spacing tokens: --mc-space-{1,2,4,5,8,10,12,14,15,16,18,19,20,22,24,25,28,30,32,40,48,64,96}
+// Layout tokens: --mc-layout-container-{xs,sm,md,lg,xl}, --mc-layout-page-max
+// Breakpoint mixins: respond-above($bp), respond-below($bp), respond-between($lo, $hi)
+//   where $bp is one of: 'xs' (400px), 'sm' (600px), 'md' (800px), 'lg' (960px), 'xl' (1170px)
+// ============================================================================
+@function size($value, $unit: 'px') {
+    @if $unit == 'rem' {
+        @return #{$value}rem;
+    }
+    @else if $unit == 'px' {
+        @return #{math.div($value, 16)}rem;
+    }
+    @else {
+        @return #{$value}#{$unit};
+    }
+}
+
+// ============================================================================
+// Shared evaluation button styles
+// Used by: _evaluation-actions.scss, _registration-evaluation-actions.scss
+// ============================================================================
+@mixin eval-buttons {
+    &__saveafter, &__reopen {
+        display: block;
+        background-color: var(--mc-eval-not-eval);
+        color: var(--mc-black);
+        border-color:  var(--mc-eval-not-eval);
+        &:hover {
+            background-color:var(--mc-white);
+            color: var(--mc-black);
+            border-color:  var(--mc-eval-not-eval);
+        }
+
+        svg {
+            float: left;
+            font-size: var(--mc-space-16);
+        }
+    }
+    
+    &__send, &__finalcontinue {
+        display: block;
+        text-align: center;
+        background-color: var(--mc-eval-approved);
+        color: var(--mc-black);
+        border-color: var(--mc-eval-approved);
+        &:hover {
+            background-color: var(--mc-white);
+            color: var(--mc-black);
+            border-color: var(--mc-eval-approved);
+        }
+        .arrow-icon {
+            float: right;
+            font-size: var(--mc-space-16);
+        }
+
+        .send-icon {
+            float: left;
+            font-size: var(--mc-space-16);
+        }
+    }
+
+    &__final {
+        display: block;
+        background-color: var(--mc-eval-pending);
+        color: var(--mc-black);
+        border-color: var(--mc-eval-pending);
+        &:hover {
+            background-color: var(--mc-white);
+            color: var(--mc-black);
+            border-color: var(--mc-eval-pending);
+        }
+
+        svg {
+            float: left;
+            font-size: var(--mc-space-16);
+        }
+    }
+}
+
+// ============================================================================
+// Shared avatar circle styles (e.g. agent/agent images in relation cards)
+// Used by: _registration-related-entity.scss, _mc-relation-card.scss,
+//          _entity-related-agents.scss, _mc-linked-entity.scss
+// ============================================================================
+@mixin avatar-circle($size, $bg-color: var(--mc-gray-500)) {
+    align-items: center;
+    background-color: $bg-color;
+    border-radius: var(--mc-border-radius-pill);
+    display: flex;
+    height: $size;
+    justify-content: center;
+    overflow: hidden;
+    width: $size;
+
+    img {
+        width: 100%;
+    }
+}
+
+// ============================================================================
+// Shared entity name text styles
+// Used by: _entity-owner.scss, _entity-link-project.scss
+// ============================================================================
+@mixin entity-name-bold {
+    color: var(--mc-black);
+    font-family: var(--mc-font-body);
+    font-style: normal;
+    font-weight: 700;
+    font-size: var(--mc-space-12);
+    line-height: var(--mc-space-16);
+}
+
+// ============================================================================
+// Shared status badge (warning icon + label)
+// Used by: _registration-related-entity.scss, _mc-relation-card.scss
+// ============================================================================
+@mixin status-badge {
+    display: flex;
+    align-items: center;
+    gap: var(--mc-space-6);
+    font-weight: 600;
+    font-size: var(--mc-space-12);
+    line-height: var(--mc-space-16);
+
+    .iconify {
+        font-size: var(--mc-space-20);
+        color: var(--mc-warning-500);
+    }
+}
+
+// For screen-readers
+@mixin sr-only {
+    border-width: 0;
+    clip: rect(0, 0, 0, 0);
+    height: 1px;
+    margin: -1px;
+    overflow: hidden;
+    padding: 0;
+    position: absolute;
+    white-space: nowrap;
+    width: 1px;
+}

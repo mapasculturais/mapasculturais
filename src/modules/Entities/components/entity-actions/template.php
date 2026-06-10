@@ -23,7 +23,7 @@ $this->import('
 
     <div v-show="!entity.__processing" class="entity-actions__content">
         <?php $this->applyTemplateHook('entity-actions', 'begin') ?>
-        <div class="entity-actions__content--groupBtn rowBtn" ref="buttons1">
+        <div class="entity-actions__content__groupBtn entity-actions__content__groupBtn-row" ref="buttons1">
             <?php $this->applyTemplateHook('entity-actions--primary', 'begin') ?>
 
 
@@ -41,7 +41,7 @@ $this->import('
 
             <mc-confirm-button v-if="entity.currentUserPermissions?.archive && entity.status != -2" @confirm="entity.archive()">
                 <template #button="modal">
-                    <button @click="modal.open()" class="button button--icon button--sm arquivar">
+                    <button @click="modal.open()" class="button button--icon button--sm entity-actions__content__groupBtn-archive">
                         <mc-icon name="archive"></mc-icon>
                         <?php i::_e("Arquivar") ?>
                     </button>
@@ -52,7 +52,7 @@ $this->import('
             </mc-confirm-button>
             <mc-confirm-button v-if="entity.currentUserPermissions?.remove && canDelete" @confirm="entity.delete()">
                 <template #button="modal">
-                    <button @click="modal.open()" class="button button--icon button--sm excluir">
+                    <button @click="modal.open()" class="button button--icon button--sm entity-actions__content__groupBtn-delete">
                         <mc-icon name="trash"></mc-icon>
                         <?php i::_e("Excluir") ?>
                     </button>
@@ -84,7 +84,7 @@ $this->import('
         </div>
         <?php $this->applyTemplateHook('entity-actions--leftGroupBtn', 'after'); ?>
 
-        <div v-if="editable" class="entity-actions__content--groupBtn" ref="buttons2">
+        <div v-if="editable" class="entity-actions__content__groupBtn" ref="buttons2">
             <?php $this->applyTemplateHook('entity-actions--secondary', 'begin') ?>
             <mc-confirm-button v-if="entity.status == 0" @confirm="exit()">
                 <template #button="modal">
@@ -142,7 +142,7 @@ $this->import('
             <?php $this->applyTemplateHook('entity-actions--secondary', 'end') ?>
         </div>
 
-        <div v-if="!editable" class="entity-actions__content--groupBtn" ref="buttons2">
+        <div v-if="!editable" class="entity-actions__content__groupBtn" ref="buttons2">
             <?php $this->applyTemplateHook('entity-actions--secondary', 'begin') ?>
             <a v-if="entity.currentUserPermissions?.modify && entity.__objectType=='opportunity'" :href="entity.editUrl" class="button button button--md publish">
                 <?php i::_e('Gerenciar') ?> {{entityType}}

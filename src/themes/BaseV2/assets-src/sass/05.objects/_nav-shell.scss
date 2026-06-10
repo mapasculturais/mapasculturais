@@ -1,0 +1,50 @@
+// ============================================================================
+// Object: Nav Shell — structural navigation list
+// Reuse sites: mc-header-menu, tabs, entity-tabs, footer nav, sidebar nav
+// CONDITIONAL: thin object, accepted for reuse breadth
+// ============================================================================
+
+.nav-shell {
+    --nav-shell-gap: var(--mc-space-4);
+
+    list-style: none;
+    margin: 0;
+    padding: 0;
+
+    &__list {
+        display: flex;
+        flex-wrap: wrap;
+        gap: var(--nav-shell-gap);
+        list-style: none;
+        margin: 0;
+        padding: 0;
+    }
+
+    &__item {
+        display: flex;
+        align-items: center;
+    }
+
+    &__link {
+        display: flex;
+        align-items: center;
+        text-decoration: none;
+        // Color/typography set by consuming component
+    }
+
+    &__item--active {
+        // Active state styling set by consuming component
+    }
+
+    &--horizontal {
+        .nav-shell__list {
+            flex-direction: row;
+        }
+    }
+
+    &--vertical {
+        .nav-shell__list {
+            flex-direction: column;
+        }
+    }
+}

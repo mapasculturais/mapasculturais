@@ -1,0 +1,129 @@
+@use '../01.settings/mixins' as *;
+@use '../01.settings/variables' as v;
+
+.registration-field-view {
+    display: flex;
+    flex-direction: column;
+    gap: var(--mc-space-20);
+    padding-top: var(--mc-space-2);
+
+    // Note: .tabs-component is an external component selector used for contextual override.
+    .tabs-component {
+        margin-top: 0;
+    }
+
+    &__step {
+        display: flex;
+        flex-direction: column;
+        gap: var(--mc-space-12);
+    }
+
+    &__list {
+        display: flex;
+        flex-direction: column;
+        gap: var(--mc-space-12);
+        margin: 0;
+        padding: 0;
+    }
+
+    &__item {
+        background: var(--mc-high-500);
+        border: 1px solid var(--mc-gray-300);
+        border-radius: var(--mc-border-radius-xs);
+        display: flex;
+        flex-direction: column;
+        gap: var(--mc-space-8);
+        list-style: none;
+        padding: var(--mc-space-12);
+
+        .entity-data {
+            margin: 0;
+        }
+    }
+
+    &__item--clickable {
+        cursor: pointer;
+    }
+
+    // Note: .field-shadow, .evaluation-invalid, .evaluation-valid are utility/state selectors.
+    .field-shadow {
+        box-shadow: 0 0 30px 0 rgba(0, 0, 0, 0.25);
+    }
+
+    .evaluation-invalid,
+    .evaluation-invalid:hover {
+        // !important justified: evaluation state must override any prior background
+        background-color: var(--mc-danger-500) !important;
+        border-color: var(--mc-danger-500);
+    }
+
+    .evaluation-valid,
+    .evaluation-valid:hover {
+        // !important justified: evaluation state must override any prior background
+        background-color: var(--mc-success-500) !important;
+        border-color: var(--mc-success-500);
+    }
+
+    &__required {
+        color: var(--mc-error);
+        font-weight: 700;
+        margin-right: var(--mc-space-2);
+    }
+
+    &__section-title {
+        font-size: var(--mc-font-size-md);
+        margin: 0;
+    }
+
+    &__label {
+        color: var(--mc-black);
+        font-size: var(--mc-font-size-xxs);
+        font-weight: 700;
+    }
+
+    &__person-card {
+        background: var(--mc-gray-100);
+        border-left: 3px solid var(--mc-primary-500);
+        border-radius: 0 var(--mc-border-radius-xs) var(--mc-border-radius-xs) 0;
+        display: grid;
+        gap: var(--mc-space-4);
+        margin-bottom: var(--mc-space-8);
+        padding: var(--mc-space-10) var(--mc-space-12);
+
+        div {
+            font-size: var(--mc-font-size-xs);
+        }
+
+        strong {
+            color: var(--mc-black);
+            font-size: var(--mc-font-size-xxs);
+            font-weight: 700;
+        }
+    }
+
+    &__table {
+        border-collapse: collapse;
+        margin-top: var(--mc-space-8);
+        width: 100%;
+
+        th,
+        td {
+            border: 1px solid var(--mc-gray-300);
+            font-size: var(--mc-font-size-xxs);
+            padding: var(--mc-space-8);
+            text-align: left;
+            vertical-align: top;
+        }
+
+        thead tr {
+            background: var(--mc-gray-100);
+        }
+    }
+}
+
+// Note: Contextual override using page/controller selectors for registration view.
+.controller-registration .registration.single .registration-field-view {
+    .tabs-component {
+        margin-top: 0;
+    }
+}

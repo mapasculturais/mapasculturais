@@ -1,0 +1,153 @@
+@use '../01.settings/mixins' as *;
+
+.opportunity-subscription {
+    &__popover {
+        .popover__content {
+            padding-bottom: var(--mc-space-8);
+            .select-entity {
+                .search-list__loadMore {
+                    padding-bottom: var(--mc-space-16);
+                }
+            }
+        }
+
+        .modal__content {
+            .select-entity__results {
+                max-height: unset;
+            }
+        }
+    }
+
+    p {
+        margin: 0;
+    }
+
+    .title,
+    .opportunity-subscription__title {
+        color: var(--mc-black);
+        font-size: var(--mc-space-24);
+        font-weight: 700;
+        line-height: var(--mc-space-32);
+        margin: var(--mc-space-16) 0;
+    }
+
+    &__info {
+        .content,
+        .opportunity-subscription__info-content {
+            background: var(--mc-gray-100);
+            border-radius: var(--mc-space-4);
+            padding: var(--mc-space-1);
+
+            &__description {
+                color: var(--mc-black);
+                font-size: var(--mc-space-18);
+                font-weight: 600;
+                line-height: var(--mc-space-25);
+                margin: 0;
+                padding: var(--mc-space-32) var(--mc-space-48);
+
+                span {
+                    font-weight: 700;
+                }
+
+                @include respond-below('xs') {
+                    padding: var(--mc-space-16) var(--mc-space-15);
+                    overflow-wrap: break-word;
+                }
+            }
+        }
+    }
+
+    &__subscription {
+
+        .logged,
+        .opportunity-subscription__logged,
+        .loggedOut,
+        .opportunity-subscription__logged-out {
+            &__description {
+                color: var(--mc-black);
+                font-size: var(--mc-space-16);
+                font-weight: 400;
+                line-height: var(--mc-space-22);
+                margin: var(--mc-space-16) 0;
+            }
+
+            &__form {
+                border-bottom: var(--mc-border-hairline);
+                padding-bottom: var(--mc-space-40);
+                row-gap: var(--mc-space-24);
+
+                .fakeInput,
+                .opportunity-subscription__fake-input {
+                    border: var(--mc-space-1) solid var(--mc-gray-500);
+                    border-radius: var(--mc-border-radius-xs);
+                    cursor: default;
+                    display: flex;
+                    font-size: var(--mc-space-16);
+                    padding: var(--mc-space-5) var(--mc-space-14);
+                    width: 100%;
+                    align-items: center;
+                    gap: var(--mc-space-16);
+
+                    background: url(https://api.iconify.design/ic/baseline-arrow-drop-down.svg) no-repeat 96% center/contain;
+                    background-color: var(--mc-white);
+                    background-size: 1.25rem;
+
+                    .iconify {
+                        font-size: var(--mc-space-20);
+                    }
+
+                    &--no-select {
+                        background: var(--mc-white);
+                    }
+
+                    &__img {
+                        width: var(--mc-space-32);
+                        height: var(--mc-space-32);
+                        background-color: var(--mc-gray-500);
+                        border-radius: var(--mc-border-radius-pill);
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+                        overflow: hidden;
+
+                        .iconify {
+                            color: var(--mc-high-500);
+                        }
+
+                        img {
+                            width: 100%;
+                        }
+                    }
+                }
+            }
+
+            &__button {
+                display: flex;
+                justify-content: center;
+                position: relative;
+                width: 100%;
+
+                &::before {
+                    background: var(--mc-gray-100);
+                    content: '';
+                    height: var(--mc-space-18);
+                    position: absolute;
+                    top: calc(50% - var(--mc-space-9));
+                    width: 100%;
+                }
+
+                .button {
+                    max-width: size(328);
+                    width: 100%;
+                }
+            }
+        }
+    }
+
+    &__selectAgents {
+        display: flex;
+        flex-direction: column;
+        gap: var(--mc-space-16);
+    }
+}

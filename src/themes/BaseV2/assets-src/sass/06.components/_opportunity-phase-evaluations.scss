@@ -1,0 +1,151 @@
+@use '../01.settings/mixins' as *;
+
+.action-single.tab-component.evaluations {
+    background-color: var(--mc-gray-100);
+    padding-inline: var(--mc-space-16);
+}
+
+.action-single.controller-opportunity .tabs-component__buttons {
+    gap: var(--mc-space-48);
+
+    @include respond-below('sm') {
+        gap: var(--mc-space-40);
+    }
+}
+
+.stepper-evaluations {
+    &__title {
+        font-family: var(--mc-font-body);
+        font-style: normal;
+        font-weight: 700;
+        font-size: var(--mc-space-18);
+        line-height: var(--mc-space-25);
+        padding-bottom: var(--mc-space-7);
+
+        &.secondTitle,
+        &.stepper-evaluations__title--second-title {
+            padding-top: var(--mc-space-48);
+        }
+    }
+
+    .line {
+        max-width: var(--mc-layout-container-xl);
+        width: 100%;
+        height: var(--mc-space-1);
+        padding-bottom: var(--mc-space-24);
+        border-top: size(0.5) solid var(--mc-gray-300);
+    }
+
+    .card {
+        &-list {
+            padding-bottom: var(--mc-space-24);
+        }
+        &-evaluation {
+            border-radius: var(--mc-space-4);
+            background-color: var(--mc-high-300);
+            padding: var(--mc-space-16);
+
+            display: flex;
+            flex-direction: column;
+            // justify-items: end;
+
+            img {
+                display: none;
+            }
+
+            &__content {
+                &--title {
+                    font-family: var(--mc-font-body);
+                    font-style: normal;
+                    font-weight: 700;
+                    font-size: var(--mc-space-24);
+                    line-height: var(--mc-space-28);
+                    padding: var(--mc-space-16) 0 var(--mc-space-8) var(--mc-space-24);
+
+                }
+
+                &--items {
+                    border: 1px solid var(--mc-gray-100);
+                    border-radius: 4px;
+                    display: flex;
+                    flex-direction: column;
+                    max-width: size(1122);
+                    margin: 0 var(--mc-space-24) var(--mc-space-16) var(--mc-space-24);
+
+                    .phase {
+                        display: flex;
+                        flex-direction: row;
+                        gap: var(--mc-space-40);
+                        padding: var(--mc-space-16) 0 var(--mc-space-16) var(--mc-space-11);
+
+                        &__title {
+                            &--title {
+                                text-transform: uppercase;
+                                font-family: var(--mc-font-body);
+                                font-style: normal;
+                                font-weight: 400;
+                                font-size: var(--mc-space-14);
+                                line-height: var(--mc-space-19);
+                            }
+
+                            .item {
+                                font-weight: 600;
+                                font-size: var(--mc-space-14);
+                            }
+                        }
+                    }
+
+                    .period {
+                        padding: 0 0 var(--mc-space-16) var(--mc-space-11);
+
+                        &__label {
+                            text-transform: uppercase;
+                            font-family: var(--mc-font-body);
+                            font-style: normal;
+                            font-weight: 400;
+                            font-size: var(--mc-space-14);
+                            line-height: var(--mc-space-19);
+                        }
+
+                        &__content {
+                            font-weight: 600;
+                            font-size: var(--mc-space-14);
+
+                        }
+                    }
+                }
+            }
+
+            .btn {
+                display: flex;
+                justify-content: flex-end;
+            }
+
+            .evaluation-button,
+            .card-evaluation__button {
+                border-radius: var(--mc-space-8);
+                display: flex;
+                flex-direction: row;
+                height: var(--mc-space-48);
+                align-items: center;
+                justify-content: flex-end;
+                gap: size(75);
+                background-color: var(--mc-primary-500);
+                color: var(--mc-white);
+
+            }
+        }
+
+        &-list:last-child {
+            padding-bottom: unset;
+        }
+    }
+    
+    .out-evalution {
+        font-family: var(--mc-font-body);
+        font-style: normal;
+        font-weight: 400;
+        font-size: var(--mc-space-16);
+        line-height: var(--mc-space-22);
+    }
+}

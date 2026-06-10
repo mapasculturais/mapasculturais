@@ -1,0 +1,63 @@
+// ============================================================================
+// Object: Toggle Switch — structural toggle/toggle control
+// Unifies .switch/.slider and mc-toggle patterns
+// Reuse sites: entity-card, registration-status, opportunity-phase-config
+// ============================================================================
+
+.toggle-switch {
+    --toggle-switch-width: var(--mc-space-48);
+    --toggle-switch-height: var(--mc-space-24);
+    --toggle-switch-thumb-size: var(--mc-space-18);
+    --toggle-switch-gap: var(--mc-space-2);
+
+    display: inline-flex;
+    align-items: center;
+    position: relative;
+
+    &__input {
+        height: 0;
+        opacity: 0;
+        position: absolute;
+        width: 0;
+    }
+
+    &__slider {
+        appearance: none;
+        background-color: transparent; // set by component
+        border-radius: calc(var(--toggle-switch-height) * 0.5);
+        cursor: pointer;
+        display: block;
+        height: var(--toggle-switch-height);
+        position: relative;
+        transition: background-color 0.2s ease;
+        width: var(--toggle-switch-width);
+
+        &::after {
+            // Thumb
+            background-color: transparent; // set by component
+            border-radius: 50%;
+            content: '';
+            height: var(--toggle-switch-thumb-size);
+            left: var(--toggle-switch-gap);
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            transition: transform 0.2s ease;
+            width: var(--toggle-switch-thumb-size);
+        }
+    }
+
+    // When checked, slide thumb to right
+    &__input:checked + &__slider::after {
+        transform: translateY(-50%) translateX(
+            calc(var(--toggle-switch-width) - var(--toggle-switch-thumb-size) - var(--toggle-switch-gap) * 2)
+        );
+    }
+
+    // Structural modifier — small variant
+    &--sm {
+        --toggle-switch-width: var(--mc-space-36);
+        --toggle-switch-height: var(--mc-space-18);
+        --toggle-switch-thumb-size: var(--mc-space-14);
+    }
+}

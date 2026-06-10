@@ -13,7 +13,7 @@ $this->import('
 <div class="home-entities">
     
     <div class="home-entities__content">
-        <div class="home-entities__content--header">
+        <div class="home-entities__content__header">
             <label class="title">
                 <?= $this->text('title', i::__('Aqui você encontra as informações da cultura de sua região!')) ?>
             </label>
@@ -22,20 +22,20 @@ $this->import('
             </label>
         </div>
         
-        <div class="home-entities__content--cards">
+        <div class="home-entities__content__cards">
             <div v-if="global.enabledEntities.opportunities" class="card">
                 <div class="card__left">
-                    <div class="card__left--content">
-                        <div class="card__left--content-icon opportunity__background">
+                    <div class="card__left-content">
+                        <div class="card__left-content-icon opportunity__background">
                             <mc-icon name="opportunity"></mc-icon>
                         </div>                        
-                        <div class="card__left--content-title">
+                        <div class="card__left-content-title">
                             <label class="title">
                                 <?= i::__('Oportunidades') ?>
                             </label>
                         </div>
                     </div>
-                    <div class="card__left--img">
+                    <div class="card__left-img">
                         <img :src="subsite?.files?.opportunityBanner ? subsite?.files?.opportunityBanner?.url : '<?php $this->asset($app->config['module.home']['home-opportunities']) ?>'" />
                     </div>
                 </div>
@@ -50,17 +50,17 @@ $this->import('
 
             <div v-if="global.enabledEntities.events" class="card">
                 <div class="card__left">
-                    <div class="card__left--content">
-                        <div class="card__left--content-icon event__background">
+                    <div class="card__left-content">
+                        <div class="card__left-content-icon event__background">
                             <mc-icon name="event"></mc-icon>
                         </div>                        
-                        <div class="card__left--content-title">
+                        <div class="card__left-content-title">
                             <label class="title">
                                 <?= i::__('Eventos') ?>
                             </label>
                         </div>
                     </div>
-                    <div class="card__left--img">
+                    <div class="card__left-img">
                         <img :src="subsite?.files?.eventBanner ? subsite?.files?.eventBanner?.url : '<?php $this->asset($app->config['module.home']['home-events']) ?>'" />
                     </div>
                 </div>
@@ -75,17 +75,17 @@ $this->import('
 
             <div v-if="global.enabledEntities.spaces" class="card">
                 <div class="card__left">
-                    <div class="card__left--content">
-                        <div class="card__left--content-icon space__background">
+                    <div class="card__left-content">
+                        <div class="card__left-content-icon space__background">
                             <mc-icon name="space"></mc-icon>
                         </div>                        
-                        <div class="card__left--content-title">
+                        <div class="card__left-content-title">
                             <label class="title">
                                 <?= i::__('Espaços') ?>
                             </label>
                         </div>
                     </div>
-                    <div class="card__left--img">
+                    <div class="card__left-img">
                         <img :src="subsite?.files?.spaceBanner ? subsite?.files?.spaceBanner?.url : '<?php $this->asset($app->config['module.home']['home-spaces']) ?>'" />
                     </div>
                 </div>
@@ -100,17 +100,17 @@ $this->import('
 
             <div v-if="global.enabledEntities.agents" class="card">
                 <div class="card__left">
-                    <div class="card__left--content">
-                        <div class="card__left--content-icon agent__background">
+                    <div class="card__left-content">
+                        <div class="card__left-content-icon agent__background">
                             <mc-icon name="agent-2"></mc-icon>
                         </div>                        
-                        <div class="card__left--content-title">
+                        <div class="card__left-content-title">
                             <label class="title">
                                 <?= i::__('Agentes') ?>
                             </label>
                         </div>
                     </div>
-                    <div class="card__left--img">
+                    <div class="card__left-img">
                         <img :src="subsite?.files?.agentBanner ? subsite?.files?.agentBanner?.url : '<?php $this->asset($app->config['module.home']['home-agents']) ?>'" />
                     </div>
                 </div>
@@ -125,17 +125,17 @@ $this->import('
 
             <div v-if="global.enabledEntities.projects" class="card">
                 <div class="card__left">
-                    <div class="card__left--content">
-                        <div class="card__left--content-icon project__background">
+                    <div class="card__left-content">
+                        <div class="card__left-content-icon project__background">
                             <mc-icon name="project"></mc-icon>
                         </div>                        
-                        <div class="card__left--content-title">
+                        <div class="card__left-content-title">
                             <label class="title">
                                 <?= i::__('Projetos') ?>
                             </label>
                         </div>
                     </div>
-                    <div class="card__left--img">
+                    <div class="card__left-img">
                         <img :src="subsite?.files?.projectBanner ? subsite?.files?.projectBanner?.url : '<?php $this->asset($app->config['module.home']['home-projects']) ?>'" />
                     </div>
                 </div>

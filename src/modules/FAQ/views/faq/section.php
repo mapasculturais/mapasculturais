@@ -20,7 +20,7 @@ $message = $app->config['module.FAQ']['support-message'] ?? '';
     <aside class="faq__aside">
         <div class="faq__btn-aside">
             <?php foreach ($faq as $section) : ?>
-                <a href="<?= $this->controller->createUrl('index', [$section->slug]) ?>" class="faq__btn <?= $section->slug == $active_section ? 'faq__btn--selected' : '' ?>">
+                <a href="<?= $this->controller->createUrl('index', [$section->slug]) ?>" class="faq__btn <?= $section->slug == $active_section ? 'faq__btn__selected' : '' ?>">
                     <?= $section->title ?> <mc-icon name="arrow-right-ios"></mc-icon>
                 </a>
             <?php endforeach; ?>

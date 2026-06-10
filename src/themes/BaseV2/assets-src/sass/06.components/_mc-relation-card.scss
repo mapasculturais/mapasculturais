@@ -1,0 +1,110 @@
+@use '../01.settings/mixins' as *;
+
+// TODO-MC-MEDIA: &__header uses figure(48px)+body grid — candidate for mc-media object
+
+/* popover do agente */
+.relation-popover {
+    .popover__content {
+        padding: 0;
+    }
+    
+    .modal__header {
+        display: none;
+    }
+    .modal__content {
+        margin: 0;
+        padding: 0;
+    }
+    .modal-content {
+        max-height: unset;
+        height: unset;
+        padding: 0;
+    }
+    .modal__action {
+        display: none;
+    }
+
+    .relation-card {
+        padding: var(--mc-space-15) var(--mc-space-16) var(--mc-space-19);
+        
+        .mc-card__content {
+            flex-direction: column;
+            gap: var(--mc-space-18);
+        }
+
+        &__close {
+            cursor: pointer;
+            position: absolute;
+            right: var(--mc-space-12);
+            top: var(--mc-space-12);
+
+            .iconify {
+                font-size: var(--mc-space-23);
+            }
+        }
+
+        &__header {
+            align-items: center;
+            display: grid;
+            gap: var(--mc-space-12);
+            grid-template-columns: var(--mc-space-48) 1fr;
+
+            .image {
+                @include avatar-circle(var(--mc-space-48), var(--mc-gray-300));
+
+                .iconify {
+                    font-size: var(--mc-space-22);
+                }
+            }
+
+            .name {
+                color: var(--mc-black);
+                font-size: var(--mc-space-18);
+                font-weight: 700;
+                line-height: var(--mc-space-25);
+                text-decoration: none;
+                width: max-content;
+            }
+        }
+
+        &__content {
+            display: flex;
+            flex-direction: column;
+            gap: var(--mc-space-8);
+
+            .type {
+                font-weight: 600;
+                font-size: var(--mc-space-14);
+                line-height: var(--mc-space-19);
+
+                .actualType {
+                    text-transform: uppercase;
+                }
+            }
+
+            .tags {
+                display: flex;
+                flex-direction: column;
+                gap: var(--mc-space-4);
+
+                &__label {
+                    color: var(--mc-gray-700);
+                    font-weight: 600;
+                    font-size: var(--mc-space-12);
+                    line-height: var(--mc-space-16);
+                    text-transform: uppercase;
+                }
+
+                &__tagsList {
+                    font-weight: 700;
+                    font-size: var(--mc-space-12);
+                    line-height: var(--mc-space-16);
+                }
+            }
+        }
+
+        &__status {
+            @include status-badge;
+        }
+    }
+}

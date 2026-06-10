@@ -1,0 +1,24 @@
+// ============================================================================
+// Object: Status Indicator — structural icon+label layout
+// Reuse sites: entity-status, mc-status, registration-status,
+// opportunity-phase-status, panel--pending-evaluations
+// CONDITIONAL: thin object, accepted for reuse breadth
+// ============================================================================
+
+.status-indicator {
+    --status-indicator-gap: var(--mc-space-4);
+
+    align-items: center;
+    display: inline-flex;
+    gap: var(--status-indicator-gap);
+
+    &__icon {
+        flex-shrink: 0;
+        display: flex;
+        align-items: center;
+    }
+
+    &__label {
+        // Text styling set by consuming component
+    }
+}

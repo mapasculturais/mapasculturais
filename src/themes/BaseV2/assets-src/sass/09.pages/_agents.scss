@@ -1,0 +1,7 @@
+@use '../01.settings/mixins' as *;
+
+.single-1 {
+    &__description {
+        padding-bottom: var(--mc-space-16);
+    }
+}

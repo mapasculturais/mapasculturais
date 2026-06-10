@@ -30,7 +30,7 @@ $this->import('
         <template v-if="sidebar">
             <?php $this->applyTemplateHook("panel-nav-left-sidebar","begin" )?>
             <div class="panel-nav__line"></div>
-            <div class="panel-nav__right panel-nav__right--user">
+            <div class="panel-nav__right panel-nav__right__user">
                 <li v-for="item in userGroup.items" :key="`user:${item.route}`">
                     <mc-link :route="item.route" :params="item.params" :icon="item.icon" :class="{'active': active(item)}">{{item.label}}</mc-link>
                 </li>
@@ -50,7 +50,7 @@ $this->import('
             </ul>
         </template>
         <div class="panel-nav__line"></div>
-        <div class="panel-nav__right panel-nav__right--user">
+        <div class="panel-nav__right panel-nav__right__user">
             <li v-for="item in userGroup.items" :key="`user:${item.route}`">
                 <mc-link :route="item.route" :params="item.params" :icon="item.icon" :class="{'active': active(item)}">{{item.label}}</mc-link>
             </li>

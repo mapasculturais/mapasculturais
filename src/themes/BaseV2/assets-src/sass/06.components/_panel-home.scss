@@ -1,0 +1,132 @@
+@use '../01.settings/mixins' as *;
+
+.controller-panel.action-index {
+    @include respond-below('xs') {
+        .panel-home__tabs {
+            .tab-component {
+                padding: var(--mc-space-32) 0 var(--mc-space-40) var(--mc-space-16);
+            }
+        }
+    }
+
+    @media (max-width:(size(700))) {
+        .panel-home__tabs {
+            .tab-component {
+                padding: var(--mc-space-32) var(--mc-space-16) var(--mc-space-40) var(--mc-space-16);
+            }
+        }
+    }
+
+}
+
+.panel-home {
+    min-height: 100%;
+    background-color: var(--mc-gray-100);
+
+    &__header {
+        background-color: var(--mc-high-500);
+        display: flex;
+        flex-direction: column;
+        gap: var(--mc-space-24);
+        padding: var(--mc-space-28) var(--mc-space-48) var(--mc-space-9) var(--mc-space-32);
+
+        &--title {
+            label.title {
+                font-size: var(--mc-space-32);
+                font-weight: 700;
+                line-height: var(--mc-space-48);
+            }
+        }
+
+        &--user {
+            align-items: center;
+            display: flex;
+            justify-content: space-between;
+
+            &-profile {
+                align-items: center;
+                display: flex;
+                gap: var(--mc-space-8);
+
+                .avatar {
+                    align-items: center;
+                    border-radius: var(--mc-border-radius-pill);
+                    contain: content;
+                    display: flex;
+                    justify-content: center;
+                    height: size(56);
+                    width: size(56);
+                }
+
+                .name {
+                    font-size: var(--mc-space-24);
+                    font-weight: 600;
+                    line-height: var(--mc-space-32);
+                }
+            }
+
+            &-button {
+                display: flex;
+                gap: var(--mc-space-8);
+            }
+
+            // TODO-BREAKPOINT: 700px is not a canonical breakpoint. Consider adding to $mc-breakpoints or using nearest canonical value.
+            @media (max-width: size(700)) {
+
+                &-profile {
+                    .avatar {
+                        display: none;
+                    }
+
+                    .name {
+                        font-size: var(--mc-space-16);
+                        line-height: var(--mc-space-22);
+                    }
+                }
+
+                &-button {
+                    .button {
+                        font-size: var(--mc-space-14);
+                        line-height: var(--mc-space-19);
+
+                        .iconify {
+                            display: none;
+                        }
+                    }
+                }
+            }
+
+            // TODO-BREAKPOINT: 500px is not a canonical breakpoint. Consider adding to $mc-breakpoints or using nearest canonical value.
+            @include respond-below('mob') {
+                align-items: flex-start;
+                flex-direction: column;
+                gap: var(--mc-space-15);
+            }
+        }
+    }
+
+    &__tabs {
+        .tab-component {
+            padding: var(--mc-space-32) var(--mc-space-40);
+            background-color: var(--mc-gray-100);
+        }
+
+        .tabs-component {
+            &__header {
+                padding: 0 size(31);
+                background-color: var(--mc-high-500);
+
+            }
+
+            &__buttons {
+                margin: 0;
+            }
+        }
+
+        &--main {
+            display: flex;
+            flex-direction: column;
+            gap: size(60);
+        }
+    }
+}

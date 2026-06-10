@@ -1,0 +1,60 @@
+@use '../01.settings/mixins' as *;
+
+// TODO-MC-MEDIA: &__owner uses figure(56px)+body grid layout — candidate for mc-media object
+
+.entity-owner {
+    margin: 0;
+
+    h4 {
+        margin: 0;
+    }
+
+    &__owner {
+        display: grid;
+        grid-template-columns: size(56) 1fr;
+        text-decoration: none;
+        align-items: center;
+        gap: var(--mc-space-8);
+    }
+
+    &__owner-img {
+        margin: var(--mc-space-13) var(--mc-space-14) var(--mc-space-13) 0;
+    }
+
+    &__owner-name {
+        @include entity-name-bold;
+    }
+
+    &__edit {
+        // base edit section
+    }
+
+    &__edit-btn {
+        align-items: center;
+        cursor: pointer;
+        display: flex;
+        gap: var(--mc-space-8);
+
+        svg {
+            font-size: var(--mc-space-20);
+        }
+    }
+
+    .related {
+        &-title {
+            font-family: var(--mc-font-body);
+            font-style: normal;
+            font-weight: 400;
+            font-size: var(--mc-space-16);
+            line-height: var(--mc-space-22);
+            color: var(--mc-black);
+            margin: var(--mc-space-11) 0 var(--mc-space-16);
+        }
+    }
+
+    .alert {
+        &.entity-owner-pending {
+            padding: 0.5rem;
+        }
+    }
+}

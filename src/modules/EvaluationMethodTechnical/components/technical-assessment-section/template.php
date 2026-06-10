@@ -22,7 +22,7 @@ $this->import('
     <div v-if="entity.sections && entity.sections.length > 0">
         <div v-for="(section, index) in entity.sections" :key="index" class="technical-assessment-section__card">
             <div class="technical-assessment-section__header">
-                <div class="title">
+                <div class="technical-assessment-section__header-title">
                     <input class="title__input" v-if="editingSections[section.id]" type="text" v-model="section.name" @keyup="change()" @blur="editSections(section.id);" placeholder="<?= i::esc_attr__('Nome seção') ?>">
                     <input class="title__input bold" v-if="!editingSections[section.id]" type="text" :value="section.name" @blur="editSections(section.id);" disabled placeholder="<?= i::esc_attr__('Nome seção') ?>">
                     <div class="title__buttons">
@@ -55,7 +55,7 @@ $this->import('
                     <label><?php i::_e("Peso") ?></label>
                 </div>
                 <div v-for="(criteria, index) in entity.criteria" :key="index">
-                    <div class="criterion" v-if="criteria.sid == section.id">
+                    <div class="technical-assessment-section__criterion" v-if="criteria.sid == section.id">
                         <div class="criterion__fields">
                             <input type="text" v-model="criteria.title" @keyup="save(1500)" placeholder="<?= i::esc_attr__('Nome do critério') ?>" ref="criteriaTitleInput" >
                             <input type="number" v-model="criteria.max" @keyup="save(1500)" placeholder="<?= i::esc_attr__('Pontuação máxima') ?>" step="0.25">
@@ -77,7 +77,7 @@ $this->import('
                 </div>
             </div>
 
-            <div class="add-criterion">
+            <div class="technical-assessment-section__add-criterion">
                 <button @click="addCriteria(section.id)" class="button button--primary button--icon">
                     <mc-icon name="add"></mc-icon>
                     <label>

@@ -1,0 +1,138 @@
+@use '../01.settings/mixins' as *;
+
+// ============================================================================
+// Component: tabs-component
+// CONSUMES: nav-shell (horizontal tab list pattern)
+//   The `__buttons` / `__button` structure mirrors nav-shell's __list / __item.
+//   Consider extracting shared horizontal-nav styles into nav-shell.
+// ============================================================================
+
+.tabs-component {
+
+    @include respond-below('md') {
+        max-width: 100vw;
+    }
+
+    &__header {
+        align-items: baseline;
+        display: flex;
+        gap: var(--mc-space-16);
+        justify-content: space-between;
+        max-width: var(--mc-layout-container-xl);
+        margin: 0 auto;
+        padding: 0 0 var(--mc-space-3);
+        overflow-x: auto;
+
+        &::-webkit-scrollbar {
+            width: var(--mc-space-4);
+            height: var(--mc-space-4);
+        }
+
+        &::-webkit-scrollbar-track {
+            background: unset;
+            width: var(--mc-space-8);
+            height: var(--mc-space-8);
+        }
+
+        &::-webkit-scrollbar-thumb {
+            background-color: var(--mc-gray-600);
+            border-radius: var(--mc-border-radius-pill);
+        }
+
+        &-left {
+            align-items: baseline;
+            display: flex;
+            gap: var(--mc-space-16);
+        }
+
+        &-right {
+
+        }
+
+    }
+
+    &__alert {
+        max-width: var(--mc-layout-container-xl);
+        margin: 0 auto var(--mc-space-30);
+        display: flex;
+    }
+
+    &__buttons {
+        display: flex;
+        margin: 0;
+        overflow: auto;
+        padding: 0;
+        rotate: x 180deg; // Hack to put scrollbar above content
+        white-space: nowrap;
+        width: auto;
+        gap: var(--mc-space-22);
+
+    }
+
+    &__button {
+        display: inline-block;
+        list-style: none;
+        rotate: x 180deg;
+
+        a {
+            align-items: center;
+            color: inherit;
+            display: flex;
+            font-weight: var(--mc-font-regular);
+            line-height: var(--mc-space-20);
+            padding: var(--mc-space-7) var(--mc-space-13);
+            text-decoration: none;
+        }
+
+        &--active {
+            a {
+                font-weight: var(--mc-font-semibold);
+            }
+
+            &::after {
+                border-radius: var(--mc-border-radius-sm);
+                background-color: var(--mc-black);
+                display: block;
+                height: var(--mc-space-6);
+                content: '';
+                width: 100%;
+            }
+        }
+
+        &.sortable-chosen, &.sortable-ghost {
+            opacity: 0.5;
+        }
+
+        &.sortable-ghost:not(.sortable-chosen) {
+            rotate: none;
+        }
+
+        .iconify {
+            color: var(--mc-gray-700);
+            font-size: var(--mc-space-20);
+            margin-right: var(--mc-space-6);
+        }
+
+        &.is-active {
+            color: var(--mc-primary-500);
+            font-weight: bold;
+
+            &::after {
+                background-color: var(--mc-primary-500);
+            }
+
+            .iconify {
+                color: var(--mc-primary-500);
+            }
+        }
+
+        &.is-disabled {
+            color: var(--mc-gray-500);
+        }
+    }
+
+    &__panels {
+        padding: 0.1px; // Hack to avoid margins collapse
+        margin: 0 0 var(--mc-space-40);
+    }
+}

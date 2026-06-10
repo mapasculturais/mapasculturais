@@ -1,0 +1,112 @@
+@use '../01.settings/mixins' as *;
+
+.entity-parent-edit {
+    margin: 0;
+
+    &__title {
+
+        margin: 0;
+    }
+
+    &__parent {
+        align-items: center;
+        display: grid;
+        grid-template-columns: size(70) 1fr;
+        text-decoration: none;
+
+        &__img {
+            border-radius: 50%;
+            overflow: hidden;
+            width: size(56);
+            height: size(56);
+            margin: var(--mc-space-13) var(--mc-space-14) var(--mc-space-13) 0;
+
+            .profile {
+                width: 100%;
+                height: 100%;
+            }
+
+            .placeholder {
+                align-items: center;
+                background-color: var(--mc-gray-600);
+                color: var(--mc-white);
+                display: flex;
+                font-size: var(--mc-space-25);
+                justify-content: center;
+                height: 100%;
+                width: 100%;
+            }
+        }
+
+        &__name {
+            color: var(--mc-black);
+            font-family: var(--mc-font-body);
+            font-style: normal;
+            font-weight: 700;
+            font-size: var(--mc-space-12);
+            line-height: var(--mc-space-16);
+        }
+    }
+
+    &__edit {
+        .title {
+            margin-bottom: var(--mc-space-8);
+        }
+
+        &__btn {
+            align-items: center;
+            cursor: pointer;
+            display: flex;
+            gap: var(--mc-space-8);
+            padding-top: var(--mc-space-16);
+            padding-bottom: var(--mc-space-16);
+            .add-button {
+                font-family: var(--mc-font-body);
+                font-weight: 600;
+
+                svg {
+                    font-size: var(--mc-space-14);
+                }
+            }
+        }
+    }
+    
+    &__remove {
+        &__btn {
+            align-items: center;
+            cursor: pointer;
+            display: flex;
+            gap: var(--mc-space-8);
+            padding-top: var(--mc-space-8);
+            padding-bottom: var(--mc-space-16);
+            color: var(--mc-danger);
+            text-decoration: none;
+            
+            &:hover {
+                opacity: 0.8;
+            }
+            
+            h4 {
+                margin: 0;
+                font-size: var(--mc-space-14);
+                font-weight: 600;
+            }
+            
+            .iconify {
+                font-size: var(--mc-space-16);
+            }
+        }
+    }
+
+    .related {
+        &-title {
+            font-family: var(--mc-font-body);
+            font-style: normal;
+            font-weight: 400;
+            font-size: var(--mc-space-16);
+            line-height: var(--mc-space-22);
+            color: var(--mc-black);
+            margin: var(--mc-space-11) 0 var(--mc-space-16);
+        }
+    }
+}

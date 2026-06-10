@@ -1,0 +1,17 @@
+@use '../01.settings/mixins' as *;
+
+// TODO-MC-MEDIA: flex layout with img+body gap — candidate for mc-media object
+
+.mc-linked-entity {
+    display: flex;
+    padding: var(--mc-space-11) var(--mc-space-14);
+    gap: var(--mc-space-8);
+    width: 100%;
+    border-radius: var(--mc-border-radius-xs);
+    align-items: center;
+    background: var(--mc-gray-100);
+
+    &__img {
+        @include avatar-circle(var(--mc-space-40));
+    }
+}

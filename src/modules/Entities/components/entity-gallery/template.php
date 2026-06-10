@@ -18,20 +18,20 @@ $this->import('
     <label class="entity-gallery__title"> {{title}} </label>
 
     <div v-if="images" class="entity-gallery__list">   
-        <div class="entity-gallery__list--image" v-for="(img, index) in images">
+        <div class="entity-gallery__list__image" v-for="(img, index) in images">
             <div>
-                <div @click="open" class="entity-gallery__list--image-img" >
+                <div @click="open" class="entity-gallery__list__image-img" >
                     <img @click="openImg(index)" :src="img.transformations.galleryFull?.url" :imgId="img.id" :title="img.description"/>
                 </div>    
-                <p @click="openImg(index); open()" class="entity-gallery__list--image-label"> {{img.description}} </p>
+                <p @click="openImg(index); open()" class="entity-gallery__list__image-label"> {{img.description}} </p>
             </div>
-            <div v-if="editable" class="entity-gallery__list--image-actions">
+            <div v-if="editable" class="entity-gallery__list__image-actions">
                 <mc-popover @open="img.newDescription = img.description" openside="down-right">
                     <template #button="popover">
                         <a @click="popover.toggle()"> <mc-icon name="edit"></mc-icon> </a>
                     </template>
                     <template #default="{popover, close}">
-                        <form @submit="rename(img, popover); $event.preventDefault()" class="entity-gallery__addNew--newGroup">
+                        <form @submit="rename(img, popover); $event.preventDefault()" class="entity-gallery__addNew__newGroup">
                             <div class="grid-12">
                                 <div class="col-12">
                                     <div class="field">
@@ -67,14 +67,14 @@ $this->import('
         </mc-image-uploader>
     </div>
     <div class="entity-gallery__full" v-if="images" :class="{ 'active': galleryOpen }">
-        <div @click="close" class="entity-gallery__full--overlay"> </div>
-        <div class="entity-gallery__full--image">
+        <div @click="close" class="entity-gallery__full__overlay"> </div>
+        <div class="entity-gallery__full__image">
             <img v-if="actualImg" :src="actualImg?.url" :imgId="actualImg?.id" :title="actualImg?.description"/>
             <mc-icon v-if="!actualImg" name="loading"></mc-icon>
-            <div class="description">{{actualImg?.description}}</div>
-            <div @click="prev" class="btnPrev"> <mc-icon name="previous"></mc-icon> </div>
-            <div @click="next" class="btnNext"> <mc-icon name="next"></mc-icon> </div>
-            <div @click="close" class="btnClose"> <mc-icon name="close"></mc-icon> </div>
+            <div class="entity-gallery__full__image-description">{{actualImg?.description}}</div>
+            <div @click="prev" class="entity-gallery__btn-prev"> <mc-icon name="previous"></mc-icon> </div>
+            <div @click="next" class="entity-gallery__btn-next"> <mc-icon name="next"></mc-icon> </div>
+            <div @click="close" class="entity-gallery__btn-close"> <mc-icon name="close"></mc-icon> </div>
         </div>
     </div>
     <?php $this->applyTemplateHook('entity-gallery','end'); ?>

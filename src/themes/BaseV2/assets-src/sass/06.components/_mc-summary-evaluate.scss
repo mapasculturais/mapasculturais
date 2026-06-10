@@ -1,0 +1,90 @@
+@use '../01.settings/mixins' as *;
+
+.mc-summary-evaluate {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    max-width: var(--mc-layout-container-xl);
+    gap: var(--mc-space-28);
+    margin: 0 auto;
+    padding-bottom: var(--mc-space-24);
+ 
+    // TODO-BREAKPOINT: 1195px is not a canonical breakpoint. Consider adding to $mc-breakpoints or using nearest canonical value.
+    @media (max-width:size(1195)) {
+        gap: var(--mc-space-16);
+        padding-left: var(--mc-space-16);
+
+        &__box {
+            width: size(260);
+            padding: var(--mc-space-8);
+        }
+    }
+
+    @include respond-below('xl') {
+        display: flex;
+        flex-wrap: wrap;
+        // flex-direction: column;
+    }
+
+
+    // NOTE-BEM: .sent, .started, .completed, .pending are template-generated state classes — rename requires PHP template update
+    // Should use BEM modifiers: &__box--sent, &__box--started, etc.
+    &__box,
+    .sent,
+    .started .completed,
+    .pending {
+
+        &.sent {
+            background-color: var(--mc-eval-approved);
+        }
+
+        &.pending {
+            background-color: var(--mc-eval-rejected)
+        }
+
+        &.started {
+            background-color: var(--mc-eval-not-eval);
+        }
+
+        &.completed {
+            background-color: var(--mc-eval-pending);
+        }
+
+        padding: var(--mc-space-12);
+
+        width: 270px;
+        border-radius: var(--mc-border-radius-xs);
+        max-width: 100%;
+        display: grid;
+        grid-template-columns: 48px 1fr;
+
+   
+
+        // padding: var(--mc-space-12) var(--mc-space-16);
+        &--icon {
+            display: flex;
+            align-items: center;
+            svg {
+                font-size: var(--mc-space-32);
+            }
+
+        }
+
+        &--content {
+            display: flex;
+            flex-direction: column;
+            max-width: 100%;
+            h4 {
+                font-family: var(--mc-font-body);
+                font-size: var(--mc-space-16);
+                font-weight: 700;
+
+            }
+            span {
+            font-family: var(--mc-font-body);
+            font-size: var(--mc-space-16);
+            font-weight: 400;
+            }
+        }
+    }
+}

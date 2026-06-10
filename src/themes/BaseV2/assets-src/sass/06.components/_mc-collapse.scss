@@ -1,0 +1,57 @@
+@use '../01.settings/mixins' as *;
+
+// ============================================================================
+// Component: mc-collapse
+// CONSUMES: accordion-shell--animated (max-height transition pattern)
+//   The __toggle + .expanded state mirrors accordion-shell--animated's
+//   max-height transition. Consider applying accordion-shell--animated
+//   base styles here or replacing mc-collapse entirely with the object.
+// ============================================================================
+
+.mc-collapse {
+    border-radius: var(--mc-border-radius-xs);
+    border: var(--mc-border-hairline) var(--mc-gray-300);
+
+    &__header {
+        padding: var(--mc-space-9) var(--mc-space-24);
+    }
+
+    &__body {
+        padding: 0 var(--mc-space-16);
+    }
+
+    &__content {
+        border-top: var(--mc-border-hairline) var(--mc-gray-300);
+        overflow: hidden;
+        margin-top: var(--mc-space-4);
+        padding: 0 var(--mc-space-10) var(--mc-space-10);
+    }
+
+    &__toggle {
+        max-height: 0;
+        opacity: 0;
+        transition: all .5s ease;
+        visibility: collapse;
+
+        &.expanded {
+            visibility: visible;
+            opacity: 1;
+            max-height: size(999);
+        }
+    }
+
+    &__toggle-close {
+        padding: var(--mc-space-10) 0;
+        display: flex;
+        justify-content: flex-end;
+        
+        .iconify {
+            cursor: pointer;
+        }
+    }
+
+    &__toggle-button {
+        display: flex;
+        justify-content: flex-end;
+    }
+}

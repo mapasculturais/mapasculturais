@@ -24,7 +24,7 @@ $this->import('
                     </span>
                 </div>
 
-                <div ref="options" class="mc-select__options" :class="[{'mc-select__options--groups' : hasGroups}]" @click="selectOption($event)" :id="uniqueID">
+                <div ref="options" class="mc-select__options" :class="[{'mc-select__options__groups' : hasGroups}]" @click="selectOption($event)" :id="uniqueID">
                     <slot>
                         <div v-for="option in selectOptions" :class="option.classes" :value="option.value"> {{option.label}} </div>
                     </slot>

@@ -1,0 +1,81 @@
+@use '../01.settings/mixins' as *;
+
+.panel--entities-summary {
+    display: grid;
+    gap: var(--mc-space-24);
+    grid-template-columns: repeat(5, 1fr);
+    overflow-x: auto;
+    padding-bottom: var(--mc-space-5);
+
+    &__card {
+        width: 100%;
+        border-radius: var(--mc-border-radius-xs);
+        flex-shrink: 0;
+        padding: 0.8rem;
+        background-color: var(--mc-high-500);
+        min-width: size(168);
+
+        @include respond-below('md') {}
+
+        // NOTE-BEM: .card-summary#summary uses ID selector — template-dependent, cannot rename from SCSS
+        .card-summary#summary {
+
+            text-decoration: none;
+            color: var(--mc-low-700);
+        }
+
+        &--header {
+            display: flex;
+            gap: var(--mc-space-8);
+            align-items: center;
+
+            &-icon {
+                width: var(--mc-space-28);
+                height: var(--mc-space-28);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                border-radius: var(--mc-border-radius-pill);
+
+                .iconify {
+                    width: var(--mc-space-14);
+                    height: var(--mc-space-14);
+                }
+            }
+
+            &-label {
+                font-weight: 600;
+                font-size: var(--mc-space-14);
+                line-height: var(--mc-space-22);
+            }
+        }
+
+        &--counter {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: var(--mc-space-16) 0 var(--mc-space-19);
+
+            &-num {
+                font-weight: 700;
+                font-size: var(--mc-space-32);
+                line-height: var(--mc-space-32);
+            }
+
+            &-label {
+                font-weight: 600;
+                font-size: var(--mc-space-14);
+                line-height: var(--mc-space-19);
+            }
+        }
+
+        .agent-summary {
+            max-width: size(120);
+
+            button {
+                margin-left: var(--mc-space-11);
+            }
+        }
+    }
+}

@@ -1,0 +1,35 @@
+@use '../01.settings/mixins' as *;
+
+.registration-status {
+    display: flex;
+    gap: var(--mc-space-6);
+    align-items: center;
+
+    &--selected,
+    &--valid {
+        color: var(--mc-success-500);
+    }
+
+    &--invalid {
+        color: var(--mc-danger-500);
+    }
+
+    &__box {
+       max-width: size(256); 
+       border-radius: var(--mc-space-4);
+       border: 1px solid var(--mc-gray-300);
+       padding: var(--mc-space-8) 0 var(--mc-space-8) var(--mc-space-8);
+    }
+    // @consumer: status-indicator — Icon + label grid; consider consuming
+    // the `status-indicator` Object from 02.tools when available.
+    &__status {
+        display: grid;
+        grid-template-columns: var(--mc-space-12) 1fr;
+        gap: var(--mc-space-8);
+        align-items: center;
+        padding-bottom: var(--mc-space-16);
+    }
+    &__label {
+        font-size: var(--mc-space-12);
+    }
+}

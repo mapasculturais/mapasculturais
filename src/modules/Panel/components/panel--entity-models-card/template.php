@@ -21,10 +21,10 @@ $this->import('
             <slot name="picture" :entity="entity">
                 <mc-avatar :entity="entity" size="medium"></mc-avatar>
             </slot>
-            <div class="panel-entity-models-card__header--info">
+            <div class="panel-entity-models-card__header__info">
                 <slot name="title" :entity="entity">
 
-                    <a v-if="entity.currentUserPermissions?.modify" :href="entity.singleUrl" class="panel-entity-models-card__header--info-link">
+                    <a v-if="entity.currentUserPermissions?.modify" :href="entity.singleUrl" class="panel-entity-models-card__header-info-link">
                         <mc-title tag="h2" :shortLength="100" :longLength="110">
                             {{ entity.name }}
                         </mc-title>

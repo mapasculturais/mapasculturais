@@ -1,0 +1,221 @@
+@use '../01.settings/mixins' as *;
+
+.main-footer {
+    align-items: flex-start;
+    background: var(--mc-white);
+    box-shadow: var(--mc-shadow-lv1-up);
+    display: flex;
+    gap: var(--mc-space-40);
+    justify-content: center;
+    padding: var(--mc-space-24) 0 0;
+    position: relative;
+    flex-wrap: wrap;
+    &__support {
+        padding-bottom: size(39);
+        @include respond-below('md') {
+            padding-bottom: var(--mc-space-24);
+        }
+    }
+    &__msgspt {
+        text-align: center;
+    }
+    
+    @include respond-below('md') {
+        gap: 0;
+    }
+    
+    &__content {
+        margin: 0 auto;
+        max-width: var(--mc-layout-page-max);
+        width: 100%;
+
+        &__logo,
+        &__links {
+            max-width: var(--mc-layout-container-xl);
+            margin: 0 auto;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 var(--mc-space-16);
+
+            @include respond-below('md') {
+                align-items: flex-start;
+                flex-direction: column;
+            }
+        }
+
+        &__logo {
+            &-img {
+                flex-basis: 100%;
+                width: 100%;
+                display: flex;
+                justify-content: center;
+
+                .theme-logo {
+                    width: 30%;
+                }
+
+                .theme-logo.onlyImg {
+                    width: unset;
+                }
+
+                @include respond-below('md') {
+                    width: 70%;
+
+                    .theme-logo {
+                        grid-template-columns: 100%;
+                        text-align: center;
+                        justify-content: center;
+                        justify-items: center;
+                        margin: 0 auto;
+                        width: 50%;
+
+                        &__logo {
+                            width: 50%;
+                            margin: 0 25%;
+                        }
+                    }
+                }
+
+                // TODO-BREAKPOINT: 490px is not a canonical breakpoint. Consider adding to $mc-breakpoints or using nearest canonical value.
+                @media (max-width: size(490)) {
+                    width: 100%;
+                }
+
+                svg {
+                    width: 100%;
+                }
+            }
+
+            &-share {
+                align-items: center;
+                color: var(--mc-low-700);
+                display: flex;
+                gap: var(--mc-space-20);
+                justify-content: center;
+                padding: var(--mc-space-32) 0;
+                font-size: var(--mc-space-20);
+                a, a:hover, a:active, a:focus, a:visited
+                {
+                    color: var(--mc-low-700);
+                    text-decoration: none;
+                }
+            }
+
+            @include respond-below('md') {
+                align-items: center;
+            }    
+        }
+
+        &__links {
+            align-items: flex-start;
+            justify-content: space-evenly;
+            gap: var(--mc-space-40);
+            padding: 0 size(56);
+            
+            @include respond-below('md') {
+                gap: 0;
+            }
+
+            // TODO-BREAKPOINT: 450px is not a canonical breakpoint. Consider adding to $mc-breakpoints or using nearest canonical value.
+            @media (max-width: size(450)) {
+                width: 100%;
+                padding: 0 var(--mc-space-40);
+            }
+
+            &-group {
+                list-style: none;
+                padding: 0;
+
+                li {
+                    font-weight: 400;
+                    font-size: var(--mc-space-16);
+                    line-height: var(--mc-space-22);
+                    padding-bottom: var(--mc-space-16);
+
+                    a {
+                        align-items: center;
+                        color: var(--mc-low-500);
+                        display: flex;
+                        gap: var(--mc-space-13);
+                        text-decoration: none;
+                    }
+                }
+
+                li:first-child {
+                    font-weight: 700;
+                    font-size: var(--mc-space-24);
+                    line-height: var(--mc-space-28);
+                    font-weight: 600;
+                    padding-bottom: var(--mc-space-24);    
+                    
+                    a {
+                        color: var(--mc-primary-500);
+                    }
+                }
+            }
+        }
+    }
+
+    &__reg {
+        background: var(--mc-footer-reg-bg);    
+        padding: var(--mc-space-14) var(--mc-space-16);    
+        width: 100%;
+
+        &__content {
+            align-items: center;
+            color: var(--mc-high-500);
+            display: flex;
+            font-weight: 400;
+            font-size: var(--mc-space-14);
+            flex-wrap: wrap;
+            justify-content: space-between;
+            line-height: var(--mc-space-19);
+            margin: 0 auto;
+            max-width: size(1150);
+            width: 100%;
+
+            p {
+                display: flex;
+                flex-wrap: wrap;
+                gap: var(--mc-space-5);
+                margin: 0;
+            }
+
+            a {
+                align-items: center;
+                color: var(--mc-high-500);
+                display: flex;
+                gap: var(--mc-space-8);
+                text-decoration: none;
+            }
+
+            .mapas {
+                align-items: center;
+                display: flex;
+                gap: var(--mc-space-5);
+                line-height: var(--mc-space-13);
+                font-weight: 700;
+
+                .iconify {
+                    width: var(--mc-space-12);
+                    height: var(--mc-space-12);
+                }
+            }
+        }
+
+        @include respond-below('md') {
+            &-content {
+                align-items: center;
+                flex-direction: column;
+                gap: var(--mc-space-14);
+                justify-content: center;
+
+                p {
+                    justify-content: center;
+                }
+            }
+        }
+    }
+}

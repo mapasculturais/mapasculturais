@@ -10,9 +10,9 @@ use MapasCulturais\i;
 
 <div class="user-accepted-terms__privacy">
     <?php $this->applyTemplateHook('user-accepted-terms', 'begin'); ?>
-    <div class="user-accepted-terms__privacy--accept">
-        <label class="user-accepted-terms__privacy--accept-title"><?= i::__('Aceite de termos') ?></label>
-        <div v-if="user" class="user-accepted-terms__privacy--accept-title-box">
+    <div class="user-accepted-terms__privacy__accept">
+        <label class="user-accepted-terms__privacy__accept-title"><?= i::__('Aceite de termos') ?></label>
+        <div v-if="user" class="user-accepted-terms__privacy__accept-title-box">
             <div class="boxterm">
                 <div v-for="(term, slug) in terms" class="boxterm__list">
                     <div v-if="user['lgpd_'+ slug]?.[term.md5]">

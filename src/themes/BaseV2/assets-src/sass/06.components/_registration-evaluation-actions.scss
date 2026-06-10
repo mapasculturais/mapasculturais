@@ -1,0 +1,83 @@
+@use '../01.settings/mixins' as *;
+
+.registration-evaluation-actions {
+    display: flex;
+    flex-direction: column;
+    gap: size(56);
+    position: sticky;
+    top: var(--mc-space-40);
+
+    // Note: .errors is a semantic class inside &__primary for evaluation error display.
+    &__primary {
+        .errors {
+            background: var(--mc-high-500);
+            border-radius: var(--mc-border-radius-xs);
+            display: flex;
+            flex-direction: column;
+            gap: var(--mc-space-8);
+            margin-bottom: var(--mc-space-24);
+            padding: var(--mc-space-16);
+
+            &__title {
+                color: var(--mc-error);
+                font-size: var(--mc-space-16);
+                font-weight: 700;
+                line-height: var(--mc-space-22);
+                text-align: center;
+            }
+
+            &__subtitle {
+                font-size: var(--mc-space-16);
+                font-weight: 600;
+                line-height: var(--mc-space-22);
+                margin-bottom: var(--mc-space-8);
+            }
+
+            
+                // Note: .errors__error uses BEM-like naming within the .errors block.
+            &__error {
+                align-items: baseline;
+                display: grid;
+                gap: var(--mc-space-8);
+                grid-template-columns: var(--mc-space-16) 1fr;
+                margin-bottom: var(--mc-space-8);
+
+                &::before {
+                    background-color: var(--mc-secondary-500);
+                    border-radius: var(--mc-border-radius-pill);
+                    content: '';
+                    height: var(--mc-space-16);
+                    width: var(--mc-space-16);
+                }
+
+                &--text {
+                    font-size: var(--mc-space-14);
+                    line-height: var(--mc-space-19);
+                    text-decoration-line: underline;
+
+                    p {
+                        margin: 0;
+                    }
+                }
+            }
+        }
+    }
+
+    &__buttons {
+        @include eval-buttons;
+
+        // Note: .modal-content and .finish-send-evaluation__text are external selectors.
+        .modal-content {
+            margin: 0;
+            padding: var(--mc-space-16) 0 var(--mc-space-24) 0;
+            max-width: size(732);
+    
+            .finish-send-evaluation__text {
+            display: flex;
+            flex-direction: column;
+    
+            }
+    
+        }
+    }
+}

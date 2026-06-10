@@ -1,0 +1,328 @@
+@use '../01.settings/mixins' as *;
+
+
+.create-occurrence {
+    
+    .modal-content {
+        padding: 0;
+        min-height: size(460);
+
+        .modal{ 
+            &__title {
+                font-weight: 700;
+                font-size: var(--mc-space-18);
+                line-height: var(--mc-space-25);
+            }
+            &__header {
+                padding: var(--mc-space-16) var(--mc-space-16) var(--mc-space-15);
+                background-color: var(--mc-gray-100);
+            }
+            &__content {
+                margin: 0;
+                padding: var(--mc-space-8) var(--mc-space-24);
+            }
+            &__action {
+                padding: var(--mc-space-16) var(--mc-space-24) var(--mc-space-24);
+                justify-content: flex-end;
+                .desktop,
+                .create-occurrence__action-desktop {
+
+                    .button-group {
+                        display: flex;
+                        gap: var(--mc-space-16);
+                    }
+                }
+                .mobile,
+                .create-occurrence__action-mobile {
+                    width: 100%;
+                    gap: var(--mc-space-16) var(--mc-space-8);
+                    justify-content: center;
+                    flex-wrap: wrap;
+
+                    .button-group {
+                        display: flex;
+                        gap: var(--mc-space-16);
+                    }
+
+                    .pagination {
+                        width: 100%;
+                        display: flex;
+                        flex-direction: row;
+                        align-items: center;
+                        justify-content: center;
+                        gap: var(--mc-space-8);
+
+                        &-item {
+                            width: var(--mc-space-8);
+                            height: var(--mc-space-8);
+                            background-color: var(--mc-gray-100);
+                            border-radius: var(--mc-border-radius-pill);
+
+                            &.active {
+                                background-color: var(--mc-primary-500);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        // TODO-BREAKPOINT: 700px is not a canonical breakpoint. Consider adding to $mc-breakpoints or using nearest canonical value.
+        @media (max-width: size(700)) {
+            min-width: size(500);
+            .modal__action {
+                .desktop,
+                .create-occurrence__action-desktop {
+                    display: none;
+                }
+                .mobile,
+                .create-occurrence__action-mobile {
+                    display: flex;
+                }
+            }
+        }
+    }
+
+    &__section {
+        display: flex;
+        flex-direction: column;
+        gap: var(--mc-space-16);
+
+        &--title {
+            font-weight: 700;
+            font-size: var(--mc-space-16);
+            line-height: var(--mc-space-22);
+        }
+
+        &--link-space {
+            display: flex;
+            align-items: center;
+            gap: var(--mc-space-25);
+            font-size: var(--mc-space-18);
+            line-height: var(--mc-space-25);
+            flex-wrap: wrap;
+
+            &.space-info {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: var(--mc-space-15);
+            }
+
+            .space-info {
+                &__space {
+                    position: relative;
+                    width: 100%;
+                    border: var(--mc-border-hairline);
+                    border-radius: var(--mc-border-radius-xs);
+                    padding: var(--mc-space-10);
+
+                    &--title {
+                        align-items: center;
+                        display: flex;
+                        font-size: var(--mc-space-18);
+                        font-weight: 800;
+                        line-height: var(--mc-space-25);
+                        gap: var(--mc-space-6);
+
+                        .remove {
+                            position: absolute;
+                            right: var(--mc-space-16);
+                            color: var(--mc-danger-500);
+                            cursor: pointer;
+                        }
+                    }
+
+                    &--address {
+                        color: var(--mc-gray-700);
+                        font-size: var(--mc-space-14);
+                        font-weight: 600;
+                        line-height: var(--mc-space-19);
+                        margin-left: var(--mc-space-16);
+                        p {
+                            margin: 0;
+                        }
+                    }
+                }
+            }
+        }
+
+        &--fields {
+            display: flex;
+            flex-direction: row;
+            gap: var(--mc-space-8) var(--mc-space-24);
+            flex-wrap: wrap;
+
+            &-field {
+                font-weight: 600;
+                font-size: var(--mc-space-14);
+                line-height: var(--mc-space-19);
+                display: flex;
+                align-items: center;
+
+                input[type='checkbox'],
+                input[type='radio'] {
+                    float: left;
+                    height: var(--mc-space-18);
+                    margin-right:var(--mc-space-8);
+                    width: var(--mc-space-18);
+                }
+            }
+
+            .label {
+                font-weight: 600;
+                font-size: var(--mc-space-14);
+                line-height: var(--mc-space-19);
+                width: 100%;
+            }
+        }
+        
+        &--field {
+            display: flex;
+            flex-direction: column;
+            gap: var(--mc-space-8);
+
+            span.label {
+                font-size: var(--mc-space-14);
+                line-height: var(--mc-space-19);
+                font-weight: 600;
+            }
+            
+            input {
+                background: var(--mc-white);
+                border: var(--mc-border-hairline) var(--mc-gray-300);
+                border-radius: var(--mc-space-4);
+                font-size: var(--mc-space-12);
+                padding: var(--mc-space-14);
+                font-weight: 600;
+                
+                &[type='date'],
+                &[type='time'] {
+                    padding: var(--mc-space-12);
+                    display: flex;
+                    flex-direction: row-reverse;
+                    font-weight: 400;
+                    gap: var(--mc-space-11);
+                    line-height: var(--mc-space-20);
+                    text-transform: uppercase;
+                    
+                    &::-webkit-calendar-picker-indicator {
+                        -webkit-appearance: none;
+                        width: var(--mc-space-20);
+                        height: var(--mc-space-20);
+                        left: 0;
+                        margin: 0;
+                        padding: 0;
+                    }
+                }
+
+                &.dp__input {
+                    padding: var(--mc-space-9) var(--mc-space-14) var(--mc-space-9) var(--mc-space-32);
+                }
+            }
+
+            .auto-description {
+                background-color: var(--mc-gray-100);
+                font-weight: 600;
+                font-size: var(--mc-space-12);
+                line-height: var(--mc-space-16);
+                padding: var(--mc-space-8);
+                display: flex;
+                flex-direction: column;
+                gap: var(--mc-space-8);
+                align-items: flex-end;
+                color: var(--mc-gray-700);
+                
+                .button {
+                    background-color: var(--mc-gray-100);
+                }
+
+                span {
+                    width: 100%;
+                }
+            }
+        }        
+
+        // TODO-BREAKPOINT: 700px is not a canonical breakpoint. Consider adding to $mc-breakpoints or using nearest canonical value.
+        @media (max-width: size(700)) {
+            display: none;
+
+            &.active {
+                display: flex;
+            }
+
+            &--link-space {
+                flex-direction: column;
+            }
+        }
+    }
+
+    &__links {
+        display: flex;
+        flex-direction: column;
+        gap: var(--mc-space-12);
+        max-width: size(400);
+        width: 100%;
+    }
+
+    &__link-item {
+        display: flex;
+        align-items: center;
+        gap: var(--mc-space-8);
+        width: 100%;
+    }
+
+    &__add-link {
+        width: fit-content;
+    }
+
+    &__price-info {
+        grid-column-start: 1;
+
+        textarea {
+            background: var(--mc-white);
+            border: var(--mc-border-hairline) var(--mc-gray-300);
+            border-radius: var(--mc-space-4);
+            font-size: var(--mc-space-12);
+            padding: var(--mc-space-14);
+            font-weight: 600;
+            resize: vertical;
+            min-height: size(80);
+            font-family: inherit;
+        }
+    }
+
+    &__link-input {
+        flex: 1;
+        background: var(--mc-white);
+        border: var(--mc-border-hairline) var(--mc-gray-300);
+        border-radius: var(--mc-border-radius-xs);
+        font-size: var(--mc-space-14);
+        padding: var(--mc-space-12) var(--mc-space-14);
+        font-weight: 600;
+        color: var(--mc-gray-700);
+        transition: all .2s ease-in-out;
+
+        &:hover {
+            border-color: var(--mc-gray-400);
+        }
+
+        &:focus {
+            outline: none;
+            border-color: var(--mc-primary-500);
+            box-shadow: 0 0 0 var(--mc-space-3) var(--mc-primary-100);
+        }
+
+        &::placeholder {
+            color: var(--mc-gray-500);
+            font-weight: 400;
+        }
+
+        &:invalid {
+            border-color: var(--mc-danger-500);
+        }
+
+        &:invalid:focus {
+            box-shadow: 0 0 0 var(--mc-space-3) var(--mc-danger-100);
+        }
+    }
+}

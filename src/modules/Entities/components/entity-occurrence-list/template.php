@@ -16,10 +16,10 @@ $this->import('
 ?>
 <div class="entity-occurrence-list" :class="classes">
     <div v-if="editable && !createEvent" class="entity-occurrence-list__editable">
-        <label class="entity-occurrence-list__editable--title">
+        <label class="entity-occurrence-list__editable__title">
             <?= i::_e('Data, hora e local do evento') ?>
         </label>
-        <p class="entity-occurrence-list__editable--description">
+        <p class="entity-occurrence-list__editable__description">
             <?= i::_e('Adicione data, hora e local da ocorrência do seu evento. Você pode criar várias ocorrências com informações diferentes.') ?>
         </p>
         <div class="button-group">
@@ -28,10 +28,10 @@ $this->import('
         </div>
     </div>
     <div v-if="editable && createEvent" class="entity-occurrence-list__editable">
-        <label class="entity-occurrence-list__editable--title">
+        <label class="entity-occurrence-list__editable__title">
             <?= i::_e('Deseja inserir uma ocorrência para o seu Evento?') ?>
         </label>
-        <p class="entity-occurrence-list__editable--description">
+        <p class="entity-occurrence-list__editable__description">
             <?= i::_e('Você pode inserir agora uma ocorrência do seu evento ou a ocorrência única.') ?>
         </p>
         <div class="button-group">
@@ -42,9 +42,9 @@ $this->import('
     <div class="entity-occurrence-list__occurrences">
         <mc-entities name="occurrenceList" type="eventoccurrence" endpoint="find" :query="{event: `EQ(${entity.id})`}" select="*,space.{name,endereco,files.avatar,location}">
             <template #default="{entities}">
-                <div v-for="occurrence in entities" class="occurrence" :class="{'edit': editable}" :key="occurrence._reccurrence_string">
+                <div v-for="occurrence in entities" class="entity-occurrence-list__occurrence" :class="{'edit': editable}" :key="occurrence._reccurrence_string">
                     <div class="occurrence__card">
-                        <div class="header">
+                        <div class="occurrence__card-header">
                             <div class="header__title">
                                 <mc-icon name="pin"></mc-icon>
                                 <span class="title" v-if="occurrence.type !== 'virtual'">
@@ -58,7 +58,7 @@ $this->import('
                                 <mc-icon name="map"></mc-icon> <?= i::_e('Ver mapa') ?>
                             </span>
                         </div>
-                        <div class="address" v-if="occurrence.type !== 'virtual'">
+                        <div class="occurrence__card-address" v-if="occurrence.type !== 'virtual'">
                             <p>{{occurrence.space?.endereco}}</p>
                         </div>
                         <div class="occurrence__links" v-if="occurrence.type === 'virtual' && occurrence.metadata?.links">
@@ -67,7 +67,7 @@ $this->import('
                                 {{formatPlatform(link.platform)}}
                             </a>
                         </div>
-                        <div class="content">
+                        <div class="occurrence__card-content">
                             <div class="content__ticket">
                                 <mc-icon name="date"></mc-icon>
                                 <span class="ticket">
@@ -75,13 +75,13 @@ $this->import('
                                 </span>
                             </div>
                             <div class="content__price">
-                                <div class="content__price--value">
+                                <div class="content__price__value">
                                     <mc-icon name="ticket"></mc-icon>
                                     <span class="value">
                                         {{formatPrice(occurrence.rule.price)}}
                                     </span>
                                 </div>
-                                <div v-if="occurrence.rule.priceInfo" class="content__price--info">
+                                <div v-if="occurrence.rule.priceInfo" class="content__price__info">
                                     <mc-icon name="info"></mc-icon>
                                     <span class="info">
                                         {{occurrence.rule.priceInfo}}
@@ -97,14 +97,14 @@ $this->import('
 
                         <!-- Sem edição no momento -->
                         <!-- <create-occurrence occurrence="ocorrência" editable>
-                            <a class="occurrence__actions--edit">
+                            <a class="occurrence__actions__edit">
                                 <mc-icon name="edit"></mc-icon><?= i::_e('Editar') ?>
                             </a>
                         </create-occurrence> -->
 
                         <mc-confirm-button @confirm="deleteOccurrence(occurrence)">
                             <template #button="modal">
-                                <a class="occurrence__actions--delete" @click="modal.open();">
+                                <a class="occurrence__actions__delete" @click="modal.open();">
                                     <mc-icon name="trash"></mc-icon><?= i::_e('Excluir') ?>
                                 </a>
                             </template>

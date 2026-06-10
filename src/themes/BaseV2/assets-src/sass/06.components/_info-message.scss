@@ -1,0 +1,31 @@
+@use '../01.settings/mixins' as *;
+
+.info-message {
+    padding: var(--mc-space-16);
+    border-radius: var(--mc-space-4);
+    margin-bottom: var(--mc-space-13);
+
+    // TODO: BEM-REFACTOR — Type modifiers use bare class qualifiers (`&.helper`)
+    // instead of BEM modifiers (`&--helper`). Inconsistent with `&--` pattern used
+    // elsewhere (e.g., _mc-alert.scss `&--sm`). DEFERRED: needs template class
+    // updates from `class="info-message helper"` to `class="info-message info-message--helper"`.
+    &.helper {
+        background-color: var(--mc-helper-500);
+        color: var(--mc-high-500);
+    }
+
+    &.warning {
+        background-color: var(--mc-warning-500);
+        color: var(--mc-high-500);
+    }
+
+    &.success {
+        background-color: var(--mc-success-500);
+        color: var(--mc-high-500);
+    }
+
+    &.error {
+        background-color: var(--mc-danger-500);
+        color: var(--mc-high-500);
+    }
+}

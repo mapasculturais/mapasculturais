@@ -13,16 +13,16 @@ $this->import('
 ?>
 <div v-if="entities.length > 0" class="panel--open-opportunities">
     <div class="panel--open-opportunities__content">
-        <div class="panel--open-opportunities__content--title">
+        <div class="panel--open-opportunities__content__title">
             <label> <?php i::_e('Oportunidades abertas')?> </label>
         </div>
-        <div class="panel--open-opportunities__content--cards">
+        <div class="panel--open-opportunities__content__cards">
             <carousel v-if="entities.length > 0" :settings="settings" :breakpoints="breakpoints">
                 <slide v-for="entity in entities" :key="entity.__objectId">
                     <div class="card">
                         <div class="card__content">
-                            <label class="card__content--title"> <img :src="entity.files.avatar.transformations.avatarMedium.url"/> {{entity.name}} </label>              
-                            <div class="card__content--description">
+                            <label class="card__content__title"> <img :src="entity.files.avatar.transformations.avatarMedium.url"/> {{entity.name}} </label>              
+                            <div class="card__content__description">
                                 {{entity.shortDescription}}
                             </div>    
                         </div>

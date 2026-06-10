@@ -19,7 +19,7 @@ $message = $app->config['module.FAQ']['support-message'] ?? '';
             <?php foreach ($faq as $section) : ?>
 
                 <a href="<?= $this->controller->createUrl('index', [$section->slug]) ?>" class="faq__card bold  primary__color">
-                    <div class="faq__card--frequent">
+                    <div class="faq__card__frequent">
                         <div class="faq__headerbtn">
                             <mc-icon name="help-outline" class="faq__helper"></mc-icon>
                             <?= $section->title ?>
@@ -47,7 +47,7 @@ $message = $app->config['module.FAQ']['support-message'] ?? '';
     </div>
 </main>
 <main>
-    <div v-if="global.faqSearch" class="faq__main faq__main--results">
+    <div v-if="global.faqSearch" class="faq__main faq__main__results">
         <faq-search-results index ></faq-search-results>
     </div>
     

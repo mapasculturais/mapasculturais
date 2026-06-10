@@ -1,0 +1,29 @@
+@use '../01.settings/mixins' as *;
+
+.opportunity-form-export {
+  
+&__button {
+    padding: var(--mc-space-16) 0;
+    display: flex;
+    gap: var(--mc-space-28);
+    justify-content: flex-end;
+    .view,
+    .opportunity-form-export__view,
+    .export,
+    .opportunity-form-export__export {
+        max-width: size(270);
+        width: 100%;
+        &.button {
+            border-radius: var(--mc-space-8);
+            background-color: var(--mc-white);
+            color: var(--mc-primary-500);
+            border: var(--mc-space-2) solid var(--mc-primary-500);
+        }
+        &:hover {
+           background-color: var(--mc-primary-500);
+            color: var(--mc-white);
+        }
+    }
+   
+}
+}

@@ -12,22 +12,22 @@ $this->import('
     registration-status
 ');
 ?>
-<section class="timeline" :class="{ 'center': center, 'big': big }">
+<section class="timeline" :class="{ 'timeline--center': center, 'timeline--big': big }">
     <?php $this->applyComponentHook('item', 'before'); ?>
     <template v-for="item of phases">
         <template v-for="registration of [getRegistration(item)]">
-            <div class="item" :class="itemClasses(item, registration)">
+            <div class="timeline__item" :class="itemClasses(item, registration)">
                 <div class="item__dot"> <span class="dot"></span> </div> 
                 <div class="item__content">
                     <?php $this->applyComponentHook('item', 'begin'); ?>
-                    <div v-if="item.isFirstPhase" class="item__content--title"> <?= $this->text('phase_registration', i::__('Fase de inscrições')) ?> </div>
-                    <div v-if="!item.isFirstPhase" class="item__content--title"> {{item.name}} </div> 
-                    <div v-if="!item.isLastPhase && (!firstPhase.isContinuousFlow || firstPhase.hasEndDate)" class="item__content--description">
+                    <div v-if="item.isFirstPhase" class="item__content__title"> <?= $this->text('phase_registration', i::__('Fase de inscrições')) ?> </div>
+                    <div v-if="!item.isFirstPhase" class="item__content__title"> {{item.name}} </div> 
+                    <div v-if="!item.isLastPhase && (!firstPhase.isContinuousFlow || firstPhase.hasEndDate)" class="item__content__description">
                         <h5 class="semibold"><?= i::__('de') ?> <span v-if="dateFrom(item)">{{dateFrom(item)}}</span>
                         <?= i::__('a') ?> <span v-if="dateTo(item)">{{dateTo(item)}}</span>
                         <?= i::__('às') ?> <span v-if="hour(item)">{{hour(item)}}</span></h5>
                     </div>
-                    <div v-if="item.isLastPhase && item.publishTimestamp" class="item__content--description">
+                    <div v-if="item.isLastPhase && item.publishTimestamp" class="item__content__description">
                         <span v-if="item.publishTimestamp">
                             {{item.publishTimestamp.date('2-digit year')}}
                             <?= i::__('às') ?>

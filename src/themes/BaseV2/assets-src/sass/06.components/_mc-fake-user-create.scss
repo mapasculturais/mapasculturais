@@ -1,0 +1,8 @@
+@use '../01.settings/mixins' as *;
+
+// NOTE-BEM: .wrapper-button-modal is a template-dependent non-BEM block name — rename requires PHP template update
+.wrapper-button-modal{
+  width: 100%;
+  display: flex;
+  justify-content: space-around;
+}

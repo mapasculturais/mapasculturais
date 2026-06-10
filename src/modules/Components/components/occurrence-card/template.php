@@ -34,10 +34,10 @@ $this->import('
     </div>
 
     <div class="entity-card__content">
-        <div class="entity-card__content--occurrence-data">
+        <div class="entity-card__content__occurrence-data">
             <mc-icon name="event"></mc-icon> {{occurrence.starts.date('long')}} <?= i::_e('às') ?> {{occurrence.starts.time()}}
         </div>
-        <div v-if="!hideSpace && !isVirtual" class="entity-card__content--occurrence-space">
+        <div v-if="!hideSpace && !isVirtual" class="entity-card__content__occurrence-space">
             <div class="link"><mc-icon class="link space__color" name="pin"></mc-icon></div>
             <div class="space-adress">
                 <mc-link :entity="space">
@@ -46,19 +46,19 @@ $this->import('
                 <span class="space-adress__adress" v-if="space.endereco">- {{space.endereco}}</span>
             </div>
         </div>
-        <div v-if="isVirtual" class="entity-card__content--occurrence-space occurrence-card__virtual">
+        <div v-if="isVirtual" class="entity-card__content__occurrence-space occurrence-card__virtual">
             <div class="occurrence-card__virtual-header">
                 <div class="link"><mc-icon class="link space__color" name="link"></mc-icon></div>
                 <span class="space-adress__name space__color"><?= i::_e('Evento Online') ?></span>
             </div>
-            <div v-if="virtualLinks.length > 0" class="virtual-links">
-                <a v-for="(link, index) in virtualLinks" :key="index" :href="link.url" target="_blank" rel="noopener noreferrer" class="virtual-link">
+            <div v-if="virtualLinks.length > 0" class="occurrence-card__virtual-links">
+                <a v-for="(link, index) in virtualLinks" :key="index" :href="link.url" target="_blank" rel="noopener noreferrer" class="occurrence-card__virtual-link">
                     <mc-icon name="link"></mc-icon>
                     {{formatPlatform(link.platform)}}
                 </a>
             </div>
         </div>
-        <div class="entity-card__content--occurrence-info">
+        <div class="entity-card__content__occurrence-info">
             <div class="ageRating">
                 <span class="ageRating__class uppercase"><?= i::__('Classificação') ?><strong>: </strong></span>
 
@@ -70,14 +70,14 @@ $this->import('
                 <span class="ageRating__value">{{occurrence.price}}</span>
             </div>
         </div>
-        <div class="entity-card__content--terms">
-            <div v-if="tags" class="entity-card__content--terms-tag">
+        <div class="entity-card__content__terms">
+            <div v-if="tags" class="entity-card__content__terms-tag">
                 <label class="tag__title">
                     <?php i::_e('Tags:') ?> ({{event.terms.tag.length}}):
                 </label>
                 <p :class="['terms', 'event__color']"> {{tags}} </p>
             </div>
-            <div v-if="linguagens" class="entity-card__content--terms-linguagem">
+            <div v-if="linguagens" class="entity-card__content__terms-linguagem">
                 <label class="linguagem__title">
                     <?php i::_e('linguagens:') ?> ({{event.terms.linguagem.length}}):
                 </label>
@@ -86,7 +86,7 @@ $this->import('
         </div>
     </div>
     <div class="entity-card__footer">
-        <div class="entity-card__footer--info">
+        <div class="entity-card__footer__info">
             <div v-if="seals" class="seals">
                 <label class="seals__title">
                     <?php i::_e('Selos') ?> ({{event.seals.length}}):
@@ -95,7 +95,7 @@ $this->import('
                 <div v-if="seals.length == 2" class="seals__seal more">+1</div>
             </div>
         </div>
-        <div class="entity-card__footer--action">
+        <div class="entity-card__footer__action">
             <a :href="event.singleUrl" class="button button--primary button--large button--icon">
                 <?php i::_e('Acessar') ?>
                 <mc-icon name="access"></mc-icon>

@@ -35,13 +35,13 @@ $this->breadcrumb = [
             <div class="grid-12">
 
                 <div class="entity-seals__validity col-12" v-if="entity.validPeriod" class="col-12">
-                    <h2 class="entity-seals__validity--label"><?php i::_e('Validade do certificado do selo');?></h2>
+                    <h2 class="entity-seals__validity-label"><?php i::_e('Validade do certificado do selo');?></h2>
                     
-                    <p v-if="entity.validPeriod <= 12" class="entity-seals__validity--content">
+                    <p v-if="entity.validPeriod <= 12" class="entity-seals__validity-content">
                         {{ entity.validPeriod }} <?= i::__('Meses') ?>
                     </p>
                     
-                    <p v-if="entity.validPeriod > 12" class="entity-seals__validity--content"> 
+                    <p v-if="entity.validPeriod > 12" class="entity-seals__validity-content"> 
                         <template v-if="Math.floor(entity.validPeriod / 12) == 1">
                             {{ Math.floor(entity.validPeriod / 12)}} <?= i::__('ano') ?>
                         </template>

@@ -1,0 +1,44 @@
+@use '../01.settings/mixins' as *;
+
+.subsite-config-map {
+    display: grid;
+    gap: var(--mc-space-20);
+
+    &__content {
+        display: grid;
+        gap: var(--mc-space-30);
+    }
+
+    &__instructions {
+        margin: 0;
+        
+        & > li {
+            list-style: decimal;
+            padding: 0 0 var(--mc-space-8) var(--mc-space-8);
+        }
+    }
+
+    &__filter {
+        display: flex;
+        gap: var(--mc-space-15);
+        flex-direction: column;
+    }
+
+    &__filter-results {
+        display: flex;
+        flex-direction: column;
+        gap: var(--mc-space-8);
+    }
+
+    &__filter-result {
+        border-bottom: var(--mc-border-hairline);
+        padding: var(--mc-space-5) var(--mc-space-16);
+        cursor: pointer;
+    }
+
+    &__buttons {
+        display: flex;
+        gap: var(--mc-space-20);
+        flex-wrap: wrap;
+    }
+}

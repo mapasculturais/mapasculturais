@@ -34,17 +34,17 @@ $this->breadcrumb = [
     <template #default="{pseudoQuery, changeTab}">
         <mc-tabs  @changed="changeTab($event)" class="search__tabs" sync-hash>
             <template #before-tablist>
-                <label class="search__tabs--before">
+                <label class="search__tabs__before">
                     <?= i::_e('Visualizar como:') ?>
                 </label>
             </template>
             <mc-tab icon="list" label="<?php i::esc_attr_e('Lista') ?>" slug="list">
-                <div class="search__tabs--list">
+                <div class="search__tabs__list">
                     <search-list-event :pseudo-query="pseudoQuery"></search-list-event>
                 </div>
             </mc-tab>
             <mc-tab icon="map" label="<?php i::esc_attr_e('Mapa') ?>"  slug="map">
-                <div class="search__tabs--map">
+                <div class="search__tabs__map">
                     <search-map-event :pseudo-query="pseudoQuery" position="map"></search-map-event>
                 </div>
             </mc-tab>

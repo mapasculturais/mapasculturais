@@ -1,0 +1,49 @@
+.opportunity-exporter {
+
+    p {
+        margin-bottom: var(--mc-space-16);
+    }
+
+    p > .mc-popover {
+        display: inline-block;
+    }
+    
+    .field__group {
+        display: block;
+        column-count: 2;
+        margin-top: var(--mc-space-16);
+
+        @include respond-below('md') {
+            column-count: 1;
+        }
+    }
+
+    .field__checkbox {
+        break-inside: avoid;
+        margin-block: var(--mc-space-8);
+    }
+}
+
+// NOTE: `.opportunity-importer` is a separate BEM block.
+// Kept here for organizational purposes. Could be split to its own file.
+.opportunity-importer {
+
+    .mc-file {
+
+        h5.bold {
+            display: none;
+        }
+    }
+
+    .mc-title {
+        font-size: var(--mc-space-14);
+        font-weight: 600;
+    }
+
+    &__button {
+
+        .iconify {
+            font-size: var(--mc-space-18);
+        }
+    }
+}

@@ -1,0 +1,113 @@
+@use '../01.settings/mixins' as *;
+
+// Object: .button structural shell
+// Layout, sizing, dimensions, and interaction mechanics.
+// Cosmetic variants (colors, hover effects) live in 06.components/_button.scss.
+
+.button {
+    align-items: center;
+    appearance: none;
+    border: 2px solid transparent;
+    border-radius: var(--mc-border-radius-sm);
+    cursor: pointer;
+    display: inline-flex;
+    font-family: var(--mc-font-body);
+    font-size: var(--mc-space-16);
+    font-weight: 600;
+    justify-content: center;
+    line-height: var(--mc-space-18);
+    padding: var(--mc-space-9) var(--mc-space-19);
+    position: relative;
+    text-decoration: none;
+
+    // Structural interaction state (visual cosmetics in 06.components)
+    &.disabled {
+        cursor: default;
+        opacity: .3;
+        pointer-events: none;
+    }
+
+    // Icon positioning (structural layout)
+    &--left-icon,
+    &--right-icon {
+        padding-inline: var(--mc-space-32);
+
+        .iconify {
+            position: absolute;
+        }
+    }
+
+    &--left-icon {
+        .iconify {
+            left: var(--mc-space-8);
+        }
+    }
+
+    &--right-icon {
+        .iconify {
+            right: var(--mc-space-8);
+        }
+    }
+
+    &--icon {
+        gap: var(--mc-space-12);
+
+        .iconify {
+            font-size: var(--mc-space-16);
+            min-width: var(--mc-space-16);
+        }
+    }
+
+    // Width (structural)
+    &--large {
+        width: 100%;
+    }
+
+    // Size variants (structural sizing)
+    &--xbg {
+        font-size: var(--mc-space-24);
+        font-weight: 700;
+        line-height: var(--mc-space-28);
+        padding: var(--mc-space-20) var(--mc-space-32);
+
+        .iconify {
+            font-size: var(--mc-space-18);
+        }
+    }
+
+    &--bg {
+        font-size: var(--mc-space-18);
+        font-weight: 700;
+        line-height: var(--mc-space-25);
+        padding: size(17.5) var(--mc-space-32);
+
+        .iconify {
+            font-size: var(--mc-space-18);
+        }
+    }
+
+    &--md {
+        font-size: var(--mc-space-18);
+        font-weight: 600;
+        padding: var(--mc-space-12) var(--mc-space-24);
+
+        .iconify {
+            font-size: var(--mc-space-18);
+        }
+    }
+
+    &--sm {
+        font-size: var(--mc-space-14);
+        gap: var(--mc-space-9);
+        padding: var(--mc-space-5) var(--mc-space-15);
+
+        .iconify {
+            font-size: var(--mc-space-14);
+        }
+    }
+
+    // Border-radius variant (structural shape)
+    &--rounded {
+        border-radius: var(--mc-border-radius-pill);
+    }
+}

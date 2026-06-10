@@ -1,0 +1,27 @@
+.entity-field-location{
+    // Note: .grid-12, .col-12, .col-4, .col-6 are shared grid utilities — not BEM-scope
+    .grid-12{
+        .col-12, .col-4, .col-6{
+            margin-top: 0;
+        }
+
+        .field{
+            &__group {
+                .input__radioLabel {
+                    display: grid;
+                    font-weight: var(--mc-font-semibold);
+                    grid-template-columns: var(--mc-space-17) 1fr;
+                    gap: var(--mc-space-8);
+                }
+            }
+        }
+    }
+
+    .not-error, &--not-error {
+        input, textarea, select, .mc-select__selected-option {
+
+            border: 0.0625rem solid var(--mc-gray-500) !important;
+            background: transparent !important;
+        }
+    }
+}

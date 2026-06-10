@@ -1,0 +1,112 @@
+@use '../01.settings/mixins' as *;
+
+.leaflet-container {
+    a {
+        color: inherit;
+
+        &.leaflet-popup-close-button {
+            width: var(--mc-space-30);
+            height: var(--mc-space-30);
+            font-size: var(--mc-space-30);
+            padding: var(--mc-space-16) var(--mc-space-16) 0 0;
+            color: var(--mc-low-500);
+            font-weight: 400;
+
+        }
+    }
+   .leaflet-popup-content-wrapper{
+        border-radius: var(--mc-space-8);
+   }
+}
+
+.leaflet-popup {
+    margin-bottom: size(75);
+
+    &-tip-container {
+        display: none;
+    }
+
+    &-content-wrapper {
+        border-radius: unset;
+        box-shadow: unset;
+    }
+
+    .mc-map-card {
+
+        max-width: size(359);
+        width: 100%;
+        background: var(--mc-white);
+        border-radius: var(--mc-border-radius-xs);
+
+        &__header {
+            
+            display: grid;
+            grid-template-columns:1fr;
+            align-items: center;
+            gap: var(--mc-space-12);
+            justify-items: start;
+
+            &__image {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                overflow: hidden;
+                width: var(--mc-space-48);
+                height: var(--mc-space-48);
+                border-radius: var(--mc-border-radius-pill);
+                background: var(--mc-gray-300);
+               
+                img {
+                    width: 100%;
+                }
+            }
+
+            &__title {
+                font-weight: 700;
+                font-size: var(--mc-space-18);
+                line-height: var(--mc-space-25);
+                word-break: break-word;
+            }
+        }
+
+        &__content {
+
+            &__info {
+                font-family: var(--mc-font-body);
+
+                .info {
+                    margin: var(--mc-space-8) 0;
+                    font-size: var(--mc-space-12);
+                    font-weight: 400;
+                    line-height: var(--mc-space-16);
+                    text-transform: uppercase;
+                    strong {
+                        text-transform: none;
+                    }
+                }
+            }
+        }
+
+        &__footer {
+            display: flex;
+            flex-direction: row;
+            justify-content: flex-end;
+
+            &__link {
+                font-weight: 700;
+                font-size: var(--mc-space-16);
+                line-height: var(--mc-space-22);
+                text-decoration: none;
+                outline: none;
+                display: flex;
+                flex-direction: row-reverse;
+                align-items: center;
+                gap: var(--mc-space-15);
+
+            }
+
+        }
+
+    }
+
+}

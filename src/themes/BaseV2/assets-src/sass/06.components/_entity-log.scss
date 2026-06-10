@@ -1,0 +1,18 @@
+@use '../01.settings/mixins' as *;
+
+.entity-log {
+    &__history-title {
+        font-weight: 700;
+        font-size: var(--mc-space-12);
+        line-height: var(--mc-space-16);
+        color: var(--mc-low-500);
+    }
+
+    &__history-link {
+        font-weight: 700;
+        font-size: var(--mc-space-16);
+        line-height: var(--mc-space-20);
+        color: var(--mc-helper-500);
+        text-decoration: none;
+    }
+}

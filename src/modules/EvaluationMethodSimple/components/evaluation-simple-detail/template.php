@@ -23,7 +23,7 @@ use MapasCulturais\i;
         </div>
     </div>
     <div class="registration-results__card-content">
-        <div class="registration-results__opinion registration-results__opinion--document">
+        <div class="registration-results__opinion registration-results__opinion__document">
         <h5 class="registration-results__opinion-title bold"><?= i::__('Justificativa') ?>:</h5>
             <div class="registration-results__opinion-text">
                 

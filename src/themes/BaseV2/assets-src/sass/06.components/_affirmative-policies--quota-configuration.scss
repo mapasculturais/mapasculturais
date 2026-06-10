@@ -1,0 +1,100 @@
+@use '../01.settings/mixins' as *;
+
+.affirmative-policies--quota-configuration {
+    display: grid;
+    gap: var(--mc-space-20);
+
+    &__activate,
+    &__add-category {
+        align-items: center;
+        display: flex;
+        gap: var(--mc-space-19);
+    }
+
+    &__header {
+        border: var(--mc-space-1) solid var(--mc-gray-300);
+        border-radius: var(--mc-border-radius-xs);
+        padding: var(--mc-space-13) var(--mc-space-23);
+        display: grid;
+        gap: var(--mc-space-8);
+    }
+
+    &__header-fields {
+        display: flex;
+        gap: var(--mc-space-10);
+    }
+
+    // Estilização do card
+    &__card {
+        border: var(--mc-space-1) solid var(--mc-gray-300);
+        border-radius: var(--mc-border-radius-xs);
+    }
+
+    &__card-header {
+        align-items: center;
+        border-bottom: var(--mc-border-hairline) var(--mc-gray-300);
+        display: grid;
+        gap: var(--mc-space-9);
+        grid-template-columns: 
+            calc(60% - var(--mc-space-48)) 
+            calc(20% - var(--mc-space-48)) 
+            calc(20% - var(--mc-space-48))
+            size(110);
+            
+        padding: var(--mc-space-13) var(--mc-space-23);
+    }
+
+    &__card-header-info {
+        display: grid;
+        gap: var(--mc-space-8);
+    }
+
+    &__card-content {
+        border-bottom: var(--mc-border-hairline) var(--mc-gray-300);
+        display: grid;
+        gap: var(--mc-space-20);
+        padding: var(--mc-space-18) var(--mc-space-23);
+        max-width: size(1018);
+    }
+
+    &__card-footer {
+        padding: var(--mc-space-10) var(--mc-space-23);
+    }
+
+    // Estilização interna
+    &__quota-field {
+        border-top: var(--mc-border-hairline) var(--mc-gray-300);
+        
+        padding-top: var(--mc-space-20);
+
+        &:first-child {
+            padding-top: 0;
+            border: 0;
+        }
+
+        // NOTE-BEM: .mc-select, .field--horizontal are cross-component selectors — owned by their respective components
+        .mc-select {
+            max-width: size(870);
+        }
+        .field--horizontal {
+            flex-wrap: wrap;
+        }
+    }
+
+    &__field {
+        margin-bottom:1rem;
+    }
+
+    &__quota-field-sufix {
+        align-items: center;
+        display: grid;
+        grid-template-columns: 1fr var(--mc-space-20);
+        justify-items: center;
+    }
+
+    // NOTE-BEM: .field--horizontal is a cross-component selector at root level — owned by mc-field
+    .field--horizontal {
+        max-width: size(870);
+        flex-wrap: wrap;
+    }
+}

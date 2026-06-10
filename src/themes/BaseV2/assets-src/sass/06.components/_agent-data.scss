@@ -1,0 +1,106 @@
+@use '../01.settings/mixins' as *;
+
+.controller-agent.action-edit.Agent-2.Agent-1 {
+    .data-subtitle {
+        font-family: var(--mc-font-body);
+        font-style: normal;
+        font-weight: 600;
+        font-size: var(--mc-space-14);
+        line-height: var(--mc-space-19);
+    }
+}
+
+.controller-agent.action-edit {
+    .mc-card__title {
+        p {
+            font-family: var(--mc-font-body);
+            font-style: normal;
+            font-weight: 600;
+            font-size: var(--mc-space-14);
+            line-height: var(--mc-space-19);
+        }
+    }
+
+    .content {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: var(--mc-space-21) 0;
+        justify-items: start;
+    }
+
+    .input__label {
+        display: flex;
+        gap: var(--mc-space-8);
+        font-family: var(--mc-font-body);
+        font-style: normal;
+        font-weight: 600;
+        font-size: var(--mc-space-14);
+        line-height: var(--mc-space-19);
+
+        input[type="checkbox"] {
+            box-sizing: border-box;
+            height: var(--mc-space-16);
+            width: var(--mc-space-16);
+            border: var(--mc-space-3) solid var(--mc-black);
+            border-radius: var(--mc-space-2);
+        }
+    }
+}
+
+.agent-data {
+    display: flex;
+    flex-direction: column;
+
+    &__title,
+    &__secondTitle {
+        margin: var(--mc-space-16) 0 var(--mc-space-16) 0;
+        font-family: $font-body;
+        font-style: normal;
+        font-weight: 700;
+        font-size: var(--mc-space-18);
+        line-height: var(--mc-space-25);
+    }
+
+    &__fields {
+        column-gap: var(--mc-space-16);
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: var(--mc-space-18);
+
+        // TODO-BREAKPOINT: 1043px is not a canonical breakpoint. Consider adding to $mc-breakpoints or using nearest canonical value.
+        @media (max-width:size(1043)) {
+            display: grid;
+            grid-template-columns: 1fr;
+        }
+    }
+
+    &__fields-field {
+        margin-bottom: var(--mc-space-16);
+
+        label, .entity-data__label {
+            font-family: $font-body;
+            font-style: normal;
+            font-weight: 600;
+            font-size: var(--mc-space-14);
+            line-height: var(--mc-space-19);
+            margin-bottom: var(--mc-space-8);
+        }
+
+        @include respond-below('sm') {
+            .box {
+                margin: var(--mc-space-8) 0 var(--mc-space-28) 0;
+            }
+        }
+
+        .box {
+            margin-top: var(--mc-space-8);
+            max-width: size(300);
+            width: 100%;
+            min-height: var(--mc-space-48);
+            background: var(--mc-gray-100);
+            border-radius: var(--mc-space-4);
+            padding: var(--mc-space-16);
+            word-break: break-word;
+        }
+    }
+}

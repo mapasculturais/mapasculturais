@@ -64,7 +64,7 @@ $this->import('
                 <div class="opportunity-committee-groups__edit-group field">
                     <!-- <label v-if="groupName != '@tiebreaker'" :for="`newGroupName${index}`"><?= i::__('Título da comissão') ?></label> -->
 
-                    <div class="opportunity-committee-groups__edit-group--field">
+                    <div class="opportunity-committee-groups__edit-group__field">
                         <!-- <input v-if="groupName != '@tiebreaker'" id="newGroupName${index}`" class="input" type="text" @change="renameTab($event, index, groupName);" placeholder="<?=  i::esc_attr__('Digite o novo nome da comissão') ?>" /> -->
                         <mc-confirm-button @confirm="removeGroup(groupName)">
                             <template #button="modal">

@@ -1,0 +1,107 @@
+@use '../01.settings/mixins' as *;
+
+.notifications {
+    .notification-card {
+        border-bottom: size(0.5) solid var(--mc-gray-200);
+        border-radius: 0;
+        margin: 0;
+        padding: var(--mc-space-16);
+        margin-bottom: var(--mc-space-16);
+
+        .mc-card__title {
+            display: none;
+        }
+
+        .mc-card__content {
+            display: grid;
+            gap: 0 var(--mc-space-16);
+            grid-template-columns: var(--mc-space-32) 1fr;
+        }
+
+        .avatar, &__avatar {
+            background-color: var(--mc-gray-100);
+            border-radius: 50%;
+            display: flex;
+            height: var(--mc-space-32);
+            justify-content: center;
+            margin: 0;
+            overflow: hidden;
+            width: var(--mc-space-32);
+
+            svg {
+                font-size: var(--mc-space-16);
+            }
+
+            img {
+                width: 100%;
+            }
+        }
+
+        .content, &__content {
+
+            &__header {
+                display: flex;
+                flex-direction: column;
+                gap: var(--mc-space-4);
+
+                .title {
+                    font-size: 16px;
+                    line-height: 22px;
+                    margin: 0;
+                    word-break: break-word;
+
+                    a {
+                        color: var(--mc-low-500);
+                        display: contents;
+                        font-weight: bold;
+                        margin: 0;
+                        padding: 0;
+                        text-decoration: none;
+                    }
+                }
+
+                .subtitle {
+                    font-size: 14px;
+                    line-height: 19px;
+                    margin: 0;
+                }
+            }
+
+                &__groupButtons, &__group-buttons {
+                display: flex;
+                gap: var(--mc-space-16);
+            }
+        }
+
+        &.divider {
+            border-top: 1px solid var(--mc-low-300);
+            padding: 16px 0;
+            margin: 8px 0;
+            border-radius: 0;
+
+            &__divider:last-child {
+                border-bottom: 1px solid var(--mc-low-500);
+                margin-bottom: 0;
+            }
+
+            .mc-card__content {
+                gap: 0 var(--mc-space-12);
+            }
+        }
+    }
+
+    &.tab-component {
+        .notification-card {
+            border-radius: var(--mc-border-radius-xs);
+            border: none;
+
+            .content, .notification-card__content {
+                gap: var(--mc-space-24);
+
+                &__header {
+                    gap: var(--mc-space-8);
+                }
+            }
+        }        
+    }
+}

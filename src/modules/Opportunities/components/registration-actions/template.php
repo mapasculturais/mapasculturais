@@ -24,7 +24,7 @@ $term_url = $app->createUrl('site', 'termoAdesao');
                 <?= i::__('Corrija os campos listados antes de enviar o formulário') ?>
             </span>
 
-            <div class="registration-actions__errors-list scrollbar" :class="{'registration-actions__errors-list--hide' : hideErrors}">
+            <div class="registration-actions__errors-list scrollbar" :class="{'registration-actions__errors-list__hide' : hideErrors}">
                 <template v-for="(errors, stepIndex) in sortedValidationErrors" :key="stepIndex">
                     <div class="registration-actions__errors-step" v-if="Object.keys(errors).length > 0">
                         <div class="registration-actions__errors-step-name">{{stepName(stepIndex)}}</div>

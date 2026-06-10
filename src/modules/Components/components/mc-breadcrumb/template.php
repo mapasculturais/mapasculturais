@@ -6,7 +6,7 @@
 use MapasCulturais\i;
 ?>
 <?php $this->applyTemplateHook('breadcrumb', 'before') ?>
-<nav :class="['mc-breadcrumb', {'mc-breadcrumb__hasCover': cover}]" aria-label="<?= i::__('Breadcrumbs') ?>">
+<nav :class="['mc-breadcrumb', {'mc-breadcrumb--has-cover': cover}]" aria-label="<?= i::__('Breadcrumbs') ?>">
     <?php $this->applyTemplateHook('breadcrumb-list', 'before') ?>
     <ul>
         <?php $this->applyTemplateHook('breadcrumb-list', 'begin') ?>

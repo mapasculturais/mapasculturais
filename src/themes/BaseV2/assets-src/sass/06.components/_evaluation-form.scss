@@ -1,0 +1,22 @@
+@use '../01.settings/mixins' as *;
+
+.evaluation-form {
+    overflow-y: auto;
+    padding-right: var(--mc-space-10);
+    display: flex;
+    flex-direction: column;
+    gap: var(--mc-space-24);
+
+    // NOTE-BEM: .needs-tiebreaker is a template-generated class — rename requires PHP template update
+    .needs-tiebreaker {
+        font-size: $font-size-md;
+        padding: 5px;
+        text-align: center;
+    }
+
+    &__status {
+        align-items: center;
+        display: flex;
+        gap: var(--mc-space-12);
+    }
+}

@@ -30,14 +30,14 @@ $this->import('
         <!-- Modo Tags -->
         <template #default="{toggle}">
             <div class="entity-terms__tags">
-                <form class="entity-terms__tags--form" @submit.prevent="insertTag(toggle)">
+                <form class="entity-terms__tags-form" @submit.prevent="insertTag(toggle)">
                     <input type="text"  class="input" placeholder="<?= i::__('Adicione uma nova tag') ?>" v-model="filter">
-                    <button class="button button--primary button--icon entity-terms__tags--form-addBtn" type="submit">
+                    <button class="button button--primary button--icon entity-terms__tags-form-addBtn" type="submit">
                         <mc-icon name="add"></mc-icon>
                     </button>
                 </form>
-                <ul class="entity-terms__tags--list" v-if="filteredTerms.length > 0">
-                    <li class="entity-terms__tags--list-item" @click="addTerm(term)" v-for="term in filteredTerms">
+                <ul class="entity-terms__tags-list" v-if="filteredTerms.length > 0">
+                    <li class="entity-terms__tags-list-item" @click="addTerm(term)" v-for="term in filteredTerms">
                         <span v-html="highlightedTerm(term)"></span>
                     </li>
                 </ul>

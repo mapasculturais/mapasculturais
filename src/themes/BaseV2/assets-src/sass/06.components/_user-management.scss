@@ -1,0 +1,11 @@
+@use '../01.settings/mixins' as *;
+
+.user-management {
+  &__content {
+    &--action {
+      align-items: center;
+      display: flex;
+      gap: var(--mc-space-13);
+    }
+  }
+}

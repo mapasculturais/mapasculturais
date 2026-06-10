@@ -1,0 +1,166 @@
+@use '../01.settings/mixins' as *;
+
+// Consider extracting a reusable mc-entity-chip component.
+
+.entity-related-agents {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem 0;
+
+    & > h4 {
+        display: flex;
+        align-items: center;
+        max-width: 200px;
+        gap: var(--mc-space-8);
+
+        a {
+            display: flex;
+            align-items: center;
+        }
+
+        .iconify {
+            font-size: var(--mc-space-20);
+        }
+    }
+
+    &__group {
+        display: flex;
+        flex-direction: column;
+        margin: 0;
+        gap: var(--mc-space-10);
+    }
+
+    &__group-name {
+        align-items: center;
+        color: var(--mc-black);
+        display: flex;
+        font-family: var(--mc-font-headings);
+        font-size: var(--mc-space-16);
+        font-style: normal;
+        font-weight: 700;
+        gap: var(--mc-space-14);
+        line-height: var(--mc-space-22);
+
+        .act {
+            align-items: center;
+            display: flex;
+            height: var(--mc-space-22);
+            justify-content: space-between;
+            width: var(--mc-space-48);
+
+            a {
+                align-items: center;
+                cursor: pointer;
+                display: flex;
+                font-size: var(--mc-space-15);
+                justify-content: center;
+                padding: size(3.5);
+
+                &:hover {
+                    color: var(--mc-gray-700);
+                }
+            }
+        }
+    }
+
+    // TODO-MC-MEDIA: each .agent uses avatar+grid layout; could consume mc-media + mc-avatar--xsmall
+    &__group-agents {
+        display: flex;
+        flex-wrap: wrap;
+        gap: var(--mc-space-16);
+
+        .agent {
+            cursor: pointer;
+            display: flex;
+            height: var(--mc-space-40);
+            position: relative;
+            width: var(--mc-space-40);
+
+            &__img {
+                @include avatar-circle(var(--mc-space-40));
+
+                // Fixed: was &--img using -- for structural child.
+                // Direct img selector avoids the BEM violation entirely.
+                img {
+                    max-width: 100%;
+                }
+
+                .iconify {
+                    color: var(--mc-high-500);
+                }
+            }
+
+            &__delete {
+                align-items: center;
+                background-color: var(--mc-error);
+                border-radius: 50%;
+                color: var(--mc-white);
+                display: flex;
+                height: var(--mc-space-18);
+                position: absolute;
+                justify-content: center;
+                right: size(-5);
+                top: size(-5);
+                width: var(--mc-space-18);
+
+                .iconify {
+                    font-size: var(--mc-space-14);
+                }
+            }
+
+            &__pending {
+                position: absolute;
+                right: 0;
+                bottom: 0;
+                width: var(--mc-space-10);
+                height: var(--mc-space-10);
+                background-color: var(--mc-warning-500);
+                border-radius: var(--mc-border-radius-pill);
+            }
+        }
+    }
+
+    &__group-actions {
+        align-items: center;
+        display: flex;
+        gap: var(--mc-space-13);
+    }
+
+    &__addNew {
+        align-items: flex-start;
+        display: flex;
+        flex-direction: column;
+        gap: var(--mc-space-8);
+
+        .add-agent {
+            margin-bottom: var(--mc-space-8);
+            font-family: var(--mc-font-body);
+            font-style: normal;
+            font-weight: 600;
+            font-size: var(--mc-space-14);
+            line-height: var(--mc-space-19);
+        }
+    }
+
+    &__addNew-group {
+        input[type="text"] {
+            height: var(--mc-space-48);
+            width: size(290);
+        }
+
+        input::placeholder {
+            font-size: var(--mc-space-16);
+            padding-left: var(--mc-space-3);
+        }
+    }
+
+    &__addNew-title {
+        color: var(--mc-black);
+        font-family: var(--mc-font-headings);
+        font-size: var(--mc-space-14);
+        font-style: normal;
+        font-weight: 600;
+        line-height: var(--mc-space-19);
+        margin-bottom: var(--mc-space-8);
+    }
+}

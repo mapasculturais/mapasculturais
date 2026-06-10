@@ -32,7 +32,7 @@ $this->import('
     
     <mc-confirm-button v-if="archiveButton && entity.status != <?= Entity::STATUS_ARCHIVED ?> && hasStatus('archived') && entity.currentUserPermissions.archive"
         @confirm="archiveEntity($event)"
-        button-class="button--text archive button--icon button--sm panel__entity-actions--archive"
+        button-class="button--text archive button--icon button--sm panel__entity-actions__archive"
         message="<?php i::esc_attr_e("Você está certo que deseja arquivar esta entidade?") ?>">
             <mc-icon name="archive"></mc-icon>
             <span><?php i::_e('Arquivar') ?></span>
@@ -40,7 +40,7 @@ $this->import('
     
     <mc-confirm-button v-if="deleteButton && entity.status != <?= Entity::STATUS_TRASH ?> && hasStatus('trash') && entity.currentUserPermissions.remove"
         @confirm="deleteEntity($event)"
-        button-class="button--text delete button--icon button--sm panel__entity-actions--trash"
+        button-class="button--text delete button--icon button--sm panel__entity-actions__trash"
         message="<?php i::esc_attr_e("Você está certo que deseja excluir esta entidade?") ?>">
             <mc-icon name="trash"></mc-icon>
             <span><?php i::_e('Excluir') ?></span>
@@ -48,7 +48,7 @@ $this->import('
     
     <mc-confirm-button v-if="destroyButton && entity.status == <?= Entity::STATUS_TRASH ?> && entity.currentUserPermissions.destroy"
         @confirm="destroyEntity($event)"
-        button-class="button--text delete button--icon button--sm panel__entity-actions--trash"
+        button-class="button--text delete button--icon button--sm panel__entity-actions__trash"
         message="<?php i::esc_attr_e("Você está certo que deseja excluir definitivamente esta entidade?") ?>">
         <mc-icon name="trash"></mc-icon>
         <?php i::_e('Excluir permanentemente') ?>

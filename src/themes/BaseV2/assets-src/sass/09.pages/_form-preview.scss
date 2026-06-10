@@ -1,0 +1,21 @@
+@use '../01.settings/mixins'as *;
+
+.form-preview {
+    background-color: var(--mc-gray-100);
+
+    .container {
+        gap: var(--mc-space-32) 2.56%;
+        grid-template-columns: 74.36% 23.08%;
+    }
+
+    .opportunity-header__content {
+        padding: var(--mc-space-48) var(--mc-space-16) size(67) var(--mc-space-16);
+    }
+
+    &__content {
+        margin: 0 auto;
+        max-width: var(--mc-layout-container-xl);
+        padding: var(--mc-space-24) var(--mc-space-16) var(--mc-space-40);
+        width: 100%;
+    }
+}

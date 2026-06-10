@@ -1,0 +1,149 @@
+@use '../01.settings/mixins' as *;
+
+.technical-assessment-section {
+    // NOTE: .field__input is an external component selector scoped via nesting.
+    &__fields {
+        border-radius: var(--mc-border-radius-xs);
+        border: var(--mc-border-hairline) var(--mc-gray-300);
+        border-top: none;
+        display: grid;
+        grid-template-columns: calc(30% - var(--mc-space-64)) calc(30% - var(--mc-space-32));
+        gap: var(--mc-space-16);
+        padding: var(--mc-space-18) var(--mc-space-23);
+
+        .field__input {
+            max-width: size(150);
+        }
+
+        & label {
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        // TODO-BREAKPOINT: 630px is not a canonical breakpoint. Consider adding to $mc-breakpoints or using nearest canonical value.
+        @media (max-width: 630px) {
+            grid-template-columns: 1fr;
+        }
+    }
+    
+    & input {
+        border: var(--mc-space-1) solid var(--mc-gray-500);
+        border-radius: var(--mc-border-radius-xs);
+        padding: var(--mc-space-14);
+        font-size: var(--mc-font-size-xxs);
+    }
+
+    &__card {
+        border-radius: var(--mc-border-radius-xs);
+        border: var(--mc-border-hairline) var(--mc-gray-300);
+
+        .add-criterion,
+        .technical-assessment-section__add-criterion {
+            padding: var(--mc-space-14) var(--mc-space-23);
+        }
+    }
+
+    &__header {
+        padding: var(--mc-space-24) var(--mc-space-23);
+
+        .title,
+        .technical-assessment-section__header-title {
+            display: grid;
+            grid-template-columns: 1fr size(256);
+            gap: var(--mc-space-16);
+
+            // TODO-BREAKPOINT: 550px is not a canonical breakpoint. Consider adding to $mc-breakpoints or using nearest canonical value.
+            @media (max-width: 550px) {
+                grid-template-columns: 1fr;
+                justify-items: center;
+            }
+
+            .title__input {
+                font-size: inherit;
+                padding: 0 0 0 var(--mc-space-14);
+                margin: 0;
+                line-height: 1;
+            }
+
+            .title__buttons {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+
+                .iconify {
+                    margin-right: var(--mc-space-8);
+                }
+
+                // TODO-BREAKPOINT: 550px is not a canonical breakpoint. Consider adding to $mc-breakpoints or using nearest canonical value.
+                @media (max-width: 550px) {
+                    flex-direction: column;
+                    gap: var(--mc-space-20)
+                }
+            } 
+        }
+    }
+
+    // NOTE: .criterion/.criterion__fields/.criterion__title/.field__trash are
+    // scoped via nesting. Dual-selectors added for BEM correctness.
+    &__criterions {
+        .criterion,
+        .technical-assessment-section__criterion {
+            border-top: var(--mc-border-hairline) var(--mc-gray-300);
+            display: grid;
+            gap: var(--mc-space-20) var(--mc-space-30);
+            grid-template-columns: 1fr size(70);
+            padding: var(--mc-space-16) var(--mc-space-20);
+
+            // TODO-BREAKPOINT: 550px is not a canonical breakpoint. Consider adding to $mc-breakpoints or using nearest canonical value.
+            @media (max-width: 550px) {
+                grid-template-columns: 1fr;
+            }
+
+            &__fields {
+                display: grid;
+                gap: var(--mc-space-20) var(--mc-space-30);
+                grid-template-columns: 
+                calc(60% - var(--mc-space-20)) 
+                calc(20% - var(--mc-space-4)) 
+                calc(20% - var(--mc-space-32));
+
+                // TODO-BREAKPOINT: 1010px is not a canonical breakpoint. Consider adding to $mc-breakpoints or using nearest canonical value.
+                @media (max-width: 1010px) {
+                    grid-template-columns: 1fr;
+                }
+
+                // TODO-BREAKPOINT: 450px is not a canonical breakpoint. Consider adding to $mc-breakpoints or using nearest canonical value.
+                @media (max-width: 450px) {
+                    grid-template-columns: size(175);
+                }
+            }
+
+            &__title {
+                grid-template-columns: 
+                calc(60% - size(80))
+                calc(20% - var(--mc-space-24))
+                calc(20% - size(56));
+                padding: var(--mc-space-18) var(--mc-space-23);
+
+                // TODO-BREAKPOINT: 550px is not a canonical breakpoint. Consider adding to $mc-breakpoints or using nearest canonical value.
+                @media (max-width: 550px) {
+                    grid-template-columns: 1fr;
+                }
+            }
+
+            .field__trash {
+                // TODO-BREAKPOINT: 550px is not a canonical breakpoint. Consider adding to $mc-breakpoints or using nearest canonical value.
+                @media (max-width: 550px) {
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                }
+            }
+        }
+    }
+
+    &__footer {
+        padding: var(--mc-space-18) 0;
+    }
+    
+}

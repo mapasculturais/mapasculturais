@@ -1,0 +1,20 @@
+@use '../01.settings/mixins' as *;
+
+// Debug component — hardcoded colors are intentional for visibility during development
+.mc-debug {
+    font-size: 11px;
+    font-family: monospace;
+    color: var(--mc-white);
+    padding: 3px;
+    display: inline-block;
+
+    &--template-hook {
+        background-color: var(--mc-black);
+    }
+    &--component-hook {
+        background-color: saddlebrown;
+    }
+    &--component {
+        background-color: darkgreen;
+    }
+}

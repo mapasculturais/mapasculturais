@@ -14,7 +14,7 @@ $this->import('
 ?>
 <div class="tabs-component">
     <div class="tabs-component__header">
-        <div class="tabs-component__header--left">
+        <div class="tabs-component__header-left">
             <slot name="before-tablist"></slot>
             <mc-tabs-header class="tabs-component__buttons" role="tablist" :list="draggable" :tabs="tabs" @sort="reorderTabs">
                 <li v-for="tab in tabs" :key="tab.slug"
@@ -37,7 +37,7 @@ $this->import('
             </mc-tabs-header>
         </div>
 
-        <div class="tabs-component__header--right">
+        <div class="tabs-component__header-right">
             <slot name="after-tablist"></slot>
         </div>
     </div>

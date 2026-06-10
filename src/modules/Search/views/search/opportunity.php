@@ -30,12 +30,12 @@ $this->breadcrumb = [
     <template #default="{pseudoQuery, entity}">
         <mc-tabs class="search__tabs" sync-hash>
             <template #before-tablist>
-                <label class="search__tabs--before">
+                <label class="search__tabs__before">
                     <?= i::_e('Visualizar como:') ?>
                 </label>
             </template>
             <mc-tab icon="list" label="<?php i::esc_attr_e('Lista') ?>" slug="list">
-                <div class="search__tabs--list">
+                <div class="search__tabs__list">
                     <search-list :pseudo-query="pseudoQuery" type="opportunity" select="name,type,shortDescription,files.avatar,seals,terms,registrationFrom,registrationTo,hasEndDate,isContinuousFlow">
                         <template #filter>
                             <search-filter-opportunity :pseudo-query="pseudoQuery"></search-filter-opportunity>

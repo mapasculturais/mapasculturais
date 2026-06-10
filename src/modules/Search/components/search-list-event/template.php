@@ -13,7 +13,7 @@ $this->import('
 ?>
 <div class="grid-12 search-list">
     <div class="col-3 search-list__filter">
-        <div class="search-list__filter--filter">
+        <div class="search-list__filter__filter">
             <search-filter-event :pseudo-query="pseudoQuery"></search-filter-event>
         </div>
     </div>
@@ -21,8 +21,8 @@ $this->import('
     <div v-if="!loading || page > 1" class="col-9 search-list__cards">
         <div class="grid-12">
             <div v-for="occurrence in occurrences" :key="occurrence._reccurrence_string" class="col-12">
-                <div v-if="newDate(occurrence)" class="search-list__cards--date">
-                    <div class="search-list__cards--date-info">
+                <div v-if="newDate(occurrence)" class="search-list__cards__date">
+                    <div class="search-list__cards__date-info">
                         <h2 v-if="occurrence.starts.isToday()" class="actual-date"><?= i::__('Hoje') ?><label class="month"><?= i::__('{{occurrence.starts.month()}}')?></label></h2>
                         <h2 v-else-if="occurrence.starts.isTomorrow()" class="actual-date"><?= i::__('Amanhã') ?><label class="month"><?= i::__('{{occurrence.starts.month()}}')?></label></h2>
                         <h2 v-else-if="occurrence.starts.isYesterday()" class="actual-date"><?= i::__('Ontem') ?><label class="month"><?= i::__('{{occurrence.starts.month()}}')?></label></h2>
@@ -31,7 +31,7 @@ $this->import('
                         </template>
                         <label class="weekend">{{occurrence.starts.weekday()}}</label>
                     </div>
-                    <div class="search-list__cards--date-line"></div>
+                    <div class="search-list__cards__date-line"></div>
                 </div>
                 <occurrence-card :occurrence="occurrence" ></occurrence-card>
             </div>

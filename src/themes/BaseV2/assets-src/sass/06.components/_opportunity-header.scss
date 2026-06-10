@@ -1,0 +1,204 @@
+@use '../01.settings/mixins' as *;
+
+.opportunity-header {
+    background-color: var(--mc-white);
+    margin: 0 auto;
+    position: relative;
+    width: 100%;
+
+    &__content {
+        align-items: center;
+        display: flex;
+        justify-content: space-between;
+        margin: 0 auto;
+        max-width: var(--mc-layout-container-xl);
+        padding: size(83) var(--mc-space-16) size(76);
+        position: relative;
+
+        // TODO-BREAKPOINT: 500px is not a canonical breakpoint. Consider adding to $mc-breakpoints or using nearest canonical value.
+        @include respond-below('mob') {
+            display: flex;
+            flex-direction: row;
+            align-items: flex-start;
+
+            .right,
+            .opportunity-header__right {
+                display: none;
+            }
+        }
+
+        .left,
+        .opportunity-header__left {
+            align-items: start;
+            display: grid;
+            gap: var(--mc-space-18);
+            grid-template-columns: size(72) 1fr;
+
+            .image,
+            .opportunity-header__image {
+                align-items: center;
+                background-color: var(--mc-gray-500);
+                border-radius: 50%;
+                display: flex;
+                height: size(72);
+                justify-content: center;
+                overflow: hidden;
+                width: size(72);
+
+                .iconify {
+                    color: var(--mc-white);
+                    font-size: var(--mc-space-40);
+                }
+
+                img {
+                    width: 100%;
+                }
+            }
+
+            // TODO-BREAKPOINT: 500px is not a canonical breakpoint. Consider adding to $mc-breakpoints or using nearest canonical value.
+            @include respond-below('mob') {
+                grid-template-columns: var(--mc-space-40) 1fr;
+
+                .image {
+                    height: var(--mc-space-40);
+                    width: var(--mc-space-40);
+
+                    .iconify {
+                        color: var(--mc-white);
+                        font-size: var(--mc-space-20);
+                    }
+
+                    img {
+                        width: 100%;
+                    }
+                }
+            }
+
+            .title,
+            .opportunity-header__title {
+                display: flex;
+                flex-direction: column;
+                gap: var(--mc-space-6);
+
+                &__title {
+                    font-size: var(--mc-space-32);
+                    font-weight: 700;
+                    line-height: var(--mc-space-48);
+
+                    a {
+                        text-decoration: none;
+                        color: var(--mc-low-500);
+                    }
+
+                    // TODO-BREAKPOINT: 500px is not a canonical breakpoint. Consider adding to $mc-breakpoints or using nearest canonical value.
+                    @include respond-below('mob') {
+                        font-weight: 700;
+                        font-size: var(--mc-space-18);
+                        line-height: var(--mc-space-25);
+                    }
+                }
+
+                &__info {
+                    display: flex;
+                    flex-wrap: wrap;
+                    gap: var(--mc-space-8) size(50);
+
+                    // TODO-BREAKPOINT: 500px is not a canonical breakpoint. Consider adding to $mc-breakpoints or using nearest canonical value.
+                    @include respond-below('mob') {
+                        display: none;
+                    }
+
+                    .data,
+                    .opportunity-header__data {
+                        display: flex;
+                        font-size: var(--mc-space-14);
+                        gap: var(--mc-space-5);
+                        line-height: var(--mc-space-19);
+                        font-family: var(--mc-font-body);
+                        align-items: baseline;
+
+                        &__title {
+
+                            font-style: normal;
+                            font-weight: 600;
+                            color: var(--mc-gray-700);
+                            font-size: var(--mc-space-14);
+                            line-height: var(--mc-space-19);
+                            text-transform: uppercase;
+
+                        }
+
+                        &__info {
+
+                            text-transform: uppercase;
+                            font-weight: 700;
+                            align-items: center;
+                            font-size: var(--mc-space-14);
+
+                            a {
+                                font-size: var(--mc-space-14);
+                                text-decoration: none;
+                            }
+                        }
+                    }
+                }
+
+                @include respond-below('xs') {
+                    &__info {
+                        flex-direction: column;
+                        font-family: var(--mc-font-body);
+                        font-style: normal;
+                        font-weight: 600;
+                        font-size: var(--mc-space-14);
+                        line-height: var(--mc-space-19);
+                        text-transform: uppercase;
+
+                        a {
+                            font-size: var(--mc-space-14);
+                        }
+
+                    }
+                }
+            }
+        }
+    }
+
+    @include respond-below('md') {
+        &__content {
+            grid-template-columns: var(--mc-space-40) 1fr;
+            padding: var(--mc-space-48) var(--mc-space-16) var(--mc-space-16);
+
+            .image {
+                height: var(--mc-space-40);
+                width: var(--mc-space-40);
+
+                .iconify {
+                    font-size: var(--mc-space-19);
+                }
+            }
+
+            .title {
+                &__title {
+                    font-size: var(--mc-space-18);
+                    line-height: var(--mc-space-25);
+                }
+
+                &__info {
+                    flex-direction: column;
+                    gap: var(--mc-space-8) var(--mc-space-20);
+                    text-transform: uppercase;
+
+                    .data {
+                        font-size: var(--mc-space-10);
+                        line-height: var(--mc-space-14);
+
+                        &__info {
+                            font-size: var(--mc-space-12);
+                            line-height: var(--mc-space-14);
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

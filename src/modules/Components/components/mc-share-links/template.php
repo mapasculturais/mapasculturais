@@ -8,36 +8,36 @@
 
     <h4 class="mc-share-links--title bold"> {{title}} </h4>
 
-    <div class="mc-share-links--links">
-        <a  class="fa fa-twitter" 
+    <div class="mc-share-links__links">
+        <a  class="mc-share-links__link fa fa-twitter" 
             title="Share on Tweet" target="_blank" 
             @click="click('twitter')">
         
             <mc-icon name="twitter"></mc-icon>
         </a>   
         
-        <a  class="fa fa-facebook" 
+        <a  class="mc-share-links__link fa fa-facebook" 
             title="Share on Facebook" target="_blank" 
             @click="click('facebook')">
 
             <mc-icon name="facebook"></mc-icon>
         </a>
 
-        <a  class="fa fa-whatsapp hide-mobile" 
+        <a  class="mc-share-links__link fa fa-whatsapp hide-mobile" 
             title="Share on WhatsApp" target="_blank"
             @click="click('whatsapp')">
         
             <mc-icon name="whatsapp"></mc-icon>
         </a>
 
-        <a  class="fa fa-whatsapp hide-desktop" 
+        <a  class="mc-share-links__link fa fa-whatsapp hide-desktop" 
             title="Share on WhatsApp" target="_blank"
             @click="click('whatsapp-mobile')">
         
             <mc-icon name="whatsapp"></mc-icon>
         </a>        
 
-        <a  class="fa fa-telegram" 
+        <a  class="mc-share-links__link fa fa-telegram" 
             title="Share on Telegram" target="_blank"
             @click="click('telegram')">
 

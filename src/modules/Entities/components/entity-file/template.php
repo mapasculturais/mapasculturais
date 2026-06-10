@@ -48,7 +48,7 @@ $this->import('
                 <span v-else> <? i::_e('Sem descrição') ?> </span>
             </a>
 
-            <a v-if="downloadOnly" class="entity-file__link entity-file__link--download bold" :download="file.name" :href="file.url">
+            <a v-if="downloadOnly" class="entity-file__link entity-file__link__download bold" :download="file.name" :href="file.url">
                 <span v-if="file.name">{{file.name}}</span>
                 <span v-else> <? i::_e('Sem descrição') ?> </span>
                 <mc-icon name="download"></mc-icon>
@@ -101,7 +101,7 @@ $this->import('
 
         <template v-if="!loading" #button="modal">
             <slot name="button" :open="modal.open" :close="modal.close" :toggle="modal.toggle" :file="file">
-                <a v-if="defaultFile" class="entity-file__link entity-file__link--download bold" :download="defaultFile.name" :href="defaultFile.url">
+                <a v-if="defaultFile" class="entity-file__link entity-file__link__download bold" :download="defaultFile.name" :href="defaultFile.url">
                     <mc-icon name="download"></mc-icon> <?php i::_e("Baixar modelo") ?>
                 </a>
                 <a v-if="!file" @click="modal.open()" class="button button--primary button--icon button--primary-outline button-up">

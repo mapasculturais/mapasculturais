@@ -1,0 +1,125 @@
+@use '../01.settings/mixins'as *;
+
+// Estilização alternativa para o home-header
+
+.home-header {
+    // TODO: Replace rgba(0,0,0,0.5) with overlay token when available
+    background: rgba(0, 0, 0, 0.5);
+    position: relative;
+
+    &__content {
+        position: relative;
+        padding: var(--mc-space-30) var(--mc-space-25);
+        display: flex;
+        justify-content: center;
+        gap: var(--mc-space-32) size(62);
+        align-items: center;
+        min-height: size(510);
+        
+        &::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--mc-home-header-gradient);
+            z-index: 2;
+        }
+    }
+
+    &__main {
+        display: flex;
+        justify-content: center;
+        position: relative;
+        z-index: 2;
+        max-width: size(500);
+        color: var(--mc-high-500);
+        flex-direction: column;
+        gap: var(--mc-space-32);
+    }
+
+    &__title {
+        display: flex;
+        font-weight: 700;
+        font-size: var(--mc-font-size-lg);
+        line-height: normal;
+        max-width: size(460);
+    }
+
+    &__description {
+        font-weight: 400;
+        font-size: var(--mc-font-size-sm);
+        line-height: normal;
+        margin: 0;
+        text-shadow: .1rem .1rem .1rem var(--mc-low-500);
+    }
+
+    &__banners {
+        z-index: 2;
+        display: grid;
+        gap: var(--mc-space-16);
+    
+    }
+
+    &__banner {
+        max-width: size(570);
+        display: flex;
+
+        a {
+            display: flex;
+        }
+
+        img {
+            width: 100%;
+            min-height: 100%;
+            border-radius: var(--mc-border-radius-sm);
+        }
+    }
+
+    &__background {
+        position: absolute;
+        top: 0;
+        left: 0;
+        height: 100%;
+        overflow: hidden;
+        width: 100%;
+        display: flex;
+        justify-content: center;
+
+        .img {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            min-width: var(--mc-layout-page-max);
+
+            &>img {
+                width: 100%;
+                min-height: 100%;
+
+                // TODO-BREAKPOINT: 500px is not a canonical breakpoint. Consider adding to $mc-breakpoints or using nearest canonical value.
+                @include respond-below('mob') {
+                    width: auto;
+                    height: 100%;
+                }
+            }
+        }
+    }
+
+    &--withBanner & {
+        &__content {
+            @include respond-below('xl') {
+                flex-direction: column;
+                height: auto;
+                min-height: size(570);
+            }
+        }
+
+        &__main {
+            @include respond-below('xl') {
+                gap: var(--mc-space-16);
+            }
+        }
+    }
+}

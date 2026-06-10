@@ -1,0 +1,63 @@
+@use '../01.settings/mixins' as *;
+
+.space-info {
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+    
+    &__label {
+        font-weight: 700;
+        font-size: var(--mc-space-18);
+        line-height: var(--mc-space-25);
+    }
+
+    &__hour,
+    &__location,
+    &__accessibility,
+    &__infos {
+        display: flex;
+        flex-direction: column;
+        gap: var(--mc-space-8);
+    }
+
+    &__infos {
+        &--capacidade,
+        &--telefone,
+        &--email {
+            span {
+                font-weight: 600;
+            }
+        }
+    }
+
+    &__location {
+        .entity-location__title {
+            display: none;
+        }
+    }
+
+    &__hour{
+        &--content {
+            align-items: center;
+            background-color: var(--mc-gray-100);
+            display: flex;
+            font-weight: 700;
+            font-size: 24px;
+            height: var(--mc-space-64);
+            line-height: 28px;
+            padding: var(--mc-space-13) var(--mc-space-23);
+            width: 100%;
+            color: var(--mc-gray-700);
+
+            // TODO-BREAKPOINT: 500px is not a canonical breakpoint. Consider adding to $mc-breakpoints or using nearest canonical value.
+            @include respond-below('mob'){
+                font-size: $font-size-xxxs;
+                height: auto;
+                padding-left: var(--mc-space-16);
+                padding-right: var(--mc-space-16);
+            }
+        }
+    }
+
+
+}

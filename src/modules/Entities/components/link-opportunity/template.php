@@ -64,7 +64,7 @@ $this->import('
                                             <span><?php i::_e('Projeto') ?> </span>
                                         </a>
 
-                                        <a :class="{'disabled': entityTypeSelected!='project'}" class="selectButton"><?php i::_e('Selecionar') ?> </a>
+                                        <a :class="{'disabled': entityTypeSelected!='project'}" class="create-modal__select-button"><?php i::_e('Selecionar') ?> </a>
                                     </label>
 
                                 </a>
@@ -85,7 +85,7 @@ $this->import('
                                             <span><?php i::_e('Evento') ?> </span>
                                         </span>
 
-                                        <a :class="{'disabled': entityTypeSelected!='event'}" class="selectButton"><?php i::_e('Selecionar') ?> </a>
+                                        <a :class="{'disabled': entityTypeSelected!='event'}" class="create-modal__select-button"><?php i::_e('Selecionar') ?> </a>
                                     </label>
 
                                 </a>
@@ -107,7 +107,7 @@ $this->import('
                                             <span><?php i::_e('Espaço') ?> </span>
                                         </span>
 
-                                        <a :class="{'disabled': entityTypeSelected!='space'}" class="selectButton"><?php i::_e('Selecionar') ?> </a>
+                                        <a :class="{'disabled': entityTypeSelected!='space'}" class="create-modal__select-button"><?php i::_e('Selecionar') ?> </a>
                                     </label>
 
                                 </a>
@@ -128,7 +128,7 @@ $this->import('
                                             <input v-model="entityTypeSelected" type="radio" id="inputAgent" name="inputName" value="agent" @click="toggle()" />
                                             <span><?php i::_e('Agente') ?> </span>
                                         </span>
-                                        <a :class="{'disabled': entityTypeSelected!='agent'}" class="selectButton"><?php i::_e('Selecionar') ?> </a>
+                                        <a :class="{'disabled': entityTypeSelected!='agent'}" class="create-modal__select-button"><?php i::_e('Selecionar') ?> </a>
                                     </label>
                                 </a>
                             </template>

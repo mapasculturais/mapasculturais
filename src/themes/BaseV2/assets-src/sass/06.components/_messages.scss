@@ -1,0 +1,73 @@
+@use '../01.settings/mixins' as *;
+
+.messages {
+    position: sticky;
+    top: var(--mc-space-20);
+    width: 100%;
+    z-index: 10000;
+    
+    &__content {
+        align-items: center;
+        border-left-style: initial;
+        display: flex;
+        flex-direction: column;
+        gap: var(--mc-space-8);
+        margin: auto;
+        position: absolute;
+        top: var(--mc-space-20);
+        width: 100%;
+        z-index: 100;
+    
+        &--message {
+            align-items: center;
+            box-shadow: 0 var(--mc-space-4) var(--mc-space-4) rgba(0, 0, 0, 0.25);
+            border-radius: var(--mc-border-radius-sm);
+            display: flex;
+            justify-content: space-between;
+            padding: var(--mc-space-15);
+            width: size(478);
+    
+            // TODO-BREAKPOINT: 480px is not a canonical breakpoint. Consider adding to $mc-breakpoints or using nearest canonical value.
+            @media (max-width: size(480)) {
+                display: flex;
+                max-width: 80%;
+                position: sticky;
+                position: -webkit-sticky;
+                z-index: 100;
+            }
+    
+            &-close {
+                color: var(--mc-white);
+                cursor: pointer;
+                font-size: var(--mc-space-20);
+                height: var(--mc-space-20);
+                width: var(--mc-space-20);
+            }
+            
+            &-text {
+                color: var(--mc-white);
+                margin-left: var(--mc-space-10);
+                padding-left: var(--mc-space-28);
+            }
+    
+            &.success {
+                background: url('https://api.iconify.design/fa-regular/check-circle.svg?color=white')  no-repeat 16px center / contain;
+                background-color: var(--mc-success-500);
+                background-size: var(--mc-space-20);
+            }
+            
+            &.warning {
+                background: url('https://api.iconify.design/fa6-solid/circle-exclamation.svg?color=white')   no-repeat 16px center / contain;
+                background-color: var(--mc-warning-500);
+                background-size: var(--mc-space-20);
+            }
+            
+            &.error {
+                background: url('https://api.iconify.design/fa6-solid/circle-exclamation.svg?color=white')   no-repeat 16px center / contain;
+                background-color: var(--mc-danger-500);
+                background-size: var(--mc-space-20);
+            }
+        }
+    }
+
+}

@@ -1,0 +1,68 @@
+@use '../01.settings/mixins' as *;
+
+.evaluation-card {
+    align-items: flex-end;
+    background-color: var(--mc-white);
+    border-radius: var(--mc-border-radius-xs);
+    display: flex;
+    flex-direction: column;
+    gap: var(--mc-space-16);
+    padding: var(--mc-space-16) var(--mc-space-24) var(--mc-space-24);
+
+    &__content {
+        display: grid;
+        gap: var(--mc-space-16);
+        grid-template-columns: size(72) 1fr;
+        width: 100%;
+
+        @include respond-below('sm') {
+            gap: var(--mc-space-13);
+            grid-template-columns: var(--mc-space-48) 1fr;
+        }
+    }
+
+    &__group {
+        align-items: flex-start;
+        display: flex;
+        flex-direction: column;
+        gap: var(--mc-space-6);
+        text-align: left;
+    }
+
+    &__title {
+        @include respond-below('sm') {
+            min-height: size(50);
+        }
+    }
+
+    &__infos {
+        border-radius: var(--mc-border-radius-xs);
+        border: var(--mc-border-hairline) var(--mc-gray-300);
+        display: grid;
+        gap: var(--mc-space-16);
+        grid-column-end: 3;
+        grid-column-start: 2;
+        grid-row-end: 3;
+        grid-row-start: 2;
+        padding: var(--mc-space-16);
+        width: 100%;
+
+        @include respond-below('sm') {
+            margin-left: size(-63);
+        }
+    }
+
+    &__info {
+        display: flex;
+        flex-wrap: wrap;
+        gap: var(--mc-space-16) var(--mc-space-40);
+    }
+
+    &__button {
+        min-width: size(272);
+
+        @include respond-below('sm') {
+            min-width: 100%;
+        }
+    }
+}

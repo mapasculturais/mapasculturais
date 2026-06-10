@@ -1,0 +1,43 @@
+@use '../01.settings/mixins' as *;
+
+.mc-tag-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--mc-space-8);
+    margin: 0;
+
+    &__tagList {
+        margin: 0;
+        display: flex;
+        gap: var(--mc-space-10);
+        padding: 0;
+        flex-wrap: wrap;
+
+        & > li {
+            list-style: none;
+        }
+    }
+
+    // @consumer: tag — Individual tag pill; consider consuming the `tag` Object
+    // from 02.tools when available for consistent pill/badge styling.
+    &__tag {
+        align-items: center;
+        border-radius: var(--mc-border-radius-pill);
+        display: grid;
+        font-size: var(--mc-space-13);
+        grid-template-columns: 1fr;
+        font-weight: 600;
+        gap: var(--mc-space-10);
+        justify-content: space-between;
+        line-height: var(--mc-space-13);
+        min-height: var(--mc-space-32);
+        padding: var(--mc-space-7) var(--mc-space-14);
+        position: relative;
+        text-align: center;
+        word-break: break-word;
+
+        &--editable {
+            grid-template-columns: 1fr var(--mc-space-16);
+        }
+    }
+}

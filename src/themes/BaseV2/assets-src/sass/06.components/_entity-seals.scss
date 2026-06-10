@@ -1,0 +1,243 @@
+@use '../01.settings/mixins' as *;
+
+.entity-seals {
+    margin: 0;
+
+    &__title {
+        margin: 0 0 var(--mc-space-10) 0;
+    }
+
+    &__seals {
+        display: flex;
+        gap: var(--mc-space-20);
+        flex-wrap: wrap;
+    }
+
+    &__seal {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+
+        .seal-label {
+            font-weight: 700;
+            font-size: var(--mc-space-14);
+            line-height: var(--mc-space-19);
+        }
+
+        .seal-icon {
+            align-items: center;
+            background: var(--mc-gray-300);
+            border-radius: var(--mc-border-radius-xs);
+            cursor: pointer;
+            display: flex;
+            height: var(--mc-space-48);
+            justify-content: center;
+            position: relative;
+            width: var(--mc-space-48);
+
+            .link {
+                text-decoration: none;
+                color: inherit;
+
+                .iconify {
+                    font-size: var(--mc-space-28);
+                }
+            }
+
+            .image {
+                align-items: center;
+                border-radius: var(--mc-border-radius-xs);
+                display: flex;
+                height: 100%;
+                justify-content: center;
+                overflow: hidden;
+                width: 100%;
+
+                img {
+                    max-height: 100%;
+                    height: var(--mc-space-48);
+                    width: var(--mc-space-48);
+                }
+            }
+
+            .icon {
+                align-items: center;
+                background-color: var(--mc-danger-500);
+                border-radius: 50%;
+                color: var(--mc-white);
+                cursor: pointer;
+                display: flex;
+                font-size: var(--mc-space-13);
+                height: var(--mc-space-16);
+                justify-content: center;
+                position: absolute;
+                top: size(-8);
+                right: size(-8);
+                width: var(--mc-space-16);
+            }
+        }
+    }
+
+    &__add-seal {
+        align-items: center;
+        border: var(--mc-space-1) solid;
+        border-radius: var(--mc-border-radius-xs);
+        display: flex;
+        height: var(--mc-space-48);
+        justify-content: center;
+        position: relative;
+        width: var(--mc-space-48);
+        cursor: pointer;
+    }
+
+    &__add-seal-list {
+        margin: 0;
+        list-style: none;
+        padding: 0;
+        display: flex;
+        gap: var(--mc-space-8);
+        width: size(272);
+        flex-wrap: wrap;
+    }
+
+    &__card {
+        margin-top: var(--mc-space-16);
+        padding-right: var(--mc-space-16);
+        margin-right: var(--mc-space-18);
+        height: 100%;
+    }
+
+    &__card-header {
+        margin-bottom: var(--mc-space-16);
+    }
+
+    &__card-header-title {
+        font-weight: 700;
+        font-size: var(--mc-space-18);
+        line-height: var(--mc-space-25);
+    }
+
+    &__card-content {
+        height: size(158);
+        width: size(700);
+        max-width: 100%;
+        display: flex;
+        flex-direction: column;
+        border: var(--mc-space-1) solid var(--mc-gray-500);
+        border-radius: var(--mc-border-radius-xs);
+        padding: var(--mc-space-8) var(--mc-space-16) var(--mc-space-8) var(--mc-space-16);
+    }
+
+    &__history-title {
+        font-weight: 700;
+        font-size: var(--mc-space-12);
+        line-height: var(--mc-space-16);
+        color: var(--mc-low-500);
+    }
+
+    &__history-link {
+        font-weight: 700;
+        font-size: var(--mc-space-16);
+        line-height: var(--mc-space-20);
+        color: var(--mc-helper-500);
+        text-decoration: none;
+    }
+
+    &__validity {
+        display: grid;
+        gap: var(--mc-space-8);
+    }
+
+    &__validity-label {
+        color: var(--mc-black);
+        font-weight: 700;
+        font-size: var(--mc-space-24);
+        line-height: var(--mc-space-28);
+    }
+
+    &__validity-content {
+        background: var(--mc-gray-200);
+        border-radius: var(--mc-space-4);
+        padding: var(--mc-space-10);
+    }
+}
+
+// Estilos para as entidades que possuem o selo
+.seal-entity-card {
+    background: var(--mc-white);
+    border: 1px solid var(--mc-gray-300);
+    border-radius: var(--mc-border-radius-sm);
+    padding: var(--mc-space-16);
+    text-align: center;
+    transition: box-shadow 0.2s ease;
+    margin-bottom: var(--mc-space-16);
+
+    &:hover {
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+
+    a {
+        text-decoration: none;
+        color: inherit;
+        display: block;
+    }
+
+    h4 {
+        font-size: var(--mc-space-16);
+        font-weight: 700;
+        margin: var(--mc-space-8) 0 var(--mc-space-4) 0;
+        color: var(--mc-primary-500);
+    }
+
+    p {
+        font-size: var(--mc-space-14);
+        color: var(--mc-gray-700);
+        margin: 0;
+        line-height: 1.4;
+    }
+}
+
+// Estilos específicos para entity-cards portrait na seção de selos
+.seal-entities-tabs {
+    .entity-card.portrait {
+        background: var(--mc-gray-100);
+        border: 1px solid var(--mc-gray-200);
+        border-radius: 8px;
+        transition: all 0.2s ease;
+        margin-bottom: var(--mc-space-16);
+
+        &:hover {
+            background: var(--mc-white);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            transform: translateY(-2px);
+        }
+    }
+
+    .entity-card {
+        background: var(--mc-gray-100);
+        border: 1px solid var(--mc-gray-200);
+        border-radius: 8px;
+        margin-bottom: var(--mc-space-16);
+        
+        &:hover {
+            background: var(--mc-white);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+    }
+}
+
+.seal-entities-tabs {
+    margin-top: var(--mc-space-24);
+    
+    h3 {
+        margin: var(--mc-space-24) 0 var(--mc-space-20) 0;
+        padding-top: var(--mc-space-8);
+        color: var(--mc-primary-500);
+        font-size: var(--mc-space-20);
+        font-weight: 600;
+    }
+
+    .mc-tab-content {
+        padding-top: 0;
+    }
+}

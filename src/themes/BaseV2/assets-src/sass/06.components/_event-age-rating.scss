@@ -1,0 +1,17 @@
+@use '../01.settings/mixins' as *;
+
+.age-rating {
+    display: flex;
+    flex-direction: column;
+    gap: var(--mc-space-12);
+
+    &__title {
+        font-weight: var(--mc-font-bold);
+    }
+
+    &__content {
+        background-color: var(--mc-gray-100);
+        border-radius: var(--mc-border-radius-xs);
+        padding: var(--mc-space-19) var(--mc-space-13);
+    }
+}

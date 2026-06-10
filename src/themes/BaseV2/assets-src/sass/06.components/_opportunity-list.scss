@@ -1,0 +1,77 @@
+@use '../01.settings/mixins' as *;
+
+.opportunity-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--mc-space-8);
+    padding-bottom: var(--mc-space-40);
+
+    &__content {
+        border-radius: var(--mc-border-radius-xs);
+        background-color: var(--mc-gray-100);
+    }
+
+    &__card {
+        max-width: size(838);
+        width: 100%;
+        background-color: var(--mc-white);
+        list-style-type: none;
+        padding: var(--mc-space-16);
+        border-radius: var(--mc-border-radius-xs);
+        display: flex;
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    &__registration {
+        font-size: var(--mc-font-size-xxs);
+    }
+
+    &__container {
+        background-color: var(--mc-gray-100);
+        max-width: size(870);
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        gap: var(--mc-space-16);
+
+        &:first-child {
+            padding: var(--mc-space-16);
+
+        }
+        padding: 0 var(--mc-space-16) var(--mc-space-16);
+    }
+
+    &__list {
+        list-style: none;
+        display: contents;
+    }
+
+    &__cardlink {
+        width: 100%;
+        display: flex;
+        justify-content: flex-end;
+    }
+
+
+    &__cardheader {
+        display: grid;
+        grid-template-columns: var(--mc-space-64) 1fr;
+        align-items: center;
+    }
+
+    &__link {
+        text-decoration: none;
+        display: flex;
+        align-items: flex-start;
+        gap: var(--mc-space-10);
+        font-size: var(--mc-font-size-xs);
+
+    }
+
+    &__icon {
+
+        font-size: var(--mc-space-24);
+    }
+
+}

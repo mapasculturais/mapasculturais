@@ -37,5 +37,5 @@ $this->import('
         </div>
         <?php $this->applyTemplateHook('search-filter-agent', 'end') ?>
     </form>
-    <a class="clear-filter" @click="clearFilters()"><?php i::_e('Limpar todos os filtros') ?></a>
+    <a class="search-filter__clear-filter" @click="clearFilters()"><?php i::_e('Limpar todos os filtros') ?></a>
 </search-filter>

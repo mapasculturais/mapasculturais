@@ -19,7 +19,7 @@ $this->import('
             <h4 class="bold">{{ section.sectionName }}</h4>
         </legend>
 
-        <div :class="['home-customizer__group', {'home-customizer__group--hasImg' : section.image}]" ref="homeTextsContent">
+        <div :class="['home-customizer__group', {'home-customizer__group__hasImg' : section.image}]" ref="homeTextsContent">
             <div class="home-customizer__texts">
                 <div class="field" v-for="(text, textIndex) in section.texts" :key="textIndex">
                     <label :for="text.slug">{{ text.description }}</label>
@@ -34,7 +34,7 @@ $this->import('
                     <template #default="modal">
                         <div class="home-customizer__uploader-wrapper">
                             <div class="home-customizer__uploader-content">
-                                <img v-if="subsite.files[section.image.group]" :src="subsite.files[section.image.group]?.url" class="select-profileImg__img--img" />
+                                <img v-if="subsite.files[section.image.group]" :src="subsite.files[section.image.group]?.url" class="select-profileImg__img__img" />
                                 <mc-icon v-if="!subsite.files[section.image.group]" name="image"></mc-icon>
                             </div>
                         </div>

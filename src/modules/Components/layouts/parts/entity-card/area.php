@@ -7,7 +7,7 @@
 use \MapasCulturais\i;
 ?>
 
-<div v-if="areas" class="entity-card__content--terms-area">
+<div v-if="areas" class="entity-card__content__terms-area">
     <label v-if="entity.__objectType === 'opportunity'" class="area__title">
         <?php i::_e('Áreas de interesse:') ?> ({{entity.terms.area.length}}):
     </label>

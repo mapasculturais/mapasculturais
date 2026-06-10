@@ -1,0 +1,108 @@
+@use '../01.settings/mixins' as *;
+
+.geo-quota {
+    &__active {
+        align-items: center;
+        display: flex;
+        gap: var(--mc-space-19);
+    }
+
+    &__card {
+        border-radius: var(--mc-border-radius-xs);
+        border: var(--mc-space-1) solid var(--mc-gray-300);
+    }
+
+    &__header {
+        display: flex;
+        flex-direction: column;
+        gap: var(--mc-space-10);
+        padding: var(--mc-space-20) var(--mc-space-20) var(--mc-space-8);
+    }
+
+    &__title {
+        align-items: flex-start;
+        display: flex;
+        justify-content: space-between;
+    }
+
+    &__options {
+        align-items: flex-end;
+        display: flex;
+        gap: var(--mc-space-10) var(--mc-space-48);
+        justify-content: space-between;
+
+        @include respond-below('md') {
+            flex-wrap: wrap;
+        }
+    }
+
+    &__field {
+        max-width: size(450);
+    }
+
+    &__description {
+        color: var(--mc-gray-700);
+        font-size: var(--mc-font-size-xxs);
+        padding: 0 var(--mc-space-10);
+
+        @include respond-above('md') {
+            max-width: size(438);
+        }
+    }
+
+    &__table {
+        & > thead > tr,
+        & > tbody > tr {
+            & > th,
+            & > td {
+                border-bottom: var(--mc-space-1) solid var(--mc-gray-300);
+                
+                &:first-child {
+                    padding: 0 var(--mc-space-24);
+                    width: 60%;
+                    @include respond-below('md') {
+                        width: 50%;
+                    }
+                }   
+            }
+        }
+
+        & > thead > tr {
+            height: var(--mc-space-32);
+            font-size: var(--mc-font-size-xxs);
+        }
+
+        & > tbody > tr {
+            height: size(61);
+
+            &:last-child {
+                & > th, 
+                & > td {
+                    border-bottom: none;
+                }
+            }
+        }
+    }
+
+    &__input-area {
+        align-items: center;
+        display: flex;
+        gap: var(--mc-space-8);
+    }
+
+    &__input {
+        border-radius: var(--mc-border-radius-xs);
+        border: var(--mc-space-1) solid var(--mc-gray-500);
+        font-family: var(--mc-font-body);
+        font-size: var(--mc-font-size-xxs);
+        line-height: normal;
+        max-width: size(92);
+        padding: var(--mc-space-8) var(--mc-space-14);
+        width: 100%;
+    }
+
+    // NOTE-BEM: .entity-owner-pending is a cross-component selector — owned by entity-owner
+    .entity-owner-pending {
+        margin-bottom: 25px;
+    }
+}

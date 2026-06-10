@@ -23,7 +23,7 @@ $this->import('
 
         <template #header="{entities}">
             <div class="col-4 search-list__filter">
-                <div class="search-list__filter--filter">
+                <div class="search-list__filter__filter">
                     <slot name="filter" :count="entities.metadata?.count"></slot>
                 </div>
             </div>
@@ -42,7 +42,7 @@ $this->import('
                                 <option v-if="type == 'opportunity'" value="registrationFrom DESC"> <?php i::_e('Início das inscrições (antigas-recentes)') ?> </option>
                             </select>
                         </div>
-                        <div class="foundResults">
+                        <div class="search-filter__found-results">
                             {{entities.metadata.count}} {{entityType}} <?= i::__('encontrados') ?> 
                         </div>
                     </div>
@@ -66,10 +66,10 @@ $this->import('
                                 <option v-if="type == 'opportunity'" value="registrationFrom DESC"> <?php i::_e('Início das inscrições (antigas-recentes)') ?> </option>
                             </select>
                         </div>
-                        <div v-if="entityType=='Oportunidades'" class="foundResults">
+                        <div v-if="entityType=='Oportunidades'" class="search-filter__found-results">
                             {{entities.metadata.count}} {{entityType}} <?= i::__('encontradas') ?> 
                         </div>
-                        <div v-if="entityType!='Oportunidades'" class="foundResults">
+                        <div v-if="entityType!='Oportunidades'" class="search-filter__found-results">
                             {{entities.metadata.count}} {{entityType}} <?= i::__('encontrados') ?> 
                         </div>
                     </div>

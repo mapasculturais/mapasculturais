@@ -1,0 +1,38 @@
+@use '../01.settings/mixins' as *;
+
+.registration-field-persons {
+    margin-top: var(--mc-space-32);
+
+    &__list {
+        display: grid;
+        gap: var(--mc-space-8);
+        
+        & > label {
+            display: flex;
+            font-family: var(--mc-font-headings);
+            font-size: var(--mc-space-14);
+            font-style: normal;
+            font-weight: 600;
+            line-height: var(--mc-space-19);
+            gap: var(--mc-space-8);
+            align-items: center;
+        }
+    }
+
+    &__person {
+        border-bottom: var(--mc-space-1) solid var(--mc-gray-300);
+        margin-bottom: var(--mc-space-15);
+    }
+
+    &__person-fields {
+        padding: var(--mc-space-10);
+
+        & .field {
+            margin-top: 0;
+        }
+    }
+
+    &__person-action {
+        text-align: end;
+    }
+}

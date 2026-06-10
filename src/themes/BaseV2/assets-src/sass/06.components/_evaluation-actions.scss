@@ -1,0 +1,14 @@
+@use '../01.settings/mixins' as *;
+
+.evaluation-actions {
+    padding-top: var(--mc-space-24);
+
+    // NOTE-BEM: .modal-content is an external Bootstrap/modal selector — not owned by this block
+    .modal-content {
+        max-width: size(732);
+    }
+
+    &__buttons {
+        @include eval-buttons;
+    }
+}

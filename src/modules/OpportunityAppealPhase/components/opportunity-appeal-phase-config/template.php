@@ -62,14 +62,14 @@ $this->import('
                 <div class="opportunity-appeal-phase-config__title">
                     <h3 class="bold"><?= i::__('Recurso') ?></h3>
                     <div class="info__type">
-                        <span class="title">
+                        <span class="opportunity-appeal-phase-config__phase-title">
                             <?= i::__('Tipo') ?>:
-                            <span class="type"><?= i::__('Coleta de dados') ?></span>
+                            <span class="opportunity-appeal-phase-config__type"><?= i::__('Coleta de dados') ?></span>
                         </span>
                     </div>
                 </div>
                 <div class="dates opportunity-appeal-phase-config__dates">
-                    <div class="date">
+                    <div class="opportunity-appeal-phase-config__date">
                         <h6 class="date__title"> <?= i::__('Data de início') ?> </h6>
                         <h4 class="date__content">{{ entity?.registrationFrom?.date('numeric year') }}  {{ entity?.registrationFrom?.time('numeric') }}</h4>
                     </div>
@@ -107,14 +107,14 @@ $this->import('
                 <div class="opportunity-appeal-phase-config__title">
                     <h3 class="bold"><?= i::__('Resposta do recurso') ?></h3>
                     <div class="info__type">
-                        <span class="title">
+                        <span class="opportunity-appeal-phase-config__phase-title">
                             <?= i::__('Tipo') ?>:
-                            <span class="type"><?= i::__('Avaliação contínua') ?></span>
+                            <span class="opportunity-appeal-phase-config__type"><?= i::__('Avaliação contínua') ?></span>
                         </span>
                     </div>
                 </div>
                 <div class="dates opportunity-appeal-phase-config__dates">
-                    <div class="date">
+                    <div class="opportunity-appeal-phase-config__date">
                         <h6 class="date__title"> <?= i::__('Data de início') ?> </h6>
                         <h4 class="date__content">{{ entity.evaluationMethodConfiguration?.evaluationFrom?.date('numeric year') }}  {{ entity.evaluationMethodConfiguration?.evaluationFrom?.time('numeric') }}</h4>
                     </div>

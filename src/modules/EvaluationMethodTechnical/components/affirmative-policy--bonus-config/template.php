@@ -33,7 +33,7 @@ $this->import('
                     </template>
                 </mc-confirm-button>
 
-                <div class="affirmative-policy--bonus-config__field affirmative-policy--bonus-config__field--roof field">
+                <div class="affirmative-policy--bonus-config__field affirmative-policy--bonus-config__field__roof field">
                     <label>
                         <span v-if="bonusType === 'percentage'"><?= i::__('Percentual máximo de bônus:') ?></span>
                         <span v-else><?= i::__('Pontuação máxima de bônus:') ?></span>
@@ -53,7 +53,7 @@ $this->import('
 
         <div class="affirmative-policy--bonus-config__quota" v-if="normalizedRules" v-for="(quota, index) in normalizedRules" :key="index">
             <div class="affirmative-policy--bonus-config__column">
-                <h5 class="field__title--semibold"><?= i::__('Bônus') ?> {{index+1}}</h5>
+                <h5 class="field__title__semibold"><?= i::__('Bônus') ?> {{index+1}}</h5>
 
                 <mc-select @change-option="setFieldName($event, quota)" :default-value="quota.field" placeholder="<?= i::esc_attr__('Selecione um campo') ?>" :disabled="isLocked" show-filter>
                     <option v-for="(item, index) in entity.opportunity.affirmativePoliciesEligibleFields" :value="item.id">{{ '#' + item.id + ' - ' + item.title }}</option>

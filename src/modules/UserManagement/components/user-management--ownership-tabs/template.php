@@ -23,7 +23,7 @@ $this->import('
         <div v-if="global.auth.is('admin') && entity.status >= 0">
             <mc-confirm-button @confirm="entity.delete()">
                 <template #button="modal">
-                    <button @click="modal.open()" class="button button--text delete button--icon button--sm panel__entity-actions--trash">
+                    <button @click="modal.open()" class="button button--text delete button--icon button--sm panel__entity-actions__trash">
                         <mc-icon name="trash"></mc-icon>
                         <?php i::_e("Excluir") ?>
                     </button>

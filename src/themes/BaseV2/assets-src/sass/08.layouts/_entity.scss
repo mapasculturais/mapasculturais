@@ -1,0 +1,79 @@
+@use '../01.settings/mixins' as *;
+
+.layout-entity {
+    background-color: var(--mc-white);
+
+    .mc-map .leaflet-container {
+        z-index: 0;
+    }
+
+    .tabs-component {
+        &__header {
+
+            @include respond-below('md') {
+                margin-top: 0;
+                background-color: var(--mc-high-500);
+            }
+        }
+
+        &__panels {
+            margin: 0 auto var(--mc-space-40);
+        }
+    }
+
+    .entity-sections {
+        display: flex;
+        flex-direction: column;
+        gap: var(--mc-space-32);
+    }
+
+    .divider {
+        width: 100%;
+        border-bottom: var(--mc-space-1) solid var(--mc-high-700);
+    }
+
+    &.action-edit {
+        background-color: var(--mc-gray-100);
+
+        .container > main {
+            gap: var(--mc-space-40);
+        }
+
+        & > .tabs-component {
+            position: relative;
+            margin-top: size(-43);
+        }
+    }
+
+    &.action-single {
+        .tabs-component {
+            &__header {
+                border-bottom: 1px solid;
+                padding: 0;
+
+                // TODO-BREAKPOINT: 1200px is not a canonical breakpoint. Consider adding to $mc-breakpoints or using nearest canonical value.
+                @media (max-width: size(1200)) {
+                    margin: 0 var(--mc-space-16);
+                }
+            }
+
+            &__buttons {
+                margin: var(--mc-space-32) 0 0;
+
+                &--active::after {
+                    background-color: var(--mc-primary-500);
+                }
+            }
+
+            &__panels {
+                .property-list {
+                    padding-bottom: var(--mc-space-16);
+                }
+            }
+        }
+    }
+
+    .description {
+        white-space: pre-line;
+    }
+}

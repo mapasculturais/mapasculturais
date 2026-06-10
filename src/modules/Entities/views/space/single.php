@@ -100,7 +100,7 @@ $this->breadcrumb = [
         </mc-tab>
         <?php if($entity->eventOccurrences && $entity->eventOccurrences->count()): ?>
         <mc-tab icon="event" label="<?= i::_e('Eventos') ?>" slug="eventos">
-            <div class="search__tabs--list">
+            <div class="search__tabs__list">
                 <search-list-event 
                     :pseudo-query='<?= json_encode([
                         "space:id" => $entity->id,

@@ -23,7 +23,7 @@
 
     <div v-if="registration.consolidatedDetails.appliedPointReward"
          v-for="policy in [registration.consolidatedDetails.appliedPointReward]" class="registration-results__card-content">
-        <div class="registration-results__opinion registration-results__opinion--document">
+        <div class="registration-results__opinion registration-results__opinion__document">
             <h5 class="registration-results__opinion-title bold">
                 <?= i::__('Bônus por pontuação') ?>
             </h5>
@@ -92,7 +92,7 @@
         </div>
     </div>
     <div class="registration-results__card-content">
-        <div class="registration-results__opinion registration-results__opinion--document">
+        <div class="registration-results__opinion registration-results__opinion__document">
         <h5 class="registration-results__opinion-title bold"><?= i::__('Parecer') ?>:</h5>
             <div class="registration-results__opinion-text">
                 <p>{{evaluation.obs}}</p>
@@ -100,7 +100,7 @@
         </div>
     </div>
     <div class="registration-results__card-content">
-        <div class="registration-results__opinion registration-results__opinion--document">
+        <div class="registration-results__opinion registration-results__opinion__document">
             <h5 class="registration-results__opinion-title bold"><?= i::__('Detalhamento da pontuação') ?>:</h5>
             <ul>
                 <li v-for="section in evaluation.scores">

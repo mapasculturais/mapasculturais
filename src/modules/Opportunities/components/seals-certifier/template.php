@@ -23,8 +23,8 @@ $this->import('
         <div v-for="(seals, proponentType) in proponentSeals" :key="proponentType" class="seals-certifier__proponent field">
             <label v-if="proponentType !== 'default'"><?php i::_e('Selecione o(s) selo(s) para {{ proponentType }}:') ?></label>
             <label v-else><?php i::_e('Selecione o(s) selo(s) para todos proponentes:') ?></label>
-            <div class="seals-certifier__proponent--seals">
-                <div v-for="seal in seals" :key="seal.id" class="seals-certifier__proponent--seal">
+            <div class="seals-certifier__proponent__seals">
+                <div v-for="seal in seals" :key="seal.id" class="seals-certifier__proponent__seal">
                     <div class="seal-icon">
                         <a :href="getSealDetails(seal).singleUrl" class="link">
                             <div v-if="getSealDetails(seal).files?.avatar" class="image">
@@ -54,7 +54,7 @@ $this->import('
                     openside="down-right"
                     >
                     <template #button="{ toggle }">
-                        <div class="seals-certifier__proponent--addSeal" @click="toggle()">
+                        <div class="seals-certifier__proponent__addSeal" @click="toggle()">
                             <mc-icon name="add"></mc-icon>
                         </div>
                     </template>
@@ -68,8 +68,8 @@ $this->import('
         <div v-for="(seals, category) in categorySeals" :key="category" class="seals-certifier__category field">
             <label v-if="category !== 'default'"><?php i::_e('Selecione o(s) selo(s) para {{ category }}:') ?></label>
             <label v-else><?php i::_e('Selecione o(s) selo(s) para todas categorias:') ?></label>
-            <div class="seals-certifier__category--seals">
-                <div v-for="seal in seals" :key="seal.id" class="seals-certifier__category--seal">
+            <div class="seals-certifier__category__seals">
+                <div v-for="seal in seals" :key="seal.id" class="seals-certifier__category__seal">
                     <div class="seal-icon">
                         <a :href="getSealDetails(seal).singleUrl" class="link">
                             <div v-if="getSealDetails(seal).files?.avatar" class="image">
@@ -98,7 +98,7 @@ $this->import('
                     :query="getSealQuery(category, 'category')"
                     openside="down-right">
                     <template #button="{ toggle }">
-                        <div class="seals-certifier__category--addSeal" @click="toggle()">
+                        <div class="seals-certifier__category__addSeal" @click="toggle()">
                             <mc-icon name="add"></mc-icon>
                         </div>
                     </template>

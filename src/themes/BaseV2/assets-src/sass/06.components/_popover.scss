@@ -1,0 +1,47 @@
+@use '../01.settings/mixins'as *;
+
+.popover {
+    &__content {
+        position: relative;
+        padding: var(--mc-space-16);
+        border-radius: var(--mc-border-radius-xs);
+
+        .field,
+        form {
+            &:first-child {
+                margin-top: 0;
+            }
+
+            .input {
+                border: 1px solid var(--mc-gray-100);
+                border-radius: var(--mc-border-radius-xs);
+                color: var(--mc-low);
+                font-size: var(--mc-space-16);
+                outline: 0;
+                padding: var(--mc-space-14);
+                width: 100%;
+                min-width: size(213);
+            }
+        }
+
+        .actions {
+            display: flex;
+            gap: var(--mc-space-10);
+        }
+    }
+}
+
+.v-popper__popper {
+    box-shadow: 0 0 var(--mc-space-10) 0 var(--mc-gray-700);
+    border-radius: var(--mc-border-radius-xs);
+        
+    .v-popper__inner {
+        border-radius: var(--mc-border-radius-xs);
+    }
+
+    &--no-border {
+        .popover__content {
+            padding: 0;
+        }
+    }
+}

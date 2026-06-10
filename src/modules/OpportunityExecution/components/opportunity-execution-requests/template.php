@@ -28,7 +28,7 @@ $this->import('
     <div v-for="req in requests" :key="req.id" class="opportunity-phases-timeline__request-appeal__box">
         <div class="item__dot-appeal-phase"><span class="dot"></span></div>
         <div class="item__content">
-            <div class="item__content--title"><?= i::__('[Pedido]') ?> {{ req.id }}</div>
+            <div class="item__content__title"><?= i::__('[Pedido]') ?> {{ req.id }}</div>
             <div class="opportunity-phases-timeline__box">
                 <div>
                     <label v-if="req.status > 0" class="semibold opportunity-phases-timeline__label"><?= i::__('Resultado do pedido:') ?></label>

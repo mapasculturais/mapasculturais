@@ -37,7 +37,7 @@ use MapasCulturais\i;
 
     <template v-for="(item, index) in detail.evaluations">
         <div v-if="index !== 'valuer'" class="registration-results__card-content">
-            <div class="registration-results__opinion registration-results__opinion--document">
+            <div class="registration-results__opinion registration-results__opinion__document">
                 <div class="registration-results__opinion-text">
                     <p>
                         <mc-icon name="circle" :class="stausColor(item.evaluation)"></mc-icon>

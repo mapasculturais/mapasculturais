@@ -1,0 +1,57 @@
+@use '../01.settings/mixins' as *;
+
+.opportunity-phase-list-evaluation {
+    .alert,
+    .opportunity-phase-list-evaluation__alert {
+        margin-top: 0;
+    }
+
+    .subscribe_prev_phase,
+    .opportunity-phase-list-evaluation__subscribe-prev-phase {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    &__cardfooter {
+        padding-top: var(--mc-space-24);
+        display: flex;
+        gap: var(--mc-space-10);
+        align-items: flex-end;
+    }
+    &__action {
+
+        &--button {
+            color: var(--mc-white);
+            font-size: var(--mc-space-24);
+            font-weight: 700;
+            line-height: var(--mc-space-28);
+            text-align: center;
+        }
+        
+        &__box {
+            border: 1px solid var(--mc-gray-300);
+            border-radius: var(--mc-space-8);
+            padding: var(--mc-space-16);
+
+            a {
+                margin-top: var(--mc-space-8);
+                color: var(--mc-white);
+                text-decoration: none;
+            }
+
+            .iconify {
+                font-size: size(22.5);
+            }
+
+        }
+
+        &--center {
+        }
+    }
+
+    &__line {
+        height: var(--mc-space-1);
+        border-bottom: var(--mc-space-1) solid var(--mc-gray-100);
+        margin: 0 0 var(--mc-space-10) 0;
+    }
+}

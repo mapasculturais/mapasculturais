@@ -1,0 +1,213 @@
+@use '../01.settings/mixins' as *;
+
+.dp {
+    // Corpo principal do datepicker
+    &__menu {
+        border-radius: var(--mc-border-radius-xs);
+        padding: var(--mc-space-24);
+
+        &_content_wrapper {
+            flex-direction: row-reverse;
+            gap: var(--mc-space-40);
+        }
+    }
+
+    // Lista lateral de ranges
+    &__preset_ranges {
+        border: none;
+        display: flex;
+        flex-direction: column;
+        gap: var(--mc-space-6);
+        padding: 0;
+    }
+
+    // Item da lista lateral de ranges
+    &__preset_range {
+        border-radius: var(--mc-border-radius-xs);
+        font-size: var(--mc-space-18);
+        font-weight: 600;
+        line-height: var(--mc-space-25);
+        padding: var(--mc-space-8);
+        white-space: nowrap;
+
+        &:hover {
+            background-color: var(--mc-secondary-300);
+        }
+    }
+
+    // Parte dos calendários
+    &__flex_display {
+        gap: var(--mc-space-40);
+    }
+
+    // Seletor de mês / ano
+    &__month_year{
+        &_row {
+            gap: var(--mc-space-25);
+            margin-bottom: var(--mc-space-15);
+        }
+
+        &_select {
+            background: var(--mc-white);
+            border-radius: var(--mc-space-4);
+            box-shadow: 0 var(--mc-space-2) var(--mc-space-4) rgb(0 0 0 / 16%);
+            font-size: var(--mc-space-18);
+            font-weight: 700;
+            line-height: var(--mc-space-25);
+
+            &:hover {
+                background-color: var(--mc-secondary-300);
+            }
+        }
+    }
+
+    // Parte interna do seletor de mês / ano
+    &__overlay{
+        &_cell,
+        &_action {
+            &:hover {
+                background-color: var(--mc-secondary-300);
+
+                svg {
+                    color: var(--mc-low-700);
+                }
+            }
+        }
+    }
+
+    // botões de navegação do seletor de mês / ano
+    &__inner_nav {
+        border: 1px solid;
+        height: var(--mc-space-40);
+        padding: var(--mc-space-7);
+        width: var(--mc-space-40);
+
+        svg {
+            color: var(--mc-primary-500);
+            height: var(--mc-space-23);
+            width: var(--mc-space-23);
+        }
+    }
+
+    // Calendários
+    &__calendar {
+        margin: 0;
+
+        &_header {
+            gap: var(--mc-space-5);
+
+            &_item {
+                height: var(--mc-space-48);
+                width: var(--mc-space-48);
+            }
+
+            &_separator {
+                display: none;
+            }
+        }
+
+        &_row {
+            gap: var(--mc-space-5);
+        }
+        
+        &_item {
+            .dp__cell_inner {
+                border: var(--mc-border-hairline) var(--mc-gray-300);
+                border-radius: var(--mc-border-radius-sm);
+                font-size: var(--mc-space-18);
+                font-weight: 600;
+                height: var(--mc-space-48);
+                line-height: var(--mc-space-25);
+                width: var(--mc-space-48);
+                
+                &:hover {
+                    background-color: var(--mc-secondary-300);
+                }
+
+                &.dp__cell_offset {
+                    border: none;
+
+                    &:hover {
+                        background-color: var(--mc-gray-100);
+                    }
+                }
+
+                &.dp__range_end, 
+                &.dp__range_start, 
+                &.dp__active_date {
+                    &:hover {
+                        background-color: var(--mc-primary-700  );
+                    }
+                }
+            }
+        }
+    }
+
+    // TODO-BREAKPOINT: 900px is not a canonical breakpoint. Consider adding to $mc-breakpoints or using nearest canonical value.
+    @include respond-below('ml') {
+        // Corpo principal do datepicker
+        &__menu {    
+            &_content_wrapper {
+                gap: var(--mc-space-20);
+            }
+        }
+
+        // Lista lateral de ranges
+        &__preset_ranges {
+            display: none;
+        }
+
+        // Parte dos calendários
+        &__flex_display {
+            flex-direction: column;
+            gap: var(--mc-space-20);
+
+            // Esconde o segundo calendário no mobile
+            .dp__instance_calendar {
+                &:nth-child(2) {
+                    display: none;
+                }
+            }
+        }
+
+        // Seletor de mês / ano
+        &__month_year{
+            &_row {
+                gap: var(--mc-space-15);
+                margin-bottom: var(--mc-space-10);
+            }
+    
+            &_select {
+                line-height: var(--mc-space-20);
+    
+                &:hover {
+                    background-color: var(--mc-secondary-300);
+                }
+            }
+        }
+        
+        // botões de navegação do seletor de mês / ano
+        &__inner_nav {
+            height: var(--mc-space-32);
+            width: var(--mc-space-32);
+        }
+
+        // Calendários
+        &__calendar {
+
+            &_header {
+                &_item {
+                    height: var(--mc-space-32);
+                    width: var(--mc-space-32);
+                }
+            }
+
+            &_item {
+                .dp__cell_inner {
+                    height: var(--mc-space-32);
+                    width: var(--mc-space-32);
+                }
+            }
+        }
+    }
+}

@@ -10,12 +10,12 @@ $this->import('
 ');
 ?>
 <div class="entity-seals__card">
-    <div class="entity-seals__card--header">
-        <label class="entity-seals__card--header-title">
+    <div class="entity-seals__card-header">
+        <label class="entity-seals__card-header-title">
             <slot name="title" />
         </label>
     </div>
-    <div class="entity-seals__card--content ">
+    <div class="entity-seals__card-content ">
         <slot name="content" />
     </div>
 </div>

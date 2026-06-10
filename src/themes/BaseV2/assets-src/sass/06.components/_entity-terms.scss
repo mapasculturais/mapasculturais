@@ -1,0 +1,172 @@
+@use '../01.settings/mixins' as *;
+
+.entity-terms {
+    display: flex;
+    flex-direction: column;
+    gap: var(--mc-space-10);
+    margin: 0;
+
+    &__header {
+        display: flex;
+        align-items: center;
+        gap: var(--mc-space-8);
+    }
+
+    &__required {
+        font-size: var(--mc-font-size-xxxs);
+        font-weight: 700;
+        line-height: normal;
+        color: var(--mc-error);
+    }
+
+    &__terms {
+        margin: var(--mc-space-10) 0 0;
+        display: flex;
+        gap: var(--mc-space-10);
+        padding: 0;
+        flex-wrap: wrap;
+
+        li {
+            align-items: center;
+            border-radius: var(--mc-space-15);
+            list-style: none;
+            padding: var(--mc-space-9) var(--mc-space-14);
+            display: flex;
+            justify-content: space-between;
+            text-align: center;
+            position: relative;
+            font-size: var(--mc-space-13);
+            gap: var(--mc-space-10);
+            line-height: var(--mc-space-13);
+
+            .iconify {
+                font-size: var(--mc-space-16);
+            }
+        }
+    }
+
+    &__term {
+        cursor: default;
+
+        svg {
+            // color: var(--mc-primary-300);
+            cursor: pointer;
+        }
+    }
+
+    &__add-new {
+        cursor: pointer;
+    }
+
+    &__tags {
+        align-items: flex-start;
+        display: flex;
+        flex-direction: column;
+        position: relative;
+        padding-top: var(--mc-space-10);
+    }
+
+    &__tags-form {
+        display: flex;
+        gap: var(--mc-space-8);
+        position: relative;
+    }
+
+    &__tags-form-input {
+        background: var(--mc-white);
+        border: var(--mc-space-1) solid var(--mc-gray-100);
+        border-radius: var(--mc-border-radius-xs);
+        color: var(--mc-gray-700);
+        font-size: var(--mc-space-16);
+        line-height: var(--mc-space-19);
+        max-width: size(217);
+        padding: var(--mc-space-10) var(--mc-space-8);
+
+        &:focus-visible {
+            border: var(--mc-space-1) solid var(--mc-gray-100);
+            outline: none;
+        }
+    }
+
+    &__tags-form-addBtn {
+        padding: var(--mc-space-14);
+    }
+
+    &__tags-list {
+        background: var(--mc-white);
+        border: var(--mc-space-1) solid var(--mc-gray-100);
+        box-shadow: 0 var(--mc-space-4) var(--mc-space-4) size(-3) rgb(0 0 0 / 16%);
+        border-radius: 0 0 var(--mc-space-4) var(--mc-space-4);
+        display: flex;
+        flex-direction: column;
+        list-style: none;
+        margin: 0;
+        margin-top: size(-3);
+        max-height: size(200);
+        max-width: size(213);
+        overflow-y: scroll;
+        padding: 0;
+        z-index: 0;
+        width: 100%;
+    }
+
+    &__tags-list-item {
+        cursor: pointer;
+        padding: var(--mc-space-16);
+
+        &:hover {
+            background-color: var(--mc-gray-100);
+        }
+    }
+
+    &__area {
+        align-items: flex-end;
+        display: flex;
+        flex-direction: column;
+        position: relative;
+    }
+
+    &__area-input {
+        background: var(--mc-white);
+        background: url(https://api.iconify.design/ic/baseline-search.svg) no-repeat right 12px center / 18px;
+        border: var(--mc-space-1) solid var(--mc-gray-200);
+        border-radius: size(68);
+        font-weight: 400;
+        font-size: var(--mc-space-16);
+        line-height: var(--mc-space-19);
+        color: var(--mc-gray-600);
+        padding: var(--mc-space-11) var(--mc-space-16);
+        min-width: size(265);
+        width: 100%;
+    }
+
+    &__area-list {
+        background: var(--mc-white);
+        display: flex;
+        flex-direction: column;
+        list-style: none;
+        margin: var(--mc-space-16) 0;
+        max-height: size(220);
+        min-width: size(265);
+        overflow-y: scroll;
+        padding: 0;
+        z-index: 0;
+        gap: var(--mc-space-16);
+        border-bottom: var(--mc-space-1) solid var(--mc-gray-200);
+    }
+
+    &__area-list-item {
+        cursor: pointer;
+        display: flex;
+        gap: var(--mc-space-8);
+    }
+
+    &.error {
+        margin-bottom: 0;
+        padding-bottom: 0;
+
+        button {
+            border: var(--mc-space-2) solid var(--mc-danger-500);
+        }
+    }
+}

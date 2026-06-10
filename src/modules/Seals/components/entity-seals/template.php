@@ -25,7 +25,7 @@ $this->import('
     
     <div class="entity-seals__seals">
 
-        <div class="entity-seals__seals--seal" v-for="seal in entity.seals">
+        <div class="entity-seals__seal" v-for="seal in entity.seals">
             <div class="seal-icon" v-tooltip="seal.name">
                 <mc-popover openside="down-right" classes="relation-popover">
                     <template #button="{toggle}">
@@ -89,7 +89,7 @@ $this->import('
         </div>
         <select-entity v-if="editable" type="seal" @select="addSeal($event)" :query="query" openside="down-right">
             <template #button="{ toggle }">
-                <div class="entity-seals__seals--addSeal" @click="toggle()">
+                <div class="entity-seals__add-seal" @click="toggle()">
                     <mc-icon name="add"></mc-icon>
                 </div>
             </template>

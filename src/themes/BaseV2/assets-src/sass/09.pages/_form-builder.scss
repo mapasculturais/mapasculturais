@@ -1,0 +1,95 @@
+@use '../01.settings/mixins'as *;
+
+.form-builder {
+    background-color: var(--mc-gray-100);
+
+    &__cards .mc-card {
+        height: 100%;
+    }
+
+    &__content {
+        max-width: size(1200);
+        margin: 0 auto;
+        padding: var(--mc-space-20) var(--mc-space-16);
+
+        .input-group {
+            &__title {
+                font-weight: var(--mc-font-bold);
+            }
+
+            &__subtitle {
+                color: var(--mc-gray-700);
+            }
+
+            &__inputs {
+                padding: var(--mc-space-15) 0;
+                display: flex;
+                flex-direction: row;
+                gap: var(--mc-space-24);
+
+                & .input-box {
+                    display: flex;
+                    flex-direction: row;
+                    gap: var(--mc-space-24);
+
+                    .field__title {
+                        display: none;
+                    }
+                }
+
+                & .input__label {
+                    font-weight: normal;
+                }
+            }
+
+            &__input {
+                align-items: center;
+                display: flex;
+                gap: var(--mc-space-8);
+                font-weight: 400;
+                font-size: var(--mc-space-14);
+                line-height: var(--mc-space-19);
+
+                input[type="radio"] {
+                    width: var(--mc-space-16);
+                    height: var(--mc-space-16);
+                    border: var(--mc-space-2) var(--mc-black);
+                    border-radius: var(--mc-space-12);
+                    margin: 0;
+                }
+            }
+        }
+
+        .build-list {
+            &__content {
+                padding-top: var(--mc-space-16);
+            }
+
+            &__title {
+                font-weight: 600;
+            }
+        }
+
+        .tabs-component__header--right {
+            position: sticky;
+            right: 0;
+        }
+    }
+
+    &__step-config {
+
+        & > * {
+            align-items: flex-end;
+            display: flex;
+            margin: var(--mc-space-8) var(--mc-space-8) var(--mc-space-32);
+        }
+
+        .button--text-danger {
+            flex: none;
+        }
+    }
+
+    &__add-step {
+        width: max-content;
+    }
+}

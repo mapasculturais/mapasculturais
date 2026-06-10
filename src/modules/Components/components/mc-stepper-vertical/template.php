@@ -15,9 +15,9 @@ $this->import('
     <ol class="mc-stepper-vertical">
         <?php $this->applyTemplateHook('mc-stepper-vertical:begin'); ?>
         <template v-for="(step, index) in steps">
-            <li :class="{active: step.active}">
-                <section class="stepper-step">
-                    <header :class="['stepper-header', {'open':step.active}]">
+            <li class="mc-stepper-vertical__item" :class="{'mc-stepper-vertical__item--active': step.active, active: step.active}">
+                <section class="mc-stepper-vertical__step">
+                    <header :class="['mc-stepper-vertical__header', {'open':step.active}]">
                         <slot class="stepper-header-title" name="header" :index="index" :step="step" :item="step.item">
                             <slot name="header-title" :index="index" :step="step" :item="step.item">{{step.item.name || step.item.title || step.item.label}}</slot>
                             <slot name="header-actions" :index="index" :step="step" :item="step.item">
@@ -33,7 +33,7 @@ $this->import('
                     </main>
                 </section>
             </li>
-            <div class="add-phase">
+            <div class="mc-stepper-vertical__add-phase">
                 <slot name="after-li" :index="index" :step="step" :item="step.item"></slot>
             </div>
         </template>

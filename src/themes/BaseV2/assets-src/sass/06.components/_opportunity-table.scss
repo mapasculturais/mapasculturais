@@ -1,0 +1,34 @@
+@use '../01.settings/mixins' as *;
+
+.opportunity-table {
+    &__multiselects {
+        display: flex;
+        gap: var(--mc-space-24);
+        flex-wrap: wrap;
+    }
+
+    &__inputs {
+        .verified,
+        .opportunity-table__verified {
+            display: flex;
+            align-items: center;
+            gap: var(--mc-space-4);
+
+            .iconify {
+                color: var(--mc-success-500);
+            }
+        }
+
+        .field {
+            &--horizontal {
+                display: flex;
+                gap: var(--mc-space-10);
+            }
+        }
+    }
+
+    &__actions {
+        display: grid;
+        gap: var(--mc-space-12);
+    }
+}

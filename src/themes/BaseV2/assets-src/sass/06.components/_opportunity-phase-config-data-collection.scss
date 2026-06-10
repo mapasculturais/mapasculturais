@@ -1,0 +1,207 @@
+@use '../01.settings/mixins' as *;
+
+.opportunity-data-collection {
+    &__section {
+        border-top: var(--mc-space-2) solid var(--mc-gray-100);
+        border-bottom: var(--mc-space-2) solid var(--mc-gray-100);
+        padding: var(--mc-space-16) 0 var(--mc-space-40);
+        gap: var(--mc-space-40) var(--mc-space-20);
+    }
+
+    &__enable-end-date {
+        display: flex;
+        flex-direction: column;
+        gap: var(--mc-space-16);
+        margin-top: var(--mc-space-8);
+        margin-bottom: var(--mc-space-8);
+
+        .mc-alert {
+            margin-bottom: 0;
+        }
+    }
+
+    &__horizontal-line {
+        max-width: size(1038);
+        border-bottom: 1px solid var(--mc-gray-100);
+    }
+
+    &__field {
+        .field {
+            &__title {
+                font-size: var(--mc-space-14);
+                font-family: var(--mc-font-body);
+                font-style: normal;
+                font-weight: 600;
+                line-height: normal;
+                margin: 0;
+                color: var(--mc-gray-500)
+            }
+            & label {
+                margin: 0;
+            }
+        }
+    }
+
+    &__delete {
+        margin: 0 auto;
+
+
+    }
+
+    &__trash {
+        display: flex;
+        gap: var(--mc-space-11);
+        text-decoration: none;
+
+        .iconify {
+            svg {
+                font-size: var(--mc-space-20);
+                color: var(--mc-danger-500);
+            }
+        }
+    }
+
+    &__category {
+        align-items: start;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+    }
+
+    &__registration {
+        padding-left: var(--mc-space-32);
+    }
+
+    &__preponent {
+        display: flex;
+        flex-direction: column;
+        gap: var(--mc-space-10);
+        margin-bottom: var(--mc-space-16);
+
+        & > h4 {
+            display: flex;
+            gap: var(--mc-space-8);
+            align-items: center;
+        }
+
+        .field__preponent > .field__group {
+            display: flex;
+            justify-content: space-between;
+            margin-top: var(--mc-space-8);
+            width: 80%;
+
+            & > .input__label {
+                display: flex;
+                align-items: center;
+
+                & > input {
+                    margin-right: var(--mc-space-12);
+                }
+            }
+        }
+    }
+
+    &__limits {
+        display: flex;
+        flex-direction: column;
+        gap: var(--mc-space-8);
+        margin-bottom: var(--mc-space-16);
+        
+        .field {
+            position: relative;
+            white-space: nowrap;
+
+            &__limits {
+                & input {
+                    max-width: size(100);
+                    padding: var(--mc-space-8);
+                    z-index: 2;
+                }
+
+                > .field__title {
+                    font-weight: 700;
+                    font-size: var(--mc-space-16);
+                }
+            }
+        }
+
+    }
+
+    &__fields {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: var(--mc-space-20) var(--mc-space-8);
+        z-index: 0;
+
+        // TODO-BREAKPOINT: 1181px is not a canonical breakpoint. Consider adding to $mc-breakpoints or using nearest canonical value.
+        @media (max-width: 1181px) {
+            grid-template-columns: repeat(2, 1fr);
+
+        }
+
+        // TODO-BREAKPOINT: 640px is not a canonical breakpoint. Consider adding to $mc-breakpoints or using nearest canonical value.
+        @media (max-width: 640px) {
+            grid-template-columns: repeat(1, 1fr);
+        }
+    }
+
+    &__config-button {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        position: relative;
+        padding-top: var(--mc-space-32);
+        gap: var(--mc-space-16);
+
+        &::before {
+            background: var(--mc-gray-100);
+            content: "";
+            position: absolute;
+            width: 100%;
+            height: var(--mc-space-10);
+            top: size(52);
+        }
+
+        .field {
+            &--checkbox {
+                display: flex;
+                flex-direction: column;
+                width: 100%;
+                max-width: size(600);
+                z-index: 1;
+
+                .input__label {
+                    display: flex;
+                    align-items: center;
+                    gap: var(--mc-space-8);
+                    font-size: var(--mc-space-14);
+                    line-height: var(--mc-space-20);
+                    cursor: pointer;
+
+                    input[type="checkbox"] {
+                        width: var(--mc-space-18);
+                        height: var(--mc-space-18);
+                        cursor: pointer;
+                    }
+                }
+            }
+        }
+
+        .config-phase__info-button {
+            background-color: var(--mc-primary-300);
+            border: var(--mc-border-hairline) var(--mc-primary-300);
+            color: var(--mc-low-500);
+            grid-template-columns: calc(70% - var(--mc-space-16)) var(--mc-space-15);
+            align-content: center;
+            max-width: 100%;
+            width: 35%;
+            height: size(52);
+            margin-top: var(--mc-space-8);
+
+            // TODO-BREAKPOINT: 680px is not a canonical breakpoint. Consider adding to $mc-breakpoints or using nearest canonical value.
+            @media (max-width: 680px) {
+                width: 60%;
+                grid-template-columns: 1fr auto;
+            }
+        }
+    }
+}

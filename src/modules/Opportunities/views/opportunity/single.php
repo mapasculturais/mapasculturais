@@ -52,7 +52,7 @@ $this->breadcrumb = [
   <entity-header :entity="entity">
     <template #metadata>
         <dl v-if="global.showIds[entity.__objectType]" class="metadata__id" v-if="entity.id">
-            <dt class="metadata__id--id"><?= i::__('ID') ?></dt>
+            <dt class="metadata__id__id"><?= i::__('ID') ?></dt>
             <dd><strong>{{entity.id}}</strong></dd>
         </dl> 
         <dl v-if="entity.type">

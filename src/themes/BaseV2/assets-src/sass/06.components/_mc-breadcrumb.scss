@@ -1,0 +1,145 @@
+@use '../01.settings/mixins' as *;
+
+// ============================================================================
+// Component: mc-breadcrumb
+// CONSUMES: nav-shell (horizontal breadcrumb trail — nav-shell __list pattern)
+// ============================================================================
+
+.mc-breadcrumb {
+    margin: 0 auto;
+    max-width: 1170px;
+
+    @include respond-below('md') {
+        font-size: var(--mc-space-14);
+    }
+
+    ul,
+    li {
+        margin: 0;
+        padding: 0;
+    }
+
+    ul {
+        align-items: center;
+        display: flex;
+        flex-wrap: wrap;
+        gap: var(--mc-space-5);
+        max-width: var(--mc-layout-container-xl);
+        padding: var(--mc-space-8) var(--mc-space-10);
+        position: absolute;
+        width: 100%;
+        z-index: 1;
+    }
+
+    li {
+        align-items: center;
+        display: flex;
+        list-style: none;
+        position: relative;
+        overflow: hidden;
+
+        @include respond-below('md') {
+            display: none;
+
+            &:nth-last-child(2) {
+                display: flex;
+                font-weight: 600;
+            }
+
+            &::before {
+                content: url('https://api.iconify.design/fe/arrow-left.svg?width=16&height=16');
+                height: var(--mc-space-16);
+                margin-inline-end: var(--mc-space-5);
+                width: var(--mc-space-16);
+            }
+        }
+
+        // TODO-BREAKPOINT: 801px is not a canonical breakpoint. Consider adding to $mc-breakpoints or using nearest canonical value.
+        @include respond-above('md') {
+            &::after {
+                content: url('https://api.iconify.design/fe/arrow-right.svg?width=18&height=18');
+                height: var(--mc-space-18);
+                margin-inline-start: var(--mc-space-5);
+                width: var(--mc-space-18);
+            }
+
+            &:last-child::after {
+                display: none;
+            }
+        }
+    }
+
+    li:last-child {
+        font-weight: bold;
+
+        &::after {
+            content: none;
+        }
+    }
+
+    a {
+        color: inherit;
+        text-decoration: none;
+        text-transform: uppercase;
+        font-size: var(--mc-space-14);
+        white-space: nowrap;
+        max-width: size(400);
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    &--has-cover {
+        ul {
+            background: linear-gradient(180deg, rgba(2, 2, 1, 0.35) 0%, rgba(255, 255, 255, 0) 100%);
+            color: var(--mc-white);
+            padding: var(--mc-space-8) var(--mc-space-10) size(60);
+        }
+
+        li {
+            @include respond-below('md') {
+                &::before {
+                    content: url('https://api.iconify.design/fe/arrow-left.svg?color=white&width=16&height=16');
+                    margin-inline-end: var(--mc-space-5);
+                }
+            }
+
+            // TODO-BREAKPOINT: 801px is not a canonical breakpoint. Consider adding to $mc-breakpoints or using nearest canonical value.
+            @include respond-above('md') {
+                &::after {
+                    content: url('https://api.iconify.design/fe/arrow-right.svg?color=white&width=18&height=18');
+                    margin-inline-start: var(--mc-space-5);
+                }
+            }
+        }
+    }
+}
+
+// Comportamento nas páginas de edição das entidades
+.action-edit {
+    .mc-breadcrumb {
+        &--has-cover {
+            ul {
+                background: transparent;
+                color: var(--mc-black);
+                padding: var(--mc-space-8) var(--mc-space-10);
+            }
+
+            li {
+                @include respond-below('md') {
+                    &::before {
+                        content: url('https://api.iconify.design/fe/arrow-left.svg?width=16&height=16');
+                        margin-inline-end: var(--mc-space-5);
+                    }
+                }
+
+                // TODO-BREAKPOINT: 801px is not a canonical breakpoint. Consider adding to $mc-breakpoints or using nearest canonical value.
+                @include respond-above('md') {
+                    &::after {
+                        content: url('https://api.iconify.design/fe/arrow-right.svg?width=18&height=18');
+                        margin-inline-start: var(--mc-space-5);
+                    }
+                }
+            }
+        }
+    }
+}

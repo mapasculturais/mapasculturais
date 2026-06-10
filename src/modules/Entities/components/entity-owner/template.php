@@ -17,10 +17,10 @@ $this->import('
 <div v-if="owner && entity != owner" class="entity-owner" :class="classes">
     <h4 class="bold">{{title}}</h4>
     <a class="entity-owner__owner" :href="owner?.singleUrl" :title="owner?.shortDescription">
-        <div class="entity-owner__owner--img">
+        <div class="entity-owner__owner__img">
             <mc-avatar :entity="owner" size="xsmall"></mc-avatar>
         </div>
-        <div class="entity-owner__owner--name">
+        <div class="entity-owner__owner__name">
             {{owner.name}}
         </div>
     </a>
@@ -33,7 +33,7 @@ $this->import('
         </mc-alert>
         <select-entity v-if="!hasRequest" :query="query" type="agent" @select="changeOwner($event)" permissions="" openside="up-right">
             <template #button="{ toggle }">
-                <a class="entity-owner__edit--btn" :class="this.entity.__objectType + '__color'" @click="toggle()">
+                <a class="entity-owner__edit__btn" :class="this.entity.__objectType + '__color'" @click="toggle()">
                     <mc-icon name="exchange"></mc-icon>
                     <h4><?php i::_e('Alterar Propriedade') ?></h4>
                 </a>

@@ -49,7 +49,7 @@ app.component('mc-notification', {
             return this.message;
         },
         classes () {
-            return `mc-notification mc-notification-${this.type}`;
+            return `mc-notification mc-notification--${this.type}`;
         }
     }
 });

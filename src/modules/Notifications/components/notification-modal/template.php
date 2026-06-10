@@ -29,7 +29,7 @@ $this->import('
                 </div>
             </div>
             <div class="notification-modal__action">
-                <div class="link" v-if="notificationsCount">
+                <div class="notification-modal__action__link" v-if="notificationsCount">
                     <mc-link route="panel/index" hash="notifications"><?= i::__('Ver todas as notificações') ?></mc-link>
                 </div>
             </div>
@@ -38,7 +38,7 @@ $this->import('
 
     <template #button="popover">
         <div v-if="viewport=='desktop'" class="notification-modal__menu-desk" @click="popover.toggle()">
-            <label class="label"><?= i::__('Notificações') ?></label>
+            <label class="notification-modal__menu-desk__label"><?= i::__('Notificações') ?></label>
             <div class="icon">
                 <mc-icon name='notification'></mc-icon>
                 <span v-if="notificationsCount>0" class="count">{{notificationsCount}}</span>
@@ -50,7 +50,7 @@ $this->import('
                 <mc-icon name='notification'></mc-icon>
                 <span v-if="notificationsCount>0" class="count">{{notificationsCount}}</span>
             </div>
-            <label class="label"><?= i::__('Notificações') ?></label>
+            <label class="notification-modal__menu-mobile__label"><?= i::__('Notificações') ?></label>
         </a>
     </template>
 </mc-popover>

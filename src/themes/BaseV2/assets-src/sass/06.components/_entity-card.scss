@@ -1,0 +1,535 @@
+@use '../01.settings/mixins' as *;
+
+// ================================================================
+// .entity-card — Vue component (entity-card)
+// Consolidated from _entity-card.scss + _entity-models-card.scss
+// Deduplication: 426 lines of identical .entity-card rules merged
+// Panel variants extracted to _panel-entity-card.scss (Wave 2)
+// ================================================================
+
+.entity-card {
+	background-color: var(--mc-white);
+	border-radius: var(--mc-border-radius-sm);
+	padding: var(--mc-space-16);
+	user-select: none;
+	width: 100%;
+	.entity-card__slot {
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+		gap: var(--mc-space-24);
+	}
+	
+	&__header {
+		align-items: stretch;
+		display: flex;
+		flex-wrap: nowrap;
+		justify-content: space-between;
+		position: relative;
+
+		&.user-details {
+			display: flex;
+			width: 100%;
+			justify-content: flex-start;
+			gap: var(--mc-space-4) var(--mc-space-16);
+			align-items: flex-start;
+			padding-top: var(--mc-space-6);
+			.user-image {
+				align-items: center;
+				background-color: var(--mc-gray-300);
+				border-radius: 50%;
+				display: flex;
+				height: var(--mc-space-48);
+				justify-content: center;
+				min-width: var(--mc-space-48);
+				overflow: hidden;
+				width: var(--mc-space-48);
+
+				img {
+					width: 100%;
+				}
+
+				.iconify {
+					font-size: var(--mc-space-24);
+					color: var(--mc-gray-700);
+				}
+			}
+
+			.user-info {
+				align-items: flex-start;
+				display: flex;
+				flex-direction: column;
+				gap: var(--mc-space-8);
+				margin: var(--mc-space-4) 0;
+				text-align: left;
+
+				&.with-labels {
+					max-width: size(700);
+				}
+
+				&.without-labels {
+					max-width: size(700);
+				}
+
+				width: 100%;
+
+				&__name {
+					align-items: center;
+					display: flex;
+					font-size: size(25.5);
+					font-weight: 700;
+					line-height: var(--mc-space-30);
+				}
+
+				&__attr {
+					display: flex;
+					flex-direction: column;
+					gap: var(--mc-space-4) 0;
+
+					.lb-agent {
+						font-style: bold;
+					}
+
+					.lb-agent-type {
+						color: var(--mc-agents-500);
+					}
+				}
+			}
+
+		}
+
+		&.with-labels & {
+			
+			&.user-slot {
+				.entity-card__slot {
+					position: absolute;
+					right: 0;
+					display: grid;
+					grid-template-columns: var(--mc-space-48) size(160);
+					// TODO-BREAKPOINT: 500px is not a canonical breakpoint. Consider adding to $mc-breakpoints or using nearest canonical value.
+					@include respond-below('mob') {
+						gap: var(--mc-space-9);
+					}
+					&.no-id {
+						position: relative;
+						display: flex;
+					}
+				}
+				.entity-card__id {
+					font-size:var(--mc-font-size-xxs);
+					display: flex;
+					flex-direction: row;
+					align-items: center;
+				}
+
+			}
+		}
+
+		&.user-slot {
+			align-items: flex-start;
+			position: absolute;
+			right: 0;
+			max-width: size(280);
+			top: size(-11.6);
+
+			.entityType {
+				align-items: center;
+				border-radius: var(--mc-border-radius-pill);
+				display: table;
+				font-size: var(--mc-space-12);
+				font-weight: 700;
+				line-height: var(--mc-space-16);
+				min-width: size(137);
+				padding: var(--mc-space-8) var(--mc-space-16);
+				text-transform: capitalize;
+				text-align: center;
+				vertical-align: middle;
+
+				.iconify {
+					float: left;
+					font-size: var(--mc-space-16);
+					line-height: var(--mc-space-16);
+				}
+			}
+			
+			.openSubscriptions {
+				color: var(--mc-low-700);
+				display: flex;
+				font-size: var(--mc-space-14);
+				font-weight: 700;
+				gap: var(--mc-space-6);
+				line-height: var(--mc-space-19);
+
+				.iconify {
+					color: var(--mc-success-500);
+					font-size: var(--mc-space-21);
+				}
+
+			}
+		}
+
+		// Modifier: highlight badge/pill (legitimate `--` modifier)
+		&--highlight {
+			padding: var(--mc-space-6) var(--mc-space-16);
+			border-radius: var(--mc-border-radius-pill);
+			min-width: size(137);
+			display: block;
+			text-align: center;
+			color: var(--mc-high-500);
+			font-weight: 700;
+			font-size: var(--mc-space-12);
+			line-height: var(--mc-space-22);
+			text-transform: capitalize;
+
+			.iconify {
+				font-size: var(--mc-space-22);
+				float: left;
+				gap: var(--mc-space-8);
+			}
+		}
+	}
+
+	&__content {
+		display: flex;
+		flex-direction: column;
+		gap: var(--mc-space-8);
+		margin: var(--mc-space-16) 0 var(--mc-space-8);
+		text-align: left;
+
+		&-shortDescription {
+			word-break:break-word;
+			font-size: var(--mc-space-14);
+
+			@include respond-below('md') {
+				line-height: var(--mc-space-19);
+				
+				small {
+					display: -webkit-box;
+					-webkit-line-clamp: 3;
+					-webkit-box-orient: vertical;
+					overflow: hidden;
+				}
+
+				&.expanded small {
+					-webkit-line-clamp: unset;
+					overflow: visible;
+				}
+			}
+
+			.entity-card__toggle-description {
+				background: none;
+				border: none;
+				color: var(--mc-primary-500);
+				cursor: pointer;
+				font-size: var(--mc-space-14);
+				font-weight: 700;
+				margin-top: var(--mc-space-4);
+				padding: 0;
+				text-decoration: underline;
+			}
+		}
+
+		// Modifier: occurrence variant (legitimate `--` modifier for content variant)
+		&--occurrence {
+			&-data {
+				font-weight: 700;
+				font-size: var(--mc-space-14);
+				line-height: var(--mc-space-19);
+				display: flex;
+				align-items: center;
+				gap: var(--mc-space-10);
+
+				.iconify {
+					font-size: var(--mc-space-18);
+				}
+			}
+
+
+			&-space {
+				font-weight: 700;
+				font-size: var(--mc-space-14);
+				line-height: var(--mc-space-19);
+				display: flex;
+				align-items: center;
+				gap: var(--mc-space-11);
+
+				.link {
+					align-items: center;
+					display: flex;
+					gap: var(--mc-space-10);
+					text-decoration: none;
+					font-size: var(--mc-space-18);
+				}
+
+				.space-adress {
+					a {
+						text-decoration: none;
+					}
+
+					&__adress {
+						margin-left: var(--mc-space-10);
+
+						@include respond-below('sm') {
+							word-break: break-word;
+						}
+					}
+				}
+
+				// TODO-BREAKPOINT: 500px is not a canonical breakpoint. Consider adding to $mc-breakpoints or using nearest canonical value.
+				@include respond-below('mob') {
+					align-items: flex-start;
+				}
+			}
+
+			&-info {
+				display: flex;
+				align-items: center;
+				gap: var(--mc-space-40);
+
+				.ageRating {
+
+					&__class {
+
+						font-weight: 500;
+						font-size: var(--mc-space-14);
+						line-height: var(--mc-space-16);
+						text-transform: uppercase;
+						color: var(--mc-low-700);
+					}
+
+					&__value {
+						font-weight: 700;
+						font-size: var(--mc-space-14);
+						line-height: var(--mc-space-16);
+					}
+
+					// TODO-BREAKPOINT: 700px is not a canonical breakpoint. Consider adding to $mc-breakpoints or using nearest canonical value.
+					@media (max-width:size(700)) {
+						display: flex;
+						flex-direction: column;
+					}
+				}
+
+			}
+		}
+
+		// Modifier: description variant (legitimate `--` modifier for content variant)
+		// Used in templates: entity-card__content--description, -local, -adress
+		&--description {
+			font-weight: 400;
+			font-size: var(--mc-space-12);
+			line-height: var(--mc-space-16);
+			color: var(--mc-low-700);
+			word-break: break-word;
+
+			&-local,
+			&-adress {
+				color: var(--mc-low-500);
+				line-height: var(--mc-space-22);
+				font-weight: 600;
+				font-size: var(--mc-space-14);
+			}
+		}
+
+		// Modifier: terms variant (legitimate `--` modifier for content variant)
+		// Used in templates: entity-card__content--terms, -area, -tag, -linguagem
+		&--terms {
+
+			&-area,
+			&-tag,
+			&-linguagem {
+				display: flex;
+				align-items: flex-start;
+				flex-direction: column;
+
+				.area__title,
+				.tag__title,
+				.linguagem__title {
+					font-weight: 500;
+					font-size: var(--mc-space-12);
+					line-height: var(--mc-space-16);
+					display: flex;
+					align-items: center;
+					text-transform: uppercase;
+					color: var(--mc-low-700);
+				}
+			}
+
+			.terms {
+				font-weight: 700;
+				font-size: var(--mc-space-12);
+				line-height: var(--mc-space-16);
+				margin: var(--mc-space-4) 0 var(--mc-space-8);
+				text-align: left;
+			}
+		}
+	}
+
+	&__footer {
+		display: flex;
+		flex-wrap: nowrap;
+		gap: var(--mc-space-24) 0;
+
+		// TODO-BREAKPOINT: 500px is not a canonical breakpoint. Consider adding to $mc-breakpoints or using nearest canonical value.
+		@include respond-below('mob') {
+			flex-direction: column;
+		}
+
+		&__info {
+			min-width: size(200);
+
+			.seals {
+				display: flex;
+				flex-wrap: wrap;
+				gap: var(--mc-space-5);
+
+				&__title {
+					align-items: center;
+					display: flex;
+					font-size: var(--mc-space-12);
+					line-height: var(--mc-space-16);
+					text-transform: uppercase;
+					width: 100%;
+				}
+
+				&__seal {
+					align-items: center;
+					background: var(--mc-high-300);
+					border-radius: var(--mc-border-radius-xs);
+					display: flex;
+					font-size: var(--mc-space-12);
+					font-weight: 400;
+					height: var(--mc-space-32);
+					justify-content: center;
+					line-height: var(--mc-space-16);
+					width: var(--mc-space-32);
+					
+					.sealImage {
+						max-width: 100%;
+						border-radius: var(--mc-space-8);
+					}
+				}
+			}
+		}
+
+		&__action {
+			align-items: flex-end;
+			display: flex;
+			justify-content: flex-end;
+			width: 100%;
+
+			.button {
+				display: block;
+				max-width: size(500);
+				text-align: center;
+
+				.iconify {
+					float: right;
+				}
+			}
+		}
+	}
+
+	// Portrait variant — superset of both original files
+	&.portrait {
+		display: flex;
+		flex-direction: column;
+		justify-content: space-between;
+
+		.entity-card__header {
+			&.user-details {
+				flex-direction: column;
+			}
+		}
+		.entity-card__footer {
+			flex-direction: column;
+		}
+	}
+}
+
+// ================================================================
+// Switch — consumes toggle-switch Object (05.objects/_toggle-switch.scss)
+// Cosmetic variant for entity-card toggle controls.
+// HTML: label.switch > input + span.slider
+// Updated in Wave 1 — do not modify
+// ================================================================
+
+.switch {
+    // Structural tokens from toggle-switch Object
+    --toggle-switch-width: 30px;
+    --toggle-switch-height: 17px;
+    --toggle-switch-thumb-size: 13px;
+    --toggle-switch-gap: 2px;
+
+    display: inline-flex;
+    position: relative;
+    height: var(--toggle-switch-height);
+    width: var(--toggle-switch-width);
+
+    input {
+        // Structural: toggle-switch__input pattern
+        height: 0;
+        opacity: 0;
+        position: absolute;
+        width: 0;
+    }
+}
+
+.slider {
+    // Structural: toggle-switch__slider pattern
+    border-radius: calc(var(--toggle-switch-height) * 0.5);
+    cursor: pointer;
+    height: 100%;
+    left: 0;
+    position: absolute;
+    top: 0;
+    transition: background-color 0.2s ease, transform 0.2s ease;
+    width: 100%;
+
+    // Cosmetic: default track color
+    background-color: var(--mc-gray-300);
+
+    &::before {
+        // Structural: toggle-switch thumb pattern
+        background-color: var(--mc-white);
+        border-radius: 50%;
+        content: '';
+        height: var(--toggle-switch-thumb-size);
+        left: var(--toggle-switch-gap);
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        transition: transform 0.2s ease;
+        width: var(--toggle-switch-thumb-size);
+    }
+}
+
+input:checked + .slider {
+    // Cosmetic: checked track color
+    background-color: var(--mc-primary-500);
+}
+
+input:focus-visible + .slider {
+    // Accessibility: visible focus indicator (keyboard only)
+    box-shadow: 0 0 1px var(--mc-primary-500);
+}
+
+input:checked + .slider::before {
+    // Structural: slide thumb to end
+    transform: translateY(-50%) translateX(
+        calc(var(--toggle-switch-width) - var(--toggle-switch-thumb-size) - var(--toggle-switch-gap) * 2)
+    );
+}
+
+.slider.round {
+    border-radius: calc(var(--toggle-switch-height) * 0.5);
+}
+
+.slider.round::before {
+    border-radius: 50%;
+}
+
+.switch-text {
+    margin-left: var(--mc-space-8);
+    font-weight: 600;
+}

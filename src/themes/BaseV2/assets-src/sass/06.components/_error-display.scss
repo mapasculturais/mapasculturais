@@ -1,0 +1,200 @@
+@use '../01.settings/mixins' as *;
+
+body.base-v2.controller-site.action-error {
+    background-color: var(--mc-gray-100);
+}
+
+.error-page {
+    margin: 0 auto;
+    max-width: 1170px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    background-color: var(--mc-gray-100);
+    border-radius: var(--mc-space-4);
+
+    // TODO-BREAKPOINT: 900px is not a canonical breakpoint. Consider adding to $mc-breakpoints or using nearest canonical value.
+    @include respond-below('ml') {
+        padding: var(--mc-space-16);
+    }
+
+    // TODO: BEM-REFACTOR — `.error-card` should be `&__card`. DEFERRED: needs
+    // template class update from `error-card` to `error-page__card`.
+    .error-card {
+        // padding: size(55) size(135);
+        padding: size(75) size(55);
+        background: var(--mc-high-300);
+        display: flex;
+        align-items: center;
+        flex-direction: column;
+        margin: 30px 0 45px 0;
+
+        // TODO: BEM-REFACTOR — `.message-error` should be `&__message-error`
+        // scoped to `.error-page`. DEFERRED: needs template class update.
+        .message-error {
+            padding: var(--mc-space-24) 0 var(--mc-space-16) 0;
+        }
+
+        @include respond-below('md') {
+            padding-inline: var(--mc-space-16);
+
+            .message-error {
+                .text {
+                    font-family: var(--mc-font-body);
+                    font-style: normal;
+                    font-weight: 600;
+                    font-size: 12px;
+                    line-height: 16px;
+                    text-align: center;
+                }
+            }
+        }
+
+        // TODO: BEM-REFACTOR — `.content`, `.left`, `.right` should be flattened:
+        // `.error-page__content`, `.error-page__content-left`, `.error-page__content-right`.
+        // DEFERRED: needs template class updates.
+        .content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+
+
+            @include respond-below('md') {
+                display: flex;
+                flex-direction: column-reverse;
+            }
+
+            .left {
+                display: flex;
+                flex-direction: column;
+                gap: var(--mc-space-23);
+                max-width: size(560);
+
+                .error-footer {
+
+
+                    .btn {
+                        button {
+                            padding: var(--mc-space-19) var(--mc-space-32);
+                            font-family: var(--mc-font-body);
+                            font-style: normal;
+                            font-weight: 700;
+                            font-size: var(--mc-space-24);
+                            line-height: var(--mc-space-28);
+
+                        }
+
+                        @include respond-below('sm') {
+                            margin: 0 auto;
+                            max-width: size(300);
+
+                            button {
+                                padding: var(--mc-space-18) var(--mc-space-18);
+
+                            }
+
+                            label {
+                                font-family: var(--mc-font-body);
+                                font-style: normal;
+                                font-weight: 700;
+                                font-size: 16px;
+                                line-height: 25px;
+                                /* identical to box height */
+
+                                // text-align: center;
+                            }
+                        }
+
+
+
+                    }
+
+                    .message-error {
+                        display: flex;
+                        flex-direction: column;
+
+                        @include respond-below('sm') {
+                            text-align: center;
+                        }
+                    }
+                }
+
+                @include respond-below('sm') {
+                    text-align: center;
+                }
+
+                &__content {
+                    font-family: var(--mc-font-body);
+                    font-style: normal;
+                    font-weight: 600;
+                    font-size: var(--mc-space-18);
+
+                    @include respond-below('sm') {
+
+                        padding-bottom: 16px;
+                    }
+                }
+
+                .left__warning {
+                    font-family: var(--mc-font-body);
+                    font-style: normal;
+                    font-weight: 700;
+                    font-size: 72px;
+                    line-height: 98px;
+                    align-items: center;
+
+                    @include respond-below('sm') {
+                        padding-top: var(--mc-space-24);
+                        font-family: var(--mc-font-body);
+                        font-style: normal;
+                        font-weight: 700;
+                        font-size: var(--mc-space-32);
+                        line-height: size(54);
+                        text-align: center;
+                    }
+                }
+
+                &__title {
+                    padding-top: var(--mc-space-24);
+                    font-family: var(--mc-font-body);
+                    font-style: normal;
+                    font-weight: 700;
+                    font-size: var(--mc-space-40);
+                    line-height: size(54);
+
+                    @include respond-below('sm') {
+                        text-align: center;
+                    }
+                }
+
+                &__message {
+                    font-size: var(--mc-space-64);
+                    line-height: size(50);
+                    font-weight: 700;
+                    font-family: var(--mc-font-body);
+                    font-style: normal;
+
+                    @include respond-below('sm') {
+                        font-family: var(--mc-font-body);
+                        font-style: normal;
+                        font-weight: 700;
+                        font-size: 32px;
+                        line-height: 3.375rem;
+                    }
+                }
+            }
+
+            .right {
+                img {
+
+                    width: 100%;
+                }
+
+                @include respond-below('sm') {
+                    display: block;
+                    margin: auto;
+                    padding-bottom: var(--mc-space-32);
+                }
+            }
+        }
+    }
+}

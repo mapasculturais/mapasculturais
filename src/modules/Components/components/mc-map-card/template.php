@@ -21,20 +21,20 @@ $this->import('
     </div>
 
     <div class="mc-map-card__content">
-        <div v-if="entity.type" class="mc-map-card__content--info">
+        <div v-if="entity.type" class="mc-map-card__content__info">
             <p class="info">
                 <?php i::_e('Tipo:') ?> <strong>{{entity.type.name}}</strong>
             </p>
         </div>
 
-        <div class="mc-map-card__content--info">
+        <div class="mc-map-card__content__info">
             <p class="info">
                 <?php i::_e('ONDE: ') ?>
                 <strong v-if="entity.endereco">{{entity.endereco}}</strong>
                 <strong v-else><?= i::_e("Sem Endereço"); ?></strong>
             </p>
         </div>
-        <div v-if="areas" class="mc-map-card__content--info">
+        <div v-if="areas" class="mc-map-card__content__info">
             <p v-if="entity.__objectType != 'agent'" class="info">
             <?= i::_e('ACESSIBILIDADE:') ?>
                 <strong v-if="entity.acessibilidade === 'Sim'">
@@ -48,7 +48,7 @@ $this->import('
                 </strong>
             </p>
         </div>
-        <div v-if="areas" class="mc-map-card__content--info">
+        <div v-if="areas" class="mc-map-card__content__info">
             <p class="info">
                 <?= i::_e('Áreas de atuação:') ?> ({{entity.terms.area.length}}): <strong>{{areas}}</strong>
             </p>
@@ -56,7 +56,7 @@ $this->import('
     </div>
 
     <div :class="['mc-map-card__footer', entity.__objectType+'__color']" @click="toggle=!toggle">
-        <a :href="entity.singleUrl" :class="['mc-map-card__footer--link', entity.__objectType+'__color']">
+        <a :href="entity.singleUrl" :class="['mc-map-card__footer__link', entity.__objectType+'__color']">
             <mc-icon name="access" ></mc-icon>
             <?php i::_e('Acessar') ?>
         </a>

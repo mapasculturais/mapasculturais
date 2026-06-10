@@ -1,0 +1,7 @@
+@use '../01.settings/mixins' as *;
+
+.entity-status {
+    .alert {
+        margin: 0;
+    }
+}

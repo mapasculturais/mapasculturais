@@ -12,40 +12,40 @@ $this->import('
 <div :class="['mc-summary-evaluate', classes]" v-if="isActive">
 
     <div class="mc-summary-evaluate__box pending">
-        <div class="mc-summary-evaluate__box--icon">
+        <div class="mc-summary-evaluate__box__icon">
             <mc-icon name="clock"></mc-icon>
         </div>
-        <div class="mc-summary-evaluate__box--content">
+        <div class="mc-summary-evaluate__box__content">
             <h4><?= i::__('Avaliações pendente') ?></h4>
             <span>{{pending}} <?= i::__('avaliações disponíveis') ?></span>
         </div>
     </div>
 
     <div class="mc-summary-evaluate__box started">
-        <div class="mc-summary-evaluate__box--icon">
+        <div class="mc-summary-evaluate__box__icon">
             <mc-icon name="clock"></mc-icon>
         </div>
-        <div class="mc-summary-evaluate__box--content">
+        <div class="mc-summary-evaluate__box__content">
             <h4><?= i::__('Avaliações iniciadas') ?></h4>
             <span>{{started}} <?= i::__('avaliações') ?></span>
         </div>
     </div>
 
     <div class="mc-summary-evaluate__box completed">
-        <div class="mc-summary-evaluate__box--icon">
+        <div class="mc-summary-evaluate__box__icon">
             <mc-icon name="check"></mc-icon>
         </div>
-        <div class="mc-summary-evaluate__box--content">
+        <div class="mc-summary-evaluate__box__content">
             <h4><?= i::__('Avaliações concluídas') ?></h4>
             <span>{{completed}} <?= i::__('avaliações') ?></span>
         </div>
     </div>
 
     <div class="mc-summary-evaluate__box sent">
-        <div class="mc-summary-evaluate__box--icon">
+        <div class="mc-summary-evaluate__box__icon">
             <mc-icon name="send"></mc-icon>
         </div>
-        <div class="mc-summary-evaluate__box--content">
+        <div class="mc-summary-evaluate__box__content">
             <h4><?= i::__('Avaliações enviadas') ?></h4>
             <span>{{sent}} <?= i::__('avaliações') ?></span>
         </div>

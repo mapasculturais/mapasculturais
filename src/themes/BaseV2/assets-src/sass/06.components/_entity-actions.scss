@@ -1,0 +1,115 @@
+@use '../01.settings/mixins' as *;
+
+.entity-actions {
+    background-color: var(--mc-primary-500);
+    border: unset;
+    bottom: 0;
+    padding: var(--mc-space-24) var(--mc-space-16);
+    position: -webkit-sticky;
+    position: sticky;
+    width: 100%;
+    z-index: 200;
+
+    &__content {
+        display: flex;
+        justify-content: space-between;
+        max-width: var(--mc-layout-container-xl);
+        margin: 0 auto;
+
+        &--groupBtn {
+            align-items: center;
+            display: flex;
+            gap: var(--mc-space-25);
+            
+            &.rowBtn,
+            &.entity-actions__content--groupBtn-row {
+                flex-direction: row;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+
+            .button {
+                cursor: pointer;
+                
+                &.publish {
+                    background: var(--mc-high-500);
+                    color: var(--mc-primary-500);
+                    padding-left: size(100);
+                    padding-right: size(100);
+                    
+                    &-exit {
+                        padding-left: var(--mc-space-40);
+                        padding-right: var(--mc-space-40);
+                    }
+                }
+            }
+            .arquivar,
+            .entity-actions__content--groupBtn-archive {
+                .iconify {
+                    color: var(--mc-warning-500);
+                    font-size: var(--mc-space-16);
+                }
+            }
+            .excluir,
+            .entity-actions__content--groupBtn-delete {
+                .iconify {
+                    color: var(--mc-danger-500);
+                    font-size: var(--mc-space-16);
+                }
+            }
+        }
+    }
+}
+
+@media(max-width: 950px){
+    .entity-actions {
+        position: relative;
+        &__content {
+            flex-direction: column-reverse;
+            align-items: center;    
+        }
+    }
+}
+
+// TODO-BREAKPOINT: 1024px is not a canonical breakpoint. Consider adding to $mc-breakpoints or using nearest canonical value.
+@media (max-width: 1024px) {
+    .entity-actions {
+        &__content {
+            display: flex;
+            gap: var(--mc-space-24);
+
+            &--groupBtn {
+                display: inline-flex;
+                gap: var(--mc-space-24);
+
+                .btn {
+                    justify-content: center;
+                }
+            }
+        }
+    }
+}
+
+// TODO-BREAKPOINT: 870px is not a canonical breakpoint. Consider adding to $mc-breakpoints or using nearest canonical value.
+@media (max-width: 870px) {
+
+    .entity-actions {
+        padding: var(--mc-space-24) var(--mc-space-10);    
+            
+        &__content {
+            gap: var(--mc-space-48);
+            &--groupBtn {
+                flex-direction: column-reverse;
+                gap: var(--mc-space-15);
+            }   
+        }
+    }
+}
+
+@include respond-below('sm') {
+
+    .entity-actions {
+        padding: var(--mc-space-24) var(--mc-space-10);
+        position: relative;
+    }
+}

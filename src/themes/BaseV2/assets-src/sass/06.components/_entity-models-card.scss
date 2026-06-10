@@ -1,0 +1,14 @@
+// ================================================================
+// MIGRATION: This file was consolidated into _entity-card.scss
+// Date: Phase 5C deduplication
+// Reason: 426 lines of duplicated .entity-card rules between
+//         _entity-card.scss and _entity-models-card.scss
+// Action: All content moved to _entity-card.scss
+//         .panel-entity-models-card + models extras preserved there
+// Dead code removed: .models & selectors (class not found in templates)
+//
+// Wave 2 update: panel-entity-models-card styles extracted from
+// _entity-card.scss into _panel-entity-models-card.scss.
+// Shared panel rules live in _panel-entity-card.scss (deduplicated).
+// This stub is NOT imported — retained for historical reference only.
+// ================================================================

@@ -1,0 +1,29 @@
+@use '../01.settings/mixins' as *;
+
+.entity-field-links {
+    display: grid;
+    justify-items: start;
+    gap: var(--mc-space-8);
+
+    &__link {
+        display: grid;
+        width: 100%;
+        gap: var(--mc-space-15);
+        justify-items: end;
+        border-bottom: 1px solid var(--mc-gray-300);
+        margin-bottom: var(--mc-space-15);
+    }
+
+    &__link-fields {
+        gap: var(--mc-space-8);
+        padding: var(--mc-space-10);
+
+        & > .field {
+            margin-top: 0;
+
+            & > a {
+                word-break: break-word;
+            }
+        }
+    }
+}

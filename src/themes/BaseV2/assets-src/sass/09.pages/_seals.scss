@@ -1,0 +1,87 @@
+@use '../01.settings/mixins' as *;
+
+.controller-seal {
+    background-color: var(--mc-white);
+
+    .tabs-component__panels {
+        margin-bottom: 0;
+
+        & .container > main > .grid-12 {
+            gap: var(--mc-space-40) var(--mc-space-20);
+        }
+    }
+
+    &.action-edit {
+        background-color: var(--mc-gray-100);
+
+        .tabs-component__panels {
+            background-color: var(--mc-gray-100);
+        }
+
+        .divider {
+            width: 100%;
+            border-bottom: var(--mc-space-1) solid;
+        }
+    }
+
+    &.action-single {
+        .tabs {
+            &-component {
+                &__header {
+                    border-bottom: 1px solid;
+                    padding: 0;
+
+                    // TODO-BREAKPOINT: 1200px is not a canonical breakpoint. Consider adding to $mc-breakpoints or using nearest canonical value.
+                    @media (max-width: size(1200)) {
+                        margin: 0 var(--mc-space-16);                        
+                    }
+                }
+
+                &__buttons {
+                    margin: var(--mc-space-32) 0 0;
+                }
+
+                &__button {
+                    &--active::after {
+                        background-color: var(--mc-primary-500);
+                    }
+                }
+            }
+
+            &__info {
+                .container main {
+                    gap: var(--mc-space-40);
+
+                    h3 {
+                        font-weight: 700;
+                        font-size: var(--mc-space-24);
+                        line-height: var(--mc-space-28);
+                        padding-bottom: var(--mc-space-16);
+                    }
+
+                    h2 {
+                        font-weight: 700;
+                        font-size: var(--mc-space-24);
+                        line-height: var(--mc-space-28);
+                    }
+
+                    .property {
+                        padding-top: 176px;
+                    }
+
+                }
+
+                .divider {
+                    background-color: var(--mc-gray-300);
+                    grid-column-end: span 3;
+                    height: size(0.5);
+                    width: 100%;
+                    
+                    @include respond-below('md') {
+                        grid-column-end: 2;
+                    }
+                }
+            }
+        }
+    }
+}

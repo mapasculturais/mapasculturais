@@ -1,0 +1,148 @@
+@use '../01.settings/mixins' as *;
+
+.faq-accordion {
+    background-color: var(--mc-gray-100);
+
+    &__items {
+        display: grid;
+        gap: var(--mc-space-8);
+        max-width: size(870);
+    }
+
+    &__intro {
+        padding: var(--mc-space-18) var(--mc-space-16);
+        border-bottom: var(--mc-space-1) solid var(--mc-gray-300);
+        background: var(--mc-white);
+    }
+
+    &__results {
+        // TODO-BREAKPOINT: 500px is not a canonical breakpoint. Consider adding to $mc-breakpoints or using nearest canonical value.
+        @include respond-below('mob') {
+            font-size: var(--mc-space-16);
+        }
+    }
+
+    &__response {
+        & > blockquote {
+            padding: var(--mc-space-10) var(--mc-space-16);
+            margin: var(--mc-space-16) 0;
+            background-color: var(--mc-gray-100);
+
+            & > p {
+                margin-bottom: var(--mc-space-10);
+
+                &:last-child {
+                    margin-bottom: 0;
+                }
+            }
+        }
+
+        & > p {
+            margin-bottom: var(--mc-space-15);
+        }
+
+        & > ul {
+            text-align: left;
+        }
+
+        & > table {
+            margin: var(--mc-space-15) 0;
+            
+            & > thead > tr > th {
+                border-bottom: var(--mc-space-2) solid var(--mc-low-500);
+                text-align: left;
+            }
+
+            & > tbody > tr > td {
+                border-bottom: var(--mc-space-1) solid var(--mc-low-500);
+            }
+        }
+    }
+
+    &__image {
+        max-width: size(272);
+        height: auto;
+        width: 100%;
+        margin: 0 auto;
+
+        // TODO-BREAKPOINT: 500px is not a canonical breakpoint. Consider adding to $mc-breakpoints or using nearest canonical value.
+        @include respond-below('mob') {
+            max-width: size(132);
+        }
+    }
+
+    &__msg {
+        font-size: var(--mc-font-size-sm);
+        color: var(--mc-gray-700);
+
+        // TODO-BREAKPOINT: 500px is not a canonical breakpoint. Consider adding to $mc-breakpoints or using nearest canonical value.
+        @include respond-below('mob') {
+            font-size: var(--mc-space-14);
+        }
+    }
+
+    &__backhelp {
+        // TODO-BREAKPOINT: 500px is not a canonical breakpoint. Consider adding to $mc-breakpoints or using nearest canonical value.
+        @include respond-below('mob') {
+            font-size: var(--mc-space-19);
+        }
+    }
+
+    &__noresults {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        gap: var(--mc-space-16);
+    }
+
+    &__context {
+        font-size: var(--mc-space-14);
+    }
+
+    &__contexts:first-child {
+        padding: 0 var(--mc-space-16) var(--mc-space-8) 0;
+    }
+
+    &__contexts {
+        max-width: size(870);
+        padding: var(--mc-space-24) 0 var(--mc-space-15);
+        display: grid;
+        gap: var(--mc-space-8);
+
+    }
+
+    &__description {
+        margin-bottom: var(--mc-space-16);
+        background: var(--mc-white);
+        padding: var(--mc-space-16);
+    }
+
+    &__subtitle {
+        font-size: var(--mc-space-14);
+    }
+
+    &__tags {
+        background-color: var(--mc-eval-not-eval);
+        margin: var(--mc-space-16) 0;
+    }
+
+    &__header {
+        padding: var(--mc-space-18) var(--mc-space-16);
+        background: var(--mc-white);
+        justify-content: center;
+        align-items: center;
+        display: grid;
+        grid-template-columns: 1fr var(--mc-space-12);
+        max-width: size(870);
+        border-radius: var(--mc-space-4);
+    }
+
+    &__content {
+        padding: var(--mc-space-16);
+        background: var(--mc-white);
+        border-top: var(--mc-space-1) solid var(--mc-gray-100);
+        max-width: size(870);
+
+    }
+}

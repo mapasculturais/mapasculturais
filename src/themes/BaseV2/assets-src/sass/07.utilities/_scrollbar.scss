@@ -1,0 +1,24 @@
+// ============================================================================
+// Scrollbar Utility — Migrated from 0.settings/_atoms.scss
+// ============================================================================
+@use '../01.settings/mixins' as *;
+
+.scrollbar {
+    overflow: auto;
+
+    &::-webkit-scrollbar {
+        width: var(--mc-space-16);
+        height: var(--mc-space-16);
+    }
+
+    &::-webkit-scrollbar-track {
+        background: unset;
+        border-radius: 50px;
+    }
+
+    &::-webkit-scrollbar-thumb {
+        background-color: var(--mc-gray-600);
+        border-radius: var(--mc-border-radius-pill);
+        border: 4px solid var(--mc-white);
+    }
+}

@@ -1,0 +1,86 @@
+// ============================================================================
+// Object: Card Shell — structural layout for card patterns
+// Reuse sites: entity-card, evaluation-card, registration-card,
+// opportunity-list, panel-entity-card, notification-card, mc-card, etc.
+// ============================================================================
+@use '../01.settings/mixins' as *;
+
+.card-shell {
+    // CSS custom properties for dimension variance
+    --card-shell-gap: var(--mc-space-16);
+    --card-shell-padding: var(--mc-space-16);
+    --card-shell-radius: var(--mc-border-radius-sm);
+    --card-shell-header-gap: var(--mc-space-12);
+
+    background-color: transparent;
+    border-radius: var(--card-shell-radius);
+    display: flex;
+    flex-direction: column;
+    gap: var(--card-shell-gap);
+    overflow: hidden;
+    position: relative;
+
+    &__header {
+        display: flex;
+        align-items: flex-start;
+        gap: var(--card-shell-header-gap);
+        padding: var(--card-shell-padding);
+        padding-block-end: 0;
+    }
+
+    &__header-figure {
+        flex-shrink: 0;
+        // Width/height set via CSS custom prop by consuming component
+        --card-shell-figure-size: var(--mc-space-64);
+        width: var(--card-shell-figure-size);
+        height: var(--card-shell-figure-size);
+    }
+
+    &__header-info {
+        flex: 1;
+        min-width: 0;
+    }
+
+    &__header-actions {
+        flex-shrink: 0;
+        display: flex;
+        gap: var(--mc-space-8);
+        align-items: center;
+    }
+
+    &__main {
+        padding: var(--card-shell-padding);
+        padding-block-start: 0;
+    }
+
+    &__footer {
+        display: flex;
+        align-items: center;
+        padding: var(--card-shell-padding);
+        padding-block-start: 0;
+    }
+
+    &__footer-actions {
+        display: flex;
+        gap: var(--mc-space-8);
+        align-items: center;
+        margin-inline-start: auto;
+    }
+
+    // Structural modifiers
+    &--compact {
+        --card-shell-gap: var(--mc-space-8);
+        --card-shell-padding: var(--mc-space-8);
+        --card-shell-header-gap: var(--mc-space-8);
+    }
+
+    &--portrait {
+        flex-direction: column;
+
+        .card-shell__header-figure {
+            width: 100%;
+            height: auto;
+            aspect-ratio: 16 / 9;
+        }
+    }
+}

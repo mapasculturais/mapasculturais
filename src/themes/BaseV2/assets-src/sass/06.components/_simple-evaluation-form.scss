@@ -1,0 +1,14 @@
+@use '../01.settings/mixins' as *;
+
+.simple-evaluation-form {
+    &__content {
+        textarea {
+            min-height: size(223);
+        }
+    }
+
+    // NOTE-BEM: .field__label is a cross-component selector — owned by mc-field
+    .field__label {
+        font-size: var(--mc-space-16);
+    }
+}

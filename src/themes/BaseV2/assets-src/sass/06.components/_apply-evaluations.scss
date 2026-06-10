@@ -1,0 +1,46 @@
+@use '../01.settings/mixins' as *;
+
+.apply-evaluations {
+    &__range {
+        min-height: size(50);
+        margin: 0 size(25.6);
+        display: inline-grid;
+        align-items: end;
+    }
+
+    &__apply-all {
+        display: grid;
+        gap: var(--mc-space-16);
+        margin-top: var(--mc-space-14);
+    }
+
+    // NOTE-BEM: .classification__panel is a cross-component selector — external to this block
+    .classification__panel {
+        margin-top: var(--mc-space-20);
+    }
+
+    // NOTE-BEM: .field__waitlist, .field__input are cross-component selectors — owned by mc-field
+    .field__waitlist {
+        text-align: start;
+    }
+    
+    .field__input[type=checkbox] {
+        width: size(29.6);
+    }
+
+    // NOTE-BEM: .tabs-component__header, .tabs-component__panels are external component selectors — owned by tabs-component
+    .tabs-component__header {
+        justify-content: center;
+    }
+    
+    .tabs-component__panels {
+        margin: 0 auto !important;
+    }
+
+    @include respond-above('md') {
+        .modal-content {
+            max-width: size(570);
+            min-width: size(570);
+        }
+    }
+}

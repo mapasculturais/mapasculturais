@@ -1,0 +1,28 @@
+@use '../01.settings/mixins' as *;
+
+.opportunity-category-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--mc-space-16);
+    max-width: 90%;
+
+    &__add-category {
+        display: flex;
+        align-items: center;
+        gap: var(--mc-space-32);
+        
+        .field {
+           max-width: size(432);
+
+            & input {
+                max-width: size(432);
+                padding: var(--mc-space-8);
+            }
+        }
+
+        @include respond-below('sm') {
+            flex-wrap: wrap;
+            gap: var(--mc-space-16);
+        }
+    }
+}

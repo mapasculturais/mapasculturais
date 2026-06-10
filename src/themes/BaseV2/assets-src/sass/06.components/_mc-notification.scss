@@ -1,0 +1,28 @@
+@use '../01.settings/mixins' as *;
+
+.mc-notification {
+  display: flex;
+  align-items: center;
+  justify-content: start;
+  border-radius: var(--mc-space-8);
+  padding: 0 var(--mc-space-22);
+  font-size: var(--mc-space-14);
+  font-weight: 600;
+  line-height: var(--mc-space-19);
+
+  &--error {
+    background: var(--mc-danger-300);
+  }
+
+  &--success {
+    background: var(--mc-success-300);
+  }
+
+  &--info {
+    background: var(--mc-primary-300);
+  }
+
+  p {
+    padding-left: var(--mc-space-8);
+  }
+}

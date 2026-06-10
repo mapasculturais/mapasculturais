@@ -1,0 +1,60 @@
+// ============================================================================
+// Object: Accordion Shell — structural expandable/collapsible container
+// Absorbs mc-collapse functionality via --animated modifier
+// Reuse sites: faq-accordion, mc-accordion, entity-terms, panel sections
+// ============================================================================
+
+.accordion-shell {
+    --accordion-shell-gap: var(--mc-space-0);
+
+    border: none; // cosmetics set by component
+    display: flex;
+    flex-direction: column;
+    gap: var(--accordion-shell-gap);
+
+    &__trigger {
+        align-items: center;
+        cursor: pointer;
+        display: flex;
+        justify-content: space-between;
+        width: 100%;
+        // Typography/colors set by consuming component
+    }
+
+    &__content {
+        overflow: hidden;
+        // Height managed by JS or CSS transition
+    }
+
+    &__icon {
+        flex-shrink: 0;
+        --accordion-shell-icon-size: var(--mc-space-20);
+        width: var(--accordion-shell-icon-size);
+        height: var(--accordion-shell-icon-size);
+        transition: transform 0.2s ease;
+    }
+
+    // Animated variant (absorbs mc-collapse)
+    &--animated {
+        .accordion-shell__content {
+            max-height: 0;
+            transition: max-height 0.3s ease-out;
+        }
+
+        .accordion-shell__icon {
+            transform: rotate(0deg);
+        }
+
+        &.is-open,
+        &.active {
+            .accordion-shell__content {
+                max-height: 1000px; // large enough for content
+                transition: max-height 0.5s ease-in;
+            }
+
+            .accordion-shell__icon {
+                transform: rotate(180deg);
+            }
+        }
+    }
+}

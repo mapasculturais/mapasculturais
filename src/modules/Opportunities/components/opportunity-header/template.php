@@ -13,26 +13,26 @@ $this->import('
 <header class="opportunity-header">
     <?php $this->applyTemplateHook('opportunity-header', 'begin'); ?>
     <div class="opportunity-header__content">
-        <div class="left">
-            <div class="image">
+        <div class="opportunity-header__left">
+            <div class="opportunity-header__image">
                <mc-avatar :entity="firstPhase" size="medium"></mc-avatar>
             </div>
-            <div class="title">
+            <div class="opportunity-header__title">
                 <slot name="title-name">
                     <span class="title__title">
                         <a :href="firstPhase.getUrl('single')">{{firstPhase.name}}</a>
                     </span>
                 </slot>
                 <div class="title__info">
-                    <div class="data">
+                    <div class="opportunity-header__data">
                         <div class="data__title"> <?= i::__('ID')?>: </div>
                         <div class="data__info "><strong>{{opportunity.id}}</strong></div>
                     </div>
-                    <div class="data">
+                    <div class="opportunity-header__data">
                         <div class="data__title"> <?= i::__('Tipo')?>: </div>
                         <div class="data__info opportunity__color"> {{firstPhase.type?.name}} </div>
                     </div>
-                    <div v-if="firstPhase.ownerEntity?.name" class="data">
+                    <div v-if="firstPhase.ownerEntity?.name" class="opportunity-header__data">
                         <div class="data__title"> {{type}}: </div>
                         <div class="data__info"> <mc-link :entity="firstPhase.ownerEntity"></mc-link> <!-- {{firstPhase.ownerEntity?.name}} --> </div>
                     </div>
@@ -42,7 +42,7 @@ $this->import('
                 </div>
             </div>
         </div>
-        <div class="right">
+        <div class="opportunity-header__right">
             <slot name="button"></slot>
         </div>
         

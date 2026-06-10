@@ -43,8 +43,8 @@ $this->import('
 	</div>
 
 	<div class="entity-card__content">
-		<div v-if="entity.__objectType=='space' && entity.endereco" class="entity-card__content--description">
-			<label class="entity-card__content--description-local"><?= i::_e('ONDE: ') ?></label> <strong class="entity-card__content--description-adress">{{entity.endereco}}</strong>
+		<div v-if="entity.__objectType=='space' && entity.endereco" class="entity-card__content__description">
+			<label class="entity-card__content__description-local"><?= i::_e('ONDE: ') ?></label> <strong class="entity-card__content__description-adress">{{entity.endereco}}</strong>
 		</div>
 
 		<template v-if="entity.__objectType=='opportunity'">
@@ -79,7 +79,7 @@ $this->import('
 			</button>
 		</div>
 
-		<div v-if="entity.__objectType=='space'" class="entity-card__content--description">
+		<div v-if="entity.__objectType=='space'" class="entity-card__content__description">
 			<label><?= i::_e('ACESSIBILIDADE:') ?>
 				<strong v-if="entity.acessibilidade === 'Sim'"> <?= i::_e('Oferece') ?> </strong>
 				<strong v-else-if="entity.acessibilidade === 'Não'"> <?= i::_e('Não') ?> </strong>
@@ -87,17 +87,17 @@ $this->import('
 			</label>
 		</div>
 
-		<div class="entity-card__content--terms">
+		<div class="entity-card__content__terms">
 			<?php $this->part('entity-card/area') ?>
 
-			<div v-if="tags" class="entity-card__content--terms-tag">
+			<div v-if="tags" class="entity-card__content__terms-tag">
 				<label class="tag__title">
 					<?php i::_e('Tags:') ?> ({{entity.terms.tag.length}}):
 				</label>
 				<p :class="['terms', entity.__objectType+'__color']"> {{tags}} </p>
 			</div>
 
-			<div v-if="linguagens" class="entity-card__content--terms-linguagem">
+			<div v-if="linguagens" class="entity-card__content__terms-linguagem">
 				<label class="linguagem__title">
 					<?php i::_e('linguagens:') ?> ({{entity.terms.linguagem.length}}):
 				</label>
@@ -107,7 +107,7 @@ $this->import('
 	</div>
 
 	<div class="entity-card__footer">
-		<div class="entity-card__footer--info">
+		<div class="entity-card__footer__info">
 			<div v-if="seals" class="seals">
 				<label class="seals__title">
 					<?php i::_e('Selos') ?>:
@@ -116,7 +116,7 @@ $this->import('
 			</div>
 		</div>
 
-		<div class="entity-card__footer--action">
+		<div class="entity-card__footer__action">
 			<a :href="entity.singleUrl" class="button button--primary button--large button--icon">
 				<?php i::_e('Acessar') ?>
 				<mc-icon name="access"></mc-icon>

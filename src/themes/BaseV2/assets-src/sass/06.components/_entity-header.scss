@@ -1,0 +1,411 @@
+@use '../01.settings/mixins' as *;
+
+.entity-header {
+    background-color: var(--mc-white);
+    margin: 0 auto;
+    position: relative;
+    width: 100%;
+    
+    @include respond-below('md') {
+        &__title {
+            text-align: center;
+        }
+    }
+
+    &__single {
+        margin: 0 auto;
+        max-width: var(--mc-layout-container-xl);
+        position: relative;
+    }
+
+    &__single-cover {
+        aspect-ratio: 3/1;
+        background-color: var(--mc-gray-300);
+        background-image: var(--url);
+        background-position: center;
+        background-size: cover;
+        max-width: var(--mc-layout-container-xl);
+        margin: 0 auto;
+        padding: var(--mc-space-10);
+        position: relative;
+        width: 100%;
+
+        .iconify {
+            font-size: size(76);
+            color: var(--mc-white);
+            position: absolute;
+            top: calc(50% - (size(76) / 2));
+            left: calc(50% - (var(--mc-space-64) / 2));
+        }
+    }
+
+    &__single-content {
+        display: flex;
+        max-width: var(--mc-layout-container-xl);
+        margin: 0 auto;
+        padding: 0 var(--mc-space-16);
+        gap: var(--mc-space-32);
+
+        .leftSide,
+        .entity-header__avatar-side {
+            z-index: 1;
+            flex-shrink: 0;
+
+            .avatar {
+                align-items: center;
+                background-color: var(--mc-gray-500);
+                border-radius: 50%;
+                display: flex;
+                justify-content: center;
+                object-fit: cover;
+                overflow: hidden;
+                max-width: size(167);
+                width: 100%;
+
+                img {
+                    width: 100%;
+                    height: 100%;
+                    z-index: 1;
+                }
+
+                svg {
+                    font-size: size(80);
+                    color: var(--mc-white);
+                }
+
+                @include respond-below('md') {
+                    height: size(113);
+                    margin-top: size(-48);
+                    width: size(113);
+                }
+
+                @include respond-above('md') {
+                    margin-top: size(-80);
+                }
+            }
+        }
+
+        .rightSide {
+            width: 100%;
+            padding-top: var(--mc-space-8);
+            display: flex;
+            flex-direction: column;
+            gap: var(--mc-space-15);
+
+            .site {
+                display: flex;
+                flex-direction: column;
+                margin-top: size(--mc-font-size-xs);
+
+                .iconify {
+                    margin-right: var(--mc-space-7);
+                    font-size: size(22.5);
+                }
+
+                a {
+                    align-items: center;
+                    display: flex;
+                    text-decoration: none;
+                    font-weight: 600;
+                    color: var(--mc-low-500);
+                }
+            }
+
+            .title {
+                font-style: normal;
+                font-weight: 700;
+                font-size: var(--mc-space-48);
+                line-height: size(65);
+                margin-top: var(--mc-space-10);
+
+                @include respond-below('md') {
+                    font-size: var(--mc-space-24);
+                    line-height: var(--mc-space-32);
+                    text-align: center;
+                    margin: 0;
+                }
+            }
+
+            .share-mobile {
+                display: none;
+                max-width: unset;
+                
+                @include respond-below('md') {
+                    display: flex;
+                    margin: var(--mc-space-3) 0 var(--mc-space-11);
+                }
+            }
+
+            .description {
+                word-break: break-word;
+                white-space: pre-line;
+
+                p {
+                    line-height: var(--mc-space-18);
+                    margin: 0;
+                }
+
+                @include respond-below('ml') {
+                    font-size: var(--mc-space-14);
+                    line-height: var(--mc-space-16);
+                }
+
+                &--event {
+                    padding-bottom: var(--mc-space-16);
+                }
+            }
+        }
+
+        .share {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: var(--mc-space-7) var(--mc-space-9);
+            max-width: size(167);
+
+            .button {
+                color: var(--mc-gray-700);
+                padding: var(--mc-space-10);
+                color: var(--mc-gray-700);
+
+                .iconify {
+                    font-size: var(--mc-space-18);
+                }
+            }
+
+            @include respond-above('md') {
+                margin: var(--mc-space-16) var(--mc-space-32) var(--mc-space-22) var(--mc-space-16);
+            }
+
+            @include respond-below('md') {
+                display: none;
+            }
+        }
+
+        .metadata {
+            display: flex;
+            gap: var(--mc-space-40);
+
+            &__id {
+                font-family: var(--mc-font-body);
+                font-style: normal;
+                font-weight: 600;
+                font-size: var(--mc-space-14);
+                line-height: var(--mc-space-19);
+
+                &--id {
+                    font-weight: 600;
+                    font-size: var(--mc-space-14);
+                    line-height: var(--mc-space-19);
+                }
+                
+            }
+            
+            dl {
+                display: inline-block;
+                margin: var(--mc-space-4) 0;
+
+                @include respond-below('md') {
+                    display: flex;
+                    margin: var(--mc-space-6) 0;
+                    justify-content: center;
+                    align-items: baseline;
+                }
+            }
+
+            dt,
+            dd {
+                display: inline-block;
+                margin: 0;
+
+                @include respond-below('md') {
+                    font-size: var(--mc-space-12);
+                    line-height: var(--mc-space-16);
+                }
+            }
+
+            dt {
+                color: var(--mc-gray-700);
+                font-size: var(--mc-space-12);
+                font-style: normal;
+                font-weight: normal;
+                font-size: var(--mc-space-14);
+
+                line-height: var(--mc-space-16);
+                text-transform: uppercase;
+
+                &::after {
+                    content: ':';
+                }
+            }
+
+            dd {
+                font-size: var(--mc-space-16);
+                font-weight: bold;
+                line-height: var(--mc-space-21);
+                margin-left: var(--mc-space-5);
+                font-size: var(--mc-space-14);
+                text-align: left;
+
+                &.type {
+                    text-transform: uppercase;
+                }
+            }
+
+            @include respond-below('md') {
+                text-align: center;
+                flex-direction: column;
+                padding: var(--mc-space-10) var(--mc-space-15);
+            }
+        }
+
+        @include respond-below('md') {
+            flex-direction: column;
+        }
+    }
+
+    &--no-image {
+        .entity-header {
+            &__single-content {
+                padding-bottom: var(--mc-space-30);
+
+                .leftSide {
+                    // TODO-BREAKPOINT: 900px is not a canonical breakpoint. Consider adding to $mc-breakpoints or using nearest canonical value.
+                    @include respond-below('ml') {
+                        margin: 0 auto;
+                    }
+
+                    .avatar {
+                        margin-top: 0;
+                        margin-left: 0;
+
+                        .iconify {
+                            height: size(75);
+                            width: size(75);
+                        }
+
+                        // TODO-BREAKPOINT: 900px is not a canonical breakpoint. Consider adding to $mc-breakpoints or using nearest canonical value.
+                        @include respond-below('ml') {
+                            height: size(113);
+                            width: size(113);
+
+                            .mc-avatar--big {
+                                min-width: unset;
+                                min-height: unset;
+                                width: 100%;
+                                height: 100%;
+                            }
+
+                            .iconify {
+                                height: size(58);
+                                width: size(58);
+                            }
+                        }
+                    }
+                }
+
+        .rightSide,
+        .entity-header__info-side {
+                    // TODO-BREAKPOINT: 901px is not a canonical breakpoint. Consider adding to $mc-breakpoints or using nearest canonical value.
+                    @include respond-above('ml') {
+                        padding-top: var(--mc-space-10);
+                    }
+                }
+
+                .share {
+                    margin-left: 0;
+                }
+            }
+
+            &__single-cover {
+                aspect-ratio: unset;
+                background: none;
+                height: size(60);
+            }
+        }
+    }
+
+    &__edit {
+        margin: 0 auto;
+        max-width: var(--mc-layout-container-xl);
+        position: relative;
+    }
+
+    &__edit-content {
+        align-items: baseline;
+        display: flex;
+        justify-content: space-between;
+        padding: size(74) var(--mc-space-16) size(61);
+
+        .title {
+            align-items: center;
+            display: grid;
+            gap: var(--mc-space-18);
+            grid-template-columns: size(72) calc(100% - size(90));
+
+            .icon {
+                align-items: center;
+                border-radius: 50%;
+                display: flex;
+                height: size(72);
+                justify-content: center;
+                width: size(72);
+
+                .iconify {
+                    font-size: var(--mc-space-40);
+                    color: var(--mc-white);
+                }
+            }
+        }
+
+        @include respond-below('md') {
+            justify-content: flex-start;
+            padding: size(60) var(--mc-space-16) var(--mc-space-20);
+
+            .title {
+                grid-template-columns: size(52) calc(100% - size(70));
+
+                .icon {
+                    height: size(52);
+                    width: size(52);
+
+                    .iconify {
+                        font-size: var(--mc-space-30);
+                    }
+                }
+
+                h2 {
+                    font-weight: 700;
+                    font-size: var(--mc-space-18);
+                    line-height: var(--mc-space-25);
+                }
+            }
+
+            .button {
+                display: none;
+            }
+        }
+
+        // TODO-BREAKPOINT: 500px is not a canonical breakpoint. Consider adding to $mc-breakpoints or using nearest canonical value.
+        @include respond-below('mob') {
+            .title {
+                grid-template-columns: var(--mc-space-32) calc(100% - size(50));
+
+                .icon {
+                    height: var(--mc-space-32);
+                    width: var(--mc-space-32);
+
+                    .iconify {
+                        font-size: var(--mc-space-18);
+                    }
+                }
+
+                h2 {
+                    font-weight: 700;
+                    font-size: var(--mc-space-18);
+                    line-height: var(--mc-space-25);
+                }
+            }
+        }
+    }
+}

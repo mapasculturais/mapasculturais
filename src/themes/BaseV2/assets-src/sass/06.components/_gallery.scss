@@ -1,0 +1,261 @@
+@use '../01.settings/mixins' as *;
+
+// NOTE: body.galleryOpen uses a BEM-adjacent class for global state.
+// Keeping as-is since it's a body-level modifier triggered by JS.
+body.galleryOpen {
+    overflow: hidden;
+}
+
+.entity-gallery {
+    display: flex;
+    flex-direction: column;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    
+    h2 {
+        margin: 0 0 var(--mc-space-16) 0;
+    }
+
+    &__title {
+        font-weight: 700;
+        font-size: var(--mc-space-18);
+        line-height: var(--mc-space-25);
+        margin-bottom: var(--mc-space-8);
+    }
+
+    &__list {
+        display: flex;
+        flex-wrap: wrap;
+        gap: var(--mc-space-24);
+        margin-bottom: var(--mc-space-24);
+
+        &--image, &--video {
+            align-items: center;
+            display: flex;
+            flex-direction: column;
+            gap: var(--mc-space-8);
+            justify-content: space-between;
+            max-width: size(139);
+
+            &-img {
+                aspect-ratio: 1.34/1;
+                border: var(--mc-border-hairline) var(--mc-gray-100);
+                border-radius: var(--mc-border-radius-xs);
+                cursor: pointer;
+                display: flex;
+                height: size(104);
+                justify-content: center;
+                overflow: hidden;
+                width: size(139);
+            }
+
+            &-label {
+                cursor: pointer;
+                font-weight: 500;
+                font-size: var(--mc-space-16);
+                line-height: var(--mc-space-22);
+                margin: var(--mc-space-8) 0 0;
+                word-break: break-word;
+            }
+
+            &-actions {
+                align-items: center;
+                background-color: var(--mc-gray-300);
+                border-radius: var(--mc-border-radius-xs);
+                display: flex;
+                height: var(--mc-space-30);
+                justify-content: space-evenly;
+                width: size(80);
+    
+                a {
+                    align-items: center;
+                    cursor: pointer;
+                    display: flex;
+                    font-size: var(--mc-space-15);
+                    justify-content: center;
+                    padding: size(7.5);
+
+                    &:hover {
+                        color: var(--mc-gray-700);
+                    }
+                }
+            }
+        }
+    }
+
+    &__addNew {
+        .v-popper {
+            width: fit-content;
+        }
+    }
+
+    &__full {
+        align-items: center;
+        display: none;
+        height: 100vh;
+        justify-content: center;
+        left: 0;
+        position: fixed;
+        top: 0;
+        width: 100vw;
+        z-index: 250;
+
+        &.active {
+            display: flex;
+        }
+
+        &--overlay {
+            background: rgba(black, 0.7);
+            background: color(from var(--mc-black) srgb r g b / 0.7);
+            height: 100vh;
+            left: 0;
+            position: fixed;
+            top: 0;
+            width: 100vw;
+            z-index: 1;
+        }
+
+        &--image,
+        &--video {
+            align-items: center;
+            background-color: var(--mc-high-500);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            max-width: var(--mc-layout-container-xl);
+            min-width: size(50);
+            min-height: size(50);
+            overflow: hidden;
+            z-index: 1;
+            width: auto;
+
+            .description,
+            .entity-gallery__full--image-description {
+                background: color(from var(--mc-black) srgb r g b / 0.5);
+                bottom: 0;
+                color: var(--mc-high-500);
+                max-width: var(--mc-layout-container-xl);
+                position: relative;
+                padding: var(--mc-space-16);
+                width: 100%;
+
+                &:before {
+                    content: '';
+                    width: 100vw;
+                    height: 100%;
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                    margin: 0 calc(50% - 50vw);
+                    background: rgba(black, 0.7);
+                    background: color(from var(--mc-black) srgb r g b / 0.7);
+                    z-index: -1;
+                }
+            }
+
+            p {
+                margin: var(--mc-space-20) size(50);
+            }
+
+            .btnPrev,
+            .entity-gallery__btn-prev,
+            .btnNext,
+            .entity-gallery__btn-next,
+            .btnClose,
+            .entity-gallery__btn-close {
+                align-items: center;
+                background: rgba(black, 0.2);
+                background: color(from var(--mc-black) srgb r g b / 0.2);
+                border-radius: var(--mc-border-radius-xs);
+                color: var(--mc-white);
+                cursor: pointer;
+                display: flex;
+                font-size: size(50);
+                justify-content: center;
+                padding: var(--mc-space-40) var(--mc-space-25);
+                width: size(100);
+                height: size(130);
+                opacity: .4;
+
+                &:hover, &:active {
+                    background: rgba(black, 0.4);
+                    background: color(from var(--mc-black) srgb r g b / 0.4);
+                    opacity: 1;
+                }
+            }
+
+            // TODO-BREAKPOINT: 500px is not a canonical breakpoint. Consider adding to $mc-breakpoints or using nearest canonical value.
+            @include respond-below('mob') {
+                .btnPrev,
+                .btnNext {
+                    font-size: var(--mc-space-25);
+                    height: size(50);
+                    padding: var(--mc-space-16);
+                    width: size(50);
+                    opacity: .7;
+                }
+            }
+
+            .btnPrev {
+                position: absolute;
+                left: 0;
+            }
+
+            .btnNext {
+                position: absolute;
+                right: 0;
+            }
+
+            .btnClose {
+                position: fixed;
+                top: 0;
+                right: 0;
+                height: size(70);
+                width: size(70);
+                padding: 0;
+            }
+        }
+
+        &--image {
+
+            svg {
+                position: absolute;
+                font-size: size(50);
+                z-index: 1;
+            }
+
+            img {
+                width: 100%;
+                max-height: 80vh;
+            }
+
+        }
+
+        &--video {
+            z-index: 2;
+            border-radius: 50%;
+
+            .iconify {
+                font-size: size(50);
+            }
+
+            iframe {
+                aspect-ratio: 16/9;
+                border: none;
+                bottom: 0;
+                height: auto;
+                left: 0;
+                margin: auto;
+                max-width: 800px;
+                position: absolute;
+                right: 0;
+                top: 0;
+                width: 100%;
+            }
+        }
+    }
+}

@@ -44,7 +44,7 @@ $this->import('
         <?php $this->applyTemplateHook('mc-entity-menu-mobile','begin'); ?>
         <slot name="default"></slot>
         <li> 
-            <a href="<?= $app->createUrl('panel', 'index') ?>" class="mc-header-menu--item painel">
+            <a href="<?= $app->createUrl('panel', 'index') ?>" class="mc-header-menu__item painel">
                 <span class="icon"> <mc-icon name="dashboard"></mc-icon> </span>
                 <p class="label"> <?php i::_e('Painel de controle') ?> </p>      
             </a> 

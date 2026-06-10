@@ -1,0 +1,139 @@
+@use '../01.settings/mixins' as *;
+
+// Define comportamento dos itens do menu de entidades (em todo o sistema)
+// Phase 2 rename: mc-header-menu--item → mc-header-menu__item (dual selector in component).
+// Using new __item naming; old --item still works via component's dual selector.
+.action {
+    &-index {
+        .mc-header-menu__item.home {
+            .icon {
+                background-color: var(--mc-primary-500);
+            }
+            .label {
+                color: var(--mc-primary-500);
+            }
+        } 
+    }
+
+    &-projects {
+        .mc-header-menu__item.project {
+            .icon {
+                background-color: var(--mc-projects-500);
+            }
+            .label {
+                color: var(--mc-projects-500);
+            }
+        }
+    }
+    
+    &-spaces {
+        .mc-header-menu__item.space {
+            .icon {
+                background-color: var(--mc-spaces-500);
+            }
+            .label {
+                color: var(--mc-spaces-500);
+            }
+        }
+    }
+    
+    &-events {
+        .mc-header-menu__item.event {
+            .icon {
+                background-color: var(--mc-events-500);
+            }
+            .label {
+                color: var(--mc-events-500);
+            }
+        }
+    }
+    
+    &-agents {
+        .mc-header-menu__item.agent {
+            .icon {
+                background-color: var(--mc-agents-500);
+            }
+            .label {
+                color: var(--mc-agents-500);
+            }
+        }
+    }   
+    
+    &-opportunities {
+        .mc-header-menu__item.opportunity {
+            .icon {
+                background-color: var(--mc-opportunities-500);
+            }
+            .label {
+                color: var(--mc-opportunities-500);
+            }
+        }
+    }
+}
+
+.main-header {
+    background-color: var(--mc-white);
+    box-shadow: var(--mc-shadow-lv1);
+    width: 100%;
+    z-index: 100;
+    position: relative;
+
+    &__content {        
+        align-items: center;
+        display: flex;
+        gap: var(--mc-space-30);
+        height: size(90);
+        justify-content: space-between;
+        padding: 0 var(--mc-space-16);
+        max-width: var(--mc-layout-page-max);
+        width: 100%;
+        margin: 0 auto;
+
+        .logIn {
+            align-items: center;
+            background:  var(--mc-low-500);
+            border-radius: var(--mc-border-radius-xs);
+            color: var(--mc-white);
+            display: flex;
+            font-size: var(--mc-space-14);
+            font-weight: 600;
+            gap: var(--mc-space-28);
+            line-height: var(--mc-space-20);
+            padding: var(--mc-space-14) var(--mc-space-64);
+            text-decoration: none;
+
+            span {
+                display: flex;
+
+                svg {
+                    transform: matrix(-1, 0, 0, 1, 0, 0);
+                }
+            }
+
+            @include respond-below('xl') {
+                padding: var(--mc-space-14) var(--mc-space-32);
+                max-width: size(77);
+                justify-content: center;
+            }
+        }
+
+        &__options {
+            &__userOptions {
+                align-items: center;
+                display: flex;
+                gap: var(--mc-space-30);
+            }
+        }
+    }
+    @include respond-below('xs') {
+       &__content{
+        height: size(53);
+       } 
+    }
+
+    &__buttons {
+        align-items: center;
+        display: flex;
+        gap: 0 var(--mc-space-30);
+    }
+}

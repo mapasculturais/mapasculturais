@@ -1,0 +1,82 @@
+@use '../01.settings/mixins' as *;
+
+// TODO-MC-MEDIA: &__project uses figure(70px)+body grid — candidate for mc-media object
+
+.entity-link-project {
+    margin: 0;
+
+    &__title {
+        margin: 0;
+    }
+
+    &__project {
+        align-items: center;
+        display: grid;
+        grid-template-columns: size(70) 1fr;
+        text-decoration: none;
+    }
+
+    &__project-img {
+        border-radius: 50%;
+        overflow: hidden;
+        width: size(56);
+        height: size(56);
+        margin: var(--mc-space-13) var(--mc-space-14) var(--mc-space-13) 0;
+
+        .profile {
+            width: 100%;
+            height: 100%;
+        }
+
+        .placeholder {
+            align-items: center;
+            background-color: var(--mc-gray-600);
+            color: var(--mc-white);
+            display: flex;
+            font-size: var(--mc-space-25);
+            justify-content: center;
+            height: 100%;
+            width: 100%;
+        }
+    }
+
+    &__project-name {
+        @include entity-name-bold;
+    }
+
+    &__edit {
+        .title {
+            margin-bottom: var(--mc-space-8);
+        }
+    }
+
+    &__edit-btn {
+        align-items: center;
+        cursor: pointer;
+        display: flex;
+        gap: var(--mc-space-8);
+        padding-top: var(--mc-space-16);
+        padding-bottom: var(--mc-space-16);
+
+        .add-button {
+            font-family: var(--mc-font-body);
+            font-weight: 600;
+
+            svg {
+                font-size: var(--mc-space-14);
+            }
+        }
+    }
+
+    .related {
+        &-title {
+            font-family: var(--mc-font-body);
+            font-style: normal;
+            font-weight: 400;
+            font-size: var(--mc-space-16);
+            line-height: var(--mc-space-22);
+            color: var(--mc-black);
+            margin: var(--mc-space-11) 0 var(--mc-space-16);
+        }
+    }
+}

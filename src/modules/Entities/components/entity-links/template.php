@@ -16,7 +16,7 @@ $this->import('
     <h4 class="entity-links__title"> {{title}} </h4>
 
     <ul v-if="entity.metalists.links" class="entity-links__links">
-        <li class="entity-links__links--item" v-for="metalist in entity.metalists.links">
+        <li class="entity-links__links__item" v-for="metalist in entity.metalists.links">
             <a class="link" :class="{'editable': editable}" :href="metalist.value" target="_blank">
                 <mc-icon name="link"></mc-icon>
                 {{metalist.title}}
@@ -40,7 +40,7 @@ $this->import('
 
             <mc-confirm-button @confirm="link.delete()">
                 <template #button="{open}">
-                    <a @click="open()" class="entity-links__button--saved-remove entity-links__button--remove"><mc-icon name="trash"></mc-icon><?= i::__('remover link') ?></a>
+                    <a @click="open()" class="entity-links__button__saved-remove entity-links__button__remove"><mc-icon name="trash"></mc-icon><?= i::__('remover link') ?></a>
                 </template>
                 <template #message="message">
                     <?php i::_e('Deseja remover o link?') ?>
@@ -64,14 +64,14 @@ $this->import('
             <div class="entity-links__buttons">
                 <mc-confirm-button @confirm="delete(index)">
                     <template #button="{open}">
-                        <a @click="open()" class="entity-links__button entity-links__button--remove"><mc-icon name="trash"></mc-icon><?= i::__('remover link') ?></a>
+                        <a @click="open()" class="entity-links__button entity-links__button__remove"><mc-icon name="trash"></mc-icon><?= i::__('remover link') ?></a>
                     </template>
                     <template #message="message">
                         <?php i::_e('Deseja remover o link?') ?>
                     </template>
                 </mc-confirm-button>
 
-                <a @click="save(link, index)" class="entity-links__button entity-links__button--save"><mc-icon name="check"></mc-icon><?= i::__('salvar') ?></a>
+                <a @click="save(link, index)" class="entity-links__button entity-links__button__save"><mc-icon name="check"></mc-icon><?= i::__('salvar') ?></a>
             </div>
         </div>
 

@@ -1,0 +1,85 @@
+@use '../01.settings/mixins' as *;
+$iconColor: var(--mc-primary-500);
+$iconUrl: 'https://api.iconify.design/ic/baseline-arrow-drop-down.svg' +#{$iconColor};
+
+.entity-tabs {
+    .panel__row {
+        max-width: 100%;
+    }
+
+    
+    .tabs-component__button {
+
+        &.archived {
+            --mc-tab-active-color: var(--mc-warning);
+
+            .iconify {
+                color: var(--mc-warning);
+            }
+        }
+
+        &.trash {
+            --mc-tab-active-color: var(--mc-error);
+
+            .iconify {
+                color: var(--mc-error);
+            }
+        }
+    }
+
+    &__filters {
+        display: flex;
+        flex-wrap: wrap;
+
+        &>* {
+            margin: 0 var(--mc-space-8) var(--mc-space-8) 0;
+        }
+    }
+
+    &__search {
+        &-input {
+            background: url(https://api.iconify.design/ant-design/search-outlined.svg) no-repeat 92% center/contain;
+            background-color: var(--mc-white);
+            background-size: var(--mc-space-16);
+            border: var(--mc-border-hairline) var(--mc-gray-500);
+            border-radius: var(--mc-border-radius-pill);
+            display: flex;
+            font-size: var(--mc-space-14);
+            font-weight: 400;
+            height: var(--mc-space-40);
+            line-height: var(--mc-space-19);
+            max-width: 369px;
+            padding: var(--mc-space-9) var(--mc-space-16);
+            width: 100%;
+
+            &:hover,
+            &:focus {
+                background: var(--mc-high-500);
+            }
+
+            &::-webkit-search-cancel-button {
+                background: url(https://api.iconify.design/gg/close.svg) no-repeat 100% center/contain;
+                background-color: transparent;
+                background-size: var(--mc-space-16);
+                display: flex;
+                height: var(--mc-space-16);
+                position: relative;
+                right: 0px;
+                width: var(--mc-space-16);
+                -webkit-appearance: none;
+            }
+        }
+
+        &-select {
+            appearance: none;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            background: url('https://api.iconify.design/ic/baseline-arrow-drop-down.svg?color=%230074c1') no-repeat 96% center/contain;
+            background-size: var(--mc-space-20);
+            background-color: var(--mc-high-500);
+            padding: var(--mc-space-10) var(--mc-space-24) var(--mc-space-10) var(--mc-space-16);
+            border-radius: var(--mc-border-radius-sm);
+        }
+        
+    }
+}

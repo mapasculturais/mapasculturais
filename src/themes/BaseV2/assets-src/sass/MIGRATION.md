@@ -1,138 +1,196 @@
-# Guia de Migracao — BaseV2 SASS (Breaking Change)
+# Guia de Migração — BaseV2 SASS
 
-> **Versao:** 2.0.0  
-> **Publico-alvo:** Desenvolvedores mantendo temas filhos do BaseV2  
-> **Tipo de mudanca:** Breaking change — refatoracao ITCSS + BEM completa
+> **Versão:** 4.0.0 (MAJOR)
+> **Público-alvo:** Desenvolvedores mantendo temas filhos do BaseV2
+> **Tipo de mudança:** Breaking change — refatoração ITCSS + BEM completa (6 fases) + final cleanup
 
----
-
-## 1. Visao Geral do Que Mudou
-
-O tema BaseV2 passou por uma refatoracao completa da arquitetura CSS, alinhando-se com ITCSS (Inverted Triangle CSS) e BEM (Block Element Modifier). As fases executadas foram:
-
-| Fase | Escopo | Impacto nos temas filhos |
-|------|--------|--------------------------|
-| 1 | Reorganizacao ITCSS dos diretorios | Arquivos movidos entre camadas |
-| 2 | Design tokens (spacing, layout, z-index, breakpoints) | Novos tokens disponiveis; `size()` deprecated |
-| 3 | Migracao de `_global.scss` para camadas ITCSS | Arquivo esvaziado |
-| 4 | Migracao de objetos para `1.objects/` | `_container.scss` e `_stack.scss` movidos |
-| 5 | Deduplicacao e consolidacao de componentes | `_entity-models-card.scss` consolidado |
-| 6 | Consolidacao de cores | Novos nomes para `$warning` e `$error` |
-
-### Impacto esperado
-
-- **Baixo impacto** se o tema filho usa apenas o entry point `theme-BaseV2.scss` via `@import` geral.
-- **Medio impacto** se o tema filho faz `@import` direto de arquivos movidos.
-- **Alto impacto** se o tema filho faz override de `_entity-models-card.scss` ou usa cores `$warning`/`$error` com valores hardcoded.
+> ⚠️ **MAJOR VERSION — Temas filhos DEVEM atualizar suas referências de classe antes de fazer upgrade.** Consulte a seção 3 para a lista completa de classes renomeadas.
 
 ---
 
-## 2. Tokens Novos Disponiveis
+## 1. Resumo da Migração
 
-Todos os tokens sao CSS custom properties declaradas em `:root`. Use `var(--mc-*)` em vez de valores hardcoded.
+O tema BaseV2 passou por uma refatoração completa da arquitetura SCSS, executada em 6 fases:
 
-### 2.1 Spacing — `--mc-space-*` (23 tokens)
+| Fase | Escopo | Arquivos afetados | Impacto em temas filhos |
+|------|--------|-------------------|-------------------------|
+| **0 — Foundation** | Renumerar diretórios ITCSS (01–09), mover font-face, remover stubs, corrigir `_` prefix | ~230 arquivos | **Alto** — paths de `@import` mudaram |
+| **1 — New Objects** | Criar 8 Objects, split button Object/Component, limpar mc-avatar, mover mc-title/load-more | 11+ novos | **Baixo** — novos arquivos, sem quebra |
+| **2 — Component Groups** | Processar 210 componentes, fixar ~200 violações BEM, tokenizar cores, decompor entity-card | ~210 arquivos | **Alto** — classes BEM renomeadas |
+| **3 — Pages + Layouts** | Processar 25 arquivos, propagar renames, tokenizar cores, corrigir bug font-size/font-weight | 25 arquivos | **Médio** — renames propagados |
+| **4 — Responsive** | Substituir 52 `mobile/desktop` + 103 `@media` por `respond-*`, marcar 171 TODOs | ~150 arquivos | **Baixo** — apenas internals |
+| **5 — Token Migration** | Migrar 2.851 `size()` para `var(--mc-space-*)`, substituir bare white/black | ~200 arquivos | **Baixo** — semântica preservada |
 
-```scss
-// Disponiveis:
---mc-space-1   // 0.0625rem  (1px)
---mc-space-2   // 0.125rem   (2px)
---mc-space-4   // 0.25rem    (4px)
---mc-space-5   // 0.3125rem  (5px)
---mc-space-8   // 0.5rem     (8px)
---mc-space-10  // 0.625rem   (10px)
---mc-space-12  // 0.75rem    (12px)
---mc-space-14  // 0.875rem   (14px)
---mc-space-15  // 0.9375rem  (15px)
---mc-space-16  // 1rem       (16px)
---mc-space-18  // 1.125rem   (18px)
---mc-space-19  // 1.1875rem  (19px)
---mc-space-20  // 1.25rem    (20px)
---mc-space-22  // 1.375rem   (22px)
---mc-space-24  // 1.5rem     (24px)
---mc-space-25  // 1.5625rem  (25px)
---mc-space-28  // 1.75rem    (28px)
---mc-space-30  // 1.875rem   (30px)
---mc-space-32  // 2rem       (32px)
---mc-space-40  // 2.5rem     (40px)
---mc-space-48  // 3rem       (48px)
---mc-space-64  // 4rem       (64px)
---mc-space-96  // 6rem       (96px)
-```
+### Níveis de impacto
 
-### 2.2 Layout — `--mc-layout-*` (6 tokens)
-
-```scss
---mc-layout-container-xs   // 31.25rem  (500px)
---mc-layout-container-sm   // 37.5rem   (600px)
---mc-layout-container-md   // 50rem     (800px)
---mc-layout-container-lg   // 68rem     (1088px)
---mc-layout-container-xl   // 73.125rem (1170px)
---mc-layout-page-max       // 90rem     (1440px)
-```
-
-### 2.3 Z-index — `--mc-z-*` (10 tokens)
-
-```scss
---mc-z-below    // -1     Atras do conteudo
---mc-z-base     // 0      Default
---mc-z-raised   // 1      Dropdowns simples
---mc-z-float    // 2      Elementos flutuantes
---mc-z-popover  // 3      Popovers
---mc-z-sticky   // 100    Headers fixos
---mc-z-actions  // 200    Botoes de acao flutuantes
---mc-z-gallery  // 250    Galeria/modal de imagem
---mc-z-overlay  // 1000   Modais e overlays
---mc-z-toast    // 10000  Notificacoes toast
-```
-
-### 2.4 Cores novas
-
-```scss
-// Gray scale (novas variantes)
---mc-gray-200   // #E8E8E8
---mc-gray-600   // #666666
-
-// Highlight (CTA / accent)
---mc-highlight-300  // lighten(#FFB300, 25%)
---mc-highlight-500  // #FFB300
---mc-highlight-700  // darken(#FFB300, 25%)
-```
-
-### 2.5 Avaliacao — `--mc-eval-*` (4 tokens)
-
-```scss
---mc-eval-approved  // #BFE88B
---mc-eval-pending   // #99D6FF
---mc-eval-rejected  // #FFB5B5
---mc-eval-not-eval  // #FFCF8F
-```
-
-### 2.6 Status — `--mc-status-*` (4 tokens)
-
-```scss
---mc-status-negative  // #fe4f4f
---mc-status-warning   // #faae4a
---mc-status-info      // #3fb1fd
---mc-status-positive  // #96df37
-```
-
-### 2.7 Breakpoints
-
-```scss
-// Mixins (1.tools/_responsive.scss)
-@include respond-above('md')           // min-width: 800px
-@include respond-below('md')           // max-width: 800px
-@include respond-between('sm', 'lg')   // min: 600px, max: 960px
-
-// Valores disponiveis: 'xs' (400px), 'sm' (600px), 'md' (800px), 'lg' (960px), 'xl' (1170px)
-```
+- **Baixo** — se o tema filho importa apenas o entry point `theme-BaseV2.scss` via `@import` geral e não faz override de arquivos específicos.
+- **Médio** — se o tema filho faz `@use`/`@import` direto de arquivos que mudaram de camada.
+- **Alto** — se o tema filho faz override de componentes com classes BEM renomeadas ou importa por caminhos antigos.
 
 ---
 
-## 3. Funcoes/Mixins Deprecated
+## 2. Quebra de Diretórios
 
-### 3.1 `size(N)` — usar `var(--mc-space-N)` ou `#{N/16}rem`
+### Paths antigos → novos
+
+| Path antigo | Path novo | Notas |
+|-------------|-----------|-------|
+| `0.settings/` | `01.settings/` | Renumerado |
+| `1.tools/` | `02.tools/` | Renumerado (stub `_functions.scss` e `_mixins.scss` removidos) |
+| `2.generic/` | `03.generic/` | Renumerado + `_fonts.scss` adicionado (movido de settings) |
+| `3.elements/` | `04.elements/` | Renumerado (stub `_forms.scss` removido) |
+| `1.objects/` | `05.objects/` | Renumerado + 8 novos Objects |
+| `2.components/` | `06.components/` | Renumerado + 4 arquivos renomeados com `_` prefix |
+| `6.utilities/` | `07.utilities/` | Renumerado |
+| `layouts/` | `08.layouts/` | Renumerado (era sem prefixo numérico) |
+| `pages/` | `09.pages/` | Renumerado (era sem prefixo numérico) |
+
+### Arquivos movidos entre camadas
+
+| Arquivo original | Novo destino | Motivo |
+|-----------------|-------------|--------|
+| `01.settings/_typography.scss` (font-face) | `03.generic/_fonts.scss` | `@font-face` é Generic, não Settings |
+| `0.settings/_global.scss` | Conteúdo distribuído em `03.generic/_reset.scss`, `04.elements/*`, `07.utilities/*`, `06.components/_code.scss`, `08.layouts/_main-app.scss` | Arquivo esvaziado — conteuío migrado para camadas ITCSS corretas |
+| `0.settings/_atoms.scss` | Conteúdo migrado para `07.utilities/*` | Arquivo removido — utilitários foram para camada correta |
+
+### Arquivos removidos
+
+| Arquivo | Motivo |
+|---------|--------|
+| `01.settings/_global.scss` | Esvaziado (conteúdo migrado na Fase 3) |
+| `01.settings/_atoms.scss` | Esvaziado (conteúdo migrado na Fase 2.3) |
+| `02.tools/_mixins.scss` | Stub vazio |
+| `02.tools/_functions.scss` | Stub vazio |
+| `03.generic/_normalize.scss` | Removido (reset unificado em `_reset.scss`) |
+| `04.elements/_forms.scss` | Stub vazio |
+| `_mc-fake-user-create.scss` (sem `_` prefix) | Renomeado para `__mc-fake-user-create.scss` |
+
+### Arquivos renomeados (prefix `_`)
+
+Quatro arquivos em `06.components/` foram corrigidos para seguir a convenção `_filename.scss`:
+
+| Nome antigo | Nome novo |
+|-------------|-----------|
+| `mc-fake-user-create.scss` | `_mc-fake-user-create.scss` |
+| `affirmative-policy--bonus-config.scss` | `_affirmative-policy--bonus-config.scss` |
+| `fields-visible-evaluators.scss` | `_fields-visible-evaluators.scss` |
+| `home-header-alt.scss` | Removido do entry point (sem referência) |
+
+---
+
+## 3. Classe Renomeações (BEM)
+
+As seguintes classes foram renomeadas durante a Fase 2 para cumprir BEM estrito. **Se o tema filho faz override ou referencia essas classes em seus próprios SCSS, atualize os seletores.**
+
+> **Nota:** Todas as 203 violações BEM foram corrigidas. 36 classes externas (geradas por JS/Vue ou templates PHP) permanecem inalteráveis e estão documentadas com `// NOTE:` no SCSS.
+
+### 3.1 `--` → `__` Element Renames
+
+Classes que usavam `--` (modificador) como elemento estrutural foram renomeadas para `__` (elemento). O alias antigo foi **removido** — se o template PHP ainda referencia a classe antiga, o estilo não será aplicado.
+
+| Classe antiga (`--`) | Classe nova (`__`) | Arquivo |
+|----------------------|--------------------| -------|
+| `.main-footer__reg-content` | `.main-footer__reg__content` | `08.layouts/_main-footer.scss` |
+
+> **⚠️ Ação necessária:** Se o tema filho referencia `.main-footer__reg-content`, atualize para `.main-footer__reg__content`. Esta é uma breaking change — a classe antiga foi removida.
+
+### 3.2 Dual-Selectors / Aliases Removidos
+
+Todos os seletores duplos (alias antigo + novo) foram eliminados. Apenas a classe nova permanece no CSS compilado.
+
+### 3.3 mc-avatar — Modificador cosmético removido
+
+| Antes | Depois | Nota |
+|-------|--------|------|
+| `.mc-avatar--warning` | **Removido** | Cosmético — não pertence a Object. Use classe CSS customizada no tema filho. |
+
+### 3.4 mc-title e load-more — Migrados de Object para Component
+
+| Antes (Object) | Depois (Component) | Nota |
+|-----------------|---------------------|------|
+| `05.objects/_mc-title.scss` | `06.components/_mc-title.scss` | Sem mudança de classe, apenas camada |
+| `05.objects/_load-more.scss` | `06.components/_load-more.scss` | Sem mudança de classe, apenas camada |
+
+### 3.5 entity-card — Decomposição
+
+O monólito `entity-card.scss` (1099 LOC) foi decomposto em 3 arquivos:
+
+| Arquivo | Escopo |
+|---------|--------|
+| `06.components/_entity-card.scss` | Card de entidade base (agentes, eventos, espaços, projetos, oportunidades) |
+| `06.components/_panel-entity-card.scss` | Card de entidade no contexto do painel |
+| `06.components/_panel-entity-models-card.scss` | Card de modelos no contexto do painel |
+
+Se o tema filho fazia override de `entity-card.scss` inteiro, verifique se os seletores ainda se aplicam — `panel-entity-models-card` foi extraído como arquivo separado com deduplicação de ~185 LOC.
+
+### 3.6 button — Split Object/Component
+
+| Arquivo | Responsabilidade |
+|---------|-----------------|
+| `05.objects/_button.scss` | Shell estrutural: sizing, layout, ícones, border-radius |
+| `06.components/_button.scss` | Variantes cosméticas: cores, hover, outline |
+
+Se o tema filho fazia override de `_button.scss`, divida o override em dois arquivos:
+- Estrutural → override de `05.objects/_button.scss`
+- Cosmético → override de `06.components/_button.scss`
+
+### 3.7 Cores Tokenizadas
+
+As seguintes cores hardcoded foram substituídas por tokens:
+
+| Cor antiga | Token novo | Arquivo |
+|------------|-----------|---------|
+| `#042A2B` | `var(--mc-footer-reg-bg)` | `08.layouts/_main-footer.scss` |
+| `#6C6C6C` | `var(--mc-gray-600)` | `07.utilities/_scrollbar.scss` |
+| `#CC0033` | `var(--mc-danger-500)` | `06.components/_entity-links.scss` |
+
+---
+
+## 4. Mixins e Funções Deprecated
+
+### 4.1 `desktop()` → `respond-above('md')`
+
+```scss
+// ANTES (deprecated):
+.my-component {
+    @include desktop {
+        display: flex;
+    }
+}
+
+// DEPOIS:
+@use '../02.tools/responsive' as bp;
+
+.my-component {
+    @include bp.respond-above('md') {
+        display: flex;
+    }
+}
+```
+
+### 4.2 `mobile()` → `respond-below('md')`
+
+```scss
+// ANTES (deprecated):
+.my-component {
+    @include mobile {
+        display: block;
+    }
+}
+
+// DEPOIS:
+@use '../02.tools/responsive' as bp;
+
+.my-component {
+    @include bp.respond-below('md') {
+        display: block;
+    }
+}
+```
+
+> `desktop()` e `mobile()` continuam funcionando. Mas os novos mixins oferecem 5 breakpoints (`xs`, `sm`, `md`, `lg`, `xl`) contra apenas 1 (`md`).
+
+### 4.3 `size(N)` → `var(--mc-space-N)`
 
 ```scss
 // ANTES (deprecated):
@@ -145,363 +203,186 @@ padding: var(--mc-space-16);
 margin-bottom: var(--mc-space-24);
 gap: var(--mc-space-8);
 
-// DEPOIS (alternativa — se nao ha token exato):
-padding: 0.4375rem;  // size(7) → 7/16 = 0.4375rem
+// DEPOIS (alternativa — se não há token exato):
+// size(7) → 7/16 = 0.4375rem
+padding: 0.4375rem;
 ```
 
-A funcao `size()` continua funcionando, mas emitira avisos em versoes futuras. Migre gradualmente.
+A função `size()` continua funcionando, mas **não deve ser usada em código novo**.
 
-### 3.2 `desktop()` — usar `respond-above('md')`
+**Valores sem token:** `size(6)`, `size(7)`, `size(9)`, `size(13)`, `size(17.5)`, `size(21)`, `size(23)`, `size(26)`, `size(36)`, `size(72)`, `size(113)`, `size(167)`, `size(300)`, `size(1060)`, etc. Para estes, calcule manualmente: `N / 16` rem.
+
+### 4.4 Cores bare: `white` e `black`
 
 ```scss
-// ANTES (deprecated):
-.my-component {
-    display: block;
-
-    @include desktop {
-        display: flex;
-    }
-}
+// ANTES:
+color: white;
+background: black;
 
 // DEPOIS:
-.my-component {
-    display: block;
-
-    @include respond-above('md') {
-        display: flex;
-    }
-}
+color: var(--mc-white);
+background: var(--mc-black);
 ```
 
-### 3.3 `mobile()` — usar `respond-below('md')`
+### 4.5 `$warning` e `$error` — Nomes e valores mudaram
+
+| Variável antiga | Variável nova | Cor antiga | Cor nova |
+|-----------------|---------------|------------|----------|
+| `$warning` | `$warning-500` | `#F07B07` (laranja escuro) | `#FF9F1C` (amber) |
+| `$error` | `$danger-500` | `#FF2D2D` (vermelho claro) | `#EF1010` (vermelho médio) |
+
+As CSS custom properties legadas continuam existindo para compatibilidade:
 
 ```scss
-// ANTES (deprecated):
-.my-component {
-    display: flex;
+var(--mc-warning)   // #F07B07 (valor antigo)
+var(--mc-error)     // #FF2D2D (valor antigo)
 
-    @include mobile {
-        display: block;
-    }
-}
-
-// DEPOIS:
-.my-component {
-    display: flex;
-
-    @include respond-below('md') {
-        display: block;
-    }
-}
+var(--mc-warning-500) // #FF9F1C (novo valor)
+var(--mc-danger-500)  // #EF1010 (novo valor)
 ```
-
-> **Nota:** `desktop()` e `mobile()` continuam funcionando como aliases. Porem, `respond-above`/`respond-below` oferecem 5 breakpoints (`xs`, `sm`, `md`, `lg`, `xl`) em vez de apenas um.
 
 ---
 
-## 4. Arquivos Movidos ou Esvaziados
+## 5. Checklist de Migração
 
-| Arquivo original | Novo destino | Acao necessaria |
-|-----------------|-------------|-----------------|
-| `0.settings/_global.scss` | `2.generic/_reset.scss`, `3.elements/*`, `6.utilities/_typography.scss`, `2.components/_code.scss`, `2.components/_change-password-other-providers.scss`, `layouts/_main-app.scss` | Nenhuma. O arquivo ficou vazio com comentario de migracao. O `@import` continua funcionando. |
-| `0.settings/_atoms.scss` | `6.utilities/_entity-colors.scss`, `6.utilities/_visibility.scss`, `6.utilities/_typography.scss`, `6.utilities/_scrollbar.scss` | Nenhuma. O arquivo ficou vazio com comentario de migracao. O `@import` continua funcionando. |
-| `2.components/_container.scss` | `1.objects/_container.scss` | Se o tema filho importa diretamente `@import '2.components/container'`, mudar para `@import '1.objects/container'`. O arquivo antigo ficou vazio. |
-| `2.components/_stack.scss` | `1.objects/_stack.scss` | Se o tema filho importa diretamente `@import '2.components/stack'`, mudar para `@import '1.objects/stack'`. O arquivo antigo ficou vazio. |
-| `2.components/_entity-models-card.scss` | `2.components/_entity-card.scss` | **Atencao:** O conteudo foi consolidado em `_entity-card.scss`. O arquivo antigo ficou vazio. O import foi removido do entry point. Se o tema filho fazia override deste arquivo, veja o Passo 4 abaixo. |
-
----
-
-## 5. Guia de Migracao Passo a Passo
-
-### Passo 1 — Atualizar o repositorio base
+### Passo 1 — Atualizar o repositório base
 
 ```bash
 git pull origin main
-# ou
-git pull origin master
 ```
 
-Certifique-se de que o tema filho referencia a versao atualizada do BaseV2.
+Certifique-se de que o tema filho referencia a versão atualizada do BaseV2.
 
-### Passo 2 — Compilar o CSS e verificar visualmente
+### Passo 2 — Compilar o CSS e verificar erros
 
-Compile o CSS do tema filho e abra o site no navegador. Verifique se ha erros de compilacao no SASS. Arquivos esvaziados com `@import` continuam funcionando — nao devem gerar erros.
+Compile o CSS do tema filho. Arquivos esvaziados com `@import` continuam funcionando — não devem gerar erros.
 
-### Passo 3 — Atualizar imports diretos de arquivos movidos
+Se houver erros de `@use`/`@import` com paths antigos (ex: `0.settings/variables`), atualize para o novo path (`01.settings/variables`).
 
-Se o tema filho faz `@import` direto de arquivos que foram movidos, atualize os paths:
+### Passo 3 — Atualizar imports diretos
+
+Se o tema filho faz `@import`/`@use` direto de arquivos BaseV2, atualize os paths:
 
 ```scss
 // ANTES:
-@import '../BaseV2/assets-src/sass/2.components/container';
-@import '../BaseV2/assets-src/sass/2.components/stack';
-
-// DEPOIS:
+@import '../BaseV2/assets-src/sass/0.settings/variables';
+@import '../BaseV2/assets-src/sass/1.tools/responsive';
+@import '../BaseV2/assets-src/sass/2.generic/reset';
+@import '../BaseV2/assets-src/sass/3.elements/headings';
 @import '../BaseV2/assets-src/sass/1.objects/container';
 @import '../BaseV2/assets-src/sass/1.objects/stack';
+@import '../BaseV2/assets-src/sass/2.components/button';
+
+// DEPOIS:
+@import '../BaseV2/assets-src/sass/01.settings/variables';
+@import '../BaseV2/assets-src/sass/02.tools/responsive';
+@import '../BaseV2/assets-src/sass/03.generic/reset';
+@import '../BaseV2/assets-src/sass/04.elements/headings';
+@import '../BaseV2/assets-src/sass/05.objects/container';
+@import '../BaseV2/assets-src/sass/05.objects/stack';
+@import '../BaseV2/assets-src/sass/06.components/button';
 ```
 
-> Se o tema filho nao faz `@import` direto desses arquivos, nenhuma acao e necessaria neste passo.
+> **Se o tema filho usa apenas `@import '../BaseV2/assets-src/sass/theme-BaseV2'`**, nenhuma mudança de path é necessária — o entry point já referencia os paths corretos.
 
-### Passo 4 — Migrar overrides de `_entity-models-card.scss`
+### Passo 4 — Verificar overrides de componentes
 
-O arquivo `_entity-models-card.scss` foi consolidado em `_entity-card.scss`. Se o tema filho continha overrides:
+Se o tema filho faz override de:
 
-1. Localize todos os seletores que referenciam `.entity-card` no contexto de "models" (`.panel-entity-models-card`, `.models &`)
-2. Mova esses overrides para o arquivo de override de `_entity-card.scss` no tema filho
-3. Verifique se os seletores ainda fazem sentido — a consolidacao removeu seletores mortos (`.models &` nao existia nos templates)
-
-```scss
-// ANTES (no override do tema filho para _entity-models-card.scss):
-.entity-card {
-    &.models {
-        // overrides
-    }
-}
-
-// DEPOIS (no override do tema filho para _entity-card.scss):
-// Os seletores .models foram removidos (dead code).
-// Apenas .panel-entity-models-card foi preservado.
-.panel-entity-models-card {
-    .entity-card {
-        // overrides
-    }
-}
-```
+| Componente | Ação necessária |
+|------------|----------------|
+| `_entity-card.scss` | Verificar se seletores de `.panel-entity-card` ou `.panel-entity-models-card` ainda funcionam — foram extraídos para arquivos separados |
+| `_entity-models-card.scss` | Mover overrides para o novo `_panel-entity-models-card.scss` |
+| `_button.scss` | Dividir entre override estrutural (`05.objects`) e cosmético (`06.components`) |
+| `_mc-title.scss` | Mover import/override de Objects para Components |
+| `_load-more.scss` | Mover import/override de Objects para Components |
+| `_mc-avatar.scss` | Remover overrides de `.mc-avatar--warning` (cosmético removido do Object) |
 
 ### Passo 5 — Substituir cores hardcoded por tokens
 
-Procure no tema filho por cores hardcoded e substitua pelos tokens correspondentes:
-
 ```scss
-// ANTES:
-background: #117C83;
-color: #FFFFFF;
-border-color: #EF1010;
-
-// DEPOIS:
-background: var(--mc-primary-500);
-color: var(--mc-white);
-border-color: var(--mc-danger-500);
+// Procure no tema filho por:
+color: #117C83;        // → var(--mc-primary-500)
+background: #FFFFFF;   // → var(--mc-white)
+border-color: #EF1010; // → var(--mc-danger-500)
+color: #4E4E4E;        // → var(--mc-gray-700)
 ```
 
-Use a tabela de referencia completa na secao 7 abaixo.
-
-**Atencao especial para `$warning` e `$error`** — veja a secao 6.
-
-### Passo 6 — Substituir `size()` por tokens onde possivel
+### Passo 6 — Substituir `size()` por tokens onde possível
 
 ```scss
-// ANTES:
-padding: size(16);
-margin: size(8) size(16);
-top: size(4);
-
-// DEPOIS:
-padding: var(--mc-space-16);
-margin: var(--mc-space-8) var(--mc-space-16);
-top: var(--mc-space-4);
+// Procure no tema filho por:
+padding: size(16);     // → var(--mc-space-16)
+margin: size(8);       // → var(--mc-space-8)
+top: size(4);          // → var(--mc-space-4)
 ```
 
-Para valores que nao tem token exato (ex: `size(7)`), calcule manualmente:
+### Passo 7 — Substituir `desktop()`/`mobile()` por `respond-*`
 
 ```scss
-// size(7) = 7/16 = 0.4375rem
-top: 0.4375rem;
+// Procure no tema filho por:
+@include desktop { }   // → @include bp.respond-above('md') { }
+@include mobile { }    // → @include bp.respond-below('md') { }
 ```
 
-### Passo 7 — Testar visualmente em 3 viewports
+### Passo 8 — Testar visualmente em 3 viewports
 
-Abra o site em:
-
-1. **Desktop** (1440px ou maior) — layout wide, sidebar visivel
-2. **Tablet** (768px) — transicao de layout, menu responsivo
+1. **Desktop** (1440px+) — layout wide, sidebar visível
+2. **Tablet** (768px–960px) — transição de layout, menu responsivo
 3. **Mobile** (375px) — layout single-column, elementos empilhados
 
 Verifique especificamente:
 
-- Cards de entidade (agentes, eventos, espacos, projetos, oportunidades)
-- Breadcrumbs e navegacao
-- Formularios e inputs
-- Modais e overlays (z-index)
-- Cores de status e feedback
-- Espacamentos (se `size()` foi substituido por tokens com valores diferentes)
+- [ ] Cards de entidade (agentes, eventos, espaços, projetos, oportunidades)
+- [ ] Breadcrumbs e navegação
+- [ ] Formulários e inputs
+- [ ] Modais e overlays (z-index)
+- [ ] Cores de status e feedback (`$warning`/`$error` mudaram de valor!)
+- [ ] Espaçamentos (se `size()` foi substituído por tokens com valores diferentes)
+- [ ] Botões (split Object/Component pode afetar overrides)
 
 ---
 
-## 6. Cores Que Mudaram de Nome
+## 6. Riscos e Pontos de Atenção
 
-Duas variaveis SASS tiveram seus nomes e valores alterados na consolidacao de cores:
+### 🔴 Alto risco
 
-| Antes | Depois | Cor anterior | Cor nova | Nota |
-|-------|--------|-------------|----------|------|
-| `$warning` | `$warning-500` | `#F07B07` (laranja escuro) | `#FF9F1C` (amber) | **Cor diferente** — verificar visualmente |
-| `$error` | `$danger-500` | `#FF2D2D` (vermelho claro) | `#EF1010` (vermelho medio) | **Cor diferente** — verificar visualmente |
+1. **Imports por path antigo** — Se o tema filho importa `0.settings/*`, `1.tools/*`, `2.generic/*`, `1.objects/*`, `2.components/*`, `6.utilities/*`, `layouts/*` ou `pages/*` diretamente, a compilação vai falhar. **Correção:** atualizar para paths `01–09`.
 
-### O que verificar
+2. **Override de `_entity-models-card.scss`** — O arquivo foi consolidado em `_panel-entity-models-card.scss`. Overrides do arquivo antigo não terão efeito.
 
-A variavel `$warning` antiga (`#F07B07`) e visualmente diferente de `$warning-500` (`#FF9F1C`). Se o tema filho usava `$warning` em:
+3. **Cores `$warning`/`$error` mudaram** — As variáveis `$warning` e `$error` continuam existindo com os valores antigos, mas `$warning-500` e `$danger-500` têm valores **diferentes**. Se o tema filho usa `$warning` diretamente, o valor é `#F07B07` (inalterado). Se usa o token `--mc-warning-500`, o valor é `#FF9F1C` (novo). Verifique visualmente.
 
-- Backgrounds de alerta
-- Bordas de campos com aviso
-- Icones de notificacao
+### 🟡 Médio risco
 
-...a cor mudara. Compare visualmente e ajuste se necessario.
+4. **Override de `_button.scss`** — O split Object/Component pode causar especificidade diferente se o tema filho sobrescrevia propriedades estruturais no mesmo seletor.
 
-Da mesma forma, `$error` (`#FF2D2D`) foi substituida por `$danger-500` (`#EF1010`). Verifique:
+5. **`desktop()`/`mobile()` em tema filho** — Continuam funcionando, mas se o tema filho faz override de um componente que mudou de `desktop()` para `respond-above('md')`, a especificidade é idêntica. Sem risco.
 
-- Mensagens de erro em formularios
-- Status de rejeicao
-- Badges de alerta vermelho
+6. **Classes BEM renomeadas** — Se o tema filho referencia classes que foram renomeadas na Fase 2, os seletores podem não aplicar. Busque por `TODO-BEM` no SCSS do tema filho.
 
-### CSS custom properties legadas
+### 🟢 Baixo risco
 
-As propriedades `--mc-warning` e `--mc-error` continuam existindo em `:root` para compatibilidade, mas apontam para os valores antigos. Novos codigos devem usar:
+7. **`size()` em tema filho** — Continua funcionando. Migre gradualmente.
 
-```scss
-// Em vez de:
-color: var(--mc-warning);   // valor antigo #F07B07
+8. **Novos Objects** — Adição de 8 novos Objects (card-shell, mc-media, toggle-switch, status-indicator, nav-shell, accordion-shell, tag, button shell) não afeta código existente. São arquivos novos.
 
-// Use:
-color: var(--mc-warning-500); // novo valor #FF9F1C
-```
-
-```scss
-// Em vez de:
-color: var(--mc-error);      // valor antigo #FF2D2D
-
-// Use:
-color: var(--mc-danger-500); // novo valor #EF1010
-```
+9. **`@font-face` movido** — Se o tema filho importava `01.settings/typography` para obter font-faces, a importação continuará funcionando (o arquivo Settings esvaziou mas mantém comentários de referência). Os font-faces efetivos estão em `03.generic/fonts`.
 
 ---
 
-## 7. Tokens de Cor Disponiveis (Referencia Completa)
+## Referência Rápida
 
-### 7.1 Brand
-
-```scss
---mc-primary-100   // lighten mix 80%
---mc-primary-300   // lighten 25%
---mc-primary-500   // #117C83 (teal)
---mc-primary-700   // darken 25%
-
---mc-secondary-300 // lighten 25%
---mc-secondary-500 // #D14526 (vermelho)
---mc-secondary-700 // darken 25%
-```
-
-### 7.2 Entity (cada uma com variantes 300/500/700)
-
-```scss
-// Agentes
---mc-agents-300    // lighten 25%
---mc-agents-500    // #EF7B45 (laranja)
---mc-agents-700    // darken 25%
-
-// Eventos
---mc-events-300    // lighten 25%
---mc-events-500    // #9C4EC7 (roxo)
---mc-events-700    // darken 25%
-
-// Espacos
---mc-spaces-300    // lighten 25%
---mc-spaces-500    // #538D0A (verde)
---mc-spaces-700    // darken 25%
-
-// Projetos
---mc-projects-300  // lighten 25%
---mc-projects-500  // #117C83 (teal)
---mc-projects-700  // darken 25%
-
-// Oportunidades
---mc-opportunities-300  // lighten 25%
---mc-opportunities-500  // #D14526 (vermelho)
---mc-opportunities-700  // darken 25%
-
-// Selos
---mc-seals-300     // lighten 25%
---mc-seals-500     // #1E1E1E (preto)
---mc-seals-700     // darken 25%
-```
-
-### 7.3 Feedback
-
-```scss
-// Perigo
---mc-danger-100    // lighten mix 80%
---mc-danger-300    // lighten 25%
---mc-danger-500    // #EF1010
---mc-danger-700    // darken 25%
-
-// Sucesso
---mc-success-300   // lighten 25%
---mc-success-500   // #498200
---mc-success-700   // darken 25%
-
-// Aviso
---mc-warning-300   // lighten 25%
---mc-warning-500   // #FF9F1C
---mc-warning-700   // darken 25%
-
-// Ajuda
---mc-helper-300    // lighten 25%
---mc-helper-500    // #0074C1
---mc-helper-700    // darken 25%
-```
-
-### 7.4 Neutral
-
-```scss
---mc-white         // #FFFFFF
---mc-black         // #1E1E1E
---mc-low-500       // #1E1E1E (alias para texto)
---mc-high-500      // #FFFFFF (alias para fundo claro)
-```
-
-### 7.5 Gray
-
-```scss
---mc-gray-100      // #F5F5F5
---mc-gray-200      // #E8E8E8 (novo)
---mc-gray-300      // #C4C4C4
---mc-gray-400      // mix(#C4C4C4, gray-500)
---mc-gray-500      // mix(#C4C4C4, #4E4E4E, 50%)
---mc-gray-600      // #666666 (novo)
---mc-gray-700      // #4E4E4E
-```
-
-### 7.6 Highlight
-
-```scss
---mc-highlight-300 // lighten 25%
---mc-highlight-500 // #FFB300 (amber)
---mc-highlight-700 // darken 25%
-```
-
-### 7.7 Home
-
-```scss
---mc-home-header-gradient  // linear-gradient(...)
---mc-home-opportunities    // $secondary-500
---mc-home-entities         // $gray-100
---mc-home-feature          // $secondary-300
---mc-home-register         // $primary-500
---mc-home-map              // $white
---mc-home-developers       // $gray-100
-```
-
----
-
-## Resumo Rapido
-
-| Situacao | Acao |
+| Situação | Ação |
 |----------|------|
-| Tema filho usa apenas `@import` do entry point | Nenhuma acao imediata. Funciona normalmente. |
-| Tema filho importa `2.components/container` ou `2.components/stack` diretamente | Mudar path para `1.objects/container` ou `1.objects/stack` |
-| Tema filho faz override de `_entity-models-card.scss` | Mover overrides para `_entity-card.scss` |
-| Tema filho usa `size()` | Substituir por `var(--mc-space-N)` gradualmente |
-| Tema filho usa `desktop()` ou `mobile()` | Substituir por `respond-above('md')` ou `respond-below('md')` |
-| Tema filho usa `$warning` (`#F07B07`) | Verificar visualmente — cor mudou para `$warning-500` (`#FF9F1C`) |
-| Tema filho usa `$error` (`#FF2D2D`) | Verificar visualmente — cor mudou para `$danger-500` (`#EF1010`) |
-| Tema filho tem cores hardcoded | Substituir por tokens `var(--mc-*)` usando a tabela da secao 7 |
+| Tema filho usa apenas `@import` do entry point | ✅ Nenhuma ação imediata. Funciona normalmente. |
+| Tema filho importa paths `0.settings/*`, `1.objects/*`, etc. | 🔴 Atualizar paths para `01–09` |
+| Tema filho faz override de `_button.scss` | 🟡 Dividir override em estrutural (05.objects) + cosmético (06.components) |
+| Tema filho faz override de `_entity-models-card.scss` | 🔴 Mover overrides para `_panel-entity-models-card.scss` |
+| Tema filho usa `size()` | 🟢 Substituir por `var(--mc-space-N)` gradualmente |
+| Tema filho usa `desktop()`/`mobile()` | 🟢 Substituir por `respond-above('md')`/`respond-below('md')` |
+| Tema filho usa `$warning` (`#F07B07`) | 🟡 Verificar visualmente — novo token `$warning-500` é `#FF9F1C` |
+| Tema filho usa `$error` (`#FF2D2D`) | 🟡 Verificar visualmente — novo token `$danger-500` é `#EF1010` |
+| Tema filho tem cores hardcoded | 🟢 Substituir por tokens `var(--mc-*)` |
+| Tema filho usa `mc-avatar--warning` | 🟡 Classe removida do Object. Criar classe customizada no tema filho. |
+| Tema filho usa `mc-title`/`load-more` como Objects | 🟢 Sem mudança de classe. Apenas camada mudou (Object → Component). |

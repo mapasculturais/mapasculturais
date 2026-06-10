@@ -1,0 +1,12 @@
+@use '../01.settings/mixins' as *;
+
+.mc-summary-agent-info {
+    &__section {
+        padding: var(--mc-space-12) var(--mc-space-16);
+        background-color: var(--mc-white);
+        border-radius: var(--mc-border-radius-xs);
+        display: flex;
+        flex-direction: column;
+        gap: var(--mc-space-16);
+    }
+}

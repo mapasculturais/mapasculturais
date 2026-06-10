@@ -20,15 +20,15 @@ $this->import('
             <slot name="picture" :entity="entity">
                 <mc-avatar :entity="entity" size="medium"></mc-avatar>
             </slot>
-            <div class="panel-entity-card__header--info">
+            <div class="panel-entity-card__header__info">
                 <slot name="title" :entity="entity">
-                    <a :href="entity.singleUrl" class="panel-entity-card__header--info-link">
+                    <a :href="entity.singleUrl" class="panel-entity-card__header-info-link">
                         <mc-title tag="h2" :shortLength="100" :longLength="110">
                             {{ entity.name || entity.email || entity.number || entity.id }}
                         </mc-title>
                     </a>            
                 </slot>
-                <p class="panel-entity-card__header--info-subtitle">
+                <p class="panel-entity-card__header-info-subtitle">
                     <slot name="subtitle" :entity="entity"></slot>
                 </p>
             </div>

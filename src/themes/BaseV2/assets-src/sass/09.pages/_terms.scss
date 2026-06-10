@@ -1,0 +1,139 @@
+@use 'sass:math';
+@use '../01.settings/mixins' as *;
+
+
+.mapas-terms {
+    .term__content p {
+        width: 100%;
+        margin-bottom: 1em;
+    }
+
+    .tabs-component {
+        &__header {
+            background-color: var(--mc-high-500);
+            max-width: unset;
+
+            @include respond-above('xl') {
+                padding-inline: calc(50vw - size(math.div(1170, 2)));
+
+            }
+
+        }
+
+        &__button--active::after {
+            background-color: var(--mc-primary-500);
+        }
+
+        &__panels {
+            margin-bottom: 0;
+            
+                @include respond-below('sm') {
+                    .btn {
+                       display: flex;
+                       flex-direction: column-reverse;
+                       gap: var(--mc-space-16);
+                    }
+                }
+            
+            .tab-component.termsOfUsage {
+                padding: var(--mc-space-24) var(--mc-space-16) 0;
+
+            }
+
+            .tab-component.privacyPolicy {
+                padding: var(--mc-space-24) var(--mc-space-16) 0;
+
+            }
+
+            .tab-component.termsUse {
+                padding: var(--mc-space-24) var(--mc-space-16) 0;
+            }
+        }
+    }
+
+
+
+    &__header {
+        max-width: var(--mc-layout-container-xl);
+        width: 100%;
+        margin: 0 auto;
+        border-radius: var(--mc-space-4);
+
+        // TODO-BREAKPOINT: 360px is not a canonical breakpoint. Consider adding to $mc-breakpoints or using nearest canonical value.
+        @media (max-width: size(360)) {
+            padding-left: 0;
+        }
+
+        &-title {
+            margin: size(75) 0 var(--mc-space-48);
+
+            .title {
+                &__title {
+                    font-weight: 700;
+                    font-size: var(--mc-space-32);
+                    line-height: var(--mc-space-48);
+                }
+            }
+        }
+    }
+
+    &__content {
+
+        background: var(--mc-gray-100);
+        margin: 0 auto;
+        max-width: 100%;
+
+        .mc-card {
+            &__title {
+                display: none;
+            }
+        }
+
+        .mc-card,
+        .btn {
+            max-width: var(--mc-layout-container-xl);
+            margin: 0 auto;
+        }
+
+        .btn {
+            display: flex;
+            justify-content: space-evenly;
+            margin: var(--mc-space-48) auto;
+        }
+
+        .mc-card {
+            // TODO-BREAKPOINT: 500px is not a canonical breakpoint. Consider adding to $mc-breakpoints or using nearest canonical value.
+            @include respond-below('mob') {
+                padding-left: 0;
+            }
+
+            &__content {
+                .term {
+                    &__content {
+                        ol {
+                            // TODO-BREAKPOINT: 500px is not a canonical breakpoint. Consider adding to $mc-breakpoints or using nearest canonical value.
+                            @include respond-below('mob') {
+                                padding-left: 25px;
+                            }
+
+                            li {
+                                // TODO-BREAKPOINT: 340px is not a canonical breakpoint. Consider adding to $mc-breakpoints or using nearest canonical value.
+                                @media (max-width:size(340)) {
+                                    text-align: left;
+                                    line-height: 1.5;
+
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        .accept,
+        .back {
+            max-width: size(473);
+            width: 100%;
+        }
+    }
+}

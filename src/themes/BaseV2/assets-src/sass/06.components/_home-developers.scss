@@ -1,0 +1,61 @@
+@use '../01.settings/mixins' as *;
+
+
+.home-developers {
+    padding: size(60) var(--mc-space-16);
+    background-color: var(--mc-home-developers);
+    &__content {
+        align-items: center;
+        display: flex;
+        flex-direction: column;
+        margin: 0 auto;
+        max-width: var(--mc-layout-container-xl);
+
+        .dev-icon {
+            font-size: var(--mc-space-32);
+        }
+
+        &__title {
+            font-weight: 700;
+            font-size: var(--mc-space-32);
+            line-height: var(--mc-space-48);
+            margin-top: var(--mc-space-4);
+
+            @include respond-below('md') {
+                font-size: var(--mc-space-24);
+                line-height: var(--mc-space-28);
+                margin-top: var(--mc-space-11);
+            }
+        }
+        &__description {
+            margin: var(--mc-space-24) 0;
+            font-weight: 400;
+            font-size: var(--mc-space-18);
+            line-height: var(--mc-space-25);
+            text-align: center;
+
+            @include respond-below('md') {
+                font-size: var(--mc-space-16);
+                line-height: var(--mc-space-22);
+            }
+        }
+
+        &__link {
+            // TODO: Consider consuming mc-media Object for icon+link layout
+            .iconify {
+                font-size: var(--mc-space-18);
+            }
+
+            .link {
+                align-items: center;
+                color: var(--mc-low-500);
+                display: flex;
+                font-size: var(--mc-space-18);
+                font-weight: 600;
+                gap: var(--mc-space-8);
+                line-height: var(--mc-space-25);
+                text-decoration: none;
+            }
+        }
+    }
+}

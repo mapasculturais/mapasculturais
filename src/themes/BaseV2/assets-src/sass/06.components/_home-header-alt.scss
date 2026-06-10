@@ -1,0 +1,98 @@
+@use '../01.settings/mixins' as *;
+
+.home-header {    
+    background: linear-gradient(180deg, var(--mc-primary-500) 0%, var(--mc-secondary-300) 98%);
+    position: relative;
+    
+    &__content {
+        display: flex;
+        height: size(510);
+        margin: 0 auto;
+        max-width: var(--mc-layout-page-max);
+        padding-top: var(--mc-space-24);
+
+        &__left {
+            display: flex;
+            flex-basis: 50%;
+            justify-content: flex-end;
+            padding: size(108) var(--mc-space-18);
+            position: relative;
+            
+            .content {
+                max-width: size(560);
+                color: var(--mc-high-500);
+    
+                &__title {
+                    display: flex;
+                    font-weight: 700;
+                    font-size: var(--mc-space-32);
+                    line-height: var(--mc-space-48);
+                    max-width: size(400);
+                }
+        
+                &__description {
+                    font-weight: 400;
+                    font-size: var(--mc-space-18);
+                    line-height: var(--mc-space-25);
+                    margin: var(--mc-space-24) 0;
+                }
+            }
+        }
+    
+        &__right {
+            overflow: hidden;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            flex-basis: 50%;
+    
+            .img {
+                align-items: stretch;
+                aspect-ratio: 24/17;
+                display: flex;
+                justify-content: center;
+                height: 100%;
+    
+                img {
+                    width: 100%;
+                    object-fit: cover;
+                    -o-object-fit: cover;
+                }
+            }
+        }
+    
+        @include respond-below('sm') {
+            flex-direction: column;
+            min-height: size(510);
+            height: auto;
+    
+            &__left {
+                padding: var(--mc-space-24);
+                justify-content: center;
+    
+                &::before {
+                    display: none;
+                }
+
+                .content {
+                    max-width: 100%;
+                    &__description {
+                        font-size: var(--mc-space-16);
+                        line-height: var(--mc-space-22);
+                        margin: var(--mc-space-8) 0 var(--mc-space-19);
+                    }
+                }
+            }
+    
+            &__right {
+                .img {
+                    height: unset;
+                    width: 100%;
+                    margin: 0 var(--mc-space-16);
+                }
+            }
+        }
+    }
+
+    
+}

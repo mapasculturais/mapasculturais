@@ -1,0 +1,173 @@
+@use '../01.settings/mixins' as *;
+
+.opportunity-support-config {
+    padding: var(--mc-space-20);
+    display: grid;
+    gap: var(--mc-space-20);
+
+    &__header {
+        display: flex;
+        flex-direction: column;
+        gap: var(--mc-space-14);
+    }
+
+    &__add-agents {
+        width: fit-content;
+    }
+
+    &__agents {
+        display: flex;
+        flex-direction: column;
+        gap: var(--mc-space-24);
+    }
+
+    &__agent {
+        display: grid;
+        grid-template-columns: calc(60% - var(--mc-space-16)) calc(40% - var(--mc-space-16));
+        gap: var(--mc-space-24);
+        background-color: var(--mc-white);
+        min-height: size(111);
+        height: 100%;
+        padding: var(--mc-space-20);
+
+        @include respond-below('sm') {
+            grid-template-columns: 1fr;
+        }
+    }
+
+    &__agent-info {
+        display: flex;
+        align-items: center;
+        gap: var(--mc-space-24);
+    }
+
+    &__agent-actions {
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+        gap: var(--mc-space-24);
+
+        @include respond-below('xs') {
+            display: grid;
+            grid-template-columns: 1fr;
+            justify-items: center;
+        }
+    }
+
+    &__content-header {
+        padding: var(--mc-space-18) var(--mc-space-24);
+        display: grid;
+        gap: var(--mc-space-18);
+        border-bottom: var(--mc-border-hairline) var(--mc-gray-300);
+    }
+
+    &__filter {
+        display: flex;
+        justify-content: space-between;
+
+        .field {
+            width: fit-content;
+        }
+    }
+
+    &__filters {
+        display: flex;
+        gap: var(--mc-space-18);
+    }
+
+    &__select-all {
+        align-items: center;
+        display: flex;
+        gap: var(--mc-space-8);
+        min-height: var(--mc-space-48);
+    }
+
+    &__field {
+        align-items: center;
+        border-bottom: var(--mc-border-hairline) var(--mc-gray-300);
+        display: flex;
+        gap: var(--mc-space-20);
+        justify-content: space-between;
+        padding: var(--mc-space-24);
+    }
+
+    &__field-content {
+        display: grid;
+        gap: size(56);
+        grid-template-columns: var(--mc-space-23) 1fr;
+    }
+
+    &__field-title {
+        align-items: center;
+        display: grid;
+        gap: var(--mc-space-16);
+        grid-template-columns: var(--mc-space-32) 1fr;
+        justify-items: center;
+        margin-bottom: var(--mc-space-4);
+
+        .required {
+            color: var(--mc-error);
+        }
+
+        .fields-info {
+            display: flex;
+            flex-direction: column;
+            gap: var(--mc-space-5);
+
+            .registration-type {
+                display: flex;
+                gap: var(--mc-space-10);
+
+                .border-span {
+                    padding-right: var(--mc-space-10);
+                    border-right: solid 1px var(--mc-gray-300);
+                }
+            }
+        }
+    }
+
+    &__field-icon {
+        align-items: center;
+        background: var(--mc-gray-100);
+        border-radius: var(--mc-space-5);
+        display: flex;
+        height: var(--mc-space-32);
+        justify-content: center;
+        padding: var(--mc-space-5);
+        width: var(--mc-space-32);
+
+        .iconify {
+            font-size: var(--mc-space-19);
+        }
+    }
+
+    &__modal-select {
+        align-items: center;
+        min-height: size(100);
+
+        .title__select {
+            display: flex;
+            align-items: center;
+            gap: var(--mc-space-48);
+            justify-content: center;
+
+            @include respond-below('xs') {
+                gap: var(--mc-space-8);
+            }
+        }
+    }
+
+    &__modal-content {
+        min-width: var(--mc-layout-container-xl);
+    }
+
+    &__checkbox {
+        width: var(--mc-space-16);
+        height: var(--mc-space-16);
+    }
+
+    .mc-select {
+        max-width: size(166);
+        width: 100%;
+    }
+}

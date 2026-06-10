@@ -1,0 +1,13 @@
+@use '../01.settings/mixins' as *;
+
+.entity-lock {
+    max-width: var(--mc-layout-container-xl);
+    width: 100%;
+    margin: 0 auto;
+    display: flex;
+    gap: var(--mc-space-15);
+    padding: size(100) var(--mc-space-16);
+    text-align: center;
+    flex-direction: column;
+    align-items: center;
+}

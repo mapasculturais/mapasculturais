@@ -1,0 +1,43 @@
+@use '../01.settings/mixins' as *;
+
+.event-importer-files {
+    &__card {
+        padding: var(--mc-space-24);
+
+        .mc-card__content {
+            flex-direction: column;
+            gap: var(--mc-space-24);
+        }
+    }
+
+    &__card-content {
+        display: flex;
+        gap: var(--mc-space-25) var(--mc-space-40);
+        flex-wrap: wrap;
+    }
+
+    &__card-footer {
+        align-items: center;
+        display: flex;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        gap: var(--mc-space-8);
+    }
+
+    &__buttons {
+        display: flex;
+        gap: var(--mc-space-8);
+
+        // TODO-BREAKPOINT: 700px is not a canonical breakpoint. Consider adding to $mc-breakpoints or using nearest canonical value.
+        @media (max-width: 700px) {
+            width: 100%;
+            justify-content: flex-end;
+            flex-wrap: wrap;
+        }
+
+        // TODO-BREAKPOINT: 500px is not a canonical breakpoint. Consider adding to $mc-breakpoints or using nearest canonical value.
+        @media (max-width: 500px) {
+            flex-direction: column;
+        }
+    }
+}

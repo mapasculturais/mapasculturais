@@ -1,0 +1,175 @@
+@use '../01.settings/mixins' as *;
+
+.home-entities {
+    background-color: var(--mc-home-entities);
+    padding: size(60) var(--mc-space-16);
+    
+    &__content {
+        min-height:size(156);
+        max-width: var(--mc-layout-container-xl);
+        margin:0 auto;
+        
+        &--header {
+            display: flex;
+            flex-direction: column;
+            gap: var(--mc-space-8);
+
+            .title {
+                font-weight: 700;
+                font-size: var(--mc-space-32);
+                line-height: var(--mc-space-48);
+                
+                @include respond-below('md') {
+                    font-weight: 700;
+                    font-size: var(--mc-space-24);
+                    line-height: var(--mc-space-28);
+                }
+            }
+
+            .description {
+                font-weight: 400;
+                font-size: var(--mc-space-18);
+                line-height: var(--mc-space-25);
+
+                p {
+                    margin: 0;
+                }
+
+                @include respond-below('md') {
+                    font-weight: 400;
+                    font-size: var(--mc-space-16);
+                    line-height: var(--mc-space-22);
+                }
+            }
+            &.user-details {
+                flex-direction: column;
+            }
+        }
+
+        &--cards {
+            display: flex;
+            flex-direction: column;
+            gap: var(--mc-space-16);
+            margin: var(--mc-space-40) 0 var(--mc-space-20);
+
+            @include respond-below('md') {
+                gap: var(--mc-space-24);
+            }
+
+            .card {
+                border-radius: var(--mc-border-radius-xs);
+                display: flex;
+                overflow: hidden;
+                
+                &__left {
+                    flex-basis: 55%;
+                    width: size(648);
+                    overflow: hidden;
+                    position: relative;
+                    
+                    // TODO: Consider consuming card-shell Object for structural layout
+                    // TODO: Consider consuming mc-media Object for icon+title layout
+                    &-content {
+                        align-items: center;
+                        // TODO: Replace rgba(0,0,0,.3) with overlay token when available
+                        background-color: rgba(0,0,0,.3);
+                        display: grid;
+                        flex-direction: row;
+                        grid-template-columns: var(--mc-space-64) 1fr;
+                        position: absolute;
+                        height: 100%;
+                        width: 100%;
+                        padding: var(--mc-space-48) var(--mc-space-40);
+                        gap: var(--mc-space-18);
+                        max-width: var(--mc-layout-container-xl);
+                        margin: 0 auto;
+
+                        @include respond-below('md') {
+                            padding: var(--mc-space-48) var(--mc-space-30);
+                        }
+
+                        @include respond-below('xs') {
+                            padding: 0 var(--mc-space-16);
+                            grid-template-columns: 1fr;
+                            justify-items: center;
+                            align-items: center;
+                            gap: 0;
+                        }
+
+                        &-icon {
+                            width:var(--mc-space-64);
+                            height: var(--mc-space-64);
+                            border-radius: 50%;
+                            display: flex;
+                            justify-content: center;
+                            align-items: center;
+
+                            .iconify {
+                                font-size: size(31);
+                                color: var(--mc-high-300);
+                            }
+                        }
+
+                        &-title {
+                            color: var(--mc-high-300);
+                            font-weight: 700;
+                            font-size: var(--mc-space-24);
+                            line-height: var(--mc-space-28);
+                        }
+                    }
+
+                    &-img{
+                        height: size(215);
+
+                        img {
+                            object-fit: cover;
+                            -o-object-fit: cover;
+                            width: 100%;
+                            min-height: 100%;
+                        }
+                    }
+                }
+
+                &__right{
+                    align-items: flex-end;
+                    background-color: var(--mc-high-500);
+                    display: flex;
+                    flex-basis: 45%;
+                    flex-direction: column;
+                    gap: var(--mc-space-8);
+                    padding: var(--mc-space-24) var(--mc-space-32) var(--mc-space-13);
+                    width: var(--mc-space-23);
+                    justify-content: space-between;
+                
+
+                    p {
+                        font-weight: 400;
+                        font-size:var(--mc-space-16);
+                        line-height:var(--mc-space-22);
+                        margin: 0;
+                    }
+
+                    .button {
+                        padding: 0 var(--mc-space-7);
+                    }
+
+                    @include respond-below('md') {
+                        align-items: flex-start;
+                        padding: var(--mc-space-24) var(--mc-space-14) var(--mc-space-13);
+                    }
+                }
+
+                @include respond-below('md') {
+                    display: flex;
+                    flex-direction: column;
+
+                    &__left,
+                    &__right {
+                        flex-basis: 50%;
+                        width: 100%;
+                    }
+                }
+            }
+        }
+    }
+}

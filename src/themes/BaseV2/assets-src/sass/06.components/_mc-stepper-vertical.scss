@@ -1,0 +1,714 @@
+@use '../01.settings/mixins' as *;
+
+// ============================================================================
+// Component: mc-stepper-vertical (and related evaluation/phases UI)
+// CONSUMES: nav-shell--vertical (ordered step list)
+//   The `ol.mc-stepper-vertical` is a vertical navigation list that could
+//   consume nav-shell--vertical for base list-reset + flex-column layout.
+//
+// DECOMPOSITION NOTE:
+//   This file contains MULTIPLE independent blocks that should be extracted:
+//   - .mc-stepper-vertical-wrapper  → keep here (wrapper)
+//   - ol.mc-stepper-vertical        → keep here (main stepper)
+//   - .evaluation-section           → extract to _evaluation-section.scss
+//   - .evaluation-line              → extract to _evaluation-line.scss
+//   - .config-input / .config-phase → extract to _config-phase.scss
+//   - .evaluation-step              → extract to _evaluation-step.scss
+//   - .phase-publish / .phase-delete → extract to _phase-actions.scss
+//   - .opportunity-phases-config    → extract to _opportunity-phases-config.scss
+// ============================================================================
+
+.mc-stepper-vertical-wrapper {
+
+    max-width: 1100px;
+    width: 100%;
+    margin: 0 auto;
+
+    // TODO-BREAKPOINT: 1180px is not a canonical breakpoint. Consider adding to $mc-breakpoints or using nearest canonical value.
+    @media (max-width:size(1180)) {
+        padding-inline: 55px;
+    }
+
+}
+
+ol.mc-stepper-vertical {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    margin-right: -28px;
+
+    // TODO-BREAKPOINT: 950px is not a canonical breakpoint. Consider adding to $mc-breakpoints or using nearest canonical value.
+    @media (max-width:size(950)) {
+        margin: 0 55 0 55px;
+    }
+
+    @include respond-below('sm') {
+        margin: 0 45px;
+    }
+
+    & > li {
+        position: relative;
+        counter-increment: item;
+        border-left: 3px solid red;
+        padding: 0 0 20px 45px;
+    
+        @include respond-below('sm') {
+            padding: 0 16px 20px 45px;
+        }
+    
+        .mc-card {
+            padding: var(--mc-space-16);
+    
+            .evaluation-box {
+                &__line {
+                    max-width: size(1038);
+                    border-bottom: 1px solid var(--mc-gray-100);
+                    height: 1px;
+                    padding-top: 2px;
+                    background-color: var(--mc-gray-100);
+                }
+            }
+        }
+    }
+
+    & > :last-of-type {
+        border-left: 0;
+    }
+}
+
+// TODO-DECOMPOSE: extract .evaluation-section to _evaluation-section.scss
+.evaluation {
+    &-section {
+        margin-bottom: var(--mc-space-20);
+        
+        // Note: `&__field &__label` produces `.evaluation-section__field .evaluation-section__label`.
+        // This is a valid contextual descendant selector in BEM.
+        &__field &__label {
+            font-size: var(--mc-space-18);
+            font-family: var(--mc-font-body);
+            font-weight: 600;
+        }
+        
+        &__header {
+            margin-bottom: var(--mc-space-24);
+            display: flex;
+            flex-direction: column;
+            gap: var(--mc-space-8);
+
+            .title {
+                font-weight: 700;
+                font-size: var(--mc-space-24);
+                line-height: var(--mc-space-28);
+            }
+
+            .subtitle {
+                font-weight: 400;
+                font-size: var(--mc-space-16);
+                line-height: var(--mc-space-22);
+            }
+        }
+    }
+
+    &-line {
+        height: var(--mc-space-1);
+        border-bottom: var(--mc-space-1) solid var(--mc-gray-100);
+        margin: 0 0 var(--mc-space-20);
+    }
+}
+
+// TODO-DECOMPOSE: extract .config-input / .config-phase to _config-phase.scss
+.config {
+    &-input {
+        background-color: var(--mc-high-500);
+        margin: 0;
+
+        input {
+            border-radius: 4px;
+        }
+    }
+
+    &-phase {
+        &__title {
+            &__title {
+                font-weight: 700;
+                font-size: var(--mc-space-24);
+                line-height: var(--mc-space-28);
+
+            }
+        }
+
+        &__info {
+            &-message {
+                align-items: center;
+                gap: var(--mc-space-10);
+                display: flex;
+                font-weight: 400;
+                font-size: var(--mc-space-16);
+                line-height: var(--mc-space-22);
+
+                .iconify {
+                    font-size: var(--mc-space-20);
+                }
+            }
+
+            // Note: `&-button` is correct BEM — element name is `info-button`.
+            &-button {
+                display: grid;
+                grid-template-columns: 1fr auto;
+                text-align: center;
+                svg {
+                    justify-self: end;
+                }
+
+            }
+        }
+
+        &__line {
+            max-width: size(1038);
+            border-bottom: 1px solid var(--mc-gray-100);
+        }
+
+        &__category {
+            display: grid;
+            grid-template-columns: 1fr size(67) 1fr;
+
+            .vertLine {
+                max-height: 100%;
+                margin: 0 auto;
+                border-left: 1px solid var(--mc-gray-300)
+            }
+        }
+
+    }
+}
+
+ol.mc-stepper-vertical > li.mc-stepper-vertical__item::before {
+    content: counters(item, ".") "";
+    position: absolute;
+    left: 0;
+    top: 0;
+    font-weight: bold;
+    color: var(--mc-secondary-500);
+    width: size(56);
+    height: size(56);
+    background-color: var(--mc-high-500);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+    margin-left: -28px;
+    border: 3px solid var(--mc-gray-100);
+    margin-bottom: 19px;
+    font-size: 25px;
+}
+
+ol.mc-stepper-vertical > li.mc-stepper-vertical__item--active::before {
+    background-color: var(--mc-secondary-500);
+    font-size: 25px;
+    color: var(--mc-high-500);
+}
+
+// Note: .evaluation-step uses correct BEM internally (__section, __line, etc.)
+// It is a separate block co-located in this file.
+.evaluation-step {
+
+    &__section {
+        border-bottom: var(--mc-border-hairline) var(--mc-gray-300);
+        display: flex;
+        flex-direction: column;
+        gap: var(--mc-space-15);
+        padding: 0 var(--mc-space-14);
+    }
+
+    &__section-header {
+        display: flex;
+        flex-direction: column;
+        gap: var(--mc-space-5);
+    }
+
+    &__section-label {
+        display: flex;
+        align-items: center;
+        gap: var(--mc-space-8);
+    }
+
+    &__section-content {
+        display: flex;
+        flex-direction: column;
+        gap: var(--mc-space-25);
+        margin-bottom: var(--mc-space-20);
+    }
+
+    &__line {
+        border-top: 3px solid var(--mc-gray-100);
+        margin-top: var(--mc-space-20);
+        margin-bottom: var(--mc-space-24);
+    }
+
+    &__btn {
+
+        &--secondary {
+            max-width: 368px;
+            width: 100%;
+            height: size(78);
+        }
+
+        margin-bottom: var(--mc-space-20);
+
+    }
+
+    .evaluation-config {
+        label {
+            font-weight: 600;
+            font-size: var(--mc-space-18);
+            line-height: var(--mc-space-25);
+            margin-bottom: var(--mc-space-4);
+        }
+        &__input {
+            height: size(80);
+        }
+        &__area {
+            height: size(80);
+            max-width: 100%;
+        }
+    }
+
+    .evaluation-text {
+        h3 {
+            font-weight: 700;
+            font-size: 24px;
+            line-height: 28px;
+        }
+
+        margin-bottom: var(--mc-space-4);
+    }
+
+    .evaluation-view {
+        display: flex;
+        flex-direction: column;
+        gap: var(--mc-space-8);
+
+        &__title {
+            font-weight: 700;
+            font-size: 24px;
+            line-height: 28px;
+        }
+
+        &__text {
+            font-weight: 400;
+            font-size: 16px;
+            line-height: 22px;
+        }
+    }
+
+    .evaluation-open {
+        &__button {
+            display: flex;
+            align-items: center;
+            gap: 1.375rem;
+        }
+    }
+
+    .evaluation-simple {
+        display: flex;
+        flex-direction: column;
+        gap: var(--mc-space-8);
+    }
+
+    .evaluation-box {
+        &__title {
+            font-weight: 700;
+            font-size: var(--mc-space-32);
+            line-height: var(--mc-space-48);
+            padding-bottom: var(--mc-space-8);
+        }
+
+        &__content {
+            color: var(--mc-gray-700);
+            font-weight: 400;
+            font-size: var(--mc-space-16);
+            line-height: var(--mc-space-22);
+
+        }
+
+        &__line {
+            max-width: size(1033);
+            border: 1px solid var(--mc-gray-100);
+        }
+    }
+}
+
+// TODO-DECOMPOSE: extract .phase-publish / .phase-delete to _phase-actions.scss
+.phase {
+    &-publish {
+        &__auto {
+            display: flex;
+            flex-direction: row;
+            align-self: center;
+        }
+
+        &__subscribers {
+            text-align: left;
+        }
+
+        &__confirm {
+            text-align: right;
+        }
+    }
+
+    &-delete {
+        justify-self: center;
+        
+        &__trash {
+            .icon {
+                svg {
+                    font-size: var(--mc-space-18);
+                }
+            }
+        }
+    }
+}
+
+.mc-stepper-vertical {
+    .mc-stepper-vertical__add-phase {
+        border-left: 3px solid red;
+        padding-left: 25px;
+        display: flex;
+        gap: 1rem;
+        padding-bottom: 15px;
+        flex-direction: column;
+        flex-wrap: wrap;
+        align-items: center;
+
+        &.add-phase.grid-12,
+        &.mc-stepper-vertical__add-phase.grid-12 {
+            border-left: none;
+        }
+
+        p {
+            font-weight: 600;
+        }
+
+        .appeal-phase-info {
+            display: flex;
+            flex-direction: row;
+            align-items: flex-start;
+            margin: calc(var(--mc-space-24) * -1) var(--mc-space-8) var(--mc-space-12);
+            padding: var(--mc-space-6) var(--mc-space-10);
+            border: 0;
+            border-radius: 0 0 var(--mc-space-15) var(--mc-space-15);
+            background: var(--mc-white);
+            position: relative;
+            z-index: 0;
+            width: 90%;
+            justify-content: space-between;
+
+            &::before {
+                content: '';
+                position: absolute;
+                top: 0;
+                left: 0;
+                right: 0;
+                height: 1px;
+                background: transparent;
+                opacity: .45;
+            }
+
+            .data-collection {
+                .data-collection-dates {
+                    display: flex;
+                    flex-direction: row;
+                    gap: var(--mc-space-4);
+                    justify-content: space-between;
+                }
+            }
+
+            .evaluation {
+                .evaluation-dates {
+                    display: flex;
+                    flex-direction: row;
+                    gap: var(--mc-space-4);
+                    justify-content: space-between;
+                }
+            }
+        }
+    }
+
+    .mc-stepper-vertical__step {
+        max-width: 1096px;
+        width: 100%;
+
+        .mc-card {
+            margin-bottom: 0;
+            max-width: 100%;
+            padding-top: 0;
+            border-top-left-radius: 0;
+            border-top-right-radius: 0;
+            padding-left: 16px;
+
+
+            &__title {
+                display: none;
+            }
+        }
+    }
+
+
+    .mc-stepper-vertical__header {
+        background-color: var(--mc-white);
+        padding: 16px;
+        border-radius: var(--mc-space-4);
+        display: flex;
+        justify-content: space-between;
+        flex-direction: row;
+        align-items: center;
+        gap: var(--mc-space-48);
+
+        &.open {
+            border-radius: var(--mc-space-4) var(--mc-space-4) 0 0;
+        }
+
+        &__content {
+            align-items: center;
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+
+            .info {
+                display: flex;
+                flex-direction: column;
+                gap: var(--mc-space-4);
+
+                &__title {
+                    font-size: var(--mc-space-24);
+                    font-weight: 700;
+                    line-height: var(--mc-space-28);
+                }
+
+                &__type {
+                    display: flex;
+                    gap: var(--mc-space-8);
+                    
+                    .title {
+                        color: var(--mc-gray-700);
+                        font-size: var(--mc-space-14);
+                        font-weight: 600;
+                        line-height: var(--mc-space-19);
+                        text-transform: uppercase;
+                    }
+
+                    .type {
+                        color: var(--mc-low-500);
+                        font-size: var(--mc-space-14);
+                        font-weight: 700;
+                        line-height: var(--mc-space-19);
+                    }
+                }
+            }
+
+            .dates {
+                display: flex;
+                gap: var(--mc-space-48);
+
+                .date {
+                    display: flex;
+                    flex-direction: column;
+                    gap: var(--mc-space-4);
+
+                    &__title {
+                        color: var(--mc-gray-700);
+                        font-size: var(--mc-space-14);
+                        font-weight: 600;
+                        line-height: var(--mc-space-19);
+                        text-transform: uppercase;
+                    }
+
+                    &__content {
+                        align-items: center;
+                        color: var(--mc-low-500);
+                        display: flex;
+                        font-size: var(--mc-space-14);
+                        font-weight: 700;
+                        line-height: var(--mc-space-19);
+                    }
+                }
+            }
+        }
+
+        &__actions {
+            color: var(--mc-primary-500);
+            display: flex;
+            flex-wrap: nowrap;
+            font-size: var(--mc-space-14);
+            font-weight: 700;
+            gap: var(--mc-space-20) var(--mc-space-48);
+            line-height: var(--mc-space-19);
+
+            @include respond-below('md') {
+                flex-direction: column;
+            }
+
+            a.support {
+                align-items: center;
+                cursor: pointer;
+                display: flex;
+                gap: var(--mc-space-8);
+
+                .iconify {
+                    font-size: var(--mc-space-24);
+                }
+            }
+        }
+
+        .phase-stepper {
+            @include respond-below('md') {
+
+                word-break: break-word;
+                display: flex;
+                flex-direction: column;
+            }
+
+            &__period {
+                font-weight: 700;
+                font-size: 24px;
+                line-height: 28px;
+
+                // TODO-BREAKPOINT: 620px is not a canonical breakpoint. Consider adding to $mc-breakpoints or using nearest canonical value.
+                @media (max-width:size(620)) {
+
+                    font-size: 20px;
+                }
+            }
+
+            &__type {
+                margin-top: 4px;
+                margin-bottom: 4px;
+
+                &--name {
+                    font-weight: 600;
+                    font-size: 14px;
+                    line-height: 19px;
+
+                }
+
+                &--label {
+                    font-weight: 700;
+                    font-size: 14px;
+                    line-height: 19px;
+
+                }
+
+                &--item {
+
+                    font-weight: 700;
+                    font-size: 14px;
+                    line-height: 19px;
+
+                }
+
+            }
+
+            &__name {
+                @include respond-below('sm') {
+                    font-size: 20px;
+                }
+            }
+        }
+
+        .expand-stepper {
+            align-items: center;
+            color: var(--mc-primary-500);
+            display: flex;
+            gap: var(--mc-space-4);
+            justify-content: flex-end;
+            min-width: size(82);
+
+            label {
+                font-weight: 700;
+                font-size: 14px;
+                line-height: 19px;
+
+            }
+        }
+    }
+}
+
+// TODO-DECOMPOSE: extract .opportunity-phases-config to _opportunity-phases-config.scss
+.opportunity-phases-config {
+    // TODO-BREAKPOINT: 597px is not a canonical breakpoint. Consider adding to $mc-breakpoints or using nearest canonical value.
+    @include respond-below('sm') {
+        padding-inline: 0;
+    }
+    .stepper-header {
+        // TODO-BREAKPOINT: 597px is not a canonical breakpoint. Consider adding to $mc-breakpoints or using nearest canonical value.
+        @include respond-below('sm') {
+            flex-direction: column;
+        }
+    }
+    &__content {
+        // TODO-BREAKPOINT: 597px is not a canonical breakpoint. Consider adding to $mc-breakpoints or using nearest canonical value.
+        @include respond-below('sm') {
+            flex-wrap: wrap;
+        }
+    }
+
+    &__info {
+        // TODO-BREAKPOINT: 597px is not a canonical breakpoint. Consider adding to $mc-breakpoints or using nearest canonical value.
+        @include respond-below('sm') {
+            margin-bottom: var(--mc-space-16);
+        }
+    }
+
+    &__dates {
+        // TODO-BREAKPOINT: 597px is not a canonical breakpoint. Consider adding to $mc-breakpoints or using nearest canonical value.
+        @include respond-below('sm') {
+            flex-wrap: wrap;
+        }
+    }
+
+    .appeal-phase-info {
+        display: flex;
+        flex-direction: row;
+        align-items: flex-start;
+        margin: calc(var(--mc-space-24) * -1) var(--mc-space-8) var(--mc-space-12);
+        padding: var(--mc-space-6) var(--mc-space-10);
+        border: 0;
+        border-radius: 0 0 var(--mc-space-15) var(--mc-space-15);
+        background: var(--mc-white);
+        position: relative;
+        z-index: 0;
+        width: 90%;
+        justify-content: space-between;
+
+        &::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: transparent;
+            opacity: .45;
+        }
+
+        .data-collection {
+            .data-collection-dates {
+                display: flex;
+                flex-direction: row;
+                gap: var(--mc-space-4);
+                justify-content: space-between;
+            }
+        }
+
+        .evaluation {
+            .evaluation-dates {
+                display: flex;
+                flex-direction: row;
+                gap: var(--mc-space-4);
+                justify-content: space-between;
+            }
+        }
+    }
+
+    
+}

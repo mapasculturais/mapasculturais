@@ -1,0 +1,10 @@
+@use '../01.settings/mixins' as *;
+
+.create-app{
+    .cardKey,
+    .create-app__card-key {
+    flex-direction: column; 
+    gap: var(--mc-space-10);   
+    }
+
+}

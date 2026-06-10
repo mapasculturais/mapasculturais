@@ -1,0 +1,65 @@
+@use '../01.settings/mixins' as *;
+
+.alert {
+    border-radius: var(--mc-border-radius-xs);
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--mc-space-8);
+    justify-content: space-between;
+    padding: var(--mc-space-18);
+
+    &--sm {
+        padding: var(--mc-space-8) var(--mc-space-18);
+    }
+
+    // TODO: BEM-REFACTOR — Type modifiers use bare class qualifiers (`&.success`)
+    // instead of BEM modifiers (`&--success`). Inconsistent with `&--sm` above.
+    // DEFERRED: needs template class updates from `class="alert success"` to
+    // `class="alert alert--success"`.
+    &.success {
+        background-color: var(--mc-success-300);
+    }
+
+    &.helper {
+        background-color: var(--mc-helper-300);
+    }
+
+    &.warning {
+        background-color: var(--mc-warning-300);
+    }
+
+    &.danger {
+        background-color: var(--mc-danger-500);
+        color: var(--mc-white);
+    }
+
+    // @consumer: status-indicator — Icon + label grid; consider consuming
+    // the `status-indicator` Object from 02.tools when available.
+    &__message {
+        align-items: start;
+        display: grid;
+        gap: var(--mc-space-10);
+        grid-template-columns: 21px 1fr;
+
+        .text {
+            font-size: var(--mc-space-16);
+            font-weight: 400;
+            line-height: var(--mc-space-22);
+            margin: 0;
+        }
+
+        .iconify {
+            font-size: var(--mc-space-21);
+        }
+    }
+
+    &__button {
+        background: none;
+        border: none;
+        cursor: pointer;
+        font-size: var(--mc-space-14);
+        font-weight: 700;
+        line-height: var(--mc-space-19);
+        margin-left: auto;
+    }
+}

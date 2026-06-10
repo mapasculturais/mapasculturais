@@ -1,0 +1,51 @@
+// ============================================================================
+// Object: Tag — structural tag/chip layout
+// Reuse sites: mc-tag-list, entity-terms, registration-status, qualification-evaluation
+// BORDERLINE: thin object, may be demoted to Component
+// ============================================================================
+
+.tag {
+    --tag-gap: var(--mc-space-4);
+    --tag-padding-inline: var(--mc-space-8);
+    --tag-padding-block: var(--mc-space-2);
+    --tag-radius: var(--mc-border-radius-pill);
+
+    align-items: center;
+    border-radius: var(--tag-radius);
+    display: inline-flex;
+    gap: var(--tag-gap);
+    padding-block: var(--tag-padding-block);
+    padding-inline: var(--tag-padding-inline);
+    // background-color, color, border set by consuming component
+
+    &__label {
+        white-space: nowrap;
+    }
+
+    &__icon {
+        flex-shrink: 0;
+        display: flex;
+        align-items: center;
+    }
+
+    &__remove {
+        appearance: none;
+        background: transparent;
+        border: none;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        padding: 0;
+        // color set by consuming component
+    }
+
+    &--removable {
+        // Adds space for remove button
+    }
+
+    &--compact {
+        --tag-gap: var(--mc-space-2);
+        --tag-padding-inline: var(--mc-space-6);
+        --tag-padding-block: var(--mc-space-1);
+    }
+}

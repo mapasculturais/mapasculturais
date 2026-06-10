@@ -29,7 +29,7 @@ $this->import('
                         <p><?= i::__('Confira nossas perguntas frequentes') ?></p>
                     </div>
                 </div>
-                <div class="faq__filter <?= isset($active_header) && $active_header ? 'faq__filter--img' : '' ?>">
+                <div class="faq__filter <?= isset($active_header) && $active_header ? 'faq__filter__img' : '' ?>">
                     <faq-search></faq-search>
                 </div>
             </div>

@@ -1,0 +1,88 @@
+@use '../01.settings/mixins' as *;
+
+.mc-card {
+    padding: var(--mc-space-24);
+    background-color: var(--mc-white);
+    border-radius: var(--mc-border-radius-sm);
+    width: 100%;
+
+    &__title {
+        margin-bottom: var(--mc-space-24);
+
+        h1, h2, h3, h4, h5, h6 {
+            align-items: center;
+            display: flex;
+            gap: var(--mc-space-8);
+        }
+
+        label {
+            font-weight: 700;
+            font-size: var(--mc-space-24);
+            line-height: var(--mc-space-28);
+        }
+
+        p {
+            margin: var(--mc-space-8) 0 0;
+            font-size: var(--mc-space-14);
+            line-height: var(--mc-space-19);
+        }
+    }
+
+    &__content {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+    }
+
+    &.feature {
+        grid-column-start: 1;
+        grid-column-end: 3;
+        
+        @include respond-below('md') {
+            grid-template-columns: 100%;
+            grid-column-end: 2;
+        }
+        
+        .mc-card__content {
+            display: grid;
+            grid-template-columns: 66% 7% 27%;
+            flex-wrap: wrap;
+
+            // TODO-BREAKPOINT: 1060px is not a canonical breakpoint. Consider adding to $mc-breakpoints or using nearest canonical value.
+            @media (max-width: size(1060)) {
+                grid-template-columns: 58% 7% 35%;
+            }
+        
+            @include respond-below('md') {
+                grid-template-columns: 100%;
+                gap: var(--mc-space-20);
+            }
+            
+            .left {
+                display: flex;
+                flex-direction: column;
+                width: 100%;
+            }
+    
+            .divider {
+                border-right: var(--mc-space-1) solid var(--mc-gray-300);
+                margin: 0 auto;
+                width: var(--mc-space-1);
+                height: 100%;
+    
+                @include respond-below('md') {
+                    border-bottom: 1px solid var(--mc-gray-300);
+                    height: var(--mc-space-1);
+                    width: 100%;
+                }
+            }
+    
+            .right {
+                display: flex;
+                flex-direction: column;
+                gap: var(--mc-space-40);
+                width: 100%;
+            }
+        }  
+    }
+}

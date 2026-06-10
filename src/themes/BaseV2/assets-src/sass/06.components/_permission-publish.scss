@@ -1,0 +1,58 @@
+@use '../01.settings/mixins' as *;
+
+.permission-publish {
+    &__title {}
+
+    &__label {
+        font-family: var(--mc-font-body);
+        font-style: normal;
+        font-weight: 600;
+        font-size: var(--mc-space-14);
+        line-height: var(--mc-space-19);
+    }
+
+    // NOTE-BEM: .publish-fields is a template-dependent class — rename requires PHP template update
+    .publish-fields {
+        // NOTE-BEM: .field-options is a template-dependent class — rename requires PHP template update
+        .field-options {
+            display: flex;
+            flex-direction: column;
+            padding-top: var(--mc-space-16);
+            gap: var(--mc-space-20);
+
+            .options {
+                display: flex;
+                flex-direction: row;
+                align-items: center;
+                gap: var(--mc-space-20);
+                @include respond-below('sm') {
+                    align-items: flex-start;
+                }
+
+                &-label {
+                    font-weight: 600;
+                    font-size: var(--mc-space-14);
+                    line-height: var(--mc-space-19);
+                }
+
+                .permission {
+
+                    font-family: var(--mc-font-body);
+                    font-style: normal;
+                    font-weight: 600;
+                    font-size: var(--mc-space-14);
+                    line-height: var(--mc-space-19);
+                }
+
+                input[type="radio"] {
+                    width: var(--mc-space-20);
+                    height: var(--mc-space-20);
+                    border: var(--mc-space-2) solid var(--mc-black);
+                    border-radius: var(--mc-space-12);
+             
+                }
+            }
+        }
+
+    }
+}

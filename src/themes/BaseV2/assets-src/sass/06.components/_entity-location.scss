@@ -1,0 +1,37 @@
+@use '../01.settings/mixins' as *;
+
+.entity-location {
+    .public-location {
+        &__label {
+
+            font-family: var(--mc-font-body);
+            font-style: normal;
+            font-weight: 600;
+            font-size: var(--mc-space-14);
+            line-height: var(--mc-space-19);
+        }
+    }
+
+    &__title {
+        align-items: center;
+        display: flex;
+        font-size: var(--mc-space-18);
+        font-weight: 600;
+        gap: var(--mc-space-8);
+        line-height: var(--mc-space-25);
+    }
+
+    .leaflet-container {
+        z-index: 0;
+    }
+
+    &__address {
+        font-size: var(--mc-space-13);
+        line-height: var(--mc-space-18);
+        margin: var(--mc-space-5) 0;
+    }
+
+    .mc-map {
+        max-height: size(230);
+    }
+}

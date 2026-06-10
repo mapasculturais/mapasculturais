@@ -16,20 +16,20 @@ $this->import('
     <slot name="description"></slot>
 
     <ul v-if="getFiles()" class="files-list__list">
-        <li class="files-list__list--item" v-for="file in getFiles()">
-            <a class="files-list__list--item-link" :download="file.name" :href="file.url">
+        <li class="files-list__list__item" v-for="file in getFiles()">
+            <a class="files-list__list__item-link" :download="file.name" :href="file.url">
                 <mc-icon name="download" :class="entity.__objectType+'__color'"></mc-icon>
                 <span v-if="file.description">{{file.description}}</span>
                 <span v-else> <? i::_e('Sem descrição') ?> </span>
             </a>
 
-            <div v-if="editable" class="edit">
+            <div v-if="editable" class="entity-file__item-edit">
                 <mc-popover @open="file.newDescription = file.description" openside="down-right">
                     <template #button="{toggle}">
                         <a @click="toggle"> <mc-icon name="edit"></mc-icon> </a>
                     </template>
                     <template #default="{popover, close}">
-                        <form @submit="rename(file, popover); $event.preventDefault()" class="entity-related-agents__addNew--newGroup">
+                        <form @submit="rename(file, popover); $event.preventDefault()" class="entity-related-agents__addNew-group">
                             <div class="grid-12">
                                 <div class="col-12">                                    
                                     <div class="field">
@@ -60,7 +60,7 @@ $this->import('
     <mc-popover v-if="editable" title="<?php i::_e('Adicionar arquivo')?>" openside="down-right">
         <template #button="popover">
             <slot name="button"> 
-                <a @click="popover.toggle()" class="button button--primary button--icon button--primary-outline button-up">
+                <a @click="popover.toggle()" class="button button--primary button--icon button--primary-outline entity-file__button-up">
                     <mc-icon name="upload"></mc-icon>
                     <?php i::_e("Enviar")?>
                 </a>

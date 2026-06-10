@@ -35,7 +35,7 @@ $this->import('
                         <mc-link :entity="entity" route="userEvaluations">
                             <mc-title small tag="h4" :shortLength="0" :longlength="1000" class="bold">{{entity.parent?.name || entity.name}}</mc-title>
                         </mc-link>
-                        <h5 class="panel--pending-evaluations__phase-name opportunity__color--dark">{{entity.phaseName}}</h5>
+                        <h5 class="panel--pending-evaluations__phase-name opportunity__color__dark">{{entity.phaseName}}</h5>
                     </template>
 
                     <template #header-actions>
@@ -47,7 +47,7 @@ $this->import('
                                 <label class="entity-label"><?php i::_e('Tipo:') ?></label> <strong class="opportunity__color entity-strong">{{entity.type?.name}}</strong>
                             </div>
                             <div class="type-evaluation__content col-12">
-                                <label class="type-evaluation__content--label">{{ownerType(entity.ownerEntity)}}:</label> <strong class="type-evaluation__content--strong"><mc-link :entity="entity.ownerEntity"></mc-link></strong>
+                                <label class="type-evaluation__content__label">{{ownerType(entity.ownerEntity)}}:</label> <strong class="type-evaluation__content__strong"><mc-link :entity="entity.ownerEntity"></mc-link></strong>
                             </div>
                             <div class="type-evaluation__date col-12">
                                 <label class="entity-label"><?php i::_e('PERÍODO DE AVALIAÇÃO: ') ?><strong class="primary__color">{{evaluationFrom(entity).date('2-digit year')}} até {{evaluationTo(entity).date('2-digit year')}}</strong></label>

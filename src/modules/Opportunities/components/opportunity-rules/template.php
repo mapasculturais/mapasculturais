@@ -15,8 +15,8 @@ $this->import('
     <label class="opportunity-rules__title"> {{title}} </label>
 
     <ul v-if="file" class="opportunity-rules__list">
-        <li class="opportunity-rules__list--item">
-            <a class="opportunity-rules__list--item-link" :download="file.name" :href="file.url">
+        <li class="opportunity-rules__list__item">
+            <a class="opportunity-rules__list__item-link" :download="file.name" :href="file.url">
                 <mc-icon name="download" :class="entity.__objectType+'__color'"></mc-icon>
                 <span v-if="file.name">{{file.name}}</span>
                 <span v-else> <? i::_e('Sem descrição') ?> </span>

@@ -1,0 +1,195 @@
+@use '../01.settings/mixins' as *;
+
+.qualification-evaluation-config {
+    &__card {
+        border-radius: var(--mc-border-radius-xs);
+        border: var(--mc-border-hairline) var(--mc-gray-500);
+        margin-bottom: var(--mc-space-24);
+        overflow: hidden;
+    }
+
+    &__header {
+        display: flex;
+        flex-direction: column;
+        border-bottom: var(--mc-border-hairline) var(--mc-gray-500);
+    }
+
+    &__title {
+        display: grid;
+        grid-template-columns: 1fr size(115);
+        gap: var(--mc-space-32);
+        padding: var(--mc-space-16);
+        border-bottom: var(--mc-border-hairline) var(--mc-gray-300);
+
+        // TODO-BREAKPOINT: 884px is not a canonical breakpoint. Consider adding to $mc-breakpoints or using nearest canonical value.
+        @media (max-width: 884px) {
+            grid-template-columns: 1fr;
+        }
+    }
+    
+    &__title-buttons {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
+        // TODO-BREAKPOINT: 884px is not a canonical breakpoint. Consider adding to $mc-breakpoints or using nearest canonical value.
+        @media (max-width: 884px) {
+            flex-direction: column;
+            gap: var(--mc-space-32);
+        }
+    }
+
+    &__filters, &__criteria-filters {
+        display: flex;
+        flex-direction: column;
+        gap: var(--mc-space-16);
+    }
+    
+    &__filters {
+        padding: var(--mc-space-16);
+    }
+
+    &__criteria-filters {
+        padding: var(--mc-space-16) 0 var(--mc-space-6);
+        margin-top: var(--mc-space-16);
+        border-top: var(--mc-border-hairline) var(--mc-gray-300);
+    }
+
+    &__non-eliminatory {
+        input {
+            max-width: 100%;
+            width: var(--mc-space-96);
+            height: var(--mc-space-40);
+        }
+    }
+
+    &__filters-input {
+        display: flex;
+        gap: var(--mc-space-8);
+        align-items: center;
+    }
+
+    &__criterions {
+        background-color: var(--mc-gray-100);
+
+        // NOTE: .criterions__title/.criterion/.criterion__buttons are scoped via nesting.
+        // External component selectors within this block's accordion context.
+        .criterions__title {
+            padding: var(--mc-space-10) var(--mc-space-16);
+
+            label {
+                font-size: var(--mc-font-size-sm);
+                font-weight: var(--mc-font-semibold);
+            }
+        }
+
+        .criterion {
+            display: grid;
+            gap: var(--mc-space-32);
+            grid-template-columns: 1fr size(160);
+            align-items: center;
+
+            // TODO-BREAKPOINT: 884px is not a canonical breakpoint. Consider adding to $mc-breakpoints or using nearest canonical value.
+            @media (max-width: 884px) {
+                grid-template-columns: 1fr;
+            }
+
+            &__buttons {
+                display: flex;
+                gap: var(--mc-space-32);
+
+                // TODO-BREAKPOINT: 884px is not a canonical breakpoint. Consider adding to $mc-breakpoints or using nearest canonical value.
+                @media (max-width: 884px) {
+                    flex-direction: column;
+                }
+
+                .field__trash {
+                    display: flex;
+                    justify-content: center;
+                }
+            }
+        }
+
+        & > .mc-accordion {
+            padding: 0 var(--mc-space-16);
+    
+            &__header {
+                max-width: unset;
+                padding: var(--mc-space-10) var(--mc-space-24);
+            }
+    
+            &__content {
+                max-width: unset;
+                background-color: var(--mc-gray-100);
+            }
+        }
+    }
+
+    &__criterions-content {
+        display: grid;
+        gap: var(--mc-space-16);
+
+        & .mc-accordion {
+            padding: 0 var(--mc-space-16);
+    
+            &__header {
+                max-width: unset;
+                padding: var(--mc-space-10) var(--mc-space-24);
+            }
+    
+            &__content {
+                max-width: unset;
+                padding: var(--mc-space-10) var(--mc-space-24);
+            }
+        }
+    }
+
+    &__criterion {
+        border: var(--mc-border-hairline) var(--mc-gray-300);
+        margin: var(--mc-space-24); 
+        padding: var(--mc-space-20);
+        display: flex;
+        flex-direction: column;
+        gap: var(--mc-space-24);
+    }
+
+    &__config-criterion {
+        gap: var(--mc-space-24);
+        
+        &__config {
+            gap: var(--mc-space-24);
+            label {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+        }
+        
+        &__checkboxes {
+            label {
+                flex-direction: row;
+                align-items: center;
+            }
+        }
+        
+        &__input {
+            flex-direction: row;
+            gap: var(--mc-space-32);
+            justify-content: space-between;
+            
+            input {
+                max-width: 100%;
+                width: 75%;
+            }
+        }
+        
+    }
+
+    &__add-criterion {
+        padding: var(--mc-space-14) var(--mc-space-23);
+    }
+
+    &__footer { 
+        padding: var(--mc-space-18) 0;
+    }
+
+}

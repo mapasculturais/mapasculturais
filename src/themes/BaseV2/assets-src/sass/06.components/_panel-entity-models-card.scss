@@ -1,0 +1,71 @@
+@use '../01.settings/mixins' as *;
+
+// ================================================================
+// .panel-entity-models-card — PHP template (panel--entity-models-card)
+// Shared rules are in _panel-entity-card.scss (deduplicated selector list)
+// This file contains ONLY models-specific additions
+// ================================================================
+
+// ---------------------------------------------------------------
+// panel-entity-models-card: specific rules
+// ---------------------------------------------------------------
+.panel-entity-models-card {
+	// Mobile: hide __main inside first-child grid
+	&__header > :first-child {
+		// TODO-BREAKPOINT: 500px is not a canonical breakpoint. Consider adding to $mc-breakpoints or using nearest canonical value.
+		@include respond-below('mob') {
+			.panel-entity-models-card__main {
+				display: none;
+			}
+		}
+	}
+
+	// Models-specific: visibility tags in header-actions
+	&__header-actions {
+		.tag-official {
+			background-color: var(--mc-highlight-500);
+			color: var(--mc-black);
+			width: size(150);
+		}
+
+		.tag-public {
+			background-color: var(--mc-highlight-500);
+			color: var(--mc-black);
+			width: size(150);
+		}
+
+		.tag-private {
+			background-color: var(--mc-white);
+			color: var(--mc-gray-600);
+			width: size(150);
+		}
+	}
+}
+
+// ---------------------------------------------------------------
+// Models card: layout overrides
+// ================================================================
+
+article.panel-entity-models-card.col-6 {
+	max-width: 450px;
+	min-height: 530px;
+	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+
+	.panel-entity-models-card__header__info {
+		margin-top: 85px;
+		margin-left: -80px;
+
+		@include respond-below('md') {
+			margin-top: 0;
+			margin-left: 0;
+		}
+	}
+}
+
+.icon-model {
+	font-size: var(--mc-space-20);
+	color: var(--mc-primary-500);
+	margin-right: 8px;
+	margin-top: 15px;
+	vertical-align: text-bottom;
+}

@@ -72,8 +72,8 @@ $this->import('
 
 <small v-if="hasObjectTypeErrors()" class="field__error">{{getObjectTypeErrors().join('; ')}}</small>
 
-<div v-if="entity.ownerEntity" class="create-modal__fields--selected">
-    <div class="create-modal__fields--selected-label"><?php i::_e('Vincule a oportunidade a uma entidade: ') ?><br></div>
+<div v-if="entity.ownerEntity" class="create-modal__fields__selected">
+    <div class="create-modal__fields__selected-label"><?php i::_e('Vincule a oportunidade a uma entidade: ') ?><br></div>
     <div class="entity-selected">
         <div class="entity-selected__entity" :class="entityColorBorder">
             <mc-avatar :entity="entity.ownerEntity" size="xsmall"></mc-avatar>
@@ -82,14 +82,14 @@ $this->import('
         <div class="entity-selected__info">
             <select-entity :type="entityTypeSelected" @select="setEntity($event)" openside="right-down">
                 <template #button="{ toggle }">
-                    <a class="entity-selected__info--btn" :class="entityColorClass" @click="toggle()">
+                    <a class="entity-selected__info__btn" :class="entityColorClass" @click="toggle()">
                         <mc-icon :class="entityColorClass" name="exchange"></mc-icon>
                         <h4 :class="entityColorClass"><?php i::_e('Alterar') ?> {{entityType}}</h4>
                     </a>
                 </template>
             </select-entity>
 
-            <a class="entity-selected__info--btn helper__color" @click="resetEntity()" v-if="types.length > 0">
+            <a class="entity-selected__info__btn helper__color" @click="resetEntity()" v-if="types.length > 0">
                 <mc-icon class="helper__color" name="exchange"></mc-icon>
                 <h4 class="helper__color"><?php i::_e('Alterar entidade') ?></h4>
             </a>

@@ -16,14 +16,14 @@ $this->import('
     <mc-image-uploader :entity="entity" group="avatar" :aspect-ratio="1" :circular="true">
         <template #default="modal">
             <div class="entity-profile__profile">
-                <div class="entity-profile__profile--img">
+                <div class="entity-profile__profile-img">
                     <mc-icon v-if="!entity.files.avatar" name="image"></mc-icon>
-                    <img v-if="entity.files.avatar" :src="entity.files.avatar?.transformations?.avatarMedium?.url" class="select-profileImg__img--img" />
+                    <img v-if="entity.files.avatar" :src="entity.files.avatar?.transformations?.avatarMedium?.url" class="select-profileImg__img__img" />
                 </div>
-                <label class="entity-profile__profile--label" for="avatar<?= date('Ymd') ?>"> 
+                <label class="entity-profile__profile-label" for="avatar<?= date('Ymd') ?>"> 
                     <?php i::_e("Adicionar imagem de perfil"); ?> 
                 </label>
-                <span v-if="isRequired" class="entity-profile__profile--label-required">* <?php i::_e("obrigatório"); ?></span>
+                <span v-if="isRequired" class="entity-profile__profile-label-required">* <?php i::_e("obrigatório"); ?></span>
             </div>
         </template>
     </mc-image-uploader>

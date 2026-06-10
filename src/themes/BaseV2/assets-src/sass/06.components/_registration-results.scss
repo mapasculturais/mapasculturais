@@ -1,0 +1,150 @@
+@use '../01.settings/mixins' as *;
+
+.registration-results {
+
+    // NOTE-BEM: .modal-content, .modal__header, .modal__content, .modal__action are external modal selectors — not owned by this block
+    &__modal {
+        .modal-content {
+            max-width: size(770);
+            width: 100%;
+            padding: 0;
+        }
+
+        .modal {
+            &__header {
+                padding: var(--mc-space-16);
+                background-color: var(--mc-gray-100);
+            }
+
+            &__content {
+                background-color: var(--mc-gray-100);
+                padding: var(--mc-space-16) var(--mc-space-12);
+                display: flex;
+                flex-direction: column;
+                gap: var(--mc-space-16);
+
+                &::-webkit-scrollbar-track {
+                    background-color: var(--mc-gray-100);
+                }
+                &::-webkit-scrollbar {
+                    width: var(--mc-space-4);
+                    background-color: var(--mc-low-300);
+                }
+                &::-webkit-scrollbar-thumb {
+                    background-color: var(--mc-low-300);
+                    border-radius: var(--mc-border-radius-xs);
+                }
+            }
+
+            &__action {
+                display: none;
+            }
+        }
+    }
+
+    &__content {
+        display: flex;
+        flex-direction: column;
+        gap: var(--mc-space-16);
+    }
+
+    &__card {
+        display: flex;
+        flex-direction: column;
+        gap: var(--mc-space-16);
+        padding: var(--mc-space-12) var(--mc-space-16);
+        background-color: var(--mc-white);
+        border-radius: var(--mc-border-radius-xs);
+
+        + .registration-results__card {
+            margin-top: var(--mc-space-16);
+        }
+    }
+
+    &__card-header {
+        display: flex;
+        flex-direction: column;
+        gap: var(--mc-space-16);
+    }
+
+    &__card-title {
+        display: flex;
+        justify-content: space-between;
+    }
+
+    &__card-action {
+        display: flex;
+        align-items: center;
+        gap: var(--mc-space-8);
+        background-color: transparent;
+        color: var(--mc-primary-500);
+        border: none;
+        cursor: pointer;
+    }
+
+    &__card-content {
+        display: flex;
+        flex-direction: column;
+        padding: var(--mc-space-10) var(--mc-space-16);
+        border: var(--mc-border-hairline) var(--mc-gray-300); 
+        border-radius: var(--mc-border-radius-xs);
+    }
+
+    &__card-status {
+        display: flex;
+        gap: var(--mc-space-10);
+    }
+
+    &__opinion {
+        &--title {
+            font-size: $font-size-xs;
+        }
+
+        &--document {
+            display: flex;
+            flex-direction: column;
+            gap: var(--mc-space-8);
+        }
+
+        &--simplified {
+
+        }
+
+        &--technical {
+            display: flex;
+            flex-direction: column;
+            gap: var(--mc-space-16);
+        }
+    }
+
+    &__chat {
+        padding: var(--mc-space-12) var(--mc-space-16);
+        background-color: var(--mc-white);
+        border-radius: var(--mc-border-radius-xs);
+
+        .mc-chat {
+            border-radius: var(--mc-border-radius-xs);
+        }
+    }
+
+    &__chat-title {
+        padding-bottom: var(--mc-space-12);
+    } 
+
+    // NOTE-BEM: .opportunity-phases-timeline__box, .opportunity-phases-timeline__content
+    // are external component selectors used here for overrides — owned by opportunity-phases-timeline
+    .opportunity-phases-timeline {
+        &__box {
+            padding: var(--mc-space-12) var(--mc-space-16);
+            background-color: var(--mc-white);
+            border-radius: var(--mc-border-radius-xs);
+            border: unset;
+        }
+
+        &__content {
+            border-radius: var(--mc-space-4);
+            border:var( --mc-border-hairline) var(--mc-gray-300);
+            padding: var(--mc-space-8) var(--mc-space-8) var(--mc-space-8);
+        }
+    }
+}

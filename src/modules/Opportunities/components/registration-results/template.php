@@ -11,7 +11,7 @@ use MapasCulturais\i;
 $entity = $this->controller->requestedEntity;
 ?>
 <div v-if="showEvaluationDetails" class="registration-results">  
-    <mc-modal :title="modalTitle" classes="registration-results__modal registration-results__modal--with-chat">
+    <mc-modal :title="modalTitle" classes="registration-results__modal registration-results__modal__with-chat">
         <template #default>
             <?php foreach($app->getRegisteredEvaluationMethods(true) as $evaluation_method): ?>
                 <div v-if="phase.type?.id == '<?= $evaluation_method->slug ?>'" class="registration-results__content">

@@ -20,8 +20,8 @@ $this->import('
         </div>
         </template>
         <template #title>
-                <h3 class="card-event__title--title"><?php i::_e("Nome do Evento")?></h3>
-                <p class="card-event__title--description"><?php i::_e("Evento")?></p>
+                <h3 class="card-event__title__title"><?php i::_e("Nome do Evento")?></h3>
+                <p class="card-event__title__description"><?php i::_e("Evento")?></p>
         </template>
         <template #content></template>
     </mc-card>

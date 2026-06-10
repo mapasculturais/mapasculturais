@@ -14,11 +14,11 @@ $this->import('
 ');
 ?>
 <div class="col-12 opportunity-enable-workplan" v-if="entity.isFirstPhase">
-    <div class="col-12 disabled-workplan" v-if="entity.enableWorkplan">
+    <div class="col-12 opportunity-enable-workplan__disabled-workplan" v-if="entity.enableWorkplan">
         <mc-confirm-button @confirm="actionDisabledWorkplan()">
             <template #button="{open}">
                 <button class="button button--delete button--icon button--sm" @click="open()">
-                    <mc-icon class="icon-workplandisabled" name="trash"></mc-icon> 
+                    <mc-icon class="opportunity-enable-workplan__icon-workplan-disabled" name="trash"></mc-icon> 
                 </button>
             </template>
             <template #message="message">
@@ -172,7 +172,7 @@ $this->import('
                             </label>
                         </div>
 
-                        <div class="field__group mt">
+                        <div class="field__group opportunity-enable-workplan__mt">
                             <label class="field__group">
                                 {{ `Número máximo de ${getDeliveryLabelDefault}` }}
                             </label>

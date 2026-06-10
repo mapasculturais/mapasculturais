@@ -1,0 +1,592 @@
+@use '../01.settings/mixins' as *;
+
+.search {
+    .mc-loading {
+        color: var(--mc-low-500);
+    }
+
+    .tab-component {
+        &.map {
+            .mc-loading {
+                left: 50%;
+                margin-left: size(-50);
+                position: fixed;
+                top: 49%;
+                width: size(200);
+                z-index: 1000;
+            }
+        }
+
+        &.list {
+
+            .mc-loading,
+            .panel__row {
+                grid-column-end: span 9;
+                text-align: center;
+            }
+        }
+    }
+
+    &__header {
+        background-color: var(--mc-high-500);
+        border: unset;
+        bottom: 0;
+        padding: size(50) 0 0;
+
+        &__content {
+            align-items: center;
+            display: flex;
+            flex-wrap: wrap;
+            gap: var(--mc-space-10);
+            justify-content: space-between;
+            margin: 0 auto;
+            max-width: var(--mc-layout-container-xl);
+            padding: 0 var(--mc-space-16);
+        }
+
+        &__left {
+            align-items: center;
+            display: flex;
+            gap: var(--mc-space-16);
+        }
+
+        &__left-icon {
+            align-items: center;
+            border-radius: 50%;
+            display: flex;
+            height: var(--mc-space-48);
+            justify-content: center;
+            width: var(--mc-space-48);
+
+            .iconify {
+                font-size: var(--mc-space-20);
+            }
+
+            // TODO-BREAKPOINT: 500px is not a canonical breakpoint. Consider adding to $mc-breakpoints or using nearest canonical value.
+            @include respond-below('mob') {
+                height: var(--mc-space-32);
+                width: var(--mc-space-32);
+
+                .iconify {
+                    font-size: var(--mc-space-10);
+                }
+            }
+        }
+
+        &__left-label {
+            font-weight: 700;
+
+            // TODO-BREAKPOINT: 500px is not a canonical breakpoint. Consider adding to $mc-breakpoints or using nearest canonical value.
+            @include respond-below('mob') {
+                line-height: var(--mc-space-32);
+                font-size: var(--mc-space-24);
+                font-weight: 700;
+            }
+        }
+
+        &__right {
+            .button {
+                display: flex;
+                gap: var(--mc-space-24);
+            }
+        }
+    }
+
+    &__tabs {
+            &__before {
+            line-height: var(--mc-space-22);
+            font-size: var(--mc-space-16);
+            font-weight: 600;
+
+            // TODO-BREAKPOINT: 500px is not a canonical breakpoint. Consider adding to $mc-breakpoints or using nearest canonical value.
+            @include respond-below('mob') {
+                line-height: var(--mc-space-20);
+                font-size: var(--mc-space-14);
+            }
+        }
+
+        //header - tabs
+        .tabs-component__header {
+            align-items: flex-end;
+            height: size(87.5);
+            padding: var(--mc-space-21) var(--mc-space-16) var(--mc-space-18);
+            position: relative;
+
+                &__left {
+                align-items: center;
+                bottom: 0;
+                position: absolute;
+                left: var(--mc-space-16);
+            }
+
+                &__right {
+                display: flex;
+                flex-direction: row;
+                justify-content: flex-end;
+                left: 0;
+                position: absolute;
+                width: 100%;
+            }
+
+            @include respond-below('md') {
+                padding: size(63) var(--mc-space-16) var(--mc-space-8);
+                height: size(111);
+                justify-content: center;
+
+                    bottom: 0;
+                }
+            }
+        }
+
+        // paineis - tabs
+        .tabs-component__panels {
+            background-color: var(--mc-gray-100);
+            margin: 0;
+            min-height: size(500);
+        }
+
+        // grupo de botões - tabs
+        .tabs-component__buttons {
+            margin: 0;
+            z-index: 1;
+
+            // resolve a sobreposição dos filtros no tabs.
+            .search-filter .map .search-filter__actions {
+                z-index: 0;
+            }
+
+            .tabs-component__button {
+                font-size: var(--mc-space-14);
+                font-weight: 700;
+                line-height: var(--mc-space-19);
+
+                a {
+                    margin: 0;
+                    padding: var(--mc-space-11) var(--mc-space-13) var(--mc-space-11);
+
+                    @include respond-below('md') {
+                        padding: var(--mc-space-7) var(--mc-space-13) var(--mc-space-7);
+                    }
+
+                    .iconify,
+                    span {
+                        color: var(--mc-gray-500);
+                    }
+                }
+
+                    a {
+
+                        .iconify,
+                        span {
+                            color: var(--mc-gray-700);
+                        }
+                    }
+                }
+
+                &--active::after {
+                    background-color: var(--mc-primary-500);
+                }
+
+
+
+            }
+
+        // tab - list
+        &__list {
+            margin: 0 auto;
+            max-width: var(--mc-layout-container-xl);
+            padding: var(--mc-space-24) var(--mc-space-16) var(--mc-space-40);
+            width: 100%;
+
+            .search-list {
+                &__order {
+                    align-items: flex-end;
+                    display: flex;
+                    gap: var(--mc-space-20) var(--mc-space-24);
+                    margin-bottom: var(--mc-space-10);
+            
+                    .field {
+                        width: auto;
+
+                        select {
+                            border-radius: var(--mc-border-radius-sm);
+                            border: var(--mc-border-solid) var(--mc-primary-500);
+                            font-size: var(--mc-space-14);
+                            font-weight: 800;
+                            line-height: var(--mc-space-19);
+                            padding: var(--mc-space-9) var(--mc-space-32) var(--mc-space-8) var(--mc-space-12);
+                        }
+                    }
+
+                    .foundResults {
+                        background-color: var(--mc-white);
+                        border-radius: var(--mc-border-radius-sm);
+                        font-weight: 700;
+                        font-size: var(--mc-space-14);
+                        line-height: var(--mc-space-18);
+                        padding: var(--mc-space-11) var(--mc-space-16);
+                    }
+                    
+                    .buttons {
+                        display: flex;
+                        gap: var(--mc-space-8);
+
+                        .orderBtn {
+                            align-items: center;
+                            background-color: var(--mc-white);
+                            border-radius: var(--mc-border-radius-sm);
+                            border: none;
+                            display: flex;
+                            height: var(--mc-space-40);
+                            justify-content: center;
+                            width: var(--mc-space-40);
+
+                            .iconify {
+                                color: var(--mc-gray-300);
+                                font-size: var(--mc-space-24);
+                                margin-top: var(--mc-space-2);
+                            }
+
+                            &.active {
+                                background-color: var(--mc-primary-500);
+
+                                .iconify {
+                                    color: var(--mc-white);
+                                }
+                            }
+                        }
+                    }
+
+                    // TODO-BREAKPOINT: 610px is not a canonical breakpoint. Consider adding to $mc-breakpoints or using nearest canonical value.
+                    @media (max-width: size(610)) {
+                        align-items: center;
+                        flex-direction: column-reverse;
+
+                        .field, .foundResults {
+                            width: 100%;
+                        }
+                    }
+                }
+                
+                &__filter {
+                    display: flex;
+                    grid-row-start: 1;
+                    grid-column-start: 10;
+                    justify-content: flex-end;
+                    max-width: var(--mc-layout-container-xl);
+                    padding: 0;
+
+                    &__filter {
+                        width: 100%;
+                    }
+                }
+
+                .entity-card {
+                    &__header {
+                        @include respond-below('md') {
+                            flex-direction: column;
+                        }
+                    }
+                    .user-info__attr {
+                        font-weight: 600;
+                        font-size: var(--mc-space-14);
+
+                        .upper {
+                            text-transform: uppercase;
+                        }
+
+                        .event__color {
+                            display: none;
+                        }
+                    }
+                }
+
+                &__loadMore {
+                    width: size(227);
+                    margin: 0 auto;
+                }
+
+                &__cards {
+                    position: relative;
+
+                    //aqui é o estilo do marcador de tempo
+                    &__date {
+                        align-items: center;
+                        display: flex;
+                        gap: var(--mc-space-8);
+                        margin-bottom: var(--mc-space-20);
+                    }
+
+                    &__date-info {
+                        display: flex;
+                        flex-direction: column;
+                        left: 0;
+                        position: relative;
+                        text-align: right;
+
+                        .weekend {
+                            font-size: var(--mc-space-13);
+                        }
+
+                        .actual-date {
+                            display: flex;
+                            flex-direction: column;
+                            left: 0;
+                            position: relative;
+                            text-align: right;
+                            font-weight: 700;
+
+                            h2 {
+                            }
+
+                            label {
+                                font-size: var(--mc-space-18);
+                                font-weight: 600;
+                            }
+                        }
+                    }
+
+                    &__date-line {
+                        height: var(--mc-space-1);
+                        background: var(--mc-black);
+                        flex-grow: 1;
+                    }
+                }
+            }
+
+            // TODO-BREAKPOINT: 900px is not a canonical breakpoint. Consider adding to $mc-breakpoints or using nearest canonical value.
+            @include respond-below('ml') {
+                .col-8 {
+                    grid-column-end: span 12;
+                }
+
+                .col-4 {
+                    grid-column-start: 1;
+                    grid-column-end: 13;
+                }
+            }
+        }
+
+        // tab - map
+        &__map {
+
+            position: relative;
+
+            .search-filter {
+                grid-column-start: 9;
+            }
+
+            .mc-map {
+                height: size(800);
+
+                .leaflet-container {
+                    z-index: 0;
+                }
+
+                @include respond-below('sm') {
+                    height: size(500);
+                }
+
+                // TODO-BREAKPOINT: 360px is not a canonical breakpoint. Consider adding to $mc-breakpoints or using nearest canonical value.
+                @media (max-width: size(360)) {
+                    height: size(500);
+                }
+            }
+
+            .search-map {
+                &__filter {
+                    display: flex;
+                    justify-content: flex-end;
+                    max-width: var(--mc-layout-container-xl);
+                    margin: 0 auto;
+                    padding: 0 var(--mc-space-16);
+
+                    &__filter {
+                        position: absolute;
+                        z-index: 1;
+                    }
+                }
+
+                &__events {
+
+                    overflow-y: auto;
+                    position: absolute;
+                    width: size(360);
+                    background-color: var(--mc-gray-100);
+                    top: 0;
+                    height: 100%;
+                    left: 0;
+                    padding: 0 var(--mc-space-16) var(--mc-space-16);
+
+                    &__close {
+                        font-weight: 600;
+                        font-size: var(--mc-space-16);
+                        line-height: var(--mc-space-22);
+                        color: var(--mc-low-700);
+
+                        .iconify {
+                            width: var(--mc-space-22);
+                            height: var(--mc-space-22);
+                        }
+
+                        &:hover {
+                            color: var(--mc-low-500);
+                        }
+                    }
+
+                    &__adress {
+                        display: flex;
+                        align-items: baseline;
+                        justify-content: center;
+                        gap: var(--mc-space-8);
+
+                        .iconify {
+                            background-color: var(--mc-white);
+                            min-width: max-content;
+                        }
+                    }
+
+                    &__adress-label {
+                        font-weight: 600;
+                        font-size: var(--mc-space-14);
+                        line-height: var(--mc-space-19);
+                    }
+
+                    &__spaces {
+                        clear: both;
+                        padding: var(--mc-space-14) var(--mc-space-16) var(--mc-space-21);
+                        background-color: var(--mc-white);
+                        border-radius: var(--mc-border-radius-xs);
+
+                        .space-link {
+                            display: flex;
+                            gap: var(--mc-space-6);
+                            align-items: center;
+
+                            &__icon {
+                                width: var(--mc-space-32);
+                                height: var(--mc-space-32);
+                                display: flex;
+                                align-items: center;
+                                justify-content: center;
+                                border-radius: var(--mc-border-radius-pill);
+                                background-color: var(--mc-spaces-500);
+
+                                .iconify {
+                                    color: var(--mc-white);
+                                }
+                            }
+
+                            a {
+                                text-decoration: none;
+                                color: var(--mc-low-500);
+                                margin: var(--mc-space-16) 0;
+                                font-weight: 700;
+                                font-size: var(--mc-space-18);
+                                line-height: var(--mc-space-25);
+                            }
+
+                        }
+
+                    }
+
+                    &__spaces-title {
+                        font-weight: 600;
+                        font-size: var(--mc-space-16);
+                        line-height: var(--mc-space-22);
+                    }
+                }
+
+                &__cards {
+                    position: relative;
+
+                    //aqui é o estilo do marcador de tempo
+                    &__date {
+                        align-items: center;
+                        display: flex;
+                        gap: var(--mc-space-8);
+                        margin: var(--mc-space-20) 0;
+                    }
+
+                    &__date-info {
+                        display: flex;
+                        flex-direction: column;
+                        left: 0;
+                        position: relative;
+                        text-align: right;
+
+                        .weekend {
+                            font-size: var(--mc-space-13);
+                        }
+                    }
+
+                    &__date-line {
+                        height: var(--mc-space-1);
+                        background: var(--mc-black);
+                        flex-grow: 1;
+                    }
+                }
+            }
+        }
+
+    // TODO-BREAKPOINT: 900px is not a canonical breakpoint. Consider adding to $mc-breakpoints or using nearest canonical value.
+    @include respond-below('ml') {
+        &__tabs {
+
+            &--map {
+
+                .search-filter {
+                    &__actions {
+                        display: flex;
+                        flex-direction: row;
+                        gap: var(--mc-space-8);
+
+                        &__formBtn {
+                            position: relative;
+                            bottom: unset;
+                        }
+                    }
+
+                    &__filter {
+                        height: 100vh;
+                        position: fixed;
+                        right: 0;
+                        top: 0;
+                        width: 100vw;
+                    }
+                }
+
+                .search-map {
+                    &__filter {
+                        &__filter {
+                            position: relative;
+                            width: 100%;
+                        }
+                    }
+
+                }
+            }
+        }
+    }
+}
+
+.action-opportunities,
+.action-projects {
+    .search {
+        .tabs-component__panels {
+            background: var(--mc-gray-100);
+            padding-bottom: var(--mc-space-40);
+            margin-bottom: 0;
+            min-height: size(500);
+        }
+
+        .search__tabs--list {
+
+            .mc-loading,
+            .panel__row {
+                grid-column-end: span 9;
+                text-align: center;
+            }
+        }
+    }
+}

@@ -27,12 +27,12 @@ $this->import("
                         <select-entity type="project" @select="setEntity($event)" openside="down-right">
                             <template #button="{ toggle }">
                                 <label class="inner" :class="{'inner--error': hasObjectTypeErrors()}">
-                                    <span class="itemLabel">
+                                    <span class="create-modal__item-label">
                                         <input v-model="entityTypeSelected" @click="toggle()" type="radio" name="inputName" value="project" />
                                         <span><?php i::_e('Projeto') ?> </span>
                                     </span>
 
-                                    <a :class="{'disabled': entityTypeSelected!='project'}" class="selectButton"><?php i::_e('Selecionar') ?> </a>
+                                    <a :class="{'disabled': entityTypeSelected!='project'}" class="create-modal__select-button"><?php i::_e('Selecionar') ?> </a>
                                 </label>
                             </template>
                         </select-entity>
@@ -41,12 +41,12 @@ $this->import("
                         <select-entity type="event" @select="setEntity($event)" openside="down-right">
                             <template #button="{ toggle }">
                                 <label class="inner" :class="{'inner--error': hasObjectTypeErrors()}">
-                                    <span class="itemLabel">
+                                    <span class="create-modal__item-label">
                                         <input v-model="entityTypeSelected" @click="toggle()" type="radio" name="inputName" value="event" />
                                         <span><?php i::_e('Evento') ?> </span>
                                     </span>
 
-                                    <a :class="{'disabled': entityTypeSelected!='event'}" class="selectButton"><?php i::_e('Selecionar') ?> </a>
+                                    <a :class="{'disabled': entityTypeSelected!='event'}" class="create-modal__select-button"><?php i::_e('Selecionar') ?> </a>
                                 </label>
                             </template>
                         </select-entity>
@@ -55,12 +55,12 @@ $this->import("
                         <select-entity type="space" @select="setEntity($event)" openside="down-right">
                             <template #button="{ toggle }">
                                 <label class="inner" :class="{'inner--error': hasObjectTypeErrors()}">
-                                    <span class="itemLabel">
+                                    <span class="create-modal__item-label">
                                         <input v-model="entityTypeSelected" @click="toggle()" type="radio" name="inputName" value="space" />
                                         <span><?php i::_e('Espaço') ?> </span>
                                     </span>
 
-                                    <a :class="{'disabled': entityTypeSelected!='space'}" class="selectButton"><?php i::_e('Selecionar') ?> </a>
+                                    <a :class="{'disabled': entityTypeSelected!='space'}" class="create-modal__select-button"><?php i::_e('Selecionar') ?> </a>
                                 </label>
                             </template>
                         </select-entity>
@@ -69,12 +69,12 @@ $this->import("
                         <select-entity type="agent" @select="setEntity($event)" openside="down-right">
                             <template #button="{ toggle }">
                                 <label class="inner" :class="{'inner--error': hasObjectTypeErrors()}">
-                                    <span class="itemLabel">
+                                    <span class="create-modal__item-label">
                                         <input v-model="entityTypeSelected" @click="toggle()" type="radio" name="inputName" value="agent" />
                                         <span><?php i::_e('Agente') ?> </span>
                                     </span>
 
-                                    <a :class="{'disabled': entityTypeSelected!='agent'}" class="selectButton"><?php i::_e('Selecionar') ?> </a>
+                                    <a :class="{'disabled': entityTypeSelected!='agent'}" class="create-modal__select-button"><?php i::_e('Selecionar') ?> </a>
                                 </label>
                             </template>
                         </select-entity>
@@ -83,8 +83,8 @@ $this->import("
 
                 <small v-if="hasObjectTypeErrors()" class="field__error">{{getObjectTypeErrors().join('; ')}}</small>
 
-                <div v-if="entity.ownerEntity" class="create-modal__fields--selected">
-                    <label class="create-modal__fields--selected-label"><?php i::_e('Vincule o edital a uma entidade: ') ?><span class="required">*</span><br></label>
+                <div v-if="entity.ownerEntity" class="create-modal__fields__selected">
+                    <label class="create-modal__fields__selected-label"><?php i::_e('Vincule o edital a uma entidade: ') ?><span class="required">*</span><br></label>
                     <div class="entity-selected">
                         <div class="entity-selected__entity" :class="entityColorBorder">
                             <mc-avatar :entity="entity.ownerEntity" size="xsmall"></mc-avatar>
@@ -93,14 +93,14 @@ $this->import("
                         <div class="entity-selected__info">
                             <select-entity :type="entityTypeSelected" @select="setEntity($event)" openside="right-down">
                                 <template #button="{ toggle }">
-                                    <a class="entity-selected__info--btn" :class="entityColorClass" @click="toggle()">
+                                    <a class="entity-selected__info__btn" :class="entityColorClass" @click="toggle()">
                                         <mc-icon :class="entityColorClass" name="exchange"></mc-icon>
                                         <h4 :class="entityColorClass"><?php i::_e('Alterar') ?> {{entityType}}</h4>
                                     </a>
                                 </template>
                             </select-entity>
 
-                            <a class="entity-selected__info--btn helper__color" @click="resetEntity()">
+                            <a class="entity-selected__info__btn helper__color" @click="resetEntity()">
                                 <mc-icon class="helper__color" name="exchange"></mc-icon>
                                 <h4 class="helper__color"><?php i::_e('Alterar entidade') ?></h4>
                             </a>

@@ -1,0 +1,191 @@
+@use '../01.settings/mixins' as *;
+
+.opportunity-evaluation-committee {
+    display: flex;
+    flex-direction: column;
+    gap: var(--mc-space-24);
+    max-width: 100%;
+    overflow: hidden;
+
+    &__header {
+        display: flex;
+        flex-wrap: wrap;
+        gap: var(--mc-space-16);
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    &__content {
+        display: flex;
+        flex-wrap: wrap;
+        flex-direction: column;
+        gap: var(--mc-space-8);
+    }
+
+    &__card {
+        border-radius: var(--mc-space-4);
+        background-color: var(--mc-gray-100);
+        width: 100%;
+        box-sizing: border-box;
+        border: var(--mc-space-1) solid var(--mc-gray-300);
+
+        .open-toggle,
+        .opportunity-evaluation-committee__open-toggle {
+            border-bottom: 1px solid var(--mc-gray-300);
+        }
+    }
+
+    &__card-header {
+        display: flex;
+        align-items: stretch;
+        justify-content: flex-start;
+        gap: var(--mc-space-24);
+
+        &-info {
+            align-items: center;
+            display: flex;
+            gap: var(--mc-space-16);
+
+            // TODO-BREAKPOINT: 1076px is not a canonical breakpoint. Consider adding to $mc-breakpoints or using nearest canonical value.
+            @media (max-width: 1076px) {
+                margin: 0 var(--mc-space-8);
+            }
+
+            &-name {
+                display: flex;
+                flex-direction: column;
+                gap: var(--mc-space-4);
+            }
+        }
+
+        &-content {
+            display: flex;
+            grid-template-columns: 1fr 3fr;
+            justify-content: space-between;
+            max-width: 100%;
+            width: 100%;
+            gap: var(--mc-space-16);
+            padding: var(--mc-space-10) 0;
+            flex-direction: column;
+
+            &-data {
+                justify-content: space-between;
+                display: flex;
+            }
+
+            @include respond-below('md') {
+                grid-template-columns: 1fr;
+            }
+        }
+    }
+
+    &__card-toggle {
+        cursor: pointer;
+        background-color: var(--mc-opportunities-500);
+        display: flex;
+        max-height: 100%;
+        min-width: var(--mc-space-48);
+        max-width: 100%;
+        color: var(--mc-white);
+        align-items: center;
+        justify-content: center;
+        border-right: var(--mc-space-1) solid var(--mc-gray-300);
+
+        .iconify {
+            font-size: var(--mc-space-24);
+        }
+    }
+
+    &__card-status {
+        label {
+            padding-left: var(--mc-space-8);
+        }
+    }
+
+    &__cancel-invitation {
+        float: inline-end;
+    }
+
+    &__card-status-wrapper {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        width: 100%;
+    }
+
+    &__card-filter {
+        padding: var(--mc-space-16) var(--mc-space-16) var(--mc-space-16) size(72);
+        border-bottom: var(--mc-space-1) solid var(--mc-gray-300);
+    }
+
+    &__summary {
+        display: flex;
+        margin: 0 var(--mc-space-8);
+        gap: var(--mc-space-8);
+        flex-wrap: wrap;
+        justify-content: flex-start;
+        width: auto;
+
+        span {
+            display: flex;
+            gap: var(--mc-space-8);
+            border-radius: var(--mc-space-4);
+            padding: var(--mc-space-8);
+            align-items: center;
+            justify-content: center;
+            max-width: 100%;
+            width: size(143);
+            height: var(--mc-space-32);
+            font-size: var(--mc-font-size-xxs);
+            white-space: nowrap;
+        }
+
+        &--sent {
+            background-color: var(--mc-eval-approved);
+        }
+
+        &--pending {
+            background-color: var(--mc-eval-rejected)
+        }
+
+        &--started {
+            background-color: var(--mc-eval-not-eval);
+        }
+
+        &--completed {
+            background-color: var(--mc-eval-pending);
+        }
+    }
+
+    &__card-footer {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: var(--mc-space-17);
+
+        &-actions {
+            display: flex;
+            gap: var(--mc-space-16);
+        }
+    }
+
+    &__max-registrations {
+        input {
+            padding: .4em;
+        }
+    }
+
+    &__registration-list {
+        padding: 1em;
+        border-bottom: var(--mc-space-1) solid var(--mc-gray-300);
+        
+        .mc-toggle {
+            margin: 1em 0;
+        }
+
+        &__exclusive {
+            margin: 1em 0;
+            display: block;
+        }
+    }
+}

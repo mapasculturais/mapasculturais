@@ -1,0 +1,201 @@
+@use '../01.settings/mixins' as *;
+
+.opportunity-appeal-phase-config {
+    display: flex;
+    flex-direction: column;
+    gap: var(--mc-space-20);
+    
+    &__appeals {
+        display: flex;
+        flex-direction: column;
+        gap: var(--mc-space-28);
+
+        .mc-accordion {
+            background-color: none;
+            border-radius: var(--mc-space-4);
+            padding: var(--mc-space-16) var(--mc-space-20) var(--mc-space-30);
+
+            &__header {
+                padding: 0;
+                background-color: var(--mc-gray-100);
+                max-width: size(1047);
+                grid-template-columns: 1fr size(124);
+
+                // TODO-BREAKPOINT: 488px is not a canonical breakpoint. Consider adding to $mc-breakpoints or using nearest canonical value.
+                @media (max-width: 488px) {
+                    grid-template-columns: 1fr;
+                }
+
+                &--active {
+                    padding-bottom: var(--mc-space-16);
+                }
+            }
+
+            &__content {
+                display: flex;
+                flex-direction: column;
+                gap: var(--mc-space-32);
+                padding: var(--mc-space-16) 0;
+                background-color: var(--mc-gray-100);
+                max-width: 100%;
+                border-top: var(--mc-border-hairline) var(--mc-gray-300);
+
+                .mc-card {
+                    background-color: var(--mc-gray-100);
+                }
+            }
+
+            &__title {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                flex-wrap: wrap;
+                gap: var(--mc-space-16);
+
+                // NOTE: .info__type uses single underscore — already BEM-compatible within mc-accordion scope.
+                .info__type {
+                    display: flex;
+                    gap: var(--mc-space-8);
+                }
+
+                .title,
+                .opportunity-appeal-phase-config__phase-title {
+                    color: var(--mc-gray-700);
+                    font-size: var(--mc-space-14);
+                    font-weight: 600;
+                    line-height: var(--mc-space-19);
+                    text-transform: uppercase;
+                }
+
+                .type,
+                .opportunity-appeal-phase-config__type {
+                    color: var(--mc-low-500);
+                    font-size: var(--mc-space-14);
+                    font-weight: 700;
+                    line-height: var(--mc-space-19);
+                    text-transform: none;
+                }
+            }
+
+            &__icon {
+                align-items: center;
+                color: var(--mc-primary-500);
+                display: flex;
+                gap: var(--mc-space-4);
+                justify-content: flex-end;
+                min-width: size(82);
+
+                // TODO-BREAKPOINT: 488px is not a canonical breakpoint. Consider adding to $mc-breakpoints or using nearest canonical value.
+                @media (max-width: 488px) {
+                    justify-content: center;
+                }
+
+                label {
+                    font-weight: 700;
+                    font-size: var(--mc-space-14);
+                    line-height: var(--mc-space-19);
+                }
+            }
+        }
+
+        .opportunity-phase-status, 
+        .opportunity-phase-list-evaluation {
+            padding-top: var(--mc-space-16);
+        }
+    }
+
+    &__title {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+    }
+
+    &__content-title {
+        display: flex;
+        flex-direction: column;
+        gap: var(--mc-space-32);
+    }
+
+    &__dates {
+        display: flex;
+        gap: var(--mc-space-48);
+
+        // NOTE: .date/.date__title/.date__content are scoped via this block's nesting.
+        .date,
+        .opportunity-appeal-phase-config__date {
+            display: flex;
+            flex-direction: column;
+            gap: var(--mc-space-4);
+        }
+
+        .date__title {
+            color: var(--mc-gray-700);
+            font-size: var(--mc-space-14);
+            font-weight: 600;
+            line-height: var(--mc-space-19);
+            text-transform: uppercase;
+        }
+
+        .date__content {
+            align-items: center;
+            color: var(--mc-low-500);
+            display: flex;
+            font-size: var(--mc-space-14);
+            font-weight: 700;
+            line-height: var(--mc-space-19);
+        }
+    }
+
+    &__datepicker {
+        display: flex;
+        max-width: size(923);
+        gap: size(70);
+
+        // TODO-BREAKPOINT: 931px is not a canonical breakpoint. Consider adding to $mc-breakpoints or using nearest canonical value.
+        @media (max-width: 931px) {
+            flex-wrap: wrap;
+        }
+
+        .entity-field-datepicker {
+            &__date {
+                width: 70%;
+            }
+
+            // TODO-BREAKPOINT: 549px is not a canonical breakpoint. Consider adding to $mc-breakpoints or using nearest canonical value.
+            @media (max-width: 549px) {
+                flex-wrap: wrap;
+            }
+        }
+    }
+
+    &__config-button {
+        .button {
+            max-width: 100%;
+            width: size(362);
+        }
+    }
+
+    &__add-evaluation-committee {
+        border-bottom: var(--mc-border-hairline) var(--mc-gray-300);
+        padding-bottom: var(--mc-space-40);
+    }
+
+    &__delete {
+        text-align: end;
+    }
+
+    &__checkboxes {
+        display: flex;
+        gap: var(--mc-space-8);
+        flex-direction: row;
+        width: 100%;
+
+        @include respond-below('md') {
+            width: 100%;
+        }
+
+        input {
+            width: var(--mc-space-16);
+        }
+    }
+}

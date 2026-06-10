@@ -22,7 +22,7 @@ $this->import('
         <?php endif; ?>
     </h4>
     <div class="entity-related-agents__group">
-        <div class="entity-related-agents__group--agents">
+        <div class="entity-related-agents__group-agents">
             <div v-for="relation in group" class="agent">
                 <mc-relation-card :relation="relation">
                     <template #default="{open, close, toggle}">
@@ -46,7 +46,7 @@ $this->import('
                 <div v-if="relation.status == -5" class="agent__pending"></div>
             </div>
         </div>
-        <div class="entity-related-agents__group--actions">
+        <div class="entity-related-agents__group-actions">
             <select-entity v-if="isEditable" type="agent" permissions="" select="id,name,files.avatar,terms,type" @select="addAgent($event)" :query="query" openside="down-right">
                 <template #button="{ toggle }">
                     <button class="button button--rounded button--sm button--icon button--primary" @click="toggle()">

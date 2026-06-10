@@ -1,0 +1,235 @@
+@use '../01.settings/mixins' as *;
+
+.registration-card {
+    background-color: var(--mc-high-500);
+    border-radius: var(--mc-border-radius-xs);
+    display: flex;
+    flex-direction: column;
+    gap: var(--mc-space-30);
+    padding: var(--mc-space-24);
+
+    // TODO-BREAKPOINT: 500px is not a canonical breakpoint. Consider adding to $mc-breakpoints or using nearest canonical value.
+    @include respond-below('mob') {
+        padding: var(--mc-space-16);
+    }
+
+    // NOTE: BEM migration tracked — .left/.right/.registerImage/.header/.title/.actions/.content
+    // .registerData/.data use dual-selectors below for backward compat.
+    &__content {
+        display: flex;
+        gap: 30px;
+
+        // TODO-BREAKPOINT: 500px is not a canonical breakpoint. Consider adding to $mc-breakpoints or using nearest canonical value.
+        @include respond-below('mob') {
+            gap: 8px;
+            flex-direction: column;
+        }
+
+        .left,
+        .registration-card__left {
+            .registerImage,
+            .registration-card__register-image {
+                align-items: center;
+                background-color: var(--mc-gray-300);
+                border-radius: var(--mc-border-radius-pill);
+                display: flex;
+                height: var(--mc-space-64);
+                justify-content: center;
+                overflow: hidden;
+                width: var(--mc-space-64);
+
+                // TODO-BREAKPOINT: 500px is not a canonical breakpoint. Consider adding to $mc-breakpoints or using nearest canonical value.
+                @include respond-below('mob') {
+                    height: var(--mc-space-48);
+                    width: var(--mc-space-48);
+                }
+                
+                img {
+                    width: 100%;
+                }
+
+                .iconify {
+                    font-size: var(--mc-space-30);
+                    color: var(--mc-gray-700);
+                }
+            }
+        }
+
+        .right,
+        .registration-card__right {
+            display: flex;
+            flex-direction: column;
+            gap: var(--mc-space-32);
+
+            .header,
+            .registration-card__header {
+                align-items: center;
+                display: flex;
+                justify-content: space-between;
+                flex-wrap: wrap;
+                gap: var(--mc-space-16);
+        
+                .title {
+                    font-size: var(--mc-space-18);
+                    font-weight: 600;
+                    line-height: var(--mc-space-25);
+                    text-transform: uppercase;
+                    display: flex;
+                    gap: var(--mc-space-4);
+                    align-items: center;
+                    flex-wrap: wrap;
+        
+                    strong {
+                        text-transform: none;
+                        font-size: var(--mc-space-24);
+                        line-height: var(--mc-space-28);
+                    }
+                }
+        
+                .actions {
+        
+                }
+            }
+    
+            .content,
+            .registration-card__content {
+                display: flex;
+                gap: var(--mc-space-25) var(--mc-space-48);
+                flex-wrap: wrap;
+                
+                .registerData {
+                    gap: 4px;
+                    display: flex;
+                    flex-direction: column;
+
+                    .title {
+                        color: var(--mc-low-500);                
+                        font-size: var(--mc-space-16);
+                        font-weight: 600;
+                        line-height: var(--mc-space-22);
+                        margin: 0;
+                        text-transform: uppercase;
+                    }
+        
+                    .data {
+                        color: var(--mc-low-500);  
+                        font-size: var(--mc-space-16);
+                        font-weight: 700;
+                        line-height: var(--mc-space-22);
+                        margin: 0;
+                    }
+                }
+
+                // TODO-BREAKPOINT: 500px is not a canonical breakpoint. Consider adding to $mc-breakpoints or using nearest canonical value.
+                @include respond-below('mob') {
+                    gap: var(--mc-space-16) var(--mc-space-40);
+
+                    .registerData {
+                        .title {               
+                            font-size: var(--mc-space-14);
+                            line-height: var(--mc-space-19);
+                        }
+            
+                        .data {
+                            font-size: var(--mc-space-14);
+                            line-height: var(--mc-space-19);
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    // NOTE: BEM migration tracked — footer .left/.status/.right/.delete-registration/.button
+    // use dual-selectors below for backward compat.
+    &__footer {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        gap: var(--mc-space-24);
+
+        .left,
+        .registration-card__footer-left {
+            .status,
+            .registration-card__status {
+                font-weight: 800;
+                font-size: var(--mc-space-12);
+                line-height: var(--mc-space-16);
+                background-color: var(--mc-low-700);
+                padding: var(--mc-space-8) var(--mc-space-32);
+                border-radius: var(--mc-border-radius-pill);
+                color: var(--mc-high-500);
+            }
+        }
+
+        .right,
+        .registration-card__footer-right {
+            display: flex;
+            flex-grow: .5;
+            gap: var(--mc-space-25);
+            justify-content: flex-end;
+            // TODO-BREAKPOINT: 440px is not a canonical breakpoint. Consider adding to $mc-breakpoints or using nearest canonical value.
+            @media (max-width: size(440)){
+                flex-direction: column-reverse;
+            }
+            .delete-registration {
+                background-color: var(--mc-high-500);
+                color: var(--mc-danger-500);
+            }
+            .delete-registration:hover {
+                filter: brightness(1.2);
+                border-color: var(--mc-danger-500);
+                color: var(--mc-high-500);
+                background-color: var(--mc-danger-500);
+            }
+            .button {
+                max-width: size(272);
+                width: 100%;
+            }
+
+            // TODO-BREAKPOINT: 440px is not a canonical breakpoint. Consider adding to $mc-breakpoints or using nearest canonical value.
+            @media (max-width: size(440)) {
+                width: 100%;
+
+                .button {
+                    margin: 0 auto;
+                }
+            }
+        }
+    }
+
+    
+    &.border {
+        border: var(--mc-border-hairline) var(--mc-low-700);
+    }
+
+    &.picture {
+        .registration-card__content .right {
+            gap: var(--mc-space-13);
+            
+
+            // TODO-BREAKPOINT: 500px is not a canonical breakpoint. Consider adding to $mc-breakpoints or using nearest canonical value.
+            @include respond-below('mob') {
+                display: flex;
+                flex-direction: column-reverse;
+                gap: var(--mc-space-8);
+            }
+
+            .header .title strong {
+                font-size: var(--mc-space-24);
+                line-height: var(--mc-space-28);  
+
+                // TODO-BREAKPOINT: 500px is not a canonical breakpoint. Consider adding to $mc-breakpoints or using nearest canonical value.
+                @include respond-below('mob') {
+                    font-size: var(--mc-space-18);
+                    line-height: var(--mc-space-25);
+                }                    
+            }
+
+            .content .registerData {
+                gap: 0;
+            }
+        }
+    }
+}

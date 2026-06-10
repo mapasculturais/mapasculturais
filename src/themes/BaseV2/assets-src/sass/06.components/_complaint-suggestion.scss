@@ -1,0 +1,32 @@
+@use '../01.settings/mixins' as *;
+
+.complaint-suggestion {
+    display: flex;
+    gap: var(--mc-space-16);
+
+    &__modal-content {
+        display: grid;
+        gap: var(--mc-space-24);
+    }
+
+    &__input-group {
+        display: grid;
+        gap: var(--mc-space-16);
+
+        input[type="checkbox"] {
+            height: var(--mc-space-16);
+        }
+    }
+
+    &__recaptcha {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+    }
+
+    .modal-content {
+        max-width: size(570);
+        width: 100%;
+    }
+}

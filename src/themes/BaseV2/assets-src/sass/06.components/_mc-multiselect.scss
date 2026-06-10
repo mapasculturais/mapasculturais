@@ -1,0 +1,182 @@
+@use '../01.settings/mixins' as *;
+
+.mc-multiselect {
+
+    &__input {
+        appearance: none;
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        background: url(https://api.iconify.design/ic/baseline-arrow-drop-down.svg) no-repeat right var(--mc-space-16) center/contain;
+        background-color: var(--mc-white);
+        background-size: var(--mc-space-24);
+        padding-right: var(--mc-space-40);
+        text-overflow: ellipsis;
+
+        &--open {
+            background: url(https://api.iconify.design/ic/baseline-arrow-drop-up.svg) no-repeat right var(--mc-space-16) center/contain;
+            background-color: var(--mc-white);
+            background-size: var(--mc-space-24);
+        }
+    }
+
+    &__filter {
+        display: flex;
+        gap: var(--mc-space-8);
+        justify-content: flex-end;
+        padding: var(--mc-space-5) var(--mc-space-10);
+        border-bottom: var(--mc-border-hairline) var(--mc-gray-300);
+        position: sticky;
+        top: 0;
+        background-color: var(--mc-white);
+    }
+
+    &__filter-input {
+        font-family: var(--mc-font-body);
+        padding: var(--mc-space-6) var(--mc-space-16);
+        width: 100%;
+    }
+
+    &__close {
+        align-items: center;
+        cursor: pointer;
+        display: flex;
+        padding: var(--mc-space-10);
+    }
+
+    &__content {
+        display: flex;
+        flex-direction: column;
+        max-height: size(256);
+        max-width: size(500);
+
+        @include respond-below('md') {
+            max-height: 100vh;
+        }
+
+        &>* {
+            border-right: var(--mc-border-hairline) var(--mc-gray-300);
+        }
+    }
+
+    &__confirm-button {
+        padding: var(--mc-space-5) var(--mc-space-10);
+        display: flex;
+    }
+
+    &__finish-action {
+        align-items: center;
+        background-color: var(--mc-white);
+        border-top: var(--mc-border-hairline) var(--mc-gray-300);
+        bottom: 0;
+        cursor: pointer;
+        display: flex;
+        gap: var(--mc-space-8);
+        justify-content: center;
+        padding: var(--mc-space-16);
+        position: sticky;
+
+        &:hover {
+            background-color: var(--mc-gray-100);
+        }
+    }
+
+    &__options {
+        display: flex;
+        flex-direction: column;
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        width: 100%;
+
+        // TODO-BREAKPOINT: 500px is not a canonical breakpoint. Consider adding to $mc-breakpoints or using nearest canonical value.
+        @include respond-below('mob') {
+            max-height: unset;
+        }
+    }
+
+    &__option {
+        border-radius: var(--mc-border-radius-xs);
+        color: var(--mc-low-500);
+        cursor: pointer;
+        display: flex;
+        gap: var(--mc-space-8);
+        padding: var(--mc-space-5) var(--mc-space-10);
+
+        &:hover {
+            background-color: var(--mc-gray-300);
+        }
+    }
+
+    &__count {
+        background-color: var(--mc-white);
+        border-bottom: var(--mc-border-hairline) var(--mc-gray-300);
+        padding: var(--mc-space-5) var(--mc-space-10);
+        position: sticky;
+        top: 0;
+
+        label {
+            justify-content: center;
+        }
+    }
+
+    &__popper {
+        box-shadow: none !important;
+        border: var(--mc-border-hairline) var(--mc-gray-300);
+
+        .popover__content {
+            background-color: var(--mc-white);
+            border-radius: var(--mc-border-radius-xs);
+            padding: 0;
+        }
+
+        &.v-popper {
+            &__popper {
+                .v-popper {
+                    &__inner {
+                        border: none;
+                        box-shadow: none !important;
+                        overflow: hidden;
+                    }
+
+                    &__arrow-container {
+                        display: none;
+                    }
+                }
+            }
+
+            &__popper--no-positioning {
+                position: fixed;
+                bottom: 0;
+                width: 100%;
+
+                &>.v-popper {
+                    &__backdrop {
+                        position: absolute;
+                        width: 100vw;
+                        height: 100vh;
+                        display: block;
+                        background: rgba(0, 0, 0, .5);
+                    }
+
+                    &__wrapper {
+                        position: fixed;
+                        width: 100%;
+                        bottom: 0;
+                    }
+                }
+
+                .mc-select__options {
+                    max-height: calc(100vh - var(--mc-space-48));
+                }
+            }
+        }
+    }
+
+    &--disabled,
+    &--disabled>input {
+        opacity: .9;
+        pointer-events: none;
+        background-color: light-dark(rgba(239, 239, 239, 0.3), rgba(59, 59, 59, 0.3));
+        color: light-dark(rgb(84, 84, 84), rgb(170, 170, 170));
+    }
+}

@@ -1,0 +1,86 @@
+@use '../01.settings/mixins' as *;
+
+.faq-info {
+    max-width: size(400);
+    max-height: size(400);
+    overflow: auto;
+    padding-right: var(--mc-space-10);
+    margin: var(--mc-space-10);
+
+    // TODO-BREAKPOINT: 500px is not a canonical breakpoint. Consider adding to $mc-breakpoints or using nearest canonical value.
+    @include respond-below('mob') {
+        max-width: unset;
+        max-height: 100%;
+        margin: 0;
+    }
+
+    &__title {
+        font-weight: 700;
+        color: var(--mc-primary-500);
+        padding: var(--mc-space-15) 0;
+        border-bottom: var(--mc-space-1) solid var(--mc-gray-500);
+        text-align: center;
+    }
+
+    &__content {
+        text-align: justify;
+        overflow: auto;
+        margin: var(--mc-space-15) 0;
+
+        & > blockquote {
+            display: grid;
+            gap: var(--mc-space-16);
+            padding: var(--mc-space-10) var(--mc-space-16);
+            margin: var(--mc-space-16) 0;
+            background-color: var(--mc-gray-100);
+        }
+
+        & > p {
+            margin-bottom: var(--mc-space-15);
+        }
+
+        & > ul {
+            text-align: left;
+        }
+
+        & > table {
+            margin: var(--mc-space-15) 0;
+
+            & > thead > tr > th {
+                border-bottom: var(--mc-space-2) solid var(--mc-low-500);
+                text-align: left;
+            }
+
+            & > tbody > tr > td {
+                border-bottom: var(--mc-space-1) solid var(--mc-low-500);
+            }
+        }
+    }
+
+    &__tags  {
+        & ul {
+            margin-bottom: var(--mc-space-15);
+
+            & li {
+                background-color: var(--mc-faq-500);
+            }
+        }
+    }
+
+    &__button {
+        align-items: center;
+        background: none;
+        border: none;
+        cursor: pointer;
+        display: flex;
+        justify-content: center;
+
+        .iconify {
+            color: var(--mc-primary-500);
+            font-size: var(--mc-space-18);
+            height: var(--mc-space-18);
+            width: var(--mc-space-18);
+        }
+    }
+
+}

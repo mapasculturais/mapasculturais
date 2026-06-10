@@ -1,0 +1,107 @@
+@use '../01.settings/mixins' as *;
+
+.seals-certifier {
+    display: flex;
+    flex-direction: column;
+    gap: var(--mc-space-20);
+    flex-wrap: wrap;
+
+    &__proponents, &__categories {
+        border-radius: var(--mc-border-radius-sm);
+        padding: var(--mc-space-10) var(--mc-space-20);
+        background-color: var(--mc-gray-100);
+        display: flex;
+        flex-direction: column;
+        gap: var(--mc-space-24);
+    }
+
+    &__proponent, &__category {
+        gap: var(--mc-space-12);
+
+        &--seals {
+            display: flex;
+            flex-wrap: wrap;
+            gap: var(--mc-space-16);
+        }
+
+        &--seal {
+            display: flex;
+            flex-direction: column;
+            gap: var(--mc-space-4);
+            max-width: size(50);
+            width: 100%;
+
+            .seal-label {
+                font-weight: 700;
+                font-size: var(--mc-space-14);
+                line-height: var(--mc-space-19);
+            }
+
+            .seal-icon {
+                align-items: center;
+                background: var(--mc-gray-300);
+                border-radius: var(--mc-border-radius-xs);
+                cursor: pointer;
+                display: flex;
+                height: var(--mc-space-48);
+                justify-content: center;
+                position: relative;
+                width: var(--mc-space-48);
+
+                .link {
+                    text-decoration: none;
+                    color: inherit;
+
+                    .iconify {
+                        font-size: var(--mc-space-28);
+                    }
+                }
+
+                .image {
+                    align-items: center;
+                    border-radius: var(--mc-border-radius-xs);
+                    display: flex;
+                    height: 100%;
+                    justify-content: center;
+                    overflow: hidden;
+                    width: 100%;
+
+                    img {
+                        max-height: 100%;
+                        height: var(--mc-space-48);
+                        width: var(--mc-space-48);
+                    }
+                }
+
+                // NOTE-BEM: .icon is a template-dependent class — rename requires PHP template update
+                .icon {
+                    align-items: center;
+                    background-color: var(--mc-danger-500);
+                    border-radius: 50%;
+                    color: var(--mc-white);
+                    cursor: pointer;
+                    display: flex;
+                    font-size: var(--mc-space-13);
+                    height: var(--mc-space-16);
+                    justify-content: center;
+                    position: absolute;
+                    top: size(-8);
+                    right: size(-8);
+                    width: var(--mc-space-16);
+                }
+            }
+        }
+
+        &--addSeal {
+            align-items: center;
+            border: 0.0625rem solid;
+            border-radius: var(--mc-border-radius-xs);
+            display: flex;
+            height: 2.9375rem;
+            justify-content: center;
+            position: relative;
+            width: 2.9375rem;
+            cursor: pointer;
+        }
+    }
+}

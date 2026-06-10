@@ -1,0 +1,78 @@
+@use '../01.settings/mixins' as *;
+
+.user-mail {
+    &__account-config {
+        margin: var(--mc-space-24) 0;
+        padding: var(--mc-space-16);
+        background-color: var(--mc-high-500);
+
+
+        &-label {
+
+            font-weight: 700;
+            font-size: var(--mc-space-18);
+            margin-bottom: var(--mc-space-16);
+        }
+
+        &-email {
+            font-style: normal;
+            font-weight: 700;
+            font-size: var(--mc-space-14);
+            gap: var(--mc-space-8);
+            padding-right: var(--mc-space-18);
+        }
+
+        &-edit {
+            gap: var(--mc-space-18);
+
+            svg {
+                color: var(--mc-helper-500);
+                margin-right: var(--mc-space-8);
+            }
+
+            &-label {
+                margin-left: var(--mc-space-8);
+                font-weight: 700;
+                font-size: var(--mc-space-14);
+                color: var(--mc-helper-500);
+            }
+        }
+
+        &-form {
+            margin: var(--mc-space-16) 0;
+            align-items: center;
+
+            &:last-child {
+                margin-bottom: 0;
+            }
+
+            .field {
+                gap: 0;
+            }
+        }
+
+
+    }
+
+    @include respond-below('md') {
+        &__account-config {
+
+            &-form {
+                display: flex;
+                flex-direction: column;
+
+                // NOTE-BEM: .mail-buttons is a template-dependent class — rename requires PHP template update
+                .mail-buttons {
+                    flex-direction: column;
+                    display: flex;
+                    gap: var(--mc-space-8);
+                }
+            }
+
+            p {
+                display: flex;
+                flex-direction: column;
+            }
+        }
+    }
+}

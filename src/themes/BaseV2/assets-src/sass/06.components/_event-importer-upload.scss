@@ -1,0 +1,37 @@
+@use '../01.settings/mixins' as *;
+
+.event-importer-upload {
+    &__field {
+        align-items: center;
+        background: var(--mc-white);
+        border-radius: var(--mc-border-radius-xs);
+        border: var(--mc-space-1) solid var(--mc-gray-300);
+        display: flex;
+        gap: var(--mc-space-16);
+        justify-content: space-between;
+        margin-top: var(--mc-space-28);
+        padding: var(--mc-space-8) var(--mc-space-8) var(--mc-space-8) var(--mc-space-16); 
+
+        input[type='file'] {
+            display: none
+        }
+
+        .input-label {
+            align-items: center;
+            background-color: var(--mc-primary-500);
+            border-radius: var(--mc-border-radius-pill);
+            color: var(--mc-high-500);
+            cursor: pointer;
+            display: flex;
+            gap: var(--mc-space-16);
+            padding: var(--mc-space-8) var(--mc-space-16);
+            width: fit-content;
+        }
+    }
+
+    &__loading {
+        align-items: flex-end;
+        display: flex;
+        justify-content: center;
+    }
+}

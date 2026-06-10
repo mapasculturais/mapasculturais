@@ -1,0 +1,22 @@
+@use '../01.settings/mixins' as *;
+
+.registration-form {
+    &__section {
+        margin-bottom: var(--mc-space-16);
+
+        >.mc-card__title {
+            font-size: $font-size-md;
+            font-weight: $font-weight-bold;
+        }
+
+        >.mc-card__content {
+            gap: var(--mc-space-32);
+        }
+    }
+
+    // NOTE-BEM: .mc-multiselect is an external component selector — owned by mc-multiselect component
+    .mc-multiselect {
+        width: 100%;
+    }
+
+}

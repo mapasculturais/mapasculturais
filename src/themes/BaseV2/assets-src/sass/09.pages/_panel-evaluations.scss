@@ -1,0 +1,97 @@
+@use '../01.settings/mixins' as *;
+
+.panel-evaluations {
+    display: grid;
+    gap: var(--mc-space-40);
+    padding: var(--mc-space-25) var(--mc-space-30);
+
+    // DUPLICATED: .tabs-component.hasDrafts block is identical in _panel-registrations.scss.
+    //   Consider extracting to a shared mixin in 01.settings/ if reused elsewhere.
+    .tabs-component {
+        &.hasDrafts {
+            li.notSent {
+                margin-right: var(--mc-space-10);
+
+                &::before {
+                    background-color: var(--mc-warning-500);
+                    border-radius: var(--mc-border-radius-pill);
+                    content: '';
+                    height: var(--mc-space-10);
+                    position: absolute;
+                    top: 0;
+                    right: size(-10);
+                    width: var(--mc-space-10);
+                }
+            }
+        }
+    }
+
+    &__filter {
+        align-items: center;
+        display: flex;
+        gap: var(--mc-space-24);
+        width: 100%;
+
+        // TODO-BREAKPOINT: 650px is not a canonical breakpoint. Consider adding to $mc-breakpoints or using nearest canonical value.
+        @media (max-width: size(650)) {
+            align-items: stretch;
+            flex-direction: column;
+        }
+
+        .search {
+            align-items: center;
+            display: flex;
+            max-width: size(370);
+            position: relative;
+            width: 100%;
+
+            // TODO-BREAKPOINT: 650px is not a canonical breakpoint. Consider adding to $mc-breakpoints or using nearest canonical value.
+            @media (max-width: size(650)) {
+                max-width: unset;
+            }
+
+            .input {
+                border-radius: var(--mc-border-radius-pill);
+                border: var(--mc-border-hairline) var(--mc-gray-500);
+                font-size: var(--mc-space-16);
+                font-weight: 400;
+                line-height: var(--mc-space-19);                    
+                margin: 0;
+                padding: var(--mc-space-10) var(--mc-space-20);
+                width: 100%;
+            }
+
+            .button {
+                background: unset;
+                border-radius: 0 var(--mc-border-radius-pill) var(--mc-border-radius-pill) 0;
+                padding: size(7.5) var(--mc-space-20);
+                position: absolute;
+                right: 0;
+
+                .iconify {
+                    font-size: var(--mc-space-22);
+                }
+            }
+        }
+
+        .order {
+            appearance: none;
+            background: url('https://api.iconify.design/ic/baseline-arrow-drop-down.svg?color=%230074c1') no-repeat 96% center/contain;
+            background-color: var(--mc-high-500);
+            background-size: var(--mc-space-20);
+            border-radius: var(--mc-border-radius-sm);
+            padding: var(--mc-space-10) var(--mc-space-24) var(--mc-space-10) var(--mc-space-16);
+        }
+    }
+
+    &__cards {
+        display: grid;
+        gap: var(--mc-space-30);
+    }
+
+    &__label {
+        border-bottom: var(--mc-border-hairline) var(--mc-gray-300);
+        padding: 0 0 var(--mc-space-8);
+    }
+
+}

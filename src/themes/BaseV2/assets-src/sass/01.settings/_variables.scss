@@ -1,0 +1,388 @@
+@use 'sass:color';
+
+// COLORS
+$black: #1E1E1E !default;
+$error: #FF2D2D !default;
+$gray-100: #F5F5F5 !default;
+$gray-300: #C4C4C4 !default;
+$gray-700: #4E4E4E !default;
+$warning: #F07B07 !default;
+$white: #FFFFFF !default;
+
+$gray-500: color.mix($gray-300, $gray-700, 50%) !default;
+$gray-400: color.mix($gray-300, $gray-500, 50%) !default;
+
+// Default lightness deltas
+$lightness-300: 25% !default;
+$lightness-700: 25% !default;
+
+// Brand colors
+$primary-500: #117C83 !default;
+$primary-300: lighten($primary-500, $lightness-300) !default;
+$primary-700: darken($primary-500, $lightness-700) !default;
+$primary-100: color.mix(white, $primary-500, 80%) !default;
+
+$secondary-500: #D14526 !default;
+$secondary-300: lighten($secondary-500, $lightness-300) !default;
+$secondary-700: darken($secondary-500, $lightness-700) !default;
+
+// Entities colors
+$seals-500: #1E1E1E !default;
+$seals-300: lighten($seals-500, $lightness-300) !default;
+$seals-700: darken($seals-500, $lightness-700) !default;
+
+$agents-500: #EF7B45 !default;
+$agents-300: lighten($agents-500, $lightness-300) !default;
+$agents-700: darken($agents-500, $lightness-700) !default;
+
+$events-500: #9C4EC7 !default;
+$events-300: lighten($events-500, $lightness-300) !default;
+$events-700: darken($events-500, $lightness-700) !default;
+
+$opportunities-500: #D14526 !default;
+$opportunities-300: lighten($opportunities-500, $lightness-300) !default;
+$opportunities-700: darken($opportunities-500, $lightness-700) !default;
+
+$projects-500:  #117C83!default;
+$projects-300: lighten($projects-500, $lightness-300) !default;
+$projects-700: darken($projects-500, $lightness-700) !default;
+
+$spaces-500: #538D0A !default;
+$spaces-300: lighten($spaces-500, $lightness-300) !default;
+$spaces-700: darken($spaces-500, $lightness-700) !default;
+
+// FAQ
+$faq-500: #ffcf8f !default;
+$faq-300: lighten($faq-500, $lightness-300) !default;
+$faq-700: darken($faq-500, $lightness-700) !default;
+
+// Feedback colors
+$danger-500: #EF1010 !default;
+$danger-300: lighten($danger-500, $lightness-300) !default;
+$danger-700: darken($danger-500, $lightness-700) !default;
+$danger-100: color.mix(white, $danger-500, 80%) !default;
+
+$success-500: #498200 !default;
+$success-300: lighten($success-500, $lightness-300) !default;
+$success-700: darken($success-500, $lightness-700) !default;
+
+$warning-500: #FF9F1C !default;
+$warning-300: lighten($warning-500, $lightness-300) !default;
+$warning-700: darken($warning-500, $lightness-700) !default;
+
+$helper-500: #0074C1 !default;
+$helper-300: lighten($helper-500, $lightness-300) !default;
+$helper-700: darken($helper-500, $lightness-700) !default;
+
+// Highlight color (CTA / accent)
+$highlight-500: #FFB300 !default;
+$highlight-300: lighten($highlight-500, $lightness-300) !default;
+$highlight-700: darken($highlight-500, $lightness-700) !default;
+
+// Home 
+$home-opportunities: $secondary-500 !default;
+$home-entities: $gray-100 !default;
+$home-feature: $secondary-300 !default;
+$home-register: $primary-500 !default;
+$home-map: $white !default;
+$home-developers: $gray-100 !default;
+$home-header-gradient: linear-gradient(180deg, rgba(0, 116, 193, 0.45) 0%, rgba(255, 164, 163, 0.45) 100%), linear-gradient(0deg, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5));
+
+// Neutral colors
+$low-500: #1E1E1E !default;
+$low-300: lighten($low-500, $lightness-300) !default;
+$low-700: darken($low-500, $lightness-700) !default;
+
+$high-500: #FFFFFF !default;
+$high-300: lighten($high-500, $lightness-300) !default;
+$high-700: darken($high-500, $lightness-700) !default;
+
+// FONTS
+$font-body: 'Open Sans', sans-serif !default;
+$font-headings: 'Open Sans', sans-serif !default;
+$font-weight-bold: 700;
+$font-weight-regular: 400;
+$font-weight-semibold: 600;
+$text-transform-lowercase: lowercase;
+$text-transform-none: none;
+$text-transform-uppercase: uppercase;
+
+$font-size-xl: 3rem;
+$font-size-lg: 2rem;
+$font-size-md: 1.5rem;
+$font-size-sm: 1.125rem;
+$font-size-xs: 1rem;
+$font-size-xxs: 0.875rem;
+$font-size-xxxs: 0.75rem;
+
+// Borders radius
+$border-radius-xs: 4px !default;
+$border-radius-sm: 8px !default;
+$border-radius-pill: 64px !default;
+
+// Borders
+$border-hairline: 1px solid;
+$border-solid: 2px solid;
+
+// Shadows
+$shadow-lv-1: 0px 4px 8px rgba(0, 0, 0, 0.16);
+$shadow-lv-2: 0px 8px 16px rgba(0, 0, 0, 0.16);
+$shadow-lv-3: 0px 8px 24px rgba(0, 0, 0, 0.16);
+$shadow-lv-4: 0px 16px 48px rgba(0, 0, 0, 0.16);
+$shadow-lv-1-up: 0px -4px 8px rgba(0, 0, 0, 0.16);
+
+// ============================================================================
+// DESIGN TOKENS — Phase 2: Spacing, Layout, Z-index
+// Token suffix = pixel value → var(--mc-space-16) maps to var(--mc-space-16)
+// ============================================================================
+
+// Spacing: Core scale (4px grid)
+$mc-space-1:  0.0625rem  !default;
+$mc-space-2:  0.125rem   !default;
+$mc-space-3:  0.1875rem  !default;
+$mc-space-4:  0.25rem    !default;
+$mc-space-5:  0.3125rem  !default;
+$mc-space-6:  0.375rem   !default;
+$mc-space-7:  0.4375rem  !default;
+$mc-space-8:  0.5rem     !default;
+$mc-space-9:  0.5625rem  !default;
+$mc-space-10: 0.625rem   !default;
+$mc-space-11: 0.6875rem  !default;
+$mc-space-12: 0.75rem    !default;
+$mc-space-13: 0.8125rem  !default;
+$mc-space-14: 0.875rem   !default;
+$mc-space-15: 0.9375rem  !default;
+$mc-space-16: 1rem       !default;
+$mc-space-17: 1.0625rem  !default;
+$mc-space-18: 1.125rem   !default;
+$mc-space-19: 1.1875rem  !default;
+$mc-space-20: 1.25rem    !default;
+$mc-space-21: 1.3125rem  !default;
+$mc-space-22: 1.375rem   !default;
+$mc-space-23: 1.4375rem  !default;
+$mc-space-24: 1.5rem     !default;
+$mc-space-25: 1.5625rem  !default;
+$mc-space-28: 1.75rem    !default;
+$mc-space-30: 1.875rem   !default;
+$mc-space-32: 2rem       !default;
+$mc-space-40: 2.5rem     !default;
+$mc-space-48: 3rem       !default;
+$mc-space-64: 4rem       !default;
+$mc-space-96: 6rem       !default;
+
+// Layout dimensions
+$mc-layout-container-xs: 31.25rem   !default;
+$mc-layout-container-sm: 37.5rem    !default;
+$mc-layout-container-md: 50rem      !default;
+$mc-layout-container-lg: 68rem      !default;
+$mc-layout-container-xl: 73.125rem  !default;
+$mc-layout-page-max:     90rem      !default;
+
+// Z-index
+$mc-z-below:   -1     !default;
+$mc-z-base:     0     !default;
+$mc-z-raised:   1     !default;
+$mc-z-float:    2     !default;
+$mc-z-popover:  3     !default;
+$mc-z-sticky:   100   !default;
+$mc-z-actions:  200   !default;
+$mc-z-gallery:  250   !default;
+$mc-z-overlay:  1000  !default;
+$mc-z-toast:    10000 !default;
+
+// ============================================================================
+// COMPONENT TOKENS — Phase 5: Evaluation, Status, Gray-200
+// ============================================================================
+
+// Evaluation status colors
+$mc-eval-approved: #BFE88B  !default;
+$mc-eval-pending:  #99D6FF  !default;
+$mc-eval-rejected: #FFB5B5  !default;
+$mc-eval-not-eval: #FFCF8F  !default;   // Same as $faq-500
+
+// Status indicator colors
+$mc-status-negative: #fe4f4f !default;
+$mc-status-warning:  #faae4a !default;
+$mc-status-info:     #3fb1fd !default;
+$mc-status-positive: #96df37 !default;
+
+// Component-specific colors
+$footer-reg-bg: #042A2B !default;
+
+// Gray scale additions
+$gray-200: #E8E8E8   !default;
+$gray-600: #666666   !default;
+
+:root {
+    --mc-home-developers: #{$home-developers};
+    --mc-home-entities: #{$home-entities};
+    --mc-home-feature: #{$home-feature};
+    --mc-home-map: #{$home-map};
+    --mc-home-opportunities: #{$home-opportunities};
+    --mc-home-register: #{$home-register};
+    --mc-home-header-gradient: #{$home-header-gradient};
+    --mc-agents-300: #{$agents-300};
+    --mc-agents-500: #{$agents-500};
+    --mc-agents-700: #{$agents-700};
+    --mc-black: #{$black};
+    --mc-border-hairline: #{$border-hairline};
+    --mc-border-radius-pill: #{$border-radius-pill};
+    --mc-border-radius-sm: #{$border-radius-sm};
+    --mc-border-radius-xs: #{$border-radius-xs};
+    --mc-border-solid: #{$border-solid};
+    --mc-danger-300: #{$danger-300};
+    --mc-danger-500: #{$danger-500};
+    --mc-danger-700: #{$danger-700};
+    --mc-danger: #{$danger-500};
+    --mc-danger-100: #{$danger-100};
+    --mc-error: #{$error};
+    --mc-events-300: #{$events-300};
+    --mc-events-500: #{$events-500};
+    --mc-events-700: #{$events-700};
+    --mc-font-body: #{$font-body};
+    --mc-font-family: #{$font-body};
+    --mc-font-headings: #{$font-headings};
+    --mc-font-heading: #{$font-headings};
+    --mc-font-bold: #{$font-weight-bold};
+    --mc-font-regular: #{$font-weight-regular};
+    --mc-font-semibold: #{$font-weight-semibold};
+    --mc-font-transform-lowercase: #{$text-transform-lowercase};
+    --mc-font-transform-none: #{$text-transform-none};
+    --mc-font-transform-uppercase: #{$text-transform-uppercase};
+    --mc-gray-100: #{$gray-100};
+    --mc-gray-300: #{$gray-300};
+    --mc-gray-400: #{$gray-400};
+    --mc-gray-500: #{$gray-500};
+    --mc-gray-700: #{$gray-700};
+    --mc-helper-300: #{$helper-300};
+    --mc-helper-500: #{$helper-500};
+    --mc-helper-700: #{$helper-700};
+    --mc-high-300: #{$high-300};
+    --mc-high-500: #{$high-500};
+    --mc-high-700: #{$high-700};
+    --mc-highlight-300: #{$highlight-300};
+    --mc-highlight-500: #{$highlight-500};
+    --mc-highlight-700: #{$highlight-700};
+    --mc-low-300: #{$low-300};
+    --mc-low-500: #{$low-500};
+    --mc-low-700: #{$low-700};
+    --mc-low: #{$low-500};
+    --mc-opportunities-300: #{$opportunities-300};
+    --mc-opportunities-500: #{$opportunities-500};
+    --mc-opportunities-700: #{$opportunities-700};
+    --mc-primary-300: #{$primary-300};
+    --mc-primary-100: #{$primary-100};
+    --mc-primary-500: #{$primary-500};
+    --mc-primary-700: #{$primary-700};
+    --mc-projects-300: #{$projects-300};
+    --mc-projects-500: #{$projects-500};
+    --mc-projects-700: #{$projects-700};
+    --mc-seals-300: #{$seals-300};
+    --mc-seals-500: #{$seals-500};
+    --mc-seals-700: #{$seals-700};
+    --mc-secondary-300: #{$secondary-300};
+    --mc-secondary-500: #{$secondary-500};
+    --mc-secondary-700: #{$secondary-700};
+    --mc-shadow-lv1-up: #{$shadow-lv-1-up};
+    --mc-shadow-lv1: #{$shadow-lv-1};
+    --mc-shadow-lv2: #{$shadow-lv-2};
+    --mc-shadow-lv3: #{$shadow-lv-3};
+    --mc-shadow-lv4: #{$shadow-lv-4};
+    --mc-spaces-300: #{$spaces-300};
+    --mc-spaces-500: #{$spaces-500};
+    --mc-spaces-700: #{$spaces-700};
+    --mc-faq-300: #{$faq-300};
+    --mc-faq-500: #{$faq-500};
+    --mc-faq-700: #{$faq-700};
+    --mc-success-300: #{$success-300};
+    --mc-success-500: #{$success-500};
+    --mc-success-700: #{$success-700};
+    --mc-warning-300: #{$warning-300};
+    --mc-warning-500: #{$warning-500};
+    --mc-warning-700: #{$warning-700};
+    --mc-warning: #{$warning};
+    --mc-white: #{$white};
+    --mc-white-500: #{$white};
+
+
+    --mc-font-size-xl: #{$font-size-xl};
+    --mc-font-size-lg: #{$font-size-lg};
+    --mc-font-size-md: #{$font-size-md};
+    --mc-font-size-sm: #{$font-size-sm};
+    --mc-font-size-xs: #{$font-size-xs};
+    --mc-font-size-xxs: #{$font-size-xxs};
+    --mc-font-size-xxxs: #{$font-size-xxxs};
+
+    // ── Spacing tokens (Phase 2.1) ────────────────────────────────────
+    --mc-space-1:  #{$mc-space-1};
+    --mc-space-2:  #{$mc-space-2};
+    --mc-space-3:  #{$mc-space-3};
+    --mc-space-4:  #{$mc-space-4};
+    --mc-space-5:  #{$mc-space-5};
+    --mc-space-6:  #{$mc-space-6};
+    --mc-space-7:  #{$mc-space-7};
+    --mc-space-8:  #{$mc-space-8};
+    --mc-space-9:  #{$mc-space-9};
+    --mc-space-10: #{$mc-space-10};
+    --mc-space-11: #{$mc-space-11};
+    --mc-space-12: #{$mc-space-12};
+    --mc-space-13: #{$mc-space-13};
+    --mc-space-14: #{$mc-space-14};
+    --mc-space-15: #{$mc-space-15};
+    --mc-space-16: #{$mc-space-16};
+    --mc-space-17: #{$mc-space-17};
+    --mc-space-18: #{$mc-space-18};
+    --mc-space-19: #{$mc-space-19};
+    --mc-space-20: #{$mc-space-20};
+    --mc-space-21: #{$mc-space-21};
+    --mc-space-22: #{$mc-space-22};
+    --mc-space-23: #{$mc-space-23};
+    --mc-space-24: #{$mc-space-24};
+    --mc-space-25: #{$mc-space-25};
+    --mc-space-28: #{$mc-space-28};
+    --mc-space-30: #{$mc-space-30};
+    --mc-space-32: #{$mc-space-32};
+    --mc-space-40: #{$mc-space-40};
+    --mc-space-48: #{$mc-space-48};
+    --mc-space-64: #{$mc-space-64};
+    --mc-space-96: #{$mc-space-96};
+
+    // ── Layout dimension tokens (Phase 2.2) ───────────────────────────
+    --mc-layout-container-xs: #{$mc-layout-container-xs};
+    --mc-layout-container-sm: #{$mc-layout-container-sm};
+    --mc-layout-container-md: #{$mc-layout-container-md};
+    --mc-layout-container-lg: #{$mc-layout-container-lg};
+    --mc-layout-container-xl: #{$mc-layout-container-xl};
+    --mc-layout-page-max:     #{$mc-layout-page-max};
+
+    // ── Z-index tokens (Phase 2.2) ────────────────────────────────────
+    --mc-z-below:   #{$mc-z-below};
+    --mc-z-base:    #{$mc-z-base};
+    --mc-z-raised:  #{$mc-z-raised};
+    --mc-z-float:   #{$mc-z-float};
+    --mc-z-popover: #{$mc-z-popover};
+    --mc-z-sticky:  #{$mc-z-sticky};
+    --mc-z-actions: #{$mc-z-actions};
+    --mc-z-gallery: #{$mc-z-gallery};
+    --mc-z-overlay: #{$mc-z-overlay};
+    --mc-z-toast:   #{$mc-z-toast};
+
+    // ── Evaluation status tokens (Phase 5) ────────────────────────────
+    --mc-eval-approved: #{$mc-eval-approved};
+    --mc-eval-pending:  #{$mc-eval-pending};
+    --mc-eval-rejected: #{$mc-eval-rejected};
+    --mc-eval-not-eval: #{$mc-eval-not-eval};
+
+    // ── Status indicator tokens (Phase 5) ─────────────────────────────
+    --mc-status-negative: #{$mc-status-negative};
+    --mc-status-warning:  #{$mc-status-warning};
+    --mc-status-info:     #{$mc-status-info};
+    --mc-status-positive: #{$mc-status-positive};
+
+    // ── Component-specific tokens ─────────────────────────────────────
+    --mc-footer-reg-bg: #{$footer-reg-bg};
+
+    // ── Gray scale additions (Phase 5) ────────────────────────────────
+    --mc-gray-200: #{$gray-200};
+    --mc-gray-600: #{$gray-600};
+}

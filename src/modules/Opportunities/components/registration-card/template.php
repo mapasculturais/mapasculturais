@@ -15,14 +15,14 @@ $this->import('
 <div :class="['registration-card', {'border': hasBorder}, {'picture': pictureCard}]">
     <div class="registration-card__content">    
 
-        <div v-if="pictureCard" class="left">
-            <div class="registerImage">
+        <div v-if="pictureCard" class="registration-card__left">
+            <div class="registration-card__register-image">
                 <mc-avatar :entity="entity.opportunity" size="small"></mc-avatar>
             </div>
         </div>
 
-        <div class="right">            
-            <div class="header">
+        <div class="registration-card__right">            
+            <div class="registration-card__header">
                 <div v-if="pictureCard" class="title"> <strong>{{entity.opportunity?.name}}</strong> </div>
                 <?php if($app->config['app.registrationCardFields']['number']): ?>
                     <div v-if="!pictureCard" class="title"><?= $this->text('my-records-numbers', i::__('Número de inscrição:')) ?> <strong>{{entity.number}}</strong> </div>
@@ -31,7 +31,7 @@ $this->import('
                 <div class="actions"></div>
             </div>
 
-            <div class="content">
+            <div class="registration-card__content">
                 <?php if($app->config['app.registrationCardFields']['number']): ?>
                     <div v-if="pictureCard" class="registerData">
                         <p class="title"> <?= $this->text('registration-number-label',i::__('Inscrição')) ?></p>
@@ -93,7 +93,7 @@ $this->import('
     </div>
 
     <div class="registration-card__footer">
-        <div class="left">
+        <div class="registration-card__footer-left">
             <?php if($app->config['app.registrationCardFields']['status']): ?>
                 <div v-if="!pictureCard" class="registerData">
                     <p class="title"> <?= $this->text('status-label',i::__('Status')) ?> </p>
@@ -105,7 +105,7 @@ $this->import('
             <?php endif ?>
             <slot name="entity-actions-left" :entity="entity"></slot>
         </div>
-        <div class="right">
+        <div class="registration-card__footer-right">
             <slot name="button" :entity="entity">
                 <mc-confirm-button v-if="verifyStatus()" @confirm="deleteRegistration(modal)">
                     <template #button="modal">

@@ -1,0 +1,11 @@
+@use '../01.settings/mixins' as *;
+
+.controller-space {
+    &.action-single {
+        .single-space{
+            &__longdescription {
+                white-space: pre-line;
+            }
+        }
+    }
+}

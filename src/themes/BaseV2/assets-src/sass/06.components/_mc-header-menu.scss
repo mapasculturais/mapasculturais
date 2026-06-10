@@ -1,0 +1,321 @@
+@use '../01.settings/mixins' as *;
+
+.mc-header-logo {
+    align-items: center;
+    display: flex;
+    flex-direction: row;
+    gap: var(--mc-space-13);
+    max-width: size(360);
+    width: 100%;
+
+    a {
+        color: var(--mc-low-500);
+        text-decoration: none;
+    }
+
+    .theme-logo {
+        width: 100%;
+    }
+
+    // TODO-BREAKPOINT: 430px is not a canonical breakpoint. Consider adding to $mc-breakpoints or using nearest canonical value.
+    @media (max-width: size(430)){
+        .theme-logo__text {
+            font-size: var(--mc-space-11);
+            letter-spacing: var(--mc-space-3);
+            line-height: var(--mc-space-15);
+        }
+    }
+
+    // TODO-BREAKPOINT: 1070px is not a canonical breakpoint. Consider adding to $mc-breakpoints or using nearest canonical value.
+    @media (max-width: size(1070)) {
+        max-width: size(422);
+    }
+}
+
+// ============================================================================
+// Component: mc-header-menu
+// CONSUMES: nav-shell (horizontal nav list pattern)
+//   The `<ul class="mc-header-menu">` list mirrors nav-shell's __list
+//   structure. Consider applying nav-shell base styles here or extending
+//   via @extend / @use if the pattern is extracted.
+// ============================================================================
+
+.mc-header-menu {
+    display: flex;
+    gap: var(--mc-space-32);
+    list-style: none;
+    padding: 0;
+
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+
+    &__btn-mobile {
+        align-items: center;
+        background: none;
+        border: none;
+        display: none;
+        justify-content: center;
+        margin: 0;
+        padding: 0;
+
+        .iconify {
+            height: var(--mc-space-24);
+            margin: var(--mc-space-3);
+            width: var(--mc-space-24);
+        }
+    }
+
+    // TODO-BREAKPOINT: 1190px is not a canonical breakpoint. Consider adding to $mc-breakpoints or using nearest canonical value.
+    @media (max-width: 1190px) {
+        gap: var(--mc-space-20);
+    }
+
+    // TODO-BREAKPOINT: 1070px is not a canonical breakpoint. Consider adding to $mc-breakpoints or using nearest canonical value.
+    @media (max-width: 1070px) {
+        display: none;
+
+        &__btn-mobile {
+            display: flex;
+        }
+    }
+
+    &__btn {
+        background: none;
+        border: none;
+        display: flex;
+        margin: 0;
+        padding: 0;
+
+        .iconify {
+            height: var(--mc-space-25);
+            width: var(--mc-space-25);
+        }
+    }
+
+    &__item {
+        align-items: center;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        padding: 0;
+        text-decoration: none;
+
+        .icon {
+            align-items: center;
+            background-color: var(--mc-low-500);
+            border-radius: 50%;
+            color: var(--mc-white);
+            display: flex;
+            height: var(--mc-space-32);
+            justify-content: center;
+            width: var(--mc-space-32);
+
+        }
+
+        .label {                    
+            color: var(--mc-black);
+            font-family: var(--mc-font-body);
+            font-size: var(--mc-space-14);
+            font-style: normal;
+            font-weight: 700;
+            letter-spacing: size(0.8);
+            line-height: var(--mc-space-15);
+            margin: var(--mc-space-8) 0 0;
+            text-align: center;
+        }
+
+
+        &.home {
+            &:hover{
+                .icon {
+                    background-color: var(--mc-primary-500);
+                }
+                .label {
+                    color: var(--mc-primary-500);
+                }
+            }
+        }
+
+        &.project {
+            &:hover{
+                .icon {
+                    background-color: var(--mc-projects-500);
+                }
+                .label {
+                    color: var(--mc-projects-500);
+                }
+            }
+        }
+
+        &.space {
+            &:hover{
+                .icon {
+                    background-color: var(--mc-spaces-500);
+                }
+                .label {
+                    color: var(--mc-spaces-500);
+                }
+            }
+        }
+
+        &.event {
+            &:hover{
+                .icon {
+                    background-color: var(--mc-events-500);
+                }
+                .label {
+                    color: var(--mc-events-500);
+                }
+            }
+        }
+
+        &.agent {
+            .icon {
+                font-size: 14px;
+            }   
+            
+            &:hover{
+                .icon {
+                    background-color: var(--mc-agents-500);
+                }
+                .label {
+                    color: var(--mc-agents-500);
+                }
+            }
+        }
+
+        &.opportunity {
+            &:hover{
+                .icon {
+                    background-color: var(--mc-opportunities-500);
+                }
+                .label {
+                    color: var(--mc-opportunities-500);
+                }
+            }
+        }
+        
+    }
+
+    &--mobile {
+        background: var(--mc-white);
+        gap: 0;
+        height: 100vh;
+        left: 0;
+        overflow-y: scroll;
+        overflow-x: hidden;
+        padding: 0;
+        position: fixed;
+        top: 0;
+        width: 100%;
+        z-index: 100;
+
+        // TODO-BREAKPOINT: 1070px is not a canonical breakpoint. Consider adding to $mc-breakpoints or using nearest canonical value.
+        @media (max-width: size(1070)) {
+            display: block;
+        }
+
+        .mc-header-menu__itens {
+            list-style: none;
+            margin: 0;
+            padding: 0 0 0 var(--mc-space-16);
+            width: 100%;
+
+            li {
+                border-bottom: var(--mc-border-hairline) var(--mc-gray-200);
+    
+                &:last-child {
+                    border-bottom: none;
+                }
+    
+                .mc-header-menu__item {
+                    display: flex;
+                    flex-direction: row;
+                    gap: 24px;
+                    justify-content: flex-start;
+                    padding: var(--mc-space-12) 0;
+    
+                    .label {
+                        margin: 0;
+                    }
+    
+                    &.painel {
+                        .icon {
+                            background: none;
+                            color: var(--mc-low-500);
+                            .iconify {
+                                width: var(--mc-space-24);
+                                height: var(--mc-space-24);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        .close {
+            align-items: center;
+            background-color: var(--mc-white);
+            border-top: none;
+            box-shadow: var(--mc-shadow-lv1);
+            display: flex;
+            flex-direction: row;
+            gap: var(--mc-space-13);
+            height: size(90);
+            margin: 0 auto;
+            padding-left: var(--mc-space-16);
+            padding-right: size(122);
+            position: sticky;
+            top: 0;
+            width: 100%;
+            z-index: 1;
+
+            @include respond-below('xs') {
+                height: size(53);
+            }
+            
+            &__btn {
+                align-items: center;
+                background: none;
+                border: none;
+                color: var(--mc-low-500);
+                justify-content: center;
+                margin: 0;
+                padding: 0;
+                text-decoration: none;
+
+                cursor: pointer;
+                display: flex;
+                
+                .iconify {
+                    height: var(--mc-space-24);
+                    margin: var(--mc-space-3);
+                    width: var(--mc-space-24);
+                }
+            }
+
+            &:hover {
+                background-color: var(--mc-white);
+                color: var(--mc-low-500);
+            }
+
+            .theme-logo {
+                max-width: size(379);
+                width: 100%;
+
+                // TODO-BREAKPOINT: 430px is not a canonical breakpoint. Consider adding to $mc-breakpoints or using nearest canonical value.
+                @media (max-width: size(430)){
+                    .theme-logo__text {
+                        font-size: var(--mc-space-11);
+                        letter-spacing: var(--mc-space-3);
+                        line-height: var(--mc-space-15);
+                    }
+                }
+            }
+        }
+    }
+}

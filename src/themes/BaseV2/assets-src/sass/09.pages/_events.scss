@@ -1,0 +1,13 @@
+@use '../01.settings/mixins' as *;
+
+.controller-event {
+    &.action-edit {
+        .long-description {
+            .field__title {
+                font-weight: 700;
+                font-size: var(--mc-space-18);
+                line-height: var(--mc-space-25);
+            }
+        }
+    }
+}

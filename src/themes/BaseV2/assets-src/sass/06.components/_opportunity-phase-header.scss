@@ -1,0 +1,20 @@
+@use '../01.settings/mixins'as *;
+
+.opportunity-phase-header {
+    align-items: center;
+    padding: var(--mc-space-13) var(--mc-space-24);
+    margin-bottom: var(--mc-space-16);
+    background-color: var(--mc-white);
+
+    &__label {
+        color: var(--mc-gray-500);
+    }
+
+    &--spacing {
+        padding: var(--mc-space-16);
+
+        div {
+            margin-bottom: var(--mc-space-16);
+        }
+    }
+}

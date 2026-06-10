@@ -1,0 +1,66 @@
+@use '../01.settings/mixins' as *;
+
+.user-accepted-terms {
+
+    &__privacy {
+
+        &--accept {
+            max-height: 100%;
+            background-color: var(--mc-high-500);
+            border-radius: var(--mc-border-radius-xs);
+            padding: var(--mc-space-16) var(--mc-space-16) var(--mc-space-24);
+
+            &-title {
+                font-weight: 700;
+                font-size: var(--mc-space-18);
+                margin-bottom: var(--mc-space-24);
+
+                &-box {
+                    margin-top: var(--mc-space-24);
+                    // TODO-BREAKPOINT: 500px is not a canonical breakpoint. Consider adding to $mc-breakpoints or using nearest canonical value.
+                    @include respond-below('mob'){
+                        .boxterm__list-subterm{
+                            label{
+                                font-weight: 600;
+                                font-size: var(--mc-space-14);
+                            }
+                        }
+                    }
+                    .boxterm {
+                        padding-bottom: var(--mc-space-24);
+
+                        &__list {
+                            margin-top: var(--mc-space-12);
+
+                            &-subterm {
+                                display: flex;
+                                flex-direction: column;
+                                gap: var(--mc-space-4);
+
+                                &-title {
+                                    font-weight: 700;
+                                    font-size: var(--mc-space-16);
+                                    font-style: normal;
+                                }
+
+                                &-content {
+                                    font-family: $font-body;
+                                    font-style: normal;
+                                    font-weight: 600;
+                                    font-size: var(--mc-space-14);
+                                }
+                            }
+                        }
+
+                        // TODO-BREAKPOINT: 500px is not a canonical breakpoint. Consider adding to $mc-breakpoints or using nearest canonical value.
+                        @include respond-below('mob') {
+                            .boxterm {
+                                max-width: fit-content;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
