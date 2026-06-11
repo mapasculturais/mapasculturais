@@ -86,21 +86,32 @@ trait EntityManagerModel {
         $this->requireAuthentication();
         $this->entityOpportunity = $this->requestedEntity;
 
+        if (!$this->entityOpportunity->getMetadata('isModelPublic')) {
+            $this->entityOpportunity->checkPermission('@control');
+        }
+
+        if (isset($this->postData['objectType']) && isset($this->postData['ownerEntity'])) {
+            $ownerEntity = $app->repo($this->postData['objectType'])->find($this->postData['ownerEntity']);
+            $ownerEntity->checkPermission('@control');
+        }
+
         $app->disableAccessControl();
-        $this->entityOpportunityModel = $this->generateOpportunity();
+        try {
+            $this->entityOpportunityModel = $this->generateOpportunity();
 
-        $this->generateEvaluationMethods();
-        $this->generatePhases();
-        $this->generateTerms();
-        $this->generateMetadata(0, 0);
-        $this->generateRegistrationFieldsAndFiles($this->entityOpportunity, $this->entityOpportunityModel);
+            $this->generateEvaluationMethods();
+            $this->generatePhases();
+            $this->generateTerms();
+            $this->generateMetadata(0, 0);
+            $this->generateRegistrationFieldsAndFiles($this->entityOpportunity, $this->entityOpportunityModel);
 
-        $this->entityOpportunity = $this->entityOpportunity->refreshed();
-        $this->entityOpportunityModel = $this->entityOpportunityModel->refreshed();
-        $this->syncRegistrationTaxonomiesFromSourceOntoModel();
-        $this->entityOpportunityModel->save(true);
-
-        $app->enableAccessControl();
+            $this->entityOpportunity = $this->entityOpportunity->refreshed();
+            $this->entityOpportunityModel = $this->entityOpportunityModel->refreshed();
+            $this->syncRegistrationTaxonomiesFromSourceOntoModel();
+            $this->entityOpportunityModel->save(true);
+        } finally {
+            $app->enableAccessControl();
+        }
 
         $this->json($this->entityOpportunityModel); 
     }
