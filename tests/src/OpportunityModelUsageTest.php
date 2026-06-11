@@ -4,6 +4,8 @@ namespace Test;
 
 use Laminas\Diactoros\Response;
 use MapasCulturais\Controllers\Opportunity as OpportunityController;
+use MapasCulturais\Definitions\Metadata;
+use MapasCulturais\Entities\EvaluationMethodConfiguration;
 use MapasCulturais\Entities\Opportunity;
 use MapasCulturais\Exceptions\Halt;
 use MapasCulturais\Exceptions\PermissionDenied;
@@ -77,6 +79,54 @@ class OpportunityModelUsageTest extends TestCase
         }
 
         $this->assertTrue($this->app->isAccessControlEnabled());
+    }
+
+    function testEvaluationMethodMetadataIsCopiedWithBatchedSaves(): void
+    {
+        $owner = $this->userDirector->createUser();
+        $model = $this->createModel($owner, true);
+        $generatedName = 'Uso de modelo otimizado ' . uniqid('', true);
+        $metadata = [
+            'modelUsagePerformanceA' => 'valor A',
+            'modelUsagePerformanceB' => 'valor B',
+            'modelUsagePerformanceC' => 'valor C',
+        ];
+
+        foreach ($metadata as $key => $value) {
+            $this->app->registerMetadata(
+                new Metadata($key, ['label' => $key, 'type' => 'text']),
+                EvaluationMethodConfiguration::class,
+                'simple'
+            );
+        }
+
+        $configuration = new EvaluationMethodConfiguration();
+        $configuration->opportunity = $model;
+        $configuration->type = 'simple';
+        $configuration->name = 'Avaliação do modelo';
+        $configuration->save(true);
+
+        foreach ($metadata as $key => $value) {
+            $configuration->setMetadata($key, $value);
+        }
+        $configuration->save(true);
+
+        $generatedConfigurationSaveCount = 0;
+        $this->app->hook('entity(EvaluationMethodConfiguration).save:finish', function () use ($generatedName, &$generatedConfigurationSaveCount) {
+            if ($this->opportunity->name === $generatedName) {
+                $generatedConfigurationSaveCount++;
+            }
+        });
+
+        $generated = $this->generateOpportunity($model, $owner->profile->id, $generatedName);
+        $generatedConfiguration = $this->app->repo('EvaluationMethodConfiguration')->findOneBy([
+            'opportunity' => $generated,
+        ]);
+
+        $this->assertSame(2, $generatedConfigurationSaveCount);
+        foreach ($metadata as $key => $value) {
+            $this->assertSame($value, $generatedConfiguration->getMetadata($key));
+        }
     }
 
     private function createModel($owner, bool $isPublic): Opportunity
