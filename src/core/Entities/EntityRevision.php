@@ -127,7 +127,7 @@ class EntityRevision extends \MapasCulturais\Entity{
             }
         } else {
             $lastRevision = $entity->getLastRevision();
-            $lastRevisionData = $lastRevision->getRevisionData();
+            $lastRevisionData = $lastRevision ? $lastRevision->getRevisionData() : [];
             
             foreach ($dataRevision as $key => $data) {
                 $item = $lastRevisionData[$key] ?? null;
