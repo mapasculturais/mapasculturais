@@ -23,6 +23,25 @@ class EvaluationMethodTechnicalBuilder extends EvaluationMethodConfigurationBuil
         return $this;
     }
 
+    public function setTiebreakerCriteriaConfiguration(array $configuration): self
+    {
+        $normalized_configuration = array_map(function ($criterion) {
+            if (is_array($criterion)) {
+                $criterion = (object) $criterion;
+            }
+
+            if (!property_exists($criterion, 'selected')) {
+                $criterion->selected = null;
+            }
+
+            return $criterion;
+        }, $configuration);
+
+        $this->instance->tiebreakerCriteriaConfiguration = $normalized_configuration;
+
+        return $this;
+    }
+
     public function quota(): QuotaBuilder {
         return $this->quotaBuilder->reset($this->instance);
     }
@@ -57,12 +76,37 @@ class EvaluationMethodTechnicalBuilder extends EvaluationMethodConfigurationBuil
             'id' => $id,
             'sid' => $section_id,
             'name' => $name,
+            'title' => $name,
             'min' => $min,
             'max' => $max,
             'weight' => $weight,
         ];
-        
+
         $this->instance->criteria = $criteria;
+        return $this;
+    }
+
+    public function activatePointReward(bool $active = true): self
+    {
+        $this->instance->isActivePointReward = $active;
+        return $this;
+    }
+
+    public function setPointRewardRoof(float $roof): self
+    {
+        $this->instance->pointRewardRoof = $roof;
+        return $this;
+    }
+
+    /**
+     * Define a configuração de bônus por pontuação.
+     *
+     * Aceita tanto o formato legado (array de regras com fieldPercent) quanto
+     * o novo formato (objeto com type e rules com bonusValue).
+     */
+    public function setPointReward(array|object $config): self
+    {
+        $this->instance->pointReward = $config;
         return $this;
     }
 }

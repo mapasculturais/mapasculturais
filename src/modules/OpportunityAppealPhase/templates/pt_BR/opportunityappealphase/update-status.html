@@ -1,15 +1,29 @@
 {{{_header}}}
-<!doctype html>
-<html>
-    <head>
-        <meta name="viewport" content="width=device-width" />
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-    </head>
-    <body>
-        <div>
-            A sua inscrição on-{{registrationId}} da {{opportunityTitle}} teve o status alterado. Acesse o
-            <a href="{{registrationUrl}}">{{siteName}}</a> para maiores informações.<br />
-        </div>
-    </body>
-</html>
+<table role="presentation" class="main">
+    <tr>
+        <td class="wrapper">
+            <table role="presentation" border="0" cellpadding="0" cellspacing="0">
+                <tr>
+                    <td>
+                        <p>Olá, <strong>{{user}}</strong></p>
+
+                        <p>O status da sua inscrição <strong>{{registrationNumber}}</strong> na fase de recurso <strong>{{phaseTitle}}</strong> foi alterado para <strong>{{statusTitle}}</strong>.</p>
+
+                        <p>
+                            <strong>Oportunidade: </strong> <a href="{{opportunityUrl}}" rel="noopener noreferrer">{{opportunityTitle}}</a><br>
+                            <strong>Inscrição: </strong> <a href="{{registrationUrl}}" rel="noopener noreferrer">{{registrationNumber}}</a>
+                        </p>
+
+                        <br>
+                        <a href="{{registrationUrl}}" rel="noopener noreferrer">
+                            <div class="status-card status-card--primary">
+                                <h2 class="status-card--title">Acompanhar inscrição</h2>
+                            </div>
+                        </a>
+                    </td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+</table>
 {{{_footer}}}

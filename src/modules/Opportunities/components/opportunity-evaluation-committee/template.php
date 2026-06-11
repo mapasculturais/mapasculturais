@@ -33,7 +33,7 @@ $this->import('
                 <span class="icon">
                     <mc-avatar :entity="entity" size="xsmall"></mc-avatar>
                 </span>
-                <span class="label"> #{{entity.id}} - {{entity.name}}</span>
+                <span class="label"> #{{entity.id}} - {{entity.name}}<template v-if="entity.user?.email"> - {{entity.user.email}}</template></span>
             </template>
         </select-entity>
         <?php $this->applyComponentHook('select-entity', 'end'); ?>
@@ -66,6 +66,7 @@ $this->import('
                 <div class="opportunity-evaluation-committee__card-header-content">
                     <div class="opportunity-evaluation-committee__card-header-content-info">
                         <small>
+                            <strong><?= i::__('Nº Avaliador')?>:</strong> #{{infoReviewer.metadata.committeeSequentialNumber || '-'}} | 
                             <strong><?= i::__('E-mail')?>:</strong> {{infoReviewer.agent.user.email}} | 
                             <strong><?= i::__('ID Agente')?>:</strong> #{{infoReviewer.agent.id}} | 
                             <strong><?= i::__('ID Usuário')?>:</strong> #{{infoReviewer.agent.user.id}}
@@ -177,7 +178,7 @@ $this->import('
                                 <span class="icon">
                                     <mc-avatar :entity="entity" size="xsmall"></mc-avatar>
                                 </span>
-                                <span class="label"> #{{entity.id}} - {{entity.name}}</span>
+                                <span class="label"> #{{entity.id}} - {{entity.name}}<template v-if="entity.user?.email"> - {{entity.user.email}}</template></span>
                             </template>
                         </select-entity>
                         <mc-confirm-button v-if="infoReviewer.metadata?.summary.sent > 0" @confirm="reopenEvaluations(infoReviewer.agentUserId)">
@@ -243,7 +244,7 @@ $this->import('
                 <span class="icon">
                     <mc-avatar :entity="entity" size="xsmall"></mc-avatar>
                 </span>
-                <span class="label"> #{{entity.id}} - {{entity.name}}</span>
+                <span class="label"> #{{entity.id}} - {{entity.name}}<template v-if="entity.user?.email"> - {{entity.user.email}}</template></span>
             </template>
         </select-entity>
     </div>

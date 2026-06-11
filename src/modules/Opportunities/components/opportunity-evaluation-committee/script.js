@@ -24,6 +24,7 @@ app.component('opportunity-evaluation-committee', {
                 '@order': 'id ASC',
                 '@limit': '25',
                 '@page': '1',
+                '_evaluatorSearch': '1',
                 'type': 'EQ(1)',
                 'parent': 'NULL()'
             };
@@ -50,6 +51,13 @@ app.component('opportunity-evaluation-committee', {
             return (this.infosReviewers ?? [])
                 .slice()
                 .sort((a, b) => {
+                    const aNum = parseInt(a.metadata?.committeeSequentialNumber, 10) || 0;
+                    const bNum = parseInt(b.metadata?.committeeSequentialNumber, 10) || 0;
+
+                    if (aNum !== bNum) {
+                        return aNum - bNum;
+                    }
+
                     const aName = a.agent?.name.toLocaleLowerCase() ?? '';
                     const bName = b.agent?.name.toLocaleLowerCase() ?? '';
                     return aName.localeCompare(bName);

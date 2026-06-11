@@ -397,7 +397,7 @@ class Module extends \MapasCulturais\Module{
         $registration_repository = $app->repo('Registration');
 
         $app->hook("entity(Registration).<<insert|send>>:before", function(){
-            if(!$this->opportunity->isDataCollection){
+            if($this->previousPhase && !$this->opportunity->isDataCollection){
               $this->sentTimestamp = $this->previousPhase->sentTimestamp;
             }
         });
@@ -496,6 +496,7 @@ class Module extends \MapasCulturais\Module{
                 FROM MapasCulturais\Entities\Opportunity o
                 LEFT JOIN o.__metadata om WITH om.key = 'isAppealPhase'
                 LEFT JOIN o.__metadata orp WITH orp.key = 'isReportingPhase'
+                LEFT JOIN o.__metadata om2 WITH om2.key = 'isExecutionPhase'
                 WHERE
                     {$complement}
                     (
@@ -1141,8 +1142,8 @@ class Module extends \MapasCulturais\Module{
         $app->hook('Entities\Opportunity::syncRegistrations', function($value, array $registrations = []) use($app) {
             /** @var Opportunity $this */
 
-            // Não deve sincronizar as inscrições da primeira fase ou fase de recurso
-            if ($this->isFirstPhase || self::isAppealPhaseOpportunity($this)) {
+            // Não deve sincronizar as inscrições da primeira fase, fase de recurso ou fase de execução
+            if ($this->isFirstPhase || self::isAppealPhaseOpportunity($this) || $this->isExecutionPhase) {
                 return false;
             }
 
@@ -1178,7 +1179,7 @@ class Module extends \MapasCulturais\Module{
         $app->hook('Entities\Opportunity::removeOrphanRegistrations', function($value, array $registrations = []) use($app) {
             /** @var Opportunity $this */
 
-            if ($this->isFirstPhase || $this->isLastPhase || $this->isAppealPhase) {
+            if ($this->isFirstPhase || $this->isLastPhase || self::isAppealPhaseOpportunity($this) || $this->isExecutionPhase) {
                 return;
             }
 
@@ -1275,8 +1276,8 @@ class Module extends \MapasCulturais\Module{
         $app->hook('Entities\Opportunity::importPreviousPhaseRegistrations', function($value, $as_draft = false, array $registrations = []) use($app, $self){
             /** @var Opportunity $this */
 
-            // Não deve sincronizar as inscrições na primeira fase e na fase de recurso
-            if ($this->isFirstPhase || $this->isAppealPhase) {
+            // Não deve sincronizar as inscrições na primeira fase, fase de recurso ou fase de execução
+            if ($this->isFirstPhase || self::isAppealPhaseOpportunity($this) || $this->isExecutionPhase) {
                 return;
             }
 
@@ -1600,11 +1601,12 @@ class Module extends \MapasCulturais\Module{
         });
 
         // Não permite a criação de inscrições em fases fora da importaçao entre fases
+        // Exceção: fase de execução (isExecutionPhase) — o agente abre pedidos manualmente.
         $app->hook('POST(registration.index):before', function() use($app) {
             $opportunity_id = $this->data['opportunityId'] ?? $this->data['opportunity'] ?? -1;
             $opportunity = $app->repo('Opportunity')->find($opportunity_id);
 
-            if($opportunity->isOpportunityPhase){
+            if($opportunity->isOpportunityPhase && !$opportunity->isExecutionPhase){
                 throw new Exceptions\PermissionDenied($app->user, $opportunity, 'register');
             }
         });
@@ -1962,10 +1964,9 @@ class Module extends \MapasCulturais\Module{
             // remove a oportunidade auxiliar da fases de avaliação sem coleta de dados
             $app->hook('entity(EvaluationMethodConfiguration).remove:after', function() use ($app) {
                 /** @var EvaluationMethodConfiguration $this */
-                $app->em->clear();
                 $opportunity = $app->repo('Opportunity')->find($this->opportunity->id);
 
-                if (!$opportunity->isDataCollection) {
+                if ($opportunity && $opportunity->status > -10 && !$opportunity->isDataCollection) {
                     $opportunity->destroy(true);
                 }
             });
@@ -1981,7 +1982,7 @@ class Module extends \MapasCulturais\Module{
             // Adiciona os proponentes, as faixas e as categorias para as novas fases de coleta de dados criadas
             $app->hook('entity(Opportunity).insert:after', function() use ($app) {
                 /** @var Opportunity $this */
-                if ($this->parent && $this->isDataCollection && !$this->isAppealPhase) {
+                if ($this->parent && $this->isDataCollection && !$this->isExecutionPhase && !$this->isAppealPhase) {
                     $this->registrationCategories = $this->parent->registrationCategories;
                     $this->registrationProponentTypes = $this->parent->registrationProponentTypes;
                     $this->registrationRanges = $this->parent->registrationRanges;

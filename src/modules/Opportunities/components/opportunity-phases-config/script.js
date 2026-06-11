@@ -53,6 +53,10 @@ app.component('opportunity-phases-config', {
         lastPhaseIndex() {
             return this.phases.findLastIndex((phase) => phase.isLastPhase);
         },
+
+        hasExecutionPhase() {
+            return this.phases.some(p => p.isExecutionPhase);
+        },
     },
     
     methods: {
@@ -94,13 +98,17 @@ app.component('opportunity-phases-config', {
             await this.refreshPhasePermissions(evaluationPhase);
         },
 
+        addExecutionPhases ({ collectionPhase, evaluationPhase }) {
+            this.phases.splice(this.lastPhaseIndex + 1, 0, collectionPhase, evaluationPhase);
+        },
+
         showPublishTimestamp(phase) {
             const previousPhase = this.getPreviousPhase(phase);
             const nextPhase = this.getNextPhase(phase);
 
             if (phase.isLastPhase) {
                 return true;
-            } else if (phase.__objectType == 'opportunity' && nextPhase.__objectType != 'evaluationmethodconfiguration' && phase.publishTimestamp) {
+            } else if (phase.__objectType == 'opportunity' && nextPhase?.__objectType != 'evaluationmethodconfiguration' && phase.publishTimestamp) {
                 return true;
             } else if (phase.__objectType == 'evaluationmethodconfiguration' && previousPhase.__objectType == 'opportunity' && previousPhase.publishTimestamp) {
                 return true;

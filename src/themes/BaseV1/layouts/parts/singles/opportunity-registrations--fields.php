@@ -240,8 +240,9 @@ $app->applyHookBoundTo($this, 'opportunity.blockedFields', [$entity]);
 
                     </edit-box>
                     <div ng-if="data.entity.canUserModifyRegistrationFields && !isBlockedFields(field.id)" class="btn-group">
-                        <a ng-click="openFieldConfigurationEditBox(field.id, $index, $event);" class="btn btn-default edit hltip" title="<?php i::esc_attr_e("editar campo"); ?>"></a>
-                        <a ng-click="removeFieldConfiguration(field.id, $index)" data-href="{{field.deleteUrl}}" class="btn btn-default delete hltip" title="<?php i::esc_attr_e("excluir campo"); ?>"></a>
+                        <button type="button" ng-click="openFieldConfigurationEditBox(field.id, $index, $event)" class="btn btn-default edit hltip" aria-label="<?php i::esc_attr_e('editar campo'); ?>"><span aria-hidden="true" class="fa fa-pencil"></span></button>
+                        <button type="button" ng-click="duplicateFieldConfiguration(field, $index)" class="btn btn-default add hltip" aria-label="<?php i::esc_attr_e('duplicar campo'); ?>"><span aria-hidden="true" class="fa fa-copy"></span></button>
+                        <button type="button" ng-click="removeFieldConfiguration(field.id, $index)" data-href="{{field.deleteUrl}}" class="btn btn-default delete hltip" aria-label="<?php i::esc_attr_e('excluir campo'); ?>"><span aria-hidden="true" class="fa fa-trash"></span></button>
                     </div>
                     <div style="color: red;">
                         <strong><em><small>{{ isBlockedFields(field.id) ? '(Campo Bloqueado para edição ou deleção)' : ''}}</small></em></strong>
@@ -389,6 +390,7 @@ $app->applyHookBoundTo($this, 'opportunity.blockedFields', [$entity]);
 
                     <div ng-if="data.entity.canUserModifyRegistrationFields && !isBlockedFields(field.id)" class="btn-group">
                         <button type="button" ng-click="openFileConfigurationEditBox(field.id, $index, $event)" class="btn btn-default edit hltip" aria-label="<?php i::esc_attr_e('editar anexo'); ?>"><span aria-hidden="true" class="fa fa-pencil"></span></button>
+                        <button type="button" ng-click="duplicateFileConfiguration(field, $index)" class="btn btn-default add hltip" aria-label="<?php i::esc_attr_e('duplicar anexo'); ?>"><span aria-hidden="true" class="fa fa-copy"></span></button>
                         <button type="button" ng-if="!field.template" ng-click="openFileConfigurationTemplateEditBox(field.id, $index, $event)" class="btn btn-default send hltip" aria-label="<?php i::esc_attr_e('enviar modelo'); ?>"><span aria-hidden="true" class="fa fa-upload"></span></button>
                         <button type="button" ng-click="removeFileConfiguration(field.id, $index)" data-href="{{field.deleteUrl}}" class="btn btn-default delete hltip" aria-label="<?php i::esc_attr_e('excluir anexo'); ?>"><span aria-hidden="true" class="fa fa-trash"></span></button>
                     </div>

@@ -17,7 +17,7 @@ $this->import('
             <div class="field tecnical-evaluation-form__maxScore grid-12">
                 <label> 
                     <strong>{{ criterion.title }}</strong>
-                    <input class="maxScore-input" v-if="isEditable" v-model="formData.data[criterion.id]" min="0" step="0.1" type="number" @input="handleInput(sectionIndex, criterion.id)">
+                    <input class="maxScore-input" v-if="isEditable" v-model.number="formData.data[criterion.id]" min="0" step="0.1" type="number" @input="handleInput(sectionIndex, criterion.id)">
                     <input class="maxScore-input" v-if="!isEditable" disabled min="0" step="0.1" type="number" :value="formData.data[criterion.id]" @input="handleInput(sectionIndex, criterion.id)">
                 </label>
             </div>
