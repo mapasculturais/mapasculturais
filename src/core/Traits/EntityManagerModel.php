@@ -481,6 +481,9 @@ trait EntityManagerModel {
     private function generateRegistrationFieldsAndFiles($opportunityCurrent, $opportunityNew) : void
     {
         $stepMap = [];
+        $fieldNameMap = [];
+        $conditionalFields = [];
+        $conditionalFiles = [];
 
         $reusableQueue = $this->findReusableRegistrationStepsWithoutFieldsOrFiles($opportunityNew);
 
@@ -518,6 +521,7 @@ trait EntityManagerModel {
         }
 
         foreach ($opportunityCurrent->getRegistrationFieldConfigurations() as $registrationFieldConfiguration) {
+            $originalFieldName = $registrationFieldConfiguration->fieldName;
             $fieldConfiguration = clone $registrationFieldConfiguration;
             $fieldConfiguration->setOwnerId($opportunityNew->id);
 
@@ -526,6 +530,11 @@ trait EntityManagerModel {
             }
 
             $fieldConfiguration->save(true);
+            $fieldNameMap[$originalFieldName] = $fieldConfiguration->fieldName;
+
+            if ($fieldConfiguration->conditionalField) {
+                $conditionalFields[] = $fieldConfiguration;
+            }
         }
 
         foreach ($opportunityCurrent->getRegistrationFileConfigurations() as $registrationFileConfiguration) {
@@ -537,6 +546,17 @@ trait EntityManagerModel {
             }
 
             $fileConfiguration->save(true);
+
+            if ($fileConfiguration->conditionalField) {
+                $conditionalFiles[] = $fileConfiguration;
+            }
+        }
+
+        foreach (array_merge($conditionalFields, $conditionalFiles) as $configuration) {
+            if (isset($fieldNameMap[$configuration->conditionalField])) {
+                $configuration->conditionalField = $fieldNameMap[$configuration->conditionalField];
+                $configuration->save(true);
+            }
         }
 
         $this->deleteOrphanEmptyRegistrationSteps($opportunityNew, $stepMap);

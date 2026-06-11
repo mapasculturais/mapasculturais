@@ -7,6 +7,7 @@ use MapasCulturais\App;
 use MapasCulturais\Controllers\Opportunity as OpportunityController;
 use MapasCulturais\Entities\EvaluationMethodConfiguration;
 use MapasCulturais\Entities\Opportunity;
+use MapasCulturais\Entities\RegistrationFileConfiguration;
 use MapasCulturais\Exceptions\Halt;
 use Opportunities\Module as OpportunitiesModule;
 use Tests\Abstract\TestCase;
@@ -470,6 +471,88 @@ class OpportunityPhasesTest extends TestCase
             $rangeValue,
             $fromModel,
             'Garantindo que o novo edital criado a partir do modelo mantenha categorias, tipos de proponente e faixas'
+        );
+    }
+
+    function testOpportunityModelRemapsConditionalFieldReferences(): void
+    {
+        $admin = $this->userDirector->createUser('admin');
+        $this->login($admin);
+
+        $modelName = 'Modelo com condicionais ' . uniqid('', true);
+
+        /** @var Opportunity $source */
+        $source = $this->opportunityBuilder
+            ->reset(owner: $admin->profile, owner_entity: $admin->profile)
+            ->fillRequiredProperties()
+            ->save()
+            ->firstPhase()
+                ->setRegistrationPeriod(new Open)
+                ->createStep('Etapa condicional')
+                ->createField('campo-controlador', 'select', title: 'Campo controlador', options: ['Sim', 'Não'])
+                ->createField('campo-condicional', 'text', title: 'Campo condicional', field_condition: 'campo-controlador:Sim')
+                ->done()
+            ->save()
+            ->refresh()
+            ->getInstance();
+
+        $sourceFields = $source->getRegistrationFieldConfigurations();
+        $sourceControllerField = array_values(array_filter(
+            $sourceFields,
+            fn($field) => $field->title === 'Campo controlador'
+        ))[0];
+
+        $sourceFile = new RegistrationFileConfiguration();
+        $sourceFile->owner = $source;
+        $sourceFile->step = $sourceControllerField->step;
+        $sourceFile->title = 'Anexo condicional';
+        $sourceFile->conditional = true;
+        $sourceFile->conditionalField = $sourceControllerField->fieldName;
+        $sourceFile->conditionalValue = 'Sim';
+        $sourceFile->save(true);
+
+        $app = $this->app;
+        $app->request = $this->requestFactory->mapasPOST('opportunity', 'generatemodel', [$source->id], ['id' => $source->id]);
+        $app->response = new Response();
+
+        /** @var OpportunityController $controller */
+        $controller = $app->controller('opportunity');
+        $controller->setRequestData(['id' => $source->id]);
+        $controller->postData = [
+            'name' => $modelName,
+            'description' => 'Modelo com referências condicionais',
+            'entityId' => $source->id,
+        ];
+
+        try {
+            $controller->ALL_generatemodel();
+            $this->fail('Garantindo que ALL_generatemodel encerre com Halt após responder em JSON');
+        } catch (Halt) {
+        }
+
+        $model = $app->repo('Opportunity')->findOneBy(['name' => $modelName])->refreshed();
+        $modelFields = $model->getRegistrationFieldConfigurations();
+        $modelFieldNames = array_map(fn($field) => $field->fieldName, $modelFields);
+        $modelConditionalField = array_values(array_filter($modelFields, fn($field) => $field->conditional))[0];
+        $modelConditionalFile = array_values(array_filter(
+            $model->getRegistrationFileConfigurations(),
+            fn($file) => $file->conditional
+        ))[0];
+
+        $this->assertContains(
+            $modelConditionalField->conditionalField,
+            $modelFieldNames,
+            'Garantindo que campo condicional referencie um campo pertencente ao modelo'
+        );
+        $this->assertContains(
+            $modelConditionalFile->conditionalField,
+            $modelFieldNames,
+            'Garantindo que anexo condicional referencie um campo pertencente ao modelo'
+        );
+        $this->assertNotSame(
+            $sourceControllerField->fieldName,
+            $modelConditionalField->conditionalField,
+            'Garantindo que a referência condicional não permaneça vinculada à oportunidade original'
         );
     }
 
