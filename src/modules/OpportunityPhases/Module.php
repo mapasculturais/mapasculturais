@@ -495,6 +495,7 @@ class Module extends \MapasCulturais\Module{
                 SELECT o
                 FROM MapasCulturais\Entities\Opportunity o
                 LEFT JOIN o.__metadata om WITH om.key = 'isAppealPhase'
+                LEFT JOIN o.__metadata orp WITH orp.key = 'isReportingPhase'
                 LEFT JOIN o.__metadata om2 WITH om2.key = 'isExecutionPhase'
                 WHERE
                     {$complement}
@@ -503,7 +504,7 @@ class Module extends \MapasCulturais\Module{
                         (o.parent = :parent AND o.id <> :this)
                     )
                     AND om.value IS NULL
-                    AND om2.value IS NULL
+                    AND orp.value IS NULL
                     AND o.status > -10
                 ORDER BY o.id DESC");
 

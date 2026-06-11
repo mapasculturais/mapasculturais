@@ -7,8 +7,20 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ## [UNRELEASED]
 ### Novas Funcionalidades
+- Módulo de **Plano de Metas e Monitoramento** que permite ao gestor configurar campos do plano de trabalho para orientar o preenchimento das metas e entregas previstas na inscrição, incluindo período, orçamento, segmento artístico-cultural, composição de equipe, estratégias de comunicação, acessibilidade, comunidades, receita e evidências. Na etapa de monitoramento, o agente informa os dados executados das entregas a partir do que foi planejado, com campos equivalentes para acompanhamento da execução, validações de obrigatoriedade conforme a configuração da oportunidade e exibição organizada entre formulário, ficha de inscrição, avaliação e exportação.
+- Permite exibir campos do plano de trabalho na ficha de avaliação
+- Adiciona os novos campos do plano de trabalho e monitoramento na exportação das inscrições
+
+### Melhorias
 - Módulo de **fase de execução** que permite ao gestor configurar uma fase de acompanhamento para os agentes contemplados após a publicação do resultado. Durante esta fase, o agente contemplado pode abrir múltiplos **pedidos de alteração** no projeto aprovado — troca de data, substituição de item de orçamento, mudança de local, entre outros. Cada pedido é avaliado individualmente por uma comissão configurada pelo gestor (mesmo modelo de avaliação simplificada já existente nas fases de seleção). Os pedidos ficam como registro histórico das alterações aprovadas durante a vigência do projeto e não interferem no fluxo das fases seguintes de prestação de informações.
 - **Bônus de pontuação configurável** no método de avaliação técnica, permitindo ao gestor definir regras de bonificação por políticas afirmativas em percentual ou ponto fixo. A configuração permite controlar o valor máximo do bônus, aplicar o acréscimo às inscrições elegíveis, exibir corretamente o bônus nas tabelas e exportações, reaplicar a pontuação quando as regras forem alteradas e manter compatibilidade com configurações legadas por meio de normalização automática.
+- Reorganiza os campos de entrega do plano de trabalho e monitoramento para manter a mesma ordem entre inscrição, visualização e avaliação
+- Melhora a validação de campos obrigatórios do plano de trabalho e monitoramento conforme as configurações da oportunidade
+- Utiliza o componente de moeda nos campos monetários do monitoramento
+
+### Correções
+- Corrige avisos de validação do monitoramento que apareciam indevidamente na fase de inscrição
+- Corrige exportação de campos multiselect do plano de trabalho para evitar valores "Array | Array"
 - Implementa configuração que permide definir a imagem de avatar de qualquer entidade como obrigatória
 - Adiciona botão para duplicar campos do formulário de inscrição, criando a cópia logo abaixo do campo original
 - Adiciona botão para duplicar anexos do formulário de inscrição, incluindo a cópia do arquivo modelo e inserindo o novo anexo logo abaixo do original
