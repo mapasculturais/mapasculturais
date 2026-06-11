@@ -363,8 +363,8 @@ trait EntityManagerModel {
             // duplica os metadados das configurações do modelo de avaliação
             foreach ($evaluationMethodConfiguration->getMetadata() as $metadataKey => $metadataValue) {
                 $newMethodConfiguration->setMetadata($metadataKey, $metadataValue);
-                $newMethodConfiguration->save(true);
             }
+            $this->saveWithSingleFlush($newMethodConfiguration);
         }
     }
 
@@ -392,17 +392,16 @@ trait EntityManagerModel {
                 foreach ($phase->getMetadata() as $metadataKey => $metadataValue) {
                     if (!is_null($metadataValue) && $metadataValue != '') {
                         $newPhase->setMetadata($metadataKey, $metadataValue);
-                        $newPhase->save(true);
                     }
                 }
-
-                $this->generateRegistrationFieldsAndFiles($phase, $newPhase);
 
                 $now = new \DateTime('now');
                 $newPhase->createTimestamp = $now;
                 $newPhase->subsite = $phase->subsite;
 
-                $newPhase->save(true);
+                $this->saveWithSingleFlush($newPhase);
+
+                $this->generateRegistrationFieldsAndFiles($phase, $newPhase);
 
                 $this->changeObjectType($newPhase->id);
 
@@ -418,8 +417,8 @@ trait EntityManagerModel {
                     // duplica os metadados das configurações do modelo de avaliação para a fase
                     foreach ($evaluationMethodConfiguration->getMetadata() as $metadataKey => $metadataValue) {
                         $newMethodConfiguration->setMetadata($metadataKey, $metadataValue);
-                        $newMethodConfiguration->save(true);
                     }
+                    $this->saveWithSingleFlush($newMethodConfiguration);
                 }
             }
             
@@ -445,6 +444,12 @@ trait EntityManagerModel {
                 }
             }
         }   
+    }
+
+    private function saveWithSingleFlush(Entity $entity): void
+    {
+        $entity->save(false);
+        App::i()->em->flush();
     }
 
 
