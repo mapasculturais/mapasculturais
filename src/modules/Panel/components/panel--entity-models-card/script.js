@@ -80,7 +80,12 @@ app.component('panel--entity-models-card', {
         },
         showModel() {
             let showModel = false;
-            if (this.entity.owner._id == $MAPAS.user.profile._id || this.entity.isModelPublic) {
+
+            if (
+                this.entity.owner._id == $MAPAS.user.profile._id ||
+                this.entity.isModelPublic ||
+                $MAPAS.isSaasAdmin
+            ) {
                 showModel = true;
             }
 
