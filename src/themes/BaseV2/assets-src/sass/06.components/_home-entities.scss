@@ -9,7 +9,7 @@
         max-width: var(--mc-layout-container-xl);
         margin:0 auto;
         
-        &--header {
+        &__header {
             display: flex;
             flex-direction: column;
             gap: var(--mc-space-8);
@@ -46,7 +46,7 @@
             }
         }
 
-        &--cards {
+        &__cards {
             display: flex;
             flex-direction: column;
             gap: var(--mc-space-16);
