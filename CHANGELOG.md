@@ -31,6 +31,7 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Melhora a performance da listagem de modelos de oportunidades ao evitar consultas repetidas para identificar modelos oficiais.
 
 ### Correções
+- Corrige o cálculo do bônus de pontuação para campos de múltipla escolha (`checkboxes`) quando configurados com `eligibleValues`, aplicando apenas o bônus correspondente às opções efetivamente selecionadas
 - Aplica texto de internacionalização faltante no componente opportunity-registration-table
 - Corrige acento faltante no texto "Gênero" na listagem de pessoas do formulário de inscrição
 - Corrige a exibição do nome do agente coletivo nos cards da tela Minhas inscrições
