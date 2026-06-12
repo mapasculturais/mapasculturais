@@ -503,6 +503,8 @@ class Opportunity extends EntityController {
 
         $data['opportunity'] = API::EQ($opportunity->id);
 
+        $enable_sensitive_seals = isset($data['sealStatus']) && $opportunity->canUser('@control') && !$app->user->is('admin');
+
         $_opportunity = $opportunity;
         $opportunity_tree = [$opportunity];
         while($_opportunity && ($parent = $_opportunity->previousPhase)){
@@ -569,6 +571,10 @@ class Opportunity extends EntityController {
                         $_order = str_replace('consolidatedResult', 'consolidatedResult AS FLOAT', $_order);
                     }
                     $current_phase_query_params['@order'] = $_order;
+                }
+
+                if(isset($data['sealStatus'])) {
+                    $current_phase_query_params['sealStatus'] = $data['sealStatus'];
                 }
             }
 
@@ -661,6 +667,9 @@ class Opportunity extends EntityController {
                 }
 
                 $phase_query = new ApiQuery(Registration::class, $params);
+                if ($enable_sensitive_seals && isset($params['sealStatus'])) {
+                    $phase_query->enableSealStatusIncludeSensitive();
+                }
                 if ($previous_phase_query && !$phase->isLastPhase) {
                     $phase_query->addFilterByApiQuery($previous_phase_query, 'number', 'number');
                 }
@@ -668,6 +677,9 @@ class Opportunity extends EntityController {
             }
 
             $current_phase_query = new ApiQuery(Registration::class, $target_build['params']);
+            if ($enable_sensitive_seals && isset($target_build['params']['sealStatus'])) {
+                $current_phase_query->enableSealStatusIncludeSensitive();
+            }
             if ($previous_phase_query) {
                 $chain_target = !$opportunity->isLastPhase || $preceding_phases_have_filters;
                 if ($chain_target) {
@@ -693,6 +705,9 @@ class Opportunity extends EntityController {
                     $params['__supplementaryPhaseQuery'] = true;
 
                     $phase_query = new ApiQuery(Registration::class, $params);
+                    if ($enable_sensitive_seals && isset($params['sealStatus'])) {
+                        $phase_query->enableSealStatusIncludeSensitive();
+                    }
                     $phase_result = $phase_query->find();
 
                     $evaluation_method = $build['evaluation_method'];
@@ -750,6 +765,9 @@ class Opportunity extends EntityController {
             $current_evaluation_method = $build['evaluation_method'];
 
             $current_phase_query = new ApiQuery(Registration::class, $build['params']);
+            if ($enable_sensitive_seals && isset($build['params']['sealStatus'])) {
+                $current_phase_query->enableSealStatusIncludeSensitive();
+            }
             if (isset($previous_phase_query) && !$phase->isLastPhase) {
                 $current_phase_query->addFilterByApiQuery($previous_phase_query, 'number', 'number');
             }

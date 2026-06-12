@@ -5,6 +5,7 @@ namespace Tests\Directors;
 use DateTime;
 use Doctrine\DBAL\Exception;
 use MapasCulturais\App;
+use MapasCulturais\Entities\Agent;
 use MapasCulturais\Entities\Opportunity;
 use MapasCulturais\Entities\Registration;
 use Tests\Abstract\Director;
@@ -85,6 +86,18 @@ class RegistrationDirector extends Director
         $this->setRegistrationData($registration, data: $data);
                 
         $registration->send();
+
+        return $registration->refreshed();
+    }
+
+    public function createSentRegistrationForAgent(Opportunity $opportunity, Agent $owner): Registration
+    {
+        $registration = $this->registrationBuilder
+            ->reset($opportunity, $owner)
+            ->fillRequiredProperties()
+            ->save()
+            ->send()
+            ->getInstance();
 
         return $registration->refreshed();
     }
