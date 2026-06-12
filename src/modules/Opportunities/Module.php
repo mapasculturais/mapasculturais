@@ -287,6 +287,31 @@ class Module extends \MapasCulturais\Module{
             }
         });
 
+        // Valida integridade entre seções e critérios na resposta da API
+        $app->hook('entity(EvaluationMethodConfiguration).validationErrors', function(&$errors) {
+            /** @var EvaluationMethodConfiguration $this */
+            
+            // Só valida se sections ou criteria foram modificados
+            $has_criteria_changes = $this->getChangedMetadata()['criteria'] ?? false;
+            $has_sections_changes = $this->getChangedMetadata()['sections'] ?? false;
+            
+            if (!$has_criteria_changes && !$has_sections_changes) {
+                return;
+            }
+
+            if (!$this->validateCriteriaSectionsIntegrity()) {
+                // Adiciona erro no campo que foi enviado para garantir que apareça na resposta
+                if ($has_criteria_changes) {
+                    $errors['criteria'] = $errors['criteria'] ?? [];
+                    $errors['criteria'][] = i::__('Critérios com erros: existe(m) critério(s) sem seção associada ou com campos obrigatórios vazios');
+                }
+                if ($has_sections_changes) {
+                    $errors['sections'] = $errors['sections'] ?? [];
+                    $errors['sections'][] = i::__('Seções com erros: existe(m) seção(ões) sem critérios associados');
+                }
+            }
+        });
+
         $app->hook('entity(EvaluationMethodConfiguration).save:finish', function () use($app, $distribute_execution_time) {
             /** @var EvaluationMethodConfiguration $this */
             if ($this->mustRedistributeCommitteeRegistrations) {
