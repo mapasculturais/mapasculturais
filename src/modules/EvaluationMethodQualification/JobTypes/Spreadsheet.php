@@ -61,7 +61,7 @@ class Spreadsheet extends EvaluationsSpreadsheetJob
                     $sub_header['obs'] = i::__('Observações');
                 } else {
                     if($property === 'result') {
-                        $sub_header[$property] = i::__('Resultado');
+                        $sub_header[$property] = i::__('Resultado do avaliador');
                         continue;
                     }
 

@@ -7,17 +7,13 @@
 use MapasCulturais\i;
 
 $this->import('
-    mc-icon
     mc-loading
 ');
 ?>
 <div class="user-management__account-deletion-config" v-if="canConfigure">
-    <div class="panel-page__header">
+    <div class="panel-page__header user-management__account-deletion-header">
         <div class="panel-page__header-title">
-            <div class="title">
-                <div class="title__icon default"> <mc-icon name="mail"></mc-icon> </div>
-                <h2 class="title__title"> <?= i::__('Exclusão de contas (LGPD)') ?> </h2>
-            </div>
+            <h3 class="title__title"> <?= i::__('Exclusão de contas (LGPD)') ?> </h3>
         </div>
         <p class="panel-page__header-subtitle">
             <?= i::__('Configure o e-mail que receberá as solicitações de exclusão de conta. Se deixar em branco, as solicitações serão enviadas aos administradores do subsite ou, sem subsite, a todos os usuários com papel administrativo na plataforma.') ?>

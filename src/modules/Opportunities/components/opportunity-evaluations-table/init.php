@@ -149,7 +149,7 @@ $headers = [
     [ 'text' => i::__('ID usuário avaliador', 'opportunity-evaluations-table'), 'value' => 'valuer?.user', 'slug' => 'valuerUserId', 'visible' => true, 'width' => '120px' ],
     [ 'text' => i::__('ID agente avaliador', 'opportunity-evaluations-table'), 'value' => 'valuer?.id', 'slug' => 'valuerAgentId', 'visible' => true, 'width' => '120px' ],
     [ 'text' => i::__('avaliador', 'opportunity-evaluations-table'), 'value' =>  'valuer?.name', 'slug' => 'evaluator', 'visible' => true],
-    [ 'text' => i::__('resultado final', 'opportunity-evaluations-table'), 'value' => 'evaluation?.resultString', 'slug' => 'result'],
+    [ 'text' => i::__('Resultado do avaliador', 'opportunity-evaluations-table'), 'value' => 'evaluation?.resultString', 'slug' => 'result'],
     [ 'text' => i::__('Tipo de proponente', 'opportunity-evaluations-table'), 'value' => 'proponentType', 'slug' => 'proponentType'],
     [ 'text' => i::__('Categoria', 'opportunity-evaluations-table'), 'value' => 'category', 'slug' => 'category'],
     [ 'text' => i::__('Faixa', 'opportunity-evaluations-table'), 'value' => 'range', 'slug' => 'range'],

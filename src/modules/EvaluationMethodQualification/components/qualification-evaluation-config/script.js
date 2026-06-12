@@ -152,6 +152,7 @@ app.component('qualification-evaluation-config', {
                 }
 
                 if (!addCriteria && criteria && !criteria.some(criterion => criterion.sid === section.id)) {
+                    this.messages.error(`${this.text('theSection')} ${section.name || this.text('section')} ${this.text('must_have_at_least_one_criterion')}`);
                     hasError = true;
                 }
             })
@@ -366,10 +367,6 @@ app.component('qualification-evaluation-config', {
             criteria.fields = value.fields && typeof value.fields == 'object' ? { ...value.fields } : {};
 
             this.save();
-        },
-
-        save(){
-            this.entity.save();
         },
 
     },
