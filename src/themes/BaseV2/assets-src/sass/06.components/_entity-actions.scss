@@ -16,13 +16,15 @@
         max-width: var(--mc-layout-container-xl);
         margin: 0 auto;
 
+        &__groupBtn,
         &--groupBtn {
             align-items: center;
             display: flex;
             gap: var(--mc-space-25);
             
             &.rowBtn,
-            &.entity-actions__content--groupBtn-row {
+            &.entity-actions__content--groupBtn-row,
+            &.entity-actions__content__groupBtn-row {
                 flex-direction: row;
                 flex-wrap: wrap;
                 justify-content: center;
@@ -44,14 +46,16 @@
                 }
             }
             .arquivar,
-            .entity-actions__content--groupBtn-archive {
+            .entity-actions__content--groupBtn-archive,
+            .entity-actions__content__groupBtn-archive {
                 .iconify {
                     color: var(--mc-warning-500);
                     font-size: var(--mc-space-16);
                 }
             }
             .excluir,
-            .entity-actions__content--groupBtn-delete {
+            .entity-actions__content--groupBtn-delete,
+            .entity-actions__content__groupBtn-delete {
                 .iconify {
                     color: var(--mc-danger-500);
                     font-size: var(--mc-space-16);
