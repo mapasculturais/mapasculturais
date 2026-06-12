@@ -43,6 +43,18 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Corrige os templates de email da fase de recurso
 - Corrige a exibição das opções de campos de seleção no formato radio para organizá-las verticalmente na ficha de inscrição
 
+## [7.7.55] - 2026-06-12
+### Melhorias
+- Valida integridade entre seções e critérios de avaliação no backend, impedindo salvamento de critérios órfãos ou com campos obrigatórios vazios
+- Exibe mensagens de erro do backend ao salvar configuração de avaliação por qualificação
+- Adiciona testes automatizados para validação de configuração de avaliação
+
+### Correções
+- Faz ajustes em nomes de colunas na tabela e planilha de avaliações
+- Corrige erro ao carregar políticas afirmativas sem pontuação configurada
+- Desativa log de tempo de execução durante testes para reduzir ruído no output
+- Ajusta layout da configuração de exclusão de contas em Gestão de usuários
+
 ## [7.7.54] - 2026-06-10
 ### Correções
 - Corrige exibição dos modelos criados para o saasAdmin
