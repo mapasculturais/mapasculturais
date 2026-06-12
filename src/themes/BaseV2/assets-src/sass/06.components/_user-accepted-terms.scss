@@ -4,18 +4,21 @@
 
     &__privacy {
 
-        &--accept {
+        &--accept,
+        &__accept {
             max-height: 100%;
             background-color: var(--mc-high-500);
             border-radius: var(--mc-border-radius-xs);
             padding: var(--mc-space-16) var(--mc-space-16) var(--mc-space-24);
 
-            &-title {
+            &-title,
+            &__title {
                 font-weight: 700;
                 font-size: var(--mc-space-18);
                 margin-bottom: var(--mc-space-24);
 
-                &-box {
+                &-box,
+                &__box {
                     margin-top: var(--mc-space-24);
                     // TODO-BREAKPOINT: 500px is not a canonical breakpoint. Consider adding to $mc-breakpoints or using nearest canonical value.
                     @include respond-below('mob'){
