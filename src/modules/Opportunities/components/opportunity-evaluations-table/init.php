@@ -144,9 +144,9 @@ $default_select = implode(',', $final_select);
 
 
 $headers = [
-    [ 'text' => i::__('inscrição', 'opportunity-evaluations-table'), 'value' => 'number', 'slug' => 'number', 'sticky' => true, 'width' => '160px' ],
-    [ 'text' => i::__('avaliador', 'opportunity-evaluations-table'), 'value' =>  'valuer?.name', 'slug' => 'evaluator', 'visible' => true],
-    [ 'text' => i::__('resultado final', 'opportunity-evaluations-table'), 'value' => 'evaluation?.resultString', 'slug' => 'result'],
+    [ 'text' => i::__('Inscrição', 'opportunity-evaluations-table'), 'value' => 'number', 'slug' => 'number', 'sticky' => true, 'width' => '160px' ],
+    [ 'text' => i::__('Avaliador', 'opportunity-evaluations-table'), 'value' =>  'valuer?.name', 'slug' => 'evaluator', 'visible' => true],
+    [ 'text' => i::__('Resultado do avaliador', 'opportunity-evaluations-table'), 'value' => 'evaluation?.resultString', 'slug' => 'result'],
     [ 'text' => i::__('Tipo de proponente', 'opportunity-evaluations-table'), 'value' => 'proponentType', 'slug' => 'proponentType'],
     [ 'text' => i::__('Categoria', 'opportunity-evaluations-table'), 'value' => 'category', 'slug' => 'category'],
     [ 'text' => i::__('Faixa', 'opportunity-evaluations-table'), 'value' => 'range', 'slug' => 'range'],

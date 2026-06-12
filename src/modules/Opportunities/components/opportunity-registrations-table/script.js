@@ -335,7 +335,7 @@ app.component('opportunity-registrations-table', {
 
             if(this.phase.isLastPhase){
                 itens.splice(2,0,{ text: "Status", value: "consolidatedResult"});
-                itens.push({ text: __('resultado final', 'opportunity-registrations-table'), value: "status", width: '250px', stickyRight: true})
+                itens.push({ text: __('Resultado final', 'opportunity-registrations-table'), value: "status", width: '250px', stickyRight: true})
             } else {
                 itens.push({ text: __('status', 'opportunity-registrations-table'), value: "status", width: '250px', stickyRight: true})
             }
