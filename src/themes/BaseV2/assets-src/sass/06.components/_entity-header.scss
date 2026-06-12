@@ -269,7 +269,8 @@
             &__single-content {
                 padding-bottom: var(--mc-space-30);
 
-                .leftSide {
+                .leftSide,
+                .entity-header__avatar-side {
                     // TODO-BREAKPOINT: 900px is not a canonical breakpoint. Consider adding to $mc-breakpoints or using nearest canonical value.
                     @include respond-below('ml') {
                         margin: 0 auto;
