@@ -91,6 +91,9 @@ use MapasCulturais\i;
             <th ng-show="data.registrationTableColumns.status" class="registration-status-col">
                 <mc-select placeholder="Status" model="registrationsFilters['status']" data="data.registrationStatuses"></mc-select>
             </th>
+            <th ng-show="data.registrationTableColumns.sealStatus" class="registration-status-col">
+                <mc-select placeholder="<?php i::esc_attr_e('Status do Selo') ?>" model="registrationsFilters['sealStatus']" data="data.sealStatuses"></mc-select>
+            </th>
 
             <?php $this->applyTemplateHook('registration-list-header','end'); ?>
         </tr>
@@ -156,6 +159,13 @@ use MapasCulturais\i;
                 <?php else: ?>
                     <mc-select model="reg" data="data.registrationStatusesNames" getter="getRegistrationStatus" setter="setRegistrationStatus"></mc-select>
                 <?php endif; ?>
+            </td>
+            <td ng-show="data.registrationTableColumns.sealStatus" class="registration-status-col">
+                <span ng-if="reg.sealStatus" class="seal-status-badge" ng-class="'status-' + reg.sealStatus">
+                    <span ng-if="reg.sealStatus === 'fully_valid'"><?php i::_e('Totalmente Válido') ?></span>
+                    <span ng-if="reg.sealStatus === 'partially_valid'"><?php i::_e('Parcialmente Válido') ?></span>
+                    <span ng-if="reg.sealStatus === 'invalid'"><?php i::_e('Inválido') ?></span>
+                </span>
             </td>
             <?php $this->applyTemplateHook('registration-list-item','end'); ?>
         </tr>

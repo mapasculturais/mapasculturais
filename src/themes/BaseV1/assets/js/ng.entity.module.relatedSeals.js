@@ -204,5 +204,15 @@
 									return Object.keys(obj).length;
 								};
 
+								$scope.hasAboutToExpireFields = function(relation) {
+									if (!relation || !relation.fields || !relation.fields.length) return false;
+									for (var i = 0; i < relation.fields.length; i++) {
+										if (relation.fields[i].fieldStatus === 'about_to_expire') {
+											return true;
+										}
+									}
+									return false;
+								};
+
 							} ]);
 })(angular);

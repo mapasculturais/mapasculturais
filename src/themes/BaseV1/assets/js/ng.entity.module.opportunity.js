@@ -3342,6 +3342,12 @@ module.controller('OpportunityController', ['$scope', '$rootScope', '$anchorScro
 
         registrationStatusesNames: RegistrationService.registrationStatusesNames,
 
+        sealStatuses: [
+            {value: 'fully_valid', label: 'Totalmente Válido'},
+            {value: 'partially_valid', label: 'Parcialmente Válido'},
+            {value: 'invalid', label: 'Inválido'}
+        ],
+
         publishedRegistrationStatuses: RegistrationService.publishedRegistrationStatuses,
 
         publishedRegistrationStatusesNames: RegistrationService.publishedRegistrationStatusesNames,
@@ -3368,7 +3374,8 @@ module.controller('OpportunityController', ['$scope', '$rootScope', '$anchorScro
             agents: true,
             attachments: true,
             evaluation: true,
-            status: true
+            status: true,
+            sealStatus: true
         },
 
         confirmEvaluationLabel: labels['confirmEvaluationLabel'],
