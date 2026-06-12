@@ -24,7 +24,7 @@
             color: var(--mc-low-700);
         }
 
-        &--header {
+        &__header {
             display: flex;
             gap: var(--mc-space-8);
             align-items: center;
@@ -50,7 +50,7 @@
             }
         }
 
-        &--counter {
+        &__counter {
             display: flex;
             flex-direction: column;
             align-items: center;
