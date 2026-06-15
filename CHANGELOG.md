@@ -5,6 +5,10 @@ Todas as mudanças notáveis no projeto serão documentadas neste arquivo.
 O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/)
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [7.5.56] - 2026-06-15
+### Correções
+- Implementa a correção na distribuição dos avaliadores de forma a evitar que uma avaliação já realizada seja desatribuída de um determinado avaliador
+
 ## [7.7.55] - 2026-06-12
 ### Melhorias
 - Valida integridade entre seções e critérios de avaliação no backend, impedindo salvamento de critérios órfãos ou com campos obrigatórios vazios
