@@ -28,6 +28,13 @@
         }
     }
 
+    function getFieldKey(field) {
+        if (!field) {
+            return '';
+        }
+        return field.groupName || field.fieldName || ('id-' + field.id);
+    }
+
     function _getStatusSlug(status) {
         switch (status) {
             case 0: return 'draft'; break;
@@ -702,9 +709,11 @@ module.controller('RegistrationConfigurationsController', ['$scope', '$rootScope
         };
 
         $scope.isFieldValid = function(field) {
-            if (!field || !field.id) return true;
-            return !$scope.fieldValidationErrors[field.id] ||
-                   $scope.fieldValidationErrors[field.id].length === 0;
+            if (!field || field.fieldType === 'file') return true;
+            var key = getFieldKey(field);
+            if (!key) return true;
+            return !$scope.fieldValidationErrors[key] ||
+                   $scope.fieldValidationErrors[key].length === 0;
         };
 
         $scope.countInvalidFields = function() {
@@ -720,7 +729,7 @@ module.controller('RegistrationConfigurationsController', ['$scope', '$rootScope
 
             $scope.data.fields.forEach(function(field) {
                 if (field.fieldType !== 'file') {
-                    $scope.fieldValidationErrors[field.id] = $scope.validateFieldIntegrity(field);
+                    $scope.fieldValidationErrors[getFieldKey(field)] = $scope.validateFieldIntegrity(field);
                 }
             });
             $scope.invalidFieldsCount = $scope.countInvalidFields();
@@ -978,7 +987,7 @@ module.controller('RegistrationConfigurationsController', ['$scope', '$rootScope
                     $scope.data.fields.push(response);
                     sortFields();
                     // Validar novo campo após criação
-                    $scope.fieldValidationErrors[response.id] = $scope.validateFieldIntegrity(response);
+                    $scope.fieldValidationErrors[getFieldKey(response)] = $scope.validateFieldIntegrity(response);
                     $scope.invalidFieldsCount = $scope.countInvalidFields();
                     EditBox.close('editbox-registration-fields');
                     $scope.data.newFieldConfiguration = angular.copy(fieldConfigurationSkeleton);
@@ -1093,7 +1102,7 @@ module.controller('RegistrationConfigurationsController', ['$scope', '$rootScope
                     normalizeFieldOptionsForDisplay(model);
                     sortFields();
                     // Revalidar o campo após edição bem-sucedida
-                    $scope.fieldValidationErrors[model.id] = $scope.validateFieldIntegrity(model);
+                    $scope.fieldValidationErrors[getFieldKey(model)] = $scope.validateFieldIntegrity(model);
                     $scope.invalidFieldsCount = $scope.countInvalidFields();
                     EditBox.close('editbox-registration-field-'+data.id);
                     MapasCulturais.Messages.success(labels['changesSaved']);
