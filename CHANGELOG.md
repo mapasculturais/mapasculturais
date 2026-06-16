@@ -5,6 +5,10 @@ Todas as mudanças notáveis no projeto serão documentadas neste arquivo.
 O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/)
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [UNRELEAESD]
+### Correções
+- Corrige a sincronização de inscrições para fases de prestação de informações após avaliação com recurso, garantindo que apenas inscrições selecionadas avancem e preservando a importação de inscrições enviadas em coletas sem avaliação
+
 ## [7.5.56] - 2026-06-15
 ### Correções
 - Implementa a correção na distribuição dos avaliadores de forma a evitar que uma avaliação já realizada seja desatribuída de um determinado avaliador
