@@ -5,6 +5,11 @@ Todas as mudanças notáveis no projeto serão documentadas neste arquivo.
 O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/)
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [7.5.57] - 2026-06-16
+### Correções
+- Corrige a propagação de inscrições entre fases, garantindo que apenas inscrições devidamente selecionadas avancem para as fases posteriores
+- Corrige CSS da exibição dos ícones de ações (editar, excluir e copiar) na configuração dos campos do formulário
+
 ## [7.5.56] - 2026-06-15
 ### Correções
 - Implementa a correção na distribuição dos avaliadores de forma a evitar que uma avaliação já realizada seja desatribuída de um determinado avaliador
