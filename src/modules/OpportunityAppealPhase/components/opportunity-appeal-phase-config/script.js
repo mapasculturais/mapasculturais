@@ -47,6 +47,35 @@ app.component('opportunity-appeal-phase-config' , {
             }
         },
 
+        /**
+         * Quantos dos 5 fluxos de notificação da fase de recurso estão ativos.
+         * Alimenta o badge "X de 5 ativas" no título do accordion de Notificações.
+         * Computado direto da entidade (fase de recurso filha), não do sub-componente
+         * notify-config — assim o badge é reativo mesmo com o accordion fechado.
+         *
+         * Lógica espelha Module::isFlowEnabled: null/false/'0' -> off; true/'1' -> on.
+         */
+        notifyActiveFlowCount() {
+            const flows = ['appealCreated', 'appealSent', 'statusNotApproved', 'statusApproved', 'statusInvalid'];
+            return flows.reduce((count, flow) => {
+                const v = this.entity?.['appealNotify_' + flow + '_enabled'];
+                return count + (v === true || v === '1' || v === 1 ? 1 : 0);
+            }, 0);
+        },
+
+        /**
+         * Classe do badge de notificações conforme spec UX (Seção 4):
+         *   0     -> warning (cor de atenção, onboarding)
+         *   1..4  -> neutra
+         *   5     -> success
+         */
+        notifyBadgeClass() {
+            const c = this.notifyActiveFlowCount;
+            if (c === 0) return 'opportunity-appeal-phase-config__notify-badge--warning';
+            if (c === 5) return 'opportunity-appeal-phase-config__notify-badge--success';
+            return 'opportunity-appeal-phase-config__notify-badge--neutral';
+        },
+
         fromDateMin() {
             return this.phase.publishTimestamp || this.phase.registrationFrom || this.phase.evaluationMethodConfiguration?.evaluationFrom;
         },

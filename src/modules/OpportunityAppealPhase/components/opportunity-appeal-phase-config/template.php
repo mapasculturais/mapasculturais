@@ -14,6 +14,7 @@ $this->import('
     mc-icon
     mc-link
     mc-loading
+    opportunity-appeal-phase-notify-config
     opportunity-committee-groups
     opportunity-phase-config-status
     opportunity-phase-list-evaluation
@@ -161,6 +162,52 @@ $this->import('
 
             <template #content v-if="tab === 'registrations'">
                 <opportunity-phase-list-evaluation :entity="phase.appealPhase.evaluationMethodConfiguration" :phases="phases" :tab="tab"></opportunity-phase-list-evaluation>
+            </template>
+        </mc-accordion>
+
+        <?php
+        // Terceiro accordion — Notificações por e-mail da fase de recurso.
+        // Restrito a gestores via permissão @control (leitura + escrita das
+        // 15 metadata keys private). O conteúdo só renderiza na aba 'config'.
+        // Irmão direto dos dois accordions acima (mesma div .__appeals).
+        //
+        // O badge "X de 5 ativas" é computado pelas computeds notifyActiveFlowCount
+        // e notifyBadgeClass deste próprio componente (script.js), lendo direto
+        // da entidade — assim ele é reativo mesmo com o accordion fechado.
+        ?>
+        <mc-accordion
+            v-if="entity?.currentUserPermissions?.['@control']"
+            :withText="true"
+        >
+            <template #title>
+                <div class="opportunity-appeal-phase-config__title">
+                    <h3 class="bold"><?= i::__('Notificações do recurso') ?></h3>
+                    <div class="info__type">
+                        <span class="title">
+                            <?= i::__('Tipo') ?>:
+                            <span class="type"><?= i::__('E-mails e notificações do sistema') ?></span>
+                        </span>
+                    </div>
+                </div>
+                <div
+                    :class="['opportunity-appeal-phase-config__notify-badge', notifyBadgeClass]"
+                    aria-live="polite"
+                    aria-atomic="true"
+                >
+                    <span class="opportunity-appeal-phase-config__notify-badge-count">
+                        {{ notifyActiveFlowCount }}
+                    </span>
+                    <?= i::__('de') ?> 5 <?= i::__('ativas') ?>
+                </div>
+            </template>
+            <template #icon>
+            </template>
+
+            <template #content v-if="tab === 'config'">
+                <opportunity-appeal-phase-notify-config
+                    :entity="entity"
+                    :tab="tab"
+                ></opportunity-appeal-phase-notify-config>
             </template>
         </mc-accordion>
     </div>

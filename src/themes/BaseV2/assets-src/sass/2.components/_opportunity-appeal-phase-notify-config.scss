@@ -1,0 +1,289 @@
+@use '../0.settings/mixins' as *;
+
+.opportunity-appeal-phase-notify-config {
+    display: flex;
+    flex-direction: column;
+    gap: size(20);
+
+    &__onboarding {
+        margin-bottom: size(8);
+    }
+
+    &__grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: size(16);
+
+        @media (max-width: 768px) {
+            grid-template-columns: 1fr;
+        }
+    }
+
+    &__card {
+        display: flex;
+        flex-direction: column;
+        gap: size(16);
+        padding: size(20);
+        background-color: var(--mc-white);
+        border: var(--mc-border-hairline) var(--mc-gray-300);
+        border-radius: size(4);
+        transition: opacity 0.2s ease;
+
+        &--off {
+            .opportunity-appeal-phase-notify-config__card-header {
+                opacity: 0.55;
+            }
+        }
+
+        &--custom {
+            border-color: var(--mc-primary-300);
+        }
+    }
+
+    &__card-header {
+        display: flex;
+        flex-direction: column;
+        gap: size(4);
+    }
+
+    &__card-title {
+        display: flex;
+        align-items: center;
+        gap: size(8);
+        color: var(--mc-gray-800);
+        font-size: size(16);
+        font-weight: 700;
+        line-height: size(22);
+    }
+
+    &__custom-badge {
+        display: inline-flex;
+        align-items: center;
+        padding: size(2) size(8);
+        background-color: var(--mc-primary-100);
+        color: var(--mc-primary-700);
+        font-size: size(12);
+        font-weight: 600;
+        line-height: size(16);
+        border-radius: size(12);
+        white-space: nowrap;
+    }
+
+    &__card-recipients {
+        color: var(--mc-low-500);
+        font-size: size(13);
+        font-weight: 400;
+        line-height: size(18);
+
+        span {
+            font-weight: 600;
+        }
+    }
+
+    &__card-controls {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: size(12);
+        flex-wrap: wrap;
+
+        @media (max-width: 768px) {
+            flex-direction: column;
+            align-items: stretch;
+
+            .entity-field {
+                width: 100%;
+            }
+        }
+    }
+
+    &__customize-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: size(4);
+        white-space: nowrap;
+        flex-shrink: 0;
+    }
+
+    // ===== Modal =====
+
+    &__modal-pill {
+        margin-bottom: size(16);
+    }
+
+    &__pill {
+        display: inline-flex;
+        align-items: center;
+        padding: size(4) size(12);
+        font-size: size(13);
+        font-weight: 600;
+        line-height: size(18);
+        border-radius: size(12);
+
+        &--default {
+            background-color: var(--mc-gray-100);
+            color: var(--mc-gray-700);
+        }
+
+        &--custom {
+            background-color: var(--mc-primary-100);
+            color: var(--mc-primary-700);
+        }
+
+        &--active {
+            background-color: var(--mc-success-100);
+            color: var(--mc-success-700);
+        }
+
+        &--inactive {
+            background-color: var(--mc-gray-100);
+            color: var(--mc-gray-500);
+        }
+    }
+
+    &__field {
+        display: flex;
+        flex-direction: column;
+        gap: size(4);
+        margin-bottom: size(16);
+    }
+
+    &__field-label {
+        color: var(--mc-gray-700);
+        font-size: size(14);
+        font-weight: 600;
+        line-height: size(19);
+    }
+
+    &__input {
+        width: 100%;
+        padding: size(10) size(12);
+        border: var(--mc-border-hairline) var(--mc-gray-400);
+        border-radius: size(4);
+        font-size: size(14);
+        line-height: size(19);
+        color: var(--mc-gray-800);
+        background-color: var(--mc-white);
+
+        &:focus {
+            border-color: var(--mc-primary-500);
+            outline: none;
+            box-shadow: 0 0 0 1px var(--mc-primary-500);
+        }
+    }
+
+    &__textarea {
+        width: 100%;
+        min-height: size(160);
+        padding: size(10) size(12);
+        border: var(--mc-border-hairline) var(--mc-gray-400);
+        border-radius: size(4);
+        font-size: size(14);
+        line-height: size(20);
+        color: var(--mc-gray-800);
+        background-color: var(--mc-white);
+        resize: vertical;
+        font-family: inherit;
+
+        &:focus {
+            border-color: var(--mc-primary-500);
+            outline: none;
+            box-shadow: 0 0 0 1px var(--mc-primary-500);
+        }
+    }
+
+    // ===== Variáveis (chips) =====
+
+    &__variables {
+        margin-top: size(8);
+        margin-bottom: size(16);
+    }
+
+    &__variables-title {
+        color: var(--mc-gray-700);
+        font-size: size(13);
+        font-weight: 600;
+        margin-bottom: size(8);
+    }
+
+    &__variables-list {
+        display: flex;
+        flex-wrap: wrap;
+        gap: size(6);
+    }
+
+    &__chip {
+        display: inline-flex;
+        align-items: center;
+        padding: size(4) size(10);
+        background-color: var(--mc-gray-100);
+        border: var(--mc-border-hairline) var(--mc-gray-300);
+        border-radius: size(4);
+        font-size: size(12);
+        font-family: monospace;
+        color: var(--mc-gray-700);
+        cursor: pointer;
+        transition: background-color 0.15s ease, border-color 0.15s ease;
+
+        &:hover {
+            background-color: var(--mc-primary-100);
+            border-color: var(--mc-primary-300);
+            color: var(--mc-primary-700);
+        }
+
+        &:focus-visible {
+            outline: 2px solid var(--mc-primary-500);
+            outline-offset: 1px;
+        }
+    }
+
+    &__variables-hint {
+        color: var(--mc-low-500);
+        font-size: size(12);
+        margin-top: size(8);
+    }
+
+    // ===== Status no rodapé do modal =====
+
+    &__modal-status {
+        display: flex;
+        align-items: center;
+        gap: size(8);
+        padding-top: size(12);
+        border-top: var(--mc-border-hairline) var(--mc-gray-200);
+    }
+}
+
+// ===== Badge no accordion pai =====
+
+.opportunity-appeal-phase-config {
+    &__notify-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: size(4);
+        padding: size(4) size(12);
+        border-radius: size(12);
+        font-size: size(13);
+        font-weight: 600;
+        line-height: size(18);
+
+        &--warning {
+            background-color: var(--mc-warn-100);
+            color: var(--mc-warn-700);
+        }
+
+        &--neutral {
+            background-color: var(--mc-gray-100);
+            color: var(--mc-gray-700);
+        }
+
+        &--success {
+            background-color: var(--mc-success-100);
+            color: var(--mc-success-700);
+        }
+    }
+
+    &__notify-badge-count {
+        font-weight: 700;
+    }
+}
