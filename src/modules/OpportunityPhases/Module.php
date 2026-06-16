@@ -209,13 +209,18 @@ class Module extends \MapasCulturais\Module{
      * - indeferido/inválido no recurso qualifica apenas se a fase de origem tiver status 10;
      * - sem recurso, qualifica com status 10 na fase de origem.
      *
-     * Fase de coleta de dados (não recurso): qualifica com status > 0 (inscrição enviada).
+     * Fase de coleta de dados sem avaliação/recurso: qualifica com status > 0 (inscrição enviada).
      *
      * @return array{0: string, 1: array<string, Opportunity>}
      */
     public static function getPreviousPhaseQualificationDql(string $alias, Opportunity $previous_phase): array
     {
-        if ($previous_phase->isDataCollection && !self::isAppealPhaseOpportunity($previous_phase)) {
+        if (
+            $previous_phase->isDataCollection &&
+            !$previous_phase->evaluationMethodConfiguration &&
+            !$previous_phase->appealPhase &&
+            !self::isAppealPhaseOpportunity($previous_phase)
+        ) {
             return ["{$alias}.status > 0", []];
         }
 
@@ -242,7 +247,14 @@ class Module extends \MapasCulturais\Module{
             AND ap_def.status = 10
         )";
 
-        $condition = "NOT {$pending} AND ({$deferred} OR ({$alias}.status = 10 AND NOT {$deferred}))";
+        $not_deferred = "NOT EXISTS (
+            SELECT ap_not_def.id FROM MapasCulturais\Entities\Registration ap_not_def
+            WHERE ap_not_def.opportunity = :appeal_phase
+            AND ap_not_def.number = {$alias}.number
+            AND ap_not_def.status = 10
+        )";
+
+        $condition = "NOT {$pending} AND ({$deferred} OR ({$alias}.status = 10 AND {$not_deferred}))";
 
         return [$condition, $params];
     }
@@ -1210,7 +1222,7 @@ class Module extends \MapasCulturais\Module{
 
             // para a última fase vão todas as inscrições que não estejam como rascunho
             $appeal_params = [];
-            if ($this->isLastPhase || ($this->isReportingPhase && !$this->isFinalReportingPhase && !$previous_phase->isLastPhase)) {
+            if ($this->isLastPhase) {
                 $qualified_status_dql = 'r2.status > 0';
             } else {
                 [$qualified_status_dql, $appeal_params] = self::getPreviousPhaseQualificationDql('r2', $previous_phase);
@@ -1387,6 +1399,8 @@ class Module extends \MapasCulturais\Module{
 
 
             } else if($this->isReportingPhase && !$this->isFinalReportingPhase && !$previous_phase->isLastPhase) {
+                [$qualified_status_dql, $appeal_params] = self::getPreviousPhaseQualificationDql('r1', $previous_phase);
+
                 $dql = "
                     SELECT
                         r1
@@ -1394,7 +1408,7 @@ class Module extends \MapasCulturais\Module{
                         MapasCulturais\Entities\Registration r1
                     WHERE
                         r1.opportunity = :previous_opportunity AND
-                        r1.status > 0 AND
+                        {$qualified_status_dql} AND
                         r1.number NOT IN (
                             SELECT
                                 r2.number
@@ -1411,7 +1425,7 @@ class Module extends \MapasCulturais\Module{
                 $query->setParameters([
                     'previous_opportunity' => $previous_phase,
                     'target_opportunity' => $this
-                ]);
+                ] + $appeal_params);
 
                 while ($registration = $query->getOneOrNullResult()) {
                     $count++;
