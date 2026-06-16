@@ -42,6 +42,7 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Corrige o cálculo ponderado dos subtotais na tela de avaliação técnica
 - Corrige os templates de email da fase de recurso
 - Corrige a exibição das opções de campos de seleção no formato radio para organizá-las verticalmente na ficha de inscrição
+- Corrige a ordenação das últimas planilhas exportadas para exibir os arquivos mais recentes primeiro
 
 ## [7.7.54] - 2026-06-10
 ### Correções
