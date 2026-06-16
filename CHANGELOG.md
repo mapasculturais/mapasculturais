@@ -5,6 +5,10 @@ Todas as mudanças notáveis no projeto serão documentadas neste arquivo.
 O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/)
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [UNRELEASED]
+### Correções
+- Evita que os ponteiros nextPhaseRegistrationId e previousPhaseRegistrationId fiquem vazios durante o sincronismo da fase de recurso
+
 ## [7.5.57] - 2026-06-16
 ### Correções
 - Corrige a propagação de inscrições entre fases, garantindo que apenas inscrições devidamente selecionadas avancem para as fases posteriores
