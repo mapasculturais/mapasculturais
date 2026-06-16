@@ -289,6 +289,170 @@ class PhaseRegistrationSyncTest extends TestCase
     }
 
     /**
+     * Garante alinhamento dos ponteiros next/previous entre fases principais em cenários variados:
+     * sync normal, re-sync com elo corrompido, recurso pendente e pós-recurso, até publicação final.
+     */
+    function testPhaseRegistrationPointersStayAlignedAcrossMultiplePhases(): void
+    {
+        $context = $this->buildPnabLikeOpportunity();
+        $this->createRegistrationsByStatus($context->coletaMerito);
+        $context = $this->refreshContext($context);
+
+        // 1. Sync inicial mérito → anexos
+        $context->anexos->syncRegistrations([]);
+        $this->processJobs();
+
+        $this->assertMainPhaseChainAligned(
+            $context->coletaMerito,
+            '333',
+            'Após sync inicial para Anexos: '
+        );
+
+        // 2. Sync completo até publicação final (várias fases principais)
+        $context->publicacao->syncRegistrations([]);
+        $this->processJobs();
+
+        $this->assertMainPhaseChainAligned(
+            $context->coletaMerito,
+            '333',
+            'Após sync até publicação final: '
+        );
+        $this->assertMainPhaseChainAligned(
+            $context->coletaMerito,
+            '222',
+            'Inscrição pendente (sem Anexos) após sync até publicação: '
+        );
+
+        // 3. Re-sync com ponteiro corrompido (simula metadata inconsistente de produção)
+        $this->breakPhasePointer(
+            $this->findRegistration($context->coletaMerito, '333'),
+            'next'
+        );
+
+        $context->anexos->syncRegistrations([]);
+        $this->processJobs();
+
+        $this->assertMainPhaseChainAligned(
+            $context->coletaMerito,
+            '333',
+            'Após re-sync com next corrompido: '
+        );
+
+        // 4. Re-sync com inscrição já existente na fase destino (não recria, deve reparar elos)
+        $this->breakPhasePointer(
+            $this->findRegistration($context->coletaMerito, '333'),
+            'next'
+        );
+        $this->breakPhasePointer(
+            $this->findRegistration($context->anexos, '333'),
+            'previous'
+        );
+
+        $context->anexos->syncRegistrations([]);
+        $this->processJobs();
+
+        $this->assertMainPhaseChainAligned(
+            $context->coletaMerito,
+            '333',
+            'Após re-sync com inscrição pré-existente em Anexos: '
+        );
+
+        // 5. Recurso: durante pendência o next deve apontar para a inscrição de recurso (não id deletado/nulo)
+        $merit333 = $this->findRegistration($context->coletaMerito, '333');
+        $appeal = $this->createAppealRegistration($merit333);
+        $merit333 = $merit333->refreshed();
+
+        $this->assertEquals(
+            $appeal->id,
+            $merit333->nextPhaseRegistrationId,
+            'Durante recurso pendente: next deve apontar para inscrição de recurso'
+        );
+        $this->assertNull(
+            $this->findRegistration($context->anexos, '333'),
+            'Durante recurso pendente: inscrição removida de Anexos'
+        );
+        $this->assertRegistrationDoesNotPointToMissingId($merit333);
+
+        // 6. Pós-recurso deferido: cadeia principal restaurada em todas as fases
+        $appeal = $this->setAppealStatus($appeal, fn ($r) => $r->setStatusToApproved(true));
+
+        $context->anexos->syncRegistrations([]);
+        $this->processJobs();
+
+        $this->assertMainPhaseChainAligned(
+            $context->coletaMerito,
+            '333',
+            'Após recurso deferido e sync: '
+        );
+
+        $context->publicacao->syncRegistrations([]);
+        $this->processJobs();
+
+        $this->assertMainPhaseChainAligned(
+            $context->coletaMerito,
+            '333',
+            'Após recurso deferido e sync até publicação: '
+        );
+    }
+
+    /**
+     * Garante alinhamento dos ponteiros em sync entre fases comuns de coleta de dados (sem recurso).
+     */
+    function testDataCollectionPhaseRegistrationPointersAlignedAfterSync(): void
+    {
+        $admin = $this->userDirector->createUser('admin');
+        $this->login($admin);
+
+        $edital = $this->opportunityBuilder
+            ->reset(owner: $admin->profile, owner_entity: $admin->profile)
+            ->fillRequiredProperties()
+            ->firstPhase()
+                ->setRegistrationPeriod(new Open)
+                ->done()
+            ->save()
+            ->addDataCollectionPhase()
+                ->setRegistrationPeriod(new Open)
+                ->done()
+            ->save()
+            ->getInstance();
+
+        $fase1 = $edital->firstPhase;
+        $fase2 = OpportunityPhasesModule::getNextMainPhase($fase1);
+
+        $pending = $this->registrationDirector->createSentRegistration($fase1, []);
+        $pending->number = '999';
+        $pending->save(true);
+
+        $selected = $this->registrationDirector->createSentRegistration($fase1, []);
+        $selected->number = '888';
+        $selected->setStatusToApproved(true);
+
+        $fase2->syncRegistrations([]);
+        $this->processJobs();
+
+        $this->assertNull(
+            $this->findRegistration($fase2, '999'),
+            'Garantindo que inscrição pendente (status 1) não avance para a próxima fase de coleta'
+        );
+        $this->assertNotNull(
+            $this->findRegistration($fase2, '888'),
+            'Garantindo que inscrição selecionada (status 10) avance para a próxima fase de coleta'
+        );
+
+        $this->assertMainPhaseChainAligned($fase1, '888', 'Sync entre fases de coleta: ');
+
+        $this->breakPhasePointer($this->findRegistration($fase1, '888'), 'next');
+        $fase2->syncRegistrations([]);
+        $this->processJobs();
+
+        $this->assertMainPhaseChainAligned(
+            $fase1,
+            '888',
+            'Re-sync entre fases de coleta com ponteiro corrompido: '
+        );
+    }
+
+    /**
      * Garante que recurso pendente bloqueie o sync e remova inscrição órfã de Anexos.
      */
     function testPendingAppealBlocksAnexosSync(): void
@@ -478,7 +642,7 @@ class PhaseRegistrationSyncTest extends TestCase
             $appeal->number = $registration->number;
             $appeal->save(true);
 
-            OpportunityPhasesModule::removeDownstreamRegistrations($registration);
+            OpportunityPhasesModule::removeDownstreamRegistrations($registration, $appeal);
 
             return $appeal->refreshed();
         } finally {
@@ -497,50 +661,91 @@ class PhaseRegistrationSyncTest extends TestCase
         }
     }
 
-    /**
-     * Garante que inscrição pendente (status 1) em coleta sem avaliação não avance para a próxima fase de coleta.
-     */
-    function testPendingRegistrationDoesNotSyncBetweenDataCollectionPhases(): void
+    /** @return Opportunity[] */
+    private function getMainPhasesFrom(Opportunity $first_phase): array
     {
-        $admin = $this->userDirector->createUser('admin');
-        $this->login($admin);
+        $phases = [$first_phase];
 
-        $edital = $this->opportunityBuilder
-            ->reset(owner: $admin->profile, owner_entity: $admin->profile)
-            ->fillRequiredProperties()
-            ->firstPhase()
-                ->setRegistrationPeriod(new Open)
-                ->done()
-            ->save()
-            ->addDataCollectionPhase()
-                ->setRegistrationPeriod(new Open)
-                ->done()
-            ->save()
-            ->getInstance();
+        foreach (OpportunityPhasesModule::getDownstreamMainPhases($first_phase) as $phase) {
+            $phases[] = $phase;
+        }
 
-        $fase1 = $edital->firstPhase;
-        $fase2 = OpportunityPhasesModule::getNextMainPhase($fase1);
+        return $phases;
+    }
 
-        $pending = $this->registrationDirector->createSentRegistration($fase1, []);
-        $pending->number = '999';
-        $pending->save(true);
+    /**
+     * Verifica elos bidirecionais entre fases principais onde a inscrição existe (ignora fases intermediárias ausentes).
+     */
+    private function assertMainPhaseChainAligned(Opportunity $first_phase, string $number, string $context = ''): void
+    {
+        $registrations = [];
 
-        $selected = $this->registrationDirector->createSentRegistration($fase1, []);
-        $selected->number = '888';
-        $selected->setStatusToApproved(true);
+        foreach ($this->getMainPhasesFrom($first_phase) as $phase) {
+            $registration = $this->findRegistration($phase, $number);
+            if ($registration) {
+                $registrations[] = $registration->refreshed();
+            }
+        }
 
-        $fase2->syncRegistrations([]);
-        $this->processJobs();
-
-        $this->assertNull(
-            $this->findRegistration($fase2, '999'),
-            'Garantindo que inscrição pendente (status 1) não avance para a próxima fase de coleta'
+        $this->assertGreaterThanOrEqual(
+            2,
+            count($registrations),
+            "{$context}esperava inscrição {$number} em ao menos duas fases principais"
         );
+
+        for ($i = 0, $last = count($registrations) - 1; $i < $last; $i++) {
+            $previous = $registrations[$i];
+            $current = $registrations[$i + 1];
+
+            $this->assertEquals(
+                $current->id,
+                $previous->nextPhaseRegistrationId,
+                "{$context}next da fase {$previous->opportunity->id} deve apontar para fase {$current->opportunity->id}"
+            );
+            $this->assertEquals(
+                $previous->id,
+                $current->previousPhaseRegistrationId,
+                "{$context}previous da fase {$current->opportunity->id} deve apontar para fase {$previous->opportunity->id}"
+            );
+
+            $this->assertRegistrationDoesNotPointToMissingId($previous, $context);
+        }
+
+        $this->assertRegistrationDoesNotPointToMissingId($registrations[$last], $context);
+    }
+
+    private function assertRegistrationDoesNotPointToMissingId(Registration $registration, string $context = ''): void
+    {
+        if (!$registration->nextPhaseRegistrationId) {
+            return;
+        }
+
+        $next = $this->app->repo('Registration')->find($registration->nextPhaseRegistrationId);
 
         $this->assertNotNull(
-            $this->findRegistration($fase2, '888'),
-            'Garantindo que inscrição selecionada (status 10) avance para a próxima fase de coleta'
+            $next,
+            "{$context}inscrição {$registration->id} não deve apontar next para id inexistente ({$registration->nextPhaseRegistrationId})"
         );
+    }
+
+    private function breakPhasePointer(Registration $registration, string $field): void
+    {
+        $this->app->disableAccessControl();
+        try {
+            if ($field === 'next') {
+                $registration->nextPhaseRegistrationId = null;
+            } elseif ($field === 'previous') {
+                $registration->previousPhaseRegistrationId = null;
+            } else {
+                throw new \InvalidArgumentException("Campo de ponteiro inválido: {$field}");
+            }
+
+            $registration->__skipQueuingPCacheRecreation = true;
+            $registration->skipSync = true;
+            $registration->save(true);
+        } finally {
+            $this->app->enableAccessControl();
+        }
     }
 
     private function getOpportunityPhasesModule(): OpportunityPhasesModule
