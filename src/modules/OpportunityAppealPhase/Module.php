@@ -164,7 +164,7 @@ class Module extends \MapasCulturais\Module {
                 
                 $new_registration->save(true);
 
-                \OpportunityPhases\Module::removeDownstreamRegistrations($registration);
+                \OpportunityPhases\Module::removeDownstreamRegistrations($registration, $new_registration);
 
                 // Cria notificação do sistema e disparo de e-mail para o proponente e gestores da oportunidade
                 // Disparo para o proponente
