@@ -51,10 +51,13 @@ class EntityMetadata extends Entity {
         ]);
 
         if ($has_metadata) {
-            // Se já existe, carrega o ID e marca como não-novo para poder atualizar
-            $this->id = (int) $has_metadata;
-            parent::save($flush);
-            return;
+            $metadata_object = $app->repo($this->className)->find((int) $has_metadata);
+            if ($metadata_object) {
+                $metadata_object->value = $this->value;
+                $metadata_object->save($flush);
+                $this->id = $metadata_object->id;
+                return;
+            }
         }
         
         parent::save($flush);

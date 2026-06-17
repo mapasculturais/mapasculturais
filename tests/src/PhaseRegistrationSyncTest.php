@@ -67,6 +67,54 @@ class PhaseRegistrationSyncTest extends TestCase
         }
     }
 
+    function testCreatePhaseRegistrationUpdatesExistingNextMetadataWhenEntityHasStaleCreatedMetadata(): void
+    {
+        $context = $this->buildPnabLikeOpportunity();
+        $this->createRegistrationsByStatus($context->coletaMerito);
+        $context = $this->refreshContext($context);
+
+        $registration = $this->findRegistration($context->coletaMerito, '333');
+        $registration->getMetadata('nextPhaseRegistrationId', true);
+
+        $this->app->conn->executeStatement(
+            "INSERT INTO registration_meta (object_id, key, value, id) VALUES (:object_id, :key, :value, nextval('registration_meta_id_seq'::regclass))",
+            [
+                'object_id' => $registration->id,
+                'key' => 'nextPhaseRegistrationId',
+                'value' => '0',
+            ]
+        );
+
+        $module = $this->getOpportunityPhasesModule();
+        $this->app->disableAccessControl();
+        try {
+            $created = $module->createPhaseRegistration($context->anexos, $registration);
+        } finally {
+            $this->app->enableAccessControl();
+        }
+
+        $this->assertEquals(
+            1,
+            (int) $this->app->conn->fetchScalar(
+                "SELECT COUNT(*) FROM registration_meta WHERE object_id = :object_id AND key = :key",
+                [
+                    'object_id' => $registration->id,
+                    'key' => 'nextPhaseRegistrationId',
+                ]
+            )
+        );
+        $this->assertEquals(
+            $created->id,
+            (int) $this->app->conn->fetchScalar(
+                "SELECT value FROM registration_meta WHERE object_id = :object_id AND key = :key",
+                [
+                    'object_id' => $registration->id,
+                    'key' => 'nextPhaseRegistrationId',
+                ]
+            )
+        );
+    }
+
     /**
      * Garante que a publicação final exiba apenas inscrições enviadas e com consolidatedResult correto da fase de mérito.
      */
