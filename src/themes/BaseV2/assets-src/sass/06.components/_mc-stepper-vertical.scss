@@ -454,7 +454,8 @@ ol.mc-stepper-vertical > li.mc-stepper-vertical__item--active::before {
     }
 
 
-    .mc-stepper-vertical__header {
+    .mc-stepper-vertical__header,
+    .stepper-header {
         background-color: var(--mc-white);
         padding: 16px;
         border-radius: var(--mc-space-4);

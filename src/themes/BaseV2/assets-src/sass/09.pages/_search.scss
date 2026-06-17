@@ -192,13 +192,13 @@
             }
 
         // tab - list
-        &__list {
-            margin: 0 auto;
-            max-width: var(--mc-layout-container-xl);
-            padding: var(--mc-space-24) var(--mc-space-16) var(--mc-space-40);
-            width: 100%;
+    &__tabs__list {
+        margin: 0 auto;
+        max-width: var(--mc-layout-container-xl);
+        padding: var(--mc-space-24) var(--mc-space-16) var(--mc-space-40);
+        width: 100%;
 
-            .search-list {
+        .search-list {
                 &__order {
                     align-items: flex-end;
                     display: flex;

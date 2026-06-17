@@ -95,9 +95,11 @@
             }
         }
 
-        &--selected {
+        &--selected,
+        &__selected {
 
-            &-label {
+            &-label,
+            &__label {
                 font-weight: 600;
                 font-size: var(--mc-space-14);
                 line-height: var(--mc-space-19);
@@ -153,7 +155,8 @@
                     display: flex;
                     gap: var(--mc-space-30);
 
-                    &--btn {
+                    &--btn,
+                    &__btn {
                         align-items: center;
                         cursor: pointer;
                         display: flex;
