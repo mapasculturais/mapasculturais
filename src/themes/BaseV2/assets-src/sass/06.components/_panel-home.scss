@@ -30,7 +30,7 @@
         gap: var(--mc-space-24);
         padding: var(--mc-space-28) var(--mc-space-48) var(--mc-space-9) var(--mc-space-32);
 
-        &--title {
+        &__title {
             label.title {
                 font-size: var(--mc-space-32);
                 font-weight: 700;
@@ -38,7 +38,7 @@
             }
         }
 
-        &--user {
+        &__user {
             align-items: center;
             display: flex;
             justify-content: space-between;
@@ -123,7 +123,8 @@
             }
         }
 
-        &--main {
+        &--main,
+        &__main {
             display: flex;
             flex-direction: column;
             gap: size(60);

@@ -22,8 +22,11 @@
 
     &__infos {
         &--capacidade,
+        &__capacidade,
         &--telefone,
-        &--email {
+        &__telefone,
+        &--email,
+        &__email {
             span {
                 font-weight: 600;
             }

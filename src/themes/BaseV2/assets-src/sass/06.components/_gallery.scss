@@ -33,7 +33,7 @@ body.galleryOpen {
         gap: var(--mc-space-24);
         margin-bottom: var(--mc-space-24);
 
-        &--image, &--video {
+        &--image, &--video, &__image, &__video {
             align-items: center;
             display: flex;
             flex-direction: column;
@@ -108,7 +108,7 @@ body.galleryOpen {
             display: flex;
         }
 
-        &--overlay {
+        &--overlay, &__overlay {
             background: rgba(black, 0.7);
             background: color(from var(--mc-black) srgb r g b / 0.7);
             height: 100vh;
@@ -120,7 +120,9 @@ body.galleryOpen {
         }
 
         &--image,
-        &--video {
+        &--video,
+        &__image,
+        &__video {
             align-items: center;
             background-color: var(--mc-high-500);
             display: flex;

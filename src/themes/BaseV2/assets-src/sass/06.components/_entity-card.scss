@@ -230,7 +230,9 @@
 		}
 
 		// Modifier: occurrence variant (legitimate `--` modifier for content variant)
-		&--occurrence {
+		// NOTE-BEM: templates also use `entity-card__content__occurrence-*`; keep both selectors.
+		&--occurrence,
+		&__occurrence {
 			&-data {
 				font-weight: 700;
 				font-size: var(--mc-space-14);
@@ -315,7 +317,9 @@
 
 		// Modifier: description variant (legitimate `--` modifier for content variant)
 		// Used in templates: entity-card__content--description, -local, -adress
-		&--description {
+		// NOTE-BEM: templates also use `entity-card__content__description-*`; keep both selectors.
+		&--description,
+		&__description {
 			font-weight: 400;
 			font-size: var(--mc-space-12);
 			line-height: var(--mc-space-16);
@@ -333,7 +337,9 @@
 
 		// Modifier: terms variant (legitimate `--` modifier for content variant)
 		// Used in templates: entity-card__content--terms, -area, -tag, -linguagem
-		&--terms {
+		// NOTE-BEM: templates also use `entity-card__content__terms-*`; keep both selectors.
+		&--terms,
+		&__terms {
 
 			&-area,
 			&-tag,

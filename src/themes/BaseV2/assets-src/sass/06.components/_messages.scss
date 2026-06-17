@@ -18,7 +18,8 @@
         width: 100%;
         z-index: 100;
     
-        &--message {
+        &--message,
+        &__message {
             align-items: center;
             box-shadow: 0 var(--mc-space-4) var(--mc-space-4) rgba(0, 0, 0, 0.25);
             border-radius: var(--mc-border-radius-sm);
@@ -36,7 +37,8 @@
                 z-index: 100;
             }
     
-            &-close {
+            &-close,
+            &__close {
                 color: var(--mc-white);
                 cursor: pointer;
                 font-size: var(--mc-space-20);
@@ -44,7 +46,8 @@
                 width: var(--mc-space-20);
             }
             
-            &-text {
+            &-text,
+            &__text {
                 color: var(--mc-white);
                 margin-left: var(--mc-space-10);
                 padding-left: var(--mc-space-28);

@@ -17,11 +17,13 @@
         gap: var(--mc-space-8);
     }
 
-    &__owner-img {
+    &__owner-img,
+    &__owner__img {
         margin: var(--mc-space-13) var(--mc-space-14) var(--mc-space-13) 0;
     }
 
-    &__owner-name {
+    &__owner-name,
+    &__owner__name {
         @include entity-name-bold;
     }
 
@@ -29,7 +31,8 @@
         // base edit section
     }
 
-    &__edit-btn {
+    &__edit-btn,
+    &__edit__btn {
         align-items: center;
         cursor: pointer;
         display: flex;

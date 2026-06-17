@@ -50,7 +50,8 @@
 
     &__right {
 
-        &--user li{
+        &--user,
+        &__user li{
             svg {
                 color: var(--mc-primary-500);
             }

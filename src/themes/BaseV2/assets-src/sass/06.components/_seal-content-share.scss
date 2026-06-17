@@ -3,13 +3,15 @@
 .seal-content-share {
 
 	&__socialnetwork {
-		&--title {
+		&--title,
+		&__title {
 			font-weight: 600;
 			font-size: var(--mc-space-14);
 			line-height: var(--mc-space-19);
 			color: var(--mc-black);
 		}
-		&--icons {
+		&--icons,
+		&__icons {
 			display: flex;
 			flex-direction: row;
 			// NOTE-BEM: .icon is a template-dependent class — rename requires PHP template update
@@ -31,16 +33,19 @@
 	}
 
 	&__share {
-		&--label {
+		&--label,
+		&__label {
 			font-weight: 600;
 			font-size: var(--mc-space-14);
 			line-height: var(--mc-space-19);
 			color: var(--mc-low-500);
 		}
-		&--icon {
+		&--icon,
+		&__icon {
 			color: var(--mc-helper-500);
 		}
-		&--field {
+		&--field,
+		&__field {
 			background: var(--mc-gray-200);
 			border-radius: var(--mc-space-4);
 			padding: var(--mc-space-8);
@@ -51,7 +56,8 @@
 				color: var(--mc-black);
 			}
 		}
-		&--button {
+		&--button,
+		&__button {
 			font-weight: 600;
 			font-size: var(--mc-space-16);
 			color: var(--mc-helper-500);
