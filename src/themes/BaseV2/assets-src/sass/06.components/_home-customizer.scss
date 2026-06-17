@@ -27,7 +27,9 @@
         display: grid;
         gap: var(--mc-space-12) var(--mc-space-20);
         
-        &--hasImg {
+        // NOTE-BEM: templates also use &__hasImg
+        &--hasImg,
+        &__hasImg {
             grid-template-columns: 1fr 1fr;
         }
     }

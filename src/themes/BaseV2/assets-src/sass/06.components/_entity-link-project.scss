@@ -40,7 +40,8 @@
         }
     }
 
-    &__project-name {
+    &__project-name,
+    &__project__name {
         @include entity-name-bold;
     }
 
@@ -50,7 +51,8 @@
         }
     }
 
-    &__edit-btn {
+    &__edit-btn,
+    &__edit__btn {
         align-items: center;
         cursor: pointer;
         display: flex;

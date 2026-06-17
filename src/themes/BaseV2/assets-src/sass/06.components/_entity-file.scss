@@ -35,7 +35,9 @@
             font-size: var(--mc-space-18);
         }
 
-        &--download {
+        // NOTE-BEM: templates also use &__download
+        &--download,
+        &__download {
             align-items: center;
             color: var(--mc-low-500);
             display: flex;

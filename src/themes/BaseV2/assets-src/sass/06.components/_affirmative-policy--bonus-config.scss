@@ -39,7 +39,9 @@
     }
   }
 
-  &__field--roof {
+  // NOTE-BEM: templates also use &__field__roof
+  &__field--roof,
+  &__field__roof {
     input {
       max-width: 11rem;
     }

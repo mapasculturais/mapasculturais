@@ -2,7 +2,9 @@
 
 .user-management {
   &__content {
-    &--action {
+    // NOTE-BEM: templates also use &__action
+    &--action,
+    &__action {
       align-items: center;
       display: flex;
       gap: var(--mc-space-13);

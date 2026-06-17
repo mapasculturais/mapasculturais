@@ -28,7 +28,9 @@
         flex-direction: column;
         list-style: none;
 
-        &--item {
+        // NOTE-BEM: templates also use &__item / &__item-link
+        &--item,
+        &__item {
             display: flex;
             align-items: center;
             gap: var(--mc-space-10);

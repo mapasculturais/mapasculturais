@@ -74,7 +74,9 @@
         }
     }
 
-    &__fields-field {
+    // NOTE-BEM: templates also use &__fields__field
+    &__fields-field,
+    &__fields__field {
         margin-bottom: var(--mc-space-16);
 
         label, .entity-data__label {

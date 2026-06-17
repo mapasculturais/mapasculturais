@@ -272,7 +272,9 @@
         align-items: center;
         border-radius: var(--mc-border-radius-sm);
 
-        &--frequent {
+        // NOTE-BEM: templates also use &__frequent
+        &--frequent,
+        &__frequent {
             height: size(130);
             display: flex;
             flex-direction: column;
