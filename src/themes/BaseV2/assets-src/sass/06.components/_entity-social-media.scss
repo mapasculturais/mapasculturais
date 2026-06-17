@@ -9,7 +9,8 @@
         padding: 0;
     }
 
-    &__links-link {
+    &__links-link,
+    &__links__link {
         align-items: center;
         display: grid;
         gap: var(--mc-space-15);
@@ -39,7 +40,8 @@
         gap: var(--mc-space-8);
     }
 
-    &__edit-link {
+    &__edit-link,
+    &__edit__link {
         align-items: center;
         display: grid;
         gap: var(--mc-space-15);
