@@ -18,13 +18,15 @@
     &__proponent, &__category {
         gap: var(--mc-space-12);
 
-        &--seals {
+        &--seals,
+        &__seals {
             display: flex;
             flex-wrap: wrap;
             gap: var(--mc-space-16);
         }
 
-        &--seal {
+        &--seal,
+        &__seal {
             display: flex;
             flex-direction: column;
             gap: var(--mc-space-4);
@@ -92,7 +94,8 @@
             }
         }
 
-        &--addSeal {
+        &--addSeal,
+        &__addSeal {
             align-items: center;
             border: 0.0625rem solid;
             border-radius: var(--mc-border-radius-xs);
