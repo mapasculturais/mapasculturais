@@ -19,7 +19,9 @@
         font-size: var(--mc-space-14);
         text-transform: uppercase;
 
-        &--lowercase {
+        // NOTE-BEM: templates also use &__lowercase
+        &--lowercase,
+        &__lowercase {
             text-transform: unset;
         }
     }
@@ -90,13 +92,16 @@
         gap: var(--mc-space-4);
         margin-top: var(--mc-space-4);
 
-        &--title {
+        // NOTE-BEM: templates also use &__title / &__description
+        &--title,
+        &__title {
             font-size: var(--mc-space-12);
             font-weight: 700;
             line-height: var(--mc-space-16);
         }
 
-        &--description {
+        &--description,
+        &__description {
             font-size: var(--mc-space-12);
             font-weight: 600;
             line-height: var(--mc-space-16);

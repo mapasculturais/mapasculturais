@@ -140,19 +140,24 @@
             white-space: nowrap;
         }
 
-        &--sent {
+        // NOTE-BEM: templates also use &__sent, &__pending, &__started, &__completed
+        &--sent,
+        &__sent {
             background-color: var(--mc-eval-approved);
         }
 
-        &--pending {
+        &--pending,
+        &__pending {
             background-color: var(--mc-eval-rejected)
         }
 
-        &--started {
+        &--started,
+        &__started {
             background-color: var(--mc-eval-not-eval);
         }
 
-        &--completed {
+        &--completed,
+        &__completed {
             background-color: var(--mc-eval-pending);
         }
     }

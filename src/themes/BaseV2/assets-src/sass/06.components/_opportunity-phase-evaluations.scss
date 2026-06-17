@@ -54,7 +54,9 @@
             }
 
             &__content {
-                &--title {
+                // NOTE-BEM: templates also use &__title
+                &--title,
+                &__title {
                     font-family: var(--mc-font-body);
                     font-style: normal;
                     font-weight: 700;
@@ -64,7 +66,9 @@
 
                 }
 
-                &--items {
+                // NOTE-BEM: templates also use &__items
+                &--items,
+                &__items {
                     border: 1px solid var(--mc-gray-100);
                     border-radius: 4px;
                     display: flex;

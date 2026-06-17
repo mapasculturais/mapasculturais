@@ -23,7 +23,9 @@
         border-bottom: var(--mc-space-1) solid;
         padding: var(--mc-space-16);
 
-        &--field {
+        // NOTE-BEM: templates also use &__field
+        &--field,
+        &__field {
             display: flex;
             gap: var(--mc-space-16);
             justify-content: space-between;

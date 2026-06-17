@@ -50,7 +50,9 @@
         line-height: var(--mc-space-19);
     }
 
-    &__errors-list--hide {
+    // NOTE-BEM: templates also use &__hide
+    &__errors-list--hide,
+    &__errors-list__hide {
         max-height: 0;
     }
 

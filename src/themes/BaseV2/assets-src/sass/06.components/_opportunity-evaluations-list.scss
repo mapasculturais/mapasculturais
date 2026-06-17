@@ -251,7 +251,9 @@
                 }
             }
         }
-        li.evaluation-list__card--modify {
+        // NOTE-BEM: templates also use .evaluation-list__card__modify
+        li.evaluation-list__card--modify,
+        li.evaluation-list__card__modify {
             background-color: var(--mc-primary-300);
         }
         
@@ -290,7 +292,9 @@
                         }
                     }
 
-                    &--label {
+                    // NOTE-BEM: templates also use &__label
+                    &--label,
+                    &__label {
                         font-family: var(--mc-font-body);
                         font-style: normal;
                         font-weight: 600;
@@ -470,7 +474,9 @@
                         }
                     }
                 }
-                li.evaluation-list__card--modify {
+                // NOTE-BEM: templates also use .evaluation-list__card__modify
+                li.evaluation-list__card--modify,
+                li.evaluation-list__card__modify {
                     background-color: var(--mc-primary-300);
                 }
                 

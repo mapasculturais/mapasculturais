@@ -11,7 +11,9 @@
     padding: var(--mc-space-40) var(--mc-space-16);
     min-height: size(500);
 
-    &--bound {
+    // NOTE-BEM: templates also use &__bound
+    &--bound,
+    &__bound {
       max-width: size(1200);
     }
   }

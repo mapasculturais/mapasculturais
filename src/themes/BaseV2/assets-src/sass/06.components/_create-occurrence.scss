@@ -88,7 +88,9 @@
         flex-direction: column;
         gap: var(--mc-space-16);
 
-        &--title {
+        // NOTE-BEM: templates also use &__section__title
+        &--title,
+        &__title {
             font-weight: 700;
             font-size: var(--mc-space-16);
             line-height: var(--mc-space-22);
@@ -116,7 +118,9 @@
                     border-radius: var(--mc-border-radius-xs);
                     padding: var(--mc-space-10);
 
-                    &--title {
+                    // NOTE-BEM: templates also use &__title / &__address
+                    &--title,
+                    &__title {
                         align-items: center;
                         display: flex;
                         font-size: var(--mc-space-18);
@@ -132,7 +136,8 @@
                         }
                     }
 
-                    &--address {
+                    &--address,
+                    &__address {
                         color: var(--mc-gray-700);
                         font-size: var(--mc-space-14);
                         font-weight: 600;

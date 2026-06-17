@@ -152,7 +152,9 @@
     }
 }
 
-.registration-results__modal--with-chat .modal__action {
+// NOTE-BEM: templates also use .registration-results__modal__with-chat
+.registration-results__modal--with-chat .modal__action,
+.registration-results__modal__with-chat .modal__action {
     display: flex;
     padding: 0 var(--mc-space-16) var(--mc-space-16) var(--mc-space-16);
 }
