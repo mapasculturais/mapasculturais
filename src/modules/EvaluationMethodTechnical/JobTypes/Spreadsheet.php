@@ -66,7 +66,7 @@ class Spreadsheet extends EvaluationsSpreadsheetJob
                     $sub_header['viability'] = i::__('Esta proposta apresenta exequibilidade?');
                 } else {
                     if($property === 'result') {
-                        $sub_header[$property] = i::__('Resultado');
+                        $sub_header[$property] = i::__('Resultado do avaliador');
                         continue;
                     }
 

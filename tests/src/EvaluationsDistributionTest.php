@@ -2406,5 +2406,121 @@ class EvaluationsDistributionTest extends TestCase
             'Garantindo que valores negativos em valuersPerRegistration são corrigidos para 0'
         );
     }
+
+    function testRedistributePreservesAllCompletedEvaluations()
+    {
+        $admin = $this->userDirector->createUser('admin');
+        $this->login($admin);
+
+        $number_of_registrations = 10;
+
+        $opportunity = $this->opportunityBuilder
+            ->reset(owner: $admin->profile, owner_entity: $admin->profile)
+            ->fillRequiredProperties()
+            ->firstPhase()
+                ->setRegistrationPeriod(new Open)
+                ->done()
+            ->save()
+            ->createSentRegistrations($number_of_registrations)
+            ->addEvaluationPhase(EvaluationMethods::simple)
+                ->setEvaluationPeriod(new ConcurrentEndingAfter)
+                ->setCommitteeValuersPerRegistration('committee 1', 3)
+                ->save()
+                ->addValuer('committee 1', name: 'avaliador01')->done()
+                ->addValuer('committee 1', name: 'avaliador02')->done()
+                ->addValuer('committee 1', name: 'avaliador03')->done()
+                ->addValuer('committee 1', name: 'avaliador04')->done()
+                ->addValuer('committee 1', name: 'avaliador05')->done()
+                ->redistributeCommitteeRegistrations()
+                ->done()
+            ->getInstance();
+
+        $registrations = $this->app->repo('Registration')->findBy(['opportunity' => $opportunity]);
+        $this->assertCount($number_of_registrations, $registrations);
+
+        /** @var array<int, int[]> */
+        $evaluated_user_ids_by_registration = [];
+
+        $app = $this->app;
+        $app->disableAccessControl();
+
+        foreach ($registrations as $registration) {
+            $registration = $registration->refreshed();
+            $assigned_valuers = (array) $registration->valuers;
+
+            $this->assertCount(
+                3,
+                $assigned_valuers,
+                "Garantindo que a primeira distribuição atribuiu 3 avaliadores à inscrição {$registration->number}"
+            );
+
+            $evaluated_user_ids = [];
+
+            foreach ($assigned_valuers as $user_id => $committee) {
+                $user_id = (int) $user_id;
+                $user = $app->repo('User')->find($user_id);
+
+                $evaluation = new RegistrationEvaluation();
+                $evaluation->registration = $registration;
+                $evaluation->user = $user;
+                $evaluation->committee = $committee;
+                $evaluation->evaluationData = ['status' => null];
+                $evaluation->status = RegistrationEvaluation::STATUS_EVALUATED;
+                $evaluation->save(true);
+
+                $evaluated_user_ids[] = $user_id;
+            }
+
+            $evaluated_user_ids_by_registration[$registration->id] = $evaluated_user_ids;
+        }
+
+        $app->enableAccessControl();
+
+        $opportunity->evaluationMethodConfiguration->redistributeCommitteeRegistrations();
+
+        /** @var Connection */
+        $conn = $this->app->em->getConnection();
+
+        foreach ($registrations as $registration) {
+            $registration = $registration->refreshed();
+            $valuers = (array) $registration->valuers;
+
+            foreach ($evaluated_user_ids_by_registration[$registration->id] as $user_id) {
+                $this->assertArrayHasKey(
+                    $user_id,
+                    $valuers,
+                    "Garantindo que avaliadores com avaliação concluída permanecem no valuers após redistribuição (inscrição {$registration->number})"
+                );
+            }
+
+            $this->assertCount(
+                3,
+                $valuers,
+                "Garantindo que a inscrição {$registration->number} mantém exatamente 3 avaliadores após redistribuição"
+            );
+
+            $evaluations_count = $conn->fetchScalar(
+                "SELECT COUNT(*) FROM evaluations WHERE registration_id = :registration_id",
+                ['registration_id' => $registration->id]
+            );
+
+            $this->assertEquals(
+                3,
+                $evaluations_count,
+                "Garantindo que a view evaluations não infla linhas com avaliações órfãs (inscrição {$registration->number})"
+            );
+        }
+
+        $total_evaluations = $conn->fetchScalar(
+            "SELECT COUNT(*) FROM evaluations WHERE opportunity_id = :opportunity_id",
+            ['opportunity_id' => $opportunity->id]
+        );
+
+        $this->assertEquals(
+            $number_of_registrations * 3,
+            $total_evaluations,
+            'Garantindo que o total de avaliações na fase corresponde a 3 por inscrição'
+        );
+    }
      
 }

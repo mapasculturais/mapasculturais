@@ -121,7 +121,8 @@ class EvaluationMethodConfiguration extends \MapasCulturais\Entity {
 
         $validations = [
             'name' => [
-                'required' => \MapasCulturais\i::__('O nome da fase de avaliação é obrigatório')
+                'required' => \MapasCulturais\i::__('O nome da fase de avaliação é obrigatório'),
+                '$this->validateCriteriaSectionsIntegrity()' => \MapasCulturais\i::__('A configuração de critérios e seções contém erros de integridade')
             ],
             'evaluationFrom' => [
                 'required' => \MapasCulturais\i::__('A data inicial das avaliações é obrigatória'),
@@ -139,6 +140,105 @@ class EvaluationMethodConfiguration extends \MapasCulturais\Entity {
         $app->applyHook("entity($hook_class)::validations", [&$validations]);
 
         return $validations;
+    }
+
+    /**
+     * Valida a integridade entre seções e critérios.
+     * 
+     * Verifica:
+     * - Se há critérios com 'sid' apontando para seção inexistente (critérios órfãos)
+     * - Se há critérios sem campos obrigatórios preenchidos (title, max, weight)
+     * 
+     * @return bool true se válido, false se há erros
+     */
+    function validateCriteriaSectionsIntegrity() {
+        // Só valida para métodos que usam seções e critérios
+        $types_with_sections = ['technical', 'qualification'];
+        if (!in_array($this->_type, $types_with_sections)) {
+            return true;
+        }
+
+        $sections = $this->sections ?? [];
+        $criteria = $this->criteria ?? [];
+
+        // Se os dados vierem como string JSON (antes do unserialize do metadata), converte
+        if (is_string($sections)) {
+            $sections = json_decode($sections);
+        }
+        if (is_string($criteria)) {
+            $criteria = json_decode($criteria);
+        }
+
+        // Normaliza para arrays
+        $sections = (array) $sections;
+        $criteria = (array) $criteria;
+
+        // Coleta IDs das seções existentes
+        $section_ids = [];
+        foreach ($sections as $section) {
+            $section = (object) $section;
+            if (isset($section->id)) {
+                $section_ids[$section->id] = true;
+            }
+        }
+
+        // Se há critérios mas não há seções, é inválido
+        if (!empty($criteria) && empty($sections)) {
+            return false;
+        }
+
+        // Se há seções, cada uma deve ter pelo menos um critério.
+        // Exceção: avaliação técnica possui hook que remove seções sem critérios
+        // automaticamente antes de salvar, portanto não rejeitamos aqui.
+        if (!empty($sections) && $this->_type !== 'technical') {
+            $section_ids_with_criteria = [];
+            foreach ($criteria as $criterion) {
+                $criterion = (object) $criterion;
+                if (isset($criterion->sid) && isset($section_ids[$criterion->sid])) {
+                    $section_ids_with_criteria[$criterion->sid] = true;
+                }
+            }
+
+            foreach ($sections as $section) {
+                $section = (object) $section;
+                if (!isset($section->id) || !isset($section_ids_with_criteria[$section->id])) {
+                    return false;
+                }
+            }
+        }
+
+        // Se não há critérios, não há mais o que validar
+        if (empty($criteria)) {
+            return true;
+        }
+
+        // Valida cada critério
+        foreach ($criteria as $criterion) {
+            $criterion = (object) $criterion;
+            
+            // Verifica se o critério tem sid
+            if (!isset($criterion->sid)) {
+                return false;
+            }
+
+            // Verifica se a seção referenciada existe
+            if (!isset($section_ids[$criterion->sid])) {
+                return false;
+            }
+
+            // Verifica campos obrigatórios do critério
+            if (empty($criterion->title) || trim($criterion->title) === '') {
+                return false;
+            }
+            if (!isset($criterion->max) || !is_numeric($criterion->max)) {
+                return false;
+            }
+            if (!isset($criterion->weight) || !is_numeric($criterion->weight)) {
+                return false;
+            }
+        }
+
+        return true;
     }
 
     function validateDate($value){

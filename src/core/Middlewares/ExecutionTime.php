@@ -27,6 +27,11 @@ class ExecutionTime {
     public function __invoke(Request $request, RequestHandler $handler) {
         $app = App::i();
 
+        // Nao loga em ambiente de teste
+        if (defined('TESTS_PATH')) {
+            return $handler->handle($request);
+        }
+
         $app->log->info('=========================================================================');
         $app->log->debug($_SERVER['REQUEST_METHOD'] . ' ' . urldecode($_SERVER['REQUEST_URI']));
 

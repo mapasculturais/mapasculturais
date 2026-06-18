@@ -140,7 +140,7 @@ $app->applyHookBoundTo($this, 'opportunity.blockedFields', [$entity]);
 
         <!-- added attachments list -->
         <ul ui-sortable="sortableOptions" class="attachment-list" ng-model="data.fields">
-            <li ng-repeat="field in data.fields track by field.id" ng-show="showFieldConfiguration(field)" on-repeat-done="init-ajax-uploaders" id="field-{{field.type}}-{{field.id}}" ng-class="{'attachment-list-item--has-error': !isFieldValid(field)}" class="attachment-list-item project-edit-mode attachment-list-item-type-{{field.fieldType}}">
+            <li ng-repeat="field in data.fields track by (field.groupName || field.fieldName)" ng-show="showFieldConfiguration(field)" on-repeat-done="init-ajax-uploaders" id="field-{{field.type}}-{{field.id}}" ng-class="{'attachment-list-item--has-error': !isFieldValid(field)}" class="attachment-list-item project-edit-mode attachment-list-item-type-{{field.fieldType}}">
                 <div ng-if="field.fieldType !== 'file'" ng-class="{'section' : field.fieldType==='section'}">
                     <div class="js-open-editbox item">
                         <div class="label">
@@ -180,7 +180,7 @@ $app->applyHookBoundTo($this, 'opportunity.blockedFields', [$entity]);
                         <div ng-if="!isFieldValid(field)" class="field-validation-message alert warning" role="alert">
                             <strong><?php i::_e('Configuração incompleta:'); ?></strong>
                             <ul>
-                                <li ng-repeat="error in fieldValidationErrors[field.id]">{{error}}</li>
+                                <li ng-repeat="error in fieldValidationErrors[(field.groupName || field.fieldName)]">{{error}}</li>
                             </ul>
                         </div>
 
@@ -362,7 +362,7 @@ $app->applyHookBoundTo($this, 'opportunity.blockedFields', [$entity]);
 
                     <div class="file-{{field.template.id}}" ng-if="field.template">
                         <span ng-if="data.entity.canUserModifyRegistrationFields" class="js-open-editbox mc-editable attachment-title" ng-click="openFileConfigurationTemplateEditBox(field.id, $index, $event);">{{field.template.name}}</span>
-                        <button type="button" ng-if="data.entity.canUserModifyRegistrationFields" class="delete hltip" ng-click="removeFileConfigurationTemplate(field.id, $index)" aria-label="<?php i::esc_attr_e('Excluir modelo'); ?>"><span aria-hidden="true" class="fa fa-trash"></span></button>
+                        <a ng-if="data.entity.canUserModifyRegistrationFields" class="delete hltip" ng-click="removeFileConfigurationTemplate(field.id, $index)" title="<?php i::esc_attr_e("Excluir modelo"); ?>"></a>
                     </div>
 
                     <p ng-if="!data.entity.canUserModifyRegistrationFields">
@@ -388,9 +388,9 @@ $app->applyHookBoundTo($this, 'opportunity.blockedFields', [$entity]);
                     </edit-box>
 
                     <div ng-if="data.entity.canUserModifyRegistrationFields && !isBlockedFields(field.id)" class="btn-group">
-                        <button type="button" ng-click="openFileConfigurationEditBox(field.id, $index, $event)" class="btn btn-default edit hltip" aria-label="<?php i::esc_attr_e('editar anexo'); ?>"><span aria-hidden="true" class="fa fa-pencil"></span></button>
-                        <button type="button" ng-if="!field.template" ng-click="openFileConfigurationTemplateEditBox(field.id, $index, $event)" class="btn btn-default send hltip" aria-label="<?php i::esc_attr_e('enviar modelo'); ?>"><span aria-hidden="true" class="fa fa-upload"></span></button>
-                        <button type="button" ng-click="removeFileConfiguration(field.id, $index)" data-href="{{field.deleteUrl}}" class="btn btn-default delete hltip" aria-label="<?php i::esc_attr_e('excluir anexo'); ?>"><span aria-hidden="true" class="fa fa-trash"></span></button>
+                        <a ng-click="openFileConfigurationEditBox(field.id, $index, $event);" class="btn btn-default edit hltip" title="<?php i::esc_attr_e("editar anexo"); ?>"></a>
+                        <a ng-if="!field.template" ng-click="openFileConfigurationTemplateEditBox(field.id, $index, $event);" class="btn btn-default send hltip" title="<?php i::esc_attr_e("enviar modelo"); ?>"></a>
+                        <a ng-click="removeFileConfiguration(field.id, $index)" data-href="{{field.deleteUrl}}" class="btn btn-default delete hltip" title="<?php i::esc_attr_e("excluir anexo"); ?>"></a>
                     </div>
                 </div>
             </li>
