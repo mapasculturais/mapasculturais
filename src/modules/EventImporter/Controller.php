@@ -503,12 +503,6 @@ class Controller extends \MapasCulturais\Controller
                if($ends_at != $value['ENDS_AT']){
                   $errors['errors'][$key+1][] = i::__("A coluna Hora final é inválida. O formato esperado é HH:MM Ex.: 12:00");
                }
-               
-               
-               if((new DateTime($value['STARTS_AT'])) > (new DateTime($value['ENDS_AT']))){
-                  $errors['errors'][$key+1][] = i::__("A data inicial é maior que a data final.");
-               }
-
                // Valida a data inicial
                if (empty($value['STARTS_ON']) || $value['STARTS_ON'] == "") {
                   $errors['errors'][$key+1][] = i::__("A Coluna Data inícial Está vazia");
@@ -528,6 +522,12 @@ class Controller extends \MapasCulturais\Controller
                   $ends_on = $this->formatDate($value['ENDS_ON'], "Y-m-d");
                   if ($ends_on != $value['ENDS_ON']) {
                      $errors['errors'][$key+1][] = i::__("A coluna data final é inválida. O formato esperado é DD/MM/YYYY Ex.: 01/01/2022");
+                  }
+               }
+
+               if(!empty($value['STARTS_ON']) && !empty($value['STARTS_AT']) && !empty($value['ENDS_AT'])){
+                  if($this->getOccurrenceStartDateTime($value) > $this->getOccurrenceEndDateTime($value)){
+                     $errors['errors'][$key+1][] = i::__("A data inicial é maior que a data final.");
                   }
                }
 
@@ -741,11 +741,7 @@ class Controller extends \MapasCulturais\Controller
          $ocurrence = new EventOccurrence();    
    
          $duration = function() use ($value){
-            $start = $this->formatDate($value['STARTS_AT']);
-            $stop = $this->formatDate($value['ENDS_AT']);
-            $diferenca = strtotime($stop) - strtotime($start);
-   
-            return ($diferenca / 60);
+            return $this->getOccurrenceDurationInMinutes($value);
          };
    
          $collum = $this->checkCollum($value['SPACE']);
@@ -1076,6 +1072,26 @@ class Controller extends \MapasCulturais\Controller
    public function error($message)
    {
       throw new Exception(i::__($message));
+   }
+
+   public function getOccurrenceStartDateTime($value)
+   {
+      return new DateTime("{$value['STARTS_ON']} {$value['STARTS_AT']}");
+   }
+
+   public function getOccurrenceEndDateTime($value)
+   {
+      $ends_on = !empty($value['ENDS_ON']) ? $value['ENDS_ON'] : $value['STARTS_ON'];
+
+      return new DateTime("{$ends_on} {$value['ENDS_AT']}");
+   }
+
+   public function getOccurrenceDurationInMinutes($value)
+   {
+      $starts_at = $this->getOccurrenceStartDateTime($value);
+      $ends_at = $this->getOccurrenceEndDateTime($value);
+
+      return (int) (($ends_at->getTimestamp() - $starts_at->getTimestamp()) / 60);
    }
 
    public function formatDate($date, $formatOut = "Y-m-d H:i")
