@@ -78,9 +78,9 @@ app.component('opportunity-appeal-phase-config' , {
             await target.POST('createAppealPhase', args)
                 .then((data) => {
                     this.phaseData = data;
-        
-                    this.entity = new Entity('opportunity');
-                    this.entity.populate(this.phaseData);
+
+                    this.entity = Entity.fromJson(data);
+                    this.phase.appealPhase = this.entity;
                     this.processing = false;
         
                     messages.success(this.text('Fase de recurso criada com sucesso'));
@@ -91,8 +91,53 @@ app.component('opportunity-appeal-phase-config' , {
                 });
         },
 
-        initializeAppealPhase() {
-            this.entity = this.phase.appealPhase;
+        async initializeAppealPhase() {
+            const appealPhaseRef = this.phase?.appealPhase ?? this.phase?.opportunity?.appealPhase;
+            if (!appealPhaseRef?.id) {
+                this.entity = null;
+                return;
+            }
+
+            if (appealPhaseRef instanceof Entity) {
+                this.entity = appealPhaseRef;
+            } else {
+                this.entity = Entity.fromJson({ '@entityType': 'opportunity', ...appealPhaseRef });
+            }
+
+            const api = new API('opportunity');
+            const select = 'appealPhaseAffectsSync,showPreviousPhaseEvaluationDetails,allow_proponent_response';
+            const url = api.createApiUrl('findOne', { id: `EQ(${appealPhaseRef.id})`, '@select': select });
+
+            try {
+                const response = await api.GET(url);
+                const data = await response.json();
+
+                if (!response.ok || data?.error) {
+                    throw data;
+                }
+
+                const metadataFields = [
+                    'appealPhaseAffectsSync',
+                    'showPreviousPhaseEvaluationDetails',
+                    'allow_proponent_response',
+                ];
+
+                for (const field of metadataFields) {
+                    if (Object.prototype.hasOwnProperty.call(data, field)) {
+                        this.entity[field] = data[field];
+                        this.entity.__originalValues[field] = data[field];
+                    }
+                }
+            } catch (error) {
+                // mantém entidade já carregada das fases
+            }
+
+            if (this.phase?.appealPhase) {
+                this.phase.appealPhase = this.entity;
+            }
+            if (this.phase?.opportunity?.appealPhase) {
+                this.phase.opportunity.appealPhase = this.entity;
+            }
         },
 
         async deleteAppealPhase() {
