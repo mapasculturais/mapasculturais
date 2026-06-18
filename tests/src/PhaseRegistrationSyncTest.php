@@ -117,10 +117,13 @@ class PhaseRegistrationSyncTest extends TestCase
 
     /**
      * Garante que inscrição selecionada com recurso deferido retorne à fase Anexos após sair dela ao abrir o recurso.
+     *
+     * Modo appealPhaseAffectsSync = true: o recurso afeta ativamente a sincronização.
      */
     function testSelectedRegistrationAppealDeferredReturnsToAnexos(): void
     {
         $context = $this->buildPnabLikeOpportunity();
+        $this->setAppealPhaseAffectsSync($context->coletaMerito, true);
         $this->createRegistrationsByStatus($context->coletaMerito);
         $context = $this->refreshContext($context);
 
@@ -134,6 +137,12 @@ class PhaseRegistrationSyncTest extends TestCase
         $appeal = $this->createAppealRegistration(
             $this->findRegistration($context->coletaMerito, '333')
         );
+        $this->assertNotNull(
+            $this->findRegistration($context->anexos, '333'),
+            'Garantindo que a inscrição selecionada permaneça em Anexos com recurso em rascunho'
+        );
+
+        $appeal = $this->sendAppealRegistration($appeal);
         $this->assertNull(
             $this->findRegistration($context->anexos, '333'),
             'Garantindo que a inscrição selecionada seja removida de Anexos ao abrir recurso'
@@ -152,10 +161,13 @@ class PhaseRegistrationSyncTest extends TestCase
 
     /**
      * Garante que inscrição selecionada com recurso indeferido permaneça selecionada e volte a Anexos pelo mérito.
+     *
+     * Modo appealPhaseAffectsSync = true: o recurso afeta ativamente a sincronização.
      */
     function testSelectedRegistrationAppealIndeferredReturnsToAnexosViaMerit(): void
     {
         $context = $this->buildPnabLikeOpportunity();
+        $this->setAppealPhaseAffectsSync($context->coletaMerito, true);
         $this->createRegistrationsByStatus($context->coletaMerito);
         $context = $this->refreshContext($context);
 
@@ -200,10 +212,13 @@ class PhaseRegistrationSyncTest extends TestCase
 
     /**
      * Garante que inscrição não selecionada com recurso deferido seja sincronizada para Anexos.
+     *
+     * Modo appealPhaseAffectsSync = true: o recurso afeta ativamente a sincronização.
      */
     function testNotSelectedAppealDeferredSyncsToAnexos(): void
     {
         $context = $this->buildPnabLikeOpportunity();
+        $this->setAppealPhaseAffectsSync($context->coletaMerito, true);
         $this->createRegistrationsByStatus($context->coletaMerito);
         $context = $this->refreshContext($context);
 
@@ -230,10 +245,13 @@ class PhaseRegistrationSyncTest extends TestCase
 
     /**
      * Garante que inscrição não selecionada com recurso indeferido não seja sincronizada para Anexos.
+     *
+     * Modo appealPhaseAffectsSync = true: o recurso afeta ativamente a sincronização.
      */
     function testNotSelectedAppealIndeferredStaysOutOfAnexos(): void
     {
         $context = $this->buildPnabLikeOpportunity();
+        $this->setAppealPhaseAffectsSync($context->coletaMerito, true);
         $this->createRegistrationsByStatus($context->coletaMerito);
         $context = $this->refreshContext($context);
 
@@ -253,10 +271,13 @@ class PhaseRegistrationSyncTest extends TestCase
 
     /**
      * Garante que inscrições suplente e inválida sigam as mesmas regras de sync de Anexos que a não selecionada.
+     *
+     * Modo appealPhaseAffectsSync = true: o recurso afeta ativamente a sincronização.
      */
     function testWaitlistAndInvalidFollowSameAnexosRulesAsNotSelected(): void
     {
         $context = $this->buildPnabLikeOpportunity();
+        $this->setAppealPhaseAffectsSync($context->coletaMerito, true);
         $this->createRegistrationsByStatus($context->coletaMerito);
         $context = $this->refreshContext($context);
 
@@ -291,10 +312,13 @@ class PhaseRegistrationSyncTest extends TestCase
     /**
      * Garante alinhamento dos ponteiros next/previous entre fases principais em cenários variados:
      * sync normal, re-sync com elo corrompido, recurso pendente e pós-recurso, até publicação final.
+     *
+     * Modo appealPhaseAffectsSync = true: o recurso afeta ativamente a sincronização.
      */
     function testPhaseRegistrationPointersStayAlignedAcrossMultiplePhases(): void
     {
         $context = $this->buildPnabLikeOpportunity();
+        $this->setAppealPhaseAffectsSync($context->coletaMerito, true);
         $this->createRegistrationsByStatus($context->coletaMerito);
         $context = $this->refreshContext($context);
 
@@ -360,6 +384,7 @@ class PhaseRegistrationSyncTest extends TestCase
         // 5. Recurso: durante pendência o next deve apontar para a inscrição de recurso (não id deletado/nulo)
         $merit333 = $this->findRegistration($context->coletaMerito, '333');
         $appeal = $this->createAppealRegistration($merit333);
+        $appeal = $this->sendAppealRegistration($appeal);
         $merit333 = $merit333->refreshed();
 
         $this->assertEquals(
@@ -454,10 +479,13 @@ class PhaseRegistrationSyncTest extends TestCase
 
     /**
      * Garante que recurso pendente bloqueie o sync e remova inscrição órfã de Anexos.
+     *
+     * Modo appealPhaseAffectsSync = true: o recurso afeta ativamente a sincronização.
      */
     function testPendingAppealBlocksAnexosSync(): void
     {
         $context = $this->buildPnabLikeOpportunity();
+        $this->setAppealPhaseAffectsSync($context->coletaMerito, true);
         $this->createRegistrationsByStatus($context->coletaMerito);
         $context = $this->refreshContext($context);
 
@@ -469,9 +497,10 @@ class PhaseRegistrationSyncTest extends TestCase
         );
         $this->app->enableAccessControl();
 
-        $this->createAppealRegistration(
+        $appeal = $this->createAppealRegistration(
             $this->findRegistration($context->coletaMerito, '444')
         );
+        $this->sendAppealRegistration($appeal);
 
         $context->anexos->syncRegistrations([]);
         $this->processJobs();
@@ -479,6 +508,182 @@ class PhaseRegistrationSyncTest extends TestCase
         $this->assertNull(
             $this->findRegistration($context->anexos, '444'),
             'Garantindo que recurso pendente remova inscrição não selecionada órfã de Anexos'
+        );
+    }
+
+    /**
+     * Garante que recurso em rascunho não bloqueie inscrição selecionada em Anexos.
+     *
+     * Modo appealPhaseAffectsSync = true: o recurso afeta ativamente a sincronização.
+     */
+    function testDraftAppealDoesNotBlockSelectedInAnexos(): void
+    {
+        $context = $this->buildPnabLikeOpportunity();
+        $this->setAppealPhaseAffectsSync($context->coletaMerito, true);
+        $this->createRegistrationsByStatus($context->coletaMerito);
+        $context = $this->refreshContext($context);
+
+        $context->anexos->syncRegistrations([]);
+        $this->processJobs();
+
+        $this->createAppealRegistration(
+            $this->findRegistration($context->coletaMerito, '333')
+        );
+
+        $context->anexos->syncRegistrations([]);
+        $this->processJobs();
+
+        $this->assertNotNull(
+            $this->findRegistration($context->anexos, '333'),
+            'Garantindo que inscrição selecionada permaneça em Anexos com recurso em rascunho após sync'
+        );
+    }
+
+    /**
+     * Modo neutro (appealPhaseAffectsSync = false): inscrição selecionada com recurso enviado
+     * permanece na fase seguinte — o recurso NÃO remove a inscrição de Anexos.
+     */
+    function testNeutralMode_SelectedWithAppealSent_StaysInDownstreamPhase(): void
+    {
+        $context = $this->buildPnabLikeOpportunity();
+        $this->setAppealPhaseAffectsSync($context->coletaMerito, false);
+        $this->createRegistrationsByStatus($context->coletaMerito);
+        $context = $this->refreshContext($context);
+
+        $context->anexos->syncRegistrations([]);
+        $this->processJobs();
+        $this->assertNotNull(
+            $this->findRegistration($context->anexos, '333'),
+            'Pré-condição: inscrição selecionada (333) sincronizada para Anexos'
+        );
+
+        $appeal = $this->createAppealRegistration(
+            $this->findRegistration($context->coletaMerito, '333')
+        );
+        $this->sendAppealRegistration($appeal);
+
+        $context->anexos->syncRegistrations([]);
+        $this->processJobs();
+
+        $this->assertNotNull(
+            $this->findRegistration($context->anexos, '333'),
+            'Modo neutro: inscrição selecionada permanece em Anexos mesmo com recurso enviado (não é removida)'
+        );
+    }
+
+    /**
+     * Modo neutro (appealPhaseAffectsSync = false): inscrição selecionada com recurso deferido
+     * permanece na fase seguinte — o deferimento não dispara re-sync porque a inscrição nunca saiu.
+     */
+    function testNeutralMode_SelectedWithAppealDeferred_StaysInDownstreamPhase(): void
+    {
+        $context = $this->buildPnabLikeOpportunity();
+        $this->setAppealPhaseAffectsSync($context->coletaMerito, false);
+        $this->createRegistrationsByStatus($context->coletaMerito);
+        $context = $this->refreshContext($context);
+
+        $context->anexos->syncRegistrations([]);
+        $this->processJobs();
+        $this->assertNotNull(
+            $this->findRegistration($context->anexos, '333'),
+            'Pré-condição: inscrição selecionada (333) sincronizada para Anexos'
+        );
+
+        $appeal = $this->createAppealRegistration(
+            $this->findRegistration($context->coletaMerito, '333')
+        );
+        $this->setAppealStatus($appeal, fn ($r) => $r->setStatusToApproved(true));
+
+        $context->anexos->syncRegistrations([]);
+        $this->processJobs();
+
+        $this->assertNotNull(
+            $this->findRegistration($context->anexos, '333'),
+            'Modo neutro: inscrição selecionada permanece em Anexos após recurso deferido (nunca saiu)'
+        );
+    }
+
+    /**
+     * Modo neutro (appealPhaseAffectsSync = false): inscrição selecionada com recurso indeferido
+     * permanece na fase seguinte — o indeferimento não altera o avanço por mérito.
+     */
+    function testNeutralMode_SelectedWithAppealRejected_StaysInDownstreamPhase(): void
+    {
+        $context = $this->buildPnabLikeOpportunity();
+        $this->setAppealPhaseAffectsSync($context->coletaMerito, false);
+        $this->createRegistrationsByStatus($context->coletaMerito);
+        $context = $this->refreshContext($context);
+
+        $context->anexos->syncRegistrations([]);
+        $this->processJobs();
+        $this->assertNotNull(
+            $this->findRegistration($context->anexos, '333'),
+            'Pré-condição: inscrição selecionada (333) sincronizada para Anexos'
+        );
+
+        $appeal = $this->createAppealRegistration(
+            $this->findRegistration($context->coletaMerito, '333')
+        );
+        $this->setAppealStatus($appeal, fn ($r) => $r->setStatusToNotApproved(true));
+
+        $context->anexos->syncRegistrations([]);
+        $this->processJobs();
+
+        $this->assertNotNull(
+            $this->findRegistration($context->anexos, '333'),
+            'Modo neutro: inscrição selecionada permanece em Anexos após recurso indeferido (nunca saiu)'
+        );
+    }
+
+    /**
+     * Modo neutro (appealPhaseAffectsSync = false): inscrição não selecionada com recurso deferido
+     * NÃO avança para a fase seguinte — o deferimento não qualifica sem seleção prévia por mérito.
+     */
+    function testNeutralMode_NonSelectedWithAppealDeferred_DoesNotAdvance(): void
+    {
+        $context = $this->buildPnabLikeOpportunity();
+        $this->setAppealPhaseAffectsSync($context->coletaMerito, false);
+        $this->createRegistrationsByStatus($context->coletaMerito);
+        $context = $this->refreshContext($context);
+
+        $context->anexos->syncRegistrations([]);
+        $this->processJobs();
+        $this->assertNull(
+            $this->findRegistration($context->anexos, '444'),
+            'Pré-condição: inscrição não selecionada (444) não está em Anexos'
+        );
+
+        $appeal = $this->createAppealRegistration(
+            $this->findRegistration($context->coletaMerito, '444')
+        );
+        $this->setAppealStatus($appeal, fn ($r) => $r->setStatusToApproved(true));
+
+        $context->anexos->syncRegistrations([]);
+        $this->processJobs();
+
+        $this->assertNull(
+            $this->findRegistration($context->anexos, '444'),
+            'Modo neutro: inscrição não selecionada não avança para Anexos mesmo com recurso deferido'
+        );
+    }
+
+    /**
+     * Modo neutro (appealPhaseAffectsSync = false): inscrição não selecionada sem recurso
+     * NÃO avança para a fase seguinte — apenas a seleção por mérito qualifica.
+     */
+    function testNeutralMode_NonSelectedWithoutAppeal_DoesNotAdvance(): void
+    {
+        $context = $this->buildPnabLikeOpportunity();
+        $this->setAppealPhaseAffectsSync($context->coletaMerito, false);
+        $this->createRegistrationsByStatus($context->coletaMerito);
+        $context = $this->refreshContext($context);
+
+        $context->anexos->syncRegistrations([]);
+        $this->processJobs();
+
+        $this->assertNull(
+            $this->findRegistration($context->anexos, '444'),
+            'Modo neutro: inscrição não selecionada sem recurso não avança para Anexos'
         );
     }
 
@@ -589,6 +794,26 @@ class PhaseRegistrationSyncTest extends TestCase
         return $context;
     }
 
+    /**
+     * Define o metadata appealPhaseAffectsSync na fase de mérito (parent da fase de recurso).
+     *
+     * A flag é lida a partir da fase principal de origem ($previous_phase / $opportunity->parent),
+     * conforme OpportunityPhases\Module::appealPhaseAffectsSync().
+     */
+    private function setAppealPhaseAffectsSync(Opportunity $meritPhase, bool $enabled): void
+    {
+        $this->app->disableAccessControl();
+        try {
+            $appealPhase = $meritPhase->appealPhase;
+            if ($appealPhase) {
+                $appealPhase->appealPhaseAffectsSync = $enabled;
+                $appealPhase->save(true);
+            }
+        } finally {
+            $this->app->enableAccessControl();
+        }
+    }
+
     private function createAppealPhaseForOpportunity(Opportunity $opportunity): Opportunity
     {
         $app = $this->app;
@@ -642,11 +867,20 @@ class PhaseRegistrationSyncTest extends TestCase
             $appeal->number = $registration->number;
             $appeal->save(true);
 
-            OpportunityPhasesModule::removeDownstreamRegistrations($registration, $appeal);
-
             return $appeal->refreshed();
         } finally {
             $app->enableAccessControl();
+        }
+    }
+
+    private function sendAppealRegistration(Registration $appeal): Registration
+    {
+        $this->app->disableAccessControl();
+        try {
+            $appeal->send(false);
+            return $appeal->refreshed();
+        } finally {
+            $this->app->enableAccessControl();
         }
     }
 
