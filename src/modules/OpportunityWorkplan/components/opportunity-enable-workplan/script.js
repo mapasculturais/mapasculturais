@@ -26,7 +26,7 @@ app.component('opportunity-enable-workplan', {
             if (!_new) {
                 this.entity.workplan_dataProjectmaximumDurationInMonths = 0;
             } else {
-                this.entity.workplan_dataProjectmaximumDurationInMonths = 1;
+                this.normalizeMaximumDurationInMonths();
             }
             this.autoSave();
         },
@@ -242,6 +242,18 @@ app.component('opportunity-enable-workplan', {
         changeLabels(modal) {
             this.autoSave();
             modal.close();            
+        },
+        normalizeMaximumDurationInMonths() {
+            if (!this.entity.workplan_dataProjectlimitMaximumDurationOfProjects) {
+                return;
+            }
+
+            const maximumDurationInMonths = parseInt(this.entity.workplan_dataProjectmaximumDurationInMonths, 10);
+            this.entity.workplan_dataProjectmaximumDurationInMonths = Number.isInteger(maximumDurationInMonths) && maximumDurationInMonths >= 1 ? maximumDurationInMonths : 1;
+        },
+        saveMaximumDurationInMonths() {
+            this.normalizeMaximumDurationInMonths();
+            this.autoSave();
         },
         actionEnabledWorkplan() {
             this.entity.enableWorkplan = true;

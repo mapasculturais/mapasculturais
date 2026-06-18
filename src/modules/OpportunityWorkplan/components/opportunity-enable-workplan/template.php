@@ -85,7 +85,7 @@ $this->import('
                         <label class="field__group">
                             <?php i::_e('Duração máxima (meses):') ?>
                         </label>
-                        <input type="number" class="field__limits" min="1" :disabled="!entity.workplan_dataProjectlimitMaximumDurationOfProjects" v-model="entity.workplan_dataProjectmaximumDurationInMonths" @change="autoSave()">
+                        <input type="number" class="field__limits" min="1" :disabled="!entity.workplan_dataProjectlimitMaximumDurationOfProjects" v-model.number="entity.workplan_dataProjectmaximumDurationInMonths" @change="saveMaximumDurationInMonths()">
                     </div>
                 </div>
             </div>

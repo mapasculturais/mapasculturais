@@ -647,7 +647,17 @@ class Module extends \MapasCulturais\Module{
         $this->registerOpportunityMetadata('workplan_dataProjectmaximumDurationInMonths', [
             'label' => i::__('Duração máxima em meses'),
             'type' => 'integer',
-            'default' => 1
+            'default' => 1,
+            'validations' => [
+                '(!$entity->workplan_dataProjectlimitMaximumDurationOfProjects || (filter_var($value, FILTER_VALIDATE_INT) !== false && (int) $value >= 1))' => i::__('Deve ser um número inteiro maior ou igual a um')
+            ],
+            'should_validate' => function($entity, $value) {
+                if($entity->workplan_dataProjectlimitMaximumDurationOfProjects) {
+                    return i::__('Deve ser um número inteiro maior ou igual a um');
+                }
+
+                return false;
+            }
         ]);
 
         
