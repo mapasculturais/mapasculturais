@@ -117,6 +117,20 @@ class Module extends \MapasCulturais\Module{
     }
 
     /**
+     * Checks whether the appeal phase associated with the given phase affects sync.
+     * The flag is stored on the appeal phase entity itself (set via UI checkbox).
+     * Returns false by default (neutral behavior) unless explicitly enabled.
+     */
+    public static function appealPhaseAffectsSync(Opportunity $phase): bool
+    {
+        $appeal_phase = $phase->appealPhase;
+        if (!$appeal_phase) {
+            return false;
+        }
+        return (bool) ($appeal_phase->appealPhaseAffectsSync ?? false);
+    }
+
+    /**
      * Próxima fase na linha principal do edital, ignorando fases de recurso.
      */
     public static function getNextMainPhase(Opportunity $phase): ?Opportunity
@@ -283,7 +297,8 @@ class Module extends \MapasCulturais\Module{
      * Condição DQL para inscrições da fase anterior que qualificam avanço à fase seguinte.
      *
      * Fase avaliativa com recurso:
-     * - bloqueia enquanto existir recurso pendente (status 0 ou 1);
+     * - bloqueia enquanto existir recurso enviado aguardando resultado (status 1);
+     * - rascunho de recurso (status 0) não bloqueia;
      * - deferido no recurso (status 10) qualifica independentemente do status na fase de origem;
      * - indeferido/inválido no recurso qualifica apenas se a fase de origem tiver status 10;
      * - sem recurso, qualifica com status 10 na fase de origem.
@@ -294,6 +309,10 @@ class Module extends \MapasCulturais\Module{
      */
     public static function getPreviousPhaseQualificationDql(string $alias, Opportunity $previous_phase): array
     {
+        if (!self::appealPhaseAffectsSync($previous_phase)) {
+            return ["{$alias}.status = 10", []];
+        }
+
         $params = [];
         $appeal_phase = $previous_phase->appealPhase;
 
@@ -307,7 +326,7 @@ class Module extends \MapasCulturais\Module{
             SELECT ap_pending.id FROM MapasCulturais\Entities\Registration ap_pending
             WHERE ap_pending.opportunity = :appeal_phase
             AND ap_pending.number = {$alias}.number
-            AND ap_pending.status NOT IN (2, 3, 10)
+            AND ap_pending.status NOT IN (0, 2, 3, 10)
         )";
 
         $deferred = "EXISTS (
@@ -1288,6 +1307,12 @@ class Module extends \MapasCulturais\Module{
             // para a publicação final, mantém inscrições com status > 0 na primeira fase
             $appeal_params = [];
             if ($this->isLastPhase) {
+                $qualified_status_dql = 'r2.status > 0';
+            } elseif (!self::appealPhaseAffectsSync($previous_phase)
+                && $this->isReportingPhase
+                && !$this->isFinalReportingPhase
+                && !$previous_phase->isLastPhase
+            ) {
                 $qualified_status_dql = 'r2.status > 0';
             } else {
                 [$qualified_status_dql, $appeal_params] = self::getPreviousPhaseQualificationDql('r2', $previous_phase);
