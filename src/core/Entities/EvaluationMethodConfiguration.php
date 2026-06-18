@@ -147,7 +147,7 @@ class EvaluationMethodConfiguration extends \MapasCulturais\Entity {
      * 
      * Verifica:
      * - Se há critérios com 'sid' apontando para seção inexistente (critérios órfãos)
-     * - Se há critérios sem campos obrigatórios preenchidos (title, max, weight)
+     * - Se há critérios sem campos obrigatórios preenchidos conforme o tipo de avaliação
      * 
      * @return bool true se válido, false se há erros
      */
@@ -226,15 +226,30 @@ class EvaluationMethodConfiguration extends \MapasCulturais\Entity {
                 return false;
             }
 
-            // Verifica campos obrigatórios do critério
-            if (empty($criterion->title) || trim($criterion->title) === '') {
-                return false;
+            if ($this->_type === 'technical') {
+                if (empty($criterion->title) || trim($criterion->title) === '') {
+                    return false;
+                }
+                if (!isset($criterion->max) || !is_numeric($criterion->max)) {
+                    return false;
+                }
+                if (!isset($criterion->weight) || !is_numeric($criterion->weight)) {
+                    return false;
+                }
             }
-            if (!isset($criterion->max) || !is_numeric($criterion->max)) {
-                return false;
-            }
-            if (!isset($criterion->weight) || !is_numeric($criterion->weight)) {
-                return false;
+
+            if ($this->_type === 'qualification') {
+                if (empty($criterion->name) || trim($criterion->name) === '') {
+                    return false;
+                }
+
+                $options = $criterion->options ?? [];
+                if (is_object($options)) {
+                    $options = get_object_vars($options);
+                }
+                if (!is_array($options) || empty(array_filter($options, fn($option) => trim((string) $option) !== ''))) {
+                    return false;
+                }
             }
         }
 

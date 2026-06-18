@@ -171,6 +171,17 @@ app.component('qualification-evaluation-config', {
                             hasError = true;
                         }
                     })
+
+                    let hasOptions = Array.isArray(criterion.options) && criterion.options.some((option) => `${option}`.trim());
+                    if (!hasOptions) {
+                        let message = `${this.text('theField')} ${this.text('fieldCriterionOptions')} ${this.text('isRequired')} `;
+
+                        if(addCriteria) {
+                            message = message + this.text('lastCriterion');
+                        }
+                        this.messages.error(message);
+                        hasError = true;
+                    }
                 })
             }
 
@@ -178,10 +189,14 @@ app.component('qualification-evaluation-config', {
         },
 
         updateOptions(criteria) {
+            if (!this.options || !this.options.trim()) {
+                return;
+            }
+
             if (!criteria.options) {
                 criteria.options = [];
             }
-            criteria.options.push(this.options);
+            criteria.options.push(this.options.trim());
             this.clear();
             this.save();
         },
