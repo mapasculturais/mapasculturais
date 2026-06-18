@@ -29,6 +29,7 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Permite buscar avaliadores por ID do agente no formato #ID e e-mail do usuário ao adicioná-los ou substituí-los nas comissões de avaliação.
 - Adiciona campos de CNPJ e mini currículo à listagem de pessoas dos formulários de inscrição, com validação de CPF e CNPJ.
 - Melhora a performance da listagem de modelos de oportunidades ao evitar consultas repetidas para identificar modelos oficiais.
+- Otimiza a construção das imagens Docker nos workflows de CI, develop e release candidate ao reutilizar o cache do Buildx armazenado no GitHub Actions.
 
 ### Correções
 - Aplica texto de internacionalização faltante no componente opportunity-registration-table
