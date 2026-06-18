@@ -6,12 +6,10 @@ O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [UNRELEASED]
-### Novas Funcionalidades
-- Módulo de **Plano de Metas e Monitoramento** que permite ao gestor configurar campos do plano de trabalho para orientar o preenchimento das metas e entregas previstas na inscrição, incluindo período, orçamento, segmento artístico-cultural, composição de equipe, estratégias de comunicação, acessibilidade, comunidades, receita e evidências. Na etapa de monitoramento, o agente informa os dados executados das entregas a partir do que foi planejado, com campos equivalentes para acompanhamento da execução, validações de obrigatoriedade conforme a configuração da oportunidade e exibição organizada entre formulário, ficha de inscrição, avaliação e exportação.
-- Permite exibir campos do plano de trabalho na ficha de avaliação
-- Adiciona os novos campos do plano de trabalho e monitoramento na exportação das inscrições
-
 ### Melhorias
+- Aprimora o módulo de **Plano de Metas e Monitoramento** com campos configuráveis para orientar o preenchimento das metas e entregas previstas na inscrição, incluindo período, orçamento, segmento artístico-cultural, composição de equipe, estratégias de comunicação, acessibilidade, comunidades, receita e evidências. Na etapa de monitoramento, o agente informa os dados executados das entregas a partir do que foi planejado, com campos equivalentes para acompanhamento da execução, validações de obrigatoriedade conforme a configuração da oportunidade e exibição organizada entre formulário, ficha de inscrição, avaliação e exportação.
+- Permite exibir campos do plano de trabalho na ficha de avaliação
+- Adiciona os campos do plano de trabalho e monitoramento na exportação das inscrições
 - Reorganiza os campos de entrega do plano de trabalho e monitoramento para manter a mesma ordem entre inscrição, visualização e avaliação
 - Melhora a validação de campos obrigatórios do plano de trabalho e monitoramento conforme as configurações da oportunidade
 - Utiliza o componente de moeda nos campos monetários do monitoramento
