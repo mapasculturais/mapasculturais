@@ -14,7 +14,7 @@ $this->import('
     mc-currency-input
 ');
 ?>
-<mc-card class="registration-details-workplan" v-if="registration.opportunity.enableWorkplan">
+<mc-card class="registration-details-workplan" v-if="opportunity.enableWorkplan">
     <template #title>
         <h3 class="card__title">{{ getWorkplanLabelDefault }}</h3>
         <p><?= i::esc_attr__('Dados da ação cultural.') ?></p>

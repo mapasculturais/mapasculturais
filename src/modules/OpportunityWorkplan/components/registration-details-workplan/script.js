@@ -20,7 +20,7 @@ app.component('registration-details-workplan', {
         const entityWorkplan = new Entity('workplan');
 
         return {
-            opportunity: this.registration.opportunity,
+            opportunity: this.registration.workplanOpportunity || this.registration.opportunity.parent || this.registration.opportunity,
             workplan: entityWorkplan,
         };
     },

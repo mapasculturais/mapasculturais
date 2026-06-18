@@ -54,8 +54,7 @@ app.component('registration-workplan-form-delivery', {
             return Vue.markRaw(this.deliveryDescriptions.availabilityType?.options ?? {});
         },
         deliveriesLabel () {
-            const opportunity = this.registration.opportunity.parent ?? this.registration.opportunity;
-            return opportunity.deliveryLabelDefault ?? Vue.markRaw($MAPAS.EntitiesDescription.opportunity.deliveryLabelDefault.default_value);
+            return this.opportunity.deliveryLabelDefault ?? Vue.markRaw($MAPAS.EntitiesDescription.opportunity.deliveryLabelDefault.default_value);
         },
         dummyEntity () {
             // A dummy entity, just for uploads so far
@@ -85,7 +84,7 @@ app.component('registration-workplan-form-delivery', {
             },
         },
         opportunity () {
-            return this.registration.opportunity.parent ?? this.registration.opportunity;
+            return this.registration.workplanOpportunity ?? this.registration.opportunity.parent ?? this.registration.opportunity;
         },
         plannedCommunicationChannels () {
             return this.normalizeArray(this.delivery.communicationChannels);

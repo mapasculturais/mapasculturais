@@ -13,6 +13,7 @@ app.component('registration-workplan', {
     data() {
         this.getWorkplan();
 
+        const workplanOpportunity = this.registration.workplanOpportunity || this.registration.opportunity.parent || this.registration.opportunity;
         const entityWorkplan = new Entity('workplan');
         entityWorkplan.id = null;
         entityWorkplan.registrationId = this.registration.id;
@@ -25,7 +26,7 @@ app.component('registration-workplan', {
 
         return {
             enableWorkplanInStep: enableWorkplanInStep,
-            opportunity: this.registration.opportunity,
+            opportunity: workplanOpportunity,
             workplan: entityWorkplan,
             workplanFields: $MAPAS.EntitiesDescription.workplan,
             expandedGoals: [],

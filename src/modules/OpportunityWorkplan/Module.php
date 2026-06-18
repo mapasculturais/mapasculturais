@@ -27,7 +27,8 @@ class Module extends \MapasCulturais\Module{
 
             $app->hook("component(registration-form):after", function(){
                 /** @var Theme $this */
-                if($this->controller->requestedEntity->opportunity->enableWorkplan && !$this->controller->requestedEntity->opportunity->firstPhase->isContinuousFlow){
+                $opportunity = $this->controller->requestedEntity->opportunity;
+                if($opportunity->firstPhase->enableWorkplan && !$opportunity->firstPhase->isContinuousFlow){
                     $this->part('registration-workplan');
                 }
             });
@@ -41,6 +42,20 @@ class Module extends \MapasCulturais\Module{
             $app->hook("template(registration.single.registration-ficha-tab):end", function($registration) {
                 if ($registration->opportunity->isFirstPhase && $registration->opportunity->enableWorkplan && !$registration->opportunity->firstPhase->isContinuousFlow) {
                     $this->part('registration-details-workplan');
+                }
+            });
+
+            $app->hook('view.requestedEntity(Registration).result', function (&$json) {
+                $registration = $this->controller->requestedEntity;
+
+                if ($workplan_opportunity = self::getWorkplanOpportunityData($registration->opportunity)) {
+                    $json['workplanOpportunity'] = $workplan_opportunity;
+                }
+            });
+
+            $app->hook('entity(Registration).jsonSerialize', function (&$json) {
+                if ($workplan_opportunity = self::getWorkplanOpportunityData($this->opportunity)) {
+                    $json['workplanOpportunity'] = $workplan_opportunity;
                 }
             });
 
@@ -599,6 +614,25 @@ class Module extends \MapasCulturais\Module{
                 unset($row);
             });
         });
+    }
+
+    private static function getWorkplanOpportunityData(?\MapasCulturais\Entities\Opportunity $opportunity): ?\stdClass
+    {
+        $first_phase = $opportunity?->firstPhase;
+
+        if (!$first_phase?->enableWorkplan) {
+            return null;
+        }
+
+        $data = $first_phase->simplify('id,name,singleUrl,isFirstPhase,isContinuousFlow');
+
+        foreach ($first_phase->getRegisteredMetadata(null, true) as $key => $definition) {
+            if ($key === 'enableWorkplan' || str_starts_with($key, 'workplan')) {
+                $data->$key = $first_phase->$key;
+            }
+        }
+
+        return $data;
     }
 
     function register()

@@ -18,7 +18,7 @@ $this->import('
 ?>
 
 <div id="registration-workplan">
-<mc-card class="registration-workplan" v-if="registration.opportunity.enableWorkplan && enableWorkplanInStep">
+<mc-card class="registration-workplan" v-if="opportunity.enableWorkplan && enableWorkplanInStep">
     <template #title>
         <h3 class="card__title">
             {{ getWorkplanLabelDefault }}
