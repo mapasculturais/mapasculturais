@@ -101,6 +101,70 @@ class Delivery extends \MapasCulturais\Entity {
         ];
     }
 
+    /**
+     * Verifica se o usuário pode modificar esta entrega.
+     *
+     * Além da verificação padrão de dono (EntityOwnerAgent._canUser),
+     * também permite se o usuário está preenchendo uma fase de monitoramento
+     * (prestação de informações) vinculada ao plano de trabalho desta entrega.
+     */
+    protected function canUserModify($user) {
+        // 1. Verificação padrão de dono via EntityOwnerAgent
+        if ($this->_canUser($user, 'modify')) {
+            return true;
+        }
+
+        // 2. Atravessa a cadeia Delivery → Goal → Workplan → Registration
+        $goal = $this->goal;
+        if (!$goal) {
+            return false;
+        }
+
+        $workplan = $goal->workplan;
+        if (!$workplan) {
+            return false;
+        }
+
+        $registration = $workplan->registration;
+        if (!$registration) {
+            return false;
+        }
+
+        // 3. Procura fases de monitoramento onde o usuário está preenchendo.
+        //    Monitoring registrations têm o mesmo número da original mas estão
+        //    na oportunidade de reporting phase (isReportingPhase = true).
+        $app = \MapasCulturais\App::i();
+
+        // Oportunidade original (first phase)
+        $original_opportunity = $registration->opportunity->firstPhase
+            ?: $registration->opportunity;
+
+        // Oportunidades filhas que são fases de prestação de informações
+        $children_opportunities = $original_opportunity->getChildren();
+        $reporting_opportunity_ids = [];
+
+        foreach ($children_opportunities as $child) {
+            if ($child->isReportingPhase) {
+                $reporting_opportunity_ids[] = $child->id;
+            }
+        }
+
+        if (!empty($reporting_opportunity_ids)) {
+            $monitoring_registrations = $app->repo('Registration')->findBy([
+                'opportunity' => $reporting_opportunity_ids,
+                'number'      => $registration->number,
+            ]);
+
+            foreach ($monitoring_registrations as $monitoring) {
+                if ($monitoring->canUser('modify', $user)) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+
     public function jsonSerialize(): array
     {
         $metadatas = $this->getMetadata();
