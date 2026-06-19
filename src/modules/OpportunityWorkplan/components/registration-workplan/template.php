@@ -553,12 +553,6 @@ $this->import('
                         </button>
                     </div>
 
-                    <div class="registration-workplan__save-goal" id="registration-workplan__save-goal">
-                        <button class="button button--primary" id="button-registration-workplan__save-goal" @click="save_">
-                            {{ `Salvar ${getGoalLabelDefault}` }}
-                        </button>
-                    </div>
-
                 </div>
             </div>
         </div>

@@ -30,12 +30,25 @@ app.component('registration-workplan', {
             workplan: entityWorkplan,
             workplanFields: $MAPAS.EntitiesDescription.workplan,
             expandedGoals: [],
-            enableButtonNewGoal: false
+            enableButtonNewGoal: false,
+            beforeSaveHandler: null,
         };
     },
     mounted() {
         this.handleHashChange();
+        this.beforeSaveHandler = (event) => {
+            if (event.detail?.registrationId !== this.registration.id) {
+                return;
+            }
+
+            event.detail.promises.push(this.save_(false, false));
+        };
         window.addEventListener('hashchange', this.handleHashChange);
+        globalThis.addEventListener('registration.beforeSave', this.beforeSaveHandler);
+    },
+    beforeUnmount() {
+        window.removeEventListener('hashchange', this.handleHashChange);
+        globalThis.removeEventListener('registration.beforeSave', this.beforeSaveHandler);
     },
     computed: {
         getWorkplanLabelDefault() {
@@ -500,7 +513,7 @@ app.component('registration-workplan', {
 
             return validationMessages;
         },
-        async save_(enableValidations = true) {
+        async save_(enableValidations = true, showSuccessMessage = true) {
             if (enableValidations && !this.validateGoal()) {
                 return false;
             }
@@ -512,13 +525,18 @@ app.component('registration-workplan', {
                 workplan: this.workplan,
             };
 
-            const response = api.POST(`save`, data);
-            response.then((res) => res.json().then((data) => {
-                this.ensureDeliveryFieldsInitialized(data.workplan);
-                this.workplan = data.workplan;
-                this.updateEnableButtonNewGoal();
+            const response = await api.POST(`save`, data);
+            const responseData = await response.json();
+
+            this.ensureDeliveryFieldsInitialized(responseData.workplan);
+            this.workplan = responseData.workplan;
+            this.updateEnableButtonNewGoal();
+
+            if (showSuccessMessage) {
                 messages.success(this.text('Modificações salvas'));
-            }));
+            }
+
+            return true;
         },
         range(start, end) {
             return Array.from({ length: end - start + 1 }, (_, i) => start + i);
@@ -738,17 +756,6 @@ app.component('registration-workplan', {
                 buttons: this.tutorialButtonsDefault()
             });
 
-            this.tour.addStep({
-                id: 'button-registration-workplan__save-goal',
-                title: this.titleTutorial(),
-                text: 'Última etapa! Clique no botão "Salvar metas" para garantir que suas metas e entregas sejam salvas.',
-                attachTo: {
-                    element: '#button-registration-workplan__save-goal',
-                    on: 'bottom'
-                },
-                buttons: this.tutorialButtonsDefault()
-            });
-
             this.tour.start();
         },
         startTutorialDelivery() {
@@ -782,17 +789,6 @@ app.component('registration-workplan', {
                 text: 'Botão "Excluir entrega" para remover a entrega cadastrada ou em processo de cadastro.',
                 attachTo: {
                     element: '#registration-workplan__delete-delivery',
-                    on: 'bottom'
-                },
-                buttons: this.tutorialButtonsDefault()
-            });
-
-            this.tour.addStep({
-                id: 'button-registration-workplan__save-goal',
-                title: this.titleTutorial(),
-                text: 'Última etapa! Para garantir que suas metas e entregas sejam salvas, clique no botão "Salvar metas".',
-                attachTo: {
-                    element: '#button-registration-workplan__save-goal',
                     on: 'bottom'
                 },
                 buttons: this.tutorialButtonsDefault()
