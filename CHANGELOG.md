@@ -5,6 +5,11 @@ Todas as mudanças notáveis no projeto serão documentadas neste arquivo.
 O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/)
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [7.7.61] - 2026-06-19
+### Melhorias
+- Implementa flag que desliga por padrão o envio de e-mails do recurso
+- Melhora configuração de cretérios das avaliações técnica e qualificação documental, para que nao fique validando e dando erros a cada clique
+
 ## [7.7.60] - 2026-06-18
 ### Correções
 - Corrige a exibição das opções de campos de seleção no formato radio para organizá-las verticalmente na ficha de inscrição
