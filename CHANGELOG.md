@@ -5,6 +5,10 @@ Todas as mudanças notáveis no projeto serão documentadas neste arquivo.
 O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/)
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [7.7.62] - 2026-06-19
+### Correções
+- Corrige os builders das avaliações técnicas e da qualificação documental para que aceitem os dados completos de configuração dos critérios
+
 ## [7.7.61] - 2026-06-19
 ### Melhorias
 - Implementa flag que desliga por padrão o envio de e-mails do recurso
