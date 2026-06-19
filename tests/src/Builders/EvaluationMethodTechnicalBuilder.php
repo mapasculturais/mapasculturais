@@ -56,7 +56,7 @@ class EvaluationMethodTechnicalBuilder extends EvaluationMethodConfigurationBuil
         $criteria[] = (object) [
             'id' => $id,
             'sid' => $section_id,
-            'name' => $name,
+            'title' => $name,
             'min' => $min,
             'max' => $max,
             'weight' => $weight,
