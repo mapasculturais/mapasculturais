@@ -10,6 +10,9 @@ use MapasCulturais\Entities\Opportunity;
 use MapasCulturais\Exceptions\Halt;
 use MapasCulturais\Exceptions\PermissionDenied;
 use Tests\Abstract\TestCase;
+use Tests\Builders\PhasePeriods\ConcurrentEndingAfter;
+use Tests\Builders\PhasePeriods\Open;
+use Tests\Enums\EvaluationMethods;
 use Tests\Traits\OpportunityBuilder;
 use Tests\Traits\RequestFactory;
 use Tests\Traits\UserDirector;
@@ -129,6 +132,50 @@ class OpportunityModelUsageTest extends TestCase
         }
     }
 
+    function testUsingPublicGeneratedModelDoesNotCreateExtraDataCollectionPhase(): void
+    {
+        $modelOwner = $this->userDirector->createUser();
+        $user = $this->userDirector->createUser();
+        $modelName = 'Modelo publico sem fase extra ' . uniqid('', true);
+
+        $this->login($modelOwner);
+        $builder = $this->opportunityBuilder
+            ->reset(owner: $modelOwner->profile, owner_entity: $modelOwner->profile)
+            ->fillRequiredProperties()
+            ->firstPhase()
+                ->setRegistrationPeriod(new Open)
+                ->done()
+            ->save();
+
+        $builder->addDataCollectionPhase()
+            ->setRegistrationPeriod(new Open)
+            ->save()
+            ->done();
+
+        $builder->addEvaluationPhase(EvaluationMethods::simple)
+            ->setEvaluationPeriod(new ConcurrentEndingAfter)
+            ->save()
+            ->done();
+
+        $source = $builder
+            ->refresh()
+            ->getInstance();
+
+        $model = $this->generateModelFromOpportunity($source, $modelName);
+        $model->setMetadata('isModelPublic', 1);
+        $model->save(true);
+        $model = $model->refreshed();
+
+        $this->login($user);
+        $generated = $this->generateOpportunity($model, $user->profile->id)->refreshed();
+
+        $this->assertCount(count($model->allPhases), $generated->allPhases);
+        $this->assertSame(
+            $this->countDataCollectionPhases($model),
+            $this->countDataCollectionPhases($generated)
+        );
+    }
+
     private function createModel($owner, bool $isPublic): Opportunity
     {
         $this->login($owner);
@@ -144,6 +191,29 @@ class OpportunityModelUsageTest extends TestCase
         $model->save(true);
 
         return $model;
+    }
+
+    private function generateModelFromOpportunity(Opportunity $source, string $name): Opportunity
+    {
+        $app = $this->app;
+        $app->request = $this->requestFactory->mapasPOST('opportunity', 'generatemodel', [$source->id], ['id' => $source->id]);
+        $app->response = new Response();
+
+        /** @var OpportunityController $controller */
+        $controller = $app->controller('opportunity');
+        $controller->setRequestData(['id' => $source->id]);
+        $controller->postData = [
+            'name' => $name,
+            'description' => 'Modelo publico gerado pelo teste',
+            'entityId' => $source->id,
+        ];
+
+        try {
+            $controller->ALL_generatemodel();
+        } catch (Halt) {
+        }
+
+        return $app->repo('Opportunity')->findOneBy(['name' => $name])->refreshed();
     }
 
     private function generateOpportunity(Opportunity $model, int $ownerEntityId, ?string $name = null): Opportunity
@@ -169,5 +239,13 @@ class OpportunityModelUsageTest extends TestCase
         }
 
         return $app->repo('Opportunity')->findOneBy(['name' => $name])->refreshed();
+    }
+
+    private function countDataCollectionPhases(Opportunity $opportunity): int
+    {
+        return count(array_filter(
+            $opportunity->allPhases,
+            fn(Opportunity $phase) => $phase->isDataCollection && !$phase->isLastPhase
+        ));
     }
 }
