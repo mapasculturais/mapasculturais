@@ -17,6 +17,7 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 ### Correções
 - Corrige avisos de validação do monitoramento que apareciam indevidamente na fase de inscrição
 - Corrige exportação de campos multiselect do plano de trabalho para evitar valores "Array | Array"
+- Corrige a listagem de avaliações para exibir fases de recurso na tela Minhas avaliações
 
 ## [7.5.59] - 2026-06-17
 ### Melhorias
