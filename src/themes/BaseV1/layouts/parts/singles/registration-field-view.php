@@ -42,6 +42,8 @@
             <div ng-if="field.config.fullName && person.fullName"><strong><?php \MapasCulturais\i::_e("Nome completo"); ?>: </strong>{{person.fullName}}</div>
             <div ng-if="field.config.socialName && person.socialName"><strong><?php \MapasCulturais\i::_e("Nome social"); ?>: </strong>{{person.socialName}}</div>
             <div ng-if="field.config.cpf && person.cpf"><strong><?php \MapasCulturais\i::_e("CPF"); ?>: </strong>{{person.cpf}}</div>
+            <div ng-if="field.config.cnpj && person.cnpj"><strong><?php \MapasCulturais\i::_e("CNPJ"); ?>: </strong>{{person.cnpj}}</div>
+            <div ng-if="field.config.miniCurriculum && person.miniCurriculum"><strong><?php \MapasCulturais\i::_e("Mini currículo"); ?>: </strong><span style="white-space: pre-line">{{person.miniCurriculum}}</span></div>
             <div ng-if="field.config.income && person.income"><strong><?php \MapasCulturais\i::_e("Renda"); ?>: </strong>{{person.income}}</div>
             <div ng-if="field.config.education && person.education"><strong><?php \MapasCulturais\i::_e("Escolaridade"); ?>: </strong>{{person.education}}</div>
             <div ng-if="field.config.telephone && person.telephone"><strong><?php \MapasCulturais\i::_e("Telefone"); ?>: </strong>{{person.telephone}}</div>

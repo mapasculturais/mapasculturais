@@ -6,6 +6,13 @@ O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [UNRELEASED]
+### Novas Funcionalidades
+- Módulo de **fase de execução** que permite ao gestor configurar uma fase de acompanhamento para os agentes contemplados após a publicação do resultado. Durante esta fase, o agente contemplado pode abrir múltiplos **pedidos de alteração** no projeto aprovado — troca de data, substituição de item de orçamento, mudança de local, entre outros. Cada pedido é avaliado individualmente por uma comissão configurada pelo gestor (mesmo modelo de avaliação simplificada já existente nas fases de seleção). Os pedidos ficam como registro histórico das alterações aprovadas durante a vigência do projeto e não interferem no fluxo das fases seguintes de prestação de informações.
+- **Bônus de pontuação configurável** no método de avaliação técnica, permitindo ao gestor definir regras de bonificação por políticas afirmativas em percentual ou ponto fixo. A configuração permite controlar o valor máximo do bônus, aplicar o acréscimo às inscrições elegíveis, exibir corretamente o bônus nas tabelas e exportações, reaplicar a pontuação quando as regras forem alteradas e manter compatibilidade com configurações legadas por meio de normalização automática.
+- Implementa configuração que permide definir a imagem de avatar de qualquer entidade como obrigatória
+- Adiciona botão para duplicar campos do formulário de inscrição, criando a cópia logo abaixo do campo original
+- Adiciona botão para duplicar anexos do formulário de inscrição, incluindo a cópia do arquivo modelo e inserindo o novo anexo logo abaixo do original
+
 ### Melhorias
 - Aprimora o módulo de **Plano de Metas e Monitoramento** com campos configuráveis para orientar o preenchimento das metas e entregas previstas na inscrição, incluindo período, orçamento, segmento artístico-cultural, composição de equipe, estratégias de comunicação, acessibilidade, comunidades, receita e evidências. Na etapa de monitoramento, o agente informa os dados executados das entregas a partir do que foi planejado, com campos equivalentes para acompanhamento da execução, validações de obrigatoriedade conforme a configuração da oportunidade e exibição organizada entre formulário, ficha de inscrição, avaliação e exportação.
 - Permite exibir campos do plano de trabalho na ficha de avaliação
@@ -13,26 +20,68 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Reorganiza os campos de entrega do plano de trabalho e monitoramento para manter a mesma ordem entre inscrição, visualização e avaliação
 - Melhora a validação de campos obrigatórios do plano de trabalho e monitoramento conforme as configurações da oportunidade
 - Utiliza o componente de moeda nos campos monetários do monitoramento
+- Adiciona um campo de busca para encontrar colunas por palavra-chave na listagem por tabela nas entidades.
+- Implementa a funcionalidade que permite ao saasSuperAdmin ordenar globalmente as colunas das tabelas que utilizam o entity-table, por meio de drag and drop.
+- Suprime campo de RG do cadastro do agente e dos campos @ para prevalecer o uso do CIN (Carteira de  Identidade Nacional)
+- Ordena opções de tipos de campos da lista de campos @ em ordem alfabética
+- Ajusta exportação da planilha para organizar as colunas segundo a ordem definida pelo superSaasAdmin
+- Melhora a exibição do botão minha conta no header para exibir o nome do perfil do agente responsável logado
+- Implementa visualização das datas de recurso no step vertical de fases
+- Adiciona configuração para exibir ou ocultar o detalhamento da avaliação anterior na fase de recurso
+- Exibe o detalhamento da avaliação da fase anterior para avaliadores da fase de recurso
+- Adiciona configuração para exigir foto de perfil do agente coletivo vinculado na inscrição para proponentes do tipo coletivo e pessoa jurídica
+- Adiciona números sequenciais nos avaliadores das comissões
+- Permite criar agentes no fluxo de inscrição de oportunidades respeitando as permissões: agente individual apenas para administradores e agente coletivo para usuários comuns quando exigido pela inscrição.
+- Permite buscar avaliadores por ID do agente no formato #ID e e-mail do usuário ao adicioná-los ou substituí-los nas comissões de avaliação.
+- Adiciona campos de CNPJ e mini currículo à listagem de pessoas dos formulários de inscrição, com validação de CPF e CNPJ.
+- Melhora a performance da listagem de modelos de oportunidades ao evitar consultas repetidas para identificar modelos oficiais.
+- Otimiza a construção das imagens Docker nos workflows de CI, develop e release candidate ao reutilizar o cache do Buildx armazenado no GitHub Actions.
 
 ### Correções
 - Corrige avisos de validação do monitoramento que apareciam indevidamente na fase de inscrição
 - Corrige exportação de campos multiselect do plano de trabalho para evitar valores "Array | Array"
 - Corrige a listagem de avaliações para exibir fases de recurso na tela Minhas avaliações
+- Aplica texto de internacionalização faltante no componente opportunity-registration-table
+- Corrige acento faltante no texto "Gênero" na listagem de pessoas do formulário de inscrição
+- Corrige a exibição do nome do agente coletivo nos cards da tela Minhas inscrições
+- Corrige a chave de internacionalização do texto "Elegível para cotas" no componente de listagem de inscrições
+- Evita erro ao hidratar campos de data inválidos em entidades
+- Corrige a importação de formulários de inscrição para preservar os formatos aceitos configurados nos campos de anexo
+- Corrige erro ao reordenar etapas na configuração do formulário de oportunidades
+- Corrige a exportação de oportunidades para não incluir datas das fases de avaliação quando a opção de exportar datas das fases estiver desmarcada
+- Corrige o cálculo ponderado dos subtotais na tela de avaliação técnica
+- Corrige os templates de email da fase de recurso
+- Corrige a exibição das opções de campos de seleção no formato radio para organizá-las verticalmente na ficha de inscrição
+- Corrige a ordenação das últimas planilhas exportadas para exibir os arquivos mais recentes primeiro
 
-## [7.5.59] - 2026-06-17
+## [7.7.62] - 2026-06-19
+### Correções
+- Corrige os builders das avaliações técnicas e da qualificação documental para que aceitem os dados completos de configuração dos critérios
+
+## [7.7.61] - 2026-06-19
+### Melhorias
+- Implementa flag que desliga por padrão o envio de e-mails do recurso
+- Melhora configuração de cretérios das avaliações técnica e qualificação documental, para que nao fique validando e dando erros a cada clique
+
+## [7.7.60] - 2026-06-18
+### Correções
+- Corrige a exibição das opções de campos de seleção no formato radio para organizá-las verticalmente na ficha de inscrição
+- Corrige erro na criação de critérios na avaliação de qualificação documental
+
+## [7.7.59] - 2026-06-17
 ### Melhorias
 - Implementa uma configuração na fase de recurso que permite habilitar ou desabilitar o sincronismo automático das inscrições quando o recurso é deferido
 
-## [7.5.58] - 2026-06-16
+## [7.7.58] - 2026-06-16
 ### Correções
 - Evita que os ponteiros nextPhaseRegistrationId e previousPhaseRegistrationId fiquem vazios durante o sincronismo da fase de recurso
 
-## [7.5.57] - 2026-06-16
+## [7.7.57] - 2026-06-16
 ### Correções
 - Corrige a propagação de inscrições entre fases, garantindo que apenas inscrições devidamente selecionadas avancem para as fases posteriores
 - Corrige CSS da exibição dos ícones de ações (editar, excluir e copiar) na configuração dos campos do formulário
 
-## [7.5.56] - 2026-06-15
+## [7.7.56] - 2026-06-15
 ### Correções
 - Implementa a correção na distribuição dos avaliadores de forma a evitar que uma avaliação já realizada seja desatribuída de um determinado avaliador
 
@@ -125,11 +174,11 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Evita reprocessar os mesmos campos do formulário de inscrição várias vezes ao montar a página
 
 ## [7.7.42] - 2026-05-20
-### Correções 
+### Correções
 - Melhora performace do sistema de criaçao de cache de permissão
 
 ## [7.7.41] - 2026-05-19
-### Correções 
+### Correções
 - Corrige erro que impedia o botão exibir detalhamento de aparecer na tela do avaliador do recurso
 
 ## [7.7.40] - 2026-05-15
@@ -197,7 +246,7 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Corrige erro no upload de arquivos xlsx no grupo de downloads das entidades
 
 ## [7.7.28] - 2026-04-20
-## Melhorias
+### Melhorias
 - Melhora validação de tipos de arquivo, impedindo que sejam feitos uploads de arquivos potencialmente perigosos
 
 ## [7.7.27] - 2026-04-16
@@ -222,12 +271,12 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 ### Correções
 - Corrige erros durante a execução das migraçoes mc-updates e db-updates
 
-##[7.7.23] - 2026-04-12
+## [7.7.23] - 2026-04-12
 - Corrige deleção indevida de roles, agents e procurations ao salvar entidades. Os mapeamentos ManyToOne de Agent, Role e Procuration não declaravam inversedBy, impedindo o Doctrine de sincronizar as coleções OneToMany do User, o que causava orphanRemoval durante computeChangeSets() no flush
 
 ## [7.7.22] - 2026-04-07
 ### Correções
-- Faz correçao na criaçao e utilizaçao de modelos que ocasionava erros na criaçao dos steps do formulario de inscriçao
+- Faz correção na criação e utilização de modelos que ocasionavam erros na criação das etapas do formulário de inscrição
 
 ## [7.7.21] - 2026-04-02
 ### Correções
@@ -240,8 +289,7 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 ## [7.7.19] - 2026-03-27
 ### Correções
 - Faz ajuste para que os campos do tipo Moeda sejam validados corretamente corretamente quando obrigatorios
-- Corrija um erro ao excluir a configuração de avaliação, garantindo que a exclusão das fases continue funcionando corretamen
-te sem falhas
+- Corrige um erro ao excluir a configuração de avaliação, garantindo que a exclusão das fases continue funcionando corretamente sem falhas
 
 ## [7.7.18] - 2026-03-20
 ### Melhorias
@@ -249,7 +297,8 @@ te sem falhas
 - Melhora a configuração de inclusão e exclusão de avaliadores na inscrição (checkboxes), para que tenha efeito imediato, sem a necessidade de redistribuição
 
 ### Correções
-- Corrige erro no duplicador de oportunidade que impede a copia correta dos arquivos
+- Corrige erro no duplicador de oportunidade que impede a cópia correta dos arquivos
+- Corrige um erro ao excluir a configuração de avaliação, garantindo que a exclusão das fases continue funcionando corretamente sem falhas
 
 ## [7.7.17] - 2026-03-19
 ### Correções
@@ -261,7 +310,7 @@ te sem falhas
 
 ## [7.7.16] - 2026-03-11
 ### Melhorias
-- Implementação de novo campo de tabaela para ser usado nos formulários de inscrições
+- Implementação de novo campo de tabela para ser usado nos formulários de inscrições
 - Atualiza pacotes pnpm
 - Implementa testes para a aplicação de resultados das avaliações
 
@@ -279,21 +328,21 @@ te sem falhas
 ### Correções
 - Corrige endpoint createAppealPhaseRegistration para verificar se já existe inscrição do proponente na fase de recurso
 - Ajusta a exibição dos avaliadores da fase de recurso na página individual da inscrição, permitindo selecionar a lista de inclusão e exclusão de avaliadores das fases avaliativas do recurso.
-- Implementa mc-update para fazer a normalização dos campos de CPF e NCPJ do registration_meta
-- Remove médodo que removia mascaras de cpf e cnpj no momento do envio da inscrições
+- Implementa mc-update para fazer a normalização dos campos de CPF e CNPJ do registration_meta
+- Remove método que removia máscaras de CPF e CNPJ no momento do envio da inscrições
+- Implementa comportamento correto de fluxo contínuo com data final: inicializa publishTimestamp da última fase, inicializa datas da fase de avaliação e propaga automaticamente alterações do publishTimestamp para as fases de avaliação vinculadas
 
 ## [7.7.13] - 2026-03-06
-### Correções
-- Ajusta filtro de arquivo na api para possibitar valores vazios
-
-## [7.7.12] - 2026-03-04
 ### Melhorias
 - Adiciona filtro de selos na tela de busca de eventos, ativável via variável de ambiente `EVENTS_FILTER_SEALS`
 - Adiciona filtro de estado e cidade na tela de busca de eventos, ativável via variável de ambiente `EVENTS_FILTER_STATES_AND_CITIES`
 
 ### Correções
+- Ajusta filtro de arquivo na api para possibitar valores vazios
+
+## [7.7.12] - 2026-03-04
+### Correções
 - Faz ajuste no campo dataDeNascimento para que o formato de data seja interpretado corretamente.
-- Implementa comportamento correto de fluxo contínuo com data final: inicializa publishTimestamp da última fase, inicializa datas da fase de avaliação e propaga automaticamente alterações do publishTimestamp para as fases de avaliação vinculadas
 - Corrige exibição de campos na fase de recurso nas opções da configuração filtro de inscrição para avaliadores/comissão
 - Corrige endpoint createAppealPhaseRegistration para verificar se já existe inscrição do proponente na fase de recurso
 
@@ -466,7 +515,7 @@ te sem falhas
 ### Correções
 - Corrige endpoint createAppealPhaseRegistration para verificar se já existe inscrição do proponente na fase de recurso
 - Ajusta a exibição dos avaliadores da fase de recurso na página individual da inscrição, permitindo selecionar a lista de inclusão e exclusão de avaliadores das fases avaliativas do recurso.
-- Implementa mc-update para fazer a normalização dos campos de CPF e NCPJ do registration_meta
+- Implementa mc-update para fazer a normalização dos campos de CPF e CNPJ do registration_meta
 - Remove médodo que removia mascaras de cpf e cnpj no momento do envio da inscrições
 
 ## [7.6.55] - 2026-03-04
