@@ -543,7 +543,9 @@ app.component('registration-workplan', {
         enableNewDelivery(goal) {
             if (this.opportunity.workplan_deliveryReportTheDeliveriesLinkedToTheGoals) {
                 if (this.opportunity.workplan_deliveryLimitNumberOfDeliveries) {
-                    return this.opportunity.workplan_deliveryMaximumNumberOfDeliveries > goal.deliveries.length;
+                    const maximumNumberOfDeliveries = parseInt(this.opportunity.workplan_deliveryMaximumNumberOfDeliveries, 10);
+                    const normalizedMaximum = Number.isInteger(maximumNumberOfDeliveries) && maximumNumberOfDeliveries >= 1 ? maximumNumberOfDeliveries : 1;
+                    return normalizedMaximum > goal.deliveries.length;
                 }
                 return true;
             }

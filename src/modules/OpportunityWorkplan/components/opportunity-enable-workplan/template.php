@@ -203,7 +203,7 @@ $this->import('
                             <label class="field__group">
                                 {{ `Número máximo de ${getDeliveryLabelDefault}` }}
                             </label>
-                            <input type="number" class="field__limits" min="1" :disabled="!entity.workplan_deliveryLimitNumberOfDeliveries" v-model="entity.workplan_deliveryMaximumNumberOfDeliveries" @change="autoSave()">
+                            <input type="number" class="field__limits" min="1" :disabled="!entity.workplan_deliveryLimitNumberOfDeliveries" v-model.number="entity.workplan_deliveryMaximumNumberOfDeliveries" @change="saveMaximumNumberOfDeliveries()">
                         </div>
                     </div>
                 </div>

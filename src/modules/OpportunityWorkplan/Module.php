@@ -756,7 +756,17 @@ class Module extends \MapasCulturais\Module{
         $this->registerOpportunityMetadata('workplan_deliveryMaximumNumberOfDeliveries', [
             'label' => i::__('Número máximo de entregas'),
             'type' => 'integer',
-            'default' => 1
+            'default' => 1,
+            'validations' => [
+                '(!$entity->workplan_deliveryLimitNumberOfDeliveries || (filter_var($value, FILTER_VALIDATE_INT) !== false && (int) $value >= 1))' => i::__('Deve ser um número inteiro maior ou igual a um')
+            ],
+            'should_validate' => function($entity, $value) {
+                if($entity->workplan_deliveryLimitNumberOfDeliveries) {
+                    return i::__('Deve ser um número inteiro maior ou igual a um');
+                }
+
+                return false;
+            }
         ]);
          
         $this->registerOpportunityMetadata('workplan_deliveryInformDeliveryPeriod', [

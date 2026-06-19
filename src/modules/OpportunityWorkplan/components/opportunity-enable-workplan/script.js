@@ -42,7 +42,7 @@ app.component('opportunity-enable-workplan', {
             if (!_new) {
                 this.entity.workplan_deliveryMaximumNumberOfDeliveries = 0;
             } else {
-                this.entity.workplan_deliveryMaximumNumberOfDeliveries = 1;
+                this.normalizeMaximumNumberOfDeliveries();
             }
             this.autoSave();
         },
@@ -253,6 +253,18 @@ app.component('opportunity-enable-workplan', {
         },
         saveMaximumDurationInMonths() {
             this.normalizeMaximumDurationInMonths();
+            this.autoSave();
+        },
+        normalizeMaximumNumberOfDeliveries() {
+            if (!this.entity.workplan_deliveryLimitNumberOfDeliveries) {
+                return;
+            }
+
+            const maximumNumberOfDeliveries = parseInt(this.entity.workplan_deliveryMaximumNumberOfDeliveries, 10);
+            this.entity.workplan_deliveryMaximumNumberOfDeliveries = Number.isInteger(maximumNumberOfDeliveries) && maximumNumberOfDeliveries >= 1 ? maximumNumberOfDeliveries : 1;
+        },
+        saveMaximumNumberOfDeliveries() {
+            this.normalizeMaximumNumberOfDeliveries();
             this.autoSave();
         },
         actionEnabledWorkplan() {
