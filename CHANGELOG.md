@@ -45,20 +45,34 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Corrige a exibição das opções de campos de seleção no formato radio para organizá-las verticalmente na ficha de inscrição
 - Corrige a ordenação das últimas planilhas exportadas para exibir os arquivos mais recentes primeiro
 
-## [7.5.59] - 2026-06-17
+## [7.7.62] - 2026-06-19
+### Correções
+- Corrige os builders das avaliações técnicas e da qualificação documental para que aceitem os dados completos de configuração dos critérios
+
+## [7.7.61] - 2026-06-19
+### Melhorias
+- Implementa flag que desliga por padrão o envio de e-mails do recurso
+- Melhora configuração de cretérios das avaliações técnica e qualificação documental, para que nao fique validando e dando erros a cada clique
+
+## [7.7.60] - 2026-06-18
+### Correções
+- Corrige a exibição das opções de campos de seleção no formato radio para organizá-las verticalmente na ficha de inscrição
+- Corrige erro na criação de critérios na avaliação de qualificação documental
+
+## [7.7.59] - 2026-06-17
 ### Melhorias
 - Implementa uma configuração na fase de recurso que permite habilitar ou desabilitar o sincronismo automático das inscrições quando o recurso é deferido
 
-## [7.5.58] - 2026-06-16
+## [7.7.58] - 2026-06-16
 ### Correções
 - Evita que os ponteiros nextPhaseRegistrationId e previousPhaseRegistrationId fiquem vazios durante o sincronismo da fase de recurso
 
-## [7.5.57] - 2026-06-16
+## [7.7.57] - 2026-06-16
 ### Correções
 - Corrige a propagação de inscrições entre fases, garantindo que apenas inscrições devidamente selecionadas avancem para as fases posteriores
 - Corrige CSS da exibição dos ícones de ações (editar, excluir e copiar) na configuração dos campos do formulário
 
-## [7.5.56] - 2026-06-15
+## [7.7.56] - 2026-06-15
 ### Correções
 - Implementa a correção na distribuição dos avaliadores de forma a evitar que uma avaliação já realizada seja desatribuída de um determinado avaliador
 

@@ -12,6 +12,15 @@ use MapasCulturais\i;
 
 class Module extends \MapasCulturais\Module {
 
+    function __construct($config = [])
+    {
+        $config += [
+            'sendMailNotification.opportunityAppealPhase' => env('SEND_MAIL_OPPORTUNITY_APPEAL_PHASE', false),
+        ];
+
+        parent::__construct($config);
+    }
+
     public function _init() {
         $app = App::i();
         $self = $this;
@@ -344,6 +353,10 @@ class Module extends \MapasCulturais\Module {
      * @param string $recipientType
      */
     function sendEmail(Opportunity $opportunity, Registration $registration, ?string $email, string $recipientType = 'manager') {
+        if(!$this->config['sendMailNotification.opportunityAppealPhase']) {
+            return;
+        }
+
         $app = App::i();
 
         if (!$email) {
@@ -388,6 +401,10 @@ class Module extends \MapasCulturais\Module {
      * @param Registration $registration
      */
     function sendMailNewStatus(Opportunity $opportunity, Registration $registration) {
+        if(!$this->config['sendMailNotification.opportunityAppealPhase']) {
+            return;
+        }
+
         $app = App::i();
 
         $template = "opportunityappealphase/update-status.html";
