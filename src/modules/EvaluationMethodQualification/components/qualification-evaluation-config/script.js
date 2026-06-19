@@ -44,28 +44,26 @@ app.component('qualification-evaluation-config', {
         },
 
         addSection() {
-            if (!this.validateErrors(false,true)) {
-                let sectionId = 's-' + this.generateUniqueNumber();
-        
-                if (!this.entity.sections) {
-                    this.entity.sections = [];
+            let sectionId = 's-' + this.generateUniqueNumber();
+    
+            if (!this.entity.sections) {
+                this.entity.sections = [];
+            }
+    
+            this.entity.sections.push({
+                id: sectionId,
+                name: '',
+            });
+            
+            this.editingSections[sectionId] = true;
+          
+            this.$nextTick(() => {
+                const sectionInputs = this.$refs['sectionNameInput']; 
+                const lastInput = sectionInputs[sectionInputs.length - 1]; 
+                if (lastInput) {
+                    lastInput.focus();
                 }
-        
-                this.entity.sections.push({
-                    id: sectionId,
-                    name: '',
-                });
-                
-                this.editingSections[sectionId] = true;
-              
-                this.$nextTick(() => {
-                    const sectionInputs = this.$refs['sectionNameInput']; 
-                    const lastInput = sectionInputs[sectionInputs.length - 1]; 
-                    if (lastInput) {
-                        lastInput.focus();
-                    }
-                });
-            } 
+            });
         },
 
         addCriteria(sid) {
@@ -123,10 +121,48 @@ app.component('qualification-evaluation-config', {
         save(time = 100) {
             clearTimeout(this.autoSaveTimeOut)
             this.autoSaveTimeOut = setTimeout(() => {
-                if(!this.validateErrors()) {
+                if(this.canAutosave()) {
                     this.entity.save()
                 }
             }, time);
+        },
+
+        canAutosave() {
+            const sections = Array.isArray(this.entity.sections) ? this.entity.sections : [];
+            const criteria = Array.isArray(this.entity.criteria) ? this.entity.criteria : [];
+
+            if (!sections.length && !criteria.length) {
+                return true;
+            }
+
+            const validSectionIds = new Set();
+            for (const section of sections) {
+                if (!section?.id || !`${section.name ?? ''}`.trim()) {
+                    return false;
+                }
+                validSectionIds.add(section.id);
+            }
+
+            const sectionsWithCriteria = new Set();
+            for (const criterion of criteria) {
+                if (!criterion?.sid || !validSectionIds.has(criterion.sid)) {
+                    return false;
+                }
+
+                if (!`${criterion.name ?? ''}`.trim()) {
+                    return false;
+                }
+
+                const options = Array.isArray(criterion.options) ? criterion.options : [];
+                const hasOptions = options.some((option) => `${option}`.trim());
+                if (!hasOptions) {
+                    return false;
+                }
+
+                sectionsWithCriteria.add(criterion.sid);
+            }
+
+            return sections.every((section) => sectionsWithCriteria.has(section.id));
         },
 
         validateErrors(addCriteria = false, addSection = false) {

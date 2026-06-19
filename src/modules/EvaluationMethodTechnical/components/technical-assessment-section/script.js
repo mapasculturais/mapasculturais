@@ -118,10 +118,49 @@ app.component('technical-assessment-section', {
         save(time = 100) {
             clearTimeout(this.autoSaveTimeOut)
             this.autoSaveTimeOut = setTimeout(() => {
-                if(!this.validateErrors()) {
+                if(this.canAutosave()) {
                     this.entity.save()
                 }
             }, time);
+        },
+        canAutosave() {
+            const sections = Array.isArray(this.entity.sections) ? this.entity.sections : [];
+            const criteria = Array.isArray(this.entity.criteria) ? this.entity.criteria : [];
+
+            if (!sections.length && !criteria.length) {
+                return true;
+            }
+
+            const validSectionIds = new Set();
+            for (const section of sections) {
+                if (!section?.id || !`${section.name ?? ''}`.trim()) {
+                    return false;
+                }
+                validSectionIds.add(section.id);
+            }
+
+            const sectionsWithCriteria = new Set();
+            for (const criterion of criteria) {
+                if (!criterion?.sid || !validSectionIds.has(criterion.sid)) {
+                    return false;
+                }
+
+                if (!`${criterion.title ?? ''}`.trim()) {
+                    return false;
+                }
+
+                if (criterion.max === null || criterion.max === undefined || criterion.max === '' || Number.isNaN(Number(criterion.max))) {
+                    return false;
+                }
+
+                if (criterion.weight === null || criterion.weight === undefined || criterion.weight === '' || Number.isNaN(Number(criterion.weight))) {
+                    return false;
+                }
+
+                sectionsWithCriteria.add(criterion.sid);
+            }
+
+            return sections.every((section) => sectionsWithCriteria.has(section.id));
         },
         validateErrors(addCriteria = false) {
             let hasError = false;
