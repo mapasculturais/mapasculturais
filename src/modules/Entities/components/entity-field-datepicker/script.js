@@ -127,7 +127,7 @@ app.component('entity-field-datepicker', {
         },
 
         dateFormat() {
-            let mcdate = this.entity[this.prop];
+            let mcdate = this.normalizeMcDate(this.entity[this.prop]);
             if (mcdate == null || mcdate == '') {
                 return '';
             }
@@ -135,7 +135,7 @@ app.component('entity-field-datepicker', {
         },
 
         timeFormat() {
-            let mcdate = this.entity[this.prop];
+            let mcdate = this.normalizeMcDate(this.entity[this.prop]);
             return mcdate ? mcdate?.time('full') : '';
         },
 
@@ -256,12 +256,38 @@ app.component('entity-field-datepicker', {
             this.$emit('change', datetime);
         },
 
-        initializeModels() {
+        normalizeMcDate(value) {
+            if (!value) {
+                return null;
+            }
 
-            this.model = this.entity[this.prop]?._date;
-            this.modelDate = this.entity[this.prop]?._date;
-            if (this.entity[this.prop]?.time('full')) {
-                let time = this.entity[this.prop]?.time('full').split(':');
+            if (value instanceof McDate) {
+                return value;
+            }
+
+            if (value instanceof Date || typeof value === 'string') {
+                return new McDate(value);
+            }
+
+            if (value?._date) {
+                return new McDate(value._date);
+            }
+
+            if (value?.date) {
+                return new McDate(value.date);
+            }
+
+            return null;
+        },
+
+        initializeModels() {
+            const mcdate = this.normalizeMcDate(this.entity[this.prop]);
+            this.entity[this.prop] = mcdate;
+
+            this.model = mcdate?._date;
+            this.modelDate = mcdate?._date;
+            if (typeof mcdate?.time === 'function' && mcdate.time('full')) {
+                let time = mcdate.time('full').split(':');
                 this.modelTime = {
                     hours: time[0],
                     minutes: time[1],
@@ -271,8 +297,8 @@ app.component('entity-field-datepicker', {
                 this.modelTime = '';
             }
 
-            this.timeInput = this.entity[this.prop]?.time('full');
-            this.dateInput = this.entity[this.prop]?.date('2-digit year');
+            this.timeInput = typeof mcdate?.time === 'function' ? mcdate.time('full') : '';
+            this.dateInput = typeof mcdate?.date === 'function' ? mcdate.date('2-digit year') : '';
         },
     }
 });

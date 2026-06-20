@@ -4,6 +4,7 @@ use MapasCulturais\i;
 return [
     'fieldSectionName' => i::__('Nome seção'),
     'fieldCriterionName' => i::__('Nome do critério'),
+    'fieldCriterionOptions' => i::__('Opções de não atendimento do critério'),
     'fieldCriterionWeight' => i::__('Peso'),
     'theField' => i::__('O campo'),
     'theSection' => i::__('A seção'),

@@ -45,6 +45,11 @@ app.component('registration-card', {
             }
             return status;
         },
+        collectiveName() {
+            return this.entity.agentRelations?.coletivo?.[0]?.agent?.name
+                || this.entity.agentRelations?.coletivo?.[0]?.agent?.nomeCompleto
+                || '';
+        },
     },
     
     methods: { 

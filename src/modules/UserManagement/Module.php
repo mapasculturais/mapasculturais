@@ -4,13 +4,14 @@ namespace UserManagement;
 
 use MapasCulturais\ApiQuery;
 use MapasCulturais\App;
-use MapasCulturais\Entities as MapasEntities;
 use MapasCulturais\Definitions\Role;
+use MapasCulturais\Entities as MapasEntities;
 use MapasCulturais\Entities\User;
 use MapasCulturais\Exceptions\Halt;
 use MapasCulturais\Exceptions\PermissionDenied;
 use MapasCulturais\i;
 use MapasCulturais\Utils;
+use PDOException;
 
 class Module extends \MapasCulturais\Module {
 
@@ -580,7 +581,11 @@ class Module extends \MapasCulturais\Module {
             $this->registerController('system-role', Controllers\SystemRole::class);
             $this->registerController('role', Controllers\Role::class);
 
-            $roles = $this->repo(Entities\SystemRole::class)->findBy(['status' => 1]);
+            try {
+                $roles = $this->repo(Entities\SystemRole::class)->findBy(['status' => 1]);
+            } catch (PDOException $e) {
+                return;
+            }
 
             foreach ($roles as $role) {
                 $definition = new Role($role->slug, $role->name, $role->name, $role->subsiteContext, function ($user) {

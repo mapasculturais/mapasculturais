@@ -6,12 +6,23 @@ use MapasCulturais\i;
 <hr>
 <div class="affirmativePolices">
     <h4><?php i::_e('Bônus por pontuação') ?></h4>
-    <p><?php i::_e('Configure abaixo os percentuais de cada bônus por pontuação que serão aplicados na nota final, caso o proponente se enquadre. ') ?>
+    <p><?php i::_e('Configure abaixo os valores de cada bônus por pontuação que serão aplicados na nota final, caso o proponente se enquadre. ') ?>
     <section ng-if="data.isActivePointReward">
         <header>
+            <div class="policy-type">
+                <label><?php i::_e('Tipo de bônus') ?></label>
+                <select ng-model="data.bonusType" ng-change="save()">
+                    <option value="percentage"><?php i::_e('Percentual') ?></option>
+                    <option value="fixed"><?php i::_e('Ponto fixo') ?></option>
+                </select>
+            </div>
             <div class="policy-roof">
-                <p> <?php i::_e('Porcentagem total a ser aplicada') ?> </p>
-                <input ng-model="data.affirmativePolicieRoof" ng-change="save()" type="number" step="0.01" value="0.00" min="0.00" max="100.00" placeholder="0,00" class="affirmative_policies-roof edit"> <span>%</span> <span class="detail"><?php i::_e('(0 = Sem limitações)') ?></span>
+                <p ng-if="data.bonusType === 'percentage'"> <?php i::_e('Porcentagem total a ser aplicada') ?> </p>
+                <p ng-if="data.bonusType === 'fixed'"> <?php i::_e('Bônus máximo a ser aplicado') ?> </p>
+                <input ng-model="data.pointRewardRoof" ng-change="save()" type="number" step="0.01" value="0.00" min="0.00" placeholder="0,00" class="affirmative_policies-roof edit" style="width:120px;">
+                <span ng-if="data.bonusType === 'percentage'">%</span>
+                <span ng-if="data.bonusType === 'fixed'"><?php i::_e('pt(s)') ?></span>
+                <span class="detail"><?php i::_e('(0 = Sem limitações)') ?></span>
             </div>
         </header>
 
@@ -19,7 +30,8 @@ use MapasCulturais\i;
             <tr>
                 <th class="policy-field"><?php i::_e('Campo') ?></th>
                 <th class="policy-value"><?php i::_e('Valor') ?></th>
-                <th class="policy-percent"><?php i::_e('Porcentagem') ?></th>
+                <th class="policy-percent" ng-if="data.bonusType === 'percentage'"><?php i::_e('Porcentagem') ?></th>
+                <th class="policy-percent" ng-if="data.bonusType === 'fixed'"><?php i::_e('Pontos') ?></th>
                 <th>
                     <button ng-click="addSessionAffirmativePolice()" class="btn btn-default add" title="<?php i::_e('Adicionar critério') ?>"></button>
                 </th>
@@ -53,7 +65,9 @@ use MapasCulturais\i;
                 </td>
 
                 <td class="policy-percent">
-                    <input ng-model="data.fieldsAffiermativePolicie[policy.id].fieldPercent" type="number" step="0.01" min="0.00" max="100.00" placeholder="0,00" value="{{policy.fieldPercent}}" class="affirmative_policies-roof edit"> <span>%</span>
+                    <input ng-model="data.fieldsAffiermativePolicie[policy.id].bonusValue" type="number" step="0.01" min="0.00" ng-attr-max="data.bonusType === 'percentage' ? 100 : undefined" placeholder="0,00" class="affirmative_policies-roof edit">
+                    <span ng-if="data.bonusType === 'percentage'">%</span>
+                    <span ng-if="data.bonusType === 'fixed'"><?php i::_e('pt(s)') ?></span>
                 </td>
 
                 <td>

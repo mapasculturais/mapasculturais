@@ -270,6 +270,19 @@ class Module extends \MapasCulturais\Module {
         $app->hook('POST(<<agent|space|event|project|opportunity>>.sendSuggestionMessage)', function() use ($plugin) {
             $app = App::i();
 
+            // Impede que usuários autenticados menores de 18 anos enviem mensagens de contato.
+            // Mensagens anônimas (não autenticadas) continuam permitidas, pois não há data de nascimento disponível.
+            if (!$app->user->is('guest')) {
+                $profile = $app->user->profile;
+                if ($profile && $profile->dataDeNascimento) {
+                    $today = new \DateTime('now');
+                    $birthDate = new \DateTime($profile->dataDeNascimento);
+                    if ($birthDate->diff($today)->y < 18) {
+                        throw new \Exception(\MapasCulturais\i::__('Menores de 18 anos não podem enviar mensagens de contato.'));
+                    }
+                }
+            }
+
             // Se não recebemos o token, não há motivo para avançar para a verificação
             if (!isset($_POST["g-recaptcha-response"]) || empty($_POST["g-recaptcha-response"])) {
                 throw new \Exception(\MapasCulturais\i::__('Recaptcha não selecionado ou inválido, tente novamente.'));

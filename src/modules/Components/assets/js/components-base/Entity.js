@@ -75,8 +75,10 @@ class Entity {
             if ((definition.type == 'datetime' || definition.type == 'date' ) && val && !(val instanceof McDate)) {
                 if (typeof val == 'string') {
                     val = new McDate(val);
-                } else {
+                } else if (typeof val?.date == 'string' && val.date) {
                     val = new McDate(val.date);
+                } else {
+                    val = null;
                 }
             }
 

@@ -43,7 +43,9 @@ app.component('complaint-suggestion', {
             suggestion: definitions.suggestion_type.config.options,
         }
 
-        return { definitions, options, typeMessage, hasCaptcha, sendSuccess, recaptchaResponse, formData, isAuth }
+        let disableContact = $MAPAS.complaintSuggestionConfig.disableContact;
+
+        return { definitions, options, typeMessage, hasCaptcha, sendSuccess, recaptchaResponse, formData, isAuth, disableContact }
     },
 
     methods: {

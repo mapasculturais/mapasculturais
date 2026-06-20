@@ -456,6 +456,38 @@ class Module extends \MapasCulturais\Module
             }
         });
 
+        $app->hook("entity(Registration).sendValidationErrors", function(&$errorsResult) use($module) {
+            /** @var Registration $this */
+            $registration = $this;
+            $opportunity = $registration->opportunity;
+
+            foreach ($opportunity->registrationFieldConfigurations as $field) {
+                if ($field->fieldType !== 'persons') {
+                    continue;
+                }
+                if (!$registration->isFieldVisisble($field)) {
+                    continue;
+                }
+
+                $prop_name = $field->getFieldName();
+                $val = $registration->$prop_name;
+
+                if (!is_array($val)) {
+                    continue;
+                }
+
+                $field_name = 'field_' . $field->id;
+                $personErrors = $module->validatePersonsField($field, $val);
+
+                if (!empty($personErrors)) {
+                    if (!isset($errorsResult[$field_name])) {
+                        $errorsResult[$field_name] = [];
+                    }
+                    $errorsResult[$field_name] = array_merge($errorsResult[$field_name], $personErrors);
+                }
+            }
+        });
+
         $app->hook("entity(Registration).save:before", function() use($module, $app) {
             /** @var Registration $this */
             $fix_field = function($entity, $field) use($module){
@@ -643,6 +675,87 @@ class Module extends \MapasCulturais\Module
         }
 
         return $errors;
+    }
+
+    function validatePersonsField(RegistrationFieldConfiguration $field, array $persons): array
+    {
+        $errors = [];
+        $config = $field->config ?? [];
+        $requiredFields = $config['requiredFields'] ?? [];
+
+        $fieldLabels = [
+            'name' => i::__('Nome'),
+            'fullName' => i::__('Nome completo'),
+            'socialName' => i::__('Nome social'),
+            'cpf' => i::__('CPF'),
+            'cnpj' => i::__('CNPJ'),
+            'miniCurriculum' => i::__('Mini currículo'),
+            'income' => i::__('Renda'),
+            'education' => i::__('Escolaridade'),
+            'telephone' => i::__('Telefone do representante'),
+            'email' => i::__('Email'),
+            'race' => i::__('Raça/Cor'),
+            'gender' => i::__('Gênero'),
+            'sexualOrientation' => i::__('Orientação sexual'),
+            'deficiencies' => i::__('Deficiências'),
+            'comunty' => i::__('Comunidade tradicional'),
+            'area' => i::__('Áreas de atuação'),
+            'funcao' => i::__('Funções/Profissões'),
+        ];
+
+        foreach ($persons as $index => $person) {
+            if (!is_array($person) && !is_object($person)) {
+                continue;
+            }
+
+            $personData = (array) $person;
+            $personNumber = $index + 1;
+
+            foreach ($fieldLabels as $key => $label) {
+                if (!$this->isTruthyConfig($config[$key] ?? false)) {
+                    continue;
+                }
+
+                $value = $personData[$key] ?? null;
+
+                if ($this->isTruthyConfig($requiredFields[$key] ?? false) && $this->isEmptyPersonField($value)) {
+                    $errors[] = sprintf(i::__('O campo %s da pessoa %d é obrigatório.'), $label, $personNumber);
+                    continue;
+                }
+
+                if ($this->isEmptyPersonField($value)) {
+                    continue;
+                }
+
+                if ($key === 'cpf' && !\Respect\Validation\Validator::cpf()->validate((string) $value)) {
+                    $errors[] = sprintf(i::__('CPF inválido na pessoa %d.'), $personNumber);
+                }
+
+                if ($key === 'cnpj' && !\Respect\Validation\Validator::cnpj()->validate((string) $value)) {
+                    $errors[] = sprintf(i::__('CNPJ inválido na pessoa %d.'), $personNumber);
+                }
+            }
+        }
+
+        return $errors;
+    }
+
+    protected function isTruthyConfig($value): bool
+    {
+        return $value === true || $value === 1 || $value === '1' || $value === 'true';
+    }
+
+    protected function isEmptyPersonField($value): bool
+    {
+        if (is_array($value)) {
+            return count(array_filter($value)) === 0;
+        }
+
+        if (is_object($value)) {
+            return count(array_filter((array) $value)) === 0;
+        }
+
+        return trim((string) $value) === '';
     }
 
     function normalizeAndValidateCustomTableConfig(RegistrationFieldConfiguration $field): void
@@ -903,7 +1016,7 @@ class Module extends \MapasCulturais\Module
     {
         $app = App::i();
 
-        $agent_fields = ['name', 'shortDescription', 'longDescription', '@location', '@links', '@gallery', '@videos', '@downloads', '@bankFields'];
+        $agent_fields = ['name', 'shortDescription', 'longDescription', '@location', '@links', '@gallery', '@videos', '@downloads'];
         
         $taxonomies_fields = $this->taxonomiesOpportunityFields(true);
 

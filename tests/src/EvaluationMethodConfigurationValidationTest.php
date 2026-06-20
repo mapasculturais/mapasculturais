@@ -77,6 +77,42 @@ class EvaluationMethodConfigurationValidationTest extends TestCase
     }
 
     /**
+     * Cria oportunidade com avaliacao por qualificacao
+     */
+    private function setupOpportunityWithQualificationPhase(): EvaluationMethodConfiguration
+    {
+        $admin = $this->userDirector->createUser('admin');
+        $this->login($admin);
+
+        $opportunity = $this->opportunityBuilder
+            ->reset(owner: $admin->profile, owner_entity: $admin->profile)
+            ->fillRequiredProperties()
+            ->save()
+            ->firstPhase()
+                ->setRegistrationPeriod(new Past)
+                ->done()
+            ->addEvaluationPhase(EvaluationMethods::qualification)
+                ->setEvaluationPeriod(new ConcurrentEndingAfter)
+                ->save()
+                ->done()
+            ->save()
+            ->refresh()
+            ->getInstance();
+
+        $opportunity = $opportunity->refreshed();
+        $config = null;
+        foreach ($opportunity->allPhases as $phase) {
+            if ($phase->evaluationMethodConfiguration && $phase->evaluationMethodConfiguration->type->id === 'qualification') {
+                $config = $phase->evaluationMethodConfiguration;
+                break;
+            }
+        }
+
+        $this->assertNotNull($config, 'Config de avaliacao por qualificacao deve existir');
+        return $config;
+    }
+
+    /**
      * Cenario 1: PATCH com criterio tecnico apontando para secao INEXISTENTE (orfao)
      * 
      * Esperado: Rejeitar com status 400
@@ -382,34 +418,7 @@ class EvaluationMethodConfigurationValidationTest extends TestCase
      */
     function testRejectsQualificationSectionWithoutCriteria()
     {
-        $admin = $this->userDirector->createUser('admin');
-        $this->login($admin);
-
-        $opportunity = $this->opportunityBuilder
-            ->reset(owner: $admin->profile, owner_entity: $admin->profile)
-            ->fillRequiredProperties()
-            ->save()
-            ->firstPhase()
-                ->setRegistrationPeriod(new Past)
-                ->done()
-            ->addEvaluationPhase(EvaluationMethods::qualification)
-                ->setEvaluationPeriod(new ConcurrentEndingAfter)
-                ->save()
-                ->done()
-            ->save()
-            ->refresh()
-            ->getInstance();
-
-        $opportunity = $opportunity->refreshed();
-        $config = null;
-        foreach ($opportunity->allPhases as $phase) {
-            if ($phase->evaluationMethodConfiguration && $phase->evaluationMethodConfiguration->type->id === 'qualification') {
-                $config = $phase->evaluationMethodConfiguration;
-                break;
-            }
-        }
-
-        $this->assertNotNull($config, 'Config de avaliacao por qualificacao deve existir');
+        $config = $this->setupOpportunityWithQualificationPhase();
 
         $patch = $this->requestFactory->PATCH(
             controller_id: 'evaluationMethodConfiguration',
@@ -427,6 +436,161 @@ class EvaluationMethodConfigurationValidationTest extends TestCase
             $patch,
             'Sistema deve REJEITAR secao sem criterios em avaliacao qualification (status 400)'
         );
+    }
+
+    /**
+     * Cenario 9: PATCH qualification com criterio apontando para secao INEXISTENTE (orfao)
+     *
+     * Esperado: Rejeitar com status 400
+     */
+    function testRejectsQualificationCriteriaWithNonExistentSectionId()
+    {
+        $config = $this->setupOpportunityWithQualificationPhase();
+
+        $sectionId = 's-qualification-valid-' . time();
+        $ghostSectionId = 's-qualification-ghost-' . time();
+
+        $patch = $this->requestFactory->PATCH(
+            controller_id: 'evaluationMethodConfiguration',
+            action: 'single',
+            url_params: [$config->id],
+            payload: [
+                'sections' => [
+                    ['id' => $sectionId, 'name' => 'Secao Valida']
+                ],
+                'criteria' => [
+                    [
+                        'id' => 'c-qualification-orphan-' . time(),
+                        'sid' => $ghostSectionId,
+                        'name' => 'Criterio Orfao',
+                        'options' => ['Nao atende']
+                    ]
+                ]
+            ]
+        );
+
+        $this->assertStatus400(
+            $patch,
+            'Sistema deve REJEITAR criterio qualification com sid de secao inexistente (status 400)'
+        );
+    }
+
+    /**
+     * Cenario 10: PATCH qualification com criterio sem nome
+     *
+     * Esperado: Rejeitar com status 400
+     */
+    function testRejectsQualificationCriteriaWithoutName()
+    {
+        $config = $this->setupOpportunityWithQualificationPhase();
+
+        $sectionId = 's-qualification-no-name-' . time();
+
+        $patch = $this->requestFactory->PATCH(
+            controller_id: 'evaluationMethodConfiguration',
+            action: 'single',
+            url_params: [$config->id],
+            payload: [
+                'sections' => [
+                    ['id' => $sectionId, 'name' => 'Secao Valida']
+                ],
+                'criteria' => [
+                    [
+                        'id' => 'c-qualification-no-name-' . time(),
+                        'sid' => $sectionId,
+                        'options' => ['Nao atende']
+                    ]
+                ]
+            ]
+        );
+
+        $this->assertStatus400(
+            $patch,
+            'Sistema deve REJEITAR criterio qualification sem nome (status 400)'
+        );
+    }
+
+    /**
+     * Cenario 11: PATCH qualification com criterio sem opcoes validas
+     *
+     * Esperado: Rejeitar com status 400
+     */
+    function testRejectsQualificationCriteriaWithoutValidOptions()
+    {
+        $config = $this->setupOpportunityWithQualificationPhase();
+
+        $sectionId = 's-qualification-no-options-' . time();
+
+        $patch = $this->requestFactory->PATCH(
+            controller_id: 'evaluationMethodConfiguration',
+            action: 'single',
+            url_params: [$config->id],
+            payload: [
+                'sections' => [
+                    ['id' => $sectionId, 'name' => 'Secao Valida']
+                ],
+                'criteria' => [
+                    [
+                        'id' => 'c-qualification-no-options-' . time(),
+                        'sid' => $sectionId,
+                        'name' => 'Criterio sem opcoes',
+                        'options' => ['   ']
+                    ]
+                ]
+            ]
+        );
+
+        $this->assertStatus400(
+            $patch,
+            'Sistema deve REJEITAR criterio qualification sem opcoes validas (status 400)'
+        );
+    }
+
+    /**
+     * Cenario 12: PATCH qualification valido com nome e opcoes
+     *
+     * Esperado: Aceitar com status 200
+     */
+    function testAcceptsValidQualificationCriteriaAndSections()
+    {
+        $config = $this->setupOpportunityWithQualificationPhase();
+
+        $sectionId = 's-qualification-valid-' . time();
+        $criterionId = 'c-qualification-valid-' . time();
+
+        $patch = $this->requestFactory->PATCH(
+            controller_id: 'evaluationMethodConfiguration',
+            action: 'single',
+            url_params: [$config->id],
+            payload: [
+                'sections' => [
+                    ['id' => $sectionId, 'name' => 'Secao Valida']
+                ],
+                'criteria' => [
+                    [
+                        'id' => $criterionId,
+                        'sid' => $sectionId,
+                        'name' => 'Criterio Valido',
+                        'options' => ['Nao atende']
+                    ]
+                ]
+            ]
+        );
+
+        $this->assertStatus200($patch, 'PATCH qualification valido deve retornar 200');
+
+        App::i()->em->clear();
+        $config = App::i()->repo('EvaluationMethodConfiguration')->find($config->id);
+
+        $sections = $config->sections ?? [];
+        $criteria = $config->criteria ?? [];
+
+        $this->assertCount(1, $sections, 'Deve ter 1 secao qualification');
+        $this->assertCount(1, $criteria, 'Deve ter 1 criterio qualification');
+        $this->assertEquals($sectionId, $sections[0]->id, 'Secao qualification salva corretamente');
+        $this->assertEquals($criterionId, $criteria[0]->id, 'Criterio qualification salvo corretamente');
+        $this->assertEquals($sectionId, $criteria[0]->sid, 'Criterio qualification vinculado a secao correta');
+        $this->assertEquals(['Nao atende'], $criteria[0]->options, 'Opcoes qualification salvas corretamente');
     }
 
     // ==================== HELPERS ====================

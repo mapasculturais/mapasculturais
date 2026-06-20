@@ -167,7 +167,7 @@ $today = new DateTime();
                                 <span>{{entity.agentsData.owner?.raca}}</span>
                             </span>                            
                             <span class="info" v-if="entity.agentsData.owner?.genero"> 
-                                <strong> <?= i::__('Genero') ?>: </strong> 
+                                <strong> <?= i::__('Gênero') ?>: </strong> 
                                 <span>{{entity.agentsData.owner?.genero}}</span>
                             </span>                            
                             <span class="info" v-if="entity.agentsData.owner?.endereco"> 
@@ -344,6 +344,8 @@ $today = new DateTime();
                     <?php endif; ?>
                     <?php $phase = $phase->nextPhase; ?>
                 <?php endwhile ?>
+
+                <?php $this->applyTemplateHook('registration-ficha-tab', 'end', [$entity]) ?>
             </div>
         </mc-tab>
 
