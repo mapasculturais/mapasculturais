@@ -15,6 +15,7 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ### Melhorias
 - Aprimora o módulo de **Plano de Metas e Monitoramento** com campos configuráveis para orientar o preenchimento das metas e entregas previstas na inscrição, incluindo período, orçamento, segmento artístico-cultural, composição de equipe, estratégias de comunicação, acessibilidade, comunidades, receita e evidências. Na etapa de monitoramento, o agente informa os dados executados das entregas a partir do que foi planejado, com campos equivalentes para acompanhamento da execução, validações de obrigatoriedade conforme a configuração da oportunidade e exibição organizada entre formulário, ficha de inscrição, avaliação e exportação.
+- Integra o salvamento do plano de metas às ações gerais de salvar, salvar e sair e enviar a inscrição, removendo o botão específico de salvar meta
 - Permite exibir campos do plano de trabalho na ficha de avaliação
 - Adiciona os campos do plano de trabalho e monitoramento na exportação das inscrições
 - Reorganiza os campos de entrega do plano de trabalho e monitoramento para manter a mesma ordem entre inscrição, visualização e avaliação
@@ -41,6 +42,7 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 ### Correções
 - Corrige avisos de validação do monitoramento que apareciam indevidamente na fase de inscrição
 - Corrige exportação de campos multiselect do plano de trabalho para evitar valores "Array | Array"
+- Corrige aviso de chave indefinida no campo de avatar do formulário de inscrição quando a obrigatoriedade está desativada
 - Corrige a listagem de avaliações para exibir fases de recurso na tela Minhas avaliações
 - Aplica texto de internacionalização faltante no componente opportunity-registration-table
 - Corrige acento faltante no texto "Gênero" na listagem de pessoas do formulário de inscrição
