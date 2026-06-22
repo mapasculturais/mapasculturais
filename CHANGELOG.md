@@ -36,6 +36,7 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Adiciona campos de CNPJ e mini currículo à listagem de pessoas dos formulários de inscrição, com validação de CPF e CNPJ.
 - Melhora a performance da listagem de modelos de oportunidades ao evitar consultas repetidas para identificar modelos oficiais.
 - Otimiza a construção das imagens Docker nos workflows de CI, develop e release candidate ao reutilizar o cache do Buildx armazenado no GitHub Actions.
+- Melhora a performance da criação de oportunidades a partir de modelos ao reduzir salvamentos repetidos de fases e metadados.
 
 ### Correções
 - Corrige avisos de validação do monitoramento que apareciam indevidamente na fase de inscrição
@@ -53,7 +54,7 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Corrige os templates de email da fase de recurso
 - Corrige a exibição das opções de campos de seleção no formato radio para organizá-las verticalmente na ficha de inscrição
 - Corrige a ordenação das últimas planilhas exportadas para exibir os arquivos mais recentes primeiro
-- Corrige a listagem de avaliações para exibir fases de recurso na tela Minhas avaliações
+- Corrige o uso de modelos de oportunidades para respeitar a visibilidade pública, validar permissões e preservar referências de campos condicionais.
 
 ## [7.7.62] - 2026-06-19
 ### Correções
