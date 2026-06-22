@@ -79,6 +79,7 @@ class WorkplanService
                     $delivery->commercialUnits = $d['commercialUnits'] ?? null;
                     $delivery->unitPrice = $d['unitPrice'] ?? null;
                     $delivery->hasCommunityCoauthors = $d['hasCommunityCoauthors'] ?? null;
+                    $delivery->communityCoauthorsDetail = $d['communityCoauthorsDetail'] ?? null;
                     $delivery->hasTransInclusionStrategy = $d['hasTransInclusionStrategy'] ?? null;
                     $delivery->transInclusionActions = $d['transInclusionActions'] ?? null;
                     $delivery->hasAccessibilityPlan = $d['hasAccessibilityPlan'] ?? null;

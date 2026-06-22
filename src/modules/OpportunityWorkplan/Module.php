@@ -1968,6 +1968,12 @@ class Module extends \MapasCulturais\Module{
         ]);
         $app->registerMetadata($hasCommunityCoauthors, Delivery::class);
 
+        $communityCoauthorsDetail = new Metadata('communityCoauthorsDetail', [
+            'label' => \MapasCulturais\i::__('Descreva o envolvimento das comunidades/coletivos como coautores/coexecutores'),
+            'type' => 'text'
+        ]);
+        $app->registerMetadata($communityCoauthorsDetail, Delivery::class);
+
         // Estratégias Trans e Travestis (boolean)
         $hasTransInclusionStrategy = new Metadata('hasTransInclusionStrategy', [
             'label' => \MapasCulturais\i::__('A atividade prevê estratégias voltadas à promoção do acesso de pessoas Trans e Travestis?'),

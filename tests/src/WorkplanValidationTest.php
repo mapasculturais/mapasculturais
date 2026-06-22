@@ -98,5 +98,36 @@ class WorkplanValidationTest extends TestCase
         $this->assertArrayNotHasKey('culturalArtisticSegment', $errors, 'Certificando que não há erro de segmento artístico-cultural quando o campo está preenchido');
         $this->assertArrayNotHasKey('delivery', $errors, 'Certificando que não há erro de entrega quando há pelo menos uma entrega cadastrada para a meta');
     }
-}
 
+    public function testSavePreservesCommunityCoauthorsDetail(): void
+    {
+        $opportunity = $this->createOpportunityWithWorkplanEnabled();
+        $registration = $this->registrationDirector->createSentRegistrations($opportunity, 1)[0];
+        $detail = 'Comunidade participante da concepção e da execução da atividade';
+
+        $data = [
+            'workplan' => [
+                'projectDuration' => 12,
+                'culturalArtisticSegment' => 'Música',
+                'goals' => [[
+                    'monthInitial' => 1,
+                    'monthEnd' => 3,
+                    'title' => 'Meta 1',
+                    'description' => 'Descrição da meta 1',
+                    'deliveries' => [[
+                        'name' => 'Entrega 1',
+                        'description' => 'Descrição da entrega 1',
+                        'typeDelivery' => 'Show realizado',
+                        'hasCommunityCoauthors' => 'true',
+                        'communityCoauthorsDetail' => $detail,
+                    ]],
+                ]],
+            ],
+        ];
+
+        $workplan = (new WorkplanService())->save($registration, null, $data);
+        $delivery = $workplan->goals->first()->deliveries->first();
+
+        $this->assertSame($detail, $delivery->communityCoauthorsDetail);
+    }
+}
