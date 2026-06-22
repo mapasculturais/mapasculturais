@@ -312,6 +312,7 @@ class Module extends \MapasCulturais\Module{
                 $this->jsObject['EntitiesDescription']['workplan'] = Workplan::getPropertiesMetadata();
                 $this->jsObject['EntitiesDescription']['workplan']['goal'] = Goal::getPropertiesMetadata();
                 $this->jsObject['EntitiesDescription']['workplan']['goal']['delivery'] = Delivery::getPropertiesMetadata();
+                $this->jsObject['EntitiesDescription']['delivery'] = Delivery::getPropertiesMetadata();
             });
 
             // FALTA-1: Export workplan data in registration spreadsheets
