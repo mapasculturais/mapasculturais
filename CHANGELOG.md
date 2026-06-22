@@ -8,6 +8,7 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 ## [UNRELEASED]
 ### Correções
 - Corrige a listagem de avaliações para exibir fases de recurso na tela Minhas avaliações
+- Corrige importação de formulários via TXT para que não deixa de importar os filtros por categoria, tipo de proponente e faixa nos campos
 
 ## [7.7.62] - 2026-06-19
 ### Correções

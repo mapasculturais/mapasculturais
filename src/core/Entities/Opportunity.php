@@ -1249,22 +1249,14 @@ abstract class Opportunity extends \MapasCulturais\Entity
                 $newField->maxSize = $field->maxSize;
                 $newField->fieldType = $field->fieldType;
                 $newField->required = $field->required;
-
-                if ($this->isFirstPhase) {
-                    $newField->categories = $field->categories;
-                }
-
+                $newField->categories = $field->categories;
                 $newField->config = $field->config;
                 $newField->fieldOptions = $field->fieldOptions;
                 $newField->displayOrder = $field->displayOrder;
                 $newField->conditional = $field->conditional;
                 $newField->conditionalValue = $field->conditionalValue;
-
-                if ($this->isFirstPhase) {
-                    $newField->proponentTypes = $field->proponentTypes;
-                    $newField->registrationRanges = $field->registrationRanges;
-                }
-
+                $newField->proponentTypes = $field->proponentTypes;
+                $newField->registrationRanges = $field->registrationRanges;
                 $newField->step = $step->id;
 
                 $field->newField = $newField;
@@ -1305,20 +1297,13 @@ abstract class Opportunity extends \MapasCulturais\Entity
                 $newFile->title = $file->title;
                 $newFile->description = $file->description;
                 $newFile->required = $file->required;
-
-                if ($this->isFirstPhase) {
-                    $newFile->categories = $file->categories;
-                }
-
+                $newFile->categories = $file->categories;
                 $newFile->displayOrder = $file->displayOrder;
                 $newFile->conditional = $file->conditional;
                 $newFile->conditionalValue = $file->conditionalValue;
                 $newFile->step = $step->id;
-
-                if ($this->isFirstPhase) {
-                    $newFile->proponentTypes = $file->proponentTypes;
-                    $newFile->registrationRanges = $file->registrationRanges;
-                }
+                $newFile->proponentTypes = $file->proponentTypes;
+                $newFile->registrationRanges = $file->registrationRanges;
 
                 $app->em->persist($newFile);
 
@@ -1382,34 +1367,55 @@ abstract class Opportunity extends \MapasCulturais\Entity
             }
 
             // Metadata
-            if ($this->isFirstPhase) {
-                foreach($importSource->meta as $key => $value) {
-                    if($key == 'continuousFlow') {
-                        if($importSource->meta->isContinuousFlow && !$importSource->meta->hasEndDate) {
-                            $this->$key = isset($value->date) ? new \DateTime($value->date) : null;
-                        }
-                        continue;
-                    }
+            $first_phase_only_metadata = [
+                'registrationCategories',
+                'registrationRanges',
+                'registrationProponentTypes',
+                'useAgentRelationColetivo',
+                'useAgentRelationInstituicao',
+                'useSpaceRelationIntituicao',
+                'registrationCategDescription',
+                'registrationCategTitle',
+                'projectName',
+                'requestAgentAvatar',
+                'enableQuotasQuestion',
+                'registrationSeals',
+                'introInscricoes',
+                'isContinuousFlow',
+                'hasEndDate',
+                'continuousFlow',
+            ];
 
-                    if($key == 'publishTimestamp') {
-                        if($importSource->meta->isContinuousFlow && $importSource->meta->hasEndDate) {
-                            $this->lastPhase->$key = isset($value->date) ? new \DateTime($value->date) : null;
-                        }
-                        continue;
-                    }
-
-                    if($key == 'registrationTo') {
-                        if($importSource->meta->isContinuousFlow && $importSource->meta->hasEndDate) {
-                            $this->$key = isset($value->date) ? new \DateTime($value->date) : null;
-                        }
-                        continue;
-                    }
-
-                    $this->$key = $value;
+            foreach($importSource->meta as $key => $value) {
+                if (!$this->isFirstPhase && in_array($key, $first_phase_only_metadata)) {
+                    continue;
                 }
 
-                $this->save(true);
+                if($key == 'continuousFlow') {
+                    if($importSource->meta->isContinuousFlow && !$importSource->meta->hasEndDate) {
+                        $this->$key = isset($value->date) ? new \DateTime($value->date) : null;
+                    }
+                    continue;
+                }
+
+                if($key == 'publishTimestamp') {
+                    if($importSource->meta->isContinuousFlow && $importSource->meta->hasEndDate) {
+                        $this->lastPhase->$key = isset($value->date) ? new \DateTime($value->date) : null;
+                    }
+                    continue;
+                }
+
+                if($key == 'registrationTo') {
+                    if($importSource->meta->isContinuousFlow && $importSource->meta->hasEndDate) {
+                        $this->$key = isset($value->date) ? new \DateTime($value->date) : null;
+                    }
+                    continue;
+                }
+
+                $this->$key = $value;
             }
+
+            $this->save(true);
 
             $app->applyHookBoundTo($this, "entity({$this->getHookClassPath()}).importFields:after", [&$importSource, &$created_fields, &$created_files]);
 
