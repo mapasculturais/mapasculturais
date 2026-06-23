@@ -30,7 +30,7 @@
         "curl/curl": "1.2.*",
         "laminas/laminas-diactoros": "^3.6",
         "scienta/doctrine-json-functions": "^5.4",
-        "phpunit/phpunit": "^10.5",
+        "phpunit/phpunit": "^12.5",
         "psy/psysh": "^0.12.8",
         "fakerphp/faker": "^1.24",
         "dompdf/dompdf": "^3.1",
