@@ -44,6 +44,7 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Corrige exportação de campos multiselect do plano de trabalho para evitar valores "Array | Array"
 - Corrige aviso de chave indefinida no campo de avatar do formulário de inscrição quando a obrigatoriedade está desativada
 - Corrige a listagem de avaliações para exibir fases de recurso na tela Minhas avaliações
+- Evita erro ao selecionar inscrições de proponente coletivo para fases posteriores quando a oportunidade não utiliza vínculo com agente coletivo e não há selo configurado.
 - Aplica texto de internacionalização faltante no componente opportunity-registration-table
 - Corrige acento faltante no texto "Gênero" na listagem de pessoas do formulário de inscrição
 - Corrige a exibição do nome do agente coletivo nos cards da tela Minhas inscrições
