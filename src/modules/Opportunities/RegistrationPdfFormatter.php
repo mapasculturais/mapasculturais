@@ -19,6 +19,15 @@ class RegistrationPdfFormatter
         return self::stringifyValue($value);
     }
 
+    public static function formatFieldValueAsHtml(object $fieldConfig, mixed $value): string
+    {
+        if (self::isCustomTableField($fieldConfig) && is_array($value)) {
+            return self::formatCustomTableValueAsHtml($fieldConfig, $value);
+        }
+
+        return nl2br(self::escape(self::formatFieldValue($fieldConfig, $value)));
+    }
+
     private static function isLocationField(object $fieldConfig): bool
     {
         $config = $fieldConfig->config ?? [];
@@ -32,6 +41,64 @@ class RegistrationPdfFormatter
         }
 
         return false;
+    }
+
+    private static function isCustomTableField(object $fieldConfig): bool
+    {
+        return ($fieldConfig->fieldType ?? null) === 'custom-table';
+    }
+
+    private static function formatCustomTableValueAsHtml(object $fieldConfig, array $rows): string
+    {
+        $columns = self::getConfigValue($fieldConfig->config ?? [], 'columns', []);
+
+        if (!$columns || !$rows) {
+            return '';
+        }
+
+        $html = '<table class="custom-table-view"><thead><tr>';
+
+        foreach ($columns as $column) {
+            $html .= '<th>' . self::escape(self::getConfigValue($column, 'name', '')) . '</th>';
+        }
+
+        $html .= '</tr></thead><tbody>';
+
+        foreach ($rows as $row) {
+            $html .= '<tr>';
+
+            foreach ($columns as $index => $column) {
+                $cellValue = self::getConfigValue($row, "col{$index}", '');
+                $html .= '<td>' . self::escape(self::formatCustomTableCell($column, $cellValue)) . '</td>';
+            }
+
+            $html .= '</tr>';
+        }
+
+        return $html . '</tbody></table>';
+    }
+
+    private static function formatCustomTableCell(mixed $column, mixed $value): string
+    {
+        $type = self::getConfigValue($column, 'type', 'text');
+        $value = self::stringifyValue($value);
+
+        if ($type === 'date') {
+            return self::formatDate($value);
+        }
+
+        return $value;
+    }
+
+    private static function formatDate(string $value): string
+    {
+        $date = \DateTimeImmutable::createFromFormat('!Y-m-d', substr($value, 0, 10));
+
+        if ($date) {
+            return $date->format('d/m/Y');
+        }
+
+        return $value;
     }
 
     private static function formatLocationValue(array $value): string
@@ -149,5 +216,23 @@ class RegistrationPdfFormatter
         }
 
         return trim((string) $value);
+    }
+
+    private static function getConfigValue(mixed $source, string|int $key, mixed $default = null): mixed
+    {
+        if (is_array($source)) {
+            return $source[$key] ?? $default;
+        }
+
+        if (is_object($source)) {
+            return $source->{$key} ?? $default;
+        }
+
+        return $default;
+    }
+
+    private static function escape(string $value): string
+    {
+        return htmlspecialchars($value, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
     }
 }

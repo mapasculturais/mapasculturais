@@ -56,4 +56,41 @@ class RegistrationPdfFormatterTest extends TestCase
         $this->assertStringNotContainsString('latitude', $formatted);
         $this->assertStringNotContainsString('publicLocation', $formatted);
     }
+
+    public function testFormatsCustomTableFieldAsHtmlTable(): void
+    {
+        $config = (object) [
+            'fieldType' => 'custom-table',
+            'config' => [
+                'columns' => [
+                    ['name' => 'Nome', 'type' => 'text'],
+                    ['name' => 'Nascimento', 'type' => 'date'],
+                    ['name' => 'Função', 'type' => 'select'],
+                ],
+            ],
+        ];
+
+        $value = [
+            [
+                'col0' => 'Maria Silva',
+                'col1' => '1990-05-12',
+                'col2' => 'Coordenação',
+            ],
+            [
+                'col0' => 'João Souza',
+                'col1' => '1988-11-30',
+                'col2' => 'Produção',
+            ],
+        ];
+
+        $formatted = RegistrationPdfFormatter::formatFieldValueAsHtml($config, $value);
+
+        $this->assertStringContainsString('<table', $formatted);
+        $this->assertStringContainsString('<th>Nome</th>', $formatted);
+        $this->assertStringContainsString('<th>Nascimento</th>', $formatted);
+        $this->assertStringContainsString('<td>Maria Silva</td>', $formatted);
+        $this->assertStringContainsString('<td>12/05/1990</td>', $formatted);
+        $this->assertStringContainsString('<td>Produção</td>', $formatted);
+        $this->assertStringNotContainsString('Array', $formatted);
+    }
 }

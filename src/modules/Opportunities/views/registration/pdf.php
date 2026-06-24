@@ -168,14 +168,12 @@ $opportunity->registerRegistrationMetadata();
             // Campos normais
             $fieldName = $config->fieldName;
             $value = $registration->$fieldName ?? null;
-            $formattedValue = RegistrationPdfFormatter::formatFieldValue($config, $value);
+            $formattedValue = RegistrationPdfFormatter::formatFieldValueAsHtml($config, $value);
             
             if ($formattedValue !== ''): ?>
                 <div class="field">
                     <span class="field-label"><?= $config->required ? '* ' : '' ?><?= htmlspecialchars($config->title) ?>:</span>
-                    <span class="field-value">
-                        <?= nl2br(htmlspecialchars($formattedValue)) ?>
-                    </span>
+                    <div class="field-value"><?= $formattedValue ?></div>
                 </div>
             <?php endif; ?>
         <?php endif; ?>
