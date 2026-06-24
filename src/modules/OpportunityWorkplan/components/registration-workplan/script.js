@@ -13,6 +13,7 @@ app.component('registration-workplan', {
     data() {
         this.getWorkplan();
 
+        const workplanOpportunity = this.registration.workplanOpportunity || this.registration.opportunity.parent || this.registration.opportunity;
         const entityWorkplan = new Entity('workplan');
         entityWorkplan.id = null;
         entityWorkplan.registrationId = this.registration.id;
@@ -25,16 +26,29 @@ app.component('registration-workplan', {
 
         return {
             enableWorkplanInStep: enableWorkplanInStep,
-            opportunity: this.registration.opportunity,
+            opportunity: workplanOpportunity,
             workplan: entityWorkplan,
             workplanFields: $MAPAS.EntitiesDescription.workplan,
             expandedGoals: [],
-            enableButtonNewGoal: false
+            enableButtonNewGoal: false,
+            beforeSaveHandler: null,
         };
     },
     mounted() {
         this.handleHashChange();
+        this.beforeSaveHandler = (event) => {
+            if (event.detail?.registrationId !== this.registration.id) {
+                return;
+            }
+
+            event.detail.promises.push(this.save_(false, false));
+        };
         window.addEventListener('hashchange', this.handleHashChange);
+        globalThis.addEventListener('registration.beforeSave', this.beforeSaveHandler);
+    },
+    beforeUnmount() {
+        window.removeEventListener('hashchange', this.handleHashChange);
+        globalThis.removeEventListener('registration.beforeSave', this.beforeSaveHandler);
     },
     computed: {
         getWorkplanLabelDefault() {
@@ -48,7 +62,7 @@ app.component('registration-workplan', {
             const label = this.opportunity.deliveryLabelDefault ? this.opportunity.deliveryLabelDefault : $MAPAS.EntitiesDescription.opportunity.deliveryLabelDefault.default_value;
             return this.pluralParaSingular(label);
         },
-        
+
     },
     methods: {
         handleHashChange() {
@@ -57,9 +71,9 @@ app.component('registration-workplan', {
 
             if (this.registration.opportunity.registrationSteps.length > 1) {
                 if (stepMatch && stepMatch[1]) {
-                    const stepNumber = parseInt(stepMatch[1], 10); 
+                    const stepNumber = parseInt(stepMatch[1], 10);
                     this.enableWorkplanInStep = stepNumber === this.registration.opportunity.registrationSteps.length;
-    
+
                 } else {
                     this.enableWorkplanInStep = false;
                 }
@@ -67,28 +81,172 @@ app.component('registration-workplan', {
                 this.enableWorkplanInStep = true;
             }
 
-            if (this.enableWorkplanInStep) {
-                this.startTutorialWorkplan();
-            }
+            // if (this.enableWorkplanInStep) {
+            //     this.startTutorialWorkplan();
+            // }
         },
         getWorkplan() {
             const api = new API('workplan');
-            
+
             const response = api.GET(`${this.registration.id}`);
             response.then((res) => res.json().then((data) => {
                 if (data.workplan != null) {
+                    this.ensureDeliveryFieldsInitialized(data.workplan);
                     this.workplan = data.workplan;
                     this.updateEnableButtonNewGoal();
                 }
             }));
         },
-        
+
+        ensureDeliveryFieldsInitialized(workplan = null) {
+            // Ensure all goals and their deliveries have the new fields initialized
+            const wp = workplan || this.workplan;
+            if (!wp.goals) return;
+
+            wp.goals.forEach(goal => {
+                if (!goal.deliveries) return;
+
+                goal.deliveries.forEach(delivery => {
+                    // Initialize array fields (required for mc-multiselect)
+                    // Parse JSON strings if needed
+                    if (typeof delivery.revenueType === 'string') {
+                        delivery.revenueType = JSON.parse(delivery.revenueType || '[]');
+                    }
+                    if (!Array.isArray(delivery.revenueType)) delivery.revenueType = [];
+
+                    if (typeof delivery.expectedAccessibilityMeasures === 'string') {
+                        delivery.expectedAccessibilityMeasures = JSON.parse(delivery.expectedAccessibilityMeasures || '[]');
+                    }
+                    if (!Array.isArray(delivery.expectedAccessibilityMeasures)) delivery.expectedAccessibilityMeasures = [];
+
+                    if (typeof delivery.communicationChannels === 'string') {
+                        delivery.communicationChannels = JSON.parse(delivery.communicationChannels || '[]');
+                    }
+                    if (!Array.isArray(delivery.communicationChannels)) delivery.communicationChannels = [];
+
+                    if (typeof delivery.innovationTypes === 'string') {
+                        delivery.innovationTypes = JSON.parse(delivery.innovationTypes || '[]');
+                    }
+                    if (!Array.isArray(delivery.innovationTypes)) delivery.innovationTypes = [];
+
+                    if (typeof delivery.documentationTypes === 'string') {
+                        delivery.documentationTypes = JSON.parse(delivery.documentationTypes || '[]');
+                    }
+                    if (!Array.isArray(delivery.documentationTypes)) delivery.documentationTypes = [];
+
+                    // Initialize paidStaffByRole
+                    if (typeof delivery.paidStaffByRole === 'string') {
+                        delivery.paidStaffByRole = JSON.parse(delivery.paidStaffByRole || '[]');
+                    }
+                    if (!Array.isArray(delivery.paidStaffByRole)) {
+                        delivery.paidStaffByRole = [];
+                    } else {
+                        // Ensure each staff object has customRole property
+                        delivery.paidStaffByRole.forEach(staff => {
+                            if (!('customRole' in staff)) staff.customRole = '';
+                        });
+                    }
+
+                    // Initialize teamCompositionGender - PARSE JSON STRING FROM API
+                    if (typeof delivery.teamCompositionGender === 'string') {
+                        try {
+                            delivery.teamCompositionGender = JSON.parse(delivery.teamCompositionGender);
+                        } catch (e) {
+                            delivery.teamCompositionGender = {
+                                cisgenderWoman: 0,
+                                cisgenderMan: 0,
+                                transgenderWoman: 0,
+                                transgenderMan: 0,
+                                nonBinary: 0,
+                                otherGenderIdentity: 0,
+                                preferNotToSay: 0
+                            };
+                        }
+                    }
+                    if (!delivery.teamCompositionGender || typeof delivery.teamCompositionGender !== 'object') {
+                        delivery.teamCompositionGender = {
+                            cisgenderWoman: 0,
+                            cisgenderMan: 0,
+                            transgenderWoman: 0,
+                            transgenderMan: 0,
+                            nonBinary: 0,
+                            otherGenderIdentity: 0,
+                            preferNotToSay: 0
+                        };
+                    } else {
+                        // Ensure all properties exist and convert to numbers
+                        delivery.teamCompositionGender.cisgenderWoman = Number(delivery.teamCompositionGender.cisgenderWoman) || 0;
+                        delivery.teamCompositionGender.cisgenderMan = Number(delivery.teamCompositionGender.cisgenderMan) || 0;
+                        delivery.teamCompositionGender.transgenderWoman = Number(delivery.teamCompositionGender.transgenderWoman) || 0;
+                        delivery.teamCompositionGender.transgenderMan = Number(delivery.teamCompositionGender.transgenderMan) || 0;
+                        delivery.teamCompositionGender.nonBinary = Number(delivery.teamCompositionGender.nonBinary) || 0;
+                        delivery.teamCompositionGender.otherGenderIdentity = Number(delivery.teamCompositionGender.otherGenderIdentity) || 0;
+                        delivery.teamCompositionGender.preferNotToSay = Number(delivery.teamCompositionGender.preferNotToSay) || 0;
+                    }
+
+                    // Initialize teamCompositionRace - PARSE JSON STRING FROM API
+                    if (typeof delivery.teamCompositionRace === 'string') {
+                        try {
+                            delivery.teamCompositionRace = JSON.parse(delivery.teamCompositionRace);
+                        } catch (e) {
+                            delivery.teamCompositionRace = {
+                                white: 0,
+                                black: 0,
+                                brown: 0,
+                                indigenous: 0,
+                                asian: 0,
+                                notDeclared: 0
+                            };
+                        }
+                    }
+                    if (!delivery.teamCompositionRace || typeof delivery.teamCompositionRace !== 'object') {
+                        delivery.teamCompositionRace = {
+                            white: 0,
+                            black: 0,
+                            brown: 0,
+                            indigenous: 0,
+                            asian: 0,
+                            notDeclared: 0
+                        };
+                    } else {
+                        // Ensure all properties exist and convert to numbers
+                        delivery.teamCompositionRace.white = Number(delivery.teamCompositionRace.white) || 0;
+                        delivery.teamCompositionRace.black = Number(delivery.teamCompositionRace.black) || 0;
+                        delivery.teamCompositionRace.brown = Number(delivery.teamCompositionRace.brown) || 0;
+                        delivery.teamCompositionRace.indigenous = Number(delivery.teamCompositionRace.indigenous) || 0;
+                        delivery.teamCompositionRace.asian = Number(delivery.teamCompositionRace.asian) || 0;
+                        delivery.teamCompositionRace.notDeclared = Number(delivery.teamCompositionRace.notDeclared) || 0;
+                    }
+
+                    // Initialize simple fields if they don't exist
+                    if (!('monthInitial' in delivery)) delivery.monthInitial = null;
+                    if (!('monthEnd' in delivery)) delivery.monthEnd = null;
+                    if (!('artChainLink' in delivery)) delivery.artChainLink = null;
+                    if (!('totalBudget' in delivery)) delivery.totalBudget = '';
+                    if (!('numberOfCities' in delivery)) delivery.numberOfCities = null;
+                    if (!('numberOfNeighborhoods' in delivery)) delivery.numberOfNeighborhoods = null;
+                    if (!('mediationActions' in delivery)) delivery.mediationActions = null;
+                    if (!('commercialUnits' in delivery)) delivery.commercialUnits = null;
+                    if (!('unitPrice' in delivery)) delivery.unitPrice = '';
+                    if (!('hasCommunityCoauthors' in delivery)) delivery.hasCommunityCoauthors = null;
+                    if (!('communityCoauthorsDetail' in delivery)) delivery.communityCoauthorsDetail = null;
+                    if (!('hasTransInclusionStrategy' in delivery)) delivery.hasTransInclusionStrategy = null;
+                    if (!('transInclusionActions' in delivery)) delivery.transInclusionActions = null;
+                    if (!('hasAccessibilityPlan' in delivery)) delivery.hasAccessibilityPlan = null;
+                    if (!('hasEnvironmentalPractices' in delivery)) delivery.hasEnvironmentalPractices = null;
+                    if (!('environmentalPracticesDescription' in delivery)) delivery.environmentalPracticesDescription = null;
+                    if (!('hasPressStrategy' in delivery)) delivery.hasPressStrategy = null;
+                    if (!('hasInnovationAction' in delivery)) delivery.hasInnovationAction = null;
+                });
+            });
+        },
+
         async newGoal() {
             if (!this.validateGoal()) {
                 return false;
             }
 
-            this.startTutorialGoal();
+            // this.startTutorialGoal();
 
             const entityGoal = new Entity('goal');
             entityGoal.id = null;
@@ -99,15 +257,15 @@ app.component('registration-workplan', {
             entityGoal.culturalMakingStage = null;
             entityGoal.deliveries = [];
 
-        
+
             this.workplan.goals.push(entityGoal);
             this.expandedGoals.push(this.workplan.goals.length - 1);
         },
         async deleteGoal(goal) {
             const api = new API('workplan');
-            
+
             if (goal.id) {
-                const response = api.DELETE('goal', {id: goal.id});
+                const response = api.DELETE('goal', { id: goal.id });
                 response.then((res) => res.json().then((data) => {
                     this.workplan.goals = this.workplan.goals.filter(g => g.id !== goal.id);
                     this.updateEnableButtonNewGoal();
@@ -115,12 +273,12 @@ app.component('registration-workplan', {
             } else {
                 const index = this.workplan.goals.indexOf(goal);
                 if (index !== -1) {
-                    this.workplan.goals.splice(index, 1);Zs
+                    this.workplan.goals.splice(index, 1);
                     this.expandedGoals = this.expandedGoals
                         .filter(i => i !== index)
                         .map(i => i > index ? i - 1 : i);
-                    
-                        this.updateEnableButtonNewGoal();
+
+                    this.updateEnableButtonNewGoal();
                 }
             }
         },
@@ -129,10 +287,12 @@ app.component('registration-workplan', {
                 return false;
             }
 
-            this.startTutorialDelivery();
+            // this.startTutorialDelivery();
 
             const entityDelivery = new Entity('delivery');
             entityDelivery.id = null;
+            entityDelivery.monthInitial = null;
+            entityDelivery.monthEnd = null;
             entityDelivery.name = null;
             entityDelivery.description = null;
             entityDelivery.typeDelivery = null
@@ -143,13 +303,54 @@ app.component('registration-workplan', {
             entityDelivery.unitValueForecast = null;
             entityDelivery.totalValueForecast = null;
 
+            // Novos campos de planejamento
+            entityDelivery.artChainLink = null;
+            entityDelivery.totalBudget = '';
+            entityDelivery.numberOfCities = null;
+            entityDelivery.numberOfNeighborhoods = null;
+            entityDelivery.mediationActions = null;
+            entityDelivery.paidStaffByRole = [];
+            entityDelivery.teamCompositionGender = {
+                cisgenderWoman: 0,
+                cisgenderMan: 0,
+                transgenderWoman: 0,
+                transgenderMan: 0,
+                nonBinary: 0,
+                otherGenderIdentity: 0,
+                preferNotToSay: 0
+            };
+            entityDelivery.teamCompositionRace = {
+                white: 0,
+                black: 0,
+                brown: 0,
+                indigenous: 0,
+                asian: 0,
+                notDeclared: 0
+            };
+            entityDelivery.revenueType = [];
+            entityDelivery.commercialUnits = null;
+            entityDelivery.unitPrice = '';
+            entityDelivery.hasCommunityCoauthors = null;
+            entityDelivery.communityCoauthorsDetail = null;
+            entityDelivery.hasTransInclusionStrategy = null;
+            entityDelivery.transInclusionActions = null;
+            entityDelivery.hasAccessibilityPlan = null;
+            entityDelivery.expectedAccessibilityMeasures = [];
+            entityDelivery.hasEnvironmentalPractices = null;
+            entityDelivery.environmentalPracticesDescription = null;
+            entityDelivery.hasPressStrategy = null;
+            entityDelivery.communicationChannels = [];
+            entityDelivery.hasInnovationAction = null;
+            entityDelivery.innovationTypes = [];
+            entityDelivery.documentationTypes = [];
+
             goal.deliveries.push(entityDelivery);
         },
         async deleteDelivery(delivery) {
             const api = new API('workplan');
 
             if (delivery.id) {
-                const response = api.DELETE('delivery', {id: delivery.id});
+                const response = api.DELETE('delivery', { id: delivery.id });
                 response.then((res) => res.json().then((data) => {
                     this.workplan.goals = this.workplan.goals.map(goal => {
                         if (goal.deliveries) {
@@ -168,22 +369,29 @@ app.component('registration-workplan', {
                     return goal;
                 });
             }
-           
+
         },
         validateGoal() {
             const messages = useMessages();
 
             let validationMessages = [];
 
+            // Validação de nível workplan
+            if (this.opportunity.workplan_dataProjectInformCulturalArtisticSegment &&
+                this.opportunity.workplan_dataProjectRequireCulturalArtisticSegment &&
+                !this.workplan.culturalArtisticSegment) {
+                validationMessages.push('Segmento artístico-cultural do plano de metas obrigatório');
+            }
+
             this.workplan.goals.forEach((goal, index) => {
                 let emptyFields = [];
-                let position = index+1;
+                let position = index + 1;
 
                 // Verificar cada campo do objeto `goal`
                 if (!goal.monthInitial) emptyFields.push("Mês inicial");
                 if (!goal.monthEnd) emptyFields.push("Mês final");
-                if (!goal.title) emptyFields.push(`Título da ${this.getGoalLabelDefault}`);
-                if (!goal.description) emptyFields.push("Descrição");
+                if (this.opportunity.workplan_goalInformTitle && this.opportunity.workplan_goalRequireTitle && !goal.title) emptyFields.push(`Título da ${this.getGoalLabelDefault}`);
+                if (this.opportunity.workplan_goalInformDescription && this.opportunity.workplan_goalRequireDescription && !goal.description) emptyFields.push("Descrição");
                 if (this.opportunity.workplan_metaInformTheStageOfCulturalMaking && !goal.culturalMakingStage) emptyFields.push("Etapa do fazer cultural");
                 if (this.opportunity.workplan_deliveryReportTheDeliveriesLinkedToTheGoals && goal.deliveries.length === 0) emptyFields.push(`${this.getDeliveryLabelDefault}`);
 
@@ -192,7 +400,7 @@ app.component('registration-workplan', {
                     emptyFields.push(`${this.getDeliveryLabelDefault}`);
                     emptyFields.push(validateDelivery);
                 }
-        
+
                 // Adicionar mensagem ao array se houver campos vazios
                 if (emptyFields.length > 0) {
 
@@ -203,12 +411,12 @@ app.component('registration-workplan', {
                     );
                 }
             });
-        
+
             if (validationMessages.length > 0) {
                 messages.error(validationMessages);
                 return false;
             }
-            
+
             return true;
         },
         validateDelivery(goal) {
@@ -218,18 +426,82 @@ app.component('registration-workplan', {
 
             goal.deliveries.forEach((delivery, index) => {
                 let emptyFields = [];
-                let position = index+1;
-        
+                let position = index + 1;
+
                 if ('name' in delivery && !delivery.name) emptyFields.push(`Nome da ${this.getDeliveryLabelDefault}`);
-                if ('description' in delivery && !delivery.description) emptyFields.push("Descrição");
+                if ('description' in delivery && !delivery.description) emptyFields.push(`Descrição da ${this.getDeliveryLabelDefault}`);
                 if ('typeDelivery' in delivery && !delivery.typeDelivery) emptyFields.push(`Tipo de ${this.getDeliveryLabelDefault}`);
-                if (this.opportunity.workplan_registrationInformCulturalArtisticSegment && 'segmentDelivery' in delivery && !delivery.segmentDelivery) emptyFields.push(`Segmento artístico-cultural da ${this.getDeliveryLabelDefault}`);
-                if (this.opportunity.workplan_registrationReportTheNumberOfParticipants && 'expectedNumberPeople' in delivery && !delivery.expectedNumberPeople) emptyFields.push("Número previsto de pessoas");
+
+                // Validação de mês inicial e final em relação ao período da meta
+                if (this.opportunity.workplan_deliveryInformDeliveryPeriod) {
+                    if (this.opportunity.workplan_deliveryRequireDeliveryPeriod && !delivery.monthInitial) {
+                        emptyFields.push(`Mês inicial da ${this.getDeliveryLabelDefault}`);
+                    } else if (delivery.monthInitial && goal.monthInitial && parseInt(delivery.monthInitial) < parseInt(goal.monthInitial)) {
+                        emptyFields.push(`Mês inicial da ${this.getDeliveryLabelDefault} deve estar dentro do período da ${this.getGoalLabelDefault} (mês ${goal.monthInitial} a ${goal.monthEnd})`);
+                    }
+                    if (this.opportunity.workplan_deliveryRequireDeliveryPeriod && !delivery.monthEnd) {
+                        emptyFields.push(`Mês final da ${this.getDeliveryLabelDefault}`);
+                    } else if (delivery.monthEnd && goal.monthEnd && parseInt(delivery.monthEnd) > parseInt(goal.monthEnd)) {
+                        emptyFields.push(`Mês final da ${this.getDeliveryLabelDefault} deve estar dentro do período da ${this.getGoalLabelDefault} (mês ${goal.monthInitial} a ${goal.monthEnd})`);
+                    } else if (delivery.monthInitial && delivery.monthEnd && parseInt(delivery.monthEnd) < parseInt(delivery.monthInitial)) {
+                        emptyFields.push(`Mês final da ${this.getDeliveryLabelDefault} não pode ser anterior ao mês inicial`);
+                    }
+                }
+
+                // Campos configuráveis: só valida se habilitado E obrigatório
+                if (this.opportunity.workplan_registrationInformCulturalArtisticSegment && this.opportunity.workplan_deliveryRequireSegment && !delivery.segmentDelivery) emptyFields.push(`Segmento artístico-cultural da ${this.getDeliveryLabelDefault}`);
+                if (this.opportunity.workplan_registrationReportTheNumberOfParticipants && this.opportunity.workplan_deliveryRequireExpectedNumberPeople && !delivery.expectedNumberPeople) emptyFields.push("Número previsto de pessoas");
                 if (this.opportunity.workplan_registrationReportExpectedRenevue && 'generaterRevenue' in delivery && !delivery.generaterRevenue) emptyFields.push(`A ${this.getDeliveryLabelDefault} irá gerar receita?`);
                 if (delivery.generaterRevenue == 'true' && 'renevueQtd' in delivery && !delivery.renevueQtd) emptyFields.push("Quantidade");
                 if (delivery.generaterRevenue == 'true' && 'unitValueForecast' in delivery && !delivery.unitValueForecast) emptyFields.push("Previsão de valor unitário");
                 if (delivery.generaterRevenue == 'true' && 'totalValueForecast' in delivery && !delivery.totalValueForecast) emptyFields.push("Previsão de valor total");
-                
+
+                // Novos campos configuráveis
+                if (this.opportunity.workplan_deliveryInformArtChainLink && this.opportunity.workplan_deliveryRequireArtChainLink && !delivery.artChainLink) emptyFields.push("Principal elo das artes acionado");
+                if (this.opportunity.workplan_deliveryInformTotalBudget && this.opportunity.workplan_deliveryRequireTotalBudget && (delivery.totalBudget === null || delivery.totalBudget === '')) emptyFields.push("Orçamento total da atividade");
+                if (this.opportunity.workplan_deliveryInformNumberOfCities && this.opportunity.workplan_deliveryRequireNumberOfCities && (delivery.numberOfCities === null || delivery.numberOfCities === '')) emptyFields.push("Número de municípios");
+                if (this.opportunity.workplan_deliveryInformNumberOfNeighborhoods && this.opportunity.workplan_deliveryRequireNumberOfNeighborhoods && (delivery.numberOfNeighborhoods === null || delivery.numberOfNeighborhoods === '')) emptyFields.push("Número de bairros");
+                if (this.opportunity.workplan_deliveryInformMediationActions && this.opportunity.workplan_deliveryRequireMediationActions && (delivery.mediationActions === null || delivery.mediationActions === '')) emptyFields.push("Ações de mediação/formação de público");
+                // Validação de pessoas remuneradas por função
+                if (this.opportunity.workplan_deliveryInformPaidStaffByRole && this.opportunity.workplan_deliveryRequirePaidStaffByRole) {
+                    if (!Array.isArray(delivery.paidStaffByRole) || !delivery.paidStaffByRole.length) {
+                        emptyFields.push("Pessoas remuneradas por função");
+                    } else {
+                        // Validar se todos os itens têm função e quantidade preenchidos
+                        let hasInvalidStaff = false;
+                        delivery.paidStaffByRole.forEach((staff, idx) => {
+                            if (!staff.role || staff.count === null || staff.count === '' || staff.count === 0) {
+                                hasInvalidStaff = true;
+                            }
+                            // Se a função é "Outra", verificar se customRole está preenchido
+                            if (staff.role === 'Outra' && !staff.customRole) {
+                                hasInvalidStaff = true;
+                            }
+                        });
+                        if (hasInvalidStaff) {
+                            emptyFields.push("Pessoas remuneradas por função - todos os campos devem estar preenchidos");
+                        }
+                    }
+                }
+                if (this.opportunity.workplan_deliveryInformTeamComposition && this.opportunity.workplan_deliveryRequireTeamCompositionGender && (!delivery.teamCompositionGender || !this.calculateGenderTotal(delivery.teamCompositionGender))) emptyFields.push("Composição da equipe por gênero");
+                if (this.opportunity.workplan_deliveryInformTeamComposition && this.opportunity.workplan_deliveryRequireTeamCompositionRace && (!delivery.teamCompositionRace || !this.calculateRaceTotal(delivery.teamCompositionRace))) emptyFields.push("Composição da equipe por raça/cor");
+                if (this.opportunity.workplan_deliveryInformRevenueType && this.opportunity.workplan_deliveryRequireRevenueType && (!Array.isArray(delivery.revenueType) || !delivery.revenueType.length)) emptyFields.push("Tipo de receita previsto");
+                if (this.opportunity.workplan_deliveryInformCommercialUnits && this.opportunity.workplan_deliveryRequireCommercialUnits && (delivery.commercialUnits === null || delivery.commercialUnits === '')) emptyFields.push("Quantidade de unidades para comercialização");
+                if (this.opportunity.workplan_deliveryInformCommercialUnits && this.opportunity.workplan_deliveryRequireUnitPrice && (delivery.unitPrice === null || delivery.unitPrice === '')) emptyFields.push("Valor unitário previsto");
+                if (this.opportunity.workplan_deliveryInformCommunityCoauthors && !delivery.hasCommunityCoauthors) emptyFields.push("Envolvimento de comunidades como coautores");
+                if (this.opportunity.workplan_deliveryInformCommunityCoauthors && delivery.hasCommunityCoauthors === 'true' && this.opportunity.workplan_deliveryRequireCommunityCoauthorsDetail && !delivery.communityCoauthorsDetail) emptyFields.push("Detalhamento do envolvimento de comunidades");
+                if (this.opportunity.workplan_deliveryInformTransInclusion && !delivery.hasTransInclusionStrategy) emptyFields.push("Estratégia de inclusão Trans/Travestis");
+                if (this.opportunity.workplan_deliveryInformTransInclusion && delivery.hasTransInclusionStrategy === 'true' && this.opportunity.workplan_deliveryRequireTransInclusionActions && !delivery.transInclusionActions) emptyFields.push("Ações de inclusão Trans e Travestis");
+                if (this.opportunity.workplan_deliveryInformAccessibilityPlan && !delivery.hasAccessibilityPlan) emptyFields.push("Plano de acessibilidade");
+                if (this.opportunity.workplan_deliveryInformAccessibilityPlan && delivery.hasAccessibilityPlan === 'true' && this.opportunity.workplan_deliveryRequireExpectedAccessibilityMeasures && (!Array.isArray(delivery.expectedAccessibilityMeasures) || !delivery.expectedAccessibilityMeasures.length)) emptyFields.push("Medidas de acessibilidade previstas");
+                if (this.opportunity.workplan_deliveryInformEnvironmentalPractices && !delivery.hasEnvironmentalPractices) emptyFields.push("Práticas socioambientais");
+                if (this.opportunity.workplan_deliveryInformEnvironmentalPractices && delivery.hasEnvironmentalPractices === 'true' && this.opportunity.workplan_deliveryRequireEnvironmentalPracticesDescription && !delivery.environmentalPracticesDescription) emptyFields.push("Descrição de práticas socioambientais");
+                if (this.opportunity.workplan_deliveryInformPressStrategy && this.opportunity.workplan_deliveryRequireHasPressStrategy && !delivery.hasPressStrategy) emptyFields.push("Estratégias de comunicação");
+                if (this.opportunity.workplan_deliveryInformCommunicationChannels && this.opportunity.workplan_deliveryRequireCommunicationChannels && (!Array.isArray(delivery.communicationChannels) || !delivery.communicationChannels.length)) emptyFields.push("Canais de comunicação");
+                if (this.opportunity.workplan_deliveryInformInnovation && !delivery.hasInnovationAction) emptyFields.push("Previsão de ação de experimentação/inovação");
+                if (this.opportunity.workplan_deliveryInformInnovation && delivery.hasInnovationAction === 'true' && this.opportunity.workplan_deliveryRequireInnovationTypes && (!Array.isArray(delivery.innovationTypes) || !delivery.innovationTypes.length)) emptyFields.push("Tipos de experimentação/inovação");
+                if (this.opportunity.workplan_deliveryInformDocumentationTypes && this.opportunity.workplan_deliveryRequireDocumentationTypes && (!Array.isArray(delivery.documentationTypes) || !delivery.documentationTypes.length)) emptyFields.push("Tipo de documentação");
+
                 if (emptyFields.length > 0) {
                     const emptyFieldsList = `<ul>${emptyFields.map(item => `<li>${item}</li>`).join('')}</ul>`;
 
@@ -238,14 +510,14 @@ app.component('registration-workplan', {
                     );
                 }
             });
-        
+
             return validationMessages;
         },
-        async save_(enableValidations = true) {    
+        async save_(enableValidations = true, showSuccessMessage = true) {
             if (enableValidations && !this.validateGoal()) {
                 return false;
             }
-            const messages = useMessages();        
+            const messages = useMessages();
             const api = new API('workplan');
 
             let data = {
@@ -253,12 +525,18 @@ app.component('registration-workplan', {
                 workplan: this.workplan,
             };
 
-            const response = api.POST(`save`, data);
-            response.then((res) => res.json().then((data) => {                
-                this.getWorkplan();
-                this.updateEnableButtonNewGoal();
+            const response = await api.POST(`save`, data);
+            const responseData = await response.json();
+
+            this.ensureDeliveryFieldsInitialized(responseData.workplan);
+            this.workplan = responseData.workplan;
+            this.updateEnableButtonNewGoal();
+
+            if (showSuccessMessage) {
                 messages.success(this.text('Modificações salvas'));
-            }));    
+            }
+
+            return true;
         },
         range(start, end) {
             return Array.from({ length: end - start + 1 }, (_, i) => start + i);
@@ -267,20 +545,25 @@ app.component('registration-workplan', {
             this.enableButtonNewGoal = this.enableNewGoal(this.workplan);
         },
         enableNewGoal(workplan) {
-            if (workplan.projectDuration == null || workplan.culturalArtisticSegment == null) {
+            if (workplan.projectDuration == null) {
+                return false;
+            }
+            if (this.opportunity.workplan_dataProjectInformCulturalArtisticSegment && workplan.culturalArtisticSegment == null) {
                 return false;
             }
 
             if (!this.opportunity.workplan_metaLimitNumberOfGoals) {
                 return true;
             }
-            
+
             return this.opportunity.workplan_metaMaximumNumberOfGoals > workplan.goals.length;
         },
         enableNewDelivery(goal) {
             if (this.opportunity.workplan_deliveryReportTheDeliveriesLinkedToTheGoals) {
                 if (this.opportunity.workplan_deliveryLimitNumberOfDeliveries) {
-                    return this.opportunity.workplan_deliveryMaximumNumberOfDeliveries > goal.deliveries.length;
+                    const maximumNumberOfDeliveries = parseInt(this.opportunity.workplan_deliveryMaximumNumberOfDeliveries, 10);
+                    const normalizedMaximum = Number.isInteger(maximumNumberOfDeliveries) && maximumNumberOfDeliveries >= 1 ? maximumNumberOfDeliveries : 1;
+                    return normalizedMaximum > goal.deliveries.length;
                 }
                 return true;
             }
@@ -292,28 +575,29 @@ app.component('registration-workplan', {
             return new Intl.NumberFormat("pt-BR", {
                 style: "currency",
                 currency: "BRL"
-              }).format(value);
+            }).format(value);
         },
         optionsProjectDurationData() {
             if (this.opportunity.workplan_dataProjectlimitMaximumDurationOfProjects) {
-                return this.opportunity.workplan_dataProjectmaximumDurationInMonths;
+                const maximumDurationInMonths = parseInt(this.opportunity.workplan_dataProjectmaximumDurationInMonths, 10);
+                return Number.isInteger(maximumDurationInMonths) && maximumDurationInMonths >= 1 ? maximumDurationInMonths : 1;
             } else {
                 return 60;
             }
         },
         toggle(index) {
             if (this.expandedGoals.includes(index)) {
-              this.expandedGoals = this.expandedGoals.filter((i) => i !== index);
+                this.expandedGoals = this.expandedGoals.filter((i) => i !== index);
             } else {
-              this.expandedGoals.push(index);
+                this.expandedGoals.push(index);
             }
         },
         isExpanded(index) {
-            return this.expandedGoals.includes(index); 
+            return this.expandedGoals.includes(index);
         },
         pluralParaSingular(texto) {
             const palavras = texto.split(' ');
-        
+
             const palavrasNoSingular = palavras.map(palavra => {
                 if (palavra.endsWith('ões')) {
                     palavra = palavra.slice(0, -3) + 'ão';
@@ -334,19 +618,18 @@ app.component('registration-workplan', {
                 } else if (palavra.endsWith('s')) {
                     palavra = palavra.slice(0, -1);
                 }
-        
+
                 return palavra.toLowerCase();
             });
-    
+
             return palavrasNoSingular.join(' ');
         },
-        tutorialButtonsDisabled() {
+        tutorialButtonsFirstStep() {
             return [
                 {
-                    text: 'Desativar assistente de configuração',
+                    text: 'Fechar',
                     action: () => {
-                        this.disableTutorial();
-                        this.tour.complete(); // Fecha o tutorial imediatamente
+                        this.tour.complete();
                     },
                     classes: 'button button--secondary button--sm'
                 },
@@ -355,66 +638,62 @@ app.component('registration-workplan', {
                     action: this.tour.next,
                     classes: 'button button--primary button--sm'
                 }
-          ];
+            ];
         },
         tutorialButtonsDefault() {
             return [
                 {
-                  text: 'Voltar',
-                  action: this.tour.back,
-                  classes: 'button button--solid-dark button--sm'
+                    text: 'Voltar',
+                    action: this.tour.back,
+                    classes: 'button button--solid-dark button--sm'
                 },
                 {
-                  text: 'Avançar',
-                  action: this.tour.next,
-                  classes: 'button button--primary button--sm'
+                    text: 'Avançar',
+                    action: this.tour.next,
+                    classes: 'button button--primary button--sm'
                 }
-              ];
+            ];
         },
         titleTutorial() {
             return "Assistente de Configuração - Plano de metas";
         },
         startTutorialWorkplan() {
-            if (this.isTutorialDisabled()) {
-                return;
-            }
-
             if (this.tour) {
-                this.tour.complete(); 
+                this.tour.complete();
                 this.tour = null;
             }
 
             this.tour = new Shepherd.Tour({
-              useModalOverlay: true, // Escurece a tela
-              defaultStepOptions: {
-                cancelIcon: {
-                    enabled: true
+                useModalOverlay: true,
+                defaultStepOptions: {
+                    cancelIcon: {
+                        enabled: true
+                    },
+                    classes: 'shadow-md bg-white p-4 rounded-lg',
+                    scrollTo: true
+                }
+            });
+
+            this.tour.addStep({
+                id: 'registration-workplan',
+                title: this.titleTutorial(),
+                text: 'Bem-vindo ao tutorial do Plano de Metas! Aqui você aprenderá a usá-lo de forma fácil e eficiente.',
+                attachTo: {
+                    element: '#registration-workplan',
+                    on: 'bottom'
                 },
-                classes: 'shadow-md bg-white p-4 rounded-lg', // Estilização
-                scrollTo: true
-              }
+                buttons: this.tutorialButtonsFirstStep()
             });
-      
+
             this.tour.addStep({
-              id: 'registration-workplan',
-              title: this.titleTutorial(),
-              text: 'Bem-vindo ao tutorial do Plano de Metas! Aqui você aprenderá a usá-lo de forma fácil e eficiente.',
-              attachTo: {
-                element: '#registration-workplan',
-                on: 'bottom'
-              },
-              buttons: this.tutorialButtonsDisabled()
-            });
-      
-            this.tour.addStep({
-              id: 'projectDuration',
-              title: this.titleTutorial(),
-              text: 'Este campo exibe a duração do projeto em meses.',
-              attachTo: {
-                element: '#projectDuration',
-                on: 'bottom'
-              },
-              buttons: this.tutorialButtonsDefault()
+                id: 'projectDuration',
+                title: this.titleTutorial(),
+                text: 'Este campo exibe a duração do projeto em meses.',
+                attachTo: {
+                    element: '#projectDuration',
+                    on: 'bottom'
+                },
+                buttons: this.tutorialButtonsDefault()
             });
 
             this.tour.addStep({
@@ -422,52 +701,48 @@ app.component('registration-workplan', {
                 title: this.titleTutorial(),
                 text: 'Este campo exibe o segmento artístico-cultural. Após o preenchimento, um botão para cadastro de metas será habilitado.',
                 attachTo: {
-                  element: '#culturalArtisticSegment',
-                  on: 'bottom'
+                    element: '#culturalArtisticSegment',
+                    on: 'bottom'
                 },
                 buttons: this.tutorialButtonsDefault()
             });
-      
+
             this.tour.start();
         },
         startTutorialGoal() {
-            if (this.isTutorialDisabled()) {
-                return;
-            }
-
             if (this.tour) {
-                this.tour.complete(); 
+                this.tour.complete();
                 this.tour = null;
             }
 
             this.tour = new Shepherd.Tour({
-              useModalOverlay: true, // Escurece a tela
-              defaultStepOptions: {
-                classes: 'shadow-md bg-white p-4 rounded-lg', // Estilização
-                scrollTo: true
-              }
+                useModalOverlay: true,
+                defaultStepOptions: {
+                    classes: 'shadow-md bg-white p-4 rounded-lg',
+                    scrollTo: true
+                }
             });
-      
+
             this.tour.addStep({
-              id: 'container_goals',
-              title: this.titleTutorial(),
-              text: 'Preencha as metas do projeto.',
-              attachTo: {
-                element: '#container_goals',
-                on: 'bottom'
-              },
-              buttons: this.tutorialButtonsDisabled()
+                id: 'container_goals',
+                title: this.titleTutorial(),
+                text: 'Preencha as metas do projeto.',
+                attachTo: {
+                    element: '#container_goals',
+                    on: 'bottom'
+                },
+                buttons: this.tutorialButtonsFirstStep()
             });
-      
+
             this.tour.addStep({
-              id: 'registration-workplan__delete-goal',
-              title: this.titleTutorial(),
-              text: 'O botão "Excluir meta" permite remover uma meta cadastrada ou em processo de cadastro.',
-              attachTo: {
-                element: '#registration-workplan__delete-goal',
-                on: 'bottom'
-              },
-              buttons: this.tutorialButtonsDefault()
+                id: 'registration-workplan__delete-goal',
+                title: this.titleTutorial(),
+                text: 'O botão "Excluir meta" permite remover uma meta cadastrada ou em processo de cadastro.',
+                attachTo: {
+                    element: '#registration-workplan__delete-goal',
+                    on: 'bottom'
+                },
+                buttons: this.tutorialButtonsDefault()
             });
 
             this.tour.addStep({
@@ -475,88 +750,123 @@ app.component('registration-workplan', {
                 title: this.titleTutorial(),
                 text: 'O botão "+ Entrega" permite adicionar uma nova entrega à sua meta.',
                 attachTo: {
-                  element: '#button-registration-workplan__new-delivery',
-                  on: 'bottom'
+                    element: '#button-registration-workplan__new-delivery',
+                    on: 'bottom'
                 },
                 buttons: this.tutorialButtonsDefault()
             });
 
-            this.tour.addStep({
-                id: 'button-registration-workplan__save-goal',
-                title: this.titleTutorial(),
-                text: 'Última etapa! Clique no botão "Salvar metas" para garantir que suas metas e entregas sejam salvas.',
-                attachTo: {
-                  element: '#button-registration-workplan__save-goal',
-                  on: 'bottom'
-                },
-                buttons: this.tutorialButtonsDefault()
-            });
-            
             this.tour.start();
         },
         startTutorialDelivery() {
-            if (this.isTutorialDisabled()) {
-                return;
-            }
-
             if (this.tour) {
-                this.tour.complete(); 
+                this.tour.complete();
                 this.tour = null;
             }
 
             this.tour = new Shepherd.Tour({
-              useModalOverlay: true, // Escurece a tela
-              defaultStepOptions: {
-                classes: 'shadow-md bg-white p-4 rounded-lg', // Estilização
-                scrollTo: true
-              }
-            });
-      
-            this.tour.addStep({
-              id: 'container_deliveries',
-              title: this.titleTutorial(),
-              text: 'Preencha as informações das suas entregas.',
-              attachTo: {
-                element: '#container_deliveries',
-                on: 'bottom'
-              },
-              buttons: this.tutorialButtonsDisabled()
-            });
-      
-            this.tour.addStep({
-              id: 'registration-workplan__delete-delivery',
-              title: this.titleTutorial(),
-              text: 'Botão "Excluir entrega" para remover a entrega cadastrada ou em processo de cadastro.',
-              attachTo: {
-                element: '#registration-workplan__delete-delivery',
-                on: 'bottom'
-              },
-              buttons: this.tutorialButtonsDefault()
+                useModalOverlay: true,
+                defaultStepOptions: {
+                    classes: 'shadow-md bg-white p-4 rounded-lg',
+                    scrollTo: true
+                }
             });
 
             this.tour.addStep({
-                id: 'button-registration-workplan__save-goal',
+                id: 'container_deliveries',
                 title: this.titleTutorial(),
-                text: 'Última etapa! Para garantir que suas metas e entregas sejam salvas, clique no botão "Salvar metas".',
+                text: 'Preencha as informações das suas entregas.',
                 attachTo: {
-                  element: '#button-registration-workplan__save-goal',
-                  on: 'bottom'
+                    element: '#container_deliveries',
+                    on: 'bottom'
+                },
+                buttons: this.tutorialButtonsFirstStep()
+            });
+
+            this.tour.addStep({
+                id: 'registration-workplan__delete-delivery',
+                title: this.titleTutorial(),
+                text: 'Botão "Excluir entrega" para remover a entrega cadastrada ou em processo de cadastro.',
+                attachTo: {
+                    element: '#registration-workplan__delete-delivery',
+                    on: 'bottom'
                 },
                 buttons: this.tutorialButtonsDefault()
             });
 
-            this.disableTutorial();
-            
             this.tour.start();
         },
-        isTutorialDisabled() {
-            return localStorage.getItem('tutorialDisabled') === 'true';
-        },
-        disableTutorial() {
-            localStorage.setItem('tutorialDisabled', 'true');
-        },
         enableTutorial() {
-            localStorage.setItem('tutorialDisabled', 'false');
+            // Método mantido para compatibilidade - tutoriais agora estão sempre disponíveis
+        },
+
+        // ============================================
+        // MÉTODOS PARA NOVOS CAMPOS ESTRUTURADOS
+        // ============================================
+
+        // Pessoas remuneradas por função
+        addPaidStaffRole(delivery) {
+            if (!Array.isArray(delivery.paidStaffByRole)) {
+                delivery.paidStaffByRole = [];
+            }
+            delivery.paidStaffByRole.push({ role: '', count: 0, customRole: '' });
+        },
+        removePaidStaffRole(delivery, index) {
+            delivery.paidStaffByRole.splice(index, 1);
+        },
+
+        // Calcular total de composição por gênero
+        calculateGenderTotal(composition) {
+            if (!composition) return 0;
+            const total = (Number(composition.cisgenderWoman) || 0) +
+                (Number(composition.cisgenderMan) || 0) +
+                (Number(composition.transgenderWoman) || 0) +
+                (Number(composition.transgenderMan) || 0) +
+                (Number(composition.nonBinary) || 0) +
+                (Number(composition.otherGenderIdentity) || 0) +
+                (Number(composition.preferNotToSay) || 0);
+            return total;
+        },
+
+        // Calcular total de composição por raça/cor
+        calculateRaceTotal(composition) {
+            if (!composition) return 0;
+            const total = (Number(composition.white) || 0) +
+                (Number(composition.black) || 0) +
+                (Number(composition.brown) || 0) +
+                (Number(composition.indigenous) || 0) +
+                (Number(composition.asian) || 0) +
+                (Number(composition.notDeclared) || 0);
+            return total;
+        },
+
+        // ============================================
+        // MÉTODOS HELPER PARA MULTISELECT
+        // ============================================
+
+        // Remove item de um array multiselect
+        removeMultiselectItem(array, key) {
+            const index = array.indexOf(key);
+            if (index > -1) {
+                array.splice(index, 1);
+            }
+        },
+
+        // Toggle item em array multiselect (usado pelos mc-tag-list)
+        toggleRevenueType(delivery, key) {
+            this.removeMultiselectItem(delivery.revenueType, key);
+        },
+        toggleAccessibilityMeasures(delivery, key) {
+            this.removeMultiselectItem(delivery.expectedAccessibilityMeasures, key);
+        },
+        toggleCommunicationChannels(delivery, key) {
+            this.removeMultiselectItem(delivery.communicationChannels, key);
+        },
+        toggleInnovationTypes(delivery, key) {
+            this.removeMultiselectItem(delivery.innovationTypes, key);
+        },
+        toggleDocumentationTypes(delivery, key) {
+            this.removeMultiselectItem(delivery.documentationTypes, key);
         },
     },
 })

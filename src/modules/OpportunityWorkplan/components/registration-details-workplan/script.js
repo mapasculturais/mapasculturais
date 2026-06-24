@@ -9,6 +9,10 @@ app.component('registration-details-workplan', {
             type: Entity,
             required: true
         },
+        evaluationFields: {
+            type: Object,
+            default: null
+        },
     },
     data() {
         this.getWorkplan();
@@ -16,7 +20,7 @@ app.component('registration-details-workplan', {
         const entityWorkplan = new Entity('workplan');
 
         return {
-            opportunity: this.registration.opportunity,
+            opportunity: this.registration.workplanOpportunity || this.registration.opportunity.parent || this.registration.opportunity,
             workplan: entityWorkplan,
         };
     },
@@ -31,6 +35,15 @@ app.component('registration-details-workplan', {
         getDeliveryLabelDefault() {
             const label = this.opportunity.deliveryLabelDefault ? this.opportunity.deliveryLabelDefault : $MAPAS.EntitiesDescription.opportunity.deliveryLabelDefault.default_value;
             return this.pluralParaSingular(label);
+        },
+        fields() {
+            return this.evaluationFields || this.opportunity.avaliableEvaluationFields || {};
+        },
+        showField() {
+            return (fieldName) => {
+                if (!this.evaluationFields) return true;
+                return this.fields[fieldName] === "true";
+            };
         },
     },
     methods: {
@@ -49,6 +62,21 @@ app.component('registration-details-workplan', {
                 style: "currency",
                 currency: "BRL"
               }).format(field);
+        },
+        parseJson(value) {
+            if (!value) {
+                return null;
+            }
+
+            if (Array.isArray(value) || typeof value === 'object') {
+                return value;
+            }
+
+            try {
+                return JSON.parse(value);
+            } catch (error) {
+                return null;
+            }
         },
         pluralParaSingular(texto) {
             const palavras = texto.split(' ');
