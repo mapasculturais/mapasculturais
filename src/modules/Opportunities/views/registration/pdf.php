@@ -1,4 +1,6 @@
 <?php
+use MapasCulturais\Modules\Opportunities\RegistrationPdfFormatter;
+
 /**
  * @var MapasCulturais\App $app
  * @var MapasCulturais\Themes\BaseV2\Theme $this
@@ -166,18 +168,13 @@ $opportunity->registerRegistrationMetadata();
             // Campos normais
             $fieldName = $config->fieldName;
             $value = $registration->$fieldName ?? null;
+            $formattedValue = RegistrationPdfFormatter::formatFieldValue($config, $value);
             
-            if ($value !== null && $value !== ''): ?>
+            if ($formattedValue !== ''): ?>
                 <div class="field">
                     <span class="field-label"><?= $config->required ? '* ' : '' ?><?= htmlspecialchars($config->title) ?>:</span>
                     <span class="field-value">
-                        <?php if (is_array($value)): ?>
-                            <?= htmlspecialchars(implode(', ', $value)) ?>
-                        <?php elseif (is_object($value)): ?>
-                            <?= htmlspecialchars(json_encode($value, JSON_UNESCAPED_UNICODE)) ?>
-                        <?php else: ?>
-                            <?= nl2br(htmlspecialchars($value)) ?>
-                        <?php endif; ?>
+                        <?= nl2br(htmlspecialchars($formattedValue)) ?>
                     </span>
                 </div>
             <?php endif; ?>
