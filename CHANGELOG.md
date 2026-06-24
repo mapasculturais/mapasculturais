@@ -35,7 +35,6 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Permite criar agentes no fluxo de inscrição de oportunidades respeitando as permissões: agente individual apenas para administradores e agente coletivo para usuários comuns quando exigido pela inscrição.
 - Permite buscar avaliadores por ID do agente no formato #ID e e-mail do usuário ao adicioná-los ou substituí-los nas comissões de avaliação.
 - Adiciona campos de CNPJ e mini currículo à listagem de pessoas dos formulários de inscrição, com validação de CPF e CNPJ.
-- Melhora a performance da listagem de modelos de oportunidades ao evitar consultas repetidas para identificar modelos oficiais.
 - Otimiza a construção das imagens Docker nos workflows de CI, develop e release candidate ao reutilizar o cache do Buildx armazenado no GitHub Actions.
 - Melhora a performance da criação de oportunidades a partir de modelos ao reduzir salvamentos repetidos de fases e metadados.
 
@@ -43,7 +42,6 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Corrige avisos de validação do monitoramento que apareciam indevidamente na fase de inscrição
 - Corrige exportação de campos multiselect do plano de trabalho para evitar valores "Array | Array"
 - Corrige aviso de chave indefinida no campo de avatar do formulário de inscrição quando a obrigatoriedade está desativada
-- Corrige a listagem de avaliações para exibir fases de recurso na tela Minhas avaliações
 - Evita erro ao selecionar inscrições de proponente coletivo para fases posteriores quando a oportunidade não utiliza vínculo com agente coletivo e não há selo configurado.
 - Aplica texto de internacionalização faltante no componente opportunity-registration-table
 - Corrige acento faltante no texto "Gênero" na listagem de pessoas do formulário de inscrição
@@ -58,6 +56,14 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Corrige a exibição das opções de campos de seleção no formato radio para organizá-las verticalmente na ficha de inscrição
 - Corrige a ordenação das últimas planilhas exportadas para exibir os arquivos mais recentes primeiro
 - Corrige o uso de modelos de oportunidades para respeitar a visibilidade pública, validar permissões e preservar referências de campos condicionais.
+
+## [7.7.63] - 2026-06-24
+### Melhorias
+- Melhora a performance da listagem de modelos de oportunidades ao evitar consultas repetidas para identificar modelos oficiais.
+
+### Correções
+- Corrige a listagem de avaliações para exibir fases de recurso na tela Minhas avaliações
+- Corrige importação de formulários via TXT para que não deixa de importar os filtros por categoria, tipo de proponente e faixa nos campos
 
 ## [7.7.62] - 2026-06-19
 ### Correções
