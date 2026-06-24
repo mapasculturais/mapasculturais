@@ -453,10 +453,20 @@ abstract class EvaluationMethod extends Module implements \JsonSerializable{
 
         $all_status_sent = true;
         foreach ($evaluations as $evaluation) {
-            $registration_evaluation = $evaluation['evaluation_id'] ? $app->repo('RegistrationEvaluation')->find($evaluation['evaluation_id']) : false;
+            if ($evaluation['valuer_committee'] === '@tiebreaker') {
+                continue;
+            }
 
-            if (!$registration_evaluation && $evaluation['evaluation_status'] !== RegistrationEvaluation::STATUS_SENT) {
-                $all_status_sent = false;
+            if ($this->slug == 'continuous') {
+                if (!$evaluation['evaluation_id']) {
+                    $all_status_sent = false;
+                    break;
+                }
+            } else {
+                if ($evaluation['evaluation_status'] != RegistrationEvaluation::STATUS_SENT) {
+                    $all_status_sent = false;
+                    break;
+                }
             }
         }
 

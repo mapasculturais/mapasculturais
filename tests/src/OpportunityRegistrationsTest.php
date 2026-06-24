@@ -5,6 +5,7 @@ namespace Test;
 use MapasCulturais\API;
 use MapasCulturais\App;
 use MapasCulturais\ApiQuery;
+use Opportunities\Module as OpportunitiesModule;
 use Tests\Abstract\TestCase;
 use Tests\Traits\UserDirector;
 use Tests\Enums\ProponentTypes;
@@ -25,6 +26,63 @@ class OpportunityRegistrationsTest extends TestCase
         AgentDirector,
         UserDirector,
         RequestFactory;
+
+
+    function testApproveCollectiveRegistrationWithoutAgentRelationAndWithoutSealDoesNotFail() {
+        $app = App::i();
+        $admin = $this->userDirector->createUser('admin');
+        $this->login($admin);
+
+        /** @var Opportunity */
+        $opportunity = $this->opportunityBuilder
+                            ->reset(owner: $admin->profile, owner_entity: $admin->profile)
+                            ->fillRequiredProperties()
+                            ->setProponentTypes()
+                            ->save()
+                            ->firstPhase()
+                                ->setRegistrationPeriod(new Open)
+                                ->done()
+                            ->save()
+                            ->refresh()
+                            ->getInstance();
+
+        $app->disableAccessControl();
+        $opportunity->publishRegistrations();
+        $app->enableAccessControl();
+
+        $registration = $this->registrationDirector->createSentRegistrations(
+            $opportunity,
+            number_of_registrations: 1,
+            proponent_type: ProponentTypes::COLETIVO->value
+        )[0];
+
+        $registration->opportunity->proponentSeals = (object) [
+            ProponentTypes::COLETIVO->value => []
+        ];
+        $registration->opportunity->proponentAgentRelation = (object) [
+            ProponentTypes::COLETIVO->value => false,
+            ProponentTypes::PESSOA_JURIDICA->value => false,
+        ];
+
+        $this->assertTrue($opportunity->publishedRegistrations);
+        $this->assertIsObject($registration->opportunity->proponentSeals);
+        $this->assertEquals([ProponentTypes::COLETIVO->value => []], (array) $registration->opportunity->proponentSeals);
+        $this->assertCount(0, $registration->getAgentRelations());
+
+        $registration->setStatusToApproved(true);
+
+        $this->assertEquals(Registration::STATUS_APPROVED, $registration->status);
+    }
+
+
+    function testApplySealIgnoresMissingAgent() {
+        /** @var OpportunitiesModule $module */
+        $module = App::i()->modules['Opportunities'];
+
+        $module->applySeal(null, []);
+
+        $this->assertTrue(true);
+    }
 
 
     function testRequiredOneLevelConditionalField() {
