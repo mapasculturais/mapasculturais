@@ -38,6 +38,7 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Melhora a performance da listagem de modelos de oportunidades ao evitar consultas repetidas para identificar modelos oficiais.
 - Otimiza a construção das imagens Docker nos workflows de CI, develop e release candidate ao reutilizar o cache do Buildx armazenado no GitHub Actions.
 - Melhora a performance da criação de oportunidades a partir de modelos ao reduzir salvamentos repetidos de fases e metadados.
+- Melhora a exportação do PDF de inscrição para exibir campos de endereço e tabela em formato legível
 
 ### Correções
 - Corrige avisos de validação do monitoramento que apareciam indevidamente na fase de inscrição
