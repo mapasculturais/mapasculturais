@@ -9,7 +9,7 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 ### Novas Funcionalidades
 - Módulo de **fase de execução** que permite ao gestor configurar uma fase de acompanhamento para os agentes contemplados após a publicação do resultado. Durante esta fase, o agente contemplado pode abrir múltiplos **pedidos de alteração** no projeto aprovado — troca de data, substituição de item de orçamento, mudança de local, entre outros. Cada pedido é avaliado individualmente por uma comissão configurada pelo gestor (mesmo modelo de avaliação simplificada já existente nas fases de seleção). Os pedidos ficam como registro histórico das alterações aprovadas durante a vigência do projeto e não interferem no fluxo das fases seguintes de prestação de informações.
 - **Bônus de pontuação configurável** no método de avaliação técnica, permitindo ao gestor definir regras de bonificação por políticas afirmativas em percentual ou ponto fixo. A configuração permite controlar o valor máximo do bônus, aplicar o acréscimo às inscrições elegíveis, exibir corretamente o bônus nas tabelas e exportações, reaplicar a pontuação quando as regras forem alteradas e manter compatibilidade com configurações legadas por meio de normalização automática.
-- Implementa configuração que permide definir a imagem de avatar de qualquer entidade como obrigatória
+- Implementa configuração que permite definir a imagem de avatar de qualquer entidade como obrigatória
 - Adiciona botão para duplicar campos do formulário de inscrição, criando a cópia logo abaixo do campo original
 - Adiciona botão para duplicar anexos do formulário de inscrição, incluindo a cópia do arquivo modelo e inserindo o novo anexo logo abaixo do original
 
@@ -21,12 +21,12 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Reorganiza os campos de entrega do plano de trabalho e monitoramento para manter a mesma ordem entre inscrição, visualização e avaliação
 - Melhora a validação de campos obrigatórios do plano de trabalho e monitoramento conforme as configurações da oportunidade
 - Utiliza o componente de moeda nos campos monetários do monitoramento
-- Adiciona um campo de busca para encontrar colunas por palavra-chave na listagem por tabela nas entidades.
-- Implementa a funcionalidade que permite ao saasSuperAdmin ordenar globalmente as colunas das tabelas que utilizam o entity-table, por meio de drag and drop.
-- Suprime campo de RG do cadastro do agente e dos campos @ para prevalecer o uso do CIN (Carteira de  Identidade Nacional)
+- Adiciona um campo de busca para encontrar colunas por palavra-chave na listagem em tabela das entidades.
+- Implementa a funcionalidade que permite ao saasSuperAdmin ordenar globalmente as colunas das tabelas que utilizam o entity-table, por meio de arrastar e soltar.
+- Suprime o campo de RG do cadastro do agente e dos campos @ para prevalecer o uso do CIN (Carteira de Identidade Nacional)
 - Ordena opções de tipos de campos da lista de campos @ em ordem alfabética
 - Ajusta exportação da planilha para organizar as colunas segundo a ordem definida pelo superSaasAdmin
-- Melhora a exibição do botão minha conta no header para exibir o nome do perfil do agente responsável logado
+- Melhora a exibição do botão Minha conta no cabeçalho para exibir o nome do perfil do agente responsável logado
 - Implementa visualização das datas de recurso no step vertical de fases
 - Adiciona configuração para exibir ou ocultar o detalhamento da avaliação anterior na fase de recurso
 - Exibe o detalhamento da avaliação da fase anterior para avaliadores da fase de recurso
@@ -54,7 +54,7 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Corrige erro ao reordenar etapas na configuração do formulário de oportunidades
 - Corrige a exportação de oportunidades para não incluir datas das fases de avaliação quando a opção de exportar datas das fases estiver desmarcada
 - Corrige o cálculo ponderado dos subtotais na tela de avaliação técnica
-- Corrige os templates de email da fase de recurso
+- Corrige os templates de e-mail da fase de recurso
 - Corrige a exibição das opções de campos de seleção no formato radio para organizá-las verticalmente na ficha de inscrição
 - Corrige a ordenação das últimas planilhas exportadas para exibir os arquivos mais recentes primeiro
 - Corrige o uso de modelos de oportunidades para respeitar a visibilidade pública, validar permissões e preservar referências de campos condicionais.
@@ -66,7 +66,7 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 ## [7.7.61] - 2026-06-19
 ### Melhorias
 - Implementa flag que desliga por padrão o envio de e-mails do recurso
-- Melhora configuração de cretérios das avaliações técnica e qualificação documental, para que nao fique validando e dando erros a cada clique
+- Melhora a configuração de critérios das avaliações técnica e de qualificação documental para evitar validações e erros a cada clique
 
 ## [7.7.60] - 2026-06-18
 ### Correções
@@ -88,7 +88,7 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ## [7.7.56] - 2026-06-15
 ### Correções
-- Implementa a correção na distribuição dos avaliadores de forma a evitar que uma avaliação já realizada seja desatribuída de um determinado avaliador
+- Corrige a distribuição dos avaliadores de forma a evitar que uma avaliação já realizada seja desatribuída de um determinado avaliador
 
 ## [7.7.55] - 2026-06-12
 ### Melhorias
@@ -99,14 +99,14 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 ### Correções
 - Faz ajustes em nomes de colunas na tabela e planilha de avaliações
 - Corrige erro ao carregar políticas afirmativas sem pontuação configurada
-- Desativa log de tempo de execução durante testes para reduzir ruído no output
+- Desativa o log de tempo de execução durante testes para reduzir ruído na saída
 - Ajusta layout da configuração de exclusão de contas em Gestão de usuários
 
 ## [7.7.54] - 2026-06-10
 ### Correções
 - Corrige exibição dos modelos criados para o saasAdmin
 - Corrige inclusão e exclusão de avaliadores na comissão de avaliação sem precisar recarregar a página
-- Protege o id da entidade em cache quando a API retorna erro no findOne e ao atualizar permissões das fases
+- Protege o ID da entidade em cache quando a API retorna erro no findOne e ao atualizar permissões das fases
 
 ## [7.7.53] - 2026-06-09
 ### Melhorias
@@ -116,8 +116,8 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Evita o carregamento indesejado de texto e botão ao utilizar o mc-modal
 
 ### Correções
-- Melhorar controle de permissões para exclusão de fases
-- Corrigir validação de campos de inscrição configurados incorretamente
+- Melhora o controle de permissões para exclusão de fases
+- Corrige a validação de campos de inscrição configurados incorretamente
 - Corrige o sincronismo das inscrições na fase de recurso, garantindo que avancem normalmente entre as fases
 
 ## [7.7.52] - 2026-06-05
@@ -139,7 +139,7 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ## [7.7.49] - 2026-05-29
 ### Melhorias
-- Aplicação de função `text` no titulo da página de Termos e Condições
+- Aplica a função `text` no título da página de Termos e Condições
 
 ## [7.7.48] - 2026-05-29
 ### Correções
@@ -148,11 +148,11 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ## [7.7.47] - 2026-05-28
 ### Correções
-- garante que uma fase de recurso não seja criada de forma incompleta, faltando metadados ou informações que a definam corretamente como uma fase de recurso
+- Garante que uma fase de recurso não seja criada de forma incompleta, faltando metadados ou informações que a definam corretamente como uma fase de recurso
 - Implementa mecanismo para encerrar editais de fluxo contínuos, sendo possível definir uma data de término
-- Ajustar a coluna Elegível na tabela de inscritos para que exiba 'Sim' ou 'Não' ao invés de um valor booleano
-- Faz ajuste para que o valor do eligible seja retornado corretamente no endpoint findRegistration
-- Faz ajuste no carregamento de quotas para que o carregamento ocorra de forma performática.
+- Ajusta a coluna Elegível na tabela de inscritos para que exiba 'Sim' ou 'Não' em vez de um valor booleano
+- Ajusta o retorno do valor de eligible no endpoint findRegistration
+- Ajusta o carregamento de `quotas` para melhorar a performance.
 
 ## [7.7.46] - 2026-05-26
 ### Correções
@@ -163,7 +163,7 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ## [7.7.45] - 2026-05-26
 ### Correções
-- Ajuste estrutura de Quotas para evitar estouro de memoria
+- Ajusta a estrutura de `quotas` para evitar estouro de memória
 
 ## [7.7.44] - 2026-05-25
 ### Correções
@@ -180,39 +180,39 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ## [7.7.42] - 2026-05-20
 ### Correções
-- Melhora performace do sistema de criaçao de cache de permissão
+- Melhora a performance do sistema de criação de cache de permissão
 
 ## [7.7.41] - 2026-05-19
 ### Correções
 - Corrige erro que impedia o botão exibir detalhamento de aparecer na tela do avaliador do recurso
 
 ## [7.7.40] - 2026-05-15
-- ### Correçoes
-- Corrige erro de estouro de memória durante a ordenaçao por cota
-- Corrige erro que impedia a sincronização de inscriçoes entre fases
+### Correções
+- Corrige erro de estouro de memória durante a ordenação por cota
+- Corrige erro que impedia a sincronização de inscrições entre fases
 
 ## [7.7.39] - 2026-05-15
 ### Correções
-- Ajusta exibiçao do nome e id do avaliador nas fases de recurso e normais no exbir detalhamento
+- Ajusta a exibição do nome e ID do avaliador nas fases de recurso e normais ao exibir detalhamento
 
 ## [7.7.38] - 2026-05-14
 ### Correções
-- Corrige erro que impedia a ordenaçao por cotas funcionar corretamente
+- Corrige erro que impedia a ordenação por cotas funcionar corretamente
 
 ### Melhorias
 - Permite que o avaliador do recurso visualize o detalhamento da avaliação anterior diretamente na tela de avaliação do recurso
 
 ## [7.7.37] - 2026-05-14
 ### Correções
-- Remove style inline na single da registration
+- Remove style inline da single da inscrição
 
 ## [7.7.36] - 2026-05-08
 ### Correções
-- Corrige exibiçao das abas com permissão na aba minhas inscrições e no gerênciamento de usuários
+- Corrige a exibição das abas com permissão na aba Minhas inscrições e no gerenciamento de usuários
 
 ## [7.7.35] - 2026-05-08
 ### Correções
-- Implementa paginaçao no na área de minhas inscriçoes
+- Implementa paginação na área Minhas inscrições
 
 ## [7.7.34] - 2026-05-08
 ### Melhorias
@@ -220,7 +220,7 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Adiciona nova aba "Com permissão" na tela de minhas inscrições, para visualizar inscrições onde você tem permissão de gestão.
 - Exibe apenas as inscrições do próprio usuário na tela "Minhas inscrições", evitando confusão com inscrições de outros.
 - Melhora a gestão de entidades dos usuários ao incluir a aba "Concedido" e ajustar a quantidade de itens exibidos por página.
-- Faz organizaçao no CHANGELOG.md
+- Organiza o CHANGELOG.md
 
 ## [7.7.33] - 2026-05-06
 ### Correções
@@ -242,7 +242,7 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ## [7.7.30] - 2026-04-28
 ### Correções
-- Corrije erro que redireciona o usuário admin sempre para a tela de suporte ao acessar a single de inscriçao
+- Corrige erro que redireciona o usuário admin sempre para a tela de suporte ao acessar a single de inscrição
 - Corrige erro que quebra o recurso devido à falta de datas configuradas nas fases avaliativas
 - Corrige o carregamento dos detalhes do recurso quando o step vertical está fechado.
 
@@ -256,12 +256,12 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ## [7.7.27] - 2026-04-16
 ### Correções
-- Corrige erro que impedia enviar a inscrição devido a ero na data de nascimento
+- Corrige erro que impedia enviar a inscrição devido a erro na data de nascimento
 - Corrige carregamento do componente request-agent-avatar
 
 ## [7.7.26] - 2026-04-14
 ### Correções
-- Corrige importação de oportunidades para evitar referência curcular
+- Corrige importação de oportunidades para evitar referência circular
 
 ## [7.7.25] - 2026-04-13
 ### Correções
@@ -274,14 +274,14 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ## [7.7.24] - 2026-04-13
 ### Correções
-- Corrige erros durante a execução das migraçoes mc-updates e db-updates
+- Corrige erros durante a execução das migrações mc-updates e db-updates
 
 ## [7.7.23] - 2026-04-12
 - Corrige deleção indevida de roles, agents e procurations ao salvar entidades. Os mapeamentos ManyToOne de Agent, Role e Procuration não declaravam inversedBy, impedindo o Doctrine de sincronizar as coleções OneToMany do User, o que causava orphanRemoval durante computeChangeSets() no flush
 
 ## [7.7.22] - 2026-04-07
 ### Correções
-- Faz correção na criação e utilização de modelos que ocasionavam erros na criação das etapas do formulário de inscrição
+- Corrige a criação e utilização de modelos que ocasionavam erros na criação das etapas do formulário de inscrição
 
 ## [7.7.21] - 2026-04-02
 ### Correções
@@ -293,7 +293,7 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ## [7.7.19] - 2026-03-27
 ### Correções
-- Faz ajuste para que os campos do tipo Moeda sejam validados corretamente corretamente quando obrigatorios
+- Ajusta os campos do tipo Moeda para que sejam validados corretamente quando obrigatórios
 - Corrige um erro ao excluir a configuração de avaliação, garantindo que a exclusão das fases continue funcionando corretamente sem falhas
 
 ## [7.7.18] - 2026-03-20
@@ -315,7 +315,7 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ## [7.7.16] - 2026-03-11
 ### Melhorias
-- Implementação de novo campo de tabela para ser usado nos formulários de inscrições
+- Implementa novo campo de tabela para ser usado nos formulários de inscrição
 - Atualiza pacotes pnpm
 - Implementa testes para a aplicação de resultados das avaliações
 
@@ -327,14 +327,14 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ### Melhorias
 - Inclui nova área de atuação "Cultura do Povo Tupiniquin"
-- Melhorias na documentação PHP DOC do sistema
+- Melhora a documentação PHPDoc do sistema
 
 ## [7.7.14] - 2026-03-06
 ### Correções
 - Corrige endpoint createAppealPhaseRegistration para verificar se já existe inscrição do proponente na fase de recurso
 - Ajusta a exibição dos avaliadores da fase de recurso na página individual da inscrição, permitindo selecionar a lista de inclusão e exclusão de avaliadores das fases avaliativas do recurso.
 - Implementa mc-update para fazer a normalização dos campos de CPF e CNPJ do registration_meta
-- Remove método que removia máscaras de CPF e CNPJ no momento do envio da inscrições
+- Remove método que removia máscaras de CPF e CNPJ no momento do envio das inscrições
 - Implementa comportamento correto de fluxo contínuo com data final: inicializa publishTimestamp da última fase, inicializa datas da fase de avaliação e propaga automaticamente alterações do publishTimestamp para as fases de avaliação vinculadas
 
 ## [7.7.13] - 2026-03-06
@@ -343,21 +343,21 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Adiciona filtro de estado e cidade na tela de busca de eventos, ativável via variável de ambiente `EVENTS_FILTER_STATES_AND_CITIES`
 
 ### Correções
-- Ajusta filtro de arquivo na api para possibitar valores vazios
+- Ajusta filtro de arquivo na API para possibilitar valores vazios
 
 ## [7.7.12] - 2026-03-04
 ### Correções
-- Faz ajuste no campo dataDeNascimento para que o formato de data seja interpretado corretamente.
+- Ajusta o campo dataDeNascimento para que o formato de data seja interpretado corretamente.
 - Corrige exibição de campos na fase de recurso nas opções da configuração filtro de inscrição para avaliadores/comissão
 - Corrige endpoint createAppealPhaseRegistration para verificar se já existe inscrição do proponente na fase de recurso
 
 ## [7.7.11] - 2026-03-03
 ### Melhorias
-- Refatora o componente de Configuração filtro de inscrição para avaliadores/comissão
+- Refatora o componente de configuração de filtro de inscrição para avaliadores/comissão
 - Adiciona opções de campos de seleção múltipla e checkbox no novo componente de configuração de filtro
 
 ### Correções
-- Realiza a correção para o carregamento adequado das geodivisões do responsável na tabela e na planilha de inscritos.
+- Corrige o carregamento adequado das geodivisões do responsável na tabela e na planilha de inscritos.
 - Ajusta regra para permitir publicação de resultado da fase para antes, durante ou depois da data final da fase
 
 ## [7.7.10] - 2026-03-02
@@ -366,7 +366,7 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ## [7.7.9] - 2026-02-26
 ### Melhorias
-- Adiciona possibilidade de filtro por arquivo na api
+- Adiciona possibilidade de filtro por arquivo na API
 
 ## [7.7.8] - 2026-02-25
 ### Correções
@@ -374,24 +374,24 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ## [7.7.7] - 2026-02-24
 ### Correções
-- Corrige a aplicação de resultados da avaliações por pontuação e classificação
-- Corrige a exibição do valor da coluna "Bônus por pontuação aplicadas a inscrição" na tabela de inscrições
+- Corrige a aplicação de resultados das avaliações por pontuação e classificação
+- Corrige a exibição do valor da coluna "Bônus por pontuação aplicada à inscrição" na tabela de inscrições
 
 ## [7.7.6] - 2026-02-22
 ### Correções
 - Corrige permissão para administrador da oportunidade remover uma avaliação
-- Corrige os campos visíveis para o avaliador para nao ignorar campos com somente uma fase de coleta de dados
+- Corrige os campos visíveis para o avaliador para não ignorar campos com somente uma fase de coleta de dados
 
 ## [7.7.5] - 2026-02-13
 ### Correções
 - Corrige falha que impedia o carregamento correto de alguns avaliadores na tela das listas de inclusão e exclusão.
 
 ## [7.7.4] - 2026-02-10
-### Melhorias 
+### Melhorias
 - Implementa uma flag no componente opportunity-evaluation-committee que permite indicar que os dados devem ser salvos no agente relacionado
 - Implementa getters e setters para persistir os filtros individuais dos avaliadores no agente relacionado
 - Ajusta a lógica de distribuição das avaliações para considerar os filtros definidos no agente relacionado
-- Implementa endpoints para configurar os filtros individuais dos avaliadores, cada um em seu respectivo agente relaciona
+- Implementa endpoints para configurar os filtros individuais dos avaliadores, cada um em seu respectivo agente relacionado
 
 ## [7.7.3] - 2026-02-02
 ### Correções
@@ -402,7 +402,7 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ## [7.7.2] - 2026-01-28
 ### Correções
-- Correção no salvamento de metadados
+- Corrige o salvamento de metadados
 
 ## [7.7.1] - 2026-01-26
 ### Correções
@@ -420,18 +420,18 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Oportunidade apenas para divulgação - permite criar oportunidades informativas onde as inscrições não são feitas pela plataforma
 - Exportação de ficha de inscrição em PDF com mesclagem automática de anexos PDF em um único arquivo
 
-### Melhorias nas avaliação
+### Melhorias nas avaliações
 - Possibilidade de configuração de limite de inscrições para os avaliadores
 - Botão de excluir avaliação para os gestores da oportunidade
 - Mantém a avaliação como pendente enquanto não houver modificação, evitando que o simples acesso à página de avaliação marque a avaliação como iniciada
 - Novo filtro para comissão por data de envio da inscrição, possibilitando comissões que avaliem somente as inscrições enviadas em determinado período
 - Possibilidade de configurar uma lista de inscrições para os avaliadores das comissões
-- Substituição de avaliadores, passando todas as incrições que ainda não foram concluídas (pendentes e iniciadas) para um novo avaliador, sem redistribuir as avaliações
+- Substituição de avaliadores, passando todas as inscrições que ainda não foram concluídas (pendentes e iniciadas) para um novo avaliador, sem redistribuir as avaliações
 
 ### Melhorias
-- Redireciona usuario para o perfil quando o mesmo esta em rascunho ou com dados obrigatórios não preechidos
-- Adiciona suporte a autenticação JWT nas requisições para API [(1)](#770-snp)
-- Melhoria na exibição das mensagens de erro para capturar e exibir mensagens específicas
+- Redireciona o usuário para o perfil quando ele está em rascunho ou com dados obrigatórios não preenchidos
+- Adiciona suporte à autenticação JWT nas requisições para API [(1)](#770-snp)
+- Melhora a exibição das mensagens de erro para capturar e exibir mensagens específicas
 - Melhora a comunicação da interface para deixar claro que a alteração de critérios ou sessões só deve ser feita por administradores quando já existirem avaliações técnicas enviadas.
 - Remove espaços múltiplos e espaços no início/fim do nome e nome completo das entidades
 - Adiciona campos de Galeria de Fotos, Vídeos e Downloads como opções de campos do agente responsável em formulários de inscrição, permitindo que o gestor solicite portfólio visual, galeria de vídeos ou documentos anexos que sincronizam automaticamente com o perfil do agente [(2)](#770-funarte)
@@ -439,18 +439,18 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Habilita as revisões para usuários, fases de avaliação, selos e funções de usuário
 
 ### Correções
-- Corrige warnigs no navegador devido a problemas com o componente entity-field
-- Implementa verificações para evitar warnings indesejados referente ao componente de localização
-- Ajusta ApiQuery para evitar que _addFilterByMetadata crie JOIN's duplicados
+- Corrige warnings no navegador devido a problemas com o componente entity-field
+- Implementa verificações para evitar warnings indesejados referentes ao componente de localização
+- Ajusta ApiQuery para evitar que _addFilterByMetadata crie JOINs duplicados
 - Corrige função replaces da classe i
 - Corrige nome do hook entity().archive:after
 - Corrige busca pela chave primária da tabela Job
-- Impede que o usuarios que não são admnistradores alterem critérios ou sessões de critérios de avaliação técnica se já existem avaliações enviadas
+- Impede que os usuários que não são administradores alterem critérios ou sessões de critérios de avaliação técnica se já existirem avaliações enviadas
 - Corrige erro ao salvar e publicar a entidade, que interpretava mensagens de erro de forma incorreta
 
 ### Melhorias não funcionais
 - LifecycleCallbacks na Entities\SealRelation
-- Função \query que faz uma consulta no banco e imprime o resultado como uma tabela ascii
+- Função \query que faz uma consulta no banco e imprime o resultado como uma tabela ASCII
 - Impede a inserção do mesmo selo mais de uma vez em uma entidade
 - Possibilita a escrita de mc-updates para entidades fora do namespace MapasCulturais\Entities
 - Implementa novos hooks na edit de espaço e no componente entity-field
@@ -464,7 +464,7 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ## [7.7.67] - 2026-05-06
 ### Correções
-- Faz implementaçao para que a ficha de inscriçao do recurso tambems eja exibida na single
+- Implementa ajuste para que a ficha de inscrição do recurso também seja exibida na single
 
 ##[7.6.66] - 2026-04-28
 ### Correções
