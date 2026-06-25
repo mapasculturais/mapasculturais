@@ -17,6 +17,7 @@ use MapasCulturais\Entities\Agent;
 use MapasCulturais\Entities\EvaluationMethodConfigurationAgentRelation;
 use MapasCulturais\Entities\EvaluationMethodConfigurationMeta;
 use MapasCulturais\Entity;
+use MapasCulturais\Exceptions\PermissionDenied;
 
 class Module extends \MapasCulturais\Module{
 
@@ -352,6 +353,45 @@ class Module extends \MapasCulturais\Module{
                     $errors['sections'] = $errors['sections'] ?? [];
                     $errors['sections'][] = i::__('Seções com erros: existe(m) seção(ões) sem critérios associados');
                 }
+            }
+        });
+
+        /**
+         * Imutabilidade pós-abertura (spec-c49fa0bb §3.6):
+         *
+         * Impede alterar o metadado `sealExemptionConfig` quando:
+         *   1. O tipo de avaliação é 'technical' (Avaliação Técnica) — a
+         *      funcionalidade de isenção por selos jamais se aplica.
+         *   2. A fase já está aberta e possui inscrições ativas. Fases sem
+         *      `evaluationFrom` ou sem inscrições continuam editáveis.
+         *
+         * A detecção de mudança usa getChangedMetadata(), que só registra
+         * alterações reais (valor != valor atual), evitando falsos positivos.
+         */
+        $app->hook('entity(EvaluationMethodConfiguration).save:before', function () use ($app) {
+            /** @var EvaluationMethodConfiguration $this */
+
+            // Early return: só valida quando sealExemptionConfig está sendo alterado.
+            /** @var array $changedMetadata */
+            $changedMetadata = $this->getChangedMetadata();
+            if (!array_key_exists('sealExemptionConfig', $changedMetadata)) {
+                return;
+            }
+
+            // Regra 1: Avaliação Técnica jamais suporta isenção por selos.
+            if ($this->_type === 'technical') {
+                throw new PermissionDenied(
+                    $app->user,
+                    message: i::__('A configuração de selos validadores não está disponível para Avaliação Técnica.')
+                );
+            }
+
+            // Regra 2: fase aberta só bloqueia quando já existem inscrições na fase.
+            if (!$this->getCanEditSealConfig()) {
+                throw new PermissionDenied(
+                    $app->user,
+                    message: i::__('A fase está aberta e já possui inscrições. A configuração de selos validadores não pode mais ser alterada.')
+                );
             }
         });
 
@@ -1387,6 +1427,18 @@ class Module extends \MapasCulturais\Module{
                 'deactivate' => i::__('Desativar distribuição'),
             ],
             'default' => 'hourly',
+        ]);
+
+        // Configuração de selos validadores para isenção automática de fase.
+        // Estrutura: { seals: [id1, id2, ...], label: string } (spec-c49fa0bb §3.1).
+        // Visível apenas para quem tem @control da oportunidade (selos podem ser
+        // sensíveis — LGPD). Pré-requisito do hook save:before de imutabilidade.
+        $this->registerEvauationMethodConfigurationMetadata('sealExemptionConfig', [
+            'label' => i::__('Configuração de selos validadores para isenção de fase'),
+            'type' => 'json',
+            'private' => function () {
+                return !$this->opportunity->canUser('@control');
+            },
         ]);
     }
 
