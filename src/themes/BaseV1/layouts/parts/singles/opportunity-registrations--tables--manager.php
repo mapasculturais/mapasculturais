@@ -94,6 +94,9 @@ use MapasCulturais\i;
             <th ng-show="data.registrationTableColumns.sealStatus" class="registration-status-col">
                 <mc-select placeholder="<?php i::esc_attr_e('Status do Selo') ?>" model="registrationsFilters['sealStatus']" data="data.sealStatuses"></mc-select>
             </th>
+            <th ng-if="data.hasSealExemptionConfig" ng-show="data.registrationTableColumns.sealExemption" class="registration-status-col">
+                <?php i::_e("Isenção");?>
+            </th>
 
             <?php $this->applyTemplateHook('registration-list-header','end'); ?>
         </tr>
@@ -165,6 +168,14 @@ use MapasCulturais\i;
                     <span ng-if="reg.sealStatus === 'fully_valid'"><?php i::_e('Totalmente Válido') ?></span>
                     <span ng-if="reg.sealStatus === 'partially_valid'"><?php i::_e('Parcialmente Válido') ?></span>
                     <span ng-if="reg.sealStatus === 'invalid'"><?php i::_e('Inválido') ?></span>
+                </span>
+            </td>
+            <td ng-if="data.hasSealExemptionConfig" ng-show="data.registrationTableColumns.sealExemption" class="registration-status-col">
+                <span ng-if="reg.sealExemptionStatus === 'granted'" class="seal-exemption-badge">
+                    {{ reg.sealExemptionLabel || data.sealExemptionDefaultLabel }}
+                </span>
+                <span ng-if="reg.sealExemptionStatus !== 'granted'" class="seal-exemption-badge seal-exemption-badge--not-granted">
+                    {{ data.sealExemptionNotGrantedLabel }}
                 </span>
             </td>
             <?php $this->applyTemplateHook('registration-list-item','end'); ?>

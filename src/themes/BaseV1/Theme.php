@@ -2147,6 +2147,9 @@ class Theme extends MapasCulturais\Theme {
             'Anexos' => i::__('Anexos'),
             'Avaliação' => i::__('Avaliação'),
             'Status' => i::__('Status'),
+            'Isenção' => i::__('Isenção'),
+            'sealExemptionDefaultLabel' => i::__('Isento por selos válidos'),
+            'sealExemptionNotGrantedLabel' => i::__('Não isenta'),
             'spaceRelationRequestSent' =>  i::__('Sua requisição para relacionar o espaço {{space}} foi enviada.'),
 
             'conditionMandatory' => i::__('Informe a qual campo quer condicionar a obrigatoriedade'),

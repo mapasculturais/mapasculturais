@@ -87,6 +87,33 @@ article.opportunity .editable-buttons button {
         }
     }
 }
+
+//## Banner de isenção por selos — acompanhamento público da inscrição (T15).
+// Exibido quando publishedRegistrations === true e sealExemptionStatus === 'granted'.
+.registration-seal-exemption {
+    .seal-exemption-banner {
+        padding: $padding-base $padding-large $padding-base 2.5rem;
+        &__label {
+            display: block;
+            margin-bottom: .25em;
+            font-size: $font-size-base;
+        }
+        &__description {
+            margin: 0;
+        }
+    }
+    @media print {
+        .seal-exemption-banner {
+            border: none;
+            padding: 0;
+            color: #000;
+            &:before {
+                content: "";
+            }
+        }
+    }
+}
+
 .registration-header {
 	background-color: $registration-header-bg;
 	color: $registration-header-color;
@@ -425,6 +452,38 @@ article.opportunity .editable-buttons button {
     width:22%;
     overflow-y: scroll;
     padding:10px;
+}
+
+.seal-validator-field {
+    border: 2px solid #e18414 !important;
+    box-shadow: 0 0 0 4px rgba(225, 132, 20, 0.18) !important;
+    position: relative;
+}
+
+.seal-validator-field::after {
+    background: #e18414;
+    border-radius: 999px;
+    color: #fff;
+    content: "Validar selo";
+    font-size: 11px;
+    font-weight: 700;
+    line-height: 1;
+    padding: 5px 8px;
+    pointer-events: none;
+    position: absolute;
+    right: 12px;
+    top: 12px;
+    z-index: 2;
+}
+
+.seal-validator-field--invalidator {
+    border-color: #b3261e !important;
+    box-shadow: 0 0 0 4px rgba(179, 38, 30, 0.16) !important;
+}
+
+.seal-validator-field--invalidator::after {
+    background: #b3261e;
+    content: "Campo invalidador";
 }
 
 @media screen and (max-width: 1366px) and (min-width: 1200px) {

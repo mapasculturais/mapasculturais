@@ -3110,7 +3110,22 @@ module.controller('OpportunityController', ['$scope', '$rootScope', '$anchorScro
         $(opportunity_main_tab).hide();
     }
 
+    var hasSealExemptionConfig = (function() {
+        var config = MapasCulturais.entity?.evaluationMethodConfiguration?.sealExemptionConfig;
+        if (typeof config === 'string') {
+            try {
+                config = JSON.parse(config);
+            } catch (e) {
+                config = null;
+            }
+        }
+        return Array.isArray(config?.seals) && config.seals.length > 0;
+    })();
+
     var select_fields = MapasCulturais.opportunitySelectFields.map(function(e){ return e.fieldName; });
+    if (hasSealExemptionConfig) {
+        select_fields = select_fields.concat(['sealExemptionStatus', 'sealExemptionLabel', 'sealExemptionTimestamp']);
+    }
     var registrationsApi;
     var evaluationsApi;
 
@@ -3280,6 +3295,10 @@ module.controller('OpportunityController', ['$scope', '$rootScope', '$anchorScro
         {fieldName: "status", title:labels['Status'] ,required:true},
     ];
 
+    if (hasSealExemptionConfig) {
+        defaultSelectFields.push({fieldName: "sealExemption", title:labels['Isenção'] ,required:true});
+    }
+
     MapasCulturais.opportunitySelectFields.forEach(function(e){
         e.options = [{ value: null, label: e.title }].concat(e.fieldOptions.map(function(e){
             return {value: e, label: e};
@@ -3384,10 +3403,15 @@ module.controller('OpportunityController', ['$scope', '$rootScope', '$anchorScro
             attachments: true,
             evaluation: true,
             status: true,
-            sealStatus: true
+            sealStatus: true,
+            sealExemption: false
         },
 
         confirmEvaluationLabel: labels['confirmEvaluationLabel'],
+
+        hasSealExemptionConfig: hasSealExemptionConfig,
+        sealExemptionDefaultLabel: labels['sealExemptionDefaultLabel'],
+        sealExemptionNotGrantedLabel: labels['sealExemptionNotGrantedLabel'],
 
         fields: RegistrationService.getFields(),
 
