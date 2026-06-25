@@ -21,9 +21,6 @@ $profile = $app->user->profile;
                 <h1 class="title__title"> <?= i::__('Gestão de usuários') ?> </h1>
             </div>
         </div>
-        <p class="panel-page__header-subtitle">
-            <?= i::__('Gestão dos usuários do sistema') ?>
-        </p>
     </header>
 
     <user-management--account-deletion-config></user-management--account-deletion-config>

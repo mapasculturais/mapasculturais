@@ -138,7 +138,14 @@ $this->import('
                 <div class="opportunity-appeal-phase-config__checkboxes field">
                     <entity-field :entity="entity" hide-required  :editable="true" prop="allow_proponent_response" :autosave="3000"></entity-field>
                     <entity-field :entity="entity" type="checkbox" hide-required :editable="true" prop="showPreviousPhaseEvaluationDetails" :autosave="3000"></entity-field>
+                    <entity-field :entity="entity" type="checkbox" hide-required :editable="true" prop="appealPhaseAffectsSync" :autosave="3000"></entity-field>
                 </div> 
+
+                <mc-alert v-if="entity.appealPhaseAffectsSync" type="warning" class="entity-owner-pending">
+                    <div>
+                        <?= i::__('Ao ativar a função <strong>Sincronizar inscrições para fase seguinte</strong>, o recurso afetará o avanço das inscrições entre fases. Inscrições selecionadas que abrirem recurso serão retiradas das fases seguintes até a análise. Inscrições não selecionadas só avançarão se o recurso for deferido.') ?>
+                    </div>
+                </mc-alert>
 
                 <mc-alert v-if="entity.allow_proponent_response" type="warning" class="entity-owner-pending">
                     <div>
@@ -154,7 +161,7 @@ $this->import('
 
                 <opportunity-phase-publish-date-config :phase="entity" :phases="phases" hide-description hide-button></opportunity-phase-publish-date-config>
 
-                <div v-if="entity.evaluationMethodConfiguration.evaluateSelfApplication">
+                <div v-if="entity.evaluationMethodConfiguration?.evaluateSelfApplication">
                     <entity-field :entity="entity.evaluationMethodConfiguration" type="checkbox" prop="autoApplicationAllowed" label="<?php i::esc_attr_e('Autoaplicação de resultados')?>" :autosave="300" classes="col-12 sm:col-12"></entity-field>
                 </div>
             </template>

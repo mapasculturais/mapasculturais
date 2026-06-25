@@ -4,8 +4,12 @@ use MapasCulturais\i;
 return [
     'fieldSectionName' => i::__('Nome seção'),
     'fieldCriterionName' => i::__('Nome do critério'),
+    'fieldCriterionOptions' => i::__('Opções de não atendimento do critério'),
     'fieldCriterionWeight' => i::__('Peso'),
     'theField' => i::__('O campo'),
+    'theSection' => i::__('A seção'),
+    'section' => i::__('seção'),
+    'must_have_at_least_one_criterion' => i::__('deve ter pelo menos um critério'),
     'isRequired' => i::__('é obrigatório'),
     'checkField' => i::__('Verifique o campo'),
     'lastCriterion' => i::__('no último critério'),

@@ -5,6 +5,7 @@ namespace Tests;
 use MapasCulturais\App;
 use MapasCulturais\Entities\Registration;
 use MapasCulturais\Entities\RegistrationEvaluation;
+use MapasCulturais\Entities\User;
 use Tests\Abstract\TestCase;
 use Tests\Builders\PhasePeriods\ConcurrentEndingAfter;
 use Tests\Builders\PhasePeriods\Open;
@@ -18,6 +19,49 @@ class EvaluationConsolidationTest extends TestCase
     use OpportunityBuilder,
         RegistrationDirector,
         UserDirector;
+
+    private function createSimpleAutoApplicationScenario(User $admin): array
+    {
+        $evaluation_phase_builder = $this->opportunityBuilder
+            ->reset(owner: $admin->profile, owner_entity: $admin->profile)
+            ->fillRequiredProperties()
+            ->firstPhase()
+                ->setRegistrationPeriod(new Open)
+                ->done()
+            ->save()
+            ->addEvaluationPhase(EvaluationMethods::simple)
+                ->setEvaluationPeriod(new ConcurrentEndingAfter)
+                ->setAutoApplicationAllowed(true)
+                ->setCommitteeValuersPerRegistration('Comissão', 2)
+                ->save()
+                ->addValuers(2, 'Comissão');
+
+        $opportunity = $evaluation_phase_builder
+            ->done()
+            ->getInstance();
+
+        $registration = $this->registrationDirector->createSentRegistration($opportunity, data: []);
+
+        $opportunity->evaluationMethodConfiguration->redistributeCommitteeRegistrations();
+        $registration = $registration->refreshed();
+
+        return [$evaluation_phase_builder, $opportunity, $registration, $this->getDistributedValuerNames($opportunity, $registration)];
+    }
+
+    private function getDistributedValuerNames($opportunity, Registration $registration): array
+    {
+        $valuer_user_ids = array_keys($registration->valuers);
+        $valuer_names = [];
+
+        $committee_relations = $opportunity->evaluationMethodConfiguration->getAgentRelationsGrouped()['Comissão'] ?? [];
+        foreach ($committee_relations as $relation) {
+            if (in_array($relation->agent->user->id, $valuer_user_ids)) {
+                $valuer_names[] = $relation->agent->name;
+            }
+        }
+
+        return $valuer_names;
+    }
 
     function testSimpleEvaluationConsolidationResult()
     {
@@ -130,6 +174,65 @@ class EvaluationConsolidationTest extends TestCase
             Registration::STATUS_APPROVED,
             (string)$registration->consolidatedResult,
             'Certificando que o resultado consolidado é o valor correto (selecionado = 10)'
+        );
+    }
+
+    function testApplyConsolidatedResultDoesNotApplyStatusWhileSimpleEvaluationIsDraft()
+    {
+        $admin = $this->userDirector->createUser('admin');
+        $this->login($admin);
+
+        [$evaluation_phase_builder, $opportunity, $registration, $valuer_names] = $this->createSimpleAutoApplicationScenario($admin);
+
+        $evaluation_phase_builder->withValuer('Comissão', $valuer_names[0])
+            ->evaluation($registration)
+                ->setSelected('Avaliação positiva')
+                ->save()
+                ->done();
+
+        $evaluation_phase_builder->withValuer('Comissão', $valuer_names[1])
+            ->evaluation($registration)
+                ->setSelected('Avaliação positiva')
+                ->save()
+                ->send()
+                ->done();
+
+        $registration = $registration->refreshed();
+
+        $this->assertEquals(
+            Registration::STATUS_SENT,
+            $registration->status,
+            'Certificando que a autoaplicação não altera o status enquanto houver avaliação em rascunho'
+        );
+    }
+
+    function testApplyConsolidatedResultAppliesStatusAfterAllSimpleEvaluationsAreSent()
+    {
+        $admin = $this->userDirector->createUser('admin');
+        $this->login($admin);
+
+        [$evaluation_phase_builder, $opportunity, $registration, $valuer_names] = $this->createSimpleAutoApplicationScenario($admin);
+
+        $evaluation_phase_builder->withValuer('Comissão', $valuer_names[0])
+            ->evaluation($registration)
+                ->setSelected('Avaliação positiva')
+                ->save()
+                ->send()
+                ->done();
+
+        $evaluation_phase_builder->withValuer('Comissão', $valuer_names[1])
+            ->evaluation($registration)
+                ->setSelected('Avaliação positiva')
+                ->save()
+                ->send()
+                ->done();
+
+        $registration = $registration->refreshed();
+
+        $this->assertEquals(
+            Registration::STATUS_APPROVED,
+            $registration->status,
+            'Certificando que a autoaplicação altera o status quando todas as avaliações foram enviadas'
         );
     }
 

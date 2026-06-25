@@ -453,10 +453,20 @@ abstract class EvaluationMethod extends Module implements \JsonSerializable{
 
         $all_status_sent = true;
         foreach ($evaluations as $evaluation) {
-            $registration_evaluation = $evaluation['evaluation_id'] ? $app->repo('RegistrationEvaluation')->find($evaluation['evaluation_id']) : false;
+            if ($evaluation['valuer_committee'] === '@tiebreaker') {
+                continue;
+            }
 
-            if (!$registration_evaluation && $evaluation['evaluation_status'] !== RegistrationEvaluation::STATUS_SENT) {
-                $all_status_sent = false;
+            if ($this->slug == 'continuous') {
+                if (!$evaluation['evaluation_id']) {
+                    $all_status_sent = false;
+                    break;
+                }
+            } else {
+                if ($evaluation['evaluation_status'] != RegistrationEvaluation::STATUS_SENT) {
+                    $all_status_sent = false;
+                    break;
+                }
             }
         }
 
@@ -868,6 +878,7 @@ abstract class EvaluationMethod extends Module implements \JsonSerializable{
                     v.user_id,
                     v.is_tiebreaker,
                     v.committee,
+                    v.status AS evaluation_status,
                     count(v.id) AS num 
                 FROM 
                     registration r 
@@ -884,6 +895,30 @@ abstract class EvaluationMethod extends Module implements \JsonSerializable{
          * Lista de inscrições que devem ser distribuidas 
          * @var array */
         $registration_evaluations_raw = $conn->fetchAllAssociative($sql);
+
+        /**
+         * Avaliações já existentes por inscrição (uma linha por avaliador na query acima)
+         * @var array<int, array<int, array{user_id: int, committee: string, status: int}>>
+         */
+        $existing_evaluations_by_registration = [];
+        foreach ($registration_evaluations_raw as $row) {
+            if (empty($row['user_id'])) {
+                continue;
+            }
+
+            $registration_id = (int) $row['id'];
+            $user_id = (int) $row['user_id'];
+
+            if (isset($existing_evaluations_by_registration[$registration_id][$user_id])) {
+                continue;
+            }
+
+            $existing_evaluations_by_registration[$registration_id][$user_id] = [
+                'user_id' => $user_id,
+                'committee' => $row['committee'],
+                'status' => (int) ($row['evaluation_status'] ?? 0),
+            ];
+        }
         
         // Remove duplicatas da query (que retorna uma linha por avaliação existente)
         // Mantém apenas a primeira ocorrência de cada inscrição
@@ -956,24 +991,27 @@ abstract class EvaluationMethod extends Module implements \JsonSerializable{
                 $registration_valuers_count[$registration->id][$committee_name] = $num;
             }
             
-            // caso a inscrição já tenha sido avaliada
-            if($registration->user_id){
-                $committee_name = $registration->committee;
-                $user_id = $registration->user_id;
+            // preserva todas as avaliações já existentes na distribuição
+            foreach ($existing_evaluations_by_registration[$registration->id] ?? [] as $existing_evaluation) {
+                $committee_name = $existing_evaluation['committee'];
+                $user_id = $existing_evaluation['user_id'];
+                $evaluation_status = $existing_evaluation['status'];
+
+                if (!$committee_name) {
+                    continue;
+                }
 
                 $result[$registration->id][$user_id] = $committee_name;
 
-                // se a configuração `Desconsiderar as avaliações já feitas na distribuição` estiver desativada
-                if(!($ignore_started_evaluations->$committee_name ?? false)) {
-                    // atualiza o número de avaliadores da inscrição
+                $counts_toward_distribution = !($ignore_started_evaluations->$committee_name ?? false)
+                    || $evaluation_status >= RegistrationEvaluation::STATUS_EVALUATED;
+
+                if ($counts_toward_distribution) {
                     $valuers_committee_registrations_count[$committee_name][$user_id] = ($valuers_committee_registrations_count[$committee_name][$user_id] ?? 0) + 1;
                     $valuers_total_registrations_count[$user_id] = ($valuers_total_registrations_count[$user_id] ?? 0) + 1;
                 }
 
-                $registration_valuers_count[$registration->id][$committee_name] = $registration_valuers_count[$registration->id][$committee_name] ?? 0;
-
-                // incrementa o número de avaliações que a inscrição tem por comissão
-                $registration_valuers_count[$registration->id][$committee_name]++;    
+                $registration_valuers_count[$registration->id][$committee_name] = ($registration_valuers_count[$registration->id][$committee_name] ?? 0) + 1;
             }
 
             // define o total de avaliações já feitas para cada inscrição
