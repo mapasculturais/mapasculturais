@@ -6,6 +6,7 @@
 
 use MapasCulturais\i;
 use MapasCulturais\Entities\Registration;
+use SealExemption\SealExemptionService;
 
 $committee = [];
 $valuersMetadata = [];
@@ -142,6 +143,15 @@ foreach ($parentOrder as $parent) {
 }
 $default_select = implode(',', $final_select);
 
+$seal_exemption_config = $opportunity->evaluationMethodConfiguration?->sealExemptionConfig;
+$has_seal_exemption_config = SealExemptionService::hasActiveConfig($seal_exemption_config);
+
+if ($has_seal_exemption_config) {
+    // Campos de isenção por selos além do status (header). O timestamp alimenta o
+    // tooltip ("Isento em ...") e o label alimenta o valor do badge.
+    $default_select .= ',sealExemptionStatus,sealExemptionTimestamp,sealExemptionLabel';
+}
+
 
 $headers = [
     [ 'text' => i::__('inscrição', 'opportunity-evaluations-table'), 'value' => 'number', 'slug' => 'number', 'sticky' => true, 'width' => '160px' ],
@@ -156,6 +166,16 @@ $headers = [
     [ 'text' => i::__('Ações', 'opportunity-evaluations-table'), 'value' => '', 'slug' => 'delete', 'visible' => true, 'width' => '100px'],
 ];
 
+if ($has_seal_exemption_config) {
+    array_splice($headers, 6, 0, [[
+        'text' => SealExemptionService::getConfigLabel($seal_exemption_config),
+        'value' => 'sealExemptionStatus',
+        'slug' => 'sealExemption',
+        'visible' => true,
+        'width' => '180px'
+    ]]);
+}
+
 $default_headers = array_merge($default_headers, $headers);
 
 $app->applyHook('component(opportunity-evaluations-table).additionalHeaders', [&$default_headers, &$default_select]);
@@ -167,4 +187,5 @@ $this->jsObject['config']['opportunityEvaluationsTable'] = [
     'defaultHeaders' => $default_headers,
     'defaultSelect' => $default_select,
     'headers' => $headers,
+    'hasSealExemptionConfig' => $has_seal_exemption_config,
 ];
