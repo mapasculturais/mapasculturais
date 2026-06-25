@@ -12,6 +12,8 @@ window.addEventListener("message", function(event) {
 
     if(event?.data?.type?.startsWith('evaluationRegistration.')){
         const iframe = document.getElementById('evaluation-registration');
-        iframe.contentWindow.postMessage(event.data);
+        if(iframe && iframe.contentWindow) {
+            iframe.contentWindow.postMessage(event.data);
+        }
     }
 });

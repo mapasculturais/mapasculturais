@@ -23,6 +23,23 @@
                 window.parent.postMessage({type: 'registration.saved', ...errors}, '*');
             })
         }
+
+        if (event.data?.type === 'evaluationRegistration.setSealValidatorFields') {
+            $('.seal-validator-field, .seal-validator-field--invalidator')
+                .removeClass('seal-validator-field seal-validator-field--invalidator');
+
+            (event.data.fields || []).forEach((field) => {
+                const $field = $(`#field_${field.fieldId}`);
+                if (!$field.length || !field.isValidator) {
+                    return;
+                }
+
+                $field.addClass('seal-validator-field');
+                if (field.hasInvalidator) {
+                    $field.addClass('seal-validator-field--invalidator');
+                }
+            });
+        }
     });
 
     if(MapasCulturais.registration) {
