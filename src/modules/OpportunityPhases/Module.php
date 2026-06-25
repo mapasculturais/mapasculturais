@@ -17,6 +17,27 @@ use Opportunities\Jobs\UpdateSummaryCaches;
 class Module extends \MapasCulturais\Module{
 
     /**
+     * Contador de profundidade da cascata síncrona de syncRegistrations.
+     *
+     * Defesa em profundidade contra loops patológicos entre fases (spec §3.6 —
+     * Guard anti-loop). A arquitetura de fases é uma lista linear finita (não
+     * um grafo cíclico), mas se a resolução de nextPhase/getNextMainPhase
+     * retornar uma fase que fecha um ciclo (ex.: metadado corrompido), a
+     * recursão síncrona em syncRegistrations nunca terminaria.
+     *
+     * Este contador aborta a cascata quando a profundidade excede
+     * count(allPhases) + 1. É incrementado antes de cada propagação recursiva
+     * e decrementado em seguida (try/finally garante o balanceamento mesmo sob
+     * exceção), retornando sempre a 0 ao fim de cada evento de sync.
+     *
+     * Escopo: processo / PHP request. Cada execução do job SyncPhaseRegistrations
+     * é um evento de sync independente — o contador nasce em 0.
+     *
+     * @var int
+     */
+    private static int $syncCascadeDepth = 0;
+
+    /**
      * Retorna o oportunidade principal
      *
      * @return Opportunity
@@ -145,6 +166,51 @@ class Module extends \MapasCulturais\Module{
         }
 
         return null;
+    }
+
+    /**
+     * Limite máximo de profundidade para a cascata de syncRegistrations.
+     *
+     * Regra (spec §3.6): count(allPhases) + 1. O "+1" é a margem de segurança
+     * sobre o número total de fases da oportunidade — suficiente para percorrer
+     * toda a cadeia linear e ainda detectar um ciclo patológico.
+     *
+     * A cascata via getNextMainPhase só percorre fases principais (ignora
+     * recurso), mas count(allPhases) é um limite superior conservador que
+     * abrange toda a árvore de fases.
+     *
+     * @param Opportunity $phase Qualquer fase da oportunidade (usa firstPhase).
+     * @return int Sempre >= 1.
+     */
+    public static function getSyncCascadeLimit(Opportunity $phase): int
+    {
+        $firstPhase = $phase->firstPhase;
+        $allPhases = $firstPhase->allPhases ?? [];
+
+        return max(1, count($allPhases) + 1);
+    }
+
+    /**
+     * Profundidade atual da cascata síncrona de syncRegistrations.
+     *
+     * Exposto para testes de fronteira (spec §5.5 — T-LOOP-OK / T-LOOP-ABORT).
+     *
+     * @return int
+     */
+    public static function getSyncCascadeDepth(): int
+    {
+        return self::$syncCascadeDepth;
+    }
+
+    /**
+     * Reseta o contador de profundidade da cascata.
+     *
+     * Uso destinado a testes que precisam garantir estado limpo entre
+     * cenários. Em produção o contador é auto-balanceado por try/finally.
+     */
+    public static function resetSyncCascadeDepth(): void
+    {
+        self::$syncCascadeDepth = 0;
     }
 
     /**
@@ -1265,7 +1331,42 @@ class Module extends \MapasCulturais\Module{
             // Propaga para a próxima fase principal (ignora recurso, inclui publicação final).
             $nextPhase = self::getNextMainPhase($this);
             if ($nextPhase) {
-                $nextPhase->syncRegistrations($registrations);
+                // ---------------------------------------------------------------
+                // Guard anti-loop (defesa em profundidade — spec §3.6)
+                //
+                // A cascata de sincronização é uma recursão síncrona que percorre
+                // as fases principais da oportunidade. Como a arquitetura é uma
+                // lista linear finita, a profundidade normal é <= count(allPhases).
+                // Qualquer valor superior indica um ciclo patológico (ex.: nextPhase
+                // retornando uma fase anterior por metadado corrompido) e deve ser
+                // abortado para evitar recursão infinita.
+                //
+                // O contador é por inscrição por evento de sync: dentro de um mesmo
+                // evento, todos os registros atravessam a mesma cadeia de fases, de
+                // modo que a profundidade da cascata == avanço por inscrição.
+                // ---------------------------------------------------------------
+                $limit = self::getSyncCascadeLimit($this);
+                self::$syncCascadeDepth++;
+                try {
+                    if (self::$syncCascadeDepth > $limit) {
+                        $app->log->warning(sprintf(
+                            '[Guard anti-loop] Cascata de sincronizacao abortada: profundidade %d excedeu o limite %d '
+                            . '(count(allPhases)+1) ao propagar para a fase "%s" (id=%s) a partir da fase "%s" (id=%s). '
+                            . 'Possivel ciclo patologico entre fases da oportunidade id=%s.',
+                            self::$syncCascadeDepth,
+                            $limit,
+                            $nextPhase->name,
+                            $nextPhase->id,
+                            $this->name,
+                            $this->id,
+                            $this->firstPhase->id
+                        ));
+                    } else {
+                        $nextPhase->syncRegistrations($registrations);
+                    }
+                } finally {
+                    self::$syncCascadeDepth--;
+                }
             }
             return $result;
         });

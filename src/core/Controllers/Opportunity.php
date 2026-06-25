@@ -576,6 +576,12 @@ class Opportunity extends EntityController {
                 if(isset($data['sealStatus'])) {
                     $current_phase_query_params['sealStatus'] = $data['sealStatus'];
                 }
+
+                // Filtro por status de isenção por selos (spec-c49fa0bb §4.3 — Indicador de agente ausente).
+                // Aplicado apenas na fase alvo: sealExemptionStatus é específico por fase.
+                if(isset($data['sealExemptionStatus'])) {
+                    $current_phase_query_params['sealExemptionStatus'] = $data['sealExemptionStatus'];
+                }
             }
 
             foreach(['agent_id', 'category', 'proponentType', 'range', 'eligible', 'number'] as $prop) {
@@ -1093,6 +1099,7 @@ class Opportunity extends EntityController {
                 AND pc.user_id = :user_id
         WHERE r.status > 0
                 AND r.opportunity_id = :opportunity_id
+                AND r.seal_exemption_status IS DISTINCT FROM 'granted'
         ";
 
         $length = $conn->fetchAll($resultLength, [
@@ -1139,6 +1146,7 @@ class Opportunity extends EntityController {
             WHERE
                 r.status > 0
                 AND r.opportunity_id = :opportunity_id
+                AND r.seal_exemption_status IS DISTINCT FROM 'granted'
                 AND r.id NOT IN (
                     SELECT registration_id 
                     FROM registration_evaluation 
@@ -1174,6 +1182,7 @@ class Opportunity extends EntityController {
             WHERE
                 r.status > 0
                 AND r.opportunity_id = :opportunity_id
+                AND r.seal_exemption_status IS DISTINCT FROM 'granted'
             ORDER BY
                 r.id
                 {$complement}
@@ -1278,9 +1287,13 @@ class Opportunity extends EntityController {
         }
 
         if(empty($users)){
-            $this->apiAddHeaderMetadata($query_data, [], 0);
-            $this->apiResponse([]);
-            return;
+            if ($opportunity->canUser('@control')) {
+                $users = '-1';
+            } else {
+                $this->apiAddHeaderMetadata($query_data, [], 0);
+                $this->apiResponse([]);
+                return;
+            }
         }
 
         $params = ['opp' => $opportunity->id];
@@ -1356,6 +1369,9 @@ class Opportunity extends EntityController {
             'status' => API::GT(0)
         ];
 
+        $seal_exemption_filter = $query_data['sealExemptionStatusFilter'] ?? null;
+        unset($query_data['sealExemptionStatusFilter']);
+
         foreach($query_data as $k => $v){
             if(strtolower(substr($k, 0, 13)) === 'registration:' && $k != 'registration:@select'){
                 $rdata[substr($k, 13)] = $v;
@@ -1372,8 +1388,24 @@ class Opportunity extends EntityController {
 
         $app->disableAccessControl();
         $registrations_query = new ApiQuery('MapasCulturais\Entities\Registration', $rdata);
-        $registration_ids = implode(",", $registrations_query->findIds() ?: [-1]);
+        $registration_ids_array = $registrations_query->findIds() ?: [-1];
         $app->enableAccessControl();
+
+        if (in_array($seal_exemption_filter, ['granted', 'not_granted'], true) && $registration_ids_array !== [-1]) {
+            $ids = implode(',', array_map('intval', $registration_ids_array));
+            $seal_condition = $seal_exemption_filter === 'granted'
+                ? "seal_exemption_status = 'granted'"
+                : "seal_exemption_status IS DISTINCT FROM 'granted'";
+            $registration_ids_array = array_map('intval', array_column($conn->fetchAllAssociative("
+                SELECT id
+                FROM registration
+                WHERE id IN ({$ids})
+                    AND {$seal_condition}
+            "), 'id'));
+            $registration_ids_array = $registration_ids_array ?: [-1];
+        }
+
+        $registration_ids = implode(",", array_map('intval', $registration_ids_array));
 
         $query = "
             SELECT 
@@ -1447,6 +1479,47 @@ class Opportunity extends EntityController {
 
 
         $evaluations = $conn->fetchAll($query, $params);
+
+        $can_include_synthetic_exemptions = $opportunity->canUser('@control')
+            && !isset($this->data['@evaluationId'])
+            && !isset($this->data['@date'])
+            && (!$seal_exemption_filter || $seal_exemption_filter === 'granted')
+            && (
+                !isset($this->data['@filterStatus'])
+                || in_array($this->data['@filterStatus'], ['all', 'pending'], true)
+            );
+
+        if ($can_include_synthetic_exemptions && $registration_ids !== '-1') {
+            $synthetic_sql = "
+                SELECT
+                    r.id AS registration_id,
+                    r.number AS registration_number,
+                    NULL AS evaluation_id,
+                    NULL AS valuer_agent_id,
+                    NULL AS evaluation_status,
+                    NULL AS valuer_committee
+                FROM registration r
+                WHERE
+                    r.opportunity_id = :opp
+                    AND r.id IN({$registration_ids})
+                    AND r.status > 0
+                    AND r.seal_exemption_status = 'granted'
+                    AND NOT EXISTS (
+                        SELECT 1
+                        FROM evaluations e
+                        WHERE
+                            e.registration_id = r.id
+                            AND e.valuer_user_id IN({$users})
+                    )
+                ORDER BY r.sent_timestamp ASC, r.id ASC
+            ";
+
+            $synthetic_evaluations = $conn->fetchAllAssociative($synthetic_sql, $params);
+            if ($synthetic_evaluations) {
+                $evaluations = array_merge($evaluations, $synthetic_evaluations);
+                $queryNumberOfResults += count($synthetic_evaluations);
+            }
+        }
         
         $app->disableAccessControl();
         

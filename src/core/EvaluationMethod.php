@@ -868,6 +868,8 @@ abstract class EvaluationMethod extends Module implements \JsonSerializable{
 
         // obtém a lista de inscrições e das avaliações já feitas
         // Query corrigida: usa apenas um LEFT JOIN para evitar duplicatas
+        // Inscrições isentas por selos (seal_exemption_status = 'granted') são excluídas
+        // da distribuição — não devem receber avaliadores nem aparecer na workload.
         $sql = "
                 SELECT 
                     r.id, 
@@ -886,7 +888,8 @@ abstract class EvaluationMethod extends Module implements \JsonSerializable{
                     registration_evaluation v ON v.registration_id = r.id
                 WHERE 
                     opportunity_id = {$opportunity->id} AND
-                    r.status > 0
+                    r.status > 0 AND
+                    r.seal_exemption_status IS DISTINCT FROM 'granted'
                 GROUP BY r.id, v.id
                 ORDER BY num ASC
             ";
@@ -1434,6 +1437,12 @@ abstract class EvaluationMethod extends Module implements \JsonSerializable{
 
     public function canUserEvaluateRegistration(Entities\Registration $registration, User|GuestUser $user){
         if($user->is('guest')){
+            return false;
+        }
+
+        // Inscrições isentas por selos não podem ser avaliadas — já receberam
+        // status 10 automaticamente e não devem aparecer na workload do avaliador.
+        if($registration->sealExemptionStatus === 'granted'){
             return false;
         }
 
