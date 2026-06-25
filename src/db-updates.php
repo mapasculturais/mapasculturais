@@ -3454,4 +3454,83 @@ $$
         __exec("CREATE INDEX IF NOT EXISTS idx_seal_relation_computed_status ON seal_relation (computed_status)");
     },
 
-] + $updates ;   
+    // === Avaliação Automática por Selos — isenção de fase ===
+    //
+    // Modelo decidido em consenso (spec-c49fa0bb §3.1/3.2/3.3):
+    //   - Config de selos por fase: METADADO (sealExemptionConfig) no EMC — NÃO há DDL aqui.
+    //   - Flag de isenção: colunas físicas em registration (enum + timestamp).
+    //   - Snapshot de auditoria: metadado opcional (sealExemptionSnapshot) — NÃO há DDL aqui.
+    //
+    // NOTA SOBRE METADADOS:
+    //   sealExemptionConfig (EMC) e sealExemptionSnapshot (Registration) são registrados
+    //   via registerEvaluationMethodConfigurationMetadata() / registerRegistrationMetadata()
+    //   no Module.php do módulo responsável, em runtime. db-updates.php é DDL-only; o
+    //   registro de metadados não escreve estado no banco (as tabelas *_meta já existem
+    //   como EAV genérico).
+    //
+    // ROLLBACK COMPLETO (reverter manualmente se necessário):
+    //   DROP INDEX IF EXISTS idx_registration_seal_exemption;
+    //   DROP INDEX IF EXISTS idx_seal_relation_agent_valid;
+    //   ALTER TABLE registration DROP CONSTRAINT IF EXISTS chk_registration_seal_exemption_status;
+    //   ALTER TABLE registration DROP COLUMN IF EXISTS seal_exemption_timestamp;
+    //   ALTER TABLE registration DROP COLUMN IF EXISTS seal_exemption_status;
+    //   (Metadados sealExemptionConfig/sealExemptionSnapshot permanecem inertes — remoção
+    //    via código do módulo.)
+    //
+    // ÍNDICE seal_relation (produção com tabela grande):
+    //   O idx_seal_relation_agent_valid abaixo é criado NÃO-concorrente para caber no
+    //   runner idempotente do db-updates (que executa dentro do fluxo de boot). Em bases
+    //   de produção com seal_relation muito grande, o operador PODE criar o índice com
+    //   CONCURRENTLY antes do deploy:
+    //     CREATE INDEX CONCURRENTLY IF NOT EXISTS idx_seal_relation_agent_valid
+    //         ON seal_relation (object_id, seal_id, computed_status)
+    //         WHERE object_type = 'MapasCulturais\Entities\Agent' AND status = 1;
+    //   O `CREATE INDEX IF NOT EXISTS` abaixo então no-op (índice já existe).
+
+    'Adiciona colunas seal_exemption_status e seal_exemption_timestamp em registration' => function () use ($conn) {
+        // PG 11+: ADD COLUMN ... NULL (sem DEFAULT) é metadado-only — não reescreve a tabela.
+        if (!__column_exists('registration', 'seal_exemption_status')) {
+            __exec("ALTER TABLE registration ADD COLUMN seal_exemption_status VARCHAR(20) NULL");
+        }
+        if (!__column_exists('registration', 'seal_exemption_timestamp')) {
+            __exec("ALTER TABLE registration ADD COLUMN seal_exemption_timestamp TIMESTAMP(0) WITHOUT TIME ZONE NULL");
+        }
+
+        // CHECK constraint idempotente via DO block (PG não suporta ADD CONSTRAINT IF NOT EXISTS).
+        // Estados válidos: 'granted' (isenção concedida), 'agent_missing' (sem proponente) ou NULL.
+        // 'seals_invalid' é deliberadamente NÃO persistido (NULL = avaliação normal / não isenta)
+        // para manter o índice parcial enxuto — ver comentário do índice abaixo.
+        __exec("DO \$\$
+        BEGIN
+            IF NOT EXISTS (
+                SELECT 1 FROM information_schema.table_constraints
+                WHERE table_name = 'registration'
+                  AND constraint_name = 'chk_registration_seal_exemption_status'
+            ) THEN
+                ALTER TABLE registration
+                    ADD CONSTRAINT chk_registration_seal_exemption_status
+                    CHECK (seal_exemption_status IN ('granted','agent_missing') OR seal_exemption_status IS NULL);
+            END IF;
+        END \$\$");
+    },
+
+    'Cria índices parciais para isenção por selos' => function () use ($conn) {
+        // Índice 1: acelera a verificação de selos válidos por agente.
+        // Predicado espelha exatamente a query em lote do SealExemptionVerifier:
+        //   WHERE object_type = 'Agent' AND status = 1 AND computed_status = 'fully_valid'
+        // O filtro de computed_status fica no SELECT (não no índice) para reuso por outros
+        // leitores; o WHERE parcial já elimina não-agentes e relações pendentes/desativadas.
+        __try("CREATE INDEX IF NOT EXISTS idx_seal_relation_agent_valid
+            ON seal_relation (object_id, seal_id, computed_status)
+            WHERE object_type = 'MapasCulturais\Entities\Agent' AND status = 1");
+
+        // Índice 2: um único índice parcial cobre os dois filtros operacionais do PM:
+        //   - "isentos"     → WHERE seal_exemption_status = 'granted'
+        //   - "sem agente"  → WHERE seal_exemption_status = 'agent_missing'
+        // Pequeno porque só indexa linhas não-NULL (exceções), não a massa de avaliações normais.
+        __try("CREATE INDEX IF NOT EXISTS idx_registration_seal_exemption
+            ON registration (opportunity_id, seal_exemption_status)
+            WHERE seal_exemption_status IS NOT NULL");
+    },
+
+] + $updates ;
