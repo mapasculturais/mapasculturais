@@ -11,6 +11,7 @@ app.component('evaluation-form', {
     mounted() {
         window.addEventListener('resize', () => this.resizeForm());
         this.resizeForm();
+        this.markSealValidatorFields();
     },
 
     updated() {
@@ -25,10 +26,18 @@ app.component('evaluation-form', {
 
     data() {
         const global = useGlobalState();
+        const sealValidators = $MAPAS.config.evaluationFormSealValidators || {};
         return {
             formData: {},
             validateErrors: global.validateEvaluationErrors,
+            sealValidatorFields: sealValidators.enabled ? (sealValidators.fields || []) : [],
         }
+    },
+
+    computed: {
+        hasSealValidatorFields() {
+            return this.sealValidatorFields.length > 0;
+        },
     },
 
     methods: {
@@ -37,6 +46,25 @@ app.component('evaluation-form', {
             const headerHeight = this.$refs.header.offsetHeight;
             const height = Math.max(window.innerHeight - buttonsHeight - headerHeight - 200, 500); 
             this.$refs.form.style.height = height + 'px';
+        },
+
+        markSealValidatorFields() {
+            if (!this.hasSealValidatorFields) {
+                return;
+            }
+
+            const message = {
+                type: 'evaluationRegistration.setSealValidatorFields',
+                fields: this.sealValidatorFields.map((field) => ({
+                    fieldId: field.fieldId,
+                    isValidator: true,
+                    hasInvalidator: field.hasInvalidator,
+                })),
+            };
+
+            [200, 700, 1500].forEach((delay) => {
+                setTimeout(() => window.postMessage(message, '*'), delay);
+            });
         }
     }
 });
