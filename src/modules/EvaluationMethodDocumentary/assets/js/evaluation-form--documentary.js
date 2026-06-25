@@ -216,6 +216,32 @@ $(function(){
         $field.addClass(className);
     }
 
+    function setSealValidatorMarker(fieldId, isValidator, hasInvalidator) {
+        const $field = $(`#field_${fieldId}`);
+        if(!$field.length) {
+            return;
+        }
+
+        $field.removeClass('seal-validator-field');
+        $field.removeClass('seal-validator-field--invalidator');
+
+        if(isValidator) {
+            $field.addClass('seal-validator-field');
+            if(hasInvalidator) {
+                $field.addClass('seal-validator-field--invalidator');
+            }
+        }
+    }
+
+    function setSealValidatorMarkers(fields) {
+        $('.seal-validator-field, .seal-validator-field--invalidator')
+            .removeClass('seal-validator-field seal-validator-field--invalidator');
+
+        (fields || []).forEach((field) => {
+            setSealValidatorMarker(field.fieldId, field.isValidator, field.hasInvalidator);
+        });
+    }
+
     function clearStyles(className) {
         const $field = $('li.js-field.field-shadow, li.registration-list-item.field-shadow')
         $field.removeClass('field-shadow');
@@ -236,6 +262,14 @@ $(function(){
 
             case 'evaluationRegistration.setClass':
                 setClass(event.data.className);
+            break;
+
+            case 'evaluationRegistration.setSealValidator':
+                setSealValidatorMarker(event.data.fieldId, event.data.isValidator, event.data.hasInvalidator);
+            break;
+
+            case 'evaluationRegistration.setSealValidatorFields':
+                setSealValidatorMarkers(event.data.fields);
             break;
         
             case 'evaluationRegistration.clearStyles':

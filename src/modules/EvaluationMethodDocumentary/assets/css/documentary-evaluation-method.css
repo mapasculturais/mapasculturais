@@ -38,6 +38,103 @@
 
 }
 
+.documentary-evaluation-form__seal-alert {
+    background: #fff7e6;
+    border: 1px solid #f0b45b;
+    border-left: 6px solid #e18414;
+    border-radius: 6px;
+    color: #3d2b12;
+    padding: 12px 14px;
+}
+
+.documentary-evaluation-form__seal-alert-header {
+    align-items: center;
+    display: flex;
+    gap: 8px;
+    justify-content: space-between;
+    margin-bottom: 6px;
+}
+
+.documentary-evaluation-form__seal-alert-status {
+    background: #ffffff;
+    border: 1px solid #f0b45b;
+    border-radius: 999px;
+    color: #8a4c00;
+    font-size: 0.75rem;
+    font-weight: 700;
+    padding: 3px 8px;
+    white-space: nowrap;
+}
+
+.documentary-evaluation-form__seal-alert p {
+    margin: 0 0 10px;
+}
+
+.documentary-evaluation-form__seal-list {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.documentary-evaluation-form__seal-item {
+    align-items: center;
+    background: rgba(255, 255, 255, 0.72);
+    border-radius: 4px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    padding: 6px 8px;
+}
+
+.documentary-evaluation-form__seal-name {
+    font-weight: 700;
+}
+
+.documentary-evaluation-form__seal-kind {
+    color: #9b4f00;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+.documentary-evaluation-form__seal-item--invalidator .documentary-evaluation-form__seal-kind {
+    color: #b3261e;
+}
+
+.seal-validator-field {
+    border: 2px solid #e18414 !important;
+    box-shadow: 0 0 0 4px rgba(225, 132, 20, 0.18) !important;
+    position: relative;
+}
+
+.seal-validator-field::after {
+    background: #e18414;
+    border-radius: 999px;
+    color: #fff;
+    content: "Validar selo";
+    font-size: 11px;
+    font-weight: 700;
+    line-height: 1;
+    padding: 5px 8px;
+    position: absolute;
+    right: 12px;
+    top: 12px;
+    z-index: 2;
+}
+
+.seal-validator-field--invalidator {
+    border-color: #b3261e !important;
+    box-shadow: 0 0 0 4px rgba(179, 38, 30, 0.16) !important;
+}
+
+.seal-validator-field--invalidator::after {
+    background: #b3261e;
+    content: "Campo invalidador";
+}
+
 .documentary-evaluation-view {
     margin:-1em;
     padding:1em;

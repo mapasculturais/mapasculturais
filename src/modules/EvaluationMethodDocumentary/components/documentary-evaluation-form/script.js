@@ -71,6 +71,14 @@ app.component('documentary-evaluation-form', {
 
         evaluationName() {
             return $MAPAS.config.documentaryEvaluationForm.evaluationMethodName;
+        },
+
+        currentFieldInfo() {
+            return $MAPAS.config.documentaryEvaluationForm.fieldsInfo[this.fieldName] || {};
+        },
+
+        currentSealValidators() {
+            return this.currentFieldInfo.sealValidators || [];
         }
     },
 
@@ -86,11 +94,13 @@ app.component('documentary-evaluation-form', {
 
                 this.formData.uid = this.userId;
                 this.formData.data[this.fieldId] = {
-                    label: $MAPAS.config.documentaryEvaluationForm.fieldsInfo[this.fieldName]?.label || '',
+                    label: this.currentFieldInfo?.label || '',
                     obsItems: this.evaluationData[this.fieldId]?.obsItems ?? '',
                     obs: this.evaluationData[this.fieldId]?.obs ?? '',
                     evaluation: this.evaluationData[this.fieldId]?.evaluation ?? '',
                 };
+
+                this.markSealValidatorField();
             }
         },
 
@@ -132,6 +142,15 @@ app.component('documentary-evaluation-form', {
                     fieldId: fieldId
                 });
             }
+        },
+
+        markSealValidatorField() {
+            window.parent.postMessage({
+                type: 'evaluationRegistration.setSealValidator',
+                fieldId: this.fieldId,
+                isValidator: this.currentSealValidators.length > 0,
+                hasInvalidator: this.currentSealValidators.some((validator) => validator.isInvalidator),
+            });
         },
 
         getEvaluationData() {
@@ -188,6 +207,17 @@ app.component('documentary-evaluation-form', {
 
         formatSealsInfo(seals) {
             return seals.map(seal => `<strong>${seal.name}</strong> em ${seal.validateDate}`).join(', ');
+        },
+
+        validatorStatusLabel() {
+            const status = this.formData.data[this.fieldId]?.evaluation;
+            if (status === 'valid') {
+                return this.text('campoValidado') || 'Campo validado';
+            }
+            if (status === 'invalid') {
+                return this.text('campoInvalidado') || 'Campo invalidado';
+            }
+            return this.text('campoPendente') || 'Validação pendente';
         },
     },
 });
