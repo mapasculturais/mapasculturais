@@ -456,8 +456,75 @@ class EvaluationMethodConfiguration extends \MapasCulturais\Entity {
         if ($this->_type == 'technical') {
             $result['opportunity']->affirmativePoliciesEligibleFields = $this->opportunity->getFields();
         }
+
+        // Avaliação Automática por Selos (spec-c49fa0bb §3.7/§4.6):
+        // sealExemptionConfig e canEditSealConfig são expostos apenas para quem
+        // tem @control da oportunidade. sealExemptionConfig contém IDs de selos
+        // (potencialmente sensíveis — LGPD); canEditSealConfig é calculado
+        // server-side para evitar divergência de fuso no cliente.
+        if ($this->opportunity && $this->opportunity->canUser('@control')) {
+            $result['sealExemptionConfig'] = $this->sealExemptionConfig;
+            $result['canEditSealConfig'] = $this->getCanEditSealConfig();
+        }
         
         return $result;
+    }
+
+    /**
+     * Indica se a configuração de selos validadores ainda pode ser editada.
+     *
+     * Regra de edição: true se o método de avaliação NÃO é técnico e a fase
+     * ainda não recebeu inscrições ativas. A data de abertura só bloqueia a
+     * edição quando já existem inscrições na fase.
+     *
+     * Calculado server-side para evitar divergência de fuso horário no cliente.
+     *
+     * @return bool
+     */
+    public function getCanEditSealConfig(): bool {
+        // Avaliação Técnica jamais suporta isenção por selos.
+        if ($this->_type === 'technical') {
+            return false;
+        }
+
+        // Sem evaluationFrom = fase ainda não configurada/aberta → permite editar.
+        if (!$this->evaluationFrom) {
+            return true;
+        }
+
+        // Se a fase ainda não abriu, permite editar.
+        $now = new DateTime('now');
+        if ($now < $this->evaluationFrom) {
+            return true;
+        }
+
+        // Abertura atingida só trava quando a fase já recebeu inscrições.
+        return !$this->hasActiveRegistrations();
+    }
+
+    /**
+     * Verifica se a oportunidade desta fase já possui inscrições ativas.
+     *
+     * Inscrições removidas/arquivadas (status negativo) não devem travar a
+     * configuração. Drafts e enviadas contam como presença na fase.
+     *
+     * @return bool
+     */
+    public function hasActiveRegistrations(): bool {
+        if (!$this->opportunity || !$this->opportunity->id) {
+            return false;
+        }
+
+        $conn = App::i()->em->getConnection();
+        $count = $conn->fetchOne(
+            'SELECT COUNT(1) FROM registration WHERE opportunity_id = :opportunity_id AND status >= :min_status',
+            [
+                'opportunity_id' => $this->opportunity->id,
+                'min_status' => Registration::STATUS_DRAFT,
+            ]
+        );
+
+        return (int) $count > 0;
     }
 
     /**

@@ -274,6 +274,27 @@ class Registration extends \MapasCulturais\Entity
      */
     protected $updateTimestamp;
 
+    /**
+     * Status da isenção automática por selos nesta fase.
+     *
+     * Valores possíveis: 'granted' (isenção concedida), 'agent_missing' (sem
+     * agente proponente identificável) ou NULL (avaliação normal / não isenta).
+     *
+     * @var string|null
+     *
+     * @ORM\Column(name="seal_exemption_status", type="string", length=20, nullable=true)
+     */
+    protected $sealExemptionStatus;
+
+    /**
+     * Momento em que a verificação de isenção por selos foi processada.
+     *
+     * @var \DateTime|null
+     *
+     * @ORM\Column(name="seal_exemption_timestamp", type="datetime", nullable=true)
+     */
+    protected $sealExemptionTimestamp;
+
 
     public $preview = false;
 
