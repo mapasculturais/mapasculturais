@@ -6,6 +6,7 @@ use MapasCulturais\App;
 use MapasCulturais\Entities\Job;
 use MapasCulturais\Entities\Registration;
 use MapasCulturais\i;
+use SealExemption\SealExemptionService;
 
 /**
  * @property-read string $fileGroup
@@ -110,7 +111,18 @@ abstract class EvaluationsSpreadsheetJob extends SpreadsheetJob
 
         $header = isset($result_header['header']) ? array_merge($header, $result_header['header']) : $header;
         $sub_header = isset($result_header['subHeader']) ? array_merge($sub_header, $result_header['subHeader']) : $sub_header;
-        
+
+        // Parte da isenção por selos (duas colunas: "Isento" + rótulo configurado).
+        // Só é adicionada quando a fase possui sealExemptionConfig ativa, evitando
+        // colunas vazias em planilhas de fases sem a funcionalidade (spec-c49fa0bb §4.4).
+        $exemption_header = $this->getSealExemptionHeader($job, $sub_header);
+        if (isset($exemption_header['header'])) {
+            $header = array_merge($header, $exemption_header['header']);
+        }
+        if (isset($exemption_header['subHeader'])) {
+            $sub_header = array_merge($sub_header, $exemption_header['subHeader']);
+        }
+
         $result = [$header, $sub_header];
 
         return $result;
@@ -131,7 +143,160 @@ abstract class EvaluationsSpreadsheetJob extends SpreadsheetJob
         $evaluations = json_decode(json_encode($evaluations), true);
 
         $result = $this->getEvaluationDataBatch($job, $evaluations);
+
+        // Complementa cada linha com as colunas de isenção por selos (spec-c49fa0bb §4.4).
+        // Os dados são resolvidos via query em lote sobre seal_exemption_status, de
+        // forma desacoplada do @select da ApiQuery de inscrições.
+        $this->appendSealExemptionColumns($job, $evaluations, $result);
+
         return $result;
+    }
+
+    /**
+     * Constrói o cabeçalho das duas colunas de isenção por selos (spec-c49fa0bb §4.4):
+     *  - sealExemption (booleana): cabeçalho "Isento", conteúdo Sim/Não.
+     *  - sealExemptionLabel (textual): cabeçalho = rótulo configurado da fase,
+     *    conteúdo = rótulo para isentos (vazio caso contrário).
+     *
+     * Retorna header/subHeader nulos quando a fase não tem sealExemptionConfig ativa,
+     * para que as colunas não sejam adicionadas à planilha (evita colunas vazias).
+     *
+     * Segurança: nunca expõe IDs internos de selos — apenas o enum de status e o
+     * rótulo textual de exibição.
+     *
+     * @param Job $job
+     * @param array $sub_header Sub-cabeçalho acumulado até o momento (para calcular
+     *                          a posição das novas colunas).
+     * @return array{header: ?array, subHeader: ?array}
+     */
+    protected function getSealExemptionHeader(Job $job, array $sub_header): array
+    {
+        if (!$this->hasSealExemptionConfig($job)) {
+            return ['header' => null, 'subHeader' => null];
+        }
+
+        // Rótulo sanitizado: protege contra caracteres especiais e injeção de
+        // fórmula em CSV/Excel (cleanTextForExport escapa prefixes =+-@, normaliza
+        // UTF-8 e remove caracteres de controle).
+        $label = $this->cleanTextForExport($this->getSealExemptionLabel($job));
+        if ($label === '') {
+            $label = i::__('Isento por selos válidos');
+        }
+
+        // Posicionamento: próximas 2 colunas após as já definidas em $sub_header.
+        $start = count($sub_header) + 1;
+        $col_exempt = $this->getSpreadsheetColumnName($start);
+        $col_label = $this->getSpreadsheetColumnName($start + 1);
+
+        return [
+            'header' => [
+                "{$col_exempt}1:{$col_label}1" => i::__('Isenção por selos'),
+            ],
+            'subHeader' => [
+                'sealExemption' => i::__('Isento'),
+                // Cabeçalho da coluna textual = rótulo configurado da fase (spec §4.4).
+                'sealExemptionLabel' => $label,
+            ],
+        ];
+    }
+
+    /**
+     * Anexa as colunas de isenção por selos em cada linha do batch.
+     *
+     * - sealExemption: "Sim" quando seal_exemption_status = 'granted'; "Não" caso
+     *   contrário (inclui agent_missing, null e demais estados).
+     * - sealExemptionLabel: rótulo configurado da fase para isentos; vazio para
+     *   não-isentos (evita redundância com o cabeçalho da coluna, que já é o rótulo).
+     *
+     * O status é resolvido por query em lote (1 query por página de batch), mapeado
+     * por registration_id — robusto à ordenação. O rótulo é constante por fase
+     * (lido do EMC, com fallback localizado).
+     *
+     * @param Job $job
+     * @param array $evaluations Resultado de apiFindEvaluations (já normalizado p/ array).
+     * @param array $result Linhas produzidas por getEvaluationDataBatch (modificado in-place).
+     * @return void
+     */
+    protected function appendSealExemptionColumns(Job $job, array $evaluations, array &$result): void
+    {
+        if (empty($result)) {
+            return;
+        }
+
+        // Só popula colunas quando a fase tem config ativa. Quando não tem, as
+        // chaves não estarão no sub_header e seriam ignoradas pelo _execute; mas
+        // evitamos a query desnecessária.
+        if (!$this->hasSealExemptionConfig($job)) {
+            return;
+        }
+
+        $app = App::i();
+        $rows = $evaluations['evaluations'] ?? [];
+
+        // Coleta os IDs das inscrições presentes nesta página.
+        $reg_ids = [];
+        foreach ($rows as $evaluation) {
+            $reg_id = $evaluation['registration_id']
+                ?? ($evaluation['registration']['id'] ?? null);
+            if ($reg_id !== null) {
+                $reg_ids[] = (int) $reg_id;
+            }
+        }
+        $reg_ids = array_values(array_unique($reg_ids));
+
+        // Map: registration_id => seal_exemption_status.
+        // Usamos prepared statement (placeholders posicionais) — IDs já cast p/ int.
+        $statuses = [];
+        if ($reg_ids) {
+            $conn = $app->em->getConnection();
+            $placeholders = implode(',', array_fill(0, count($reg_ids), '?'));
+            $sql = "SELECT id, seal_exemption_status FROM registration WHERE id IN ({$placeholders})";
+            foreach ($conn->fetchAllAssociative($sql, $reg_ids) as $row) {
+                $statuses[(int) $row['id']] = $row['seal_exemption_status'];
+            }
+        }
+
+        $label = $this->cleanTextForExport($this->getSealExemptionLabel($job));
+
+        // Zip por índice: $result segue a mesma ordem de $evaluations['evaluations']
+        // (ambos iteram o mesmo array na mesma sequência em _getEvaluationDataBatch).
+        // A busca do status é feita por registration_id, então é robusta mesmo se
+        // a ordem eventualmente divergir.
+        $count = min(count($result), count($rows));
+        for ($i = 0; $i < $count; $i++) {
+            $reg_id = $rows[$i]['registration_id']
+                ?? ($rows[$i]['registration']['id'] ?? null);
+
+            $status = ($reg_id !== null && isset($statuses[(int) $reg_id]))
+                ? $statuses[(int) $reg_id]
+                : null;
+            $is_exempt = ($status === 'granted');
+
+            $result[$i]['sealExemption'] = $is_exempt ? i::__('Sim') : i::__('Não');
+            $result[$i]['sealExemptionLabel'] = $is_exempt ? $label : i::__('Não isenta');
+        }
+    }
+
+    /**
+     * Verifica se a fase possui configuração de isenção por selos ativa
+     * (sealExemptionConfig com ao menos um selo).
+     */
+    protected function hasSealExemptionConfig(Job $job): bool
+    {
+        $opportunity = $job->owner;
+        $emc = $opportunity->evaluationMethodConfiguration ?? null;
+        return SealExemptionService::hasActiveConfig($emc?->sealExemptionConfig);
+    }
+
+    /**
+     * Resolve o rótulo de isenção por selos da fase (do sealExemptionConfig do EMC),
+     * com fallback localizado "Isento por selos válidos" (spec-c49fa0bb §3.1).
+     */
+    protected function getSealExemptionLabel(Job $job): string
+    {
+        $opportunity = $job->owner;
+        $emc = $opportunity->evaluationMethodConfiguration ?? null;
+        return SealExemptionService::getConfigLabel($emc?->sealExemptionConfig);
     }
 
     function getSpreadsheetColumnName($index) {
