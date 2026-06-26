@@ -1,19 +1,19 @@
 <?php
 namespace Tests;
 
-require_once __DIR__ . '/bootstrap.php';
-
 use OpportunityWorkplan\Entities\Delivery;
 use OpportunityWorkplan\Entities\Goal;
 use OpportunityWorkplan\Entities\Workplan;
-use Tests\Traits\OpportunityDirector;
+use Tests\Abstract\TestCase;
+use Tests\Builders\PhasePeriods\Open;
+use Tests\Traits\OpportunityBuilder;
 use Tests\Traits\RegistrationDirector;
 use Tests\Traits\UserDirector;
 
-class OpportunityWorkplanMonitoringValidationTest extends \MapasCulturais_TestCase
+class OpportunityWorkplanMonitoringValidationTest extends TestCase
 {
     use UserDirector;
-    use OpportunityDirector;
+    use OpportunityBuilder;
     use RegistrationDirector;
 
     public function testMonitoringFieldsAreNotRequiredDuringRegistrationPhase()
@@ -44,7 +44,7 @@ class OpportunityWorkplanMonitoringValidationTest extends \MapasCulturais_TestCa
         ]);
 
         $workplan = $app->repo(Workplan::class)->findOneBy(['registration' => $registration->id]);
-        $delivery = $workplan->goals[0]->deliveries[0];
+        $delivery = $this->getFirstDelivery($workplan);
 
         $errors = $this->collectSendValidationErrors($registration);
         $deliveryErrors = $errors['workplanProxy']['deliveries'][$delivery->id] ?? [];
@@ -74,7 +74,7 @@ class OpportunityWorkplanMonitoringValidationTest extends \MapasCulturais_TestCa
             ]);
 
             $workplan = $app->repo(Workplan::class)->findOneBy(['registration' => $registration->id]);
-            $delivery = $workplan->goals[0]->deliveries[0];
+            $delivery = $this->getFirstDelivery($workplan);
             $errors = $this->collectSendValidationErrors($registration);
             $deliveryErrors = $errors['workplanProxy']['deliveries'][$delivery->id] ?? [];
 
@@ -111,7 +111,7 @@ class OpportunityWorkplanMonitoringValidationTest extends \MapasCulturais_TestCa
         ]);
 
         $workplan = $app->repo(Workplan::class)->findOneBy(['registration' => $registration->id]);
-        $delivery = $workplan->goals[0]->deliveries[0];
+        $delivery = $this->getFirstDelivery($workplan);
 
         $errors = $this->collectSendValidationErrors($registration);
         $deliveryErrors = $errors['workplanProxy']['deliveries'][$delivery->id] ?? [];
@@ -184,7 +184,7 @@ class OpportunityWorkplanMonitoringValidationTest extends \MapasCulturais_TestCa
         $registration = $this->createRegistrationWithWorkplan($opportunity, $user);
 
         $workplan = $app->repo(Workplan::class)->findOneBy(['registration' => $registration->id]);
-        $delivery = $workplan->goals[0]->deliveries[0];
+        $delivery = $this->getFirstDelivery($workplan);
 
         $errors = $this->collectSendValidationErrors($registration);
         $deliveryErrors = $errors['workplanProxy']['deliveries'][$delivery->id] ?? [];
@@ -215,7 +215,8 @@ class OpportunityWorkplanMonitoringValidationTest extends \MapasCulturais_TestCa
 
         $firstPhaseRegistration = $this->createRegistrationWithWorkplan($firstPhaseOpportunity, $user);
 
-        $monitoringPhaseOpportunity = new \MapasCulturais\Entities\Opportunity;
+        $monitoring_phase_class = $firstPhaseOpportunity->specializedClassName;
+        $monitoringPhaseOpportunity = new $monitoring_phase_class;
         $monitoringPhaseOpportunity->name = 'Fase de Monitoramento';
         $monitoringPhaseOpportunity->shortDescription = 'Teste';
         $monitoringPhaseOpportunity->owner = $firstPhaseOpportunity->owner;
@@ -230,11 +231,12 @@ class OpportunityWorkplanMonitoringValidationTest extends \MapasCulturais_TestCa
         $monitoringRegistration = new \MapasCulturais\Entities\Registration;
         $monitoringRegistration->opportunity = $monitoringPhaseOpportunity;
         $monitoringRegistration->owner = $user->profile;
+        $monitoringRegistration->number = $firstPhaseRegistration->number;
         $monitoringRegistration->firstPhase = $firstPhaseRegistration;
         $monitoringRegistration->save(true);
 
         $workplan = $app->repo(Workplan::class)->findOneBy(['registration' => $firstPhaseRegistration->id]);
-        $delivery = $workplan->goals[0]->deliveries[0];
+        $delivery = $this->getFirstDelivery($workplan);
 
         $errors = $this->collectSendValidationErrors($monitoringRegistration);
 
@@ -254,22 +256,25 @@ class OpportunityWorkplanMonitoringValidationTest extends \MapasCulturais_TestCa
 
     private function createOpportunityWithWorkplan(array $metadata = [])
     {
-        $user = $this->userDirector->createUser();
-        $agent = $user->profile;
+        $agent = $this->app->user->profile;
 
         $project = new \MapasCulturais\Entities\Project;
         $project->name = 'Projeto Teste Monitoramento';
         $project->shortDescription = 'Teste';
+        $project->type = 1;
         $project->owner = $agent;
         $project->save(true);
 
-        $opportunity = new \MapasCulturais\Entities\Opportunity;
+        $this->opportunityBuilder
+            ->reset(owner: $agent, owner_entity: $project)
+            ->fillRequiredProperties()
+            ->firstPhase()
+                ->setRegistrationPeriod(new Open)
+                ->done();
+
+        $opportunity = $this->opportunityBuilder->getInstance();
         $opportunity->name = 'Oportunidade Teste Monitoramento';
         $opportunity->shortDescription = 'Teste';
-        $opportunity->owner = $agent;
-        $opportunity->ownerEntity = $project;
-        $opportunity->registrationFrom = new \DateTime('now');
-        $opportunity->registrationTo = new \DateTime('+30 days');
         $opportunity->enableWorkplan = true;
         $opportunity->workplan_deliveryReportTheDeliveriesLinkedToTheGoals = true;
 
@@ -303,6 +308,7 @@ class OpportunityWorkplanMonitoringValidationTest extends \MapasCulturais_TestCa
         $goal->title = $data['goal']['title'] ?? 'Meta Teste';
         $goal->description = $data['goal']['description'] ?? 'Descrição teste';
         $goal->save(true);
+        $workplan->goals->add($goal);
 
         $delivery = new Delivery;
         $delivery->goal = $goal;
@@ -320,6 +326,7 @@ class OpportunityWorkplanMonitoringValidationTest extends \MapasCulturais_TestCa
         }
 
         $delivery->save(true);
+        $goal->deliveries->add($delivery);
 
         return $registration;
     }
@@ -330,6 +337,17 @@ class OpportunityWorkplanMonitoringValidationTest extends \MapasCulturais_TestCa
         $this->app->applyHookBoundTo($registration, 'entity(Registration).sendValidationErrors', [&$errors]);
 
         return $errors;
+    }
+
+    private function getFirstDelivery(Workplan $workplan): Delivery
+    {
+        $goal = $this->app->repo(Goal::class)->findOneBy(['workplan' => $workplan->id]);
+        $this->assertInstanceOf(Goal::class, $goal);
+
+        $delivery = $this->app->repo(Delivery::class)->findOneBy(['goal' => $goal->id]);
+        $this->assertInstanceOf(Delivery::class, $delivery);
+
+        return $delivery;
     }
 
     private function arrayContainsSubstring(array $messages, string $needle): bool

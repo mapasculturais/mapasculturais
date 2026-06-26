@@ -1,14 +1,14 @@
 <?php
 namespace Tests;
 
-require_once __DIR__ . '/bootstrap.php';
-
 use MapasCulturais\App;
 use OpportunityWorkplan\Entities\Workplan;
 use OpportunityWorkplan\Entities\Goal;
 use OpportunityWorkplan\Entities\Delivery;
+use Tests\Abstract\TestCase;
+use Tests\Builders\PhasePeriods\Open;
 use Tests\Traits\UserDirector;
-use Tests\Traits\OpportunityDirector;
+use Tests\Traits\OpportunityBuilder;
 use Tests\Traits\RegistrationDirector;
 
 /**
@@ -17,10 +17,10 @@ use Tests\Traits\RegistrationDirector;
  * Execução:
  * docker exec -it mapas-dev-mapas vendor/bin/phpunit tests/src/OpportunityWorkplanRequireFieldsTest.php
  */
-class OpportunityWorkplanRequireFieldsTest extends \MapasCulturais_TestCase
+class OpportunityWorkplanRequireFieldsTest extends TestCase
 {
     use UserDirector;
-    use OpportunityDirector;
+    use OpportunityBuilder;
     use RegistrationDirector;
 
     /**
@@ -46,7 +46,7 @@ class OpportunityWorkplanRequireFieldsTest extends \MapasCulturais_TestCase
         ]);
 
         $workplan = $app->repo(Workplan::class)->findOneBy(['registration' => $registration->id]);
-        $delivery = $workplan->goals[0]->deliveries[0];
+        $delivery = $this->getFirstDelivery($workplan);
 
         // Verificar que campo NÃO é obrigatório
         $isRequired = $delivery->isMetadataRequired('numberOfCities');
@@ -74,7 +74,7 @@ class OpportunityWorkplanRequireFieldsTest extends \MapasCulturais_TestCase
         ]);
 
         $workplan = $app->repo(Workplan::class)->findOneBy(['registration' => $registration->id]);
-        $delivery = $workplan->goals[0]->deliveries[0];
+        $delivery = $this->getFirstDelivery($workplan);
 
         // Verificar que campo É obrigatório
         $isRequired = $delivery->isMetadataRequired('numberOfCities');
@@ -102,7 +102,7 @@ class OpportunityWorkplanRequireFieldsTest extends \MapasCulturais_TestCase
         ]);
 
         $workplan = $app->repo(Workplan::class)->findOneBy(['registration' => $registration->id]);
-        $delivery = $workplan->goals[0]->deliveries[0];
+        $delivery = $this->getFirstDelivery($workplan);
 
         // Validar que array vazio não passa
         $value = $delivery->paidStaffByRole;
@@ -135,7 +135,7 @@ class OpportunityWorkplanRequireFieldsTest extends \MapasCulturais_TestCase
         ]);
 
         $workplan1 = $app->repo(Workplan::class)->findOneBy(['registration' => $registration1->id]);
-        $delivery1 = $workplan1->goals[0]->deliveries[0];
+        $delivery1 = $this->getFirstDelivery($workplan1);
 
         $isRequired1 = $delivery1->isMetadataRequired('transInclusionActions');
         $this->assertFalse($isRequired1, 'Detail NÃO deveria ser obrigatório quando gate=false');
@@ -149,7 +149,7 @@ class OpportunityWorkplanRequireFieldsTest extends \MapasCulturais_TestCase
         ]);
 
         $workplan2 = $app->repo(Workplan::class)->findOneBy(['registration' => $registration2->id]);
-        $delivery2 = $workplan2->goals[0]->deliveries[0];
+        $delivery2 = $this->getFirstDelivery($workplan2);
 
         $isRequired2 = $delivery2->isMetadataRequired('transInclusionActions');
         $this->assertTrue($isRequired2, 'Detail deveria ser obrigatório quando gate=true');
@@ -265,7 +265,7 @@ class OpportunityWorkplanRequireFieldsTest extends \MapasCulturais_TestCase
         ]);
 
         $workplan = $app->repo(Workplan::class)->findOneBy(['registration' => $registration->id]);
-        $delivery = $workplan->goals[0]->deliveries[0];
+        $delivery = $this->getFirstDelivery($workplan);
 
         $this->assertTrue($delivery->isMetadataRequired('executedRevenueType'));
     }
@@ -289,7 +289,7 @@ class OpportunityWorkplanRequireFieldsTest extends \MapasCulturais_TestCase
         ]);
 
         $workplan = $app->repo(Workplan::class)->findOneBy(['registration' => $registration->id]);
-        $delivery = $workplan->goals[0]->deliveries[0];
+        $delivery = $this->getFirstDelivery($workplan);
 
         $this->assertFalse($delivery->isMetadataRequired('executedCommunityCoauthorsDetail'));
     }
@@ -313,7 +313,7 @@ class OpportunityWorkplanRequireFieldsTest extends \MapasCulturais_TestCase
         ]);
 
         $workplan = $app->repo(Workplan::class)->findOneBy(['registration' => $registration->id]);
-        $delivery = $workplan->goals[0]->deliveries[0];
+        $delivery = $this->getFirstDelivery($workplan);
 
         $this->assertTrue($delivery->isMetadataRequired('executedCommunityCoauthorsDetail'));
     }
@@ -338,7 +338,7 @@ class OpportunityWorkplanRequireFieldsTest extends \MapasCulturais_TestCase
         ]);
 
         $workplan = $app->repo(Workplan::class)->findOneBy(['registration' => $registration->id]);
-        $delivery = $workplan->goals[0]->deliveries[0];
+        $delivery = $this->getFirstDelivery($workplan);
 
         $this->assertTrue($delivery->isMetadataRequired('numberOfParticipants'));
     }
@@ -362,7 +362,7 @@ class OpportunityWorkplanRequireFieldsTest extends \MapasCulturais_TestCase
         ]);
 
         $workplan = $app->repo(Workplan::class)->findOneBy(['registration' => $registration->id]);
-        $delivery = $workplan->goals[0]->deliveries[0];
+        $delivery = $this->getFirstDelivery($workplan);
 
         $this->assertTrue($delivery->isMetadataRequired('executedMonthInitial'));
         $this->assertTrue($delivery->isMetadataRequired('executedMonthEnd'));
@@ -386,7 +386,7 @@ class OpportunityWorkplanRequireFieldsTest extends \MapasCulturais_TestCase
         ]);
 
         $workplan = $app->repo(Workplan::class)->findOneBy(['registration' => $registration->id]);
-        $delivery = $workplan->goals[0]->deliveries[0];
+        $delivery = $this->getFirstDelivery($workplan);
 
         $this->assertTrue($delivery->isMetadataRequired('executedTotalBudget'));
     }
@@ -409,7 +409,7 @@ class OpportunityWorkplanRequireFieldsTest extends \MapasCulturais_TestCase
         ]);
 
         $workplan = $app->repo(Workplan::class)->findOneBy(['registration' => $registration->id]);
-        $delivery = $workplan->goals[0]->deliveries[0];
+        $delivery = $this->getFirstDelivery($workplan);
 
         $this->assertTrue($delivery->isMetadataRequired('executedCommunicationStrategies'));
     }
@@ -424,24 +424,27 @@ class OpportunityWorkplanRequireFieldsTest extends \MapasCulturais_TestCase
     private function createOpportunityWithWorkplan(array $metadata = [])
     {
         $app = $this->app;
-        $user = $this->userDirector->createUser();
-        $agent = $user->profile;
+        $agent = $app->user->profile;
 
         // Criar projeto pai
         $project = new \MapasCulturais\Entities\Project;
         $project->name = 'Projeto Teste Workplan';
         $project->shortDescription = 'Teste';
+        $project->type = 1;
         $project->owner = $agent;
         $project->save(true);
 
+        $this->opportunityBuilder
+            ->reset(owner: $agent, owner_entity: $project)
+            ->fillRequiredProperties()
+            ->firstPhase()
+                ->setRegistrationPeriod(new Open)
+                ->done();
+
         // Criar oportunidade
-        $opportunity = new \MapasCulturais\Entities\Opportunity;
+        $opportunity = $this->opportunityBuilder->getInstance();
         $opportunity->name = 'Oportunidade Teste Workplan';
         $opportunity->shortDescription = 'Teste';
-        $opportunity->owner = $agent;
-        $opportunity->ownerEntity = $project;
-        $opportunity->registrationFrom = new \DateTime('now');
-        $opportunity->registrationTo = new \DateTime('+30 days');
 
         // Habilitar workplan
         $opportunity->enableWorkplan = true;
@@ -486,6 +489,7 @@ class OpportunityWorkplanRequireFieldsTest extends \MapasCulturais_TestCase
         $goal->title = $data['goal']['title'] ?? 'Meta Teste';
         $goal->description = $data['goal']['description'] ?? 'Descrição teste';
         $goal->save(true);
+        $workplan->goals->add($goal);
 
         // Criar delivery
         $delivery = new Delivery;
@@ -505,6 +509,7 @@ class OpportunityWorkplanRequireFieldsTest extends \MapasCulturais_TestCase
         }
 
         $delivery->save(true);
+        $goal->deliveries->add($delivery);
 
         return $registration;
     }
@@ -515,5 +520,16 @@ class OpportunityWorkplanRequireFieldsTest extends \MapasCulturais_TestCase
         $this->app->applyHookBoundTo($registration, 'entity(Registration).sendValidationErrors', [&$errors]);
 
         return $errors;
+    }
+
+    private function getFirstDelivery(Workplan $workplan): Delivery
+    {
+        $goal = $this->app->repo(Goal::class)->findOneBy(['workplan' => $workplan->id]);
+        $this->assertInstanceOf(Goal::class, $goal);
+
+        $delivery = $this->app->repo(Delivery::class)->findOneBy(['goal' => $goal->id]);
+        $this->assertInstanceOf(Delivery::class, $delivery);
+
+        return $delivery;
     }
 }
