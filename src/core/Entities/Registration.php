@@ -888,17 +888,80 @@ class Registration extends \MapasCulturais\Entity
         $fields = $this->opportunity->registrationFieldConfigurations;
 
         foreach($fields as $field) {
-            if($field->fieldType == 'agent-owner-field' && isset($owner_locked_field_seals[$field->config['entityField']])) {
-                $locked_field_seals[$field->fieldName] = $owner_locked_field_seals[$field->config['entityField']];
-                
+            if($field->fieldType == 'agent-owner-field') {
+                $field_seals = $this->getAgentFieldSealDataForRegistrationField($owner_locked_field_seals, $field->config['entityField'] ?? null);
+                if($field_seals) {
+                    $locked_field_seals[$field->fieldName] = $field_seals;
+                }
             }
 
-            if($field->fieldType == 'agent-collective-field' && isset($collective_locked_field_seals[$field->config['entityField']])) {
-                $locked_field_seals[$field->fieldName] = $collective_locked_field_seals[$field->config['entityField']];
+            if($field->fieldType == 'agent-collective-field') {
+                $field_seals = $this->getAgentFieldSealDataForRegistrationField($collective_locked_field_seals, $field->config['entityField'] ?? null);
+                if($field_seals) {
+                    $locked_field_seals[$field->fieldName] = $field_seals;
+                }
             }
         }
         
         return (object) $locked_field_seals;
+    }
+
+    /**
+     * Retorna os selos dos campos da inscrição com o status granular de cada campo.
+     *
+     * Diferente de lockedFieldSeals, este método inclui também campos prestes a
+     * expirar e expirados para exibição visual, sem implicar bloqueio.
+     *
+     * @return object
+     */
+    function getFieldSealStatuses() {
+        $owner_field_seal_statuses = (array) $this->owner->fieldSealStatuses;
+
+        $related_agents = $this->relatedAgents ?: [];
+        $collective_field_seal_statuses = [];
+
+        if(isset($related_agents['coletivo'])) {
+            $collective_field_seal_statuses = (array) $related_agents['coletivo'][0]->fieldSealStatuses;
+        }
+
+        $field_seal_statuses = [];
+        $fields = $this->opportunity->registrationFieldConfigurations;
+
+        foreach($fields as $field) {
+            if($field->fieldType == 'agent-owner-field') {
+                $field_statuses = $this->getAgentFieldSealDataForRegistrationField($owner_field_seal_statuses, $field->config['entityField'] ?? null);
+                if($field_statuses) {
+                    $field_seal_statuses[$field->fieldName] = $field_statuses;
+                }
+            }
+
+            if($field->fieldType == 'agent-collective-field') {
+                $field_statuses = $this->getAgentFieldSealDataForRegistrationField($collective_field_seal_statuses, $field->config['entityField'] ?? null);
+                if($field_statuses) {
+                    $field_seal_statuses[$field->fieldName] = $field_statuses;
+                }
+            }
+        }
+
+        return (object) $field_seal_statuses;
+    }
+
+    /**
+     * Resolve selos/status de um campo de agente para o campo equivalente na
+     * inscrição. O mapeamento é estrito: `name` e `nomeCompleto` são campos
+     * diferentes e não devem ser tratados como equivalentes.
+     *
+     * @param array $agent_field_seal_data
+     * @param string|null $entity_field
+     * @return array
+     */
+    protected function getAgentFieldSealDataForRegistrationField(array $agent_field_seal_data, ?string $entity_field): array
+    {
+        if(!$entity_field) {
+            return [];
+        }
+
+        return isset($agent_field_seal_data[$entity_field]) ? (array) $agent_field_seal_data[$entity_field] : [];
     }
 
     /**

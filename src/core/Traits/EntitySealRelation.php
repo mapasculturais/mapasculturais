@@ -135,6 +135,75 @@ trait EntitySealRelation {
     }
 
     /**
+     * Retorna os selos que validam cada campo com o status granular atual.
+     *
+     * Este payload é visual: inclui campos válidos, prestes a expirar e expirados.
+     * O bloqueio continua sendo decidido por getLockedFieldSeals()/getLockedFields,
+     * que só considera valid/no_expiration como bloqueados.
+     *
+     * @return object
+     */
+    function getFieldSealStatuses() {
+        /** @var \MapasCulturais\Entity $this */
+
+        $app = App::i();
+        $field_seal_statuses = [];
+
+        foreach ($this->getSealRelations() as $seal_relation) {
+            $seal = $seal_relation->seal;
+            $config = (array) $seal->lockedFieldsConfig;
+
+            if (!empty($config)) {
+                $fields_by_name = [];
+                foreach ($seal_relation->getSealRelationFields() as $srf) {
+                    $fields_by_name[$srf->fieldName] = $srf;
+                }
+
+                foreach ($config as $field_name => $field_config) {
+                    if (preg_match("#{$this->controllerId}\.(.*)#", $field_name, $match)) {
+                        $field = $match[1];
+                        $srf = $fields_by_name[$field_name] ?? null;
+                        $status = $srf ? $srf->getFieldStatus() : 'no_expiration';
+
+                        $field_seal_statuses[$field] = $field_seal_statuses[$field] ?? [];
+                        $field_seal_statuses[$field][] = [
+                            'sealId' => $seal->id,
+                            'fieldName' => $field_name,
+                            'fieldStatus' => $status,
+                            'expiryDate' => $srf && $srf->expiryDate ? $srf->expiryDate->format(\MapasCulturais\i::__('d/m/Y')) : null,
+                            'isInvalidator' => $srf ? $srf->isInvalidator : !empty(((array) $field_config)['isInvalidator']),
+                            'isUnlocked' => in_array($status, ['about_to_expire', 'expired'], true),
+                            'isLocked' => in_array($status, ['valid', 'no_expiration'], true),
+                        ];
+                    }
+                }
+            } else {
+                // Comportamento legado: selos sem configuração granular continuam
+                // sendo exibidos como válidos e bloqueados.
+                foreach ($seal->lockedFields ?: [] as $entity_field) {
+                    if (preg_match("#{$this->controllerId}\.(.*)#", $entity_field, $match)) {
+                        $field = $match[1];
+                        $field_seal_statuses[$field] = $field_seal_statuses[$field] ?? [];
+                        $field_seal_statuses[$field][] = [
+                            'sealId' => $seal->id,
+                            'fieldName' => $entity_field,
+                            'fieldStatus' => 'no_expiration',
+                            'expiryDate' => null,
+                            'isInvalidator' => false,
+                            'isUnlocked' => false,
+                            'isLocked' => true,
+                        ];
+                    }
+                }
+            }
+        }
+
+        $app->applyHookBoundTo($this, "{$this->hookPrefix}.fieldSealStatuses", [&$field_seal_statuses]);
+
+        return (object) $field_seal_statuses;
+    }
+
+    /**
      * Retorna a lista dos campos bloqueados.
      * NÃO usa cache.
      *
