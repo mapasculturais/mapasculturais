@@ -323,6 +323,90 @@ abstract class SealRelation extends \MapasCulturais\Entity
         $this->updateComputedStatus();
         $app->em->persist($this);
     }
+
+    /**
+     * Sincroniza os campos granulares desta relação com a configuração atual
+     * do selo. Usado quando lockedFieldsConfig do selo é alterado.
+     *
+     * @return void
+     */
+    public function reconcileSealRelationFields(): void
+    {
+        $app = App::i();
+        $config = (array) $this->seal->lockedFieldsConfig;
+        $fields_by_name = [];
+
+        foreach ($this->getSealRelationFields() as $field) {
+            $fields_by_name[$field->fieldName] = $field;
+        }
+
+        foreach ($fields_by_name as $field_name => $field) {
+            if (!isset($config[$field_name])) {
+                $app->em->remove($field);
+                unset($fields_by_name[$field_name]);
+            }
+        }
+
+        foreach ($config as $field_name => $field_config) {
+            $field_config = (array) $field_config;
+            $field = $fields_by_name[$field_name] ?? null;
+
+            if (!$field instanceof SealRelationField) {
+                $field = new SealRelationField();
+                $field->sealRelation = $this;
+                $field->fieldName = $field_name;
+            }
+
+            $field->expiryDate = $this->calculateSealRelationFieldExpiryDate($field_config);
+            $field->isInvalidator = !empty($field_config['isInvalidator']);
+            $field->setNotifiedExpire(false);
+            $field->setNotifiedToExpire(false);
+
+            $app->em->persist($field);
+            $fields_by_name[$field_name] = $field;
+        }
+
+        $this->__sealRelationFields = array_values($fields_by_name);
+        $this->updateComputedStatus();
+        $app->em->persist($this);
+    }
+
+    /**
+     * @param array $field_config
+     * @return \DateTimeInterface|null
+     */
+    protected function calculateSealRelationFieldExpiryDate(array $field_config): ?\DateTimeInterface
+    {
+        $has_expiry = !empty($field_config['hasExpiry']);
+        if (!$has_expiry || empty($field_config['periodValue']) || empty($field_config['periodUnit'])) {
+            return null;
+        }
+
+        $period_value = (int) $field_config['periodValue'];
+        $period_unit = $field_config['periodUnit'];
+
+        $interval_spec = 'P' . $period_value;
+        switch ($period_unit) {
+            case 'day':
+                $interval_spec .= 'D';
+                break;
+            case 'month':
+                $interval_spec .= 'M';
+                break;
+            case 'year':
+                $interval_spec .= 'Y';
+                break;
+            default:
+                $interval_spec .= 'M';
+                break;
+        }
+
+        $create_timestamp = $this->createTimestamp ?: new \DateTime();
+        $expiry_date = clone $create_timestamp;
+        $expiry_date->add(new \DateInterval($interval_spec));
+
+        return $expiry_date;
+    }
     
     /**
      * Retorna 0 se o certificado está expirado, 
@@ -532,41 +616,12 @@ abstract class SealRelation extends \MapasCulturais\Entity
 
         foreach ($config as $field_name => $field_config) {
             $field_config = (array) $field_config;
-            
-            $has_expiry = !empty($field_config['hasExpiry']);
-            $is_invalidator = !empty($field_config['isInvalidator']);
-            
-            $expiry_date = null;
-            if ($has_expiry && !empty($field_config['periodValue']) && !empty($field_config['periodUnit'])) {
-                $period_value = (int) $field_config['periodValue'];
-                $period_unit = $field_config['periodUnit'];
-                
-                $interval_spec = 'P' . $period_value;
-                switch ($period_unit) {
-                    case 'day':
-                        $interval_spec .= 'D';
-                        break;
-                    case 'month':
-                        $interval_spec .= 'M';
-                        break;
-                    case 'year':
-                        $interval_spec .= 'Y';
-                        break;
-                    default:
-                        $interval_spec .= 'M';
-                        break;
-                }
-                
-                $create_timestamp = $this->createTimestamp ?: new \DateTime();
-                $expiry_date = clone $create_timestamp;
-                $expiry_date->add(new \DateInterval($interval_spec));
-            }
 
             $seal_relation_field = new SealRelationField();
             $seal_relation_field->sealRelation = $this;
             $seal_relation_field->fieldName = $field_name;
-            $seal_relation_field->expiryDate = $expiry_date;
-            $seal_relation_field->isInvalidator = $is_invalidator;
+            $seal_relation_field->expiryDate = $this->calculateSealRelationFieldExpiryDate($field_config);
+            $seal_relation_field->isInvalidator = !empty($field_config['isInvalidator']);
             
             $app->em->persist($seal_relation_field);
         }

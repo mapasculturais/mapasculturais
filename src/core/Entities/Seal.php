@@ -227,6 +227,12 @@ class Seal extends \MapasCulturais\Entity
     protected $__lockedFieldsConfigSetInRequest = false;
 
     /**
+     * Indica que as relações já aplicadas precisam ser reconciliadas após salvar.
+     * @var bool
+     */
+    protected $__shouldReconcileSealRelations = false;
+
+    /**
      * Define o valor de lockedFields parseando o valor
      * @return void 
      */
@@ -250,6 +256,7 @@ class Seal extends \MapasCulturais\Entity
                 'isInvalidator' => false,
             ];
         }
+        $this->markRelationsForReconciliationIfConfigChanged($config);
         $this->lockedFieldsConfig = $config;
     }
 
@@ -349,11 +356,83 @@ class Seal extends \MapasCulturais\Entity
             $validated[$field_name] = array_intersect_key($field_config, array_flip($allowed_field_keys));
         }
         
+        $this->markRelationsForReconciliationIfConfigChanged($validated);
         $this->__lockedFieldsConfigSetInRequest = true;
         $this->lockedFieldsConfig = $validated;
         
         // Dual-write: sincroniza locked_fields legado a partir de locked_fields_config
         $this->lockedFields = array_keys($validated);
+    }
+
+    /**
+     * @param array $new_config
+     * @return void
+     */
+    protected function markRelationsForReconciliationIfConfigChanged(array $new_config): void
+    {
+        if ($this->isNew()) {
+            return;
+        }
+
+        if ($this->normalizeLockedFieldsConfigForComparison($this->lockedFieldsConfig) !== $this->normalizeLockedFieldsConfigForComparison($new_config)) {
+            $this->__shouldReconcileSealRelations = true;
+        }
+    }
+
+    /**
+     * @param mixed $config
+     * @return string
+     */
+    protected function normalizeLockedFieldsConfigForComparison($config): string
+    {
+        $config = (array) ($config ?: []);
+        ksort($config);
+
+        foreach ($config as &$field_config) {
+            $field_config = (array) $field_config;
+            ksort($field_config);
+        }
+        unset($field_config);
+
+        return json_encode($config);
+    }
+
+    /**
+     * @param bool $flush
+     * @return void
+     */
+    public function save($flush = false) {
+        $should_reconcile = $this->__shouldReconcileSealRelations && !$this->isNew();
+
+        parent::save($flush);
+
+        if ($should_reconcile) {
+            $this->reconcileExistingSealRelations($flush);
+            $this->__shouldReconcileSealRelations = false;
+        }
+    }
+
+    /**
+     * Recria/atualiza o estado granular das relações já aplicadas a partir da
+     * configuração atual do selo.
+     *
+     * @param bool $flush
+     * @return void
+     */
+    protected function reconcileExistingSealRelations(bool $flush = false): void
+    {
+        $app = App::i();
+        $relations = $app->repo('SealRelation')->findBy(['seal' => $this]);
+
+        foreach ($relations as $relation) {
+            if ($relation instanceof SealRelation) {
+                $relation->reconcileSealRelationFields();
+            }
+        }
+
+        if ($flush) {
+            $app->em->flush();
+        }
     }
 
     /**
