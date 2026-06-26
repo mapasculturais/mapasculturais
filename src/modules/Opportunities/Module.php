@@ -18,6 +18,7 @@ use MapasCulturais\Entities\EvaluationMethodConfigurationAgentRelation;
 use MapasCulturais\Entities\EvaluationMethodConfigurationMeta;
 use MapasCulturais\Entity;
 use MapasCulturais\Exceptions\PermissionDenied;
+use SealExemption\SealExemptionService;
 
 class Module extends \MapasCulturais\Module{
 
@@ -375,6 +376,11 @@ class Module extends \MapasCulturais\Module{
             /** @var array $changedMetadata */
             $changedMetadata = $this->getChangedMetadata();
             if (!array_key_exists('sealExemptionConfig', $changedMetadata)) {
+                return;
+            }
+
+            $newConfig = $changedMetadata['sealExemptionConfig']['newValue'] ?? null;
+            if (!SealExemptionService::hasActiveConfig($newConfig)) {
                 return;
             }
 
@@ -1437,7 +1443,17 @@ class Module extends \MapasCulturais\Module{
             'label' => i::__('Configuração de selos validadores para isenção de fase'),
             'type' => 'json',
             'private' => function () {
-                return !$this->opportunity->canUser('@control');
+                $opportunity = $this->opportunity ?? null;
+
+                if (!$opportunity) {
+                    return true;
+                }
+
+                if (!$opportunity instanceof Opportunity) {
+                    $opportunity = App::i()->repo('Opportunity')->find($opportunity);
+                }
+
+                return !$opportunity instanceof Opportunity || !$opportunity->canUser('@control');
             },
         ]);
     }

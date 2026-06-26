@@ -65,6 +65,7 @@ class Module extends \MapasCulturais\Module
         $this->registerManualApprovalHook($app);
         $this->registerVirtualGetters($app);
         $this->registerApiQueryHooks($app);
+        $this->registerSummaryHooks($app);
     }
 
     /**
@@ -212,6 +213,38 @@ class Module extends \MapasCulturais\Module
                     ? $labels[(int) $id]
                     : null;
             }
+        });
+    }
+
+    /**
+     * Acrescenta no resumo das avaliações a quantidade de inscrições que foram
+     * selecionadas automaticamente pela isenção por selos.
+     */
+    private function registerSummaryHooks(App $app): void
+    {
+        $app->hook('evaluations(<<*>>).summary', function (&$data) use ($app) {
+            /** @var \MapasCulturais\Entities\EvaluationMethodConfiguration $this */
+            $config = $this->sealExemptionConfig;
+
+            if (!SealExemptionService::hasActiveConfig($config)) {
+                return;
+            }
+
+            $opportunity = $this->owner;
+            if (!$opportunity) {
+                return;
+            }
+
+            $count = (int) $app->em->getConnection()->fetchOne(
+                "SELECT COUNT(id)
+                 FROM registration
+                 WHERE opportunity_id = ?
+                   AND status > 0
+                   AND seal_exemption_status = 'granted'",
+                [(int) $opportunity->id]
+            );
+
+            $data['evaluations'][\MapasCulturais\i::__('dispensadas automaticamente por selos')] = $count;
         });
     }
 }
