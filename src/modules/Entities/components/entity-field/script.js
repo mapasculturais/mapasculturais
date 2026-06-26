@@ -488,6 +488,8 @@ app.component('entity-field', {
         isReadonly() {
             const userPermission = this.entity.currentUserPermissions?.modifyReadonlyData;
             const lockedFieldSeals = this.entity.__lockedFieldSeals;
+            const fieldSealStatuses = this.entity.__fieldSealStatuses || {};
+            const hasUnlockedSealStatus = (fieldSealStatuses[this.prop] || []).some((seal) => seal?.isUnlocked);
 
             if(this.entity.__objectType == "registration") {
                 const editableFields = this.entity.editableFields || [];
@@ -516,7 +518,7 @@ app.component('entity-field', {
                         const agentDescription = $DESCRIPTIONS.agent[agentFieldName];
                         
                         if(agentDescription.readonly) {
-                            this.readonly = !(userPermission || !this.value);
+                            this.readonly = !hasUnlockedSealStatus && !(userPermission || !this.value);
                             return this.readonly;
                         }
                     }
@@ -524,16 +526,16 @@ app.component('entity-field', {
             }
 
             if(this.description.readonly) {
-                this.readonly = !(userPermission || !this.value);
+                this.readonly = !hasUnlockedSealStatus && !(userPermission || !this.value);
             }
 
-            if(lockedFieldSeals && lockedFieldSeals[this.prop]) {
+            if(!hasUnlockedSealStatus && lockedFieldSeals && lockedFieldSeals[this.prop]) {
                 this.readonly = true;
             }
 
             const lockedFields = this.entity.__lockedFields || [];
 
-            if(lockedFields.includes(this.prop)) {
+            if(!hasUnlockedSealStatus && lockedFields.includes(this.prop)) {
                 this.readonly = true;
             }
 
