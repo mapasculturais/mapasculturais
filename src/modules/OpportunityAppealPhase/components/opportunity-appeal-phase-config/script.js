@@ -105,7 +105,7 @@ app.component('opportunity-appeal-phase-config' , {
             }
 
             const api = new API('opportunity');
-            const select = 'appealPhaseAffectsSync,showPreviousPhaseEvaluationDetails,allow_proponent_response';
+            const select = 'appealPhaseAffectsSync,allowPendingRegistrationsAppeal,showPreviousPhaseEvaluationDetails,allow_proponent_response';
             const url = api.createApiUrl('findOne', { id: `EQ(${appealPhaseRef.id})`, '@select': select });
 
             try {
@@ -118,6 +118,7 @@ app.component('opportunity-appeal-phase-config' , {
 
                 const metadataFields = [
                     'appealPhaseAffectsSync',
+                    'allowPendingRegistrationsAppeal',
                     'showPreviousPhaseEvaluationDetails',
                     'allow_proponent_response',
                 ];

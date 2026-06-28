@@ -48,7 +48,11 @@ app.component('registration-results', {
                 return false;
             }
 
-            return this.registration.status > 1 && this.registration.status < 10 && this.opportunity.isAppealPhase && !this.appealRegistration;
+            const statusAllowsAppeal = this.registration.status === 1
+                ? !!this.appealPhase?.allowPendingRegistrationsAppeal
+                : this.registration.status > 1 && this.registration.status < 10;
+
+            return statusAllowsAppeal && this.opportunity.isAppealPhase && !this.appealRegistration;
         },
 
         currentEvaluation() {
