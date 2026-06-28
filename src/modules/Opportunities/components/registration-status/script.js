@@ -60,6 +60,9 @@ app.component('registration-status', {
                 return false;
             }
 
+            if (this.registration.status === 1) {
+                return !!this.appealPhase?.allowPendingRegistrationsAppeal;
+            }
 
             return this.registration.status > 1 && this.registration.status <= 10;
         },

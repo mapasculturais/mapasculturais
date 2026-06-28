@@ -152,6 +152,14 @@ class Module extends \MapasCulturais\Module {
                     $this->errorJson(sprintf(i::__('Não existe uma fase de recurso para a %s'), $opportunity->name), 403);
                 }
 
+                $allow_pending = (bool) ($appeal_phase->allowPendingRegistrationsAppeal ?? false);
+                $is_appealable_status = $registration->status > Registration::STATUS_SENT && $registration->status <= Registration::STATUS_APPROVED;
+                $is_pending_allowed = $allow_pending && $registration->status === Registration::STATUS_SENT;
+
+                if (!$is_appealable_status && !$is_pending_allowed) {
+                    $this->errorJson(i::__('O status da inscrição não permite solicitação de recurso'), 403);
+                }
+
                 // Verifica se já existe inscrição de recurso com o mesmo number
                 $existing_appeal = $app->repo('Registration')->findOneBy([
                     'opportunity' => $appeal_phase,
@@ -302,6 +310,12 @@ class Module extends \MapasCulturais\Module {
 
         $this->registerOpportunityMetadata('appealPhaseAffectsSync', [
             'label' => i::__('Sincronizar inscrições para fase seguinte'),
+            'type'  => 'boolean',
+            'default' => false,
+        ]);
+
+        $this->registerOpportunityMetadata('allowPendingRegistrationsAppeal', [
+            'label' => i::__('Permitir recurso para inscrições pendentes'),
             'type'  => 'boolean',
             'default' => false,
         ]);

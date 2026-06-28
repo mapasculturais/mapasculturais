@@ -139,6 +139,7 @@ $this->import('
                     <entity-field :entity="entity" hide-required  :editable="true" prop="allow_proponent_response" :autosave="3000"></entity-field>
                     <entity-field :entity="entity" type="checkbox" hide-required :editable="true" prop="showPreviousPhaseEvaluationDetails" :autosave="3000"></entity-field>
                     <entity-field :entity="entity" type="checkbox" hide-required :editable="true" prop="appealPhaseAffectsSync" :autosave="3000"></entity-field>
+                    <entity-field :entity="entity" type="checkbox" hide-required :editable="true" prop="allowPendingRegistrationsAppeal" :autosave="3000"></entity-field>
                 </div> 
 
                 <mc-alert v-if="entity.appealPhaseAffectsSync" type="warning" class="entity-owner-pending">

@@ -336,7 +336,7 @@ class Module extends \MapasCulturais\Module{
             AND ap_def.status = 10
         )";
 
-        $condition = "NOT {$pending} AND ({$deferred} OR {$alias}.status = 10)";
+        $condition = "NOT {$pending} AND (({$deferred} AND {$alias}.status > 1) OR {$alias}.status = 10)";
 
         return [$condition, $params];
     }
