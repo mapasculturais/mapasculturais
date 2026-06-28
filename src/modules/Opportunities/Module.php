@@ -1314,6 +1314,13 @@ class Module extends \MapasCulturais\Module{
             'default' => false,
         ]);
 
+        $this->registerOpportunityMetadata('hidePhaseDates', [
+            'label' => i::__('Ocultar datas das fases para o público'),
+            'type' => 'boolean',
+            'default' => false,
+            'description' => i::__('As datas continuam sendo usadas pelo sistema, mas não aparecem na página pública da oportunidade nem no acompanhamento da inscrição.'),
+        ]);
+
         $this->registerOpportunityMetadata('publicityOnly', [
             'label' => i::__('Oportunidade apenas para divulgação'),
             'type' => 'boolean',

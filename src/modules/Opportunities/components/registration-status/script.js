@@ -89,6 +89,11 @@ app.component('registration-status', {
     },
 
     methods: {
+        showPhaseDates() {
+            const firstPhase = $MAPAS.opportunityPhases?.find((phase) => phase.isFirstPhase) || this.firstPhase;
+            return !firstPhase?.hidePhaseDates;
+        },
+
         shouldDisplayEvaluationResults(registration) {
             return $MAPAS.config.registrationResults.shouldDisplayEvaluationResults[registration.id];
         },

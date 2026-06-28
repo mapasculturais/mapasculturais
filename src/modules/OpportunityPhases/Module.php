@@ -826,7 +826,7 @@ class Module extends \MapasCulturais\Module{
                     if($opportunity->isDataCollection || $opportunity->isFirstPhase || $opportunity->isLastPhase){
                         $app->applyHook('module(OpportunityPhases).dataCollectionPhaseData', [&$mout_simplify]);
 
-                        $item = $opportunity->simplify("{$mout_simplify},type,publishedRegistrations,publishTimestamp,registrationFrom,registrationTo,isContinuousFlow,hasEndDate,isDataCollection,isFirstPhase,isLastPhase,isReportingPhase,isLastReportingPhase,files,statusLabels");
+                        $item = $opportunity->simplify("{$mout_simplify},type,publishedRegistrations,publishTimestamp,registrationFrom,registrationTo,isContinuousFlow,hasEndDate,hidePhaseDates,isDataCollection,isFirstPhase,isLastPhase,isReportingPhase,isLastReportingPhase,files,statusLabels");
                         $item->appealPhase = $opportunity->appealPhase;
 
                         $item->registrationSteps = [];
@@ -854,7 +854,7 @@ class Module extends \MapasCulturais\Module{
                         $item = $emc->simplify("{$mout_simplify},opportunity,infos,evaluationFrom,evaluationTo,relatedAgents,agentRelations");
                         if($appeal_phase = $emc->appealPhase) {
                             $item->appealPhase = $appeal_phase;
-                            $item->opportunity = $opportunity->simplify('id,isFirstPhase,isLastPhase,isReportingPhase,isLastReportingPhase,isContinuousFlow,hasEndDate,files,statusLabels,relatedAgents,agentRelations');
+                            $item->opportunity = $opportunity->simplify('id,isFirstPhase,isLastPhase,isReportingPhase,isLastReportingPhase,isContinuousFlow,hasEndDate,hidePhaseDates,files,statusLabels,relatedAgents,agentRelations');
                             $item->opportunity->appealPhase = (object) $appeal_phase->jsonSerialize();
                             $item->opportunity->appealPhase->relatedAgents = $appeal_phase->relatedAgents;
                             $item->opportunity->appealPhase->agentRelations = $appeal_phase->agentRelations;
