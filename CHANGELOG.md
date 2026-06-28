@@ -56,6 +56,7 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Corrige a exibição das opções de campos de seleção no formato radio para organizá-las verticalmente na ficha de inscrição
 - Corrige a ordenação das últimas planilhas exportadas para exibir os arquivos mais recentes primeiro
 - Corrige o uso de modelos de oportunidades para respeitar a visibilidade pública, validar permissões e preservar referências de campos condicionais.
+- Corrige o carregamento da configuração de cotas em oportunidades antigas sem regras de cotas cadastradas.
 
 ## [7.7.63] - 2026-06-24
 ### Melhorias
