@@ -48,6 +48,7 @@ if($all_registrations = $app->repo('Registration')->findBy(['number' => $entity-
 $this->jsObject['config']['registrationResults']['shouldDisplayEvaluationResults'] = $result;
 
 $today = new DateTime();
+$hide_phase_dates = $entity->opportunity->firstPhase->hidePhaseDates;
 ?>
 
 <div class="main-app registration single">
@@ -276,8 +277,11 @@ $today = new DateTime();
                         <?php endif ?>
                         <?php if($phase->status < 1 && !$opportunity->isFirstPhase && $today <= $opportunity->registrationTo): ?>
                             <mc-alert type="warning">
-                                <?= i::__('Nesta etapa, é necessário inserir informações. Por favor, clique no botão para acessar o formulário e preenchê-lo') ?> <br>
-                                <?= i::__('dentro do período de') ?>  <?=$phase->opportunity->registrationFrom->format("d/m/Y")?> <?= i::__('à') ?> <?=$phase->opportunity->registrationTo->format("d/m/Y H:i:s")?>
+                                <?= i::__('Nesta etapa, é necessário inserir informações. Por favor, clique no botão para acessar o formulário e preenchê-lo') ?>
+                                <?php if(!$hide_phase_dates): ?>
+                                    <br>
+                                    <?= i::__('dentro do período de') ?>  <?=$phase->opportunity->registrationFrom->format("d/m/Y")?> <?= i::__('à') ?> <?=$phase->opportunity->registrationTo->format("d/m/Y H:i:s")?>
+                                <?php endif; ?>
                             </mc-alert>
                             <div class="grid-12">
                                 <div class="col-3 sm:col-12">
@@ -289,7 +293,13 @@ $today = new DateTime();
                                     <?php if($today > $opportunity->registrationTo):?>
                                         <mc-alert type="warning">
                                             <?= i::__("Você não enviou o formulário desta fase") ?> <br>
-                                            <small><?= i::__("O prazo para envio dessa inscrição foi até {$opportunity->registrationTo->format('d/m/Y H:i:s')}") ?></small> <br>
+                                            <small>
+                                                <?php if($hide_phase_dates): ?>
+                                                    <?= i::__("O prazo para envio dessa inscrição foi encerrado") ?>
+                                                <?php else: ?>
+                                                    <?= i::__("O prazo para envio dessa inscrição foi até {$opportunity->registrationTo->format('d/m/Y H:i:s')}") ?>
+                                                <?php endif; ?>
+                                            </small> <br>
                                         </mc-alert>
                                     <?php else: ?>
                                         <mc-alert type="warning">
@@ -322,7 +332,13 @@ $today = new DateTime();
                                     <?php if($today > $appeal_phase->registrationTo):?>
                                         <mc-alert type="warning">
                                             <?= i::__("Você não enviou o formulário desta fase") ?> <br>
-                                            <small><?= i::__("O prazo para envio dessa inscrição foi até {$appeal_phase->registrationTo->format('d/m/Y H:i:s')}") ?></small> <br>
+                                            <small>
+                                                <?php if($hide_phase_dates): ?>
+                                                    <?= i::__("O prazo para envio dessa inscrição foi encerrado") ?>
+                                                <?php else: ?>
+                                                    <?= i::__("O prazo para envio dessa inscrição foi até {$appeal_phase->registrationTo->format('d/m/Y H:i:s')}") ?>
+                                                <?php endif; ?>
+                                            </small> <br>
                                         </mc-alert>
                                     <?php else: ?>
                                         <mc-alert type="warning">
