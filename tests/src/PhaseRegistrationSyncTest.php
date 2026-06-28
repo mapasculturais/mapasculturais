@@ -211,6 +211,71 @@ class PhaseRegistrationSyncTest extends TestCase
     }
 
     /**
+     * Garante que inscrição pendente não possa solicitar recurso por padrão.
+     */
+    function testPendingRegistrationAppealRequestBlockedByDefault(): void
+    {
+        $context = $this->buildPnabLikeOpportunity();
+        $this->createRegistrationsByStatus($context->coletaMerito);
+        $context = $this->refreshContext($context);
+
+        $pending = $this->findRegistration($context->coletaMerito, '222');
+
+        $this->assertCreateAppealPhaseRegistrationStatus(
+            $pending,
+            403,
+            'Garantindo que recurso para inscrição pendente seja bloqueado por padrão'
+        );
+
+        $this->assertNull(
+            $this->findRegistration($context->coletaMerito->appealPhase, '222'),
+            'Garantindo que nenhuma inscrição de recurso seja criada para pendente com configuração desligada'
+        );
+    }
+
+    /**
+     * Garante que inscrição pendente possa solicitar recurso quando habilitado,
+     * mas o deferimento registre apenas a decisão sem avançar para Anexos.
+     */
+    function testPendingRegistrationAppealApprovalOnlyRecordsDecision(): void
+    {
+        $context = $this->buildPnabLikeOpportunity();
+        $this->setAppealPhaseAffectsSync($context->coletaMerito, true);
+        $this->setAllowPendingRegistrationsAppeal($context->coletaMerito, true);
+        $this->createRegistrationsByStatus($context->coletaMerito);
+        $context = $this->refreshContext($context);
+
+        $pending = $this->findRegistration($context->coletaMerito, '222');
+
+        $this->assertCreateAppealPhaseRegistrationStatus(
+            $pending,
+            200,
+            'Garantindo que recurso para inscrição pendente seja permitido quando configurado'
+        );
+
+        $appeal = $this->findRegistration($context->coletaMerito->appealPhase, '222');
+        $this->assertNotNull(
+            $appeal,
+            'Garantindo que inscrição de recurso seja criada para pendente quando configurado'
+        );
+
+        $this->setAppealStatus($appeal, fn ($r) => $r->setStatusToApproved(true));
+
+        $context->anexos->syncRegistrations([]);
+        $this->processJobs();
+
+        $this->assertEquals(
+            Registration::STATUS_SENT,
+            $pending->refreshed()->status,
+            'Garantindo que o deferimento do recurso não altera o status pendente na fase de origem'
+        );
+        $this->assertNull(
+            $this->findRegistration($context->anexos, '222'),
+            'Garantindo que pendente com recurso deferido não avance para Anexos'
+        );
+    }
+
+    /**
      * Garante que inscrição não selecionada com recurso deferido seja sincronizada para Anexos.
      *
      * Modo appealPhaseAffectsSync = true: o recurso afeta ativamente a sincronização.
@@ -812,6 +877,32 @@ class PhaseRegistrationSyncTest extends TestCase
         } finally {
             $this->app->enableAccessControl();
         }
+    }
+
+    private function setAllowPendingRegistrationsAppeal(Opportunity $meritPhase, bool $enabled): void
+    {
+        $this->app->disableAccessControl();
+        try {
+            $appealPhase = $meritPhase->appealPhase;
+            if ($appealPhase) {
+                $appealPhase->allowPendingRegistrationsAppeal = $enabled;
+                $appealPhase->save(true);
+            }
+        } finally {
+            $this->app->enableAccessControl();
+        }
+    }
+
+    private function assertCreateAppealPhaseRegistrationStatus(Registration $registration, int $status, string $message): void
+    {
+        $request = $this->requestFactory->POST(
+            'opportunity',
+            'createAppealPhaseRegistration',
+            [$registration->opportunity->id],
+            ['registration_id' => $registration->id]
+        );
+
+        $this->assertHttpStatusCode($request, $status, $message);
     }
 
     private function createAppealPhaseForOpportunity(Opportunity $opportunity): Opportunity
