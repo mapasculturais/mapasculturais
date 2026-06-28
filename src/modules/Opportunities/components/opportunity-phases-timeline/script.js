@@ -47,6 +47,10 @@ app.component('opportunity-phases-timeline', {
 	},
 
 	methods: {
+		showPhaseDates(item) {
+			return !this.firstPhase?.hidePhaseDates;
+		},
+
 		dateFrom(item) {
 			if (item.registrationFrom) {
 				return item.registrationFrom.date('2-digit year');

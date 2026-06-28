@@ -25,6 +25,7 @@ $this->import('
             <entity-field v-if="!phase.isFirstPhase" :entity="phase" prop="name" :autosave="3000" classes="col-12 sm:col-12"></entity-field>
             <entity-field :entity="phase" prop="registrationFrom" :autosave="3000"  classes="col-6 sm:col-12"></entity-field>
             <entity-field v-if="!firstPhase?.isContinuousFlow || firstPhase?.hasEndDate" :entity="phase" prop="registrationTo" :autosave="3000"  classes="col-6 sm:col-12"></entity-field>
+            <entity-field v-if="phase.isFirstPhase" :entity="phase" prop="hidePhaseDates" type="checkbox" :autosave="3000" hide-required classes="col-12 sm:col-12"></entity-field>
             <entity-field v-if="phase.isReportingPhase" :entity="phase" prop="includesWorkPlan" classes="col-12"></entity-field>
 
             <div v-if="phase.isFirstPhase && firstPhase?.isContinuousFlow && !firstPhase?.hasEndDate" class="col-12 opportunity-data-collection__enable-end-date">
