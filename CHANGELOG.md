@@ -12,6 +12,7 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Implementa configuração que permide definir a imagem de avatar de qualquer entidade como obrigatória
 - Adiciona botão para duplicar campos do formulário de inscrição, criando a cópia logo abaixo do campo original
 - Adiciona botão para duplicar anexos do formulário de inscrição, incluindo a cópia do arquivo modelo e inserindo o novo anexo logo abaixo do original
+- Adiciona configuração na oportunidade para ocultar todas as datas das fases na página pública, na linha do tempo de acompanhamento da inscrição e nos avisos de prazo da ficha, mantendo as datas operacionais ativas para validações e gestão interna.
 
 ### Melhorias
 - Aprimora o módulo de **Plano de Metas e Monitoramento** com campos configuráveis para orientar o preenchimento das metas e entregas previstas na inscrição, incluindo período, orçamento, segmento artístico-cultural, composição de equipe, estratégias de comunicação, acessibilidade, comunidades, receita e evidências. Na etapa de monitoramento, o agente informa os dados executados das entregas a partir do que foi planejado, com campos equivalentes para acompanhamento da execução, validações de obrigatoriedade conforme a configuração da oportunidade e exibição organizada entre formulário, ficha de inscrição, avaliação e exportação.
