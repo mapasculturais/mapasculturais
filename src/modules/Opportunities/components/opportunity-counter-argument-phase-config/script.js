@@ -44,15 +44,23 @@ app.component('opportunity-counter-argument-phase-config' , {
             return this.phases[0];
         },
 
+        isTechnicalEvaluationPhase() {
+            return this.phase?.type?.id === 'technical' ||
+                this.phase?.type === 'technical' ||
+                this.target?.evaluationMethodConfiguration?.type?.id === 'technical' ||
+                this.target?.evaluationMethodConfiguration?.type === 'technical';
+        },
+
         canConfigure() {
-            return this.target?.evaluationMethodConfiguration?.type?.id === 'technical' &&
-                !!this.target?.appealPhase;
+            return this.isTechnicalEvaluationPhase &&
+                !!(this.target?.appealPhase || this.phase?.appealPhase);
         },
 
         fromDateMin() {
             return this.target.appealPhase?.registrationTo ||
                 this.target.publishTimestamp ||
-                this.target.evaluationMethodConfiguration?.evaluationFrom;
+                this.target.evaluationMethodConfiguration?.evaluationFrom ||
+                this.phase?.evaluationFrom;
         },
 
         toDateMin() {

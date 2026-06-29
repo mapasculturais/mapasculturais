@@ -15,6 +15,7 @@ $this->import('
     opportunity-committee-groups
     opportunity-phase-publish-date-config
     opportunity-appeal-phase-config
+    opportunity-counter-argument-phase-config
     seals-certifier
     tiebreaker-criteria-configuration
     v1-embed-tool
@@ -96,6 +97,7 @@ $evaluation_methods = $app->getRegisteredEvaluationMethods();
 
         
         <opportunity-appeal-phase-config v-if="!firstPhase?.isContinuousFlow" :phase="phase" :phases="phases" :tab="tab"></opportunity-appeal-phase-config>
+        <opportunity-counter-argument-phase-config v-if="!firstPhase?.isContinuousFlow" :phase="phase" :phases="phases" :tab="tab"></opportunity-counter-argument-phase-config>
         
         <div class="config-phase__line col-12"></div>
 
