@@ -94,6 +94,7 @@ abstract class Opportunity extends \MapasCulturais\Entity
         }
 
     const STATUS_APPEAL_PHASE = -20;
+    const STATUS_COUNTER_ARGUMENT_PHASE = -21;
     const STATUS_PHASE = -1;
     const CONTINUOUS_FLOW_DATE =  "2111-01-01 00:00";
 

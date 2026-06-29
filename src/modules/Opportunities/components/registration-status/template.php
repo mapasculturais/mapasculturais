@@ -79,3 +79,39 @@ $this->import('
 
     </div>
 </div>
+
+<div v-if="canShowCounterArgument && counterArgumentPhase && !counterArgumentRegistration" class="opportunity-phases-timeline__request-appeal">
+    <h5 v-if="!processing" class="bold opportunity-phases-timeline__label--lowercase"><?= i::__('Deseja apresentar contrarrazão?')?></h5>
+    <button v-if="!processing" class="button button--primary button--primary-outline" @click="createCounterArgumentPhaseRegistration()"><?= i::__('Solicitar contrarrazão') ?></button>
+
+    <div v-if="processing" class="col-12">
+        <mc-loading :condition="processing"> <?= i::__('carregando') ?></mc-loading>
+    </div>
+</div>
+<div v-if="counterArgumentRegistration?.id" class="opportunity-phases-timeline__request-appeal__box">
+    <div class="item__dot-appeal-phase"> <span class="dot"></span> </div>
+    <div class="item__content">
+        <div class="item__content--title"> <?= i::__('[Contrarrazão]') ?> </div>
+        <div class="item__content--description">
+            <h5 class="semibold"><?= i::__('de') ?> <span v-if="counterArgumentDateFrom()">{{counterArgumentDateFrom()}}</span>
+            <?= i::__('a') ?> <span v-if="counterArgumentDateTo()">{{counterArgumentDateTo()}}</span>
+            <?= i::__('às') ?> <span v-if="counterArgumentHour()">{{counterArgumentHour()}}</span></h5>
+        </div>
+
+        <div v-if="counterArgumentRegistration.status > 0" class="opportunity-phases-timeline__box">
+            <div>
+                <label class="semibold opportunity-phases-timeline__label"><?= i::__('Resultado da contrarrazão:')?></label>
+                <div class="opportunity-phases-timeline__status">
+                    <mc-icon name="circle" :class="verifyState(counterArgumentRegistration)"></mc-icon>
+                    <p>{{showRegistrationStatus(counterArgumentRegistration)}}</p>
+                </div>
+            </div>
+            <registration-results :registration="counterArgumentRegistration" :phase="counterArgumentRegistration.opportunity.evaluationMethodConfiguration"></registration-results>
+        </div>
+        <div v-if="counterArgumentRegistration && counterArgumentRegistration.status == 0" class="opportunity-phases-timeline__request-appeal">
+            <h5 class="bold opportunity-phases-timeline__label--lowercase"><?= i::__('Finalize sua inscrição na contrarrazão:')?></h5>
+            <button class="button button--primary button--primary" @click="fillCounterArgumentFormButton()"><?= i::__('Preencher formulário') ?></button>
+        </div>
+
+    </div>
+</div>

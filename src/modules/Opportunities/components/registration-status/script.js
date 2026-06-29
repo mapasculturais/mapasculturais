@@ -47,6 +47,19 @@ app.component('registration-status', {
             return $MAPAS.registrationPhases[appealPhaseId] || this.entity;
         },
 
+        counterArgumentPhase() {
+            return this.opportunity.isCounterArgumentPhase ? this.opportunity : this.opportunity.counterArgumentPhase;
+        },
+
+        counterArgumentRegistration() {
+            const counterArgumentPhaseId = this.counterArgumentPhase?.id;
+            if (!counterArgumentPhaseId) {
+                return null;
+            }
+
+            return $MAPAS.registrationPhases[counterArgumentPhaseId];
+        },
+
         canShowAppeal() {
             if (this.registration.opportunity.isReportingPhase) {
                 return false;
@@ -62,6 +75,28 @@ app.component('registration-status', {
 
 
             return this.registration.status > 1 && this.registration.status <= 10;
+        },
+
+        canShowCounterArgument() {
+            if (this.registration.opportunity.isReportingPhase) {
+                return false;
+            }
+
+            if(!this.firstPhaseRegistration?.currentUserPermissions.create) {
+                return false;
+            }
+
+            if (!this.counterArgumentPhase) {
+                return false;
+            }
+
+            if (this.counterArgumentRegistration ||
+                this.counterArgumentPhase?.registrationFrom?.isFuture() ||
+                this.counterArgumentPhase?.registrationTo?.isPast()) {
+                return false;
+            }
+
+            return this.registration.status > 0;
         },
 
         opportunity () {
@@ -149,8 +184,36 @@ app.component('registration-status', {
             this.processing = false;
         },
 
+        async createCounterArgumentPhaseRegistration() {
+            this.processing = true;
+            const messages = useMessages();
+
+            const args = {
+                registration_id: this.registration._id,
+            };
+
+            try {
+                await this.opportunity.POST('createCounterArgumentPhaseRegistration', {data: args, callback: (data) => {
+                        this.entity = new Entity('registration');
+                        this.entity.populate(data);
+                        this.processing = false;
+                        messages.success(this.text('Solicitação de contrarrazão criada com sucesso'));
+
+                        window.location.href = Utils.createUrl('registration', 'view', [this.entity.id]);
+                }});
+            } catch (error) {
+                console.error(error);
+                messages.error(error.data ?? error);
+            }
+            this.processing = false;
+        },
+
         fillFormButton() {
             window.location.href = this.appealRegistration.editUrl;
+        },
+
+        fillCounterArgumentFormButton() {
+            window.location.href = this.counterArgumentRegistration.editUrl;
         },
 
         dateFrom() {
@@ -185,6 +248,38 @@ app.component('registration-status', {
 			return false;
 		},
 
+        counterArgumentDateFrom() {
+			if (this.counterArgumentPhase?.registrationFrom) {
+				return this.counterArgumentPhase?.registrationFrom.date('2-digit year');
+			}
+
+			if (this.counterArgumentPhase?.evaluationMethodConfiguration?.evaluationFrom) {
+				return this.counterArgumentPhase?.evaluationMethodConfiguration?.evaluationFrom.date('2-digit year');
+			}
+			return false;
+		},
+
+		counterArgumentDateTo() {
+			if (this.counterArgumentPhase?.registrationTo) {
+				return this.counterArgumentPhase?.registrationTo?.date('2-digit year');
+			}
+
+			if (this.counterArgumentPhase?.evaluationMethodConfiguration?.evaluationTo) {
+				return this.counterArgumentPhase?.evaluationMethodConfiguration?.evaluationTo?.date('2-digit year');
+			}
+			return false;
+		},
+
+		counterArgumentHour() {
+			if (this.counterArgumentPhase?.registrationTo) {
+				return this.counterArgumentPhase?.registrationTo?.time();
+			}
+			if (this.counterArgumentPhase?.evaluationMethodConfiguration?.evaluationTo) {
+				return this.counterArgumentPhase?.evaluationMethodConfiguration?.evaluationTo.time();
+			}
+			return false;
+		},
+
         redirectToRegistrationForm() {
             return window.location.hash = "#ficha";
         },
@@ -213,6 +308,10 @@ app.component('registration-status', {
             
             if(registration.opportunity.isAppealPhase) {
                 return this.shouldDisplayEvaluationResults(registration) ? this.phase.appealPhase.statusLabels[registration.status] : this.phase.appealPhase.statusLabels[1];
+            }
+
+            if(registration.opportunity.isCounterArgumentPhase) {
+                return this.shouldDisplayEvaluationResults(registration) ? this.counterArgumentPhase.statusLabels[registration.status] : this.counterArgumentPhase.statusLabels[1];
             }
 
             if(registration.status == 0) {

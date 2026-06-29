@@ -489,8 +489,14 @@ class Module extends \MapasCulturais\Module{
             $data = ['opportunity' => $this];
 
             // verifica se a oportunidade e a fase estão públicas
-            $enabled_status = $this->isAppealPhase ? -1 : Opportunity::STATUS_ENABLED;
-            $active = in_array($this->status, [-1,-20, Opportunity::STATUS_ENABLED]) && $this->firstPhase->status === $enabled_status;
+            $is_supplementary_phase = $this->isAppealPhase || $this->isCounterArgumentPhase;
+            $enabled_status = $is_supplementary_phase ? Opportunity::STATUS_PHASE : Opportunity::STATUS_ENABLED;
+            $active = in_array($this->status, [
+                Opportunity::STATUS_PHASE,
+                Opportunity::STATUS_APPEAL_PHASE,
+                Opportunity::STATUS_COUNTER_ARGUMENT_PHASE,
+                Opportunity::STATUS_ENABLED
+            ]) && $this->firstPhase->status === $enabled_status;
 
             $now = new \DateTime;
 
@@ -1465,6 +1471,12 @@ class Module extends \MapasCulturais\Module{
             if ($appeal = $phase->appealPhase) {
                 if ($appeal_emc = $appeal->evaluationMethodConfiguration) {
                     $emc_ids[$appeal_emc->id] = (int) $appeal_emc->id;
+                }
+            }
+
+            if ($counter_argument = $phase->counterArgumentPhase) {
+                if ($counter_argument_emc = $counter_argument->evaluationMethodConfiguration) {
+                    $emc_ids[$counter_argument_emc->id] = (int) $counter_argument_emc->id;
                 }
             }
         }

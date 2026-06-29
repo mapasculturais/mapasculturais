@@ -342,6 +342,35 @@ $today = new DateTime();
                             </div>
                         <?php endif; ?>
                     <?php endif; ?>
+                    <?php if ($counter_argument_phase = $opportunity->counterArgumentPhase): ?>
+                        <?php $counter_argument_registration = $app->repo('Registration')->findOneBy(['opportunity' => $counter_argument_phase, 'number' => $entity->number]); ?>
+                        <?php if ($counter_argument_registration && $counter_argument_registration->canUser('view')): ?>
+                            <div class="registration-appeal-phase">
+                                <h2><?= $counter_argument_phase->name ?> <span class="appeal-badge"><?= i::__('Contrarrazão') ?></span></h2>
+                                <?php if($counter_argument_registration->status === 0):?>
+                                    <?php if($today > $counter_argument_phase->registrationTo):?>
+                                        <mc-alert type="warning">
+                                            <?= i::__("Você não enviou o formulário desta fase") ?> <br>
+                                            <small><?= i::__("O prazo para envio dessa inscrição foi até {$counter_argument_phase->registrationTo->format('d/m/Y H:i:s')}") ?></small> <br>
+                                        </mc-alert>
+                                    <?php else: ?>
+                                        <mc-alert type="warning">
+                                            <?= i::__("Você não enviou o formulário desta fase") ?> <br>
+                                        </mc-alert>
+                                        <div class="grid-12">
+                                            <div class="col-3 sm:col-12">
+                                                <a class="button button--primary" href="<?=$app->createUrl("registration", "edit", [$counter_argument_registration->id])?>"><?= i::__('Acessar formulário') ?></a>
+                                            </div>
+                                        </div>
+                                    <?php endif ?>
+                                <?php else: ?>
+                                    <?php $this->applyTemplateHook("registration-counter-argument-phase-form-view", 'before', [$counter_argument_registration]) ?>
+                                    <v1-embed-tool route="registrationview" :id="<?=$counter_argument_registration->id?>"></v1-embed-tool>
+                                    <?php $this->applyTemplateHook("registration-counter-argument-phase-form-view", 'after', [$counter_argument_registration]) ?>
+                                <?php endif ?>
+                            </div>
+                        <?php endif; ?>
+                    <?php endif; ?>
                     <?php $phase = $phase->nextPhase; ?>
                 <?php endwhile ?>
 
@@ -372,6 +401,16 @@ $today = new DateTime();
                         <mc-tab label="<?= htmlspecialchars($appeal_emc->name) ?>" slug="valuers-<?= $appeal_opp->id ?>">
                             <mc-card>
                                 <registration-evaluation-tab :phase-id="<?= (int) $appeal_opp->id ?>"></registration-evaluation-tab>
+                            </mc-card>
+                        </mc-tab>
+                    <?php
+                    endif;
+                    $counter_argument_opp = $opp->counterArgumentPhase ?? null;
+                    if ($counter_argument_opp && ($counter_argument_emc = $counter_argument_opp->evaluationMethodConfiguration ?? null)):
+                        ?>
+                        <mc-tab label="<?= htmlspecialchars($counter_argument_emc->name) ?>" slug="valuers-<?= $counter_argument_opp->id ?>">
+                            <mc-card>
+                                <registration-evaluation-tab :phase-id="<?= (int) $counter_argument_opp->id ?>"></registration-evaluation-tab>
                             </mc-card>
                         </mc-tab>
                     <?php

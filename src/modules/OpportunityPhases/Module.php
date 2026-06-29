@@ -113,7 +113,10 @@ class Module extends \MapasCulturais\Module{
 
     public static function isAppealPhaseOpportunity(Opportunity $phase): bool
     {
-        return (bool) $phase->isAppealPhase || $phase->status === Opportunity::STATUS_APPEAL_PHASE;
+        return (bool) $phase->isAppealPhase ||
+            $phase->status === Opportunity::STATUS_APPEAL_PHASE ||
+            (bool) $phase->isCounterArgumentPhase ||
+            $phase->status === Opportunity::STATUS_COUNTER_ARGUMENT_PHASE;
     }
 
     /**
@@ -828,6 +831,7 @@ class Module extends \MapasCulturais\Module{
 
                         $item = $opportunity->simplify("{$mout_simplify},type,publishedRegistrations,publishTimestamp,registrationFrom,registrationTo,isContinuousFlow,hasEndDate,isDataCollection,isFirstPhase,isLastPhase,isReportingPhase,isLastReportingPhase,files,statusLabels");
                         $item->appealPhase = $opportunity->appealPhase;
+                        $item->counterArgumentPhase = $opportunity->counterArgumentPhase;
 
                         $item->registrationSteps = [];
                         foreach ($opportunity->registrationSteps as $step) {
@@ -838,6 +842,7 @@ class Module extends \MapasCulturais\Module{
                         if($emc){
                             $item->evaluationMethodConfiguration = $emc->simplify("id,name,evaluationFrom,evaluationTo,useCommitteeGroups,evaluateSelfApplication");
                             $item->evaluationMethodConfiguration->appealPhase = $emc->appealPhase;
+                            $item->evaluationMethodConfiguration->counterArgumentPhase = $emc->counterArgumentPhase;
                         }
 
                         $result[] = $item;
@@ -862,6 +867,19 @@ class Module extends \MapasCulturais\Module{
                                 $item->opportunity->appealPhase->evaluationMethodConfiguration = (object) $appeal_phase->evaluationMethodConfiguration->jsonSerialize();
                                 $item->opportunity->appealPhase->evaluationMethodConfiguration->relatedAgents = $appeal_phase->evaluationMethodConfiguration->relatedAgents;
                                 $item->opportunity->appealPhase->evaluationMethodConfiguration->agentRelations = $appeal_phase->evaluationMethodConfiguration->agentRelations;
+                            }
+                        }
+
+                        if($counter_argument_phase = $emc->counterArgumentPhase) {
+                            $item->counterArgumentPhase = $counter_argument_phase;
+                            $item->opportunity = $item->opportunity ?? $opportunity->simplify('id,isFirstPhase,isLastPhase,isReportingPhase,isLastReportingPhase,isContinuousFlow,hasEndDate,files,statusLabels,relatedAgents,agentRelations');
+                            $item->opportunity->counterArgumentPhase = (object) $counter_argument_phase->jsonSerialize();
+                            $item->opportunity->counterArgumentPhase->relatedAgents = $counter_argument_phase->relatedAgents;
+                            $item->opportunity->counterArgumentPhase->agentRelations = $counter_argument_phase->agentRelations;
+                            if ($counter_argument_phase->evaluationMethodConfiguration) {
+                                $item->opportunity->counterArgumentPhase->evaluationMethodConfiguration = (object) $counter_argument_phase->evaluationMethodConfiguration->jsonSerialize();
+                                $item->opportunity->counterArgumentPhase->evaluationMethodConfiguration->relatedAgents = $counter_argument_phase->evaluationMethodConfiguration->relatedAgents;
+                                $item->opportunity->counterArgumentPhase->evaluationMethodConfiguration->agentRelations = $counter_argument_phase->evaluationMethodConfiguration->agentRelations;
                             }
                         }
                         
@@ -1027,6 +1045,19 @@ class Module extends \MapasCulturais\Module{
             }
         });
 
+        $app->hook('entity(Registration).get(counterArgumentPhase)', function(&$value) use($registration_repository) {
+            /** @var Registration $this */
+
+            $this->enableCacheGetterResult('counterArgumentPhase');
+
+            if($counter_argument_phase = $this->opportunity->counterArgumentPhase) {
+                $value = $registration_repository->findOneBy([
+                    'opportunity' => $counter_argument_phase,
+                    'number' => $this->number
+                ]);
+            }
+        });
+
         /** @var \MapasCulturais\Connection $conn */
         $conn = $app->em->getConnection();
 
@@ -1144,6 +1175,10 @@ class Module extends \MapasCulturais\Module{
             if(!$result && ($appeal_phase = $this->appealPhase)) {
                 $result = $appeal_phase->canUser('view', $user);
             }
+
+            if(!$result && ($counter_argument_phase = $this->counterArgumentPhase)) {
+                $result = $counter_argument_phase->canUser('view', $user);
+            }
         });
 
         $app->hook('entity(Registration).canUser(viewPrivateData)', function($user, &$result) use($app, $registration_repository){
@@ -1162,6 +1197,20 @@ class Module extends \MapasCulturais\Module{
 
                     if($registration_appeal_phase) {
                         $result = $registration_appeal_phase->canUser('viewPrivateData', $user);
+                    }
+                }
+            }
+
+            if(!$result) {
+                if($counter_argument_phase = $this->opportunity->counterArgumentPhase) {
+
+                    $registration_counter_argument_phase = $registration_repository->findOneBy([
+                        'opportunity' => $counter_argument_phase,
+                        'number' => $this->number
+                    ]);
+
+                    if($registration_counter_argument_phase) {
+                        $result = $registration_counter_argument_phase->canUser('viewPrivateData', $user);
                     }
                 }
             }
