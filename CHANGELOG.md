@@ -39,6 +39,7 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Melhora a performance da criação de oportunidades a partir de modelos ao reduzir salvamentos repetidos de fases e metadados.
 
 ### Correções
+- Corrige o cálculo do bônus de pontuação para campos de múltipla escolha (`checkboxes`) quando configurados com `eligibleValues`, aplicando apenas o bônus correspondente às opções efetivamente selecionadas
 - Corrige avisos de validação do monitoramento que apareciam indevidamente na fase de inscrição
 - Corrige exportação de campos multiselect do plano de trabalho para evitar valores "Array | Array"
 - Corrige aviso de chave indefinida no campo de avatar do formulário de inscrição quando a obrigatoriedade está desativada
