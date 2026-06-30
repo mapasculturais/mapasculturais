@@ -145,12 +145,20 @@ app.component('documentary-evaluation-form', {
         },
 
         markSealValidatorField() {
-            window.parent.postMessage({
+            const seals = this.getSealInfo(this.fieldId);
+
+            this.postToEvaluationRegistration({
                 type: 'evaluationRegistration.setSealValidator',
                 fieldId: this.fieldId,
-                isValidator: this.currentSealValidators.length > 0,
-                hasInvalidator: this.currentSealValidators.some((validator) => validator.isInvalidator),
+                isValidator: seals.length > 0 || this.currentSealValidators.length > 0,
+                hasInvalidator: seals.some((seal) => seal.isInvalidator) || this.currentSealValidators.some((validator) => validator.isInvalidator),
+                seals,
             });
+        },
+
+        postToEvaluationRegistration(message) {
+            window.parent.postMessage(message, '*');
+            document.getElementById('evaluation-registration')?.contentWindow?.postMessage(message, '*');
         },
 
         getEvaluationData() {
@@ -175,38 +183,215 @@ app.component('documentary-evaluation-form', {
             return true;
         },
 
-        lockedFields() {
-            const lockedFields = this.entity.__lockedFields;
-            if (lockedFields.includes(`field_${this.fieldId}`)) {
-                const sealIds = this.lockedFieldSeals[`field_${this.fieldId}`];
-                return sealIds && sealIds.length > 0;
-            }
-
-            return false;
+        hasSealInfo(fieldId) {
+            return this.getSealInfo(fieldId).length > 0;
         },
 
         getSealInfo(fieldId) {
-            const sealIds = this.lockedFieldSeals[`field_${fieldId}`];
-            if (sealIds && sealIds.length > 0) {
-                return sealIds.map(sealId => {
-                    const seal = this.entity.seals.find(seal => seal.sealId === sealId);
-                    if (seal) {
-                        return {
-                            ...seal, 
-                            validateDate: new McDate(seal.createTimestamp.date).date('2-digit year'), 
-                            files: {
-                                avatar: seal.files?.avatar 
-                            }
-                        };
-                    }
-                    return null;
-                }).filter(info => info !== null);
+            const fieldName = `field_${fieldId}`;
+            const fieldSealStatuses = this.entity.$fieldSealStatuses?.[fieldName] || [];
+            if (fieldSealStatuses.length > 0) {
+                return fieldSealStatuses.map((seal) => this.normalizeSealInfo(seal));
             }
+
+            const lockedFieldSeals = this.entity.$lockedFieldSeals?.[fieldName] || [];
+            if (lockedFieldSeals.length > 0) {
+                return lockedFieldSeals.map((seal) => this.normalizeSealInfo(seal));
+            }
+
+            const validatorSeals = this.getValidatorSealInfo(fieldId);
+            if (validatorSeals.length > 0) {
+                return validatorSeals.map((seal) => this.normalizeSealInfo(seal));
+            }
+
             return [];
         },
 
+        getValidatorSealInfo(fieldId) {
+            const validatorsConfig = $MAPAS.config?.evaluationFormSealValidators?.fields || [];
+            const fieldConfig = validatorsConfig.find((field) => String(field.fieldId) === String(fieldId));
+
+            if (!fieldConfig) {
+                return this.currentSealValidators.map((validator) => this.normalizeValidatorSeal(validator));
+            }
+
+            return (fieldConfig.validators || []).map((validator) => this.normalizeValidatorSeal(validator));
+        },
+
+        normalizeValidatorSeal(validator) {
+            const entitySeal = this.getEntitySealById(validator.sealId);
+
+            return {
+                ...entitySeal,
+                sealId: validator.sealId,
+                sealName: validator.sealName,
+                fieldName: validator.fieldName,
+                fieldStatus: validator.fieldStatus || entitySeal.fieldStatus,
+                expiryDate: validator.expiryDate || entitySeal.expiryDate,
+                isInvalidator: validator.isInvalidator ?? entitySeal.isInvalidator,
+                isUnlocked: validator.isUnlocked ?? entitySeal.isUnlocked,
+                isLocked: validator.isLocked ?? entitySeal.isLocked,
+                hasSealRelation: validator.hasSealRelation ?? entitySeal.hasSealRelation,
+                validateDate: validator.validateDate || entitySeal.validateDate,
+                createTimestamp: validator.createTimestamp || entitySeal.createTimestamp,
+                files: validator.files || entitySeal.files,
+            };
+        },
+
+        getEntitySealById(sealId) {
+            const seals = Array.isArray(this.entity.seals) ? this.entity.seals : Object.values(this.entity.seals || {});
+            return seals.find((seal) => String(seal.sealId || seal.id) === String(sealId)) || {};
+        },
+
+        normalizeSealInfo(seal) {
+            const fieldStatus = seal.fieldStatus || 'no_expiration';
+            const validateDate = seal.validateDate || (seal.createTimestamp?.date ? new McDate(seal.createTimestamp.date).date('2-digit year') : '');
+
+            return {
+                sealId: seal.sealId || seal.id,
+                sealRelationId: seal.sealRelationId,
+                fieldName: seal.fieldName,
+                name: seal.name || seal.sealName,
+                fieldStatus,
+                expiryDate: seal.expiryDate,
+                isInvalidator: Boolean(seal.isInvalidator),
+                hasSealRelation: seal.hasSealRelation ?? Boolean(validateDate),
+                validateDate,
+                expiryDateLabel: this.sealExpiryLabel(seal),
+                files: {
+                    avatar: seal.files?.avatar
+                }
+            };
+        },
+
+        sealExpiryLabel(seal) {
+            if (!seal.expiryDate) {
+                return '';
+            }
+
+            if (seal.fieldStatus === 'expired') {
+                return `expirou em ${seal.expiryDate}`;
+            }
+
+            if (seal.fieldStatus === 'about_to_expire') {
+                return `expira em ${seal.expiryDate}`;
+            }
+
+            return `válido até ${seal.expiryDate}`;
+        },
+
+        sealStatusLabel(seals) {
+            if (!seals.some((seal) => seal.hasSealRelation || seal.validateDate)) {
+                return 'Sem validação registrada';
+            }
+
+            if (seals.some((seal) => seal.fieldStatus === 'expired')) {
+                return 'Expirado';
+            }
+
+            if (seals.some((seal) => seal.fieldStatus === 'about_to_expire')) {
+                return 'Prestes a expirar';
+            }
+
+            return 'Validado';
+        },
+
+        sealAlertClass(seals) {
+            if (!seals.some((seal) => seal.hasSealRelation || seal.validateDate)) {
+                return 'documentary-evaluation-form__seal-alert--invalid';
+            }
+
+            if (seals.some((seal) => seal.fieldStatus === 'expired')) {
+                return 'documentary-evaluation-form__seal-alert--invalid';
+            }
+
+            if (seals.some((seal) => seal.fieldStatus === 'about_to_expire')) {
+                return 'documentary-evaluation-form__seal-alert--about-to-expire';
+            }
+
+            return 'documentary-evaluation-form__seal-alert--valid';
+        },
+
+        sealAlertTitle(seals) {
+            if (!seals.some((seal) => seal.hasSealRelation || seal.validateDate)) {
+                return 'Campo sem validação por selo';
+            }
+
+            if (seals.some((seal) => seal.fieldStatus === 'expired')) {
+                return 'Validação por selo expirada';
+            }
+
+            if (seals.some((seal) => seal.fieldStatus === 'about_to_expire')) {
+                return 'Validação por selo prestes a vencer';
+            }
+
+            return 'Campo validado por selo';
+        },
+
+        sealAlertMessage(seals) {
+            const sealsInfo = this.formatSealsInfo(seals);
+            const hasValidationInfo = seals.some((seal) => seal.hasSealRelation || seal.validateDate);
+            const evaluatorInstruction = seals.some((seal) => seal.isInvalidator)
+                ? 'Se o dado informado não conferir, marque este campo como inválido.'
+                : 'Confira o dado antes de concluir a avaliação.';
+
+            if (!hasValidationInfo) {
+                return `Este campo exige validação por ${sealsInfo}, mas não há registro de selo válido para o proponente desta inscrição. ${evaluatorInstruction}`;
+            }
+
+            if (seals.some((seal) => seal.fieldStatus === 'expired')) {
+                return `Este campo teve validação por ${sealsInfo}, mas a validade expirou. ${this.formatSealStatusInfo(seals)} ${evaluatorInstruction}`;
+            }
+
+            if (seals.some((seal) => seal.fieldStatus === 'about_to_expire')) {
+                return `Este campo foi validado por ${sealsInfo}, mas a validação está prestes a vencer. ${this.formatSealStatusInfo(seals)} ${evaluatorInstruction}`;
+            }
+
+            if (seals.some((seal) => seal.fieldStatus === 'no_expiration')) {
+                return `Este campo foi validado por ${sealsInfo} e não possui prazo de expiração configurado. ${evaluatorInstruction}`;
+            }
+
+            return `Este campo foi validado por ${sealsInfo}. ${this.formatSealStatusInfo(seals)} ${evaluatorInstruction}`;
+        },
+
+        formatSealStatusInfo(seals) {
+            const statusMessages = seals
+                .map((seal) => {
+                    if (seal.fieldStatus === 'expired' && seal.expiryDate) {
+                        return `A validação deste campo expirou em ${this.escapeHtml(seal.expiryDate)}.`;
+                    }
+
+                    if (seal.fieldStatus === 'about_to_expire' && seal.expiryDate) {
+                        return `A validação deste campo expira em ${this.escapeHtml(seal.expiryDate)}.`;
+                    }
+
+                    if (seal.expiryDate) {
+                        return `A validação deste campo é válida até ${this.escapeHtml(seal.expiryDate)}.`;
+                    }
+
+                    if (seal.hasSealRelation || seal.validateDate) {
+                        return 'Esta validação não possui data de expiração configurada.';
+                    }
+
+                    return '';
+                })
+                .filter((message) => message !== '');
+
+            return statusMessages.join(' ');
+        },
+
         formatSealsInfo(seals) {
-            return seals.map(seal => `<strong>${seal.name}</strong> em ${seal.validateDate}`).join(', ');
+            return seals.map((seal) => {
+                const name = this.escapeHtml(seal.name || 'selo');
+                const date = seal.validateDate ? ` em ${this.escapeHtml(seal.validateDate)}` : '';
+                return `<strong>${name}</strong>${date}`;
+            }).join(', ');
+        },
+
+        escapeHtml(value) {
+            const element = document.createElement('div');
+            element.innerText = value;
+            return element.innerHTML;
         },
 
         validatorStatusLabel() {

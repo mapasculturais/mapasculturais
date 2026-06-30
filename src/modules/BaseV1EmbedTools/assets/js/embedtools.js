@@ -14,6 +14,104 @@
 
         window.parent.postMessage(sendMessage, '*');
     }
+
+    function getSealAvatarUrl(seal) {
+        const transformations = seal?.files?.avatar?.transformations;
+        return transformations?.avatarSmall?.url || transformations?.avatarMedium?.url || transformations?.avatarBig?.url || seal?.files?.avatar?.url || null;
+    }
+
+    function renderSealValidatorAvatars($field, seals) {
+        $field.find('.seal-validator-field__seals').remove();
+
+        if(!seals || seals.length === 0) {
+            return;
+        }
+
+        const $seals = $('<div class="seal-validator-field__seals" aria-label="Selos validadores do campo"></div>');
+
+        seals.forEach((seal) => {
+            const $seal = $('<span class="seal-validator-field__seal"></span>');
+            const avatarUrl = getSealAvatarUrl(seal);
+
+            if(avatarUrl) {
+                $('<img class="seal-validator-field__seal-image" alt="">')
+                    .attr('src', avatarUrl)
+                    .attr('title', seal.name || 'Selo validador')
+                    .appendTo($seal);
+            } else {
+                $seal
+                    .addClass('seal-validator-field__seal--fallback')
+                    .attr('title', seal.name || 'Selo validador')
+                    .text('✓');
+            }
+
+            $seals.append($seal);
+        });
+
+        $field.append($seals);
+    }
+
+    function applySealValidatorFields(fields) {
+        $('.seal-validator-field, .seal-validator-field--valid, .seal-validator-field--about-to-expire, .seal-validator-field--expired, .seal-validator-field--missing')
+            .find('.seal-validator-field__seals')
+            .remove()
+            .end()
+            .removeClass('seal-validator-field seal-validator-field--valid seal-validator-field--about-to-expire seal-validator-field--expired seal-validator-field--missing');
+
+        (fields || []).forEach((field) => {
+            const $field = $(`#field_${field.fieldId}`);
+            if (!$field.length || !field.isValidator) {
+                return;
+            }
+
+            $field.addClass('seal-validator-field');
+            renderSealValidatorAvatars($field, field.seals);
+            $field.addClass(getSealValidatorStatusClass(field.seals));
+        });
+    }
+
+    function getSealValidatorStatusClass(seals) {
+        if (!(seals || []).some((seal) => seal.hasSealRelation || seal.validateDate)) {
+            return 'seal-validator-field--missing';
+        }
+
+        if ((seals || []).some((seal) => seal.fieldStatus === 'expired')) {
+            return 'seal-validator-field--expired';
+        }
+
+        if ((seals || []).some((seal) => seal.fieldStatus === 'about_to_expire')) {
+            return 'seal-validator-field--about-to-expire';
+        }
+
+        return 'seal-validator-field--valid';
+    }
+
+    function getParentSealValidatorFields() {
+        try {
+            const config = window.parent?.$MAPAS?.config?.evaluationFormSealValidators;
+            if (!config?.enabled) {
+                return [];
+            }
+
+            return (config.fields || []).map((field) => ({
+                fieldId: field.fieldId,
+                isValidator: true,
+                hasInvalidator: field.hasInvalidator,
+                seals: (field.validators || []).map((validator) => ({
+                    sealId: validator.sealId,
+                    name: validator.sealName,
+                    fieldStatus: validator.fieldStatus,
+                    expiryDate: validator.expiryDate,
+                    isInvalidator: validator.isInvalidator,
+                    hasSealRelation: validator.hasSealRelation,
+                    validateDate: validator.validateDate,
+                    files: validator.files,
+                })),
+            }));
+        } catch (e) {
+            return [];
+        }
+    }
     
     window.addEventListener("message", function(event) {            
         if (event.data == "registration.save") {
@@ -25,20 +123,7 @@
         }
 
         if (event.data?.type === 'evaluationRegistration.setSealValidatorFields') {
-            $('.seal-validator-field, .seal-validator-field--invalidator')
-                .removeClass('seal-validator-field seal-validator-field--invalidator');
-
-            (event.data.fields || []).forEach((field) => {
-                const $field = $(`#field_${field.fieldId}`);
-                if (!$field.length || !field.isValidator) {
-                    return;
-                }
-
-                $field.addClass('seal-validator-field');
-                if (field.hasInvalidator) {
-                    $field.addClass('seal-validator-field--invalidator');
-                }
-            });
+            applySealValidatorFields(event.data.fields);
         }
     });
 
@@ -106,6 +191,10 @@
     }
 
     setInterval(postToParent, 50);
+
+    [300, 1000, 2500, 5000].forEach((delay) => {
+        setTimeout(() => applySealValidatorFields(getParentSealValidatorFields()), delay);
+    });
 
     $(document).ready(function() {
         $("body").on("click", "a[href]", function(event) {
