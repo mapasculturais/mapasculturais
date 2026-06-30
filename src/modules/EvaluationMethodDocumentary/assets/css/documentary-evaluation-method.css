@@ -39,100 +39,121 @@
 }
 
 .documentary-evaluation-form__seal-alert {
-    background: #fff7e6;
-    border: 1px solid #f0b45b;
-    border-left: 6px solid #e18414;
-    border-radius: 6px;
-    color: #3d2b12;
+    align-items: center;
+    background: #f6fff7;
+    border: 1px solid #83c98b;
+    border-left: 6px solid #2e7d32;
+    border-radius: 8px;
+    color: #173f1b;
+    display: flex;
+    gap: 12px;
     padding: 12px 14px;
 }
 
-.documentary-evaluation-form__seal-alert-header {
-    align-items: center;
-    display: flex;
-    gap: 8px;
-    justify-content: space-between;
-    margin-bottom: 6px;
+.documentary-evaluation-form__seal-alert--about-to-expire {
+    background: #fff7e6;
+    border-color: #f0b45b;
+    border-left-color: #e18414;
+    color: #3d2b12;
 }
 
-.documentary-evaluation-form__seal-alert-status {
-    background: #ffffff;
-    border: 1px solid #f0b45b;
-    border-radius: 999px;
-    color: #8a4c00;
-    font-size: 0.75rem;
-    font-weight: 700;
-    padding: 3px 8px;
-    white-space: nowrap;
+.documentary-evaluation-form__seal-alert--invalid {
+    background: #fff4f4;
+    border-color: #ef9a9a;
+    border-left-color: #b3261e;
+    color: #4f1111;
+}
+
+.documentary-evaluation-form__seal-alert h4 {
+    line-height: 1.2;
+    margin: 0;
 }
 
 .documentary-evaluation-form__seal-alert p {
-    margin: 0 0 10px;
+    font-size: 0.875rem;
+    line-height: 1.45;
+    margin: 4px 0 0;
 }
 
-.documentary-evaluation-form__seal-list {
+.documentary-evaluation-form__seal-alert-content {
     display: flex;
     flex-direction: column;
-    gap: 6px;
-    list-style: none;
-    margin: 0;
-    padding: 0;
-}
-
-.documentary-evaluation-form__seal-item {
-    align-items: center;
-    background: rgba(255, 255, 255, 0.72);
-    border-radius: 4px;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 6px;
-    padding: 6px 8px;
-}
-
-.documentary-evaluation-form__seal-name {
-    font-weight: 700;
-}
-
-.documentary-evaluation-form__seal-kind {
-    color: #9b4f00;
-    font-size: 0.75rem;
-    font-weight: 700;
-    text-transform: uppercase;
-}
-
-.documentary-evaluation-form__seal-item--invalidator .documentary-evaluation-form__seal-kind {
-    color: #b3261e;
+    gap: 2px;
 }
 
 .seal-validator-field {
-    border: 2px solid #e18414 !important;
-    box-shadow: 0 0 0 4px rgba(225, 132, 20, 0.18) !important;
+    border: 2px solid #2e7d32 !important;
+    box-shadow: 0 0 0 4px rgba(46, 125, 50, 0.16) !important;
     position: relative;
 }
 
-.seal-validator-field::after {
-    background: #e18414;
-    border-radius: 999px;
-    color: #fff;
-    content: "Validar selo";
-    font-size: 11px;
-    font-weight: 700;
-    line-height: 1;
-    padding: 5px 8px;
+.seal-validator-field::after,
+.seal-validator-field--invalidator::after {
+    content: none !important;
+    display: none !important;
+}
+
+.seal-validator-field__seals {
+    align-items: center;
+    display: flex;
+    gap: 4px;
     position: absolute;
-    right: 12px;
-    top: 12px;
+    right: 10px;
+    top: 10px;
     z-index: 2;
 }
 
-.seal-validator-field--invalidator {
+.seal-validator-field__seal {
+    align-items: center;
+    background: #ffffff;
+    border: 2px solid #2e7d32;
+    border-radius: 6px;
+    display: inline-flex;
+    height: 36px;
+    justify-content: center;
+    overflow: hidden;
+    width: 36px;
+}
+
+.seal-validator-field__seal-image {
+    display: block;
+    height: 100%;
+    object-fit: cover;
+    width: 100%;
+}
+
+.seal-validator-field__seal--fallback {
+    color: #2e7d32;
+    font-weight: 700;
+}
+
+.seal-validator-field--about-to-expire {
+    border-color: #e18414 !important;
+    box-shadow: 0 0 0 4px rgba(225, 132, 20, 0.18) !important;
+}
+
+.seal-validator-field--about-to-expire .seal-validator-field__seal {
+    border-color: #e18414;
+}
+
+.seal-validator-field--about-to-expire .seal-validator-field__seal--fallback {
+    color: #e18414;
+}
+
+.seal-validator-field--expired,
+.seal-validator-field--missing {
     border-color: #b3261e !important;
     box-shadow: 0 0 0 4px rgba(179, 38, 30, 0.16) !important;
 }
 
-.seal-validator-field--invalidator::after {
-    background: #b3261e;
-    content: "Campo invalidador";
+.seal-validator-field--expired .seal-validator-field__seal,
+.seal-validator-field--missing .seal-validator-field__seal {
+    border-color: #b3261e;
+}
+
+.seal-validator-field--expired .seal-validator-field__seal--fallback,
+.seal-validator-field--missing .seal-validator-field__seal--fallback {
+    color: #b3261e;
 }
 
 .documentary-evaluation-view {

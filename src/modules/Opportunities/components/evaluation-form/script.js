@@ -12,6 +12,7 @@ app.component('evaluation-form', {
         window.addEventListener('resize', () => this.resizeForm());
         this.resizeForm();
         this.markSealValidatorFields();
+        document.getElementById('evaluation-registration')?.addEventListener('load', () => this.markSealValidatorFields());
     },
 
     updated() {
@@ -59,11 +60,45 @@ app.component('evaluation-form', {
                     fieldId: field.fieldId,
                     isValidator: true,
                     hasInvalidator: field.hasInvalidator,
+                    seals: this.getFieldValidatorSeals(field),
                 })),
             };
 
-            [200, 700, 1500].forEach((delay) => {
-                setTimeout(() => window.postMessage(message, '*'), delay);
+            [200, 700, 1500, 3000, 5000].forEach((delay) => {
+                setTimeout(() => this.postToEvaluationRegistration(message), delay);
+            });
+        },
+
+        postToEvaluationRegistration(message) {
+            window.postMessage(message, '*');
+            document.getElementById('evaluation-registration')?.contentWindow?.postMessage(message, '*');
+        },
+
+        getFieldValidatorSeals(field) {
+            const sealsById = {};
+            const entitySeals = Array.isArray(this.entity.seals) ? this.entity.seals : Object.values(this.entity.seals || {});
+            for (const seal of entitySeals) {
+                sealsById[seal.sealId || seal.id] = seal;
+            }
+
+            return (field.validators || []).map((validator) => {
+                const seal = sealsById[validator.sealId] || {};
+                return {
+                    sealId: validator.sealId,
+                    fieldName: validator.fieldName,
+                    name: seal.name || validator.sealName,
+                    fieldStatus: validator.fieldStatus,
+                    expiryDate: validator.expiryDate,
+                    isInvalidator: validator.isInvalidator,
+                    isUnlocked: validator.isUnlocked,
+                    isLocked: validator.isLocked,
+                    hasSealRelation: validator.hasSealRelation,
+                    validateDate: validator.validateDate,
+                    createTimestamp: seal.createTimestamp || validator.createTimestamp,
+                    files: {
+                        avatar: seal.files?.avatar || validator.files?.avatar,
+                    },
+                };
             });
         }
     }

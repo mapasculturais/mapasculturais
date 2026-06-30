@@ -455,35 +455,78 @@ article.opportunity .editable-buttons button {
 }
 
 .seal-validator-field {
-    border: 2px solid #e18414 !important;
-    box-shadow: 0 0 0 4px rgba(225, 132, 20, 0.18) !important;
+    border: 2px solid #2e7d32 !important;
+    box-shadow: 0 0 0 4px rgba(46, 125, 50, 0.16) !important;
     position: relative;
 }
 
-.seal-validator-field::after {
-    background: #e18414;
-    border-radius: 999px;
-    color: #fff;
-    content: "Validar selo";
-    font-size: 11px;
-    font-weight: 700;
-    line-height: 1;
-    padding: 5px 8px;
-    pointer-events: none;
+.seal-validator-field::after,
+.seal-validator-field--invalidator::after {
+    content: none !important;
+    display: none !important;
+}
+
+.seal-validator-field__seals {
+    align-items: center;
+    display: flex;
+    gap: 4px;
     position: absolute;
-    right: 12px;
-    top: 12px;
+    right: 10px;
+    top: 10px;
     z-index: 2;
 }
 
-.seal-validator-field--invalidator {
+.seal-validator-field__seal {
+    align-items: center;
+    background: #fff;
+    border: 2px solid #2e7d32;
+    border-radius: 6px;
+    display: inline-flex;
+    height: 36px;
+    justify-content: center;
+    overflow: hidden;
+    width: 36px;
+}
+
+.seal-validator-field__seal-image {
+    display: block;
+    height: 100%;
+    object-fit: cover;
+    width: 100%;
+}
+
+.seal-validator-field__seal--fallback {
+    color: #2e7d32;
+    font-weight: 700;
+}
+
+.seal-validator-field--about-to-expire {
+    border-color: #e18414 !important;
+    box-shadow: 0 0 0 4px rgba(225, 132, 20, 0.18) !important;
+}
+
+.seal-validator-field--about-to-expire .seal-validator-field__seal {
+    border-color: #e18414;
+}
+
+.seal-validator-field--about-to-expire .seal-validator-field__seal--fallback {
+    color: #e18414;
+}
+
+.seal-validator-field--expired,
+.seal-validator-field--missing {
     border-color: #b3261e !important;
     box-shadow: 0 0 0 4px rgba(179, 38, 30, 0.16) !important;
 }
 
-.seal-validator-field--invalidator::after {
-    background: #b3261e;
-    content: "Campo invalidador";
+.seal-validator-field--expired .seal-validator-field__seal,
+.seal-validator-field--missing .seal-validator-field__seal {
+    border-color: #b3261e;
+}
+
+.seal-validator-field--expired .seal-validator-field__seal--fallback,
+.seal-validator-field--missing .seal-validator-field__seal--fallback {
+    color: #b3261e;
 }
 
 @media screen and (max-width: 1366px) and (min-width: 1200px) {
