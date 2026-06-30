@@ -121,7 +121,8 @@ class EvaluationMethodConfiguration extends \MapasCulturais\Entity {
 
         $validations = [
             'name' => [
-                'required' => \MapasCulturais\i::__('O nome da fase de avaliação é obrigatório')
+                'required' => \MapasCulturais\i::__('O nome da fase de avaliação é obrigatório'),
+                '$this->validateCriteriaSectionsIntegrity()' => \MapasCulturais\i::__('A configuração de critérios e seções contém erros de integridade')
             ],
             'evaluationFrom' => [
                 'required' => \MapasCulturais\i::__('A data inicial das avaliações é obrigatória'),
@@ -139,6 +140,238 @@ class EvaluationMethodConfiguration extends \MapasCulturais\Entity {
         $app->applyHook("entity($hook_class)::validations", [&$validations]);
 
         return $validations;
+    }
+
+    /**
+     * Valida a integridade entre seções e critérios.
+     * 
+     * Verifica:
+     * - Se há critérios com 'sid' apontando para seção inexistente (critérios órfãos)
+     * - Se há critérios sem campos obrigatórios preenchidos conforme o tipo de avaliação
+     * 
+     * @return bool true se válido, false se há erros
+     */
+    function validateCriteriaSectionsIntegrity() {
+        // Só valida para métodos que usam seções e critérios
+        $types_with_sections = ['technical', 'qualification'];
+        if (!in_array($this->_type, $types_with_sections)) {
+            return true;
+        }
+
+        $sections = $this->sections ?? [];
+        $criteria = $this->criteria ?? [];
+
+        // Se os dados vierem como string JSON (antes do unserialize do metadata), converte
+        if (is_string($sections)) {
+            $sections = json_decode($sections);
+        }
+        if (is_string($criteria)) {
+            $criteria = json_decode($criteria);
+        }
+
+        // Normaliza para arrays
+        $sections = (array) $sections;
+        $criteria = (array) $criteria;
+
+        // Coleta IDs das seções existentes
+        $section_ids = [];
+        foreach ($sections as $section) {
+            $section = (object) $section;
+            if (isset($section->id)) {
+                $section_ids[$section->id] = true;
+            }
+        }
+
+        // Se há critérios mas não há seções, é inválido
+        if (!empty($criteria) && empty($sections)) {
+            return false;
+        }
+
+        // Se há seções, cada uma deve ter pelo menos um critério.
+        // Exceção: avaliação técnica possui hook que remove seções sem critérios
+        // automaticamente antes de salvar, portanto não rejeitamos aqui.
+        if (!empty($sections) && $this->_type !== 'technical') {
+            $section_ids_with_criteria = [];
+            foreach ($criteria as $criterion) {
+                $criterion = (object) $criterion;
+                if (isset($criterion->sid) && isset($section_ids[$criterion->sid])) {
+                    $section_ids_with_criteria[$criterion->sid] = true;
+                }
+            }
+
+            foreach ($sections as $section) {
+                $section = (object) $section;
+                if (!isset($section->id) || !isset($section_ids_with_criteria[$section->id])) {
+                    return false;
+                }
+            }
+        }
+
+        // Se não há critérios, não há mais o que validar
+        if (empty($criteria)) {
+            return true;
+        }
+
+        // Valida cada critério
+        foreach ($criteria as $criterion) {
+            $criterion = (object) $criterion;
+            
+            // Verifica se o critério tem sid
+            if (!isset($criterion->sid)) {
+                return false;
+            }
+
+            // Verifica se a seção referenciada existe
+            if (!isset($section_ids[$criterion->sid])) {
+                return false;
+            }
+
+            if ($this->_type === 'technical') {
+                if (empty($criterion->title) || trim($criterion->title) === '') {
+                    return false;
+                }
+                if (!isset($criterion->max) || !is_numeric($criterion->max)) {
+                    return false;
+                }
+                if (!isset($criterion->weight) || !is_numeric($criterion->weight)) {
+                    return false;
+                }
+            }
+
+            if ($this->_type === 'qualification') {
+                if (empty($criterion->name) || trim($criterion->name) === '') {
+                    return false;
+                }
+
+                $options = $criterion->options ?? [];
+                if (is_object($options)) {
+                    $options = get_object_vars($options);
+                }
+                if (!is_array($options) || empty(array_filter($options, fn($option) => trim((string) $option) !== ''))) {
+                    return false;
+                }
+            }
+        }
+
+        return true;
+    }
+
+    /**
+     * Remove draft/empty criteria configuration entries before persistence.
+     *
+     * The UI autosaves while managers are still typing, so intermediate values
+     * such as a section without criteria must not become effective config.
+     */
+    function sanitizeCriteriaSectionsDraft(): void {
+        $types_with_sections = ['technical', 'qualification'];
+        if (!in_array($this->_type, $types_with_sections)) {
+            return;
+        }
+
+        $sections = $this->normalizeCriteriaSectionsValue($this->sections ?? []);
+        $criteria = $this->normalizeCriteriaSectionsValue($this->criteria ?? []);
+
+        $sections_by_id = [];
+        foreach ($sections as $section) {
+            $section = (object) $section;
+            $section_id = $section->id ?? null;
+            $section_name = trim((string) ($section->name ?? ''));
+
+            if (!$section_id || $section_name === '') {
+                continue;
+            }
+
+            $section->name = $section_name;
+            $sections_by_id[$section_id] = $section;
+        }
+
+        $clean_criteria = [];
+        $section_ids_with_criteria = [];
+        foreach ($criteria as $criterion) {
+            $criterion = (object) $criterion;
+            $section_id = $criterion->sid ?? null;
+
+            if (!$section_id || !isset($sections_by_id[$section_id])) {
+                continue;
+            }
+
+            if (!$this->isPersistableCriterion($criterion)) {
+                continue;
+            }
+
+            $clean_criteria[] = $criterion;
+            $section_ids_with_criteria[$section_id] = true;
+        }
+
+        $clean_sections = [];
+        foreach ($sections_by_id as $section_id => $section) {
+            if (isset($section_ids_with_criteria[$section_id])) {
+                $clean_sections[] = $section;
+            }
+        }
+
+        $this->sections = $clean_sections;
+        $this->criteria = $clean_criteria;
+    }
+
+    private function normalizeCriteriaSectionsValue($value): array {
+        if (is_string($value)) {
+            $decoded = json_decode($value);
+            $value = $decoded ?: [];
+        }
+
+        if (is_object($value)) {
+            $value = get_object_vars($value);
+        }
+
+        return is_array($value) ? $value : [];
+    }
+
+    private function isPersistableCriterion(object $criterion): bool {
+        if ($this->_type === 'technical') {
+            $criterion->title = trim((string) ($criterion->title ?? ''));
+
+            if ($criterion->title === '') {
+                return false;
+            }
+
+            if (!isset($criterion->max) || !is_numeric($criterion->max)) {
+                return false;
+            }
+
+            if (!isset($criterion->weight) || !is_numeric($criterion->weight)) {
+                return false;
+            }
+
+            return true;
+        }
+
+        if ($this->_type === 'qualification') {
+            $criterion->name = trim((string) ($criterion->name ?? ''));
+
+            if ($criterion->name === '') {
+                return false;
+            }
+
+            $options = $criterion->options ?? [];
+            if (is_object($options)) {
+                $options = get_object_vars($options);
+            }
+
+            if (!is_array($options)) {
+                return false;
+            }
+
+            $options = array_values(array_filter($options, fn($option) => trim((string) $option) !== ''));
+            if (empty($options)) {
+                return false;
+            }
+
+            $criterion->options = $options;
+            return true;
+        }
+
+        return false;
     }
 
     function validateDate($value){
@@ -663,6 +896,8 @@ class EvaluationMethodConfiguration extends \MapasCulturais\Entity {
     
     
     function save($flush = false){
+        $this->sanitizeCriteriaSectionsDraft();
+
         parent::save($flush);
         
         $this->enqueueToPCacheRecreation();

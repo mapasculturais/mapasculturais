@@ -330,6 +330,31 @@ class Module extends \MapasCulturais\Module{
             }
         });
 
+        // Valida integridade entre seções e critérios na resposta da API
+        $app->hook('entity(EvaluationMethodConfiguration).validationErrors', function(&$errors) {
+            /** @var EvaluationMethodConfiguration $this */
+            
+            // Só valida se sections ou criteria foram modificados
+            $has_criteria_changes = $this->getChangedMetadata()['criteria'] ?? false;
+            $has_sections_changes = $this->getChangedMetadata()['sections'] ?? false;
+            
+            if (!$has_criteria_changes && !$has_sections_changes) {
+                return;
+            }
+
+            if (!$this->validateCriteriaSectionsIntegrity()) {
+                // Adiciona erro no campo que foi enviado para garantir que apareça na resposta
+                if ($has_criteria_changes) {
+                    $errors['criteria'] = $errors['criteria'] ?? [];
+                    $errors['criteria'][] = i::__('Critérios com erros: existe(m) critério(s) sem seção associada ou com campos obrigatórios vazios');
+                }
+                if ($has_sections_changes) {
+                    $errors['sections'] = $errors['sections'] ?? [];
+                    $errors['sections'][] = i::__('Seções com erros: existe(m) seção(ões) sem critérios associados');
+                }
+            }
+        });
+
         $app->hook('entity(EvaluationMethodConfiguration).save:finish', function () use($app, $distribute_execution_time) {
             /** @var EvaluationMethodConfiguration $this */
             if ($this->mustRedistributeCommitteeRegistrations) {
@@ -981,7 +1006,7 @@ class Module extends \MapasCulturais\Module{
                if($proponent_type){
 
                    if (array_key_exists($proponent_type, $proponent_typesTo_agents_Map)) {
-                       $agent_type = $proponent_typesTo_agents_Map[$proponent_type];
+                       $agent_type = $self->getProponentSealAgentType($this, $proponent_typesTo_agents_Map);
                        if (isset($seals->$proponent_type)) {
                             $proponent_seals = $seals->{$proponent_type};
                             if($agent_type == "owner"){
@@ -1047,7 +1072,7 @@ class Module extends \MapasCulturais\Module{
                 $categories_seals = $opportunity->categorySeals;
                 $category = $this->category;
                 $proponent_typesTo_agents_Map = $app->config['registration.proponentTypesToAgentsMap'];
-                $agent_type = $proponent_typesTo_agents_Map[$proponent_type] ?? "owner";
+                $agent_type = $self->getProponentSealAgentType($this, $proponent_typesTo_agents_Map);
 
                 if ($proponent_type  && $proponent_type_seals) {
                     $proponent_seals = $proponent_type_seals->{$proponent_type};
@@ -1109,7 +1134,7 @@ class Module extends \MapasCulturais\Module{
 
                         if($proponent_type){
                             $proponent_seals = $this->proponentSeals->{$proponent_type};
-                            $agent_type = $proponent_typesTo_agents_Map[$proponent_type];
+                            $agent_type = $self->getProponentSealAgentType($registration, $proponent_typesTo_agents_Map);
 
                             if($agent_type == "owner"){
                                 $self->applySeal($owner,$proponent_seals);
@@ -1169,7 +1194,7 @@ class Module extends \MapasCulturais\Module{
 
                         if ($proponent_type) {
                             $proponent_seals = $this->proponentSeals->{$proponent_type};
-                            $agent_type = $proponent_typesTo_agents_Map[$proponent_type];
+                            $agent_type = $self->getProponentSealAgentType($registration, $proponent_typesTo_agents_Map);
 
                             if ($agent_type == "owner") {
                                 $relations = $owner->getSealRelations();
@@ -1365,7 +1390,11 @@ class Module extends \MapasCulturais\Module{
         ]);
     }
 
-    public function applySeal(Agent $agent, array $sealIds){
+    public function applySeal(?Agent $agent, array $sealIds){
+        if (!$agent) {
+            return;
+        }
+
         $app = App::i();
         foreach($sealIds as $sealId) {
             $seal = $app->repo('Seal')->find($sealId);
@@ -1382,6 +1411,28 @@ class Module extends \MapasCulturais\Module{
                 $agent->createSealRelation($seal, agent: $agent);
             }
         }
+    }
+
+    private function getProponentSealAgentType(Registration $registration, array $proponentTypesToAgentsMap): ?string {
+        $proponent_type = $registration->proponentType;
+        $agent_type = $proponentTypesToAgentsMap[$proponent_type] ?? 'owner';
+
+        if ($agent_type !== 'coletivo') {
+            return $agent_type;
+        }
+
+        $opportunity = $registration->opportunity;
+        $proponent_agent_relation = $opportunity->proponentAgentRelation ?? null;
+
+        if (is_object($proponent_agent_relation) && property_exists($proponent_agent_relation, $proponent_type)) {
+            return $proponent_agent_relation->{$proponent_type} ? 'coletivo' : null;
+        }
+
+        if (is_array($proponent_agent_relation) && array_key_exists($proponent_type, $proponent_agent_relation)) {
+            return $proponent_agent_relation[$proponent_type] ? 'coletivo' : null;
+        }
+
+        return $opportunity->firstPhase->useAgentRelationColetivo == 'required' ? 'coletivo' : null;
     }
 
     function removeSeals($app, $relations, $proponent_seals) {

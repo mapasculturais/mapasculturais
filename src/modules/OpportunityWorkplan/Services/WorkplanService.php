@@ -57,12 +57,82 @@ class WorkplanService
                     $delivery->name = $d['name'] ?? null;
                     $delivery->description = $d['description'] ?? null;
                     $delivery->typeDelivery = $d['typeDelivery'] ?? null;
+                    $delivery->monthInitial = $d['monthInitial'] ?? null;
+                    $delivery->monthEnd = $d['monthEnd'] ?? null;
                     $delivery->segmentDelivery = $d['segmentDelivery'] ?? null;
                     $delivery->expectedNumberPeople = $d['expectedNumberPeople'] ?? null;
                     $delivery->generaterRevenue = $d['generaterRevenue'] ?? null;
                     $delivery->renevueQtd = $d['renevueQtd'] ?? null;
                     $delivery->unitValueForecast = $d['unitValueForecast'] ?? null;
                     $delivery->totalValueForecast = $d['totalValueForecast'] ?? null;
+                    
+                    // Novos campos de planejamento
+                    $delivery->artChainLink = $d['artChainLink'] ?? null;
+                    $delivery->totalBudget = $d['totalBudget'] ?? null;
+                    $delivery->numberOfCities = $d['numberOfCities'] ?? null;
+                    $delivery->numberOfNeighborhoods = $d['numberOfNeighborhoods'] ?? null;
+                    $delivery->mediationActions = $d['mediationActions'] ?? null;
+                    $delivery->paidStaffByRole = $d['paidStaffByRole'] ?? null;
+                    $delivery->teamCompositionGender = $d['teamCompositionGender'] ?? null;
+                    $delivery->teamCompositionRace = $d['teamCompositionRace'] ?? null;
+                    $delivery->revenueType = $d['revenueType'] ?? null;
+                    $delivery->commercialUnits = $d['commercialUnits'] ?? null;
+                    $delivery->unitPrice = $d['unitPrice'] ?? null;
+                    $delivery->hasCommunityCoauthors = $d['hasCommunityCoauthors'] ?? null;
+                    $delivery->communityCoauthorsDetail = $d['communityCoauthorsDetail'] ?? null;
+                    $delivery->hasTransInclusionStrategy = $d['hasTransInclusionStrategy'] ?? null;
+                    $delivery->transInclusionActions = $d['transInclusionActions'] ?? null;
+                    $delivery->hasAccessibilityPlan = $d['hasAccessibilityPlan'] ?? null;
+                    $delivery->expectedAccessibilityMeasures = $d['expectedAccessibilityMeasures'] ?? null;
+                    $delivery->hasEnvironmentalPractices = $d['hasEnvironmentalPractices'] ?? null;
+                    $delivery->environmentalPracticesDescription = $d['environmentalPracticesDescription'] ?? null;
+                    $delivery->hasPressStrategy = $d['hasPressStrategy'] ?? null;
+                    $delivery->communicationChannels = $d['communicationChannels'] ?? null;
+                    $delivery->hasInnovationAction = $d['hasInnovationAction'] ?? null;
+                    $delivery->innovationTypes = $d['innovationTypes'] ?? null;
+                    $delivery->documentationTypes = $d['documentationTypes'] ?? null;
+
+                    foreach ([
+                        'availabilityType',
+                        'accessibilityMeasures',
+                        'participantProfile',
+                        'priorityAudience',
+                        'numberOfParticipants',
+                        'executedRevenue',
+                        'executedMonthInitial',
+                        'executedMonthEnd',
+                        'executedTotalBudget',
+                        'executedNumberOfCities',
+                        'executedNumberOfNeighborhoods',
+                        'executedMediationActions',
+                        'executedCommercialUnits',
+                        'executedUnitPrice',
+                        'executedArtChainLink',
+                        'executedSegmentDelivery',
+                        'executedCommunicationStrategies',
+                        'executedPaidStaffByRole',
+                        'executedTeamCompositionGender',
+                        'executedTeamCompositionRace',
+                        'executedCommunicationChannels',
+                        'executedRevenueType',
+                        'executedHasCommunityCoauthors',
+                        'executedCommunityCoauthorsDetail',
+                        'executedHasTransInclusionStrategy',
+                        'executedTransInclusionActions',
+                        'executedHasAccessibilityPlan',
+                        'executedExpectedAccessibilityMeasures',
+                        'executedHasEnvironmentalPractices',
+                        'executedEnvironmentalPracticesDescription',
+                        'executedHasPressStrategy',
+                        'executedHasInnovationAction',
+                        'executedInnovationTypes',
+                        'executedDocumentationTypes',
+                    ] as $field) {
+                        if (array_key_exists($field, $d)) {
+                            $delivery->$field = $d[$field];
+                        }
+                    }
+                    
                     $delivery->goal = $goal;
                     $delivery->save(true);
                 }  
@@ -70,6 +140,19 @@ class WorkplanService
         } 
 
         $workplan = $app->repo(Workplan::class)->find($workplan->id);
+
+        // Força reload do banco para garantir que novas goals/deliveries
+        // (cujas collections ArrayCollection em memória estão vazias) sejam
+        // retornadas corretamente na serialização — corrige bug de entrega
+        // desaparecendo após salvar a meta.
+        // refresh($workplan) sozinho não basta: as goals ainda presentes na
+        // Identity Map conservam suas ArrayCollections vazias. É preciso
+        // refresh em cada goal para que a coleção deliveries seja
+        // reinicializada e recarregada do banco na serialização.
+        $app->em->refresh($workplan);
+        foreach ($workplan->goals as $goal) {
+            $app->em->refresh($goal);
+        }
 
         return $workplan;        
     }

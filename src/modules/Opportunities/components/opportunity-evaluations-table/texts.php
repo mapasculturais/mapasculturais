@@ -5,7 +5,7 @@ return [
     'inscrição' => i::__('Número da inscrição'),
     'agente' => i::__('Agente responsável'),
     'coletivo' => i::__('Agente coletivo'),
-    'resultado final' => i::__('Resultado final da avaliação'),
+    'resultado final' => i::__('Resultado do avaliador'),
     'avaliador' => i::__('Nome do avaliador'),
     'Nº avaliador' => i::__('Nº sequencial do avaliador'),
     'ID usuário avaliador' => i::__('ID do usuário do avaliador'),

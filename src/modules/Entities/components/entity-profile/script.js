@@ -9,7 +9,8 @@ app.component('entity-profile', {
     },
     computed: {
         isRequired() {
-            return $MAPAS.config['EntityProfile']['EntityRequiredAvatar'];
+            const config = $MAPAS.config.EntityProfile?.requiredAvatarByEntityType ?? {};
+            return Boolean(config[this.entity.__objectType]);
         },
     },
 });

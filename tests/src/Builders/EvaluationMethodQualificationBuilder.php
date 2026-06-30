@@ -19,7 +19,7 @@ class EvaluationMethodQualificationBuilder extends EvaluationMethodConfiguration
         return $this;
     }
 
-    public function addCriterion(string $id, string $section_id, string $name, bool $non_eliminatory = false): self
+    public function addCriterion(string $id, string $section_id, string $name, bool $non_eliminatory = false, array $options = ['Nao atende']): self
     {
         $criteria = $this->instance->criteria ?? [];
 
@@ -32,6 +32,7 @@ class EvaluationMethodQualificationBuilder extends EvaluationMethodConfiguration
             'sid' => $section_id,
             'name' => $name,
             'nonEliminatory' => $non_eliminatory ? 'true' : 'false',
+            'options' => $options,
         ];
         
         $this->instance->criteria = $criteria;

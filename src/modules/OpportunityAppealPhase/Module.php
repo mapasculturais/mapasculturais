@@ -12,6 +12,15 @@ use MapasCulturais\i;
 
 class Module extends \MapasCulturais\Module {
 
+    function __construct($config = [])
+    {
+        $config += [
+            'sendMailNotification.opportunityAppealPhase' => env('SEND_MAIL_OPPORTUNITY_APPEAL_PHASE', false),
+        ];
+
+        parent::__construct($config);
+    }
+
     public function _init() {
         $app = App::i();
         $self = $this;
@@ -164,8 +173,6 @@ class Module extends \MapasCulturais\Module {
                 
                 $new_registration->save(true);
 
-                \OpportunityPhases\Module::removeDownstreamRegistrations($registration);
-
                 // Cria notificação do sistema e disparo de e-mail para o proponente e gestores da oportunidade
                 // Disparo para o proponente
                 $registration_email = ($new_registration->owner->emailPrivado ??
@@ -200,6 +207,15 @@ class Module extends \MapasCulturais\Module {
             $opportunity = $this->opportunity;
 
             if($opportunity->status == Opportunity::STATUS_APPEAL_PHASE) {
+                $parent_phase = $opportunity->parent;
+                $parent_registration = $app->repo('Registration')->findOneBy([
+                    'opportunity' => $parent_phase,
+                    'number' => $this->number,
+                ]);
+
+                if ($parent_registration && \OpportunityPhases\Module::appealPhaseAffectsSync($parent_phase)) {
+                    \OpportunityPhases\Module::removeDownstreamRegistrations($parent_registration, $this);
+                }
 
                 // Disparo de e-mail para todos os avaliadores dessa fase de recurso
                 $relations = $opportunity->evaluationMethodConfiguration->getAgentRelations();
@@ -222,7 +238,9 @@ class Module extends \MapasCulturais\Module {
             if($opportunity->status == Opportunity::STATUS_APPEAL_PHASE) {
                 $self->sendMailNewStatus($opportunity, $this);
                 $self->sendNotificationNewStatus($opportunity, $this);
-                $self->enqueueNextMainPhaseSync($app, $this, $opportunity);
+                if (\OpportunityPhases\Module::appealPhaseAffectsSync($opportunity->parent)) {
+                    $self->enqueueNextMainPhaseSync($app, $this, $opportunity);
+                }
             }
         });
 
@@ -234,7 +252,9 @@ class Module extends \MapasCulturais\Module {
             if($opportunity->status == Opportunity::STATUS_APPEAL_PHASE) {
                 $self->sendMailNewStatus($opportunity, $this);
                 $self->sendNotificationNewStatus($opportunity, $this);
-                $self->enqueueNextMainPhaseSync($app, $this, $opportunity);
+                if (\OpportunityPhases\Module::appealPhaseAffectsSync($opportunity->parent)) {
+                    $self->enqueueNextMainPhaseSync($app, $this, $opportunity);
+                }
             }
         });
 
@@ -246,7 +266,9 @@ class Module extends \MapasCulturais\Module {
             if($opportunity->status == Opportunity::STATUS_APPEAL_PHASE) {
                 $self->sendMailNewStatus($opportunity, $this);
                 $self->sendNotificationNewStatus($opportunity, $this);
-                $self->enqueueNextMainPhaseSync($app, $this, $opportunity);
+                if (\OpportunityPhases\Module::appealPhaseAffectsSync($opportunity->parent)) {
+                    $self->enqueueNextMainPhaseSync($app, $this, $opportunity);
+                }
             }
         });
 
@@ -276,6 +298,12 @@ class Module extends \MapasCulturais\Module {
             'label' => i::__('Exibir detalhamento da avaliação anterior para avaliadores do recurso'),
             'type'  => 'boolean',
             'default' => true,
+        ]);
+
+        $this->registerOpportunityMetadata('appealPhaseAffectsSync', [
+            'label' => i::__('Sincronizar inscrições para fase seguinte'),
+            'type'  => 'boolean',
+            'default' => false,
         ]);
 
         $this->registerEvauationMethodConfigurationMetadata('appealPhase', [
@@ -325,6 +353,10 @@ class Module extends \MapasCulturais\Module {
      * @param string $recipientType
      */
     function sendEmail(Opportunity $opportunity, Registration $registration, ?string $email, string $recipientType = 'manager') {
+        if(!$this->config['sendMailNotification.opportunityAppealPhase']) {
+            return;
+        }
+
         $app = App::i();
 
         if (!$email) {
@@ -369,6 +401,10 @@ class Module extends \MapasCulturais\Module {
      * @param Registration $registration
      */
     function sendMailNewStatus(Opportunity $opportunity, Registration $registration) {
+        if(!$this->config['sendMailNotification.opportunityAppealPhase']) {
+            return;
+        }
+
         $app = App::i();
 
         $template = "opportunityappealphase/update-status.html";

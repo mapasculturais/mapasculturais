@@ -210,13 +210,12 @@ app.component('registration-actions', {
             let result;
             try {
                 this.registration.disableMessages();
-                await this.save();
-                this.registration.enableMessages();
-
                 result = await this.validate();
             } catch(error) {
                 console.error(error);
                 result = false;
+            } finally {
+                this.registration.enableMessages();
             }
 
             if(!result) { 
@@ -248,7 +247,9 @@ app.component('registration-actions', {
             const messages = useMessages();
 
             try {
-                await this.save();
+                if (!await this.save()) {
+                    return false;
+                }
                 const data = this.getRegistrationPayloadForValidation();
                 const success = await this.registration.POST('validateEntity', { data, processingMessage: this.text('Validando') });
 
@@ -266,6 +267,17 @@ app.component('registration-actions', {
                 }
                 return false;
             }
+        },
+
+        async saveRelatedFormData() {
+            const promises = [];
+            globalThis.dispatchEvent(new CustomEvent('registration.beforeSave', {
+                detail: {
+                    registrationId: this.registration.id,
+                    promises,
+                },
+            }));
+            await Promise.all(promises);
         },
 
         getRegistrationPayloadForValidation() {
@@ -350,6 +362,7 @@ app.component('registration-actions', {
         async save() {
             try{
                 await this.registration.save(0, false, true);
+                await this.saveRelatedFormData();
                 this.isValidated = false;
                 this.validationErrors = this.getEmptyValidationState();
                 return true;
