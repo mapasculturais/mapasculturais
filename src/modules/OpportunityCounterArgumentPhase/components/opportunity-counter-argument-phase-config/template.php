@@ -22,7 +22,7 @@ $this->import('
 ');
 ?>
 
-<div v-if="canConfigure" class="opportunity-counter-argument-phase-config col-12">
+<div v-if="canConfigure" class="opportunity-appeal-phase-config opportunity-counter-argument-phase-config col-12">
     <h4 v-if="tab === 'config'" class="opportunity-appeal-phase-config__title bold"><?= i::__("Contrarrazão") ?></h4>
 
     <div v-if="!entity && tab === 'config'" class="opportunity-appeal-phase-config__button">
