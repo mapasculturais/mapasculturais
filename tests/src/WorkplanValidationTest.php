@@ -32,7 +32,12 @@ class WorkplanValidationTest extends TestCase
             ->save()
             ->enableWorkplan();
 
-        return $opportunity_builder->getInstance();
+        $opportunity = $opportunity_builder->getInstance();
+        $opportunity->workplan_dataProjectInformCulturalArtisticSegment = true;
+        $opportunity->workplan_dataProjectRequireCulturalArtisticSegment = true;
+        $opportunity->save(true);
+
+        return $opportunity;
     }
 
     public function testRequireWorkplanWhenEnabled(): void
