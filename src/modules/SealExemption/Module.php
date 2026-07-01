@@ -64,7 +64,6 @@ class Module extends \MapasCulturais\Module
         $this->registerSendAfterHook($app);
         $this->registerManualApprovalHook($app);
         $this->registerVirtualGetters($app);
-        $this->registerApiQueryHooks($app);
         $this->registerSummaryHooks($app);
     }
 
@@ -130,7 +129,6 @@ class Module extends \MapasCulturais\Module
      *
      * - sealExempt: boolean (true se sealExemptionStatus === 'granted')
      * - proponentAgentMissing: boolean (true se sealExemptionStatus === 'agent_missing')
-     * - sealExemptionLabel: string (rótulo configurado no EMC, com fallback)
      */
     private function registerVirtualGetters(App $app): void
     {
@@ -144,75 +142,6 @@ class Module extends \MapasCulturais\Module
         $app->hook('entity(Registration).get(proponentAgentMissing)', function (&$value) {
             /** @var Registration $this */
             $value = $this->sealExemptionStatus === 'agent_missing';
-        });
-
-        // sealExemptionLabel → rótulo da fase (do EMC) com fallback
-        $app->hook('entity(Registration).get(sealExemptionLabel)', function (&$value) {
-            /** @var Registration $this */
-            $emc = $this->evaluationMethodConfiguration;
-            $value = SealExemptionService::getConfigLabel($emc?->sealExemptionConfig);
-        });
-    }
-
-    /**
-     * Acrescenta campos derivados da isenção por selos em respostas da API sem
-     * acoplar essa regra ao core ApiQuery.
-     */
-    private function registerApiQueryHooks(App $app): void
-    {
-        $app->hook('ApiQuery(registration).findResult', function (&$result) {
-            /** @var \MapasCulturais\ApiQuery $this */
-            $selecting = (array) ($this->selecting ?? []);
-            if (!in_array('sealExemptionLabel', $selecting, true) || empty($result)) {
-                return;
-            }
-
-            $registration_ids = [];
-            foreach ($result as $entity) {
-                $id = $entity[$this->pk] ?? null;
-                if ($id !== null && $id !== '') {
-                    $registration_ids[] = (int) $id;
-                }
-            }
-
-            $registration_ids = array_values(array_unique($registration_ids));
-            if (!$registration_ids) {
-                return;
-            }
-
-            $ids = implode(',', $registration_ids);
-            $dql = "
-                SELECT r.id AS reg_id, emcm.value AS config_value
-                FROM " . Registration::class . " r
-                JOIN r.opportunity o
-                JOIN o.evaluationMethodConfiguration emc
-                LEFT JOIN emc.__metadata emcm WITH emcm.key = :meta_key
-                WHERE r.id IN ({$ids})
-            ";
-
-            $query = $this->em->createQuery($dql);
-            $query->setParameter('meta_key', 'sealExemptionConfig');
-            $rows = $query->getArrayResult();
-
-            $labels = [];
-            foreach ($rows as $row) {
-                $config_value = $row['config_value'];
-                $label = null;
-
-                if ($config_value !== null && $config_value !== '') {
-                    $config = json_decode($config_value, true);
-                    $label = SealExemptionService::getConfigLabel(is_array($config) ? $config : []);
-                }
-
-                $labels[(int) $row['reg_id']] = $label;
-            }
-
-            foreach ($result as &$entity) {
-                $id = $entity[$this->pk] ?? null;
-                $entity['sealExemptionLabel'] = ($id !== null && array_key_exists((int) $id, $labels))
-                    ? $labels[(int) $id]
-                    : null;
-            }
         });
     }
 

@@ -17,7 +17,7 @@ $has_seal_exemption_config = SealExemptionService::hasActiveConfig(
 $required_fields = 'number,committeeSequentialNumber,valuerUserId,valuerAgentId,evaluator,result,status,delete';
 $visible_fields = "['agent', 'number', 'committeeSequentialNumber', 'valuerUserId', 'valuerAgentId', 'evaluator', 'result', 'status', 'coletivo', 'goalStatuses']";
 if ($has_seal_exemption_config) {
-    $required_fields = 'number,committeeSequentialNumber,valuerUserId,valuerAgentId,evaluator,result,status,sealExemptionStatus,sealExemptionTimestamp,sealExemptionLabel,delete';
+    $required_fields = 'number,committeeSequentialNumber,valuerUserId,valuerAgentId,evaluator,result,status,sealExemptionStatus,sealExemptionTimestamp,delete';
     $visible_fields = "['agent', 'number', 'committeeSequentialNumber', 'valuerUserId', 'valuerAgentId', 'evaluator', 'result', 'status', 'sealExemption', 'coletivo', 'goalStatuses']";
 }
 
@@ -155,7 +155,7 @@ $this->import('
                         v-tooltip="sealExemptionTooltip(entity)"
                     >
                         <mc-icon name="circle-checked"></mc-icon>
-                        <span class="seal-exemption-badge__label">{{ entity.sealExemptionLabel || text('isento') }}</span>
+                        <span class="seal-exemption-badge__label"><?= i::__('Dispensada por selos') ?></span>
                     </span>
                     <span
                         v-else-if="entity.sealExemptionStatus === 'agent_missing'"

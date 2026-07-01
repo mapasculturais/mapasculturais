@@ -97,17 +97,17 @@ class SealExemptionService
     }
 
     /**
-     * Resolve o rótulo público da isenção por selos.
+     * Resolve o rótulo público fixo da isenção por selos.
+     *
+     * O texto é padronizado; não há mais configuração de rótulo customizável
+     * por fase (simplificação de UX).
      *
      * @param mixed $config
      * @return string
      */
     public static function getConfigLabel($config): string
     {
-        $config = self::normalizeConfig($config);
-        $label = isset($config['label']) ? trim((string) $config['label']) : '';
-
-        return $label !== '' ? $label : i::__('Isento por selos válidos');
+        return i::__('Dispensada por selos');
     }
 
     /**
@@ -512,7 +512,7 @@ class SealExemptionService
     /**
      * Salva um snapshot dos dados da isenção como metadado da inscrição.
      *
-     * Estrutura: { emc_id, seal_ids, label, agent_id }
+     * Estrutura: { emc_id, seal_ids, agent_id }
      *
      * @param Registration $registration
      * @param object $config
@@ -531,7 +531,6 @@ class SealExemptionService
         $snapshot = (object) [
             'emc_id'  => $emc?->id,
             'seal_ids' => $sealIds,
-            'label'   => $config->label ?? null,
             'agent_id' => $agent->id,
         ];
 

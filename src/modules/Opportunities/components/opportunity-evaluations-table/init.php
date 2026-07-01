@@ -148,8 +148,8 @@ $has_seal_exemption_config = SealExemptionService::hasActiveConfig($seal_exempti
 
 if ($has_seal_exemption_config) {
     // Campos de isenção por selos além do status (header). O timestamp alimenta o
-    // tooltip ("Isento em ...") e o label alimenta o valor do badge.
-    $default_select .= ',sealExemptionStatus,sealExemptionTimestamp,sealExemptionLabel';
+    // tooltip ("Isento em ...").
+    $default_select .= ',sealExemptionStatus,sealExemptionTimestamp';
 }
 
 
@@ -168,7 +168,7 @@ $headers = [
 
 if ($has_seal_exemption_config) {
     array_splice($headers, 6, 0, [[
-        'text' => SealExemptionService::getConfigLabel($seal_exemption_config),
+        'text' => i::__('Dispensada por selos'),
         'value' => 'sealExemptionStatus',
         'slug' => 'sealExemption',
         'visible' => true,

@@ -155,8 +155,8 @@ abstract class EvaluationsSpreadsheetJob extends SpreadsheetJob
     /**
      * Constrói o cabeçalho das duas colunas de isenção por selos (spec-c49fa0bb §4.4):
      *  - sealExemption (booleana): cabeçalho "Isento", conteúdo Sim/Não.
-     *  - sealExemptionLabel (textual): cabeçalho = rótulo configurado da fase,
-     *    conteúdo = rótulo para isentos (vazio caso contrário).
+     *  - sealExemptionLabel (textual): cabeçalho fixo "Dispensada por selos",
+     *    conteúdo = rótulo fixo para isentos (vazio caso contrário).
      *
      * Retorna header/subHeader nulos quando a fase não tem sealExemptionConfig ativa,
      * para que as colunas não sejam adicionadas à planilha (evita colunas vazias).
@@ -175,13 +175,8 @@ abstract class EvaluationsSpreadsheetJob extends SpreadsheetJob
             return ['header' => null, 'subHeader' => null];
         }
 
-        // Rótulo sanitizado: protege contra caracteres especiais e injeção de
-        // fórmula em CSV/Excel (cleanTextForExport escapa prefixes =+-@, normaliza
-        // UTF-8 e remove caracteres de controle).
-        $label = $this->cleanTextForExport($this->getSealExemptionLabel($job));
-        if ($label === '') {
-            $label = i::__('Isento por selos válidos');
-        }
+        // Rótulo fixo padronizado (não há mais configuração customizável por fase).
+        $label = i::__('Dispensada por selos');
 
         // Posicionamento: próximas 2 colunas após as já definidas em $sub_header.
         $start = count($sub_header) + 1;
@@ -194,7 +189,7 @@ abstract class EvaluationsSpreadsheetJob extends SpreadsheetJob
             ],
             'subHeader' => [
                 'sealExemption' => i::__('Isento'),
-                // Cabeçalho da coluna textual = rótulo configurado da fase (spec §4.4).
+                // Cabeçalho da coluna textual = rótulo fixo padronizado.
                 'sealExemptionLabel' => $label,
             ],
         ];
@@ -205,12 +200,11 @@ abstract class EvaluationsSpreadsheetJob extends SpreadsheetJob
      *
      * - sealExemption: "Sim" quando seal_exemption_status = 'granted'; "Não" caso
      *   contrário (inclui agent_missing, null e demais estados).
-     * - sealExemptionLabel: rótulo configurado da fase para isentos; vazio para
+     * - sealExemptionLabel: rótulo fixo padronizado para isentos; vazio para
      *   não-isentos (evita redundância com o cabeçalho da coluna, que já é o rótulo).
      *
      * O status é resolvido por query em lote (1 query por página de batch), mapeado
-     * por registration_id — robusto à ordenação. O rótulo é constante por fase
-     * (lido do EMC, com fallback localizado).
+     * por registration_id — robusto à ordenação.
      *
      * @param Job $job
      * @param array $evaluations Resultado de apiFindEvaluations (já normalizado p/ array).
@@ -256,7 +250,7 @@ abstract class EvaluationsSpreadsheetJob extends SpreadsheetJob
             }
         }
 
-        $label = $this->cleanTextForExport($this->getSealExemptionLabel($job));
+        $label = i::__('Dispensada por selos');
 
         // Zip por índice: $result segue a mesma ordem de $evaluations['evaluations']
         // (ambos iteram o mesmo array na mesma sequência em _getEvaluationDataBatch).
@@ -273,7 +267,7 @@ abstract class EvaluationsSpreadsheetJob extends SpreadsheetJob
             $is_exempt = ($status === 'granted');
 
             $result[$i]['sealExemption'] = $is_exempt ? i::__('Sim') : i::__('Não');
-            $result[$i]['sealExemptionLabel'] = $is_exempt ? $label : i::__('Não isenta');
+            $result[$i]['sealExemptionLabel'] = $is_exempt ? $label : '';
         }
     }
 
@@ -286,17 +280,6 @@ abstract class EvaluationsSpreadsheetJob extends SpreadsheetJob
         $opportunity = $job->owner;
         $emc = $opportunity->evaluationMethodConfiguration ?? null;
         return SealExemptionService::hasActiveConfig($emc?->sealExemptionConfig);
-    }
-
-    /**
-     * Resolve o rótulo de isenção por selos da fase (do sealExemptionConfig do EMC),
-     * com fallback localizado "Isento por selos válidos" (spec-c49fa0bb §3.1).
-     */
-    protected function getSealExemptionLabel(Job $job): string
-    {
-        $opportunity = $job->owner;
-        $emc = $opportunity->evaluationMethodConfiguration ?? null;
-        return SealExemptionService::getConfigLabel($emc?->sealExemptionConfig);
     }
 
     function getSpreadsheetColumnName($index) {

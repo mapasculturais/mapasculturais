@@ -125,26 +125,6 @@ $this->import('
             </button>
         </div>
 
-        <!-- Rótulo configurável -->
-        <div class="seal-validator-config__field field">
-            <label class="field__title semibold" for="seal-validator-label">
-                <?= i::_e('Rótulo exibido da isenção') ?>
-            </label>
-            <input
-                id="seal-validator-label"
-                type="text"
-                class="seal-validator-config__label-input"
-                maxlength="80"
-                v-model="config.label"
-                @change="onLabelChange"
-                :disabled="!canEdit"
-                placeholder="<?= i::esc_attr__('Isento por selos válidos') ?>"
-            >
-            <span class="seal-validator-config__label-help">
-                <?= i::__('Texto exibido na tabela de avaliação, na planilha e no acompanhamento do proponente. Se vazio, será usado o rótulo padrão.') ?>
-            </span>
-        </div>
-
     </div>
 
     <?php $this->applyComponentHook('bottom') ?>

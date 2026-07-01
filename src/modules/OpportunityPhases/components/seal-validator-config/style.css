@@ -97,16 +97,6 @@
     color: var(--mc-warning, #b7791f);
 }
 
-.seal-validator-config__label-input {
-    width: 100%;
-    max-width: 480px;
-}
-
-.seal-validator-config__label-help {
-    font-size: .75rem;
-    color: var(--mc-gray-500, #888);
-}
-
 /* Read-only: opacidade reduzida nos campos interativos travados */
 .seal-validator-config__body input:disabled,
 .seal-validator-config__body .mc-multiselect--disabled {

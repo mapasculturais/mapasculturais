@@ -206,7 +206,6 @@ app.component('opportunity-evaluations-table', {
             // ou campos derivados no Registration.
             reg.sealExemptionStatus = rawData.registration?.sealExemptionStatus ?? null;
             reg.sealExemptionTimestamp = rawData.registration?.sealExemptionTimestamp ?? null;
-            reg.sealExemptionLabel = rawData.registration?.sealExemptionLabel ?? null;
 
             return reg;
         },
@@ -231,7 +230,7 @@ app.component('opportunity-evaluations-table', {
 
         getResultString(entity) {
             if (entity?.sealExemptionStatus === 'granted') {
-                return entity.sealExemptionLabel || __('Dispensada por selos', 'opportunity-evaluations-table');
+                return __('Dispensada por selos', 'opportunity-evaluations-table');
             }
 
             return entity?.evaluation?.resultString ?? __('não avaliado', 'opportunity-evaluations-table');

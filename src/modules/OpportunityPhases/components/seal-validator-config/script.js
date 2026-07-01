@@ -3,12 +3,11 @@
  *
  * Componente Vue de configuração dos selos validadores por fase de avaliação.
  *
- * Persiste o metadado `sealExemptionConfig = { seals: [ids], label: string }`
+ * Persiste o metadado `sealExemptionConfig = { seals: [ids] }`
  * no EvaluationMethodConfiguration recebido via prop `entity`.
  *
  * - Selos sem permissão: ocultos (lista vem filtrada do init.php); contador
  *   de transparência no rodapé (deniedSealsCount).
- * - Rótulo: opcional com fallback para o rótulo padrão localizado.
  * - Bloqueio read-only quando `entity.canEditSealConfig === false` (flag
  *   calculada server-side — nunca no cliente, para evitar divergência de fuso).
  * - "Habilitado" deriva de `seals.length > 0` (spec §3.1: sem campo `enabled`
@@ -47,13 +46,10 @@ app.component('seal-validator-config', {
     beforeMount() {
         // Garante a estrutura do metadado antes do primeiro render.
         if (!this.entity.sealExemptionConfig || typeof this.entity.sealExemptionConfig !== 'object') {
-            this.entity.sealExemptionConfig = { seals: [], label: '' };
+            this.entity.sealExemptionConfig = { seals: [] };
         }
         if (!Array.isArray(this.entity.sealExemptionConfig.seals)) {
             this.entity.sealExemptionConfig.seals = [];
-        }
-        if (typeof this.entity.sealExemptionConfig.label !== 'string') {
-            this.entity.sealExemptionConfig.label = '';
         }
         // Abre a configuração automaticamente se já houver selos configurados.
         this.expanded = this.isEnabled;
@@ -126,10 +122,6 @@ app.component('seal-validator-config', {
 
         onSealRemoved() {
             this.persist();
-        },
-
-        onLabelChange() {
-            this.persist(1500);
         },
 
         async removeAllSeals() {
