@@ -43,7 +43,7 @@ class SealExemptionServiceTest extends TestCase
      * Helper: create a project-based opportunity with one evaluation phase
      * (non-technical) and the given seal exemption config.
      */
-    private function createOpportunityWithSealConfig(array $sealIds, ?string $label = null): Opportunity
+    private function createOpportunityWithSealConfig(array $sealIds): Opportunity
     {
         $admin = $this->userDirector->createUser('admin');
         $this->login($admin);
@@ -70,7 +70,6 @@ class SealExemptionServiceTest extends TestCase
 
         $emc->sealExemptionConfig = (object) [
             'seals' => $sealIds,
-            'label' => $label ?? 'Isento por selos válidos',
         ];
         $emc->save(true);
 
@@ -152,7 +151,7 @@ class SealExemptionServiceTest extends TestCase
         $owner = $this->agentDirector->createAgent($admin->profile);
         $seal = $this->createFullyValidSealForAgent($owner, $admin->profile);
 
-        $opportunity = $this->createOpportunityWithSealConfig([$seal->id], 'Test Label');
+        $opportunity = $this->createOpportunityWithSealConfig([$seal->id]);
         $registration = $this->createPhaseRegistration($opportunity, $owner);
 
         $config = $opportunity->evaluationMethodConfiguration->sealExemptionConfig;
@@ -272,7 +271,7 @@ class SealExemptionServiceTest extends TestCase
         $owner = $this->agentDirector->createAgent($admin->profile);
         $seal = $this->createFullyValidSealForAgent($owner, $admin->profile);
 
-        $opportunity = $this->createOpportunityWithSealConfig([$seal->id], 'Snapshot Label');
+        $opportunity = $this->createOpportunityWithSealConfig([$seal->id]);
         $registration = $this->createPhaseRegistration($opportunity, $owner);
 
         $config = $opportunity->evaluationMethodConfiguration->sealExemptionConfig;
@@ -284,7 +283,6 @@ class SealExemptionServiceTest extends TestCase
         $decoded = json_decode(is_string($snapshot) ? $snapshot : json_encode($snapshot), true);
         $this->assertSame($opportunity->evaluationMethodConfiguration->id, $decoded['emc_id']);
         $this->assertSame([$seal->id], $decoded['seal_ids']);
-        $this->assertSame('Snapshot Label', $decoded['label']);
         $this->assertSame($owner->id, $decoded['agent_id']);
     }
 

@@ -58,7 +58,6 @@ class SealExemptionModuleIntegrationTest extends TestCase
         if ($sealIds) {
             $emc->sealExemptionConfig = (object) [
                 'seals' => $sealIds,
-                'label' => 'Test Label',
             ];
             $emc->save(true);
         }
@@ -208,7 +207,6 @@ class SealExemptionModuleIntegrationTest extends TestCase
 
         $emc->sealExemptionConfig = (object) [
             'seals' => [$seal->id, 99999],
-            'label' => 'Changed Label',
         ];
         $emc->save(true);
     }
@@ -229,10 +227,9 @@ class SealExemptionModuleIntegrationTest extends TestCase
         // No registrations in the phase — editing is still allowed.
         $emc->sealExemptionConfig = (object) [
             'seals' => [$seal->id],
-            'label' => 'Changed Label',
         ];
         $emc->save(true);
 
-        $this->assertSame('Changed Label', $emc->refreshed()->sealExemptionConfig->label);
+        $this->assertSame([$seal->id], $emc->refreshed()->sealExemptionConfig->seals);
     }
 }
