@@ -88,32 +88,6 @@ article.opportunity .editable-buttons button {
     }
 }
 
-//## Banner de isenção por selos — acompanhamento público da inscrição (T15).
-// Exibido quando publishedRegistrations === true e sealExemptionStatus === 'granted'.
-.registration-seal-exemption {
-    .seal-exemption-banner {
-        padding: $padding-base $padding-large $padding-base 2.5rem;
-        &__label {
-            display: block;
-            margin-bottom: .25em;
-            font-size: $font-size-base;
-        }
-        &__description {
-            margin: 0;
-        }
-    }
-    @media print {
-        .seal-exemption-banner {
-            border: none;
-            padding: 0;
-            color: #000;
-            &:before {
-                content: "";
-            }
-        }
-    }
-}
-
 .registration-header {
 	background-color: $registration-header-bg;
 	color: $registration-header-color;

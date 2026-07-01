@@ -172,10 +172,10 @@ use MapasCulturais\i;
             </td>
             <td ng-if="data.hasSealExemptionConfig" ng-show="data.registrationTableColumns.sealExemption" class="registration-status-col">
                 <span ng-if="reg.sealExemptionStatus === 'granted'" class="seal-exemption-badge">
-                    {{ reg.sealExemptionLabel || data.sealExemptionDefaultLabel }}
+                    <?php i::_e('Dispensada por selos') ?>
                 </span>
                 <span ng-if="reg.sealExemptionStatus !== 'granted'" class="seal-exemption-badge seal-exemption-badge--not-granted">
-                    {{ data.sealExemptionNotGrantedLabel }}
+                    <?php i::_e('Não isenta') ?>
                 </span>
             </td>
             <?php $this->applyTemplateHook('registration-list-item','end'); ?>

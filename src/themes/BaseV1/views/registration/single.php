@@ -51,8 +51,6 @@ $_params = [
 
         <?php $this->part('singles/registration-single--header', $_params) ?>
 
-        <?php $this->part('singles/registration-single--seal-exemption', $_params) ?>
-
         <?php if($can_see('category')): ?>
        
         <?php $this->part('singles/registration-single--categories', $_params) ?>   

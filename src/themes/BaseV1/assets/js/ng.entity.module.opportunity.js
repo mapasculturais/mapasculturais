@@ -3124,7 +3124,7 @@ module.controller('OpportunityController', ['$scope', '$rootScope', '$anchorScro
 
     var select_fields = MapasCulturais.opportunitySelectFields.map(function(e){ return e.fieldName; });
     if (hasSealExemptionConfig) {
-        select_fields = select_fields.concat(['sealExemptionStatus', 'sealExemptionLabel', 'sealExemptionTimestamp']);
+        select_fields = select_fields.concat(['sealExemptionStatus', 'sealExemptionTimestamp']);
     }
     var registrationsApi;
     var evaluationsApi;
@@ -3410,8 +3410,6 @@ module.controller('OpportunityController', ['$scope', '$rootScope', '$anchorScro
         confirmEvaluationLabel: labels['confirmEvaluationLabel'],
 
         hasSealExemptionConfig: hasSealExemptionConfig,
-        sealExemptionDefaultLabel: labels['sealExemptionDefaultLabel'],
-        sealExemptionNotGrantedLabel: labels['sealExemptionNotGrantedLabel'],
 
         fields: RegistrationService.getFields(),
 
