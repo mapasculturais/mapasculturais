@@ -2,10 +2,17 @@
 
 class OpportunityWorkplanMonitoringTemplateTest extends \PHPUnit\Framework\TestCase
 {
+    private function sourcePath(string $path): string
+    {
+        return realpath(__DIR__ . '/../src/' . $path)
+            ?: realpath(__DIR__ . '/../../src/' . $path)
+            ?: '';
+    }
+
     public function testMonitoringDeliveryTemplateUsesNormalizedPlannedValues(): void
     {
-        $template = file_get_contents(__DIR__ . '/../../src/modules/OpportunityWorkplan/components/registration-workplan-form-delivery/template.php');
-        $script = file_get_contents(__DIR__ . '/../../src/modules/OpportunityWorkplan/components/registration-workplan-form-delivery/script.js');
+        $template = file_get_contents($this->sourcePath('modules/OpportunityWorkplan/components/registration-workplan-form-delivery/template.php'));
+        $script = file_get_contents($this->sourcePath('modules/OpportunityWorkplan/components/registration-workplan-form-delivery/script.js'));
 
         $this->assertStringContainsString('plannedRevenueType', $template);
         $this->assertStringContainsString('plannedPaidStaffByRole', $template);

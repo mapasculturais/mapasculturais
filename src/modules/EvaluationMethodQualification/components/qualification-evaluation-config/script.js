@@ -32,6 +32,15 @@ app.component('qualification-evaluation-config', {
         fieldsDict() {
             return $MAPAS.config.qualificationAssessmentSection.fieldsDict;
         },
+        hasEvaluationsStarted() {
+            return $MAPAS.config.qualificationAssessmentSection.hasEvaluationsStarted;
+        },
+        isAdmin() {
+            return $MAPAS.config.qualificationAssessmentSection.isAdmin;
+        },
+        canDeleteCriteriaAndSections() {
+            return $MAPAS.config.qualificationAssessmentSection.canDeleteCriteriaAndSections;
+        },
 
         opportunity() {
             return this.entity?.opportunity || this.entity;
@@ -100,6 +109,10 @@ app.component('qualification-evaluation-config', {
         },
 
         delSection(sectionId) {
+            if (!this.canDeleteCriteriaAndSections) {
+                return;
+            }
+
             if(this.entity.criteria) {
                 const criterias = this.entity.criteria.filter(criteria => criteria.sid !== sectionId);
                 this.entity.criteria = criterias;
@@ -110,6 +123,10 @@ app.component('qualification-evaluation-config', {
         },
 
         delCriteria(criteriaId) {
+            if (!this.canDeleteCriteriaAndSections) {
+                return;
+            }
+
             this.entity.criteria = this.entity.criteria.filter(criteria => criteria.id !== criteriaId);
             this.save();
         },
