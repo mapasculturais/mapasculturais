@@ -81,6 +81,13 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Corrige a ordenação das últimas planilhas exportadas para exibir os arquivos mais recentes primeiro
 - Corrige o uso de modelos de oportunidades para respeitar a visibilidade pública, validar permissões e preservar referências de campos condicionais.
 
+## [7.7.64] - 2026-07-02
+### Melhorias
+- Restringe a exclusão de critérios e seções de avaliação técnica e de qualificação documental: somente administradores podem excluir quando já existem avaliações iniciadas, concluídas ou enviadas
+- Ao excluir critério ou seção, remove automaticamente as notas/respostas correspondentes do legado das avaliações existentes e reconsolida o resultado
+- Exibe avisos distintos para administradores e demais usuários na configuração de critérios das avaliações técnica e de qualificação documental
+- Desabilita visualmente os botões de exclusão de critérios e seções para usuários sem permissão
+
 ## [7.7.63] - 2026-06-24
 ### Melhorias
 - Melhora a performance da listagem de modelos de oportunidades ao evitar consultas repetidas para identificar modelos oficiais.

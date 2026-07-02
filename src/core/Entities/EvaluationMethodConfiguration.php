@@ -9,6 +9,7 @@ use MapasCulturais\Traits;
 use MapasCulturais\GuestUser;
 use Doctrine\ORM\Mapping as ORM;
 use MapasCulturais\Connection;
+use MapasCulturais\Exceptions\PermissionDenied;
 use Opportunities\Jobs\UpdateSummaryCaches;
 
 /**
@@ -854,10 +855,154 @@ class EvaluationMethodConfiguration extends \MapasCulturais\Entity {
     }
     
     
+    /**
+     * Verifica se existem avaliações iniciadas, concluídas ou enviadas nesta fase.
+     */
+    public function hasStartedEvaluations(): bool {
+        if ($this->isNew()) {
+            return false;
+        }
+
+        $app = App::i();
+        $count = $app->em->getConnection()->fetchOne("
+            SELECT COUNT(re.id)
+            FROM registration_evaluation re
+            INNER JOIN registration r ON r.id = re.registration_id
+            WHERE r.opportunity_id = :opportunity_id
+        ", ['opportunity_id' => $this->opportunity->id]);
+
+        return (int) $count > 0;
+    }
+
+    /**
+     * Retorna os IDs de critérios removidos entre duas configurações.
+     */
+    public function getRemovedCriterionIds(array $old_criteria, array $new_criteria): array {
+        $old_criteria = $this->normalizeCriteriaSectionsValue($old_criteria);
+        $new_criteria = $this->normalizeCriteriaSectionsValue($new_criteria);
+
+        $new_criterion_ids = [];
+        foreach ($new_criteria as $criterion) {
+            $criterion = (object) $criterion;
+            if (!empty($criterion->id)) {
+                $new_criterion_ids[$criterion->id] = true;
+            }
+        }
+
+        $removed = [];
+        foreach ($old_criteria as $criterion) {
+            $criterion = (object) $criterion;
+            if (!empty($criterion->id) && !isset($new_criterion_ids[$criterion->id])) {
+                $removed[] = $criterion->id;
+            }
+        }
+
+        return array_values(array_unique($removed));
+    }
+
+    /**
+     * Impede exclusão de critérios/seções por não-admin quando há avaliações iniciadas.
+     *
+     * @return string[] IDs dos critérios removidos autorizados
+     */
+    protected function validateCriteriaDeletion(): array {
+        $types_with_sections = ['technical', 'qualification'];
+        if (!in_array($this->_type, $types_with_sections, true) || $this->isNew()) {
+            return [];
+        }
+
+        $app = App::i();
+        $conn = $app->em->getConnection();
+
+        $old_criteria = json_decode((string) $conn->fetchOne("
+            SELECT value FROM evaluationmethodconfiguration_meta
+            WHERE object_id = :id AND key = 'criteria'
+        ", ['id' => $this->id]) ?: '[]', true) ?: [];
+
+        $removed_criterion_ids = $this->getRemovedCriterionIds(
+            $old_criteria,
+            (array) ($this->criteria ?? [])
+        );
+
+        if (empty($removed_criterion_ids) || !$this->hasStartedEvaluations()) {
+            return $removed_criterion_ids;
+        }
+
+        if (!$app->user->is('admin')) {
+            throw new PermissionDenied(
+                $app->user,
+                message: i::__('Já existem avaliações iniciadas, concluídas ou enviadas. Por isso, não é possível excluir critérios ou seções. Solicite a um administrador do sistema.')
+            );
+        }
+
+        return $removed_criterion_ids;
+    }
+
+    /**
+     * Remove critérios excluídos do evaluation_data das avaliações existentes.
+     */
+    public function removeDeletedCriteriaFromEvaluations(array $removed_criterion_ids): void {
+        if (empty($removed_criterion_ids)) {
+            return;
+        }
+
+        $app = App::i();
+        $app->disableAccessControl();
+
+        $evaluations = $app->em->createQuery("
+            SELECT re
+            FROM MapasCulturais\\Entities\\RegistrationEvaluation re
+            JOIN re.registration r
+            WHERE r.opportunity = :opportunity
+        ")->setParameter('opportunity', $this->opportunity)->getResult();
+
+        $registrations_to_consolidate = [];
+
+        foreach ($evaluations as $evaluation) {
+            $data = (array) $evaluation->evaluationData;
+            $changed = false;
+
+            foreach ($removed_criterion_ids as $criterion_id) {
+                if (array_key_exists($criterion_id, $data)) {
+                    unset($data[$criterion_id]);
+                    $changed = true;
+                }
+
+                $reason_key = "{$criterion_id}_reason";
+                if (array_key_exists($reason_key, $data)) {
+                    unset($data[$reason_key]);
+                    $changed = true;
+                }
+            }
+
+            if (!$changed) {
+                continue;
+            }
+
+            $evaluation->setEvaluationData($data);
+            $evaluation->__skipQueuingPCacheRecreation = true;
+            $evaluation->save(true);
+
+            $registrations_to_consolidate[$evaluation->registration->id] = $evaluation->registration;
+        }
+
+        foreach ($registrations_to_consolidate as $registration) {
+            $registration->consolidateResult(true);
+        }
+
+        $app->enableAccessControl();
+    }
+
     function save($flush = false){
+        $removed_criterion_ids = $this->validateCriteriaDeletion();
+
         $this->sanitizeCriteriaSectionsDraft();
 
         parent::save($flush);
+
+        if ($removed_criterion_ids) {
+            $this->removeDeletedCriteriaFromEvaluations($removed_criterion_ids);
+        }
         
         $this->enqueueToPCacheRecreation();
     }

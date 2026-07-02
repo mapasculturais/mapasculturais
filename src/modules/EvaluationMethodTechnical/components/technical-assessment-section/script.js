@@ -33,6 +33,12 @@ app.component('technical-assessment-section', {
         hasEvaluationsStarted() {
             return $MAPAS.config.technicalAssessmentsection.hasEvaluationsStarted;
         },
+        isAdmin() {
+            return $MAPAS.config.technicalAssessmentsection.isAdmin;
+        },
+        canDeleteCriteriaAndSections() {
+            return $MAPAS.config.technicalAssessmentsection.canDeleteCriteriaAndSections;
+        },
         maxScore() {
             let totalScore = 0;
 
@@ -100,6 +106,10 @@ app.component('technical-assessment-section', {
             this.editingSections[sectionId] = !this.editingSections[sectionId];
         },
         delSection(sectionId) {
+            if (!this.canDeleteCriteriaAndSections) {
+                return;
+            }
+
             if(this.entity.criteria) {
                 const criterias = this.entity.criteria.filter(criteria => criteria.sid !== sectionId);
                 this.entity.criteria = criterias;
@@ -109,6 +119,10 @@ app.component('technical-assessment-section', {
             this.save();
         },
         delCriteria(criteriaId) {
+            if (!this.canDeleteCriteriaAndSections) {
+                return;
+            }
+
             this.entity.criteria = this.entity.criteria.filter(criteria => criteria.id !== criteriaId);
             this.save();
         },

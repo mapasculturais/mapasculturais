@@ -313,22 +313,6 @@ class Module extends \MapasCulturais\EvaluationMethod
 
         $self = $this;
 
-        // impede que o usuario altere critérios ou sessões de critérios de avaliação se já existem avaliações enviadas
-        $app->hook('entity(EvaluationMethodConfiguration).set(<<criteria|sections>>)', function() use($app){
-            $errors = [];
-            if($committee = $this->getCommittee()) {
-                foreach($committee as $relation) {  
-                    if($relation->metadata['summary']['sent'] > 0) {
-                        $errors['criteria'] = i::__('Já existem avaliações enviadas. Por isso, não é mais possível alterar critérios ou sessões. Se for necessário adicionar ou alterar algo, solicite a um administrador');
-                    }
-                }
-
-                if($errors && !$app->user->is('admin')) {
-                    throw new PermissionDenied($app->user, message: $errors['criteria']);
-                }
-            }
-        });
-
         $app->hook('entity(EvaluationMethodConfiguration).set(<<pointReward|pointRewardRoof|isActivePointReward>>)', function(&$value, string $metadata) use($app, $self) {
             /** @var EvaluationMethodConfiguration $this */
             if (!$this->definition || $this->definition->slug !== 'technical' || !$this->opportunity?->publishedRegistrations) {
