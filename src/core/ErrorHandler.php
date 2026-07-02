@@ -75,7 +75,7 @@ class ErrorHandler implements ErrorHandlerInterface {
                     $log .= "\n*TRACE:*\n{$trace}\n";
                 }
 
-                $app->log->critical($log);
+                $app->log->critical($log, ['exception' => $exception]);
             }
 
             return self::$defaultErrorHandler->__invoke($request, $exception, $displayErrorDetails, $logErrors, $logErrorDetails);
