@@ -5,6 +5,13 @@ Todas as mudanças notáveis no projeto serão documentadas neste arquivo.
 O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/)
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [7.7.64] - 2026-07-02
+### Melhorias
+- Restringe a exclusão de critérios e seções de avaliação técnica e de qualificação documental: somente administradores podem excluir quando já existem avaliações iniciadas, concluídas ou enviadas
+- Ao excluir critério ou seção, remove automaticamente as notas/respostas correspondentes do legado das avaliações existentes e reconsolida o resultado
+- Exibe avisos distintos para administradores e demais usuários na configuração de critérios das avaliações técnica e de qualificação documental
+- Desabilita visualmente os botões de exclusão de critérios e seções para usuários sem permissão
+
 ## [7.7.63] - 2026-06-24
 ### Melhorias
 - Melhora a performance da listagem de modelos de oportunidades ao evitar consultas repetidas para identificar modelos oficiais.
