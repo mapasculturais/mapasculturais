@@ -13,12 +13,20 @@ $this->import('
     mc-modal
     mc-tag-list
     mc-toggle
-    mc-accordion 
+    mc-accordion
+    mc-alert
     registration-distribution-rule
 ');
 ?>
 
 <div class="qualification-evaluation-config">
+
+    <mc-alert v-if="hasEvaluationsStarted && isAdmin" type="warning">
+        <?= i::__('Já existem avaliações iniciadas, concluídas ou enviadas. Ao excluir critérios ou seções, as respostas correspondentes serão removidas das avaliações existentes.') ?>
+    </mc-alert>
+    <mc-alert v-if="hasEvaluationsStarted && !isAdmin" type="warning">
+        <?= i::__('Já existem avaliações iniciadas, concluídas ou enviadas. Por isso, fale com um administrador do sistema para poder excluir critérios ou seções de avaliação.') ?>
+    </mc-alert>
 
     <div v-if="entity.sections && entity.sections.length > 0">
         
@@ -31,7 +39,7 @@ $this->import('
                         <div class="field__trash">
                             <mc-confirm-button @confirm="delSection(section.id)">
                                 <template #button="{open}">
-                                    <button class="button button--delete button--icon" @click="open()">
+                                    <button class="button button--delete button--icon" :class="{'disabled': !canDeleteCriteriaAndSections}" @click="canDeleteCriteriaAndSections && open()">
                                         <mc-icon class="danger__color" name="trash"></mc-icon>
                                         <label class="semibold field__title"><?php i::_e("Excluir") ?></label>
                                     </button>
@@ -96,7 +104,7 @@ $this->import('
                                             <div class="field__trash">
                                                 <mc-confirm-button title="Excluir critério" @confirm="delCriteria(criteria.id)">
                                                     <template #button="{open}">
-                                                        <button class="button button--sm button--text-danger button-icon" @click="open()">
+                                                        <button class="button button--sm button--text-danger button-icon" :class="{'disabled': !canDeleteCriteriaAndSections}" @click="canDeleteCriteriaAndSections && open()">
                                                             <mc-icon class="danger__color" name="trash"></mc-icon>
                                                             <?= i::__('Excluir critério') ?>
                                                         </button>
