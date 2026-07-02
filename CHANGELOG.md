@@ -12,6 +12,7 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Implementa configuração que permide definir a imagem de avatar de qualquer entidade como obrigatória
 - Adiciona botão para duplicar campos do formulário de inscrição, criando a cópia logo abaixo do campo original
 - Adiciona botão para duplicar anexos do formulário de inscrição, incluindo a cópia do arquivo modelo e inserindo o novo anexo logo abaixo do original
+- Integração com o **Sentry** para monitoramento de erros em tempo real, habilitada pela variável de ambiente `SENTRY_DSN` (sem a variável, a integração permanece desligada). Captura erros fatais, exceções não tratadas, exceções tratadas pela aplicação (incluindo erros de banco/Doctrine) e logs de erro registrados via Monolog, enviando os eventos com stack trace estruturado. A captura automática de erros do PHP é restrita a erros graves — warnings, notices e deprecations permanecem apenas nos logs convencionais — e o envio de logs ao Sentry pode ser controlado pela variável `SENTRY_ENABLE_LOGS`.
 
 ### Melhorias
 - Adiciona um campo de busca para encontrar colunas por palavra-chave na listagem por tabela nas entidades.
