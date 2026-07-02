@@ -633,7 +633,7 @@ class App
                         $handlers[] = $handler;
                     }
                 } elseif ($type == "sentry") {
-                    if (\Sentry\SentrySdk::getCurrentHub()->getClient() !== null) {
+                    if (class_exists(\Sentry\SentrySdk::class) && \Sentry\SentrySdk::getCurrentHub()->getClient() !== null) {
                         $handlers[] = new \Sentry\Monolog\Handler(
                             \Sentry\SentrySdk::getCurrentHub(),
                             $level,
