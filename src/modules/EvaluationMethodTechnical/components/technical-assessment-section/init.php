@@ -7,17 +7,12 @@ use MapasCulturais\i;
  * @var MapasCulturais\Themes\BaseV2\Theme $this
  */
 
-$entity = $this->controller->requestedEntity;
+$opportunity = $this->controller->requestedEntity;
+$config = $opportunity->evaluationMethodConfiguration ?? null;
 
-$has_evaluations_started= false;
-if($committee = $entity->getEvaluationCommittee()){
-    foreach($committee as $relation){
-        if($relation->metadata['summary']['sent'] > 0){
-            $has_evaluations_started = true;
-            break;
-        }
-    }
-}
+$has_evaluations_started = $config ? $config->hasStartedEvaluations() : false;
+$is_admin = $app->user->is('admin');
+$can_delete_criteria_and_sections = $is_admin || !$has_evaluations_started;
 
 $fieldsDict = [
     'sections' => [
@@ -47,5 +42,7 @@ $fieldsDict = [
 
 $this->jsObject['config']['technicalAssessmentsection'] = [
     'fieldsDict' => $fieldsDict,
-    'hasEvaluationsStarted' => $has_evaluations_started
+    'hasEvaluationsStarted' => $has_evaluations_started,
+    'isAdmin' => $is_admin,
+    'canDeleteCriteriaAndSections' => $can_delete_criteria_and_sections,
 ];
