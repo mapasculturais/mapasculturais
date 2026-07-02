@@ -25,7 +25,7 @@ app.component('registration-edition', {
 
     computed: {
         hasWorkplan () {
-            const opportunity = this.entity.opportunity.parent ?? this.entity.opportunity;
+            const opportunity = this.entity.workplanOpportunity ?? this.entity.opportunity.parent ?? this.entity.opportunity;
             return Boolean(opportunity?.enableWorkplan);
         },
 

@@ -7,7 +7,9 @@ $opportunity = $this->controller->requestedEntity;
 $data = [];
 
 $evaluation_method_configuration = $opportunity->evaluationMethodConfiguration;
-$statuses_names = $opportunity->statusLabels ?: $evaluation_method_configuration->defaultStatuses;
+$statuses_names = $opportunity->statusLabels
+    ?: $evaluation_method_configuration?->defaultStatuses
+    ?: $opportunity->defaultStatuses;
 
 $data['evaluationStatusDict'] = [
     'simple' => [
