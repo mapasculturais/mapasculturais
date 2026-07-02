@@ -5,7 +5,7 @@ Todas as mudanças notáveis no projeto serão documentadas neste arquivo.
 O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/)
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [UNRELEASED]
+## [7.8.0] - 2026-07-02
 ### Novas Funcionalidades
 - Módulo de **fase de execução** para acompanhar projetos aprovados após o resultado. O agente contemplado pode abrir pedidos de alteração (data, orçamento, local etc.), cada um avaliado por uma comissão. Os pedidos ficam registrados no histórico e não atrapalham as fases seguintes de prestação de informações
 - Na fase de execução, os pedidos aparecem na **ficha da inscrição**, na **linha do tempo** e na **lista do gestor** — com identificação, número da inscrição original e ordem de criação. O gestor cria a fase por um modal simples e monta o formulário livremente, sem categorias fixas
