@@ -171,7 +171,29 @@ $opportunity->registerRegistrationMetadata();
                 <div class="field">
                     <span class="field-label"><?= $config->required ? '* ' : '' ?><?= htmlspecialchars($config->title) ?>:</span>
                     <span class="field-value">
-                        <?php if (is_array($value)): ?>
+                        <?php if ($config->fieldType === 'addresses' && is_array($value)): ?>
+                            <ul class="address-list">
+                                <?php foreach ($value as $address): ?>
+                                    <?php
+                                        $address = (object) $address;
+                                        $line = sprintf(
+                                            '%s, nº %s — %s, %s/%s, %s',
+                                            $address->logradouro ?? '',
+                                            $address->numero ?? '',
+                                            $address->bairro ?? '',
+                                            $address->cidade ?? '',
+                                            $address->estado ?? '',
+                                            $address->cep ?? ''
+                                        );
+                                        $complemento = $address->complemento ?? '';
+                                        if ($complemento !== '') {
+                                            $line .= sprintf(' (%s)', $complemento);
+                                        }
+                                    ?>
+                                    <li><?= htmlspecialchars($line) ?></li>
+                                <?php endforeach; ?>
+                            </ul>
+                        <?php elseif (is_array($value)): ?>
                             <?= htmlspecialchars(implode(', ', $value)) ?>
                         <?php elseif (is_object($value)): ?>
                             <?= htmlspecialchars(json_encode($value, JSON_UNESCAPED_UNICODE)) ?>
