@@ -112,6 +112,21 @@ $this->breadcrumb = [
                     </mc-card>
                     <mc-card>
                         <template #title>
+                            <h3 class="bold"><?php i::_e("Documentos e Certidões"); ?></h3>
+                            <p class="data-subtitle"><?php i::_e("Certidões de regularidade do agente coletivo"); ?></p>
+                        </template>
+                        <template #content>
+                            <div class="grid-12">
+                                <entity-field :entity="entity" classes="col-12" prop="certidaoFiscalAnexo" label="<?= i::__('Certidão de Regularidade Fiscal') ?>" title-modal="<?php i::_e('Anexar Certidão Fiscal - Formatos: (png, jpeg, pdf)') ?>" group-name="docs-certidao-fiscal"></entity-field>
+                                <div class="col-12 divider"></div>
+                                <entity-field :entity="entity" classes="col-12" prop="certidaoTrabalhistaAnexo" label="<?= i::__('Certidão de Regularidade Trabalhista') ?>" title-modal="<?php i::_e('Anexar Certidão Trabalhista - Formatos: (png, jpeg, pdf)') ?>" group-name="docs-certidao-trabalhista"></entity-field>
+                                <div class="col-12 divider"></div>
+                                <entity-field :entity="entity" classes="col-12" prop="certidaoPrestacaoContasAnexo" label="<?= i::__('Certidão de Prestação de Contas') ?>" title-modal="<?php i::_e('Anexar Certidão de Prestação de Contas - Formatos: (png, jpeg, pdf)') ?>" group-name="docs-certidao-contas"></entity-field>
+                            </div>
+                        </template>
+                    </mc-card>
+                    <mc-card>
+                        <template #title>
                             <label><?php i::_e("informações públicas"); ?></label>
                             <p><?php i::_e("Os dados inseridos abaixo assim como as informações de apresentação também são exibidos publicamente"); ?></p>
                         </template>
