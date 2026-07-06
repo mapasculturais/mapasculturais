@@ -475,8 +475,8 @@ class EvaluationMethodConfiguration extends \MapasCulturais\Entity {
      * Indica se a configuração de selos validadores ainda pode ser editada.
      *
      * Regra de edição: true se o método de avaliação NÃO é técnico e a fase
-     * ainda não recebeu inscrições ativas. A data de abertura só bloqueia a
-     * edição quando já existem inscrições na fase.
+     * ainda não recebeu inscrições enviadas. A data de abertura só bloqueia a
+     * edição quando já existem inscrições enviadas (rascunhos não contam).
      *
      * Calculado server-side para evitar divergência de fuso horário no cliente.
      *
@@ -504,10 +504,10 @@ class EvaluationMethodConfiguration extends \MapasCulturais\Entity {
     }
 
     /**
-     * Verifica se a oportunidade desta fase já possui inscrições ativas.
+     * Verifica se a oportunidade desta fase já possui inscrições enviadas.
      *
-     * Inscrições removidas/arquivadas (status negativo) não devem travar a
-     * configuração. Drafts e enviadas contam como presença na fase.
+     * Inscrições removidas/arquivadas (status negativo) e rascunhos não bloqueiam
+     * a configuração. Apenas inscrições com status >= STATUS_SENT contam.
      *
      * @return bool
      */
@@ -521,7 +521,7 @@ class EvaluationMethodConfiguration extends \MapasCulturais\Entity {
             'SELECT COUNT(1) FROM registration WHERE opportunity_id = :opportunity_id AND status >= :min_status',
             [
                 'opportunity_id' => $this->opportunity->id,
-                'min_status' => Registration::STATUS_DRAFT,
+                'min_status' => Registration::STATUS_SENT,
             ]
         );
 

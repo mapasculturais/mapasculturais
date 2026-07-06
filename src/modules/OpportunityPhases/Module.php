@@ -902,7 +902,7 @@ class Module extends \MapasCulturais\Module{
                         }
 
                         if($emc){
-                            $item->evaluationMethodConfiguration = $emc->simplify("id,name,evaluationFrom,evaluationTo,useCommitteeGroups,evaluateSelfApplication");
+                            $item->evaluationMethodConfiguration = $emc->simplify("id,name,evaluationFrom,evaluationTo,useCommitteeGroups,evaluateSelfApplication,sealExemptionConfig,canEditSealConfig");
                             $item->evaluationMethodConfiguration->appealPhase = $emc->appealPhase;
                         }
 

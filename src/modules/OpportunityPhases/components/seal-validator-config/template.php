@@ -32,9 +32,9 @@ $this->import('
 
     <?php $this->applyComponentHook('header', 'after') ?>
 
-    <!-- Bloqueio read-only quando a fase aberta já possui inscrições -->
+    <!-- Bloqueio read-only quando a fase aberta já possui inscrições enviadas -->
     <mc-alert v-if="!canEdit" type="warning">
-        <?= i::__('A fase está aberta e já possui inscrições. A configuração de selos validadores não pode mais ser alterada.') ?>
+        <?= i::__('A fase está aberta e já possui inscrições enviadas. A configuração de avaliação automática por selos não pode mais ser alterada nem desativada.') ?>
     </mc-alert>
 
     <!-- Sem nenhum selo disponível (sem permissão) -->
@@ -45,8 +45,9 @@ $this->import('
     <!-- Toggle habilitar/desabilitar (UI: expande/recolhe a configuração) -->
     <div class="seal-validator-config__toggle field" v-if="hasAvailableSeals || !canEdit">
         <mc-toggle
-            :modelValue="expanded"
-            @update:modelValue="onToggleExpand"
+            :modelValue="isEnabled"
+            @update:modelValue="onToggleEnabled"
+            :disabled="!canEdit"
             label="<?= i::esc_attr__('Habilitar avaliação automática por selos nesta fase') ?>"
         ></mc-toggle>
 
@@ -98,13 +99,19 @@ $this->import('
             </p>
 
             <!-- Selos selecionados (tags com nome) -->
-            <mc-tag-list
-                v-if="selectedCount > 0"
-                :tags="config.seals"
-                :labels="sealLabels"
-                :editable="canEdit"
-                @remove="onSealRemoved"
-            ></mc-tag-list>
+            <div v-if="selectedCount > 0" class="seal-validator-config__selected">
+                <p class="seal-validator-config__selected-label field__title">
+                    <?= i::_e('Selos selecionados') ?>
+                </p>
+                <mc-tag-list
+                    :key="config.seals.join('-')"
+                    :tags="config.seals"
+                    :labels="sealLabels"
+                    :editable="canEdit"
+                    classes="seal__background seal__color"
+                    @remove="onSealRemoved"
+                ></mc-tag-list>
+            </div>
 
             <!-- Selos configurados que não estão mais disponíveis (inativos/removidos) -->
             <ul class="seal-validator-config__inactive" v-if="inactiveSelectedSeals.length > 0">

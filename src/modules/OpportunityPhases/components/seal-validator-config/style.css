@@ -97,6 +97,50 @@
     color: var(--mc-warning, #b7791f);
 }
 
+.seal-validator-config__selected {
+    display: flex;
+    flex-direction: column;
+    gap: .5rem;
+    margin-top: .25rem;
+}
+
+.seal-validator-config__selected-label {
+    margin: 0;
+    font-size: .8125rem;
+    font-weight: 600;
+    color: var(--mc-gray-700, #555);
+}
+
+.seal-validator-config__selected .mc-tag-list__tag {
+    border: 1px solid var(--mc-seals-700, #6b4f9a);
+    box-shadow: 0 1px 2px rgba(0, 0, 0, .08);
+}
+
+.seal-validator-config__selected .mc-tag-list__tag .iconify {
+    color: inherit;
+    opacity: .85;
+}
+
+/* Opções marcadas no popover do multiselect */
+.seal-validator-config .mc-multiselect__option:has(input:checked) {
+    background-color: color-mix(in srgb, var(--mc-seals-500) 14%, var(--mc-white));
+    color: var(--mc-seals-700, var(--mc-seals-500));
+    font-weight: 600;
+}
+
+.seal-validator-config .mc-multiselect__option:has(input:checked) .text {
+    color: inherit;
+}
+
+.seal-validator-config__toggle .mc-toggle input:disabled + .mc-toggle__slider {
+    cursor: not-allowed;
+    opacity: 0.6;
+}
+
+.seal-validator-config__toggle .mc-toggle input:disabled ~ .label-text {
+    opacity: 0.7;
+}
+
 /* Read-only: opacidade reduzida nos campos interativos travados */
 .seal-validator-config__body input:disabled,
 .seal-validator-config__body .mc-multiselect--disabled {

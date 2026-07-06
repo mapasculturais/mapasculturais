@@ -11,7 +11,7 @@
  * - Bloqueio read-only quando `entity.canEditSealConfig === false` (flag
  *   calculada server-side — nunca no cliente, para evitar divergência de fuso).
  * - "Habilitado" deriva de `seals.length > 0` (spec §3.1: sem campo `enabled`
- *   redundante).
+ *   redundante). Desligar o toggle remove todos os selos e persiste `{ seals: [] }`.
  *
  * Spec §4.1 / §4.2.
  */
@@ -36,22 +36,13 @@ app.component('seal-validator-config', {
 
     data() {
         return {
-            // Controla expansão da área de configuração (UI), independente do
-            // estado real (que deriva de seals.length > 0).
             expanded: false,
             saving: false,
         };
     },
 
     beforeMount() {
-        // Garante a estrutura do metadado antes do primeiro render.
-        if (!this.entity.sealExemptionConfig || typeof this.entity.sealExemptionConfig !== 'object') {
-            this.entity.sealExemptionConfig = { seals: [] };
-        }
-        if (!Array.isArray(this.entity.sealExemptionConfig.seals)) {
-            this.entity.sealExemptionConfig.seals = [];
-        }
-        // Abre a configuração automaticamente se já houver selos configurados.
+        this.ensureConfigStructure();
         this.expanded = this.isEnabled;
     },
 
@@ -77,28 +68,29 @@ app.component('seal-validator-config', {
             return this.availableSeals.length > 0;
         },
 
-        // Flag de bloqueio server-side (spec §4.2). Fallback true somente quando
-        // o backend ainda não expuser o campo — ambiente de desenvolvimento.
         canEdit() {
+            if (this.entity.canEditSealConfig === undefined) {
+                return false;
+            }
             return this.entity.canEditSealConfig !== false;
         },
 
-        // Mapa id -> label para exibir os nomes dos selos selecionados nas tags.
         sealLabels() {
             const map = {};
             this.availableSeals.forEach((s) => {
                 map[s.value] = s.label;
+                map[String(s.value)] = s.label;
             });
             return map;
         },
 
-        // IDs de selos configurados que não estão mais na lista de disponíveis
-        // (ex.: selo desativado depois de configurado). Mantidos no read-only
-        // para rastreabilidade, sinalizados visualmente.
         inactiveSelectedSeals() {
             const known = {};
-            this.availableSeals.forEach((s) => { known[s.value] = true; });
-            return (this.config?.seals || []).filter((id) => !known[id]);
+            this.availableSeals.forEach((s) => {
+                known[s.value] = true;
+                known[String(s.value)] = true;
+            });
+            return (this.config?.seals || []).filter((id) => !known[id] && !known[String(id)]);
         },
 
         selectedCount() {
@@ -107,15 +99,51 @@ app.component('seal-validator-config', {
     },
 
     methods: {
-        onToggleExpand(value) {
+        normalizeSealIds(seals) {
+            return Array.isArray(seals)
+                ? seals.map((id) => parseInt(id, 10)).filter((id) => !Number.isNaN(id))
+                : [];
+        },
+
+        ensureConfigStructure() {
+            if (!this.entity.sealExemptionConfig || typeof this.entity.sealExemptionConfig !== 'object') {
+                this.entity.sealExemptionConfig = { seals: [] };
+            }
+            if (!Array.isArray(this.entity.sealExemptionConfig.seals)) {
+                this.entity.sealExemptionConfig.seals = [];
+            }
+            const normalized = this.normalizeSealIds(this.entity.sealExemptionConfig.seals);
+            if (JSON.stringify(normalized) !== JSON.stringify(this.entity.sealExemptionConfig.seals)) {
+                this.entity.sealExemptionConfig = { seals: normalized };
+            }
+        },
+
+        /**
+         * Atribui novo objeto ao metadado para que o Entity.data() detecte mudança
+         * (mutação in-place não altera __originalValues).
+         */
+        assignSealConfig(seals) {
+            this.entity.sealExemptionConfig = { seals: this.normalizeSealIds(seals) };
+        },
+
+        async onToggleEnabled(value) {
             if (!this.canEdit) {
                 return;
             }
-            this.expanded = value;
+
+            if (value) {
+                this.expanded = true;
+                return;
+            }
+
+            if (this.isEnabled) {
+                await this.removeAllSeals();
+                return;
+            }
+
+            this.expanded = false;
         },
 
-        // mc-multiselect muta o array `model` in place (push/splice) e emite
-        // 'selected'/'removed'. Usamos os eventos para disparar o salvamento.
         onSealSelected() {
             this.persist();
         },
@@ -129,13 +157,12 @@ app.component('seal-validator-config', {
                 return;
             }
             try {
-                // Substitui o array para garantir reatividade e persistência.
-                this.config.seals = [];
+                this.assignSealConfig([]);
                 await this.persist(0);
                 this.expanded = false;
                 this.messages.success(this.text('removeSuccess'));
             } catch (e) {
-                this.messages.error(this.text('removeError'));
+                this.messages.error(e?.data?.message || this.text('removeError'));
             }
         },
 
@@ -147,8 +174,11 @@ app.component('seal-validator-config', {
             this.__sealValidatorSaveTimeout = setTimeout(async () => {
                 this.saving = true;
                 try {
+                    const seals = [...(this.config?.seals || [])];
+                    this.assignSealConfig(seals);
                     await this.entity.save();
-                    this.$emit('changed', this.config);
+                    this.ensureConfigStructure();
+                    this.$emit('changed', this.entity.sealExemptionConfig);
                 } catch (e) {
                     this.messages.error(e?.data?.message || this.text('saveError'));
                 } finally {
