@@ -2617,10 +2617,29 @@ module.controller('RegistrationFieldsController', ['$scope', '$rootScope', '$int
         return field;
     }
 
+    $scope.isAgentFileField = function(field) {
+        if (!field || !field.config || !field.config.entityField) {
+            return false;
+        }
+
+        var definition = MapasCulturais.EntitiesDescription.agent[field.config.entityField];
+        return definition && definition.type === 'file';
+    };
+
     $scope.printField = function(field, value){
         
         let entityFiel = ['agent-owner-field', 'agent-collective-field']
         let fieldType = entityFiel.includes(field.fieldType) ? field.config.entityField : field.fieldType;
+
+        if ($scope.isAgentFileField(field) || (value && typeof value === 'object' && !Array.isArray(value) && value.url)) {
+            if (!value || !value.url) {
+                return null;
+            }
+
+            var escapedUrl = String(value.url).replace(/"/g, '&quot;').replace(/>/g, '&gt;').replace(/</g, '&lt;');
+            var escapedName = String(value.name || value.url).replace(/"/g, '&quot;').replace(/>/g, '&gt;').replace(/</g, '&lt;');
+            return '<a class="attachment-title" href="' + escapedUrl + '" target="_blank" rel="noopener noreferrer">' + escapedName + '</a>';
+        }
 
         if (field.fieldType === 'date' || field?.config?.entityField === 'dataDeNascimento') {
             return moment(value).format('DD-MM-YYYY');

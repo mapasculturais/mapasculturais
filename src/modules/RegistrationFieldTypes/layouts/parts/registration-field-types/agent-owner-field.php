@@ -11,6 +11,8 @@ foreach (Entities\Agent::getPropertiesMetadata() as $key => $def) {
         if (empty($def->field_type)) {
             if (in_array($key, ['shortDescription', 'longDescription'])) {
                 $def->field_type = 'textarea';
+            } elseif (($def->type ?? null) === 'file') {
+                $def->field_type = 'file';
             } else {
                 $def->field_type = 'text';
             }

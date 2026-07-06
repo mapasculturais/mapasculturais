@@ -293,6 +293,12 @@ app.component('entity-field', {
             return this.entity.__validationErrors[this.prop];
         },
         value() {
+            if (this.is('file')) {
+                return this.fileEntity?.files?.[this.resolvedGroupName]
+                    || this.entity[this.prop]?.id
+                    || this.entity[this.prop];
+            }
+
             return this.entity[this.prop]?.id ?? this.entity[this.prop];
         },
         tableData() {
@@ -323,6 +329,53 @@ app.component('entity-field', {
                 return this.metaListTypes().includes(registrationFieldConfiguration.config.entityField);
             }
             return false;
+        },
+        registrationFieldConfig() {
+            return this.registrationFieldConfiguration
+                || this.description?.registrationFieldConfiguration
+                || null;
+        },
+        /**
+         * Anexos type=file do agente vivem em Agent.files[file_group], não na inscrição.
+         * No formulário de inscrição, entity-file deve apontar para o owner/coletivo.
+         */
+        fileEntity() {
+            if (!this.is('file') || this.entity.__objectType !== 'registration') {
+                return this.entity;
+            }
+
+            const fieldType = this.registrationFieldConfig?.fieldType;
+            if (fieldType === 'agent-owner-field') {
+                return this.entity.owner || this.entity;
+            }
+
+            if (fieldType === 'agent-collective-field') {
+                const collective = this.entity.relatedAgents?.coletivo?.[0]
+                    || this.entity.agentRelations?.coletivo?.[0]?.agent;
+
+                return collective || this.entity;
+            }
+
+            return this.entity;
+        },
+        /**
+         * Resolve o FileGroup do anexo (ex.: docs-cpf) a partir do prop, da config
+         * do campo @ ou da descrição do metadado no Agent.
+         */
+        resolvedGroupName() {
+            if (this.groupName) {
+                return this.groupName;
+            }
+
+            if (this.description?.file_group) {
+                return this.description.file_group;
+            }
+
+            const entityField = this.registrationFieldConfig?.config?.entityField;
+            const agentField = entityField || (this.entity.__objectType === 'agent' ? this.prop : null);
+            const agentDescription = agentField ? ($DESCRIPTIONS.agent?.[agentField] || null) : null;
+
+            return agentDescription?.file_group || this.groupName;
         },
     },
     
