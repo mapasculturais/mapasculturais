@@ -21,7 +21,7 @@ require_once __DIR__ . '/SealExemptionService.php';
  * - SealExemptionService: orquestra a verificação e aplicação da isenção.
  *
  * Hooks:
- * - entity(Registration).send:after          → dispara verificação de isenção.
+ * - entity(Registration).send:after          → isenção na 1ª fase (EMC local) ou fases sincronizadas.
  * - entity(Registration).get(sealExempt)      → getter virtual booleano.
  * - entity(Registration).get(proponentAgentMissing) → getter virtual booleano.
  *
@@ -62,19 +62,43 @@ class Module extends \MapasCulturais\Module
         );
 
         $this->registerSendAfterHook($app);
+        $this->registerDraftResetHook($app);
         $this->registerManualApprovalHook($app);
         $this->registerVirtualGetters($app);
         $this->registerSummaryHooks($app);
+        $this->registerPhasesDataHook($app);
+    }
+
+    /**
+     * Inclui sealExemptionConfig e canEditSealConfig no payload das fases
+     * enviado ao frontend ($MAPAS.opportunityPhases).
+     */
+    private function registerPhasesDataHook(App $app): void
+    {
+        $appendFields = function (&$properties) {
+            foreach (['sealExemptionConfig', 'canEditSealConfig'] as $field) {
+                if (strpos($properties, $field) === false) {
+                    $properties .= ',' . $field;
+                }
+            }
+        };
+
+        $app->hook('module(OpportunityPhases).evaluationPhaseData', $appendFields);
+
+        $app->hook('module(OpportunityPhases).dataCollectionPhaseData', function (&$properties) use ($appendFields) {
+            $appendFields($properties);
+        });
     }
 
     /**
      * Hook: entity(Registration).send:after
      *
-     * Dispara a verificação de isenção quando uma inscrição entra em uma fase
-     * de avaliação via sincronização de fases. Guardas:
-     * 1. previousPhaseRegistrationId existe (não é submissão de primeira fase).
-     * 2. O EMC tem sealExemptionConfig com selos não-vazio.
-     * 3. O tipo de avaliação não é 'technical'.
+     * Dispara a verificação de isenção quando:
+     * - a inscrição entra em fase de avaliação via sync (fases subsequentes), ou
+     * - a inscrição é enviada na primeira fase cuja oportunidade possui EMC com
+     *   sealExemptionConfig ativa (coleta + avaliação na mesma fase).
+     *
+     * Guardas adicionais: EMC presente, config ativa, tipo != technical.
      */
     private function registerSendAfterHook(App $app): void
     {
@@ -82,31 +106,28 @@ class Module extends \MapasCulturais\Module
 
         $app->hook('entity(Registration).send:after', function () use ($service) {
             /** @var Registration $this */
+            $service->processExemptionOnSend($this);
+        });
+    }
 
-            // Guarda 1: inscrição veio de sync de fase anterior
-            if (!$this->previousPhaseRegistrationId) {
+    /**
+     * Limpa flags de isenção quando a inscrição volta a rascunho, permitindo
+     * reavaliação automática no próximo envio.
+     */
+    private function registerDraftResetHook(App $app): void
+    {
+        $app->hook('entity(Registration).status(draft)', function () use ($app) {
+            /** @var Registration $this */
+
+            if ($this->sealExemptionStatus === null && $this->sealExemptionTimestamp === null) {
                 return;
             }
 
-            // Guarda 2: EMC com configuração de isenção ativa
-            $emc = $this->evaluationMethodConfiguration;
-            if (!$emc) {
-                return;
-            }
-
-            $config = $emc->sealExemptionConfig;
-            if (!$config || empty($config->seals)) {
-                return;
-            }
-
-            // Guarda 3: excluir Avaliação Técnica (defesa em profundidade)
-            // Padrão idiomático: evaluationMethodConfiguration->type->id retorna o slug.
-            $evalType = $emc->type;
-            if ($evalType && $evalType->id === 'technical') {
-                return;
-            }
-
-            $service->applyExemptionCheck($this, $config);
+            $app->disableAccessControl();
+            $this->sealExemptionStatus = null;
+            $this->sealExemptionTimestamp = null;
+            $this->save(true);
+            $app->enableAccessControl();
         });
     }
 

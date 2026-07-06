@@ -97,6 +97,89 @@ class SealExemptionService
     }
 
     /**
+     * Lê a configuração de isenção do EMC ignorando restrições de metadado privado.
+     *
+     * @param EvaluationMethodConfiguration $emc
+     * @return object|null
+     */
+    public static function resolveSealExemptionConfig(EvaluationMethodConfiguration $emc): ?object
+    {
+        $app = App::i();
+
+        $app->disableAccessControl();
+        try {
+            $raw = $emc->sealExemptionConfig ?? $emc->getMetadata('sealExemptionConfig');
+        } finally {
+            $app->enableAccessControl();
+        }
+
+        if (!self::hasActiveConfig($raw)) {
+            return null;
+        }
+
+        return (object) self::normalizeConfig($raw);
+    }
+
+    /**
+     * Indica se a isenção deve ser verificada no envio da inscrição.
+     *
+     * - Fases subsequentes: inscrição sincronizada da fase anterior.
+     * - Primeira fase: oportunidade com EMC e config ativa na própria fase de coleta.
+     *
+     * @param Registration $registration
+     * @return bool
+     */
+    public function shouldProcessExemptionOnSend(Registration $registration): bool
+    {
+        if ($registration->previousPhaseRegistrationId) {
+            return true;
+        }
+
+        $opportunity = $registration->opportunity;
+
+        return $opportunity && $opportunity->isFirstPhase;
+    }
+
+    /**
+     * Verifica e aplica isenção após o envio da inscrição (hook send:after).
+     *
+     * @param Registration $registration
+     * @return void
+     */
+    public function processExemptionOnSend(Registration $registration): void
+    {
+        if (!$this->shouldProcessExemptionOnSend($registration)) {
+            return;
+        }
+
+        $emc = $registration->evaluationMethodConfiguration;
+        if (!$emc instanceof EvaluationMethodConfiguration) {
+            return;
+        }
+
+        // Na 1ª fase (sem sync), só processa config do EMC desta oportunidade —
+        // não config herdada de fase-filha de avaliação.
+        if (!$registration->previousPhaseRegistrationId) {
+            $opportunity = $registration->opportunity;
+            if (!$opportunity || (int) $emc->opportunity->id !== (int) $opportunity->id) {
+                return;
+            }
+        }
+
+        $evalType = $emc->type;
+        if ($evalType && $evalType->id === 'technical') {
+            return;
+        }
+
+        $config = self::resolveSealExemptionConfig($emc);
+        if (!$config) {
+            return;
+        }
+
+        $this->applyExemptionCheck($registration, $config);
+    }
+
+    /**
      * Resolve o rótulo público fixo da isenção por selos.
      *
      * O texto é padronizado; não há mais configuração de rótulo customizável
@@ -134,7 +217,7 @@ class SealExemptionService
      * Processa a verificação de isenção para uma inscrição.
      *
      * Deve ser chamado após a inscrição "entrar na fase" (hook send:after),
-     * respeitando as guardas do hook (previousPhaseRegistrationId + config ativa).
+     * respeitando as guardas de processExemptionOnSend + config ativa.
      *
      * @param Registration $registration
      * @param object|null $config Configuração de selos do EMC ({ seals: [ids], label: string }).
@@ -162,12 +245,7 @@ class SealExemptionService
             return;
         }
 
-        // Idempotência: já processada nesta fase
-        if ($registration->sealExemptionStatus !== null) {
-            return;
-        }
-
-        // Idempotência: já aprovada por outro caminho
+        // Idempotência: já aprovada (por isenção ou outro caminho) neste ciclo.
         if ($registration->status === Registration::STATUS_APPROVED) {
             return;
         }
@@ -411,7 +489,8 @@ class SealExemptionService
         }
 
         $result = [];
-        $phases = $registration->opportunity->allPhases ?: [$registration->opportunity];
+        $first_phase = $registration->opportunity->firstPhase;
+        $phases = $first_phase->allPhases ?: [$first_phase];
         foreach ($phases as $phase) {
             foreach ($phase->registrationFieldConfigurations as $field) {
                 $entityField = $this->getRegistrationFieldEntityName($field);

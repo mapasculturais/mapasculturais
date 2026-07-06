@@ -10,6 +10,9 @@ use MapasCulturais\Entities\Project;
 use MapasCulturais\Entities\Registration;
 use MapasCulturais\Exceptions\PermissionDenied;
 use Tests\Abstract\TestCase;
+use Tests\Builders\EvaluationPhaseBuilder;
+use Tests\Builders\PhasePeriods\ConcurrentEndingAfter;
+use Tests\Builders\PhasePeriods\Open;
 use Tests\Enums\EvaluationMethods;
 use Tests\Traits\AgentDirector;
 use Tests\Traits\OpportunityBuilder;
@@ -111,6 +114,127 @@ class SealExemptionModuleIntegrationTest extends TestCase
         return $seal->id;
     }
 
+    /**
+     * Helper: create invalid seal relation for an agent.
+     */
+    private function createInvalidSealForAgent(Agent $agent, Agent $applyingAgent): int
+    {
+        $seal = $this->sealDirector->createSeal($applyingAgent);
+        $agent->createSealRelation($seal, true, true, $applyingAgent);
+
+        App::i()->em->getConnection()->executeQuery(
+            "UPDATE seal_relation
+             SET computed_status = 'invalid'
+             WHERE object_type = :object_type
+               AND object_id = :agent_id
+               AND seal_id = :seal_id",
+            [
+                'object_type' => 'MapasCulturais\Entities\Agent',
+                'agent_id'    => $agent->id,
+                'seal_id'     => $seal->id,
+            ]
+        );
+
+        return $seal->id;
+    }
+
+    /**
+     * Helper: oportunidade com coleta + avaliação documental na mesma fase (1ª fase).
+     *
+     * @return array{0: Opportunity, 1: \MapasCulturais\Entities\EvaluationMethodConfiguration}
+     */
+    private function createFirstPhaseDocumentaryOpportunity(array $sealIds = []): array
+    {
+        $admin = $this->userDirector->createUser('admin');
+        $this->login($admin);
+
+        $ownerAgent = $admin->profile;
+        $project = new Project();
+        $project->name = 'Test Project First Phase Eval';
+        $project->type = 1;
+        $project->owner = $ownerAgent;
+        $project->save(true);
+
+        $builder = $this->opportunityBuilder
+            ->reset($ownerAgent, $project)
+            ->fillRequiredProperties()
+            ->setProponentTypes(['Pessoa Física'])
+            ->save();
+
+        $firstPhase = $builder->getInstance()->firstPhase;
+
+        $emcBuilder = new EvaluationPhaseBuilder($builder);
+        $emcBuilder->reset($firstPhase, EvaluationMethods::documentary)
+            ->fillRequiredProperties()
+            ->save();
+
+        $emc = $emcBuilder->getInstance();
+
+        if ($sealIds) {
+            $emc->sealExemptionConfig = (object) ['seals' => $sealIds];
+            $emc->save(true);
+        }
+
+        return [$firstPhase, $emc];
+    }
+
+    /**
+     * Helper: edital com coleta (1ª fase) e avaliação em oportunidade-filha separada.
+     *
+     * @return array{0: Opportunity, 1: \MapasCulturais\Entities\EvaluationMethodConfiguration}
+     */
+    private function createSeparateEvaluationPhaseOpportunity(array $sealIds = []): array
+    {
+        $admin = $this->userDirector->createUser('admin');
+        $this->login($admin);
+
+        $owner = $this->agentDirector->createAgent($admin->profile);
+        $project = new Project();
+        $project->name = 'Test Project Separate Phases';
+        $project->type = 1;
+        $project->owner = $owner;
+        $project->save(true);
+
+        $builder = $this->opportunityBuilder
+            ->reset($owner, $project)
+            ->fillRequiredProperties()
+            ->firstPhase()
+                ->setRegistrationPeriod(new Open())
+                ->done()
+            ->save();
+
+        // 1ª avaliação fica na oportunidade de coleta (sem config de selos).
+        $builder->addEvaluationPhase(EvaluationMethods::simple)
+            ->setEvaluationPeriod(new ConcurrentEndingAfter())
+            ->fillRequiredProperties()
+            ->save()
+            ->done();
+
+        // 2ª avaliação em oportunidade-filha separada (onde ficam os selos).
+        $evalEmc = $builder->addEvaluationPhase(EvaluationMethods::simple)
+            ->setEvaluationPeriod(new ConcurrentEndingAfter())
+            ->fillRequiredProperties()
+            ->save()
+            ->getInstance();
+
+        if ($sealIds) {
+            $evalEmc->sealExemptionConfig = (object) ['seals' => $sealIds];
+            $evalEmc->save(true);
+        }
+
+        return [$builder->getInstance()->firstPhase, $evalEmc];
+    }
+
+    /**
+     * Helper: abre a fase de avaliação (evaluationFrom no passado).
+     */
+    private function openEvaluationPhase(\MapasCulturais\Entities\EvaluationMethodConfiguration $emc): void
+    {
+        $emc->evaluationFrom = (new DateTime())->sub(new \DateInterval('P1D'));
+        $emc->evaluationTo = (new DateTime())->add(new \DateInterval('P7D'));
+        $emc->save(true);
+    }
+
     public function testSendAfterHookGrantsExemptionWhenAllSealsValid(): void
     {
         $admin = $this->userDirector->createUser('admin');
@@ -129,7 +253,7 @@ class SealExemptionModuleIntegrationTest extends TestCase
         $this->assertSame('granted', $registration->sealExemptionStatus);
     }
 
-    public function testSendAfterHookDoesNothingOnFirstPhase(): void
+    public function testSendAfterHookDoesNothingOnFirstPhaseWithoutLocalEvaluationConfig(): void
     {
         $admin = $this->userDirector->createUser('admin');
         $this->login($admin);
@@ -137,18 +261,151 @@ class SealExemptionModuleIntegrationTest extends TestCase
         $owner = $this->agentDirector->createAgent($admin->profile);
         $sealId = $this->createFullyValidSealForAgent($owner, $admin->profile);
 
-        $opportunity = $this->createOpportunity(EvaluationMethods::simple, [$sealId]);
+        [$firstPhase] = $this->createSeparateEvaluationPhaseOpportunity([$sealId]);
 
-        // first phase = data collection phase (the base opportunity itself)
-        $firstPhase = $opportunity->firstPhase;
         $registration = $this->createDraftRegistration($firstPhase, $owner);
-        // no previousPhaseRegistrationId, as in a real first-phase submission
-
         $registration->send(false);
 
         $registration = $registration->refreshed();
         $this->assertNull($registration->sealExemptionStatus);
         $this->assertSame(Registration::STATUS_SENT, $registration->status);
+    }
+
+    public function testSendAfterHookGrantsExemptionWhenSyncedToSeparateEvaluationPhase(): void
+    {
+        $admin = $this->userDirector->createUser('admin');
+        $this->login($admin);
+
+        $owner = $this->agentDirector->createAgent($admin->profile);
+        $sealId = $this->createFullyValidSealForAgent($owner, $admin->profile);
+
+        [$firstPhase, $evalEmc] = $this->createSeparateEvaluationPhaseOpportunity([$sealId]);
+
+        $registration = $this->createDraftRegistration($firstPhase, $owner);
+        $registration->send(false);
+
+        $registration = $registration->refreshed();
+        $this->assertSame(Registration::STATUS_SENT, $registration->status);
+        $this->assertNull($registration->sealExemptionStatus);
+
+        $evalRegistration = $this->createDraftRegistration(
+            $evalEmc->opportunity,
+            $owner,
+            $registration->id
+        );
+        $evalRegistration->send(false);
+
+        $evalRegistration = $evalRegistration->refreshed();
+        $this->assertSame(Registration::STATUS_APPROVED, $evalRegistration->status);
+        $this->assertSame('granted', $evalRegistration->sealExemptionStatus);
+    }
+
+    public function testSendAfterHookGrantsExemptionOnFirstPhaseWithActiveConfig(): void
+    {
+        $admin = $this->userDirector->createUser('admin');
+        $this->login($admin);
+
+        $owner = $this->agentDirector->createAgent($admin->profile);
+        $sealId = $this->createFullyValidSealForAgent($owner, $admin->profile);
+
+        [$firstPhase] = $this->createFirstPhaseDocumentaryOpportunity([$sealId]);
+
+        $registration = $this->createDraftRegistration($firstPhase, $owner);
+        $registration->send(false);
+
+        $registration = $registration->refreshed();
+        $this->assertSame(Registration::STATUS_APPROVED, $registration->status);
+        $this->assertSame('granted', $registration->sealExemptionStatus);
+        $this->assertNotNull($registration->sealExemptionTimestamp);
+    }
+
+    public function testSendAfterHookDoesNotApproveFirstPhaseWhenSealsInvalid(): void
+    {
+        $admin = $this->userDirector->createUser('admin');
+        $this->login($admin);
+
+        $owner = $this->agentDirector->createAgent($admin->profile);
+        $invalidSealId = $this->createInvalidSealForAgent($owner, $admin->profile);
+
+        [$firstPhase] = $this->createFirstPhaseDocumentaryOpportunity([$invalidSealId]);
+
+        $registration = $this->createDraftRegistration($firstPhase, $owner);
+        $registration->send(false);
+
+        $registration = $registration->refreshed();
+        $this->assertSame(Registration::STATUS_SENT, $registration->status);
+        $this->assertNull($registration->sealExemptionStatus);
+    }
+
+    public function testSendAfterHookDoesNotApproveFirstPhaseWhenOneOfMultipleSealsInvalid(): void
+    {
+        $admin = $this->userDirector->createUser('admin');
+        $this->login($admin);
+
+        $owner = $this->agentDirector->createAgent($admin->profile);
+        $validSealId = $this->createFullyValidSealForAgent($owner, $admin->profile);
+        $invalidSealId = $this->createInvalidSealForAgent($owner, $admin->profile);
+
+        [$firstPhase] = $this->createFirstPhaseDocumentaryOpportunity([$validSealId, $invalidSealId]);
+
+        $registration = $this->createDraftRegistration($firstPhase, $owner);
+        $registration->send(false);
+
+        $registration = $registration->refreshed();
+        $this->assertSame(Registration::STATUS_SENT, $registration->status);
+        $this->assertNull($registration->sealExemptionStatus);
+    }
+
+    public function testSendAfterHookMarksAgentMissingOnFirstPhaseWhenProponentUnresolved(): void
+    {
+        $admin = $this->userDirector->createUser('admin');
+        $this->login($admin);
+
+        $owner = $this->agentDirector->createAgent($admin->profile);
+        $sealId = $this->createFullyValidSealForAgent($owner, $admin->profile);
+
+        [$firstPhase] = $this->createFirstPhaseDocumentaryOpportunity([$sealId]);
+        $firstPhase->useAgentRelationColetivo = 'required';
+        $firstPhase->save(true);
+
+        $registration = $this->createDraftRegistration($firstPhase, $owner);
+        $registration->proponentType = 'Pessoa Jurídica';
+        $registration->save(true);
+
+        $registration->send(false);
+
+        $registration = $registration->refreshed();
+        $this->assertSame('agent_missing', $registration->sealExemptionStatus);
+        $this->assertSame(Registration::STATUS_SENT, $registration->status);
+    }
+
+    public function testSendAfterHookGrantsExemptionAgainAfterReturnToDraft(): void
+    {
+        $admin = $this->userDirector->createUser('admin');
+        $this->login($admin);
+
+        $owner = $this->agentDirector->createAgent($admin->profile);
+        $sealId = $this->createFullyValidSealForAgent($owner, $admin->profile);
+
+        [$firstPhase] = $this->createFirstPhaseDocumentaryOpportunity([$sealId]);
+
+        $registration = $this->createDraftRegistration($firstPhase, $owner);
+
+        $registration->send(false);
+        $registration = $registration->refreshed();
+        $this->assertSame(Registration::STATUS_APPROVED, $registration->status);
+        $this->assertSame('granted', $registration->sealExemptionStatus);
+
+        $registration->setStatusToDraft(false);
+        $registration = $registration->refreshed();
+        $this->assertSame(Registration::STATUS_DRAFT, $registration->status);
+        $this->assertNull($registration->sealExemptionStatus);
+        $this->assertNull($registration->sealExemptionTimestamp);
+
+        $registration->send(false);
+        $registration = $registration->refreshed();
+        $this->assertSame(Registration::STATUS_APPROVED, $registration->status);
+        $this->assertSame('granted', $registration->sealExemptionStatus);
     }
 
     public function testSendAfterHookDoesNothingWhenPhaseHasNoConfig(): void
@@ -200,8 +457,8 @@ class SealExemptionModuleIntegrationTest extends TestCase
         $emc->evaluationTo = (new DateTime())->add(new \DateInterval('P7D'));
         $emc->save(true);
 
-        // Create a registration in the phase so hasActiveRegistrations() returns true.
-        $this->createDraftRegistration($opportunity, $owner, 999999);
+        $registration = $this->createDraftRegistration($opportunity, $owner, 999999);
+        $registration->send(false);
 
         $this->expectException(PermissionDenied::class);
 
@@ -209,6 +466,52 @@ class SealExemptionModuleIntegrationTest extends TestCase
             'seals' => [$seal->id, 99999],
         ];
         $emc->save(true);
+    }
+
+    public function testEmcSaveBeforeBlocksDisablingWhenSentRegistrationsExist(): void
+    {
+        $admin = $this->userDirector->createUser('admin');
+        $this->login($admin);
+
+        $owner = $this->agentDirector->createAgent($admin->profile);
+        $seal = $this->sealDirector->createSeal($admin->profile);
+
+        $opportunity = $this->createOpportunity(EvaluationMethods::simple, [$seal->id]);
+
+        $emc = $opportunity->evaluationMethodConfiguration;
+        $emc->evaluationFrom = (new DateTime())->sub(new \DateInterval('P1D'));
+        $emc->evaluationTo = (new DateTime())->add(new \DateInterval('P7D'));
+        $emc->save(true);
+
+        $registration = $this->createDraftRegistration($opportunity, $owner, 999999);
+        $registration->send(false);
+
+        $this->expectException(PermissionDenied::class);
+
+        $emc->sealExemptionConfig = (object) ['seals' => []];
+        $emc->save(true);
+    }
+
+    public function testEmcSaveBeforeAllowsEditWhenOnlyDraftRegistrationsExist(): void
+    {
+        $admin = $this->userDirector->createUser('admin');
+        $this->login($admin);
+
+        $seal = $this->sealDirector->createSeal($admin->profile);
+        $owner = $this->agentDirector->createAgent($admin->profile);
+        $opportunity = $this->createOpportunity(EvaluationMethods::simple, [$seal->id]);
+
+        $emc = $opportunity->evaluationMethodConfiguration;
+        $emc->evaluationFrom = (new DateTime())->sub(new \DateInterval('P1D'));
+        $emc->evaluationTo = (new DateTime())->add(new \DateInterval('P7D'));
+        $emc->save(true);
+
+        $this->createDraftRegistration($opportunity, $owner, 999999);
+
+        $emc->sealExemptionConfig = (object) ['seals' => []];
+        $emc->save(true);
+
+        $this->assertSame([], $emc->refreshed()->sealExemptionConfig->seals);
     }
 
     public function testEmcSaveBeforeAllowsEditWhenPhaseHasNoRegistrations(): void
@@ -231,5 +534,152 @@ class SealExemptionModuleIntegrationTest extends TestCase
         $emc->save(true);
 
         $this->assertSame([$seal->id], $emc->refreshed()->sealExemptionConfig->seals);
+    }
+
+    public function testHasActiveRegistrationsIgnoresDraftRegistrations(): void
+    {
+        $admin = $this->userDirector->createUser('admin');
+        $this->login($admin);
+
+        $owner = $this->agentDirector->createAgent($admin->profile);
+        $seal = $this->sealDirector->createSeal($admin->profile);
+        $opportunity = $this->createOpportunity(EvaluationMethods::simple, [$seal->id]);
+
+        $emc = $opportunity->evaluationMethodConfiguration;
+        $this->openEvaluationPhase($emc);
+
+        $this->createDraftRegistration($opportunity, $owner, 999999);
+
+        $this->assertFalse($emc->hasActiveRegistrations());
+    }
+
+    public function testHasActiveRegistrationsCountsSentRegistrations(): void
+    {
+        $admin = $this->userDirector->createUser('admin');
+        $this->login($admin);
+
+        $owner = $this->agentDirector->createAgent($admin->profile);
+        $seal = $this->sealDirector->createSeal($admin->profile);
+        $opportunity = $this->createOpportunity(EvaluationMethods::simple, [$seal->id]);
+
+        $emc = $opportunity->evaluationMethodConfiguration;
+        $this->openEvaluationPhase($emc);
+
+        $registration = $this->createDraftRegistration($opportunity, $owner, 999999);
+        $registration->send(false);
+
+        $this->assertTrue($emc->refreshed()->hasActiveRegistrations());
+    }
+
+    public function testGetCanEditSealConfigAllowsEditWhenOnlyDraftRegistrationsExist(): void
+    {
+        $admin = $this->userDirector->createUser('admin');
+        $this->login($admin);
+
+        $owner = $this->agentDirector->createAgent($admin->profile);
+        $seal = $this->sealDirector->createSeal($admin->profile);
+        $opportunity = $this->createOpportunity(EvaluationMethods::simple, [$seal->id]);
+
+        $emc = $opportunity->evaluationMethodConfiguration;
+        $this->openEvaluationPhase($emc);
+
+        $this->createDraftRegistration($opportunity, $owner, 999999);
+
+        $this->assertTrue($emc->getCanEditSealConfig());
+    }
+
+    public function testGetCanEditSealConfigBlocksEditWhenSentRegistrationsExist(): void
+    {
+        $admin = $this->userDirector->createUser('admin');
+        $this->login($admin);
+
+        $owner = $this->agentDirector->createAgent($admin->profile);
+        $seal = $this->sealDirector->createSeal($admin->profile);
+        $opportunity = $this->createOpportunity(EvaluationMethods::simple, [$seal->id]);
+
+        $emc = $opportunity->evaluationMethodConfiguration;
+        $this->openEvaluationPhase($emc);
+
+        $registration = $this->createDraftRegistration($opportunity, $owner, 999999);
+        $registration->send(false);
+
+        $this->assertFalse($emc->refreshed()->getCanEditSealConfig());
+    }
+
+    public function testGetCanEditSealConfigAllowsEditAgainAfterRegistrationReturnsToDraft(): void
+    {
+        $admin = $this->userDirector->createUser('admin');
+        $this->login($admin);
+
+        $owner = $this->agentDirector->createAgent($admin->profile);
+        $seal = $this->sealDirector->createSeal($admin->profile);
+        $opportunity = $this->createOpportunity(EvaluationMethods::simple, [$seal->id]);
+
+        $emc = $opportunity->evaluationMethodConfiguration;
+        $this->openEvaluationPhase($emc);
+
+        $registration = $this->createDraftRegistration($opportunity, $owner, 999999);
+        $registration->send(false);
+        $this->assertFalse($emc->refreshed()->getCanEditSealConfig());
+
+        $registration->refreshed()->setStatusToDraft(false);
+
+        $this->assertTrue($emc->refreshed()->getCanEditSealConfig());
+        $this->assertFalse($emc->refreshed()->hasActiveRegistrations());
+    }
+
+    public function testGetCanEditSealConfigReturnsFalseForTechnicalEvaluation(): void
+    {
+        $admin = $this->userDirector->createUser('admin');
+        $this->login($admin);
+
+        $seal = $this->sealDirector->createSeal($admin->profile);
+        $opportunity = $this->createOpportunity(EvaluationMethods::technical);
+
+        $emc = $opportunity->evaluationMethodConfiguration;
+
+        $this->assertFalse($emc->getCanEditSealConfig());
+    }
+
+    public function testSimplifyExposesCanEditSealConfigForController(): void
+    {
+        $admin = $this->userDirector->createUser('admin');
+        $this->login($admin);
+
+        $seal = $this->sealDirector->createSeal($admin->profile);
+        $opportunity = $this->createOpportunity(EvaluationMethods::simple, [$seal->id]);
+
+        $emc = $opportunity->evaluationMethodConfiguration;
+        $this->openEvaluationPhase($emc);
+
+        $simplified = $emc->simplify('id,sealExemptionConfig,canEditSealConfig');
+
+        $this->assertTrue($simplified->canEditSealConfig);
+        $this->assertSame([$seal->id], $simplified->sealExemptionConfig->seals);
+    }
+
+    public function testFirstPhaseExemptionConfigEditableWithDraftRegistrationAfterPhaseOpens(): void
+    {
+        $admin = $this->userDirector->createUser('admin');
+        $this->login($admin);
+
+        $owner = $this->agentDirector->createAgent($admin->profile);
+        $seal = $this->sealDirector->createSeal($admin->profile);
+        $otherSeal = $this->sealDirector->createSeal($admin->profile);
+
+        [$firstPhase, $emc] = $this->createFirstPhaseDocumentaryOpportunity([$seal->id]);
+        $this->openEvaluationPhase($emc);
+
+        $this->createDraftRegistration($firstPhase, $owner);
+
+        $this->assertTrue($emc->getCanEditSealConfig());
+
+        $emc->sealExemptionConfig = (object) ['seals' => [$seal->id, $otherSeal->id]];
+        $emc->save(true);
+
+        $this->assertSame(
+            [$seal->id, $otherSeal->id],
+            $emc->refreshed()->sealExemptionConfig->seals
+        );
     }
 }
