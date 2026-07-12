@@ -24,6 +24,7 @@ return [
                 'client_secret' => env('AUTH_GOOGLE_CLIENT_SECRET', null),
                 'redirect_uri' => '/autenticacao/google/oauth2callback',
                 'scope' => env('AUTH_GOOGLE_SCOPE', 'email profile'),
+                'prompt' => env('AUTH_GOOGLE_PROMPT', null),
             ],
             'Twitter' => [
                 'app_id' => env('AUTH_TWITTER_APP_ID', null),
