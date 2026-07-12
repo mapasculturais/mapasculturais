@@ -8,6 +8,7 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 ## [Unreleased]
 ### Correções
 - Corrige a listagem de fases da oportunidade para exibir corretamente fases de avaliação na configuração
+- Corrige login via Google que não salvava o nome do usuário no perfil, por não solicitar o escopo de perfil na autenticação
 
 ## [7.8.0] - 2026-07-02
 ### Novas Funcionalidades
