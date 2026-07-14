@@ -8,6 +8,7 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 ## [Unreleased]
 ### Correções
 - Corrige a listagem de fases da oportunidade para exibir corretamente fases de avaliação na configuração
+- Corrige o uso de modelos de oportunidades para criar novas oportunidades sem copiar as datas das fases
 
 ## [7.8.0] - 2026-07-02
 ### Novas Funcionalidades
