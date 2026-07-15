@@ -63,7 +63,7 @@ class Module extends \MapasCulturais\Module
 
         $this->registerSendAfterHook($app);
         $this->registerDraftResetHook($app);
-        $this->registerManualApprovalHook($app);
+        $this->registerEvaluationResultHooks($app);
         $this->registerVirtualGetters($app);
         $this->registerSummaryHooks($app);
         $this->registerPhasesDataHook($app);
@@ -133,16 +133,29 @@ class Module extends \MapasCulturais\Module
 
     /**
      * Concede os selos validadores quando uma inscrição não isenta passa pela
-     * avaliação manual e é selecionada.
+     * avaliação e recebe um resultado.
+     *
+     * Hooks explícitos para os três status que disparam concessão:
+     * - approved (10): concede TODOS os selos configurados.
+     * - notapproved (3): concessão PARCIAL (selos com 100% dos invalidadores válidos).
+     * - waitlist (8): concessão PARCIAL (mesma regra do notapproved).
+     * - invalid (2): concessão PARCIAL (mesma regra).
+     *
+     * Não usa wildcard status(<<*>>) para evitar overhead em draft/sent.
      */
-    private function registerManualApprovalHook(App $app): void
+    private function registerEvaluationResultHooks(App $app): void
     {
         $service = $this->service;
 
-        $app->hook('entity(Registration).status(approved)', function () use ($service) {
+        $grant = function () use ($service) {
             /** @var Registration $this */
-            $service->grantValidatorSealsAfterManualApproval($this);
-        });
+            $service->grantValidatorSealsAfterEvaluationResult($this);
+        };
+
+        $app->hook('entity(Registration).status(approved)', $grant);
+        $app->hook('entity(Registration).status(notapproved)', $grant);
+        $app->hook('entity(Registration).status(waitlist)', $grant);
+        $app->hook('entity(Registration).status(invalid)', $grant);
     }
 
     /**
