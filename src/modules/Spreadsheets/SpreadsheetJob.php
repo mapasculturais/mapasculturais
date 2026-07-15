@@ -135,11 +135,23 @@ abstract class SpreadsheetJob extends JobType
         
         $row = $has_sub_header ? count($header)+1 : 2;
         while($batch = $this->getBatch($job)) {
+            $batch_count = count($batch);
             foreach ($batch as $data) {
                 $new_data = [];
 
                 foreach($sub_header as $prop => $label) {
                     if (isset($data[$prop]) && is_array($data[$prop])) {
+                        // Anexo type=file: array associativo {id,name,url,mimeType}
+                        if (
+                            !array_is_list($data[$prop])
+                            && !empty($data[$prop]['url'])
+                            && is_string($data[$prop]['url'])
+                            && (isset($data[$prop]['name']) || isset($data[$prop]['id']) || isset($data[$prop]['mimeType']))
+                        ) {
+                            $new_data[] = $data[$prop]['url'];
+                            continue;
+                        }
+
                         $middle_data = [];
 
                         foreach ($data[$prop] as $key => $value){
@@ -167,6 +179,11 @@ abstract class SpreadsheetJob extends JobType
                         continue;
                     }
 
+                    // Objetos de anexo ({url, name, ...}) que escaparam da normalização.
+                    if (is_object($value) && isset($value->url) && is_string($value->url) && $value->url !== '') {
+                        $value = $value->url;
+                    }
+
                     // Insere link quando 
                     if (is_string($value) && preg_match('/^https?:\/\//', $value)) {
                         $columnLetter = Coordinate::stringFromColumnIndex($colIndex + 1);
@@ -192,6 +209,11 @@ abstract class SpreadsheetJob extends JobType
 
                 $sheet->fromArray($new_data, null, "A$row");
                 $row++;
+            }
+
+            // Última página: evita loop se a fonte de dados repetir itens sem esvaziar.
+            if ($batch_count < $this->limit) {
+                break;
             }
         }
         

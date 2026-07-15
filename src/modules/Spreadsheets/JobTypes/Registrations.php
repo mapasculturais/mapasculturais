@@ -461,6 +461,11 @@ class Registrations extends SpreadsheetJob
                         }
                     }
 
+                    if ($file_url = $this->extractAgentFileUrl($entity[$field->fieldName] ?? null)) {
+                        $entity[$field->fieldName] = $file_url;
+                        continue;
+                    }
+
                     if (isset($entity[$field->fieldName]) && $entity[$field->fieldName] instanceof \stdClass) {
                         $entity[$field->fieldName] = (array) $entity[$field->fieldName];
                     }	
@@ -661,6 +666,37 @@ class Registrations extends SpreadsheetJob
         ]));
 
         return "registrationsSpreadsheet:{$md5}";
+    }
+
+    /**
+     * Extrai a URL de um valor de campo anexo (agent type=file).
+     *
+     * Formato esperado (RegistrationFieldTypes::fetchAgentFileFieldFromEntity):
+     * ['id' => int, 'name' => string, 'url' => string, 'mimeType' => string]
+     *
+     * @param mixed $value
+     * @return string|null URL do arquivo, ou null se não for um anexo.
+     */
+    public function extractAgentFileUrl($value): ?string
+    {
+        if ($value instanceof \stdClass) {
+            $value = (array) $value;
+        }
+
+        if (!is_array($value) || $value === [] || array_is_list($value)) {
+            return null;
+        }
+
+        $url = $value['url'] ?? null;
+        if (!is_string($url) || $url === '') {
+            return null;
+        }
+
+        if (!isset($value['name']) && !isset($value['id']) && !isset($value['mimeType'])) {
+            return null;
+        }
+
+        return $url;
     }
 
     private function formatAppliedPointReward($applied_point_reward): string
