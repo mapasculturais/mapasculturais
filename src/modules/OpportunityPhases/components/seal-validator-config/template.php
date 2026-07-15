@@ -3,7 +3,7 @@
  * template.php — seal-validator-config
  *
  * Renderiza a configuração de selos validadores por fase de avaliação.
- * Reutiliza: mc-multiselect, mc-tag-list, mc-toggle, mc-alert, mc-icon.
+ * Reutiliza: mc-multiselect, mc-toggle, mc-alert, mc-icon.
  *
  * @var MapasCulturais\App $app
  * @var MapasCulturais\Themes\BaseV2\Theme $this
@@ -15,7 +15,6 @@ $this->import('
     mc-alert
     mc-icon
     mc-multiselect
-    mc-tag-list
     mc-toggle
 ');
 ?>
@@ -98,19 +97,50 @@ $this->import('
                 {{ deniedSealsCount }} <?= i::__('selo(s) não disponível(is) por falta de permissão') ?>
             </p>
 
-            <!-- Selos selecionados (tags com nome) -->
+            <!-- Selos selecionados (tags; amarelo = pendências de invalidadores) -->
             <div v-if="selectedCount > 0" class="seal-validator-config__selected">
                 <p class="seal-validator-config__selected-label field__title">
                     <?= i::_e('Selos selecionados') ?>
                 </p>
-                <mc-tag-list
-                    :key="config.seals.join('-')"
-                    :tags="config.seals"
-                    :labels="sealLabels"
-                    :editable="canEdit"
-                    classes="seal__background seal__color"
-                    @remove="onSealRemoved"
-                ></mc-tag-list>
+                <ul class="seal-validator-config__tag-list">
+                    <li
+                        v-for="seal in selectedSealsWithStatus"
+                        :key="seal.id"
+                        class="seal-validator-config__tag"
+                        :class="{
+                            'seal-validator-config__tag--pending': seal.hasPending,
+                            'seal-validator-config__tag--editable': canEdit,
+                        }"
+                    >
+                        <mc-icon v-if="seal.hasPending" name="exclamation"></mc-icon>
+                        <span>{{ seal.label }}</span>
+                        <mc-icon
+                            v-if="canEdit"
+                            name="delete"
+                            is-link
+                            @click="removeSelectedSeal(seal.id)"
+                        ></mc-icon>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Pendências: invalidadores do selo ausentes no formulário -->
+            <div v-if="hasPendingInvalidators" class="seal-validator-config__pending">
+                <mc-alert type="warning">
+                    <strong>{{ text('pendingTitle') }}</strong>
+                    — {{ text('pendingIntro') }}
+                </mc-alert>
+                <ul class="seal-validator-config__pending-list">
+                    <li v-for="seal in pendingSeals" :key="'pending-' + seal.id">
+                        <strong>{{ text('pendingSealPrefix') }}: {{ seal.label }}</strong>
+                        <span class="seal-validator-config__pending-fields-label">{{ text('pendingFieldsLabel') }}:</span>
+                        <ul>
+                            <li v-for="field in seal.missingInvalidators" :key="field.fieldKey">
+                                {{ field.label }}
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
             </div>
 
             <!-- Selos configurados que não estão mais disponíveis (inativos/removidos) -->

@@ -111,14 +111,76 @@
     color: var(--mc-gray-700, #555);
 }
 
-.seal-validator-config__selected .mc-tag-list__tag {
+.seal-validator-config__tag-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: .5rem;
+}
+
+.seal-validator-config__tag {
+    display: inline-flex;
+    align-items: center;
+    gap: .35rem;
+    padding: .35rem .65rem;
+    border-radius: .25rem;
+    font-size: .8125rem;
+    font-weight: 600;
     border: 1px solid var(--mc-seals-700, #6b4f9a);
+    background: color-mix(in srgb, var(--mc-seals-500, #8b6bb8) 14%, var(--mc-white, #fff));
+    color: var(--mc-seals-700, #6b4f9a);
     box-shadow: 0 1px 2px rgba(0, 0, 0, .08);
 }
 
-.seal-validator-config__selected .mc-tag-list__tag .iconify {
-    color: inherit;
+.seal-validator-config__tag .mc-icon,
+.seal-validator-config__tag .iconify {
+    font-size: 1rem;
     opacity: .85;
+}
+
+.seal-validator-config__tag--pending {
+    border-color: var(--mc-warning, #b7791f);
+    background: color-mix(in srgb, var(--mc-warning, #e3a008) 18%, var(--mc-white, #fff));
+    color: var(--mc-warning, #8a5b0a);
+}
+
+.seal-validator-config__tag--editable .mc-icon[name="delete"],
+.seal-validator-config__tag--editable .iconify {
+    cursor: pointer;
+}
+
+.seal-validator-config__pending {
+    margin-top: .5rem;
+    display: flex;
+    flex-direction: column;
+    gap: .75rem;
+}
+
+.seal-validator-config__pending-list {
+    margin: 0;
+    padding: .75rem 1rem;
+    border: 1px solid color-mix(in srgb, var(--mc-warning, #e3a008) 35%, var(--mc-white, #fff));
+    border-radius: .25rem;
+    background: color-mix(in srgb, var(--mc-warning, #e3a008) 8%, var(--mc-white, #fff));
+    display: flex;
+    flex-direction: column;
+    gap: .65rem;
+    font-size: .875rem;
+    list-style: none;
+}
+
+.seal-validator-config__pending-list > li ul {
+    margin: .25rem 0 0;
+    padding-left: 1.1rem;
+}
+
+.seal-validator-config__pending-fields-label {
+    display: block;
+    margin-top: .2rem;
+    font-size: .8125rem;
+    color: var(--mc-gray-700, #555);
 }
 
 /* Opções marcadas no popover do multiselect */

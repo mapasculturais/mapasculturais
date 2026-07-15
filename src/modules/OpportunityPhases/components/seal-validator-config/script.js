@@ -12,6 +12,8 @@
  *   calculada server-side — nunca no cliente, para evitar divergência de fuso).
  * - "Habilitado" deriva de `seals.length > 0` (spec §3.1: sem campo `enabled`
  *   redundante). Desligar o toggle remove todos os selos e persiste `{ seals: [] }`.
+ * - Pendências: invalidadores do selo ausentes no formulário (init.php);
+ *   selos com pendência ficam marcados em amarelo.
  *
  * Spec §4.1 / §4.2.
  */
@@ -75,6 +77,15 @@ app.component('seal-validator-config', {
             return this.entity.canEditSealConfig !== false;
         },
 
+        sealById() {
+            const map = {};
+            this.availableSeals.forEach((s) => {
+                map[s.value] = s;
+                map[String(s.value)] = s;
+            });
+            return map;
+        },
+
         sealLabels() {
             const map = {};
             this.availableSeals.forEach((s) => {
@@ -95,6 +106,27 @@ app.component('seal-validator-config', {
 
         selectedCount() {
             return (this.config?.seals || []).length;
+        },
+
+        selectedSealsWithStatus() {
+            return (this.config?.seals || []).map((id) => {
+                const seal = this.sealById[id] || this.sealById[String(id)];
+                const missing = seal?.missingInvalidators || [];
+                return {
+                    id,
+                    label: seal?.label || this.sealLabels[id] || this.sealLabels[String(id)] || String(id),
+                    missingInvalidators: missing,
+                    hasPending: missing.length > 0,
+                };
+            });
+        },
+
+        pendingSeals() {
+            return this.selectedSealsWithStatus.filter((s) => s.hasPending);
+        },
+
+        hasPendingInvalidators() {
+            return this.pendingSeals.length > 0;
         },
     },
 
@@ -150,6 +182,19 @@ app.component('seal-validator-config', {
 
         onSealRemoved() {
             this.persist();
+        },
+
+        removeSelectedSeal(id) {
+            if (!this.canEdit) {
+                return;
+            }
+            const seals = [...(this.config?.seals || [])];
+            const index = seals.findIndex((s) => s === id || String(s) === String(id));
+            if (index >= 0) {
+                seals.splice(index, 1);
+                this.assignSealConfig(seals);
+                this.persist();
+            }
         },
 
         async removeAllSeals() {
