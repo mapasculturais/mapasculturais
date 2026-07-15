@@ -1516,8 +1516,31 @@ class Opportunity extends EntityController {
 
             $synthetic_evaluations = $conn->fetchAllAssociative($synthetic_sql, $params);
             if ($synthetic_evaluations) {
-                $evaluations = array_merge($evaluations, $synthetic_evaluations);
-                $queryNumberOfResults += count($synthetic_evaluations);
+                $real_total = (int) $queryNumberOfResults;
+                $queryNumberOfResults = $real_total + count($synthetic_evaluations);
+
+                // Sem paginação: anexa todas. Com @limit/@page: as sintéticas vêm
+                // DEPOIS das avaliações reais — só entram no restante da página atual.
+                // Sem este recorte, páginas > 1 reanexavam todas as sintéticas e o
+                // export de planilha entrava em loop infinito (while getBatch).
+                if (!isset($query_data['@limit'])) {
+                    $evaluations = array_merge($evaluations, $synthetic_evaluations);
+                } else {
+                    $limit = intval($query_data['@limit']);
+                    $page = isset($query_data['@page']) ? max(1, intval($query_data['@page'])) : 1;
+                    $offset = ($page - 1) * $limit;
+                    $remaining = $limit - count($evaluations);
+
+                    if ($remaining > 0) {
+                        $synth_start = max(0, $offset - $real_total);
+                        if ($synth_start < count($synthetic_evaluations)) {
+                            $evaluations = array_merge(
+                                $evaluations,
+                                array_slice($synthetic_evaluations, $synth_start, $remaining)
+                            );
+                        }
+                    }
+                }
             }
         }
         
