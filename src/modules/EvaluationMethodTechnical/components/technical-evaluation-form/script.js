@@ -59,6 +59,9 @@ app.component('technical-evaluation-form', {
         currentEvaluation() {
             return $MAPAS.config.technicalEvaluationForm.currentEvaluation;
         },
+        hasAppealTechnicalCorrection() {
+            return Boolean(this.currentEvaluation?.hasAppealTechnicalCorrection);
+        },
         notesResult() {
             let result = 0;
             for (let sectionIndex in this.sections) {

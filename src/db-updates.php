@@ -3299,5 +3299,69 @@ $$
         ));
         return true;
     },
+
+    'Cria auditoria de correção de notas técnicas em recursos' => function () use ($conn) {
+        $conn->executeStatement(<<<'SQL'
+            CREATE TABLE IF NOT EXISTS appeal_technical_correction (
+                id SERIAL PRIMARY KEY,
+                appeal_registration_id INTEGER NOT NULL REFERENCES registration(id) ON DELETE CASCADE,
+                appeal_evaluation_id INTEGER NULL REFERENCES registration_evaluation(id) ON DELETE SET NULL,
+                source_registration_id INTEGER NOT NULL REFERENCES registration(id) ON DELETE CASCADE,
+                relator_user_id INTEGER NOT NULL REFERENCES usr(id) ON DELETE RESTRICT,
+                sequence INTEGER NOT NULL,
+                status SMALLINT NOT NULL DEFAULT 0,
+                reason TEXT NOT NULL DEFAULT '',
+                confirm_no_score_change BOOLEAN NOT NULL DEFAULT FALSE,
+                before_consolidated_result DOUBLE PRECISION NULL,
+                after_consolidated_result DOUBLE PRECISION NULL,
+                before_score DOUBLE PRECISION NULL,
+                after_score DOUBLE PRECISION NULL,
+                before_eligible BOOLEAN NULL,
+                after_eligible BOOLEAN NULL,
+                criteria_configuration_snapshot JSONB NOT NULL DEFAULT '{}'::jsonb,
+                version INTEGER NOT NULL DEFAULT 1,
+                create_timestamp TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL,
+                update_timestamp TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL,
+                CONSTRAINT appeal_technical_correction_sequence_uidx
+                    UNIQUE (appeal_registration_id, sequence)
+            )
+        SQL);
+
+        $conn->executeStatement(<<<'SQL'
+            CREATE UNIQUE INDEX IF NOT EXISTS appeal_technical_correction_active_draft_uidx
+            ON appeal_technical_correction (appeal_registration_id)
+            WHERE status = 0
+        SQL);
+
+        $conn->executeStatement(<<<'SQL'
+            CREATE INDEX IF NOT EXISTS appeal_technical_correction_source_idx
+            ON appeal_technical_correction (source_registration_id)
+        SQL);
+
+        $conn->executeStatement(<<<'SQL'
+            CREATE TABLE IF NOT EXISTS appeal_technical_correction_item (
+                id SERIAL PRIMARY KEY,
+                correction_id INTEGER NOT NULL REFERENCES appeal_technical_correction(id) ON DELETE CASCADE,
+                target_evaluation_id INTEGER NOT NULL REFERENCES registration_evaluation(id) ON DELETE RESTRICT,
+                original_valuer_user_id INTEGER NOT NULL REFERENCES usr(id) ON DELETE RESTRICT,
+                is_tiebreaker BOOLEAN NOT NULL DEFAULT FALSE,
+                before_evaluation_data JSONB NOT NULL,
+                after_evaluation_data JSONB NOT NULL,
+                before_result DOUBLE PRECISION NULL,
+                after_result DOUBLE PRECISION NULL,
+                changed_criteria JSONB NOT NULL,
+                create_timestamp TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL,
+                CONSTRAINT appeal_technical_correction_item_target_uidx
+                    UNIQUE (correction_id, target_evaluation_id)
+            )
+        SQL);
+
+        $conn->executeStatement(<<<'SQL'
+            CREATE INDEX IF NOT EXISTS appeal_technical_correction_item_evaluation_idx
+            ON appeal_technical_correction_item (target_evaluation_id)
+        SQL);
+
+        return true;
+    },
     
 ] + $updates ;   

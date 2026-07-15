@@ -4,10 +4,14 @@ use MapasCulturais\i;
 
 $this->import('
     evaluation-actions
+    mc-alert
 ')
 ?>
 
 <div class="tecnical-evaluation-form">
+    <mc-alert v-if="hasAppealTechnicalCorrection" type="info">
+        <?php i::_e('Esta avaliação teve notas corrigidas após o deferimento de um recurso. Os valores exibidos já são os vigentes.') ?>
+    </mc-alert>
     <div class="tecnical-evaluation-form__header">
         <h4 class="semibold"><?php i::_e('Insira as notas nos campos abaixo') ?></h4>
     </div>

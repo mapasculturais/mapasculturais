@@ -2,13 +2,21 @@
 
 namespace OpportunityAppealPhase;
 
+use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
+use Doctrine\ORM\OptimisticLockException;
+use DomainException;
 use MapasCulturais\App;
 use MapasCulturais\Controllers;
 use MapasCulturais\Entities\EvaluationMethodConfiguration;
 use MapasCulturais\Entities\Notification;
 use MapasCulturais\Entities\Opportunity;
 use MapasCulturais\Entities\Registration;
+use MapasCulturais\Exceptions\PermissionDenied;
 use MapasCulturais\i;
+use OpportunityAppealPhase\Entities\AppealTechnicalCorrection;
+use OpportunityAppealPhase\Entities\AppealTechnicalCorrectionItem;
+use OpportunityAppealPhase\Services\AppealTechnicalCorrectionConflict;
+use OpportunityAppealPhase\Services\AppealTechnicalCorrectionService;
 
 class Module extends \MapasCulturais\Module {
 
@@ -24,6 +32,112 @@ class Module extends \MapasCulturais\Module {
     public function _init() {
         $app = App::i();
         $self = $this;
+
+        $app->hook('entity(RegistrationEvaluation).jsonSerialize', function (&$json) use ($app) {
+            /** @var \MapasCulturais\Entities\RegistrationEvaluation $this */
+            if ($this->registration?->evaluationMethod?->slug !== 'technical') {
+                return;
+            }
+            if ((int) $app->user->id !== (int) $this->user->id) {
+                return;
+            }
+
+            $item = $app->em->createQuery(
+                'SELECT item FROM ' . AppealTechnicalCorrectionItem::class . ' item '
+                . 'JOIN item.correction correction '
+                . 'WHERE item.targetEvaluation = :evaluation AND correction.status = :status '
+                . 'ORDER BY correction.sequence DESC'
+            )
+                ->setParameter('evaluation', $this)
+                ->setParameter('status', AppealTechnicalCorrection::STATUS_APPLIED)
+                ->setMaxResults(1)
+                ->getOneOrNullResult();
+
+            if ($item) {
+                $json['hasAppealTechnicalCorrection'] = true;
+                $json['latestAppealTechnicalCorrectionAt'] = $item->correction->updateTimestamp?->format(DATE_ATOM);
+            }
+        });
+
+        $app->hook('entity(RegistrationEvaluation).send:before', function () use ($app) {
+            /** @var \MapasCulturais\Entities\RegistrationEvaluation $this */
+            $appeal = $this->registration;
+            if (!$appeal?->opportunity?->isAppealPhase
+                || $appeal->opportunity->parent?->evaluationMethod?->slug !== 'technical') {
+                return;
+            }
+
+            $relatorId = (int) ($appeal->appealTechnicalCorrectionRelatorUserId ?? 0);
+            if (!$relatorId || $relatorId !== (int) $this->user->id) {
+                return;
+            }
+
+            foreach (array_keys((array) $appeal->valuers) as $valuerId) {
+                if ((int) $valuerId === $relatorId) {
+                    continue;
+                }
+                $evaluation = $app->repo('RegistrationEvaluation')->findOneBy([
+                    'registration' => $appeal,
+                    'user' => (int) $valuerId,
+                    'status' => \MapasCulturais\Entities\RegistrationEvaluation::STATUS_SENT,
+                ]);
+                if (!$evaluation) {
+                    throw new PermissionDenied(
+                        $this->user,
+                        $appeal,
+                        'finalizar parecer antes dos demais avaliadores',
+                        i::__('O relator deve finalizar por último, após o envio de todos os demais pareceres do recurso.')
+                    );
+                }
+            }
+
+            if ((int) ($this->evaluationData->status ?? 0) === Registration::STATUS_APPROVED) {
+                throw new PermissionDenied(
+                    $this->user,
+                    $appeal,
+                    'deferir recurso técnico fora da correção auditada',
+                    i::__('Finalize o deferimento pelo painel de correção de nota técnica, inclusive quando não houver alteração de nota.')
+                );
+            }
+        });
+
+        $app->hook('GET(registration.technicalScoreCorrection)', function () use ($self) {
+            $self->handleTechnicalCorrectionEndpoint($this, function (Registration $appeal, AppealTechnicalCorrectionService $service) {
+                return $service->getContext($appeal, App::i()->user);
+            });
+        });
+
+        $app->hook('PATCH(registration.technicalScoreCorrectionRelator)', function () use ($self) {
+            $self->handleTechnicalCorrectionEndpoint($this, function (Registration $appeal, AppealTechnicalCorrectionService $service) {
+                $user_id = (int) ($this->data['userId'] ?? 0);
+                $relator = $user_id ? App::i()->repo('User')->find($user_id) : null;
+                if (!$relator) {
+                    throw new DomainException(i::__('O relator informado não foi encontrado.'));
+                }
+                $service->assignRelator($appeal, $relator, App::i()->user);
+                return $service->getContext($appeal->refreshed(), App::i()->user);
+            });
+        });
+
+        $app->hook('PATCH(registration.technicalScoreCorrection)', function () use ($self) {
+            $self->handleTechnicalCorrectionEndpoint($this, function (Registration $appeal, AppealTechnicalCorrectionService $service) {
+                return $service->saveDraft($appeal, App::i()->user, (array) $this->data);
+            });
+        });
+
+        $app->hook('POST(registration.resolveTechnicalScoreCorrection)', function () use ($self) {
+            $self->handleTechnicalCorrectionEndpoint($this, function (Registration $appeal, AppealTechnicalCorrectionService $service) {
+                $correction = $service->resolve($appeal, App::i()->user, (array) $this->data);
+                return $service->serializeCorrection($correction, true);
+            });
+        });
+
+        $app->hook('POST(registration.reopenTechnicalScoreCorrection)', function () use ($self) {
+            $self->handleTechnicalCorrectionEndpoint($this, function (Registration $appeal, AppealTechnicalCorrectionService $service) {
+                $correction = $service->reopen($appeal, App::i()->user);
+                return $service->serializeCorrection($correction, true);
+            });
+        });
 
         /* Endpoint de criação de fase de recurso na oportunidade */
         $app->hook('POST(opportunity.createAppealPhase)', function() use ($app) {
@@ -306,6 +420,12 @@ class Module extends \MapasCulturais\Module {
             'default' => false,
         ]);
 
+        $this->registerRegistrationMetadata('appealTechnicalCorrectionRelatorUserId', [
+            'label' => i::__('Relator da correção de nota técnica'),
+            'type' => 'integer',
+            'private' => true,
+        ]);
+
         $this->registerEvauationMethodConfigurationMetadata('appealPhase', [
             'label'     => i::__('Indica se é uma fase de recurso'),
             'type'      => 'entity',
@@ -316,6 +436,27 @@ class Module extends \MapasCulturais\Module {
                 return $evaluationMethodConfiguration->opportunity->appealPhase;
             }
         ]);
+    }
+
+    public function handleTechnicalCorrectionEndpoint($controller, callable $action): void
+    {
+        $controller->requireAuthentication();
+        $appeal = $controller->requestedEntity;
+        if (!$appeal instanceof Registration) {
+            $controller->errorJson(['error' => i::__('Inscrição de recurso não encontrada.')], 404);
+            return;
+        }
+
+        try {
+            $result = $action->call($controller, $appeal, new AppealTechnicalCorrectionService());
+            $controller->json($result);
+        } catch (AppealTechnicalCorrectionConflict|OptimisticLockException|UniqueConstraintViolationException $error) {
+            $controller->errorJson(['error' => $error->getMessage()], 409);
+        } catch (PermissionDenied $error) {
+            $controller->errorJson(['error' => $error->getMessage()], 403);
+        } catch (DomainException $error) {
+            $controller->errorJson(['error' => $error->getMessage()], 422);
+        }
     }
 
     /**
