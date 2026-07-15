@@ -337,6 +337,18 @@ class SealExemptionModuleIntegrationTest extends TestCase
         $this->assertNull($registration->sealExemptionStatus);
     }
 
+    /**
+     * Isencao AUTOMATICA no envio (send:after) — permanece all-or-nothing.
+     *
+     * Se 1 de N selos tem computed_status='invalid', a isencao automatica NAO
+     * e concedida (a inscricao fica em STATUS_SENT para avaliacao normal).
+     *
+     * IMPORTANTE: este teste cobre a ISENCAO AUTOMATICA (hook send:after →
+     * applyExemptionCheck), que permanece all-or-nothing por restricao da
+     * especificacao (spec-b9e4a024.md §3.9). NAO confundir com a CONCESSAO
+     * PARCIAL apos avaliacao manual (status 3/8), que e testada em
+     * SealPartialGrantTest.
+     */
     public function testSendAfterHookDoesNotApproveFirstPhaseWhenOneOfMultipleSealsInvalid(): void
     {
         $admin = $this->userDirector->createUser('admin');

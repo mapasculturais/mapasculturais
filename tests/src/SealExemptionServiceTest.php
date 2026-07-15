@@ -7,6 +7,7 @@ use MapasCulturais\Entities\Agent;
 use MapasCulturais\Entities\Opportunity;
 use MapasCulturais\Entities\Project;
 use MapasCulturais\Entities\Registration;
+use MapasCulturais\Entities\RegistrationFieldConfiguration;
 use MapasCulturais\Entities\Seal;
 use SealExemption\ProponentAgentResolver;
 use SealExemption\SealExemptionService;
@@ -289,6 +290,13 @@ class SealExemptionServiceTest extends TestCase
         $this->assertSame($owner->id, $decoded['agent_id']);
     }
 
+    /**
+     * Status 10 (Selecionada/Aprovada) concede TODOS os selos configurados
+     * sem validacao campo-a-campo. Este e o comportamento atual que deve
+     * permanecer inalterado apos a implementacao da concessao parcial.
+     *
+     * @see SealPartialGrantTest::testStatusApprovedGrantsAllSealsWithoutEvaluation
+     */
     public function testManualApprovalGrantsValidatorSealsAfterSelection(): void
     {
         $admin = $this->userDirector->createUser('admin');
@@ -336,6 +344,53 @@ class SealExemptionServiceTest extends TestCase
         $relationCountAfter = count($owner->refreshed()->getSealRelations());
 
         $this->assertSame($relationCountBefore, $relationCountAfter);
+    }
+
+    /**
+     * Para status 3/8 (concessao parcial), a verificacao de selo ja existente
+     * na relacao (findOneBy no helper applySealGrants) impede duplicacao.
+     * Este teste garante que o mecanismo de idempotencia no nivel de dado
+     * funciona independentemente de flags de aplicacao.
+     *
+     * @see SealPartialGrantTest::testStatusNotApprovalIsIdempotentDoesNotDuplicateSeals
+     */
+    public function testReEvaluationDoesNotDuplicateAlreadyGrantedSealRelations(): void
+    {
+        $admin = $this->userDirector->createUser('admin');
+        $this->login($admin);
+
+        $owner = $this->agentDirector->createAgent($admin->profile);
+        $seal = $this->sealDirector->createSeal($admin->profile);
+
+        $opportunity = $this->createOpportunityWithSealConfig([$seal->id]);
+        $registration = $this->createPhaseRegistration($opportunity, $owner);
+
+        // Primeira concessao via status 10.
+        $app = App::i();
+        $app->disableAccessControl();
+        try {
+            $registration->setStatusToApproved(true);
+        } finally {
+            $app->enableAccessControl();
+        }
+
+        $countAfterFirst = count($owner->refreshed()->getSealRelations());
+        $this->assertSame(1, $countAfterFirst);
+
+        // Segunda execucao do mesmo hook nao deve duplicar.
+        $app->disableAccessControl();
+        try {
+            $registration->refreshed()->setStatusToApproved(true);
+        } finally {
+            $app->enableAccessControl();
+        }
+
+        $countAfterSecond = count($owner->refreshed()->getSealRelations());
+        $this->assertSame(
+            $countAfterFirst,
+            $countAfterSecond,
+            'Re-execucao do hook de concessao nao deve duplicar relacoes de selo.'
+        );
     }
 
     public function testHasActiveConfigReturnsFalseForEmptyOrMissingSeals(): void
@@ -587,5 +642,132 @@ class SealExemptionServiceTest extends TestCase
         }
 
         return [$builder->getInstance()->firstPhase, $evalEmc];
+    }
+
+    private function createSealWithLockedFieldsConfig(Agent $owner, array $lockedFieldsConfig): Seal
+    {
+        $seal = $this->sealDirector->createSeal($owner);
+        $seal->validPeriod = 0;
+        $seal->lockedFieldsConfig = $lockedFieldsConfig;
+        $seal->save(true);
+
+        return $seal;
+    }
+
+    /**
+     * @param string[] $agentEntityFields
+     */
+    private function addAgentOwnerFields(Opportunity $firstPhase, array $agentEntityFields): void
+    {
+        foreach ($agentEntityFields as $entityField) {
+            $field = new RegistrationFieldConfiguration();
+            $field->owner = $firstPhase;
+            $field->fieldType = 'agent-owner-field';
+            $field->title = 'Field for ' . $entityField;
+            $field->displayOrder = 0;
+            $field->config = ['entityField' => $entityField];
+            $field->save(true);
+        }
+
+        $firstPhase->registerRegistrationMetadata();
+    }
+
+    public function testGetMissingInvalidatorsBySealReturnsEmptyWhenAllPresent(): void
+    {
+        $admin = $this->userDirector->createUser('admin');
+        $this->login($admin);
+
+        $seal = $this->createSealWithLockedFieldsConfig($admin->profile, [
+            'agent.name' => [
+                'hasExpiry' => true,
+                'periodValue' => 1,
+                'periodUnit' => 'year',
+                'isInvalidator' => true,
+            ],
+            'agent.shortDescription' => [
+                'hasExpiry' => true,
+                'periodValue' => 1,
+                'periodUnit' => 'year',
+                'isInvalidator' => false,
+            ],
+        ]);
+
+        [$firstPhase] = $this->createFirstPhaseDocumentaryOpportunity();
+        $this->addAgentOwnerFields($firstPhase, ['name', 'shortDescription']);
+
+        $result = $this->service->getMissingInvalidatorsBySeal($firstPhase, [$seal->id]);
+
+        $this->assertSame([], $result[$seal->id]['missing']);
+    }
+
+    public function testGetMissingInvalidatorsBySealListsAbsentInvalidators(): void
+    {
+        $admin = $this->userDirector->createUser('admin');
+        $this->login($admin);
+
+        $seal = $this->createSealWithLockedFieldsConfig($admin->profile, [
+            'agent.name' => [
+                'hasExpiry' => true,
+                'periodValue' => 1,
+                'periodUnit' => 'year',
+                'isInvalidator' => true,
+            ],
+            'agent.shortDescription' => [
+                'hasExpiry' => true,
+                'periodValue' => 1,
+                'periodUnit' => 'year',
+                'isInvalidator' => true,
+            ],
+        ]);
+
+        [$firstPhase] = $this->createFirstPhaseDocumentaryOpportunity();
+        $this->addAgentOwnerFields($firstPhase, ['name']);
+
+        $result = $this->service->getMissingInvalidatorsBySeal($firstPhase, [$seal->id]);
+        $missingKeys = array_column($result[$seal->id]['missing'], 'fieldKey');
+
+        $this->assertSame(['agent.shortDescription'], $missingKeys);
+        $this->assertNotEmpty($result[$seal->id]['missing'][0]['label']);
+    }
+
+    public function testGetMissingInvalidatorsBySealIgnoresNonInvalidators(): void
+    {
+        $admin = $this->userDirector->createUser('admin');
+        $this->login($admin);
+
+        $seal = $this->createSealWithLockedFieldsConfig($admin->profile, [
+            'agent.name' => [
+                'hasExpiry' => true,
+                'periodValue' => 1,
+                'periodUnit' => 'year',
+                'isInvalidator' => false,
+            ],
+            'agent.shortDescription' => [
+                'hasExpiry' => true,
+                'periodValue' => 1,
+                'periodUnit' => 'year',
+                'isInvalidator' => false,
+            ],
+        ]);
+
+        [$firstPhase] = $this->createFirstPhaseDocumentaryOpportunity();
+        // Nenhum campo no formulário — sem invalidadores, sem pendência.
+        $result = $this->service->getMissingInvalidatorsBySeal($firstPhase, [$seal->id]);
+
+        $this->assertSame([], $result[$seal->id]['missing']);
+    }
+
+    public function testGetMissingInvalidatorsBySealWithEmptySealConfig(): void
+    {
+        $admin = $this->userDirector->createUser('admin');
+        $this->login($admin);
+
+        $seal = $this->createSealWithLockedFieldsConfig($admin->profile, []);
+        [$firstPhase] = $this->createFirstPhaseDocumentaryOpportunity();
+
+        $result = $this->service->getMissingInvalidatorsBySeal($firstPhase, [$seal->id]);
+
+        $this->assertArrayHasKey($seal->id, $result);
+        $this->assertSame([], $result[$seal->id]['missing']);
     }
 }
