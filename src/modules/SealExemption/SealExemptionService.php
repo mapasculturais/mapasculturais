@@ -4,6 +4,7 @@ namespace SealExemption;
 use MapasCulturais\App;
 use MapasCulturais\Entities\Agent;
 use MapasCulturais\Entities\EvaluationMethodConfiguration;
+use MapasCulturais\Entities\Opportunity;
 use MapasCulturais\Entities\Registration;
 use MapasCulturais\Entities\Seal;
 use MapasCulturais\i;
@@ -290,19 +291,34 @@ class SealExemptionService
     }
 
     /**
-     * Concede os selos validadores ao proponente após aprovação manual.
-     *
-     * A inscrição só recebe os selos se:
-     * - a fase tem sealExemptionConfig ativa;
-     * - a inscrição não foi isenta automaticamente;
-     * - todos os campos dos selos configurados foram avaliados como válidos.
-     *
-     * @param Registration $registration
-     * @return bool True quando todos os selos foram concedidos.
+     * Thin wrapper para compatibilidade retroativa.
      */
     public function grantValidatorSealsAfterManualApproval(Registration $registration): bool
     {
-        if ($registration->status !== Registration::STATUS_APPROVED) {
+        return $this->grantValidatorSealsAfterEvaluationResult($registration);
+    }
+
+    /**
+     * Ponto de entrada unificado para concessão de selos pós-avaliação.
+     * Bifurca por status:
+     * - Status 10 (Selecionada): concede TODOS os selos (comportamento histórico).
+     * - Status 2 (Inválida) / 3 (Não selecionada) / 8 (Suplente): concessão
+     *   PARCIAL — apenas selos cujos campos invalidadores foram 100% validados.
+     * - Status 0 (Rascunho) / 1 (Pendente): nenhum selo.
+     *
+     * @param Registration $registration
+     * @return bool True quando o processo de concessão foi executado.
+     */
+    public function grantValidatorSealsAfterEvaluationResult(Registration $registration): bool
+    {
+        $status = $registration->status;
+        $grantableStatuses = [
+            Registration::STATUS_APPROVED,    // 10
+            Registration::STATUS_NOTAPPROVED, // 3
+            Registration::STATUS_WAITLIST,    // 8
+            Registration::STATUS_INVALID,     // 2
+        ];
+        if (!in_array($status, $grantableStatuses, true)) {
             return false;
         }
 
@@ -320,7 +336,23 @@ class SealExemptionService
         }
 
         $sealIds = self::getConfiguredSealIds($emc->sealExemptionConfig);
-        if (!$sealIds || !$this->canGrantValidatorSealsAfterSelection($registration, $sealIds)) {
+        if (!$sealIds) {
+            return false;
+        }
+
+        // BIFURCAÇÃO por status
+        if ($status === Registration::STATUS_APPROVED) {
+            // Status 10: comportamento atual — concede todos
+            if (!$this->canGrantValidatorSealsAfterSelection($registration, $sealIds)) {
+                return false;
+            }
+            $sealsToGrant = $sealIds;
+        } else {
+            // Status 2/3/8: concessão parcial por selo
+            $sealsToGrant = $this->getGrantableSealsForPartialGrant($registration, $sealIds);
+        }
+
+        if (empty($sealsToGrant)) {
             return false;
         }
 
@@ -329,8 +361,25 @@ class SealExemptionService
             return false;
         }
 
+        return $this->applySealGrants($agent, $sealsToGrant, $registration);
+    }
+
+    /**
+     * Aplica a concessão de selos ao agente proponente.
+     *
+     * Idempotente: verifica via findOneBy se a relação selo→agente já existe
+     * antes de criar e renovar.
+     *
+     * @param Agent $agent
+     * @param int[] $sealIds
+     * @param Registration $registration
+     * @return bool
+     */
+    private function applySealGrants(Agent $agent, array $sealIds, Registration $registration): bool
+    {
         $app = App::i();
         $applyingAgent = $registration->opportunity?->owner ?: $agent;
+        $relationClass = $agent->getSealRelationEntityClassName();
 
         $app->disableAccessControl();
         try {
@@ -339,6 +388,13 @@ class SealExemptionService
                 if (!$seal instanceof Seal) {
                     continue;
                 }
+
+                // Idempotência: não renova nem duplica relação pré-existente
+                $existing = $app->repo($relationClass)->findOneBy(['seal' => $seal, 'owner' => $agent]);
+                if ($existing) {
+                    continue;
+                }
+
                 $relation = $agent->createSealRelation($seal, true, true, $applyingAgent);
                 $relation->renew();
                 $relation->save(true);
@@ -424,16 +480,7 @@ class SealExemptionService
             return false;
         }
 
-        $evaluatedFields = [];
-        foreach ($evaluations as $evaluation) {
-            $data = (array) ($evaluation->evaluationData ?? []);
-            foreach ($data as $fieldId => $fieldEvaluation) {
-                $fieldEvaluation = (array) $fieldEvaluation;
-                if (($fieldEvaluation['evaluation'] ?? null) === 'valid') {
-                    $evaluatedFields[(string) $fieldId] = true;
-                }
-            }
-        }
+        $evaluatedFields = $this->getValidEvaluatedFieldIds($registration);
 
         if (!$evaluatedFields) {
             return false;
@@ -675,5 +722,223 @@ class SealExemptionService
         }
 
         $emc->enqueueUpdateSummary('5 seconds');
+    }
+
+    /**
+     * Retorna set de field IDs marcados como "valid" nas avaliações enviadas.
+     *
+     * @param Registration $registration
+     * @return array<string, bool>
+     */
+    private function getValidEvaluatedFieldIds(Registration $registration): array
+    {
+        $evaluations = $registration->sentEvaluations;
+        if (!$evaluations || count($evaluations) === 0) {
+            return [];
+        }
+
+        $evaluatedFields = [];
+        foreach ($evaluations as $evaluation) {
+            $data = (array) ($evaluation->evaluationData ?? []);
+            foreach ($data as $fieldId => $fieldEvaluation) {
+                $fieldEvaluation = (array) $fieldEvaluation;
+                if (($fieldEvaluation['evaluation'] ?? null) === 'valid') {
+                    $evaluatedFields[(string) $fieldId] = true;
+                }
+            }
+        }
+
+        return $evaluatedFields;
+    }
+
+    /**
+     * Retorna IDs de selos que possuem pelo menos um campo isInvalidator=true.
+     *
+     * @param int[] $sealIds
+     * @return int[]
+     */
+    private function getSealsWithInvalidators(array $sealIds): array
+    {
+        $app = App::i();
+        $result = [];
+        foreach ($sealIds as $sealId) {
+            $seal = $app->repo('Seal')->find($sealId);
+            if (!$seal instanceof Seal) {
+                continue;
+            }
+            foreach ((array) $seal->lockedFieldsConfig as $fieldConfig) {
+                if (($fieldConfig['isInvalidator'] ?? false) === true) {
+                    $result[] = $sealId;
+                    break;
+                }
+            }
+        }
+        return $result;
+    }
+
+    /**
+     * Mapeia selo => IDs de campos da inscrição, filtrando apenas invalidadores.
+     *
+     * @param Registration $registration
+     * @param int[] $sealIds
+     * @return array<int, array<int>>
+     */
+    private function getInvalidatorFieldIdsBySeal(Registration $registration, array $sealIds): array
+    {
+        $app = App::i();
+        $sealFields = [];
+
+        foreach ($sealIds as $sealId) {
+            $seal = $app->repo('Seal')->find($sealId);
+            if (!$seal instanceof Seal) {
+                continue;
+            }
+
+            $config = (array) $seal->lockedFieldsConfig;
+            foreach ($config as $lockedField => $fieldConfig) {
+                // CRÍTICO: isInvalidator é UNSET quando hasExpiry=false (Seal.php:316)
+                if (($fieldConfig['isInvalidator'] ?? false) !== true) {
+                    continue;
+                }
+                $sealFields[$sealId][] = $lockedField;
+            }
+        }
+
+        if (!$sealFields) {
+            return [];
+        }
+
+        $result = [];
+        $firstPhase = $registration->opportunity->firstPhase;
+        $phases = $firstPhase->allPhases ?: [$firstPhase];
+        foreach ($phases as $phase) {
+            foreach ($phase->registrationFieldConfigurations as $field) {
+                $entityField = $this->getRegistrationFieldEntityName($field);
+                if (!$entityField) {
+                    continue;
+                }
+
+                foreach ($sealFields as $sealId => $lockedFields) {
+                    foreach ($lockedFields as $lockedField) {
+                        if ($this->lockedFieldMatchesRegistrationField($lockedField, $entityField)) {
+                            $result[$sealId][] = (int) $field->id;
+                        }
+                    }
+                }
+            }
+        }
+
+        foreach ($result as $sealId => $fields) {
+            $result[$sealId] = array_values(array_unique($fields));
+        }
+
+        return $result;
+    }
+
+    /**
+     * Determina quais selos são concedíveis na concessão parcial (status 2/3/8).
+     *
+     * Métodos não-documentais: retorna [] (sem dados granulares para decidir).
+     *
+     * @param Registration $registration
+     * @param int[] $sealIds
+     * @return int[] IDs dos selos concedíveis.
+     */
+    private function getGrantableSealsForPartialGrant(Registration $registration, array $sealIds): array
+    {
+        if (!$this->isDocumentaryEvaluation($registration)) {
+            return [];
+        }
+
+        $evaluatedFields = $this->getValidEvaluatedFieldIds($registration);
+        if (!$evaluatedFields) {
+            return [];
+        }
+
+        $sealsWithInvalidators = $this->getSealsWithInvalidators($sealIds);
+        $invalidatorFieldIdsBySeal = $this->getInvalidatorFieldIdsBySeal($registration, $sealIds);
+
+        $grantable = [];
+        foreach ($sealIds as $sealId) {
+            $hasInvalidators = in_array($sealId, $sealsWithInvalidators, true);
+
+            if (!$hasInvalidators) {
+                // Selo sem invalidadores → sempre concedível
+                $grantable[] = $sealId;
+                continue;
+            }
+
+            $requiredFields = $invalidatorFieldIdsBySeal[$sealId] ?? [];
+            if (empty($requiredFields)) {
+                // Invalidadores configurados mas não resolvem no formulário → não conceder (fail-safe)
+                continue;
+            }
+
+            $allValid = true;
+            foreach ($requiredFields as $fieldId) {
+                if (empty($evaluatedFields[(string) $fieldId])) {
+                    $allValid = false;
+                    break;
+                }
+            }
+            if ($allValid) {
+                $grantable[] = $sealId;
+            }
+        }
+
+        return $grantable;
+    }
+
+    /**
+     * Identifica quais campos invalidadores dos selos não têm campo
+     * correspondente no formulário da oportunidade.
+     *
+     * @param Opportunity $firstPhase
+     * @param int[] $sealIds
+     * @return array<int, array{missing: list<array{fieldKey: string, label: string}>}>
+     */
+    public function getMissingInvalidatorsBySeal(Opportunity $firstPhase, array $sealIds): array
+    {
+        $app = App::i();
+        $result = [];
+
+        // Coleta todos os entityFields presentes no formulário
+        $formEntityFields = [];
+        $phases = $firstPhase->allPhases ?: [$firstPhase];
+        foreach ($phases as $phase) {
+            foreach ($phase->registrationFieldConfigurations as $field) {
+                $entityField = $this->getRegistrationFieldEntityName($field);
+                if ($entityField) {
+                    $formEntityFields[$entityField] = true;
+                }
+            }
+        }
+
+        foreach ($sealIds as $sealId) {
+            $seal = $app->repo('Seal')->find($sealId);
+            $result[$sealId] = ['missing' => []];
+            if (!$seal instanceof Seal) {
+                continue;
+            }
+
+            $config = (array) $seal->lockedFieldsConfig;
+            foreach ($config as $lockedField => $fieldConfig) {
+                if (($fieldConfig['isInvalidator'] ?? false) !== true) {
+                    continue;
+                }
+
+                $parts = explode('.', $lockedField, 2);
+                $fieldName = $parts[1] ?? $lockedField;
+
+                if (!isset($formEntityFields[$fieldName])) {
+                    $result[$sealId]['missing'][] = [
+                        'fieldKey' => $lockedField,
+                        'label' => $lockedField,
+                    ];
+                }
+            }
+        }
+
+        return $result;
     }
 }
