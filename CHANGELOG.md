@@ -6,6 +6,13 @@ O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+### Novas Funcionalidades
+- Permite que o relator de um recurso deferido corrija uma ou mais avaliações técnicas individuais, alterando somente os critérios reconhecidos na decisão do recurso
+- Adiciona à ficha do recurso o fluxo completo para designar o relator, selecionar avaliações e critérios, salvar um rascunho, conferir a prévia dos novos resultados e confirmar a correção ou o deferimento sem mudança de nota
+- Substitui imediatamente as notas corrigidas e recalcula o resultado consolidado, os bônus por pontuação, a nota final e a elegibilidade, sem alterar automaticamente o status da inscrição, a classificação publicada ou o avanço de fase
+- Mantém histórico interno e imutável de cada decisão, com justificativa obrigatória, valores anteriores e posteriores, critérios alterados, configuração técnica utilizada e responsável pela correção
+- Protege a confirmação contra alterações simultâneas e mudanças na configuração dos critérios, permite reabrir a correção em uma nova sequência e notifica os avaliadores técnicos cujas notas foram modificadas
+
 ### Correções
 - Corrige a listagem de fases da oportunidade para exibir corretamente fases de avaliação na configuração
 
