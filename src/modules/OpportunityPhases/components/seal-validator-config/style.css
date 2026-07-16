@@ -209,3 +209,248 @@
     opacity: .7;
     cursor: not-allowed;
 }
+
+/* ===================================================================
+   Condicionalidade de invalidadores (spec-fe9b2cfc)
+   =================================================================== */
+
+.seal-validator-config__conditions {
+    /* details element — recolhido por padrão */
+    border: 1px solid color-mix(in srgb, var(--mc-seals-500, #8b6bb8) 30%, var(--mc-white, #fff));
+    border-radius: .375rem;
+    background: color-mix(in srgb, var(--mc-seals-500, #8b6bb8) 4%, var(--mc-white, #fff));
+    overflow: hidden;
+}
+
+.seal-validator-config__conditions > summary {
+    list-style: none;
+    cursor: pointer;
+    padding: .65rem .875rem;
+    font-size: .875rem;
+    font-weight: 700;
+    color: var(--mc-seals-700, #6b4f9a);
+    display: flex;
+    align-items: center;
+    gap: .4rem;
+    user-select: none;
+}
+
+.seal-validator-config__conditions > summary::-webkit-details-marker {
+    display: none;
+}
+
+.seal-validator-config__conditions > summary::before {
+    content: '▸';
+    font-size: .7rem;
+    transition: transform .15s ease;
+    color: var(--mc-seals-500, #8b6bb8);
+}
+
+.seal-validator-config__conditions[open] > summary::before {
+    transform: rotate(90deg);
+}
+
+.seal-validator-config__conditions-body {
+    display: flex;
+    flex-direction: column;
+    gap: .75rem;
+    padding: 0 .875rem .875rem;
+}
+
+.seal-validator-config__conditions-intro {
+    margin: 0;
+    font-size: .8125rem;
+    line-height: 1.4;
+    color: var(--mc-gray-700, #555);
+}
+
+.seal-validator-config__condition-seal {
+    display: flex;
+    flex-direction: column;
+    gap: .65rem;
+    padding-top: .5rem;
+    border-top: 1px dashed color-mix(in srgb, var(--mc-gray-500, #888) 30%, transparent);
+}
+
+.seal-validator-config__condition-seal:first-of-type {
+    padding-top: 0;
+    border-top: none;
+}
+
+.seal-validator-config__condition-seal-name {
+    margin: 0;
+    font-size: .8125rem;
+    font-weight: 600;
+    color: var(--mc-gray-800, #333);
+}
+
+.seal-validator-config__condition-item {
+    display: flex;
+    flex-direction: column;
+    gap: .5rem;
+    padding: .65rem .75rem;
+    border: 1px solid color-mix(in srgb, var(--mc-gray-500, #888) 18%, transparent);
+    border-radius: .375rem;
+    background: var(--mc-white, #fff);
+}
+
+.seal-validator-config__condition-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: .75rem;
+    flex-wrap: wrap;
+}
+
+.seal-validator-config__condition-title-wrap {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: .5rem;
+    min-width: 0;
+}
+
+.seal-validator-config__condition-field-label {
+    font-size: .875rem;
+    font-weight: 700;
+    color: var(--mc-gray-800, #333);
+}
+
+.seal-validator-config__condition-badge {
+    display: inline-flex;
+    align-items: center;
+    padding: .15rem .5rem;
+    border-radius: 999px;
+    font-size: .6875rem;
+    font-weight: 700;
+    letter-spacing: .02em;
+    text-transform: uppercase;
+    color: var(--mc-seals-700, #6b4f9a);
+    background: color-mix(in srgb, var(--mc-seals-500, #8b6bb8) 16%, var(--mc-white, #fff));
+    border: 1px solid color-mix(in srgb, var(--mc-seals-500, #8b6bb8) 30%, transparent);
+}
+
+.seal-validator-config__clause .mc-select {
+    width: 100%;
+}
+
+.seal-validator-config__condition-config {
+    display: flex;
+    flex-direction: column;
+    gap: .75rem;
+}
+
+.seal-validator-config__clause {
+    display: flex;
+    flex-direction: column;
+    gap: .75rem;
+    padding: .85rem 1rem;
+    border: 1px solid color-mix(in srgb, var(--mc-seals-500, #8b6bb8) 22%, transparent);
+    border-radius: .375rem;
+    background: color-mix(in srgb, var(--mc-seals-500, #8b6bb8) 5%, var(--mc-white, #fff));
+}
+
+.seal-validator-config__clause-step {
+    display: flex;
+    flex-direction: column;
+    gap: .4rem;
+}
+
+.seal-validator-config__clause-step-label {
+    font-size: .75rem;
+    font-weight: 700;
+    letter-spacing: .02em;
+    text-transform: uppercase;
+    color: var(--mc-gray-600, #666);
+}
+
+.seal-validator-config__clause-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: .45rem;
+}
+
+.seal-validator-config__clause-chips--single {
+    gap: .55rem;
+}
+
+.seal-validator-config__chip {
+    appearance: none;
+    border: 1px solid color-mix(in srgb, var(--mc-gray-500, #888) 35%, transparent);
+    background: var(--mc-white, #fff);
+    color: var(--mc-gray-800, #333);
+    border-radius: 999px;
+    padding: .35rem .75rem;
+    font-size: .8125rem;
+    font-weight: 500;
+    line-height: 1.2;
+    cursor: pointer;
+    transition: background .15s ease, border-color .15s ease, color .15s ease, box-shadow .15s ease;
+}
+
+.seal-validator-config__chip:hover:not(:disabled) {
+    border-color: var(--mc-seals-500, #8b6bb8);
+    color: var(--mc-seals-700, #6b4f9a);
+}
+
+.seal-validator-config__chip--selected {
+    border-color: var(--mc-seals-700, #6b4f9a);
+    background: color-mix(in srgb, var(--mc-seals-500, #8b6bb8) 18%, var(--mc-white, #fff));
+    color: var(--mc-seals-700, #6b4f9a);
+    font-weight: 700;
+    box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--mc-seals-500, #8b6bb8) 35%, transparent);
+}
+
+.seal-validator-config__chip:disabled {
+    opacity: .55;
+    cursor: not-allowed;
+}
+
+.seal-validator-config__clause-preview {
+    display: flex;
+    align-items: flex-start;
+    gap: .45rem;
+    font-size: .8125rem;
+    line-height: 1.4;
+    color: var(--mc-gray-700, #444);
+    padding: .55rem .7rem;
+    border-radius: .3rem;
+    border: 1px solid color-mix(in srgb, var(--mc-success, #1a8a3c) 25%, transparent);
+    background: color-mix(in srgb, var(--mc-success, #1a8a3c) 8%, var(--mc-white, #fff));
+}
+
+.seal-validator-config__clause-preview .mc-icon {
+    flex-shrink: 0;
+    margin-top: .1rem;
+    color: var(--mc-success, #1a8a3c);
+}
+
+.seal-validator-config__clause-preview strong {
+    font-weight: 700;
+    color: var(--mc-gray-900, #222);
+}
+
+.seal-validator-config__clause-actions {
+    display: flex;
+    justify-content: flex-end;
+    padding-top: .15rem;
+    border-top: 1px dashed color-mix(in srgb, var(--mc-gray-500, #888) 25%, transparent);
+}
+
+.seal-validator-config__condition-actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: .5rem;
+    padding-top: .15rem;
+}
+
+/* Botões de texto dentro das condições */
+.seal-validator-config__conditions .button--text {
+    font-size: .8125rem;
+}
+
+.seal-validator-config__conditions .button--primary-outline {
+    font-size: .8125rem;
+}

@@ -15,6 +15,7 @@ $this->import('
     mc-alert
     mc-icon
     mc-multiselect
+    mc-select
     mc-toggle
 ');
 ?>
@@ -123,6 +124,142 @@ $this->import('
                     </li>
                 </ul>
             </div>
+
+            <!-- Condicionalidade de invalidadores (spec-fe9b2cfc) -->
+            <details v-if="canEdit && isEnabled" class="seal-validator-config__conditions">
+                <summary class="seal-validator-config__conditions-title field__title">
+                    <?= i::_e('Condicionalidade de invalidadores') ?>
+                </summary>
+
+                <div class="seal-validator-config__conditions-body">
+                    <p class="seal-validator-config__conditions-intro">
+                        <?= i::__('Faça com que um campo invalidador só seja exigido quando o proponente preencher determinado campo do formulário. Quando a condição não se aplica, o invalidador é relevado.') ?>
+                    </p>
+
+                    <div
+                        v-for="seal in selectedSealsWithStatus"
+                        :key="'cond-' + seal.id"
+                        class="seal-validator-config__condition-seal"
+                    >
+                        <p class="seal-validator-config__condition-seal-name">
+                            <strong>{{ seal.label }}</strong>
+                        </p>
+
+                        <div
+                            v-for="inv in invalidatorsBySeal(seal.id)"
+                            :key="'inv-' + seal.id + '-' + inv.fieldKey"
+                            class="seal-validator-config__condition-item"
+                        >
+                            <div class="seal-validator-config__condition-header">
+                                <div class="seal-validator-config__condition-title-wrap">
+                                    <span class="seal-validator-config__condition-field-label">{{ inv.label }}</span>
+                                    <span
+                                        v-if="conditionsForSeal(seal.id)[inv.fieldKey]"
+                                        class="seal-validator-config__condition-badge"
+                                    >
+                                        <?= i::_e('Condicionado') ?>
+                                    </span>
+                                </div>
+                                <button
+                                    v-if="!conditionsForSeal(seal.id)[inv.fieldKey]"
+                                    type="button"
+                                    class="button button--primary-outline button--sm"
+                                    :disabled="!canEdit"
+                                    @click="addCondition(seal.id, inv.fieldKey)"
+                                >
+                                    + <?= i::_e('Condicionar') ?>
+                                </button>
+                            </div>
+
+                            <div v-if="conditionsForSeal(seal.id)[inv.fieldKey]" class="seal-validator-config__condition-config">
+                                <div
+                                    v-for="(clause, idx) in conditionsForSeal(seal.id)[inv.fieldKey].clauses"
+                                    :key="'clause-' + idx"
+                                    class="seal-validator-config__clause"
+                                >
+                                    <div class="seal-validator-config__clause-step">
+                                        <span class="seal-validator-config__clause-step-label">
+                                            {{ text('conditionFieldLabel') }}
+                                        </span>
+                                        <mc-select
+                                            :default-value="clause.field"
+                                            @change-option="onClauseFieldChange(seal.id, inv.fieldKey, idx, $event)"
+                                            :options="conditionalFields.map(f => ({ value: f.fieldName, label: f.title }))"
+                                            :placeholder="text('conditionFieldPlaceholder')"
+                                            :disabled="!canEdit"
+                                        ></mc-select>
+                                    </div>
+
+                                    <div v-if="clause.field" class="seal-validator-config__clause-step">
+                                        <span class="seal-validator-config__clause-step-label">
+                                            {{ text('conditionValuesLabel') }}
+                                        </span>
+                                        <div
+                                            class="seal-validator-config__clause-chips"
+                                            :class="{
+                                                'seal-validator-config__clause-chips--single': conditionalFields.find(f => f.fieldName === clause.field)?.fieldType === 'checkbox'
+                                            }"
+                                        >
+                                            <button
+                                                v-for="opt in getFieldOptions(conditionalFields.find(f => f.fieldName === clause.field))"
+                                                :key="opt.value"
+                                                type="button"
+                                                class="seal-validator-config__chip"
+                                                :class="{ 'seal-validator-config__chip--selected': clause.values.includes(opt.value) }"
+                                                :disabled="!canEdit"
+                                                @click="conditionalFields.find(f => f.fieldName === clause.field)?.fieldType === 'checkbox'
+                                                    ? setConditionSingleValue(seal.id, inv.fieldKey, idx, opt.value)
+                                                    : toggleConditionValue(seal.id, inv.fieldKey, idx, opt.value)"
+                                            >
+                                                {{ opt.label }}
+                                            </button>
+                                        </div>
+                                    </div>
+
+                                    <div v-if="clause.field && clause.values.length > 0" class="seal-validator-config__clause-preview">
+                                        <mc-icon name="circle-checked"></mc-icon>
+                                        <span>{{ text('conditionPreviewTemplate') }} <strong>{{ clausePreview(clause) }}</strong></span>
+                                    </div>
+
+                                    <div class="seal-validator-config__clause-actions">
+                                        <button
+                                            type="button"
+                                            class="button button--text button--sm button--text-danger"
+                                            :disabled="!canEdit"
+                                            @click="removeClause(seal.id, inv.fieldKey, idx)"
+                                        >
+                                            {{ text('conditionRemoveClause') }}
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <div class="seal-validator-config__condition-actions">
+                                    <button
+                                        type="button"
+                                        class="button button--primary-outline button--sm"
+                                        :disabled="!canEdit"
+                                        @click="addCondition(seal.id, inv.fieldKey)"
+                                    >
+                                        + {{ text('conditionAddClause') }}
+                                    </button>
+                                    <button
+                                        type="button"
+                                        class="button button--text button--sm button--text-danger"
+                                        :disabled="!canEdit"
+                                        @click="removeCondition(seal.id, inv.fieldKey)"
+                                    >
+                                        {{ text('conditionRemove') }}
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <mc-alert type="warning">
+                        {{ text('conditionBlankAlert') }}
+                    </mc-alert>
+                </div>
+            </details>
 
             <!-- Pendências: invalidadores do selo ausentes no formulário -->
             <div v-if="hasPendingInvalidators" class="seal-validator-config__pending">
