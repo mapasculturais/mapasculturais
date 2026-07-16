@@ -68,6 +68,14 @@ class SealNotificationsTest extends TestCase
 
     protected function runExpirationJobOnce(): void
     {
+        $conn = App::i()->em->getConnection();
+        // Garante que o job de selos é o próximo da fila (outros jobs com due antiga roubam a vez).
+        $conn->executeStatement(
+            "UPDATE job
+             SET status = 0,
+                 next_execution_timestamp = '1999-01-01 00:00:00'
+             WHERE name = 'NotifySealExpirations'"
+        );
         $this->processJobs(as_date: '2100-01-01 00:00', number_of_jobs: 1);
     }
 
@@ -135,9 +143,13 @@ class SealNotificationsTest extends TestCase
         $this->runExpirationJobOnce();
 
         $app = App::i();
-        $relation = $app->repo('AgentSealRelation')->find($this->relation->id);
+        // Coluna persistida (não o magic getter getComputedStatus())
+        $persisted = $app->em->getConnection()->fetchOne(
+            'SELECT computed_status FROM seal_relation WHERE id = ?',
+            [$this->relation->id]
+        );
 
-        $this->assertSame('invalid', $relation->computedStatus);
+        $this->assertSame('invalid', $persisted);
     }
 
     public function testSensitiveSealNotificationIsGeneric(): void
