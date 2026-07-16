@@ -390,6 +390,20 @@ class Module extends \MapasCulturais\Module{
                     message: i::__('A fase está aberta e já possui inscrições enviadas. A configuração de selos validadores não pode mais ser alterada.')
                 );
             }
+
+            // Validação da condicionalidade de invalidadores (spec-fe9b2cfc):
+            // conditions é opcional; quando presente, valida forma e cruzamento.
+            $newConfig = $changedMetadata['sealExemptionConfig']['newValue'] ?? null;
+            if ($newConfig) {
+                $structError = \SealExemption\SealExemptionService::validateConditionsStructure($newConfig);
+                if ($structError !== null) {
+                    throw new \MapasCulturais\Exceptions\BadRequest($structError);
+                }
+                $crossError = \SealExemption\SealExemptionService::validateConditionsAgainstSeals($newConfig);
+                if ($crossError !== null) {
+                    throw new \MapasCulturais\Exceptions\BadRequest($crossError);
+                }
+            }
         });
 
         $app->hook('entity(EvaluationMethodConfiguration).save:finish', function () use($app, $distribute_execution_time) {
