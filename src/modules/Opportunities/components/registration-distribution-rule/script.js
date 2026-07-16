@@ -642,16 +642,32 @@ app.component('registration-distribution-rule', {
             return options;
         },
 
+        getCheckboxLabels(fieldId) {
+            const field = this.selectionFields[fieldId];
+            // appliedForQuota usa Sim/Não (mesmo rótulo da inscrição); demais checkboxes: Marcado/Desmarcado
+            if (field?.fieldName === 'appliedForQuota' || fieldId === 'appliedForQuota') {
+                return {
+                    checked: this.text('Sim'),
+                    unchecked: this.text('Não'),
+                };
+            }
+            return {
+                checked: this.text('Marcado'),
+                unchecked: this.text('Desmarcado'),
+            };
+        },
+
         getFieldOptionLabel(fieldId, option) {
             const field = this.selectionFields[fieldId];
 
             if (field?.fieldType == 'checkbox') {
-                if (option == true) {
-                    return this.text('Marcado');
+                const labels = this.getCheckboxLabels(fieldId);
+                if (option == true || option === 1 || option === '1') {
+                    return labels.checked;
                 }
 
-                if (option == false) {
-                    return this.text('Desmarcado');
+                if (option == false || option === 0 || option === '0') {
+                    return labels.unchecked;
                 }
             }
 
@@ -876,13 +892,12 @@ app.component('registration-distribution-rule', {
                     const field = this.selectionFields[fieldId];
                     
                     if (field?.fieldType === 'checkbox') {
-                        const checkedLabel = this.text('Marcado');
-                        const uncheckedLabel = this.text('Desmarcado');
+                        const { checked, unchecked } = this.getCheckboxLabels(fieldId);
                         
                         let valueToRemove = null;
-                        if (value === checkedLabel) {
+                        if (value === checked) {
                             valueToRemove = true;
-                        } else if (value === uncheckedLabel) {
+                        } else if (value === unchecked) {
                             valueToRemove = false;
                         }
                         
