@@ -226,7 +226,11 @@ class Entity {
             this.sendMessage(message || this.text('erro inesperado'), 'error');
         } else if(res.status == 400) {
             if (data.error) {
-                this.__validationErrors = data.data;
+                // data.data pode ser string (BadRequest genérico) ou mapa prop→erros.
+                // Sempre manter objeto para não quebrar entity-field.hasErrors.
+                this.__validationErrors = (data.data && typeof data.data === 'object' && !Array.isArray(data.data))
+                    ? data.data
+                    : {};
                 this.sendMessage(message || this.text('erro de validacao'), 'error');
             }
         } else if(res.status == 403) {

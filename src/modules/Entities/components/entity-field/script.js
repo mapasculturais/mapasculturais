@@ -279,7 +279,10 @@ app.component('entity-field', {
 
     computed: {
         hasErrors() {
-            const errors = this.entity.__validationErrors[this.prop] || [];
+            const bag = this.entity.__validationErrors;
+            const errors = (bag && typeof bag === 'object' && !Array.isArray(bag))
+                ? (bag[this.prop] || [])
+                : [];
 
             // Para campos @location, deixamos a sinalização visual por conta
             // do componente de endereço, que destaca apenas os subcampos faltando.
@@ -290,7 +293,11 @@ app.component('entity-field', {
             return errors.length > 0;
         },
         errors() {
-            return this.entity.__validationErrors[this.prop];
+            const bag = this.entity.__validationErrors;
+            if (!bag || typeof bag !== 'object' || Array.isArray(bag)) {
+                return undefined;
+            }
+            return bag[this.prop];
         },
         value() {
             if (this.is('file')) {
