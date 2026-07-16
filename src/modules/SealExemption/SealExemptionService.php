@@ -3,10 +3,12 @@ namespace SealExemption;
 
 use MapasCulturais\App;
 use MapasCulturais\Entities\Agent;
+use MapasCulturais\Entities\AgentSealRelation;
 use MapasCulturais\Entities\EvaluationMethodConfiguration;
 use MapasCulturais\Entities\Opportunity;
 use MapasCulturais\Entities\Registration;
 use MapasCulturais\Entities\Seal;
+use MapasCulturais\Entities\SealRelation;
 use MapasCulturais\i;
 
 /**
@@ -269,6 +271,16 @@ class SealExemptionService
 
         // 3. Verificar selos
         $isExempt = $this->sealVerifier->hasAllValidSeals($agent, $sealIds);
+
+        // 3b. Se não isento pelos selos, tentar relevação condicional de invalidadores
+        // (spec-fe9b2cfc): invalidadores amarrados a condições podem ser relevados
+        // quando a condição não se aplica ao proponente (ex.: não-cotista c/ Raça/Cor).
+        if (!$isExempt) {
+            $conditions = self::extractConditions($config);
+            if (!empty($conditions)) {
+                $isExempt = $this->isExemptWithConditions($registration, $agent, $sealIds, $conditions);
+            }
+        }
 
         if (!$isExempt) {
             // 5. Não isento — avaliação normal (status permanece NULL)
@@ -887,6 +899,581 @@ class SealExemptionService
         }
 
         return $grantable;
+    }
+
+    // ===================================================================
+    // Condicionalidade de invalidadores (spec-fe9b2cfc)
+    // ===================================================================
+
+    /**
+     * Recalcula e persiste computed_status de uma SealRelation levando em conta
+     * a estrutura genérica `conditions` dos editais (sealExemptionConfig).
+     *
+     * Usado pelo job NotifySealExpirations. Não altera o fluxo de isenção.
+     *
+     * Regra:
+     * - Sem conditions aplicáveis ao selo → status bruto (getComputedStatus).
+     * - Com conditions + inscrições encontradas: se em TODOS os contextos o
+     *   selo é efetivamente válido (invalidadores vencidos relevados quando a
+     *   condição não se aplica), grava fully_valid; senão mantém o status bruto.
+     *
+     * @param SealRelation $relation
+     * @return void
+     */
+    public function recomputeSealRelationComputedStatus(SealRelation $relation): void
+    {
+        $app = App::i();
+
+        // Recarrega relação/campos do banco (expiry_date pode ter sido
+        // atualizado via SQL ou por outro processo).
+        if ($relation->id) {
+            $app->em->refresh($relation);
+            foreach ($relation->getSealRelationFields() as $field) {
+                $app->em->refresh($field);
+            }
+        }
+
+        // Sempre sincroniza a propriedade ORM com o status bruto primeiro.
+        // Importante: NÃO usar $relation->computedStatus na leitura — o magic
+        // getter chama getComputedStatus() (cálculo ao vivo) e mascara o valor
+        // persistido, impedindo o flush de corrigir status stale.
+        $relation->updateComputedStatus();
+
+        if (!($relation instanceof AgentSealRelation)) {
+            return;
+        }
+
+        $raw = $relation->getComputedStatus();
+        if ($raw === 'fully_valid') {
+            return;
+        }
+
+        $owner = $relation->owner;
+        if (!$owner instanceof Agent) {
+            return;
+        }
+
+        $contexts = $this->findConditionContextsForSealRelation($relation);
+        if (empty($contexts)) {
+            return;
+        }
+
+        foreach ($contexts as [$registration, $sealConditions]) {
+            if (!$this->isSealEffectivelyValid($relation, $sealConditions, $registration)) {
+                // Mantém o status bruto já gravado por updateComputedStatus().
+                return;
+            }
+        }
+
+        // Todos os contextos relevam os invalidadores condicionados → válido.
+        $relation->computedStatus = 'fully_valid';
+    }
+
+    /**
+     * Localiza contextos (inscrição na 1ª fase + conditions do selo) em que
+     * este AgentSealRelation participa via sealExemptionConfig.
+     *
+     * @param AgentSealRelation $relation
+     * @return list<array{0: Registration, 1: array}>
+     */
+    private function findConditionContextsForSealRelation(AgentSealRelation $relation): array
+    {
+        $app = App::i();
+        $sealId = (int) $relation->seal->id;
+        $agent = $relation->owner;
+        if (!$agent instanceof Agent) {
+            return [];
+        }
+
+        $rows = $app->em->getConnection()->fetchAllAssociative(
+            'SELECT object_id, value FROM evaluationmethodconfiguration_meta WHERE key = ?',
+            ['sealExemptionConfig']
+        );
+
+        $contexts = [];
+        foreach ($rows as $row) {
+            $config = self::normalizeConfig(json_decode((string) $row['value'], true));
+            if (!self::hasActiveConfig($config)) {
+                continue;
+            }
+
+            if (!in_array($sealId, self::getConfiguredSealIds($config), true)) {
+                continue;
+            }
+
+            $conditions = $config['conditions'] ?? [];
+            if (!is_array($conditions) || empty($conditions)) {
+                continue;
+            }
+
+            $sealConditions = $conditions[$sealId] ?? $conditions[(string) $sealId] ?? null;
+            if (!is_array($sealConditions) || empty($sealConditions)) {
+                continue;
+            }
+
+            $emc = $app->repo('EvaluationMethodConfiguration')->find((int) $row['object_id']);
+            if (!$emc instanceof EvaluationMethodConfiguration || !$emc->opportunity) {
+                continue;
+            }
+
+            $opportunity = $emc->opportunity;
+            $firstPhase = $opportunity->firstPhase ?: $opportunity;
+
+            // Preferência: inscrição na 1ª fase (onde ficam campos como appliedForQuota).
+            // Fallback: inscrição na própria fase do EMC (padrão de alguns testes/sync).
+            $registration = $app->repo('Registration')->findOneBy([
+                'opportunity' => $firstPhase,
+                'owner' => $agent,
+            ]);
+            if (
+                (!$registration instanceof Registration || $registration->status < 0)
+                && (int) $opportunity->id !== (int) $firstPhase->id
+            ) {
+                $registration = $app->repo('Registration')->findOneBy([
+                    'opportunity' => $opportunity,
+                    'owner' => $agent,
+                ]);
+            }
+
+            if (!$registration instanceof Registration || $registration->status < 0) {
+                continue;
+            }
+
+            $contexts[] = [$registration, $sealConditions];
+        }
+
+        return $contexts;
+    }
+
+    /**
+     * Extrai as condições de relevação da configuração do EMC.
+     *
+     * Estrutura esperada (spec D1):
+     *   conditions: { "<sealId>": { "<invalidatorKey>": { clauses: [ {field, values} ] } } }
+     *
+     * @param object|null $config
+     * @return array Estrutura de condições normalizada (vazia se ausente).
+     */
+    public static function extractConditions(?object $config): array
+    {
+        if (!$config || !isset($config->conditions)) {
+            return [];
+        }
+
+        $conditions = $config->conditions;
+        if (is_object($conditions)) {
+            $conditions = json_decode(json_encode($conditions), true);
+        }
+
+        return is_array($conditions) ? $conditions : [];
+    }
+
+    /**
+     * Validação estrutural das condições (T2).
+     *
+     * Verifica forma: sealId → invalidatorKey → { clauses: [{ field, values }] }.
+     * A validação cruzada (invalidador existe e é invalidador no selo) é feita
+     * em validateConditionsAgainstSeals, separada por exigir carga dos selos.
+     *
+     * @param mixed $config
+     * @return string|null Mensagem de erro ou null se válido.
+     */
+    public static function validateConditionsStructure($config): ?string
+    {
+        $config = self::normalizeConfig($config);
+        $conditions = $config['conditions'] ?? null;
+
+        if ($conditions === null) {
+            return null;
+        }
+
+        if (!is_array($conditions)) {
+            return i::__('O campo "conditions" deve ser um objeto.');
+        }
+
+        foreach ($conditions as $sealId => $invalidators) {
+            if (!is_array($invalidators) || empty($invalidators)) {
+                return i::__('Cada selo em "conditions" deve ter ao menos um invalidador.');
+            }
+
+            foreach ($invalidators as $invalidatorKey => $condDef) {
+                if (!is_string($invalidatorKey) || $invalidatorKey === '') {
+                    return i::__('A chave do invalidador deve ser um fieldKey não vazio.');
+                }
+
+                $clauses = $condDef['clauses'] ?? null;
+                if (!is_array($clauses) || empty($clauses)) {
+                    return i::__('Cada invalidador deve ter ao menos uma cláusula em "clauses".');
+                }
+
+                foreach ($clauses as $clause) {
+                    $field = $clause['field'] ?? null;
+                    $values = $clause['values'] ?? null;
+
+                    if (!is_string($field) || $field === '') {
+                        return i::__('O campo "field" da cláusula deve ser uma string não vazia.');
+                    }
+                    if (!is_array($values) || empty($values)) {
+                        return i::__('O campo "values" da cláusula deve ser um array não vazio.');
+                    }
+                    foreach ($values as $v) {
+                        if (!is_scalar($v)) {
+                            return i::__('Os valores aceitos devem ser escalares.');
+                        }
+                    }
+                }
+            }
+        }
+
+        return null;
+    }
+
+    /**
+     * Validação cruzada: cada invalidador referenciado em conditions deve existir
+     * e ser invalidador (isInvalidator===true) no lockedFieldsConfig do selo.
+     *
+     * @param mixed $config
+     * @return string|null Mensagem de erro ou null se válido.
+     */
+    public static function validateConditionsAgainstSeals($config): ?string
+    {
+        $config = self::normalizeConfig($config);
+        $conditions = $config['conditions'] ?? null;
+        $sealIds = self::getConfiguredSealIds($config);
+
+        if (!$conditions || !$sealIds) {
+            return null;
+        }
+
+        $app = App::i();
+        foreach ($conditions as $sealIdStr => $invalidators) {
+            $sealId = (int) $sealIdStr;
+            if (!in_array($sealId, $sealIds, true)) {
+                return sprintf(i::__('O selo %d em "conditions" não está na lista de selos configurados.'), $sealId);
+            }
+
+            $seal = $app->repo('Seal')->find($sealId);
+            if (!$seal instanceof Seal) {
+                return sprintf(i::__('Selo %d não encontrado.'), $sealId);
+            }
+
+            $lockedConfig = (array) $seal->lockedFieldsConfig;
+            foreach (array_keys($invalidators) as $invalidatorKey) {
+                $fieldConfig = $lockedConfig[$invalidatorKey] ?? null;
+                if (!is_array($fieldConfig)) {
+                    return sprintf(i::__('O invalidador "%s" não existe no selo %d.'), $invalidatorKey, $sealId);
+                }
+                if (($fieldConfig['isInvalidator'] ?? false) !== true) {
+                    return sprintf(i::__('O campo "%s" do selo %d não é um invalidador.'), $invalidatorKey, $sealId);
+                }
+            }
+        }
+
+        return null;
+    }
+
+    /**
+     * Verifica isenção considerando relevação condicional de invalidadores.
+     *
+     * Para cada selo NÃO fully_valid, inspeciona seus SealRelationField: se todos
+     * os invalidadores vencidos puderem ser relevados por condições não-satisfeitas
+     * (e não houver outros campos vencidos), o selo é efetivamente válido.
+     *
+     * @param Registration $registration
+     * @param Agent $agent
+     * @param int[] $sealIds
+     * @param array $conditions Estrutura de conditions (extractConditions).
+     * @return bool
+     */
+    private function isExemptWithConditions(
+        Registration $registration,
+        Agent $agent,
+        array $sealIds,
+        array $conditions
+    ): bool {
+        $app = App::i();
+
+        foreach ($sealIds as $sealId) {
+            // Caminho rápido: selo já fully_valid via computed_status
+            if ($this->isSealFullyValidForAgent($agent->id, $sealId)) {
+                continue;
+            }
+
+            // Selo não fully_valid — buscar condições para este selo
+            $sealConditions = $conditions[$sealId] ?? $conditions[(string) $sealId] ?? null;
+            if (empty($sealConditions)) {
+                // Sem condições para relevação → selo falha
+                return false;
+            }
+
+            $relation = $app->repo('AgentSealRelation')->findOneBy([
+                'seal' => $sealId,
+                'owner' => $agent,
+                'status' => 1,
+            ]);
+
+            if (!$relation) {
+                return false;
+            }
+
+            if (!$this->isSealEffectivelyValid($relation, $sealConditions, $registration)) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    /**
+     * Verifica via SQL se o agente possui o selo como fully_valid (computed_status).
+     *
+     * @param int $agentId
+     * @param int $sealId
+     * @return bool
+     */
+    private function isSealFullyValidForAgent(int $agentId, int $sealId): bool
+    {
+        $app = App::i();
+        $conn = $app->em->getConnection();
+
+        $sql = "
+            SELECT COUNT(1) AS cnt
+            FROM seal_relation sr
+            WHERE sr.object_type = ?
+              AND sr.object_id = ?
+              AND sr.status = 1
+              AND sr.seal_id = ?
+              AND sr.computed_status = 'fully_valid'
+        ";
+
+        return (int) $conn->executeQuery($sql, [
+            'MapasCulturais\Entities\Agent',
+            $agentId,
+            $sealId,
+        ])->fetchOne() > 0;
+    }
+
+    /**
+     * Determina a validade efetiva de uma relação de selo aplicando relevação.
+     *
+     * Um campo vencido invalidador COM condição relevável (condição não-satisfeita,
+     * sem branco) é ignorado. Qualquer outro campo vencido (invalidador sem condição,
+     * invalidador com condição satisfeita/branco, ou não-invalidador) faz o selo
+     * NÃO ser efetivamente fully_valid.
+     *
+     * @param \MapasCulturais\Entities\AgentSealRelation $relation
+     * @param array $sealConditions Condições do selo: invalidatorKey → { clauses }
+     * @param Registration $registration
+     * @return bool
+     */
+    private function isSealEffectivelyValid(
+        \MapasCulturais\Entities\AgentSealRelation $relation,
+        array $sealConditions,
+        Registration $registration
+    ): bool {
+        // Leitura via SQL fresco (evita stale cache do Doctrine em testes / concorrência).
+        $app = App::i();
+        $conn = $app->em->getConnection();
+        $rows = $conn->fetchAllAssociative(
+            "SELECT field_name, is_invalidator, expiry_date
+             FROM seal_relation_field
+             WHERE seal_relation_id = :rid",
+            ['rid' => $relation->id]
+        );
+
+        $now = (new \DateTimeImmutable('now', new \DateTimeZone('UTC')))->setTime(0, 0, 0);
+
+        foreach ($rows as $row) {
+            // Verificar se está vencido
+            $expiry = $row['expiry_date'];
+            if ($expiry === null) {
+                continue; // sem expiração → não vence
+            }
+            $expiryDate = \DateTimeImmutable::createFromFormat('!Y-m-d', $expiry, new \DateTimeZone('UTC'));
+            if ($expiryDate >= $now) {
+                continue; // não vencido
+            }
+
+            // Campo vencido
+            $isInvalidator = (bool) $row['is_invalidator'];
+            if (!$isInvalidator) {
+                // Não-invalidador vencido → partially_valid → não é fully_valid
+                return false;
+            }
+
+            $lockedFieldKey = $row['field_name'];
+            $condition = $sealConditions[$lockedFieldKey] ?? null;
+
+            if (!$condition) {
+                // Invalidador vencido sem condição → aplica
+                return false;
+            }
+
+            if (!$this->isInvalidadorWaived($condition, $registration)) {
+                // Condição não releva (branco ou satisfeita) → aplica
+                return false;
+            }
+            // Relevado — continua verificando os demais campos
+        }
+
+        return true;
+    }
+
+    /**
+     * Determina se um invalidador deve ser relevado para esta inscrição.
+     *
+     * Regra (spec — Regra de Negócio):
+     * - Branco (qualquer campo condicional vazio) → NÃO relevado (branco invalida).
+     * - Todas as cláusulas satisfeitas → NÃO relevado (condição atendida, aplica normal).
+     * - Alguma cláusula não-satisfeita (sem branco) → RELEVADO.
+     *
+     * @param array|object $condition { clauses: [{ field, values }] }
+     * @param Registration $registration
+     * @return bool True se o invalidador deve ser relevado.
+     */
+    private function isInvalidadorWaived($condition, Registration $registration): bool
+    {
+        $clauses = is_object($condition) ? ($condition->clauses ?? []) : ($condition['clauses'] ?? []);
+
+        foreach ($clauses as $clause) {
+            $clause = (array) $clause;
+            $fieldName = $clause['field'] ?? '';
+            $accepted = $clause['values'] ?? [];
+
+            $value = $this->readRegistrationFieldValue($registration, $fieldName);
+
+            // Branco → não relevado (branco invalida)
+            if ($this->isBlankValue($value)) {
+                return false;
+            }
+
+            // Cláusula não satisfeita → relevado
+            if (!$this->valueMatchesAccepted($value, $accepted)) {
+                return true;
+            }
+        }
+
+        // Todas as cláusulas satisfeitas → não relevado
+        return false;
+    }
+
+    /**
+     * Lê o valor de um campo do formulário da inscrição (metadata registrada).
+     *
+     * @param Registration $registration
+     * @param string $fieldName Ex.: 'appliedForQuota', 'field_42'
+     * @return mixed
+     */
+    private function readRegistrationFieldValue(Registration $registration, string $fieldName)
+    {
+        $app = App::i();
+        $app->disableAccessControl();
+        try {
+            $value = $registration->getMetadata($fieldName);
+        } finally {
+            $app->enableAccessControl();
+        }
+
+        return $value;
+    }
+
+    /**
+     * Verifica se o valor é considerado "branco" (vazio/nulo).
+     *
+     * @param mixed $value
+     * @return bool
+     */
+    private function isBlankValue($value): bool
+    {
+        if ($value === null || $value === '') {
+            return true;
+        }
+        if (is_string($value) && trim($value) === '') {
+            return true;
+        }
+        // Boolean false NÃO é branco — é um valor deliberado (Desmarcado)
+        return false;
+    }
+
+    /**
+     * Verifica se o valor do campo satisfaz a cláusula (igualdade, OU entre aceitos).
+     *
+     * @param mixed $fieldValue
+     * @param array $acceptedValues
+     * @return bool
+     */
+    private function valueMatchesAccepted($fieldValue, array $acceptedValues): bool
+    {
+        $norm = $this->normalizeComparable($fieldValue);
+
+        // Campo multivalorado (checkboxes/JSON) → interseção não-vazia
+        if (is_array($norm)) {
+            foreach ($norm as $v) {
+                if ($this->anyAcceptedMatches($v, $acceptedValues)) {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        return $this->anyAcceptedMatches($norm, $acceptedValues);
+    }
+
+    /**
+     * @param mixed $scalarValue
+     * @param array $acceptedValues
+     * @return bool
+     */
+    private function anyAcceptedMatches($scalarValue, array $acceptedValues): bool
+    {
+        $target = $this->normalizeComparable($scalarValue);
+        foreach ($acceptedValues as $accepted) {
+            if ($this->normalizeComparable($accepted) === $target) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Normaliza um valor para comparação por igualdade.
+     *
+     * Booleanos e suas representações em string ('1'/'0', 'true'/'false') são
+     * normalizados para '1'/'0'. Strings são trimadas. JSON de arrays é decodificado.
+     *
+     * @param mixed $v
+     * @return string|array
+     */
+    private function normalizeComparable($v)
+    {
+        if (is_bool($v)) {
+            return $v ? '1' : '0';
+        }
+        if ($v === 'true') {
+            return '1';
+        }
+        if ($v === 'false') {
+            return '0';
+        }
+        if (is_string($v)) {
+            $decoded = json_decode($v, true);
+            if (is_array($decoded)) {
+                return $decoded;
+            }
+            // '1'/'0' numéricos para campos booleanos armazenados como string
+            if ($v === '1') {
+                return '1';
+            }
+            if ($v === '0') {
+                return '0';
+            }
+            return trim($v);
+        }
+        if (is_array($v)) {
+            return $v;
+        }
+
+        return (string) $v;
     }
 
     /**
