@@ -57,6 +57,56 @@ class RegistrationPdfFormatterTest extends TestCase
         $this->assertStringNotContainsString('publicLocation', $formatted);
     }
 
+    public function testFormatsLocationFieldObjectAsReadableLines(): void
+    {
+        $config = (object) [
+            'fieldType' => 'agent-owner-field',
+            'config' => (object) [
+                'entityField' => '@location',
+            ],
+        ];
+
+        $value = (object) [
+            'address_postalCode' => '79074055',
+            'address_level0' => 'BR',
+            'address_level1' => null,
+            'address_level2' => 'MS',
+            'address_level3' => null,
+            'address_level4' => 'Campo Grande',
+            'address_level5' => null,
+            'address_level6' => 'Jardim Monte Alegre',
+            'address_line1' => 'Rua Cefalândia, 15',
+            'address_line2' => 'Teste teste',
+            'endereco' => 'Rua Cefalândia, 15, Teste teste - Jardim Monte Alegre - Campo Grande/MS - CEP: 79074-055',
+            'location' => (object) [
+                'latitude' => '0',
+                'longitude' => '0',
+            ],
+            'publicLocation' => true,
+            'En_Pais' => 'BR',
+        ];
+
+        $formatted = RegistrationPdfFormatter::formatFieldValue($config, $value);
+
+        $this->assertSame(
+            implode("\n", [
+                'Código postal: 79074-055',
+                'País: BR',
+                'Estado/Província: MS',
+                'Município/Cidade/Comune: Campo Grande',
+                'Bairro: Jardim Monte Alegre',
+                'Endereço: Rua Cefalândia, 15',
+                'Complemento: Teste teste',
+                'endereco: Rua Cefalândia, 15, Teste teste - Jardim Monte Alegre - Campo Grande/MS - CEP: 79074-055',
+            ]),
+            $formatted
+        );
+
+        $this->assertStringNotContainsString('address_postalCode', $formatted);
+        $this->assertStringNotContainsString('latitude', $formatted);
+        $this->assertStringNotContainsString('publicLocation', $formatted);
+    }
+
     public function testFormatsCustomTableFieldAsHtmlTable(): void
     {
         $config = (object) [
@@ -92,5 +142,31 @@ class RegistrationPdfFormatterTest extends TestCase
         $this->assertStringContainsString('<td>12/05/1990</td>', $formatted);
         $this->assertStringContainsString('<td>Produção</td>', $formatted);
         $this->assertStringNotContainsString('Array', $formatted);
+    }
+
+    public function testFormatsAddressesFieldAsHtmlList(): void
+    {
+        $config = (object) [
+            'fieldType' => 'addresses',
+        ];
+
+        $value = [
+            [
+                'logradouro' => 'Rua das Flores',
+                'numero' => '123',
+                'bairro' => 'Centro',
+                'cidade' => 'Campo Grande',
+                'estado' => 'MS',
+                'cep' => '79000-000',
+                'complemento' => 'Sala <script>',
+            ],
+        ];
+
+        $formatted = RegistrationPdfFormatter::formatFieldValueAsHtml($config, $value);
+
+        $this->assertStringContainsString('<ul class="address-list">', $formatted);
+        $this->assertStringContainsString('<li>Rua das Flores, nº 123 - Centro, Campo Grande/MS, 79000-000 (Sala &lt;script&gt;)</li>', $formatted);
+        $this->assertStringNotContainsString('Array', $formatted);
+        $this->assertStringNotContainsString('<script>', $formatted);
     }
 }

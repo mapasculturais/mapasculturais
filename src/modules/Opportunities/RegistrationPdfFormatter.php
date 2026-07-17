@@ -8,7 +8,7 @@ class RegistrationPdfFormatter
 {
     public static function formatFieldValue(object $fieldConfig, mixed $value): string
     {
-        if (self::isLocationField($fieldConfig) && is_array($value)) {
+        if (self::isLocationField($fieldConfig) && (is_array($value) || is_object($value))) {
             return self::formatLocationValue($value);
         }
 
@@ -21,6 +21,10 @@ class RegistrationPdfFormatter
 
     public static function formatFieldValueAsHtml(object $fieldConfig, mixed $value): string
     {
+        if (self::isAddressesField($fieldConfig) && is_array($value)) {
+            return self::formatAddressesValueAsHtml($value);
+        }
+
         if (self::isCustomTableField($fieldConfig) && is_array($value)) {
             return self::formatCustomTableValueAsHtml($fieldConfig, $value);
         }
@@ -46,6 +50,59 @@ class RegistrationPdfFormatter
     private static function isCustomTableField(object $fieldConfig): bool
     {
         return ($fieldConfig->fieldType ?? null) === 'custom-table';
+    }
+
+    private static function isAddressesField(object $fieldConfig): bool
+    {
+        return ($fieldConfig->fieldType ?? null) === 'addresses';
+    }
+
+    private static function formatAddressesValueAsHtml(array $addresses): string
+    {
+        if (!$addresses) {
+            return '';
+        }
+
+        $html = '<ul class="address-list">';
+
+        foreach ($addresses as $address) {
+            $line = self::formatAddressListItem($address);
+
+            if ($line === '') {
+                continue;
+            }
+
+            $html .= '<li>' . self::escape($line) . '</li>';
+        }
+
+        return $html === '<ul class="address-list">' ? '' : $html . '</ul>';
+    }
+
+    private static function formatAddressListItem(mixed $address): string
+    {
+        if (!is_array($address) && !is_object($address)) {
+            return self::cleanScalar($address);
+        }
+
+        $logradouro = self::cleanScalar(self::getConfigValue($address, 'logradouro'));
+        $numero = self::cleanScalar(self::getConfigValue($address, 'numero'));
+        $bairro = self::cleanScalar(self::getConfigValue($address, 'bairro'));
+        $cidade = self::cleanScalar(self::getConfigValue($address, 'cidade'));
+        $estado = self::cleanScalar(self::getConfigValue($address, 'estado'));
+        $cep = self::cleanScalar(self::getConfigValue($address, 'cep'));
+        $complemento = self::cleanScalar(self::getConfigValue($address, 'complemento'));
+
+        if (!$logradouro && !$numero && !$bairro && !$cidade && !$estado && !$cep && !$complemento) {
+            return '';
+        }
+
+        $line = sprintf('%s, nº %s - %s, %s/%s, %s', $logradouro, $numero, $bairro, $cidade, $estado, $cep);
+
+        if ($complemento !== '') {
+            $line .= sprintf(' (%s)', $complemento);
+        }
+
+        return trim($line, " \t\n\r\0\x0B,-/");
     }
 
     private static function formatCustomTableValueAsHtml(object $fieldConfig, array $rows): string
@@ -101,17 +158,13 @@ class RegistrationPdfFormatter
         return $value;
     }
 
-    private static function formatLocationValue(array $value): string
+    private static function formatLocationValue(array|object $value): string
     {
-        $country = self::cleanScalar($value['address_level0'] ?? $value['En_Pais'] ?? null);
+        $country = self::cleanScalar(self::getConfigValue($value, 'address_level0', self::getConfigValue($value, 'En_Pais')));
         $lines = [];
 
         foreach (self::locationDisplayKeys() as $key) {
-            if (!array_key_exists($key, $value)) {
-                continue;
-            }
-
-            $item = self::cleanScalar($value[$key]);
+            $item = self::cleanScalar(self::getConfigValue($value, $key));
             if ($item === '') {
                 continue;
             }
