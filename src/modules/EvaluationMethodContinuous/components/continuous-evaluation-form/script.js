@@ -32,8 +32,8 @@ app.component('continuous-evaluation-form', {
     },
 
     created() {
-        this.formData['data'] = {};
-        const formData = this.evaluationData || this.skeleton();
+        this.formData['data'] = this.skeleton().data;
+        const formData = this.evaluationData;
 
         for (let key in formData.data) {
             this.formData.data[key] = formData.data[key];
@@ -155,8 +155,9 @@ app.component('continuous-evaluation-form', {
             let error = false;
             const global = useGlobalState();
 
-            Object.keys(this.formData.data).forEach(key => {
-                if (!this.formData.data[key] || this.formData.data[key] === '') {
+            ['status', 'obs'].forEach(key => {
+                const value = this.formData.data[key];
+                if (value === null || value === undefined || String(value).trim() === '') {
                     messages.error(this.text('emptyField') + ' ' + this.dictFields(key) + ' ' + this.text('required'));
                     error = true;
                 }

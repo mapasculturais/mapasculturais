@@ -144,6 +144,61 @@ class Module extends \MapasCulturais\Module {
             }
         });
 
+        // Formata campos JSON complexos como texto legível nas exportações HTML/Excel
+        $formatSnapshot = function ($snapshot): string {
+            $goals = $snapshot->goals ?? [];
+            if (empty($goals)) {
+                return i::__('(sem metas)');
+            }
+
+            $status_labels = [
+                0  => i::__('programada'),
+                1  => i::__('em andamento'),
+                2  => i::__('atrasada'),
+                3  => i::__('cancelada'),
+                10 => i::__('concluída'),
+            ];
+
+            $status_counts = [];
+            $total_deliveries = 0;
+
+            foreach ($goals as $goal) {
+                $status = $goal->status ?? 0;
+                $label = $status_labels[$status] ?? (string) $status;
+                $status_counts[$label] = ($status_counts[$label] ?? 0) + 1;
+                $total_deliveries += count($goal->deliveries ?? []);
+            }
+
+            $total_goals = count($goals);
+            $parts = [];
+            foreach ($status_counts as $label => $count) {
+                $parts[] = "$count $label";
+            }
+
+            $summary = "$total_goals " . i::__('meta(s)') . ' — ' . implode(', ', $parts);
+            $summary .= ' (' . "$total_deliveries " . i::__('entrega(s) total') . ')';
+
+            return $summary;
+        };
+
+        $formatFields = function (&$hook_data) use ($formatSnapshot) {
+            foreach ($hook_data['data'] as &$entity) {
+                if (!empty($entity['workplanSnapshot']) && is_object($entity['workplanSnapshot'])) {
+                    $entity['workplanSnapshot'] = $formatSnapshot($entity['workplanSnapshot']);
+                }
+                if (!empty($entity['goalStatuses']) && (is_object($entity['goalStatuses']) || is_array($entity['goalStatuses']))) {
+                    $gs = (array) $entity['goalStatuses'];
+                    $entity['goalStatuses'] = ($gs[10] ?? 0) . '/' . ($gs['numGoals'] ?? 0) . ' ' . i::__('concluídas');
+                }
+                if (!empty($entity['workplanProxy']) && (is_object($entity['workplanProxy']) || is_array($entity['workplanProxy']))) {
+                    $entity['workplanProxy'] = json_encode($entity['workplanProxy'], JSON_UNESCAPED_UNICODE);
+                }
+            }
+        };
+
+        $app->hook('api.response(html).array(Entities):before', $formatFields);
+        $app->hook('api.response(excel).array(Entities):before', $formatFields);
+
     }
 
     public function register() {

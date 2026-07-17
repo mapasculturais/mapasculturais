@@ -5,9 +5,18 @@ Todas as mudanças notáveis no projeto serão documentadas neste arquivo.
 O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/)
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [UNRELEASED]
+## [Unreleased]
 ### Melhorias
 - Melhora a exportação do PDF de inscrição para exibir campos de endereço e tabela em formato legível
+
+### Correções
+- Corrige a listagem de fases da oportunidade para exibir corretamente fases de avaliação na configuração
+- Corrige o cálculo do bônus de pontuação para campos de múltipla escolha (`checkboxes`) quando configurados com `eligibleValues`, aplicando apenas o bônus correspondente às opções efetivamente selecionadas
+- Corrige avisos de validação do monitoramento que apareciam indevidamente na fase de inscrição
+- Corrige exportação de campos multiselect do plano de trabalho para evitar valores "Array | Array"
+- Corrige o carregamento da configuração de cotas em oportunidades antigas sem regras de cotas cadastradas.
+- Corrige erro na configuração de formulário causado por valores numéricos salvos como texto em campos de limite de opções, linhas e arquivos
+- Corrige a validação da resposta do recurso para impedir concluir ou enviar avaliação contínua sem selecionar o status da inscrição
 
 ## [7.8.0] - 2026-07-02
 ### Novas Funcionalidades

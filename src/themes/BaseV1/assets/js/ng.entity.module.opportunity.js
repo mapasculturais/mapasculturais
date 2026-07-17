@@ -35,6 +35,32 @@
         return field.groupName || field.fieldName || ('id-' + field.id);
     }
 
+    var NUMERIC_FIELD_CONFIG_KEYS = ['maxOptions', 'minRows', 'maxRows', 'maxFiles', 'maxVideos'];
+
+    function normalizeNumericFieldConfig(config) {
+        if (!config || typeof config !== 'object' || Array.isArray(config)) {
+            return;
+        }
+
+        NUMERIC_FIELD_CONFIG_KEYS.forEach(function(key) {
+            var value = config[key];
+
+            if (typeof value !== 'string') {
+                return;
+            }
+
+            var trimmed = value.trim();
+            if (trimmed === '') {
+                return;
+            }
+
+            var numberValue = Number(trimmed);
+            if (Number.isFinite(numberValue)) {
+                config[key] = numberValue;
+            }
+        });
+    }
+
     function _getStatusSlug(status) {
         switch (status) {
             case 0: return 'draft'; break;
@@ -207,6 +233,7 @@
                     if (typeof field.config !== 'object' || field.config instanceof Array) {
                         field.config = {};
                     }
+                    normalizeNumericFieldConfig(field.config);
 
                     // Suporte ao novo formato (Brazil/Other) e retrocompatibilidade (requiredAddressFields)
                     if (field.config && field.config.entityField === '@location') {
@@ -518,6 +545,7 @@ module.controller('RegistrationConfigurationsController', ['$scope', '$rootScope
         if (typeof field.config !== 'object' || field.config instanceof Array) {
             field.config = {};
         }
+        normalizeNumericFieldConfig(field.config);
         if (field.config && field.config.entityField === '@location') {
             // Suporta novo formato (Brazil/Other) ou legado
             var hasBrazil = field.config.requiredAddressFieldsBrazil !== undefined;
@@ -634,6 +662,8 @@ module.controller('RegistrationConfigurationsController', ['$scope', '$rootScope
             } else if (typeof config !== 'object' || Array.isArray(config)) {
                 field.config = {};
             }
+
+            normalizeNumericFieldConfig(field.config);
         }
 
         function normalizeFieldOptionsForDisplay(field) {
