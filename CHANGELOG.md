@@ -12,6 +12,7 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Corrige avisos de validação do monitoramento que apareciam indevidamente na fase de inscrição
 - Corrige exportação de campos multiselect do plano de trabalho para evitar valores "Array | Array"
 - Corrige o carregamento da configuração de cotas em oportunidades antigas sem regras de cotas cadastradas.
+- Corrige erro na configuração de formulário causado por valores numéricos salvos como texto em campos de limite de opções, linhas e arquivos
 
 ## [7.8.0] - 2026-07-02
 ### Novas Funcionalidades
