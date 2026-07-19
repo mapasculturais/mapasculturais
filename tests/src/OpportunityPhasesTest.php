@@ -34,6 +34,37 @@ class OpportunityPhasesTest extends TestCase
     private const REGISTRATION_MODEL_TEST_STEP_NAMES = ['Etapa 1', 'Etapa 2', 'Etapa 3', 'Etapa 4'];
 
 
+    function testPhasesIncludesEvaluationTypeForConfigRendering(): void
+    {
+        $admin = $this->userDirector->createUser('admin');
+        $this->login($admin);
+
+        /** @var Opportunity */
+        $opportunity = $this->opportunityBuilder
+            ->reset(owner: $admin->profile, owner_entity: $admin->profile)
+            ->fillRequiredProperties()
+            ->firstPhase()
+                ->setRegistrationPeriod(new Open)
+                ->done()
+            ->save()
+            ->addEvaluationPhase(EvaluationMethods::simple)
+                ->setEvaluationPeriod(new ConcurrentEndingAfter)
+                ->save()
+                ->done()
+            ->refresh()
+            ->getInstance();
+
+        $phases = $opportunity->phases;
+        $evaluation_phase = array_values(array_filter($phases, function ($phase) {
+            return isset($phase->evaluationFrom, $phase->evaluationTo);
+        }))[0] ?? null;
+
+        $this->assertNotNull($evaluation_phase, 'Garantindo que a lista de fases contenha uma fase de avaliação');
+        $this->assertObjectHasProperty('type', $evaluation_phase, 'Garantindo que a fase de avaliação traga o tipo usado pelo template');
+        $this->assertEquals('simple', $evaluation_phase->type->id);
+        $this->assertNotEmpty($evaluation_phase->type->name);
+    }
+
     /**
      * Garante que, após excluir a primeira fase de avaliação, a segunda fase de avaliação permaneça vinculada à primeira fase de coleta de dados.
      */

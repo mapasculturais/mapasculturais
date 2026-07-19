@@ -2,9 +2,16 @@
 
 class OpportunityWorkplanMonitoringSummaryStaticTest extends \PHPUnit\Framework\TestCase
 {
+    private function sourcePath(string $path): string
+    {
+        return realpath(__DIR__ . '/../src/' . $path)
+            ?: realpath(__DIR__ . '/../../src/' . $path)
+            ?: '';
+    }
+
     public function testMonitoringValidationIsGuardedByReportingPhase(): void
     {
-        $module = file_get_contents(__DIR__ . '/../../src/modules/OpportunityWorkplan/Module.php');
+        $module = file_get_contents($this->sourcePath('modules/OpportunityWorkplan/Module.php'));
 
         // Validação de monitoramento deve estar presente no hook sendValidationErrors
         $this->assertStringContainsString('isReportingPhase', $module);

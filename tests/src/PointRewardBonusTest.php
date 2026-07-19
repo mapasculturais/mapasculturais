@@ -34,7 +34,7 @@ class PointRewardBonusTest extends TestCase
      *
      * Retorna array com [opportunity, evaluation_phase_builder, field].
      */
-    private function createOpportunityWithBonusField(): array
+    private function createOpportunityWithBonusField(string $field_type = 'select'): array
     {
         $admin = $this->userDirector->createUser('admin');
         $this->login($admin);
@@ -48,7 +48,7 @@ class PointRewardBonusTest extends TestCase
                 ->createStep('Dados')
                 ->createField(
                     identifier: 'raca',
-                    field_type: 'select',
+                    field_type: $field_type,
                     title: 'Raça/Cor',
                     options: ['Preta', 'Parda', 'Branca']
                 )
@@ -77,13 +77,13 @@ class PointRewardBonusTest extends TestCase
     /**
      * Cria uma inscrição enviada com valor "Preta" no campo raça.
      */
-    private function createRegistrationWithRacaPreta($opportunity, $field): Registration
+    private function createRegistrationWithRacaPreta($opportunity, $field, string|array $value = 'Preta'): Registration
     {
         $field_name = $field->fieldName;
 
         return $this->registrationDirector->createSentRegistration(
             $opportunity,
-            data: [$field_name => 'Preta']
+            data: [$field_name => $value]
         );
     }
 
@@ -103,6 +103,30 @@ class PointRewardBonusTest extends TestCase
                 ->send();
 
         $app->enableAccessControl();
+    }
+
+    private function saveEvaluationMethodConfiguration($emc): void
+    {
+        foreach ($emc->getCommittee() as $relation) {
+            $metadata = $relation->metadata;
+
+            if ($metadata instanceof \stdClass) {
+                $metadata = json_decode(json_encode($metadata), true) ?: [];
+            }
+
+            $metadata = is_array($metadata) ? $metadata : [];
+            $metadata['summary'] = (array) ($metadata['summary'] ?? []);
+            $metadata['summary'] += [
+                'pending' => 0,
+                'started' => 0,
+                'completed' => 0,
+                'sent' => 0,
+            ];
+
+            $relation->metadata = $metadata;
+        }
+
+        $emc->save(true);
     }
 
     // =====================================================================
@@ -128,7 +152,7 @@ class PointRewardBonusTest extends TestCase
                 'fieldPercent' => 10,
             ],
         ];
-        $emc->save(true);
+        $this->saveEvaluationMethodConfiguration($emc);
 
         $registration = $this->createRegistrationWithRacaPreta($opportunity, $field);
         $this->sendTechnicalEvaluation($eval_builder, $registration, 8.0);
@@ -169,7 +193,7 @@ class PointRewardBonusTest extends TestCase
                 ],
             ],
         ];
-        $emc->save(true);
+        $this->saveEvaluationMethodConfiguration($emc);
 
         $registration = $this->createRegistrationWithRacaPreta($opportunity, $field);
         $this->sendTechnicalEvaluation($eval_builder, $registration, 8.0);
@@ -210,7 +234,7 @@ class PointRewardBonusTest extends TestCase
                 ],
             ],
         ];
-        $emc->save(true);
+        $this->saveEvaluationMethodConfiguration($emc);
 
         $registration = $this->createRegistrationWithRacaPreta($opportunity, $field);
         $this->sendTechnicalEvaluation($eval_builder, $registration, 8.0);
@@ -252,7 +276,7 @@ class PointRewardBonusTest extends TestCase
                 ],
             ],
         ];
-        $emc->save(true);
+        $this->saveEvaluationMethodConfiguration($emc);
 
         $registration = $this->createRegistrationWithRacaPreta($opportunity, $field);
         $this->sendTechnicalEvaluation($eval_builder, $registration, 8.0);
@@ -294,7 +318,7 @@ class PointRewardBonusTest extends TestCase
                 ],
             ],
         ];
-        $emc->save(true);
+        $this->saveEvaluationMethodConfiguration($emc);
 
         $registration = $this->createRegistrationWithRacaPreta($opportunity, $field);
         $this->sendTechnicalEvaluation($eval_builder, $registration, 8.0);
@@ -319,7 +343,7 @@ class PointRewardBonusTest extends TestCase
                 ],
             ],
         ];
-        $emc->save(true);
+        $this->saveEvaluationMethodConfiguration($emc);
 
         $registration = $registration->refreshed();
 
@@ -348,7 +372,7 @@ class PointRewardBonusTest extends TestCase
                 ],
             ],
         ];
-        $emc->save(true);
+        $this->saveEvaluationMethodConfiguration($emc);
 
         $registration = $this->createRegistrationWithRacaPreta($opportunity, $field);
         $this->sendTechnicalEvaluation($eval_builder, $registration, 8.0);
@@ -365,7 +389,7 @@ class PointRewardBonusTest extends TestCase
 
         $emc = $opportunity->evaluationMethodConfiguration->refreshed();
         $emc->isActivePointReward = false;
-        $emc->save(true);
+        $this->saveEvaluationMethodConfiguration($emc);
 
         $registration = $registration->refreshed();
 
@@ -393,7 +417,7 @@ class PointRewardBonusTest extends TestCase
                 ],
             ],
         ];
-        $emc->save(true);
+        $this->saveEvaluationMethodConfiguration($emc);
 
         $opportunity->publishRegistrations();
         $opportunity = $opportunity->refreshed();
@@ -448,7 +472,7 @@ class PointRewardBonusTest extends TestCase
                 ],
             ],
         ];
-        $emc->save(true);
+        $this->saveEvaluationMethodConfiguration($emc);
 
         $registration = $this->createRegistrationWithRacaPreta($opportunity, $field);
         $this->sendTechnicalEvaluation($eval_builder, $registration, 8.0);
@@ -495,7 +519,7 @@ class PointRewardBonusTest extends TestCase
                 ],
             ],
         ];
-        $emc->save(true);
+        $this->saveEvaluationMethodConfiguration($emc);
 
         $registration = $this->createRegistrationWithRacaPreta($opportunity, $field);
         $this->sendTechnicalEvaluation($eval_builder, $registration, 7.0);
@@ -510,6 +534,44 @@ class PointRewardBonusTest extends TestCase
 
         // 7 + 3 = 10
         $this->assertEquals('10.00', $registration->score, 'Bônus fixo de 3 pontos sobre nota 7 deve resultar em 10');
+    }
+
+    public function testPointRewardOnlyAppliesRuleForSelectedMultipleChoiceOption(): void
+    {
+        [$opportunity, $eval_builder, $field] = $this->createOpportunityWithBonusField('checkboxes');
+
+        $emc = $opportunity->evaluationMethodConfiguration;
+        $emc->isActivePointReward = true;
+        $emc->pointRewardRoof = 15;
+        $emc->pointReward = (object) [
+            'type' => 'percentage',
+            'rules' => array_map(
+                fn($option) => (object) [
+                    'field' => $field->id,
+                    'value' => (object) [],
+                    'eligibleValues' => [$option],
+                    'bonusValue' => 5,
+                ],
+                ['Preta', 'Parda', 'Branca']
+            ),
+        ];
+        $emc->save(true);
+
+        $registration = $this->createRegistrationWithRacaPreta($opportunity, $field, ['Preta']);
+        $this->sendTechnicalEvaluation($eval_builder, $registration, 8.0);
+
+        $app = App::i();
+        $app->disableAccessControl();
+        $registration = $registration->refreshed();
+        $registration->consolidateResult();
+        $app->enableAccessControl();
+
+        $registration = $registration->refreshed();
+
+        $this->assertEquals('8.40', $registration->score, 'Somente a opção marcada deve aplicar bônus');
+        $this->assertEquals(5, $registration->appliedPointReward->percentage);
+        $this->assertCount(1, $registration->appliedPointReward->rules);
+        $this->assertEquals('Preta', $registration->appliedPointReward->rules[0]->value);
     }
 
     // =====================================================================
@@ -536,7 +598,7 @@ class PointRewardBonusTest extends TestCase
                 ],
             ],
         ];
-        $emc->save(true);
+        $this->saveEvaluationMethodConfiguration($emc);
 
         $registration = $this->createRegistrationWithRacaPreta($opportunity, $field);
         $this->sendTechnicalEvaluation($eval_builder, $registration, 8.0);
@@ -577,7 +639,7 @@ class PointRewardBonusTest extends TestCase
                 ],
             ],
         ];
-        $emc->save(true);
+        $this->saveEvaluationMethodConfiguration($emc);
 
         $registration = $this->createRegistrationWithRacaPreta($opportunity, $field);
         $this->sendTechnicalEvaluation($eval_builder, $registration, 8.0);
@@ -618,7 +680,7 @@ class PointRewardBonusTest extends TestCase
                 ],
             ],
         ];
-        $emc->save(true);
+        $this->saveEvaluationMethodConfiguration($emc);
 
         $registration = $this->createRegistrationWithRacaPreta($opportunity, $field);
         $this->sendTechnicalEvaluation($eval_builder, $registration, 8.0);
@@ -655,7 +717,7 @@ class PointRewardBonusTest extends TestCase
                 ],
             ],
         ];
-        $emc->save(true);
+        $this->saveEvaluationMethodConfiguration($emc);
 
         $registration = $this->createRegistrationWithRacaPreta($opportunity, $field);
         $this->sendTechnicalEvaluation($eval_builder, $registration, 8.0);
@@ -696,7 +758,7 @@ class PointRewardBonusTest extends TestCase
                 ],
             ],
         ];
-        $emc->save(true);
+        $this->saveEvaluationMethodConfiguration($emc);
 
         // Inscrição com valor "Branca" — não atende a regra para "Preta"
         $field_name = $field->fieldName;
@@ -739,7 +801,7 @@ class PointRewardBonusTest extends TestCase
                 ],
             ],
         ];
-        $emc->save(true);
+        $this->saveEvaluationMethodConfiguration($emc);
 
         $registration = $this->createRegistrationWithRacaPreta($opportunity, $field);
         $this->sendTechnicalEvaluation($eval_builder, $registration, 8.0);

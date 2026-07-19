@@ -5,45 +5,68 @@ Todas as mudanças notáveis no projeto serão documentadas neste arquivo.
 O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/)
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [UNRELEASED]
-### Novas Funcionalidades
-- Módulo de **fase de execução** que permite ao gestor configurar uma fase de acompanhamento para os agentes contemplados após a publicação do resultado. Durante esta fase, o agente contemplado pode abrir múltiplos **pedidos de alteração** no projeto aprovado — troca de data, substituição de item de orçamento, mudança de local, entre outros. Cada pedido é avaliado individualmente por uma comissão configurada pelo gestor (mesmo modelo de avaliação simplificada já existente nas fases de seleção). Os pedidos ficam como registro histórico das alterações aprovadas durante a vigência do projeto e não interferem no fluxo das fases seguintes de prestação de informações.
-- **Bônus de pontuação configurável** no método de avaliação técnica, permitindo ao gestor definir regras de bonificação por políticas afirmativas em percentual ou ponto fixo. A configuração permite controlar o valor máximo do bônus, aplicar o acréscimo às inscrições elegíveis, exibir corretamente o bônus nas tabelas e exportações, reaplicar a pontuação quando as regras forem alteradas e manter compatibilidade com configurações legadas por meio de normalização automática.
-- Implementa configuração que permide definir a imagem de avatar de qualquer entidade como obrigatória
-- Adiciona botão para duplicar campos do formulário de inscrição, criando a cópia logo abaixo do campo original
-- Adiciona botão para duplicar anexos do formulário de inscrição, incluindo a cópia do arquivo modelo e inserindo o novo anexo logo abaixo do original
-
+## [Unreleased]
 ### Melhorias
-- Aprimora o módulo de **Plano de Metas e Monitoramento** com campos configuráveis para orientar o preenchimento das metas e entregas previstas na inscrição, incluindo período, orçamento, segmento artístico-cultural, composição de equipe, estratégias de comunicação, acessibilidade, comunidades, receita e evidências. Na etapa de monitoramento, o agente informa os dados executados das entregas a partir do que foi planejado, com campos equivalentes para acompanhamento da execução, validações de obrigatoriedade conforme a configuração da oportunidade e exibição organizada entre formulário, ficha de inscrição, avaliação e exportação.
-- Integra o salvamento do plano de metas às ações gerais de salvar, salvar e sair e enviar a inscrição, removendo o botão específico de salvar meta
-- Permite exibir campos do plano de trabalho na ficha de avaliação
-- Adiciona os campos do plano de trabalho e monitoramento na exportação das inscrições
-- Reorganiza os campos de entrega do plano de trabalho e monitoramento para manter a mesma ordem entre inscrição, visualização e avaliação
-- Melhora a validação de campos obrigatórios do plano de trabalho e monitoramento conforme as configurações da oportunidade
-- Utiliza o componente de moeda nos campos monetários do monitoramento
-- Adiciona um campo de busca para encontrar colunas por palavra-chave na listagem por tabela nas entidades.
-- Implementa a funcionalidade que permite ao saasSuperAdmin ordenar globalmente as colunas das tabelas que utilizam o entity-table, por meio de drag and drop.
-- Suprime campo de RG do cadastro do agente e dos campos @ para prevalecer o uso do CIN (Carteira de  Identidade Nacional)
-- Ordena opções de tipos de campos da lista de campos @ em ordem alfabética
-- Ajusta exportação da planilha para organizar as colunas segundo a ordem definida pelo superSaasAdmin
-- Melhora a exibição do botão minha conta no header para exibir o nome do perfil do agente responsável logado
-- Implementa visualização das datas de recurso no step vertical de fases
-- Adiciona configuração para exibir ou ocultar o detalhamento da avaliação anterior na fase de recurso
-- Exibe o detalhamento da avaliação da fase anterior para avaliadores da fase de recurso
-- Adiciona configuração para exigir foto de perfil do agente coletivo vinculado na inscrição para proponentes do tipo coletivo e pessoa jurídica
-- Adiciona números sequenciais nos avaliadores das comissões
-- Permite criar agentes no fluxo de inscrição de oportunidades respeitando as permissões: agente individual apenas para administradores e agente coletivo para usuários comuns quando exigido pela inscrição.
-- Permite buscar avaliadores por ID do agente no formato #ID e e-mail do usuário ao adicioná-los ou substituí-los nas comissões de avaliação.
-- Adiciona campos de CNPJ e mini currículo à listagem de pessoas dos formulários de inscrição, com validação de CPF e CNPJ.
-- Otimiza a construção das imagens Docker nos workflows de CI, develop e release candidate ao reutilizar o cache do Buildx armazenado no GitHub Actions.
-- Melhora a performance da criação de oportunidades a partir de modelos ao reduzir salvamentos repetidos de fases e metadados.
 - Adiciona configuração na fase de recurso para permitir solicitações de recurso em inscrições pendentes, atendendo editais que ainda não publicam a lista classificada e mantendo o deferimento do recurso apenas como registro da decisão, sem avanço automático entre fases.
 
 ### Correções
+- Corrige a listagem de fases da oportunidade para exibir corretamente fases de avaliação na configuração
+- Corrige o cálculo do bônus de pontuação para campos de múltipla escolha (`checkboxes`) quando configurados com `eligibleValues`, aplicando apenas o bônus correspondente às opções efetivamente selecionadas
 - Corrige avisos de validação do monitoramento que apareciam indevidamente na fase de inscrição
 - Corrige exportação de campos multiselect do plano de trabalho para evitar valores "Array | Array"
+- Corrige o carregamento da configuração de cotas em oportunidades antigas sem regras de cotas cadastradas.
+- Corrige erro na configuração de formulário causado por valores numéricos salvos como texto em campos de limite de opções, linhas e arquivos
+- Corrige a validação da resposta do recurso para impedir concluir ou enviar avaliação contínua sem selecionar o status da inscrição
+
+## [7.8.0] - 2026-07-02
+### Novas Funcionalidades
+- Módulo de **fase de execução** para acompanhar projetos aprovados após o resultado. O agente contemplado pode abrir pedidos de alteração (data, orçamento, local etc.), cada um avaliado por uma comissão. Os pedidos ficam registrados no histórico e não atrapalham as fases seguintes de prestação de informações
+- Na fase de execução, os pedidos aparecem na **ficha da inscrição**, na **linha do tempo** e na **lista do gestor** — com identificação, número da inscrição original e ordem de criação. O gestor cria a fase por um modal simples e monta o formulário livremente, sem categorias fixas
+- **Bônus de pontuação configurável** na avaliação técnica, com regras por políticas afirmativas em percentual ou pontos fixos, teto máximo, exibição em tabelas e exportações, e compatibilidade com configurações antigas
+- Permite tornar a **foto de perfil obrigatória** em agentes, espaços, projetos, eventos e oportunidades, configurável por variáveis de ambiente em cada tipo de entidade
+- Adiciona botão para **duplicar campos** do formulário de inscrição, logo abaixo do original
+- Adiciona botão para **duplicar anexos** do formulário de inscrição, copiando também o arquivo modelo
+
+### Melhorias no Plano de Metas e Monitoramento
+- Amplia o **Plano de Metas e Monitoramento** com dezenas de campos novos e configuráveis para planejar metas e entregas (período, orçamento, equipe, comunicação, acessibilidade, comunidades, receita, evidências etc.) e registrar o que foi executado no acompanhamento
+- Permite ao gestor escolher quais campos são obrigatórios e tornar o **segmento artístico-cultural** configurável por oportunidade
+- Adiciona **tutorial passo a passo** no preenchimento do plano, da meta e de cada entrega
+- Permite **limitar a duração máxima do projeto** (em meses) e o **número máximo de entregas** por meta
+- Salva o plano de metas junto com as ações de salvar, salvar e sair e enviar a inscrição, sem botão separado de salvar meta
+- Mantém a **mesma ordem de campos** na inscrição, na visualização, na avaliação e na exportação
+- Exibe campos do plano na **ficha de avaliação** e inclui planejamento e monitoramento na **exportação das inscrições**
+- Usa formato de **moeda** nos campos de valores do monitoramento
+- Melhora as **validações de campos obrigatórios** conforme o que o gestor configurou na oportunidade
+- Preserva o **detalhamento de coautoria** ao salvar o plano
+- Corrige avisos de monitoramento que apareciam indevidamente já na fase de inscrição
+- Corrige exportação de campos de múltipla escolha que exibiam valores estranhos na planilha
+- Corrige envio de **arquivos nas entregas** do plano de metas
+
+### Melhorias nas avaliação
+- Implementa visualização das datas de recurso no step vertical de fases
+- Adiciona configuração para exibir ou ocultar o detalhamento da avaliação anterior na fase de recurso
+- Exibe o detalhamento da avaliação da fase anterior para avaliadores da fase de recurso
+- Adiciona **números sequenciais nos avaliadores** das comissões, na interface, na tabela e na planilha de avaliações, com atualização automática em editais já existentes
+- Permite buscar avaliadores por ID do agente no formato #ID e por e-mail do usuário ao adicioná-los ou substituí-los nas comissões de avaliação
+
+### Melhorias
+- Adiciona campo de busca para encontrar colunas por palavra-chave nas listagens em tabela das entidades
+- Permite ao saasSuperAdmin ordenar globalmente as colunas das tabelas que utilizam o entity-table, por meio de drag and drop
+- Suprime o campo RG do cadastro do agente e dos campos @, renomeia o CPF para **CPF / Carteira de Identidade Nacional (CIN)** e remove campos bancários da lista de campos @ do agente
+- Impede que usuários autenticados **menores de 18 anos** enviem mensagens de contato pelas páginas das entidades
+- Ordena alfabeticamente as opções de tipos de campos na lista de campos @
+- Ajusta exportação da planilha para organizar as colunas segundo a ordem definida pelo saasSuperAdmin
+- Melhora a exibição do botão Minha conta no header para exibir o nome do perfil do agente responsável logado
+- Adiciona configuração para exigir foto de perfil do agente coletivo vinculado na inscrição para proponentes do tipo coletivo e pessoa jurídica
+- Permite criar agentes no fluxo de inscrição de oportunidades respeitando as permissões: agente individual apenas para administradores e agente coletivo para usuários comuns quando exigido pela inscrição
+- Adiciona campos de CNPJ e minicurrículo à listagem de pessoas dos formulários de inscrição, com validação de CPF e CNPJ
+- Melhora a performance da criação de oportunidades a partir de modelos ao reduzir salvamentos repetidos de fases e metadados
+- Melhora a listagem de modelos ao identificar corretamente quais são oficiais pelo selo verificado
+
+### Correções
 - Corrige aviso de chave indefinida no campo de avatar do formulário de inscrição quando a obrigatoriedade está desativada
-- Evita erro ao selecionar inscrições de proponente coletivo para fases posteriores quando a oportunidade não utiliza vínculo com agente coletivo e não há selo configurado.
+- Corrige verificação de avatar obrigatório para não atrapalhar a criação de agente novo na inscrição
+- Evita erro ao selecionar inscrições de proponente coletivo para fases posteriores quando a oportunidade não utiliza vínculo com agente coletivo e não há selo configurado
 - Aplica texto de internacionalização faltante no componente opportunity-registration-table
 - Corrige acento faltante no texto "Gênero" na listagem de pessoas do formulário de inscrição
 - Corrige a exibição do nome do agente coletivo nos cards da tela Minhas inscrições
@@ -53,10 +76,32 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Corrige erro ao reordenar etapas na configuração do formulário de oportunidades
 - Corrige a exportação de oportunidades para não incluir datas das fases de avaliação quando a opção de exportar datas das fases estiver desmarcada
 - Corrige o cálculo ponderado dos subtotais na tela de avaliação técnica
-- Corrige os templates de email da fase de recurso
+- Corrige os templates de e-mail da fase de recurso
 - Corrige a exibição das opções de campos de seleção no formato radio para organizá-las verticalmente na ficha de inscrição
 - Corrige a ordenação das últimas planilhas exportadas para exibir os arquivos mais recentes primeiro
-- Corrige o uso de modelos de oportunidades para respeitar a visibilidade pública, validar permissões e preservar referências de campos condicionais.
+- Corrige o uso de modelos de oportunidades para respeitar a visibilidade pública, validar permissões, preservar referências de campos condicionais, evitar fase extra e tratar revisões anteriores ausentes
+- Corrige erro 500 na lista de inscrições causado por fases de prestação de informações no cálculo de fase anterior
+- Corrige erro na listagem de inscrições de fases sem avaliação configurada
+- Corrige validação de datas entre fases para respeitar uma sequência lógica
+- Corrige erro ao excluir configuração de avaliação que impedia excluir fases corretamente
+- Corrige personalização de cores no Theme Customizer quando o subsite ainda não tinha cores salvas
+- Corrige upload de arquivos xlsx no grupo de downloads das entidades
+- Reforça a validação de tipos de arquivo permitidos no upload
+- Corrige redirecionamento indevido para a tela de suporte ao abrir a ficha de uma inscrição
+- Melhora o funcionamento de popovers e seleção de entidade ao criar agente dentro da inscrição
+
+### Melhorias não funcionais
+- Otimiza a construção das imagens Docker nos workflows de CI, develop e release candidate ao reutilizar o cache do Buildx armazenado no GitHub Actions
+- Permite configurar o cabeçalho HTTP usado para identificar o IP do visitante em ambientes com proxy (ex.: Cloudflare), via variável `PROXY_HEADER`
+- Evita que a subida do ambiente falhe quando a tabela de papéis do sistema ainda não existe no banco
+- Adiciona atualizações automáticas de banco para normalizar bônus de pontuação antigos e preencher números sequenciais de avaliadores em editais existentes
+
+## [7.7.64] - 2026-07-02
+### Melhorias
+- Restringe a exclusão de critérios e seções de avaliação técnica e de qualificação documental: somente administradores podem excluir quando já existem avaliações iniciadas, concluídas ou enviadas
+- Ao excluir critério ou seção, remove automaticamente as notas/respostas correspondentes do legado das avaliações existentes e reconsolida o resultado
+- Exibe avisos distintos para administradores e demais usuários na configuração de critérios das avaliações técnica e de qualificação documental
+- Desabilita visualmente os botões de exclusão de critérios e seções para usuários sem permissão
 
 ## [7.7.63] - 2026-06-24
 ### Melhorias
