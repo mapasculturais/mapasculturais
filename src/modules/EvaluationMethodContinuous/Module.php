@@ -138,14 +138,12 @@ class Module extends \MapasCulturais\EvaluationMethod
     {   
         $errors = [];
 
-        foreach($data as $key => $val){
-            if($key === i::__('status') && !trim($val)) {
-                $errors[] = i::__('O campo Status é obrigatório');
-            }
-            
-            if($key === i::__('obs') && !trim($val)) {
-                $errors[] = i::__('O campo Observações é obrigatório');
-            }
+        if (!array_key_exists('status', $data) || trim((string) $data['status']) === '') {
+            $errors[] = i::__('O campo Status é obrigatório');
+        }
+
+        if (!array_key_exists('obs', $data) || trim((string) $data['obs']) === '') {
+            $errors[] = i::__('O campo Observações é obrigatório');
         }
 
         return $errors;
