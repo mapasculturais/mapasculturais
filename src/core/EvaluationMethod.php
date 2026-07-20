@@ -1150,6 +1150,11 @@ abstract class EvaluationMethod extends Module implements \JsonSerializable{
                         }
                     }
 
+                    // Ordena por contagem na comissão
+                    $count1 = $valuers_committee_registrations_count[$committee_name][$u1->id] ?? 0;
+                    $count2 = $valuers_committee_registrations_count[$committee_name][$u2->id] ?? 0;
+                    $result = $count1 <=> $count2;
+
                     // Se há quotas calculadas para esta comissão, ordena por espaço restante na quota
                     if(isset($committee_quotas[$committee_name])) {
                         $current1 = $valuers_committee_registrations_count[$committee_name][$u1->id] ?? 0;
@@ -1162,14 +1167,11 @@ abstract class EvaluationMethod extends Module implements \JsonSerializable{
                         $remaining2 = $quota2 - $current2;
                         
                         if($remaining1 !== $remaining2) {
-                            return $remaining2 <=> $remaining1;
+                            $result = $remaining2 <=> $remaining1;
                         }
                     }
-                    
-                    // Fallback: ordena por contagem na comissão (quem tem menos vem primeiro)
-                    $count1 = $valuers_committee_registrations_count[$committee_name][$u1->id] ?? 0;
-                    $count2 = $valuers_committee_registrations_count[$committee_name][$u2->id] ?? 0;
-                    return $count1 <=> $count2;
+
+                    return $result;
                 });
                 
                 // adiciona os avaliadores da comissão na inscrição
