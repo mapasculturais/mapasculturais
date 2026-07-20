@@ -497,6 +497,24 @@ class ApiQuery {
      * @var array
      */
     protected $_seals = [];
+
+    /**
+     * Filtro por status de selo (computed_status)
+     * @var array
+     */
+    protected $_sealStatus = [];
+
+    /**
+     * Incluir selos sensíveis no filtro de status de selo
+     * @var bool
+     */
+    protected $_sealStatusIncludeSensitive = false;
+
+    /**
+     * Mapeamento de permissão para visualizar selos sensíveis por entidade
+     * @var array|null
+     */
+    protected $__canViewSensitiveSeals = null;
     
     /**
      *
@@ -762,7 +780,9 @@ class ApiQuery {
     public function getFindOneResult() {
         $app = App::i();
         
-        $cache_key = $this->getCacheKey(__METHOD__, offset: $this->getOffset());
+        $dql = $this->getFindDQL();
+        $params = $this->getDqlParams();
+        $cache_key = $this->getCacheKey(__METHOD__, offset: $this->getOffset(), dql: $dql, params: $params);
 
         if($this->__useDQLCache && $app->rcache->contains($cache_key)) {
             return $app->rcache->fetch($cache_key);
@@ -774,8 +794,6 @@ class ApiQuery {
                 return $result[0];
             }
         }
-
-        $dql = $this->getFindDQL();
 
         $q = $this->em->createQuery($dql);
 
@@ -829,6 +847,18 @@ class ApiQuery {
      * @var array
      */
     private $_idsFilter = [];
+
+    /**
+     * Cache da cláusula WHERE gerada (invalidada quando _idsFilter muda)
+     * @var string|null
+     */
+    private $_whereCache = null;
+
+    /**
+     * Hash do _idsFilter usado para validar o cache do WHERE
+     * @var string|null
+     */
+    private $_whereCacheIdsFilterHash = null;
 
     /**
      * Retorna o resultado para subclasses
@@ -886,9 +916,13 @@ class ApiQuery {
      * @param int|null $limit
      * @return string
      */
-    function getCacheKey($method, string $select = null, $offset = null, $limit = null) {
-        $dql = $this->getFindDQL($select);
-        $params = $this->getDqlParams();
+    function getCacheKey($method, string $select = null, $offset = null, $limit = null, $dql = null, $params = null) {
+        if ($dql === null) {
+            $dql = $this->getFindDQL($select);
+        }
+        if ($params === null) {
+            $params = $this->getDqlParams();
+        }
 
         return md5(print_r([
             $method,
@@ -909,7 +943,9 @@ class ApiQuery {
     public function getFindResult(?string $select = null) {
         $app = App::i();
 
-        $cache_key = $this->getCacheKey(__METHOD__, $select, $this->getOffset(), $this->getLimit());
+        $dql = $this->getFindDQL($select);
+        $params = $this->getDqlParams();
+        $cache_key = $this->getCacheKey(__METHOD__, $select, $this->getOffset(), $this->getLimit(), $dql, $params);
 
         if($this->__useDQLCache && $app->rcache->contains($cache_key)) {
             return $app->rcache->fetch($cache_key);
@@ -920,7 +956,6 @@ class ApiQuery {
             $result = $this->getSubClassesResult();
             $this->__inSubclassesQuery = false;
         } else {
-            $dql = $this->getFindDQL($select);
             $q = $this->em->createQuery($dql);
             if($this->__useDQLCache){
                 $q->enableResultCache($this->__cacheTLS);
@@ -933,8 +968,6 @@ class ApiQuery {
             if (!$this->__inGetSubClassesResult && $limit = $this->getLimit()) {
                 $q->setMaxResults($limit);
             }
-    
-            $params = $this->getDqlParams();
     
             $q->setParameters($params);
             $this->logDql($dql, __FUNCTION__, $params);
@@ -982,21 +1015,19 @@ class ApiQuery {
     public function getCountResult() {
         $app = App::i();
 
-        $cache_key = $this->getCacheKey(__METHOD__, offset: $this->getOffset(), limit: $this->getLimit());
+        $dql = $this->getCountDQL();
+        $params = $this->getDqlParams();
+        $cache_key = $this->getCacheKey(__METHOD__, offset: $this->getOffset(), limit: $this->getLimit(), dql: $dql, params: $params);
 
         if($this->__useDQLCache && $app->rcache->contains($cache_key)) {
             return $app->rcache->fetch($cache_key);
         }
-
-        $dql = $this->getCountDQL();
 
         $q = $this->em->createQuery($dql);
         if($this->__useDQLCache){
             $q->enableResultCache($this->__cacheTLS);
         }
         
-        $params = $this->getDqlParams();
-
         $q->setParameters($params);
         
         $this->logDql($dql, __FUNCTION__, $params);
@@ -1296,6 +1327,11 @@ class ApiQuery {
     protected function generateWhere() {
         $app = App::i();
 
+        $ids_filter_hash = md5(json_encode($this->_idsFilter));
+        if ($this->_whereCache !== null && $this->_whereCacheIdsFilterHash === $ids_filter_hash) {
+            return $this->_whereCache;
+        }
+
         $where = $this->where;
         $where_dqls = implode(" $this->_op \n\t", $this->_whereDqls);
         
@@ -1339,7 +1375,41 @@ class ApiQuery {
         if(!$where) {
             $where = "1 = 1";
         }
-        
+
+        if ($this->_sealStatus) {
+            $sr_alias = $this->getAlias('sr_status');
+            $s_alias = $this->getAlias('s_status');
+            $status_params = $this->addMultipleParams($this->_sealStatus);
+
+            if ($this->entityClassName === Registration::class) {
+                $seal_relation_class = 'MapasCulturais\Entities\AgentSealRelation';
+                $owner_path = 'e.owner';
+            } elseif ($this->sealRelationClassName) {
+                $seal_relation_class = $this->sealRelationClassName;
+                $owner_path = 'e';
+            } else {
+                $seal_relation_class = null;
+                $owner_path = null;
+            }
+
+            if ($seal_relation_class && $owner_path) {
+                $sensitive_where = '';
+                if (!$this->_sealStatusIncludeSensitive) {
+                    $sensitive_where = " AND {$s_alias}.sensitive = false";
+                }
+
+                $where .= " AND EXISTS (
+                    SELECT 1 FROM {$seal_relation_class} {$sr_alias}
+                    JOIN {$sr_alias}.seal {$s_alias}
+                    WHERE {$sr_alias}.owner = {$owner_path}
+                    AND {$sr_alias}.computedStatus IN (" . implode(', ', $status_params) . ")
+                    AND {$sr_alias}.status >= 0
+                    AND {$s_alias}.status >= 0
+                    {$sensitive_where}
+                )";
+            }
+        }
+
         if($this->_subsiteId){
             $where = "($where) OR e._subsiteId = {$this->_subsiteId}";
 
@@ -1355,6 +1425,9 @@ class ApiQuery {
         }
 
         $app->applyHookBoundTo($this, "{$this->hookPrefix}.where", [&$where]);
+
+        $this->_whereCache = $where;
+        $this->_whereCacheIdsFilterHash = $ids_filter_hash;
 
         return $where;
     }
@@ -3035,9 +3108,11 @@ class ApiQuery {
                     IDENTITY(sr.owner) as entity_id,
                     sr.id as relation_id,
                     sr.createTimestamp as relation_create_timestamp,
+                    sr.computedStatus as computed_status,
                     s.id as seal_id,
                     s.name as seal_name,
-                    s.shortDescription as seal_short_description
+                    s.shortDescription as seal_short_description,
+                    s.sensitive as seal_sensitive
                 FROM
                     {$this->sealRelationClassName} sr
                     JOIN sr.seal s
@@ -3047,9 +3122,6 @@ class ApiQuery {
                     s.status >= 0";
 
             $query = $this->em->createQuery($dql);
-            if($this->__useDQLCache){
-                $query->enableResultCache($this->__cacheTLS);
-            }
             
             if($this->_usingSubquery){
                 $query->setParameters($this->getDqlParams());
@@ -3071,10 +3143,17 @@ class ApiQuery {
                 $files[$seal['id']] = $seal['files'] ?? null;
                 $enable_certificate_page[$seal['id']] = (bool) (is_null($seal['enableCertificatePage']) || $seal['enableCertificatePage'] === '1');
             }
+            $can_view_sensitive = $this->getCanViewSensitiveSeals($entities);
+
             foreach($relations as $relation){
                 $relation = (object) $relation;
                 
                 $entity_id = $relation->entity_id;
+
+                // Filtra selos sensíveis para usuários não autorizados
+                if (!empty($relation->seal_sensitive) && empty($can_view_sensitive[$entity_id])) {
+                    continue;
+                }
 
                 if(!isset($this->_relatedSeals[$entity_id])){
                     $this->_relatedSeals[$entity_id] = [];
@@ -3088,6 +3167,7 @@ class ApiQuery {
                     'files' => $files[$relation->seal_id] ?? null,
                     'singleUrl' => $app->createUrl('seal', 'sealRelation', [$relation->relation_id]),
                     'createTimestamp' => $relation->relation_create_timestamp,
+                    'computedStatus' => $relation->computed_status,
                     'isVerificationSeal' => in_array($relation->seal_id, $app->config['app.verifiedSealsIds']),
                     'enableCertificatePage' => $enable_certificate_page[$relation->seal_id] ?? true,
                     'shortDescription' => $relation->seal_short_description
@@ -3217,6 +3297,85 @@ class ApiQuery {
         }
         
         return $this->__viewPrivateDataPermissions;
+    }
+
+    /**
+     * Retorna as permissões de visualização de selos sensíveis para as entidades
+     *
+     * @param array $entities
+     * @return array
+     */
+    protected function getCanViewSensitiveSeals(array $entities){
+        if(is_null($this->__canViewSensitiveSeals) && count($entities) > 0){
+            $this->__canViewSensitiveSeals = [];
+
+            $app = App::i();
+            $user = $app->user;
+
+            if($user->is('admin')){
+                foreach($entities as $entity){
+                    $this->__canViewSensitiveSeals[$entity[$this->pk]] = true;
+                }
+                return $this->__canViewSensitiveSeals;
+            }
+
+            $dql_in = $this->getSubqueryInIdentities($entities);
+            if ($dql_in) {
+                // Verifica se o usuário é o dono da entidade
+                if ($this->entityClassName === Agent::class) {
+                    $dql = "SELECT e.id as entity_id FROM {$this->entityClassName} e WHERE e.id IN ($dql_in) AND e.userId = {$user->id}";
+                } else {
+                    $dql = "SELECT e.id as entity_id FROM {$this->entityClassName} e WHERE e.id IN ($dql_in) AND e.owner IN (SELECT a.id FROM MapasCulturais\Entities\Agent a WHERE a.userId = {$user->id})";
+                }
+
+                $query = $this->em->createQuery($dql);
+
+                if($this->_usingSubquery){
+                    $query->setParameters($this->getDqlParams());
+                }
+                $this->logDql($dql, __FUNCTION__, $this->_usingSubquery ? $this->getDqlParams() : []);
+
+                foreach($query->getResult(Query::HYDRATE_ARRAY) as $r){
+                    $this->__canViewSensitiveSeals[$r['entity_id']] = true;
+                }
+
+                // Verifica se o usuário é gestor de oportunidade vinculada ao dono da entidade
+                $owner_expr = ($this->entityClassName === Agent::class) ? 'e' : 'e.owner';
+
+                $dql = "SELECT e.id as entity_id
+                    FROM {$this->entityClassName} e
+                    WHERE e.id IN ($dql_in)
+                    AND EXISTS (
+                        SELECT 1 FROM MapasCulturais\Entities\OpportunityPermissionCache pc
+                        JOIN pc.owner o
+                        WHERE pc.userId = {$user->id} AND pc.action = '@control'
+                        AND (
+                            o.owner = {$owner_expr}
+                            OR EXISTS (
+                                SELECT 1 FROM MapasCulturais\Entities\AgentOpportunity ao
+                                WHERE ao.id = o.id AND ao.ownerEntity = {$owner_expr}
+                            )
+                            OR EXISTS (
+                                SELECT 1 FROM MapasCulturais\Entities\Registration r
+                                WHERE r.opportunity = o AND r.owner = {$owner_expr}
+                            )
+                        )
+                    )";
+
+                $query = $this->em->createQuery($dql);
+
+                if($this->_usingSubquery){
+                    $query->setParameters($this->getDqlParams());
+                }
+                $this->logDql($dql, __FUNCTION__, $this->_usingSubquery ? $this->getDqlParams() : []);
+
+                foreach($query->getResult(Query::HYDRATE_ARRAY) as $r){
+                    $this->__canViewSensitiveSeals[$r['entity_id']] = true;
+                }
+            }
+        }
+
+        return $this->__canViewSensitiveSeals;
     }
 
     /**
@@ -3553,6 +3712,8 @@ class ApiQuery {
                 $this->_addFilterBySeals($value);
             } elseif (strtolower($key) == '@verified') {
                 $this->_addFilterBySeals($app->config['app.verifiedSealsIds']);
+            } elseif (strtolower($key) == 'sealstatus') {
+                $this->_addFilterBySealStatus($value);
             } elseif (strtolower($key) == '@or') {
                 $this->_op = ' OR ';
             } elseif (strtolower($key) == '@files') {
@@ -3604,6 +3765,52 @@ class ApiQuery {
                 $this->_seals[] = $s;
             }
         }
+    }
+
+    /**
+     * Adiciona filtro por status de selo (computed_status)
+     *
+     * @param string $value
+     * @return void
+     */
+    protected function _addFilterBySealStatus($value){
+        $app = App::i();
+        $valid_statuses = ['fully_valid', 'partially_valid', 'invalid', 'valid'];
+        $requested = array_map('trim', explode(',', $value));
+        $statuses = [];
+
+        foreach ($requested as $status) {
+            if (!in_array($status, $valid_statuses, true)) {
+                continue;
+            }
+            if ($status === 'valid') {
+                $statuses = array_merge($statuses, ['fully_valid', 'partially_valid']);
+            } else {
+                $statuses[] = $status;
+            }
+        }
+
+        $statuses = array_unique($statuses);
+
+        if (empty($statuses)) {
+            return;
+        }
+
+        $this->_sealStatus = $statuses;
+
+        if ($app->user->is('admin')) {
+            $this->_sealStatusIncludeSensitive = true;
+        }
+    }
+
+    /**
+     * Permite incluir selos sensíveis no filtro de status de selo.
+     * Deve ser usado apenas internamente, após verificação de permissões.
+     *
+     * @return void
+     */
+    public function enableSealStatusIncludeSensitive() {
+        $this->_sealStatusIncludeSensitive = true;
     }
     
     protected $_filteringByPermissions = false;

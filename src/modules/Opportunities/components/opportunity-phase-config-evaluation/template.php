@@ -16,6 +16,7 @@ $this->import('
     opportunity-phase-publish-date-config
     opportunity-appeal-phase-config
     seals-certifier
+    seal-validator-config
     tiebreaker-criteria-configuration
     v1-embed-tool
 
@@ -63,6 +64,24 @@ $evaluation_methods = $app->getRegisteredEvaluationMethods();
             </template>
             <?php $this->applyComponentHook("{$evaluation_method->slug}-config", 'after') ?>
         <?php endforeach; ?>
+
+        <?php $this->applyComponentHook("seal-validators-config", 'before') ?>
+        <template v-if="phase.type.id != 'technical'">
+            <?php $this->applyComponentHook("seal-validators-config", 'begin') ?>
+            <section class="col-12 evaluation-step__section">
+                <div class="evaluation-step__section-header">
+                    <?php $this->applyComponentHook("seal-validators-config", 'header') ?>
+                    <div class="evaluation-step__section-label">
+                        <h3><?= i::__('Avaliação automática por selos') ?></h3>
+                    </div>
+                </div>
+                <div class="evaluation-step__section-content">
+                    <seal-validator-config :entity="phase"></seal-validator-config>
+                </div>
+            </section>
+            <?php $this->applyComponentHook("seal-validators-config", 'end') ?>
+        </template>
+        <?php $this->applyComponentHook("seal-validators-config", 'after') ?>
 
         <section class="evaluation-section col-12">
             <fields-visible-evaluators :entity="phase"></fields-visible-evaluators>

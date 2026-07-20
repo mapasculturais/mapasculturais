@@ -17,6 +17,8 @@ use MapasCulturais\Entities\Agent;
 use MapasCulturais\Entities\EvaluationMethodConfigurationAgentRelation;
 use MapasCulturais\Entities\EvaluationMethodConfigurationMeta;
 use MapasCulturais\Entity;
+use MapasCulturais\Exceptions\PermissionDenied;
+use SealExemption\SealExemptionService;
 
 class Module extends \MapasCulturais\Module{
 
@@ -351,6 +353,55 @@ class Module extends \MapasCulturais\Module{
                 if ($has_sections_changes) {
                     $errors['sections'] = $errors['sections'] ?? [];
                     $errors['sections'][] = i::__('Seções com erros: existe(m) seção(ões) sem critérios associados');
+                }
+            }
+        });
+
+        /**
+         * Imutabilidade pós-abertura (spec-c49fa0bb §3.6):
+         *
+         * Impede qualquer alteração em `sealExemptionConfig` (inclusive desativar)
+         * quando a fase já está aberta e possui inscrições enviadas.
+         * Rascunhos não bloqueiam a edição.
+         */
+        $app->hook('entity(EvaluationMethodConfiguration).save:before', function () use ($app) {
+            /** @var EvaluationMethodConfiguration $this */
+
+            /** @var array $changedMetadata */
+            $changedMetadata = $this->getChangedMetadata();
+            if (!array_key_exists('sealExemptionConfig', $changedMetadata)) {
+                return;
+            }
+
+            if ($this->_type === 'technical') {
+                $newConfig = $changedMetadata['sealExemptionConfig']['newValue'] ?? null;
+                if (SealExemptionService::hasActiveConfig($newConfig)) {
+                    throw new PermissionDenied(
+                        $app->user,
+                        message: i::__('A configuração de selos validadores não está disponível para Avaliação Técnica.')
+                    );
+                }
+                return;
+            }
+
+            if (!$this->getCanEditSealConfig()) {
+                throw new PermissionDenied(
+                    $app->user,
+                    message: i::__('A fase está aberta e já possui inscrições enviadas. A configuração de selos validadores não pode mais ser alterada.')
+                );
+            }
+
+            // Validação da condicionalidade de invalidadores (spec-fe9b2cfc):
+            // conditions é opcional; quando presente, valida forma e cruzamento.
+            $newConfig = $changedMetadata['sealExemptionConfig']['newValue'] ?? null;
+            if ($newConfig) {
+                $structError = \SealExemption\SealExemptionService::validateConditionsStructure($newConfig);
+                if ($structError !== null) {
+                    throw new \MapasCulturais\Exceptions\BadRequest($structError);
+                }
+                $crossError = \SealExemption\SealExemptionService::validateConditionsAgainstSeals($newConfig);
+                if ($crossError !== null) {
+                    throw new \MapasCulturais\Exceptions\BadRequest($crossError);
                 }
             }
         });
@@ -995,62 +1046,65 @@ class Module extends \MapasCulturais\Module{
 
             $opportunity = $this->opportunity;
 
-            if ($opportunity && ($opportunity->publishedRegistrations || $this->opportunity->firstPhase->isContinuousFlow)) {
-               $seals = $opportunity->proponentSeals;
-               $proponent_type = $this->proponentType;
-               $owner = $this->owner;
-               $proponent_typesTo_agents_Map = $app->config['registration.proponentTypesToAgentsMap'];
-               $categories_seals = $opportunity->categorySeals;
-               $category = $this->category;
+            if (!$opportunity || !$self->shouldApplyCertifierSealsOnApproval($opportunity)) {
+                return;
+            }
 
-               if($proponent_type){
+            $seals_source = $self->getCertifierSealsSource($opportunity);
+            $seals = $seals_source->proponentSeals;
+            $proponent_type = $this->proponentType;
+            $owner = $this->owner;
+            $proponent_typesTo_agents_Map = $app->config['registration.proponentTypesToAgentsMap'];
+            $categories_seals = $seals_source->categorySeals;
+            $category = $this->category;
 
-                   if (array_key_exists($proponent_type, $proponent_typesTo_agents_Map)) {
-                       $agent_type = $self->getProponentSealAgentType($this, $proponent_typesTo_agents_Map);
-                       if (isset($seals->$proponent_type)) {
-                            $proponent_seals = $seals->{$proponent_type};
-                            if($agent_type == "owner"){
-                               $self->applySeal($owner,$proponent_seals);
-                            }
+            if($proponent_type){
 
-                            if($agent_type == "coletivo"){
-                                $agents = $this->getAgentRelations();
-                                $self->applySeal($agents[0]->agent, $proponent_seals);
-                            }
+                if (array_key_exists($proponent_type, $proponent_typesTo_agents_Map)) {
+                    $agent_type = $self->getProponentSealAgentType($this, $proponent_typesTo_agents_Map);
+                    if (isset($seals->$proponent_type)) {
+                        $proponent_seals = $seals->{$proponent_type};
+                        if($agent_type == "owner"){
+                           $self->applySeal($owner,$proponent_seals);
                         }
-                    }
 
-                    // Se a inscrição tiver "tipo de proponente" e "categoria", adicionar o selo verificador da categoria, caso possua.
-                    if($category) {
-                        if (array_key_exists($proponent_type, $proponent_typesTo_agents_Map)) {
-                            $agent_type = $proponent_typesTo_agents_Map[$proponent_type];
-
-                            if (isset($categories_seals->{$category})) {
-                                $category_seals = $categories_seals->{$category};
-
-                                // Verifica se a opção "Habilitar a vinculação de agente coletivo" esta ativa
-                                if($opportunity->firstPhase->useAgentRelationColetivo == 'required') {
-                                    if($agent_type == "coletivo"){
-                                        $agents = $this->getAgentRelations();
-                                        $self->applySeal($agents[0]->agent, $category_seals);
-                                    }
-                                }
-
-                                if($agent_type == "owner"){
-                                   $self->applySeal($owner, $category_seals);
-                                }
-                            }
-
+                        if($agent_type == "coletivo"){
+                            $agents = $this->getAgentRelations();
+                            $self->applySeal($agents[0]->agent, $proponent_seals);
                         }
                     }
                 }
 
-                // Se tiver apenas "categoria" e não houver "tipo de proponente", adicionar selo verificador (caso configurado) apenas no agente individual
-                if($category && !$proponent_type) {
-                    if (isset($categories_seals->{$category})) {
-                        $category_seals = $categories_seals->{$category};
-                        $self->applySeal($owner, $category_seals);
+                // Se a inscrição tiver "tipo de proponente" e "categoria", adicionar o selo verificador da categoria, caso possua.
+                if($category) {
+                    if (array_key_exists($proponent_type, $proponent_typesTo_agents_Map)) {
+                        $agent_type = $self->getProponentSealAgentType($this, $proponent_typesTo_agents_Map);
+
+                        if (isset($categories_seals->{$category})) {
+                            $category_seals = $categories_seals->{$category};
+
+                            // Verifica se a opção "Habilitar a vinculação de agente coletivo" esta ativa
+                            if($opportunity->firstPhase->useAgentRelationColetivo == 'required') {
+                                if($agent_type == "coletivo"){
+                                    $agents = $this->getAgentRelations();
+                                    $self->applySeal($agents[0]->agent, $category_seals);
+                                }
+                            }
+
+                            if($agent_type == "owner"){
+                               $self->applySeal($owner, $category_seals);
+                            }
+                        }
                     }
+
+                }
+            }
+
+            // Se tiver apenas "categoria" e não houver "tipo de proponente", adicionar selo verificador (caso configurado) apenas no agente individual
+            if($category && !$proponent_type) {
+                if (isset($categories_seals->{$category})) {
+                    $category_seals = $categories_seals->{$category};
+                    $self->applySeal($owner, $category_seals);
                 }
             }
         });
@@ -1059,17 +1113,18 @@ class Module extends \MapasCulturais\Module{
             /** @var \MapasCulturais\Entities\Registration $this */
 
             $opportunity = $this->opportunity;
-            $seals = $opportunity->proponentSeals;
+            $seals_source = $self->getCertifierSealsSource($opportunity);
+            $seals = $seals_source->proponentSeals;
 
             if (!$seals) {
                 return;
             }
 
-            if ($opportunity && ($opportunity->publishedRegistrations || $this->opportunity->firstPhase->isContinuousFlow)) {
-                $proponent_type_seals = $opportunity->proponentSeals;
+            if ($opportunity && $self->shouldApplyCertifierSealsOnApproval($opportunity)) {
+                $proponent_type_seals = $seals_source->proponentSeals;
                 $proponent_type = $this->proponentType;
                 $owner = $this->owner;
-                $categories_seals = $opportunity->categorySeals;
+                $categories_seals = $seals_source->categorySeals;
                 $category = $this->category;
                 $proponent_typesTo_agents_Map = $app->config['registration.proponentTypesToAgentsMap'];
                 $agent_type = $self->getProponentSealAgentType($this, $proponent_typesTo_agents_Map);
@@ -1120,7 +1175,9 @@ class Module extends \MapasCulturais\Module{
         $app->hook("entity(Opportunity).publishRegistrations:after", function() use($app, $self){
             /** @var \MapasCulturais\Entities\Opportunity $this */
 
-            if($this->proponentSeals || $this->categorySeals){
+            $seals_source = $self->getCertifierSealsSource($this);
+
+            if($seals_source->proponentSeals || $seals_source->categorySeals){
                 $proponent_typesTo_agents_Map = $app->config['registration.proponentTypesToAgentsMap'];
                 $registrations = $app->repo('Registration')->findBy(['opportunity' => $this]);
 
@@ -1129,11 +1186,11 @@ class Module extends \MapasCulturais\Module{
                     if($registration->status == Registration::STATUS_APPROVED){
                     $proponent_type = $registration->proponentType;
                         $category = $registration->category;
-                        $categories_seals = $this->categorySeals;
+                        $categories_seals = $seals_source->categorySeals;
                         $owner = $registration->owner;
 
                         if($proponent_type){
-                            $proponent_seals = $this->proponentSeals->{$proponent_type};
+                            $proponent_seals = $seals_source->proponentSeals->{$proponent_type};
                             $agent_type = $self->getProponentSealAgentType($registration, $proponent_typesTo_agents_Map);
 
                             if($agent_type == "owner"){
@@ -1388,6 +1445,50 @@ class Module extends \MapasCulturais\Module{
             ],
             'default' => 'hourly',
         ]);
+
+        // Configuração de selos validadores para isenção automática de fase.
+        // Estrutura: { seals: [id1, id2, ...], label: string } (spec-c49fa0bb §3.1).
+        // Visível apenas para quem tem @control da oportunidade (selos podem ser
+        // sensíveis — LGPD). Pré-requisito do hook save:before de imutabilidade.
+        $this->registerEvauationMethodConfigurationMetadata('sealExemptionConfig', [
+            'label' => i::__('Configuração de selos validadores para isenção de fase'),
+            'type' => 'json',
+            'private' => function () {
+                $opportunity = $this->opportunity ?? null;
+
+                if (!$opportunity) {
+                    return true;
+                }
+
+                if (!$opportunity instanceof Opportunity) {
+                    $opportunity = App::i()->repo('Opportunity')->find($opportunity);
+                }
+
+                return !$opportunity instanceof Opportunity || !$opportunity->canUser('@control');
+            },
+        ]);
+    }
+
+    /**
+     * Selos certificadores (proponentSeals / categorySeals) são configurados na 1ª fase do edital.
+     */
+    private function getCertifierSealsSource(Opportunity $opportunity): Opportunity
+    {
+        return $opportunity->firstPhase;
+    }
+
+    /**
+     * Define quando selos certificadores devem ser aplicados/removidos na inscrição.
+     */
+    private function shouldApplyCertifierSealsOnApproval(Opportunity $opportunity): bool
+    {
+        $first_phase = $opportunity->firstPhase;
+        $emc = $opportunity->evaluationMethodConfiguration;
+
+        return $first_phase->publishedRegistrations
+            || $first_phase->isContinuousFlow
+            || $opportunity->publishedRegistrations
+            || ($emc && $emc->autoApplicationAllowed);
     }
 
     public function applySeal(?Agent $agent, array $sealIds){

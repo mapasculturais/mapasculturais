@@ -1071,6 +1071,10 @@ abstract class Theme {
                 $e['__lockedFieldSeals'] = $request_entity->lockedFieldSeals;
             }
 
+            if(method_exists($entity_class_name, 'getFieldSealStatuses')) {
+                $e['__fieldSealStatuses'] = $request_entity->fieldSealStatuses;
+            }
+
             $app->applyHookBoundTo($this, "view.requestedEntity($_entity).result", [&$e, $entity_class_name, $entity_id]);
             $this->jsObject['requestedEntity'] = $e;
         }

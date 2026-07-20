@@ -81,4 +81,21 @@ foreach ([...$phases, ...$appeal_phases] as $phase) {
     }
 }
 
+// appliedForQuota ("Vai concorrer às cotas?") é metadata embutida de Registration
+// (EvaluationMethodTechnical/Module.php), não RegistrationFieldConfiguration — por isso
+// não entra no loop acima. Cachear enableQuotasQuestion: acessos repetidos a
+// firstPhase→property no mesmo request podem inconsistir (2º acesso vazio).
+$enable_quotas_question = $opportunity->firstPhase->enableQuotasQuestion;
+
+if (!empty($enable_quotas_question)) {
+    $_fields[] = [
+        'id' => 'appliedForQuota',
+        'fieldName' => 'appliedForQuota',
+        'title' => \MapasCulturais\i::__('Vai concorrer às cotas?'),
+        'fieldType' => 'checkbox',
+        'fieldOptions' => [],
+        'appealPhase' => false,
+    ];
+}
+
 $this->jsObject['config']['registrationFilterFields'] = $_fields;

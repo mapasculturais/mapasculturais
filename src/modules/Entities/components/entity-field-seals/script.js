@@ -21,7 +21,7 @@ app.component('entity-field-seals', {
     
     computed: {
         seals () {
-            return this.entity.$lockedFieldSeals?.[this.prop] ?? [];
+            return this.entity.$fieldSealStatuses?.[this.prop] ?? this.entity.$lockedFieldSeals?.[this.prop] ?? [];
         },
     },
 
@@ -41,6 +41,10 @@ app.component('entity-field-seals', {
 
     methods: {
         formatDate (date) {
+            if (!date) {
+                return '';
+            }
+
             let mcDate;
             if (date instanceof McDate) {
                 mcDate = date;
@@ -53,18 +57,38 @@ app.component('entity-field-seals', {
         },
 
         formatText (seal) {
+            if (seal.fieldStatus === 'about_to_expire') {
+                return this.text('prestesAExpirar', {
+                    authority: seal.name,
+                    date: seal.expiryDate || '',
+                });
+            }
+
+            if (seal.fieldStatus === 'expired') {
+                return this.text('expirado', {
+                    authority: seal.name,
+                    date: seal.expiryDate || '',
+                });
+            }
+
             return this.text('validadoPor', {
                 authority: seal.name,
                 date: this.formatDate(seal.createTimestamp.date),
             })
         },
 
+        sealStatusClass (seal) {
+            return {
+                'entity-field-seal--valid': ['valid', 'no_expiration'].includes(seal.fieldStatus),
+                'entity-field-seal--about-to-expire': seal.fieldStatus === 'about_to_expire',
+                'entity-field-seal--expired': seal.fieldStatus === 'expired',
+                'entity-field-seal--invalidator': seal.isInvalidator,
+            };
+        },
+
         setSeal (seal) {
             if (seal) {
-                const text = this.text('validadoPor', {
-                    authority: seal.name,
-                    date: this.formatDate(seal.createTimestamp.date),
-                });
+                const text = this.formatText(seal);
                 this.$emit('select', { seal, text });
             } else if (this.seals.length > 1) {
                 this.$emit('select', { seal: null, text: null });

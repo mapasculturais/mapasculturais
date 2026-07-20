@@ -1,5 +1,10 @@
 <?php $this->applyTemplateHook('registration-field-item', 'begin') ?>
-<div ng-if="field.fieldType !== 'file' && field.fieldType !== 'section' && field.fieldType !== 'persons' && field.fieldType !== 'custom-table' && field.config.entityField !== '@location' && field.config.entityField !== '@links' &&  field.fieldType !== 'links'  && !checkRegistrationFields(field, 'links')">
+<div ng-if="isAgentFileField(field)">
+    <label>{{field.required ? '*' : ''}} {{field.title}}: </label>
+    <a ng-if="entity[field.fieldName] && entity[field.fieldName].url" class="attachment-title" href="{{entity[field.fieldName].url}}" target="_blank" rel="noopener noreferrer">{{entity[field.fieldName].name}}</a>
+    <span ng-if="!entity[field.fieldName] || !entity[field.fieldName].url"><em><?php \MapasCulturais\i::_e("Arquivo não enviado."); ?></em></span>
+</div>
+<div ng-if="field.fieldType !== 'file' && field.fieldType !== 'section' && field.fieldType !== 'persons' && field.fieldType !== 'custom-table' && field.config.entityField !== '@location' && field.config.entityField !== '@links' &&  field.fieldType !== 'links'  && !checkRegistrationFields(field, 'links') && !isAgentFileField(field)">
     <label>{{field.required ? '*' : ''}} {{field.title}}: </label>
     <div ng-if="field.fieldType !== 'agent-owner-field'">
         <div ng-if="field.fieldType != 'bankFields'">

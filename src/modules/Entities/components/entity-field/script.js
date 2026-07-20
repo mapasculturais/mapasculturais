@@ -279,7 +279,10 @@ app.component('entity-field', {
 
     computed: {
         hasErrors() {
-            const errors = this.entity.__validationErrors[this.prop] || [];
+            const bag = this.entity.__validationErrors;
+            const errors = (bag && typeof bag === 'object' && !Array.isArray(bag))
+                ? (bag[this.prop] || [])
+                : [];
 
             // Para campos @location, deixamos a sinalização visual por conta
             // do componente de endereço, que destaca apenas os subcampos faltando.
@@ -290,9 +293,19 @@ app.component('entity-field', {
             return errors.length > 0;
         },
         errors() {
-            return this.entity.__validationErrors[this.prop];
+            const bag = this.entity.__validationErrors;
+            if (!bag || typeof bag !== 'object' || Array.isArray(bag)) {
+                return undefined;
+            }
+            return bag[this.prop];
         },
         value() {
+            if (this.is('file')) {
+                return this.fileEntity?.files?.[this.resolvedGroupName]
+                    || this.entity[this.prop]?.id
+                    || this.entity[this.prop];
+            }
+
             return this.entity[this.prop]?.id ?? this.entity[this.prop];
         },
         tableData() {
@@ -323,6 +336,53 @@ app.component('entity-field', {
                 return this.metaListTypes().includes(registrationFieldConfiguration.config.entityField);
             }
             return false;
+        },
+        registrationFieldConfig() {
+            return this.registrationFieldConfiguration
+                || this.description?.registrationFieldConfiguration
+                || null;
+        },
+        /**
+         * Anexos type=file do agente vivem em Agent.files[file_group], não na inscrição.
+         * No formulário de inscrição, entity-file deve apontar para o owner/coletivo.
+         */
+        fileEntity() {
+            if (!this.is('file') || this.entity.__objectType !== 'registration') {
+                return this.entity;
+            }
+
+            const fieldType = this.registrationFieldConfig?.fieldType;
+            if (fieldType === 'agent-owner-field') {
+                return this.entity.owner || this.entity;
+            }
+
+            if (fieldType === 'agent-collective-field') {
+                const collective = this.entity.relatedAgents?.coletivo?.[0]
+                    || this.entity.agentRelations?.coletivo?.[0]?.agent;
+
+                return collective || this.entity;
+            }
+
+            return this.entity;
+        },
+        /**
+         * Resolve o FileGroup do anexo (ex.: docs-cpf) a partir do prop, da config
+         * do campo @ ou da descrição do metadado no Agent.
+         */
+        resolvedGroupName() {
+            if (this.groupName) {
+                return this.groupName;
+            }
+
+            if (this.description?.file_group) {
+                return this.description.file_group;
+            }
+
+            const entityField = this.registrationFieldConfig?.config?.entityField;
+            const agentField = entityField || (this.entity.__objectType === 'agent' ? this.prop : null);
+            const agentDescription = agentField ? ($DESCRIPTIONS.agent?.[agentField] || null) : null;
+
+            return agentDescription?.file_group || this.groupName;
         },
     },
     
@@ -488,6 +548,8 @@ app.component('entity-field', {
         isReadonly() {
             const userPermission = this.entity.currentUserPermissions?.modifyReadonlyData;
             const lockedFieldSeals = this.entity.__lockedFieldSeals;
+            const fieldSealStatuses = this.entity.__fieldSealStatuses || {};
+            const hasUnlockedSealStatus = (fieldSealStatuses[this.prop] || []).some((seal) => seal?.isUnlocked);
 
             if(this.entity.__objectType == "registration") {
                 const editableFields = this.entity.editableFields || [];
@@ -516,7 +578,7 @@ app.component('entity-field', {
                         const agentDescription = $DESCRIPTIONS.agent[agentFieldName];
                         
                         if(agentDescription.readonly) {
-                            this.readonly = !(userPermission || !this.value);
+                            this.readonly = !hasUnlockedSealStatus && !(userPermission || !this.value);
                             return this.readonly;
                         }
                     }
@@ -524,16 +586,16 @@ app.component('entity-field', {
             }
 
             if(this.description.readonly) {
-                this.readonly = !(userPermission || !this.value);
+                this.readonly = !hasUnlockedSealStatus && !(userPermission || !this.value);
             }
 
-            if(lockedFieldSeals && lockedFieldSeals[this.prop]) {
+            if(!hasUnlockedSealStatus && lockedFieldSeals && lockedFieldSeals[this.prop]) {
                 this.readonly = true;
             }
 
             const lockedFields = this.entity.__lockedFields || [];
 
-            if(lockedFields.includes(this.prop)) {
+            if(!hasUnlockedSealStatus && lockedFields.includes(this.prop)) {
                 this.readonly = true;
             }
 

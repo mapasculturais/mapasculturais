@@ -7,6 +7,7 @@ use MapasCulturais\i;
 use MapasCulturais\Entities\MetaList;
 use MapasCulturais\Entity;
 use MapasCulturais\Entities\Agent;
+use MapasCulturais\Entities\AgentFile;
 use MapasCulturais\Entities\Space;
 use MapasCulturais\Entities\Registration;
 use MapasCulturais\Definitions\Metadata;
@@ -48,6 +49,28 @@ class Module extends \MapasCulturais\Module
                 }
             }
             $module->entities = [];
+        });
+
+        // BaseV2: o owner da inscrição só vinha com files.avatar. Anexos type=file
+        // (docs-cpf, docs-passaporte, etc.) precisam estar em owner.files para o entity-file.
+        $app->hook('view.requestedEntity(Registration).owner.params', function (&$params) {
+            $select = $params['@select'] ?? '';
+            if (str_contains($select, 'files.avatar')) {
+                $params['@select'] = str_replace('files.avatar', 'files', $select);
+            } elseif ($select !== '' && !preg_match('/(^|,)files(,|$)/', $select)) {
+                $params['@select'] = $select . ',files';
+            }
+        });
+
+        // Avaliadores (e quem pode ver a inscrição) precisam baixar anexos privados do agente
+        // expostos como campo "@" no formulário — o arquivo pertence ao Agent, não à Registration.
+        $app->hook('entity(AgentFile).canUser(view)', function ($user, &$result) use ($module) {
+            /** @var AgentFile $this */
+            if ($result || !$this->private) {
+                return;
+            }
+
+            $result = $module->canUserViewAgentFileViaRegistration($this, $user);
         });
 
         // Hook para modificar o resultado do jsonSerialize e incluir files/metalists do owner
@@ -1406,38 +1429,9 @@ class Module extends \MapasCulturais\Module
                         return $value;
                     }
                 },
-                'unserialize' => function($value, $registration = null, $metadata_definition = null) use ($module, $app) {
-                    if(is_null($registration) || ($registration->status ?? 0) > 0){
-                        $value = $value ?: "";
-
-                        $first_char = strlen($value ?? '') > 0 ? $value[0] : "" ;
-                        if(in_array($first_char, ['"', "[", "{"], true) || in_array($value, ["null", "false", "true"], true)) {
-                            $result = json_decode($value ?: "");
-                        }else {
-                            $result = $value;
-                        }
-
-                    }else{
-                        if(!$registration instanceof \MapasCulturais\Entities\Registration){
-                            $registration = $app->repo('Registration')->find($registration->id);
-                        }
-
-                        $disable_access_control = false;
-
-                        if($registration->canUser('viewPrivateData')){
-                            $disable_access_control = true;
-                            $app->disableAccessControl();
-                        }
-
-                        $result = $module->fetchFromEntity($registration->owner, $value, $registration, $metadata_definition);
-
-                        if($disable_access_control) {
-                            $app->enableAccessControl();
-                        }
-                    }
-
-                    return $result;
-                }   
+                'unserialize' => function($value, $registration = null, $metadata_definition = null) use ($module) {
+                    return $module->unserializeAgentOwnerFieldValue($value, $registration, $metadata_definition);
+                }
             ],
             [
                 'slug' => 'agent-collective-field',
@@ -1458,43 +1452,8 @@ class Module extends \MapasCulturais\Module
                         return $value;
                     }
                 },
-                'unserialize' => function($value, $registration = null, $metadata_definition = null) use ($module, $app) {
-                    if(is_null($registration) || ($registration->status ?? 0) > 0){
-                            
-                        $first_char = strlen($value ?? '') > 0 ? $value[0] : "" ;
-                        if(in_array($first_char, ['"', "[", "{"], true) || in_array($value, ["null", "false", "true"], true)) {
-                            $result = json_decode($value ?: "");
-                        }else {
-                            $result = $value;
-                        }
-
-                    } else {
-                        if(!$registration instanceof \MapasCulturais\Entities\Registration){
-                            $registration =  $app->repo('Registration')->find($registration->id);
-                        }
-
-                        $disable_access_control = false;
-
-                        if($registration->canUser('viewPrivateData')){
-                            $disable_access_control = true;
-                            $app->disableAccessControl();
-                        }
-    
-                        $agent = $registration->getRelatedAgents('coletivo');
-    
-                        if($agent){
-                            $result = $module->fetchFromEntity($agent[0], $value, $registration, $metadata_definition);
-                        } else {
-                            $result = json_decode($value ?: "");
-                        }
-    
-                        if($disable_access_control) {
-                            $app->enableAccessControl();
-                        }
-    
-                    }
-
-                    return $result;
+                'unserialize' => function($value, $registration = null, $metadata_definition = null) use ($module) {
+                    return $module->unserializeAgentCollectiveFieldValue($value, $registration, $metadata_definition);
                 }   
             ],
             [
@@ -1727,6 +1686,10 @@ class Module extends \MapasCulturais\Module
                         }
                     }
                 }
+            } else if ($this->isAgentFileEntityField($entity_field)) {
+                // Anexos (type=file) são gerenciados via upload no perfil do agente.
+                // Não atribuir o valor como metadata: o arquivo vive na tabela file,
+                // vinculado ao FileGroup do agente, não em agent_meta.
             } else if($value) {
                 $entity->$entity_field = $value;
             }
@@ -1848,6 +1811,9 @@ class Module extends \MapasCulturais\Module
                 
                 $value = $result;
             }
+            else if ($this->isAgentFileEntityField($entity_field)) {
+                $value = $this->fetchAgentFileFieldFromEntity($entity, $entity_field);
+            }
              else {
                 $value = $entity->$entity_field;
             }
@@ -1958,5 +1924,284 @@ class Module extends \MapasCulturais\Module
         ];
 
         return array_intersect_key($labels, array_flip($keys));
+    }
+
+    /**
+     * Indica se o entityField aponta para metadado de anexo (type=file) do Agent.
+     */
+    function isAgentFileEntityField(string $entity_field): bool
+    {
+        if ($entity_field === '' || ($entity_field[0] ?? '') === '@') {
+            return false;
+        }
+
+        $agent_props = Agent::getPropertiesMetadata();
+
+        return isset($agent_props[$entity_field])
+            && ($agent_props[$entity_field]['type'] ?? null) === 'file';
+    }
+
+    /**
+     * Busca o arquivo do FileGroup do agente para exibição no formulário de inscrição.
+     *
+     * @return array{id:int,name:string,url:string,mimeType:string}|null
+     */
+    function fetchAgentFileFieldFromEntity(Entity $entity, string $entity_field): ?array
+    {
+        $agent_props = Agent::getPropertiesMetadata();
+        $file_group = $agent_props[$entity_field]['file_group'] ?? null;
+
+        if (!$file_group || !method_exists($entity, 'getFile')) {
+            return null;
+        }
+
+        $file = $entity->getFile($file_group);
+        if (!$file) {
+            return null;
+        }
+
+        return [
+            'id' => $file->id,
+            'name' => $file->name,
+            'url' => $file->url,
+            'mimeType' => $file->mimeType,
+        ];
+    }
+
+    /**
+     * Decodifica valor armazenado na inscrição quando não há sync com a entidade.
+     */
+    function decodeStoredRegistrationFieldValue($value)
+    {
+        $value = $value ?: '';
+        $first_char = strlen($value ?? '') > 0 ? $value[0] : '';
+
+        if (in_array($first_char, ['"', '[', '{'], true) || in_array($value, ['null', 'false', 'true'], true)) {
+            return json_decode($value ?: '');
+        }
+
+        return $value;
+    }
+
+    /**
+     * unserialize do agent-owner-field: rascunho e anexos sempre sincronizam com o agente.
+     */
+    function unserializeAgentOwnerFieldValue($value, $registration = null, $metadata_definition = null)
+    {
+        $entity_field = $metadata_definition->config['registrationFieldConfiguration']->config['entityField'] ?? null;
+        $is_file_field = is_string($entity_field) && $this->isAgentFileEntityField($entity_field);
+
+        if (is_null($registration) || (($registration->status ?? 0) > 0 && !$is_file_field)) {
+            return $this->decodeStoredRegistrationFieldValue($value);
+        }
+
+        return $this->fetchEntityFieldValueForRegistration(
+            $registration,
+            fn (Registration $registration) => $registration->owner,
+            $value,
+            $metadata_definition
+        );
+    }
+
+    /**
+     * unserialize do agent-collective-field: rascunho e anexos sempre sincronizam com o coletivo.
+     */
+    function unserializeAgentCollectiveFieldValue($value, $registration = null, $metadata_definition = null)
+    {
+        $entity_field = $metadata_definition->config['registrationFieldConfiguration']->config['entityField'] ?? null;
+        $is_file_field = is_string($entity_field) && $this->isAgentFileEntityField($entity_field);
+
+        if (is_null($registration) || (($registration->status ?? 0) > 0 && !$is_file_field)) {
+            return $this->decodeStoredRegistrationFieldValue($value);
+        }
+
+        return $this->fetchEntityFieldValueForRegistration(
+            $registration,
+            function (Registration $registration) {
+                $agents = $registration->getRelatedAgents('coletivo');
+
+                return $agents[0] ?? null;
+            },
+            $value,
+            $metadata_definition
+        );
+    }
+
+    /**
+     * @param callable(Registration):(?Entity) $entity_resolver
+     */
+    private function fetchEntityFieldValueForRegistration(
+        $registration,
+        callable $entity_resolver,
+        $value,
+        $metadata_definition
+    ) {
+        $app = App::i();
+
+        if (!$registration instanceof Registration) {
+            $registration = $app->repo('Registration')->find($registration->id);
+        }
+
+        $entity = $entity_resolver($registration);
+        if (!$entity) {
+            return $this->decodeStoredRegistrationFieldValue($value);
+        }
+
+        $disable_access_control = false;
+        if ($registration->canUser('viewPrivateData')) {
+            $disable_access_control = true;
+            $app->disableAccessControl();
+        }
+
+        try {
+            return $this->fetchFromEntity($entity, $value, $registration, $metadata_definition);
+        } finally {
+            if ($disable_access_control) {
+                $app->enableAccessControl();
+            }
+        }
+    }
+
+    /**
+     * Permite visualizar/baixar anexo privado do agente quando ele é referenciado em campo "@"
+     * de uma inscrição que o usuário pode ver ou avaliar.
+     */
+    function canUserViewAgentFileViaRegistration(AgentFile $file, $user): bool
+    {
+        if ($user->is('guest')) {
+            return false;
+        }
+
+        $agent = $file->owner;
+        $entity_fields = $this->getAgentEntityFieldsForFileGroup(trim($file->getGroup()));
+
+        if (empty($entity_fields)) {
+            return false;
+        }
+
+        foreach ($this->findSubmittedRegistrationsForAgent($agent) as $registration) {
+            if (
+                !$registration->canUser('viewUserEvaluation', $user)
+                && !$registration->canUser('view', $user)
+                && !$registration->canUser('viewPrivateData', $user)
+            ) {
+                continue;
+            }
+
+            if ($this->registrationExposesAgentFile($registration, $agent, $file, $entity_fields)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * @return string[]
+     */
+    private function getAgentEntityFieldsForFileGroup(string $file_group): array
+    {
+        $fields = [];
+
+        foreach (Agent::getPropertiesMetadata() as $key => $meta) {
+            if (($meta['type'] ?? null) === 'file' && trim($meta['file_group'] ?? '') === $file_group) {
+                $fields[] = $key;
+            }
+        }
+
+        return $fields;
+    }
+
+    /**
+     * @return \Generator<int, Registration>
+     */
+    private function findSubmittedRegistrationsForAgent(Agent $agent): \Generator
+    {
+        $app = App::i();
+        $seen = [];
+
+        foreach ($app->repo('Registration')->findBy(['owner' => $agent]) as $registration) {
+            if ($registration->status <= 0) {
+                continue;
+            }
+
+            $seen[$registration->id] = true;
+            yield $registration;
+        }
+
+        foreach ($app->repo('RegistrationAgentRelation')->findBy(['agent' => $agent, 'group' => 'coletivo']) as $relation) {
+            $registration = $relation->owner;
+            if (!$registration || $registration->status <= 0 || isset($seen[$registration->id])) {
+                continue;
+            }
+
+            $seen[$registration->id] = true;
+            yield $registration;
+        }
+    }
+
+    /**
+     * @param string[] $entity_fields
+     */
+    private function registrationExposesAgentFile(
+        Registration $registration,
+        Agent $agent,
+        AgentFile $file,
+        array $entity_fields
+    ): bool {
+        $opportunity = $registration->opportunity;
+        if (!$opportunity) {
+            return false;
+        }
+
+        foreach ($opportunity->registrationFieldConfigurations as $field_config) {
+            if (!in_array($field_config->fieldType, ['agent-owner-field', 'agent-collective-field'], true)) {
+                continue;
+            }
+
+            $entity_field = $field_config->config['entityField'] ?? null;
+            if (!in_array($entity_field, $entity_fields, true)) {
+                continue;
+            }
+
+            $field_agent = $this->resolveAgentForRegistrationField($registration, $field_config->fieldType);
+            if (!$field_agent || $field_agent->id !== $agent->id) {
+                continue;
+            }
+
+            if ($this->registrationFieldValueMatchesFile($registration, $field_config->fieldName, $entity_field, $file)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    private function resolveAgentForRegistrationField(Registration $registration, string $field_type): ?Agent
+    {
+        if ($field_type === 'agent-owner-field') {
+            return $registration->owner;
+        }
+
+        $agents = $registration->getRelatedAgents('coletivo');
+
+        return $agents[0] ?? null;
+    }
+
+    private function registrationFieldValueMatchesFile(
+        Registration $registration,
+        string $field_name,
+        string $entity_field,
+        AgentFile $file
+    ): bool {
+        $decoded = $this->decodeStoredRegistrationFieldValue($registration->$field_name ?? null);
+
+        if (is_array($decoded) && isset($decoded['id']) && (int) $decoded['id'] === (int) $file->id) {
+            return true;
+        }
+
+        $live = $this->fetchAgentFileFieldFromEntity($file->owner, $entity_field);
+
+        return is_array($live) && (int) ($live['id'] ?? 0) === (int) $file->id;
     }
 }
