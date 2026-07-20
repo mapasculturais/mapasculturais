@@ -48,7 +48,7 @@ $this->applyComponentHook('.sortOptions', [&$tabs]);
     </template>
     <?php foreach($tabs as $status => $label): ?>
     <?php $this->applyComponentHook($status, 'before') ?>
-    <mc-tab v-if="showTab('<?=$status?>')" cache key="<?$status?>" label="<?=$label?>" slug="<?=$status?>">
+    <mc-tab v-if="showTab('<?=$status?>')" cache key="<?=$status?>" label="<?=$label?>" slug="<?=$status?>">
         <?php $this->applyComponentHook($status, 'begin') ?>
         <mc-entities :name="type + ':<?=$status?>'" :type="type" 
             :select="select"
