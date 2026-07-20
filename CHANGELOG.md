@@ -6,6 +6,18 @@ O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+### Novas Funcionalidades
+- **Avaliação automática por selos**: o gestor pode indicar, em uma fase de avaliação, quais selos validam o proponente. Se a pessoa já tiver esses selos válidos no perfil, a inscrição é **dispensada automaticamente** daquela fase (marcada como “Dispensada por selos”) e segue para a próxima etapa, sem precisar de avaliador
+- **Novos anexos no cadastro do agente** (também usáveis como campos `@` no formulário de inscrição): CPF, CNPJ, CNH, RG, passaporte, comprovante de residência, vínculo territorial, currículo, portfólio, certidões fiscal, trabalhista e de prestação de contas, além de comprovantes de raça/cor, pessoa com deficiência e comunidades tradicionais. Os arquivos ficam no perfil e acompanham a inscrição automaticamente
+
+### Melhorias nos selos validadores
+- Mostra o **status de cada campo** do selo (válido, prestes a vencer, vencido etc.) na ficha e no formulário de avaliação, para o avaliador entender o que está ok e o que precisa de atenção
+- Permite **concessão parcial do selo** na avaliação documental: o selo pode ser aplicado só aos campos que passaram, conforme os invalidadores configurados
+- Permite configurar **condições nos invalidadores**: um documento só é exigido quando o proponente responde de determinado jeito no formulário (por exemplo, só pedir comprovante de PCD se a pessoa se declarar PCD)
+- Avisa o gestor quando o formulário da inscrição ainda **não tem os campos** necessários para a validação automática por selos funcionar
+- Inclui coluna, filtros e indicação de isenção por selos na tabela e na planilha de avaliações
+- Exibe corretamente os anexos `@` do agente na inscrição, na edição do perfil, na single e nas listagens/planilhas (com link para download)
+
 ### Melhorias
 - Melhora a exportação do PDF de inscrição para exibir campos de endereço e tabela em formato legível
 - Melhora o uso de modelos de oportunidades para criar novas oportunidades sem copiar as datas das fases
