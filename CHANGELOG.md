@@ -8,6 +8,7 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 ## [Unreleased]
 ### Melhorias
 - Melhora a exportação do PDF de inscrição para exibir campos de endereço e tabela em formato legível
+- Melhora o uso de modelos de oportunidades para criar novas oportunidades sem copiar as datas das fases
 
 ### Correções
 - Corrige a listagem de fases da oportunidade para exibir corretamente fases de avaliação na configuração

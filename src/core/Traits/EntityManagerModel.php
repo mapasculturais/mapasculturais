@@ -3,6 +3,7 @@ namespace MapasCulturais\Traits;
 
 use MapasCulturais\App;
 use MapasCulturais\Entity;
+use MapasCulturais\Entities\EvaluationMethodConfiguration;
 use MapasCulturais\Entities\Opportunity;
 use MapasCulturais\Entities\RegistrationStep;
 
@@ -105,8 +106,8 @@ trait EntityManagerModel {
         try {
             $this->entityOpportunityModel = $this->generateOpportunity();
 
-            $this->generateEvaluationMethods();
-            $this->generatePhases();
+            $this->generateEvaluationMethods(false);
+            $this->generatePhases(false);
             $this->generateTerms();
             $this->generateMetadata(0, 0);
             $this->generateRegistrationFieldsAndFiles($this->entityOpportunity, $this->entityOpportunityModel);
@@ -303,6 +304,7 @@ trait EntityManagerModel {
         
         $this->entityOpportunityModel = clone $this->entityOpportunity;
         $this->resetClonedEvaluationMethodConfiguration($this->entityOpportunityModel);
+        $this->clearOpportunityPhaseDates($this->entityOpportunityModel);
         $this->entityOpportunityModel->name = $name;
         $this->entityOpportunityModel->status = Entity::STATUS_DRAFT;
         $this->entityOpportunityModel->owner = $app->user->profile;
@@ -357,7 +359,7 @@ trait EntityManagerModel {
      * @return void
      * @access private
      */
-    private function generateEvaluationMethods() : void
+    private function generateEvaluationMethods(bool $copyDates = true) : void
     {
         $app = App::i();
 
@@ -368,6 +370,9 @@ trait EntityManagerModel {
         foreach ($evaluationMethodConfigurations as $evaluationMethodConfiguration) {
             $newMethodConfiguration = clone $evaluationMethodConfiguration;
             $newMethodConfiguration->setOpportunity($this->entityOpportunityModel);
+            if (!$copyDates) {
+                $this->clearEvaluationDates($newMethodConfiguration);
+            }
             $newMethodConfiguration->save(true);
 
             // duplica os metadados das configurações do modelo de avaliação
@@ -384,7 +389,7 @@ trait EntityManagerModel {
      * @return void
      * @access private
      */
-    private function generatePhases() : void
+    private function generatePhases(bool $copyDates = true) : void
     {
         $app = App::i();
         $postData = $this->postData;
@@ -406,6 +411,9 @@ trait EntityManagerModel {
 
             $newPhase = clone $phase;
             $this->resetClonedEvaluationMethodConfiguration($newPhase);
+            if (!$copyDates) {
+                $this->clearOpportunityPhaseDates($newPhase);
+            }
             $newPhase->setParent($this->entityOpportunityModel);
             $newPhase->owner = $app->user->profile;
 
@@ -432,6 +440,9 @@ trait EntityManagerModel {
             foreach ($evaluationMethodConfigurations as $evaluationMethodConfiguration) {
                 $newMethodConfiguration = clone $evaluationMethodConfiguration;
                 $newMethodConfiguration->setOpportunity($newPhase);
+                if (!$copyDates) {
+                    $this->clearEvaluationDates($newMethodConfiguration);
+                }
                 $newMethodConfiguration->save(true);
 
                 foreach ($evaluationMethodConfiguration->getMetadata() as $metadataKey => $metadataValue) {
@@ -441,15 +452,19 @@ trait EntityManagerModel {
             }
         }
 
-        if ($publishDate !== null) {
+        if ($publishDate !== null || !$copyDates) {
             $newPhases = $app->repo('Opportunity')->findBy([
                 'parent' => $this->entityOpportunityModel
             ]);
 
             foreach ($newPhases as $newPhase) {
                 if ($newPhase->getMetadata('isLastPhase')) {
-                    $newPhase->setPublishTimestamp($publishDate);
                     $newPhase->subsite = $publishSubsite;
+                    if ($copyDates) {
+                        $newPhase->setPublishTimestamp($publishDate);
+                    } else {
+                        $this->clearOpportunityPhaseDates($newPhase);
+                    }
                     $newPhase->save(true);
                     $this->changeObjectType($newPhase->id);
                     break;
@@ -471,6 +486,20 @@ trait EntityManagerModel {
         if (is_object($opportunity->__magicGetterCache ?? null)) {
             unset($opportunity->__magicGetterCache->evaluationMethodConfiguration);
         }
+    }
+
+    private function clearOpportunityPhaseDates(Opportunity $opportunity): void
+    {
+        $opportunity->registrationFrom = null;
+        $opportunity->registrationTo = null;
+        $opportunity->publishTimestamp = null;
+        $opportunity->autoPublish = false;
+    }
+
+    private function clearEvaluationDates(EvaluationMethodConfiguration $configuration): void
+    {
+        $configuration->evaluationFrom = null;
+        $configuration->evaluationTo = null;
     }
 
 

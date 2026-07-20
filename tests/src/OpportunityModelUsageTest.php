@@ -176,6 +176,76 @@ class OpportunityModelUsageTest extends TestCase
         );
     }
 
+    function testOpportunityGeneratedFromModelDoesNotCopyPhaseDates(): void
+    {
+        $owner = $this->userDirector->createUser();
+
+        $this->login($owner);
+        $builder = $this->opportunityBuilder
+            ->reset(owner: $owner->profile, owner_entity: $owner->profile)
+            ->fillRequiredProperties()
+            ->firstPhase()
+                ->setRegistrationPeriod(new Open)
+                ->done()
+            ->save();
+
+        $builder->addEvaluationPhase(EvaluationMethods::simple)
+            ->setEvaluationPeriod(new ConcurrentEndingAfter)
+            ->setAutoPublish()
+            ->save()
+            ->done();
+
+        $additionalPhase = $builder->addDataCollectionPhase()
+            ->setRegistrationPeriod(new Open)
+            ->getInstance();
+        $additionalPhase->publishTimestamp = new \DateTime('+ 1 month');
+        $additionalPhase->autoPublish = true;
+        $additionalPhase->save(true);
+
+        $source = $builder->refresh()->getInstance();
+        $source->lastPhase->publishTimestamp = new \DateTime('+ 2 months');
+        $source->lastPhase->save(true);
+
+        $model = $this->generateModelFromOpportunity(
+            $source,
+            'Modelo com datas ' . uniqid('', true)
+        );
+        $model->setMetadata('isModelPublic', 1);
+        $model->save(true);
+        $model = $model->refreshed();
+
+        $this->assertSame($this->getPhaseDates($source->refreshed()), $this->getPhaseDates($model));
+
+        $model->lastPhase->autoPublish = true;
+        $model->lastPhase->save(true);
+        $model = $model->refreshed();
+        $modelPhaseDates = $this->getPhaseDates($model);
+
+        $this->assertNotNull($model->registrationFrom);
+        $this->assertNotNull($model->registrationTo);
+        $this->assertNotNull($model->evaluationMethodConfiguration->evaluationFrom);
+        $this->assertNotNull($model->evaluationMethodConfiguration->evaluationTo);
+        $this->assertNotNull($model->lastPhase->publishTimestamp);
+        $this->assertTrue($model->autoPublish);
+
+        $generated = $this->generateOpportunity($model, $owner->profile->id)->refreshed();
+
+        $this->assertCount(count($model->allPhases), $generated->allPhases);
+        foreach ($generated->allPhases as $phase) {
+            $this->assertNull($phase->registrationFrom);
+            $this->assertNull($phase->registrationTo);
+            $this->assertNull($phase->publishTimestamp);
+            $this->assertFalse($phase->autoPublish);
+
+            if ($configuration = $phase->evaluationMethodConfiguration) {
+                $this->assertNull($configuration->evaluationFrom);
+                $this->assertNull($configuration->evaluationTo);
+            }
+        }
+
+        $this->assertSame($modelPhaseDates, $this->getPhaseDates($model->refreshed()));
+    }
+
     private function createModel($owner, bool $isPublic): Opportunity
     {
         $this->login($owner);
@@ -247,5 +317,20 @@ class OpportunityModelUsageTest extends TestCase
             $opportunity->allPhases,
             fn(Opportunity $phase) => $phase->isDataCollection && !$phase->isLastPhase
         ));
+    }
+
+    private function getPhaseDates(Opportunity $opportunity): array
+    {
+        return array_map(
+            static fn(Opportunity $phase) => [
+                'registrationFrom' => $phase->registrationFrom?->format('Y-m-d H:i:s'),
+                'registrationTo' => $phase->registrationTo?->format('Y-m-d H:i:s'),
+                'publishTimestamp' => $phase->publishTimestamp?->format('Y-m-d H:i:s'),
+                'autoPublish' => $phase->autoPublish,
+                'evaluationFrom' => $phase->evaluationMethodConfiguration?->evaluationFrom?->format('Y-m-d H:i:s'),
+                'evaluationTo' => $phase->evaluationMethodConfiguration?->evaluationTo?->format('Y-m-d H:i:s'),
+            ],
+            $opportunity->allPhases
+        );
     }
 }
