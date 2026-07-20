@@ -6,6 +6,9 @@ O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+### Melhorias
+- Melhora a exportação do PDF de inscrição para exibir campos de endereço e tabela em formato legível
+
 ### Correções
 - Corrige a listagem de fases da oportunidade para exibir corretamente fases de avaliação na configuração
 - Corrige o cálculo do bônus de pontuação para campos de múltipla escolha (`checkboxes`) quando configurados com `eligibleValues`, aplicando apenas o bônus correspondente às opções efetivamente selecionadas
