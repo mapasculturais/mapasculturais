@@ -1291,7 +1291,7 @@ module.controller('RegistrationConfigurationsController', ['$scope', '$rootScope
                     $scope.data.fields.push(response);
                     sortFields();
                     EditBox.close('editbox-registration-files');
-                    $scope.data.newFileConfiguration = angular.copy(fileConfigurationSkeleton);
+                    angular.copy(fileConfigurationSkeleton, $scope.data.newFileConfiguration);
                     MapasCulturais.Messages.success(labels['attachmentCreated']);
                 }
             });
