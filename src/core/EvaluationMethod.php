@@ -750,6 +750,11 @@ abstract class EvaluationMethod extends Module implements \JsonSerializable{
 
         $evaluation_config = $opportunity->evaluationMethodConfiguration;
 
+        // Permite que temas e plugins especializem somente a ordem dos avaliadores.
+        // Sem um callable, ou quando ele retorna null, o balanceamento por quotas permanece inalterado.
+        $distribution_comparator = null;
+        $app->applyHookBoundTo($this, 'evaluationMethod.distributionComparator', [&$distribution_comparator, $opportunity]);
+
         /** @var Connection */
         $conn = $app->em->getConnection();
 
@@ -778,6 +783,10 @@ abstract class EvaluationMethod extends Module implements \JsonSerializable{
          * @var bool[][]
          **/
         $registration_list_exclusive_per_valuer = [];
+
+        // Conta somente as atribuições criadas nesta redistribuição. Avaliações já existentes
+        // continuam preservadas pelo fluxo abaixo, mas não entram neste contador separado.
+        $pending_assignments_count = [];
 
         foreach($evaluation_config->getAgentRelationsGrouped() as $committee => $agent_relations) {
             $registrations_per_valuer[$committee] = $registrations_per_valuer[$committee] ?? [];
@@ -1060,6 +1069,10 @@ abstract class EvaluationMethod extends Module implements \JsonSerializable{
                     // atualiza o número de avaliadores da inscrição
                     $valuers_committee_registrations_count[$committee_name][$user_id]++;
 
+                    // Inclusões manuais também compõem a carga pendente da rodada.
+                    $pending_assignments_count[$committee_name][$user_id] =
+                        ($pending_assignments_count[$committee_name][$user_id] ?? 0) + 1;
+
                     // incrementa o número de avaliações que a inscrição tem por comissão
                     $registration_valuers_count[$registration->id][$committee_name]++;
 
@@ -1095,7 +1108,7 @@ abstract class EvaluationMethod extends Module implements \JsonSerializable{
                     }
                 }
 
-                usort($users, function($u1, $u2) use ($registration, $registration_lists_per_valuer, $registration_list_exclusive_per_valuer, $committee_name, $valuers_committee_registrations_count, $committee_quotas) {
+                usort($users, function($u1, $u2) use ($registration, $registration_lists_per_valuer, $registration_list_exclusive_per_valuer, $committee_name, $valuers_committee_registrations_count, $committee_quotas, $distribution_comparator, $pending_assignments_count) {
                     $registration_number = $registration->number;
 
                     $list1 = $registration_lists_per_valuer[$committee_name][$u1->id] ?? [];
@@ -1122,6 +1135,26 @@ abstract class EvaluationMethod extends Module implements \JsonSerializable{
                         return $priority2 <=> $priority1;
                     }
 
+                    // O comparador personalizado atua depois das prioridades de lista. Ao retornar
+                    // null, delega a decisão para a ordenação por quotas já existente no core.
+                    if(is_callable($distribution_comparator)) {
+                        $custom_result = $distribution_comparator(
+                            $u1,
+                            $u2,
+                            $committee_name,
+                            $pending_assignments_count[$committee_name] ?? []
+                        );
+
+                        if($custom_result !== null) {
+                            return (int) $custom_result;
+                        }
+                    }
+
+                    // Ordena por contagem na comissão
+                    $count1 = $valuers_committee_registrations_count[$committee_name][$u1->id] ?? 0;
+                    $count2 = $valuers_committee_registrations_count[$committee_name][$u2->id] ?? 0;
+                    $result = $count1 <=> $count2;
+
                     // Se há quotas calculadas para esta comissão, ordena por espaço restante na quota
                     if(isset($committee_quotas[$committee_name])) {
                         $current1 = $valuers_committee_registrations_count[$committee_name][$u1->id] ?? 0;
@@ -1134,14 +1167,11 @@ abstract class EvaluationMethod extends Module implements \JsonSerializable{
                         $remaining2 = $quota2 - $current2;
                         
                         if($remaining1 !== $remaining2) {
-                            return $remaining2 <=> $remaining1;
+                            $result = $remaining2 <=> $remaining1;
                         }
                     }
-                    
-                    // Fallback: ordena por contagem na comissão (quem tem menos vem primeiro)
-                    $count1 = $valuers_committee_registrations_count[$committee_name][$u1->id] ?? 0;
-                    $count2 = $valuers_committee_registrations_count[$committee_name][$u2->id] ?? 0;
-                    return $count1 <=> $count2;
+
+                    return $result;
                 });
                 
                 // adiciona os avaliadores da comissão na inscrição
@@ -1193,6 +1223,10 @@ abstract class EvaluationMethod extends Module implements \JsonSerializable{
 
                     // atualiza o número de avaliações do usuário
                     $valuers_committee_registrations_count[$committee_name][$user->id]++;
+
+                    // Atualiza a carga usada pelo comparador nas próximas inscrições da comissão.
+                    $pending_assignments_count[$committee_name][$user->id] =
+                        ($pending_assignments_count[$committee_name][$user->id] ?? 0) + 1;
 
                     // incrementa o número de avaliações que a inscrição tem por comissão
                     $registration_valuers_count[$registration->id][$committee_name]++;

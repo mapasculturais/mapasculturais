@@ -5,6 +5,10 @@ Todas as mudanças notáveis no projeto serão documentadas neste arquivo.
 O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/)
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [UNRELEASED]
+### Melhorias não funcionais
+- Adiciona hook `evaluationMethod.distributionComparator` para permitir que temas personalizem a ordem de prioridade dos avaliadores durante a redistribuição de comissões
+
 ## [7.8.1] - 2026-07-21
 ### Melhorias
 - Melhora a exportação do PDF de inscrição para exibir campos de endereço e tabela em formato legível
