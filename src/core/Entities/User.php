@@ -723,7 +723,16 @@ class User extends \MapasCulturais\Entity implements \MapasCulturais\UserInterfa
         $opportunities = $app->repo('Opportunity')->findBy(['id' => $opportunity_ids]);
 
         usort($opportunities, function(Opportunity $opp1, Opportunity $opp2) {
-            return $opp2->evaluationMethodConfiguration->evaluationFrom <=> $opp1->evaluationMethodConfiguration->evaluationFrom;
+            $from1 = $opp1->evaluationMethodConfiguration->evaluationFrom;
+            $from2 = $opp2->evaluationMethodConfiguration->evaluationFrom;
+            $ts1 = $from1 instanceof \DateTimeInterface ? $from1->getTimestamp() : 0;
+            $ts2 = $from2 instanceof \DateTimeInterface ? $from2->getTimestamp() : 0;
+
+            if ($ts2 !== $ts1) {
+                return $ts2 <=> $ts1;
+            }
+
+            return $opp2->id <=> $opp1->id;
         });
 
         return $opportunities;

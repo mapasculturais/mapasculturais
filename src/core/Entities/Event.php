@@ -299,7 +299,11 @@ class Event extends \MapasCulturais\Entity
     }
 
     function setProject($project) {
-        if(is_numeric($project)) {
+        if (is_null($project)) {
+            if ($this->project) {
+                $this->_newProject = null;
+            }
+        } else if(is_numeric($project)) {
             $this->setProjectId($project);
         } else if (is_object($project)) {
             if(!$this->project || !$this->project->equals($project)) {

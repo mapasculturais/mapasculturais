@@ -18,11 +18,16 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Inclui coluna, filtros e indicação de isenção por selos na tabela e na planilha de avaliações
 - Exibe corretamente os anexos `@` do agente na inscrição, na edição do perfil, na single e nas listagens/planilhas (com link para download)
 
+## [7.8.1] - 2026-07-21
 ### Melhorias
 - Melhora a exportação do PDF de inscrição para exibir campos de endereço e tabela em formato legível
+- Melhora a exportação do PDF de inscrição para exibir links e arquivos de agente de forma legível
 - Melhora o uso de modelos de oportunidades para criar novas oportunidades sem copiar as datas das fases
 
 ### Correções
+- Ordena os cards do painel (inscrições recentes, oportunidades abertas e avaliações disponíveis) do mais recente para o mais antigo
+- Corrige warning de variável indefinida (`$committee_where`) no repositório de avaliações quando a comissão não é informada
+- Corrige campos condicionais do formulário de inscrição quando o campo pai é um `checkboxes`, considerando o valor esperado dentro do array marcado
 - Corrige a listagem de fases da oportunidade para exibir corretamente fases de avaliação na configuração
 - Corrige o cálculo do bônus de pontuação para campos de múltipla escolha (`checkboxes`) quando configurados com `eligibleValues`, aplicando apenas o bônus correspondente às opções efetivamente selecionadas
 - Corrige avisos de validação do monitoramento que apareciam indevidamente na fase de inscrição
@@ -30,6 +35,12 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Corrige o carregamento da configuração de cotas em oportunidades antigas sem regras de cotas cadastradas.
 - Corrige erro na configuração de formulário causado por valores numéricos salvos como texto em campos de limite de opções, linhas e arquivos
 - Corrige a validação da resposta do recurso para impedir concluir ou enviar avaliação contínua sem selecionar o status da inscrição
+- Corrige o importador de eventos para aceitar eventos noturnos que ultrapassam a meia-noite (ex.: das 18h às 3h)
+- Impede o reprocessamento de uma mesma planilha no importador de eventos para evitar duplicações silenciosas
+- Reverte as alterações do importador de eventos quando ocorre falha durante a importação, evitando eventos parcialmente criados
+- Amplia os tipos de CSV aceitos no importador de eventos para contemplar variações enviadas por diferentes navegadores
+- Atualiza a biblioteca de leitura de planilhas do importador de eventos para uma versão mantida ativamente
+- Melhora as mensagens de erro exibidas ao usuário durante o processamento da planilha de eventos
 
 ## [7.8.0] - 2026-07-02
 ### Novas Funcionalidades

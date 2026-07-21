@@ -169,4 +169,89 @@ class RegistrationPdfFormatterTest extends TestCase
         $this->assertStringNotContainsString('Array', $formatted);
         $this->assertStringNotContainsString('<script>', $formatted);
     }
+
+    public function testFormatsCheckboxesArrayOfStrings(): void
+    {
+        $config = (object) [
+            'fieldType' => 'checkboxes',
+        ];
+
+        $value = [
+            'Audiovisual e cinema',
+            'Social Media, Comunicação digital, redes e estratégia',
+            'Música, som e produção sonora',
+        ];
+
+        $formatted = RegistrationPdfFormatter::formatFieldValue($config, $value);
+
+        $this->assertSame(
+            'Audiovisual e cinema, Social Media, Comunicação digital, redes e estratégia, Música, som e produção sonora',
+            $formatted
+        );
+    }
+
+    public function testFormatsScalarStringValue(): void
+    {
+        $config = (object) [
+            'fieldType' => 'select',
+        ];
+
+        $formatted = RegistrationPdfFormatter::formatFieldValue($config, 'Sim');
+
+        $this->assertSame('Sim', $formatted);
+    }
+
+    public function testFormatsLinksArrayOfObjectsWithoutThrowing(): void
+    {
+        $config = (object) [
+            'fieldType' => 'agent-owner-field',
+            'config' => [
+                'entityField' => '@links',
+            ],
+        ];
+
+        $value = [
+            (object) [
+                'title' => '2º lugar Mister Trans Brasil 2022',
+                'value' => 'https://exemplo.org/noticia',
+            ],
+            (object) [
+                'title' => 'DJ Parada do Orgulho LGBT',
+                'value' => 'https://exemplo.org/evento',
+            ],
+        ];
+
+        $formatted = RegistrationPdfFormatter::formatFieldValue($config, $value);
+        $formattedHtml = RegistrationPdfFormatter::formatFieldValueAsHtml($config, $value);
+
+        $this->assertStringContainsString('https://exemplo.org/noticia', $formatted);
+        $this->assertStringContainsString('https://exemplo.org/evento', $formatted);
+        $this->assertStringContainsString('Mister Trans', $formatted);
+        $this->assertStringNotContainsString('Array', $formatted);
+        $this->assertStringContainsString('https://exemplo.org/noticia', $formattedHtml);
+    }
+
+    public function testFormatsAgentFilesArrayOfObjectsWithoutThrowing(): void
+    {
+        $config = (object) [
+            'fieldType' => 'agent-owner-field',
+            'config' => [
+                'entityField' => 'files',
+            ],
+        ];
+
+        $value = [
+            (object) [
+                'id' => 145903,
+                'name' => 'portfolio.pdf',
+                'url' => 'https://exemplo.org/files/portfolio.pdf',
+            ],
+        ];
+
+        $formatted = RegistrationPdfFormatter::formatFieldValue($config, $value);
+
+        $this->assertStringContainsString('portfolio.pdf', $formatted);
+        $this->assertStringContainsString('https://exemplo.org/files/portfolio.pdf', $formatted);
+        $this->assertStringNotContainsString('Array', $formatted);
+    }
 }
