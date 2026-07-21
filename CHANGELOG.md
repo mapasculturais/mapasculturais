@@ -18,6 +18,12 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Corrige o carregamento da configuração de cotas em oportunidades antigas sem regras de cotas cadastradas.
 - Corrige erro na configuração de formulário causado por valores numéricos salvos como texto em campos de limite de opções, linhas e arquivos
 - Corrige a validação da resposta do recurso para impedir concluir ou enviar avaliação contínua sem selecionar o status da inscrição
+- Corrige o importador de eventos para aceitar eventos noturnos que ultrapassam a meia-noite (ex.: das 18h às 3h)
+- Impede o reprocessamento de uma mesma planilha no importador de eventos para evitar duplicações silenciosas
+- Reverte as alterações do importador de eventos quando ocorre falha durante a importação, evitando eventos parcialmente criados
+- Amplia os tipos de CSV aceitos no importador de eventos para contemplar variações enviadas por diferentes navegadores
+- Atualiza a biblioteca de leitura de planilhas do importador de eventos para uma versão mantida ativamente
+- Melhora as mensagens de erro exibidas ao usuário durante o processamento da planilha de eventos
 
 ## [7.8.0] - 2026-07-02
 ### Novas Funcionalidades
