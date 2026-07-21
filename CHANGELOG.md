@@ -6,6 +6,9 @@ O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [UNRELEASED]
+### Correções
+- Corrige a opção de obrigatoriedade ao adicionar anexos sucessivos no formulário de inscrição, evitando que um novo anexo apareça marcado como obrigatório por causa da configuração anterior
+
 ### Melhorias não funcionais
 - Adiciona hook `evaluationMethod.distributionComparator` para permitir que temas personalizem a ordem de prioridade dos avaliadores durante a redistribuição de comissões
 
