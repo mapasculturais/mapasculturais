@@ -31,7 +31,7 @@ $this->import('
                         <a @click="metalist.newData = {title: metalist.title, value: metalist.value}; popover.toggle()"> <mc-icon name="edit"></mc-icon> </a>
                     </template>
                     <template #default="popover">
-                        <form @submit="save(metalist, popover); $event.preventDefault()" class="entity-related-agents__addNew--newGroup">
+                        <form v-if="metalist.newData" @submit="save(metalist, popover); $event.preventDefault()" class="entity-related-agents__addNew--newGroup">
                             <div class="grid-12">
                                 <div class="col-12">
                                     <div class="field">
