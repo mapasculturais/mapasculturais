@@ -256,10 +256,27 @@ class RegistrationPdfFormatter
         }
 
         if (is_array($value) || is_object($value)) {
-            return json_encode($value, JSON_UNESCAPED_UNICODE) ?: '';
+            return self::stringifyStructuredValue($value);
         }
 
         return (string) $value;
+    }
+
+    private static function stringifyStructuredValue(array|object $value): string
+    {
+        $title = self::cleanScalar(self::getConfigValue($value, 'title'));
+        $link = self::cleanScalar(self::getConfigValue($value, 'value'));
+        if ($title !== '' && $link !== '') {
+            return $title . ': ' . $link;
+        }
+
+        $name = self::cleanScalar(self::getConfigValue($value, 'name'));
+        $url = self::cleanScalar(self::getConfigValue($value, 'url'));
+        if ($name !== '' && $url !== '') {
+            return $name . ': ' . $url;
+        }
+
+        return json_encode($value, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) ?: '';
     }
 
     private static function cleanScalar(mixed $value): string

@@ -7,15 +7,12 @@ use stdClass;
 use Curl\Curl;
 use Exception;
 use MapasCulturais\i;
-use League\Csv\Reader;
 use League\Csv\Writer;
 use MapasCulturais\App;
-use Shuchkin\SimpleXLS;
-use Shuchkin\SimpleXLSX;
-use League\Csv\Statement;
 use MapasCulturais\Entity;
 use MapasCulturais\Entities\Event;
 use MapasCulturais\Entities\MetaList;
+use PhpOffice\PhpSpreadsheet\IOFactory;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 use MapasCulturais\Entities\EventOccurrence;
@@ -145,42 +142,55 @@ class Controller extends \MapasCulturais\Controller
 
    public function getDataCSV($file)
    {
-     $stream = fopen($file, 'r');
-
-      $csv = Reader::createFromStream($stream);
-      $csv->setDelimiter(",");
-      $csv->setHeaderOffset(0);
-
-      $stm = (new Statement());
-      $file_data = $stm->process($csv);
-
-      return $file_data;
+      return $this->readSpreadsheetRows($file);
    }
 
    public function getDataXLS($file)
    {
-      $info = pathinfo($file);
-      $ext = $info['extension'];
-      $classes = [
-         'xls' => \Shuchkin\SimpleXLS::class,
-         'xlsx' => \Shuchkin\SimpleXLSX::class,
-      ];
-      $_class = $classes[$ext] ?? null;
+      return $this->readSpreadsheetRows($file);
+   }
 
-      if(!$_class){
-         die("Tipo de arquivo inválido");
+   /**
+    * Lê CSV, XLS ou XLSX via PhpSpreadsheet e devolve linhas associativas (1-based).
+    */
+   protected function readSpreadsheetRows($file): array
+   {
+      $ext = strtolower(pathinfo($file, PATHINFO_EXTENSION));
+
+      if ($ext === 'csv') {
+         $reader = IOFactory::createReader('Csv');
+         $reader->setDelimiter(',');
+         $spreadsheet = $reader->load($file);
+      } else {
+         $spreadsheet = IOFactory::load($file);
       }
 
-      $class = new $_class($file);
-      $xls = $class::parseFile($file);
-      $rows = $xls->rows();
-      $header = $rows[0];
+      $rows = $spreadsheet->getActiveSheet()->toArray(null, true, true, false);
 
+      if (empty($rows)) {
+         return [];
+      }
+
+      $header = array_shift($rows);
+      $headerCount = count($header);
       $file_data = [];
-      foreach($rows as $key => $values){
-         if($key === 0){continue;}
-         
-         $file_data[$key] = array_combine($header, $values);
+
+      foreach ($rows as $index => $values) {
+         if (count($values) < $headerCount) {
+            $values = array_pad($values, $headerCount, '');
+         } elseif (count($values) > $headerCount) {
+            $values = array_slice($values, 0, $headerCount);
+         }
+
+         // PhpSpreadsheet retorna null em células vazias; processData usa trim()
+         $values = array_map(fn($v) => $v === null ? '' : $v, $values);
+
+         if (empty(array_filter($values, fn($v) => $v !== ''))) {
+            continue;
+         }
+
+         // 1-based (linha 1 = header) para mensagens de erro em processData
+         $file_data[$index + 1] = array_combine($header, $values);
       }
 
       return $file_data;
@@ -307,7 +317,7 @@ class Controller extends \MapasCulturais\Controller
 
                $_collum = $app->slugify($collum);
                if(in_array(trim($_collum), $alloweds)){
-                  $tmp[$key] = trim($values[$collum]);
+                  $tmp[$key] = trim((string) ($values[$collum] ?? ''));
                }
               
             }
@@ -354,7 +364,7 @@ class Controller extends \MapasCulturais\Controller
          
             $hash = md5(implode(",", $value));
             if(in_array($hash, $exampleHash)){
-               $errors['errors'][$key+1][] = i::__("Linha invalida. Os dados da linha são os dados do exemplo, apague a mesma para continuar");
+               $errors['errors'][$key+1][] = i::__("Linha inválida: ainda é a linha de instruções/exemplo da planilha modelo. Apague as linhas de exemplo e deixe apenas o cabeçalho + seus dados reais");
                break;
             }
             
@@ -505,8 +515,9 @@ class Controller extends \MapasCulturais\Controller
                }
                
                
-               if((new DateTime($value['STARTS_AT'])) > (new DateTime($value['ENDS_AT']))){
-                  $errors['errors'][$key+1][] = i::__("A data inicial é maior que a data final.");
+               // Eventos que atravessam a meia-noite (ex.: 18:00 → 03:00) são válidos
+               if((new DateTime($value['STARTS_AT'])) == (new DateTime($value['ENDS_AT']))){
+                  $errors['errors'][$key+1][] = i::__("A hora inicial e a hora final não podem ser iguais.");
                }
 
                // Valida a data inicial
@@ -546,20 +557,32 @@ class Controller extends \MapasCulturais\Controller
       $eventsIdList = [];
       $error_process = false;
       $deletedOcurrences = [];
-      $process_file = json_decode($app->user->profile->event_importer_files_processed, true);
-      if (!in_array($file->id, $process_file)) {
-         $process_file[] = $file->id;
-         $app->user->profile->event_importer_files_processed = json_encode($process_file);
-         $app->user->profile->save(true);
+      $uploadedFile = $file;
+      $process_file = $app->user->profile->event_importer_files_processed;
+      if (is_string($process_file)) {
+         $process_file = json_decode($process_file, true);
+      }
+      if (!is_array($process_file)) {
+         $process_file = [];
+      }
 
-         foreach ($data as $key => $value) {
-            $type_process_map = $this->typeProcessMap($value);
+      if (in_array($uploadedFile->id, $process_file)) {
+         return [
+            'errors' => [
+               0 => [i::__('Este arquivo já foi processado. Envie a planilha novamente ou use outro arquivo para importar.')]
+            ]
+         ];
+      }
 
-            if (!empty($value['EVENT_ID']) && in_array($value['NAME'], $moduleConfig['clear_ocurrence_ref'])) {
-               continue;
-            };
+      foreach ($data as $key => $value) {
+         $type_process_map = $this->typeProcessMap($value);
 
-            $app->em->beginTransaction();
+         if (!empty($value['EVENT_ID']) && in_array($value['NAME'], $moduleConfig['clear_ocurrence_ref'])) {
+            continue;
+         };
+
+         $app->em->beginTransaction();
+         try {
             if ($type_process_map->create_event || $type_process_map->edit_event) {
 
                if ($type_process_map->edit_event && in_array($value['EVENT_ID'], $clearOcurrenceList) && !in_array($value['EVENT_ID'], $deletedOcurrences)) {
@@ -571,26 +594,31 @@ class Controller extends \MapasCulturais\Controller
                   }
                }
 
-               if ($event = $this->insertEvent($value)) {
+               $event = $this->insertEvent($value);
+               if (!$event) {
+                  $error_process = true;
+                  $errors['errors'][$key + 1][] = i::__('Falha ao salvar o evento. Verifique os dados da linha.');
+                  $app->em->rollback();
+                  continue;
+               }
 
-                  $ocurrence = true;
-                  if ($type_process_map->create_ocurrence || $type_process_map->edit_ocurrence) {
-                     $ocurrence = $this->createOcurrency($event, $value, $key);
-                  }
+               $ocurrence_ok = true;
+               if ($type_process_map->create_ocurrence || $type_process_map->edit_ocurrence) {
+                  $ocurrence_ok = $this->createOcurrency($event, $value, $key);
+               }
 
-                  $file = $this->downloadFile($event, $value);
-                  $metalist = $this->createMetalists($event, $value);
+               $files_ok = $this->downloadFile($event, $value);
+               $metalist_ok = $this->createMetalists($event, $value);
 
-
-                  if ($ocurrence && $file && $metalist) {
-                     $countNewEvent++;
-                     $eventsIdList[$event->id] = $event->id;
-                     $this->ApplySeal($event, $value);
-                     $app->em->commit();
-                  } else {
-                     $error_process = true;
-                     $errors['errors'][$key + 1][] = i::__("Evento {$event->name} Não foi inserido");
-                  }
+               if ($ocurrence_ok && $files_ok && $metalist_ok) {
+                  $countNewEvent++;
+                  $eventsIdList[$event->id] = $event->id;
+                  $this->ApplySeal($event, $value);
+                  $app->em->commit();
+               } else {
+                  $error_process = true;
+                  $errors['errors'][$key + 1][] = i::__("Evento {$event->name} não foi inserido (falha na ocorrência, arquivos ou metalists)");
+                  $app->em->rollback();
                }
             } else if ($type_process_map->delete_event) {
                $event = $app->repo('Event')->find($value['EVENT_ID']);
@@ -598,32 +626,49 @@ class Controller extends \MapasCulturais\Controller
                $countNewEvent++;
                $eventsIdList[] = $event->id;
                $app->em->commit();
+            } else {
+               $app->em->rollback();
             }
-         }
-
-         if ($countNewEvent >= 1) {
-            $_agent = $app->user->profile;
-            $files = $_agent->event_importer_processed_file ?: new stdClass();
-            $files->{basename($file_dir)} = [
-               'date' => date('d/m/Y \à\s H:i'),
-               'countProsess' => $countNewEvent,
-               'eventsIdList' => $eventsIdList,
-               'typeFile' => ($type_process_map->create_event ? i::__('Criação') : ($type_process_map->edit_event ? i::__('Edição') : ($type_process_map->delete_event ? i::__('Deleção') : i::__('Não definido'))))
-            ];
-            $_agent->event_importer_processed_file = $files;
-            $_agent->save(true);
-
-            if ($error_process) {
-               return $errors;
+         } catch (\Throwable $th) {
+            if ($app->em->getConnection()->isTransactionActive()) {
+               $app->em->rollback();
             }
-
-         } else {
-            return $errors;
+            $error_process = true;
+            $errors['errors'][$key + 1][] = i::__('Erro ao processar a linha: ') . $th->getMessage();
          }
       }
 
-      $this->json($app->user->profile->event_importer_processed_file);
+      if ($countNewEvent < 1) {
+         if (empty($errors['errors'])) {
+            $errors['errors'][0][] = i::__('Nenhum evento foi criado ou atualizado. Verifique os dados da planilha.');
+         }
+         return $errors;
+      }
+
+      $process_file[] = $uploadedFile->id;
+      $app->user->profile->event_importer_files_processed = $process_file;
+
+      $_agent = $app->user->profile;
+      $files = $_agent->event_importer_processed_file ?: new stdClass();
+
+      if (is_array($files)) {
+         $files = (object) $files;
+      }
       
+      $files->{basename($file_dir)} = [
+         'date' => date('d/m/Y \à\s H:i'),
+         'countProsess' => $countNewEvent,
+         'eventsIdList' => $eventsIdList,
+         'typeFile' => ($type_process_map->create_event ? i::__('Criação') : ($type_process_map->edit_event ? i::__('Edição') : ($type_process_map->delete_event ? i::__('Deleção') : i::__('Não definido'))))
+      ];
+      $_agent->event_importer_processed_file = $files;
+      $_agent->save(true);
+
+      if ($error_process) {
+         return $errors;
+      }
+
+      return $_agent->event_importer_processed_file;
    }
 
    public function checkCollum($value)
@@ -711,7 +756,9 @@ class Controller extends \MapasCulturais\Controller
          $event->longDescription = $value['LONG_DESCRIPTION'];
          $event->classificacaoEtaria = $value['CLASSIFICATION'];
          $event->terms['linguagem'] = $_languages;
-         $event->projectId = $project ? $project->id : null;
+         if ($project) {
+            $event->projectId = $project->id;
+         }
          $event->event_attendance = $value['EVENT_ATTENDANCE'];
          $event->traducaoLibras = $value['LIBRAS_TRANSLATION'];
          $event->telefonePublico = $more_information;
@@ -725,7 +772,7 @@ class Controller extends \MapasCulturais\Controller
          $event->save(true);
          return $event;
       } catch (\Throwable $th) {
-         return false;
+         throw $th;
       }         
    }
 
@@ -744,18 +791,34 @@ class Controller extends \MapasCulturais\Controller
             $start = $this->formatDate($value['STARTS_AT']);
             $stop = $this->formatDate($value['ENDS_AT']);
             $diferenca = strtotime($stop) - strtotime($start);
+
+            // Evento noturno: hora final no dia seguinte (ex.: 18:00 → 03:00)
+            if ($diferenca <= 0) {
+               $diferenca += 24 * 60 * 60;
+            }
    
             return ($diferenca / 60);
          };
    
          $collum = $this->checkCollum($value['SPACE']);
          $space = $app->repo("Space")->findOneBy([$collum => $value['SPACE']]);
+         if (!$space) {
+            throw new Exception(i::__('Espaço não encontrado para criar a ocorrência'));
+         }
+
+         $freq_map = [];
+         foreach ($moduleConfig['frequence_list_allowed'] as $label => $slug) {
+            $freq_map[$this->lowerStr($label)] = $slug;
+         }
+         if (empty($freq_map[$freq])) {
+            throw new Exception(i::__('Frequência inválida para criar a ocorrência'));
+         }
    
          $rule = [
             "spaceId" => $space->id,
             "startsOn" => $this->formatDate($value['STARTS_ON'], "Y-m-d"),
             "duration" => $duration(),
-            "frequency" => $moduleConfig['frequence_list_allowed'][$freq],
+            "frequency" => $freq_map[$freq],
             "startsAt" => $this->formatDate($value['STARTS_AT'], "H:i"),
             "until" => (!empty($value['ENDS_ON']) && $value['ENDS_ON'] !="")? $this->formatDate($value['ENDS_ON'], "Y-m-d") :null,
             "price" => $value['PRICE'],
@@ -897,6 +960,10 @@ class Controller extends \MapasCulturais\Controller
                };
                break;
          }
+
+         if (!isset($exec)) {
+            throw new Exception(i::__('Frequência não suportada para criar a ocorrência'));
+         }
    
          $exec();
          
@@ -907,7 +974,7 @@ class Controller extends \MapasCulturais\Controller
          $ocurrence->startsAt = $this->formatDate($value['STARTS_AT'], false);
          $ocurrence->endsAt = $this->formatDate($value['ENDS_AT'], false);
          $ocurrence->startOn = $this->formatDate($value['STARTS_ON'], false);
-         $ocurrence->frequency = $moduleConfig['frequence_list_allowed'][$freq];
+         $ocurrence->frequency = $freq_map[$freq];
          $ocurrence->status = EventOccurrence::STATUS_ENABLED;
          $ocurrence->event = $event;
          $ocurrence->space = $space;
@@ -922,7 +989,7 @@ class Controller extends \MapasCulturais\Controller
          $app->enableAccessControl();
          return true;
       } catch (\Throwable $th) {
-         return false;
+         throw $th;
       }
    }
 
