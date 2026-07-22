@@ -101,6 +101,29 @@ class Module extends \MapasCulturais\EvaluationMethod
         return i::__('Consiste em avaliação por critérios e cotas.');
     }
 
+    public function findRegistrationIdsForResultApplication(Opportunity $opportunity, array $registration_numbers, int $new_status): array
+    {
+        $registration_numbers = array_values(array_unique(array_filter(array_map(
+            fn ($number) => is_string($number) ? trim($number) : '',
+            $registration_numbers
+        ))));
+
+        if (!$registration_numbers) {
+            return [];
+        }
+
+        $status_in = API::IN([1, 3, 8, 10]);
+        $status_not_equal = API::NOT_EQ($new_status);
+        $query = new ApiQuery(Registration::class, [
+            '@select' => 'id',
+            'opportunity' => API::EQ($opportunity->id),
+            'number' => API::IN($registration_numbers),
+            'status' => "AND($status_not_equal, $status_in)",
+        ]);
+
+        return $query->findIds();
+    }
+
     public function filterEvaluationsSummary(array $data) {
         $items = array_filter(array_keys($data), function($item) {
             return is_numeric($item) ? $item : null;            
@@ -683,8 +706,10 @@ class Module extends \MapasCulturais\EvaluationMethod
                 '@order' => 'score DESC'
             ];
 
-            // TAB POR PONTUAÇÃO
-            if($this->data['tabSelected'] === 'score') {
+            $tab_selected = $this->data['tabSelected'] ?? null;
+            $applies_single_status = in_array($tab_selected, ['score', 'registration'], true);
+
+            if($applies_single_status) {
                 if(!isset($this->data['setStatusTo'])) {
                     $this->errorJson(i::__('Por favor selecione um status para ser aplicado.'), 400);
                 }
@@ -695,6 +720,10 @@ class Module extends \MapasCulturais\EvaluationMethod
                 }
 
                 $new_status = intval($this->data['setStatusTo']);
+            }
+
+            // TAB POR PONTUAÇÃO
+            if($tab_selected === 'score') {
                 $statusNotEqual =  API::NOT_EQ($new_status);
                 $min = $this->data['from'][0];
                 $max = $this->data['from'][1];
@@ -704,6 +733,18 @@ class Module extends \MapasCulturais\EvaluationMethod
 
                 $query = new ApiQuery(Registration::class, $query_params);
                 $registrations = $query->findIds();
+            }
+
+            // TAB POR INSCRIÇÃO
+            if($tab_selected === 'registration') {
+                $registrations = $self->findRegistrationIdsForResultApplication(
+                    $opp,
+                    $this->data['registrationNumbers'] ?? [],
+                    $new_status
+                );
+            }
+
+            if($applies_single_status) {
                 $total = count($registrations);
 
                 foreach($registrations as $i => $reg) {
@@ -742,7 +783,7 @@ class Module extends \MapasCulturais\EvaluationMethod
             }
 
             // TAB POR CLASSIFICAÇÃO
-            if($this->data['tabSelected'] === 'classification') {
+            if($tab_selected === 'classification') {
                 $early_registrations = $this->data['earlyRegistrations'];
                 $wait_list = $this->data['waitList'];
                 $invalidate_registrations = $this->data['invalidateRegistrations'];
