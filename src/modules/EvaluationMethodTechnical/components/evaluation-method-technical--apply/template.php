@@ -97,9 +97,10 @@ $this->import('
             <mc-tab label="<?= i::esc_attr__('Por inscrição') ?>" slug='registration'>
                 <div class="grid-12 classification__panel">
                     <div class="field col-12">
-                        <label><?php i::_e('Lista de inscrições') ?></label>
+                        <label for="evaluation-technical-registration-list"><?php i::_e('Lista de inscrições') ?></label>
                         <div class="field opportunity-evaluation-committee__registration-list-textarea">
                             <textarea
+                                id="evaluation-technical-registration-list"
                                 v-model="registrationListText"
                                 placeholder="<?= i::esc_attr__('Preencha com os números das inscrições em que deseja aplicar o resultado das avaliações, separados por vírgula.') ?>"
                                 rows="4"></textarea>
@@ -107,8 +108,8 @@ $this->import('
                     </div>
 
                     <div class="field col-12">
-                        <label><?php i::_e('Selecione o status que deseja aplicar') ?></label>
-                        <select v-model="applyData.setStatusTo">
+                        <label for="evaluation-technical-registration-status"><?php i::_e('Selecione o status que deseja aplicar') ?></label>
+                        <select id="evaluation-technical-registration-status" v-model="applyData.setStatusTo">
                             <option v-for="item in statusList" :value="item.status">{{item.label}}</option>
                         </select>
                     </div>
