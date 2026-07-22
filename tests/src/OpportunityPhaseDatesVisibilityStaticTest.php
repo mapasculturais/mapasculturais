@@ -14,10 +14,27 @@ class OpportunityPhaseDatesVisibilityStaticTest extends TestCase
     public function testOpportunityRegistersHidePhaseDatesMetadata(): void
     {
         $module = file_get_contents($this->root . '/src/modules/Opportunities/Module.php');
+        $metadataStart = strpos($module, "registerOpportunityMetadata('hidePhaseDates'");
+        $metadataEnd = strpos($module, "registerOpportunityMetadata('publicityOnly'", $metadataStart);
+        $metadata = substr($module, $metadataStart, $metadataEnd - $metadataStart);
 
         $this->assertStringContainsString("registerOpportunityMetadata('hidePhaseDates'", $module);
         $this->assertStringContainsString("Ocultar datas das fases para o público", $module);
-        $this->assertStringContainsString("'default' => false", $module);
+        $this->assertStringContainsString("'default' => false", $metadata);
+        $this->assertStringNotContainsString("'description'", $metadata);
+    }
+
+    public function testOpportunityConfigurationShowsHidePhaseDatesFaqInfo(): void
+    {
+        $template = file_get_contents($this->root . '/src/modules/Opportunities/components/opportunity-phase-config-data-collection/template.php');
+        $ptBrFaq = file_get_contents($this->root . '/src/modules/FAQ/questions/pt_BR/editais-oportunidades/configuracoes/ocultar-datas-fases.md');
+        $esFaq = file_get_contents($this->root . '/src/modules/FAQ/questions/es_ES/editais-oportunidades/configuracoes/ocultar-datas-fases.md');
+
+        $this->assertStringContainsString('prop="hidePhaseDates"', $template);
+        $this->assertStringContainsString('<template #info>', $template);
+        $this->assertStringContainsString("editais-oportunidades -> configuracoes -> ocultar-datas-fases", $template);
+        $this->assertStringContainsString('O que significa ocultar datas das fases para o público?', $ptBrFaq);
+        $this->assertStringContainsString('¿Qué significa ocultar las fechas de las fases para el público?', $esFaq);
     }
 
     public function testPhasesPayloadExposesHidePhaseDatesToTimelineConsumers(): void
