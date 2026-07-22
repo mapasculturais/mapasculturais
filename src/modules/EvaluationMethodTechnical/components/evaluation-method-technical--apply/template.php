@@ -97,15 +97,13 @@ $this->import('
             <mc-tab label="<?= i::esc_attr__('Por inscrição') ?>" slug='registration'>
                 <div class="grid-12 classification__panel">
                     <div class="field col-12">
-                        <label>
-                            <?php i::_e('Lista de inscrições') ?>
-                            <div class="field opportunity-evaluation-committee__registration-list-textarea">
-                                <textarea
-                                    v-model="registrationListText"
-                                    placeholder="<?= i::esc_attr__('Preencha com os números de inscrição que o avaliador deve avaliar, separados por vírgula.') ?>"
-                                    rows="4"></textarea>
-                            </div>
-                        </label>
+                        <label><?php i::_e('Lista de inscrições') ?></label>
+                        <div class="field opportunity-evaluation-committee__registration-list-textarea">
+                            <textarea
+                                v-model="registrationListText"
+                                placeholder="<?= i::esc_attr__('Preencha com os números das inscrições em que deseja aplicar o resultado das avaliações, separados por vírgula.') ?>"
+                                rows="4"></textarea>
+                        </div>
                     </div>
 
                     <div class="field col-12">
