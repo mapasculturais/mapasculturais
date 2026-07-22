@@ -22,7 +22,9 @@ return [
             'selo'              => ['seal', 'single'],
             'oportunidade'      => ['opportunity', 'single'],
             'instalacao'        => ['subsite', 'single'],
-            
+
+            'cadastro-unico'    => ['cadastroUnico', 'single'],
+
             'edicao-de-evento'            => ['event', 'edit'],
             'edicao-de-usuario'           => ['user', 'edit'],
             'edicao-de-agente'            => ['agent', 'edit'],
@@ -90,6 +92,8 @@ return [
 
             'file/arquivo-privado' => ['file', 'privateFile'],
 
+            'inscricao-exportar-pdf' => ['registration', 'exportPDF'],
+            'inscricao-baixar-arquivos' => ['registration', 'createZipFiles'],
         ],
         'controllers' => [
             'painel'         => 'panel',

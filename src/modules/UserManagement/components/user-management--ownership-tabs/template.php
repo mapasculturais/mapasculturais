@@ -15,7 +15,7 @@ $this->import('
     mc-icon
 ');
 ?>
-<panel--entity-tabs tabs="publish,draft,trash,archived" :type='type' :user="user.id" :select="newSelect">
+<panel--entity-tabs tabs="publish,draft,granted,trash,archived" :type='type' :user="user.id" :select="newSelect" :limit="20">
     <template  #entity-actions-left="{entity}">
         <div v-if="type == 'agent' && !entity.parent">
             <mc-icon name="agent-default-account-user"></mc-icon>

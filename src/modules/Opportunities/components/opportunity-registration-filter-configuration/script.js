@@ -48,6 +48,23 @@ app.component('opportunity-registration-filter-configuration', {
             type: String,
             default: ''
         },
+
+        groupFilters: {
+            type: Object,
+            required: false,
+            default: null
+        },
+
+        group: {
+            type: String,
+            required: false,
+            default: null
+        },
+
+        saveToAgentRelation: {
+            type: Boolean,
+            default: false
+        },
     },
 
     setup() {
@@ -110,12 +127,105 @@ app.component('opportunity-registration-filter-configuration', {
                     ),
                 };
             } else {
+                // Se for avaliador individual e houver filtros globais da comissão, usar apenas esses filtros
+                if (!this.isGlobal && !this.isSection && this.groupFilters) {
+                    const globalCategories = Array.isArray(this.groupFilters.category) ? this.groupFilters.category : [];
+                    const globalProponentTypes = Array.isArray(this.groupFilters.proponentType) ? this.groupFilters.proponentType : [];
+                    const globalRanges = Array.isArray(this.groupFilters.range) ? this.groupFilters.range : [];
+                    
+                    return {
+                        categories: globalCategories.length > 1 
+                            ? globalCategories
+                            : (globalCategories.length > 0 
+                                ? globalCategories 
+                                : this.registrationCategories.filter(cat => !this.excludeFields.includes('category'))),
+                        proponentTypes: globalProponentTypes.length > 1
+                            ? globalProponentTypes
+                            : (globalProponentTypes.length > 0
+                                ? globalProponentTypes
+                                : this.registrationProponentTypes.filter(type => !this.excludeFields.includes('proponentType'))),
+                        ranges: globalRanges.length > 1
+                            ? globalRanges
+                            : (globalRanges.length > 0
+                                ? globalRanges
+                                : this.registrationRanges.filter(range => !this.excludeFields.includes('range'))),
+                    };
+                }
+                
                 return {
                     categories: this.registrationCategories.filter(cat => !this.excludeFields.includes('category')),
                     proponentTypes: this.registrationProponentTypes.filter(type => !this.excludeFields.includes('proponentType')),
                     ranges: this.registrationRanges.filter(range => !this.excludeFields.includes('range')),
                 };
             }
+        },
+
+        filteredSelectionFieldOptions() {
+            if (!this.isGlobal && !this.isSection && !this.isCriterion && this.groupFilters && this.selectedField) {
+                const reservedFields = ['category', 'proponentType', 'range', 'sentTimestamp', 'distribution'];
+                
+                if (!reservedFields.includes(this.selectedField)) {
+                    const globalFieldOptions = Array.isArray(this.groupFilters[this.selectedField]) 
+                        ? this.groupFilters[this.selectedField] 
+                        : [];
+                    
+                    if (globalFieldOptions.length > 1) {
+                        return globalFieldOptions;
+                    }
+                    
+                    if (globalFieldOptions.length > 0) {
+                        return globalFieldOptions;
+                    }
+                }
+            }
+            
+            return this.registrationSelectionFields?.[this.selectedField]?.fieldOptions ?? [];
+        },
+
+        canConfirm() {
+            if (this.selectedField === 'sentTimestamp') {
+                const hasInitialDate = !!this.selectedConfigs?.from;
+                const hasFinalDate = !!this.selectedConfigs?.to;
+                
+                // Precisa ter pelo menos uma data
+                if (!hasInitialDate && !hasFinalDate) {
+                    return false;
+                }
+                
+                // Se ambas as datas estiverem preenchidas, a data final deve ser maior ou igual à inicial
+                if (hasInitialDate && hasFinalDate) {
+                    const fromDate = new Date(this.selectedConfigs.from);
+                    const toDate = new Date(this.selectedConfigs.to);
+                    return toDate >= fromDate;
+                }
+                
+                return true;
+            }
+
+            return true;
+        },
+
+        sentTimestampErrors() {
+            if (this.selectedField !== 'sentTimestamp') {
+                return { from: '', to: '' };
+            }
+
+            const hasInitialDate = !!this.selectedConfigs?.from;
+            const hasFinalDate = !!this.selectedConfigs?.to;
+
+            if (hasInitialDate && hasFinalDate) {
+                const fromDate = new Date(this.selectedConfigs.from);
+                const toDate = new Date(this.selectedConfigs.to);
+                
+                if (fromDate > toDate) {
+                    return {
+                        from: this.text('A data inicial não pode ser maior que a data final'),
+                        to: ''
+                    };
+                }
+            }
+
+            return { from: '', to: '' };
         },
 
         fillTagsList() {
@@ -126,27 +236,61 @@ app.component('opportunity-registration-filter-configuration', {
                 groupData = this.getAgentData() || {};
             }
 
+            const formatDate = (dateString) => {
+                if (!dateString) return '';
+                try {
+                    const date = new Date(dateString);
+                    const day = String(date.getDate()).padStart(2, '0');
+                    const month = String(date.getMonth() + 1).padStart(2, '0');
+                    const year = date.getFullYear();
+                    return `${day}/${month}/${year}`;
+                } catch (e) {
+                    return dateString;
+                }
+            };
+
             Object.entries(groupData).forEach(([prop, values]) => {
                 if ((this.isSection && this.excludeFields.includes(prop)) || (this.isCriterion && this.excludeFields.includes(prop))) {
                     return;
                 }
-                let keyPrefix;
-                if(prop.startsWith('field_')) {
-                    keyPrefix = prop;
-                    labelPrefix = this.registrationSelectionFields?.[prop]?.label;
-                } else {
-                    keyPrefix = prop;
-                    labelPrefix = prop;
+
+                if (prop == 'sentTimestamp' && values && (values.from || values.to)) {
+                    if (values.from) {
+                        const tagKey = `${this.dictTypes(prop)} - ${this.text('de')} ${formatDate(values.from)}`;
+                        if (!this.tagsList.includes(tagKey)) {
+                            this.tagsList.push(tagKey);
+                        }
+                    }
+                    if (values.to) {
+                        const tagKey = `${this.dictTypes(prop)} - ${this.text('até')} ${formatDate(values.to)}`;
+                        if (!this.tagsList.includes(tagKey)) {
+                            this.tagsList.push(tagKey);
+                        }
+                    }
+                    return;
                 }
-                
+
                 if (Array.isArray(values)) {
                     values.forEach(value => {
-                        const tagKey = `${this.dictTypes(keyPrefix)}: ${value}`;
+                        const tagKey = `${this.dictTypes(prop)}: ${value}`;
                         if (!this.tagsList.includes(tagKey)) {
                             this.tagsList.push(tagKey);
                         }
                     });
-                } else {
+                } else if (values && typeof values == 'object' && values.sentTimestamp && (values.sentTimestamp.from || values.sentTimestamp.to)) {
+                    if (values.sentTimestamp.from) {
+                        const tagKey = `${this.dictTypes('sentTimestamp')} - ${this.text('de')} ${formatDate(values.sentTimestamp.from)}`;
+                        if (!this.tagsList.includes(tagKey)) {
+                            this.tagsList.push(tagKey);
+                        }
+                    }
+                    if (values.sentTimestamp.to) {
+                        const tagKey = `${this.dictTypes('sentTimestamp')} - ${this.text('até')} ${formatDate(values.sentTimestamp.to)}`;
+                        if (!this.tagsList.includes(tagKey)) {
+                            this.tagsList.push(tagKey);
+                        }
+                    }
+                } else if (values != undefined && values != null && values != '') {
                     const tagKey = `${this.dictTypes(prop)}: ${values}`;
                     if (!this.tagsList.includes(tagKey)) {
                         this.tagsList.push(tagKey);
@@ -166,29 +310,53 @@ app.component('opportunity-registration-filter-configuration', {
                 groupData = this.getAgentData() || {};
             }
 
+            const formatDate = (dateString) => {
+                if (!dateString) return '';
+                try {
+                    const date = new Date(dateString);
+                    const day = String(date.getDate()).padStart(2, '0');
+                    const month = String(date.getMonth() + 1).padStart(2, '0');
+                    const year = date.getFullYear();
+                    return `${day}/${month}/${year}`;
+                } catch (e) {
+                    return dateString;
+                }
+            };
+
             Object.entries(groupData).forEach(([prop, values]) => {
                 if ((this.isSection && this.excludeFields.includes(prop)) || (this.isCriterion && this.excludeFields.includes(prop))) {
                     return;
                 }
-                let keyPrefix, labelPrefix;
-                if(prop.startsWith('field_')) {
-                    keyPrefix = prop;
-                    labelPrefix = this.registrationSelectionFields?.[prop]?.title;
-                } else {
-                    keyPrefix = prop;
-                    labelPrefix = prop;
+
+                if (prop === 'sentTimestamp' && values && (values.from || values.to)) {
+                    if (values.from) {
+                        const tagKey = `${this.dictTypes(prop)} - ${this.text('de')} ${formatDate(values.from)}`;
+                        this.tagsLabels[tagKey] = tagKey;
+                    }
+                    if (values.to) {
+                        const tagKey = `${this.dictTypes(prop)} - ${this.text('até')} ${formatDate(values.to)}`;
+                        this.tagsLabels[tagKey] = tagKey;
+                    }
+                    return;
                 }
-                
+
                 if (Array.isArray(values)) {
                     values.forEach(value => {
-                        const tagKey = `${this.dictTypes(keyPrefix)}: ${value}`;
-                        const tagLabel = `${this.dictTypes(labelPrefix)}: ${value}`;
-                        this.tagsLabels[tagKey] = tagLabel;
+                        const tagKey = `${this.dictTypes(prop)}: ${value}`;
+                        this.tagsLabels[tagKey] = tagKey;
                     });
-                } else {
+                } else if (values && typeof values == 'object' && values.sentTimestamp && (values.sentTimestamp.from || values.sentTimestamp.to)) {
+                    if (values.sentTimestamp.from) {
+                        const tagKey = `${this.dictTypes('sentTimestamp')} - ${this.text('de')} ${formatDate(values.sentTimestamp.from)}`;
+                        this.tagsLabels[tagKey] = tagKey;
+                    }
+                    if (values.sentTimestamp.to) {
+                        const tagKey = `${this.dictTypes('sentTimestamp')} - ${this.text('até')} ${formatDate(values.sentTimestamp.to)}`;
+                        this.tagsLabels[tagKey] = tagKey;
+                    }
+                } else if (values !== undefined && values !== null && values !== '') {
                     const tagKey = `${this.dictTypes(prop)}: ${values}`;
-                    const tagLabel = `${this.dictTypes(labelPrefix)}: ${values}`;
-                    this.tagsLabels[tagKey] = tagLabel;
+                    this.tagsLabels[tagKey] = tagKey;
                 }
             });
 
@@ -202,10 +370,18 @@ app.component('opportunity-registration-filter-configuration', {
             let prop = event.target.value;
             let _defaultValue = this.loadCheckedOptions();
 
-            if(prop in _defaultValue) {
-                for(item of _defaultValue[prop]) {
-                    selected.push(item);
-                }  
+            if (this.selectedField == 'sentTimestamp') {
+                const currentValue = _defaultValue?.[prop] || {};
+                selected = {
+                    from: currentValue.from ?? null,
+                    to: currentValue.to ?? null
+                };
+            } else {
+                if(prop in _defaultValue) {
+                    for(item of _defaultValue[prop]) {
+                        selected.push(item);
+                    }  
+                }
             }
         
             this.selectedConfigs = selected
@@ -228,11 +404,59 @@ app.component('opportunity-registration-filter-configuration', {
         },
 
         isFieldExcluded(field) {
+            if (!this.isGlobal && !this.isSection && !this.isCriterion && this.groupFilters) {
+                if (field === 'category') {
+                    const globalCategories = Array.isArray(this.groupFilters.category) ? this.groupFilters.category : [];
+                    if (globalCategories.length > 1) {
+                        return false;
+                    }
+                }
+                if (field === 'proponentType') {
+                    const globalProponentTypes = Array.isArray(this.groupFilters.proponentType) ? this.groupFilters.proponentType : [];
+                    if (globalProponentTypes.length > 1) {
+                        return false;
+                    }
+                }
+                if (field === 'range') {
+                    const globalRanges = Array.isArray(this.groupFilters.range) ? this.groupFilters.range : [];
+                    if (globalRanges.length > 1) {
+                        return false;
+                    }
+                }
+                
+                // Verifica campos de seleção customizados
+                const reservedFields = ['category', 'proponentType', 'range', 'sentTimestamp', 'distribution'];
+                if (!reservedFields.includes(field) && this.groupFilters[field]) {
+                    const globalFieldOptions = Array.isArray(this.groupFilters[field]) ? this.groupFilters[field] : [];
+                    if (globalFieldOptions.length > 1) {
+                        return false; // Permite subdividir os campos de seleção entre avaliadores
+                    }
+                }
+            }
+            
             return this.excludeFields.includes(field);
         },
 
         addConfig(modal) {
             this.configs = this.defaultValue ?? {};
+
+            if (this.selectedField == 'sentTimestamp') {
+                const hasInitialDate = !!this.selectedConfigs?.from;
+                const hasFinalDate = !!this.selectedConfigs?.to;
+
+                if (!hasInitialDate && !hasFinalDate) {
+                    return;
+                }
+
+                // Valida se a data final não é menor que a data inicial
+                if (hasInitialDate && hasFinalDate) {
+                    const fromDate = new Date(this.selectedConfigs.from);
+                    const toDate = new Date(this.selectedConfigs.to);
+                    if (toDate < fromDate) {
+                        return;
+                    }
+                }
+            }
 
             if (this.isGlobal) {
                 this.globalConfig();
@@ -244,6 +468,7 @@ app.component('opportunity-registration-filter-configuration', {
                 this.evaluatorConfig();
             }
 
+            this.selectedConfigs = [];
             this.selectedField = '';
             this.$emit('update:defaultValue', this.configs);
             this.loadExcludeFields();
@@ -252,7 +477,50 @@ app.component('opportunity-registration-filter-configuration', {
         },
 
         async save() {
-            this.entity.save();
+            if (this.saveToAgentRelation && this.infoReviewer) {
+                await this.saveValuerFilters();
+            } else {
+                this.entity.save();
+            }
+        },
+
+        async saveValuerFilters() {
+            const agentData = this.getAgentData();
+            const url = Utils.createUrl('evaluationMethodConfiguration', 'setValuerFilters', { id: this.entity.id });
+            
+            const data = {
+                relationId: this.infoReviewer.id,
+                categories: agentData.category || null,
+                proponentTypes: agentData.proponentType || null,
+                ranges: agentData.range || null,
+                distribution: agentData.distribution || null,
+                selectionFields: this.buildSelectionFieldsPayload(agentData),
+            };
+
+            try {
+                await fetch(url, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(data),
+                });
+            } catch (error) {
+                console.error('Erro ao salvar filtros do avaliador:', error);
+            }
+        },
+
+        buildSelectionFieldsPayload(agentData) {
+            const reservedFields = ['category', 'proponentType', 'range', 'distribution', 'sentTimestamp'];
+            const selectionFields = {};
+
+            Object.entries(agentData).forEach(([key, value]) => {
+                if (!reservedFields.includes(key) && value) {
+                    selectionFields[key] = value;
+                }
+            });
+
+            return Object.keys(selectionFields).length > 0 ? selectionFields : null;
         },
 
         dictTypes(type, reverse = false) {
@@ -264,6 +532,7 @@ app.component('opportunity-registration-filter-configuration', {
                 'range': this.text('Faixa/Linha'),
                 'ranges': this.text('Faixas/Linhas'),
                 'distribution': this.text('Distribuição'),
+                'sentTimestamp': this.text('Data de envio')
             };
 
             if (reverse) {
@@ -276,6 +545,25 @@ app.component('opportunity-registration-filter-configuration', {
         },
 
         removeTag(tag) {
+            // Verifica se é uma tag de sentTimestamp
+            if (tag.includes(' - ')) {
+                const parts = tag.split(' - ');
+                const keyPart = parts[0].trim();
+                const datePart = parts[1]?.trim();
+                
+                if (keyPart === this.text('Data de envio') || keyPart.startsWith('Data')) {
+                    // Extrai o tipo de data (de/até) e a data
+                    const dateMatch = datePart?.match(/^(de|até)\s+(.+)$/i);
+                    if (dateMatch) {
+                        const dateType = dateMatch[1];
+                        this.removeSentTimestampGlobal(dateType);
+                        this.loadExcludeFields();
+                        this.save();
+                        return;
+                    }
+                }
+            }
+            
             const [displayKey, value] = tag.split(': ');
             const key = this.dictTypes(displayKey, true);
 
@@ -291,6 +579,28 @@ app.component('opportunity-registration-filter-configuration', {
 
             this.loadExcludeFields();
             this.save();
+        },
+
+        removeSentTimestampGlobal(dateType) {
+            if (this.defaultValue && this.defaultValue.sentTimestamp) {
+                const dateTypeLower = dateType?.toLowerCase();
+                const isFrom = dateTypeLower == 'de' || dateTypeLower == this.text('de')?.toLowerCase();
+                const isTo = dateTypeLower == 'até' || dateTypeLower == 'ate' || dateTypeLower == this.text('até')?.toLowerCase();
+                
+                if (isFrom) {
+                    this.defaultValue.sentTimestamp.from = null;
+                }
+
+                if (isTo) {
+                    this.defaultValue.sentTimestamp.to = null;
+                }
+                
+                if (!this.defaultValue.sentTimestamp.from && !this.defaultValue.sentTimestamp.to) {
+                    delete this.defaultValue.sentTimestamp;
+                }
+                
+                this.$emit('update:defaultValue', this.defaultValue);
+            }
         },
 
         removeGlobal(key, value) {
@@ -367,6 +677,11 @@ app.component('opportunity-registration-filter-configuration', {
         },
         
         updateAgentData(agentId, key, value) {
+            if (this.saveToAgentRelation && this.infoReviewer?.metadata) {
+                this.updateAgentDataInMetadata(key, value);
+                return;
+            }
+
             if (!this.entity.fetchCategories[agentId]) {
                 this.entity.fetchCategories[agentId] = [];
             }
@@ -388,11 +703,58 @@ app.component('opportunity-registration-filter-configuration', {
             }
         },
 
+        updateAgentDataInMetadata(key, value) {
+            const metadata = this.infoReviewer.metadata;
+
+            if (key === 'category') {
+                metadata.categories = value || null;
+            } else if (key === 'proponentType') {
+                metadata.proponentTypes = value || null;
+            } else if (key === 'range') {
+                metadata.ranges = value || null;
+            } else if (key === 'distribution') {
+                metadata.distribution = value || null;
+            } else {
+                if (!metadata.selectionFields) {
+                    metadata.selectionFields = {};
+                }
+                if (value && (Array.isArray(value) ? value.length > 0 : Object.keys(value).length > 0)) {
+                    metadata.selectionFields[key] = value;
+                } else {
+                    delete metadata.selectionFields[key];
+                }
+            }
+        },
+
         globalConfig() {
+            if (this.selectedField == 'sentTimestamp') {
+                const formatSentTimestamp = (dateString) => {
+                    if (!dateString) return null;
+                    try {
+                        const date = new Date(dateString);
+                        const year = date.getFullYear();
+                        const month = String(date.getMonth() + 1).padStart(2, '0');
+                        const day = String(date.getDate()).padStart(2, '0');
+                        const hours = String(date.getHours()).padStart(2, '0');
+                        const minutes = String(date.getMinutes()).padStart(2, '0');
+                        const seconds = String(date.getSeconds()).padStart(2, '0');
+                        return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+                    } catch (e) {
+                        return dateString;
+                    }
+                };
+
+                this.configs[this.selectedField] = {
+                    from: formatSentTimestamp(this.selectedConfigs?.from) || null,
+                    to: formatSentTimestamp(this.selectedConfigs?.to) || null
+                };
+                return;
+            }
+
             if (!this.configs[this.selectedField]) {
                 this.configs[this.selectedField] = [];
             }
-            this.configs[this.selectedField] = this.selectedConfigs;                
+            this.configs[this.selectedField] = [...this.selectedConfigs];                
         },
 
         evaluatorConfig() {
@@ -415,6 +777,11 @@ app.component('opportunity-registration-filter-configuration', {
                         this.configs[agentId][this.selectedField].push(config);
                     }
                 });
+            }
+
+            if (this.saveToAgentRelation) {
+                this.updateInfoReviewerMetadata(agentId);
+                return;
             }
 
             Object.entries(this.configs).forEach(([agentId, values]) => {
@@ -484,11 +851,38 @@ app.component('opportunity-registration-filter-configuration', {
             });
         },
 
+        updateInfoReviewerMetadata(agentId) {
+            const values = this.configs[agentId] || {};
+            const metadata = this.infoReviewer.metadata;
+
+            Object.entries(values).forEach(([key, configs]) => {
+                if (key === 'category') {
+                    metadata.categories = Array.isArray(configs) ? [...configs] : null;
+                } else if (key === 'proponentType') {
+                    metadata.proponentTypes = Array.isArray(configs) ? [...configs] : null;
+                } else if (key === 'range') {
+                    metadata.ranges = Array.isArray(configs) ? [...configs] : null;
+                } else if (key === 'distribution') {
+                    metadata.distribution = configs || null;
+                } else {
+                    // Selection fields
+                    if (!metadata.selectionFields) {
+                        metadata.selectionFields = {};
+                    }
+                    metadata.selectionFields[key] = configs;
+                }
+            });
+        },
+
         getAgentData() {
             const agentId = this.infoReviewer?.agentUserId;
 
             if (!agentId) {
                 return null;
+            }
+
+            if (this.saveToAgentRelation && this.infoReviewer?.metadata) {
+                return this.getAgentDataFromMetadata();
             }
 
             let agentData = {};
@@ -513,6 +907,35 @@ app.component('opportunity-registration-filter-configuration', {
             if (this.entity.fetchSelectionFields && this.entity.fetchSelectionFields[agentId]) {
                 for (const field in this.entity.fetchSelectionFields[agentId]) {
                     agentData[field] = this.entity.fetchSelectionFields[agentId][field];
+                }
+            }
+
+            return agentData;
+        },
+
+        getAgentDataFromMetadata() {
+            const metadata = this.infoReviewer.metadata;
+            let agentData = {};
+
+            if (metadata.categories && metadata.categories.length > 0) {
+                agentData['category'] = metadata.categories;
+            }
+
+            if (metadata.proponentTypes && metadata.proponentTypes.length > 0) {
+                agentData['proponentType'] = metadata.proponentTypes;
+            }
+
+            if (metadata.ranges && metadata.ranges.length > 0) {
+                agentData['range'] = metadata.ranges;
+            }
+
+            if (metadata.distribution) {
+                agentData['distribution'] = metadata.distribution;
+            }
+
+            if (metadata.selectionFields) {
+                for (const field in metadata.selectionFields) {
+                    agentData[field] = metadata.selectionFields[field];
                 }
             }
 
@@ -629,6 +1052,29 @@ app.component('opportunity-registration-filter-configuration', {
                         }
                 }
             } else {
+                if (!this.isGlobal && !this.isSection && this.groupFilters) {
+                    switch (type) {
+                        case 'category':
+                            const globalCategories = Array.isArray(this.groupFilters.category) ? this.groupFilters.category : [];
+                            if (globalCategories.length > 0) {
+                                return globalCategories.length > 1;
+                            }
+                            return this.registrationCategories.length > 0;
+                        case 'proponentType':
+                            const globalProponentTypes = Array.isArray(this.groupFilters.proponentType) ? this.groupFilters.proponentType : [];
+                            if (globalProponentTypes.length > 0) {
+                                return globalProponentTypes.length > 1;
+                            }
+                            return this.registrationProponentTypes.length > 0;
+                        case 'range':
+                            const globalRanges = Array.isArray(this.groupFilters.range) ? this.groupFilters.range : [];
+                            if (globalRanges.length > 0) {
+                                return globalRanges.length > 1;
+                            }
+                            return this.registrationRanges.length > 0;
+                    }
+                }
+                
                 switch (type) {
                     case 'category':
                         return this.registrationCategories.length > 0; 

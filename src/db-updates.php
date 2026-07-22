@@ -1147,7 +1147,10 @@ return [
         __exec("ALTER TABLE subsite_meta ALTER column id SET DEFAULT nextval('subsite_meta_id_seq');");
         __exec("ALTER TABLE evaluationmethodconfiguration_meta ALTER column id SET DEFAULT nextval('evaluationmethodconfiguration_meta_id_seq');");
     },
-    
+    'define default para o id da tabela seal' => function() {
+        __exec("ALTER TABLE seal ALTER column id SET DEFAULT nextval('seal_id_seq');");
+    },
+
     'Criação da coluna update timestemp' => function() use($conn) {
 
         if(!__column_exists('registration', 'update_timestamp')){
@@ -1214,6 +1217,13 @@ return [
             __exec("ALTER TABLE opportunity ADD COLUMN continuous_flow TIMESTAMP NULL");
         }
     },
+    
+    "Cria coluna publicity_only na tabela opportunity" => function() use ($conn) {
+        if (!__column_exists('opportunity', 'publicity_only')) {
+            __exec("ALTER TABLE opportunity ADD COLUMN publicity_only BOOLEAN DEFAULT FALSE NOT NULL");
+        }
+    },
+    
     'Cria a tabela da entidade RegistrationStep' => function () {
         $app = App::i();
         $em = $app->em;
@@ -2073,7 +2083,6 @@ $$
         __try("CREATE INDEX agent_relation_owner_agent ON agent_relation (object_type, object_id, agent_id);");
         __try("CREATE INDEX agent_relation_has_control ON agent_relation (has_control);");
         __try("CREATE INDEX agent_relation_status ON agent_relation (status);");
-        __try("ALTER INDEX idx_54585edd3414710b RENAME TO agent_relation_agent;");
     },
 
     'valuer disabling refactor' => function() use($conn) {
@@ -2394,7 +2403,7 @@ $$
         $fileName = "dbupdate_RegistrationFieldConfiguration.txt";
         $dir = PRIVATE_FILES_PATH . "dbupdate_documento";
         if (!file_exists($dir)) {
-            mkdir($dir, 775);
+            mkdir($dir, 0775);
         }
 
         $path = $dir . "/" . $fileName;
@@ -2891,7 +2900,7 @@ $$
         __exec("CREATE UNIQUE INDEX unique_evaluation_user_id ON registration_evaluation (registration_id, user_id)");
     },
 
-    'cria novos índices em diversas tabelas ' => function() {
+    'Adiciona novos índices em diversas tabelas' => function() {
         __exec('CREATE INDEX idx_usr_profile ON usr (profile_id);');
         __exec('CREATE INDEX id_agent_relation_agent ON agent_relation (agent_id);');
         __exec('CREATE INDEX idx_space_agent_id ON space (agent_id);');
@@ -3111,6 +3120,417 @@ $$
                      USING registration_step rs
                      WHERE rs.id = rfc.step_id
                        AND rs.opportunity_id != rfc.opportunity_id;");
-    }
-    
-] + $updates ;   
+    },
+
+    "Adiciona coluna allowed_file_types na tabela registration_file_configuration para restringir tipos de arquivo" => function() {
+        if(!__column_exists('registration_file_configuration', 'allowed_file_types')) {
+            __exec("ALTER TABLE registration_file_configuration ADD COLUMN allowed_file_types JSON DEFAULT NULL");
+        }
+    },
+    "incrementa a sequencia do id dos selos para evitar erro na primeira tentativa de criar um selo pois já existe o id 1" => function () {
+        __exec("SELECT nextval('seal_id_seq')");
+    },
+
+    "limpa chaves incompatíveis com a v7.7" => function ()  {
+        __exec("DELETE FROM user_app");
+    },
+
+    "Migra configurações de distribuição de evaluationmethodconfiguration_meta para agent_relation" => function() use ($conn, $app) {
+        $keys = ['fetchCategories', 'fetchRanges', 'fetchProponentTypes', 'fetch', 'fetchSelectionFields'];
+        $keys_sql = implode("','", $keys);
+        
+        $meta_records = $conn->fetchAllAssociative("
+            SELECT object_id, key, value FROM evaluationmethodconfiguration_meta
+            WHERE key IN ('{$keys_sql}') ORDER BY object_id
+        ");
+
+        if (empty($meta_records)) {
+            $app->log->debug("Nenhum registro encontrado para migração.");
+            return true;
+        }
+
+        $decode_json = fn($val) => ($val && $val !== '{}') ? json_decode($val, true) : null;
+        
+        $get_value = fn($data, $user_id) => is_array($data) 
+            ? ($data[(string)$user_id] ?? $data[$user_id] ?? null) 
+            : null;
+
+        $configs_by_object = [];
+        foreach ($meta_records as $record) {
+            $configs_by_object[$record['object_id']][$record['key']] = $record['value'];
+        }
+
+        $total = count($configs_by_object);
+        $processed = $updated = $skipped = 0;
+
+        foreach ($configs_by_object as $emc_id => $configs) {
+            $app->log->debug("(" . ++$processed . "/{$total}) Processando EMC {$emc_id}");
+
+            $data = [
+                'categories' => $decode_json($configs['fetchCategories'] ?? null),
+                'ranges' => $decode_json($configs['fetchRanges'] ?? null),
+                'proponentTypes' => $decode_json($configs['fetchProponentTypes'] ?? null),
+                'distribution' => $decode_json($configs['fetch'] ?? null),
+                'selectionFields' => $decode_json($configs['fetchSelectionFields'] ?? null),
+            ];
+
+            $agent_relations = $conn->fetchAllAssociative("
+                SELECT ar.id, ar.agent_id, ar.metadata, u.id as user_id
+                FROM agent_relation ar
+                JOIN agent a ON a.id = ar.agent_id
+                JOIN usr u ON u.profile_id = a.id
+                WHERE ar.object_type = 'MapasCulturais\Entities\EvaluationMethodConfiguration'
+                  AND ar.object_id = :emc_id
+            ", ['emc_id' => $emc_id]);
+
+            if (empty($agent_relations)) {
+                $app->log->debug("  Sem agent_relation. Pulando...");
+                $skipped++;
+                continue;
+            }
+
+            foreach ($agent_relations as $ar) {
+                $user_id = (int) $ar['user_id'];
+                $new_data = [];
+
+                foreach (['categories', 'ranges', 'proponentTypes'] as $field) {
+                    $val = $get_value($data[$field], $user_id);
+                    if (is_array($val)) $new_data[$field] = $val;
+                }
+
+                $dist = $get_value($data['distribution'], $user_id);
+                if ($dist !== null && $dist !== '') $new_data['distribution'] = $dist;
+
+                $sel = $get_value($data['selectionFields'], $user_id);
+                if (is_array($sel) || is_object($sel)) {
+                    $sel = array_filter((array)$sel, fn($v) => !empty($v));
+                    if (!empty($sel)) $new_data['selectionFields'] = $sel;
+                }
+
+                if (empty($new_data)) continue;
+
+                $metaRaw = $ar['metadata'];
+                $metadata = (is_string($metaRaw) && $metaRaw !== '')
+                    ? (json_decode($metaRaw, true) ?: [])
+                    : [];
+                $metadata = array_merge($metadata, $new_data);
+                $metadata['summary'] ??= ["pending" => 0, "started" => 0, "completed" => 0, "sent" => 0];
+
+                $conn->executeQuery(
+                    "UPDATE agent_relation SET metadata = :metadata WHERE id = :id",
+                    ['metadata' => json_encode($metadata), 'id' => $ar['id']]
+                );
+
+                $updated++;
+                $info = array_map(fn($k) => isset($new_data[$k]) ? "$k:" . (is_array($new_data[$k]) ? count($new_data[$k]) : $new_data[$k]) : null, array_keys($new_data));
+                $app->log->debug("  AR {$ar['id']} (user:{$user_id}) - " . implode(', ', array_filter($info)));
+            }
+        }
+
+        $app->log->debug("Migração concluída! Atualizados: {$updated} | Sem relations: {$skipped}");
+        return true;
+    },
+
+    'normaliza metadado pointReward para tipo configuravel' => function() use ($conn, $app) {
+        $normalizeRule = function(array $rule): array {
+            $rule['bonusValue'] = $rule['bonusValue'] ?? $rule['fieldPercent'] ?? 0;
+            return $rule;
+        };
+
+        $updateMeta = function(string $id, array $normalized) use ($conn): void {
+            $conn->executeQuery(
+                "UPDATE evaluationmethodconfiguration_meta SET value = :value WHERE id = :id",
+                ['value' => json_encode($normalized), 'id' => $id]
+            );
+        };
+
+        $normalizeLegacyArray = function(array $decoded, string $id) use ($normalizeRule, $updateMeta): void {
+            $updateMeta($id, ['type' => 'percentage', 'rules' => array_map($normalizeRule, $decoded)]);
+        };
+
+        $normalizeObject = function(array $decoded, string $id) use ($app, $normalizeRule, $updateMeta): bool {
+            $type = $decoded['type'] ?? 'percentage';
+            if (!in_array($type, ['percentage', 'fixed'], true)) {
+                $app->log->debug("pointReward id={$id}: type '{$type}' inválido, definindo como percentage");
+                $type = 'percentage';
+            }
+            $rules = array_map($normalizeRule, $decoded['rules'] ?? []);
+            if (isset($decoded['type']) && $decoded['type'] === $type && ($decoded['rules'] ?? []) === $rules) {
+                return false;
+            }
+            $updateMeta($id, array_merge($decoded, ['type' => $type, 'rules' => $rules]));
+            return true;
+        };
+
+        $metas        = $conn->fetchAll("SELECT id, object_id, value FROM evaluationmethodconfiguration_meta WHERE key = 'pointReward'");
+        $total        = count($metas);
+        $migrados     = 0;
+        $normalizados = 0;
+        $ignorados    = 0;
+
+        foreach ($metas as $meta) {
+            $decoded = json_decode((string) $meta['value'], true);
+
+            if ($meta['value'] === null || $meta['value'] === '' || json_last_error() !== JSON_ERROR_NONE || !is_array($decoded)) {
+                $app->log->debug("pointReward id={$meta['id']} ignorado: valor ausente ou JSON inválido");
+                $ignorados++;
+                continue;
+            }
+
+            if (array_values($decoded) === $decoded) {
+                $normalizeLegacyArray($decoded, $meta['id']);
+                $migrados++;
+                continue;
+            }
+
+            $normalizeObject($decoded, $meta['id']) ? $migrados++ : $normalizados++;
+        }
+
+        $app->log->debug("normaliza pointReward: total={$total}, migrados={$migrados}, já normalizados={$normalizados}, ignorados={$ignorados}");
+        return true;
+    },
+
+    "Backfill committeeSequentialNumber para avaliadores da comissão" => function () use ($app) {
+        $result = \Opportunities\Module::backfillCommitteeSequentialNumbers($app);
+        $app->log->debug(sprintf(
+            'Backfill committeeSequentialNumber: %d editais processados, %d relações atualizadas',
+            $result['opportunities'],
+            $result['relations_updated']
+        ));
+        return true;
+    },
+
+    // === FASE 1: Fundação de Dados — Selos Validadores Granulares e Ocultos (LGPD) ===
+
+    'Adiciona colunas locked_fields_config e sensitive à tabela seal' => function () use ($conn) {
+        if (!__column_exists('seal', 'locked_fields_config')) {
+            __exec("ALTER TABLE seal ADD COLUMN locked_fields_config JSONB NOT NULL DEFAULT '{}'::jsonb");
+        }
+        if (!__column_exists('seal', 'sensitive')) {
+            __exec("ALTER TABLE seal ADD COLUMN sensitive BOOLEAN NOT NULL DEFAULT FALSE");
+        }
+    },
+
+    'Adiciona coluna computed_status à tabela seal_relation' => function () use ($conn) {
+        if (!__column_exists('seal_relation', 'computed_status')) {
+            __exec("ALTER TABLE seal_relation ADD COLUMN computed_status VARCHAR(20) DEFAULT NULL");
+        }
+    },
+
+    'Cria tabela seal_relation_field' => function () use ($conn) {
+        if (__table_exists('seal_relation_field')) {
+            echo "TABELA seal_relation_field JÁ EXISTE";
+            return true;
+        }
+
+        __exec("CREATE SEQUENCE seal_relation_field_id_seq INCREMENT BY 1 MINVALUE 1 START 1");
+        __exec("CREATE TABLE seal_relation_field (
+            id INT NOT NULL DEFAULT nextval('seal_relation_field_id_seq'),
+            seal_relation_id INT NOT NULL,
+            field_name VARCHAR(255) NOT NULL,
+            expiry_date DATE DEFAULT NULL,
+            is_invalidator BOOLEAN NOT NULL DEFAULT FALSE,
+            notified_expire BOOLEAN NOT NULL DEFAULT FALSE,
+            notified_to_expire BOOLEAN NOT NULL DEFAULT FALSE,
+            created_at TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP,
+            PRIMARY KEY(id)
+        )");
+        __exec("ALTER TABLE seal_relation_field ADD CONSTRAINT FK_seal_relation_field_seal_relation
+            FOREIGN KEY (seal_relation_id) REFERENCES seal_relation (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE");
+        __exec("CREATE UNIQUE INDEX idx_srf_unique_relation_field ON seal_relation_field (seal_relation_id, field_name)");
+        __exec("CREATE INDEX idx_srf_relation ON seal_relation_field (seal_relation_id)");
+        __exec("CREATE INDEX idx_srf_expiry ON seal_relation_field (expiry_date) WHERE expiry_date IS NOT NULL");
+        __exec("CREATE INDEX idx_srf_to_expire ON seal_relation_field (seal_relation_id, expiry_date) WHERE expiry_date IS NOT NULL");
+    },
+
+    'Backfill locked_fields_config a partir de locked_fields' => function () use ($conn) {
+        $seals = $conn->fetchAll("SELECT id, locked_fields FROM seal WHERE locked_fields IS NOT NULL AND locked_fields::text != '[]'");
+        foreach ($seals as $seal) {
+            $locked_fields = json_decode($seal['locked_fields'], true);
+            if (!is_array($locked_fields)) {
+                continue;
+            }
+            $config = [];
+            foreach ($locked_fields as $field) {
+                $config[$field] = [
+                    'hasExpiry' => false,
+                    'periodValue' => null,
+                    'periodUnit' => null,
+                    'isInvalidator' => false,
+                ];
+            }
+            $conn->executeQuery(
+                "UPDATE seal SET locked_fields_config = :config WHERE id = :id",
+                ['config' => json_encode($config), 'id' => $seal['id']]
+            );
+        }
+    },
+
+    'Backfill seal_relation_field para relações existentes' => function () use ($conn, $app) {
+        $relations = $conn->fetchAll("SELECT sr.id, s.locked_fields_config
+            FROM seal_relation sr
+            JOIN seal s ON s.id = sr.seal_id
+            WHERE s.locked_fields_config IS NOT NULL AND s.locked_fields_config != '{}'::jsonb");
+
+        foreach ($relations as $relation) {
+            $config = json_decode($relation['locked_fields_config'], true);
+            if (!is_array($config)) {
+                continue;
+            }
+
+            foreach ($config as $field_name => $field_config) {
+                // Verifica se já existe registro para evitar duplicatas em re-execuções
+                $exists = $conn->fetchColumn(
+                    "SELECT COUNT(*) FROM seal_relation_field WHERE seal_relation_id = :relation_id AND field_name = :field_name",
+                    ['relation_id' => $relation['id'], 'field_name' => $field_name]
+                );
+                if ($exists > 0) {
+                    continue;
+                }
+
+                $conn->executeQuery(
+                    "INSERT INTO seal_relation_field (seal_relation_id, field_name, expiry_date, is_invalidator, notified_expire, notified_to_expire, created_at)
+                    VALUES (:relation_id, :field_name, NULL, FALSE, FALSE, FALSE, NOW())",
+                    ['relation_id' => $relation['id'], 'field_name' => $field_name]
+                );
+            }
+        }
+    },
+
+    'Backfill computed_status para relações existentes e cria índice' => function () use ($conn) {
+        if (!__column_exists('seal_relation', 'computed_status')) {
+            return true;
+        }
+
+        // Relações com campos granulares: calcula a partir dos campos
+        __exec("
+            UPDATE seal_relation sr
+            SET computed_status = CASE
+                WHEN EXISTS (
+                    SELECT 1 FROM seal_relation_field srf
+                    WHERE srf.seal_relation_id = sr.id
+                    AND srf.is_invalidator = TRUE
+                    AND srf.expiry_date < CURRENT_DATE
+                ) THEN 'invalid'
+                WHEN EXISTS (
+                    SELECT 1 FROM seal_relation_field srf
+                    WHERE srf.seal_relation_id = sr.id
+                    AND srf.is_invalidator = FALSE
+                    AND srf.expiry_date < CURRENT_DATE
+                ) AND NOT EXISTS (
+                    SELECT 1 FROM seal_relation_field srf
+                    WHERE srf.seal_relation_id = sr.id
+                    AND srf.expiry_date >= CURRENT_DATE
+                ) THEN 'invalid'
+                WHEN EXISTS (
+                    SELECT 1 FROM seal_relation_field srf
+                    WHERE srf.seal_relation_id = sr.id
+                    AND srf.is_invalidator = FALSE
+                    AND srf.expiry_date < CURRENT_DATE
+                ) THEN 'partially_valid'
+                ELSE 'fully_valid'
+            END
+            WHERE sr.computed_status IS NULL
+            AND EXISTS (
+                SELECT 1 FROM seal_relation_field srf WHERE srf.seal_relation_id = sr.id
+            )
+        ");
+
+        // Relações legadas sem campos granulares: usa lógica de validate_date
+        __exec("
+            UPDATE seal_relation sr
+            SET computed_status = CASE
+                WHEN s.valid_period > 0 AND sr.validate_date < CURRENT_DATE THEN 'invalid'
+                ELSE 'fully_valid'
+            END
+            FROM seal s
+            WHERE sr.seal_id = s.id
+            AND sr.computed_status IS NULL
+            AND NOT EXISTS (
+                SELECT 1 FROM seal_relation_field srf WHERE srf.seal_relation_id = sr.id
+            )
+        ");
+
+        __exec("CREATE INDEX IF NOT EXISTS idx_seal_relation_computed_status ON seal_relation (computed_status)");
+    },
+
+    // === Avaliação Automática por Selos — isenção de fase ===
+    //
+    // Modelo decidido em consenso (spec-c49fa0bb §3.1/3.2/3.3):
+    //   - Config de selos por fase: METADADO (sealExemptionConfig) no EMC — NÃO há DDL aqui.
+    //   - Flag de isenção: colunas físicas em registration (enum + timestamp).
+    //   - Snapshot de auditoria: metadado opcional (sealExemptionSnapshot) — NÃO há DDL aqui.
+    //
+    // NOTA SOBRE METADADOS:
+    //   sealExemptionConfig (EMC) e sealExemptionSnapshot (Registration) são registrados
+    //   via registerEvaluationMethodConfigurationMetadata() / registerRegistrationMetadata()
+    //   no Module.php do módulo responsável, em runtime. db-updates.php é DDL-only; o
+    //   registro de metadados não escreve estado no banco (as tabelas *_meta já existem
+    //   como EAV genérico).
+    //
+    // ROLLBACK COMPLETO (reverter manualmente se necessário):
+    //   DROP INDEX IF EXISTS idx_registration_seal_exemption;
+    //   DROP INDEX IF EXISTS idx_seal_relation_agent_valid;
+    //   ALTER TABLE registration DROP CONSTRAINT IF EXISTS chk_registration_seal_exemption_status;
+    //   ALTER TABLE registration DROP COLUMN IF EXISTS seal_exemption_timestamp;
+    //   ALTER TABLE registration DROP COLUMN IF EXISTS seal_exemption_status;
+    //   (Metadados sealExemptionConfig/sealExemptionSnapshot permanecem inertes — remoção
+    //    via código do módulo.)
+    //
+    // ÍNDICE seal_relation (produção com tabela grande):
+    //   O idx_seal_relation_agent_valid abaixo é criado NÃO-concorrente para caber no
+    //   runner idempotente do db-updates (que executa dentro do fluxo de boot). Em bases
+    //   de produção com seal_relation muito grande, o operador PODE criar o índice com
+    //   CONCURRENTLY antes do deploy:
+    //     CREATE INDEX CONCURRENTLY IF NOT EXISTS idx_seal_relation_agent_valid
+    //         ON seal_relation (object_id, seal_id, computed_status)
+    //         WHERE object_type = 'MapasCulturais\Entities\Agent' AND status = 1;
+    //   O `CREATE INDEX IF NOT EXISTS` abaixo então no-op (índice já existe).
+
+    'Adiciona colunas seal_exemption_status e seal_exemption_timestamp em registration' => function () use ($conn) {
+        // PG 11+: ADD COLUMN ... NULL (sem DEFAULT) é metadado-only — não reescreve a tabela.
+        if (!__column_exists('registration', 'seal_exemption_status')) {
+            __exec("ALTER TABLE registration ADD COLUMN seal_exemption_status VARCHAR(20) NULL");
+        }
+        if (!__column_exists('registration', 'seal_exemption_timestamp')) {
+            __exec("ALTER TABLE registration ADD COLUMN seal_exemption_timestamp TIMESTAMP(0) WITHOUT TIME ZONE NULL");
+        }
+
+        // CHECK constraint idempotente via DO block (PG não suporta ADD CONSTRAINT IF NOT EXISTS).
+        // Estados válidos: 'granted' (isenção concedida), 'agent_missing' (sem proponente) ou NULL.
+        // 'seals_invalid' é deliberadamente NÃO persistido (NULL = avaliação normal / não isenta)
+        // para manter o índice parcial enxuto — ver comentário do índice abaixo.
+        __exec("DO \$\$
+        BEGIN
+            IF NOT EXISTS (
+                SELECT 1 FROM information_schema.table_constraints
+                WHERE table_name = 'registration'
+                  AND constraint_name = 'chk_registration_seal_exemption_status'
+            ) THEN
+                ALTER TABLE registration
+                    ADD CONSTRAINT chk_registration_seal_exemption_status
+                    CHECK (seal_exemption_status IN ('granted','agent_missing') OR seal_exemption_status IS NULL);
+            END IF;
+        END \$\$");
+    },
+
+    'Cria índices parciais para isenção por selos' => function () use ($conn) {
+        // Índice 1: acelera a verificação de selos válidos por agente.
+        // Predicado espelha exatamente a query em lote do SealExemptionVerifier:
+        //   WHERE object_type = 'Agent' AND status = 1 AND computed_status = 'fully_valid'
+        // O filtro de computed_status fica no SELECT (não no índice) para reuso por outros
+        // leitores; o WHERE parcial já elimina não-agentes e relações pendentes/desativadas.
+        __try("CREATE INDEX IF NOT EXISTS idx_seal_relation_agent_valid
+            ON seal_relation (object_id, seal_id, computed_status)
+            WHERE object_type = 'MapasCulturais\Entities\Agent' AND status = 1");
+
+        // Índice 2: um único índice parcial cobre os dois filtros operacionais do PM:
+        //   - "isentos"     → WHERE seal_exemption_status = 'granted'
+        //   - "sem agente"  → WHERE seal_exemption_status = 'agent_missing'
+        // Pequeno porque só indexa linhas não-NULL (exceções), não a massa de avaliações normais.
+        __try("CREATE INDEX IF NOT EXISTS idx_registration_seal_exemption
+            ON registration (opportunity_id, seal_exemption_status)
+            WHERE seal_exemption_status IS NOT NULL");
+    },
+
+] + $updates ;

@@ -45,6 +45,7 @@ if(!$evaluation_configuration->statusLabels) {
     $evaluation_configuration->statusLabels = $status_label;
 
     $app->disableAccessControl();
+    $evaluation_configuration->__skipQueuingPCacheRecreation = true;
     $evaluation_configuration->save();
     $app->enableAccessControl();
 }

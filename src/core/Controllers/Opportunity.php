@@ -14,6 +14,7 @@ use MapasCulturais\Entities\RegistrationEvaluation;
 use MapasCulturais\Entities\EvaluationMethodConfiguration;
 use MapasCulturais\Entities\Opportunity as EntitiesOpportunity;
 use MapasCulturais\Utils;
+use Opportunities\Jobs\ImportFields;
 
 /**
  * Opportunity Controller
@@ -44,6 +45,15 @@ class Opportunity extends EntityController {
             Traits\ControllerEntityActions::PATCH_single as _PATCH_single;
         }
 
+    /**
+     * Atualiza parcialmente uma oportunidade.
+     *
+     * Este método sobrescreve o comportamento padrão para permitir alterar
+     * o tipo de objeto e entidade proprietária da oportunidade.
+     *
+     * @param mixed $data Dados para atualização
+     * @return void
+     */
     function PATCH_single($data = null)
     {
         $app = App::i();
@@ -67,12 +77,30 @@ class Opportunity extends EntityController {
         self::_PATCH_single();
     }
     
+    /**
+     * Exibe o formulário de criação de oportunidade.
+     *
+     * Este método sobrescreve o comportamento padrão para permitir a definição
+     * da entidade relacionada à oportunidade.
+     *
+     * @return void
+     */
     function GET_create() {
         // @TODO: definir entitidade relacionada
 
         parent::GET_create();
     }
 
+    /**
+     * Cria uma nova oportunidade.
+     *
+     * Este método determina automaticamente o tipo de oportunidade com base
+     * no parâmetro 'objectType' ou 'parent' fornecido nos dados da requisição.
+     * Os tipos suportados são: agent, event, space, project.
+     *
+     * @param mixed $data Dados da oportunidade a ser criada
+     * @return void
+     */
     function POST_index($data = null)
     {
         $classes = [
@@ -97,6 +125,15 @@ class Opportunity extends EntityController {
         parent::POST_index($this->data);
     }
 
+    /**
+     * Envia as avaliações por email para os usuários.
+     *
+     * Esta ação requer autenticação e permissão na oportunidade.
+     * Envia emails com os resultados das avaliações para os proponentes
+     * das inscrições.
+     *
+     * @return void
+     */
     function ALL_sendEvaluations(){
         $this->requireAuthentication();
 
@@ -117,6 +154,15 @@ class Opportunity extends EntityController {
         }
     }
 
+    /**
+     * Publica as inscrições de uma oportunidade.
+     *
+     * Esta ação requer autenticação e permissão na oportunidade.
+     * Torna as inscrições visíveis publicamente, alterando seu status
+     * para publicado.
+     *
+     * @return void
+     */
     function ALL_publishRegistrations(){
         $this->requireAuthentication();
 
@@ -138,6 +184,15 @@ class Opportunity extends EntityController {
         }
     }
 
+    /**
+    * Despublica as inscrições de uma oportunidade
+    * 
+    * Esta ação requer autenticação e permissão na oportunidade.
+    * Torna as inscrições não visíveis publicamente, revertendo o status
+    * para não publicado.
+    * 
+    * @return void
+    */
     function ALL_unPublishRegistrations() {
         $this->requireAuthentication();
 
@@ -160,6 +215,14 @@ class Opportunity extends EntityController {
         }
     }
 
+    /**
+    * Gera relatório de rascunhos de inscrições
+    * 
+    * Esta ação requer autenticação e permissão '@control' na oportunidade.
+    * Gera um arquivo CSV com as inscrições em status rascunho.
+    * 
+    * @return void
+    */
     function GET_reportDrafts(){
         $this->requireAuthentication();
         $app = App::i();
@@ -176,6 +239,14 @@ class Opportunity extends EntityController {
         $this->reportOutput('report-drafts-csv', ['entity' => $entity, 'registrationsDraftList' => $registrationsDraftList], $filename );
      }
 
+    /**
+    * Gera relatório de avaliações
+    * 
+    * Esta ação requer autenticação e permissão 'viewEvaluations' na oportunidade.
+    * Gera um arquivo Excel com as avaliações realizadas.
+    * 
+    * @return void
+    */
     function GET_reportEvaluations(){
         $this->requireAuthentication();
         $app = App::i();
@@ -213,6 +284,16 @@ class Opportunity extends EntityController {
         $this->reportOutput('report-evaluations', ['cfg' => $cfg, 'evaluations' => $evaluations, 'pending_evaluations' => $all_evaluations], $filename);
     }
 
+    /**
+    * Emite saída de relatório
+    * 
+    * Processa e emite a saída de relatórios em formatos CSV ou Excel.
+    * 
+    * @param string $view Nome da view do relatório
+    * @param array $view_params Parâmetros para a view
+    * @param string $filename Nome do arquivo de saída
+    * @return void
+    */
     protected function reportOutput($view, $view_params, $filename){
         $app = App::i();
         ini_set('max_execution_time', 0);
@@ -270,6 +351,14 @@ class Opportunity extends EntityController {
     }
 
 
+    /**
+    * Busca oportunidades com inscrições aprovadas pelo usuário
+    * 
+    * Esta ação requer autenticação.
+    * Retorna as oportunidades onde o usuário tem inscrições aprovadas.
+    * 
+    * @return void
+    */
     function API_findByUserApprovedRegistration(){
         ini_set('max_execution_time', 0);
         ini_set('memory_limit', '-1');
@@ -320,6 +409,14 @@ class Opportunity extends EntityController {
         return $opportunity;
     }
 
+    /**
+    * Obtém campos do tipo select de uma oportunidade
+    * 
+    * Retorna os campos de seleção configurados na oportunidade.
+    * 
+    * @param \MapasCulturais\Entities\Opportunity $opportunity Oportunidade
+    * @return array Campos do tipo select
+    */
     function getSelectFields(Entities\Opportunity $opportunity){
         $app = App::i();
 
@@ -338,6 +435,14 @@ class Opportunity extends EntityController {
         return $fields;
     }
 
+    /**
+    * Retorna o comitê de avaliação da oportunidade
+    * 
+    * Esta ação requer autenticação e permissão '@control' na oportunidade.
+    * Retorna a lista de avaliadores do comitê de avaliação.
+    * 
+    * @return void
+    */
     function API_evaluationCommittee(){
         $this->requireAuthentication();
 
@@ -364,6 +469,13 @@ class Opportunity extends EntityController {
         $this->apiResponse($result);
     }
 
+    /**
+    * Retorna os campos de seleção da oportunidade via API
+    * 
+    * Retorna os campos do tipo select configurados na oportunidade.
+    * 
+    * @return void
+    */
     function API_selectFields(){
         $app = App::i();
 
@@ -374,11 +486,24 @@ class Opportunity extends EntityController {
         $this->apiResponse($fields);
     }
 
+    /**
+    * Busca inscrições de uma oportunidade
+    * 
+    * Executa uma busca complexa de inscrições considerando múltiplas fases
+    * da oportunidade e seus metadados.
+    * 
+    * @param \MapasCulturais\Entities\Opportunity $opportunity Oportunidade
+    * @param array $query_data Dados da consulta
+    * @param bool $enalble_quota Habilita controle de cotas
+    * @return object Resultado da busca com contagem e registros
+    */
     function apiFindRegistrations($opportunity, $query_data, $enalble_quota = false) {
         $app = App::i();
         $data = $query_data;
 
         $data['opportunity'] = API::EQ($opportunity->id);
+
+        $enable_sensitive_seals = isset($data['sealStatus']) && $opportunity->canUser('@control') && !$app->user->is('admin');
 
         $_opportunity = $opportunity;
         $opportunity_tree = [$opportunity];
@@ -391,7 +516,7 @@ class Opportunity extends EntityController {
 
         $query_select = array_map(function ($item) { return trim($item); }, explode(',', $data['@select'] ?? ''));
 
-        $previous_phase_result = null;
+        $phase_builds = [];
 
         foreach($opportunity_tree as $phase){
             /** @var EntitiesOpportunity $phase */
@@ -404,7 +529,8 @@ class Opportunity extends EntityController {
 
             $current_phase_query_params = [
                 'opportunity' => API::EQ($phase->id),
-                '__enableQuota' => $enalble_quota
+                // Cotas só na fase solicitada; fases anteriores são consulta complementar de merge.
+                '__enableQuota' => $enalble_quota && $phase->equals($opportunity),
             ];
             
             // $phase é a fase que foi informada no parâmetro @opportunity
@@ -445,6 +571,16 @@ class Opportunity extends EntityController {
                         $_order = str_replace('consolidatedResult', 'consolidatedResult AS FLOAT', $_order);
                     }
                     $current_phase_query_params['@order'] = $_order;
+                }
+
+                if(isset($data['sealStatus'])) {
+                    $current_phase_query_params['sealStatus'] = $data['sealStatus'];
+                }
+
+                // Filtro por status de isenção por selos (spec-c49fa0bb §4.3 — Indicador de agente ausente).
+                // Aplicado apenas na fase alvo: sealExemptionStatus é específico por fase.
+                if(isset($data['sealExemptionStatus'])) {
+                    $current_phase_query_params['sealExemptionStatus'] = $data['sealExemptionStatus'];
                 }
             }
 
@@ -494,39 +630,215 @@ class Opportunity extends EntityController {
                 $current_phase_query_params['@order'] = 'id ASC';
             }
 
-            $current_phase_query = new ApiQuery(Registration::class, $current_phase_query_params);
-            if(isset($previous_phase_query) && !$phase->isLastPhase) {
+            $phase_builds[] = [
+                'phase' => $phase,
+                'params' => $current_phase_query_params,
+                'evaluation_method' => $current_evaluation_method,
+            ];
+        }
+
+        $opportunity->registerRegistrationMetadata();
+
+        // Com paginação em edital multi-fase: consulta a fase alvo primeiro e busca fases anteriores só pelos numbers da página.
+        $use_paginated_phase_load = count($opportunity_tree) > 1
+            && isset($data['@limit'])
+            && !isset($data['number']);
+
+        if ($use_paginated_phase_load) {
+            $target_build = null;
+            $previous_builds = [];
+
+            foreach ($phase_builds as $build) {
+                if ($build['phase']->equals($opportunity)) {
+                    $target_build = $build;
+                } else {
+                    $previous_builds[] = $build;
+                }
+            }
+
+            // Encadeia fases anteriores (como no legado) para filtros de campos do formulário e demais critérios.
+            $previous_phase_query = null;
+            $preceding_phases_have_filters = false;
+
+            foreach ($previous_builds as $build) {
+                /** @var EntitiesOpportunity $phase */
+                $phase = $build['phase'];
+                $params = $build['params'];
+                $params['__supplementaryPhaseQuery'] = true;
+                unset($params['__enableQuota'], $params['@limit'], $params['@page']);
+                $params['@select'] = 'number';
+
+                if ($this->phaseParamsHasUserFilters($params)) {
+                    $preceding_phases_have_filters = true;
+                }
+
+                $phase_query = new ApiQuery(Registration::class, $params);
+                if ($enable_sensitive_seals && isset($params['sealStatus'])) {
+                    $phase_query->enableSealStatusIncludeSensitive();
+                }
+                if ($previous_phase_query && !$phase->isLastPhase) {
+                    $phase_query->addFilterByApiQuery($previous_phase_query, 'number', 'number');
+                }
+                $previous_phase_query = $phase_query;
+            }
+
+            $current_phase_query = new ApiQuery(Registration::class, $target_build['params']);
+            if ($enable_sensitive_seals && isset($target_build['params']['sealStatus'])) {
+                $current_phase_query->enableSealStatusIncludeSensitive();
+            }
+            if ($previous_phase_query) {
+                $chain_target = !$opportunity->isLastPhase || $preceding_phases_have_filters;
+                if ($chain_target) {
+                    $current_phase_query->addFilterByApiQuery($previous_phase_query, 'number', 'number');
+                }
+            }
+
+            $current_phase_result = $current_phase_query->find();
+
+            $registrations_by_number = [];
+            foreach ($current_phase_result as $registration) {
+                $registrations_by_number[$registration['number']] = $registration;
+            }
+
+            $numbers = array_keys($registrations_by_number);
+
+            if ($numbers) {
+                foreach ($previous_builds as $build) {
+                    /** @var EntitiesOpportunity $phase */
+                    $phase = $build['phase'];
+                    $params = $build['params'];
+                    $params['number'] = API::IN($numbers);
+                    $params['__supplementaryPhaseQuery'] = true;
+
+                    $phase_query = new ApiQuery(Registration::class, $params);
+                    if ($enable_sensitive_seals && isset($params['sealStatus'])) {
+                        $phase_query->enableSealStatusIncludeSensitive();
+                    }
+                    $phase_result = $phase_query->find();
+
+                    $evaluation_method = $build['evaluation_method'];
+                    if ($evaluation_method) {
+                        foreach ($phase_result as &$reg) {
+                            if (in_array('consolidatedResult', $phase_query->selecting)) {
+                                $reg['evaluationResultString'] = $evaluation_method->valueToString($reg['consolidatedResult']);
+                            }
+                        }
+                        unset($reg);
+                    }
+
+                    foreach ($phase_result as $registration) {
+                        $registration_number = $registration['number'];
+                        if (isset($registrations_by_number[$registration_number])) {
+                            $registrations_by_number[$registration_number] += $registration;
+                        }
+                    }
+
+                    if (count($opportunity_tree) > 1 && $phase->id != $opportunity_tree[0]->id) {
+                        $phase->unregisterRegistrationMetadata();
+                    }
+                }
+            }
+
+            $ordered_result = [];
+            foreach ($current_phase_result as $registration) {
+                $ordered_result[] = $registrations_by_number[$registration['number']];
+            }
+
+            $target_evaluation_method = $target_build['evaluation_method'];
+            if ($target_evaluation_method) {
+                foreach ($ordered_result as &$reg) {
+                    if (in_array('consolidatedResult', $current_phase_query->selecting)) {
+                        $reg['evaluationResultString'] = $target_evaluation_method->valueToString($reg['consolidatedResult']);
+                    }
+                }
+                unset($reg);
+            }
+
+            return (object) [
+                'count' => $current_phase_query->count(),
+                'registrations' => $ordered_result,
+            ];
+        }
+
+        $previous_phase_result = null;
+        $previous_phase_query = null;
+        $current_phase_query = null;
+        $current_phase_result = [];
+
+        foreach ($phase_builds as $build) {
+            /** @var EntitiesOpportunity $phase */
+            $phase = $build['phase'];
+            $current_evaluation_method = $build['evaluation_method'];
+
+            $current_phase_query = new ApiQuery(Registration::class, $build['params']);
+            if ($enable_sensitive_seals && isset($build['params']['sealStatus'])) {
+                $current_phase_query->enableSealStatusIncludeSensitive();
+            }
+            if (isset($previous_phase_query) && !$phase->isLastPhase) {
                 $current_phase_query->addFilterByApiQuery($previous_phase_query, 'number', 'number');
             }
             $previous_phase_query = $current_phase_query;
             $current_phase_result = $current_phase_query->find();
 
             $new_previous_phase_result = [];
-            foreach($current_phase_result as &$registration) {
+            foreach ($current_phase_result as &$registration) {
                 $registration += $previous_phase_result[$registration['number']] ?? [];
                 $new_previous_phase_result[$registration['number']] = $registration;
             }
 
             $previous_phase_result = $new_previous_phase_result;
 
-            if(count($opportunity_tree) > 1 && $phase->id != $opportunity_tree[0]->id) {
+            if (count($opportunity_tree) > 1 && $phase->id != $opportunity_tree[0]->id) {
                 $phase->unregisterRegistrationMetadata();
             }
 
-            if($current_evaluation_method){
-                foreach($current_phase_result as &$reg) {
-                    if(in_array('consolidatedResult', $current_phase_query->selecting)){
+            if ($current_evaluation_method) {
+                foreach ($current_phase_result as &$reg) {
+                    if (in_array('consolidatedResult', $current_phase_query->selecting)) {
                         $reg['evaluationResultString'] = $current_evaluation_method->valueToString($reg['consolidatedResult']);
                     }
                 }
+                unset($reg);
             }
         }
-
-        $opportunity->registerRegistrationMetadata();
 
         return (object) ['count' => $current_phase_query->count(), 'registrations' => $current_phase_result,];
     }
 
+    /**
+     * Indica se os parâmetros de uma fase incluem filtros definidos pelo usuário (não só defaults da consulta).
+     */
+    protected function phaseParamsHasUserFilters(array $params): bool {
+        static $ignore = [
+            'opportunity',
+            '__enableQuota',
+            '__supplementaryPhaseQuery',
+            '@select',
+            '@permissions',
+            '@permission',
+        ];
+
+        foreach ($params as $key => $value) {
+            if (in_array($key, $ignore, true)) {
+                continue;
+            }
+            if ($key === '@order' && in_array($value, ['id ASC', 'id DESC'], true)) {
+                continue;
+            }
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+    * Busca inscrições via API
+    * 
+    * Esta ação busca inscrições de uma oportunidade com suporte a
+    * paginação, filtros e ordenação.
+    * 
+    * @return void
+    */
     function API_findRegistrations() {
         $app = App::i();
         
@@ -546,6 +858,14 @@ class Opportunity extends EntityController {
         $app->applyHookBoundTo($this, "API.{$this->action}({$this->id}).result" , [$query_data,  &$result]);
     }
 
+    /**
+    * Obtém o comitê de avaliação de uma oportunidade
+    * 
+    * Retorna a lista de avaliadores do comitê de avaliação.
+    * 
+    * @param int $opportunity_id ID da oportunidade
+    * @return array Comitê de avaliação
+    */
     protected function _getOpportunityCommittee($opportunity_id) {
         $app = App::i();
 
@@ -556,12 +876,18 @@ class Opportunity extends EntityController {
         }
 
         $committee_relations = [];
+        $sequential_by_agent = [];
         if($relations = $app->repo('EvaluationMethodConfigurationAgentRelation')->findBy(['owner' => $opportunity->evaluationMethodConfiguration->id])) {
             foreach($relations as $relation) {
+                if ($relation->status <= 0) {
+                    continue;
+                }
+                $agent_id = (int) $relation->agent->id;
                 $committee_relations[] = [
                     'id' => $relation->id,
-                    'agent' => $relation->agent->id,
+                    'agent' => $agent_id,
                 ];
+                $sequential_by_agent[$agent_id] = $relation->getCommitteeSequentialNumber();
             }
         }
 
@@ -596,9 +922,25 @@ class Opportunity extends EntityController {
             $committee = [];
         }
 
-        return $committee;
+        $enriched_committee = [];
+        foreach ($committee as $valuer) {
+            $row = is_object($valuer) ? $valuer->jsonSerialize() : (array) $valuer;
+            $agent_id = (int) ($row['id'] ?? 0);
+            $row['committeeSequentialNumber'] = $sequential_by_agent[$agent_id] ?? null;
+            $enriched_committee[] = $row;
+        }
+
+        return $enriched_committee;
     }
 
+    /**
+    * Obtém avaliadores por usuário
+    * 
+    * Retorna um mapeamento de usuários para seus respectivos avaliadores.
+    * 
+    * @param int $opportunity_id ID da oportunidade
+    * @return array Mapeamento usuário → avaliador
+    */
     function _getOpportunityValuerByUser($opportunity_id){
         $committee = $this->_getOpportunityCommittee($opportunity_id);
 
@@ -611,6 +953,16 @@ class Opportunity extends EntityController {
         return $valuer_by_user;
     }
 
+    /**
+    * Obtém inscrições de uma oportunidade
+    * 
+    * Retorna as inscrições com base nos números de inscrição fornecidos.
+    * 
+    * @param \MapasCulturais\Entities\Opportunity $opportunity Oportunidade
+    * @param array $registration_numbers Números das inscrições
+    * @param array $query_data Dados da consulta
+    * @return array Inscrições encontradas
+    */
     function _getOpportunityRegistrations($opportunity, array $registration_numbers, array $query_data){
         if (empty($registration_numbers)) {
             return [];
@@ -669,6 +1021,15 @@ class Opportunity extends EntityController {
 
     }
 
+    /**
+    * Obtém avaliações de uma oportunidade
+    * 
+    * Retorna as avaliações com base nos IDs fornecidos.
+    * 
+    * @param \MapasCulturais\Entities\Opportunity $opportunity Oportunidade
+    * @param array $evaluation_ids IDs das avaliações
+    * @return array Avaliações encontradas
+    */
     function _getOpportunityEvaluations($opportunity, $evaluation_ids) {
         $app = App::i();
 
@@ -709,6 +1070,15 @@ class Opportunity extends EntityController {
 
     }
 
+    /**
+    * Busca inscrições e avaliações via API
+    * 
+    * Esta ação requer autenticação.
+    * Retorna inscrições e suas avaliações para o usuário atual.
+    * 
+    * @param bool $return Se true, retorna os dados em vez de emitir resposta
+    * @return mixed Dados ou void
+    */
     function API_findRegistrationsAndEvaluations($return = false) {
         $app = App::i();
 
@@ -729,6 +1099,7 @@ class Opportunity extends EntityController {
                 AND pc.user_id = :user_id
         WHERE r.status > 0
                 AND r.opportunity_id = :opportunity_id
+                AND r.seal_exemption_status IS DISTINCT FROM 'granted'
         ";
 
         $length = $conn->fetchAll($resultLength, [
@@ -775,6 +1146,7 @@ class Opportunity extends EntityController {
             WHERE
                 r.status > 0
                 AND r.opportunity_id = :opportunity_id
+                AND r.seal_exemption_status IS DISTINCT FROM 'granted'
                 AND r.id NOT IN (
                     SELECT registration_id 
                     FROM registration_evaluation 
@@ -810,6 +1182,7 @@ class Opportunity extends EntityController {
             WHERE
                 r.status > 0
                 AND r.opportunity_id = :opportunity_id
+                AND r.seal_exemption_status IS DISTINCT FROM 'granted'
             ORDER BY
                 r.id
                 {$complement}
@@ -857,6 +1230,15 @@ class Opportunity extends EntityController {
         $this->apiResponse($registrationWithResultString);
     }
 
+    /**
+    * Busca avaliações via API
+    * 
+    * Esta ação requer autenticação.
+    * Retorna avaliações de uma oportunidade.
+    * 
+    * @param int|null $opportunity_id ID da oportunidade (opcional)
+    * @return void
+    */
     function API_findEvaluations($opportunity_id = null) {
         $this->requireAuthentication();
         
@@ -870,6 +1252,16 @@ class Opportunity extends EntityController {
         }
     }
 
+    /**
+    * Busca avaliações
+    * 
+    * Executa uma busca complexa de avaliações considerando comitê,
+    * usuários e filtros.
+    * 
+    * @param int|null $opportunity_id ID da oportunidade
+    * @param array $query_data Dados da consulta
+    * @return object Resultado da busca com contagem e avaliações
+    */
     function apiFindEvaluations(int $opportunity_id = null, array $query_data = []) {
         $app = App::i();
         $conn = $app->em->getConnection();
@@ -895,9 +1287,13 @@ class Opportunity extends EntityController {
         }
 
         if(empty($users)){
-            $this->apiAddHeaderMetadata($query_data, [], 0);
-            $this->apiResponse([]);
-            return;
+            if ($opportunity->canUser('@control')) {
+                $users = '-1';
+            } else {
+                $this->apiAddHeaderMetadata($query_data, [], 0);
+                $this->apiResponse([]);
+                return;
+            }
         }
 
         $params = ['opp' => $opportunity->id];
@@ -973,6 +1369,9 @@ class Opportunity extends EntityController {
             'status' => API::GT(0)
         ];
 
+        $seal_exemption_filter = $query_data['sealExemptionStatusFilter'] ?? null;
+        unset($query_data['sealExemptionStatusFilter']);
+
         foreach($query_data as $k => $v){
             if(strtolower(substr($k, 0, 13)) === 'registration:' && $k != 'registration:@select'){
                 $rdata[substr($k, 13)] = $v;
@@ -989,8 +1388,24 @@ class Opportunity extends EntityController {
 
         $app->disableAccessControl();
         $registrations_query = new ApiQuery('MapasCulturais\Entities\Registration', $rdata);
-        $registration_ids = implode(",", $registrations_query->findIds() ?: [-1]);
+        $registration_ids_array = $registrations_query->findIds() ?: [-1];
         $app->enableAccessControl();
+
+        if (in_array($seal_exemption_filter, ['granted', 'not_granted'], true) && $registration_ids_array !== [-1]) {
+            $ids = implode(',', array_map('intval', $registration_ids_array));
+            $seal_condition = $seal_exemption_filter === 'granted'
+                ? "seal_exemption_status = 'granted'"
+                : "seal_exemption_status IS DISTINCT FROM 'granted'";
+            $registration_ids_array = array_map('intval', array_column($conn->fetchAllAssociative("
+                SELECT id
+                FROM registration
+                WHERE id IN ({$ids})
+                    AND {$seal_condition}
+            "), 'id'));
+            $registration_ids_array = $registration_ids_array ?: [-1];
+        }
+
+        $registration_ids = implode(",", array_map('intval', $registration_ids_array));
 
         $query = "
             SELECT 
@@ -1064,6 +1479,70 @@ class Opportunity extends EntityController {
 
 
         $evaluations = $conn->fetchAll($query, $params);
+
+        $can_include_synthetic_exemptions = $opportunity->canUser('@control')
+            && !isset($this->data['@evaluationId'])
+            && !isset($this->data['@date'])
+            && (!$seal_exemption_filter || $seal_exemption_filter === 'granted')
+            && (
+                !isset($this->data['@filterStatus'])
+                || in_array($this->data['@filterStatus'], ['all', 'pending'], true)
+            );
+
+        if ($can_include_synthetic_exemptions && $registration_ids !== '-1') {
+            $synthetic_sql = "
+                SELECT
+                    r.id AS registration_id,
+                    r.number AS registration_number,
+                    NULL AS evaluation_id,
+                    NULL AS valuer_agent_id,
+                    NULL AS evaluation_status,
+                    NULL AS valuer_committee
+                FROM registration r
+                WHERE
+                    r.opportunity_id = :opp
+                    AND r.id IN({$registration_ids})
+                    AND r.status > 0
+                    AND r.seal_exemption_status = 'granted'
+                    AND NOT EXISTS (
+                        SELECT 1
+                        FROM evaluations e
+                        WHERE
+                            e.registration_id = r.id
+                            AND e.valuer_user_id IN({$users})
+                    )
+                ORDER BY r.sent_timestamp ASC, r.id ASC
+            ";
+
+            $synthetic_evaluations = $conn->fetchAllAssociative($synthetic_sql, $params);
+            if ($synthetic_evaluations) {
+                $real_total = (int) $queryNumberOfResults;
+                $queryNumberOfResults = $real_total + count($synthetic_evaluations);
+
+                // Sem paginação: anexa todas. Com @limit/@page: as sintéticas vêm
+                // DEPOIS das avaliações reais — só entram no restante da página atual.
+                // Sem este recorte, páginas > 1 reanexavam todas as sintéticas e o
+                // export de planilha entrava em loop infinito (while getBatch).
+                if (!isset($query_data['@limit'])) {
+                    $evaluations = array_merge($evaluations, $synthetic_evaluations);
+                } else {
+                    $limit = intval($query_data['@limit']);
+                    $page = isset($query_data['@page']) ? max(1, intval($query_data['@page'])) : 1;
+                    $offset = ($page - 1) * $limit;
+                    $remaining = $limit - count($evaluations);
+
+                    if ($remaining > 0) {
+                        $synth_start = max(0, $offset - $real_total);
+                        if ($synth_start < count($synthetic_evaluations)) {
+                            $evaluations = array_merge(
+                                $evaluations,
+                                array_slice($synthetic_evaluations, $synth_start, $remaining)
+                            );
+                        }
+                    }
+                }
+            }
+        }
         
         $app->disableAccessControl();
         
@@ -1123,6 +1602,14 @@ class Opportunity extends EntityController {
         return (object) ['evaluations' => $_result, 'count' => $queryNumberOfResults];
     }
 
+    /**
+    * Reconcilia resultados de avaliações
+    * 
+    * Esta ação requer autenticação e permissão '@control' na oportunidade.
+    * Recalcula e atualiza os resultados consolidados das avaliações.
+    * 
+    * @return void
+    */
     function ALL_reconsolidateResults() {
         $this->requireAuthentication();
 
@@ -1183,6 +1670,14 @@ class Opportunity extends EntityController {
         $app->redirect($url);
     }
 
+    /**
+    * Exporta configuração de campos
+    * 
+    * Esta ação requer autenticação e permissão 'modify' na oportunidade.
+    * Exporta a configuração de campos e arquivos da oportunidade.
+    * 
+    * @return void
+    */
     function GET_exportFields() {
         $this->requireAuthentication();
 
@@ -1282,6 +1777,14 @@ class Opportunity extends EntityController {
         echo json_encode($result);
     }
 
+    /**
+    * Importa configuração de campos
+    * 
+    * Esta ação requer autenticação e permissão 'modify' na oportunidade.
+    * Importa configuração de campos e arquivos para a oportunidade.
+    * 
+    * @return void
+    */
     function POST_importFields() {
         $this->requireAuthentication();
 
@@ -1302,15 +1805,27 @@ class Opportunity extends EntityController {
             /** @var Entities\Opportunity */
             $opportunity =  $app->repo("Opportunity")->find($opportunity_id);
 
-            $opportunity->importFields($importSource);
+            $app->enqueueOrReplaceJob(ImportFields::SLUG, [
+                'opportunity' => $opportunity,
+                'importSource' => $importSource,
+                'authenticatedUser' => $app->user,
+            ], 'now');
 
+            return $this->json(true);
         }
 
-        $url = $app->createUrl('opportunity', 'formBuilder', [$opportunity->id]);
-        $app->redirect($url);
+        return $this->json(false);
 
     }
 
+    /**
+    * Salva ordem dos campos
+    * 
+    * Esta ação requer autenticação e permissão 'modify' na oportunidade.
+    * Salva a ordem de exibição dos campos e arquivos.
+    * 
+    * @return void
+    */
     function POST_saveFieldsOrder() {
 
         $this->requireAuthentication();
@@ -1355,6 +1870,14 @@ class Opportunity extends EntityController {
 
     }
 
+    /**
+    * Exibe construtor de formulário
+    * 
+    * Esta ação requer autenticação e permissão 'modify' na oportunidade.
+    * Exibe a interface para construção do formulário de inscrição.
+    * 
+    * @return void
+    */
     function GET_formBuilder() {
         $this->requireAuthentication();
         $app = App::i();
@@ -1398,6 +1921,14 @@ class Opportunity extends EntityController {
         $this->render('form-builder', ['entity' => $entity]);
     }
 
+    /**
+    * Exibe lista de inscrições
+    * 
+    * Esta ação requer autenticação e permissão 'modify' na oportunidade.
+    * Exibe a lista de inscrições da oportunidade.
+    * 
+    * @return void
+    */
     function GET_registrations() {
         $this->requireAuthentication();
         $app = App::i();
@@ -1415,6 +1946,14 @@ class Opportunity extends EntityController {
         $this->render('registrations', ['entity' => $entity]);
     }
 
+    /**
+    * Exibe avaliações do usuário
+    * 
+    * Esta ação requer autenticação e permissão 'viewEvaluations' na oportunidade.
+    * Exibe as avaliações realizadas pelo usuário atual.
+    * 
+    * @return void
+    */
     function GET_userEvaluations() {
         $this->requireAuthentication();
 
@@ -1449,6 +1988,14 @@ class Opportunity extends EntityController {
         $this->render('evaluations-list--user', ['entity' => $opportunity->evaluationMethodConfiguration, 'valuer_user' => $valuer_user]);
     }
 
+    /**
+    * Exibe todas as avaliações
+    * 
+    * Esta ação requer autenticação e permissão '@control' na oportunidade.
+    * Exibe todas as avaliações da oportunidade.
+    * 
+    * @return void
+    */
     function GET_allEvaluations() {
         $this->requireAuthentication();
 
@@ -1469,6 +2016,14 @@ class Opportunity extends EntityController {
         $this->render('evaluations-list--all', ['entity' => $opportunity->evaluationMethodConfiguration]);
     }
 
+    /**
+    * Reabre avaliações
+    * 
+    * Esta ação requer autenticação e permissão 'manageEvaluationCommittee'.
+    * Reabre avaliações enviadas por um usuário específico.
+    * 
+    * @return void
+    */
     public function POST_reopenEvaluations() {
         $this->requireAuthentication();
 
@@ -1518,8 +2073,12 @@ class Opportunity extends EntityController {
     }
 
     /**
-     * Recria ponteiros entre fases das inscrições
-     * @return void 
+     * Corrige ponteiros entre fases de inscrições
+     * 
+     * Esta ação requer autenticação.
+     * Corrige os IDs de inscrição entre fases sequenciais da oportunidade.
+     * 
+     * @return void
      */
     public function ALL_fixNextPhaseRegistrationIds():void
     {
@@ -1531,6 +2090,14 @@ class Opportunity extends EntityController {
 
     }
 
+    /**
+    * Busca oportunidades avaliáveis
+    * 
+    * Esta ação requer autenticação.
+    * Retorna oportunidades que o usuário pode avaliar.
+    * 
+    * @return void
+    */
     public function API_findEvaluable(): void {
         $this->requireAuthentication();
 
@@ -1542,7 +2109,13 @@ class Opportunity extends EntityController {
         $user->profile->checkPermission('@control');
 
         $opportunity_ids = $app->repo('Opportunity')->findValuerOpportunities($user->id, only_ids: true); 
-        
+
+        if (empty($opportunity_ids)) {
+            $this->apiAddHeaderMetadata($this->data, [], 0);
+            $this->apiResponse([]);
+            return;
+        }
+
         $query_params = $this->data;
         $query_params['id'] = API::IN($opportunity_ids);
 
@@ -1553,6 +2126,107 @@ class Opportunity extends EntityController {
 
         $this->apiAddHeaderMetadata($query_params, $result, $query->count());
         $this->apiResponse($result);
+    }
+
+    /**
+    * Recalcula o campo eligible das inscrições de uma oportunidade
+    * 
+    * Esta ação requer autenticação e permissão '@control' na oportunidade.
+    * Recalcula o campo eligible para todas as inscrições da primeira fase
+    * baseado na configuração atual de políticas afirmativas/cotas.
+    * 
+    * @return void
+    */
+    public function API_recalculateEligible(): void {
+        $this->requireAuthentication();
+
+        $app = App::i();
+        $opportunity_id = (int) ($this->data['id'] ?? $this->data['@opportunity'] ?? 0);
+        $opportunity = $this->_getOpportunity($opportunity_id);
+        $opportunity->checkPermission('@control');
+
+        $first_phase = $opportunity->firstPhase;
+        $em = $opportunity->evaluationMethodConfiguration;
+
+        if (!$em || $em->type->id !== 'technical') {
+            $this->errorJson(i::__('Esta oportunidade não possui avaliação técnica configurada.'), 400);
+            return;
+        }
+
+        $quota_config = $em->quotaConfiguration;
+        if (!$quota_config || !($quota_config->rules ?? [])) {
+            $this->errorJson(i::__('Esta oportunidade não possui cotas configuradas.'), 400);
+            return;
+        }
+
+        $app->disableAccessControl();
+
+        $first_phase->registerRegistrationMetadata();
+
+        $query = new ApiQuery(Registration::class, [
+            'opportunity' => API::EQ($first_phase->id),
+            '@select' => 'id',
+            'status' => API::GTE(0),
+        ]);
+        $registrations = $query->find();
+
+        $updated = 0;
+        $eligible_count = 0;
+        $connection = $app->em->getConnection();
+
+        foreach ($registrations as $reg_data) {
+            $registration = $app->repo('Registration')->find($reg_data['id']);
+            if (!$registration) {
+                continue;
+            }
+
+            $eligible = false;
+            $proponent_type = $registration->proponentType ?: 'default';
+
+            foreach ($quota_config->rules as $rule) {
+                $field_name = $rule->fields->$proponent_type->fieldName ?? null;
+                if (!$field_name) {
+                    continue;
+                }
+
+                $field_value = (array) ($registration->$field_name ?? []);
+                $eligible_values = (array) ($rule->fields->$proponent_type->eligibleValues ?? []);
+
+                if (array_intersect($field_value, $eligible_values)) {
+                    $eligible = true;
+                    break;
+                }
+            }
+
+            $eligible_str = $eligible ? 'true' : 'false';
+
+            $connection->executeQuery(
+                "UPDATE registration SET eligible = :eligible WHERE id = :id",
+                ['eligible' => $eligible_str, 'id' => $registration->id]
+            );
+
+            $updated++;
+            if ($eligible) {
+                $eligible_count++;
+            }
+
+            if ($registration->nextPhase) {
+                $connection->executeQuery(
+                    "UPDATE registration SET eligible = :eligible WHERE id = :id",
+                    ['eligible' => $eligible_str, 'id' => $registration->nextPhase->id]
+                );
+            }
+        }
+
+        $app->enableAccessControl();
+
+        $this->apiResponse([
+            'success' => true,
+            'message' => i::__('Campo eligible recalculado com sucesso.'),
+            'total' => $updated,
+            'eligible' => $eligible_count,
+            'notEligible' => $updated - $eligible_count,
+        ]);
     }
     
 }

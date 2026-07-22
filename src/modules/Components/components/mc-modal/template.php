@@ -28,5 +28,5 @@ $this->import('
 </vue-final-modal>
 
 <slot name="button" :close="close" :open="open" :toggle="toggle" :loading="loading">
-    <button :class="['button',buttonClasses]" @click="open()">{{buttonLabel || '<?= i::__('Defina a propriedade `buttonLabel` do componente modal') ?>'}}</button>
+    <button v-if="buttonLabel" :class="['button', buttonClasses]" @click="open()">{{buttonLabel}}</button>
 </slot>

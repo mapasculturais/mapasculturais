@@ -2,69 +2,71 @@
 namespace MapasCulturais\Definitions;
 
 /**
- * This class defines an Entity Type Group.
+ * Define um Grupo de Tipos de Entidade.
  *
- * An Entity Type Group is, basically, a minimun id, a maximun id and a description.
+ * Um Grupo de Tipos de Entidade é basicamente um ID mínimo, um ID máximo e uma descrição.
  *
- * The intent of this class is to be used in searches. When the user searches for an Entity Type Group,
- * internally the application searches for entities that the type is between the minimun and maximun id.
+ * A intenção desta classe é ser usada em buscas. Quando o usuário busca por um Grupo de Tipos de Entidade,
+ * internamente a aplicação busca por entidades cujo tipo está entre o ID mínimo e máximo.
  *
- * To this definition take effects, you must register it in to application.
+ * Para que esta definição tenha efeito, você deve registrá-la na aplicação.
  *
- * @property-read string $entity_class Entity Class Name
- * @property-read string $name Group Name
- * @property-read int $min_id Minimum id
- * @property-read int $max_id Maximum id
- * @property-read \MapasCulturais\Definitions\EntityType[]  $registered_types Registered types for this group.
+ * @property-read string $entity_class Nome da Classe da Entidade
+ * @property-read string $name Nome do Grupo
+ * @property-read int $min_id ID mínimo
+ * @property-read int $max_id ID máximo
+ * @property-read \MapasCulturais\Definitions\EntityType[] $registered_types Tipos registrados para este grupo.
  *
  * @see \MapasCulturais\App::registerEntityTypeGroup()
  * @see \MapasCulturais\App::getRegisteredEntityTypeGroupByTypeId()
+ * @package MapasCulturais\Definitions
  */
 class EntityTypeGroup extends \MapasCulturais\Definition{
 
     /**
-     * The entity class name.
+     * Nome da classe da entidade.
      *
      * @var string
      */
     public $entity_class;
 
     /**
-     * The name of this group.
-     * @var type
+     * Nome deste grupo.
+     * 
+     * @var string
      */
     public $name;
 
     /**
-     * The minimum id for types in this group.
+     * ID mínimo para tipos neste grupo.
      *
      * @var int
      */
     public $min_id;
 
     /**
-     * The maximum id for types in this group.
+     * ID máximo para tipos neste grupo.
      *
      * @var int
      */
     public $max_id;
 
     /**
-     * Registered types for this group.
+     * Tipos registrados para este grupo.
      *
      * @var \MapasCulturais\Definitions\EntityType[]
      */
     public $registered_types = [];
 
     /**
-     * Create a new Entity Type Group.
+     * Cria um novo Grupo de Tipos de Entidade.
      *
-     * To this entity type group take effects you need to register it in to the application
+     * Para que este grupo de tipos de entidade tenha efeito, você precisa registrá-lo na aplicação.
      *
-     * @param string $entity_class Entity Class Name
-     * @param string $name Group Name
-     * @param int $minId Minimum id
-     * @param int $maxId Maximum id
+     * @param string $entity_class Nome da Classe da Entidade
+     * @param string $name Nome do Grupo
+     * @param int $minId ID mínimo
+     * @param int $maxId ID máximo
      *
      * @see \MapasCulturais\App::registerEntityTypeGroup()
      * @see \MapasCulturais\App::getRegisteredEntityTypeGroupByTypeId()
@@ -77,7 +79,7 @@ class EntityTypeGroup extends \MapasCulturais\Definition{
     }
 
     /**
-     * Register a entity type to this group.
+     * Registra um tipo de entidade neste grupo.
      *
      * @param \MapasCulturais\Definitions\EntityType $type
      */
@@ -86,6 +88,11 @@ class EntityTypeGroup extends \MapasCulturais\Definition{
             $this->registered_types[] = $type;
     }
 
+    /**
+     * Serializa o grupo de tipos de entidade para JSON
+     * 
+     * @return array Array com nome, IDs mínimo/máximo e tipos registrados
+     */
     function jsonSerialize(): array {
         return [
             'name' => $this->name,

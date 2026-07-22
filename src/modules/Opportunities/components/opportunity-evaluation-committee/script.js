@@ -24,6 +24,7 @@ app.component('opportunity-evaluation-committee', {
                 '@order': 'id ASC',
                 '@limit': '25',
                 '@page': '1',
+                '_evaluatorSearch': '1',
                 'type': 'EQ(1)',
                 'parent': 'NULL()'
             };
@@ -50,14 +51,119 @@ app.component('opportunity-evaluation-committee', {
             return (this.infosReviewers ?? [])
                 .slice()
                 .sort((a, b) => {
+                    const aNum = parseInt(a.metadata?.committeeSequentialNumber, 10) || 0;
+                    const bNum = parseInt(b.metadata?.committeeSequentialNumber, 10) || 0;
+
+                    if (aNum !== bNum) {
+                        return aNum - bNum;
+                    }
+
                     const aName = a.agent?.name.toLocaleLowerCase() ?? '';
                     const bName = b.agent?.name.toLocaleLowerCase() ?? '';
                     return aName.localeCompare(bName);
                 });
+        },
+
+        // Garante que os filtros globais da comissão sejam passados corretamente
+        // mesmo após recarregar a página (F5)
+        groupFiltersForComponent() {
+            // Garante que fetchFields está inicializado
+            if (!this.entity.fetchFields) {
+                this.entity.fetchFields = {};
+            }
+            
+            // Retorna os filtros globais do grupo atual
+            return this.entity.fetchFields?.[this.group] || null;
+        },
+
+        evaluatorDisabledFilters() {
+            const disabled = {
+                categories: [],
+                proponentTypes: [],
+                ranges: [],
+                fields: {}
+            };
+
+            const fetchFields = this.entity.fetchFields || {};
+            const allGroups = Object.keys(this.entity.relatedAgents || {});
+
+            allGroups.forEach(groupName => {
+                if (groupName === this.group || groupName === '@support') {
+                    return;
+                }
+
+                const src = fetchFields[groupName] || {};
+
+                const categories = Array.isArray(src.category) ? src.category : [];
+                categories.forEach(value => {
+                    if (disabled.categories.indexOf(value) === -1) {
+                        disabled.categories.push(value);
+                    }
+                });
+
+                const proponentTypes = Array.isArray(src.proponentType) ? src.proponentType : [];
+                proponentTypes.forEach(value => {
+                    if (disabled.proponentTypes.indexOf(value) === -1) {
+                        disabled.proponentTypes.push(value);
+                    }
+                });
+
+                const ranges = Array.isArray(src.range) ? src.range : [];
+                ranges.forEach(value => {
+                    if (disabled.ranges.indexOf(value) === -1) {
+                        disabled.ranges.push(value);
+                    }
+                });
+
+                Object.entries(src).forEach(([key, value]) => {
+                    if (['category', 'proponentType', 'range', 'distribution', 'sentTimestamp'].indexOf(key) !== -1) {
+                        return;
+                    }
+                    
+                    if (!Array.isArray(value) || value.length === 0) {
+                        return;
+                    }
+
+                    if (!disabled.fields[key]) {
+                        disabled.fields[key] = [];
+                    }
+
+                    value.forEach(v => {
+                        if (disabled.fields[key].indexOf(v) === -1) {
+                            disabled.fields[key].push(v);
+                        }
+                    });
+                });
+            });
+
+            return disabled;
+        },
+        
+        commissionDistributionRule() {
+            const src = this.entity.fetchFields?.[this.group] || {};
+            const categories = Array.isArray(src.category) ? [...src.category] : [];
+            const proponentTypes = Array.isArray(src.proponentType) ? [...src.proponentType] : [];
+            const ranges = Array.isArray(src.range) ? [...src.range] : [];
+            const distribution = typeof src.distribution == 'string' ? src.distribution : '';
+            const sentTimestamp = (src.sentTimestamp && typeof src.sentTimestamp == 'object')
+                ? { from: src.sentTimestamp.from || '', to: src.sentTimestamp.to || '' }
+                : { from: '', to: '' };
+            const fields = {};
+
+            Object.entries(src).forEach(([key, value]) => {
+                if (['category', 'proponentType', 'range', 'distribution', 'sentTimestamp'].includes(key)) return;
+                if (Array.isArray(value) && value.length > 0) fields[key] = [...value];
+            });
+
+            return { categories, proponentTypes, ranges, distribution, sentTimestamp, fields };
         }
     },
 
     mounted() {
+        // Garante que fetchFields está inicializado
+        if (!this.entity.fetchFields) {
+            this.entity.fetchFields = {};
+        }
         this.loadReviewers();
     },
 
@@ -89,13 +195,27 @@ app.component('opportunity-evaluation-committee', {
             sendTimeOut: null,
             fetchConfigs: {},
             reviewersId: [],
-            fetchFields: this.entity.fetchFields
+            fetchFields: this.entity.fetchFields,
+            showRegistrationListFlag: {},
+            evaluatorDistributionRules: {},
+            lastParentFilters: null,
+            allCommitteeRelations: []
         }
     },
     
     methods: {   
         showSummary(summary) {
             return summary ? Object.values(summary).some(value => value > 0) : false;
+        },
+
+        showRegistrationList(infoReviewer) {
+            return this.showRegistrationListFlag[infoReviewer.id] || !!infoReviewer.registrationListText;
+        },
+
+        changeShowRegistrationListFlag($event, infoReviewer) {
+            if(!$event) {
+                infoReviewer.registrationListText = '';
+            }
         },
 
         hasEvaluationConfiguration(infoReviewer) {
@@ -133,6 +253,23 @@ app.component('opportunity-evaluation-committee', {
             return false;
         },
         
+        replaceReviewer(agent, relation) {
+            const api = new API();
+            let url = Utils.createUrl('evaluationMethodConfiguration', 'replaceValuer', {id: this.entity.id});
+            
+            let evaluatorData = {
+                newValuerAgentId: agent.id,
+                relation: relation.id,
+            };
+
+            api.POST(url, evaluatorData).then(res => res.json()).then(data => {
+                this.messages.success(this.text('reviewerReplaced'));
+                this.loadReviewers();
+                this.loadFetchs();
+                this.refreshEntityPermissions();
+            });
+        },
+        
         selectAgent(agent) {
             const api = new API();
             let url = Utils.createUrl('evaluationMethodConfiguration', 'createAgentRelation', {id: this.entity.id});
@@ -145,6 +282,7 @@ app.component('opportunity-evaluation-committee', {
             api.POST(url, this.agentData).then(res => res.json()).then(data => {
                 this.loadReviewers();
                 this.loadFetchs();
+                this.refreshEntityPermissions();
             });
         },
         
@@ -159,11 +297,32 @@ app.component('opportunity-evaluation-committee', {
             const api = new API('opportunity');
             let url = api.createApiUrl('evaluationCommittee', args);
             
-            api.GET(url).then(res => res.json()).then(data => {
-                this.infosReviewers = data.filter(reviewer => reviewer.group === this.group).map(reviewer => ({
-                    ...reviewer,
-                    isContentVisible: false,
-                }));
+            return api.GET(url).then(res => res.json()).then(data => {
+                const expandedIds = (this.infosReviewers || [])
+                    .filter(reviewer => reviewer.isContentVisible)
+                    .map(reviewer => reviewer.id);
+
+                this.infosReviewers = data.filter(reviewer => reviewer.group === this.group).map(reviewer => {
+                    if (!reviewer.metadata) {
+                        reviewer.metadata = {};
+                    }
+                    
+                    if (reviewer.metadata.registrationListExclusive == undefined || reviewer.metadata.registrationListExclusive == null) {
+                        reviewer.metadata.registrationListExclusive = false;
+                    } else {
+                        reviewer.metadata.registrationListExclusive = Boolean(reviewer.metadata.registrationListExclusive);
+                    }
+                    
+                    return {
+                        ...reviewer,
+                        isContentVisible: expandedIds.indexOf(reviewer.id) != -1,
+                        registrationListText: this.formatRegistrationList(reviewer.metadata?.registrationList),
+                    };
+                });
+
+                for(let infoReviewer of this.infosReviewers) {
+                    this.showRegistrationListFlag[infoReviewer.id] = !!infoReviewer.registrationListText;
+                }
 
                 const pendingReviews = this.infosReviewers.filter((reviewer) => reviewer.status === -5);
                 pendingReviews.sort((a, b) => {
@@ -200,16 +359,40 @@ app.component('opportunity-evaluation-committee', {
                 })
                 this.showReviewers = Object.keys(this.infosReviewers).length > 0;
                 this.ReviewerSelect = false;
-                this.entity.agentRelations = data;
+                this.allCommitteeRelations = data;
                 this.loadFetchs();
             });
+        },
+
+        saveReviewerDataRemoval() {
+            const api = new API();
+            const url = Utils.createUrl('evaluationMethodConfiguration', 'single', { id: this.entity.id });
+            const properties = [
+                'fetch',
+                'fetchSelectionFields',
+                'fetchRanges',
+                'fetchProponentTypes',
+                'fetchCategories'
+            ];
+            const args = {};
+
+            properties.forEach(property => {
+                if (this.entity[property]) {
+                    args[property] = this.entity[property];
+                }
+            });
+
+            return api.POST(url, args);
         },
 
         delReviewer(infoReviewer) {
             const agentId = infoReviewer.agent.id;
             const userId = infoReviewer.agentUserId;
 
-            let userGroups = this.entity.agentRelations.filter(relation => relation.agentUserId === userId);
+            const committeeRelations = this.allCommitteeRelations.length > 0
+                ? this.allCommitteeRelations
+                : (this.entity.agentRelations || []);
+            let userGroups = committeeRelations.filter(relation => relation.agentUserId === userId);
             
             const api = new API();
             let url = Utils.createUrl('evaluationMethodConfiguration', 'removeAgentRelation', {id: this.entity.id});
@@ -218,13 +401,37 @@ app.component('opportunity-evaluation-committee', {
                 agentId: agentId,
             }; 
 
-            api.POST(url, this.agentData).then(res => res.json()).then(data => {
+            api.POST(url, this.agentData).then(res => res.json()).then(async () => {
                 if (userGroups.length <= 1) {
                     this.delReviewerData(userId);
+                    await this.saveReviewerDataRemoval();
                 }
-                this.loadReviewers();
-                this.entity.save();
+                await this.loadReviewers();
+                await this.refreshEntityPermissions();
             });
+        },
+
+        async refreshEntityPermissions() {
+            try {
+                const opportunityId = this.entity.opportunity?.id;
+                if (!opportunityId) {
+                    return;
+                }
+
+                const api = new API('opportunity');
+                const url = api.createApiUrl('findOne', {
+                    id: `EQ(${opportunityId})`,
+                    '@select': 'evaluationMethodConfiguration.{currentUserPermissions}'
+                });
+                const res = await api.GET(url);
+                const data = await res.json();
+
+                if (res.ok && data?.evaluationMethodConfiguration?.currentUserPermissions) {
+                    this.entity.currentUserPermissions = data.evaluationMethodConfiguration.currentUserPermissions;
+                }
+            } catch (error) {
+                console.error('Erro ao atualizar permissões da entidade:', error);
+            }
         },
 
         delReviewerData(userId) {
@@ -261,6 +468,7 @@ app.component('opportunity-evaluation-committee', {
 
             api.POST(url, relationData).then(res => res.json()).then(data => {
                 this.loadReviewers();
+                this.refreshEntityPermissions();
             });
         },
 
@@ -325,34 +533,175 @@ app.component('opportunity-evaluation-committee', {
 
         loadFetchs() {
             if(this.infosReviewers?.length > 0) {
+                const keys = ['fetch', 'fetchCategories', 'fetchRanges', 'fetchProponentTypes', 'fetchSelectionFields'];
+                
                 this.infosReviewers.forEach(info => {
-                    for (const key of ['fetch', 'fetchCategories', 'fetchRanges', 'fetchProponentTypes']) {
+                    for (const key of keys) {
                         if (!this.entity[key]) {
                             this.entity[key] = {};
                         } else if (Array.isArray(this.entity[key])) {
                             if (this.entity[key].length === 0) {
                                 this.entity[key] = {};
                             } else {
-                                const entries = Object.entries(this.entity[key]).filter(([key, value]) => {
-                                    return value != null;
-                                });
-
+                                const entries = Object.entries(this.entity[key]).filter(([k, value]) => value != null);
                                 this.entity[key] = Object.fromEntries(entries);
                             }
                         }
 
-                        if(this.entity[key] && !this.entity[key][info.agentUserId]) {
+                        if (this.entity[key] && this.entity[key][info.agentUserId] === undefined) {
                             if (key === 'fetch') {
                                 this.entity[key][info.agentUserId] = '';
+                            } else if (key === 'fetchSelectionFields') {
+                                this.entity[key][info.agentUserId] = {};
                             } else {
                                 this.entity[key][info.agentUserId] = [];
                             }
                         }
                     }
 
+                    this.evaluatorDistributionRules[info.agentUserId] = this.getEvaluatorDistributionRule(info.agentUserId);
                     info.default = (this.entity.fetch[info.agentUserId] || this.entity.fetchCategories[info.agentUserId].length > 0 || this.entity.fetchRanges[info.agentUserId].length > 0 || this.entity.fetchProponentTypes[info.agentUserId].length > 0) ? false : true;
                 });
             }
+        },
+
+        getEvaluatorDistributionRule(agentUserId) {
+            return {
+                categories: Array.isArray(this.entity.fetchCategories?.[agentUserId]) ? [...this.entity.fetchCategories[agentUserId]] : [],
+                proponentTypes: Array.isArray(this.entity.fetchProponentTypes?.[agentUserId]) ? [...this.entity.fetchProponentTypes[agentUserId]] : [],
+                ranges: Array.isArray(this.entity.fetchRanges?.[agentUserId]) ? [...this.entity.fetchRanges[agentUserId]] : [],
+                distribution: typeof this.entity.fetch?.[agentUserId] == 'string' ? this.entity.fetch[agentUserId] : '',
+                sentTimestamp: { from: '', to: '' },
+                fields: this.entity.fetchSelectionFields?.[agentUserId] && typeof this.entity.fetchSelectionFields[agentUserId] == 'object'
+                    ? { ...this.entity.fetchSelectionFields[agentUserId] }
+                    : {}
+            };
+        },
+
+        async onEvaluatorDistributionRuleChange(rule, infoReviewer) {
+            if (!rule || !infoReviewer) {
+                return;
+            }
+
+            const relationId = infoReviewer.id;
+            const agentUserId = infoReviewer.agentUserId;
+
+            const categories = Array.isArray(rule.categories) && rule.categories.length > 0 ? rule.categories : null;
+            const proponentTypes = Array.isArray(rule.proponentTypes) && rule.proponentTypes.length > 0 ? rule.proponentTypes : null;
+            const ranges = Array.isArray(rule.ranges) && rule.ranges.length > 0 ? rule.ranges : null;
+            const distribution = typeof rule.distribution == 'string' && rule.distribution.trim() ? rule.distribution.trim() : null;
+            const selectionFields = rule.fields && typeof rule.fields == 'object' && Object.keys(rule.fields).length > 0 ? rule.fields : null;
+
+            const url = Utils.createUrl('evaluationMethodConfiguration', 'setValuerFilters', { id: this.entity.id });
+            const data = {
+                relationId,
+                categories,
+                proponentTypes,
+                ranges,
+                distribution,
+                selectionFields
+            };
+
+            try {
+                const api = new API();
+                await api.POST(url, data);
+                this.syncEntityFromEvaluatorRule(agentUserId, rule);
+                this.messages.success(this.text('modificações salvas'));
+                this.loadReviewers();
+            } catch (error) {
+                console.error('Erro ao salvar filtros do avaliador:', error);
+            }
+        },
+
+        syncEntityFromEvaluatorRule(agentUserId, rule) {
+            if (!this.entity.fetchCategories) {
+                this.entity.fetchCategories = {};
+            }
+
+            if (!this.entity.fetchProponentTypes) {
+                this.entity.fetchProponentTypes = {};
+            }
+
+            if (!this.entity.fetchRanges) {
+                this.entity.fetchRanges = {};
+            }
+
+            if (!this.entity.fetch) {
+                this.entity.fetch = {};
+            }
+
+            if (!this.entity.fetchSelectionFields) {
+                this.entity.fetchSelectionFields = {};
+            }
+
+            this.entity.fetchCategories[agentUserId] = Array.isArray(rule.categories) ? rule.categories : [];
+            this.entity.fetchProponentTypes[agentUserId] = Array.isArray(rule.proponentTypes) ? rule.proponentTypes : [];
+            this.entity.fetchRanges[agentUserId] = Array.isArray(rule.ranges) ? rule.ranges : [];
+            this.entity.fetch[agentUserId] = typeof rule.distribution == 'string' ? rule.distribution : '';
+            this.entity.fetchSelectionFields[agentUserId] = rule.fields && typeof rule.fields == 'object' ? { ...rule.fields } : {};
+        },
+
+        onParentFiltersUpdate(parentFilters) {
+            this.lastParentFilters = parentFilters;
+        },
+
+        saveMaxRegistrations(infoReviewer){
+            const timeoutName = "saveMaxRegistrations" + infoReviewer.id;
+            const messages = useMessages();
+
+            clearTimeout(this[timeoutName]);
+            this[timeoutName] = setTimeout(async () => {
+                this.entity.enableM
+                await this.entity.invoke('setValuerMaxRegistrations',{relationId: infoReviewer.id, maxRegistrations: infoReviewer.metadata.maxRegistrations});
+                messages.success(this.text('modificações salvas'));
+            }, 3000)
+        },
+
+        parseRegistrationList(text) {
+            if (!text || !text.trim()) {
+                return null;
+            }
+            
+            // Remove espaços extras e divide por vírgula, ponto e vírgula, espaço ou quebra de linha
+            const separators = /[,;\s\n\r]+/;
+            const numbers = text
+                .split(separators)
+                .map(num => num.trim())
+                .filter(num => num.length > 0);
+            
+            return numbers.length > 0 ? numbers : null;
+        },
+
+        formatRegistrationList(registrationList) {
+            if (!registrationList || !Array.isArray(registrationList) || registrationList.length == 0) {
+                return '';
+            }
+            return registrationList.join(', ');
+        },
+
+        saveRegistrationList(infoReviewer) {
+            const timeoutName = "saveRegistrationList" + infoReviewer.id;
+            const messages = useMessages();
+
+            clearTimeout(this[timeoutName]);
+            this[timeoutName] = setTimeout(async () => {
+                const registrationNumbers = this.parseRegistrationList(infoReviewer.registrationListText);
+                await this.entity.invoke('setValuerRegistrationList', {
+                    relationId: infoReviewer.id, 
+                    registrationList: registrationNumbers
+                });
+                messages.success(this.text('modificações salvas'));
+            }, 3000);
+        },
+
+        saveRegistrationListExclusive(infoReviewer) {
+            const messages = useMessages();
+            this.entity.invoke('setValuerRegistrationListExclusive', {
+                relationId: infoReviewer.id, 
+                exclusive: infoReviewer.metadata.registrationListExclusive
+            }).then(() => {
+                messages.success(this.text('modificações salvas'));
+            });
         },
 
         toggleContent(reviewerId) {

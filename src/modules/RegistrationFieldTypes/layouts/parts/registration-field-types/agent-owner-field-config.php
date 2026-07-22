@@ -10,6 +10,9 @@ $fields_labels = [
     '@location' => " " . i::__('Campos de endereço'),
     '@terms:area' => " " . i::__('Área de atuação'),
     '@links' => " " . i::__(' Links'),
+    '@gallery' => " " . i::__(' Galeria de Fotos'),
+    '@videos' => " " . i::__(' Galeria de Vídeos'),
+    '@downloads' => " " . i::__(' Downloads/Anexos'),
 ];
 
 $taxonomies_fields = [];
@@ -72,6 +75,10 @@ foreach ($agent_fields as $field) {
     }
 }
 
+uasort($fields_options, function ($a, $b) {
+    return strcasecmp((string) trim($a), (string) trim($b));
+});
+
 $this->jsObject['registered_terms'] = array_keys($taxonomie_options);
 ?>
 <div ng-if="field.fieldType === 'agent-owner-field'" >
@@ -87,6 +94,41 @@ $this->jsObject['registered_terms'] = array_keys($taxonomie_options);
     <div ng-if="field.config.entityField == '@location'">
         <label><input type="checkbox" ng-model="field.config.setLatLon" ng-true-value="'true'" ng-false-value=""> <?php i::_e('Definir a latitude e longitude baseado no CEP?') ?></label><br>
         <label><input type="checkbox" ng-model="field.config.setPrivacy" ng-true-value="'true'" ng-false-value=""> <?php i::_e('Fornecer opção para mudar a privacidade da localização?') ?></label>
+        <?php
+        $location_required_brazil = $app->modules['RegistrationFieldTypes']->getLocationRequiredFieldsConfigBrazil();
+        $location_required_other = $app->modules['RegistrationFieldTypes']->getLocationRequiredFieldsConfigOther();
+        ?>
+        <div ng-if="field.required" class="registration-field-config--location-required" style="margin-top: 0.75em;">
+            <?php if (!empty($location_required_brazil)) : ?>
+            <div style="margin-bottom: 1em;">
+                <strong><?php i::_e('Subcampos obrigatórios do endereço no Brasil:') ?></strong>
+                <div style="margin-top: 0.25em;">
+                    <?php foreach ($location_required_brazil as $key => $label) : ?>
+                    <label style="display: inline-block; margin-right: 1em; white-space: nowrap;">
+                        <input type="checkbox" ng-model="field.config.requiredAddressFieldsBrazil.<?= $key ?>" ng-change="saveField()">
+                        <?= $label ?>
+                    </label>
+                    <?php endforeach; ?>
+                </div>
+            </div>
+            <?php endif; ?>
+
+            <?php if (!empty($location_required_other)) : ?>
+            <div>
+                <strong><?php i::_e('Subcampos obrigatórios do endereço em outros países:') ?></strong>
+                <div style="margin-top: 0.25em;">
+                    <?php foreach ($location_required_other as $key => $label) : ?>
+                    <label style="display: inline-block; margin-right: 1em; white-space: nowrap;">
+                        <input type="checkbox" ng-model="field.config.requiredAddressFieldsOther.<?= $key ?>" ng-change="saveField()">
+                        <?= $label ?>
+                    </label>
+                    <?php endforeach; ?>
+                </div>
+            </div>
+            <?php endif; ?>
+
+            <small class="registration-help" style="margin-top: 0.5em; display: block;"><?php i::_e('Marque os subcampos que devem ser obrigatórios para cada tipo de endereço.'); ?></small>
+        </div>
     </div>
     <div ng-if="data.registered_terms.includes(field.config.entityField)">
         <?php foreach($taxonomie_options as $field_name => $slug):?>
@@ -157,6 +199,63 @@ $this->jsObject['registered_terms'] = array_keys($taxonomie_options);
 
     <div ng-if="field.config.entityField == '@links'">
         <label><input type="checkbox" ng-model="field.config.title" ng-true-value="'true'" ng-false-value=""> <?php i::_e('Pedir de título') ?></label><br>
+    </div>
+
+    <!-- Configuração: Galeria de Fotos -->
+    <div ng-if="field.config.entityField == '@gallery'">
+        <p class="registration-help">
+            <?php i::_e('As fotos da galeria do perfil do agente responsável serão exibidas e editáveis no formulário de inscrição.') ?>
+        </p>
+        <label>
+            <input type="checkbox" ng-model="field.config.allowUpload" ng-true-value="'true'" ng-false-value="">
+            <?php i::_e('Permitir adicionar novas fotos?') ?>
+        </label><br>
+        <label>
+            <input type="checkbox" ng-model="field.config.allowDelete" ng-true-value="'true'" ng-false-value="">
+            <?php i::_e('Permitir remover fotos?') ?>
+        </label><br>
+        <label>
+            <?php i::_e('Número máximo de fotos') ?>
+            <input type="number" ng-model="field.config.maxFiles" placeholder="<?php i::esc_attr_e('Ilimitado') ?>">
+        </label>
+    </div>
+
+    <!-- Configuração: Galeria de Vídeos -->
+    <div ng-if="field.config.entityField == '@videos'">
+        <p class="registration-help">
+            <?php i::_e('Os vídeos (YouTube/Vimeo) do perfil do agente responsável serão exibidos e editáveis no formulário de inscrição.') ?>
+        </p>
+        <label>
+            <input type="checkbox" ng-model="field.config.allowAdd" ng-true-value="'true'" ng-false-value="">
+            <?php i::_e('Permitir adicionar novos vídeos?') ?>
+        </label><br>
+        <label>
+            <input type="checkbox" ng-model="field.config.allowDelete" ng-true-value="'true'" ng-false-value="">
+            <?php i::_e('Permitir remover vídeos?') ?>
+        </label><br>
+        <label>
+            <?php i::_e('Número máximo de vídeos') ?>
+            <input type="number" ng-model="field.config.maxVideos" placeholder="<?php i::esc_attr_e('Ilimitado') ?>">
+        </label>
+    </div>
+
+    <!-- Configuração: Downloads/Anexos -->
+    <div ng-if="field.config.entityField == '@downloads'">
+        <p class="registration-help">
+            <?php i::_e('Os arquivos de download do perfil do agente responsável serão exibidos e editáveis no formulário de inscrição.') ?>
+        </p>
+        <label>
+            <input type="checkbox" ng-model="field.config.allowUpload" ng-true-value="'true'" ng-false-value="">
+            <?php i::_e('Permitir adicionar novos arquivos?') ?>
+        </label><br>
+        <label>
+            <input type="checkbox" ng-model="field.config.allowDelete" ng-true-value="'true'" ng-false-value="">
+            <?php i::_e('Permitir remover arquivos?') ?>
+        </label><br>
+        <label>
+            <?php i::_e('Número máximo de arquivos') ?>
+            <input type="number" ng-model="field.config.maxFiles" placeholder="<?php i::esc_attr_e('Ilimitado') ?>">
+        </label>
     </div>
 
     

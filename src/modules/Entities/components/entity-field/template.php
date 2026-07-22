@@ -14,8 +14,12 @@ $this->import('
     entity-field-location-global
     entity-field-seals
     entity-file
+    entity-files-list
+    entity-gallery
+    entity-gallery-video
     mc-alert
     mc-currency-input
+    mc-icon
     mc-multiselect
     mc-tag-list
     select-municipio
@@ -66,15 +70,17 @@ $this->import('
 
 
             <template v-else-if="is('file')">
-                <entity-file :entity="entity" disableName :titleModal="titleModal" :groupName="groupName" classes="col-12" editable button-text-value="Anexar arquivo" :disabled="readonly || disabled" :readonly="readonly"></entity-file>
+                <entity-file :entity="fileEntity" disableName :titleModal="titleModal" :groupName="resolvedGroupName" classes="col-12" editable button-text-value="Anexar arquivo" :disabled="readonly || disabled" :readonly="readonly"></entity-file>
             </template>
 
 
             <template v-else-if="is('select')">
                 <template v-if="description.registrationFieldConfiguration?.config?.viewMode === 'radio'">
-                    <label class="input__label input__radioLabel" v-for="(optionLabel, optionValue) in description.options">
-                        <input :checked="isRadioChecked(value, optionValue)" type="radio" :value="optionValue" @input="change($event,true)" @blur="change($event)" :disabled="readonly || disabled"> {{description.options[optionValue]}}
-                    </label>
+                    <div class="field__group">
+                        <label class="input__label input__radioLabel" v-for="(optionLabel, optionValue) in description.options">
+                            <input :checked="isRadioChecked(value, optionValue)" type="radio" :value="optionValue" @input="change($event,true)" @blur="change($event)" :disabled="readonly || disabled"> {{description.options[optionValue]}}
+                        </label>
+                    </div>
                 </template>
 
                 <select v-else :value="value" :id="propId" :name="prop" @input="change($event)" @blur="change($event,true)" :disabled="readonly || disabled">
@@ -94,12 +100,27 @@ $this->import('
                 <entity-field-links :entity="entity" :prop="prop" :show-title="Boolean(description?.registrationFieldConfiguration?.config?.title)" @change="change($event, true)" :editable="!disabled"></entity-field-links>
             </template>
 
+            <!-- Galeria de Fotos (FileGroup) -->
+            <template v-else-if="is('gallery')">
+                <entity-gallery :entity="entity.owner || entity" :editable="!readonly && !disabled" class="registration-gallery"></entity-gallery>
+            </template>
+
+            <!-- Galeria de Vídeos (MetaList) -->
+            <template v-else-if="is('videos')">
+                <entity-gallery-video :entity="entity.owner || entity" :editable="!readonly && !disabled" class="registration-videos"></entity-gallery-video>
+            </template>
+
+            <!-- Downloads/Anexos (FileGroup) -->
+            <template v-else-if="is('downloads')">
+                <entity-files-list :entity="entity.owner || entity" group="downloads" :title="fieldDescription || description.label" :editable="!readonly && !disabled" class="registration-downloads"></entity-files-list>
+            </template>
+
             <template v-else-if="is('multiselect') || is('checklist')">
             <div class="field__group">
                     <template v-if="isMultiSelect()">
-                        <mc-multiselect :placeholder="placeholder || description?.placeholder" @selected="change($event)" :model="selectedOptions[prop]" :items="description.options" #default="{popover,setFilter}" :max-options="maxOptions" :preserve-order="preserveOrder" hide-filter hide-button></mc-multiselect>
+                        <mc-multiselect :placeholder="placeholder || description?.placeholder" @selected="change($event)" :model="selectedOptions[prop]" :items="description.options" #default="{popover,setFilter}" :max-options="maxOptions" :preserve-order="preserveOrder" :disabled="readonly || disabled" hide-filter hide-button></mc-multiselect>
 
-                        <mc-tag-list :tags="selectedOptions[prop]" :labels="description?.options" classes="opportunity__background" @remove="change($event)" editable></mc-tag-list>
+                        <mc-tag-list :tags="selectedOptions[prop]" :labels="description?.options" classes="opportunity__background" @remove="change($event)" :editable="!(readonly || disabled)"></mc-tag-list>
                     </template>
 
                     <template v-else>
@@ -150,7 +171,7 @@ $this->import('
             </template>
 
             <template v-else-if="is('location')">
-                <entity-field-location-global :entity="entity" :field-name="prop" :configs="description?.registrationFieldConfiguration"></entity-field-location-global>
+                <entity-field-location-global :entity="entity" :field-name="prop" :configs="registrationFieldConfiguration || description?.registrationFieldConfiguration"></entity-field-location-global>
                 <!-- <entity-field-location :entity="entity" :field-name="prop" :configs="description?.registrationFieldConfiguration?.config"></entity-field-location> -->
             </template>
 
@@ -160,6 +181,109 @@ $this->import('
 
             <template v-else-if="is('municipio')">
                 <select-municipio :entity="entity" :prop="prop" @change="change($event)"></select-municipio>
+            </template>
+
+            <template v-else-if="is('custom-table')">
+                <div class="custom-table-field">
+                    <div style="overflow-x: auto; margin-top: 15px;">
+                        <table class="custom-table" style="width: 100%; border-collapse: collapse; border: 1px solid #ddd;">
+                            <thead>
+                                <tr style="background-color: #f2f2f2;">
+                                    <th v-for="(column, colIndex) in description.registrationFieldConfiguration.config.columns" :key="colIndex" style="border: 1px solid #ddd; padding: 10px; text-align: left;">
+                                        {{column.name}}
+                                        <span v-if="column.required === 'true'" style="color: red;">*</span>
+                                    </th>
+                                    <th style="border: 1px solid #ddd; padding: 10px; text-align: center; width: 100px;">
+                                        <?= i::__('Ações') ?>
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr v-for="(row, rowIndex) in tableData" :key="rowIndex">
+                                    <td v-for="(column, colIndex) in description.registrationFieldConfiguration.config.columns" :key="colIndex" style="border: 1px solid #ddd; padding: 8px;">
+                                        <!-- Campo de texto -->
+                                        <input v-if="column.type === 'text'" 
+                                               type="text" 
+                                               v-model="row['col' + colIndex]"
+                                               @blur="updateTableData"
+                                               :required="column.required === 'true'"
+                                               :disabled="readonly || disabled"
+                                               style="width: 100%; padding: 5px; border: 1px solid #ccc; border-radius: 3px;">
+                                        
+                                        <!-- Campo de número -->
+                                        <input v-else-if="column.type === 'number'" 
+                                               type="number" 
+                                               v-model="row['col' + colIndex]"
+                                               @blur="updateTableData"
+                                               :required="column.required === 'true'"
+                                               :disabled="readonly || disabled"
+                                               style="width: 100%; padding: 5px; border: 1px solid #ccc; border-radius: 3px;">
+                                        
+                                        <!-- Campo de e-mail -->
+                                        <div v-else-if="column.type === 'email'" style="position: relative;">
+                                            <input type="email" 
+                                                   v-model="row['col' + colIndex]"
+                                                   @blur="updateTableData"
+                                                   :required="column.required === 'true'"
+                                                   :disabled="readonly || disabled"
+                                                   :class="getCellValidationClass(row, colIndex, column)"
+                                                   style="width: 100%; padding: 5px; border: 1px solid #ccc; border-radius: 3px;">
+
+                                        </div>
+                                        
+                                        <!-- Campo de CPF -->
+                                        <div v-else-if="column.type === 'cpf'" style="position: relative;">
+                                            <input type="text" 
+                                                   v-model="row['col' + colIndex]"
+                                                   @blur="updateTableData"
+                                                   v-maska data-maska="###.###.###-##"
+                                                   placeholder="___.___.___-__"
+                                                   :required="column.required === 'true'"
+                                                   :disabled="readonly || disabled"
+                                                   :class="getCellValidationClass(row, colIndex, column)"
+                                                   style="width: 100%; padding: 5px; border: 1px solid #ccc; border-radius: 3px;">
+
+                                        </div>
+                                        
+                                        <!-- Campo de data -->
+                                        <input v-else-if="column.type === 'date'" 
+                                               type="date" 
+                                               v-model="row['col' + colIndex]"
+                                               @blur="updateTableData"
+                                               :required="column.required === 'true'"
+                                               :disabled="readonly || disabled"
+                                               style="width: 100%; padding: 5px; border: 1px solid #ccc; border-radius: 3px;">
+                                        
+                                        <!-- Campo de seleção -->
+                                        <select v-else-if="column.type === 'select'" 
+                                                v-model="row['col' + colIndex]"
+                                                @blur="updateTableData"
+                                                :required="column.required === 'true'"
+                                                :disabled="readonly || disabled"
+                                                style="width: 100%; padding: 5px; border: 1px solid #ccc; border-radius: 3px;">
+                                            <option value=""><?= i::__('Selecione...') ?></option>
+                                            <option v-for="(option, optIndex) in (column.options || '').split('\n').filter(o => o.trim())" :key="optIndex" :value="option.trim()">
+                                                {{option.trim()}}
+                                            </option>
+                                        </select>
+                                    </td>
+                                    <td style="border: 1px solid #ddd; padding: 8px; text-align: center;">
+                                        <button v-if="!readonly && !disabled" type="button" @click="removeRow(rowIndex)" class="button button--sm button--icon button--text-danger">
+                                            <mc-icon name="trash"></mc-icon> <?= i::__('Remover') ?>
+                                        </button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div v-if="!readonly && !disabled" style="margin-top: 10px;">
+                        <button type="button" @click="addRow" 
+                                :disabled="description.registrationFieldConfiguration.config.maxRows > 0 && tableData.length >= description.registrationFieldConfiguration.config.maxRows"
+                                class="button button--sm button--icon button--primary">
+                            <mc-icon name="add"></mc-icon> <?= i::__('Adicionar linha') ?>
+                        </button>
+                    </div>
+                </div>
             </template>
 
             <div v-if="maxLength && (is('string') || is('text') || is('textarea'))" class="field__length">{{ value ? value?.length : '0' }}/{{maxLength}}</div>
@@ -175,4 +299,4 @@ $this->import('
     </small>
     <?php $this->applyTemplateHook('entity-field','end') ?>
 </div>
-<?php $this->applyTemplateHook('entity-field','after') ?>   
+<?php $this->applyTemplateHook('entity-field','after') ?>

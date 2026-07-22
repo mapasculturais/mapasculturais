@@ -14,7 +14,7 @@ $this->import('
 ?>
 <div class="col-12">
     <div class="grid-12 opportunity-phase-publish-date-config">
-        <h4 class="bold col-12">  <?= i::__("Publicação de Resultados") ?></h4>
+        <h3 class="bold col-12">  <?= i::__("Publicação de Resultados") ?></h3>
         <div v-if="phase.publishedRegistrations && !firstPhase?.isContinuousFlow" class="published">
             <div class="col-4">
                 <mc-confirm-button :message="text('despublicar')" @confirm="unpublishRegistration()">
@@ -27,7 +27,7 @@ $this->import('
             </div>
         </div>
 
-        <div v-if="(!phase.publishedRegistrations && !firstPhase?.isContinuousFlow)" class="grid-12 col-12 notPublished opportunity-phase-publish-date-config__content">
+        <div v-if="(!phase.publishedRegistrations && !firstPhase?.isContinuousFlow) || (firstPhase?.isContinuousFlow && firstPhase?.hasEndDate && phase.isLastPhase)" class="grid-12 col-12 notPublished opportunity-phase-publish-date-config__content">
             <div class="opportunity-phase-publish-date-config__left" :class="{ 'col-6': phase.appealPhase, 'col-4': !phase.appealPhase }">
 
                 <entity-field v-if="!hideDatepicker" :entity="phase" prop="publishTimestamp" :autosave="3000"  classes="col-4 opportunity-phase-publish-date-config__date"></entity-field>

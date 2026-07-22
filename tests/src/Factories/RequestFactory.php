@@ -6,6 +6,7 @@ use Exception;
 use Laminas\Diactoros\ServerRequest;
 use MapasCulturais\App;
 use MapasCulturais\Entity;
+use MapasCulturais\Request as MapasRequest;
 use Psr\Http\Message\ServerRequestInterface;
 
 class RequestFactory
@@ -25,7 +26,12 @@ class RequestFactory
         return $request;
     }
 
-    function GET(string $controller_id, string $action, array $url_params = [], array $query_params = [], array $headers = [], array $cookie_params = []): ServerRequestInterface {
+    function GET(string $controller_id, string $action, array $url_params = [], array $query_params = [], array $headers = [], array $cookie_params = [], bool $ajax = false): ServerRequestInterface {
+        
+        if($ajax){
+            $headers['X-Requested-With'] = 'XMLHttpRequest';
+        }
+        
         return $this->createServerRequest(
                         method: 'GET',
                         controller_id: $controller_id,
@@ -36,8 +42,13 @@ class RequestFactory
                         cookie_params: $cookie_params);
     }
 
-    function POST(string $controller_id, string $action, array $url_params = [], array $payload = [], array $query_params = [], array $headers = [], array $cookie_params = []): ServerRequestInterface
+    function POST(string $controller_id, string $action, array $url_params = [], array $payload = [], array $query_params = [], array $headers = [], array $cookie_params = [], bool $ajax = true): ServerRequestInterface
     {
+        
+        if($ajax){
+            $headers['X-Requested-With'] = 'XMLHttpRequest';
+        }
+
         return $this->createServerRequest(
                         method: 'POST',
                         controller_id: $controller_id,
@@ -49,8 +60,32 @@ class RequestFactory
                         cookie_params: $cookie_params);
     }
 
-    function PATCH(string $controller_id, string $action, array $url_params = [], array $payload = [], array $query_params = [], array $headers = [], array $cookie_params = []): ServerRequestInterface
+    /**
+     * POST AJAX com URI gerada por createUrl, encapsulado em {@see MapasRequest} (ex.: atribuir a App::i()->request antes de chamar ações do controller).
+     * Para ids na rota, prefira url_params posicionais (ex.: [$id]): `key:value` no path quebra o parse de URI do Laminas Diactoros.
+     */
+    function mapasPOST(
+        string $controller_id,
+        string $action,
+        array $url_params = [],
+        array $request_params = [],
+        array $parsed_body = [],
+    ): MapasRequest {
+        return new MapasRequest(
+            $this->POST($controller_id, $action, $url_params, $parsed_body),
+            $controller_id,
+            $action,
+            $request_params
+        );
+    }
+
+    function PATCH(string $controller_id, string $action, array $url_params = [], array $payload = [], array $query_params = [], array $headers = [], array $cookie_params = [], bool $ajax = true): ServerRequestInterface
     {
+        
+        if($ajax){
+            $headers['X-Requested-With'] = 'XMLHttpRequest';
+        }
+        
         return $this->createServerRequest(
                         method: 'PATCH',
                         controller_id: $controller_id,
@@ -62,8 +97,13 @@ class RequestFactory
                         cookie_params: $cookie_params);
     }
 
-    function DELETE(string $controller_id, string $action, array $url_params = [], array $payload = [], array $query_params = [], array $headers = [], array $cookie_params = []): ServerRequestInterface
+    function DELETE(string $controller_id, string $action, array $url_params = [], array $payload = [], array $query_params = [], array $headers = [], array $cookie_params = [], bool $ajax = true): ServerRequestInterface
     {
+        
+        if($ajax){
+            $headers['X-Requested-With'] = 'XMLHttpRequest';
+        }
+        
         return $this->createServerRequest(
                         method: 'DELETE',
                         controller_id: $controller_id,

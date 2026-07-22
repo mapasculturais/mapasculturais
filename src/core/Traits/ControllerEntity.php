@@ -11,14 +11,19 @@ trait ControllerEntity {
     } 
 
     /**
-     * The class name of the entity with the same name of the controller in the same parent namespace.
+     * Nome da classe da entidade com o mesmo nome do controlador no mesmo namespace pai.
      *
-     * @example for the controller \MapasCulturais\Controllers\User the value will be \MapasCulturais\Entities\User
-     * @example for the controller \MyPlugin\Controllers\User the value will be \MyPlugin\Entities\User
+     * @example para o controlador \MapasCulturais\Controllers\User o valor será \MapasCulturais\Entities\User
+     * @example para o controlador \MyPlugin\Controllers\User o valor será \MyPlugin\Entities\User
      *
-     * @var string the entity class name
+     * @var string Nome da classe da entidade
      */
     protected $entityClassName;
+    
+    /**
+     * Repositório da entidade
+     * @var Repository|\Doctrine\ORM\EntityRepository|null
+     */
     protected Repository|\Doctrine\ORM\EntityRepository|null $entityRepository = null;
 
     static $changeStatusMap = [
@@ -49,7 +54,7 @@ trait ControllerEntity {
     ];
 
     /**
-     * Returns the Doctrine Entity Repository to the entity with the same name of the controller in the same parent namespace.
+     * Retorna o Repositório de Entidade Doctrine para a entidade com o mesmo nome do controlador no mesmo namespace pai.
      *
      * @see \MapasCulturais\App::repo()
      *
@@ -62,7 +67,7 @@ trait ControllerEntity {
     }
 
     /**
-     * Alias to getRepository
+     * Apelido para getRepository
      *
      * @see \MapasCulturais\Controller::getRepository()
      *
@@ -73,11 +78,11 @@ trait ControllerEntity {
     }
 
     /**
-     * Creates and returns an empty new entity object of the entity class related with this controller.
+     * Cria e retorna um novo objeto de entidade vazio da classe de entidade relacionada com este controlador.
      *
      * @see \MapasCulturais\Controller::$entityClassName
      *
-     * @return \MapasCulturais\entityClassName An empty new entity object.
+     * @return \MapasCulturais\entityClassName Um novo objeto de entidade vazio.
      */
     public function getNewEntity(){
         $class = $this->entityClassName;
@@ -85,7 +90,7 @@ trait ControllerEntity {
     }
 
     /**
-     * Returns the etity with the requested id.
+     * Retorna a entidade com o ID solicitado.
      *
      * @example for the url http://mapasculturais/agent/33  or http://mapasculturais/agent/id:33 returns the agent with the id 33
      *
@@ -107,7 +112,7 @@ trait ControllerEntity {
     }
 
     /**
-     * Returns the fields of the entity with the same name of the controller in the same parent namespace.
+     * Retorna os campos da entidade com o mesmo nome do controlador no mesmo namespace pai.
      *
      * @see \MapasCulturais\App::fields()
      *
@@ -118,7 +123,7 @@ trait ControllerEntity {
     }
 
     /**
-     * Alias to getFields()
+     * Apelido para getFields()
      *
      * @see \MapasCulturais\Entities\EntityController::getFields()
      *

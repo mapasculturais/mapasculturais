@@ -12,15 +12,19 @@ app.component('mc-toggle', {
             type: Boolean, 
             default: false,
         },
-    },
 
-    data() {
-        return {
-        }
+        disabled: {
+            type: Boolean,
+            default: false,
+        },
     },
 
     methods: {
         toggleSwitch(event) {
+            if (this.disabled) {
+                event.target.checked = this.modelValue;
+                return;
+            }
             this.$emit('update:modelValue', event.target.checked);
         }
     },

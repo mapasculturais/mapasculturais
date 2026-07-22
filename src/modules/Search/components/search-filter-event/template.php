@@ -10,6 +10,7 @@ $this->import('
     mc-icon
     mc-multiselect 
     mc-tag-list
+    mc-states-and-cities
     search-filter 
 ');
 ?>
@@ -41,6 +42,29 @@ $this->import('
         <div class="field">
             <label> <?php i::_e('Status do evento') ?></label>
             <label class="verified"><input v-model="pseudoQuery['event:@verified']" type="checkbox"> <?php i::_e('Eventos oficiais') ?> </label>
+        </div>
+        <div v-if="sealsFilterEnabled" class="field">
+            <label> <?php i::_e('Selos') ?></label>
+            <mc-multiselect
+                :model="pseudoQuery['event:@seals']"
+                :items="seals"
+                placeholder="<?php i::_e('Selecione os selos') ?>"
+                hide-filter
+                hide-button>
+            </mc-multiselect>
+            <mc-tag-list
+                editable
+                :tags="pseudoQuery['event:@seals']"
+                :labels="sealsLabels"
+                classes="event__background event__color">
+            </mc-tag-list>
+        </div>
+        <div v-if="statesAndCitiesFilterEnabled && hasStatesAndCities" class="field">
+            <label><?php i::_e('Estado e Cidade') ?></label>
+            <mc-states-and-cities
+                v-model:model-states="pseudoQuery['space:En_Estado']"
+                v-model:model-cities="pseudoQuery['space:En_Municipio']">
+            </mc-states-and-cities>
         </div>
         <div class="field">
             <label> <?php i::_e('Classificação Etária') ?></label>

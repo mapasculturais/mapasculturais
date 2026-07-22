@@ -7,21 +7,26 @@
 use MapasCulturais\i;
 
 $this->import('
+    entity-field-seals
     mc-confirm-button
     mc-popover 
 ');
 ?>
 <div :class="classes" v-if="getFiles() || editable" class="files-list">
-    <label v-if="!hideTitle" class="files-list__title"> {{title}} </label>
+    <label v-if="!hideTitle && !isDocsAnexoList" class="files-list__title"> {{title}} </label>
     <slot name="description"></slot>
 
     <ul v-if="getFiles()" class="files-list__list">
         <li class="files-list__list--item" v-for="file in getFiles()">
-            <a class="files-list__list--item-link" :download="file.name" :href="file.url">
-                <mc-icon name="download" :class="entity.__objectType+'__color'"></mc-icon>
-                <span v-if="file.description">{{file.description}}</span>
-                <span v-else> <? i::_e('Sem descrição') ?> </span>
-            </a>
+            <div class="files-list__list--item-main">
+                <a class="files-list__list--item-link" :download="file.name" :href="file.url">
+                    <mc-icon name="download" :class="entity.__objectType+'__color'"></mc-icon>
+                    <span v-if="isDocsAnexoList">{{ title }}</span>
+                    <span v-else-if="file.description">{{ file.description }}</span>
+                    <span v-else> <?php i::_e('Sem descrição') ?> </span>
+                </a>
+                <entity-field-seals v-if="sealProp" :entity="entity" :prop="sealProp"></entity-field-seals>
+            </div>
 
             <div v-if="editable" class="edit">
                 <mc-popover @open="file.newDescription = file.description" openside="down-right">

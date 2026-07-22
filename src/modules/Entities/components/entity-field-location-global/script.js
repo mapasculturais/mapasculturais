@@ -69,6 +69,119 @@ app.component('entity-field-location-global', {
         hasPublicLocation() {
             return this.configs?.fieldType !== 'space-field';
         },
+
+        // Detecta se o país atual é Brasil
+        isBrazil() {
+            const country = (this.country || '').toString().trim();
+            const upper = country.toUpperCase();
+            const lower = country.toLowerCase();
+            return upper === 'BR' || upper === 'BRA' || ['brasil', 'brazil'].includes(lower);
+        },
+
+        // Retorna objeto com os subcampos obrigatórios conforme país (Brazil ou Other)
+        requiredAddressFields() {
+            const config = this.configs?.config || {};
+            const result = {};
+
+            const isBrazil = this.isBrazil;
+            // Brasil: level2=Estado, level4=Município, level6=Bairro (padrão BrasilLocalization)
+            const keysBrazil = ['address_level0', 'address_postalCode', 'address_line1', 'address_number', 'address_line2', 'address_level2', 'address_level4', 'address_level6'];
+            const keysOther = ['address_level0', 'address_level1', 'address_level2', 'address_level3', 'address_level4', 'address_level5', 'address_level6', 'address_postalCode', 'address_line1', 'address_line2'];
+
+            const normalize = (raw, keys) => {
+                const out = {};
+                if (raw && typeof raw === 'object') {
+                    keys.forEach(k => {
+                        const v = raw[k];
+                        out[k] = v === true || v === 1 || v === '1' || v === 'true';
+                    });
+                } else {
+                    keys.forEach(k => { out[k] = false; });
+                }
+                return out;
+            };
+
+            // Suporte ao novo formato (Brazil/Other) e retrocompatibilidade (requiredAddressFields)
+            const hasBrazil = config.requiredAddressFieldsBrazil !== undefined;
+            const hasOther = config.requiredAddressFieldsOther !== undefined;
+            const hasLegacy = config.requiredAddressFields !== undefined;
+
+            if (hasBrazil || hasOther) {
+                if (isBrazil) {
+                    return normalize(config.requiredAddressFieldsBrazil, keysBrazil);
+                } else {
+                    return normalize(config.requiredAddressFieldsOther, keysOther);
+                }
+            }
+
+            // Retrocompatibilidade: formato legado único
+            if (hasLegacy) {
+                return normalize(config.requiredAddressFields, keysBrazil);
+            }
+
+            // Sem config
+            const keys = isBrazil ? keysBrazil : keysOther;
+            keys.forEach(k => { result[k] = false; });
+            return result;
+        },
+
+        // Erros de validação no registro para este campo (field_X)
+        registrationFieldErrors() {
+            const errors = this.entity.__validationErrors || {};
+            return errors[this.fieldName] || [];
+        },
+
+        // Há erros de backend para este campo?
+        hasLocationErrors() {
+            return this.registrationFieldErrors.length > 0;
+        },
+
+        // Quais subcampos obrigatórios estão faltando (recalculado no front)
+        missingLocationKeys() {
+            if (!this.hasLocationErrors) {
+                return [];
+            }
+
+            const required = this.requiredAddressFields;
+            const value = this.model || {};
+            const clean = v => (v ?? '').toString().trim();
+            const isBrazil = this.isBrazil;
+
+            const getVal = key => {
+                switch (key) {
+                    case 'address_level0':
+                        return clean(value.address_level0);
+                    case 'address_level1':
+                        return isBrazil ? clean(value.address_level2) : clean(value.address_level1);
+                    case 'address_level2':
+                        // Brasil: Estado (UF) em address_level2; outros: nível 2
+                        return clean(value.address_level2);
+                    case 'address_level3':
+                        return isBrazil ? clean(value.address_level6) : clean(value.address_level3);
+                    case 'address_level4':
+                        // Brasil: Município em address_level4
+                        return clean(value.address_level4);
+                    case 'address_level5': return clean(value.address_level5);
+                    case 'address_level6':
+                        // Brasil: Bairro em address_level6
+                        return clean(value.address_level6);
+                    case 'address_postalCode': return clean(value.address_postalCode);
+                    case 'address_line1':      return clean(value.address_line1);
+                    case 'address_number':
+                        return isBrazil ? clean(value.address_number) : clean(value.address_line1);
+                    case 'address_line2':      return clean(value.address_line2);
+                    default:                   return '';
+                }
+            };
+
+            const missing = [];
+            Object.keys(required).forEach(key => {
+                if (required[key] && getVal(key) === '') {
+                    missing.push(key);
+                }
+            });
+            return missing;
+        },
     },
 
     watch: {

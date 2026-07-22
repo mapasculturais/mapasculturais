@@ -36,10 +36,11 @@ use MapasCulturais\Traits;
  * @ORM\HasLifecycleCallbacks
  */
 class User extends \MapasCulturais\Entity implements \MapasCulturais\UserInterface{
-    use Traits\EntityMetadata,
-        Traits\EntitySoftDelete,
+    use Traits\EntityFiles,
+        Traits\EntityMetadata,
         Traits\EntityPermissionCache,
-        Traits\EntityFiles;
+        Traits\EntityRevision,
+        Traits\EntitySoftDelete;
 
     const STATUS_ENABLED = 1;
 
@@ -101,12 +102,12 @@ class User extends \MapasCulturais\Entity implements \MapasCulturais\UserInterfa
     /**
      *
      * @var \MapasCulturais\Entities\Role[] User Roles
-     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\Role", mappedBy="user", cascade={"remove"}, orphanRemoval=true, fetch="LAZY")
+     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\Role", mappedBy="user", cascade={"remove"}, fetch="LAZY")
      */
     protected $roles;
 
     /**
-     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\Agent", mappedBy="user", cascade={"remove"}, orphanRemoval=true, fetch="LAZY")
+     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\Agent", mappedBy="user", cascade={"remove"}, fetch="LAZY")
      * @ORM\OrderBy({"createTimestamp" = "ASC"})
      */
     protected $agents;
@@ -124,23 +125,31 @@ class User extends \MapasCulturais\Entity implements \MapasCulturais\UserInterfa
     /**
      *
      * @var \MapasCulturais\Entities\Procuration[] 
-     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\Procuration", mappedBy="user", cascade={"remove"}, orphanRemoval=true, fetch="LAZY")
+     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\Procuration", mappedBy="user", cascade={"remove"}, fetch="LAZY")
      */
     protected $_userProcurations;
 
     /**
      *
      * @var \MapasCulturais\Entities\Procuration[] 
-     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\Procuration", mappedBy="attorney", cascade={"remove"}, orphanRemoval=true, fetch="LAZY")
+     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\Procuration", mappedBy="attorney", cascade={"remove"}, fetch="LAZY")
      */
     protected $_attorneyProcurations;
 
     /**
-    * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\UserMeta", mappedBy="owner", cascade={"remove","persist"}, orphanRemoval=true, fetch="EAGER")
+    * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\UserMeta", mappedBy="owner", cascade={"remove","persist"}, fetch="EAGER")
     */
     protected $__metadata;
 
     protected $_isDeleting = false;
+
+    static function getPublicApiFields(): array 
+    {
+        $public_fields = ['id','profile','currentUserPermissions','status'];
+
+        return $public_fields;
+    }
+
 
     static function getValidations() {
         $app = App::i();
@@ -163,6 +172,15 @@ class User extends \MapasCulturais\Entity implements \MapasCulturais\UserInterfa
 
         $this->agents = new \Doctrine\Common\Collections\ArrayCollection();
         $this->lastLoginTimestamp = new \DateTime;
+    }
+
+    public function getRevisionData()
+    {
+        $roles = [];
+        foreach($this->roles as $role) {
+            $roles[] = $role->name;
+        }
+        return ['roles' => $roles];
     }
 
     public static function getPropertiesMetadata($include_column_name = false){
@@ -236,6 +254,9 @@ class User extends \MapasCulturais\Entity implements \MapasCulturais\UserInterfa
             $role->save(true);
 
             $this->roles[] = $role;
+
+            $this->_newModifiedRevision(i::__("Role adcionado: ") . $role_name);
+
             return true;
         }
 
@@ -264,6 +285,7 @@ class User extends \MapasCulturais\Entity implements \MapasCulturais\UserInterfa
         foreach($this->roles as $role){
             if($role->name == $role_name && $role->subsiteId == $subsite_id){
                 $role->delete(true);
+                $this->_newModifiedRevision(i::__("Role removido: ") . $role_name);
                 return true;
             }
         }
@@ -701,7 +723,16 @@ class User extends \MapasCulturais\Entity implements \MapasCulturais\UserInterfa
         $opportunities = $app->repo('Opportunity')->findBy(['id' => $opportunity_ids]);
 
         usort($opportunities, function(Opportunity $opp1, Opportunity $opp2) {
-            return $opp2->evaluationMethodConfiguration->evaluationFrom <=> $opp1->evaluationMethodConfiguration->evaluationFrom;
+            $from1 = $opp1->evaluationMethodConfiguration->evaluationFrom;
+            $from2 = $opp2->evaluationMethodConfiguration->evaluationFrom;
+            $ts1 = $from1 instanceof \DateTimeInterface ? $from1->getTimestamp() : 0;
+            $ts2 = $from2 instanceof \DateTimeInterface ? $from2->getTimestamp() : 0;
+
+            if ($ts2 !== $ts1) {
+                return $ts2 <=> $ts1;
+            }
+
+            return $opp2->id <=> $opp1->id;
         });
 
         return $opportunities;

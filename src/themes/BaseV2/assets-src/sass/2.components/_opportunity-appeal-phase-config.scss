@@ -179,7 +179,7 @@
         display: flex;
         gap: size(8);
         flex-direction: row;
-        width: 50%;
+        width: 100%;
 
         @include mobile {
             width: 100%;

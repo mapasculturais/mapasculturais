@@ -32,6 +32,19 @@ app.component('qualification-evaluation-config', {
         fieldsDict() {
             return $MAPAS.config.qualificationAssessmentSection.fieldsDict;
         },
+        hasEvaluationsStarted() {
+            return $MAPAS.config.qualificationAssessmentSection.hasEvaluationsStarted;
+        },
+        isAdmin() {
+            return $MAPAS.config.qualificationAssessmentSection.isAdmin;
+        },
+        canDeleteCriteriaAndSections() {
+            return $MAPAS.config.qualificationAssessmentSection.canDeleteCriteriaAndSections;
+        },
+
+        opportunity() {
+            return this.entity?.opportunity || this.entity;
+        },
     },
 
     methods: {
@@ -40,28 +53,26 @@ app.component('qualification-evaluation-config', {
         },
 
         addSection() {
-            if (!this.validateErrors(false,true)) {
-                let sectionId = 's-' + this.generateUniqueNumber();
-        
-                if (!this.entity.sections) {
-                    this.entity.sections = [];
+            let sectionId = 's-' + this.generateUniqueNumber();
+    
+            if (!this.entity.sections) {
+                this.entity.sections = [];
+            }
+    
+            this.entity.sections.push({
+                id: sectionId,
+                name: '',
+            });
+            
+            this.editingSections[sectionId] = true;
+          
+            this.$nextTick(() => {
+                const sectionInputs = this.$refs['sectionNameInput']; 
+                const lastInput = sectionInputs[sectionInputs.length - 1]; 
+                if (lastInput) {
+                    lastInput.focus();
                 }
-        
-                this.entity.sections.push({
-                    id: sectionId,
-                    name: '',
-                });
-                
-                this.editingSections[sectionId] = true;
-              
-                this.$nextTick(() => {
-                    const sectionInputs = this.$refs['sectionNameInput']; 
-                    const lastInput = sectionInputs[sectionInputs.length - 1]; 
-                    if (lastInput) {
-                        lastInput.focus();
-                    }
-                });
-            } 
+            });
         },
 
         addCriteria(sid) {
@@ -98,6 +109,10 @@ app.component('qualification-evaluation-config', {
         },
 
         delSection(sectionId) {
+            if (!this.canDeleteCriteriaAndSections) {
+                return;
+            }
+
             if(this.entity.criteria) {
                 const criterias = this.entity.criteria.filter(criteria => criteria.sid !== sectionId);
                 this.entity.criteria = criterias;
@@ -108,6 +123,10 @@ app.component('qualification-evaluation-config', {
         },
 
         delCriteria(criteriaId) {
+            if (!this.canDeleteCriteriaAndSections) {
+                return;
+            }
+
             this.entity.criteria = this.entity.criteria.filter(criteria => criteria.id !== criteriaId);
             this.save();
         },
@@ -119,10 +138,48 @@ app.component('qualification-evaluation-config', {
         save(time = 100) {
             clearTimeout(this.autoSaveTimeOut)
             this.autoSaveTimeOut = setTimeout(() => {
-                if(!this.validateErrors()) {
+                if(this.canAutosave()) {
                     this.entity.save()
                 }
             }, time);
+        },
+
+        canAutosave() {
+            const sections = Array.isArray(this.entity.sections) ? this.entity.sections : [];
+            const criteria = Array.isArray(this.entity.criteria) ? this.entity.criteria : [];
+
+            if (!sections.length && !criteria.length) {
+                return true;
+            }
+
+            const validSectionIds = new Set();
+            for (const section of sections) {
+                if (!section?.id || !`${section.name ?? ''}`.trim()) {
+                    return false;
+                }
+                validSectionIds.add(section.id);
+            }
+
+            const sectionsWithCriteria = new Set();
+            for (const criterion of criteria) {
+                if (!criterion?.sid || !validSectionIds.has(criterion.sid)) {
+                    return false;
+                }
+
+                if (!`${criterion.name ?? ''}`.trim()) {
+                    return false;
+                }
+
+                const options = Array.isArray(criterion.options) ? criterion.options : [];
+                const hasOptions = options.some((option) => `${option}`.trim());
+                if (!hasOptions) {
+                    return false;
+                }
+
+                sectionsWithCriteria.add(criterion.sid);
+            }
+
+            return sections.every((section) => sectionsWithCriteria.has(section.id));
         },
 
         validateErrors(addCriteria = false, addSection = false) {
@@ -148,6 +205,7 @@ app.component('qualification-evaluation-config', {
                 }
 
                 if (!addCriteria && criteria && !criteria.some(criterion => criterion.sid === section.id)) {
+                    this.messages.error(`${this.text('theSection')} ${section.name || this.text('section')} ${this.text('must_have_at_least_one_criterion')}`);
                     hasError = true;
                 }
             })
@@ -166,6 +224,17 @@ app.component('qualification-evaluation-config', {
                             hasError = true;
                         }
                     })
+
+                    let hasOptions = Array.isArray(criterion.options) && criterion.options.some((option) => `${option}`.trim());
+                    if (!hasOptions) {
+                        let message = `${this.text('theField')} ${this.text('fieldCriterionOptions')} ${this.text('isRequired')} `;
+
+                        if(addCriteria) {
+                            message = message + this.text('lastCriterion');
+                        }
+                        this.messages.error(message);
+                        hasError = true;
+                    }
                 })
             }
 
@@ -173,10 +242,14 @@ app.component('qualification-evaluation-config', {
         },
 
         updateOptions(criteria) {
+            if (!this.options || !this.options.trim()) {
+                return;
+            }
+
             if (!criteria.options) {
                 criteria.options = [];
             }
-            criteria.options.push(this.options);
+            criteria.options.push(this.options.trim());
             this.clear();
             this.save();
         },
@@ -253,13 +326,19 @@ app.component('qualification-evaluation-config', {
                     if (section.categories) section.categories = [];
                     if (section.ranges) section.ranges = [];
                     if (section.proponentTypes) section.proponentTypes = [];
-        
+                    if (section.distribution) section.distribution = '';
+                    if (section.sentTimestamp) section.sentTimestamp = { from: '', to: '' };
+                    if (section.fields) section.fields = {};
+
                     this.entity.criteria.forEach(criteria => {
-                        if (criteria.sid === section.id) { 
+                        if (criteria.sid === section.id) {
                             criteria.showFilters = false;
                             if (criteria.categories) criteria.categories = [];
                             if (criteria.ranges) criteria.ranges = [];
                             if (criteria.proponentTypes) criteria.proponentTypes = [];
+                            if (criteria.distribution) criteria.distribution = '';
+                            if (criteria.sentTimestamp) criteria.sentTimestamp = { from: '', to: '' };
+                            if (criteria.fields) criteria.fields = {};
                         }
                     });
                 }
@@ -281,14 +360,81 @@ app.component('qualification-evaluation-config', {
                     if (criteria.categories) criteria.categories = [];
                     if (criteria.ranges) criteria.ranges = [];
                     if (criteria.proponentTypes) criteria.proponentTypes = [];
+                    if (criteria.distribution) criteria.distribution = '';
+                    if (criteria.sentTimestamp) criteria.sentTimestamp = { from: '', to: '' };
+                    if (criteria.fields) criteria.fields = {};
                 }
             }
 
             this.save();
         },
 
-        save(){
-            this.entity.save();
+        sectionFilterModel(section) {
+            if (!section) {
+                return { categories: [], proponentTypes: [], ranges: [], distribution: '', sentTimestamp: { from: '', to: '' }, fields: {} };
+            }
+            
+            return {
+                categories: Array.isArray(section.categories) ? section.categories : [],
+                proponentTypes: Array.isArray(section.proponentTypes) ? section.proponentTypes : [],
+                ranges: Array.isArray(section.ranges) ? section.ranges : [],
+                distribution: typeof section.distribution == 'string' ? section.distribution : '',
+                sentTimestamp: section.sentTimestamp && typeof section.sentTimestamp == 'object'
+                    ? { from: section.sentTimestamp.from ?? '', to: section.sentTimestamp.to ?? '' }
+                    : { from: '', to: '' },
+                fields: section.fields && typeof section.fields == 'object' ? section.fields : {},
+            };
+        },
+
+        onSectionFilterChange(section, value) {
+            if (!section || !value) {
+                return;
+            }
+
+            section.categories = Array.isArray(value.categories) ? [...value.categories] : [];
+            section.proponentTypes = Array.isArray(value.proponentTypes) ? [...value.proponentTypes] : [];
+            section.ranges = Array.isArray(value.ranges) ? [...value.ranges] : [];
+            section.distribution = typeof value.distribution == 'string' ? value.distribution : '';
+            section.sentTimestamp = value.sentTimestamp && typeof value.sentTimestamp == 'object'
+                ? { from: value.sentTimestamp.from ?? '', to: value.sentTimestamp.to ?? '' }
+                : { from: '', to: '' };
+            section.fields = value.fields && typeof value.fields == 'object' ? { ...value.fields } : {};
+            
+            this.save();
+        },
+
+        criteriaFilterModel(criteria) {
+            if (!criteria) {
+                return { categories: [], proponentTypes: [], ranges: [], distribution: '', sentTimestamp: { from: '', to: '' }, fields: {} };
+            }
+
+            return {
+                categories: Array.isArray(criteria.categories) ? criteria.categories : [],
+                proponentTypes: Array.isArray(criteria.proponentTypes) ? criteria.proponentTypes : [],
+                ranges: Array.isArray(criteria.ranges) ? criteria.ranges : [],
+                distribution: typeof criteria.distribution == 'string' ? criteria.distribution : '',
+                sentTimestamp: criteria.sentTimestamp && typeof criteria.sentTimestamp == 'object'
+                    ? { from: criteria.sentTimestamp.from ?? '', to: criteria.sentTimestamp.to ?? '' }
+                    : { from: '', to: '' },
+                fields: criteria.fields && typeof criteria.fields == 'object' ? criteria.fields : {},
+            };
+        },
+
+        onCriteriaFilterChange(criteria, value) {
+            if (!criteria || !value) {
+                return;
+            }
+
+            criteria.categories = Array.isArray(value.categories) ? [...value.categories] : [];
+            criteria.proponentTypes = Array.isArray(value.proponentTypes) ? [...value.proponentTypes] : [];
+            criteria.ranges = Array.isArray(value.ranges) ? [...value.ranges] : [];
+            criteria.distribution = typeof value.distribution == 'string' ? value.distribution : '';
+            criteria.sentTimestamp = value.sentTimestamp && typeof value.sentTimestamp == 'object'
+                ? { from: value.sentTimestamp.from ?? '', to: value.sentTimestamp.to ?? '' }
+                : { from: '', to: '' };
+            criteria.fields = value.fields && typeof value.fields == 'object' ? { ...value.fields } : {};
+
+            this.save();
         },
 
     },

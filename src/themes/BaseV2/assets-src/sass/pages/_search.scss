@@ -585,14 +585,6 @@
             padding-bottom: size(40);
             margin-bottom: 0;
             min-height: size(500);
-
-            @media (max-width: size(800)) {
-                margin-top: size(123);
-            }
-
-            @media (max-width: size(500)) {
-                margin-top: size(130);
-            }
         }
 
         .search__tabs--list {

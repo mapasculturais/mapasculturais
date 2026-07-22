@@ -4,6 +4,7 @@ namespace MapasCulturais\Traits;
 use Doctrine\ORM\Exception\NotSupported;
 use MapasCulturais\App,
     MapasCulturais\Entities\Agent;
+use MapasCulturais\Entities\AgentRelation;
 use MapasCulturais\Entities\User;
 use MapasCulturais\Exceptions\PermissionDenied;
 use RuntimeException;
@@ -230,7 +231,7 @@ trait EntityAgentRelation {
         return in_array($user->id, $ids);
     }
 
-    function createAgentRelation(\MapasCulturais\Entities\Agent $agent, $group, $has_control = false, $save = true, $flush = true){
+    function createAgentRelation(\MapasCulturais\Entities\Agent $agent, $group, $has_control = false, $save = true, $flush = true): AgentRelation {
         $relation_class = $this->getAgentRelationEntityClassName();
         $relation = new $relation_class;
         $relation->agent = $agent;

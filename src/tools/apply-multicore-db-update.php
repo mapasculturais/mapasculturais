@@ -22,8 +22,10 @@ class DB_UPDATE {
     static $exceptions = [];
     
     static function enqueue($entity_class, $where, $cb){
-        $entity_class = strpos($entity_class, 'MapasCulturais\Entities\\') === 0 ? $entity_class : 'MapasCulturais\Entities\\' . $entity_class;
-
+        if(!str_starts_with($entity_class, '\\') && !str_starts_with($entity_class, 'MapasCulturais\Entities\\')) {
+                 $entity_class = 'MapasCulturais\Entities\\' . $entity_class;
+        }
+        
         $app = App::i();
         
         $table = $app->em->getClassMetadata($entity_class)->getTableName();
@@ -144,7 +146,15 @@ class DB_UPDATE {
                         $app->disableAccessControl();
 
                         try{
+                            // echo "\n #" . PROCESS_NUM . ' - ' . self::$current_update;
+
+                            if(\env('HIDE_MC_LOGS')) {
+                                ob_start();
+                            }
                             $__callback($entity);
+                            if(\env('HIDE_MC_LOGS')) {
+                                $output = ob_get_clean();
+                            }
                         } catch (\Error $e){
                             echo "$e";
                             self::$exceptions[] = [

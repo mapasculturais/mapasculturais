@@ -5,6 +5,7 @@ namespace MapasCulturais\Controllers;
 use MapasCulturais\App;
 use MapasCulturais\Controller;
 use MapasCulturais\Entities\EvaluationMethodConfiguration as EvaluationMethodConfigurationEntity;
+use MapasCulturais\Entities\EvaluationMethodConfigurationAgentRelation;
 use MapasCulturais\Traits;
 use Opportunities\Jobs\RedistributeCommitteeRegistrations;
 
@@ -41,7 +42,7 @@ class EvaluationMethodConfiguration extends Controller {
         $this->_POST_index();
     }
 
-    protected function _getValuerAgentRelation() {
+    protected function _getValuerAgentRelation(): EvaluationMethodConfigurationAgentRelation {
         $this->requireAuthentication();
 
         $app = App::i();
@@ -191,7 +192,7 @@ class EvaluationMethodConfiguration extends Controller {
 
     function POST_registributeEvaluations() {
         $app = App::i();
-
+        
         $this->requireAuthentication();
 
         $emc = $this->requestedEntity;
@@ -203,6 +204,157 @@ class EvaluationMethodConfiguration extends Controller {
 
         $app->enqueueOrReplaceJob(RedistributeCommitteeRegistrations::SLUG, ['evaluationMethodConfiguration' => $emc], 'now');
         
+        $this->json(true);
+    }
+
+    function POST_setValuerMaxRegistrations()
+    {
+        $relation = $this->_getValuerAgentRelation();
+
+        $max_registrations = $this->data['maxRegistrations'] ?? null;
+
+        $relation->maxRegistrations = $max_registrations;
+
+        $relation->save(true);
+        $this->json(true);
+    }
+
+    function POST_setValuerCategories()
+    {
+        $relation = $this->_getValuerAgentRelation();
+
+        $categories = $this->data['categories'] ?? null;
+
+        $relation->setCategories($categories);
+
+        $relation->save(true);
+        $this->json(true);
+    }
+
+    /**
+     * Substitui um avaliador por outro
+     * 
+     * @return void
+     */
+    function POST_replaceValuer(): void
+    {
+        $app = App::i();    
+
+        $this->requireAuthentication();
+
+        $emc = $this->requestedEntity;
+        
+        $emc->checkPermission('replaceEvaluator');
+
+        if($relation = $app->repo('EvaluationMethodConfigurationAgentRelation')->find($this->data['relation'])){
+            $newValuer = $app->repo('Agent')->find($this->data['newValuerAgentId']);
+            $new_valuer = $relation->replaceEvaluator($newValuer->user);
+            $this->json($new_valuer);
+        } else {
+            $this->json(false);
+        }
+    }
+
+    function POST_setValuerRegistrationList()
+    {
+        $relation = $this->_getValuerAgentRelation();
+
+        $registration_list = $this->data['registrationList'] ?? null;
+
+        $relation->setRegistrationList($registration_list);
+
+        $relation->save(true);
+        $this->json(true);
+    }
+
+    function POST_setValuerRegistrationListExclusive()
+    {
+        $relation = $this->_getValuerAgentRelation();
+
+        $exclusive = $this->data['exclusive'] ?? false;
+
+        $relation->setRegistrationListExclusive($exclusive);
+
+        $relation->save(true);
+        $this->json(true);
+    }
+
+    function POST_setValuerProponentTypes()
+    {
+        $relation = $this->_getValuerAgentRelation();
+
+        $proponent_types = $this->data['proponentTypes'] ?? null;
+
+        $relation->setProponentTypes($proponent_types);
+
+        $relation->save(true);
+        $this->json(true);
+    }
+
+    function POST_setValuerRanges()
+    {
+        $relation = $this->_getValuerAgentRelation();
+
+        $ranges = $this->data['ranges'] ?? null;
+
+        $relation->setRanges($ranges);
+
+        $relation->save(true);
+        $this->json(true);
+    }
+
+    function POST_setValuerDistribution()
+    {
+        $relation = $this->_getValuerAgentRelation();
+
+        $distribution = $this->data['distribution'] ?? null;
+
+        $relation->setDistribution($distribution);
+
+        $relation->save(true);
+        $this->json(true);
+    }
+
+    function POST_setValuerSelectionFields()
+    {
+        $relation = $this->_getValuerAgentRelation();
+
+        $selection_fields = $this->data['selectionFields'] ?? null;
+
+        $relation->setSelectionFields($selection_fields);
+
+        $relation->save(true);
+        $this->json(true);
+    }
+
+    /**
+     * Endpoint genérico para salvar todos os filtros de um avaliador de uma vez
+     */
+    function POST_setValuerFilters()
+    {
+        $relation = $this->_getValuerAgentRelation();
+
+        if (array_key_exists('categories', $this->data)) {
+            $relation->setCategories($this->data['categories']);
+        }
+
+        if (array_key_exists('proponentTypes', $this->data)) {
+            $relation->setProponentTypes($this->data['proponentTypes']);
+        }
+
+        if (array_key_exists('ranges', $this->data)) {
+            $relation->setRanges($this->data['ranges']);
+        }
+
+        if (array_key_exists('distribution', $this->data)) {
+            $relation->setDistribution($this->data['distribution']);
+        }
+
+        if (array_key_exists('selectionFields', $this->data)) {
+            $relation->setSelectionFields($this->data['selectionFields']);
+        }
+
+        $relation->save(true);
         $this->json(true);
     }
 }

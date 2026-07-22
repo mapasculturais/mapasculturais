@@ -45,6 +45,13 @@ app.component('entity-data', {
         propertyType() {
             return this.description.type;
         },
+
+        hasSeals() {
+            const statuses = this.entity.$fieldSealStatuses?.[this.prop] ?? [];
+            const locked = this.entity.$lockedFieldSeals?.[this.prop] ?? [];
+
+            return statuses.length > 0 || locked.length > 0;
+        },
     },
 
     methods: {

@@ -26,16 +26,22 @@ app.component('opportunity-category-list', {
     },
     methods: {
         enabledButton() {
-            let value = this.category;
-            
-            if(value && value.trim()) {
-                return true;
-            }
-
-            return false;
+            const value = (this.category ?? '').trim();
+            return value !== '';
         },
         addCategory() {
-            this.entity.registrationCategories.push(this.category);
+            const value = (this.category ?? '').trim();
+            
+            if (!value) {
+                return;
+            }
+
+            if (this.entity.registrationCategories.includes(value)) {
+                this.clear();
+                return;
+            }
+            
+            this.entity.registrationCategories.push(value);
             this.clear();
         },
 

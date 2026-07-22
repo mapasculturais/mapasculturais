@@ -78,6 +78,14 @@ app.component('opportunity-phases-timeline', {
 		},
 
 		isActive(item, registration) {
+			if (item.isExecutionPhase) {
+				return item.registrationFrom?.isPast() && item.registrationTo?.isFuture();
+			}
+
+			if (item.__objectType == 'evaluationmethodconfiguration') {
+				return item.evaluationFrom?.isPast() && item.evaluationTo?.isFuture();
+			}
+
 			if (!registration) {
 				return false;
 			}
@@ -110,6 +118,14 @@ app.component('opportunity-phases-timeline', {
 		},
 
 		itHappened(item, registration) {
+			if (item.isExecutionPhase) {
+				return item.registrationTo?.isPast();
+			}
+
+			if (item.__objectType == 'evaluationmethodconfiguration') {
+				return item.evaluationTo?.isPast();
+			}
+
 			if (!registration) {
 				return false;
 			}

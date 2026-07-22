@@ -128,7 +128,7 @@ class RegistrationEvaluation extends \MapasCulturais\Entity {
     /**
      * @var \MapasCulturais\Entities\RegistrationEvaluationFile[] Files
      *
-     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\RegistrationEvaluationFile", mappedBy="owner", cascade={"remove"}, orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\RegistrationEvaluationFile", mappedBy="owner", cascade={"remove"})
      * @ORM\JoinColumn(name="id", referencedColumnName="object_id", onDelete="CASCADE")
     */
     protected $__files;
@@ -287,7 +287,7 @@ class RegistrationEvaluation extends \MapasCulturais\Entity {
 
     protected function canUserRemove($user)
     {
-        if ($this->registration->opportunity->canUser('remove', $user)) {
+        if ($this->registration->opportunity->canUser('remove', $user) || $this->registration->opportunity->canUser('@control', $user)) {
             return true;
         } else {
             return parent::canUserRemove($user);

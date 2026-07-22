@@ -2,19 +2,22 @@
 
 namespace EvaluationMethodTechnical;
 
-use MapasCulturais\API;
-use MapasCulturais\ApiQuery;
 use MapasCulturais\i;
+use MapasCulturais\API;
 use MapasCulturais\App;
-use MapasCulturais\Controller;
-use MapasCulturais\Controllers\Opportunity as ControllersOpportunity;
+use MapasCulturais\ApiQuery;
 use MapasCulturais\Entities;
-use MapasCulturais\Entities\EvaluationMethodConfiguration;
+use MapasCulturais\Controller;
 use MapasCulturais\Entities\Opportunity;
 use MapasCulturais\Entities\Registration;
+use MapasCulturais\Exceptions\PermissionDenied;
+use MapasCulturais\Entities\EvaluationMethodConfiguration;
+use MapasCulturais\Controllers\Opportunity as ControllersOpportunity;
 
 class Module extends \MapasCulturais\EvaluationMethod
 {
+    private array $pendingPointRewardRecalculation = [];
+
     protected function _export(EvaluationMethodConfiguration $evaluation_method_configuration): array 
     {
         $result = [
@@ -187,7 +190,14 @@ class Module extends \MapasCulturais\EvaluationMethod
             'type' => 'json',
             'private' => true,
             'serialize' => function ($val){
-                $val = (!empty($val)) ? $val : ['raw' => null, 'percentage' => null, 'rules' => []];
+                $val = (!empty($val)) ? $val : [
+                    'raw'        => null,
+                    'type'       => 'percentage',
+                    'percentage' => null,
+                    'fixed'      => 0,
+                    'roof'       => 0,
+                    'rules'      => [],
+                ];
                 return json_encode($val);
             },
             'unserialize' => function($val){
@@ -303,6 +313,65 @@ class Module extends \MapasCulturais\EvaluationMethod
 
         $self = $this;
 
+        $app->hook('entity(EvaluationMethodConfiguration).set(<<pointReward|pointRewardRoof|isActivePointReward>>)', function(&$value, string $metadata) use($app, $self) {
+            /** @var EvaluationMethodConfiguration $this */
+            if (!$this->definition || $this->definition->slug !== 'technical' || !$this->opportunity?->publishedRegistrations) {
+                return;
+            }
+
+            if (!$self->pointRewardMetadataHasChanged($metadata, $this->$metadata, $value)) {
+                return;
+            }
+
+            throw new PermissionDenied(
+                $app->user,
+                message: i::__('Não é possível alterar o bônus de pontuação após a publicação do resultado da fase.')
+            );
+        });
+
+        // Remove seções sem critérios antes de salvar a configuração técnica
+        $app->hook('entity(EvaluationMethodConfiguration).save:before', function() use($app) {
+            /** @var EvaluationMethodConfiguration $this */
+            if (!$this->definition || $this->definition->slug !== 'technical') {
+                return;
+            }
+
+            $sections = is_array($this->sections) ? $this->sections : [];
+            $criteria = is_array($this->criteria) ? $this->criteria : [];
+
+            if (empty($sections)) {
+                return;
+            }
+
+            $section_ids_with_criteria = [];
+            foreach ($criteria as $cri) {
+                if ($sid = ($cri->sid ?? null)) {
+                    $section_ids_with_criteria[$sid] = true;
+                }
+            }
+
+            $clean_sections = array_values(array_filter($sections, function ($section) use ($section_ids_with_criteria) {
+                return isset($section->id) && isset($section_ids_with_criteria[$section->id]);
+            }));
+
+            if (count($clean_sections) !== count($sections)) {
+                $app->disableAccessControl();
+                $this->sections = $clean_sections;
+                $app->enableAccessControl();
+            }
+        });
+
+        $app->hook('entity(EvaluationMethodConfiguration).save:before', function() use($self) {
+            /** @var EvaluationMethodConfiguration $this */
+            if ($self->shouldReapplyPointRewardOnSave($this)) {
+                $self->schedulePointRewardRecalculation($this);
+            }
+        });
+
+        $app->hook('entity(EvaluationMethodConfiguration).save:finish', function() use($self) {
+            /** @var EvaluationMethodConfiguration $this */
+            $self->reapplyScheduledPointReward($this);
+        });
 
         // Define o valor da coluna eligible
         $app->hook('entity(Registration).<<save|send>>:before', function() use($app){
@@ -436,6 +505,11 @@ class Module extends \MapasCulturais\EvaluationMethod
         $app->hook('ApiQuery(registration).params', function(&$params) use($app) {
             /** @var ApiQuery $this */
 
+            if($params['__supplementaryPhaseQuery'] ?? false) {
+                unset($params['__supplementaryPhaseQuery']);
+                return;
+            }
+
             if($params['__enableQuota'] ?? false) {
                 Module::$quotaData = null;
                 unset($params['__enableQuota']);
@@ -455,43 +529,38 @@ class Module extends \MapasCulturais\EvaluationMethod
                 Quotas::instance($phase_id) : null;
             
             if($phase_id && $quota && is_null(Module::$quotaData)) {
-                Module::$quotaData = (object) [];                
+                $order_by_quota = ($order === '@quota');
+                $needs_quota_fields = Quotas::selectRequiresQuotaFields($params['@select'] ?? '');
+
+                if (!$order_by_quota && !$needs_quota_fields) {
+                    return;
+                }
+
+                Module::$quotaData = (object) [];
 
                 Module::$quotaData->objectId = spl_object_id($this);
                 Module::$quotaData->params = $params;
                 Module::$quotaData->quota = $quota;
-                Module::$quotaData->orderByQuota = $order == '@quota';
+                Module::$quotaData->orderByQuota = $order_by_quota;
+                Module::$quotaData->enrichFieldsOnly = !$order_by_quota;
 
-                $quota_order = Module::$quotaData->quota->getRegistrationsOrderByScoreConsideringQuotas($params);
+                if (Module::$quotaData->enrichFieldsOnly) {
+                    $select = $params['@select'] ?? '';
+                    if ($select !== '*' && !preg_match('/\beligible\b/', $select)) {
+                        $params['@select'] = $select === '' ? 'eligible' : "{$select},eligible";
+                    }
+                    return;
+                }
+
+                $quota_order = Module::$quotaData->quota->getRegistrationsOrderByScoreConsideringQuotas();
 
                 $opportunity = $app->repo('Opportunity')->find($phase_id);
                 $opportunity->registerRegistrationMetadata();
                 
                 if(Module::$quotaData->orderByQuota && $limit = (int) ($params['@limit'] ?? 0)) {
                     unset($params['@order']);
-                    $ids_params = $params;
-                    unset(
-                        $ids_params['@limit'], 
-                        $ids_params['@order'], 
-                        $ids_params['@page'],
-                        $ids_params['oppotunity'],
-                    );
-                    $ids_params['@select'] = 'id';
 
-                    /** @var ControllersOpportunity $opportunity_controller */
-                    $opportunity_controller = $app->controller('opportunity');
-                    $result = $opportunity_controller->apiFindRegistrations($opportunity, $ids_params);
-                    $_ids = [];
-                    foreach($result->registrations as $reg) {
-                        $_ids[$reg['id']] = $reg['id'];
-                    }
-
-                    $ids = [];
-                    foreach($quota_order as $reg) {
-                        if(isset($_ids[$reg->id])) {
-                            $ids[] = $reg->id;
-                        }
-                    }
+                    $ids = Module::$quotaData->quota->filterRegistrationIdsMatchingParams($params, $quota_order);
 
                     Module::$quotaData->foundIds = $ids;
 
@@ -522,6 +591,18 @@ class Module extends \MapasCulturais\EvaluationMethod
         $app->hook('ApiQuery(registration).findResult', function(&$result) {
             /** @var ApiQuery $this */
             if((Module::$quotaData->objectId ?? false) == spl_object_id($this)) {
+                if (Module::$quotaData->enrichFieldsOnly ?? false) {
+                    $quota = Module::$quotaData->quota;
+                    foreach ($result as &$registration) {
+                        $reg = (object) $registration;
+                        $quota->getRegistrationQuotas($reg);
+                        $quota->getRegistrationRegion($reg);
+                        $registration = array_merge($registration, $quota->registrationFields[$reg->id] ?? []);
+                    }
+                    unset($registration);
+                    return;
+                }
+
                 $app = App::i();
                 $_new_result = [];
                 $quota_fields = Module::$quotaData->quota->registrationFields;
@@ -544,6 +625,9 @@ class Module extends \MapasCulturais\EvaluationMethod
 
         $app->hook('ApiQuery(registration).countResult', function(&$result) {
             if((Module::$quotaData->objectId ?? false) == spl_object_id($this)) {
+                if (Module::$quotaData->enrichFieldsOnly ?? false) {
+                    return;
+                }
                 $result = count(Module::$quotaData->foundIds);
             }
         });
@@ -553,7 +637,7 @@ class Module extends \MapasCulturais\EvaluationMethod
             /** @var Controller $this */
             $params = $this->data;
             
-            if(Module::$quotaData && API::EQ($params['@opportunity'] ?? 0) ==  Module::$quotaData->params['opportunity']) {
+            if(Module::$quotaData && empty(Module::$quotaData->enrichFieldsOnly) && API::EQ($params['@opportunity'] ?? 0) ==  Module::$quotaData->params['opportunity']) {
                 $params['opportunity'] = API::EQ($params['@opportunity']);
 
                 $count_query = new ApiQuery(Registration::class, Module::$quotaData->params);
@@ -663,8 +747,8 @@ class Module extends \MapasCulturais\EvaluationMethod
                 $wait_list = $this->data['waitList'];
                 $invalidate_registrations = $this->data['invalidateRegistrations'];
 
-                $cutoff_score = $this->data['cutoffScore'];
-                $quantity_vacancies = $this->data['quantityVacancies'];
+                $cutoff_score = (float) $this->data['cutoffScore'];
+                $quantity_vacancies = (int) $this->data['quantityVacancies'];
                 $consider_quotas = $this->data['considerQuotas'];
 
                 $query_params['status'] = $statusIn;
@@ -672,6 +756,7 @@ class Module extends \MapasCulturais\EvaluationMethod
                 // considerar cotas
                 if($consider_quotas) {
                     $query_params['@order'] = '@quota';
+                    $query_params['__enableQuota'] = true;
                 }
 
                 $query = new ApiQuery(Registration::class, $query_params);
@@ -725,7 +810,7 @@ class Module extends \MapasCulturais\EvaluationMethod
                             $registration->skipSync = true;
                             $registration->__skipQueuingPCacheRecreation = true;
 
-                            $app->log->debug("{$count}/{$total} Alterando status da inscrição {$registration->number} para INVÁLIDO");
+                            $app->log->debug("{$count}/{$total} Alterando status da inscrição {$registration->number} para NÃO SELECIONADO");
                             $registration->setStatusToNotApproved();
                             $app->em->clear();
                         }
@@ -778,18 +863,38 @@ class Module extends \MapasCulturais\EvaluationMethod
                         continue;
                     }
 
-                    $valuePencentage = (($policies->raw * $policies->percentage)/100);
+                    $type = $policies->type ?? 'percentage';
                     $cell = "";
-                    $cell.= "Bônus por pontuação atribuídos \n\n";
-                    foreach($policies->rules as $k => $rule){
-                        $_value = is_array($rule->value) ? implode(",", $rule->value) : $rule->value;
-                        $cell.= "{$rule->field->title}: {$_value} (+{$rule->percentage}%)\n";
-                        $cell.= "-------------------- \n";
+                    $cell .= "Bônus por pontuação atribuídos \n\n";
+
+                    foreach ($policies->rules as $rule) {
+                        $_value      = is_array($rule->value) ? implode(',', $rule->value) : $rule->value;
+                        $bonusValue  = $rule->bonusValue ?? $rule->percentage ?? 0;
+                        $unit        = $type === 'fixed' ? ' ponto(s)' : '%';
+                        $cell .= "{$rule->field->title}: {$_value} (+{$bonusValue}{$unit})\n";
+                        $cell .= "-------------------- \n";
                     }
-                    
-                    $cell.= "\nAvaliação Técnica: {$policies->raw} \n";
-                    $cell.= "valor somado ao resultado: {$valuePencentage} (+{$policies->percentage}%)\n";
-                    $cell.= "Resultado final: {$reg->consolidatedResult} \n";
+
+                    $cell .= "\nAvaliação Técnica: {$policies->raw} \n";
+
+                    if ($type === 'fixed') {
+                        $fixed = $policies->fixed ?? 0;
+                        $roof  = $policies->roof ?? 0;
+                        $cell .= "valor somado ao resultado: +{$fixed} ponto(s)\n";
+                        if ($roof > 0) {
+                            $cell .= "Teto de bônus: {$roof} ponto(s)\n";
+                        }
+                    } else {
+                        $percentage   = $policies->percentage ?? 0;
+                        $roof         = $policies->roof ?? 0;
+                        $valuePercent = ($policies->raw * $percentage) / 100;
+                        $cell .= "valor somado ao resultado: {$valuePercent} (+{$percentage}%)\n";
+                        if ($roof > 0) {
+                            $cell .= "Teto de bônus: {$roof}%\n";
+                        }
+                    }
+
+                    $cell .= "Resultado final: {$reg->consolidatedResult} \n";
                     $body[$i][] = $cell;
                 }
 
@@ -1021,108 +1126,351 @@ class Module extends \MapasCulturais\EvaluationMethod
         return $registration->consolidatedResult;
     }
 
+    /**
+     * Normaliza a configuração de pointReward para o formato canônico:
+     * objeto com 'type' (percentage|fixed) e 'rules' (array de regras com bonusValue).
+     *
+     * Aceita:
+     * - array legado de regras com fieldPercent → type=percentage
+     * - objeto sem type → type=percentage
+     * - objeto com type válido → preservado
+     * - null/vazio → type=percentage, rules=[]
+     */
+    public function normalizePointRewardConfig(mixed $config): object
+    {
+        $default = (object) ['type' => 'percentage', 'rules' => []];
+
+        if (empty($config)) {
+            return $default;
+        }
+
+        // Formato legado: array de regras
+        if (is_array($config)) {
+            $default->rules = array_map(fn($rule) => $this->normalizePointRewardRule($rule), $config);
+            return $default;
+        }
+
+        if (!is_object($config)) {
+            return $default;
+        }
+
+        // Objeto: garante type e rules
+        $type = $config->type ?? 'percentage';
+        if (!in_array($type, ['percentage', 'fixed'], true)) {
+            $type = 'percentage';
+        }
+
+        $rules = [];
+        if (!empty($config->rules) && is_array($config->rules)) {
+            $rules = array_map(fn($rule) => $this->normalizePointRewardRule($rule), $config->rules);
+        }
+
+        return (object) ['type' => $type, 'rules' => $rules];
+    }
+
+    private function normalizePointRewardRule(mixed $rule): object
+    {
+        if (!is_object($rule)) {
+            $rule = (object) $rule;
+        }
+
+        // Deriva bonusValue de fieldPercent quando ausente (compatibilidade legada)
+        if (!isset($rule->bonusValue) && isset($rule->fieldPercent)) {
+            $rule->bonusValue = $rule->fieldPercent;
+        }
+
+        return $rule;
+    }
+
+    private function pointRewardMetadataHasChanged(string $metadata, mixed $current_value, mixed $new_value): bool
+    {
+        if ($metadata === 'isActivePointReward') {
+            return (bool) $current_value !== (bool) $new_value;
+        }
+
+        if ($metadata === 'pointRewardRoof') {
+            return (float) ($current_value ?: 0) !== (float) ($new_value ?: 0);
+        }
+
+        return $this->normalizeComparablePointRewardValue($current_value) !== $this->normalizeComparablePointRewardValue($new_value);
+    }
+
+    private function normalizeComparablePointRewardValue(mixed $value): string
+    {
+        if (is_object($value)) {
+            $value = get_object_vars($value);
+        }
+
+        if (is_array($value)) {
+            $value = $this->sortComparablePointRewardArray($value);
+        }
+
+        return (string) json_encode($value);
+    }
+
+    private function sortComparablePointRewardArray(array $value): array
+    {
+        foreach ($value as $key => $item) {
+            if (is_object($item)) {
+                $item = get_object_vars($item);
+            }
+
+            if (is_array($item)) {
+                $value[$key] = $this->sortComparablePointRewardArray($item);
+            }
+        }
+
+        if (array_keys($value) !== range(0, count($value) - 1)) {
+            ksort($value);
+        }
+
+        return $value;
+    }
+
+    private function shouldReapplyPointRewardOnSave(EvaluationMethodConfiguration $evaluation_method_configuration): bool
+    {
+        if (!$evaluation_method_configuration->definition || $evaluation_method_configuration->definition->slug !== 'technical') {
+            return false;
+        }
+
+        $changed_metadata = array_keys($evaluation_method_configuration->getChangedMetadata());
+        $point_reward_metadata = ['pointReward', 'pointRewardRoof', 'isActivePointReward'];
+
+        return !empty(array_intersect($point_reward_metadata, $changed_metadata));
+    }
+
+    private function schedulePointRewardRecalculation(EvaluationMethodConfiguration $evaluation_method_configuration): void
+    {
+        if ($evaluation_method_configuration->id) {
+            $this->pendingPointRewardRecalculation[$evaluation_method_configuration->id] = true;
+        }
+    }
+
+    private function reapplyScheduledPointReward(EvaluationMethodConfiguration $evaluation_method_configuration): void
+    {
+        if (!$evaluation_method_configuration->id || empty($this->pendingPointRewardRecalculation[$evaluation_method_configuration->id])) {
+            return;
+        }
+
+        unset($this->pendingPointRewardRecalculation[$evaluation_method_configuration->id]);
+        $this->reapplyPointRewardForEvaluatedRegistrations($evaluation_method_configuration);
+    }
+
+    public function reapplyPointRewardForEvaluatedRegistrations(EvaluationMethodConfiguration $evaluation_method_configuration): int
+    {
+        $app = App::i();
+
+        if (!$evaluation_method_configuration->opportunity || !$evaluation_method_configuration->definition || $evaluation_method_configuration->definition->slug !== 'technical') {
+            return 0;
+        }
+
+        $conn = $app->em->getConnection();
+        $rows = $conn->fetchAllAssociative(
+            "SELECT DISTINCT r.id
+                FROM registration r
+                INNER JOIN registration_evaluation e ON e.registration_id = r.id
+                WHERE r.opportunity_id = :opportunity_id
+                    AND e.status = :sent_status
+                    AND r.consolidated_result IS NOT NULL
+                    AND r.consolidated_result <> ''
+                ORDER BY r.id",
+            [
+                'opportunity_id' => $evaluation_method_configuration->opportunity->id,
+                'sent_status' => Entities\RegistrationEvaluation::STATUS_SENT,
+            ]
+        );
+
+        $updated = 0;
+        $app->disableAccessControl();
+
+        try {
+            foreach ($rows as $row) {
+                $registration = $app->repo('Registration')->find($row['id']);
+                if (!$registration) {
+                    continue;
+                }
+
+                $registration->consolidateResult(true, $evaluation_method_configuration);
+                $updated++;
+            }
+        } finally {
+            $app->enableAccessControl();
+        }
+
+        return $updated;
+    }
+
+    private function clearAppliedPointReward(Registration $registration): void
+    {
+        $applied_point_reward = $registration->appliedPointReward;
+
+        if (!$applied_point_reward || (($applied_point_reward->raw ?? null) === null && empty($applied_point_reward->rules ?? []))) {
+            return;
+        }
+
+        $registration->appliedPointReward = null;
+        $registration->save(true);
+    }
+
+    private function getPointRewardRuleMatch(object $rule, mixed $registration_value): array
+    {
+        $result = ['applied' => false, 'value' => null];
+
+        if (isset($rule->eligibleValues)) {
+            $eligible_values = is_object($rule->eligibleValues)
+                ? get_object_vars($rule->eligibleValues)
+                : (array) $rule->eligibleValues;
+
+            if (!array_is_list($eligible_values)) {
+                $eligible_values = array_keys($eligible_values);
+            }
+
+            $eligible_values = array_map(
+                fn($value) => is_string($value) ? explode(':', $value, 2)[0] : $value,
+                $eligible_values
+            );
+
+            $registration_values = is_array($registration_value) ? $registration_value : [$registration_value];
+            $matched_values = array_values(array_intersect($registration_values, $eligible_values));
+
+            if ($matched_values) {
+                return ['applied' => true, 'value' => $matched_values[0]];
+            }
+
+            return $result;
+        }
+
+        if (isset($rule->value) && (is_object($rule->value) || is_array($rule->value))) {
+            foreach ($rule->value as $key => $value) {
+                if (is_array($registration_value)) {
+                    if (in_array($key, $registration_value) && filter_var($value, FILTER_VALIDATE_BOOL)) {
+                        $result = ['applied' => true, 'value' => $key];
+                    }
+                } elseif ($registration_value == $key && filter_var($value, FILTER_VALIDATE_BOOL)) {
+                    $result = ['applied' => true, 'value' => $key];
+                }
+            }
+        } elseif (isset($rule->value) && filter_var($registration_value, FILTER_VALIDATE_BOOL) == filter_var($rule->value, FILTER_VALIDATE_BOOL)) {
+            $result = ['applied' => true, 'value' => $registration_value];
+        }
+
+        return $result;
+    }
+
     public function applyPointReward($result, \MapasCulturais\Entities\Registration $registration)
     {
         $app = App::i();
 
         $reg = $registration;
-        
-        do{
+        do {
             $reg->registerFieldsMetadata();
-        } while($reg = $reg->previousPhase);
-        
-        $affirmativePoliciesConfig = $registration->opportunity->evaluationMethodConfiguration->pointReward;
-        $pointRewardRoof = $registration->opportunity->evaluationMethodConfiguration->pointRewardRoof;
-        $isActivePointReward = filter_var($registration->opportunity->evaluationMethodConfiguration->isActivePointReward, FILTER_VALIDATE_BOOL);
-        $metadata = $registration->getRegisteredMetadata();
-       
-        if(!$isActivePointReward || !array_filter($affirmativePoliciesConfig) || empty($affirmativePoliciesConfig)){
+        } while ($reg = $reg->previousPhase);
+
+        $emc = $registration->opportunity->evaluationMethodConfiguration;
+        $isActivePointReward = filter_var($emc->isActivePointReward, FILTER_VALIDATE_BOOL);
+
+        if (!$isActivePointReward) {
+            $this->clearAppliedPointReward($registration);
             return $result;
         }
 
-        $totalPercent = 0.00;
-        $appliedPolicies = [];
-        foreach($affirmativePoliciesConfig as $rules){
-            if(empty($metadata) || empty($rules) || !$rules){
+        $config       = $this->normalizePointRewardConfig($emc->pointReward);
+        $pointRewardRoof = (float) ($emc->pointRewardRoof ?? 0);
+        $metadata     = $registration->getRegisteredMetadata();
+
+        if (empty($config->rules)) {
+            $this->clearAppliedPointReward($registration);
+            return $result;
+        }
+
+        $totalBonus    = 0.00;
+        $appliedRules  = [];
+
+        foreach ($config->rules as $rule) {
+            if (empty($metadata) || empty($rule)) {
                 continue;
             }
-            
-            $fieldName = "field_".$rules->field;
-            $applied = false;
+
+            $fieldName  = 'field_' . $rule->field;
+
+            if (empty($metadata[$fieldName])) {
+                continue;
+            }
+
             $field_conf = $metadata[$fieldName]->config['registrationFieldConfiguration'];
 
-            if($field_conf->categories && !in_array($registration->category, $field_conf->categories)){
+            if ($field_conf->categories && !in_array($registration->category, $field_conf->categories)) {
                 continue;
             }
 
-            if($field_conf->conditional){
+            if ($field_conf->conditional) {
                 $_field_name = $field_conf->conditionalField;
-                if(trim($registration->$_field_name) != trim($field_conf->conditionalValue)){
+                if (trim($registration->$_field_name) != trim($field_conf->conditionalValue)) {
                     continue;
                 }
             }
 
-            if(is_object($rules->value) || is_array($rules->value)){
+            $match = $this->getPointRewardRuleMatch($rule, $registration->$fieldName);
 
-                foreach($rules->value as $key => $value){
-                    if(is_array($registration->$fieldName)){
-                        if(in_array($key, $registration->$fieldName) && filter_var($value, FILTER_VALIDATE_BOOL)){
-                            $_value = $key;
-                            $applied = true;
-                            continue;
-                        }
-
-                    }else{
-                        if($registration->$fieldName == $key && filter_var($value, FILTER_VALIDATE_BOOL)){
-                            $_value = $key;
-                            $applied = true;
-                            continue;
-                        }
-                    }
-                }
-            }else{
-                if(filter_var($registration->$fieldName, FILTER_VALIDATE_BOOL) == filter_var($rules->value, FILTER_VALIDATE_BOOL)){
-                    $applied = true;
-                    $_value = $registration->$fieldName;
-                }
-            }
-        
-            if($applied){
-                $totalPercent += $rules->fieldPercent;
-                $field = $app->repo('RegistrationFieldConfiguration')->find($rules->field);
-                $appliedPolicies[] = [
-                    'field' => [
-                        'title' => $field->title,
-                        'id' =>$rules->field
-                    ],
-                    'percentage' => $rules->fieldPercent,
-                    'value' => $_value,
-                ];
+            if (!$match['applied']) {
                 continue;
             }
+
+            $bonusValue = (float) ($rule->bonusValue ?? 0);
+            $totalBonus += $bonusValue;
+
+            $field = $app->repo('RegistrationFieldConfiguration')->find($rule->field);
+            $ruleRecord = [
+                'field'      => ['title' => $field->title, 'id' => $rule->field],
+                'type'       => $config->type,
+                'bonusValue' => $bonusValue,
+                'value'      => $match['value'],
+            ];
+
+            // Mantém 'percentage' para compatibilidade de leitura legada
+            if ($config->type === 'percentage') {
+                $ruleRecord['percentage'] = $bonusValue;
+            }
+
+            $appliedRules[] = $ruleRecord;
         }
-        
-        $percentage = (($pointRewardRoof > 0) && $totalPercent > $pointRewardRoof) ? $pointRewardRoof : $totalPercent;
 
+        // Aplica teto (roof=0 = sem limite)
+        $limitedBonus = ($pointRewardRoof > 0 && $totalBonus > $pointRewardRoof)
+            ? $pointRewardRoof
+            : $totalBonus;
+
+        if ($config->type === 'percentage') {
+            $registration->appliedPointReward = [
+                'raw'        => $result,
+                'type'       => 'percentage',
+                'percentage' => $limitedBonus,
+                'fixed'      => 0,
+                'roof'       => $pointRewardRoof,
+                'rules'      => $appliedRules,
+            ];
+            $registration->save(true);
+
+            return $limitedBonus > 0 ? $this->percentCalc($result, $limitedBonus) : $result;
+        }
+
+        // type === 'fixed'
         $registration->appliedPointReward = [
-            'raw' => $result,
-            'percentage' => $percentage,
-            'rules' => $appliedPolicies
+            'raw'        => $result,
+            'type'       => 'fixed',
+            'percentage' => 0,
+            'fixed'      => $limitedBonus,
+            'roof'       => $pointRewardRoof,
+            'rules'      => $appliedRules,
         ];
-
         $registration->save(true);
 
-        if($percentage > 0){
-            return $this->percentCalc($result, $percentage);
-        }else{
-            return $result;
-        }
-
+        return $limitedBonus > 0 ? $result + $limitedBonus : $result;
     }
 
     private function percentCalc($value, $percent)
     {
-        return (($value * $percent) /100) + $value;
+        return (($value * (float) $percent) / 100) + $value;
     }
 
     /**

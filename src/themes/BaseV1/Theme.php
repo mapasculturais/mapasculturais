@@ -2095,9 +2095,11 @@ class Theme extends MapasCulturais\Theme {
             'allCategories' => i::__('Todas as categorias'),
             'selectFieldType' =>  i::__('Selecione o tipo de campo'),
             'fieldCreated' =>  i::__('Campo criado.'),
+            'fieldDuplicated' => i::__('Campo duplicado.'),
             'fieldRemoved' =>  i::__('Campo removido.'),
             'changesSaved' =>  i::__('Alterações Salvas.'),
             'attachmentCreated' =>  i::__('Anexo criado.'),
+            'attachmentDuplicated' => i::__('Anexo duplicado.'),
             'attachmentRemoved' =>  i::__('Anexo removido.'),
             'confirmAttachmentRemoved' =>  i::__('Deseja remover este anexo?'),
             'confirmRemoveModel' =>  i::__('Deseja remover este modelo?'),
@@ -2145,6 +2147,7 @@ class Theme extends MapasCulturais\Theme {
             'Anexos' => i::__('Anexos'),
             'Avaliação' => i::__('Avaliação'),
             'Status' => i::__('Status'),
+            'Isenção' => i::__('Isenção'),
             'spaceRelationRequestSent' =>  i::__('Sua requisição para relacionar o espaço {{space}} foi enviada.'),
 
             'conditionMandatory' => i::__('Informe a qual campo quer condicionar a obrigatoriedade'),
@@ -2161,7 +2164,10 @@ class Theme extends MapasCulturais\Theme {
             'providingAccount' => i::__('Ao enviar a prestação de contas, não será mais permitido editar os campos. tem certeza que deseja continuar?'),
             'disableColumns' => i::__('Não é permitido desabilitar todas as colunas da tabela'),
             'columnDisabling' => i::__('Não é permitido desabilitar a coluna'),
-            'fileTooBig' => i::__('O tamanho do arquivo excede o limite estabelecido')
+            'fileTooBig' => i::__('O tamanho do arquivo excede o limite estabelecido'),
+            'processingError' => i::__('Erro ao processar a solicitação'),
+            'validationProcessingError' => i::__('Erro ao processar validationErrors:'),
+            'validationError' => i::__('Erro de validação')
         ]);
 
         $this->enqueueScript('app', 'entity.module.subsiteAdmins', 'js/ng.entity.module.subsiteAdmins.js', array('ng-mapasculturais'));

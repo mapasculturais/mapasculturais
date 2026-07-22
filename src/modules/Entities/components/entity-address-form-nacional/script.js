@@ -12,6 +12,18 @@ app.component('entity-address-form-nacional', {
             default: () => null
         },
         hasPublicLocation: Boolean,
+        hasErrors: {
+            type: Boolean,
+            default: false,
+        },
+        missingKeys: {
+            type: Array,
+            default: () => [],
+        },
+        requiredFields: {
+            type: Object,
+            default: () => ({})
+        },
     },
 
     setup(props, { slots }) {
@@ -59,6 +71,15 @@ app.component('entity-address-form-nacional', {
         fid(name) { return `${name}-${this.idSuffix}`; },
 
         clean(v) { return (v ?? '').toString().trim(); },
+
+        // Verifica se o subcampo é obrigatório
+        isRequired(addressKey) {
+            return !!this.requiredFields?.[addressKey];
+        },
+
+        hasError(addressKey) {
+            return this.hasErrors && this.missingKeys.includes(addressKey);
+        },
 
         splitLine1(line1) {
             const s = this.clean(line1);

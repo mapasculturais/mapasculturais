@@ -15,7 +15,18 @@ $this->import('
 ');
 ?>
 
-<div v-if="file || editable" :class="['entity-file', {'entity-file--disabled' : disabled}, classes]" :data-field="groupName?.replace('rfc_', 'file_')">
+<div v-if="file || editable || showEmpty" :class="['entity-file', {'entity-file--disabled' : disabled}, classes]" :data-field="groupName?.replace('rfc_', 'file_')">
+
+    <div v-if="!file && !editable && showEmpty" class="entity-file__empty">
+        <label v-if="title" class="entity-file__title">
+            {{title}}
+            <span v-if="required" class="required">*<?php i::_e('obrigatório') ?></span>
+        </label>
+        <small v-if="description" class="field__description">{{description}}</small>
+        <p class="entity-file__no-file"><?php i::_e('Nenhum arquivo anexado') ?></p>
+    </div>
+
+    <template v-else>
 
     <label v-if="title" class="entity-file__title">
         {{title}}
@@ -67,8 +78,9 @@ $this->import('
                             <div class="field__upload">
                                 <label for="newFile" class="field__buttonUpload button button--icon button--primary-outline">
                                     <mc-icon name="upload"></mc-icon> <?= i::__('Anexar') ?>
-                                    <input id="newFile" type="file" @change="setFile($event)" ref="file">
+                                    <input id="newFile" type="file" @change="setFile($event)" ref="file" :accept="acceptAttribute">
                                     <small><?= i::__('Tamanho máximo do arquivo:') ?> <strong>{{maxFileSize}}</strong></small>
+                                    <small v-if="allowedFileTypesLabel"><?= i::__('Tipos permitidos:') ?> <strong>{{allowedFileTypesLabel}}</strong></small>
                                 </label>
                             </div>
                         </div>
@@ -106,4 +118,5 @@ $this->import('
             <button class="col-6 button button--primary" type="submit" @click.prevent="submit(modal)"> <?php i::_e("Enviar") ?> </button>
         </template>
     </mc-modal>
+    </template>
 </div>

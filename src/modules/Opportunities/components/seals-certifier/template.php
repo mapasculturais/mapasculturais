@@ -17,6 +17,7 @@ $this->import('
 ?>
 
 <div v-if="entity.seals.length > 0 || editable" class="seals-certifier col-12">
+    <h3><?= i::__('Selos certificadores') ?></h3>
     <h4 class="seals-certifier__title bold"> {{title}} <?php i::_e(' para proponentes') ?> </h4>
     <div class="seals-certifier__proponents">
         <div v-for="(seals, proponentType) in proponentSeals" :key="proponentType" class="seals-certifier__proponent field">

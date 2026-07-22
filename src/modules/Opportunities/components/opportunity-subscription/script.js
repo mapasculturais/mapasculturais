@@ -157,6 +157,10 @@ app.component('opportunity-subscription' , {
             return this.entity.proponentAgentRelation ?? {};
         },
 
+        canCreateIndividualAgent() {
+            return ($MAPAS.currentUserRoles || []).some((role) => String(role).toLowerCase().includes('admin'));
+        },
+
         selectAgentRelationColetivo() {
             return (this.registrationProponentType == 'Coletivo' && this.proponentAgentRelation['Coletivo'] == true) 
                 || (this.registrationProponentType == 'Pessoa Jurídica' && this.proponentAgentRelation['Pessoa Jurídica'] == true);

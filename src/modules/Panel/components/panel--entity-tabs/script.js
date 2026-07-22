@@ -29,17 +29,39 @@ app.component('panel--entity-tabs', {
             // queryGetModel.user = `EQ(${this.user})`
         }
 
+        const viewingOtherUserProfile = this.user != null && `${this.user}` !== '@me'
+        const grantedOwnerNotUser = viewingOtherUserProfile
+            ? `!EQ(${this.user})`
+            : '!EQ(@me)'
+        const grantedQuery = {
+            ...query,
+            '@permissions': '@control',
+            status: 'GTE(0)',
+            user: grantedOwnerNotUser,
+        }
+        if (viewingOtherUserProfile) {
+            grantedQuery['@permissionsUser'] = this.user
+        }
+
+        if (this.type == 'opportunity') {
+            const api = new API('opportunity');
+            api.GET('/opportunity/findOpportunitiesModels').then((r) => r.json().then((data) => {
+                this.opportunitiesModels = data;
+            }));
+        }
+
         return {
             description: $DESCRIPTIONS[this.type],
             queries: {
                 publish: { status: 'GTE(1)', ...query },
                 draft: { status: 'EQ(0)', ...query },
-                granted: { ...query, '@permissions': '@control', status: 'GTE(0)', user: '!EQ(@me)' },
+                granted: grantedQuery,
                 mymodels: { status: 'EQ(-1)', isModel: 'EQ(1)', ...queryGetModel },
                 trash: { status: 'EQ(-10)', ...query },
                 archived: { status: 'EQ(-2)', ...query },
             },
             showPrivateKey: false,
+            opportunitiesModels: [],
         }
     },
     props: {
@@ -55,6 +77,10 @@ app.component('panel--entity-tabs', {
         tabs: {
             type: String,
             default: "publish,draft,granted,mymodels,trash,archived"
+        },
+        limit: {
+            type: Number,
+            default: 50,
         },
 
     },

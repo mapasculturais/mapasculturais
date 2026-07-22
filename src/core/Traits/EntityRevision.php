@@ -183,38 +183,41 @@ trait EntityRevision{
 
         $last_revision_data = $last_revision->getRevisionData();
         
-        $old_status = $last_revision_data['status']->value;
-        $new_status = $this->status;
-        
-        if($old_status != $new_status){
-            switch ($new_status){
-                case self::STATUS_ENABLED:
-                    $action = Revision::ACTION_PUBLISHED;
-                    $message = i::__("Registro publicado.");
-                    break;
-                
-                case self::STATUS_ARCHIVED:
-                    $action = Revision::ACTION_ARCHIVED;
-                    $message = i::__("Registro arquivado.");
-                    break;
-                
-                case self::STATUS_DRAFT:
-                    if($old_status == self::STATUS_TRASH){
-                        $message = i::__("Registro recuperado da lixeira.");
-                        $action = Revision::ACTION_UNTRASHED;
-                    } else if( $old_status == self::STATUS_ARCHIVED){
-                        $message = i::__("Registro desarquivado.");
-                        $action = Revision::ACTION_UNARCHIVED;
-                    } else {
-                        $action = Revision::ACTION_UNPUBLISHED;
-                        $message = i::__("Registro despublicado.");
-                    }
-                    break;
+        // Verifica se a entidade tem propriedade status antes de processar mudanças de status
+        if(property_exists($this, 'status') && isset($last_revision_data['status'])) {
+            $old_status = $last_revision_data['status']->value;
+            $new_status = $this->status;
+            
+            if($old_status != $new_status){
+                switch ($new_status){
+                    case self::STATUS_ENABLED:
+                        $action = Revision::ACTION_PUBLISHED;
+                        $message = i::__("Registro publicado.");
+                        break;
                     
-                case self::STATUS_TRASH:
-                    $action = Revision::ACTION_TRASHED;
-                    $message = i::__("Registro movido para a lixeira.");
-                    break;
+                    case self::STATUS_ARCHIVED:
+                        $action = Revision::ACTION_ARCHIVED;
+                        $message = i::__("Registro arquivado.");
+                        break;
+                    
+                    case self::STATUS_DRAFT:
+                        if($old_status == self::STATUS_TRASH){
+                            $message = i::__("Registro recuperado da lixeira.");
+                            $action = Revision::ACTION_UNTRASHED;
+                        } else if( $old_status == self::STATUS_ARCHIVED){
+                            $message = i::__("Registro desarquivado.");
+                            $action = Revision::ACTION_UNARCHIVED;
+                        } else {
+                            $action = Revision::ACTION_UNPUBLISHED;
+                            $message = i::__("Registro despublicado.");
+                        }
+                        break;
+                        
+                    case self::STATUS_TRASH:
+                        $action = Revision::ACTION_TRASHED;
+                        $message = i::__("Registro movido para a lixeira.");
+                        break;
+                }
             }
         }
 
@@ -224,17 +227,18 @@ trait EntityRevision{
         }
     }
 
-    public function _newDeletedRevision() {
+    public function _newDeletedRevision(bool $flush = true) {
         $revisionData = $this->_getRevisionData();
-        $action = Revision::ACTION_DELETED;
-        $message = i::__("Registro deletado.");
+        $message = i::__("Registro deletado permanentemente.");
         $revision = new Revision($revisionData,$this,Revision::ACTION_DELETED,$message);
-        $revision->save(true);
+        $revision->objectId = $this->id;
+        $revision->save($flush);
     }
 
     public function getLastRevision() {
         $app = App::i();
-        $revision = $app->repo('EntityRevision')->findLastRevision($this);
+        $pk = $this->getPKPropertyName();
+        $revision = $app->repo('EntityRevision')->findLastRevisionByObjectTypeAndId($this->className, $this->__pk ?: $this->$pk);
         return $revision;
     }
 

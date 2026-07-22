@@ -16,6 +16,7 @@ $this->import('
     opportunity-phase-publish-date-config
     opportunity-appeal-phase-config
     seals-certifier
+    seal-validator-config
     tiebreaker-criteria-configuration
     v1-embed-tool
 
@@ -33,7 +34,7 @@ $evaluation_methods = $app->getRegisteredEvaluationMethods();
                 <div class="grid-12">
                     <entity-field :entity="phase" prop="name" :autosave="3000" classes="col-12" label="<?= i::esc_attr__('Título') ?>" hide-required></entity-field>
                     <entity-field :entity="phase" prop="evaluationFrom" :autosave="3000" classes="col-6 sm:col-12" label="<?= i::esc_attr__('Data de início') ?>" :min="fromDateMin?._date" :max="fromDateMax?._date"></entity-field>    
-                    <entity-field v-if="!firstPhase?.isContinuousFlow" :entity="phase" prop="evaluationTo" :autosave="3000" classes="col-6 sm:col-12" label="<?= i::esc_attr__('Data de término') ?>" :min="toDateMin?._date" :max="toDateMax?._date"></entity-field>
+                    <entity-field v-if="!firstPhase?.isContinuousFlow || firstPhase?.hasEndDate" :entity="phase" prop="evaluationTo" :autosave="3000" classes="col-6 sm:col-12" label="<?= i::esc_attr__('Data de término') ?>" :min="toDateMin?._date" :max="toDateMax?._date"></entity-field>
                     <entity-field v-if="phase.opportunity?.isReportingPhase" :entity="phase.opportunity" prop="allow_proponent_response" :autosave="3000" classes="col-12" ></entity-field>
                 </div>
             </div>
@@ -64,6 +65,24 @@ $evaluation_methods = $app->getRegisteredEvaluationMethods();
             <?php $this->applyComponentHook("{$evaluation_method->slug}-config", 'after') ?>
         <?php endforeach; ?>
 
+        <?php $this->applyComponentHook("seal-validators-config", 'before') ?>
+        <template v-if="phase.type.id != 'technical'">
+            <?php $this->applyComponentHook("seal-validators-config", 'begin') ?>
+            <section class="col-12 evaluation-step__section">
+                <div class="evaluation-step__section-header">
+                    <?php $this->applyComponentHook("seal-validators-config", 'header') ?>
+                    <div class="evaluation-step__section-label">
+                        <h3><?= i::__('Avaliação automática por selos') ?></h3>
+                    </div>
+                </div>
+                <div class="evaluation-step__section-content">
+                    <seal-validator-config :entity="phase"></seal-validator-config>
+                </div>
+            </section>
+            <?php $this->applyComponentHook("seal-validators-config", 'end') ?>
+        </template>
+        <?php $this->applyComponentHook("seal-validators-config", 'after') ?>
+
         <section class="evaluation-section col-12">
             <fields-visible-evaluators :entity="phase"></fields-visible-evaluators>
         </section>
@@ -87,12 +106,13 @@ $evaluation_methods = $app->getRegisteredEvaluationMethods();
         <opportunity-phase-config-status :phase="phase.opportunity"></opportunity-phase-config-status>
 
         <opportunity-phase-publish-date-config :phase="phase.opportunity" :phases="phases" hide-button hide-description></opportunity-phase-publish-date-config>
-        
-        <seals-certifier :entity="firstPhase" :editable="seals.length > 0"></seals-certifier>
 
         <template v-if="phase.evaluateSelfApplication">
             <entity-field :entity="phase" type="checkbox" prop="autoApplicationAllowed" label="<?php i::esc_attr_e('Autoaplicação de resultados')?>" :autosave="300" classes="col-12 sm:col-12"></entity-field>
         </template>
+        
+        <seals-certifier :entity="firstPhase" :editable="seals.length > 0"></seals-certifier>
+
         
         <opportunity-appeal-phase-config v-if="!firstPhase?.isContinuousFlow" :phase="phase" :phases="phases" :tab="tab"></opportunity-appeal-phase-config>
         
@@ -105,12 +125,29 @@ $evaluation_methods = $app->getRegisteredEvaluationMethods();
         <div class="phase-delete col-12">
             <mc-confirm-button :message="confirmDeleteMessage" @confirm="deletePhase(phase, index)">
                 <template #button="modal">
-                    <button :class="['phase-delete__trash button button--text button--sm', {'disabled' : !phase.currentUserPermissions.remove}]" @click="modal.open()">
+                    <button 
+                        :class="['phase-delete__trash button button--text button--sm', {'disabled' : !phase.currentUserPermissions.remove}]" 
+                        @click="modal.open()"
+                        v-tooltip="!phase.currentUserPermissions.remove ? text('tooltip_nao_pode_excluir_avaliacao') : ''"
+                    >
                         <div class="icon">
                             <mc-icon name="trash" class="secondary__color"></mc-icon>
                         </div>
                         <h5><?= i::__("Excluir fase de avaliação") ?></h5>
                     </button>
+                </template>
+                <template #message="message">
+                    <div class="grid-12">
+                        <div class="col-12">
+                            <p>{{ confirmDeleteMessage }}</p>
+                        </div>
+                        <div class="col-12" v-if="Object.keys(phase.agentRelations || {}).length > 0">
+                            <mc-alert type="warning">
+                                <strong><?= i::__('ATENÇÃO') ?>: </strong> 
+                                <?= i::__('Esta fase possui avaliadores no comitê de avaliação. Remova todos os avaliadores do comitê antes de excluir a fase.') ?>
+                            </mc-alert>
+                        </div>
+                    </div>
                 </template>
             </mc-confirm-button>
         </div>

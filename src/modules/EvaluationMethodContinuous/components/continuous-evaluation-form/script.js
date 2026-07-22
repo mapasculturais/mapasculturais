@@ -32,8 +32,8 @@ app.component('continuous-evaluation-form', {
     },
 
     created() {
-        this.formData['data'] = {};
-        const formData = this.evaluationData || this.skeleton();
+        this.formData['data'] = this.skeleton().data;
+        const formData = this.evaluationData;
 
         for (let key in formData.data) {
             this.formData.data[key] = formData.data[key];
@@ -62,15 +62,21 @@ app.component('continuous-evaluation-form', {
         },
 
         evaluationData() {
+            const currentEvalConfig = $MAPAS.config.continuousEvaluationForm.currentEvaluation;
             return {
-                data: $MAPAS.config.continuousEvaluationForm.currentEvaluation?.evaluationData
+                data: currentEvalConfig?.evaluationData || {}
             };
         },
 
         currentEvaluation() {
+            const currentEvalConfig = $MAPAS.config.continuousEvaluationForm.currentEvaluation;
+            if (!currentEvalConfig) {
+                return null;
+            }
+            
             const api = new API('registrationevaluation');
-            const evaluation = api.getEntityInstance($MAPAS.config.continuousEvaluationForm.currentEvaluation.id);
-            evaluation.populate($MAPAS.config.continuousEvaluationForm.currentEvaluation);
+            const evaluation = api.getEntityInstance(currentEvalConfig.id);
+            evaluation.populate(currentEvalConfig);
             return evaluation;
         },
 
@@ -119,11 +125,18 @@ app.component('continuous-evaluation-form', {
         },
 
         handleCurrentEvaluationForm() {
-            return this.currentEvaluation?.status > 0 ? this.isEditable = false : this.isEditable = this.editable;
+            if (!this.currentEvaluation) {
+                this.isEditable = this.editable;
+                return;
+            }
+            
+            return this.currentEvaluation.status > 0 ? this.isEditable = false : this.isEditable = this.editable;
         },
 
         removeEvaluationAttachment(file) {
-            this.currentEvaluation.files.evaluationAttachment = undefined;
+            if (this.currentEvaluation && this.currentEvaluation.files) {
+                this.currentEvaluation.files.evaluationAttachment = undefined;
+            }
         },
 
         statusToString(status) {
@@ -142,8 +155,9 @@ app.component('continuous-evaluation-form', {
             let error = false;
             const global = useGlobalState();
 
-            Object.keys(this.formData.data).forEach(key => {
-                if (!this.formData.data[key] || this.formData.data[key] === '') {
+            ['status', 'obs'].forEach(key => {
+                const value = this.formData.data[key];
+                if (value === null || value === undefined || String(value).trim() === '') {
                     messages.error(this.text('emptyField') + ' ' + this.dictFields(key) + ' ' + this.text('required'));
                     error = true;
                 }

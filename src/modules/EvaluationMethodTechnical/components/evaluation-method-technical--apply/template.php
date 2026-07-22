@@ -46,7 +46,7 @@ $this->import('
                     <div class="field col-12">
                         <label><?php i::_e('Selecione o status que deseja aplicar') ?></label>
                         <select v-model="applyData.setStatusTo">
-                            <option v-for="item in statusList" :value="item.value">{{item.label}}</option>
+                            <option v-for="item in statusList" :value="item.status">{{item.label}}</option>
                         </select>
                     </div>
                 </div>

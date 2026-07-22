@@ -1,0 +1,13 @@
+@use '../0.settings/mixins' as *;
+
+.custom-table {
+    input.invalid-cell {
+        border-color: $error !important;
+        background-color: rgba($error, 0.05) !important;
+
+        &:focus {
+            outline-color: $error !important;
+            box-shadow: 0 0 0 size(2) rgba($error, 0.1) !important;
+        }
+    }
+}

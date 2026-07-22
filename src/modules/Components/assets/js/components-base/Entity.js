@@ -14,6 +14,7 @@ class Entity {
 
         this.__lockedFields = [];
         this.__lockedFieldSeals = {};
+        this.__fieldSealStatuses = {};
 
         // as traduções estão no arquivo texts.php do componente <entity>
         this.text = Utils.getTexts('mc-entity');
@@ -32,6 +33,7 @@ class Entity {
             'terms', 'seals', , 'currentUserPermissions', 
             'relatedAgents', 'agentRelations',
             'relatedSpaces', 'spaceRelations',
+            'editableFields', 'allowedFields',
         ];
         
         this.populateId(obj);
@@ -42,6 +44,10 @@ class Entity {
 
         if(obj.__lockedFieldSeals) {
             this.__lockedFieldSeals = obj.__lockedFieldSeals;
+        }
+
+        if(obj.__fieldSealStatuses) {
+            this.__fieldSealStatuses = obj.__fieldSealStatuses;
         }
 
         for (const prop of defaultProperties) {
@@ -74,8 +80,10 @@ class Entity {
             if ((definition.type == 'datetime' || definition.type == 'date' ) && val && !(val instanceof McDate)) {
                 if (typeof val == 'string') {
                     val = new McDate(val);
-                } else {
+                } else if (typeof val?.date == 'string' && val.date) {
                     val = new McDate(val.date);
+                } else {
+                    val = null;
                 }
             }
 
@@ -171,7 +179,9 @@ class Entity {
     }
 
     populateId(obj) {
-        this.id = obj[this.$PK];
+        if (obj[this.$PK] !== undefined && obj[this.$PK] !== null) {
+            this.id = obj[this.$PK];
+        }
     }
 
     populateFiles(files) {        
@@ -200,13 +210,27 @@ class Entity {
     }
 
     catchErrors(res, data) {
-        const message = data.data?.message;
+        let message = null;
+        
+        if (typeof data.data === 'string') {
+            message = data.data;
+        } else if (data.data && typeof data.data === 'object' && data.data.message !== undefined) {
+            if (Array.isArray(data.data.message)) {
+                message = data.data.message[0] || data.data.message.join(', ');
+            } else {
+                message = data.data.message;
+            }
+        }
         
         if (res.status >= 500 && res.status <= 599) {
             this.sendMessage(message || this.text('erro inesperado'), 'error');
         } else if(res.status == 400) {
             if (data.error) {
-                this.__validationErrors = data.data;
+                // data.data pode ser string (BadRequest genérico) ou mapa prop→erros.
+                // Sempre manter objeto para não quebrar entity-field.hasErrors.
+                this.__validationErrors = (data.data && typeof data.data === 'object' && !Array.isArray(data.data))
+                    ? data.data
+                    : {};
                 this.sendMessage(message || this.text('erro de validacao'), 'error');
             }
         } else if(res.status == 403) {
@@ -348,7 +372,7 @@ class Entity {
         const result = {};
         if(this.seals && this.seals.length > 0) {
             const sealsById = {};
-            
+
             for (const seal of this.seals) {
                 sealsById[seal.sealId] = seal;
             }
@@ -357,6 +381,26 @@ class Entity {
                 result[field] = this.__lockedFieldSeals[field].map((sealId) => {
                     return sealsById[sealId];
                 });
+            }
+        }
+
+        return result;
+    }
+
+    get $fieldSealStatuses() {
+        const result = {};
+        if(this.seals && this.seals.length > 0) {
+            const sealsById = {};
+
+            for (const seal of this.seals) {
+                sealsById[seal.sealId] = seal;
+            }
+
+            for (const field in this.__fieldSealStatuses) {
+                result[field] = this.__fieldSealStatuses[field].map((fieldSeal) => {
+                    const seal = sealsById[fieldSeal.sealId];
+                    return seal ? {...seal, ...fieldSeal} : null;
+                }).filter((seal) => seal);
             }
         }
 
@@ -802,11 +846,15 @@ class Entity {
             this.doPromise(res, (data) => {
                 let index;
                 
-                index = this.agentRelations[group].indexOf(agent);
-                this.agentRelations[group].splice(index,1);
+                index = this.agentRelations[group]?.findIndex(relation => relation.agent?.id === agent.id);
+                if (index != undefined && index != -1) {
+                    this.agentRelations[group].splice(index, 1);
+                }
                 
-                index = this.relatedAgents[group].indexOf(agent);
-                this.relatedAgents[group].splice(index,1);
+                index = this.relatedAgents[group]?.findIndex(a => a.id === agent.id);
+                if (index != undefined && index != -1) {
+                    this.relatedAgents[group].splice(index, 1);
+                }
             
             });
         } catch (error) {

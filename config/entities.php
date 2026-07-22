@@ -55,13 +55,18 @@ return [
             'autoPublish' => i::__('Publicar resultado automaticamente')
         ),
 
+        'MapasCulturais\Entities\Seal' => array(
+            'sensitive' => i::__('Selo sensível/LGPD (oculto para o público)'),
+            'lockedFieldsConfig' => i::__('Configuração de campos bloqueados'),
+        ),
+
         'MapasCulturais\Entities\Registration' => [
             'category' => i::__('Categoria'),
             'range' => i::__('Faixa/Linha'),
             'proponentType' => i::__('Tipo de proponente'),
             'number' => i::__('Número da inscrição'),
             'sentTimestamp' => i::__('Data e hora de envio'),
-            'score' => i::__('Pontuação'),
+            'score' => i::__('Resultado final'),
             'eligible' => i::__('Elegível'),
             'consolidatedResult' => i::__('Resultado consolidado'),
         ]

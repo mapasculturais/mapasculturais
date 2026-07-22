@@ -236,6 +236,9 @@ function arrayToAsciiTable($data, $maxTableWidth = 80, $maxColumnWidth = 30) {
         $output .= str_repeat("-", $width + 2) . "+";
     }
     $output .= "\n";
+
+    $num = count((array) $data);
+    $output .= "($num rows)\n";
     
     return $output;
 }

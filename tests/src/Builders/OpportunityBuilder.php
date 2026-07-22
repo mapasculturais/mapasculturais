@@ -3,17 +3,19 @@
 namespace Tests\Builders;
 
 use Exception;
+use Tests\Traits\Faker;
+use Tests\Abstract\Builder;
+use Tests\Traits\UserDirector;
+use Tests\Enums\ProponentTypes;
 use MapasCulturais\Entities\Agent;
 use MapasCulturais\Entities\Event;
-use MapasCulturais\Entities\Opportunity;
-use MapasCulturais\Entities\Project;
-use MapasCulturais\Entities\RegistrationFieldConfiguration;
 use MapasCulturais\Entities\Space;
-use Tests\Abstract\Builder;
 use Tests\Enums\EvaluationMethods;
-use Tests\Enums\ProponentTypes;
-use Tests\Traits\Faker;
-use Tests\Traits\UserDirector;
+use MapasCulturais\Entities\Project;
+use Tests\Traits\RegistrationDirector;
+use MapasCulturais\Entities\Opportunity;
+use MapasCulturais\Entities\Registration;
+use MapasCulturais\Entities\RegistrationFieldConfiguration;
 
 class OpportunityBuilder extends Builder
 {
@@ -24,7 +26,7 @@ class OpportunityBuilder extends Builder
         Traits\SealRelations,
         Traits\Taxonomies,
         Traits\EntityName,
-
+        RegistrationDirector,
         UserDirector;
 
     protected Opportunity $instance;
@@ -91,6 +93,14 @@ class OpportunityBuilder extends Builder
         return $builder;
     }
 
+    public function addExecutionPhase(): ExecutionPhaseBuilder
+    {
+        $builder = new ExecutionPhaseBuilder($this);
+        $builder->reset($this->instance);
+
+        return $builder;
+    }
+
     public function fillRequiredProperties(): self
     {
         $instance = $this->instance;
@@ -98,6 +108,18 @@ class OpportunityBuilder extends Builder
         $instance->shortDescription = $this->faker->name();
         if (!$instance->type) {
             $this->setType(1);
+        }
+
+        return $this;
+    }
+
+    public function enableWorkplan(bool $deliveryReportLinkedToGoals = true, bool $save = true, bool $flush = true): self
+    {
+        $this->instance->enableWorkplan = true;
+        $this->instance->workplan_deliveryReportTheDeliveriesLinkedToTheGoals = $deliveryReportLinkedToGoals;
+
+        if ($save) {
+            $this->instance->save($flush);
         }
 
         return $this;
@@ -139,16 +161,20 @@ class OpportunityBuilder extends Builder
         return $this;
     }
 
-    public function addCategory(?string $category = null): self
+    public function addCategory(?string $category = null, bool $save = true, bool $flush = true): self
     {
         $categories = $this->instance->registrationCategories;
         $categories[] = $category ?: $this->faker->text(10);
         $this->instance->registrationCategories = $categories;
 
+        if($save) {
+            $this->instance->save($flush);
+        }
+
         return $this;
     }
 
-    public function setCategories(array $categories = [], int $number_of_random_categories = 3): self
+    public function setCategories(array $categories = [], int $number_of_random_categories = 3, bool $save = true, bool $flush = true): self
     {
         if (empty($categories)) {
             for ($i = 0; $i < $number_of_random_categories; $i++) {
@@ -157,11 +183,14 @@ class OpportunityBuilder extends Builder
         }
 
         $this->instance->registrationCategories = $categories;
+        if($save) {
+            $this->instance->save($flush);
+        }
 
         return $this;
     }
 
-    public function addProponentType(?ProponentTypes $proponent_type = null): self
+    public function addProponentType(?ProponentTypes $proponent_type = null, bool $save = true, bool $flush = true): self
     {
         $available_proponent_types = array_map(fn($case) => $case->value, ProponentTypes::cases());
         
@@ -185,11 +214,14 @@ class OpportunityBuilder extends Builder
         $proponent_types[] = $proponent_type->value;
 
         $this->instance->registrationProponentTypes = $proponent_types;
+        if($save) {
+            $this->instance->save($flush);
+        }
 
         return $this;
     }
 
-    public function setProponentTypes(array $proponent_types = []): self
+    public function setProponentTypes(array $proponent_types = [], bool $save = true, bool $flush = true): self
     {
         $available_proponent_types = ['Coletivo', 'MEI', 'Pessoa Jurídica', 'Pessoa Física'];
 
@@ -200,11 +232,14 @@ class OpportunityBuilder extends Builder
         }
 
         $this->instance->registrationProponentTypes = $proponent_types;
+        if($save) {
+            $this->instance->save($flush);
+        }
 
         return $this;
     }
 
-    public function addRange(?string $label = null, ?int $limit = 0, ?int $value = 0): self
+    public function addRange(?string $label = null, ?int $limit = 0, ?int $value = 0, bool $save = true, bool $flush = true): self
     {
         $ranges = $this->instance->registrationRanges ?: [];
 
@@ -215,11 +250,14 @@ class OpportunityBuilder extends Builder
         ];
 
         $this->instance->registrationRanges = $ranges;
+        if($save) {
+            $this->instance->save($flush);
+        }
 
         return $this;
     }
 
-    public function setRanges(array $ranges = [], int $number_of_random_ranges = 3): self
+    public function setRanges(array $ranges = [], int $number_of_random_ranges = 3, bool $save = true, bool $flush = true): self
     {
         if (empty($ranges)) {
             for ($i = 0; $i < $number_of_random_ranges; $i++) {
@@ -232,6 +270,9 @@ class OpportunityBuilder extends Builder
         }
 
         $this->instance->registrationRanges = $ranges;
+        if($save) {
+            $this->instance->save($flush);
+        }
 
         return $this;
     }
@@ -259,5 +300,26 @@ class OpportunityBuilder extends Builder
         $field = $this->getField($identifier, $opportunity);
 
         return $field ? $field->fieldName : null;
+    }
+
+    public function createDraftRegistrations(int $number_of_registrations = 10, ?string $category = null, ?string $proponent_type = null, ?string $range = null, array $data = [], bool $fill_requered_properties = true, bool $save = true, bool $flush = true): static
+    {
+        $this->registrationDirector->createDraftRegistrations($this->instance, $number_of_registrations, $category, $proponent_type, $range, $data, $fill_requered_properties, $save, $flush);
+
+        return $this;
+    }
+
+    public function createSentRegistrations(int $number_of_registrations = 10, ?string $category = null, ?string $proponent_type = null, ?string $range = null, array $data = []): static
+    {
+        $this->registrationDirector->createSentRegistrations($this->instance, $number_of_registrations, $category, $proponent_type, $range, $data);
+
+        return $this;
+    }
+
+    public function createSentRegistration(array $data): static
+    {
+        $this->registrationDirector->createSentRegistration($this->instance, $data);
+
+        return $this;
     }
 }

@@ -150,7 +150,7 @@ $this->import("
             </template>
 
             <template #button="modal">
-                <button type="button" @click="modal.open(); initFormData('sendSuggestionMessage')" class="button button--primary"><?= i::__('Contato') ?></button>
+                <button v-if="!disableContact" type="button" @click="modal.open(); initFormData('sendSuggestionMessage')" class="button button--primary"><?= i::__('Contato') ?></button>
             </template>
         </mc-modal>
     </div>

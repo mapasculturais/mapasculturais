@@ -36,22 +36,28 @@ return [
 
     'app.log.hook.traceDepth' => 5,
      
-    // 'app.log.hook'          => true,
-    // 'app.log.query'         => true,
-    // 'app.log.requestData'   => true,
-    // 'app.log.texts'         => true,
-    // 'app.log.translations'  => true,
-    // 'app.log.apiCache'      => true,
-    // 'app.log.apiDql'        => true,
-    // 'app.log.assets'        => true,
-    // 'app.log.auth'          => true,
-
-    // 'app.log.components'    => true,
-    // 'app.log.assetManager'  => true,
+    // 'app.log.query' => true,
+    // 'app.log.hook' => true,
+    // 'app.log.requestData' => true,
+    // 'app.log.texts' => true,
+    // 'app.log.translations' => true,
+    // 'app.log.apiCache' => true,
+    // 'app.log.apiDql' => true,
+    // 'app.log.assets' => true,
+    // 'app.log.auth' => true,
     
-    // 'app.log.jobs'          => true,
-    // 'app.log.pcache'        => true,
-    // 'app.log.pcache.users'  => true,
+    // 'app.log.evaluations' => true,
+    // 'app.log.summary' => true,
+    // 'app.log.syncRegistrations' => true,
+
+    // 'app.log.lockfile' => true,
+
+    // 'app.log.components' => true,
+    // 'app.log.assetManager' => true,
+
+    // 'app.log.jobs' => true,
+    // 'app.log.pcache' => true,
+    // 'app.log.pcache.users' => true,
 
     'app.queryLogger' => env('LOG_QUERYLOG_CLASS', null)
 

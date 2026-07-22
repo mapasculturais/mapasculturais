@@ -6,21 +6,33 @@
  */
 
 use MapasCulturais\i;
+use SealExemption\SealExemptionService;
 
 $this->layout = 'entity';
+
+$opportunity = $this->getOpportunityFromEntity($entity);
+$has_seal_exemption_config = SealExemptionService::hasActiveConfig(
+    $opportunity->evaluationMethodConfiguration?->sealExemptionConfig
+);
+$required_fields = 'number,committeeSequentialNumber,valuerUserId,valuerAgentId,evaluator,result,status,delete';
+$visible_fields = "['agent', 'number', 'committeeSequentialNumber', 'valuerUserId', 'valuerAgentId', 'evaluator', 'result', 'status', 'coletivo', 'goalStatuses']";
+if ($has_seal_exemption_config) {
+    $required_fields = 'number,committeeSequentialNumber,valuerUserId,valuerAgentId,evaluator,result,status,sealExemptionStatus,sealExemptionTimestamp,delete';
+    $visible_fields = "['agent', 'number', 'committeeSequentialNumber', 'valuerUserId', 'valuerAgentId', 'evaluator', 'result', 'status', 'sealExemption', 'coletivo', 'goalStatuses']";
+}
 
 $this->import('
     mc-export-spreadsheet
     mc-status
     entity-table
-    mc-confirm-button
+    mc-modal
 ')
 ?>
 <div :class="['opportunity-evaluations-table', 'grid-12', classes]">
 
     <template v-if="!isFuture()">
         <div class="col-12">
-            <entity-table controller="opportunity" show-index :select="defaultSelect" :raw-processor="rawProcessor" :identifier="identifier" endpoint="findEvaluations" type="registration" :headers="headers" :phase="phase" :visible="['agent', 'number', 'result', 'status', 'evaluator', 'coletivo', 'goalStatuses']" :query="query" :limit="100" @clear-filters="clearFilters" @remove-filter="removeFilter($event)" :filtersDictComplement="filtersDictComplement"> 
+            <entity-table controller="opportunity" show-index :select="defaultSelect" :raw-processor="rawProcessor" :identifier="identifier" endpoint="findEvaluations" type="registration" :headers="headers" :phase="phase" required="<?= $required_fields ?>" :visible="<?= $visible_fields ?>" :query="query" :limit="100" @clear-filters="clearFilters" @remove-filter="removeFilter($event)" :filtersDictComplement="filtersDictComplement">
                 <template #title>
                     <h2 v-if="isPast()"><?= i::__("As avaliações já estão encerradas") ?></h2>
                     <h2 v-if="isHappening()"><?= i::__("As avaliações estão em andamento") ?></h2>
@@ -51,7 +63,7 @@ $this->import('
                                     :param="phase.opportunity.id"><?= i::__("Enviar avaliações") ?></mc-link>
                             </div>
                             <div v-if="user == 'all'">
-                                <mc-export-spreadsheet :owner="phase.opportunity" endpoint="evaluations" :params="{entityType: 'registrationEvaluation', '@select': 'projectName,category,owner.{name},number,score,proponentType,range,eligible,goalStatuses,user,result,status,evaluationData', query}" group="evaluations-spreadsheets"></mc-export-spreadsheet>
+                                <mc-export-spreadsheet :owner="phase.opportunity" endpoint="evaluations" :params="{entityType: 'registrationEvaluation', '@select': 'projectName,category,owner.{name},number,score,proponentType,range,eligible,goalStatuses,committeeSequentialNumber,valuerUserId,valuerAgentId,user,result,status,evaluationData', query}" group="evaluations-spreadsheets"></mc-export-spreadsheet>
                             </div>
                         </div>
                     </div>
@@ -66,6 +78,10 @@ $this->import('
 
                         <div :class="hasControl ? 'col-3' : 'col-4'">
                             <mc-select :options="status" v-model:default-value="selectedStatus" @change-option="filterByStatus($event, entities)" placeholder="<?= i::__("Estado da avaliação") ?>" hide-filters></mc-select>
+                        </div>
+
+                        <div v-if="hasControl && hasSealExemptionConfig" class="col-3">
+                            <mc-select :options="sealExemptionStatusOptions" v-model:default-value="sealExemptionFilter" @change-option="filterBySealExemption($event, entities)" placeholder="<?= i::__("Isenção por selos") ?>" hide-filters></mc-select>
                         </div>
 
                         <div class="field" :class="hasControl ? 'col-3' : 'col-4'">
@@ -106,8 +122,21 @@ $this->import('
                     <a :href="createUrl(entity)">{{entity.number}}</a>
                 </template>
 
+                <template #committeeSequentialNumber="{entity}">
+                    <span v-if="entity.valuer?.committeeSequentialNumber">#{{ entity.valuer.committeeSequentialNumber }}</span>
+                    <span v-else>-</span>
+                </template>
+
+                <template #valuerUserId="{entity}">
+                    {{ entity.valuer?.user ?? '-' }}
+                </template>
+
+                <template #valuerAgentId="{entity}">
+                    {{ entity.valuer?.id ?? '-' }}
+                </template>
+
                 <template #result="{entity}">
-                    {{getResultString(entity.evaluation?.resultString)}}
+                    {{getResultString(entity)}}
                 </template>
 
                 <template #coletivo="{entity}">
@@ -116,29 +145,95 @@ $this->import('
                 </template>
 
                 <template #status="{entity}">
-                    <mc-status :status-name="getStatus(entity.evaluation?.status)"></mc-status>
+                    <mc-status :status-name="getStatus(entity)"></mc-status>
+                </template>
+
+                <template #sealExemption="{entity}">
+                    <span
+                        v-if="entity.sealExemptionStatus === 'granted'"
+                        class="seal-exemption-badge seal-exemption-badge--granted"
+                        v-tooltip="sealExemptionTooltip(entity)"
+                    >
+                        <mc-icon name="circle-checked"></mc-icon>
+                        <span class="seal-exemption-badge__label"><?= i::__('Dispensada por selos') ?></span>
+                    </span>
+                    <span
+                        v-else-if="entity.sealExemptionStatus === 'agent_missing'"
+                        class="seal-exemption-badge seal-exemption-badge--warning"
+                        v-tooltip="text('semAgenteTooltip')"
+                    >
+                        <mc-icon name="exclamation"></mc-icon>
+                        <?= i::__('Sem agente') ?>
+                    </span>
+                    <span v-else class="seal-exemption-badge seal-exemption-badge--not-granted">
+                        <?= i::__('Não isenta') ?>
+                    </span>
                 </template>
 
                 <template #goalStatuses="{entity}">
                     <a v-if="entity.goalStatuses" :href="entity.singleUrl + '#ficha'" class="entity-table__goals">{{entity.goalStatuses['10']}}/{{entity.goalStatuses.numGoals}} <?= i::__('concluídas') ?></a>
                 </template>
 
+                <template #appliedPointReward="{entity}">
+                    <template v-if="entity.appliedPointReward && entity.appliedPointReward.raw != null">
+                        <div class="entity-table__applied-point-reward">
+                            <template v-if="entity.appliedPointReward.type === 'fixed'">
+                                <span v-if="entity.appliedPointReward.fixed > 0">+{{ entity.appliedPointReward.fixed }} pt(s)</span>
+                                <span v-else>&nbsp;</span>
+                            </template>
+                            <template v-else>
+                                <span v-if="entity.appliedPointReward.percentage > 0">{{ entity.appliedPointReward.percentage }}%</span>
+                                <span v-else>&nbsp;</span>
+                            </template>
+                        </div>
+                    </template>
+                    <span v-else>&nbsp;</span>
+                </template>
+
                 <template #delete="{entity, refresh}">
-                    <mc-confirm-button 
-                        v-if="hasControl && entity.evaluation && (entity.evaluation.status === 0 || entity.evaluation.status === 1 || entity.evaluation.status === 2)"
-                        @confirm="deleteEvaluation(entity, refresh)">
+                    <mc-modal
+                        v-if="canDeleteEvaluation(entity)"
+                        classes="opportunity-evaluations-table__delete-modal"
+                        :title="`<?= i::esc_attr__('Excluir avaliação') ?> ${entity.number}`">
                         <template #button="modal">
-                            <button 
-                                @click="modal.open()"
+                            <button
+                                @click="openDeleteModal(entity, refresh, modal)"
                                 class="button button--icon button--text-danger button--sm"
                                 v-tooltip="'<?= i::__('Excluir avaliação') ?>'">
                                 <mc-icon name="trash"></mc-icon>
                             </button>
                         </template>
-                        <template #message="message">
-                            <?= i::__('Tem certeza que deseja excluir esta avaliação?') ?>
+
+                        <div class="opportunity-evaluations-table__delete-modal-content">
+                            <div class="opportunity-evaluations-table__delete-modal-description">
+                                <p v-if="entity.evaluation && (entity.evaluation.status === 0 || entity.evaluation.status === 1 || entity.evaluation.status === 2)">
+                                    <span class="bold"><?= i::__('Excluir avaliação') ?>:</span>
+                                    <?= i::__('remove apenas o registro da avaliação selecionada.') ?>
+                                </p>
+
+                                <p>
+                                    <span class="bold"><?= i::__('Excluir avaliação e avaliador') ?>:</span>
+                                    <?= i::__('remove também o avaliador vinculado NESTA AVALIAÇÃO.') ?>
+                                </p>
+
+                                <p class="semibold"><?= i::__('Após confirmar, a ação não pode ser desfeita.') ?></p>
+                            </div>
+                        </div>
+
+                        <template #actions="{close}">
+                            <button class="button button--sm button--primary-outline" @click="cancelDelete(close)">
+                                <?= i::__('Cancelar') ?>
+                            </button>
+
+                            <button v-if="entity.evaluation && (entity.evaluation.status === 0 || entity.evaluation.status === 1 || entity.evaluation.status === 2)" class="button button--sm button--secondary" @click="confirmDeleteEvaluation(close)">
+                                <?= i::__('Excluir avaliação') ?>
+                            </button>
+
+                            <button class="button button--sm button--secondary" @click="confirmDeleteEvaluationAndValuer(close)">
+                                <?= i::__('Excluir avaliação e avaliador') ?>
+                            </button>
                         </template>
-                    </mc-confirm-button>
+                    </mc-modal>
                 </template>
 
                 <template #icon-text="popover">

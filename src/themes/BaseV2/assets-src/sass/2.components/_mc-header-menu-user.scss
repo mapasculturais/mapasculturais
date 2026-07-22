@@ -33,6 +33,21 @@
                 font-size: size(14);
                 line-height: size(14);
                 white-space: nowrap;
+                display: flex;
+                flex-direction: column;
+                gap: size(2);
+                align-items: flex-end;
+                max-width: size(220);
+                width: 100%;
+                overflow: hidden;
+                text-overflow: ellipsis;
+
+                > * {
+                    max-width: 100%;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                    white-space: nowrap;
+                }
 
                 @media (max-width: size(1150)) {
                     display: none;

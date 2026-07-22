@@ -20,6 +20,18 @@ app.component('entity-address-form-internacional', {
             default: false,
         },
         hasPublicLocation: Boolean,
+        requiredFields: {
+            type: Object,
+            default: () => ({}),
+        },
+        hasErrors: {
+            type: Boolean,
+            default: false,
+        },
+        missingKeys: {
+            type: Array,
+            default: () => [],
+        },
     },
 
     setup(props, { slots }) {
@@ -116,6 +128,18 @@ app.component('entity-address-form-internacional', {
             const n = Number(level);
             if (Number.isNaN(n)) return null;
             return this[`level${n}`];
+        },
+
+        addressKeyForLevel(level) {
+            return `address_level${Number(level)}`;
+        },
+
+        isRequired(addressKey) {
+            return !!this.requiredFields?.[addressKey];
+        },
+
+        hasError(addressKey) {
+            return this.hasErrors && this.missingKeys.includes(addressKey);
         },
 
         // Parser da árvore de níveis → { value, label, subLevels[] }

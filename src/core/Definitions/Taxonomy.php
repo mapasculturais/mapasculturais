@@ -2,81 +2,89 @@
 namespace MapasCulturais\Definitions;
 
 /**
- * This class defines a Taxonomy.
+ * Define uma Taxonomia.
  *
- * You need to register the taxonomy definition in the application to it take effects.
+ * Você precisa registrar a definição da taxonomia na aplicação para que ela tenha efeito.
  *
- * If you want to restrict the terms that the user can use, pass an array of terms to the $restrictedTerms constructor param.
+ * Se você quiser restringir os termos que o usuário pode usar, passe um array de termos para o parâmetro $restrictedTerms do construtor.
  *
- * @property-read int $id Taxonomy Id
- * @property-read string $slug Taxonomy Slug
- * @property-read string $name Taxonomy Name
- * @property-read bool $allowInsert Can user insert terms in this taxonomy?
- * @property-read bool $required Is this taxonomy required?
- * @property-read array $restrictedTerms List of terms allowed to this taxonomy. If this list is empty any term is allowed.
- * @property-read string $description Taxonomy Description
+ * @property-read int $id ID da Taxonomia
+ * @property-read string $slug Slug da Taxonomia
+ * @property-read string $name Nome da Taxonomia
+ * @property-read bool $allowInsert O usuário pode inserir termos nesta taxonomia?
+ * @property-read bool $required Esta taxonomia é obrigatória?
+ * @property-read array $restrictedTerms Lista de termos permitidos para esta taxonomia. Se esta lista estiver vazia, qualquer termo é permitido.
+ * @property-read string $description Descrição da Taxonomia
+ * 
+ * @package MapasCulturais\Definitions
  */
 class Taxonomy extends \MapasCulturais\Definition{
 
     /**
-     * The taxonomy Id saved in Term Entity.
+     * ID da taxonomia salvo na Entidade Term.
      * @var int
      */
     public $id;
 
     /**
-     * The toxonomy slug (like "tag")
+     * Slug da taxonomia (ex: "tag")
      * @var string
      */
     public $slug;
 
     /**
-     * The toxonomy name (like "Área de Atuação")
+     * Nome da taxonomia (ex: "Área de Atuação")
      * @var string
      */
     public $name;
 
     /**
-     * If allowInsert is setted to true, the users will be allowed to creates new terms for this taxonomy.
+     * Se allowInsert for true, os usuários poderão criar novos termos para esta taxonomia.
      * @var bool
      */
     public $allowInsert;
 
     /**
-     * The description of this taxonomy.
+     * Descrição desta taxonomia.
      * @var string
      */
     public $description;
 
     /**
-     * List of terms allowed to this taxonomy. If this list is empty any term is allowed.
+     * Lista de termos permitidos para esta taxonomia. Se esta lista estiver vazia, qualquer termo é permitido.
      * @var array
      */
     public $restrictedTerms = [];
 
 
     /**
-     * List of entities allowed for this taxonomy. If the list is empty, any term is allowed.
+     * Lista de entidades permitidas para esta taxonomia. Se a lista estiver vazia, qualquer entidade é permitida.
      * @var array
      */
     public $entities = [];
 
 
+    /**
+     * Indica se a taxonomia é obrigatória
+     * @var bool
+     */
     public $required = false;
 
     /**
-     * Creates the new Taxonomy Definition.
+     * Cria uma nova Definição de Taxonomia.
      *
-     * If you just creates a new Taxonomy Definition it will do nothing.
+     * Se você apenas criar uma nova Definição de Taxonomia, ela não fará nada.
      *
-     * To the new taxonomy take effects, you need to register it in the application.
+     * Para que a nova taxonomia tenha efeito, você precisa registrá-la na aplicação.
      *
-     * If you want to restrict the terms that the user can use, pass an array of terms to the $restrictedTerms param.
+     * Se você quiser restringir os termos que o usuário pode usar, passe um array de termos para o parâmetro $restrictedTerms.
      *
-     * @param int $id The taxonomy Id saved in Term Entity.
-     * @param string $slug The taxonomy slug (like "tag")
-     * @param string $description The description of this taxonomy.
-     * @param array|boolean $restrictedTerms array with the terms allowed to this taxonomy or false to allow terms to be inserted by the user.
+     * @param int $id ID da taxonomia salvo na Entidade Term.
+     * @param string $slug Slug da taxonomia (ex: "tag")
+     * @param string $description Descrição desta taxonomia.
+     * @param array|boolean $restrictedTerms array com os termos permitidos para esta taxonomia ou false para permitir que termos sejam inseridos pelo usuário.
+     * @param bool $taxonomy_required Indica se a taxonomia é obrigatória
+     * @param array $entities Lista de entidades permitidas para esta taxonomia
      *
      * @see \MapasCulturais\App::registerTaxonomy()
      * @see \MapasCulturais\App::getRegisteredTaxonomyById()

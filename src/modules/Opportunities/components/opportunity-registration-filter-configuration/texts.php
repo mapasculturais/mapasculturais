@@ -14,4 +14,9 @@
     'Faixa/Linha' => i::__('Faixa/Linha'),
     'Faixas/Linhas' => i::__('Faixas/Linhas'),
     'Distribuição' => i::__('Distribuição'),
+    'Data de envio' => i::__('Data de envio'),
+    'de' => i::__('de'),
+    'até' => i::__('até'),
+    'A data inicial não pode ser maior que a data final' => i::__('A data inicial não pode ser maior que a data final'),
+    'A data final não pode ser menor que a data inicial' => i::__('A data final não pode ser menor que a data inicial')
  ];

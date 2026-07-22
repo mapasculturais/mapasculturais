@@ -13,6 +13,7 @@ class AgentBuilder extends Builder
         Traits\AgentRelations,
         Traits\SealRelations,
         Traits\Taxonomies,
+        Traits\EntityFile,
         Traits\EntityType,
         Traits\EntityParent;
 
@@ -42,6 +43,13 @@ class AgentBuilder extends Builder
         $this->instance->shortDescription = $this->faker->text(400);
 
         $this->addRandomTerms('area');
+
+        return $this;
+    }
+
+    public function addFileGroup(string $group_name): self
+    {
+        $this->addFileToInstance($group_name);
 
         return $this;
     }

@@ -89,6 +89,22 @@ $this->includeAngularEntityAssets($entity);
             <?php endif; ?>
 					</p>
 
+                    <?php if ($this->isEditable()): ?>
+                    <p>
+                        <label>
+                            <input type="checkbox" id="seal-sensitive-toggle" <?= (property_exists($entity, 'sensitive') && $entity->sensitive) ? 'checked' : '' ?> data-confirm-message="<?= \MapasCulturais\i::esc_attr_e('Ao marcar este selo como sensível, ele ficará oculto para o público e visível apenas para administradores, o dono da entidade e gestores de oportunidade. Deseja continuar?') ?>">
+                            <?php \MapasCulturais\i::_e("Selo sensível/LGPD (oculto para o público)"); ?>
+                        </label>
+                        <span class="registration-help"><?php \MapasCulturais\i::_e("Selos sensíveis ficam visíveis apenas para administradores, o dono da entidade e gestores de oportunidade."); ?></span>
+                    </p>
+                    <input type="hidden" id="seal-sensitive-input" class="js-include-editable" data-value="<?= (property_exists($entity, 'sensitive') && $entity->sensitive) ? '1' : '0' ?>">
+                    <?php else: ?>
+                    <p>
+                        <span class="label"><?php \MapasCulturais\i::_e("Selo sensível/LGPD"); ?>:</span>
+                        <?= (property_exists($entity, 'sensitive') && $entity->sensitive) ? \MapasCulturais\i::_e("Sim") : \MapasCulturais\i::_e("Não") ?>
+                    </p>
+                    <?php endif; ?>
+
                     <?php $this->applyTemplateHook('tab-about-service','end'); ?>
                 </div>
                 <?php $this->applyTemplateHook('tab-about-service','after'); ?>

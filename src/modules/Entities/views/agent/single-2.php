@@ -151,6 +151,10 @@ $this->breadcrumb = [
                                         <entity-seals :entity="entity" :editable="entity.currentUserPermissions?.createSealRelation" classes="col-12" title="<?php i::esc_attr_e('Verificações'); ?>"></entity-seals>
                                         <?php $this->applyTemplateHook('single2-entity-info-entity-seals', 'after') ?>
                                     </div>
+                                    <entity-files-list v-if="entity.files.downloads != null" :entity="entity" classes="col-12" group="downloads" title="<?php i::esc_attr_e('Arquivos para download'); ?>"></entity-files-list>
+                                    <entity-links :entity="entity" classes="col-12" title="<?php i::_e('Links'); ?>"></entity-links>
+                                    <entity-gallery-video :entity="entity" classes="col-12"></entity-gallery-video>
+                                    <entity-gallery :entity="entity" classes="col-12"></entity-gallery>
                                     <complaint-suggestion :entity="entity" classes="col-12"></complaint-suggestion>
 
                                 </mc-tab>
@@ -160,7 +164,19 @@ $this->breadcrumb = [
                                         <template #content>
                                             <div class="grid-12">
                                                 <agent-data-2 :entity="entity"></agent-data-2>
-                                                <country-address-view v-if="entity.publicLocation" :entity="entity" class="col-12"></country-address-view>
+
+                                                <?php $this->applyTemplateHook('single2-agent-documents', 'before') ?>
+                                                <template v-if="entity.currentUserPermissions.viewPrivateData">
+                                                    <div v-if="entity.files?.['docs-certidao-fiscal'] || entity.files?.['docs-certidao-trabalhista'] || entity.files?.['docs-certidao-contas']" class="col-12 agent-data">
+                                                        <div class="agent-data__secondTitle">
+                                                            <h4 class="title bold"><?php i::_e("Documentos e Certidões") ?></h4>
+                                                        </div>
+                                                        <entity-files-list v-if="entity.files?.['docs-certidao-fiscal']" :entity="entity" classes="col-12 docs-anexo-list" group="docs-certidao-fiscal" seal-prop="certidaoFiscalAnexo" title="<?php i::_e('Certidão de Regularidade Fiscal'); ?>"></entity-files-list>
+                                                        <entity-files-list v-if="entity.files?.['docs-certidao-trabalhista']" :entity="entity" classes="col-12 docs-anexo-list" group="docs-certidao-trabalhista" seal-prop="certidaoTrabalhistaAnexo" title="<?php i::_e('Certidão de Regularidade Trabalhista'); ?>"></entity-files-list>
+                                                        <entity-files-list v-if="entity.files?.['docs-certidao-contas']" :entity="entity" classes="col-12 docs-anexo-list" group="docs-certidao-contas" seal-prop="certidaoPrestacaoContasAnexo" title="<?php i::_e('Certidão de Prestação de Contas'); ?>"></entity-files-list>
+                                                    </div>
+                                                </template>
+                                                <?php $this->applyTemplateHook('single2-agent-documents', 'after') ?>
                                             </div>
                                         </template>
                                     </mc-card>
@@ -188,6 +204,14 @@ $this->breadcrumb = [
                             <?php $this->applyTemplateHook('single2-entity-info-mc-share-links', 'before') ?>
                             <mc-share-links classes="col-12" title="<?php i::esc_attr_e('Compartilhar'); ?>" text="<?php i::esc_attr_e('Veja este link:'); ?>"></mc-share-links>
                             <?php $this->applyTemplateHook('single2-entity-info-mc-share-links', 'after') ?>
+
+                            <?php $this->applyTemplateHook('single2-entity-info-entity-admins', 'before') ?>
+                            <entity-admins :entity="entity" classes="col-12"></entity-admins>
+                            <?php $this->applyTemplateHook('single2-entity-info-entity-admins', 'after') ?>
+
+                            <?php $this->applyTemplateHook('single2-entity-info-entity-owner', 'before') ?>
+                            <entity-owner classes="col-12" title="<?php i::esc_attr_e('Publicado por'); ?>" :entity="entity"></entity-owner>
+                            <?php $this->applyTemplateHook('single2-entity-info-entity-owner', 'after') ?>
                         </div>
                     </aside>
                 </mc-container>

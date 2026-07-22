@@ -15,7 +15,7 @@ $this->import('
     mc-multiselect
     mc-tag-list
     select-entity
-    opportunity-registration-filter-configuration
+    registration-distribution-rule
 ');
 ?>
 <div class="opportunity-evaluation-committee">
@@ -27,6 +27,13 @@ $this->import('
                     <mc-icon name="add"></mc-icon>
                     <?php i::_e('Adicionar pessoa avaliadora') ?>
                 </button>
+            </template>
+
+            <template #entityInfo="{entity}">
+                <span class="icon">
+                    <mc-avatar :entity="entity" size="xsmall"></mc-avatar>
+                </span>
+                <span class="label"> #{{entity.id}} - {{entity.name}}<template v-if="entity.user?.email"> - {{entity.user.email}}</template></span>
             </template>
         </select-entity>
         <?php $this->applyComponentHook('select-entity', 'end'); ?>
@@ -59,6 +66,7 @@ $this->import('
                 <div class="opportunity-evaluation-committee__card-header-content">
                     <div class="opportunity-evaluation-committee__card-header-content-info">
                         <small>
+                            <strong><?= i::__('Nº Avaliador')?>:</strong> #{{infoReviewer.metadata.committeeSequentialNumber || '-'}} | 
                             <strong><?= i::__('E-mail')?>:</strong> {{infoReviewer.agent.user.email}} | 
                             <strong><?= i::__('ID Agente')?>:</strong> #{{infoReviewer.agent.id}} | 
                             <strong><?= i::__('ID Usuário')?>:</strong> #{{infoReviewer.agent.user.id}}
@@ -117,28 +125,74 @@ $this->import('
             </div>
 
             <div class="opportunity-evaluation-committee__card-content" v-if="infoReviewer.isContentVisible">
-                <opportunity-registration-filter-configuration
-                    :entity="entity"
-                    v-model:default-value="fetchConfigs[infoReviewer.agent.id]"
-                    :excludeFields="excludeFields"
-                    @updateExcludeFields="$emit('updateExcludeFields', $event)"
-                    :info-reviewer="infoReviewer"
+                <registration-distribution-rule
+                    :opportunity="entity.opportunity"
+                    v-model="evaluatorDistributionRules[infoReviewer.agentUserId]"
+                    :parent-filters="commissionDistributionRule"
+                    :disable-filters="evaluatorDisabledFilters"
+                    enable-filter-by-number
+                    enable-filter-by-sent-timestamp
                     class="opportunity-evaluation-committee__card-filter"
-                    useDistributionField />
+                    @update:modelValue="onEvaluatorDistributionRuleChange($event, infoReviewer)"
+                    @update:parentFilters="onParentFiltersUpdate($event)"
+                />
+
+                <div class="opportunity-evaluation-committee__registration-list">
+                    <mc-toggle
+                        v-model="showRegistrationListFlag[infoReviewer.id]"
+                        label="<?= i::esc_attr__('Informar lista de inscrições que este avaliador deve avaliar') ?>"
+                        @update:modelValue="changeShowRegistrationListFlag($event, infoReviewer)"
+                    />
+                    <template v-if="showRegistrationList(infoReviewer)">
+                        <label>
+                            <?= i::__('Lista de inscrições') ?>
+                            <div class='field opportunity-evaluation-committee__registration-list-textarea'>
+                                <textarea 
+                                    v-model="infoReviewer.registrationListText" 
+                                    @change="saveRegistrationList(infoReviewer)" 
+                                    placeholder="<?=  i::esc_attr__('Preencha com os números de inscrição que o avaliador deve avaliar, separados por vírgula.') ?>"
+                                    rows="4"></textarea>
+                            </div>
+                        </label>
+                        <label class="opportunity-evaluation-committee__registration-list__exclusive">
+                            <input 
+                                type="checkbox" 
+                                v-model="infoReviewer.metadata.registrationListExclusive" 
+                                @change="saveRegistrationListExclusive(infoReviewer)">
+                            <?= i::__('não distribuir outras inscrições desta comissão para este avaliador') ?>
+                        </label>
+                    </template>
+                </div>
 
                 <div class="opportunity-evaluation-committee__card-footer">
-                    <mc-confirm-button v-if="infoReviewer.metadata?.summary.sent > 0" @confirm="reopenEvaluations(infoReviewer.agentUserId)">
-                        <template #button="{open}">
-                            <button class="button button--primary" :class="{'disabled' : infoReviewer.metadata.summary.sent <= 0}" @click="open()">
-                                <?php i::_e('Reabrir avaliações') ?>
-                            </button>
-                        </template>
-                        <template #message="message">
-                            <?php i::_e('Você tem certeza que deseja reabrir as avaliações para este avaliador?') ?>
-                        </template>
-                    </mc-confirm-button>
-
                     <div class="opportunity-evaluation-committee__card-footer-actions" v-if="infoReviewer.status !== -5">
+                        <select-entity v-if="!showDisabled" type="agent" :select="queryString" :query="query" @select="replaceReviewer($event, infoReviewer)" openside="down-right" permissions="">
+                            <template #button="{ toggle }">
+                                <button class="opportunity-evaluation-committee__card-footer-button button button--disable button--icon button--sm" @click="toggle()">
+                                    <mc-icon name="exchange"></mc-icon>
+                                    <?php i::_e('Substituir avaliador') ?>
+                                </button>
+                            </template>
+
+                            <template #entityInfo="{entity}">
+                                <span class="icon">
+                                    <mc-avatar :entity="entity" size="xsmall"></mc-avatar>
+                                </span>
+                                <span class="label"> #{{entity.id}} - {{entity.name}}<template v-if="entity.user?.email"> - {{entity.user.email}}</template></span>
+                            </template>
+                        </select-entity>
+                        <mc-confirm-button v-if="infoReviewer.metadata?.summary.sent > 0" @confirm="reopenEvaluations(infoReviewer.agentUserId)">
+                            <template #button="{open}">
+                                <button class="opportunity-evaluation-committee__card-footer-button danger__border button button--icon button--sm" :class="{'disabled' : infoReviewer.metadata.summary.sent <= 0}" @click="open()">
+                                    <mc-icon name="lock-open" class="danger__color" ></mc-icon>
+                                    <?php i::_e('Reabrir avaliações') ?>
+                                </button>
+                            </template>
+                            <template #message="message">
+                                <?php i::_e('Você tem certeza que deseja reabrir as avaliações para este avaliador?') ?>
+                            </template>
+                        </mc-confirm-button>
+
                         <button class="opportunity-evaluation-committee__card-footer-button button button--disable button--icon button--sm" @click="disableOrEnableReviewer(infoReviewer)">
                             <mc-icon name="close"></mc-icon> {{buttonText(infoReviewer.status)}}
                         </button>
@@ -162,6 +216,16 @@ $this->import('
                             </template>
                         </mc-confirm-button>
                     </div>
+
+                    <label>
+                        <?= i::__('Limite de inscrições:') ?>
+                        <div class='field opportunity-evaluation-committee__max-registrations'>
+                            <input 
+                                v-model="infoReviewer.metadata.maxRegistrations" 
+                                @change="saveMaxRegistrations(infoReviewer)" 
+                                type="number">
+                        </div>
+                    </label>
                 </div>
             </div>
         </div>
@@ -180,7 +244,7 @@ $this->import('
                 <span class="icon">
                     <mc-avatar :entity="entity" size="xsmall"></mc-avatar>
                 </span>
-                <span class="label"> #{{entity.id}} - {{entity.name}}</span>
+                <span class="label"> #{{entity.id}} - {{entity.name}}<template v-if="entity.user?.email"> - {{entity.user.email}}</template></span>
             </template>
         </select-entity>
     </div>

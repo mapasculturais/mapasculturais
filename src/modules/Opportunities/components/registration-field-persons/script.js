@@ -69,8 +69,38 @@ app.component('registration-field-persons', {
             }, now ? 0 : this.debounce);
         },
     },
+
+    mounted() {
+        this.normalizePersonsDeficiencies();
+    },
     
     methods: {
+        normalizePersonsDeficiencies() {
+            const persons = this.registration?.[this.prop];
+            if (!Array.isArray(persons)) {
+                return;
+            }
+
+            persons.forEach((person) => {
+                if (!person) {
+                    return;
+                }
+
+                if (person.deficiencies === null || person.deficiencies === undefined) {
+                    person.deficiencies = {};
+                    return;
+                }
+
+                if (Array.isArray(person.deficiencies)) {
+                    const obj = {};
+                    Object.keys(person.deficiencies).forEach((k) => {
+                        obj[k] = person.deficiencies[k];
+                    });
+                    person.deficiencies = obj;
+                }
+            });
+        },
+
         removePerson(person) {
             const persons = this.registration[this.prop];
             this.registration[this.prop] = persons.filter( (_person) => { 
@@ -89,6 +119,8 @@ app.component('registration-field-persons', {
                 fullName: '',
                 socialName: '',
                 cpf: '',
+                cnpj: '',
+                miniCurriculum: '',
                 income: '',
                 education: '',
                 telephone: '',
@@ -96,7 +128,7 @@ app.component('registration-field-persons', {
                 race: '',
                 gender: '',
                 sexualOrientation: '',
-                deficiencies: [],
+                deficiencies: {},
                 comunty: '',
                 area: [],
                 funcao: [],
@@ -109,6 +141,8 @@ app.component('registration-field-persons', {
                 'fullName': 'Nome Completo',
                 'socialName': 'Nome Social',
                 'cpf': 'CPF',
+                'cnpj': 'CNPJ',
+                'miniCurriculum': 'Mini currículo',
                 'income': 'Renda',
                 'education': 'Escolaridade',
                 'telephone': 'Telefone do representante',
@@ -123,7 +157,14 @@ app.component('registration-field-persons', {
             };
 
             const errors = this.registration.__validationErrors[this.prop];
-            return (errors?.some(str => str.toLowerCase().includes(fieldNames[field])) && person[field] == '') ?? false;
+            const needle = fieldNames[field]?.toLowerCase();
+            const hasError = needle && errors?.some(str => str.toLowerCase().includes(needle));
+
+            if (!hasError) {
+                return false;
+            }
+
+            return ['cpf', 'cnpj'].includes(field) || person[field] == '';
         },
 
         save() {

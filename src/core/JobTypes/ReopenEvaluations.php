@@ -5,15 +5,41 @@ use MapasCulturais\App;
 use MapasCulturais\Definitions\JobType;
 use MapasCulturais\Entities\RegistrationEvaluation;
 
+/**
+ * Tipo de job para reabertura de avaliações
+ * 
+ * Este job type é responsável por reabrir avaliações de inscrições
+ * que foram fechadas, permitindo que avaliadores revisem suas avaliações.
+ * 
+ * @package MapasCulturais\JobTypes
+ */
 class ReopenEvaluations extends JobType
 {
+    /**
+     * @const string SLUG Identificador único do tipo de job
+     */
     const SLUG = "reopenEvaluations";
 
+    /**
+     * Gera um ID único para o job
+     * 
+     * @param array $data Dados do job
+     * @param string $start_string String de início
+     * @param string $interval_string String de intervalo
+     * @param int $iterations Número de iterações
+     * @return string ID único do job
+     */
     protected function _generateId(array $data, string $start_string, string $interval_string, int $iterations)
     {
         return "reopenEvaluation:{$data['agentRelation']}".uniqid();
     }
 
+    /**
+     * Executa o job de reabertura de avaliações
+     * 
+     * @param \MapasCulturais\Entities\Job $job Instância do job
+     * @return bool False para indicar que o job não se repete
+     */
     protected function _execute(\MapasCulturais\Entities\Job $job){
         $app = App::i();
 

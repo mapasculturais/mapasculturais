@@ -10,7 +10,9 @@ app.component('entity-card', {
     },
 
     data() {
-        return {}
+        return {
+            expandedDescription: false
+        }
     },
 
     props: {
@@ -43,7 +45,7 @@ app.component('entity-card', {
         showShortDescription() {
             if (this.entity.shortDescription) {
                 if (this.entity.shortDescription.length > 400) {
-                    return this.entity.shortDescription.substring(0, 400) + '...';
+                    return this.entity.shortDescription.substring(0, 400);
                 } else {
                     return this.entity.shortDescription;
                 }
@@ -63,21 +65,10 @@ app.component('entity-card', {
         },
         openSubscriptions() {
             if (this.entity.__objectType == "opportunity") {
-                
                 if (this.entity.registrationFrom && this.entity.registrationTo) {
-                    if (this.entity.isContinuousFlow) {
-                        if (!this.entity.hasEndDate && this.entity.registrationFrom.isFuture()) {
-                            return false; 
-                        }
-                        
-                        if (!this.entity.hasEndDate && this.entity.registrationFrom.isPast()) {
-                            return true; 
-                        }
-                    }
                     return this.entity.registrationFrom.isPast() && this.entity.registrationTo.isFuture();
-                } else {
-                    return false;
                 }
+                return false;
             }
             return false;
         },

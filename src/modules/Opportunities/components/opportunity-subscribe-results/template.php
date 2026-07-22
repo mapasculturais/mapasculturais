@@ -75,4 +75,37 @@ $this->import('
             <opportunity-phase-status :entity="item"  :phases="phases" :tab="tab"></opportunity-phase-status>
         </template>
     </template>
+    <template #after-li="{index, item, step}">
+        <div v-if="!step?.active && item.__objectType === 'evaluationmethodconfiguration' && item?.opportunity?.appealPhase" class="appeal-phase-info">
+           <div class="data-collection">
+                <div>
+                    <small><strong><?= i::__("Recurso") ?></strong></small>
+                </div>
+                <div class="data-collection-dates">
+                    <small>
+                        {{item?.opportunity?.appealPhase?.registrationFrom?.date('2-digit year')}} {{item?.opportunity?.appealPhase?.registrationFrom?.time('numeric')}}
+                    </small>
+                    <small><strong><?= i::__("à") ?></strong></small>
+                    <small>
+                        {{item?.opportunity?.appealPhase?.registrationTo?.date('2-digit year')}} {{item?.opportunity?.appealPhase?.registrationTo?.time('numeric')}}
+                    </small>
+                </div>
+           </div>
+
+           <div class="evaluation">
+                <div>
+                    <small><strong><?= i::__("Avaliação do recurso") ?></strong></small>
+                </div>
+                <div class="evaluation-dates">
+                    <small>
+                        {{item?.opportunity?.appealPhase?.evaluationMethodConfiguration?.evaluationFrom?.date('2-digit year')}} {{item?.opportunity?.appealPhase?.evaluationMethodConfiguration?.evaluationFrom?.time('numeric')}}
+                    </small>
+                    <small><strong><?= i::__("à") ?></strong></small>
+                    <small>
+                        {{item?.opportunity?.appealPhase?.evaluationMethodConfiguration?.evaluationTo?.date('2-digit year')}} {{item?.opportunity?.appealPhase?.evaluationMethodConfiguration?.evaluationTo?.time('numeric')}}
+                    </small>
+                </div>
+           </div>
+        </div>
+    </template>
 </mc-stepper-vertical>

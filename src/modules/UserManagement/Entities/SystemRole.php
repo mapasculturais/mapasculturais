@@ -12,26 +12,34 @@ use MapasCulturais\App;
  *
  * @property-read \MapasCulturais\Definitions\Role $definition
  * 
+ * @property int $id
+ * @property string $slug
+ * @property string $name
+ * @property bool $subsiteContext
+ * @property array $permissions
+ * @property DateTime $createTimestamp
+ * @property DateTime $updateTimestamp
+ * @property int $status
+ * 
  * @ORM\Table(name="system_role")
  * @ORM\Entity
  * @ORM\entity(repositoryClass="MapasCulturais\Repository")
  */
 class SystemRole extends \MapasCulturais\Entity {
-    use Traits\EntitySoftDelete,
-        Traits\EntityDraft;
-
+    use Traits\EntityDraft,
+        Traits\EntityRevision,
+        Traits\EntitySoftDelete;
 
     /**
-     * @var integer
+     * @var int
      *
      * @ORM\Column(name="id", type="integer", nullable=false)
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="SEQUENCE")
      * @ORM\SequenceGenerator(sequenceName="system_role_id_seq", allocationSize=1, initialValue=1)
      */
-    protected $id;
+    public $id;
     
-
     /**
      * @var string
      *
@@ -47,7 +55,7 @@ class SystemRole extends \MapasCulturais\Entity {
     protected $name;
 
     /**
-     * @var string
+     * @var bool
      *
      * @ORM\Column(name="subsite_context", type="boolean", nullable=false)
      */
@@ -55,7 +63,7 @@ class SystemRole extends \MapasCulturais\Entity {
 
     
     /**
-     * @var object
+     * @var array
      *
      * @ORM\Column(name="permissions", type="json", nullable=true)
      */
@@ -76,7 +84,7 @@ class SystemRole extends \MapasCulturais\Entity {
     protected $updateTimestamp;
 
     /**
-     * @var integer
+     * @var int
      *
      * @ORM\Column(name="status", type="smallint", nullable=false)
      */

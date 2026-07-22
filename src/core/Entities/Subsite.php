@@ -96,7 +96,7 @@ class Subsite extends \MapasCulturais\Entity
 
     /**
      * @var \MapasCulturais\Entities\Role[] Role
-     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\Role", mappedBy="subsite", cascade={"remove"}, fetch="EAGER", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\Role", mappedBy="subsite", cascade={"remove"}, fetch="EAGER")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="id", referencedColumnName="subsite_id", onDelete="CASCADE")
      * })
@@ -136,14 +136,14 @@ class Subsite extends \MapasCulturais\Entity
     protected $namespace = 'Subsite';
 
     /**
-     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\SubsiteMeta", mappedBy="owner", cascade={"remove","persist"}, orphanRemoval=true, fetch="EAGER")
+     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\SubsiteMeta", mappedBy="owner", cascade={"remove","persist"}, fetch="EAGER")
      */
     protected $__metadata;
 
     /**
      * @var \MapasCulturais\Entities\SubsiteFile[] Files
      *
-     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\SubsiteFile", fetch="EAGER", mappedBy="owner", cascade={"remove"}, orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\SubsiteFile", fetch="EAGER", mappedBy="owner", cascade={"remove"})
      * @ORM\JoinColumn(name="id", referencedColumnName="object_id", onDelete="CASCADE")
     */
     protected $__files;
@@ -375,7 +375,9 @@ class Subsite extends \MapasCulturais\Entity
         $assets_folder = "assets/{$domain}/";
 
         $app->config['base.assetUrl'] = $app->baseUrl . $assets_folder;
-        $app->assetManager->config['publishPath'] = BASE_PATH . $assets_folder;
+        $config = $app->assetManager->config;
+        $config['publishPath'] = BASE_PATH . $assets_folder;
+        $app->assetManager->config = $config;
 
         // @TODO: passar esta parte abaixo para o tema
         $entidades = $this->entidades_habilitadas ?: ['Agents', 'Projects', 'Spaces', 'Events', 'Opportunities'];

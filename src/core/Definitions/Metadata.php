@@ -6,118 +6,160 @@ use InvalidArgumentException;
 use MapasCulturais\App;
 
 /**
- * This class defines an Entity Metadata.
+ * Define um Metadado de Entidade.
  *
- * @property-read string $key Metadata Key
- * @property-read mixed $default_value The metadata default value
- * @property-read string $label The metadata label
- * @property-read string $type The metadata input type
- * @property-read boolean $is_unique The value of metadata must be unique for the same entity?
- * @property-read string $is_unique_error_message The is_unique error message
- * @property-read boolean $is_required Is this metadata required?
- * @property-read array $config The metadata configuration. This will be extracted to the input
+ * Esta classe define a estrutura e comportamento de um metadado que pode ser
+ * associado a entidades do sistema, incluindo validações, serialização e
+ * configurações de exibição.
+ *
+ * @property-read string $key Chave do Metadado
+ * @property-read mixed $default_value Valor padrão do metadado
+ * @property-read string $label Rótulo do metadado
+ * @property-read string $type Tipo de entrada do metadado
+ * @property-read boolean $is_unique O valor do metadado deve ser único para a mesma entidade?
+ * @property-read string $is_unique_error_message Mensagem de erro para unicidade
+ * @property-read boolean $is_required Este metadado é obrigatório?
+ * @property-read array $config Configuração do metadado. Será extraída para o input
+ * 
+ * @package MapasCulturais\Definitions
  */
 class Metadata extends \MapasCulturais\Definition{
 
     /**
-     * Metadata Key.
+     * Chave do Metadado.
      * @var string
      */
     public $key;
 
     /**
-     * The metadata default value.
+     * Valor padrão do metadado.
      * @var mixed
      */
     public $default_value;
 
     /**
-     * The metadata label.
+     * Rótulo do metadado.
      * @var string
      */
     public $label;
 
     /**
-     * The metadata input type.
+     * Tipo de entrada do metadado.
      * @var string
      */
     public $type;
 
     /**
-     * The value of metadata must be unique for the same entity?
+     * O valor do metadado deve ser único para a mesma entidade?
      * @var boolean
      */
     public $is_unique = false;
 
     /**
-     * The is_unique error message.
+     * Mensagem de erro para unicidade.
      * @var string
      */
     public $is_unique_error_message = '';
 
     /**
-     * Is this metadata required?
+     * Este metadado é obrigatório?
      * @var boolean
      */
     public $is_required = false;
 
     /**
-     * The is_required error message
+     * Mensagem de erro para obrigatoriedade
      * @var string
      */
     public $is_required_error_message = '';
 
     /**
-     * Array of validations where the key is a Respect/Validation call and the value is a error message.
-     * @example to validate a positive integet the key must be 'v::intVal()->positive()'
+     * Array de validações onde a chave é uma chamada Respect/Validation e o valor é uma mensagem de erro.
+     * @example para validar um inteiro positivo a chave deve ser 'v::intVal()->positive()'
      * @var array
      */
     public $_validations= [];
 
 
-    public $private = false;
     /**
-     * The metadata configuration
+     * Indica se o metadado é privado (não visível publicamente)
+     * @var boolean
+     */
+    public $private = false;
+    
+    /**
+     * Configuração do metadado
      * @var array
      */
     public $config = [];
 
+    /**
+     * Função de serialização do valor
+     * @var callable|null
+     */
     public $serialize = null;
 
+    /**
+     * Função de desserialização do valor
+     * @var callable|null
+     */
     public $unserialize = null;
 
+    /**
+     * Disponível para oportunidades
+     * @var boolean
+     */
     public $available_for_opportunities = false;
 
+    /**
+     * Tipo de campo (pode ser diferente do tipo de entrada)
+     * @var string
+     */
     public $field_type;
 
+    /**
+     * Opções para campos do tipo select
+     * @var array
+     */
     public array $options = [];
 
+    /**
+     * Usar chaves numéricas para opções
+     * @var bool
+     */
     public bool $numericKeyValueOptions = false;
 
+    /**
+     * Campo somente leitura
+     * @var bool
+     */
     public bool $readonly = false;
 
+    /**
+     * Dados sensíveis (tratamento especial)
+     * @var bool
+     */
     public bool $sensitive = false;
 
     /**
-     * Creates a new Metadata Definition.
+     * Cria uma nova Definição de Metadado.
      *
-     * To the new Metadata Definition take effects, you need register them in to the application.
+     * Para que a nova Definição de Metadado tenha efeito, você precisa registrá-la na aplicação.
      *
      * <code>
-     * /**
-     *  * $config example
-     * new \MapasCulturais\Definitions\Metadata('age', array(
-     *      'label' => 'Your Age',
+     * // Exemplo de configuração
+     * new \MapasCulturais\Definitions\Metadata('idade', array(
+     *      'label' => 'Sua Idade',
      *      'type' => 'text',
      *      'validations' => array(
-     *          'required' => 'You must inform your age',
-     *          'v::intVal()->min(18)' => 'You must be older than 18'
+     *          'required' => 'Você deve informar sua idade',
+     *          'v::intVal()->min(18)' => 'Você deve ter mais de 18 anos'
      *      )
      * ));
      * </code>
      *
-     * @param string $key the key of the metadata
-     * @param array $config the configuration.
+     * @param string $key a chave do metadado
+     * @param array $config a configuração.
      *
      * @see \MapasCulturais\Validator
      * @see https://github.com/Respect/Validation
@@ -182,6 +224,11 @@ class Metadata extends \MapasCulturais\Definition{
         $this->config = $config;
     }
 
+    /**
+     * Obtém o serializador padrão baseado no tipo do metadado
+     * 
+     * @return callable|null Função de serialização
+     */
     function getDefaultSerializer() {
         $serializers = [
             'boolean' => function($value) {
@@ -246,6 +293,11 @@ class Metadata extends \MapasCulturais\Definition{
         return $serializer;
     }
 
+    /**
+     * Obtém o desserializador padrão baseado no tipo do metadado
+     * 
+     * @return callable|null Função de desserialização
+     */
     function getDefaultUnserializer() {
         $app = App::i();
         $unserializers = [
@@ -334,9 +386,11 @@ class Metadata extends \MapasCulturais\Definition{
     }
 
     /**
-     * Checks if the the metadata validation should be run, even if value is empty
+     * Verifica se a validação do metadado deve ser executada, mesmo se o valor estiver vazio
      * 
-     * @return The validation error message, if metadata validation is required, or false otherwise
+     * @param \MapasCulturais\Entity $entity Entidade dona do metadado
+     * @param mixed $value Valor do metadado
+     * @return string|false Mensagem de erro de validação, se a validação for necessária, ou false caso contrário
      */
     function shouldValidate(\MapasCulturais\Entity $entity, $value) {
         if ($this->is_required) {
@@ -353,11 +407,12 @@ class Metadata extends \MapasCulturais\Definition{
     }
 
     /**
-     * Validates the value with the defined validation rules.
+     * Valida o valor com as regras de validação definidas.
      *
-     * @param mixed $value
+     * @param \MapasCulturais\Entity $entity Entidade dona do metadado
+     * @param mixed $value Valor a ser validado
      *
-     * @return bool|array true if the value is valid or an array of errors
+     * @return bool|array true se o valor for válido ou um array de erros
      */
     function validate(\MapasCulturais\Entity $entity, $value){
         $errors = [];
@@ -391,12 +446,12 @@ class Metadata extends \MapasCulturais\Definition{
     }
 
     /**
-     * Verify that there is no other metadata with the same value and key for the same entity class.
+     * Verifica se não há outro metadado com o mesmo valor e chave para a mesma classe de entidade.
      *
-     * @param \MapasCulturais\Entity $owner the owner of the metadata value
-     * @param type $value the value to check.
+     * @param \MapasCulturais\Entity $owner o dono do valor do metadado
+     * @param mixed $value o valor a verificar.
      *
-     * @return bool true if there is no metadata with the same value, false otherwise.
+     * @return bool true se não houver metadado com o mesmo valor, false caso contrário.
      */
     protected function validateUniqueValue(\MapasCulturais\Entity $owner, $value){
         $app = \MapasCulturais\App::i();
@@ -426,31 +481,31 @@ class Metadata extends \MapasCulturais\Definition{
 
 
     /**
-     * Returns the metadata of this metadata definition.
+     * Retorna os metadados desta definição de metadado.
      *
      * <code>
-     * // example of a select metadata
+     * // exemplo de um metadado select
      * array(
-     *     'label' => 'A select metadata',
+     *     'label' => 'Um metadado select',
      *     'required' => false,
      *     'select' => 'select',
      *     'length' => 255,
      *     'options' => array(
-     *         'a value' => 'A Label',
-     *         'another value' => 'Another Label'
+     *         'um valor' => 'Um Rótulo',
+     *         'outro valor' => 'Outro Rótulo'
      *     )
      * )
      *
-     * // example of a string metadata
+     * // exemplo de um metadado string
      * array(
-     *     'label' => 'A string metadata',
+     *     'label' => 'Um metadado string',
      *     'required' => true,
      *     'select' => 'string',
      *     'length' => null
      * )
      * </code>
      *
-     * @return array array with keys 'required', 'type', 'length', 'options' (if exists) and 'label' (if exists')
+     * @return array array com chaves 'required', 'type', 'length', 'options' (se existir) e 'label' (se existir)
      */
     function getMetadata(){
         $result = [

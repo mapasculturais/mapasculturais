@@ -7,7 +7,9 @@ $opportunity = $this->controller->requestedEntity;
 $data = [];
 
 $evaluation_method_configuration = $opportunity->evaluationMethodConfiguration;
-$statuses_names = $opportunity->statusLabels ?: $evaluation_method_configuration->defaultStatuses;
+$statuses_names = $opportunity->statusLabels
+    ?: $evaluation_method_configuration?->defaultStatuses
+    ?: $opportunity->defaultStatuses;
 
 $data['evaluationStatusDict'] = [
     'simple' => [
@@ -39,7 +41,7 @@ $data['evaluationStatusDict'] = [
 $phase = $this->controller->requestedEntity;
 
 $skipFields = ["previousPhaseRegistrationId", "nextPhaseRegistrationId", "id"];
-$default_select = "agentsData,number,singleUrl,consolidatedResult,score,status,sentTimestamp,createTimestamp,files,owner.{name,geoMesoregiao},editSentTimestamp,editableUntil,editableFields";
+$default_select = "agentsData,number,singleUrl,consolidatedResult,score,status,sentTimestamp,createTimestamp,files,owner.{name,geoMesorregiao,geoEstado,geoMicrorregiao,geoMunicipio,geoPais},editSentTimestamp,editableUntil,editableFields";
 $default_headers = [
     [
         'text' => i::__('inscrição'),
@@ -70,6 +72,26 @@ $default_headers = [
         'text' => i::__('data de envio'),
         'value' => 'sentTimestamp',
     ],
+    [
+        'text' => i::__('Divisão geográfica do responsável – Mesorregião'),
+        'value' => 'owner?.geoMesorregiao',
+    ],
+    [
+        'text' => i::__('Divisão geográfica do responsável – Estado'),
+        'value' => 'owner?.geoEstado',
+    ],
+    [
+        'text' => i::__('Divisão geográfica do responsável – Microrregião'),
+        'value' => 'owner?.geoMicrorregiao',
+    ],
+    [
+        'text' => i::__('Divisão geográfica do responsável – Município'),
+        'value' => 'owner?.geoMunicipio',
+    ],
+    [
+        'text' => i::__('Divisão geográfica do responsável – País'),
+        'value' => 'owner?.geoPais',
+    ],
 ];
 
 if($phase->isReportingPhase || $phase->isFinalReportingPhase) {
@@ -88,8 +110,8 @@ $default_headers[] = [
 
 // Carrega metadados
 $definitions = Registration::getPropertiesMetadata();
-$can_see = function ($def) use ($app) {
-    return $app->user->is('admin') ? true : !(isset($def['private']) && $def['private']);
+$can_see = function ($def) use ($app, $opportunity) {
+    return ($app->user->is('admin') || $opportunity->canUser('@control')) ? true : !(isset($def['private']) && $def['private']);
 };
 
 foreach ($definitions as $field => $def) {

@@ -23,7 +23,18 @@ $this->import('
 			<div class="content__description" v-html="infoRegistration"></div>
 		</div>
 	</div>
-	<div v-if="isOpen && !isPublished && !registrationLimit && !registrationLimitPerOwner" class="col-12 opportunity-subscription__subscription">
+	<!-- Mensagem para oportunidades de divulgação -->
+	<div v-if="entity.publicityOnly" class="col-12 opportunity-subscription__publicity-notice alert helper">
+		<div class="alert__message">
+			<mc-icon name="info-full"></mc-icon>
+			<div class="text">
+				<strong><?= i::__("Oportunidade apenas para divulgação") ?></strong>
+				<p><?= i::__("As inscrições para esta oportunidade não são feitas pela plataforma.") ?></p>
+			</div>
+		</div>
+	</div>
+
+	<div v-if="!entity.publicityOnly && isOpen && !isPublished && !registrationLimit && !registrationLimitPerOwner" class="col-12 opportunity-subscription__subscription">
 		<p class="title"> <?= i::__("Inscreva-se") ?> </p>
 
 		<div v-if="global.auth.isLoggedIn" class="logged">
@@ -40,7 +51,7 @@ $this->import('
 			<!-- Logado -->
 			<form class="logged__form grid-12" @submit.prevent>
 				<div class="col-6 sm:col-12 opportunity-subscription__selectAgents" v-if="entitiesLength > 1">
-					<select-entity type="agent" openside="down-right" :query="{'type': 'EQ(1)'}" select="name,files.avatar,endereco,location" @fetch="fetch($event)" @select="selectAgent($event)" classes="opportunity-subscription__popover">
+					<select-entity type="agent" openside="down-right" :createNew="canCreateIndividualAgent" :create-new-type="1" :query="{'type': 'EQ(1)'}" select="name,files.avatar,endereco,location" @fetch="fetch($event)" @select="selectAgent($event)" classes="opportunity-subscription__popover">
 						<template #button="{ toggle }">
 							<span v-if="!agent" class="fakeInput" @click="toggle()">
 								<div class="fakeInput__img">
@@ -58,7 +69,7 @@ $this->import('
 					</select-entity>
 				</div>
 				<div class="col-6 sm:col-12 opportunity-subscription__selectAgents" v-if="selectAgentRelationColetivo">
-					<select-entity type="agent" openside="down-right" :query="{'type': 'EQ(2)'}" select="name,files.avatar,endereco,location,type" @fetch="fetch($event)" @select="selectAgent($event)" classes="opportunity-subscription__popover">
+					<select-entity type="agent" openside="down-right" :createNew="true" :create-new-type="2" :query="{'type': 'EQ(2)'}" select="name,files.avatar,endereco,location,type" @fetch="fetch($event)" @select="selectAgent($event)" classes="opportunity-subscription__popover">
 						<template #button="{ toggle }">
 							<span v-if="!agentCollective" class="fakeInput" @click="toggle()">
 								<div class="fakeInput__img">

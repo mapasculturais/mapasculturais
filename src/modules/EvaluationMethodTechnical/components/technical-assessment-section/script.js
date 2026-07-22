@@ -30,6 +30,15 @@ app.component('technical-assessment-section', {
     },
 
     computed: {
+        hasEvaluationsStarted() {
+            return $MAPAS.config.technicalAssessmentsection.hasEvaluationsStarted;
+        },
+        isAdmin() {
+            return $MAPAS.config.technicalAssessmentsection.isAdmin;
+        },
+        canDeleteCriteriaAndSections() {
+            return $MAPAS.config.technicalAssessmentsection.canDeleteCriteriaAndSections;
+        },
         maxScore() {
             let totalScore = 0;
 
@@ -97,6 +106,10 @@ app.component('technical-assessment-section', {
             this.editingSections[sectionId] = !this.editingSections[sectionId];
         },
         delSection(sectionId) {
+            if (!this.canDeleteCriteriaAndSections) {
+                return;
+            }
+
             if(this.entity.criteria) {
                 const criterias = this.entity.criteria.filter(criteria => criteria.sid !== sectionId);
                 this.entity.criteria = criterias;
@@ -106,6 +119,10 @@ app.component('technical-assessment-section', {
             this.save();
         },
         delCriteria(criteriaId) {
+            if (!this.canDeleteCriteriaAndSections) {
+                return;
+            }
+
             this.entity.criteria = this.entity.criteria.filter(criteria => criteria.id !== criteriaId);
             this.save();
         },
@@ -115,23 +132,64 @@ app.component('technical-assessment-section', {
         save(time = 100) {
             clearTimeout(this.autoSaveTimeOut)
             this.autoSaveTimeOut = setTimeout(() => {
-                if(!this.validateErrors()) {
+                if(this.canAutosave()) {
                     this.entity.save()
                 }
             }, time);
         },
+        canAutosave() {
+            const sections = Array.isArray(this.entity.sections) ? this.entity.sections : [];
+            const criteria = Array.isArray(this.entity.criteria) ? this.entity.criteria : [];
+
+            if (!sections.length && !criteria.length) {
+                return true;
+            }
+
+            const validSectionIds = new Set();
+            for (const section of sections) {
+                if (!section?.id || !`${section.name ?? ''}`.trim()) {
+                    return false;
+                }
+                validSectionIds.add(section.id);
+            }
+
+            const sectionsWithCriteria = new Set();
+            for (const criterion of criteria) {
+                if (!criterion?.sid || !validSectionIds.has(criterion.sid)) {
+                    return false;
+                }
+
+                if (!`${criterion.title ?? ''}`.trim()) {
+                    return false;
+                }
+
+                if (criterion.max === null || criterion.max === undefined || criterion.max === '' || Number.isNaN(Number(criterion.max))) {
+                    return false;
+                }
+
+                if (criterion.weight === null || criterion.weight === undefined || criterion.weight === '' || Number.isNaN(Number(criterion.weight))) {
+                    return false;
+                }
+
+                sectionsWithCriteria.add(criterion.sid);
+            }
+
+            return sections.every((section) => sectionsWithCriteria.has(section.id));
+        },
         validateErrors(addCriteria = false) {
             let hasError = false;
 
-            this.entity.sections.forEach((section) => {
-                Object.keys(this.fieldsDict.sections).forEach((field) => {
-                    let _field = this.fieldsDict.sections[field];
-                    if (_field.isRequired && !section[field]) {
-                        this.messages.error(`${this.text('theField')} ${this.text(_field.label)} ${this.text('isRequired')}`)
-                        hasError = true;
-                    }
-                })
-            })
+            if (this.entity.sections && Array.isArray(this.entity.sections)) {
+                this.entity.sections.forEach((section) => {
+                    Object.keys(this.fieldsDict.sections).forEach((field) => {
+                        let _field = this.fieldsDict.sections[field];
+                        if (_field.isRequired && !section[field]) {
+                            this.messages.error(`${this.text('theSection')} ${this.text(_field.label)} ${this.text('isRequired')}`)
+                            hasError = true;
+                        }
+                    })
+                });
+            }
 
             if(this.entity.criteria) {
                 this.entity.criteria.forEach((criterion) => {
@@ -148,6 +206,22 @@ app.component('technical-assessment-section', {
                         }
                     })
                 })
+            }
+
+            if (!addCriteria && this.entity.sections && Array.isArray(this.entity.sections)) {
+                const criteria = Array.isArray(this.entity.criteria) ? this.entity.criteria : [];
+
+                this.entity.sections.forEach((section) => {
+                    const hasCriteriaForSection = criteria.some(criterion => criterion.sid === section.id);
+
+                    if (!hasCriteriaForSection) {
+                        const sectionName = section.name || this.text('section');
+                        this.messages.error(
+                            `${this.text('theSection')} ${sectionName} ${this.text('must_have_at_least_one_criterion')}`
+                        );
+                        hasError = true;
+                    }
+                });
             }
 
             return hasError;

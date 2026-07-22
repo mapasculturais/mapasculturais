@@ -78,7 +78,7 @@ app.component('opportunity-phase-config-evaluation' , {
 
             // senão, a data inicial não pode ser enor que a data inicial da fase anterior
             } else {
-                date = this.previousPhase.registrationfrom || this.previousPhase.evaluationfrom;
+                date = this.previousPhase.registrationFrom || this.previousPhase.evaluationFrom;
             }
 
             return date;

@@ -164,7 +164,7 @@ abstract class Opportunity extends \MapasCulturais\Entity
     /**
      * @var MapasCulturais\Entities\RegistrationStep[]
      * 
-     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\RegistrationStep", mappedBy="opportunity", cascade={"remove"}, orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\RegistrationStep", mappedBy="opportunity", cascade={"remove"})
      */
     protected $registrationSteps;
 
@@ -252,14 +252,14 @@ abstract class Opportunity extends \MapasCulturais\Entity
     protected $evaluationMethodConfiguration;
 
     /**
-    * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\OpportunityMeta", mappedBy="owner", cascade={"remove","persist"}, orphanRemoval=true, fetch="EAGER")
+    * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\OpportunityMeta", mappedBy="owner", cascade={"remove","persist"}, fetch="EAGER")
     */
     protected $__metadata;
 
     /**
      * @var OpportunityFile[] Files
      *
-     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\OpportunityFile", mappedBy="owner", cascade={"remove"}, orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\OpportunityFile", mappedBy="owner", cascade={"remove"})
      * @ORM\JoinColumn(name="id", referencedColumnName="object_id", onDelete="CASCADE")
     */
     protected $__files;
@@ -267,7 +267,7 @@ abstract class Opportunity extends \MapasCulturais\Entity
     /**
      * @var OpportunityAgentRelation[] Agent Relations
      *
-     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\OpportunityAgentRelation", mappedBy="owner", cascade={"remove"}, orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\OpportunityAgentRelation", mappedBy="owner", cascade={"remove"})
      * @ORM\JoinColumn(name="id", referencedColumnName="object_id", onDelete="CASCADE")
     */
     protected $__agentRelations;
@@ -276,7 +276,7 @@ abstract class Opportunity extends \MapasCulturais\Entity
     /**
      * @var OpportunityTermRelation[] TermRelation
      *
-     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\OpportunityTermRelation", fetch="LAZY", mappedBy="owner", cascade={"remove"}, orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\OpportunityTermRelation", fetch="LAZY", mappedBy="owner", cascade={"remove"})
      * @ORM\JoinColumn(name="id", referencedColumnName="object_id", onDelete="CASCADE")
     */
     protected $__termRelations;
@@ -285,13 +285,13 @@ abstract class Opportunity extends \MapasCulturais\Entity
     /**
      * @var OpportunitySealRelation[] OpportunitySealRelation
      *
-     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\OpportunitySealRelation", fetch="LAZY", mappedBy="owner", cascade={"remove"}, orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\OpportunitySealRelation", fetch="LAZY", mappedBy="owner", cascade={"remove"})
      * @ORM\JoinColumn(name="id", referencedColumnName="object_id", onDelete="CASCADE")
     */
     protected $__sealRelations;
 
     /**
-     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\OpportunityPermissionCache", mappedBy="owner", cascade={"remove"}, orphanRemoval=true, fetch="EXTRA_LAZY")
+     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\OpportunityPermissionCache", mappedBy="owner", cascade={"remove"}, fetch="EXTRA_LAZY")
      */
     protected $__permissionsCache;
 
@@ -332,6 +332,15 @@ abstract class Opportunity extends \MapasCulturais\Entity
      * @ORM\Column(name="continuous_flow", type="datetime", nullable=true)
      */
     protected $continuousFlow;
+
+    /**
+     * Indica se a oportunidade é apenas para divulgação (sem inscrições na plataforma)
+     * 
+     * @var boolean
+     *
+     * @ORM\Column(name="publicity_only", type="boolean", nullable=false, options={"default": false})
+     */
+    protected $publicityOnly = false;
     
     abstract function getSpecializedClassName();
 
@@ -428,6 +437,20 @@ abstract class Opportunity extends \MapasCulturais\Entity
         } else {
             $this->continuousFlow = null;
         }
+    }
+
+    /**
+     * @return boolean
+     */
+    function getPublicityOnly() {
+        return $this->publicityOnly;
+    }
+
+    /**
+     * @param boolean $value
+     */
+    function setPublicityOnly($value) {
+        $this->publicityOnly = (bool) $value;
     }
     
     function getEvaluationCommittee($return_relation = true){
@@ -779,6 +802,28 @@ abstract class Opportunity extends \MapasCulturais\Entity
     }
 
     function validateRegistrationDates() {
+        // Validação para oportunidades de divulgação
+        if ($this->publicityOnly) {
+            // Datas são obrigatórias
+            if (!$this->registrationFrom || !$this->registrationTo) {
+                return false;
+            }
+            
+            // Não pode ter fluxo contínuo
+            if ($this->isContinuousFlow || $this->continuousFlow) {
+                return false;
+            }
+            
+            // Data final não pode ser nula
+            if ($this->registrationTo === null) {
+                return false;
+            }
+            
+            // Data início deve ser menor que data fim
+            return $this->registrationFrom <= $this->registrationTo;
+        }
+        
+        // Validação normal
         if($this->registrationFrom && $this->registrationTo){
             $shouldValidateRegistrationTo = (!$this->isContinuousFlow) || ($this->isContinuousFlow && $this->hasEndDate);
             if ($shouldValidateRegistrationTo) {
@@ -806,9 +851,24 @@ abstract class Opportunity extends \MapasCulturais\Entity
     function setRegistrationCategories(string|array $categories) {
         $app = App::i();
 
-        $new_categories = $categories;
-        if(is_string($categories) && trim($categories)){
-            $new_categories = Utils::nl2array($categories);
+        if (is_string($categories)) {
+            $new_categories = trim($categories) ? Utils::nl2array($categories) : [];
+        } else {
+            $new_categories = [];
+
+            foreach ($categories as $category) {
+                if (!is_string($category)) {
+                    continue;
+                }
+
+                $category = trim($category);
+
+                if ($category !== '') {
+                    $new_categories[] = $category;
+                }
+            }
+            
+            $new_categories = array_values(array_unique($new_categories));
         }
 
         $removed_categories = array_filter(array_diff($this->registrationCategories, $new_categories));
@@ -946,6 +1006,24 @@ abstract class Opportunity extends \MapasCulturais\Entity
         ]);
 
         return $registration ? true : false;
+    }
+
+
+    /**
+     * Verifica se a oportunidade passada como parâmetro possui inscrições
+     */
+    public function hasRegistrations()
+    {
+        $app = App::i();
+        $conn = $app->em->getConnection();
+
+        $registrations = $conn->fetchAll("SELECT id FROM registration WHERE opportunity_id = $this->id");
+
+        if (count($registrations) >= 1) {
+            return true;
+        }
+
+        return false;
     }
 
     protected function hasFieldOf (string $registration_field, string $value): bool {
@@ -1223,6 +1301,7 @@ abstract class Opportunity extends \MapasCulturais\Entity
                 $newFile->displayOrder = $file->displayOrder;
                 $newFile->conditional = $file->conditional;
                 $newFile->conditionalValue = $file->conditionalValue;
+                $newFile->allowedFileTypes = $file->allowedFileTypes ?? [];
                 $newFile->step = $step->id;
                 $newFile->proponentTypes = $file->proponentTypes;
                 $newFile->registrationRanges = $file->registrationRanges;
@@ -1289,7 +1368,30 @@ abstract class Opportunity extends \MapasCulturais\Entity
             }
 
             // Metadata
+            $first_phase_only_metadata = [
+                'registrationCategories',
+                'registrationRanges',
+                'registrationProponentTypes',
+                'useAgentRelationColetivo',
+                'useAgentRelationInstituicao',
+                'useSpaceRelationIntituicao',
+                'registrationCategDescription',
+                'registrationCategTitle',
+                'projectName',
+                'requestAgentAvatar',
+                'enableQuotasQuestion',
+                'registrationSeals',
+                'introInscricoes',
+                'isContinuousFlow',
+                'hasEndDate',
+                'continuousFlow',
+            ];
+
             foreach($importSource->meta as $key => $value) {
+                if (!$this->isFirstPhase && in_array($key, $first_phase_only_metadata)) {
+                    continue;
+                }
+
                 if($key == 'continuousFlow') {
                     if($importSource->meta->isContinuousFlow && !$importSource->meta->hasEndDate) {
                         $this->$key = isset($value->date) ? new \DateTime($value->date) : null;
@@ -1303,7 +1405,7 @@ abstract class Opportunity extends \MapasCulturais\Entity
                     }
                     continue;
                 }
-                
+
                 if($key == 'registrationTo') {
                     if($importSource->meta->isContinuousFlow && $importSource->meta->hasEndDate) {
                         $this->$key = isset($value->date) ? new \DateTime($value->date) : null;
@@ -1561,6 +1663,7 @@ abstract class Opportunity extends \MapasCulturais\Entity
                 continue;
             }
             $field_validations = [];
+            $agent_file_group = null;
             if(in_array($field->fieldType, ['agent-owner-field', 'agent-collective-field'])) {
                 $agent_properties_metadata = \MapasCulturais\Entities\Agent::getPropertiesMetadata();
                 $agent_field_name = $field->config['entityField'] ?? null;
@@ -1586,6 +1689,11 @@ abstract class Opportunity extends \MapasCulturais\Entity
                 if(in_array($field->config['entityField'], ['longDescription', 'shortDescription'])){
                     $field_type = 'textarea';
                 }
+
+                // Anexos do agente (type=file): entity-file no BaseV2 precisa do FileGroup.
+                if (($agent_field['type'] ?? null) === 'file' && !empty($agent_field['file_group'])) {
+                    $agent_file_group = $agent_field['file_group'];
+                }
                 
                 $field_validations = $agent_field['validations'] ?? [];
                 unset($field_validations['required']);
@@ -1603,6 +1711,10 @@ abstract class Opportunity extends \MapasCulturais\Entity
                 'private' => true,
                 'registrationFieldConfiguration' => $field
             ];
+
+            if ($agent_file_group) {
+                $cfg['file_group'] = $agent_file_group;
+            }
 
             $def = $field->getFieldTypeDefinition();
 
@@ -1713,10 +1825,6 @@ abstract class Opportunity extends \MapasCulturais\Entity
             return false;
         }
 
-        if($this->registrationTo >= new \DateTime){
-            return false;
-        }
-
         return $this->canUser('@control', $user);
     }
 
@@ -1729,6 +1837,13 @@ abstract class Opportunity extends \MapasCulturais\Entity
     }
 
     protected function canUserRemove($user){
+
+        if($this->isContinuousFlow) {
+            if($this->canUser('@control') && !$this->hasRegistrations()) {
+                return true;
+            }
+        }
+        
         if ($this->publishedRegistrations) {
             return false;
         }

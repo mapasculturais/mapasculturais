@@ -46,6 +46,11 @@ app.component('mc-popover', {
         document.addEventListener('mousedown', (event) => {
             let contained = false;
             const slotPopover = document.getElementsByClassName('v-popper__popper');
+            const modalContent = event.target.closest('.modal-container') || event.target.closest('.modal-content');
+
+            if (modalContent) {
+                contained = true;
+            }
 
             for (let popover of slotPopover) {
                 let buttonAriaDescribedby = event.target.getAttribute("aria-describedby") ?? (event.target.closest("a") ? event.target.closest("a").getAttribute("aria-describedby") : null);

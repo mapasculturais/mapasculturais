@@ -19,7 +19,27 @@ app.component('opportunity-phase-config-status', {
         }
     },
 
+    watch: {
+        'phase.id': {
+            immediate: true,
+            handler() {
+                this.refreshStatuses();
+            }
+        },
+
+        'phase.statusLabels': {
+            deep: true,
+            handler() {
+                this.refreshStatuses();
+            }
+        }
+    },
+
     methods: {
+        refreshStatuses() {
+            this.statuses = this.defaultStatuses();
+        },
+
         updateStatus(status) {
             const key = String(status.key);
             if (status.enabled) {
@@ -99,9 +119,5 @@ app.component('opportunity-phase-config-status', {
                 };
             });
         }
-    },
-
-    mounted() {
-        this.statuses = this.defaultStatuses();
     },
 });

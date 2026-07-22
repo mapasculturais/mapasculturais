@@ -60,7 +60,8 @@ app.component('registration-status', {
                 return false;
             }
 
-            return this.registration.status > 1 && this.registration.status < 10;
+
+            return this.registration.status > 1 && this.registration.status <= 10;
         },
 
         opportunity () {
@@ -215,11 +216,11 @@ app.component('registration-status', {
             }
 
             if(registration.status == 0) {
-                return this.text('Não enviada');
+                return this.statuses[registration.status] || this.text('Não enviada');
             }
 
             if(registration.status == 1) {
-                return this.text('Enviada');
+                return this.statuses[registration.status] || this.text('Enviada');
             }
 
             return this.statuses[registration.status];

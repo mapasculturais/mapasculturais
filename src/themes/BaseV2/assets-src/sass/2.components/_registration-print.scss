@@ -5,25 +5,20 @@
     margin: 0 auto;
     position: relative;
 
-    &__button {
-        align-items: center;
-        background-color: transparent;
-        border: none;
-        bottom: size(4);
-        color: var(--mc-low-500);
-        cursor: pointer;
+    &__actions {
         display: flex;
-        font-size: var(--mc-font-size-xxs);
-        gap: size(8);
-        position: absolute;
-        right: 0;
-
-        .iconify {
-            font-size: size(24);
+        gap: size(12);
+        justify-content: flex-end;
+        margin-bottom: size(24);
+        margin-top: size(16);
+        
+        @include mobile {
+            flex-direction: column;
+            gap: size(8);
         }
 
-        @include mobile {
-            bottom: size(36);
+        @media print {
+            display: none;
         }
     }
 

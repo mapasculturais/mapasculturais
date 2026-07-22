@@ -48,12 +48,12 @@ $this->applyComponentHook('.sortOptions', [&$tabs]);
     </template>
     <?php foreach($tabs as $status => $label): ?>
     <?php $this->applyComponentHook($status, 'before') ?>
-    <mc-tab v-if="showTab('<?=$status?>')" cache key="<?$status?>" label="<?=$label?>" slug="<?=$status?>">
+    <mc-tab v-if="showTab('<?=$status?>')" cache key="<?=$status?>" label="<?=$label?>" slug="<?=$status?>">
         <?php $this->applyComponentHook($status, 'begin') ?>
         <mc-entities :name="type + ':<?=$status?>'" :type="type" 
             :select="select"
             :query="queries['<?=$status?>']" 
-            :limit="50" 
+            :limit="limit" 
             :order="queries['<?=$status?>']['@order']"
             watch-query>
             <template #header="{entities}">
@@ -111,7 +111,7 @@ $this->applyComponentHook('.sortOptions', [&$tabs]);
                             <slot name="entity-actions-right" :entity="entity"></slot>
                         </template>
                     </panel--entity-card>
-                    <panel--entity-models-card v-if="entity.__objectType == 'opportunity' && entity.isModel == 1" :key="entity.id" :entity="entity"></panel--entity-models-card>
+                    <panel--entity-models-card v-if="entity.__objectType == 'opportunity' && entity.isModel == 1" :key="entity.id" :entity="entity" :models="opportunitiesModels"></panel--entity-models-card>
                 </slot>
                 <slot name='after-list' :entities="entities" :query="queries['<?=$status?>']"></slot>
             </template>

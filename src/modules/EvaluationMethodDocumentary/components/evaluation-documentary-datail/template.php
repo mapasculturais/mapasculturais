@@ -11,8 +11,14 @@ use MapasCulturais\i;
 <div v-if="evaluationDetails" v-for="(detail, index) in evaluationDetails" class="registration-results__card">
     <div class="registration-results__card-header">
         <div class="registration-results__card-title">
-            <h4 v-if="detail.valuer" class="registration-results__opinion-title bold">
-                <?= i::__('Parecerista: ') ?> {{detail.valuer.name}}
+            <h4 v-if="detail.valuer && detail.committeeSequentialNumber" class="registration-results__opinion-title bold">
+                <?= i::__('Parecerista: ') ?> #{{detail.committeeSequentialNumber}} - ({{detail.valuer.id}} - {{detail.valuer.name}})
+            </h4>
+            <h4 v-else-if="detail.valuer" class="registration-results__opinion-title bold">
+                <?= i::__('Parecerista: ') ?> #{{index+1}} - ({{detail.valuer.id}} - {{detail.valuer.name}})
+            </h4>
+            <h4 v-else-if="detail.committeeSequentialNumber" class="registration-results__opinion-title bold">
+                <?= i::__('Parecerista: ') ?> #{{detail.committeeSequentialNumber}}
             </h4>
             <h4 v-else class="registration-results__opinion-title bold">
                 <?= i::__('Parecerista: ') ?> #{{index+1}}

@@ -7,6 +7,7 @@ use MapasCulturais\i;
 use MapasCulturais\Entities\MetaList;
 use MapasCulturais\Entity;
 use MapasCulturais\Entities\Agent;
+use MapasCulturais\Entities\AgentFile;
 use MapasCulturais\Entities\Space;
 use MapasCulturais\Entities\Registration;
 use MapasCulturais\Definitions\Metadata;
@@ -50,17 +51,462 @@ class Module extends \MapasCulturais\Module
             $module->entities = [];
         });
 
+        // BaseV2: o owner da inscrição só vinha com files.avatar. Anexos type=file
+        // (docs-cpf, docs-passaporte, etc.) precisam estar em owner.files para o entity-file.
+        $app->hook('view.requestedEntity(Registration).owner.params', function (&$params) {
+            $select = $params['@select'] ?? '';
+            if (str_contains($select, 'files.avatar')) {
+                $params['@select'] = str_replace('files.avatar', 'files', $select);
+            } elseif ($select !== '' && !preg_match('/(^|,)files(,|$)/', $select)) {
+                $params['@select'] = $select . ',files';
+            }
+        });
+
+        // Avaliadores (e quem pode ver a inscrição) precisam baixar anexos privados do agente
+        // expostos como campo "@" no formulário — o arquivo pertence ao Agent, não à Registration.
+        $app->hook('entity(AgentFile).canUser(view)', function ($user, &$result) use ($module) {
+            /** @var AgentFile $this */
+            if ($result || !$this->private) {
+                return;
+            }
+
+            $result = $module->canUserViewAgentFileViaRegistration($this, $user);
+        });
+
+        // Hook para modificar o resultado do jsonSerialize e incluir files/metalists do owner
+        $app->hook("entity(Registration).jsonSerialize", function(&$result) use($app) {
+            /** @var Registration $this */
+            if ($this->owner && isset($result['owner'])) {
+                // Verifica se algum campo precisa de files ou metalists do owner
+                $fields = $this->opportunity->registrationFieldConfigurations ?? [];
+                $needs_files = false;
+                $needs_metalists = false;
+                
+                foreach($fields as $field) {
+                    // Verifica tanto por fieldType quanto por entityField
+                    if(in_array($field->fieldType, ['gallery', 'downloads'], true) || in_array($field->config['entityField'] ?? '', ['@gallery', '@downloads'], true)) {
+                        $needs_files = true;
+                    }
+                    if($field->fieldType === 'videos' || ($field->config['entityField'] ?? '') === '@videos') {
+                        $needs_metalists = true;
+                    }
+                }
+                
+                // Se precisa, inclui files e/ou metalists no owner serializado
+                if($needs_files || $needs_metalists) {
+                    // Força carregamento dos files e metalists do owner
+                    $owner_files = $this->owner->files; // Acessa para forçar lazy loading
+                    $owner_metalists = $this->owner->metalists; // Acessa para forçar lazy loading
+                    
+                    if($needs_files) {
+                        $files_data = [];
+                        
+                        // Gallery
+                        if(isset($owner_files['gallery'])) {
+                            try {
+                                $files_data['gallery'] = [];
+                                $gallery = $owner_files['gallery'];
+                                
+                                // Se for um único arquivo, transforma em array
+                                if(!is_array($gallery) && !is_iterable($gallery)) {
+                                    $gallery = [$gallery];
+                                }
+                                
+                                foreach($gallery as $file) {
+                                    $files_data['gallery'][] = [
+                                        'id' => $file->id,
+                                        'url' => $file->url,
+                                        'name' => $file->name,
+                                        'description' => $file->description,
+                                        'deleteUrl' => $file->deleteUrl,
+                                        'transformations' => $file->getFiles()
+                                    ];
+                                }
+                            } catch (\Exception $e) {
+                                $app->log->error("RegistrationFieldTypes: Error processing gallery: " . $e->getMessage());
+                            }
+                        }
+                        
+                        // Downloads
+                        if(isset($owner_files['downloads'])) {
+                            try {
+                                $files_data['downloads'] = [];
+                                $downloads = $owner_files['downloads'];
+                                
+                                // Se for um único arquivo, transforma em array
+                                if(!is_array($downloads) && !is_iterable($downloads)) {
+                                    $downloads = [$downloads];
+                                }
+                                
+                                foreach($downloads as $file) {
+                                    $simplified = $file->simplify('id,url,name,description,deleteUrl');
+                                    $files_data['downloads'][] = (array) $simplified;
+                                }
+                            } catch (\Exception $e) {
+                                $app->log->error("RegistrationFieldTypes: Error processing downloads: " . $e->getMessage());
+                            }
+                        }
+                        
+                        if(!empty($files_data)) {
+                            // Converte owner para array se for stdClass
+                            if(is_object($result['owner'])) {
+                                $result['owner'] = (array) $result['owner'];
+                            }
+                            $result['owner']['files'] = $files_data;
+                        }
+                    }
+                    
+                    if($needs_metalists) {
+                        if(isset($owner_metalists['videos'])) {
+                            try {
+                                $videos_data = [];
+                                $videos = $owner_metalists['videos'];
+                                
+                                // Se for um único vídeo, transforma em array
+                                if(!is_array($videos) && !is_iterable($videos)) {
+                                    $videos = [$videos];
+                                }
+                                
+                                foreach($videos as $video) {
+                                    $videos_data[] = [
+                                        'id' => $video->id,
+                                        'title' => $video->title,
+                                        'value' => $video->value,
+                                        'group' => $video->group,
+                                        'description' => $video->description ?? ''
+                                    ];
+                                }
+                                // Converte owner para array se for stdClass
+                                if(is_object($result['owner'])) {
+                                    $result['owner'] = (array) $result['owner'];
+                                }
+                                $result['owner']['metalists'] = ['videos' => $videos_data];
+                            } catch (\Exception $e) {
+                                $app->log->error("RegistrationFieldTypes: Error processing videos: " . $e->getMessage() . " at line " . $e->getLine());
+                            }
+                        }
+                    }
+                }
+            }
+        });
+
         $app->hook("entity(Registration).validationErrors", function(&$errors) use($module, $app) {
             /** @var Registration $this */
 
             $fields = $this->opportunity->registrationFieldConfigurations;
             foreach($errors as $field_name => $error) {
                 foreach($fields as $field) {
-                    if($field->fieldName == $field_name) {
+                    if($field->fieldName === $field_name) {
                         if(!$this->isFieldVisisble($field)) {
                             unset($errors[$field_name]);
                         }
                     }
+                }
+            }
+        });
+
+        // Faz validação dos dados de entrada no campo de tabela
+        $app->hook("entity(RegistrationFieldConfiguration).validationErrors", function(&$errors) use($module, $app) {
+            if($this->fieldType === 'custom-table') {
+                $config = $this->config ?? [];
+                if (!isset($config['columns']) || !is_array($config['columns']) || empty($config['columns'])) {
+                    $errors[] = htmlspecialchars(i::__('É necessário configurar pelo menos uma coluna para o campo de tabela'), ENT_QUOTES, 'UTF-8');
+                } else {
+                    foreach ($config['columns'] as $column) {
+                        if (!isset($column['name']) || trim($column['name']) === '') {
+                            $errors[] = htmlspecialchars(i::__('Todas as colunas devem ter um nome configurado'), ENT_QUOTES, 'UTF-8');
+                        }
+
+                        if($column['type'] === 'select' && trim($column['options']) === '') {
+                            $errors[] = htmlspecialchars(i::__('O campo de seleção deve ter pelo menos uma opção'), ENT_QUOTES, 'UTF-8');
+                        }
+                    }
+                }
+            }
+
+            // Validação para campos select e checkboxes: fieldOptions deve ter pelo menos 1 opção não-vazia
+            if ($this->fieldType === 'select' || $this->fieldType === 'checkboxes') {
+                $fieldOptions = $this->fieldOptions;
+
+                // Normaliza fieldOptions: null ou string vazia vira array vazio
+                if ($fieldOptions === null || $fieldOptions === '' || (is_string($fieldOptions) && trim($fieldOptions) === '')) {
+                    $fieldOptions = [];
+                }
+
+                // Se for string, converte para array
+                if (is_string($fieldOptions)) {
+                    $fieldOptions = explode("\n", $fieldOptions);
+                }
+
+                // Garante que é array
+                $fieldOptions = (array) $fieldOptions;
+
+                // Aplica strip_tags em cada opção e filtra strings vazias após trim
+                $validOptions = [];
+                foreach ($fieldOptions as $option) {
+                    if (!is_string($option) && !is_numeric($option)) {
+                        continue;
+                    }
+                    $cleanOption = strip_tags((string) $option);
+                    if (trim($cleanOption) !== '') {
+                        $validOptions[] = trim($cleanOption);
+                    }
+                }
+
+                if (empty($validOptions)) {
+                    $errors[] = htmlspecialchars(i::__('O campo de seleção deve ter pelo menos uma opção configurada'), ENT_QUOTES, 'UTF-8');
+                }
+            }
+
+            // Validação para campos de entidade: config.entityField é obrigatório
+            $entityFieldRequiredTypes = ['agent-owner-field', 'agent-collective-field', 'space-field'];
+            if (in_array($this->fieldType, $entityFieldRequiredTypes, true)) {
+                $config = $this->config;
+
+                // Normaliza config: null ou array vazio vira objeto vazio
+                if ($config === null || (is_array($config) && empty($config))) {
+                    $config = new \stdClass();
+                }
+
+                // Garante que config é acessível como array/object
+                if (is_object($config)) {
+                    $config = (array) $config;
+                }
+
+                $entityField = $config['entityField'] ?? null;
+
+                if ($entityField === null || $entityField === '' || (is_string($entityField) && trim($entityField) === '')) {
+                    if ($this->fieldType === 'agent-owner-field') {
+                        $errors[] = htmlspecialchars(i::__('É necessário selecionar um campo do agente responsável'), ENT_QUOTES, 'UTF-8');
+                    } elseif ($this->fieldType === 'agent-collective-field') {
+                        $errors[] = htmlspecialchars(i::__('É necessário selecionar um campo do agente coletivo'), ENT_QUOTES, 'UTF-8');
+                    } elseif ($this->fieldType === 'space-field') {
+                        $errors[] = htmlspecialchars(i::__('É necessário selecionar um campo do espaço'), ENT_QUOTES, 'UTF-8');
+                    }
+                }
+            }
+
+            // Validação para campo persons: pelo menos um campo deve estar selecionado em config
+            if ($this->fieldType === 'persons') {
+                $config = $this->config;
+
+                // Normaliza config: null ou array vazio vira objeto vazio
+                if ($config === null || (is_array($config) && empty($config))) {
+                    $config = new \stdClass();
+                }
+
+                // Garante que config é acessível como array
+                if (is_object($config)) {
+                    $config = (array) $config;
+                }
+
+                $personFields = [
+                    'name', 'fullName', 'socialName', 'cpf', 'income', 'education',
+                    'telephone', 'email', 'race', 'gender', 'sexualOrientation',
+                    'deficiencies', 'comunty', 'area', 'funcao'
+                ];
+
+                $hasSelectedField = false;
+                foreach ($personFields as $field) {
+                    if (isset($config[$field]) && $config[$field] !== false && $config[$field] !== null && $config[$field] !== '' && $config[$field] !== 'false') {
+                        $hasSelectedField = true;
+                        break;
+                    }
+                }
+
+                if (!$hasSelectedField) {
+                    $errors[] = htmlspecialchars(i::__('É necessário selecionar pelo menos um campo de pessoa'), ENT_QUOTES, 'UTF-8');
+                }
+            }
+        });
+
+        // Validação de @location: lista de subcampos obrigatórios vem do banco.
+        // Suporta config separada (requiredAddressFieldsBrazil / requiredAddressFieldsOther) ou legado (requiredAddressFields).
+        $module = $this;
+        $app->hook('entity(Registration).sendValidationErrors', function(&$errorsResult) use($app, $module) {
+            /** @var Registration $registration */
+            $registration = $this;
+            $opportunity = $registration->opportunity;
+
+            // Moeda obrigatória: máscara/front envia 0 quando o campo não foi preenchido
+            $required_msg = i::__('O campo é obrigatório.');
+            foreach ($opportunity->registrationFieldConfigurations as $field) {
+                if (!$field->required || ($field->fieldType ?? '') !== 'currency') {
+                    continue;
+                }
+                if (!$registration->isFieldVisisble($field)) {
+                    continue;
+                }
+                $val = $registration->{$field->getFieldName()};
+                if (!is_numeric($val) || (float) $val !== 0.0) {
+                    continue;
+                }
+                $field_name = 'field_' . $field->id;
+                if (!isset($errorsResult[$field_name])) {
+                    $errorsResult[$field_name] = [];
+                }
+                if (!in_array($required_msg, $errorsResult[$field_name], true)) {
+                    $errorsResult[$field_name][] = $required_msg;
+                }
+            }
+
+            foreach ($opportunity->registrationFieldConfigurations as $field) {
+
+                if (!$field->required) {
+                    continue;
+                }
+                if (!in_array($field->fieldType ?? '', ['agent-owner-field', 'agent-collective-field', 'space-field'], true)) {
+                    continue;
+                }
+                if (($field->config['entityField'] ?? '') !== '@location') {
+                    continue;
+                }
+                if (!$registration->isFieldVisisble($field)) {
+                    continue;
+                }
+
+                $prop_name = $field->getFieldName();
+                $val = $registration->$prop_name;
+                if (!is_array($val) && !is_object($val)) {
+                    $val = [];
+                }
+                $arr = (array) $val;
+
+                $country = trim((string) ($arr['address_level0'] ?? ''));
+                $isBrazil = in_array(strtoupper($country), ['BR', 'BRA'], true)
+                    || in_array(strtolower($country), ['brasil', 'brazil'], true);
+
+                // Usa conjunto apropriado (BR ou outros) conforme país do endereço
+                $requiredKeys = $module->resolveLocationRequiredFields($field, $isBrazil);
+                if (empty($requiredKeys)) {
+                    continue;
+                }
+
+                $missing = [];
+                foreach ($requiredKeys as $configKey) {
+                    $storedKeys = $module->getLocationStoredKeysForConfigKey($configKey, $isBrazil);
+                    $raw = null;
+                    foreach ($storedKeys as $k) {
+                        if (array_key_exists($k, $arr)) {
+                            $val = $arr[$k];
+                            // Só considera preenchido se o valor for não vazio (form BR pode ter address_level1/3 null e dados em level2/4/6)
+                            if ($val !== null && trim((string) $val) !== '') {
+                                $raw = $val;
+                                break;
+                            }
+                        }
+                    }
+                    if ($raw === null || trim((string) $raw) === '') {
+                        // Fora do Brasil não existe campo "Número" separado: Endereço (address_line1) atende ambos.
+                        if ($configKey === 'address_number') {
+                            $line1 = trim((string) ($arr['address_line1'] ?? ''));
+
+                            if (!$isBrazil) {
+                                if ($line1 !== '') {
+                                    continue;
+                                }
+                            } else {
+                                // No formulário nacional, o número vai como "Rua..., 123".
+                                // Considera número presente apenas se houver parte após a vírgula com algum dígito.
+                                if ($line1 !== '' && strpos($line1, ',') !== false) {
+                                    [$street, $rest] = explode(',', $line1, 2);
+                                    $rest = trim((string) $rest);
+                                    if ($rest !== '' && preg_match('/\\d/', $rest)) {
+                                        continue;
+                                    }
+                                }
+                            }
+                        }
+
+                        $missing[] = $configKey;
+                    }
+                }
+                if (empty($missing)) {
+                    continue;
+                }
+
+                $field_name = 'field_' . $field->id;
+                if (!isset($errorsResult[$field_name])) {
+                    $errorsResult[$field_name] = [];
+                }
+
+                // Usa labels apropriados ao país
+                $labels = $isBrazil
+                    ? $module->getLocationRequiredFieldsConfigBrazil()
+                    : $module->getLocationRequiredFieldsConfigOther();
+
+                foreach ($missing as $configKey) {
+                    $label = $labels[$configKey] ?? $configKey;
+                    
+                    $_message = sprintf('O campo %s é obrigatório.', htmlspecialchars($label, ENT_QUOTES, 'UTF-8'));
+                    $msg = i::__($_message);
+                    if (!in_array($msg, $errorsResult[$field_name], true)) {
+                        $errorsResult[$field_name][] = $msg;
+                    }
+                }
+            }
+        });
+
+        $app->hook("entity(Registration).sendValidationErrors", function(&$errorsResult) use($module) {
+            /** @var Registration $this */
+            $registration = $this;
+            $opportunity = $registration->opportunity;
+
+            foreach ($opportunity->registrationFieldConfigurations as $field) {
+                if ($field->fieldType !== 'custom-table') {
+                    continue;
+                }
+                if (!$registration->isFieldVisisble($field)) {
+                    continue;
+                }
+
+                $prop_name = $field->getFieldName();
+                $val = $registration->$prop_name;
+
+                if (!is_array($val)) {
+                    continue;
+                }
+
+                $field_name = 'field_' . $field->id;
+                $cellErrors = $module->validateCustomTableCells($field->config['columns'] ?? [], $val);
+
+                if (!empty($cellErrors)) {
+                    if (!isset($errorsResult[$field_name])) {
+                        $errorsResult[$field_name] = [];
+                    }
+                    $errorsResult[$field_name] = array_merge($errorsResult[$field_name], $cellErrors);
+                }
+            }
+        });
+
+        $app->hook("entity(Registration).sendValidationErrors", function(&$errorsResult) use($module) {
+            /** @var Registration $this */
+            $registration = $this;
+            $opportunity = $registration->opportunity;
+
+            foreach ($opportunity->registrationFieldConfigurations as $field) {
+                if ($field->fieldType !== 'persons') {
+                    continue;
+                }
+                if (!$registration->isFieldVisisble($field)) {
+                    continue;
+                }
+
+                $prop_name = $field->getFieldName();
+                $val = $registration->$prop_name;
+
+                if (!is_array($val)) {
+                    continue;
+                }
+
+                $field_name = 'field_' . $field->id;
+                $personErrors = $module->validatePersonsField($field, $val);
+
+                if (!empty($personErrors)) {
+                    if (!isset($errorsResult[$field_name])) {
+                        $errorsResult[$field_name] = [];
+                    }
+                    $errorsResult[$field_name] = array_merge($errorsResult[$field_name], $personErrors);
                 }
             }
         });
@@ -94,13 +540,19 @@ class Module extends \MapasCulturais\Module
                     continue;
                 }
                 
-                if($field->fieldType == 'agent-owner-field') {
+                if($field->fieldType === 'agent-owner-field') {
                     $entity = $this->owner;
 
                     $fix_field($entity, $field);
                 }
 
-                if($field->fieldType == 'agent-collective-field') {
+                // Campos de galeria, vídeos e downloads também vêm do agente
+                if(in_array($field->fieldType, ['gallery', 'videos', 'downloads'], true)) {
+                    $entity = $this->owner;
+                    $fix_field($entity, $field);
+                }
+
+                if($field->fieldType === 'agent-collective-field') {
                     $entity = $this->owner;
                     if($agents = $this->getRelatedAgents('coletivo')) {
                         $entity = $agents[0];
@@ -109,7 +561,7 @@ class Module extends \MapasCulturais\Module
 
                 }
 
-                if($field->fieldType == 'space-field') {
+                if($field->fieldType === 'space-field') {
                     if($space_relation = $this->getSpaceRelation()) {
                         $entity = $space_relation->space;
                         $fix_field($entity, $field);
@@ -147,7 +599,7 @@ class Module extends \MapasCulturais\Module
                 
                 $key = $this->group ?? $this->key;
 
-                if(in_array($key, $this->owner->editableFields)) {
+                if(in_array($key, $this->owner->editableFields, true)) {
                     $result = true;
                     return;
                 }
@@ -165,7 +617,7 @@ class Module extends \MapasCulturais\Module
         $app->hook("entity(RegistrationMeta).save:before", function () use ($app, $module) {
             $entity = $this->owner;
             if($module->inEditableTransaction) {
-                if($entity->editableFields && !in_array($this->key, $entity->editableFields)) {
+                if($entity->editableFields && !in_array($this->key, $entity->editableFields, true)) {
                     $app->em->rollback();
                     $module->inEditableTransaction = false;
                     throw new PermissionDenied(message:i::__('Você está tentando modificar um campo que você não tem permissão'));
@@ -177,6 +629,12 @@ class Module extends \MapasCulturais\Module
                 $app->em->commit();
             }
             return;
+        });
+
+        // Faz a normalização dos dados no campo de tabela
+        $app->hook("entity(registration).fieldConfiguration(custom-table).<<insert|update>>:before", function() use($module) {
+            /** @var RegistrationFieldConfiguration $this */
+            $module->normalizeAndValidateCustomTableConfig($this);
         });
     }
 
@@ -191,6 +649,157 @@ class Module extends \MapasCulturais\Module
         }
     }
 
+    function validateCustomTableCells(array $columns, array $rows): array
+    {
+        $errors = [];
+
+        foreach ($rows as $rowIndex => $row) {
+            if (!is_array($row)) {
+                continue;
+            }
+
+            foreach ($columns as $colIndex => $column) {
+                $cellValue = $row["col{$colIndex}"] ?? null;
+                $columnName = $column['name'] ?? "Coluna {$colIndex}";
+                $columnType = $column['type'] ?? 'text';
+                $isRequired = ($column['required'] ?? '') === 'true';
+
+                if ($isRequired && ($cellValue === null || $cellValue === '')) {
+                    $errors[] = htmlspecialchars(sprintf(i::__('Campo "%s" (linha %d) é obrigatório'), $columnName, $rowIndex + 1), ENT_QUOTES, 'UTF-8');
+                    continue;
+                }
+
+                if ($cellValue === null || $cellValue === '') {
+                    continue;
+                }
+
+                $cellOk = true;
+                $cellErrorMsg = '';
+
+                switch ($columnType) {
+                    case 'cpf':
+                        $cellOk = \Respect\Validation\Validator::cpf()->validate($cellValue);
+                        $cellErrorMsg = htmlspecialchars(sprintf(i::__('CPF inválido no campo "%s" (linha %d)'), $columnName, $rowIndex + 1), ENT_QUOTES, 'UTF-8');
+                        break;
+                    case 'email':
+                        $cellOk = \Respect\Validation\Validator::email()->validate($cellValue);
+                        $cellErrorMsg = htmlspecialchars(sprintf(i::__('E-mail inválido no campo "%s" (linha %d)'), $columnName, $rowIndex + 1), ENT_QUOTES, 'UTF-8');
+                        break;
+                    case 'number':
+                        $cellOk = \Respect\Validation\Validator::numericVal()->validate($cellValue);
+                        $cellErrorMsg = htmlspecialchars(sprintf(i::__('Número inválido no campo "%s" (linha %d)'), $columnName, $rowIndex + 1), ENT_QUOTES, 'UTF-8');
+                        break;
+                }
+
+                if (!$cellOk) {
+                    $errors[] = $cellErrorMsg;
+                }
+            }
+        }
+
+        return $errors;
+    }
+
+    function validatePersonsField(RegistrationFieldConfiguration $field, array $persons): array
+    {
+        $errors = [];
+        $config = $field->config ?? [];
+        $requiredFields = $config['requiredFields'] ?? [];
+
+        $fieldLabels = [
+            'name' => i::__('Nome'),
+            'fullName' => i::__('Nome completo'),
+            'socialName' => i::__('Nome social'),
+            'cpf' => i::__('CPF'),
+            'cnpj' => i::__('CNPJ'),
+            'miniCurriculum' => i::__('Mini currículo'),
+            'income' => i::__('Renda'),
+            'education' => i::__('Escolaridade'),
+            'telephone' => i::__('Telefone do representante'),
+            'email' => i::__('Email'),
+            'race' => i::__('Raça/Cor'),
+            'gender' => i::__('Gênero'),
+            'sexualOrientation' => i::__('Orientação sexual'),
+            'deficiencies' => i::__('Deficiências'),
+            'comunty' => i::__('Comunidade tradicional'),
+            'area' => i::__('Áreas de atuação'),
+            'funcao' => i::__('Funções/Profissões'),
+        ];
+
+        foreach ($persons as $index => $person) {
+            if (!is_array($person) && !is_object($person)) {
+                continue;
+            }
+
+            $personData = (array) $person;
+            $personNumber = $index + 1;
+
+            foreach ($fieldLabels as $key => $label) {
+                if (!$this->isTruthyConfig($config[$key] ?? false)) {
+                    continue;
+                }
+
+                $value = $personData[$key] ?? null;
+
+                if ($this->isTruthyConfig($requiredFields[$key] ?? false) && $this->isEmptyPersonField($value)) {
+                    $errors[] = sprintf(i::__('O campo %s da pessoa %d é obrigatório.'), $label, $personNumber);
+                    continue;
+                }
+
+                if ($this->isEmptyPersonField($value)) {
+                    continue;
+                }
+
+                if ($key === 'cpf' && !\Respect\Validation\Validator::cpf()->validate((string) $value)) {
+                    $errors[] = sprintf(i::__('CPF inválido na pessoa %d.'), $personNumber);
+                }
+
+                if ($key === 'cnpj' && !\Respect\Validation\Validator::cnpj()->validate((string) $value)) {
+                    $errors[] = sprintf(i::__('CNPJ inválido na pessoa %d.'), $personNumber);
+                }
+            }
+        }
+
+        return $errors;
+    }
+
+    protected function isTruthyConfig($value): bool
+    {
+        return $value === true || $value === 1 || $value === '1' || $value === 'true';
+    }
+
+    protected function isEmptyPersonField($value): bool
+    {
+        if (is_array($value)) {
+            return count(array_filter($value)) === 0;
+        }
+
+        if (is_object($value)) {
+            return count(array_filter((array) $value)) === 0;
+        }
+
+        return trim((string) $value) === '';
+    }
+
+    function normalizeAndValidateCustomTableConfig(RegistrationFieldConfiguration $field): void
+    {
+        $config = is_array($field->config) ? $field->config : [];
+
+        if (array_key_exists('minRows', $config)) {
+            $config['minRows'] = ($config['minRows'] === null || $config['minRows'] === '' || $config['minRows'] === false)
+                ? 0
+                : (int) $config['minRows'];
+        }
+
+        if (array_key_exists('maxRows', $config)) {
+            $config['maxRows'] = ($config['maxRows'] === null || $config['maxRows'] === '' || $config['maxRows'] === false)
+                ? null
+                : (int) $config['maxRows'];
+        }
+
+        $field->config = $config;
+    }
+
     function register_agent_field() {
         $app = App::i();
 
@@ -201,6 +810,20 @@ class Module extends \MapasCulturais\Module
             }
 
             $agent_field_name = $field->config['entityField'];
+
+            // Tratamento especial para campos de galeria/vídeos/downloads
+            if($agent_field_name === '@gallery') {
+                $registration_field_config['type'] = 'gallery';
+                return;
+            }
+            if($agent_field_name === '@videos') {
+                $registration_field_config['type'] = 'videos';
+                return;
+            }
+            if($agent_field_name === '@downloads') {
+                $registration_field_config['type'] = 'downloads';
+                return;
+            }
 
             if(!isset($agent_fields[$agent_field_name])){
                 return;
@@ -268,11 +891,155 @@ class Module extends \MapasCulturais\Module
         $this->_config['availableSpaceFields'] = $this->getSpaceFields();
     }
 
+    /**
+     * Subcampos de endereço que podem ser marcados como obrigatórios na config do campo @location.
+     * Chave = nome do campo no valor; valor = label na interface.
+     * 
+     * RETROCOMPATIBILIDADE: Este método continua existindo para código legado.
+     * Para novos usos, prefira getLocationRequiredFieldsConfigBrazil() ou getLocationRequiredFieldsConfigOther().
+     * 
+     * @return array<string, string>
+     */
+    function getLocationRequiredFieldsConfig()
+    {
+        return $this->getLocationRequiredFieldsConfigBrazil();
+    }
+
+
+    /**
+     * Mapeamento de chaves En_* (formulário BR) para chaves address_* usadas na validação.
+     * @return array<string, string>
+     */
+    protected function getLocationFieldKeyMap()
+    {
+        return [
+            'En_Pais'           => 'address_level0',
+            'En_Estado'          => 'address_level1',
+            'En_Municipio'      => 'address_level2',
+            'En_Bairro'         => 'address_level3',
+            'En_CEP'             => 'address_postalCode',
+            'En_Nome_Logradouro' => 'address_line1',
+            'En_Num'             => 'address_number',
+            'En_Complemento'     => 'address_line2',
+        ];
+    }
+
+    /**
+     * Resolve a lista de chaves de subcampos de endereço obrigatórios a partir da config do campo (banco).
+     * 
+     * RETROCOMPATIBILIDADE: Se existir apenas 'requiredAddressFields' (legado), usa para ambos os casos.
+     * Se existirem 'requiredAddressFieldsBrazil' e/ou 'requiredAddressFieldsOther', usa o conjunto apropriado.
+     * 
+     * @param RegistrationFieldConfiguration $field
+     * @param bool $isBrazil Se true, retorna config do Brasil; se false, retorna config de outros países.
+     * @return list<string>
+     */
+    function resolveLocationRequiredFields(RegistrationFieldConfiguration $field, ?bool $isBrazil = null): array
+    {
+        $fieldConfig = $field->config ?? [];
+
+        $isTruthy = function($v): bool {
+            if (is_bool($v)) {
+                return $v;
+            }
+            if (is_int($v)) {
+                return $v === 1;
+            }
+            if (is_string($v)) {
+                return in_array(strtolower($v), ['true', '1'], true);
+            }
+            return (bool) $v;
+        };
+
+        $parseConfig = function($config) use ($isTruthy): array {
+            if (is_array($config)) {
+                $keys = [];
+                foreach ($config as $k => $v) {
+                    if (is_string($k) && $isTruthy($v)) {
+                        $keys[] = $k;
+                    } elseif (is_int($k) && is_string($v)) {
+                        $keys[] = $v;
+                    }
+                }
+                return $keys;
+            }
+            if (is_object($config)) {
+                $arr = (array) $config;
+                $out = [];
+                foreach ($arr as $k => $v) {
+                    if ($isTruthy($v)) {
+                        $out[] = $k;
+                    }
+                }
+                return $out;
+            }
+            return [];
+        };
+
+        $hasBrazilConfig = isset($fieldConfig['requiredAddressFieldsBrazil']);
+        $hasOtherConfig = isset($fieldConfig['requiredAddressFieldsOther']);
+        $hasLegacyConfig = isset($fieldConfig['requiredAddressFields']);
+
+        if ($hasBrazilConfig || $hasOtherConfig) {
+            if ($isBrazil === true) {
+                return $parseConfig($fieldConfig['requiredAddressFieldsBrazil'] ?? []);
+            } elseif ($isBrazil === false) {
+                return $parseConfig($fieldConfig['requiredAddressFieldsOther'] ?? []);
+            } else {
+                return array_unique(array_merge(
+                    $parseConfig($fieldConfig['requiredAddressFieldsBrazil'] ?? []),
+                    $parseConfig($fieldConfig['requiredAddressFieldsOther'] ?? [])
+                ));
+            }
+        }
+
+        if ($hasLegacyConfig) {
+            return $parseConfig($fieldConfig['requiredAddressFields']);
+        }
+
+        return [];
+    }
+
+    /**
+     * Para uma chave da config de endereço (ex: address_level1), retorna as chaves possíveis no valor salvo.
+     * 
+     * Para Brasil: usa mapeamento En_* (legado) e as chaves do formulário nacional (level2/4/6).
+     * O formulário nacional usa address_level2=Estado, address_level4=Cidade, address_level6=Bairro.
+     * Para outros países: usa apenas address_* diretamente.
+     * 
+     * @param string $configKey
+     * @param bool $isBrazil
+     * @return array<string>
+     */
+    function getLocationStoredKeysForConfigKey(string $configKey, bool $isBrazil = true): array
+    {
+        $keys = [$configKey];
+
+        if ($isBrazil) {
+            $map = $this->getLocationFieldKeyMap();
+            $enKey = array_search($configKey, $map, true);
+            if ($enKey !== false) {
+                $keys[] = $enKey;
+            }
+            // Formulário nacional (Brasil) guarda Estado/Cidade/Bairro em level2/4/6, não em 1/2/3
+            $brazilFormKeys = [
+                'address_level1' => 'address_level2', // Estado (UF)
+                'address_level2' => 'address_level4', // Cidade/Município
+                'address_level3' => 'address_level6', // Bairro
+            ];
+            if (isset($brazilFormKeys[$configKey])) {
+                $keys[] = $brazilFormKeys[$configKey];
+            }
+        }
+
+        return $keys;
+    }
+
     function getAgentFields()
     {
         $app = App::i();
 
-        $agent_fields = ['name', 'shortDescription', 'longDescription', '@location', '@links', '@bankFields'];
+        $agent_fields = ['name', 'shortDescription', 'longDescription', '@location', '@links', '@gallery', '@videos', '@downloads'];
         
         $taxonomies_fields = $this->taxonomiesOpportunityFields(true);
 
@@ -359,8 +1126,21 @@ class Module extends \MapasCulturais\Module
                     'v::brCurrency()' => \MapasCulturais\i::__('O valor não está no formato de moeda real (R$)')
                 ],
                 'unserialize' => function($value) {
-                    if(is_string($value) && !is_numeric($value)) {
-                        return (float) str_replace(",",".", str_replace(".","", $value));
+                    if ($value === null || $value === '') {
+                        return null;
+                    }
+                    if (is_string($value) && trim($value) === '') {
+                        return null;
+                    }
+                    if (is_string($value) && !is_numeric($value)) {
+                        return (float) str_replace(",", ".", str_replace(".", "", $value));
+                    }
+
+                    return (float) $value;
+                },
+                'serialize' => function($value) {
+                    if ($value === null || $value === '' || $value === '0' || (is_numeric($value) && (float) $value === 0.0)) {
+                        return null;
                     }
 
                     return (float) $value;
@@ -579,6 +1359,49 @@ class Module extends \MapasCulturais\Module
                 }
             ],
             [
+                'slug' => 'custom-table',
+                'name' => \MapasCulturais\i::__('Tabela Customizável'),
+                'viewTemplate' => 'registration-field-types/custom-table',
+                'configTemplate' => 'registration-field-types/custom-table-config',
+                'validations' => [],
+                'serialize' => function($value) {
+                    // Se já é string, retorna direto (evita double encoding)
+                    if(is_string($value)) {
+                        return $value;
+                    }
+                    
+                    // Limpar propriedades internas do Vue (que começam com $$)
+                    if(is_array($value)){
+                        foreach($value as &$row){
+                            if(is_object($row)) {
+                                foreach($row as $key => $v){
+                                    if(substr($key, 0, 2) == '$$'){
+                                        unset($row->$key);
+                                    }
+                                }
+                            } elseif(is_array($row)) {
+                                foreach($row as $key => $v){
+                                    if(substr($key, 0, 2) == '$$'){
+                                        unset($row[$key]);
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+                    return json_encode($value);
+                },
+                'unserialize' => function($value) {
+                    $rows = json_decode($value ?: "", true);
+
+                    if(!is_array($rows)){
+                        $rows = [];
+                    }
+
+                    return $rows;
+                }
+            ],
+            [
                 'slug' => 'municipio',
                 'name' => \MapasCulturais\i::__('Seleção de município'),
                 'viewTemplate' => 'registration-field-types/municipio',
@@ -606,38 +1429,9 @@ class Module extends \MapasCulturais\Module
                         return $value;
                     }
                 },
-                'unserialize' => function($value, $registration = null, $metadata_definition = null) use ($module, $app) {
-                    if(is_null($registration) || ($registration->status ?? 0) > 0){
-                        $value = $value ?: "";
-
-                        $first_char = strlen($value ?? '') > 0 ? $value[0] : "" ;
-                        if(in_array($first_char, ['"', "[", "{"]) || in_array($value, ["null", "false", "true"])) {
-                            $result = json_decode($value ?: "");
-                        }else {
-                            $result = $value;
-                        }
-
-                    }else{
-                        if(!$registration instanceof \MapasCulturais\Entities\Registration){
-                            $registration = $app->repo('Registration')->find($registration->id);
-                        }
-
-                        $disable_access_control = false;
-
-                        if($registration->canUser('viewPrivateData')){
-                            $disable_access_control = true;
-                            $app->disableAccessControl();
-                        }
-
-                        $result = $module->fetchFromEntity($registration->owner, $value, $registration, $metadata_definition);
-
-                        if($disable_access_control) {
-                            $app->enableAccessControl();
-                        }
-                    }
-
-                    return $result;
-                }   
+                'unserialize' => function($value, $registration = null, $metadata_definition = null) use ($module) {
+                    return $module->unserializeAgentOwnerFieldValue($value, $registration, $metadata_definition);
+                }
             ],
             [
                 'slug' => 'agent-collective-field',
@@ -658,43 +1452,8 @@ class Module extends \MapasCulturais\Module
                         return $value;
                     }
                 },
-                'unserialize' => function($value, $registration = null, $metadata_definition = null) use ($module, $app) {
-                    if(is_null($registration) || $registration->status > 0){
-                            
-                        $first_char = strlen($value ?? '') > 0 ? $value[0] : "" ;
-                        if(in_array($first_char, ['"', "[", "{"]) || in_array($value, ["null", "false", "true"])) {
-                            $result = json_decode($value ?: "");
-                        }else {
-                            $result = $value;
-                        }
-
-                    } else {
-                        if(!$registration instanceof \MapasCulturais\Entities\Registration){
-                            $registration =  $app->repo('Registration')->find($registration->id);
-                        }
-
-                        $disable_access_control = false;
-
-                        if($registration->canUser('viewPrivateData')){
-                            $disable_access_control = true;
-                            $app->disableAccessControl();
-                        }
-    
-                        $agent = $registration->getRelatedAgents('coletivo');
-    
-                        if($agent){
-                            $result = $module->fetchFromEntity($agent[0], $value, $registration, $metadata_definition);
-                        } else {
-                            $result = json_decode($value ?: "");
-                        }
-    
-                        if($disable_access_control) {
-                            $app->enableAccessControl();
-                        }
-    
-                    }
-
-                    return $result;
+                'unserialize' => function($value, $registration = null, $metadata_definition = null) use ($module) {
+                    return $module->unserializeAgentCollectiveFieldValue($value, $registration, $metadata_definition);
                 }   
             ],
             [
@@ -720,7 +1479,7 @@ class Module extends \MapasCulturais\Module
                                         
                     if(is_null($registration) || $registration->status > 0){
                         $first_char = strlen($value ?? '') > 0 ? $value[0] : "" ;
-                        if(in_array($first_char, ['"', "[", "{"]) || in_array($value, ["null", "false", "true"])) {
+                        if(in_array($first_char, ['"', "[", "{"], true) || in_array($value, ["null", "false", "true"], true)) {
                             $result = json_decode($value ?: "");
                         }else {
                             $result = $value;
@@ -780,26 +1539,26 @@ class Module extends \MapasCulturais\Module
                     $entity->location = [$value["location"]["lng"], $value["location"]["lat"]];
 
                 }
+
+                if (isset($value["En_Pais"])) {
+                    $entity->En_Pais = $value["En_Pais"];
+                }
                 
-                $entity->address_postalCode = $value["address_postalCode"];
                 $entity->address_level0     = $value["address_level0"];
+                $entity->address_postalCode = $value["address_postalCode"];
                 $entity->address_level1     = $value["address_level1"];
                 $entity->address_level2     = $value["address_level2"];
                 $entity->address_level3     = $value["address_level3"];
                 $entity->address_level4     = $value["address_level4"];
                 $entity->address_level5     = $value["address_level5"];
                 $entity->address_level6     = $value["address_level6"];
-                $entity->address_line1      = $value["address_line1"];
+                $entity->address_line1      = $value["address_line1"];  
                 $entity->address_line2      = $value["address_line2"];
                 
-                if (isset($value["En_Pais"])) {
-                    $entity->En_Pais = $value["En_Pais"];
-                }
-                
-                $entity->endereco           = $value["endereco"] ?: $value["address"];
-                $entity->publicLocation = filter_var($value['publicLocation'] ?? false, FILTER_VALIDATE_BOOLEAN);
+                $entity->endereco           = $value["endereco"] ?? $value["address"] ?? null;
+                $entity->publicLocation     = !empty($value['publicLocation']);
 
-            } else if($taxonomies_fields && in_array($entity_field, array_keys($taxonomies_fields))) {
+            } else if($taxonomies_fields && in_array($entity_field, array_keys($taxonomies_fields), true)) {
                 $entity->terms[$taxonomies_fields[$entity_field]] = $value;
                 $entity->save(true);
             } else if($entity_field == '@links') {
@@ -853,6 +1612,84 @@ class Module extends \MapasCulturais\Module
                 $entity->payment_bank_account_number = $value['account_number'];
                 $entity->payment_bank_dv_account_number = $value['dv_account_number'];
                 $entity->save(true);
+            } else if($entity_field == '@gallery' && $value) {
+                // Galeria de FOTOS (Files)
+                $existingGallery = $entity->getFiles('gallery');
+                
+                if(is_array($existingGallery)) {
+                    $existing_ids = array_map(fn($f) => $f->id, $existingGallery);
+                    $new_ids = is_array($value) ? array_map(fn($v) => isset($v['id']) ? $v['id'] : null, $value) : [];
+                    
+                    // Remover fotos que não estão mais no array
+                    foreach($existingGallery as $existingFile) {
+                        if(!in_array($existingFile->id, $new_ids, true)) {
+                            $existingFile->delete(true);
+                        }
+                    }
+                }
+            } else if($entity_field == '@videos' && $value) {
+                // Galeria de VÍDEOS (MetaList)
+                $savedMetaList = $entity->getMetaLists();
+                
+                foreach ($savedMetaList as $savedMetaListGroup) {
+                    foreach ($savedMetaListGroup as $savedMetaListObject) {
+                        $matchedItem = false;
+                        if(is_array($value)){
+                            foreach ($value as $key => $itemValue) {
+                                if(is_array($itemValue) && empty($itemValue['value'])){
+                                    continue;
+                                }
+                                $itemValueToCompare = is_array($itemValue) ? $itemValue['value'] : (isset($itemValue->value) ? $itemValue->value : null);
+                                if($savedMetaListObject->value == $itemValueToCompare){
+                                    $matchedItem = true;
+                                    unset($value[$key]);
+                                    $itemTitle = is_array($itemValue) ? ($itemValue['title'] ?? '') : (isset($itemValue->title) ? $itemValue->title : '');
+                                    $savedMetaListObject->title = $itemTitle;
+                                    $savedMetaListObject->save(true);
+                                }   
+                            }
+                        }
+                        if ($matchedItem == false && $savedMetaListObject->group == 'videos'){
+                            $savedMetaListObject->delete(true);
+                        }                    
+                    }
+                }
+                
+                if(!is_array($value)) {
+                    $value = (array) $value;
+                }
+                
+                foreach ($value as $itemArray) {
+                    $itemValueData = is_array($itemArray) ? ($itemArray['value'] ?? null) : (isset($itemArray->value) ? $itemArray->value : null);
+                    if (isset($itemValueData) && $url = $itemValueData){
+                        $metaList = new \MapasCulturais\Entities\MetaList;
+                        $metaList->owner = $entity;
+                        $metaList->group = 'videos';
+                        $itemTitle = is_array($itemArray) ? ($itemArray['title'] ?? '') : (isset($itemArray->title) ? $itemArray->title : '');
+                        $metaList->title = $itemTitle;
+                        $metaList->value = $url;
+                        $metaList->save(true);
+                    }
+                }
+            } else if($entity_field == '@downloads' && $value) {
+                // Downloads/Anexos (Files)
+                $existingDownloads = $entity->getFiles('downloads');
+                
+                if(is_array($existingDownloads)) {
+                    $existing_ids = array_map(fn($f) => $f->id, $existingDownloads);
+                    $new_ids = is_array($value) ? array_map(fn($v) => isset($v['id']) ? $v['id'] : null, $value) : [];
+                    
+                    // Remover downloads que não estão mais no array
+                    foreach($existingDownloads as $existingFile) {
+                        if(!in_array($existingFile->id, $new_ids, true)) {
+                            $existingFile->delete(true);
+                        }
+                    }
+                }
+            } else if ($this->isAgentFileEntityField($entity_field)) {
+                // Anexos (type=file) são gerenciados via upload no perfil do agente.
+                // Não atribuir o valor como metadata: o arquivo vive na tabela file,
+                // vinculado ao FileGroup do agente, não em agent_meta.
             } else if($value) {
                 $entity->$entity_field = $value;
             }
@@ -901,18 +1738,18 @@ class Module extends \MapasCulturais\Module
 
                 $value = $result;
 
-            } else if($taxonomies_fields && in_array($entity_field, array_keys($taxonomies_fields))) {
+            } else if($taxonomies_fields && in_array($entity_field, array_keys($taxonomies_fields), true)) {
                 $term = $taxonomies_fields[$entity_field];
                 $value = $entity->terms[$term];
-            } else if($entity_field == '@type') {
+            } else if($entity_field === '@type') {
                 $value = $entity->type->name;
 
-            } else if($entity_field == '@links') {
+            } else if($entity_field === '@links') {
                 $metaLists = $entity->getMetaLists();
                 $links = isset($metaLists['links'])? $metaLists['links']:[];
                 $videos = isset($metaLists['videos'])? $metaLists['videos']:[];
                 $value = array_merge($links,$videos);
-            } else if($entity_field == '@bankFields') {
+            } else if($entity_field === '@bankFields') {
                 $value = [
                     'account_type' => $entity->payment_bank_account_type,
                     'number' => $entity->payment_bank_number,
@@ -921,7 +1758,61 @@ class Module extends \MapasCulturais\Module
                     'account_number' => (int) $entity->payment_bank_account_number,
                     'dv_account_number' => $entity->payment_bank_dv_account_number,
                 ];
-
+            } else if($entity_field === '@gallery') {
+                // Buscar fotos da galeria
+                $gallery = $entity->getFiles('gallery');
+                $result = [];
+                
+                if(is_array($gallery)) {
+                    foreach($gallery as $file) {
+                        $result[] = [
+                            'id' => $file->id,
+                            'name' => $file->name,
+                            'url' => $file->url,
+                            'description' => $file->description
+                        ];
+                    }
+                }
+                
+                $value = $result;
+            } else if($entity_field === '@videos') {
+                // Buscar vídeos (MetaList)
+                $videos = $entity->getMetaLists('videos');
+                $result = [];
+                
+                if(is_array($videos)) {
+                    foreach($videos as $video) {
+                        $result[] = [
+                            'id' => $video->id,
+                            'title' => $video->title,
+                            'value' => $video->value,
+                            'group' => $video->group
+                        ];
+                    }
+                }
+                
+                $value = $result;
+            } else if($entity_field === '@downloads') {
+                // Buscar downloads/anexos
+                $downloads = $entity->getFiles('downloads');
+                $result = [];
+                
+                if(is_array($downloads)) {
+                    foreach($downloads as $file) {
+                        $result[] = [
+                            'id' => $file->id,
+                            'name' => $file->name,
+                            'url' => $file->url,
+                            'description' => $file->description,
+                            'mimeType' => $file->mimeType
+                        ];
+                    }
+                }
+                
+                $value = $result;
+            }
+            else if ($this->isAgentFileEntityField($entity_field)) {
+                $value = $this->fetchAgentFileFieldFromEntity($entity, $entity_field);
             }
              else {
                 $value = $entity->$entity_field;
@@ -945,7 +1836,7 @@ class Module extends \MapasCulturais\Module
         $taxonomies_fields = [];
         if($registered_taxonomies = $app->getRegisteredTaxonomies()) {
             foreach($registered_taxonomies as $taxonomie) {
-                if($taxonomie->restrictedTerms && in_array('MapasCulturais\Entities\Opportunity', $taxonomie->entities)) {
+                if($taxonomie->restrictedTerms && in_array('MapasCulturais\Entities\Opportunity', $taxonomie->entities, true)) {
                     if($slugOnly) {
                         $taxonomies_fields[] = "@terms:{$taxonomie->slug}";
                     } else {
@@ -956,5 +1847,361 @@ class Module extends \MapasCulturais\Module
         }
 
         return $taxonomies_fields;
+    }
+
+    /**
+     * Subcampos de endereço (label) usados na config de campos de inscrição.
+     *
+     * Retorna o mapa completo de labels, independente de país.
+     *
+     * @return array<string,string>
+     */
+    protected function getBaseLocationFieldsLabels(): array
+    {
+        $app = App::i();
+
+        $level_labels = $app->config['address.defaultLevelsLabels'] ?? [];
+
+        $labels = [
+            'address_level0'     => i::__('País'),
+            'address_postalCode' => i::__('Código postal'),
+            'address_line1'      => i::__('Endereço'),
+            'address_number'     => i::__('Número'),
+            'address_line2'      => i::__('Complemento'),
+            'address_level3'     => i::__('Mesorregião'),
+        ];
+
+        // níveis hierárquicos (1 a 6) vindos da configuração global
+        for ($i = 1; $i <= 6; $i++) {
+            $labels["address_level{$i}"] = $level_labels[$i] ?? "address_level{$i}";
+        }
+
+        return $labels;
+    }
+
+    /**
+     * Campos de endereço que podem ser marcados como obrigatórios para Brasil.
+     *
+     * @return array<string,string>
+     */
+    public function getLocationRequiredFieldsConfigBrazil(): array
+    {
+        // Para o Brasil usamos a convenção específica da BrasilLocalization:
+        // level0 = País, level2 = Estado, level4 = Município/Cidade, level6 = Bairro.
+        // Os demais níveis (1,3,5) não são exibidos aqui.
+        return [
+            'address_level0'     => i::__('País'),
+            'address_postalCode' => i::__('CEP'),
+            'address_line1'      => i::__('Endereço'),
+            'address_number'     => i::__('Número'),
+            'address_line2'      => i::__('Complemento'),
+            'address_level2'     => i::__('Estado'),
+            'address_level4'     => i::__('Município/Cidade'),
+            'address_level6'     => i::__('Bairro'),
+        ];
+    }
+
+    /**
+     * Campos de endereço que podem ser marcados como obrigatórios para outros países.
+     *
+     * @return array<string,string>
+     */
+    public function getLocationRequiredFieldsConfigOther(): array
+    {
+        $labels = $this->getBaseLocationFieldsLabels();
+
+        $keys = [
+            'address_level0',
+            'address_level1',
+            'address_level2',
+            'address_level3',
+            'address_level4',
+            'address_level5',
+            'address_level6',
+            'address_postalCode',
+            'address_line1',
+            'address_line2',
+        ];
+
+        return array_intersect_key($labels, array_flip($keys));
+    }
+
+    /**
+     * Indica se o entityField aponta para metadado de anexo (type=file) do Agent.
+     */
+    function isAgentFileEntityField(string $entity_field): bool
+    {
+        if ($entity_field === '' || ($entity_field[0] ?? '') === '@') {
+            return false;
+        }
+
+        $agent_props = Agent::getPropertiesMetadata();
+
+        return isset($agent_props[$entity_field])
+            && ($agent_props[$entity_field]['type'] ?? null) === 'file';
+    }
+
+    /**
+     * Busca o arquivo do FileGroup do agente para exibição no formulário de inscrição.
+     *
+     * @return array{id:int,name:string,url:string,mimeType:string}|null
+     */
+    function fetchAgentFileFieldFromEntity(Entity $entity, string $entity_field): ?array
+    {
+        $agent_props = Agent::getPropertiesMetadata();
+        $file_group = $agent_props[$entity_field]['file_group'] ?? null;
+
+        if (!$file_group || !method_exists($entity, 'getFile')) {
+            return null;
+        }
+
+        $file = $entity->getFile($file_group);
+        if (!$file) {
+            return null;
+        }
+
+        return [
+            'id' => $file->id,
+            'name' => $file->name,
+            'url' => $file->url,
+            'mimeType' => $file->mimeType,
+        ];
+    }
+
+    /**
+     * Decodifica valor armazenado na inscrição quando não há sync com a entidade.
+     */
+    function decodeStoredRegistrationFieldValue($value)
+    {
+        $value = $value ?: '';
+        $first_char = strlen($value ?? '') > 0 ? $value[0] : '';
+
+        if (in_array($first_char, ['"', '[', '{'], true) || in_array($value, ['null', 'false', 'true'], true)) {
+            return json_decode($value ?: '');
+        }
+
+        return $value;
+    }
+
+    /**
+     * unserialize do agent-owner-field: rascunho e anexos sempre sincronizam com o agente.
+     */
+    function unserializeAgentOwnerFieldValue($value, $registration = null, $metadata_definition = null)
+    {
+        $entity_field = $metadata_definition->config['registrationFieldConfiguration']->config['entityField'] ?? null;
+        $is_file_field = is_string($entity_field) && $this->isAgentFileEntityField($entity_field);
+
+        if (is_null($registration) || (($registration->status ?? 0) > 0 && !$is_file_field)) {
+            return $this->decodeStoredRegistrationFieldValue($value);
+        }
+
+        return $this->fetchEntityFieldValueForRegistration(
+            $registration,
+            fn (Registration $registration) => $registration->owner,
+            $value,
+            $metadata_definition
+        );
+    }
+
+    /**
+     * unserialize do agent-collective-field: rascunho e anexos sempre sincronizam com o coletivo.
+     */
+    function unserializeAgentCollectiveFieldValue($value, $registration = null, $metadata_definition = null)
+    {
+        $entity_field = $metadata_definition->config['registrationFieldConfiguration']->config['entityField'] ?? null;
+        $is_file_field = is_string($entity_field) && $this->isAgentFileEntityField($entity_field);
+
+        if (is_null($registration) || (($registration->status ?? 0) > 0 && !$is_file_field)) {
+            return $this->decodeStoredRegistrationFieldValue($value);
+        }
+
+        return $this->fetchEntityFieldValueForRegistration(
+            $registration,
+            function (Registration $registration) {
+                $agents = $registration->getRelatedAgents('coletivo');
+
+                return $agents[0] ?? null;
+            },
+            $value,
+            $metadata_definition
+        );
+    }
+
+    /**
+     * @param callable(Registration):(?Entity) $entity_resolver
+     */
+    private function fetchEntityFieldValueForRegistration(
+        $registration,
+        callable $entity_resolver,
+        $value,
+        $metadata_definition
+    ) {
+        $app = App::i();
+
+        if (!$registration instanceof Registration) {
+            $registration = $app->repo('Registration')->find($registration->id);
+        }
+
+        $entity = $entity_resolver($registration);
+        if (!$entity) {
+            return $this->decodeStoredRegistrationFieldValue($value);
+        }
+
+        $disable_access_control = false;
+        if ($registration->canUser('viewPrivateData')) {
+            $disable_access_control = true;
+            $app->disableAccessControl();
+        }
+
+        try {
+            return $this->fetchFromEntity($entity, $value, $registration, $metadata_definition);
+        } finally {
+            if ($disable_access_control) {
+                $app->enableAccessControl();
+            }
+        }
+    }
+
+    /**
+     * Permite visualizar/baixar anexo privado do agente quando ele é referenciado em campo "@"
+     * de uma inscrição que o usuário pode ver ou avaliar.
+     */
+    function canUserViewAgentFileViaRegistration(AgentFile $file, $user): bool
+    {
+        if ($user->is('guest')) {
+            return false;
+        }
+
+        $agent = $file->owner;
+        $entity_fields = $this->getAgentEntityFieldsForFileGroup(trim($file->getGroup()));
+
+        if (empty($entity_fields)) {
+            return false;
+        }
+
+        foreach ($this->findSubmittedRegistrationsForAgent($agent) as $registration) {
+            if (
+                !$registration->canUser('viewUserEvaluation', $user)
+                && !$registration->canUser('view', $user)
+                && !$registration->canUser('viewPrivateData', $user)
+            ) {
+                continue;
+            }
+
+            if ($this->registrationExposesAgentFile($registration, $agent, $file, $entity_fields)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * @return string[]
+     */
+    private function getAgentEntityFieldsForFileGroup(string $file_group): array
+    {
+        $fields = [];
+
+        foreach (Agent::getPropertiesMetadata() as $key => $meta) {
+            if (($meta['type'] ?? null) === 'file' && trim($meta['file_group'] ?? '') === $file_group) {
+                $fields[] = $key;
+            }
+        }
+
+        return $fields;
+    }
+
+    /**
+     * @return \Generator<int, Registration>
+     */
+    private function findSubmittedRegistrationsForAgent(Agent $agent): \Generator
+    {
+        $app = App::i();
+        $seen = [];
+
+        foreach ($app->repo('Registration')->findBy(['owner' => $agent]) as $registration) {
+            if ($registration->status <= 0) {
+                continue;
+            }
+
+            $seen[$registration->id] = true;
+            yield $registration;
+        }
+
+        foreach ($app->repo('RegistrationAgentRelation')->findBy(['agent' => $agent, 'group' => 'coletivo']) as $relation) {
+            $registration = $relation->owner;
+            if (!$registration || $registration->status <= 0 || isset($seen[$registration->id])) {
+                continue;
+            }
+
+            $seen[$registration->id] = true;
+            yield $registration;
+        }
+    }
+
+    /**
+     * @param string[] $entity_fields
+     */
+    private function registrationExposesAgentFile(
+        Registration $registration,
+        Agent $agent,
+        AgentFile $file,
+        array $entity_fields
+    ): bool {
+        $opportunity = $registration->opportunity;
+        if (!$opportunity) {
+            return false;
+        }
+
+        foreach ($opportunity->registrationFieldConfigurations as $field_config) {
+            if (!in_array($field_config->fieldType, ['agent-owner-field', 'agent-collective-field'], true)) {
+                continue;
+            }
+
+            $entity_field = $field_config->config['entityField'] ?? null;
+            if (!in_array($entity_field, $entity_fields, true)) {
+                continue;
+            }
+
+            $field_agent = $this->resolveAgentForRegistrationField($registration, $field_config->fieldType);
+            if (!$field_agent || $field_agent->id !== $agent->id) {
+                continue;
+            }
+
+            if ($this->registrationFieldValueMatchesFile($registration, $field_config->fieldName, $entity_field, $file)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    private function resolveAgentForRegistrationField(Registration $registration, string $field_type): ?Agent
+    {
+        if ($field_type === 'agent-owner-field') {
+            return $registration->owner;
+        }
+
+        $agents = $registration->getRelatedAgents('coletivo');
+
+        return $agents[0] ?? null;
+    }
+
+    private function registrationFieldValueMatchesFile(
+        Registration $registration,
+        string $field_name,
+        string $entity_field,
+        AgentFile $file
+    ): bool {
+        $decoded = $this->decodeStoredRegistrationFieldValue($registration->$field_name ?? null);
+
+        if (is_array($decoded) && isset($decoded['id']) && (int) $decoded['id'] === (int) $file->id) {
+            return true;
+        }
+
+        $live = $this->fetchAgentFileFieldFromEntity($file->owner, $entity_field);
+
+        return is_array($live) && (int) ($live['id'] ?? 0) === (int) $file->id;
     }
 }

@@ -35,7 +35,7 @@ $this->import('
                         </span>
                     </div>
 
-                    <template v-if="registration && item.isFirstPhase">
+                    <template v-if="registration && registration?.currentUserPermissions?.sendEditableFields && item?.isDataCollection">
                         <registration-form-timeline :entity="registration"></registration-form-timeline>
                     </template>
 
@@ -44,7 +44,7 @@ $this->import('
 
                         <registration-status v-if="shouldShowResults(item, registration)" :registration="registration" :phase="item"></registration-status>
 
-                        <div v-if="isDataCollectionPhase(item) && isActive(item, registration) && registration.status == 0">
+                        <div v-if="isDataCollectionPhase(item) && !item.isExecutionPhase && isActive(item, registration) && registration.status == 0">
                             <mc-link :entity="registration" route="edit" class="button button--primary"><?= i::__('Preencher formulário') ?></mc-link>
                         </div>
                         <?php $this->applyComponentHook('registration', 'end'); ?>

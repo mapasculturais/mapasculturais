@@ -13,8 +13,23 @@ app.component('entity-files-list', {
 
     },
 
+    mounted() {
+    },
+
     computed: {
-        
+        isDocsAnexoList() {
+            const classes = this.classes;
+
+            if (typeof classes === 'string') {
+                return classes.includes('docs-anexo-list');
+            }
+
+            if (Array.isArray(classes)) {
+                return classes.includes('docs-anexo-list');
+            }
+
+            return classes?.['docs-anexo-list'] ?? false;
+        },
     },
 
     props: {
@@ -42,6 +57,13 @@ app.component('entity-files-list', {
             type: Boolean,
             default: false
         },
+
+        /** Metadado do agente associado ao FileGroup (ex.: cpfAnexo para docs-cpf). */
+        sealProp: {
+            type: String,
+            required: false,
+        },
+
     },
     
     data() {

@@ -1,6 +1,7 @@
 <?php
 namespace MapasCulturais\Repositories;
 use MapasCulturais\Traits;
+use MapasCulturais\Entities\EvaluationMethodConfigurationAgentRelation;
 use MapasCulturais\Entities\ProjectOpportunity;
 use MapasCulturais\Entities\Project;
 use DateTime;
@@ -85,11 +86,28 @@ class Opportunity extends \MapasCulturais\Repository{
 
         $conn = $app->em->getConnection();
 
-        $opportunity_ids = $conn->fetchFirstColumn("
+        // Busca oportunidades onde o usuário tem avaliações atribuídas na tabela de avaliações
+        $evaluation_opportunity_ids = $conn->fetchFirstColumn("
             select distinct(opportunity_id) from evaluations where valuer_user_id = :valuer_user_id;
         ", [
             'valuer_user_id' => $valuer_user_id,
         ]);
+
+        // Busca oportunidades onde o usuário está configurado como avaliador via relação de agente
+        // (mesmo que as inscrições ainda não tenham sido distribuídas para ele)
+        $relation_class = EvaluationMethodConfigurationAgentRelation::class;
+        $agent_relation_query = $app->em->createQuery("
+            SELECT IDENTITY(emc.opportunity) as opp_id
+            FROM $relation_class ar
+            JOIN ar.agent a WITH a.user = :user_id
+            JOIN ar.owner emc
+            WHERE ar.status = 1
+        ");
+        $agent_relation_query->setParameter('user_id', $valuer_user_id);
+        $relation_opportunity_ids = $agent_relation_query->getSingleColumnResult();
+
+        $opportunity_ids = array_values(array_unique(array_merge($evaluation_opportunity_ids, $relation_opportunity_ids)));
+
         if (empty($opportunity_ids)) {
             return [];
         }
@@ -105,7 +123,7 @@ class Opportunity extends \MapasCulturais\Repository{
                 MapasCulturais\Entities\Opportunity o
             WHERE 
                 o.id in (:opportunity_ids)
-                AND o.status = 1 OR o.status = -1"
+                AND (o.status = 1 OR o.status = -1)"
 
         );
 

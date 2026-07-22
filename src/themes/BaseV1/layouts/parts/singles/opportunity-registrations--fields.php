@@ -18,6 +18,11 @@ $app->applyHookBoundTo($this, 'opportunity.blockedFields', [$entity]);
     <div class="project-edit-mode--header">
         <h4><?php i::_e("Campos"); ?></h4>
 
+        <div ng-if="countInvalidFields() > 0" class="alert warning field-validation-alert" role="alert" aria-live="polite">
+            <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
+            <strong><?php i::_e('Atenção:'); ?></strong> {{countInvalidFields()}} <?php i::_e('campo(s) possuem configuração incompleta.'); ?>
+        </div>
+
         <p ng-if="data.entity.canUserModifyRegistrationFields" class="registration-help"><?php i::_e("Configure aqui os campos do formulário de inscrição."); ?></p>
         <p ng-if="!data.entity.canUserModifyRegistrationFields" class="registration-help"><?php i::_e("A edição destas opções estão desabilitadas porque agentes já se inscreveram neste projeto."); ?> </p>
     </div>
@@ -28,8 +33,8 @@ $app->applyHookBoundTo($this, 'opportunity.blockedFields', [$entity]);
         <?php else : ?>
             <?php $this->part('singles/opportunity-registrations--fields--project-name', ['editable_class' => $editable_class, 'entity' => $entity]) ?>
             <p ng-if="data.entity.canUserModifyRegistrationFields" class="buttons">
-                <a class="btn btn-default add" title="" ng-click="editbox.open('editbox-registration-fields', $event)" rel='noopener noreferrer'><?php i::_e("Adicionar campo"); ?></a>
-                <a class="btn btn-default add" title="" ng-click="editbox.open('editbox-registration-files', $event)" rel='noopener noreferrer'><?php i::_e("Adicionar anexo"); ?></a>
+                <button type="button" class="btn btn-default add" ng-click="openNewFieldConfigurationEditBox($event)"><?php i::_e("Adicionar campo"); ?></button>
+                <button type="button" class="btn btn-default add" ng-click="openNewFileConfigurationEditBox($event)"><?php i::_e("Adicionar anexo"); ?></button>
             </p>
         <?php endif; ?>
         <!-- edit-box to add attachment -->
@@ -75,6 +80,51 @@ $app->applyHookBoundTo($this, 'opportunity.blockedFields', [$entity]);
             <div ng-init="field = data.newFileConfiguration">
                 <?php $this->part('singles/opportunity-registrations--fields--field-require'); ?>
             </div>
+            <p>
+                <small><?php i::_e("Tipos de arquivo permitidos (deixe em branco para permitir todos)"); ?>:</small><br>
+                
+                <strong><?php i::_e("Documentos"); ?></strong><br>
+                <label class="checkbox-label"><input type="checkbox" checklist-model="data.newFileConfiguration.allowedFileTypes" checklist-value="'application/msword'"> <?php i::_e(".doc"); ?> </label>
+                <label class="checkbox-label"><input type="checkbox" checklist-model="data.newFileConfiguration.allowedFileTypes" checklist-value="'application/vnd.openxmlformats-officedocument.wordprocessingml.document'"> <?php i::_e(".docx"); ?> </label>
+                <label class="checkbox-label"><input type="checkbox" checklist-model="data.newFileConfiguration.allowedFileTypes" checklist-value="'application/vnd.oasis.opendocument.text'"> <?php i::_e(".odt"); ?> </label>
+                <label class="checkbox-label"><input type="checkbox" checklist-model="data.newFileConfiguration.allowedFileTypes" checklist-value="'application/pdf'"> <?php i::_e(".pdf"); ?> </label>
+                <label class="checkbox-label"><input type="checkbox" checklist-model="data.newFileConfiguration.allowedFileTypes" checklist-value="'text/plain'"> <?php i::_e(".txt"); ?> </label>
+                <br>
+                
+                <strong><?php i::_e("Planilhas"); ?></strong><br>
+                <label class="checkbox-label"><input type="checkbox" checklist-model="data.newFileConfiguration.allowedFileTypes" checklist-value="'application/vnd.ms-excel'"> <?php i::_e(".xls"); ?> </label>
+                <label class="checkbox-label"><input type="checkbox" checklist-model="data.newFileConfiguration.allowedFileTypes" checklist-value="'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'"> <?php i::_e(".xlsx"); ?> </label>
+                <label class="checkbox-label"><input type="checkbox" checklist-model="data.newFileConfiguration.allowedFileTypes" checklist-value="'application/vnd.oasis.opendocument.spreadsheet'"> <?php i::_e(".ods"); ?> </label>
+                <label class="checkbox-label"><input type="checkbox" checklist-model="data.newFileConfiguration.allowedFileTypes" checklist-value="'text/csv'"> <?php i::_e(".csv"); ?> </label>
+                <br>
+                
+                <strong><?php i::_e("Apresentações"); ?></strong><br>
+                <label class="checkbox-label"><input type="checkbox" checklist-model="data.newFileConfiguration.allowedFileTypes" checklist-value="'application/vnd.ms-powerpoint'"> <?php i::_e(".ppt"); ?> </label>
+                <label class="checkbox-label"><input type="checkbox" checklist-model="data.newFileConfiguration.allowedFileTypes" checklist-value="'application/vnd.openxmlformats-officedocument.presentationml.presentation'"> <?php i::_e(".pptx"); ?> </label>
+                <label class="checkbox-label"><input type="checkbox" checklist-model="data.newFileConfiguration.allowedFileTypes" checklist-value="'application/vnd.oasis.opendocument.presentation'"> <?php i::_e(".odp"); ?> </label>
+                <br>
+                
+                <strong><?php i::_e("Imagens"); ?></strong><br>
+                <label class="checkbox-label"><input type="checkbox" checklist-model="data.newFileConfiguration.allowedFileTypes" checklist-value="'image/jpeg'"> <?php i::_e(".jpg/.jpeg"); ?> </label>
+                <label class="checkbox-label"><input type="checkbox" checklist-model="data.newFileConfiguration.allowedFileTypes" checklist-value="'image/png'"> <?php i::_e(".png"); ?> </label>
+                <label class="checkbox-label"><input type="checkbox" checklist-model="data.newFileConfiguration.allowedFileTypes" checklist-value="'image/gif'"> <?php i::_e(".gif"); ?> </label>
+                <br>
+                
+                <strong><?php i::_e("Arquivos Compactados"); ?></strong><br>
+                <label class="checkbox-label"><input type="checkbox" checklist-model="data.newFileConfiguration.allowedFileTypes" checklist-value="'application/zip'"> <?php i::_e(".zip"); ?> </label>
+                <label class="checkbox-label"><input type="checkbox" checklist-model="data.newFileConfiguration.allowedFileTypes" checklist-value="'application/x-rar-compressed'"> <?php i::_e(".rar"); ?> </label>
+                <br>
+                
+                <strong><?php i::_e("Vídeos"); ?></strong><br>
+                <label class="checkbox-label"><input type="checkbox" checklist-model="data.newFileConfiguration.allowedFileTypes" checklist-value="'video/mp4'"> <?php i::_e(".mp4"); ?> </label>
+                <label class="checkbox-label"><input type="checkbox" checklist-model="data.newFileConfiguration.allowedFileTypes" checklist-value="'video/x-msvideo'"> <?php i::_e(".avi"); ?> </label>
+                <label class="checkbox-label"><input type="checkbox" checklist-model="data.newFileConfiguration.allowedFileTypes" checklist-value="'video/quicktime'"> <?php i::_e(".mov"); ?> </label>
+                <br>
+                
+                <strong><?php i::_e("Áudios"); ?></strong><br>
+                <label class="checkbox-label"><input type="checkbox" checklist-model="data.newFileConfiguration.allowedFileTypes" checklist-value="'audio/mpeg'"> <?php i::_e(".mp3"); ?> </label>
+                <label class="checkbox-label"><input type="checkbox" checklist-model="data.newFileConfiguration.allowedFileTypes" checklist-value="'audio/wav'"> <?php i::_e(".wav"); ?> </label>
+            </p>
             <p ng-if="data.categories.length > 1">
                 <small><?php i::_e("Selecione em quais categorias este anexo é utilizado"); ?>:</small><br>
                 <label class="checkbox-label"><input type="checkbox" onclick="if (!this.checked) return false" ng-click="data.newFileConfiguration.categories = []" ng-checked="allCategories(data.newFileConfiguration)"> <?php i::_e("Todas"); ?> </label>
@@ -90,12 +140,15 @@ $app->applyHookBoundTo($this, 'opportunity.blockedFields', [$entity]);
 
         <!-- added attachments list -->
         <ul ui-sortable="sortableOptions" class="attachment-list" ng-model="data.fields">
-            <li ng-repeat="field in data.fields" ng-show="showFieldConfiguration(field)" on-repeat-done="init-ajax-uploaders" id="field-{{field.type}}-{{field.id}}" class="attachment-list-item project-edit-mode attachment-list-item-type-{{field.fieldType}}">
+            <li ng-repeat="field in data.fields track by (field.groupName || field.fieldName)" ng-show="showFieldConfiguration(field)" on-repeat-done="init-ajax-uploaders" id="field-{{field.type}}-{{field.id}}" ng-class="{'attachment-list-item--has-error': !isFieldValid(field)}" class="attachment-list-item project-edit-mode attachment-list-item-type-{{field.fieldType}}">
                 <div ng-if="field.fieldType !== 'file'" ng-class="{'section' : field.fieldType==='section'}">
                     <div class="js-open-editbox item">
                         <div class="label">
                             <code onclick="copyToClipboard(this)" class="hltip field-id" title="<?php i::esc_attr_e('Clique para copiar') ?>">{{field.id}}</code> {{field.title}}
                             <em ng-if="field.fieldType !== 'section'"><small>({{field.required.toString() === 'true' ? data.fieldsRequiredLabel : data.fieldsOptionalLabel }})</small></em>
+                            <span ng-if="!isFieldValid(field)" class="field-validation-badge" title="<?php i::esc_attr_e('Configuração incompleta'); ?>">
+                                <i class="fa fa-exclamation-circle"></i>
+                            </span>
                         </div>
 
                         <span class="attachment-description">
@@ -124,6 +177,13 @@ $app->applyHookBoundTo($this, 'opportunity.blockedFields', [$entity]);
 
                     <!-- edit-box to edit attachment -->
                     <edit-box ng-if="data.entity.canUserModifyRegistrationFields" id="editbox-registration-field-{{field.id}}" position="left" title="<?php i::esc_attr_e("Editar Campo"); ?>" cancel-label="<?php i::esc_attr_e("Cancelar"); ?>" submit-label="<?php i::esc_attr_e("Salvar"); ?>" close-on-cancel='true' on-cancel="cancelFieldConfigurationEditBox" on-submit="editFieldConfiguration" index="{{$index}}" spinner-condition="data.fieldSpinner">
+                        <div ng-if="!isFieldValid(field)" class="field-validation-message alert warning" role="alert">
+                            <strong><?php i::_e('Configuração incompleta:'); ?></strong>
+                            <ul>
+                                <li ng-repeat="error in fieldValidationErrors[(field.groupName || field.fieldName)]">{{error}}</li>
+                            </ul>
+                        </div>
+
                         <label>
                             <?php i::_e('Nome do campo') ?><br>
                             <input type="text" ng-model="field.title" placeholder="<?php i::esc_attr_e("Nome do campo"); ?>" />
@@ -181,6 +241,7 @@ $app->applyHookBoundTo($this, 'opportunity.blockedFields', [$entity]);
                     </edit-box>
                     <div ng-if="data.entity.canUserModifyRegistrationFields && !isBlockedFields(field.id)" class="btn-group">
                         <a ng-click="openFieldConfigurationEditBox(field.id, $index, $event);" class="btn btn-default edit hltip" title="<?php i::esc_attr_e("editar campo"); ?>"></a>
+                        <a ng-click="duplicateFieldConfiguration(field, $index)" class="btn btn-default add hltip" title="<?php i::esc_attr_e("duplicar campo"); ?>"></a>
                         <a ng-click="removeFieldConfiguration(field.id, $index)" data-href="{{field.deleteUrl}}" class="btn btn-default delete hltip" title="<?php i::esc_attr_e("excluir campo"); ?>"></a>
                     </div>
                     <div style="color: red;">
@@ -227,6 +288,51 @@ $app->applyHookBoundTo($this, 'opportunity.blockedFields', [$entity]);
                             <?php i::_e('Etapa') ?><br>
                             <select ng-model="field.step" ng-options="step as step.name for step in steps track by step.id" ng-change="changeFileStep(field)"></select>
                         </label>
+                        <p>
+                            <small><?php i::_e("Tipos de arquivo permitidos (deixe em branco para permitir todos)"); ?>:</small><br>
+                            
+                            <strong><?php i::_e("Documentos"); ?></strong><br>
+                            <label class="checkbox-label"><input type="checkbox" checklist-model="field.allowedFileTypes" checklist-value="'application/msword'"> <?php i::_e(".doc"); ?> </label>
+                            <label class="checkbox-label"><input type="checkbox" checklist-model="field.allowedFileTypes" checklist-value="'application/vnd.openxmlformats-officedocument.wordprocessingml.document'"> <?php i::_e(".docx"); ?> </label>
+                            <label class="checkbox-label"><input type="checkbox" checklist-model="field.allowedFileTypes" checklist-value="'application/vnd.oasis.opendocument.text'"> <?php i::_e(".odt"); ?> </label>
+                            <label class="checkbox-label"><input type="checkbox" checklist-model="field.allowedFileTypes" checklist-value="'application/pdf'"> <?php i::_e(".pdf"); ?> </label>
+                            <label class="checkbox-label"><input type="checkbox" checklist-model="field.allowedFileTypes" checklist-value="'text/plain'"> <?php i::_e(".txt"); ?> </label>
+                            <br>
+                            
+                            <strong><?php i::_e("Planilhas"); ?></strong><br>
+                            <label class="checkbox-label"><input type="checkbox" checklist-model="field.allowedFileTypes" checklist-value="'application/vnd.ms-excel'"> <?php i::_e(".xls"); ?> </label>
+                            <label class="checkbox-label"><input type="checkbox" checklist-model="field.allowedFileTypes" checklist-value="'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'"> <?php i::_e(".xlsx"); ?> </label>
+                            <label class="checkbox-label"><input type="checkbox" checklist-model="field.allowedFileTypes" checklist-value="'application/vnd.oasis.opendocument.spreadsheet'"> <?php i::_e(".ods"); ?> </label>
+                            <label class="checkbox-label"><input type="checkbox" checklist-model="field.allowedFileTypes" checklist-value="'text/csv'"> <?php i::_e(".csv"); ?> </label>
+                            <br>
+                            
+                            <strong><?php i::_e("Apresentações"); ?></strong><br>
+                            <label class="checkbox-label"><input type="checkbox" checklist-model="field.allowedFileTypes" checklist-value="'application/vnd.ms-powerpoint'"> <?php i::_e(".ppt"); ?> </label>
+                            <label class="checkbox-label"><input type="checkbox" checklist-model="field.allowedFileTypes" checklist-value="'application/vnd.openxmlformats-officedocument.presentationml.presentation'"> <?php i::_e(".pptx"); ?> </label>
+                            <label class="checkbox-label"><input type="checkbox" checklist-model="field.allowedFileTypes" checklist-value="'application/vnd.oasis.opendocument.presentation'"> <?php i::_e(".odp"); ?> </label>
+                            <br>
+                            
+                            <strong><?php i::_e("Imagens"); ?></strong><br>
+                            <label class="checkbox-label"><input type="checkbox" checklist-model="field.allowedFileTypes" checklist-value="'image/jpeg'"> <?php i::_e(".jpg/.jpeg"); ?> </label>
+                            <label class="checkbox-label"><input type="checkbox" checklist-model="field.allowedFileTypes" checklist-value="'image/png'"> <?php i::_e(".png"); ?> </label>
+                            <label class="checkbox-label"><input type="checkbox" checklist-model="field.allowedFileTypes" checklist-value="'image/gif'"> <?php i::_e(".gif"); ?> </label>
+                            <br>
+                            
+                            <strong><?php i::_e("Arquivos Compactados"); ?></strong><br>
+                            <label class="checkbox-label"><input type="checkbox" checklist-model="field.allowedFileTypes" checklist-value="'application/zip'"> <?php i::_e(".zip"); ?> </label>
+                            <label class="checkbox-label"><input type="checkbox" checklist-model="field.allowedFileTypes" checklist-value="'application/x-rar-compressed'"> <?php i::_e(".rar"); ?> </label>
+                            <br>
+                            
+                            <strong><?php i::_e("Vídeos"); ?></strong><br>
+                            <label class="checkbox-label"><input type="checkbox" checklist-model="field.allowedFileTypes" checklist-value="'video/mp4'"> <?php i::_e(".mp4"); ?> </label>
+                            <label class="checkbox-label"><input type="checkbox" checklist-model="field.allowedFileTypes" checklist-value="'video/x-msvideo'"> <?php i::_e(".avi"); ?> </label>
+                            <label class="checkbox-label"><input type="checkbox" checklist-model="field.allowedFileTypes" checklist-value="'video/quicktime'"> <?php i::_e(".mov"); ?> </label>
+                            <br>
+                            
+                            <strong><?php i::_e("Áudios"); ?></strong><br>
+                            <label class="checkbox-label"><input type="checkbox" checklist-model="field.allowedFileTypes" checklist-value="'audio/mpeg'"> <?php i::_e(".mp3"); ?> </label>
+                            <label class="checkbox-label"><input type="checkbox" checklist-model="field.allowedFileTypes" checklist-value="'audio/wav'"> <?php i::_e(".wav"); ?> </label>
+                        </p>
                         <p ng-if="data.categories.length > 1">
                             <small><?php i::_e("Selecione em quais categorias este anexo é utilizado"); ?>:</small><br>
                             <label class="checkbox-label"><input type="checkbox" onclick="if (!this.checked) return false" ng-click="field.categories = []" ng-checked="allCategories(field)"> <?php i::_e("Todas"); ?> </label>
@@ -284,6 +390,7 @@ $app->applyHookBoundTo($this, 'opportunity.blockedFields', [$entity]);
 
                     <div ng-if="data.entity.canUserModifyRegistrationFields && !isBlockedFields(field.id)" class="btn-group">
                         <a ng-click="openFileConfigurationEditBox(field.id, $index, $event);" class="btn btn-default edit hltip" title="<?php i::esc_attr_e("editar anexo"); ?>"></a>
+                        <a ng-click="duplicateFileConfiguration(field, $index)" class="btn btn-default add hltip" title="<?php i::esc_attr_e("duplicar anexo"); ?>"></a>
                         <a ng-if="!field.template" ng-click="openFileConfigurationTemplateEditBox(field.id, $index, $event);" class="btn btn-default send hltip" title="<?php i::esc_attr_e("enviar modelo"); ?>"></a>
                         <a ng-click="removeFileConfiguration(field.id, $index)" data-href="{{field.deleteUrl}}" class="btn btn-default delete hltip" title="<?php i::esc_attr_e("excluir anexo"); ?>"></a>
                     </div>

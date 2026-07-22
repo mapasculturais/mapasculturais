@@ -255,7 +255,7 @@ class RegistrationFieldConfiguration extends \MapasCulturais\Entity {
     public function getFieldName(){
         return 'field_' . $this->id;
     }
-
+    
     /**
      *
      * @return \MapasCulturais\Definitions\RegistrationFieldType
@@ -275,7 +275,7 @@ class RegistrationFieldConfiguration extends \MapasCulturais\Entity {
         'required' => $this->required,
         'fieldType' => $this->fieldType,
         'fieldOptions' => $this->fieldOptions,
-        'config' => $this->config,
+        'config' => $this->config ?: [],
         'categories' => $this->categories ?: [],
         'fieldName' => $this->getFieldName(),
         'displayOrder' => $this->displayOrder,
@@ -284,7 +284,7 @@ class RegistrationFieldConfiguration extends \MapasCulturais\Entity {
         'conditionalValue' => $this->conditionalValue,
         'registrationRanges' => $this->registrationRanges ?: [],
         'proponentTypes' => $this->proponentTypes ?: [],
-        'step' => $this->step ?? null,
+        'step' => $this->step ? $this->step->simplify('id,name,displayOrder,metadata') : null,
         ];
 
         $app = App::i();

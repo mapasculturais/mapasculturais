@@ -11,6 +11,7 @@ $this->import('
     mc-stepper-vertical
     opportunity-create-data-collect-phase
     opportunity-create-evaluation-phase
+    opportunity-create-execution-phase
     opportunity-create-reporting-phase
     opportunity-phase-config-data-collection
     opportunity-phase-config-evaluation
@@ -28,6 +29,7 @@ $this->import('
                         <?= i::__('Tipo') ?>: 
                         <template v-if="item.__objectType == 'opportunity' && !item.isLastPhase">
                             <span v-if="item.isReportingPhase" class="type"><?= i::__('Prestação de informações') ?></span>
+                            <span v-else-if="item.isExecutionPhase" class="type"><?= i::__('Fase de Execução') ?></span>
                             <span v-else class="type"><?= i::__('Coleta de dados') ?></span>
                         </template>
                         <span v-else-if="item.__objectType == 'evaluationmethodconfiguration'" class="type">{{item.type.name}}</span>
@@ -70,7 +72,39 @@ $this->import('
             <opportunity-phase-config-results :phases="phases" :phase="item" :tab="tab"></opportunity-phase-config-results>
         </template>
     </template>
-    <template #after-li="{index, item}">
+    <template #after-li="{index, item, step}">
+        <div v-if="!step?.active && item.__objectType === 'evaluationmethodconfiguration' && item?.opportunity?.appealPhase" class="appeal-phase-info">
+           <div class="data-collection">
+                <div>
+                    <small><strong><?= i::__("Recurso") ?></strong></small>
+                </div>
+                <div class="data-collection-dates">
+                    <small>
+                        {{item?.opportunity?.appealPhase?.registrationFrom?.date('2-digit year')}} {{item?.opportunity?.appealPhase?.registrationFrom?.time('numeric')}}
+                    </small>
+                    <small><strong><?= i::__("à") ?></strong></small>
+                    <small>
+                        {{item?.opportunity?.appealPhase?.registrationTo?.date('2-digit year')}} {{item?.opportunity?.appealPhase?.registrationTo?.time('numeric')}}
+                    </small>
+                </div>
+           </div>
+
+           <div class="evaluation">
+                <div>
+                    <small><strong><?= i::__("Avaliação do recurso") ?></strong></small>
+                </div>
+                <div class="evaluation-dates">
+                    <small>
+                        {{item?.opportunity?.appealPhase?.evaluationMethodConfiguration?.evaluationFrom?.date('2-digit year')}} {{item?.opportunity?.appealPhase?.evaluationMethodConfiguration?.evaluationFrom?.time('numeric')}}
+                    </small>
+                    <small><strong><?= i::__("à") ?></strong></small>
+                    <small>
+                        {{item?.opportunity?.appealPhase?.evaluationMethodConfiguration?.evaluationTo?.date('2-digit year')}} {{item?.opportunity?.appealPhase?.evaluationMethodConfiguration?.evaluationTo?.time('numeric')}}
+                    </small>
+                </div>
+           </div>
+        </div>
+
         <template v-if="phases[index + 1]?.isLastPhase">
             <div v-if="showButtons() && entity.registrationFrom && entity.registrationTo" class="add-phase grid-12">
                 <div class="add-phase__evaluation col-12">
@@ -98,6 +132,14 @@ $this->import('
 
         <template v-else-if="index === phases.length - 1">
             <div class="add-phase grid-12">
+                <div class="col-12" v-if="!hasExecutionPhase">
+                    <mc-alert v-if="!firstPhase?.isContinuousFlow && !lastPhase?.publishTimestamp" type="warning">
+                        <p><small class="required"><?= i::__("A data e hora da 'Publicação final' precisa estar preenchida para adicionar a fase de execução.") ?></small></p>
+                    </mc-alert>
+
+                    <opportunity-create-execution-phase v-if="!firstPhase?.isContinuousFlow && lastPhase?.publishTimestamp" :opportunity="entity" @create="addExecutionPhases"></opportunity-create-execution-phase>
+                </div>
+
                 <div class="col-12" v-if="!finalReportingPhase">
                     <mc-alert v-if="!firstPhase?.isContinuousFlow && !lastPhase?.publishTimestamp" type="warning">
                         <p><small class="required"><?= i::__("A data e hora da 'Publicação final' precisa estar preenchida para adicionar novas fases de prestação de informações.") ?></small></p>

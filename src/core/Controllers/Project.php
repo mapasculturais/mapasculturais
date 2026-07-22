@@ -65,6 +65,14 @@ class Project extends EntityController {
 
 
 
+    /**
+    * Exibe o formulário de criação de projeto
+    * 
+    * Este método sobrescreve o comportamento padrão para permitir
+    * a definição de um projeto pai através do parâmetro 'parentId'.
+    * 
+    * @return void
+    */
     function GET_create() {
         if(key_exists('parentId', $this->urlData) && is_numeric($this->urlData['parentId'])){
             $parent = $this->repository->find($this->urlData['parentId']);
@@ -76,6 +84,14 @@ class Project extends EntityController {
         parent::GET_create();
     }
 
+    /**
+    * Publica as inscrições de um projeto
+    * 
+    * Esta ação requer autenticação e permissão no projeto.
+    * Torna as inscrições visíveis publicamente.
+    * 
+    * @return void
+    */
     function ALL_publishRegistrations(){
         $this->requireAuthentication();
 
@@ -96,6 +112,14 @@ class Project extends EntityController {
     }
 
 
+    /**
+    * Gera relatório do projeto
+    * 
+    * Esta ação requer autenticação e permissão '@control' no projeto.
+    * Gera um arquivo Excel com os dados do projeto.
+    * 
+    * @return void
+    */
     function GET_report(){
         $this->requireAuthentication();
         $app = App::i();
@@ -127,6 +151,15 @@ class Project extends EntityController {
         echo mb_convert_encoding($output,"HTML-ENTITIES","UTF-8");
     }    
 
+    /**
+    * Define o status de eventos do projeto
+    * 
+    * Esta ação requer autenticação e permissão '@control' no projeto.
+    * Altera o status de múltiplos eventos (publicar/despublicar).
+    * 
+    * @param int $status Status a ser definido
+    * @return void
+    */
     protected function _setEventStatus($status){
         $this->requireAuthentication();
 
@@ -164,10 +197,26 @@ class Project extends EntityController {
         $this->json(true);
     }
 
+    /**
+    * Publica eventos do projeto
+    * 
+    * Esta ação requer autenticação e permissão '@control' no projeto.
+    * Publica os eventos selecionados do projeto.
+    * 
+    * @return void
+    */
     function POST_publishEvents(){
         $this->_setEventStatus(Entities\Event::STATUS_ENABLED);
     }
 
+    /**
+    * Despublica eventos do projeto
+    * 
+    * Esta ação requer autenticação e permissão '@control' no projeto.
+    * Despublica os eventos selecionados do projeto.
+    * 
+    * @return void
+    */
     function POST_unpublishEvents(){
         $this->_setEventStatus(Entities\Event::STATUS_DRAFT);
     }

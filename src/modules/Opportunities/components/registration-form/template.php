@@ -50,6 +50,7 @@
                         :autosave="60000"
                         description-first
                         :max-options="field?.config?.maxOptions !== undefined && field?.config?.maxOptions !== '' ? Number(field.config.maxOptions) : 0"
+                        :registration-field-configuration="field"
                         preserve-order></entity-field>
 
                     <entity-file v-else-if="field.groupName" 
@@ -59,9 +60,11 @@
                         titleModal="<?php i::_e('Adicionar anexo') ?>" 
                         :title="field.title" 
                         :description="field.description"
-                        editable
+                        :editable="!isDisabled(field)"
+                        showEmpty
                         :required="field.required"
-                        :default-file="field?.template"></entity-file>
+                        :default-file="field?.template"
+                        :allowed-file-types="field.allowedFileTypes || []"></entity-file>
 
                 </template>
             </template>

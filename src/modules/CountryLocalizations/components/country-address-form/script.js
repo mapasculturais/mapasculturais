@@ -37,16 +37,23 @@ app.component('country-address-form', {
 
         countryFieldEnabled() {
             return $MAPAS.config.countryLocalization.countryFieldEnabled;
+        },
+
+        isCountryRequired() {
+            const addressLevel0 = this.entity.$PROPERTIES?.address_level0;
+            const enPais = this.entity.$PROPERTIES?.En_Pais;
+        
+            return !!(addressLevel0?.required || enPais?.required);
         }
     },
 
     methods: {
         changeCountry() {
             this.processing = true;
-            this.entity.address_level0 = this.country;   
-            this.clearFields();
-
+            
             this.$nextTick(() => {
+                this.entity.address_level0 = this.country;
+                this.clearFields();
                 this.getLevelHierarchy();
             });
         },

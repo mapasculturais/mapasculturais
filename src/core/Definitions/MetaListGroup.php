@@ -2,26 +2,46 @@
 namespace MapasCulturais\Definitions;
 
 /**
- * This class defines a MetaList Group
+ * Esta classe define um Grupo de MetaList
+ * 
+ * @property-read string $name Nome do grupo
+ * @property-read int|null $maxFiles Número máximo de arquivos
+ * @property-read array $metadata Metadados do grupo
+ * @property-read int|null $maxItems Número máximo de itens
  */
 class MetaListGroup{
     use \MapasCulturais\Traits\MagicGetter;
 
+    /**
+     * Nome do grupo
+     * @var string
+     */
     public $name = '';
 
+    /**
+     * Número máximo de arquivos
+     * @var int|null
+     */
     public $maxFiles = null;
 
+    /**
+     * Metadados do grupo
+     * @var array
+     */
     public $metadata = [];
 
+    /**
+     * Número máximo de itens
+     * @var int|null
+     */
     public $maxItems = null;
 
     /**
+     * Construtor da classe
      *
-     * @param string $name The group name
-     * @param array $validations An array with regex to validate file mime type
-     * @param type $error_message The error message to display if the file mime type is not valid
-     * @param type $unique If this group contains just one file. If this is set to true the uploaded file always replaces the existent file.
-     * @param type $max_files Maximum files in this group.
+     * @param string $name Nome do grupo
+     * @param array $metadata Metadados do grupo
+     * @param int|null $max_items Número máximo de itens
      */
     function __construct($name, array $metadata = [], $max_items = null) {
         $this->name = $name;
@@ -32,8 +52,10 @@ class MetaListGroup{
     }
 
     /**
-     * Validates the file and if it is not valid returns the error message
+     * Valida o arquivo e retorna a mensagem de erro se não for válido
      *
+     * @param \MapasCulturais\Entities\MetaList $file Arquivo a ser validado
+     * @return bool Sempre retorna true (método em desenvolvimento)
      */
     function getError(\MapasCulturais\Entities\MetaList $file){
 
@@ -54,11 +76,11 @@ class MetaListGroup{
 
 
     /**
-     * Validates the value with the defined validation rules.
+     * Valida o valor com as regras de validação definidas
      *
-     * @param mixed $value
-     *
-     * @return bool|array true if the value is valid or an array of errors
+     * @param \MapasCulturais\Entity $owner Proprietário do valor
+     * @param mixed $value Valor a ser validado
+     * @return bool|array true se o valor for válido ou um array de erros
      */
     function validate(\MapasCulturais\Entity $owner, $value){
         $errors = [];

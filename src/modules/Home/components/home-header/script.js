@@ -13,15 +13,18 @@ app.component('home-header', {
             
             banner: $MAPAS.config.homeHeader.banner,
             bannerLink: $MAPAS.config.homeHeader.bannerLink,
-            downloadableLink: $MAPAS.config.homeHeader.downloadableLink,
+            bannerAlt: $MAPAS.config.homeHeader.bannerAlt,
+            bannerOpenInNewTab: $MAPAS.config.homeHeader.bannerOpenInNewTab,
 
             secondBanner: $MAPAS.config.homeHeader.secondBanner,
             secondBannerLink: $MAPAS.config.homeHeader.secondBannerLink,
-            secondDownloadableLink: $MAPAS.config.homeHeader.secondDownloadableLink,
+            secondBannerAlt: $MAPAS.config.homeHeader.secondBannerAlt,
+            secondBannerOpenInNewTab: $MAPAS.config.homeHeader.secondBannerOpenInNewTab,
 
             thirdBanner: $MAPAS.config.homeHeader.thirdBanner,
             thirdBannerLink: $MAPAS.config.homeHeader.thirdBannerLink,
-            thirdDownloadableLink: $MAPAS.config.homeHeader.thirdDownloadableLink,
+            thirdBannerAlt: $MAPAS.config.homeHeader.thirdBannerAlt,
+            thirdBannerOpenInNewTab: $MAPAS.config.homeHeader.thirdBannerOpenInNewTab,
         }
     },
     computed: {

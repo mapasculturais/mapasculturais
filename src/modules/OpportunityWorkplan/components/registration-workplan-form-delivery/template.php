@@ -9,6 +9,7 @@ use MapasCulturais\i;
 
 $this->import('
     entity-files-list
+    mc-currency-input
     mc-icon
     mc-links-field
     mc-multiselect
@@ -53,33 +54,33 @@ $this->import('
             {{ delivery.segmentDelivery }}
         </div>
 
-        <div v-if="delivery.expectedNumberPeople" class="field">
+        <div v-if="hasValue(delivery.expectedNumberPeople)" class="field">
             <label><?= i::esc_attr__('Número previsto de pessoas') ?></label>
             {{ delivery.expectedNumberPeople }}
         </div>
 
-        <div v-if="delivery.generaterRevenue" class="field">
+        <div v-if="hasValue(delivery.generaterRevenue)" class="field">
             <label><?= i::esc_attr__('Irá gerar receita?') ?></label>
-            <?= i::__('Sim') ?>
+            {{ booleanOptions[delivery.generaterRevenue] ?? delivery.generaterRevenue }}
         </div>
 
-        <div v-if="delivery.renevueQtd" class="field">
+        <div v-if="hasValue(delivery.renevueQtd)" class="field">
             <label><?= i::esc_attr__('Quantidade') ?></label>
             {{ delivery.renevueQtd }}
         </div>
 
-        <div v-if="delivery.unitValueForecast" class="field">
+        <div v-if="hasValue(delivery.unitValueForecast)" class="field">
             <label><?= i::esc_attr__('Previsão de valor unitário') ?></label>
             {{ convertToCurrency(delivery.unitValueForecast) }}
         </div>
 
-        <div v-if="delivery.totalValueForecast" class="field">
+        <div v-if="hasValue(delivery.totalValueForecast)" class="field">
             <label><?= i::esc_attr__(text: 'Previsão de valor total') ?></label>
             {{ convertToCurrency(delivery.totalValueForecast) }}
         </div>
 
         <div class="field" v-if="opportunity.workplan_monitoringInformTheFormOfAvailability && (editable || proxy.availabilityType)">
-            <label :for="`${vid}__availabilityType`"><?= i::__('Forma de disponibilização') ?></label>
+            <label :for="`${vid}__availabilityType`"><?= i::__('Forma de disponibilização') ?><span v-if="opportunity.workplan_monitoringRequireAvailabilityType" class="required">obrigatório*</span></label>
             <select v-if="editable" :id="`${vid}__availabilityType`" v-model="proxy.availabilityType">
                 <option key="" value=""><?= i::esc_attr__('Selecione') ?></option>
                 <option v-for="(value, label) of availabilityOptions" :key="value" :value="value">{{ label }}</option>
@@ -89,40 +90,550 @@ $this->import('
         </div>
 
         <div class="field" v-if="opportunity.workplan_monitoringInformAccessibilityMeasures && (editable || accessibilityMeasures.length > 0)">
-            <label :for="`${vid}__accessibilityMeasures`"><?= i::__('Medidas de acessibilidade') ?></label>
-            <mc-multiselect v-if="editable" :id="`${vid}__accessibilityMeasures`" :model="accessibilityMeasures" :items="accessibilityOptions"></mc-multiselect>
-            <mc-tag-list classes="primary__background" :tags="accessibilityMeasures"></mc-tag-list>
+            <label :for="`${vid}__accessibilityMeasures`"><?= i::__('Medidas de acessibilidade') ?><span v-if="opportunity.workplan_monitoringRequireAccessibilityMeasures" class="required">obrigatório*</span></label>
+            <mc-multiselect v-if="editable" :id="`${vid}__accessibilityMeasures`" :model="accessibilityMeasures" :items="accessibilityOptions" hide-filter hide-button></mc-multiselect>
+            <mc-tag-list classes="primary__background" :tags="accessibilityMeasures" :labels="accessibilityOptions" editable></mc-tag-list>
             <small class="field__error" v-if="validationErrors.accessibilityMeasures">{{ validationErrors.accessibilityMeasures.join('; ') }}</small>
         </div>
 
         <div class="field" v-if="opportunity.workplan_monitoringProvideTheProfileOfParticipants && (editable || proxy.participantProfile)">
-            <label :for="`${vid}__participantProfile`"><?= i::__('Perfil dos participantes') ?></label>
+            <label :for="`${vid}__participantProfile`"><?= i::__('Perfil dos participantes') ?><span v-if="opportunity.workplan_monitoringRequireParticipantProfile" class="required">obrigatório*</span></label>
             <input v-if="editable" :id="`${vid}__participantProfile`" type="text" v-model="proxy.participantProfile">
             <span v-else>{{ proxy.participantProfile }}</span>
             <small class="field__error" v-if="validationErrors.participantProfile">{{ validationErrors.participantProfile.join('; ') }}</small>
         </div>
 
         <div class="field" v-if="opportunity.workplan_monitoringInformThePriorityAudience && (editable || priorityAudience.length > 0)">
-            <label :for="`${vid}__priorityAudience`"><?= i::__('Territórios prioritários') ?></label>
-            <mc-multiselect v-if="editable" :id="`${vid}__priorityAudience`" :model="priorityAudience" :items="audienceOptions"></mc-multiselect>
-            <mc-tag-list classes="primary__background" :tags="priorityAudience"></mc-tag-list>
+            <label :for="`${vid}__priorityAudience`"><?= i::__('Territórios prioritários') ?><span v-if="opportunity.workplan_monitoringRequirePriorityAudience" class="required">obrigatório*</span></label>
+            <mc-multiselect v-if="editable" :id="`${vid}__priorityAudience`" :model="priorityAudience" :items="audienceOptions" hide-filter hide-button></mc-multiselect>
+            <mc-tag-list classes="primary__background" :tags="priorityAudience" :labels="audienceOptions" editable></mc-tag-list>
             <small class="field__error" v-if="validationErrors.priorityAudience">{{ validationErrors.priorityAudience.join('; ') }}</small>
         </div>
 
-        <div class="field" v-if="opportunity.workplan_registrationReportTheNumberOfParticipants && (editable || proxy.numberOfParticipants)">
-            <label :for="`${vid}__numberOfParticipants`"><?= i::__('Número de participantes') ?></label>
+        <div class="field" v-if="opportunity.workplan_monitoringInformNumberOfParticipants && (editable || hasValue(proxy.numberOfParticipants))">
+            <label :for="`${vid}__numberOfParticipants`"><?= i::__('Número de participantes') ?><span v-if="opportunity.workplan_monitoringRequireNumberOfParticipants" class="required">obrigatório*</span></label>
+            <div v-if="hasValue(delivery.expectedNumberPeople)" class="field__note">
+                <strong><?= i::__('Previsto:') ?></strong> {{ delivery.expectedNumberPeople }}
+            </div>
             <input v-if="editable" :id="`${vid}__numberOfParticipants`" type="number" v-model.number="proxy.numberOfParticipants">
             <span v-else>{{ proxy.numberOfParticipants }}</span>
             <small class="field__error" v-if="validationErrors.numberOfParticipants">{{ validationErrors.numberOfParticipants.join('; ') }}</small>
         </div>
 
-        <div class="field" v-if="opportunity.workplan_monitoringReportExecutedRevenue && (editable || executedRevenue)">
-            <label :for="`${vid}__executedRevenue`"><?= i::__('Receita executada') ?></label>
-            <input v-if="editable" :id="`${vid}__executedRevenue`" type="number" v-model.number="executedRevenue">
+        <div class="field" v-if="opportunity.workplan_monitoringReportExecutedRevenue && (editable || hasExecutedRevenue)">
+            <label :for="`${vid}__executedRevenue`"><?= i::__('Receita executada') ?><span v-if="opportunity.workplan_monitoringRequireExecutedRevenue" class="required">obrigatório*</span></label>
+            <div v-if="hasPlannedRevenueInfo" class="field__note">
+                <strong><?= i::__('Previsto:') ?></strong>
+                <ul>
+                    <li v-if="hasValue(delivery.generaterRevenue)">
+                        <?= i::__('Gerar receita:') ?> {{ booleanOptions[delivery.generaterRevenue] ?? delivery.generaterRevenue }}
+                    </li>
+                    <li v-if="hasValue(delivery.renevueQtd)">
+                        <?= i::__('Quantidade:') ?> {{ delivery.renevueQtd }}
+                    </li>
+                    <li v-if="hasValue(delivery.unitValueForecast)">
+                        <?= i::__('Valor unitário:') ?> {{ convertToCurrency(delivery.unitValueForecast) }}
+                    </li>
+                    <li v-if="hasValue(delivery.totalValueForecast)">
+                        <?= i::__('Valor total:') ?> {{ convertToCurrency(delivery.totalValueForecast) }}
+                    </li>
+                </ul>
+            </div>
+            <mc-currency-input v-if="editable" :id="`${vid}__executedRevenue`" v-model="executedRevenue"></mc-currency-input>
             <span v-else>{{ convertToCurrency(executedRevenue) }}</span>
             <small class="field__error" v-if="validationErrors.executedRevenue">{{ validationErrors.executedRevenue.join('; ') }}</small>
         </div>
-        
+
+        <div class="field" v-if="opportunity.workplan_monitoringInformSegmentDelivery && (editable || proxy.executedSegmentDelivery)">
+            <label :for="`${vid}__executedSegmentDelivery`"><?= i::__('Segmento artístico-cultural executado') ?><span v-if="opportunity.workplan_monitoringRequireSegmentDelivery" class="required">obrigatório*</span></label>
+            <div v-if="delivery.segmentDelivery" class="field__note">
+                <strong><?= i::__('Previsto:') ?></strong> {{ delivery.segmentDelivery }}
+            </div>
+            <select v-if="editable" :id="`${vid}__executedSegmentDelivery`" v-model="proxy.executedSegmentDelivery">
+                <option value=""><?= i::esc_attr__('Selecione') ?></option>
+                <option v-for="opt in segmentDeliveryOptions" :key="opt" :value="opt">{{ opt }}</option>
+            </select>
+            <span v-else>{{ proxy.executedSegmentDelivery }}</span>
+            <small class="field__error" v-if="validationErrors.executedSegmentDelivery">{{ validationErrors.executedSegmentDelivery.join('; ') }}</small>
+        </div>
+
+        <div class="field" v-if="opportunity.workplan_monitoringInformExecutedDeliveryPeriod && (editable || proxy.executedMonthInitial || proxy.executedMonthEnd)">
+            <label><?= i::__('Período executado de realização') ?><span v-if="opportunity.workplan_monitoringRequireExecutedDeliveryPeriod" class="required">obrigatório*</span></label>
+            <div v-if="delivery.monthInitial || delivery.monthEnd" class="field__note">
+                <strong><?= i::__('Previsto:') ?></strong> <?= i::__('mês') ?> {{ delivery.monthInitial }} <?= i::__('a') ?> {{ delivery.monthEnd }}
+            </div>
+            <div v-if="editable" class="grid-12">
+                <div class="col-6 sm:col-12 field">
+                    <label :for="`${vid}__executedMonthInitial`"><?= i::__('Mês inicial executado') ?></label>
+                    <select :id="`${vid}__executedMonthInitial`" v-model.number="proxy.executedMonthInitial" @change="normalizeExecutedMonthEnd()">
+                        <option value=""><?= i::esc_attr__('Selecione') ?></option>
+                        <option v-for="n in executedMonthInitialOptions" :key="n" :value="n">{{ n }}</option>
+                    </select>
+                    <small class="field__error" v-if="validationErrors.executedMonthInitial">{{ validationErrors.executedMonthInitial.join('; ') }}</small>
+                </div>
+                <div class="col-6 sm:col-12 field">
+                    <label :for="`${vid}__executedMonthEnd`"><?= i::__('Mês final executado') ?></label>
+                    <select :id="`${vid}__executedMonthEnd`" v-model.number="proxy.executedMonthEnd">
+                        <option value=""><?= i::esc_attr__('Selecione') ?></option>
+                        <option v-for="n in executedMonthEndOptions" :key="n" :value="n">{{ n }}</option>
+                    </select>
+                    <small class="field__error" v-if="validationErrors.executedMonthEnd">{{ validationErrors.executedMonthEnd.join('; ') }}</small>
+                </div>
+            </div>
+            <span v-else><?= i::__('mês') ?> {{ proxy.executedMonthInitial }} <?= i::__('a') ?> {{ proxy.executedMonthEnd }}</span>
+        </div>
+
+        <!-- Elo das artes executado -->
+        <div class="field" v-if="opportunity.workplan_monitoringInformArtChainLink && (editable || proxy.executedArtChainLink)">
+            <label :for="`${vid}__executedArtChainLink`"><?= i::__('Principal elo das artes acionado (executado)') ?><span v-if="opportunity.workplan_monitoringRequireArtChainLink" class="required">obrigatório*</span></label>
+            <div v-if="delivery.artChainLink" class="field__note">
+                <strong><?= i::__('Previsto:') ?></strong> {{ delivery.artChainLink }}
+            </div>
+            <select v-if="editable" :id="`${vid}__executedArtChainLink`" v-model="proxy.executedArtChainLink">
+                <option value=""><?= i::esc_attr__('Selecione') ?></option>
+                <option v-for="opt in artChainLinkOptions" :key="opt" :value="opt">{{ opt }}</option>
+            </select>
+            <span v-else>{{ proxy.executedArtChainLink }}</span>
+            <small class="field__error" v-if="validationErrors.executedArtChainLink">{{ validationErrors.executedArtChainLink.join('; ') }}</small>
+        </div>
+
+        <div class="field" v-if="opportunity.workplan_monitoringInformExecutedTotalBudget && (editable || proxy.executedTotalBudget !== null && proxy.executedTotalBudget !== '')">
+            <label :for="`${vid}__executedTotalBudget`"><?= i::__('Orçamento total executado') ?><span v-if="opportunity.workplan_monitoringRequireExecutedTotalBudget" class="required">obrigatório*</span></label>
+            <div v-if="hasValue(delivery.totalBudget)" class="field__note">
+                <strong><?= i::__('Previsto:') ?></strong> {{ convertToCurrency(delivery.totalBudget) }}
+            </div>
+            <mc-currency-input v-if="editable" :id="`${vid}__executedTotalBudget`" v-model="proxy.executedTotalBudget"></mc-currency-input>
+            <span v-else>{{ convertToCurrency(proxy.executedTotalBudget) }}</span>
+            <small class="field__error" v-if="validationErrors.executedTotalBudget">{{ validationErrors.executedTotalBudget.join('; ') }}</small>
+        </div>
+
+        <div class="field" v-if="opportunity.workplan_monitoringInformNumberOfCities && (editable || hasValue(proxy.executedNumberOfCities))">
+            <label :for="`${vid}__executedNumberOfCities`"><?= i::__('Municípios realizados') ?><span v-if="opportunity.workplan_monitoringRequireNumberOfCities" class="required">obrigatório*</span></label>
+            <div v-if="hasValue(delivery.numberOfCities)" class="field__note">
+                <strong><?= i::__('Previsto:') ?></strong> {{ delivery.numberOfCities }}
+            </div>
+            <input v-if="editable" :id="`${vid}__executedNumberOfCities`" type="number" v-model.number="proxy.executedNumberOfCities" min="0">
+            <span v-else>{{ proxy.executedNumberOfCities }}</span>
+            <small class="field__error" v-if="validationErrors.executedNumberOfCities">{{ validationErrors.executedNumberOfCities.join('; ') }}</small>
+        </div>
+
+        <div class="field" v-if="opportunity.workplan_monitoringInformNumberOfNeighborhoods && (editable || hasValue(proxy.executedNumberOfNeighborhoods))">
+            <label :for="`${vid}__executedNumberOfNeighborhoods`"><?= i::__('Bairros realizados') ?><span v-if="opportunity.workplan_monitoringRequireNumberOfNeighborhoods" class="required">obrigatório*</span></label>
+            <div v-if="hasValue(delivery.numberOfNeighborhoods)" class="field__note">
+                <strong><?= i::__('Previsto:') ?></strong> {{ delivery.numberOfNeighborhoods }}
+            </div>
+            <input v-if="editable" :id="`${vid}__executedNumberOfNeighborhoods`" type="number" v-model.number="proxy.executedNumberOfNeighborhoods" min="0">
+            <span v-else>{{ proxy.executedNumberOfNeighborhoods }}</span>
+            <small class="field__error" v-if="validationErrors.executedNumberOfNeighborhoods">{{ validationErrors.executedNumberOfNeighborhoods.join('; ') }}</small>
+        </div>
+
+        <div class="field" v-if="opportunity.workplan_monitoringInformMediationActions && (editable || hasValue(proxy.executedMediationActions))">
+            <label :for="`${vid}__executedMediationActions`"><?= i::__('Ações de mediação realizadas') ?><span v-if="opportunity.workplan_monitoringRequireMediationActions" class="required">obrigatório*</span></label>
+            <div v-if="hasValue(delivery.mediationActions)" class="field__note">
+                <strong><?= i::__('Previsto:') ?></strong> {{ delivery.mediationActions }}
+            </div>
+            <input v-if="editable" :id="`${vid}__executedMediationActions`" type="number" v-model.number="proxy.executedMediationActions" min="0">
+            <span v-else>{{ proxy.executedMediationActions }}</span>
+            <small class="field__error" v-if="validationErrors.executedMediationActions">{{ validationErrors.executedMediationActions.join('; ') }}</small>
+        </div>
+
+        <div class="field" v-if="opportunity.workplan_monitoringInformRevenueType && (editable || hasExecutedRevenueType)">
+            <label :for="`${vid}__executedRevenueType`"><?= i::__('Tipo de receita executada') ?><span v-if="opportunity.workplan_monitoringRequireRevenueType" class="required">obrigatório*</span></label>
+            <div v-if="plannedRevenueType.length > 0" class="field__note">
+                <strong><?= i::__('Previsto:') ?></strong>
+                <mc-tag-list :tags="plannedRevenueType" :labels="revenueTypeOptions" classes="opportunity__background" :editable="false"></mc-tag-list>
+            </div>
+            <template v-if="editable">
+                <mc-multiselect :id="`${vid}__executedRevenueType`" :model="executedRevenueType" :items="revenueTypeOptions" hide-filter hide-button></mc-multiselect>
+                <mc-tag-list :tags="executedRevenueType" :labels="revenueTypeOptions" classes="opportunity__background" @remove="toggleExecutedRevenueType($event)" editable></mc-tag-list>
+            </template>
+            <mc-tag-list v-else :tags="executedRevenueType" :labels="revenueTypeOptions" classes="opportunity__background" :editable="false"></mc-tag-list>
+            <small class="field__error" v-if="validationErrors.executedRevenueType">{{ validationErrors.executedRevenueType.join('; ') }}</small>
+        </div>
+
+        <div class="field" v-if="opportunity.workplan_monitoringInformCommercialUnits && (editable || hasValue(proxy.executedCommercialUnits))">
+            <label :for="`${vid}__executedCommercialUnits`"><?= i::__('Unidades comercializadas') ?><span v-if="opportunity.workplan_monitoringRequireCommercialUnits" class="required">obrigatório*</span></label>
+            <div v-if="hasValue(delivery.commercialUnits)" class="field__note">
+                <strong><?= i::__('Previsto:') ?></strong> {{ delivery.commercialUnits }}
+            </div>
+            <input v-if="editable" :id="`${vid}__executedCommercialUnits`" type="number" v-model.number="proxy.executedCommercialUnits" min="0">
+            <span v-else>{{ proxy.executedCommercialUnits }}</span>
+            <small class="field__error" v-if="validationErrors.executedCommercialUnits">{{ validationErrors.executedCommercialUnits.join('; ') }}</small>
+        </div>
+
+        <div class="field" v-if="opportunity.workplan_monitoringInformCommercialUnits && (editable || hasValue(proxy.executedUnitPrice))">
+            <label :for="`${vid}__executedUnitPrice`"><?= i::__('Valor unitário praticado (R$)') ?><span v-if="opportunity.workplan_monitoringRequireUnitPrice" class="required">obrigatório*</span></label>
+            <div v-if="hasValue(delivery.unitPrice)" class="field__note">
+                <strong><?= i::__('Previsto:') ?></strong> {{ convertToCurrency(delivery.unitPrice) }}
+            </div>
+            <mc-currency-input v-if="editable" :id="`${vid}__executedUnitPrice`" v-model="proxy.executedUnitPrice"></mc-currency-input>
+            <span v-else>{{ convertToCurrency(proxy.executedUnitPrice) }}</span>
+            <small class="field__error" v-if="validationErrors.executedUnitPrice">{{ validationErrors.executedUnitPrice.join('; ') }}</small>
+        </div>
+
+        <div class="field" v-if="opportunity.workplan_deliveryInformPaidStaffByRole && plannedPaidStaffByRole.length > 0">
+            <label><?= i::__('Pessoas remuneradas por função (previsto)') ?></label>
+            <ul class="field__note">
+                <li v-for="(staff, index) in plannedPaidStaffByRole" :key="index">
+                    <strong>{{ staff.role === 'Outra' && staff.customRole ? staff.customRole : staff.role }}:</strong> {{ staff.count }}
+                </li>
+            </ul>
+        </div>
+
+        <div class="field" v-if="opportunity.workplan_monitoringInformPaidStaffByRole && (editable || (executedPaidStaffByRole && executedPaidStaffByRole.length > 0))">
+            <label :for="`${vid}__executedPaidStaffByRole`"><?= i::__('Pessoas remuneradas por função (executado)') ?><span v-if="opportunity.workplan_monitoringRequirePaidStaffByRole" class="required">obrigatório*</span></label>
+            <div v-if="plannedPaidStaffByRole.length > 0" class="field__note">
+                <strong><?= i::__('Previsto:') ?></strong>
+                <ul>
+                    <li v-for="(staff, index) in plannedPaidStaffByRole" :key="index">
+                        <strong>{{ staff.role === 'Outra' && staff.customRole ? staff.customRole : staff.role }}:</strong> {{ staff.count }}
+                    </li>
+                </ul>
+            </div>
+            <template v-if="editable">
+                <div v-if="!executedPaidStaffByRole || !executedPaidStaffByRole.length" class="field__note">
+                    <button type="button" class="button button--sm button--primary-outline" @click="addExecutedPaidStaffRole()">
+                        <?= i::__('+ Adicionar função') ?>
+                    </button>
+                </div>
+                <div v-else class="paid-staff-list">
+                    <div v-for="(staff, index) in executedPaidStaffByRole" :key="index" class="paid-staff-item">
+                        <div class="paid-staff-item__header">
+                            <p class="paid-staff-item__title semibold">{{ index + 1 }}ª <?= i::__('Função') ?></p>
+                            <button type="button" class="button button--delete button--icon button--sm" @click="removeExecutedPaidStaffRole(index)">
+                                <mc-icon name="trash"></mc-icon>
+                                <?= i::__('Remover') ?>
+                            </button>
+                        </div>
+                        <div class="paid-staff-item__fields grid-12">
+                            <div class="col-6 sm:col-12 field">
+                                <label><?= i::esc_attr__('Função') ?></label>
+                                <select v-model="staff.role">
+                                    <option value=""><?= i::esc_attr__('Selecione a função') ?></option>
+                                    <option v-for="roleOption in paidStaffRoleOptions" :key="roleOption" :value="roleOption">{{ roleOption }}</option>
+                                </select>
+                            </div>
+                            <div class="col-6 sm:col-12 field">
+                                <label><?= i::esc_attr__('Quantidade') ?></label>
+                                <input v-model.number="staff.count" type="number" min="0" placeholder="<?= i::esc_attr__('Quantidade de pessoas') ?>">
+                            </div>
+                            <div v-if="staff.role === 'Outra'" class="col-12 field">
+                                <label><?= i::esc_attr__('Especifique a função') ?></label>
+                                <input v-model="staff.customRole" type="text" placeholder="<?= i::esc_attr__('Digite o nome da função') ?>">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="paid-staff-add">
+                        <button type="button" class="button button--sm button--icon button--primary-outline" @click="addExecutedPaidStaffRole()">
+                            <mc-icon name="add"></mc-icon>
+                            <?= i::__('Adicionar outra função') ?>
+                        </button>
+                    </div>
+                </div>
+            </template>
+            <template v-else>
+                <ul v-if="executedPaidStaffByRole && executedPaidStaffByRole.length > 0">
+                    <li v-for="(staff, index) in executedPaidStaffByRole" :key="index">
+                        <strong>{{ staff.role === 'Outra' && staff.customRole ? staff.customRole : staff.role }}:</strong> {{ staff.count }}
+                    </li>
+                </ul>
+            </template>
+            <small class="field__error" v-if="validationErrors.executedPaidStaffByRole">{{ validationErrors.executedPaidStaffByRole.join('; ') }}</small>
+        </div>
+
+        <!-- Composição da equipe por gênero (executado) -->
+        <div class="field" v-if="opportunity.workplan_monitoringInformTeamComposition && (editable || hasExecutedGenderData)">
+            <label><?= i::__('Composição da equipe por gênero (executado)') ?><span v-if="opportunity.workplan_monitoringRequireTeamCompositionGender" class="required">obrigatório*</span></label>
+            <div v-if="plannedTeamCompositionGender" class="field__note">
+                <strong><?= i::__('Previsto:') ?></strong>
+                <?= i::__('Mulher cisg.') ?>: {{ plannedTeamCompositionGender.cisgenderWoman || 0 }},
+                <?= i::__('Homem cisg.') ?>: {{ plannedTeamCompositionGender.cisgenderMan || 0 }},
+                <?= i::__('Mulher trans') ?>: {{ plannedTeamCompositionGender.transgenderWoman || 0 }},
+                <?= i::__('Homem trans') ?>: {{ plannedTeamCompositionGender.transgenderMan || 0 }},
+                <?= i::__('Não-binário') ?>: {{ plannedTeamCompositionGender.nonBinary || 0 }},
+                <?= i::__('Outra') ?>: {{ plannedTeamCompositionGender.otherGenderIdentity || 0 }},
+                <?= i::__('Pref. não inf.') ?>: {{ plannedTeamCompositionGender.preferNotToSay || 0 }}
+            </div>
+            <template v-if="editable">
+                <div class="grid-12">
+                    <div class="col-3 sm:col-6 field">
+                        <label><?= i::esc_attr__('Mulher cisgênero') ?></label>
+                        <input v-model.number="executedTeamCompositionGender.cisgenderWoman" type="number" min="0">
+                    </div>
+                    <div class="col-3 sm:col-6 field">
+                        <label><?= i::esc_attr__('Homem cisgênero') ?></label>
+                        <input v-model.number="executedTeamCompositionGender.cisgenderMan" type="number" min="0">
+                    </div>
+                    <div class="col-3 sm:col-6 field">
+                        <label><?= i::esc_attr__('Mulher transgênero') ?></label>
+                        <input v-model.number="executedTeamCompositionGender.transgenderWoman" type="number" min="0">
+                    </div>
+                    <div class="col-3 sm:col-6 field">
+                        <label><?= i::esc_attr__('Homem transgênero') ?></label>
+                        <input v-model.number="executedTeamCompositionGender.transgenderMan" type="number" min="0">
+                    </div>
+                    <div class="col-3 sm:col-6 field">
+                        <label><?= i::esc_attr__('Pessoa não binária') ?></label>
+                        <input v-model.number="executedTeamCompositionGender.nonBinary" type="number" min="0">
+                    </div>
+                    <div class="col-3 sm:col-6 field">
+                        <label><?= i::esc_attr__('Outra identidade de gênero') ?></label>
+                        <input v-model.number="executedTeamCompositionGender.otherGenderIdentity" type="number" min="0">
+                    </div>
+                    <div class="col-3 sm:col-6 field">
+                        <label><?= i::esc_attr__('Prefiro não informar') ?></label>
+                        <input v-model.number="executedTeamCompositionGender.preferNotToSay" type="number" min="0">
+                    </div>
+                </div>
+                <div class="field__note">
+                    <strong><?= i::__('Total executado:') ?></strong> {{ calculateGenderTotal(executedTeamCompositionGender) }}
+                </div>
+            </template>
+            <template v-else>
+                <div>
+                    <?= i::__('Mulher cisg.') ?>: {{ proxy.executedTeamCompositionGender?.cisgenderWoman || 0 }},
+                    <?= i::__('Homem cisg.') ?>: {{ proxy.executedTeamCompositionGender?.cisgenderMan || 0 }},
+                    <?= i::__('Mulher trans') ?>: {{ proxy.executedTeamCompositionGender?.transgenderWoman || 0 }},
+                    <?= i::__('Homem trans') ?>: {{ proxy.executedTeamCompositionGender?.transgenderMan || 0 }},
+                    <?= i::__('Não-binário') ?>: {{ proxy.executedTeamCompositionGender?.nonBinary || 0 }},
+                    <?= i::__('Outra') ?>: {{ proxy.executedTeamCompositionGender?.otherGenderIdentity || 0 }},
+                    <?= i::__('Pref. não inf.') ?>: {{ proxy.executedTeamCompositionGender?.preferNotToSay || 0 }}
+                </div>
+            </template>
+            <small class="field__error" v-if="validationErrors.executedTeamCompositionGender">{{ validationErrors.executedTeamCompositionGender.join('; ') }}</small>
+        </div>
+
+        <!-- Composição da equipe por raça/cor (executado) -->
+        <div class="field" v-if="opportunity.workplan_monitoringInformTeamComposition && (editable || hasExecutedRaceData)">
+            <label><?= i::__('Composição da equipe por raça/cor (executado)') ?><span v-if="opportunity.workplan_monitoringRequireTeamCompositionRace" class="required">obrigatório*</span></label>
+            <div v-if="plannedTeamCompositionRace" class="field__note">
+                <strong><?= i::__('Previsto:') ?></strong>
+                <?= i::__('Branca') ?>: {{ plannedTeamCompositionRace.white || 0 }},
+                <?= i::__('Preta') ?>: {{ plannedTeamCompositionRace.black || 0 }},
+                <?= i::__('Parda') ?>: {{ plannedTeamCompositionRace.brown || 0 }},
+                <?= i::__('Indígena') ?>: {{ plannedTeamCompositionRace.indigenous || 0 }},
+                <?= i::__('Amarela') ?>: {{ plannedTeamCompositionRace.asian || 0 }},
+                <?= i::__('Não decl.') ?>: {{ plannedTeamCompositionRace.notDeclared || 0 }}
+            </div>
+            <template v-if="editable">
+                <div class="grid-12">
+                    <div class="col-4 sm:col-6 field">
+                        <label><?= i::esc_attr__('Branca') ?></label>
+                        <input v-model.number="executedTeamCompositionRace.white" type="number" min="0">
+                    </div>
+                    <div class="col-4 sm:col-6 field">
+                        <label><?= i::esc_attr__('Preta') ?></label>
+                        <input v-model.number="executedTeamCompositionRace.black" type="number" min="0">
+                    </div>
+                    <div class="col-4 sm:col-6 field">
+                        <label><?= i::esc_attr__('Parda') ?></label>
+                        <input v-model.number="executedTeamCompositionRace.brown" type="number" min="0">
+                    </div>
+                    <div class="col-4 sm:col-6 field">
+                        <label><?= i::esc_attr__('Indígena') ?></label>
+                        <input v-model.number="executedTeamCompositionRace.indigenous" type="number" min="0">
+                    </div>
+                    <div class="col-4 sm:col-6 field">
+                        <label><?= i::esc_attr__('Amarela') ?></label>
+                        <input v-model.number="executedTeamCompositionRace.asian" type="number" min="0">
+                    </div>
+                    <div class="col-4 sm:col-6 field">
+                        <label><?= i::esc_attr__('Não declarado') ?></label>
+                        <input v-model.number="executedTeamCompositionRace.notDeclared" type="number" min="0">
+                    </div>
+                </div>
+                <div class="field__note">
+                    <strong><?= i::__('Total executado:') ?></strong> {{ calculateRaceTotal(executedTeamCompositionRace) }}
+                </div>
+            </template>
+            <template v-else>
+                <div>
+                    <?= i::__('Branca') ?>: {{ proxy.executedTeamCompositionRace?.white || 0 }},
+                    <?= i::__('Preta') ?>: {{ proxy.executedTeamCompositionRace?.black || 0 }},
+                    <?= i::__('Parda') ?>: {{ proxy.executedTeamCompositionRace?.brown || 0 }},
+                    <?= i::__('Indígena') ?>: {{ proxy.executedTeamCompositionRace?.indigenous || 0 }},
+                    <?= i::__('Amarela') ?>: {{ proxy.executedTeamCompositionRace?.asian || 0 }},
+                    <?= i::__('Não decl.') ?>: {{ proxy.executedTeamCompositionRace?.notDeclared || 0 }}
+                </div>
+            </template>
+            <small class="field__error" v-if="validationErrors.executedTeamCompositionRace">{{ validationErrors.executedTeamCompositionRace.join('; ') }}</small>
+        </div>
+
+        <div class="field" v-if="opportunity.workplan_monitoringInformCommunityCoauthors && (editable || hasValue(proxy.executedHasCommunityCoauthors) || proxy.executedCommunityCoauthorsDetail)">
+            <label :for="`${vid}__executedHasCommunityCoauthors`"><?= i::__('Houve coautoria/coexecução com comunidades/coletivos?') ?><span v-if="opportunity.workplan_monitoringRequireHasCommunityCoauthors" class="required">obrigatório*</span></label>
+            <div v-if="hasValue(delivery.hasCommunityCoauthors)" class="field__note">
+                <strong><?= i::__('Previsto:') ?></strong> {{ booleanOptions[delivery.hasCommunityCoauthors] ?? delivery.hasCommunityCoauthors }}
+            </div>
+            <select v-if="editable" :id="`${vid}__executedHasCommunityCoauthors`" v-model="proxy.executedHasCommunityCoauthors">
+                <option value=""><?= i::esc_attr__('Selecione') ?></option>
+                <option v-for="(label, value) in booleanOptions" :key="value" :value="value">{{ label }}</option>
+            </select>
+            <span v-else>{{ booleanOptions[proxy.executedHasCommunityCoauthors] ?? proxy.executedHasCommunityCoauthors }}</span>
+            <small class="field__error" v-if="validationErrors.executedHasCommunityCoauthors">{{ validationErrors.executedHasCommunityCoauthors.join('; ') }}</small>
+        </div>
+
+        <div class="field" v-if="opportunity.workplan_monitoringInformCommunityCoauthors && proxy.executedHasCommunityCoauthors === 'true' && (editable || proxy.executedCommunityCoauthorsDetail)">
+            <label :for="`${vid}__executedCommunityCoauthorsDetail`"><?= i::__('Descreva a coautoria/coexecução realizada') ?><span v-if="opportunity.workplan_monitoringRequireCommunityCoauthorsDetail" class="required">obrigatório*</span></label>
+            <div v-if="delivery.communityCoauthorsDetail" class="field__note">
+                <strong><?= i::__('Previsto:') ?></strong> {{ delivery.communityCoauthorsDetail }}
+            </div>
+            <textarea v-if="editable" :id="`${vid}__executedCommunityCoauthorsDetail`" v-model="proxy.executedCommunityCoauthorsDetail" rows="3"></textarea>
+            <span v-else>{{ proxy.executedCommunityCoauthorsDetail }}</span>
+            <small class="field__error" v-if="validationErrors.executedCommunityCoauthorsDetail">{{ validationErrors.executedCommunityCoauthorsDetail.join('; ') }}</small>
+        </div>
+
+        <div class="field" v-if="opportunity.workplan_monitoringInformTransInclusion && (editable || hasValue(proxy.executedHasTransInclusionStrategy) || proxy.executedTransInclusionActions)">
+            <label :for="`${vid}__executedHasTransInclusionStrategy`"><?= i::__('Houve estratégias executadas de inclusão Trans e Travestis?') ?><span v-if="opportunity.workplan_monitoringRequireHasTransInclusionStrategy" class="required">obrigatório*</span></label>
+            <div v-if="hasValue(delivery.hasTransInclusionStrategy)" class="field__note">
+                <strong><?= i::__('Previsto:') ?></strong> {{ booleanOptions[delivery.hasTransInclusionStrategy] ?? delivery.hasTransInclusionStrategy }}
+            </div>
+            <select v-if="editable" :id="`${vid}__executedHasTransInclusionStrategy`" v-model="proxy.executedHasTransInclusionStrategy">
+                <option value=""><?= i::esc_attr__('Selecione') ?></option>
+                <option v-for="(label, value) in booleanOptions" :key="value" :value="value">{{ label }}</option>
+            </select>
+            <span v-else>{{ booleanOptions[proxy.executedHasTransInclusionStrategy] ?? proxy.executedHasTransInclusionStrategy }}</span>
+            <small class="field__error" v-if="validationErrors.executedHasTransInclusionStrategy">{{ validationErrors.executedHasTransInclusionStrategy.join('; ') }}</small>
+        </div>
+
+        <div class="field" v-if="opportunity.workplan_monitoringInformTransInclusion && proxy.executedHasTransInclusionStrategy === 'true' && (editable || proxy.executedTransInclusionActions)">
+            <label :for="`${vid}__executedTransInclusionActions`"><?= i::__('Quais ações foram executadas?') ?><span v-if="opportunity.workplan_monitoringRequireTransInclusionActions" class="required">obrigatório*</span></label>
+            <div v-if="delivery.transInclusionActions" class="field__note">
+                <strong><?= i::__('Previsto:') ?></strong> {{ delivery.transInclusionActions }}
+            </div>
+            <textarea v-if="editable" :id="`${vid}__executedTransInclusionActions`" v-model="proxy.executedTransInclusionActions" rows="3"></textarea>
+            <span v-else>{{ proxy.executedTransInclusionActions }}</span>
+            <small class="field__error" v-if="validationErrors.executedTransInclusionActions">{{ validationErrors.executedTransInclusionActions.join('; ') }}</small>
+        </div>
+
+        <div class="field" v-if="opportunity.workplan_monitoringInformAccessibilityPlan && (editable || hasValue(proxy.executedHasAccessibilityPlan) || hasExecutedExpectedAccessibilityMeasures)">
+            <label :for="`${vid}__executedHasAccessibilityPlan`"><?= i::__('Houve medidas de acessibilidade executadas?') ?><span v-if="opportunity.workplan_monitoringRequireHasAccessibilityPlan" class="required">obrigatório*</span></label>
+            <div v-if="hasValue(delivery.hasAccessibilityPlan)" class="field__note">
+                <strong><?= i::__('Previsto:') ?></strong> {{ booleanOptions[delivery.hasAccessibilityPlan] ?? delivery.hasAccessibilityPlan }}
+            </div>
+            <select v-if="editable" :id="`${vid}__executedHasAccessibilityPlan`" v-model="proxy.executedHasAccessibilityPlan">
+                <option value=""><?= i::esc_attr__('Selecione') ?></option>
+                <option v-for="(label, value) in booleanOptions" :key="value" :value="value">{{ label }}</option>
+            </select>
+            <span v-else>{{ booleanOptions[proxy.executedHasAccessibilityPlan] ?? proxy.executedHasAccessibilityPlan }}</span>
+            <small class="field__error" v-if="validationErrors.executedHasAccessibilityPlan">{{ validationErrors.executedHasAccessibilityPlan.join('; ') }}</small>
+        </div>
+
+        <div class="field" v-if="opportunity.workplan_monitoringInformAccessibilityPlan && proxy.executedHasAccessibilityPlan === 'true' && (editable || hasExecutedExpectedAccessibilityMeasures)">
+            <label :for="`${vid}__executedExpectedAccessibilityMeasures`"><?= i::__('Quais medidas de acessibilidade foram executadas?') ?><span v-if="opportunity.workplan_monitoringRequireExpectedAccessibilityMeasures" class="required">obrigatório*</span></label>
+            <div v-if="plannedExpectedAccessibilityMeasures.length > 0" class="field__note">
+                <strong><?= i::__('Previsto:') ?></strong>
+                <mc-tag-list :tags="plannedExpectedAccessibilityMeasures" :labels="accessibilityPlanOptions" classes="opportunity__background" :editable="false"></mc-tag-list>
+            </div>
+            <template v-if="editable">
+                <mc-multiselect :id="`${vid}__executedExpectedAccessibilityMeasures`" :model="executedExpectedAccessibilityMeasures" :items="accessibilityPlanOptions" hide-filter hide-button></mc-multiselect>
+                <mc-tag-list :tags="executedExpectedAccessibilityMeasures" :labels="accessibilityPlanOptions" classes="opportunity__background" @remove="toggleExecutedExpectedAccessibilityMeasure($event)" editable></mc-tag-list>
+            </template>
+            <mc-tag-list v-else :tags="executedExpectedAccessibilityMeasures" :labels="accessibilityPlanOptions" classes="opportunity__background" :editable="false"></mc-tag-list>
+            <small class="field__error" v-if="validationErrors.executedExpectedAccessibilityMeasures">{{ validationErrors.executedExpectedAccessibilityMeasures.join('; ') }}</small>
+        </div>
+
+        <div class="field" v-if="opportunity.workplan_monitoringInformEnvironmentalPractices && (editable || hasValue(proxy.executedHasEnvironmentalPractices) || proxy.executedEnvironmentalPracticesDescription)">
+            <label :for="`${vid}__executedHasEnvironmentalPractices`"><?= i::__('Houve medidas ou práticas socioambientais executadas?') ?><span v-if="opportunity.workplan_monitoringRequireHasEnvironmentalPractices" class="required">obrigatório*</span></label>
+            <div v-if="hasValue(delivery.hasEnvironmentalPractices)" class="field__note">
+                <strong><?= i::__('Previsto:') ?></strong> {{ booleanOptions[delivery.hasEnvironmentalPractices] ?? delivery.hasEnvironmentalPractices }}
+            </div>
+            <select v-if="editable" :id="`${vid}__executedHasEnvironmentalPractices`" v-model="proxy.executedHasEnvironmentalPractices">
+                <option value=""><?= i::esc_attr__('Selecione') ?></option>
+                <option v-for="(label, value) in booleanOptions" :key="value" :value="value">{{ label }}</option>
+            </select>
+            <span v-else>{{ booleanOptions[proxy.executedHasEnvironmentalPractices] ?? proxy.executedHasEnvironmentalPractices }}</span>
+            <small class="field__error" v-if="validationErrors.executedHasEnvironmentalPractices">{{ validationErrors.executedHasEnvironmentalPractices.join('; ') }}</small>
+        </div>
+
+        <div class="field" v-if="opportunity.workplan_monitoringInformEnvironmentalPractices && proxy.executedHasEnvironmentalPractices === 'true' && (editable || proxy.executedEnvironmentalPracticesDescription)">
+            <label :for="`${vid}__executedEnvironmentalPracticesDescription`"><?= i::__('Quais práticas socioambientais foram executadas?') ?><span v-if="opportunity.workplan_monitoringRequireEnvironmentalPracticesDescription" class="required">obrigatório*</span></label>
+            <div v-if="delivery.environmentalPracticesDescription" class="field__note">
+                <strong><?= i::__('Previsto:') ?></strong> {{ delivery.environmentalPracticesDescription }}
+            </div>
+            <textarea v-if="editable" :id="`${vid}__executedEnvironmentalPracticesDescription`" v-model="proxy.executedEnvironmentalPracticesDescription" rows="3"></textarea>
+            <span v-else>{{ proxy.executedEnvironmentalPracticesDescription }}</span>
+            <small class="field__error" v-if="validationErrors.executedEnvironmentalPracticesDescription">{{ validationErrors.executedEnvironmentalPracticesDescription.join('; ') }}</small>
+        </div>
+
+        <div class="field" v-if="opportunity.workplan_monitoringInformPressStrategy && (editable || hasValue(proxy.executedHasPressStrategy))">
+            <label :for="`${vid}__executedHasPressStrategy`"><?= i::__('Houve estratégia de relacionamento com a imprensa?') ?><span v-if="opportunity.workplan_monitoringRequireHasPressStrategy" class="required">obrigatório*</span></label>
+            <div v-if="hasValue(delivery.hasPressStrategy)" class="field__note">
+                <strong><?= i::__('Estratégia de imprensa prevista:') ?></strong> {{ booleanOptions[delivery.hasPressStrategy] ?? delivery.hasPressStrategy }}
+            </div>
+            <select v-if="editable" :id="`${vid}__executedHasPressStrategy`" v-model="proxy.executedHasPressStrategy">
+                <option value=""><?= i::esc_attr__('Selecione') ?></option>
+                <option v-for="(label, value) in booleanOptions" :key="value" :value="value">{{ label }}</option>
+            </select>
+            <span v-else>{{ booleanOptions[proxy.executedHasPressStrategy] ?? proxy.executedHasPressStrategy }}</span>
+            <small class="field__error" v-if="validationErrors.executedHasPressStrategy">{{ validationErrors.executedHasPressStrategy.join('; ') }}</small>
+        </div>
+
+        <div class="field" v-if="opportunity.workplan_monitoringInformExecutedCommunicationStrategies && (editable || proxy.executedCommunicationStrategies)">
+            <label :for="`${vid}__executedCommunicationStrategies`"><?= i::__('Estratégias de comunicação executadas') ?><span v-if="opportunity.workplan_monitoringRequireExecutedCommunicationStrategies" class="required">obrigatório*</span></label>
+            <div v-if="hasValue(delivery.hasPressStrategy)" class="field__note">
+                <strong><?= i::__('Estratégia de imprensa prevista:') ?></strong> {{ booleanOptions[delivery.hasPressStrategy] ?? delivery.hasPressStrategy }}
+            </div>
+            <textarea v-if="editable" :id="`${vid}__executedCommunicationStrategies`" v-model="proxy.executedCommunicationStrategies" rows="3"></textarea>
+            <span v-else>{{ proxy.executedCommunicationStrategies }}</span>
+            <small class="field__error" v-if="validationErrors.executedCommunicationStrategies">{{ validationErrors.executedCommunicationStrategies.join('; ') }}</small>
+        </div>
+
+        <!-- Canais de comunicação executados -->
+        <div class="field" v-if="opportunity.workplan_monitoringInformCommunicationChannels && (editable || executedCommunicationChannels.length > 0)">
+            <label :for="`${vid}__executedCommunicationChannels`"><?= i::__('Canais de comunicação utilizados (executado)') ?><span v-if="opportunity.workplan_monitoringRequireCommunicationChannels" class="required">obrigatório*</span></label>
+            <div v-if="plannedCommunicationChannels.length > 0" class="field__note">
+                <strong><?= i::__('Previsto:') ?></strong>
+                <mc-tag-list :tags="plannedCommunicationChannels" :labels="communicationChannelsOptions" classes="opportunity__background" :editable="false"></mc-tag-list>
+            </div>
+            <template v-if="editable">
+                <mc-multiselect :id="`${vid}__executedCommunicationChannels`" :model="executedCommunicationChannels" :items="communicationChannelsOptions" hide-filter hide-button></mc-multiselect>
+                <mc-tag-list :tags="executedCommunicationChannels" :labels="communicationChannelsOptions" classes="opportunity__background" @remove="toggleExecutedCommunicationChannel($event)" editable></mc-tag-list>
+            </template>
+            <mc-tag-list v-else :tags="executedCommunicationChannels" :labels="communicationChannelsOptions" classes="opportunity__background" :editable="false"></mc-tag-list>
+            <small class="field__error" v-if="validationErrors.executedCommunicationChannels">{{ validationErrors.executedCommunicationChannels.join('; ') }}</small>
+        </div>
+
+        <div class="field" v-if="opportunity.workplan_monitoringInformInnovation && (editable || hasValue(proxy.executedHasInnovationAction) || hasExecutedInnovationTypes)">
+            <label :for="`${vid}__executedHasInnovationAction`"><?= i::__('Houve ação de experimentação/inovação executada?') ?><span v-if="opportunity.workplan_monitoringRequireHasInnovationAction" class="required">obrigatório*</span></label>
+            <div v-if="hasValue(delivery.hasInnovationAction)" class="field__note">
+                <strong><?= i::__('Previsto:') ?></strong> {{ booleanOptions[delivery.hasInnovationAction] ?? delivery.hasInnovationAction }}
+            </div>
+            <select v-if="editable" :id="`${vid}__executedHasInnovationAction`" v-model="proxy.executedHasInnovationAction">
+                <option value=""><?= i::esc_attr__('Selecione') ?></option>
+                <option v-for="(label, value) in booleanOptions" :key="value" :value="value">{{ label }}</option>
+            </select>
+            <span v-else>{{ booleanOptions[proxy.executedHasInnovationAction] ?? proxy.executedHasInnovationAction }}</span>
+            <small class="field__error" v-if="validationErrors.executedHasInnovationAction">{{ validationErrors.executedHasInnovationAction.join('; ') }}</small>
+        </div>
+
+        <div class="field" v-if="opportunity.workplan_monitoringInformInnovation && proxy.executedHasInnovationAction === 'true' && (editable || hasExecutedInnovationTypes)">
+            <label :for="`${vid}__executedInnovationTypes`"><?= i::__('Quais tipos de experimentação/inovação foram executados?') ?><span v-if="opportunity.workplan_monitoringRequireInnovationTypes" class="required">obrigatório*</span></label>
+            <div v-if="plannedInnovationTypes.length > 0" class="field__note">
+                <strong><?= i::__('Previsto:') ?></strong>
+                <mc-tag-list :tags="plannedInnovationTypes" :labels="innovationTypeOptions" classes="opportunity__background" :editable="false"></mc-tag-list>
+            </div>
+            <template v-if="editable">
+                <mc-multiselect :id="`${vid}__executedInnovationTypes`" :model="executedInnovationTypes" :items="innovationTypeOptions" hide-filter hide-button></mc-multiselect>
+                <mc-tag-list :tags="executedInnovationTypes" :labels="innovationTypeOptions" classes="opportunity__background" @remove="toggleExecutedInnovationType($event)" editable></mc-tag-list>
+            </template>
+            <mc-tag-list v-else :tags="executedInnovationTypes" :labels="innovationTypeOptions" classes="opportunity__background" :editable="false"></mc-tag-list>
+            <small class="field__error" v-if="validationErrors.executedInnovationTypes">{{ validationErrors.executedInnovationTypes.join('; ') }}</small>
+        </div>
+
+        <div class="field" v-if="opportunity.workplan_monitoringInformDocumentationTypes && (editable || hasExecutedDocumentationTypes)">
+            <label :for="`${vid}__executedDocumentationTypes`"><?= i::__('Tipos de documentação produzida') ?><span v-if="opportunity.workplan_monitoringRequireDocumentationTypes" class="required">obrigatório*</span></label>
+            <div v-if="plannedDocumentationTypes.length > 0" class="field__note">
+                <strong><?= i::__('Previsto:') ?></strong>
+                <mc-tag-list :tags="plannedDocumentationTypes" :labels="documentationTypeOptions" classes="opportunity__background" :editable="false"></mc-tag-list>
+            </div>
+            <template v-if="editable">
+                <mc-multiselect :id="`${vid}__executedDocumentationTypes`" :model="executedDocumentationTypes" :items="documentationTypeOptions" hide-filter hide-button></mc-multiselect>
+                <mc-tag-list :tags="executedDocumentationTypes" :labels="documentationTypeOptions" classes="opportunity__background" @remove="toggleExecutedDocumentationType($event)" editable></mc-tag-list>
+            </template>
+            <mc-tag-list v-else :tags="executedDocumentationTypes" :labels="documentationTypeOptions" classes="opportunity__background" :editable="false"></mc-tag-list>
+            <small class="field__error" v-if="validationErrors.executedDocumentationTypes">{{ validationErrors.executedDocumentationTypes.join('; ') }}</small>
+        </div>
+
         <div class="field" v-if="editable || proxy.files.length > 0">
             <label :for="`${vid}__evidenceFiles`"><?= i::__('Evidências') ?></label>
             <entity-files-list :id="`${vid}__evidenceFiles`" :entity="dummyEntity" group="evidences" title="<?= i::esc_attr__('Arquivos de evidência') ?>" :editable="editable">
@@ -130,7 +641,7 @@ $this->import('
                     <p v-if="editable"><?= i::__('Adicione vídeos, fotos e documentos que servirão como evidência para o seu projeto') ?></p>
                 </template>
             </entity-files-list>
-            <small class="field__error" v-if="validationErrors.evidenceFiles">{{ validationErrors.evidenceLinks.join('; ') }}</small>
+            <small class="field__error" v-if="validationErrors.evidenceLinks">{{ validationErrors.evidenceLinks.join('; ') }}</small>
         </div>
 
         <div class="field" v-if="editable || evidenceLinks.length > 0">

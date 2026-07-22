@@ -3,8 +3,22 @@ namespace MapasCulturais\AssetManagers;
 
 use MapasCulturais\App;
 
+/**
+ * Gerenciador de assets usando sistema de arquivos
+ * 
+ * Esta classe implementa um gerenciador de assets que armazena arquivos
+ * no sistema de arquivos local, permitindo processamento e publicação
+ * de scripts e estilos.
+ * 
+ * @package MapasCulturais\AssetManagers
+ */
 class FileSystem extends \MapasCulturais\AssetManager{
 
+    /**
+     * Construtor do gerenciador de assets FileSystem
+     * 
+     * @param array $config Configurações do gerenciador
+     */
     public function __construct(array $config = []) {
 
         parent::__construct(array_merge([
@@ -21,6 +35,12 @@ class FileSystem extends \MapasCulturais\AssetManager{
 
     }
 
+    /**
+     * Cria o diretório para armazenar o asset
+     * 
+     * @param string $output_file Caminho do arquivo de saída
+     * @param bool $is_dir Se true, cria o diretório especificado em $output_file
+     */
     protected function _mkAssetDir($output_file, $is_dir = false){
         if($is_dir){
             $path = $this->config['publishPath'] . $output_file;
@@ -32,6 +52,13 @@ class FileSystem extends \MapasCulturais\AssetManager{
             mkdir($path,0777,true);
     }
 
+    /**
+     * Executa um comando de processamento de asset
+     * 
+     * @param string $command_pattern Padrão do comando com placeholders
+     * @param string $input_files Arquivos de entrada
+     * @param string $output_file Arquivo de saída
+     */
     protected function _exec($command_pattern, $input_files, $output_file){
         $this->_mkAssetDir($output_file);
         
@@ -63,6 +90,13 @@ class FileSystem extends \MapasCulturais\AssetManager{
         }
     }
     
+    /**
+     * Publica um asset individual
+     * 
+     * @param string $asset_filename Caminho do arquivo do asset
+     * @param string $output_file Caminho do arquivo de saída
+     * @return string URL do asset publicado
+     */
     protected function _publishAsset($asset_filename, $output_file) {
         $app = App::i();
 
@@ -79,19 +113,44 @@ class FileSystem extends \MapasCulturais\AssetManager{
         return $app->assetUrl . $output_file;
     }
 
+    /**
+     * Publica uma pasta inteira de assets
+     * 
+     * @param string $path Caminho da pasta de origem
+     * @param string $destination Caminho da pasta de destino
+     */
     protected function _publishFolder($path, $destination){
         $this->_mkAssetDir($destination, true);
         $this->_exec($this->config['publishFolderCommand'], $path, $destination);
     }
 
+    /**
+     * Publica os scripts de um grupo
+     * 
+     * @param string $group Nome do grupo de scripts
+     * @return array URLs dos scripts publicados
+     */
     protected function _publishScripts($group) {
         return $this->_publishAssetGroup('js', $group);
     }
 
+    /**
+     * Publica os estilos de um grupo
+     * 
+     * @param string $group Nome do grupo de estilos
+     * @return array URLs dos estilos publicados
+     */
     protected function _publishStyles($group) {
         return $this->_publishAssetGroup('css', $group);
     }
 
+    /**
+     * Publica um grupo de assets (scripts ou estilos)
+     * 
+     * @param string $extension Extensão dos assets ('js' ou 'css')
+     * @param string $group Nome do grupo
+     * @return array URLs dos assets publicados
+     */
     protected function _publishAssetGroup($extension, $group) {
         if($extension === 'js'){
             $enqueuedAssets = isset($this->_enqueuedScripts[$group]) ? $this->_enqueuedScripts[$group] : null;

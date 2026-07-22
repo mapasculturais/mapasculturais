@@ -48,12 +48,12 @@ class Workplan extends \MapasCulturais\Entity {
     protected $registration;
 
     /**
-    * @ORM\OneToMany(targetEntity=\OpportunityWorkplan\Entities\Goal::class, mappedBy="workplan", cascade={"persist", "remove"}, orphanRemoval=true)
+    * @ORM\OneToMany(targetEntity=\OpportunityWorkplan\Entities\Goal::class, mappedBy="workplan", cascade={"persist", "remove"})
     */
     protected $goals;
 
     /**
-    * @ORM\OneToMany(targetEntity=\OpportunityWorkplan\Entities\WorkplanMeta::class, mappedBy="owner", cascade={"remove","persist"}, orphanRemoval=true, fetch="EAGER")
+    * @ORM\OneToMany(targetEntity=\OpportunityWorkplan\Entities\WorkplanMeta::class, mappedBy="owner", cascade={"remove","persist"}, fetch="EAGER")
     */
     protected $__metadata;
 

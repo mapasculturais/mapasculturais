@@ -3,7 +3,28 @@ namespace MapasCulturais\Traits;
 
 use MapasCulturais\App;
 
+/**
+ * Trait para controladores que suportam exclusão lógica (soft delete) de entidades
+ * 
+ * Este trait fornece métodos para restaurar entidades excluídas logicamente
+ * e para destruir permanentemente entidades (hard delete).
+ * 
+ * @package MapasCulturais\Traits
+ */
 trait ControllerSoftDelete{
+    
+    /**
+     * Restaura uma entidade excluída logicamente
+     * 
+     * Este método altera o status da entidade de excluída para ativa.
+     * Requer autenticação do usuário.
+     * 
+     * @api ALL undelete
+     * @return void Retorna JSON da entidade (AJAX) ou redireciona
+     * 
+     * @throws \MapasCulturais\Exceptions\PermissionDenied Se o usuário não tiver permissão
+     * @uses \MapasCulturais\Traits\EntitySoftDelete::undelete()
+     */
     function ALL_undelete(){
         $this->requireAuthentication();
 
@@ -24,6 +45,18 @@ trait ControllerSoftDelete{
         }
     }
 
+    /**
+     * Destrói permanentemente uma entidade
+     * 
+     * Este método realiza uma exclusão física (hard delete) da entidade.
+     * Requer autenticação do usuário.
+     * 
+     * @api ALL destroy
+     * @return void Retorna JSON simplificado da entidade (AJAX) ou redireciona
+     * 
+     * @throws \MapasCulturais\Exceptions\PermissionDenied Se o usuário não tiver permissão
+     * @uses \MapasCulturais\Traits\EntitySoftDelete::destroy()
+     */
     function ALL_destroy(){
         $this->requireAuthentication();
 
@@ -47,6 +80,5 @@ trait ControllerSoftDelete{
             else
                 $app->redirect($app->request->getReferer());
         }
-
     }
 }

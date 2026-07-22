@@ -4,12 +4,18 @@ namespace MapasCulturais\Controllers;
 use MapasCulturais\Traits;
 
 /**
- * This is the base class to Entity Controllers
+ * Classe base para controladores de entidades
  *
- * @property-read \MapasCulturais\Entity $newEntity An empty new entity object of the class related to this controller
- * @property-read \Doctrine\ORM\EntityRepository $repository the Doctrine Entity Repository to the entity with the same name of the controller in the same parent namespace.
- * @property-read array $fields the fields of the entity with the same name of the controller in the same parent namespace.
- * @property-read \MapasCulturais\Entity $requestedEntity The requested Entity
+ * Esta classe abstrata estende a classe base Controller e fornece funcionalidades
+ * específicas para manipulação de entidades do sistema Mapas Culturais.
+ * Ela utiliza traits para adicionar ações, visualizações e operações de entidade.
+ *
+ * @property-read \MapasCulturais\Entity $newEntity Uma nova instância vazia da entidade relacionada a este controlador
+ * @property-read \Doctrine\ORM\EntityRepository $repository O repositório Doctrine da entidade com o mesmo nome do controlador no mesmo namespace pai
+ * @property-read array $fields Os campos da entidade com o mesmo nome do controlador no mesmo namespace pai
+ * @property-read \MapasCulturais\Entity $requestedEntity A entidade solicitada na requisição atual
+ * 
+ * @package MapasCulturais\Controllers
  */
 abstract class EntityController extends \MapasCulturais\Controller{
     use Traits\ControllerEntity,
@@ -17,9 +23,10 @@ abstract class EntityController extends \MapasCulturais\Controller{
         Traits\ControllerEntityViews;
 
     /**
-     * The controllers constructor.
+     * Construtor do controlador.
      *
-     * This method sets the controller entity class name with an class with the same name of the controller in the parent namespace.
+     * Este método define o nome da classe da entidade do controlador com uma classe
+     * que tem o mesmo nome do controlador no namespace pai (substituindo "Controllers" por "Entities").
      *
      * @see \MapasCulturais\Controller::$entityClassName
      */

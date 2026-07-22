@@ -66,4 +66,9 @@ return array(
     'Textarea Field' => 'Campo de texto (textarea)',
     'Date Field' => 'Campo de data',
     
+    // publicity only opportunity
+    'Oportunidade apenas para divulgação' => 'Oportunidade apenas para divulgação',
+    'As inscrições para esta oportunidade não são feitas pela plataforma.' => 'As inscrições para esta oportunidade não são feitas pela plataforma.',
+    'As inscrições para esta oportunidade não serão feitas pela plataforma.' => 'As inscrições para esta oportunidade não serão feitas pela plataforma.',
+    
 );

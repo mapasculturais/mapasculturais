@@ -215,7 +215,7 @@ class Job extends \MapasCulturais\Entity{
 
         if ($success !== false){
             // para evitar que um eventual erro no job deixe a entidade detached
-            $job = $app->repo('Job')->find($this->pk) ?: $this;
+            $job = $this->isNew() ? $this : $app->repo('Job')->find($this->pk);
 
             $job->iterationsCount++;
             

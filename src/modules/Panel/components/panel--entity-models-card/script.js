@@ -19,17 +19,14 @@ app.component('panel--entity-models-card', {
         onDeleteRemoveFromLists: {
             type: Boolean,
             default: true
+        },
+        models: {
+            type: Array,
+            default: () => []
         }
     },
-    data() {        
-        const api = new API(this.entity.__objectType);
-        const response = api.GET('/opportunity/findOpportunitiesModels');
-        response.then((r) => r.json().then((r) => {
-           this.models = r;
-        }));
-
+    data() {
         let isModelPublic = this.entity.isModelPublic == 1 ? true : false;
-
 
         const MODEL_OFFICIAL = 'MODELO OFICIAL';
         const MODEL_PRIVATE = 'MODELO PRIVADO';
@@ -43,7 +40,6 @@ app.component('panel--entity-models-card', {
 
         return {
             isModelPublic,
-            models: [],
             typeModels
         }
     },
@@ -80,7 +76,12 @@ app.component('panel--entity-models-card', {
         },
         showModel() {
             let showModel = false;
-            if (this.entity.owner._id == $MAPAS.user.profile._id || this.entity.isModelPublic) {
+
+            if (
+                this.entity.owner._id == $MAPAS.user.profile._id ||
+                this.entity.isModelPublic ||
+                $MAPAS.isSaasAdmin
+            ) {
                 showModel = true;
             }
 

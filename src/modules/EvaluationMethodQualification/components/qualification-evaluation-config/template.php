@@ -13,12 +13,20 @@ $this->import('
     mc-modal
     mc-tag-list
     mc-toggle
-    mc-accordion 
-    opportunity-registration-filter-configuration
+    mc-accordion
+    mc-alert
+    registration-distribution-rule
 ');
 ?>
 
 <div class="qualification-evaluation-config">
+
+    <mc-alert v-if="hasEvaluationsStarted && isAdmin" type="warning">
+        <?= i::__('Já existem avaliações iniciadas, concluídas ou enviadas. Ao excluir critérios ou seções, as respostas correspondentes serão removidas das avaliações existentes.') ?>
+    </mc-alert>
+    <mc-alert v-if="hasEvaluationsStarted && !isAdmin" type="warning">
+        <?= i::__('Já existem avaliações iniciadas, concluídas ou enviadas. Por isso, fale com um administrador do sistema para poder excluir critérios ou seções de avaliação.') ?>
+    </mc-alert>
 
     <div v-if="entity.sections && entity.sections.length > 0">
         
@@ -31,7 +39,7 @@ $this->import('
                         <div class="field__trash">
                             <mc-confirm-button @confirm="delSection(section.id)">
                                 <template #button="{open}">
-                                    <button class="button button--delete button--icon" @click="open()">
+                                    <button class="button button--delete button--icon" :class="{'disabled': !canDeleteCriteriaAndSections}" @click="canDeleteCriteriaAndSections && open()">
                                         <mc-icon class="danger__color" name="trash"></mc-icon>
                                         <label class="semibold field__title"><?php i::_e("Excluir") ?></label>
                                     </button>
@@ -60,14 +68,14 @@ $this->import('
                         label="<?= i::__('Configurar filtro') ?>"
                         >
                     </mc-toggle>
-                    <opportunity-registration-filter-configuration
+                    <registration-distribution-rule
                         v-if="section.showFilters"
-                        :entity="entity"
-                        v-model:default-value="section"
-                        :excludeFields="['id', 'name', 'showFilters', 'maxNonEliminatory', 'numberMaxNonEliminatory','requiredSectionObservation']"
-                        titleModal="<?= i::__('Configuração de filtros da seção') ?>"
-                        is-section
-                        ></opportunity-registration-filter-configuration>
+                        :opportunity="opportunity"
+                        :modelValue="sectionFilterModel(section)"
+                        @update:modelValue="onSectionFilterChange(section, $event)"
+                        :titleModal="text('sectionFiltersTitle')"
+                        class="qualification-evaluation-config__section-filter"
+                    />
 
                         <mc-toggle
                             :modelValue="section.requiredSectionObservation" 
@@ -96,7 +104,7 @@ $this->import('
                                             <div class="field__trash">
                                                 <mc-confirm-button title="Excluir critério" @confirm="delCriteria(criteria.id)">
                                                     <template #button="{open}">
-                                                        <button class="button button--sm button--text-danger button-icon" @click="open()">
+                                                        <button class="button button--sm button--text-danger button-icon" :class="{'disabled': !canDeleteCriteriaAndSections}" @click="canDeleteCriteriaAndSections && open()">
                                                             <mc-icon class="danger__color" name="trash"></mc-icon>
                                                             <?= i::__('Excluir critério') ?>
                                                         </button>
@@ -167,14 +175,16 @@ $this->import('
                                             label="<?= i::__('Configurar filtro') ?>"
                                             >
                                         </mc-toggle>
-                                        <opportunity-registration-filter-configuration
+                                        
+                                        <registration-distribution-rule
                                             v-if="criteria.showFilters"
-                                            :entity="entity"
-                                            v-model:default-value="criteria"
-                                            :excludeFields="['id', 'name', 'showFilters', 'options', 'notApplyOption', 'otherReasonsOption', 'sid', 'weight', 'description', 'nonEliminatory']"
-                                            titleModal="<?= i::__('Configuração de filtros do critério') ?>"
-                                            is-criterion
-                                        ></opportunity-registration-filter-configuration>   
+                                            :opportunity="opportunity"
+                                            :modelValue="criteriaFilterModel(criteria)"
+                                            @update:modelValue="onCriteriaFilterChange(criteria, $event)"
+                                            :parentFilters="section"
+                                            :titleModal="text('criteriaFiltersTitle')"
+                                            class="qualification-evaluation-config__criteria-filter"
+                                        />   
                                     </div>
                                 </template>
                             </mc-accordion>

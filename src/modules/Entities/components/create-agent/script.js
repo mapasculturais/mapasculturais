@@ -25,6 +25,22 @@ app.component('create-agent', {
             type: Boolean,
             default: true
         },
+        clickToClose: {
+            type: Boolean,
+            default: true
+        },
+        initialType: {
+            type: Number,
+            default: 1
+        },
+        lockType: {
+            type: Boolean,
+            default: false
+        },
+        teleport: {
+            type: null,
+            default: false
+        },
     },
 
     computed: {
@@ -69,7 +85,7 @@ app.component('create-agent', {
         },
         createEntity() {
             this.entity = Vue.ref(new Entity('agent'));
-            this.entity.type = 1;
+            this.entity.type = this.initialType;
             this.entity.terms = { area: [] }
         },
         createDraft(modal) {
@@ -83,6 +99,10 @@ app.component('create-agent', {
         },
         save(modal) {
             const lists = useEntitiesLists(); // obtem o storage de listas de entidades
+
+            if (this.lockType) {
+                this.entity.type = this.initialType;
+            }
 
             modal.loading(true);
             this.entity.save().then((response) => {
