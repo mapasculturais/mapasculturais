@@ -14,9 +14,13 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Mostra o **status de cada campo** do selo (válido, prestes a vencer, vencido etc.) na ficha e no formulário de avaliação, para o avaliador entender o que está ok e o que precisa de atenção
 - Permite **concessão parcial do selo** na avaliação documental: o selo pode ser aplicado só aos campos que passaram, conforme os invalidadores configurados
 - Permite configurar **condições nos invalidadores**: um documento só é exigido quando o proponente responde de determinado jeito no formulário (por exemplo, só pedir comprovante de PCD se a pessoa se declarar PCD)
+- A **concessão de selos após a avaliação documental** também respeita essas condições: invalidadores relevados (condição não aplicável à inscrição) não impedem a concessão do selo
 - Avisa o gestor quando o formulário da inscrição ainda **não tem os campos** necessários para a validação automática por selos funcionar
 - Inclui coluna, filtros e indicação de isenção por selos na tabela e na planilha de avaliações
 - Exibe corretamente os anexos `@` do agente na inscrição, na edição do perfil, na single e nas listagens/planilhas (com link para download)
+
+### Correções
+- Na avaliação documental, o link de download do arquivo não cobre mais o campo inteiro: clicar no campo abre o formulário de avaliação e clicar no nome do arquivo continua baixando
 
 ## [7.8.1] - 2026-07-21
 ### Melhorias

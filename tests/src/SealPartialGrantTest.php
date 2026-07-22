@@ -1235,4 +1235,185 @@ class SealPartialGrantTest extends TestCase
             'Status 10 com campos invalidados NAO deve conceder selos — comportamento mantido, parcialidade nao vazou para status 10.'
         );
     }
+
+    // ============================================================
+    // GRUPO H — Conditions na concessao pos-avaliacao
+    // ============================================================
+
+    /**
+     * Status 10: invalidador com condition nao satisfeita (relevado) nao bloqueia
+     * a concessao quando os demais campos do selo estao validos.
+     *
+     * Replica o caso PE: cota = Nao → Raça/cor nao e exigida.
+     */
+    public function testStatusApprovedGrantsWhenConditionalInvalidatorIsWaived(): void
+    {
+        $admin = $this->userDirector->createUser('admin');
+        $this->login($admin);
+
+        $owner = $this->agentDirector->createAgent($admin->profile);
+
+        $seal = $this->createSealWithConfig($admin->profile, [
+            'agent.name' => ['hasExpiry' => true, 'periodValue' => 1, 'periodUnit' => 'year', 'isInvalidator' => true],
+            'agent.shortDescription' => ['hasExpiry' => true, 'periodValue' => 1, 'periodUnit' => 'year', 'isInvalidator' => true],
+        ]);
+
+        [$opportunity, $fieldConfigs] = $this->createDocumentaryOpportunityWithSeals(
+            [$seal],
+            ['name', 'shortDescription']
+        );
+
+        $emc = $opportunity->evaluationMethodConfiguration;
+        $config = (array) $emc->sealExemptionConfig;
+        $config['conditions'] = [
+            (string) $seal->id => [
+                'agent.name' => [
+                    'clauses' => [
+                        ['field' => 'appliedForQuota', 'values' => ['1']],
+                    ],
+                ],
+            ],
+        ];
+        $emc->sealExemptionConfig = (object) $config;
+        $emc->save(true);
+
+        $registration = $this->createPhaseRegistration($opportunity, $owner);
+
+        // Condicao nao satisfeita → agent.name relevado
+        $app = App::i();
+        $app->disableAccessControl();
+        $registration->appliedForQuota = false;
+        $registration->save(true);
+        $app->enableAccessControl();
+
+        // name nao avaliado / invalid; shortDescription valid — so o segundo e exigido
+        $this->createSentDocumentaryEvaluation($registration, [
+            $fieldConfigs['shortDescription']->id => 'valid',
+        ]);
+
+        $this->setRegistrationStatus($registration->refreshed(), 'setStatusToApproved');
+
+        $granted = $this->getGrantedSealIds($owner);
+
+        $this->assertContains(
+            $seal->id,
+            $granted,
+            'Status 10 deve conceder o selo quando o invalidador condicional esta relevado e os demais campos sao validos.'
+        );
+    }
+
+    /**
+     * Status 10: condition satisfeita → invalidador continua exigido.
+     */
+    public function testStatusApprovedDoesNotGrantWhenConditionalInvalidatorAppliesAndIsInvalid(): void
+    {
+        $admin = $this->userDirector->createUser('admin');
+        $this->login($admin);
+
+        $owner = $this->agentDirector->createAgent($admin->profile);
+
+        $seal = $this->createSealWithConfig($admin->profile, [
+            'agent.name' => ['hasExpiry' => true, 'periodValue' => 1, 'periodUnit' => 'year', 'isInvalidator' => true],
+            'agent.shortDescription' => ['hasExpiry' => true, 'periodValue' => 1, 'periodUnit' => 'year', 'isInvalidator' => true],
+        ]);
+
+        [$opportunity, $fieldConfigs] = $this->createDocumentaryOpportunityWithSeals(
+            [$seal],
+            ['name', 'shortDescription']
+        );
+
+        $emc = $opportunity->evaluationMethodConfiguration;
+        $config = (array) $emc->sealExemptionConfig;
+        $config['conditions'] = [
+            (string) $seal->id => [
+                'agent.name' => [
+                    'clauses' => [
+                        ['field' => 'appliedForQuota', 'values' => ['1']],
+                    ],
+                ],
+            ],
+        ];
+        $emc->sealExemptionConfig = (object) $config;
+        $emc->save(true);
+
+        $registration = $this->createPhaseRegistration($opportunity, $owner);
+
+        $app = App::i();
+        $app->disableAccessControl();
+        $registration->appliedForQuota = '1';
+        $registration->save(true);
+        $app->enableAccessControl();
+
+        $this->createSentDocumentaryEvaluation($registration, [
+            $fieldConfigs['name']->id => 'invalid',
+            $fieldConfigs['shortDescription']->id => 'valid',
+        ]);
+
+        $this->setRegistrationStatus($registration->refreshed(), 'setStatusToApproved');
+
+        $granted = $this->getGrantedSealIds($owner);
+
+        $this->assertSame(
+            [],
+            $granted,
+            'Status 10 NAO deve conceder quando a condition esta satisfeita e o invalidador ficou invalido.'
+        );
+    }
+
+    /**
+     * Status 3: mesma relevacao aplica-se na concessao parcial.
+     */
+    public function testStatusNotApprovedGrantsWhenConditionalInvalidatorIsWaived(): void
+    {
+        $admin = $this->userDirector->createUser('admin');
+        $this->login($admin);
+
+        $owner = $this->agentDirector->createAgent($admin->profile);
+
+        $seal = $this->createSealWithConfig($admin->profile, [
+            'agent.name' => ['hasExpiry' => true, 'periodValue' => 1, 'periodUnit' => 'year', 'isInvalidator' => true],
+            'agent.shortDescription' => ['hasExpiry' => true, 'periodValue' => 1, 'periodUnit' => 'year', 'isInvalidator' => true],
+        ]);
+
+        [$opportunity, $fieldConfigs] = $this->createDocumentaryOpportunityWithSeals(
+            [$seal],
+            ['name', 'shortDescription']
+        );
+
+        $emc = $opportunity->evaluationMethodConfiguration;
+        $config = (array) $emc->sealExemptionConfig;
+        $config['conditions'] = [
+            (string) $seal->id => [
+                'agent.name' => [
+                    'clauses' => [
+                        ['field' => 'appliedForQuota', 'values' => ['1']],
+                    ],
+                ],
+            ],
+        ];
+        $emc->sealExemptionConfig = (object) $config;
+        $emc->save(true);
+
+        $registration = $this->createPhaseRegistration($opportunity, $owner);
+
+        $app = App::i();
+        $app->disableAccessControl();
+        $registration->appliedForQuota = false;
+        $registration->save(true);
+        $app->enableAccessControl();
+
+        $this->createSentDocumentaryEvaluation($registration, [
+            $fieldConfigs['shortDescription']->id => 'valid',
+        ]);
+
+        $this->setRegistrationStatus($registration->refreshed(), 'setStatusToNotApproved');
+
+        $granted = $this->getGrantedSealIds($owner);
+
+        $this->assertContains(
+            $seal->id,
+            $granted,
+            'Status 3 deve conceder o selo quando o invalidador condicional esta relevado e os demais sao validos.'
+        );
+    }
 }

@@ -160,10 +160,17 @@ $(function(){
             }, c+5000);
         }, 200);
 
-        $('body').on('click', 'li.js-field, li.registration-list-item', function(){
+        $('body').on('click', 'li.js-field, li.registration-list-item', function(e){
             var $field = $(this);
-            
+            // Clique no link do arquivo (download): deixa o download seguir e
+            // não alterna o formulário (não fecha se já estiver aberto).
+            var isFileLinkClick = $(e.target).closest('a[href]').length > 0;
+
             if($field.hasClass('field-shadow')){
+                if (isFileLinkClick) {
+                    return;
+                }
+
                 $field.removeClass('field-shadow');
 
                 if (insideEmbedTools) {

@@ -125,19 +125,33 @@ $this->import('
                 </ul>
             </div>
 
-            <!-- Condicionalidade de invalidadores (spec-fe9b2cfc) -->
-            <details v-if="canEdit && isEnabled" class="seal-validator-config__conditions">
+            <!-- Condicionalidade: visível com isenção ativa; edição só se canEdit.
+                 Em leitura: só invalidadores já condicionados. details fechado por padrão;
+                 abertura persistida no localStorage. -->
+            <details
+                v-if="isEnabled && showConditionsSection"
+                ref="conditionsDetails"
+                class="seal-validator-config__conditions"
+                @toggle="onConditionsDetailsToggle"
+            >
                 <summary class="seal-validator-config__conditions-title field__title">
                     <?= i::_e('Condicionalidade de invalidadores') ?>
+                    <span v-if="!canEdit && conditionedInvalidatorsCount > 0" class="seal-validator-config__conditions-count">
+                        ({{ conditionedInvalidatorsCount }})
+                    </span>
                 </summary>
 
                 <div class="seal-validator-config__conditions-body">
-                    <p class="seal-validator-config__conditions-intro">
+                    <p v-if="canEdit" class="seal-validator-config__conditions-intro">
                         <?= i::__('Faça com que um campo invalidador só seja exigido quando o proponente preencher determinado campo do formulário. Quando a condição não se aplica, o invalidador é relevado.') ?>
                     </p>
 
+                    <mc-alert v-if="!canEdit" type="helper">
+                        <?= i::__('Somente visualização: a fase já possui inscrições enviadas e a condicionalidade não pode ser alterada.') ?>
+                    </mc-alert>
+
                     <div
-                        v-for="seal in selectedSealsWithStatus"
+                        v-for="seal in sealsForConditionsUi"
                         :key="'cond-' + seal.id"
                         class="seal-validator-config__condition-seal"
                     >
@@ -146,7 +160,7 @@ $this->import('
                         </p>
 
                         <div
-                            v-for="inv in invalidatorsBySeal(seal.id)"
+                            v-for="inv in invalidatorsForConditionsUi(seal.id)"
                             :key="'inv-' + seal.id + '-' + inv.fieldKey"
                             class="seal-validator-config__condition-item"
                         >
@@ -161,10 +175,9 @@ $this->import('
                                     </span>
                                 </div>
                                 <button
-                                    v-if="!conditionsForSeal(seal.id)[inv.fieldKey]"
+                                    v-if="canEdit && !conditionsForSeal(seal.id)[inv.fieldKey]"
                                     type="button"
                                     class="button button--primary-outline button--sm"
-                                    :disabled="!canEdit"
                                     @click="addCondition(seal.id, inv.fieldKey)"
                                 >
                                     + <?= i::_e('Condicionar') ?>
@@ -221,11 +234,10 @@ $this->import('
                                         <span>{{ text('conditionPreviewTemplate') }} <strong>{{ clausePreview(clause) }}</strong></span>
                                     </div>
 
-                                    <div class="seal-validator-config__clause-actions">
+                                    <div v-if="canEdit" class="seal-validator-config__clause-actions">
                                         <button
                                             type="button"
                                             class="button button--text button--sm button--text-danger"
-                                            :disabled="!canEdit"
                                             @click="removeClause(seal.id, inv.fieldKey, idx)"
                                         >
                                             {{ text('conditionRemoveClause') }}
@@ -233,11 +245,10 @@ $this->import('
                                     </div>
                                 </div>
 
-                                <div class="seal-validator-config__condition-actions">
+                                <div v-if="canEdit" class="seal-validator-config__condition-actions">
                                     <button
                                         type="button"
                                         class="button button--primary-outline button--sm"
-                                        :disabled="!canEdit"
                                         @click="addCondition(seal.id, inv.fieldKey)"
                                     >
                                         + {{ text('conditionAddClause') }}
@@ -245,7 +256,6 @@ $this->import('
                                     <button
                                         type="button"
                                         class="button button--text button--sm button--text-danger"
-                                        :disabled="!canEdit"
                                         @click="removeCondition(seal.id, inv.fieldKey)"
                                     >
                                         {{ text('conditionRemove') }}
@@ -255,7 +265,7 @@ $this->import('
                         </div>
                     </div>
 
-                    <mc-alert type="warning">
+                    <mc-alert v-if="canEdit" type="warning">
                         {{ text('conditionBlankAlert') }}
                     </mc-alert>
                 </div>

@@ -481,6 +481,9 @@ class SealExemptionService
      * Verifica se todos os campos associados aos selos configurados foram
      * avaliados como válidos no formulário documental.
      *
+     * Campos com condição em sealExemptionConfig.conditions cuja cláusula
+     * não se aplica à inscrição (relevados) não entram na exigência.
+     *
      * @param Registration $registration
      * @param int[] $sealIds
      * @return bool
@@ -492,20 +495,36 @@ class SealExemptionService
             return false;
         }
 
+        $bindingsBySeal = $this->getRequiredFieldBindingsBySeal($registration, $sealIds);
+        if (!$bindingsBySeal) {
+            return false;
+        }
+
+        $conditions = self::extractConditions(
+            $registration->evaluationMethodConfiguration?->sealExemptionConfig
+        );
+
         $evaluatedFields = $this->getValidEvaluatedFieldIds($registration);
 
-        if (!$evaluatedFields) {
-            return false;
-        }
-
-        $requiredFieldIdsBySeal = $this->getRequiredFieldIdsBySeal($registration, $sealIds);
-        if (!$requiredFieldIdsBySeal) {
-            return false;
-        }
-
         foreach ($sealIds as $sealId) {
-            $requiredFieldIds = $requiredFieldIdsBySeal[$sealId] ?? [];
+            $bindings = $bindingsBySeal[$sealId] ?? [];
+            if (!$bindings) {
+                return false;
+            }
+
+            $requiredFieldIds = $this->excludeWaivedFieldIds(
+                $registration,
+                (int) $sealId,
+                $bindings,
+                $conditions
+            );
+
             if (!$requiredFieldIds) {
+                // Todos os campos do selo foram relevados por condição → OK
+                continue;
+            }
+
+            if (!$evaluatedFields) {
                 return false;
             }
 
@@ -520,14 +539,19 @@ class SealExemptionService
     }
 
     /**
-     * Mapeia selo => campos da inscrição que validam aquele selo na fase.
+     * Mapeia selo => bindings (fieldId + lockedField) dos campos do formulário
+     * que validam aquele selo na fase.
      *
      * @param Registration $registration
      * @param int[] $sealIds
-     * @return array<int, array<int>>
+     * @param bool $invalidatorsOnly Quando true, considera só locked fields com isInvalidator.
+     * @return array<int, list<array{fieldId: int, lockedField: string}>>
      */
-    private function getRequiredFieldIdsBySeal(Registration $registration, array $sealIds): array
-    {
+    private function getRequiredFieldBindingsBySeal(
+        Registration $registration,
+        array $sealIds,
+        bool $invalidatorsOnly = false
+    ): array {
         $app = App::i();
         $sealFields = [];
 
@@ -538,7 +562,10 @@ class SealExemptionService
             }
 
             $config = (array) $seal->lockedFieldsConfig;
-            foreach (array_keys($config) as $lockedField) {
+            foreach ($config as $lockedField => $fieldConfig) {
+                if ($invalidatorsOnly && ($fieldConfig['isInvalidator'] ?? false) !== true) {
+                    continue;
+                }
                 $sealFields[$sealId][] = $lockedField;
             }
         }
@@ -560,18 +587,72 @@ class SealExemptionService
                 foreach ($sealFields as $sealId => $lockedFields) {
                     foreach ($lockedFields as $lockedField) {
                         if ($this->lockedFieldMatchesRegistrationField($lockedField, $entityField)) {
-                            $result[$sealId][] = (int) $field->id;
+                            $result[$sealId][] = [
+                                'fieldId' => (int) $field->id,
+                                'lockedField' => (string) $lockedField,
+                            ];
                         }
                     }
                 }
             }
         }
 
-        foreach ($result as $sealId => $fields) {
-            $result[$sealId] = array_values(array_unique($fields));
+        return $result;
+    }
+
+    /**
+     * Mapeia selo => campos da inscrição que validam aquele selo na fase.
+     *
+     * @param Registration $registration
+     * @param int[] $sealIds
+     * @return array<int, array<int>>
+     */
+    private function getRequiredFieldIdsBySeal(Registration $registration, array $sealIds): array
+    {
+        $result = [];
+        foreach ($this->getRequiredFieldBindingsBySeal($registration, $sealIds) as $sealId => $bindings) {
+            $result[$sealId] = array_values(array_unique(array_column($bindings, 'fieldId')));
         }
 
         return $result;
+    }
+
+    /**
+     * Remove da lista de campos exigidos aqueles relevados por conditions
+     * (condição não satisfeita / sem branco).
+     *
+     * @param Registration $registration
+     * @param int $sealId
+     * @param list<array{fieldId: int, lockedField: string}> $bindings
+     * @param array $conditions extractConditions()
+     * @return int[]
+     */
+    private function excludeWaivedFieldIds(
+        Registration $registration,
+        int $sealId,
+        array $bindings,
+        array $conditions
+    ): array {
+        if (!$bindings) {
+            return [];
+        }
+
+        $sealConditions = $conditions[$sealId] ?? $conditions[(string) $sealId] ?? [];
+        if (!is_array($sealConditions) || !$sealConditions) {
+            return array_values(array_unique(array_column($bindings, 'fieldId')));
+        }
+
+        $fieldIds = [];
+        foreach ($bindings as $binding) {
+            $lockedField = $binding['lockedField'] ?? '';
+            $condition = $sealConditions[$lockedField] ?? null;
+            if ($condition && $this->isInvalidadorWaived($condition, $registration)) {
+                continue;
+            }
+            $fieldIds[] = (int) $binding['fieldId'];
+        }
+
+        return array_values(array_unique($fieldIds));
     }
 
     /**
@@ -797,51 +878,9 @@ class SealExemptionService
      */
     private function getInvalidatorFieldIdsBySeal(Registration $registration, array $sealIds): array
     {
-        $app = App::i();
-        $sealFields = [];
-
-        foreach ($sealIds as $sealId) {
-            $seal = $app->repo('Seal')->find($sealId);
-            if (!$seal instanceof Seal) {
-                continue;
-            }
-
-            $config = (array) $seal->lockedFieldsConfig;
-            foreach ($config as $lockedField => $fieldConfig) {
-                // CRÍTICO: isInvalidator é UNSET quando hasExpiry=false (Seal.php:316)
-                if (($fieldConfig['isInvalidator'] ?? false) !== true) {
-                    continue;
-                }
-                $sealFields[$sealId][] = $lockedField;
-            }
-        }
-
-        if (!$sealFields) {
-            return [];
-        }
-
         $result = [];
-        $firstPhase = $registration->opportunity->firstPhase;
-        $phases = $firstPhase->allPhases ?: [$firstPhase];
-        foreach ($phases as $phase) {
-            foreach ($phase->registrationFieldConfigurations as $field) {
-                $entityField = $this->getRegistrationFieldEntityName($field);
-                if (!$entityField) {
-                    continue;
-                }
-
-                foreach ($sealFields as $sealId => $lockedFields) {
-                    foreach ($lockedFields as $lockedField) {
-                        if ($this->lockedFieldMatchesRegistrationField($lockedField, $entityField)) {
-                            $result[$sealId][] = (int) $field->id;
-                        }
-                    }
-                }
-            }
-        }
-
-        foreach ($result as $sealId => $fields) {
-            $result[$sealId] = array_values(array_unique($fields));
+        foreach ($this->getRequiredFieldBindingsBySeal($registration, $sealIds, true) as $sealId => $bindings) {
+            $result[$sealId] = array_values(array_unique(array_column($bindings, 'fieldId')));
         }
 
         return $result;
@@ -851,6 +890,7 @@ class SealExemptionService
      * Determina quais selos são concedíveis na concessão parcial (status 2/3/8).
      *
      * Métodos não-documentais: retorna [] (sem dados granulares para decidir).
+     * Invalidadores relevados por conditions não entram na exigência do selo.
      *
      * @param Registration $registration
      * @param int[] $sealIds
@@ -863,12 +903,12 @@ class SealExemptionService
         }
 
         $evaluatedFields = $this->getValidEvaluatedFieldIds($registration);
-        if (!$evaluatedFields) {
-            return [];
-        }
 
         $sealsWithInvalidators = $this->getSealsWithInvalidators($sealIds);
-        $invalidatorFieldIdsBySeal = $this->getInvalidatorFieldIdsBySeal($registration, $sealIds);
+        $invalidatorBindingsBySeal = $this->getRequiredFieldBindingsBySeal($registration, $sealIds, true);
+        $conditions = self::extractConditions(
+            $registration->evaluationMethodConfiguration?->sealExemptionConfig
+        );
 
         $grantable = [];
         foreach ($sealIds as $sealId) {
@@ -880,9 +920,26 @@ class SealExemptionService
                 continue;
             }
 
-            $requiredFields = $invalidatorFieldIdsBySeal[$sealId] ?? [];
-            if (empty($requiredFields)) {
+            $bindings = $invalidatorBindingsBySeal[$sealId] ?? [];
+            if (empty($bindings)) {
                 // Invalidadores configurados mas não resolvem no formulário → não conceder (fail-safe)
+                continue;
+            }
+
+            $requiredFields = $this->excludeWaivedFieldIds(
+                $registration,
+                (int) $sealId,
+                $bindings,
+                $conditions
+            );
+
+            if (empty($requiredFields)) {
+                // Todos os invalidadores relevados por condição → concedível
+                $grantable[] = $sealId;
+                continue;
+            }
+
+            if (!$evaluatedFields) {
                 continue;
             }
 

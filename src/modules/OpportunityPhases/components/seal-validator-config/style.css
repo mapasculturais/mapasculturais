@@ -316,6 +316,19 @@
     color: var(--mc-gray-800, #333);
 }
 
+.seal-validator-config__conditions-title {
+    cursor: pointer;
+    list-style: none;
+    display: flex;
+    align-items: center;
+    gap: .35rem;
+}
+
+.seal-validator-config__conditions-count {
+    font-weight: 600;
+    color: var(--mc-gray-600, #666);
+}
+
 .seal-validator-config__condition-badge {
     display: inline-flex;
     align-items: center;

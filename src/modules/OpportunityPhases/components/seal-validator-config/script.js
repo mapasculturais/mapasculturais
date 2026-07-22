@@ -10,6 +10,7 @@
  *   de transparência no rodapé (deniedSealsCount).
  * - Bloqueio read-only quando `entity.canEditSealConfig === false` (flag
  *   calculada server-side — nunca no cliente, para evitar divergência de fuso).
+ *   Condicionalidade permanece visível em read-only para conferência.
  * - "Habilitado" deriva de `seals.length > 0` (spec §3.1: sem campo `enabled`
  *   redundante). Desligar o toggle remove todos os selos e persiste `{ seals: [] }`.
  * - Pendências: invalidadores do selo ausentes no formulário (init.php);
@@ -53,6 +54,10 @@ app.component('seal-validator-config', {
         this.ensureConfigStructure();
         this.syncConditionsDraftFromEntity();
         this.expanded = this.isEnabled;
+    },
+
+    mounted() {
+        this.restoreConditionsDetailsOpen();
     },
 
     computed: {
@@ -138,6 +143,32 @@ app.component('seal-validator-config', {
 
         // --- Condicionalidade (spec-fe9b2cfc) ---
 
+        conditionsOpenStorageKey() {
+            const id = this.entity?.id ?? 'unknown';
+            return `sealValidatorConfig.conditionsOpen.${id}`;
+        },
+
+        conditionedInvalidatorsCount() {
+            let count = 0;
+            for (const seal of this.selectedSealsWithStatus) {
+                count += Object.keys(this.conditionsForSeal(seal.id)).length;
+            }
+            return count;
+        },
+
+        // Em edição: sempre mostra a seção. Em leitura: só se houver condição ativa.
+        showConditionsSection() {
+            return this.canEdit || this.conditionedInvalidatorsCount > 0;
+        },
+
+        // Em edição: todos os selos selecionados. Em leitura: só os que têm condição.
+        sealsForConditionsUi() {
+            if (this.canEdit) {
+                return this.selectedSealsWithStatus;
+            }
+            return this.selectedSealsWithStatus.filter((seal) => this.sealHasConditions(seal.id));
+        },
+
         conditionalFields() {
             // Preferir registrationFilterFields (fonte): evita depender da ordem do init.php
             // entre registration-distribution-rule e seal-validator-config.
@@ -153,6 +184,18 @@ app.component('seal-validator-config', {
             return (sealId) => {
                 const seal = this.sealById[sealId] || this.sealById[String(sealId)];
                 return seal?.invalidators || [];
+            };
+        },
+
+        // Em edição: todos. Em leitura: só invalidadores com condição ativa.
+        invalidatorsForConditionsUi() {
+            return (sealId) => {
+                const all = this.invalidatorsBySeal(sealId);
+                if (this.canEdit) {
+                    return all;
+                }
+                const conds = this.conditionsForSeal(sealId);
+                return all.filter((inv) => !!conds[inv.fieldKey]);
             };
         },
 
@@ -174,6 +217,28 @@ app.component('seal-validator-config', {
     },
 
     methods: {
+        restoreConditionsDetailsOpen() {
+            const el = this.$refs.conditionsDetails;
+            if (!el) {
+                return;
+            }
+            try {
+                const saved = localStorage.getItem(this.conditionsOpenStorageKey);
+                el.open = saved === '1';
+            } catch (e) {
+                el.open = false;
+            }
+        },
+
+        onConditionsDetailsToggle(event) {
+            const open = !!event?.target?.open;
+            try {
+                localStorage.setItem(this.conditionsOpenStorageKey, open ? '1' : '0');
+            } catch (e) {
+                // ignore quota / private mode
+            }
+        },
+
         normalizeSealIds(seals) {
             return Array.isArray(seals)
                 ? seals.map((id) => parseInt(id, 10)).filter((id) => !Number.isNaN(id))
