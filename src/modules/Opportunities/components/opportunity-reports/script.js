@@ -13,6 +13,7 @@ app.component('opportunity-reports', {
             filters: {
                 status: 'all',
                 proponentTypes: [],
+                ranges: [],
             },
         };
     },
@@ -20,6 +21,10 @@ app.component('opportunity-reports', {
     computed: {
         proponentTypeOptions() {
             return this.entity.registrationProponentTypes || [];
+        },
+
+        rangeOptions() {
+            return (this.entity.registrationRanges || []).map(range => range.label);
         },
     },
 });

@@ -12,7 +12,7 @@ $this->import('
 ');
 ?>
 <div class="opportunity-reports">
-    <opportunity-reports-filters v-model="filters" :proponent-type-options="proponentTypeOptions"></opportunity-reports-filters>
+    <opportunity-reports-filters v-model="filters" :proponent-type-options="proponentTypeOptions" :range-options="rangeOptions"></opportunity-reports-filters>
 
     <opportunity-reports-static-charts :opportunity-id="entity.id" :filters="filters"></opportunity-reports-static-charts>
 

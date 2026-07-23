@@ -3,12 +3,15 @@ class ReportsAPI {
         this.api = new API('reports');
     }
 
-    // acrescenta os filtros de status/tipo de proponente como query string,
+    // acrescenta os filtros de status/tipo de proponente/faixa como query string,
     // seguindo o mesmo padrão usado por API.createApiUrl (searchParams)
-    _withFilters(url, { status, proponentTypes } = {}) {
+    _withFilters(url, { status, proponentTypes, ranges } = {}) {
         url.searchParams.set('status', status || 'all');
         if (proponentTypes && proponentTypes.length) {
             url.searchParams.set('proponentType', proponentTypes.join(','));
+        }
+        if (ranges && ranges.length) {
+            url.searchParams.set('range', ranges.join(','));
         }
         return url;
     }

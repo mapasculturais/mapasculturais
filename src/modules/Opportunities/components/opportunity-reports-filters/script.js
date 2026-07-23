@@ -4,9 +4,13 @@ app.component('opportunity-reports-filters', {
     props: {
         modelValue: {
             type: Object,
-            required: true, // { status, proponentTypes }
+            required: true, // { status, proponentTypes, ranges }
         },
         proponentTypeOptions: {
+            type: Array,
+            default: () => [],
+        },
+        rangeOptions: {
             type: Array,
             default: () => [],
         },
@@ -23,6 +27,7 @@ app.component('opportunity-reports-filters', {
     data() {
         return {
             selectedProponentTypes: [...(this.modelValue.proponentTypes || [])],
+            selectedRanges: [...(this.modelValue.ranges || [])],
         };
     },
 
@@ -49,6 +54,17 @@ app.component('opportunity-reports-filters', {
             }
             return result;
         },
+
+        rangeItems() {
+            if (!this.rangeOptions.length) {
+                return null;
+            }
+            const result = {};
+            for (const range of this.rangeOptions) {
+                result[range.replace(/,/g, '\\,')] = range;
+            }
+            return result;
+        },
     },
 
     methods: {
@@ -58,6 +74,10 @@ app.component('opportunity-reports-filters', {
 
         onProponentTypesChange() {
             this.$emit('update:modelValue', { ...this.modelValue, proponentTypes: [...this.selectedProponentTypes] });
+        },
+
+        onRangesChange() {
+            this.$emit('update:modelValue', { ...this.modelValue, ranges: [...this.selectedRanges] });
         },
     },
 });

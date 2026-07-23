@@ -124,6 +124,7 @@ app.component('opportunity-reports-chart-form', {
                 opportunity_id: this.opportunityId,
                 status: this.filters.status,
                 proponentType: this.filters.proponentTypes,
+                range: this.filters.ranges,
                 typeGraphic: this.typeGraphic,
                 columns,
                 title: this.title,
