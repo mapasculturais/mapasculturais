@@ -113,12 +113,14 @@ class Controller extends \MapasCulturais\Controller
 
         $request = $this->data;
         $proponentTypes = $this->getRequestProponentTypes();
+        $ranges = $this->getRequestRanges();
         [$ptClause, $ptParams] = QueryFilters::proponentTypeClause($proponentTypes);
+        [$rangeClause, $rangeParams] = QueryFilters::rangeClause($ranges);
 
         $data = [];
-        $params = array_merge(['opportunity' => $request['opportunity_id']], $ptParams);
+        $params = array_merge(['opportunity' => $request['opportunity_id']], $ptParams, $rangeParams);
 
-        $query = "SELECT status, count(*) FROM registration r WHERE opportunity_id = :opportunity{$ptClause} GROUP BY status";
+        $query = "SELECT status, count(*) FROM registration r WHERE opportunity_id = :opportunity{$ptClause}{$rangeClause} GROUP BY status";
 
         $result = $conn->fetchAll($query, $params);
 
@@ -158,11 +160,13 @@ class Controller extends \MapasCulturais\Controller
 
         $request = $this->data;
         $proponentTypes = $this->getRequestProponentTypes();
+        $ranges = $this->getRequestRanges();
         [$ptClause, $ptParams] = QueryFilters::proponentTypeClause($proponentTypes);
+        [$rangeClause, $rangeParams] = QueryFilters::rangeClause($ranges);
 
         //Seleciona e agrupa inscrições ao longo do tempo
 
-        $params = array_merge(['opportunity_id' => $opp->id], $ptParams);
+        $params = array_merge(['opportunity_id' => $opp->id], $ptParams, $rangeParams);
 
         $result = [];
         $a = 0;
@@ -179,7 +183,7 @@ class Controller extends \MapasCulturais\Controller
             FROM registration r
             WHERE opportunity_id = :opportunity_id
             AND consolidated_result <> '0' AND
-            cast(consolidated_result as DECIMAL) BETWEEN {$i} AND {$b}{$ptClause}";
+            cast(consolidated_result as DECIMAL) BETWEEN {$i} AND {$b}{$ptClause}{$rangeClause}";
 
             $label = i::__('de ') . $a . i::__(' a ') . $b;
 
@@ -216,16 +220,18 @@ class Controller extends \MapasCulturais\Controller
 
         $request = $this->data;
         $proponentTypes = $this->getRequestProponentTypes();
+        $ranges = $this->getRequestRanges();
         [$ptClause, $ptParams] = QueryFilters::proponentTypeClause($proponentTypes);
+        [$rangeClause, $rangeParams] = QueryFilters::rangeClause($ranges);
 
         $data = [];
-        $params = array_merge(['opportunity' => $request['opportunity_id']], $ptParams);
+        $params = array_merge(['opportunity' => $request['opportunity_id']], $ptParams, $rangeParams);
 
-        $query = "SELECT count(*) AS evaluated FROM registration r WHERE opportunity_id = :opportunity  AND consolidated_result <> '0'{$ptClause}";
+        $query = "SELECT count(*) AS evaluated FROM registration r WHERE opportunity_id = :opportunity  AND consolidated_result <> '0'{$ptClause}{$rangeClause}";
 
         $evaluated = $conn->fetchAll($query, $params);
 
-        $query = "SELECT COUNT(*) AS notEvaluated FROM registration r WHERE opportunity_id = :opportunity  AND consolidated_result = '0'{$ptClause}";
+        $query = "SELECT COUNT(*) AS notEvaluated FROM registration r WHERE opportunity_id = :opportunity  AND consolidated_result = '0'{$ptClause}{$rangeClause}";
 
         $notEvaluated = $conn->fetchAll($query, $params);
 
@@ -289,12 +295,14 @@ class Controller extends \MapasCulturais\Controller
         $conn = $app->em->getConnection();
 
         $proponentTypes = $this->getRequestProponentTypes();
+        $ranges = $this->getRequestRanges();
         [$ptClause, $ptParams] = QueryFilters::proponentTypeClause($proponentTypes);
+        [$rangeClause, $rangeParams] = QueryFilters::rangeClause($ranges);
 
         $data = [];
-        $params = array_merge(['opportunity' => $opp->id], $ptParams);
+        $params = array_merge(['opportunity' => $opp->id], $ptParams, $rangeParams);
 
-        $query = "SELECT COUNT(*), consolidated_result FROM registration r WHERE opportunity_id = :opportunity  AND consolidated_result <> '0'{$ptClause} GROUP BY consolidated_result";
+        $query = "SELECT COUNT(*), consolidated_result FROM registration r WHERE opportunity_id = :opportunity  AND consolidated_result <> '0'{$ptClause}{$rangeClause} GROUP BY consolidated_result";
 
         $evaluations = $conn->fetchAll($query, $params);
 
@@ -336,12 +344,14 @@ class Controller extends \MapasCulturais\Controller
         $conn = $app->em->getConnection();
 
         $proponentTypes = $this->getRequestProponentTypes();
+        $ranges = $this->getRequestRanges();
         [$ptClause, $ptParams] = QueryFilters::proponentTypeClause($proponentTypes);
+        [$rangeClause, $rangeParams] = QueryFilters::rangeClause($ranges);
 
         $csv_data = [];
-        $params = array_merge(['opportunity' => $opp->id], $ptParams);
+        $params = array_merge(['opportunity' => $opp->id], $ptParams, $rangeParams);
 
-        $query = "select  category, count(category) from registration r where r.status > 0 and r.opportunity_id = :opportunity{$ptClause} group by category";
+        $query = "select  category, count(category) from registration r where r.status > 0 and r.opportunity_id = :opportunity{$ptClause}{$rangeClause} group by category";
 
         $csv_data = $conn->fetchAll($query, $params);
 
@@ -378,12 +388,14 @@ class Controller extends \MapasCulturais\Controller
         $conn = $app->em->getConnection();
 
         $proponentTypes = $this->getRequestProponentTypes();
+        $ranges = $this->getRequestRanges();
         [$ptClause, $ptParams] = QueryFilters::proponentTypeClause($proponentTypes);
+        [$rangeClause, $rangeParams] = QueryFilters::rangeClause($ranges);
 
         $data = [];
-        $params = array_merge(['opportunity' => $opp->id], $ptParams);
+        $params = array_merge(['opportunity' => $opp->id], $ptParams, $rangeParams);
 
-        $query = "SELECT status, count(*) FROM registration r WHERE opportunity_id = :opportunity{$ptClause} GROUP BY status";
+        $query = "SELECT status, count(*) FROM registration r WHERE opportunity_id = :opportunity{$ptClause}{$rangeClause} GROUP BY status";
 
         $result = $conn->fetchAll($query, $params);
 
@@ -430,17 +442,19 @@ class Controller extends \MapasCulturais\Controller
         $conn = $app->em->getConnection();
 
         $proponentTypes = $this->getRequestProponentTypes();
+        $ranges = $this->getRequestRanges();
         [$ptClause, $ptParams] = QueryFilters::proponentTypeClause($proponentTypes);
+        [$rangeClause, $rangeParams] = QueryFilters::rangeClause($ranges);
 
         $initiated = [];
         $sent = [];
-        $params = array_merge(['opportunity' => $opp->id], $ptParams);
+        $params = array_merge(['opportunity' => $opp->id], $ptParams, $rangeParams);
 
         $query = "SELECT
         to_char(create_timestamp , 'YYYY-MM-DD') as date,
         count(*) as total
         FROM registration r
-        WHERE opportunity_id = :opportunity{$ptClause}
+        WHERE opportunity_id = :opportunity{$ptClause}{$rangeClause}
         GROUP BY to_char(create_timestamp , 'YYYY-MM-DD')
         ORDER BY date ASC";
         $initiated = $conn->fetchAll($query, $params);
@@ -449,7 +463,7 @@ class Controller extends \MapasCulturais\Controller
         to_char(sent_timestamp , 'YYYY-MM-DD') as date,
         count(*) as total
         FROM registration r
-        WHERE opportunity_id = :opportunity AND r.status > 0{$ptClause}
+        WHERE opportunity_id = :opportunity AND r.status > 0{$ptClause}{$rangeClause}
         GROUP BY to_char(sent_timestamp , 'YYYY-MM-DD')
         ORDER BY date ASC";
         $sent = $conn->fetchAll($query, $params);
@@ -542,11 +556,12 @@ class Controller extends \MapasCulturais\Controller
         $request = $this->data;
         $statusValue = $request['status'] ?? 'all';
         $proponentTypes = $this->getRequestProponentTypes();
+        $ranges = $this->getRequestRanges();
 
         $charts = [];
 
         if (!$opp->isOpportunityPhase) {
-            if ($byTime = $module->registrationsByTime($opp, $proponentTypes)) {
+            if ($byTime = $module->registrationsByTime($opp, $proponentTypes, $ranges)) {
                 $charts['registrationsByTime'] = [
                     'labels' => array_keys($byTime['Iniciadas']),
                     'datasets' => [
@@ -557,7 +572,7 @@ class Controller extends \MapasCulturais\Controller
             }
         }
 
-        if ($byStatus = $module->registrationsByStatus($opp, $proponentTypes)) {
+        if ($byStatus = $module->registrationsByStatus($opp, $proponentTypes, $ranges)) {
             $charts['registrationsByStatus'] = [
                 'labels' => array_keys($byStatus),
                 'data' => array_values($byStatus),
@@ -566,7 +581,7 @@ class Controller extends \MapasCulturais\Controller
         }
 
         if ($opp->evaluationMethod->slug == 'technical') {
-            if ($byEvaluation = $module->registrationsByEvaluationStatusBar($opp, $proponentTypes)) {
+            if ($byEvaluation = $module->registrationsByEvaluationStatusBar($opp, $proponentTypes, $ranges)) {
                 $charts['registrationsByEvaluation'] = [
                     'labels' => array_keys($byEvaluation),
                     'data' => array_values($byEvaluation),
@@ -574,7 +589,7 @@ class Controller extends \MapasCulturais\Controller
                 ];
             }
         } else {
-            if ($byEvaluation = $module->registrationsByEvaluation($opp, $statusValue, $proponentTypes)) {
+            if ($byEvaluation = $module->registrationsByEvaluation($opp, $statusValue, $proponentTypes, $ranges)) {
                 $labels = [i::__('Avaliada'), i::__('Não avaliada')];
                 $data = [$byEvaluation[0]['evaluated'] ?? 0, $byEvaluation[1]['notevaluated'] ?? ($byEvaluation[1]['notEvaluated'] ?? 0)];
                 $charts['registrationsByEvaluation'] = [
@@ -585,7 +600,7 @@ class Controller extends \MapasCulturais\Controller
             }
         }
 
-        if ($byEvaluationStatus = $module->registrationsByEvaluationStatus($opp, $proponentTypes)) {
+        if ($byEvaluationStatus = $module->registrationsByEvaluationStatus($opp, $proponentTypes, $ranges)) {
             $charts['registrationsByEvaluationStatus'] = [
                 'labels' => array_keys($byEvaluationStatus),
                 'data' => array_values($byEvaluationStatus),
@@ -595,7 +610,7 @@ class Controller extends \MapasCulturais\Controller
 
         $registrationCategories = $opp->registrationCategories;
         if (!empty($registrationCategories)) {
-            if ($byCategory = $module->registrationsByCategory($opp, $proponentTypes)) {
+            if ($byCategory = $module->registrationsByCategory($opp, $proponentTypes, $ranges)) {
                 $charts['registrationsByCategory'] = [
                     'labels' => array_column($byCategory, 'category'),
                     'data' => array_column($byCategory, 'count'),
@@ -635,13 +650,14 @@ class Controller extends \MapasCulturais\Controller
         $request = $this->data;
         $status = $request['status'] ?? 'all';
         $proponentTypes = $this->getRequestProponentTypes();
+        $ranges = $this->getRequestRanges();
 
         $return = [];
         $metalists = $app->repo("MetaList")->findBy(['objectId' => $opp->id, "group" => "reports"]);
         foreach ($metalists as $metalist) {
             $value = json_decode($metalist->value, true);
             $value['reportData']['graphicId'] = $metalist->id;
-            $value['data'] = $this->getData($value, $opp, $status, $proponentTypes);
+            $value['data'] = $this->getData($value, $opp, $status, $proponentTypes, $ranges);
             $return[] = $value;
         }
 
@@ -660,9 +676,10 @@ class Controller extends \MapasCulturais\Controller
         $request = $this->data;
         $status = $request['status'] ?? 'all';
         $proponentTypes = $this->getRequestProponentTypes();
+        $ranges = $this->getRequestRanges();
         $reportData = json_decode($request['reportData'], true);
 
-        $this->apiResponse($this->getData($reportData, $opp, $status, $proponentTypes));
+        $this->apiResponse($this->getData($reportData, $opp, $status, $proponentTypes, $ranges));
     }
 
     /**
@@ -697,8 +714,9 @@ class Controller extends \MapasCulturais\Controller
         $opp->checkPermission('viewReport');
 
         $proponentTypes = $this->getRequestProponentTypes();
+        $ranges = $this->getRequestRanges();
 
-        $preload = $this->getData($this->data, $opp, $request['status'], $proponentTypes);
+        $preload = $this->getData($this->data, $opp, $request['status'], $proponentTypes, $ranges);
 
         /**
          * Verifica se existe dados suficientes para gerar o gráfico
@@ -789,6 +807,7 @@ class Controller extends \MapasCulturais\Controller
         // populada pelo SSR do tema v1 somente quando ausentes (compatibilidade)
         $status = $request['status'] ?? ($_SESSION['reportStatusRegistration'] ?? 'all');
         $proponentTypes = $this->getRequestProponentTypes();
+        $ranges = $this->getRequestRanges();
 
         $params = ['objectId' => $opp->id, "group" => "reports", "id" => $request['graphicId']];
 
@@ -799,7 +818,7 @@ class Controller extends \MapasCulturais\Controller
         foreach ($metalists as $metalist){
             $value = json_decode($metalist->value, true);
             $value['reportData']['graphicId'] = $metalist->id;
-            $value['data'] = $this->getData($value, $opp, $status, $proponentTypes);
+            $value['data'] = $this->getData($value, $opp, $status, $proponentTypes, $ranges);
             $return = $value;
         }
 
@@ -827,7 +846,7 @@ class Controller extends \MapasCulturais\Controller
         $this->createCsv($header, $csv_data, $action, $opp->id);
     }
 
-    public function getData($reportData, $opp, $status, ?array $proponentTypes = null)
+    public function getData($reportData, $opp, $status, ?array $proponentTypes = null, ?array $ranges = null)
     {
         $em = $opp->getEvaluationMethod();
         $app = App::i();
@@ -837,9 +856,10 @@ class Controller extends \MapasCulturais\Controller
         $dataB = $reportData["columns"][1];
         $conn = $app->em->getConnection();
         $query = $this->buildQuery($reportData["columns"], $opp,
-                                   ($reportData["typeGraphic"] == "line"), $status, $proponentTypes);
+                                   ($reportData["typeGraphic"] == "line"), $status, $proponentTypes, $ranges);
         [, $proponentTypeParams] = QueryFilters::proponentTypeClause($proponentTypes);
-        $result = $conn->fetchAll($query, array_merge(["opportunity" => $opp->id], $proponentTypeParams));
+        [, $rangeParams] = QueryFilters::rangeClause($ranges);
+        $result = $conn->fetchAll($query, array_merge(["opportunity" => $opp->id], $proponentTypeParams, $rangeParams));
 
         $return = [];
         $labels = [];
@@ -875,10 +895,11 @@ class Controller extends \MapasCulturais\Controller
         return $return;
     }
 
-    public function buildQuery($columns, $op, $timeSeries=false, $statusValue = "all", ?array $proponentTypes = null)
+    public function buildQuery($columns, $op, $timeSeries=false, $statusValue = "all", ?array $proponentTypes = null, ?array $ranges = null)
     {
         $status = QueryFilters::statusOperator($statusValue);
         [$proponentTypeClause, ] = QueryFilters::proponentTypeClause($proponentTypes);
+        [$rangeClause, ] = QueryFilters::rangeClause($ranges);
 
         // FIXME: remove empty definitions at the source, not here
         $columns = array_filter($columns, function ($item) {
@@ -904,7 +925,7 @@ class Controller extends \MapasCulturais\Controller
         $out .= ("SELECT " . $this->querySelect($targets, $timeSeries) .
                  " FROM registration r " .
                  $this->queryJoins($tables, $types, $ctes) .
-                 "WHERE r.opportunity_id = :opportunity AND r.status {$status}{$proponentTypeClause} " .
+                 "WHERE r.opportunity_id = :opportunity AND r.status {$status}{$proponentTypeClause}{$rangeClause} " .
                  "GROUP BY " . $this->queryGroup($targets) .
                  $this->queryOrder($targets, $timeSeries));
         return $out;
@@ -1201,12 +1222,16 @@ class Controller extends \MapasCulturais\Controller
         // protegidas/privadas — é preciso ler o valor numa variável local antes.
         $registrationCategories = $opportunity->registrationCategories;
         $registrationProponentTypes = $opportunity->registrationProponentTypes;
+        $registrationRanges = $opportunity->registrationRanges;
 
         if (!empty($registrationCategories)) {
             $fields[] = $this->fieldDefinition(i::__("Categoria"), "category", "r");
         }
         if (!empty($registrationProponentTypes)) {
             $fields[] = $this->fieldDefinition(i::__("Tipo de proponente"), "proponent_type", "r");
+        }
+        if (!empty($registrationRanges)) {
+            $fields[] = $this->fieldDefinition(i::__("Faixa/Linha"), "range", "r");
         }
         $fields[] = $this->fieldDefinition(i::__("Status"), "status", "r", 'status');
         $fields[] = $this->fieldDefinition(i::__("Avaliação"), "consolidated_result", "r", "valueToString");
@@ -1299,14 +1324,33 @@ class Controller extends \MapasCulturais\Controller
      */
     private function getRequestProponentTypes(): ?array
     {
+        return $this->getRequestListParam('proponentType');
+    }
+
+    /**
+     * Lê o filtro de faixa/linha do request (CSV, ex: "Faixa 1,Faixa 2")
+     * usado tanto pelos gráficos estáticos quanto pelo construtor dinâmico.
+     *
+     * @return string[]|null
+     */
+    private function getRequestRanges(): ?array
+    {
+        return $this->getRequestListParam('range');
+    }
+
+    /**
+     * @return string[]|null
+     */
+    private function getRequestListParam(string $key): ?array
+    {
         $request = $this->data;
-        if (empty($request['proponentType'])) {
+        if (empty($request[$key])) {
             return null;
         }
-        if (is_array($request['proponentType'])) {
-            return $request['proponentType'];
+        if (is_array($request[$key])) {
+            return $request[$key];
         }
-        return array_filter(array_map('trim', explode(',', $request['proponentType'])));
+        return array_filter(array_map('trim', explode(',', $request[$key])));
     }
 
     /**
