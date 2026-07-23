@@ -3273,15 +3273,23 @@ class EvaluationMethodTechnicalTest extends TestCase
 
         $selected_registrations = array_slice($eligible_registrations, 0, 2);
         $registration_numbers = array_column($selected_registrations, 'number');
+        $registration_numbers[] = $selected_registrations[0]['number'];
         $registration_numbers[] = 'numero-inexistente';
 
-        $found_ids = \EvaluationMethodTechnical\Module::i()->findRegistrationIdsForResultApplication(
+        $simple_method = $app->getRegisteredEvaluationMethodBySlug('simple')->evaluationMethod;
+
+        $found_ids = $simple_method->findRegistrationIdsForResultApplication(
             $technical_phase,
             $registration_numbers,
             Registration::STATUS_APPROVED
         );
 
         $this->assertEqualsCanonicalizing(array_column($selected_registrations, 'id'), $found_ids);
+        $this->assertSame([], $simple_method->findRegistrationIdsForResultApplication(
+            $technical_phase,
+            [],
+            Registration::STATUS_APPROVED
+        ));
     }
 
     public function testApplyResultsByScore()
