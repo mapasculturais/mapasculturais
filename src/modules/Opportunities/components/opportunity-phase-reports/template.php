@@ -8,7 +8,7 @@ use MapasCulturais\i;
 
 $this->import('
     mc-stepper-vertical
-    v1-embed-tool
+    opportunity-reports
 ');
 ?>
 <mc-stepper-vertical :items="newPhases" allow-multiple>
@@ -29,7 +29,7 @@ $this->import('
     </template>
     <template #default="{index, item}">
         <mc-card v-if="item.id">
-            <v1-embed-tool route="reportmanager" :id="item.id"></v1-embed-tool>
+            <opportunity-reports :entity="item.entity"></opportunity-reports>
         </mc-card>
     </template>
 </mc-stepper-vertical>
