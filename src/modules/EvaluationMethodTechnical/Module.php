@@ -101,29 +101,6 @@ class Module extends \MapasCulturais\EvaluationMethod
         return i::__('Consiste em avaliação por critérios e cotas.');
     }
 
-    public function findRegistrationIdsForResultApplication(Opportunity $opportunity, array $registration_numbers, int $new_status): array
-    {
-        $registration_numbers = array_values(array_unique(array_filter(array_map(
-            fn ($number) => is_string($number) ? trim($number) : '',
-            $registration_numbers
-        ))));
-
-        if (!$registration_numbers) {
-            return [];
-        }
-
-        $status_in = API::IN([1, 3, 8, 10]);
-        $status_not_equal = API::NOT_EQ($new_status);
-        $query = new ApiQuery(Registration::class, [
-            '@select' => 'id',
-            'opportunity' => API::EQ($opportunity->id),
-            'number' => API::IN($registration_numbers),
-            'status' => "AND($status_not_equal, $status_in)",
-        ]);
-
-        return $query->findIds();
-    }
-
     public function filterEvaluationsSummary(array $data) {
         $items = array_filter(array_keys($data), function($item) {
             return is_numeric($item) ? $item : null;            

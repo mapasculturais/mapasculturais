@@ -94,6 +94,48 @@ abstract class EvaluationMethod extends Module implements \JsonSerializable{
     }
 
     /**
+     * Retorna os IDs das inscrições aptas a receber a aplicação de um resultado.
+     *
+     * A busca considera apenas inscrições da oportunidade informada, com os números
+     * solicitados, em status válidos e com status diferente do que será aplicado.
+     *
+     * @param Opportunity $opportunity Oportunidade à qual as inscrições pertencem
+     * @param string[] $registration_numbers Números das inscrições a serem filtradas
+     * @param int $new_status Status que será aplicado às inscrições encontradas
+     * @return int[] IDs das inscrições aptas
+     */
+    public function findRegistrationIdsForResultApplication(
+        Opportunity $opportunity,
+        array $registration_numbers,
+        int $new_status
+    ): array {
+        $registration_numbers = array_values(array_unique(array_filter(array_map(
+            fn ($number) => is_string($number) ? trim($number) : '',
+            $registration_numbers
+        ))));
+
+        if (!$registration_numbers) {
+            return [];
+        }
+
+        $status_in = API::IN([
+            Registration::STATUS_SENT,
+            Registration::STATUS_NOTAPPROVED,
+            Registration::STATUS_WAITLIST,
+            Registration::STATUS_APPROVED,
+        ]);
+        $status_not_equal = API::NOT_EQ($new_status);
+        $query = new ApiQuery(Registration::class, [
+            '@select' => 'id',
+            'opportunity' => API::EQ($opportunity->id),
+            'number' => API::IN($registration_numbers),
+            'status' => "AND($status_not_equal, $status_in)",
+        ]);
+
+        return $query->findIds();
+    }
+
+    /**
      * Exporta as configurações do método para array
      * 
      * @param EvaluationMethodConfiguration $evaluation_method_configuration
