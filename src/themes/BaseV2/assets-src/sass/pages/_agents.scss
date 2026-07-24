@@ -1076,6 +1076,134 @@
         }
     }
 
+    // Endereço — dados + mapa (Figma)
+    &__address-card {
+        @extend %white-card;
+        margin-bottom: size(16);
+
+        &:last-child {
+            margin-bottom: 0;
+        }
+
+        .entity-data {
+            display: flex;
+            flex-direction: column;
+            gap: size(4);
+            margin: 0;
+            width: 100%;
+
+            &__label {
+                margin: 0;
+                font-size: size(14);
+                font-weight: 700;
+                line-height: size(19);
+                color: var(--mc-gray-700);
+            }
+
+            &__data {
+                background-color: transparent;
+                border-radius: 0;
+                padding: 0;
+                min-height: auto;
+                display: block;
+            }
+
+            &__value {
+                font-size: size(14);
+                line-height: size(20);
+                font-weight: 400;
+                color: var(--mc-low-500);
+
+                .bold,
+                small,
+                small.bold {
+                    font-weight: 400 !important;
+                    font-size: inherit;
+                }
+
+                a {
+                    @extend %link-color;
+                    font-weight: 600;
+                }
+            }
+        }
+    }
+
+    &__address-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: size(16);
+        margin-bottom: size(24);
+    }
+
+    &__address-title {
+        margin: 0;
+        padding: 0;
+        font-weight: 700;
+        font-size: size(20);
+        line-height: size(24);
+        color: var(--mc-low-500);
+    }
+
+    &__address-header &__address-title {
+        margin: 0;
+    }
+
+    &__address-map-link {
+        @extend %link-color;
+        flex-shrink: 0;
+        font-size: size(14);
+        font-weight: 600;
+        text-decoration: none;
+        white-space: nowrap;
+    }
+
+    &__address-grid {
+        gap: size(24) size(16);
+        align-items: start;
+        margin-bottom: size(24);
+    }
+
+    &__address-location {
+        margin-top: size(8);
+    }
+
+    &__address-subtitle {
+        margin: 0 0 size(16);
+        padding: 0;
+        font-weight: 700;
+        font-size: size(14);
+        line-height: size(19);
+        color: var(--mc-gray-700);
+    }
+
+    &__address-map {
+        width: 100%;
+        overflow: hidden;
+        border-radius: var(--mc-border-radius-sm);
+
+        .mc-map,
+        .leaflet-container {
+            width: 100%;
+            min-height: size(280);
+            height: size(320);
+        }
+    }
+
+    &__address-map-empty {
+        padding: size(24);
+        background: var(--mc-gray-100);
+        border-radius: var(--mc-border-radius-sm);
+        text-align: center;
+        color: var(--mc-gray-700);
+
+        p {
+            margin: 0;
+            font-size: size(14);
+        }
+    }
+
     &__description-block {
         .entity-description-collapse__title {
             margin: 0 0 size(8);

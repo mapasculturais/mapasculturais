@@ -5,7 +5,7 @@ use MapasCulturais\i;
 $this->layout = 'entity';
 
 $this->import('
-    country-address-view
+    entity-map
     mc-avatar
     mc-collapsible
     mc-entities
@@ -311,15 +311,90 @@ $this->breadcrumb = [
                             </mc-tab>
 
                             <mc-tab label="<?= i::_e('Endereço') ?>" slug="endereco">
-                                <mc-card>
-                                    <template #content>
-                                        <div class="grid-12">
-                                            <div class="col-12 address-display-simple">
-                                                <country-address-view v-if="entity.publicLocation || entity.address || entity.endereco" :entity="entity" hide-label></country-address-view>
-                                            </div>
+                                <div class="single-1__address-card">
+                                    <div class="single-1__address-header">
+                                        <h2 class="single-1__address-title"><?php i::_e('Dados do endereço'); ?></h2>
+                                        <a
+                                            v-if="(entity.location?.lat ?? entity.location?.latitude) && (entity.location?.lng ?? entity.location?.longitude)"
+                                            class="single-1__address-map-link"
+                                            href="#localizacao">
+                                            <?php i::_e('ver mapa'); ?>
+                                        </a>
+                                    </div>
+
+                                    <!-- Endereço brasileiro (En_*) -->
+                                    <div
+                                        v-if="(entity.address_level0 || entity.En_Pais || 'BR') === 'BR'"
+                                        class="grid-12 single-1__address-grid">
+                                        <div class="col-4 sm:col-12">
+                                            <entity-data :entity="entity" prop="En_CEP" label="<?php i::_e('CEP') ?>"></entity-data>
                                         </div>
-                                    </template>
-                                </mc-card>
+                                        <div class="col-8 sm:col-12">
+                                            <entity-data :entity="entity" prop="En_Nome_Logradouro" label="<?php i::_e('Logradouro') ?>"></entity-data>
+                                        </div>
+                                        <div class="col-2 sm:col-12">
+                                            <entity-data :entity="entity" prop="En_Num" label="<?php i::_e('Número') ?>"></entity-data>
+                                        </div>
+                                        <div class="col-2 sm:col-12">
+                                            <entity-data :entity="entity" prop="En_Bairro" label="<?php i::_e('Bairro') ?>"></entity-data>
+                                        </div>
+                                        <div class="col-8 sm:col-12">
+                                            <entity-data :entity="entity" prop="En_Complemento" label="<?php i::_e('Complemento (ou ponto de referência)') ?>"></entity-data>
+                                        </div>
+                                        <div class="col-4 sm:col-12">
+                                            <entity-data :entity="entity" prop="En_Estado" label="<?php i::_e('Estado') ?>"></entity-data>
+                                        </div>
+                                        <div class="col-4 sm:col-12">
+                                            <entity-data :entity="entity" prop="En_Municipio" label="<?php i::_e('Município') ?>"></entity-data>
+                                        </div>
+                                    </div>
+
+                                    <!-- Endereço internacional (address_*) -->
+                                    <div v-else class="grid-12 single-1__address-grid">
+                                        <div class="col-4 sm:col-12">
+                                            <entity-data :entity="entity" prop="address_postalCode" label="<?php i::_e('Código postal') ?>"></entity-data>
+                                        </div>
+                                        <div class="col-4 sm:col-12">
+                                            <entity-data :entity="entity" prop="address_level0" label="<?php i::_e('País') ?>"></entity-data>
+                                        </div>
+                                        <div class="col-8 sm:col-12">
+                                            <entity-data :entity="entity" prop="address_line1" label="<?php i::_e('Endereço') ?>"></entity-data>
+                                        </div>
+                                        <div class="col-4 sm:col-12">
+                                            <entity-data :entity="entity" prop="address_line2" label="<?php i::_e('Complemento') ?>"></entity-data>
+                                        </div>
+                                        <div v-if="entity.address_level1" class="col-4 sm:col-12">
+                                            <entity-data :entity="entity" prop="address_level1"></entity-data>
+                                        </div>
+                                        <div v-if="entity.address_level2" class="col-4 sm:col-12">
+                                            <entity-data :entity="entity" prop="address_level2"></entity-data>
+                                        </div>
+                                        <div v-if="entity.address_level3" class="col-4 sm:col-12">
+                                            <entity-data :entity="entity" prop="address_level3"></entity-data>
+                                        </div>
+                                        <div v-if="entity.address_level4" class="col-4 sm:col-12">
+                                            <entity-data :entity="entity" prop="address_level4"></entity-data>
+                                        </div>
+                                        <div v-if="entity.address_level5" class="col-4 sm:col-12">
+                                            <entity-data :entity="entity" prop="address_level5"></entity-data>
+                                        </div>
+                                        <div v-if="entity.address_level6" class="col-4 sm:col-12">
+                                            <entity-data :entity="entity" prop="address_level6"></entity-data>
+                                        </div>
+                                    </div>
+
+                                    <div id="localizacao" class="single-1__address-location">
+                                        <h3 class="single-1__address-subtitle"><?php i::_e('Localização'); ?></h3>
+                                        <div
+                                            v-if="(entity.location?.lat ?? entity.location?.latitude) && (entity.location?.lng ?? entity.location?.longitude)"
+                                            class="single-1__address-map">
+                                            <entity-map :entity="entity"></entity-map>
+                                        </div>
+                                        <div v-else class="single-1__address-map-empty">
+                                            <p><?php i::_e('Localização não informada'); ?></p>
+                                        </div>
+                                    </div>
+                                </div>
                             </mc-tab>
 
                             <mc-tab label="<?= i::_e('Administração') ?>" slug="administracao">
