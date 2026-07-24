@@ -580,7 +580,7 @@ class Controller extends \MapasCulturais\Controller
             ];
         }
 
-        if ($opp->evaluationMethod->slug == 'technical') {
+        if ($opp->evaluationMethod?->slug == 'technical') {
             if ($byEvaluation = $module->registrationsByEvaluationStatusBar($opp, $proponentTypes, $ranges)) {
                 $charts['registrationsByEvaluation'] = [
                     'labels' => array_keys($byEvaluation),
@@ -853,7 +853,7 @@ class Controller extends \MapasCulturais\Controller
         $module = $app->modules['Reports'];
 
         $dataA = $reportData["columns"][0];
-        $dataB = $reportData["columns"][1];
+        $dataB = $reportData["columns"][1] ?? null;
         $conn = $app->em->getConnection();
         $query = $this->buildQuery($reportData["columns"], $opp,
                                    ($reportData["typeGraphic"] == "line"), $status, $proponentTypes, $ranges);
