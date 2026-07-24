@@ -27,7 +27,15 @@
     &__grid {
         display: grid;
         gap: size(24);
-        grid-template-columns: repeat(auto-fit, minmax(size(320), 1fr));
+        grid-template-columns: 1fr;
+
+        // número de colunas fixo por breakpoint (não auto-fit/minmax): com
+        // auto-fit, o número de colunas depende do espaço livre calculado a
+        // cada reflow, e como a altura do canvas também muda com o número de
+        // colunas, isso cria um loop infinito de resize (tela tremendo)
+        @include desktop {
+            grid-template-columns: 1fr 1fr;
+        }
 
         // sem isso, os itens do grid herdam min-width:auto e assumem o tamanho
         // intrínseco do canvas; como o Chart.js redimensiona o canvas com base
