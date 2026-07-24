@@ -13,6 +13,7 @@ $this->import('
     mc-alert
     mc-breadcrumb
     mc-container
+    mc-icon
     mc-summary-agent
     mc-summary-agent-info
     mc-summary-evaluate
@@ -36,19 +37,6 @@ if ($showWorkplanForm) {
     $this->import('registration-workplan-form');
 }
 
-$referer = $app->request->getReferer();
-
-$breadcrumb = [
-    ['label' => i::__('Início'), 'url' => $app->createUrl('panel', 'opportunities')],
-    ['label' => i::__('Painel de controle'), 'url' => $app->createUrl('panel', 'opportunities')],
-    ['label' => i::__('Minhas Avaliações'), 'url' => $app->createUrl('panel', 'evaluations')],
-    ['label' => i::__('Lista de Avaliações'), 'url' => $referer],
-];
-
-$breadcrumb[] = ['label' => i::__('Formulário de avaliação')];
-
-$this->breadcrumb = $breadcrumb;
-
 if ($entity->opportunity->isAppealPhase) {
     $parent_registration = $app->repo('registration')->findOneBy([
         'owner' => $entity->owner->id,
@@ -62,6 +50,57 @@ if (isset($this->controller->data['user']) && $entity->opportunity->canUser("@co
 } else {
     $userEvaluator = $app->user;
 }
+
+// Voltar: lembra a lista de origem (gestão vs avaliador) mesmo após navegar no sidebar
+$opportunity_id = $entity->opportunity->id;
+$back_session_key = "evaluationBackUrl:{$opportunity_id}";
+$all_evaluations_url = $app->createUrl('opportunity', 'allEvaluations', [$opportunity_id]);
+$user_evaluations_url = $app->createUrl('opportunity', 'userEvaluations', [$opportunity_id]);
+
+$referer_raw = $app->request->getReferer();
+$referer = is_array($referer_raw) ? (string) ($referer_raw[0] ?? '') : (string) ($referer_raw ?: '');
+$is_evaluations_list_referer = static function (string $url, int $opportunity_id): bool {
+    if ($url === '') {
+        return false;
+    }
+    $patterns = [
+        "#/lista-de-avaliacoes/(?:id:)?{$opportunity_id}(?:/|\\?|$)#",
+        "#/avaliacoes/(?:id:)?{$opportunity_id}(?:/|\\?|$)#",
+        "#/opportunity/allEvaluations/(?:id:)?{$opportunity_id}(?:/|\\?|$)#",
+        "#/opportunity/userEvaluations/(?:id:)?{$opportunity_id}(?:/|\\?|$)#",
+    ];
+    foreach ($patterns as $pattern) {
+        if (preg_match($pattern, $url)) {
+            return true;
+        }
+    }
+    return false;
+};
+
+if ($is_evaluations_list_referer($referer, $opportunity_id)) {
+    $_SESSION[$back_session_key] = $referer;
+}
+
+if (!empty($_SESSION[$back_session_key])) {
+    $back_url = $_SESSION[$back_session_key];
+} elseif ($entity->opportunity->canUser('@control') && !$userEvaluator->equals($app->user)) {
+    // Gestor manipulando avaliação de outro avaliador → lista gerencial
+    $back_url = $all_evaluations_url;
+} else {
+    // Avaliador (ex.: Vinícius no próprio fluxo) → lista do avaliador
+    $back_url = $user_evaluations_url;
+}
+
+$breadcrumb = [
+    ['label' => i::__('Início'), 'url' => $app->createUrl('panel', 'opportunities')],
+    ['label' => i::__('Painel de controle'), 'url' => $app->createUrl('panel', 'opportunities')],
+    ['label' => i::__('Minhas Avaliações'), 'url' => $app->createUrl('panel', 'evaluations')],
+    ['label' => i::__('Lista de Avaliações'), 'url' => $back_url],
+];
+
+$breadcrumb[] = ['label' => i::__('Formulário de avaliação')];
+
+$this->breadcrumb = $breadcrumb;
 ?>
 
 <div class="main-app registration edit">
@@ -69,11 +108,14 @@ if (isset($this->controller->data['user']) && $entity->opportunity->canUser("@co
     <opportunity-header :opportunity="entity.opportunity">
         <template #title-name>
             <span class="title__title">
-                <a :href="entity.opportunity.getUrl('userEvaluations')">{{entity.opportunity.name}}</a>
+                <a href="<?= htmlspecialchars($back_url) ?>">{{entity.opportunity.name}}</a>
             </span>
         </template>
         <template #button>
-            <mc-link class="button button--primary-outline" :entity="entity.opportunity" route="userEvaluations" icon="arrow-left"><?= i::__("Voltar") ?></mc-link>
+            <a class="button button--primary-outline" href="<?= htmlspecialchars($back_url) ?>">
+                <mc-icon name="arrow-left"></mc-icon>
+                <?= i::__("Voltar") ?>
+            </a>
         </template>
         <template #footer>
             <mc-summary-evaluate></mc-summary-evaluate>
