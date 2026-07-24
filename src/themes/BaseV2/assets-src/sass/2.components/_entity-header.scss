@@ -40,6 +40,7 @@
 
         &--content {
             display: flex;
+            flex-wrap: wrap;
             max-width: size(1170);
             margin: 0 auto;
             padding: 0 size(16);
@@ -91,6 +92,50 @@
                     word-break: break-word;
                     overflow-wrap: break-word;
                 }
+            }
+
+            > .description,
+            > .entity-header__short-description {
+                flex: 0 0 100%;
+                width: 100%;
+                max-width: 100%;
+                margin-top: 0;
+                word-break: break-word;
+                overflow-wrap: break-word;
+                white-space: pre-line;
+                overflow: hidden;
+
+                p {
+                    line-height: size(18);
+                    margin: 0;
+                    word-break: break-word;
+                    overflow-wrap: break-word;
+                    max-width: 100%;
+                }
+
+                @media (max-width : size(900)) {
+                    font-size: size(14);
+                    line-height: size(16);
+                }
+
+                &.description--event,
+                &--event {
+                    padding-bottom: size(16);
+                }
+            }
+
+            .entity-header__identity {
+                display: flex;
+                flex-wrap: wrap;
+                align-items: center;
+                gap: size(12);
+            }
+
+            .entity-header__actions {
+                display: flex;
+                flex-wrap: wrap;
+                align-items: center;
+                gap: size(12);
             }
 
             .rightSide {
@@ -146,30 +191,6 @@
                     @include mobile {
                         display: flex;
                         margin: size(3) 0 size(11);
-                    }
-                }
-
-                .description {
-                    word-break: break-word;
-                    overflow-wrap: break-word;
-                    white-space: pre-line;
-                    max-width: 100%;
-                    overflow: hidden;
-
-                    p {
-                        line-height: size(18);
-                        margin: 0;
-                        word-break: break-word;
-                        overflow-wrap: break-word;
-                        max-width: 100%;
-                    }
-
-                    @media (max-width : size(900)) {
-                        font-size: size(14);
-                        line-height: size(16);
-                    }
-                    &--event {
-                        padding-bottom: size(16);
                     }
                 }
             }
