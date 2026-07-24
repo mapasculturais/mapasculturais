@@ -718,52 +718,15 @@ class Controller extends \MapasCulturais\Controller
 
         $preload = $this->getData($this->data, $opp, $request['status'], $proponentTypes, $ranges);
 
-        /**
-         * Verifica se existe dados suficientes para gerar o gráfico
-         */
-        if ($preload['typeGraphic'] == 'pie') {
-            if (!$module->checkIfChartHasData($preload['data']) && $request['status'] == 'all') {
-                $this->apiResponse(['error' => true]);
-                return;
-            }
-        } else {
-            if (!$module->checkIfChartHasData($preload['series']) && $request['status'] == 'all') {
-                $this->apiResponse(['error' => true]);
-                return;
-            }
+        if (!$this->hasEnoughDataToSaveGraphic($module, $preload, $request['status'])) {
+            $this->apiResponse(['error' => true]);
+            return;
         }
 
-        $value = "";
-        $source = "";
-        foreach ($request['columns'] as $v){
-            $value .= $v['value'];
-            $source .= is_array($v['source']) ? implode(",",$v['source']) : $v['source'];
-        }
-
-        $identifier = md5($opp->id . "-" . $request['typeGraphic'] . "-" . $source . "-" . $value);
-
+        $identifier = $this->buildGraphicIdentifier($opp, $request);
         $this->data['identifier'] = $identifier;
 
-        // busca por gráfico já salvo pelo id explícito (edição) ou, na ausência dele,
-        // por identifier dentro do escopo da própria oportunidade/grupo (evita colisão
-        // entre oportunidades diferentes que a antiga busca por LIKE global permitia)
-        $metaList = null;
-        if (!empty($request['graphicId'])) {
-            $metaList = $app->repo("MetaList")->find($request['graphicId']);
-        } else {
-            $existing = $app->repo("MetaList")->findBy(['objectId' => $opp->id, 'group' => 'reports']);
-            foreach ($existing as $ml) {
-                $value = json_decode($ml->value, true);
-                if (($value['identifier'] ?? null) === $identifier) {
-                    $metaList = $ml;
-                    break;
-                }
-            }
-        }
-
-        if (!$metaList) {
-            $metaList = new MetaList;
-        }
+        $metaList = $this->findExistingGraphic($opp, $request['graphicId'] ?? null, $identifier) ?: new MetaList;
         $metaList->value = json_encode($this->data);
 
         $metaList->owner = $opp;
@@ -779,6 +742,58 @@ class Controller extends \MapasCulturais\Controller
 
         $this->apiResponse($return);
 
+    }
+
+    /**
+     * Verifica se há dados suficientes para salvar o gráfico (só bloqueia
+     * quando o filtro de status está em "all" e o gráfico ainda assim
+     * não tem dados)
+     */
+    private function hasEnoughDataToSaveGraphic(Module $module, array $preload, string $status): bool
+    {
+        if ($status != 'all') {
+            return true;
+        }
+
+        $data = $preload['typeGraphic'] == 'pie' ? $preload['data'] : $preload['series'];
+        return $module->checkIfChartHasData($data);
+    }
+
+    private function buildGraphicIdentifier(Opportunity $opp, array $request): string
+    {
+        $value = "";
+        $source = "";
+        foreach ($request['columns'] as $v) {
+            $value .= $v['value'];
+            $source .= is_array($v['source']) ? implode(",", $v['source']) : $v['source'];
+        }
+
+        return md5($opp->id . "-" . $request['typeGraphic'] . "-" . $source . "-" . $value);
+    }
+
+    /**
+     * Busca por gráfico já salvo pelo id explícito (edição) ou, na ausência
+     * dele, por identifier dentro do escopo da própria oportunidade/grupo
+     * (evita colisão entre oportunidades diferentes que a antiga busca por
+     * LIKE global permitia)
+     */
+    private function findExistingGraphic(Opportunity $opp, ?string $graphicId, string $identifier): ?MetaList
+    {
+        $app = App::i();
+
+        if (!empty($graphicId)) {
+            return $app->repo("MetaList")->find($graphicId);
+        }
+
+        $existing = $app->repo("MetaList")->findBy(['objectId' => $opp->id, 'group' => 'reports']);
+        foreach ($existing as $ml) {
+            $value = json_decode($ml->value, true);
+            if (($value['identifier'] ?? null) === $identifier) {
+                return $ml;
+            }
+        }
+
+        return null;
     }
 
     public function GET_dataOpportunityReport()
