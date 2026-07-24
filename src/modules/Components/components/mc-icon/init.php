@@ -114,6 +114,7 @@ $iconset = [
     'order-down' => 'heroicons-outline:sort-descending',
     'order-up' => 'heroicons-outline:sort-ascending',
     'pin' => 'ph:map-pin-fill',
+    'play' => 'mdi:play-circle',
     'previous' => 'ooui:previous-ltr',
     'print' => 'material-symbols:print-outline',
     'projects' => 'ri:file-list-2-line',

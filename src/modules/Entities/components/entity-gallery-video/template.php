@@ -22,6 +22,9 @@ $this->import('
             <div>
                 <div @click="openVideo(index); open()" class="entity-gallery__list--video-img">
                     <img :src="metalist.video.thumbnail" />
+                    <span class="entity-gallery__list--video-play" aria-hidden="true">
+                        <mc-icon name="play"></mc-icon>
+                    </span>
                 </div>                
                 <p @click="openVideo(index); open()" class="entity-gallery__list--video-label"> {{metalist.title}} </p>
             </div>
