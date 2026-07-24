@@ -1,3 +1,50 @@
+class ReportsAPI {
+    constructor() {
+        this.api = new API('reports');
+    }
+
+    _withFilters(url, { status } = {}) {
+        url.searchParams.set('status', status || 'all');
+        return url;
+    }
+
+    getStaticCharts(opportunityId, filters = {}) {
+        const url = this._withFilters(this.api.createUrl('staticCharts', { opportunity_id: opportunityId }), filters);
+        return this.api.GET(url).then(r => r.json());
+    }
+
+    getReportFields(opportunityId) {
+        const url = this.api.createUrl('reportFields', { opportunity_id: opportunityId });
+        return this.api.GET(url).then(r => r.json());
+    }
+
+    getGraphics(opportunityId, filters = {}) {
+        const url = this._withFilters(this.api.createUrl('graphics', { opportunity_id: opportunityId }), filters);
+        return this.api.GET(url).then(r => r.json());
+    }
+
+    previewGraphic(opportunityId, reportData, filters = {}) {
+        const url = this._withFilters(this.api.createUrl('graphicPreview', { opportunity_id: opportunityId }), filters);
+        url.searchParams.set('reportData', JSON.stringify(reportData));
+        return this.api.GET(url).then(r => r.json());
+    }
+
+    saveGraphic(payload) {
+        const url = this.api.createUrl('saveGraphic');
+        return this.api.POST(url, payload).then(r => r.json());
+    }
+
+    deleteGraphic(opportunityId, graphicId) {
+        const url = this.api.createUrl('deleteGraphic');
+        return this.api.DELETE(url, { opportunity_id: opportunityId, graphicId }).then(r => r.json());
+    }
+
+    csvExportUrl(action, opportunityId, filters = {}, extraParams = {}) {
+        const url = this._withFilters(this.api.createUrl(action, { opportunity_id: opportunityId, ...extraParams }), filters);
+        return url.toString();
+    }
+}
+
 class OpportunitiesAPI {
     getPhases(opportunityId) {
         const APIs = {

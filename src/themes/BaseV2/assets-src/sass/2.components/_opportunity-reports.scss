@@ -1,0 +1,177 @@
+@use '../0.settings/mixins' as *;
+
+.opportunity-reports {
+    display: flex;
+    flex-direction: column;
+    gap: size(32);
+}
+
+.opportunity-reports-filters {
+    align-items: center;
+    display: flex;
+    gap: size(12);
+
+    &__label {
+        color: var(--mc-gray-700);
+        font-size: size(14);
+        font-weight: 700;
+    }
+
+    &__status {
+        min-width: size(200);
+    }
+}
+
+.opportunity-reports-static-charts,
+.opportunity-reports-chart-builder {
+    &__grid {
+        display: grid;
+        gap: size(24);
+        grid-template-columns: 1fr;
+
+        // número de colunas fixo por breakpoint (não auto-fit/minmax): com
+        // auto-fit, o número de colunas depende do espaço livre calculado a
+        // cada reflow, e como a altura do canvas também muda com o número de
+        // colunas, isso cria um loop infinito de resize (tela tremendo)
+        @include desktop {
+            grid-template-columns: 1fr 1fr;
+        }
+
+        // sem isso, os itens do grid herdam min-width:auto e assumem o tamanho
+        // intrínseco do canvas; como o Chart.js redimensiona o canvas com base
+        // no espaço disponível, isso cria um loop de resize (tela tremendo)
+        > * {
+            min-width: 0;
+        }
+    }
+}
+
+.opportunity-reports-chart-builder {
+    &__header {
+        align-items: center;
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: size(16);
+    }
+}
+
+.opportunity-reports-chart-card {
+    &__header {
+        align-items: flex-start;
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: size(16);
+    }
+
+    &__title {
+        margin: 0;
+    }
+
+    &__actions {
+        align-items: center;
+        display: flex;
+        flex-shrink: 0;
+        gap: size(8);
+    }
+
+    &__export,
+    &__edit,
+    &__delete {
+        background: none;
+        border: 0;
+        color: var(--mc-gray-500);
+        cursor: pointer;
+        padding: 0;
+
+        &:hover {
+            color: var(--mc-gray-700);
+        }
+    }
+
+    &__delete:hover {
+        color: var(--mc-danger-500);
+    }
+}
+
+.mc-chart {
+    height: size(280);
+    min-width: 0;
+    position: relative;
+    width: 100%;
+
+    &__table {
+        width: 100%;
+
+        th, td {
+            border-bottom: 1px solid var(--mc-gray-300);
+            padding: size(4) size(8);
+            text-align: left;
+        }
+    }
+}
+
+.opportunity-reports-chart-form {
+    display: flex;
+    flex-direction: column;
+    gap: size(16);
+
+    &__error {
+        color: var(--mc-danger-500);
+    }
+
+    &__step-title {
+        margin-bottom: size(8);
+    }
+
+    &__type-options {
+        display: flex;
+        flex-direction: column;
+        gap: size(12);
+        margin-bottom: size(16);
+    }
+
+    &__type-option {
+        align-items: center;
+        color: var(--mc-gray-700);
+        cursor: pointer;
+        display: flex;
+        gap: size(12);
+
+        iconify {
+            color: var(--mc-gray-500);
+            font-size: size(20);
+        }
+
+        input:checked ~ iconify,
+        input:checked ~ span {
+            color: var(--mc-primary-500);
+        }
+    }
+
+    &__row {
+        display: flex;
+        gap: size(16);
+
+        .field {
+            flex: 1;
+        }
+    }
+
+    &__preview {
+        margin-top: size(16);
+        position: relative;
+        min-height: size(80);
+    }
+
+    &__actions {
+        display: flex;
+        gap: size(12);
+        justify-content: flex-end;
+    }
+
+    @media (max-width: size(600)) {
+        &__row {
+            flex-direction: column;
+        }
+    }
+}
