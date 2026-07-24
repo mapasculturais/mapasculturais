@@ -32,9 +32,10 @@ app.component('opportunity-reports-chart-form', {
         const reportData = (this.graphic && this.graphic.reportData) || {};
         const columns = reportData.columns || [];
         return {
+            step: 1,
             title: reportData.title || '',
             description: reportData.description || '',
-            typeGraphic: reportData.typeGraphic || 'pie',
+            typeGraphic: reportData.typeGraphic || '',
             fieldAIndex: this.findFieldIndex(columns[0]),
             fieldBIndex: this.findFieldIndex(columns[1]),
             groupData: reportData.groupData || false,
@@ -44,6 +45,26 @@ app.component('opportunity-reports-chart-form', {
             error: null,
             previewTimeout: null,
         };
+    },
+
+    computed: {
+        showFieldB() {
+            return this.typeGraphic === 'bar' || this.typeGraphic === 'table' || this.typeGraphic === 'horizontalBar';
+        },
+
+        showGroupData() {
+            return this.typeGraphic === 'bar' || this.typeGraphic === 'horizontalBar';
+        },
+
+        canSubmit() {
+            if (!this.title || this.fieldAIndex === '' || this.fieldAIndex === null) {
+                return false;
+            }
+            if (this.showFieldB && (this.fieldBIndex === '' || this.fieldBIndex === null)) {
+                return false;
+            }
+            return true;
+        },
     },
 
     watch: {
@@ -84,10 +105,21 @@ app.component('opportunity-reports-chart-form', {
             if (this.fieldAIndex !== '' && this.fieldAIndex !== null) {
                 columns.push(this.availableFields[this.fieldAIndex]);
             }
-            if (this.typeGraphic !== 'pie' && this.fieldBIndex !== '' && this.fieldBIndex !== null) {
+            if (this.showFieldB && this.fieldBIndex !== '' && this.fieldBIndex !== null) {
                 columns.push(this.availableFields[this.fieldBIndex]);
             }
             return columns;
+        },
+
+        goToStep2() {
+            if (!this.typeGraphic) {
+                return;
+            }
+            this.step = 2;
+        },
+
+        goToStep1() {
+            this.step = 1;
         },
 
         schedulePreview() {
@@ -123,8 +155,6 @@ app.component('opportunity-reports-chart-form', {
             const payload = {
                 opportunity_id: this.opportunityId,
                 status: this.filters.status,
-                proponentType: this.filters.proponentTypes,
-                range: this.filters.ranges,
                 typeGraphic: this.typeGraphic,
                 columns,
                 title: this.title,
