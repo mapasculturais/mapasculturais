@@ -327,6 +327,30 @@ class Module extends \MapasCulturais\Module
                 }
             }
 
+            // Campo number: allowZero + min/max de dígitos (valor já normalizado/salvo)
+            foreach ($opportunity->registrationFieldConfigurations as $field) {
+                if (($field->fieldType ?? '') !== 'number') {
+                    continue;
+                }
+                if (!$registration->isFieldVisisble($field)) {
+                    continue;
+                }
+                $field_name = 'field_' . $field->id;
+                $val = $registration->{$field->getFieldName()};
+                $number_errors = $module->validateNumberFieldValue($field, $val);
+                if (!$number_errors) {
+                    continue;
+                }
+                if (!isset($errorsResult[$field_name])) {
+                    $errorsResult[$field_name] = [];
+                }
+                foreach ($number_errors as $msg) {
+                    if (!in_array($msg, $errorsResult[$field_name], true)) {
+                        $errorsResult[$field_name][] = $msg;
+                    }
+                }
+            }
+
             foreach ($opportunity->registrationFieldConfigurations as $field) {
 
                 if (!$field->required) {
@@ -756,6 +780,117 @@ class Module extends \MapasCulturais\Module
         }
 
         return trim((string) $value) === '';
+    }
+
+    /**
+     * Indica se o campo number aceita zero.
+     * Default true (legado): campos antigos sem config continuam aceitando 0.
+     */
+    public function isNumberFieldZeroAllowed(array $config): bool
+    {
+        if (!array_key_exists('allowZero', $config)) {
+            return true;
+        }
+
+        $value = $config['allowZero'];
+        if ($value === false || $value === 0 || $value === '0' || $value === 'false') {
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
+     * Conta dígitos do valor numérico já normalizado (como tende a ser salvo).
+     * Ex.: 000963010 salvo como 963010 → 6 dígitos; 0 → 1 dígito.
+     */
+    public function countNumericDigits(mixed $value): int
+    {
+        if ($value === null || $value === '' || (is_string($value) && trim($value) === '')) {
+            return 0;
+        }
+
+        if (!is_numeric($value)) {
+            return 0;
+        }
+
+        $float = (float) $value;
+        if (!is_finite($float)) {
+            return 0;
+        }
+
+        if (floor($float) == $float) {
+            $str = sprintf('%.0f', abs($float));
+        } else {
+            $str = rtrim(rtrim(sprintf('%.12F', abs($float)), '0'), '.');
+            $str = str_replace('.', '', $str);
+        }
+
+        return strlen(preg_replace('/\D/', '', $str) ?? '');
+    }
+
+    protected function parseOptionalDigitLimit(mixed $raw): ?int
+    {
+        if ($raw === null || $raw === '' || $raw === false) {
+            return null;
+        }
+
+        if (!is_numeric($raw)) {
+            return null;
+        }
+
+        $n = (int) $raw;
+        return $n >= 1 ? $n : null;
+    }
+
+    /**
+     * Valida regras específicas do tipo number (allowZero, minDigits, maxDigits).
+     * Não trata obrigatório/vazio — isso fica no fluxo padrão.
+     *
+     * @return string[]
+     */
+    public function validateNumberFieldValue(RegistrationFieldConfiguration $field, mixed $value): array
+    {
+        if (($field->fieldType ?? '') !== 'number') {
+            return [];
+        }
+
+        if ($value === null || $value === '' || (is_string($value) && trim($value) === '')) {
+            return [];
+        }
+
+        if (!is_numeric($value)) {
+            return [];
+        }
+
+        $config = (array) ($field->config ?? []);
+        $errors = [];
+
+        if (!$this->isNumberFieldZeroAllowed($config) && (float) $value == 0.0) {
+            $errors[] = i::__('O valor zero (0) não é permitido neste campo.');
+        }
+
+        $digit_count = $this->countNumericDigits($value);
+        $min_digits = $this->parseOptionalDigitLimit($config['minDigits'] ?? null);
+        $max_digits = $this->parseOptionalDigitLimit($config['maxDigits'] ?? null);
+
+        if ($min_digits !== null && $digit_count < $min_digits) {
+            $errors[] = sprintf(
+                i::__('O valor deve ter no mínimo %s dígito(s) (valor salvo tem %s).'),
+                $min_digits,
+                $digit_count
+            );
+        }
+
+        if ($max_digits !== null && $digit_count > $max_digits) {
+            $errors[] = sprintf(
+                i::__('O valor deve ter no máximo %s dígito(s) (valor salvo tem %s).'),
+                $max_digits,
+                $digit_count
+            );
+        }
+
+        return $errors;
     }
 
     function normalizeAndValidateCustomTableConfig(RegistrationFieldConfiguration $field): void

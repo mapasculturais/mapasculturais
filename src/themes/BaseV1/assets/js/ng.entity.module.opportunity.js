@@ -61,6 +61,30 @@
         });
     }
 
+    // Campo number: legado aceita 0 → UI já vem com "Sim" marcado quando allowZero não existe.
+    function normalizeNumberFieldAllowZero(field) {
+        if (!field || field.fieldType !== 'number') {
+            return;
+        }
+
+        if (typeof field.config !== 'object' || field.config instanceof Array || !field.config) {
+            field.config = {};
+        }
+
+        var value = field.config.allowZero;
+        if (value === undefined || value === null || value === '') {
+            field.config.allowZero = true;
+            return;
+        }
+
+        if (value === false || value === 0 || value === '0' || value === 'false') {
+            field.config.allowZero = false;
+            return;
+        }
+
+        field.config.allowZero = true;
+    }
+
     function _getStatusSlug(status) {
         switch (status) {
             case 0: return 'draft'; break;
@@ -234,6 +258,7 @@
                         field.config = {};
                     }
                     normalizeNumericFieldConfig(field.config);
+                    normalizeNumberFieldAllowZero(field);
 
                     // Suporte ao novo formato (Brazil/Other) e retrocompatibilidade (requiredAddressFields)
                     if (field.config && field.config.entityField === '@location') {
@@ -478,6 +503,7 @@ module.controller('RegistrationConfigurationsController', ['$scope', '$rootScope
         ownerId: MapasCulturais.entity.id,
         fieldType: null,
         fieldOptions: null,
+        config: {},
         title: null,
         description: null,
         maxSize: null,
@@ -546,6 +572,7 @@ module.controller('RegistrationConfigurationsController', ['$scope', '$rootScope
             field.config = {};
         }
         normalizeNumericFieldConfig(field.config);
+        normalizeNumberFieldAllowZero(field);
         if (field.config && field.config.entityField === '@location') {
             // Suporta novo formato (Brazil/Other) ou legado
             var hasBrazil = field.config.requiredAddressFieldsBrazil !== undefined;
@@ -641,6 +668,16 @@ module.controller('RegistrationConfigurationsController', ['$scope', '$rootScope
 
         $scope.data.newFieldConfiguration.fieldType = fieldTypes[0].slug;
 
+        $scope.normalizeNumberFieldAllowZero = function(field) {
+            normalizeNumberFieldAllowZero(field);
+        };
+
+        $scope.$watch('data.newFieldConfiguration.fieldType', function(fieldType) {
+            if (fieldType === 'number') {
+                normalizeNumberFieldAllowZero($scope.data.newFieldConfiguration);
+            }
+        });
+
         // --- Field Integrity Validation ---
         $scope.fieldValidationErrors = {};
         $scope.invalidFieldsCount = 0;
@@ -664,6 +701,7 @@ module.controller('RegistrationConfigurationsController', ['$scope', '$rootScope
             }
 
             normalizeNumericFieldConfig(field.config);
+            normalizeNumberFieldAllowZero(field);
         }
 
         function normalizeFieldOptionsForDisplay(field) {
@@ -2637,6 +2675,20 @@ module.controller('RegistrationFieldsController', ['$scope', '$rootScope', '$int
             return false;
         }
         return !!field.config.requiredAddressFields[addrKey];
+    };
+
+    $scope.hasFieldValue = function(value) {
+        if (value === null || value === undefined) {
+            return false;
+        }
+        if (typeof value === 'string' && value.trim() === '') {
+            return false;
+        }
+        if (Array.isArray(value)) {
+            return value.length > 0;
+        }
+        // 0 e false são valores válidos (número / checkbox)
+        return true;
     };
 
     $scope.checkField =  function(field) {

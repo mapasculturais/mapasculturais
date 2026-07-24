@@ -1037,7 +1037,7 @@ class Module extends \MapasCulturais\Module{
                 return;
             }
 
-            if(!isset($value) || empty($value) || $value == ""){
+            if(!isset($value) || $value === null || $value === '' || $value === []){
                 $app->disableAccessControl();
                 $reg = $conn->fetchAssociative("SELECT object_id, value FROM registration_meta WHERE key = '{$field_name}' AND object_id in (SELECT id FROM registration WHERE number = '{$this->number}')");
 

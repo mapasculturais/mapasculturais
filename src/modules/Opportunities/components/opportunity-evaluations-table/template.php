@@ -60,15 +60,15 @@ $this->import('
                 <template #filters="{entities,filters}">
                     <div class="opportunity-evaluations-table__filters grid-12">
 
-                        <div v-if="hasControl" :class="hasControl ? 'col-3' : 'col-4'">
+                        <div v-if="showEvaluatorFilter" :class="showEvaluatorFilter ? 'col-3' : 'col-4'">
                             <mc-select :options="evaluationsFiltersOptions" v-model:default-value="evaluatiorFilter" @change-option="filterByEvaluator($event, entities)" placeholder="<?= i::__("Avaliador") ?>" hide-filters></mc-select>
                         </div>
 
-                        <div :class="hasControl ? 'col-3' : 'col-4'">
+                        <div :class="showEvaluatorFilter ? 'col-3' : 'col-4'">
                             <mc-select :options="status" v-model:default-value="selectedStatus" @change-option="filterByStatus($event, entities)" placeholder="<?= i::__("Estado da avaliação") ?>" hide-filters></mc-select>
                         </div>
 
-                        <div class="field" :class="hasControl ? 'col-3' : 'col-4'">
+                        <div class="field" :class="showEvaluatorFilter ? 'col-3' : 'col-4'">
                             <datepicker 
                                 teleport
                                 v-model="firstDate" 
@@ -84,7 +84,7 @@ $this->import('
                             </datepicker>
                         </div>
 
-                        <div class="field" :class="hasControl ? 'col-3' : 'col-4'">
+                        <div class="field" :class="showEvaluatorFilter ? 'col-3' : 'col-4'">
                             <datepicker 
                                 teleport
                                 v-model="lastDate" 

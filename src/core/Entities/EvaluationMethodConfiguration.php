@@ -7,6 +7,7 @@ use MapasCulturais\i;
 use MapasCulturais\App;
 use MapasCulturais\Traits;
 use MapasCulturais\GuestUser;
+use MapasCulturais\Entities\User;
 use Doctrine\ORM\Mapping as ORM;
 use MapasCulturais\Exceptions\PermissionDenied;
 use Opportunities\Jobs\UpdateSummaryCaches;
@@ -1046,6 +1047,80 @@ class EvaluationMethodConfiguration extends \MapasCulturais\Entity {
         }
         
         $this->enqueueToPCacheRecreation();
+    }
+
+    /**
+     * Retorna as inscrições enviadas do edital cujo dono é o usuário informado.
+     * Usado para avisar que o avaliador não poderá avaliar a própria inscrição.
+     *
+     * @return array<int, array{id:int|string, number:string}>
+     */
+    public function findSentRegistrationsOwnedByUser(User $user): array
+    {
+        $app = App::i();
+        $first_phase = $this->opportunity->firstPhase ?? $this->opportunity;
+
+        $phase_ids = [(int) $first_phase->id];
+        foreach ($app->repo('Opportunity')->findBy(['parent' => $first_phase]) as $phase) {
+            $phase_ids[] = (int) $phase->id;
+        }
+
+        if (!in_array((int) $this->opportunity->id, $phase_ids, true)) {
+            $phase_ids[] = (int) $this->opportunity->id;
+        }
+
+        $placeholders = implode(',', array_fill(0, count($phase_ids), '?'));
+        $params = array_merge([(int) $user->id], $phase_ids);
+
+        return $app->em->getConnection()->fetchAllAssociative(
+            "SELECT r.id, r.number
+             FROM registration r
+             INNER JOIN agent a ON a.id = r.agent_id
+             WHERE a.user_id = ?
+               AND r.status > 0
+               AND r.opportunity_id IN ($placeholders)
+             ORDER BY r.id",
+            $params
+        );
+    }
+
+    /**
+     * Monta payload de aviso quando o usuário/agente tem inscrição própria no edital.
+     *
+     * @return array{count:int, numbers:string[], message:string}|null
+     */
+    public function buildOwnRegistrationsWarning(User $user, ?string $agent_name = null): ?array
+    {
+        $registrations = $this->findSentRegistrationsOwnedByUser($user);
+        if (!$registrations) {
+            return null;
+        }
+
+        $numbers = array_values(array_filter(array_map(
+            fn ($row) => (string) ($row['number'] ?? ''),
+            $registrations
+        )));
+        $count = count($numbers);
+        $name = $agent_name ?: ($user->profile->name ?? ("#{$user->id}"));
+
+        if ($count === 1) {
+            $message = sprintf(
+                i::__('%s também é proponente neste edital e, por isso, não avaliará a própria inscrição. As quantidades para ele podem ser diferentes do esperado.'),
+                $name
+            );
+        } else {
+            $message = sprintf(
+                i::__('%s também é proponente neste edital (%d inscrições) e, por isso, não avaliará as próprias. As quantidades para ele podem ser diferentes do esperado.'),
+                $name,
+                $count
+            );
+        }
+
+        return [
+            'count' => $count,
+            'numbers' => $numbers,
+            'message' => $message,
+        ];
     }
 
     //============================================================= //

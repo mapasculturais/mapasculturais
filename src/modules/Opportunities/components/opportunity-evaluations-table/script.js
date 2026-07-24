@@ -29,10 +29,16 @@ app.component('opportunity-evaluations-table', {
     data() {
         const defaultHeaders = $MAPAS.config.opportunityEvaluationsTable.defaultHeaders;
         const defaultSelect = $MAPAS.config.opportunityEvaluationsTable.defaultSelect;
+        // Em /avaliacoes/.../user:X (modo avaliador), sempre filtra por esse usuário —
+        // inclusive se a pessoa também for gestor (@control). Lista completa só em allEvaluations.
+        const query = {
+            '@opportunity': this.phase.opportunity.id,
+        };
+        if (this.user != 'all' && this.user != null && this.user !== '') {
+            query['@evaluationId'] = `${this.user}`;
+        }
         return {
-            query: {
-                '@opportunity': this.phase.opportunity.id,
-            },
+            query,
             locale: $MAPAS.config.locale,
             firstDate: null,
             lastDate: null,
@@ -47,6 +53,10 @@ app.component('opportunity-evaluations-table', {
     computed: {
         hasControl() {
             return this.phase.opportunity.currentUserPermissions['@control'];
+        },
+        // Filtro por avaliador só faz sentido na lista gerencial (user=all)
+        showEvaluatorFilter() {
+            return this.hasControl && this.user == 'all';
         },
         evaluationsFiltersOptions() {
             return $MAPAS.config.opportunityEvaluationsTable.committee
@@ -133,10 +143,17 @@ app.component('opportunity-evaluations-table', {
         },
         createUrl(entity) {
             let user = this.user;
-            if (user === 'all' && entity.evaluation?.status == null) {
-                return 'javascript:void(0)';
-            } else if (user === 'all' && entity.evaluation) {
-                user = entity.evaluation?.user;
+            const rowValuerUser = entity.valuer?.user ?? entity.evaluation?.user ?? null;
+
+            if (user === 'all') {
+                if (rowValuerUser == null) {
+                    return 'javascript:void(0)';
+                }
+                user = rowValuerUser;
+            } else if (rowValuerUser != null) {
+                // Prefere o avaliador da linha (lista da comissão para o gestor)
+                // para não abrir /avaliacao/.../user:<gestor>/ em inscrição de outro
+                user = rowValuerUser;
             }
             
             return Utils.createUrl('registration', 'evaluation', { id: entity._id, user });
@@ -214,6 +231,13 @@ app.component('opportunity-evaluations-table', {
         },
 
         filterByEvaluator(option, entities) {
+            // Só aplica na lista gerencial; em modo avaliador o @evaluationId é fixo
+            if (this.user != 'all') {
+                this.query['@evaluationId'] = `${this.user}`;
+                entities.refresh();
+                return;
+            }
+
             this.evaluatiorFilter = option.value;
 
             if (this.evaluatiorFilter != "all") {
