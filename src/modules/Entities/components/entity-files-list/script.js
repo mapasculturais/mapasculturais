@@ -58,6 +58,18 @@ app.component('entity-files-list', {
             default: false
         },
 
+        /** Exibe ação de visualização (layout público). */
+        viewAction: {
+            type: Boolean,
+            default: false
+        },
+
+        /** Texto da ação de visualização (ex.: "ver arquivo", "ver documento"). */
+        viewActionLabel: {
+            type: String,
+            default: __('ver arquivo', 'entity-files-list')
+        },
+
         /** Metadado do agente associado ao FileGroup (ex.: cpfAnexo para docs-cpf). */
         sealProp: {
             type: String,

@@ -19,14 +19,30 @@ $this->import('
     <ul v-if="getFiles()" class="files-list__list">
         <li class="files-list__list--item" v-for="file in getFiles()">
             <div class="files-list__list--item-main">
-                <a class="files-list__list--item-link" :download="file.name" :href="file.url">
-                    <mc-icon name="download" :class="entity.__objectType+'__color'"></mc-icon>
+                <a
+                    class="files-list__list--item-link"
+                    :href="file.url"
+                    :download="viewAction ? null : file.name"
+                    :target="viewAction ? '_blank' : undefined"
+                    :rel="viewAction ? 'noopener noreferrer' : undefined">
+                    <mc-icon :name="viewAction ? 'file' : 'download'" :class="viewAction ? '' : (entity.__objectType+'__color')"></mc-icon>
                     <span v-if="isDocsAnexoList">{{ title }}</span>
                     <span v-else-if="file.description">{{ file.description }}</span>
+                    <span v-else-if="file.name">{{ file.name }}</span>
                     <span v-else> <?php i::_e('Sem descrição') ?> </span>
                 </a>
                 <entity-field-seals v-if="sealProp" :entity="entity" :prop="sealProp"></entity-field-seals>
             </div>
+
+            <a
+                v-if="viewAction && !editable"
+                class="files-list__view"
+                :href="file.url"
+                target="_blank"
+                rel="noopener noreferrer">
+                <mc-icon name="eye-view"></mc-icon>
+                <span>{{ viewActionLabel }}</span>
+            </a>
 
             <div v-if="editable" class="edit">
                 <mc-popover @open="file.newDescription = file.description" openside="down-right">
