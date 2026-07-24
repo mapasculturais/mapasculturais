@@ -52,45 +52,47 @@ $this->import('
             </label>
         </div>
 
-        <label v-if="showGroupData" class="opportunity-reports-chart-form__field opportunity-reports-chart-form__field--checkbox">
-            <input type="checkbox" v-model="groupData" />
-            <span><b><?= i::__('Agrupar dados') ?></b></span>
-        </label>
+        <div v-if="showGroupData" class="field">
+            <label class="field__checkbox">
+                <input type="checkbox" v-model="groupData" />
+                <span><?= i::__('Agrupar dados') ?></span>
+            </label>
+        </div>
     </div>
 
     <div v-if="step === 2" class="opportunity-reports-chart-form__step opportunity-reports-chart-form__step--data">
         <p><?= i::__('Agora defina o título e dados exibido no gráfico') ?></p>
 
         <div class="opportunity-reports-chart-form__row">
-            <label class="opportunity-reports-chart-form__field">
-                <span><?= i::__('Título do gráfico') ?></span>
+            <div class="field">
+                <label><?= i::__('Título do gráfico') ?></label>
                 <input type="text" v-model="title" placeholder="<?= i::esc_attr__('Digite um título que represente os dados do novo gráfico') ?>" />
-            </label>
+            </div>
 
-            <label class="opportunity-reports-chart-form__field">
-                <span><?= i::__('Breve descrição') ?></span>
+            <div class="field">
+                <label><?= i::__('Breve descrição') ?></label>
                 <input type="text" v-model="description" placeholder="<?= i::esc_attr__('Digite uma descrição resumida') ?>" />
-            </label>
+            </div>
         </div>
 
         <div class="opportunity-reports-chart-form__row">
-            <label class="opportunity-reports-chart-form__field">
-                <span v-if="typeGraphic === 'table' || typeGraphic === 'horizontalBar'"><?= i::__('Dados a serem exibidos na linha') ?></span>
-                <span v-else><?= i::__('Dados a serem exibidos') ?></span>
+            <div class="field">
+                <label v-if="typeGraphic === 'table' || typeGraphic === 'horizontalBar'"><?= i::__('Dados a serem exibidos na linha') ?></label>
+                <label v-else><?= i::__('Dados a serem exibidos') ?></label>
                 <select v-model="fieldAIndex">
                     <option value="" disabled><?= i::__('Selecione uma opção ...') ?></option>
                     <option v-for="(field, index) in availableFields" :key="index" :value="index">{{ field.label }}</option>
                 </select>
-            </label>
+            </div>
 
-            <label v-if="showFieldB" class="opportunity-reports-chart-form__field">
-                <span v-if="typeGraphic === 'table' || typeGraphic === 'horizontalBar'"><?= i::__('Dados a serem exibidos na coluna') ?></span>
-                <span v-else><?= i::__('Dados a serem exibidos') ?></span>
+            <div v-if="showFieldB" class="field">
+                <label v-if="typeGraphic === 'table' || typeGraphic === 'horizontalBar'"><?= i::__('Dados a serem exibidos na coluna') ?></label>
+                <label v-else><?= i::__('Dados a serem exibidos') ?></label>
                 <select v-model="fieldBIndex">
                     <option value="" disabled><?= i::__('Selecione uma opção ...') ?></option>
                     <option v-for="(field, index) in availableFields" :key="index" :value="index">{{ field.label }}</option>
                 </select>
-            </label>
+            </div>
         </div>
 
         <div class="opportunity-reports-chart-form__preview">
