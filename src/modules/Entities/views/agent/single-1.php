@@ -22,7 +22,6 @@ $this->import('
     entity-header
     entity-links
     entity-list
-    entity-owner
     entity-related-agents
     entity-seals
     entity-social-media
@@ -291,20 +290,20 @@ $this->breadcrumb = [
                                     <h2 class="single-1__personal-title"><?php i::_e('Documentos'); ?></h2>
                                     <div class="single-1__documents-list">
                                         <template v-if="entity.currentUserPermissions.viewPrivateData">
-                                            <entity-files-list v-if="entity.files?.['docs-cpf']" :entity="entity" classes="docs-anexo-list" group="docs-cpf" seal-prop="cpfAnexo" title="<?php i::_e('Comprovante de CPF'); ?>"></entity-files-list>
-                                            <entity-files-list v-if="entity.files?.['docs-rg']" :entity="entity" classes="docs-anexo-list" group="docs-rg" seal-prop="rgAnexo" title="<?php i::_e('Comprovante de RG'); ?>"></entity-files-list>
-                                            <entity-files-list v-if="entity.files?.['docs-cnh']" :entity="entity" classes="docs-anexo-list" group="docs-cnh" seal-prop="cnhAnexo" title="<?php i::_e('Comprovante de CNH'); ?>"></entity-files-list>
-                                            <entity-files-list v-if="entity.files?.['docs-passaporte']" :entity="entity" classes="docs-anexo-list" group="docs-passaporte" seal-prop="passaporteAnexo" title="<?php i::_e('Comprovante de Passaporte'); ?>"></entity-files-list>
-                                            <entity-files-list v-if="entity.files?.['docs-residencia']" :entity="entity" classes="docs-anexo-list" group="docs-residencia" seal-prop="comprovanteResidenciaAnexo" title="<?php i::_e('Comprovante de Residência'); ?>"></entity-files-list>
-                                            <entity-files-list v-if="entity.files?.['docs-vinculo-territorial']" :entity="entity" classes="docs-anexo-list" group="docs-vinculo-territorial" seal-prop="comprovanteVinculoTerritorialAnexo" title="<?php i::_e('Comprovante de Vínculo Territorial'); ?>"></entity-files-list>
-                                            <entity-files-list v-if="entity.files?.['docs-raca']" :entity="entity" classes="docs-anexo-list" group="docs-raca" seal-prop="racaAnexo" title="<?php i::_e('Comprovação de Raça/Cor'); ?>"></entity-files-list>
-                                            <entity-files-list v-if="entity.files?.['docs-pcd']" :entity="entity" classes="docs-anexo-list" group="docs-pcd" seal-prop="pessoaDeficienciaAnexo" title="<?php i::_e('Comprovação de Pessoa com Deficiência'); ?>"></entity-files-list>
-                                            <entity-files-list v-if="entity.files?.['docs-comunidades']" :entity="entity" classes="docs-anexo-list" group="docs-comunidades" seal-prop="comunidadesTradicionalAnexo" title="<?php i::_e('Comprovação de Comunidade Tradicional'); ?>"></entity-files-list>
-                                            <entity-files-list v-if="entity.files?.['docs-certidao-fiscal']" :entity="entity" classes="docs-anexo-list" group="docs-certidao-fiscal" seal-prop="certidaoFiscalAnexo" title="<?php i::_e('Certidão de Regularidade Fiscal'); ?>"></entity-files-list>
-                                            <entity-files-list v-if="entity.files?.['docs-certidao-trabalhista']" :entity="entity" classes="docs-anexo-list" group="docs-certidao-trabalhista" seal-prop="certidaoTrabalhistaAnexo" title="<?php i::_e('Certidão de Regularidade Trabalhista'); ?>"></entity-files-list>
-                                            <entity-files-list v-if="entity.files?.['docs-certidao-contas']" :entity="entity" classes="docs-anexo-list" group="docs-certidao-contas" seal-prop="certidaoPrestacaoContasAnexo" title="<?php i::_e('Certidão de Prestação de Contas'); ?>"></entity-files-list>
+                                            <entity-files-list v-if="entity.files?.['docs-cpf']" :entity="entity" classes="docs-anexo-list" group="docs-cpf" seal-prop="cpfAnexo" title="<?php i::_e('Comprovante de CPF'); ?>" view-action view-action-label="<?php i::esc_attr_e('ver documento'); ?>"></entity-files-list>
+                                            <entity-files-list v-if="entity.files?.['docs-rg']" :entity="entity" classes="docs-anexo-list" group="docs-rg" seal-prop="rgAnexo" title="<?php i::_e('Comprovante de RG'); ?>" view-action view-action-label="<?php i::esc_attr_e('ver documento'); ?>"></entity-files-list>
+                                            <entity-files-list v-if="entity.files?.['docs-cnh']" :entity="entity" classes="docs-anexo-list" group="docs-cnh" seal-prop="cnhAnexo" title="<?php i::_e('Comprovante de CNH'); ?>" view-action view-action-label="<?php i::esc_attr_e('ver documento'); ?>"></entity-files-list>
+                                            <entity-files-list v-if="entity.files?.['docs-passaporte']" :entity="entity" classes="docs-anexo-list" group="docs-passaporte" seal-prop="passaporteAnexo" title="<?php i::_e('Comprovante de Passaporte'); ?>" view-action view-action-label="<?php i::esc_attr_e('ver documento'); ?>"></entity-files-list>
+                                            <entity-files-list v-if="entity.files?.['docs-residencia']" :entity="entity" classes="docs-anexo-list" group="docs-residencia" seal-prop="comprovanteResidenciaAnexo" title="<?php i::_e('Comprovante de Residência'); ?>" view-action view-action-label="<?php i::esc_attr_e('ver documento'); ?>"></entity-files-list>
+                                            <entity-files-list v-if="entity.files?.['docs-vinculo-territorial']" :entity="entity" classes="docs-anexo-list" group="docs-vinculo-territorial" seal-prop="comprovanteVinculoTerritorialAnexo" title="<?php i::_e('Comprovante de Vínculo Territorial'); ?>" view-action view-action-label="<?php i::esc_attr_e('ver documento'); ?>"></entity-files-list>
+                                            <entity-files-list v-if="entity.files?.['docs-raca']" :entity="entity" classes="docs-anexo-list" group="docs-raca" seal-prop="racaAnexo" title="<?php i::_e('Comprovação de Raça/Cor'); ?>" view-action view-action-label="<?php i::esc_attr_e('ver documento'); ?>"></entity-files-list>
+                                            <entity-files-list v-if="entity.files?.['docs-pcd']" :entity="entity" classes="docs-anexo-list" group="docs-pcd" seal-prop="pessoaDeficienciaAnexo" title="<?php i::_e('Comprovação de Pessoa com Deficiência'); ?>" view-action view-action-label="<?php i::esc_attr_e('ver documento'); ?>"></entity-files-list>
+                                            <entity-files-list v-if="entity.files?.['docs-comunidades']" :entity="entity" classes="docs-anexo-list" group="docs-comunidades" seal-prop="comunidadesTradicionalAnexo" title="<?php i::_e('Comprovação de Comunidade Tradicional'); ?>" view-action view-action-label="<?php i::esc_attr_e('ver documento'); ?>"></entity-files-list>
+                                            <entity-files-list v-if="entity.files?.['docs-certidao-fiscal']" :entity="entity" classes="docs-anexo-list" group="docs-certidao-fiscal" seal-prop="certidaoFiscalAnexo" title="<?php i::_e('Certidão de Regularidade Fiscal'); ?>" view-action view-action-label="<?php i::esc_attr_e('ver documento'); ?>"></entity-files-list>
+                                            <entity-files-list v-if="entity.files?.['docs-certidao-trabalhista']" :entity="entity" classes="docs-anexo-list" group="docs-certidao-trabalhista" seal-prop="certidaoTrabalhistaAnexo" title="<?php i::_e('Certidão de Regularidade Trabalhista'); ?>" view-action view-action-label="<?php i::esc_attr_e('ver documento'); ?>"></entity-files-list>
+                                            <entity-files-list v-if="entity.files?.['docs-certidao-contas']" :entity="entity" classes="docs-anexo-list" group="docs-certidao-contas" seal-prop="certidaoPrestacaoContasAnexo" title="<?php i::_e('Certidão de Prestação de Contas'); ?>" view-action view-action-label="<?php i::esc_attr_e('ver documento'); ?>"></entity-files-list>
                                         </template>
-                                        <entity-files-list v-if="entity.files?.downloads" :entity="entity" group="downloads" title="<?php i::_e('Outros documentos'); ?>" hide-title></entity-files-list>
+                                        <entity-files-list v-if="entity.files?.downloads" :entity="entity" group="downloads" title="<?php i::_e('Outros documentos'); ?>" hide-title view-action view-action-label="<?php i::esc_attr_e('ver documento'); ?>"></entity-files-list>
                                     </div>
                                 </div>
                                 <?php $this->applyTemplateHook('single1-agent-documents', 'after') ?>
@@ -398,20 +397,19 @@ $this->breadcrumb = [
                             </mc-tab>
 
                             <mc-tab label="<?= i::_e('Administração') ?>" slug="administracao">
-                                <mc-card>
-                                    <template #content>
-                                        <p class="single-1__administration-intro"><?php i::_e("Administradores do perfil podem visualizar e editar os dados públicos e pessoais do agente cultural que administram, além de fazer inscrições em seu nome nas oportunidades vinculadas na plataforma e transferir,editar e/ou excluir suas entidades. A administração dos perfis só e possivel mediante a autorização do proprietário do perfil."); ?></p>
-                                        <div class="grid-12">
-                                            <?php $this->applyTemplateHook('single1-entity-info-entity-admins', 'before') ?>
-                                            <entity-admins :entity="entity" classes="col-12"></entity-admins>
-                                            <?php $this->applyTemplateHook('single1-entity-info-entity-admins', 'after') ?>
+                                <p
+                                    v-if="!entity.agentRelations?.['group-admin']?.length"
+                                    class="single-1__administration-empty">
+                                    <?php i::_e('Essa pessoa não possui administradores.'); ?>
+                                </p>
 
-                                            <?php $this->applyTemplateHook('single1-entity-info-entity-owner', 'before') ?>
-                                            <entity-owner classes="col-12" title="<?php i::esc_attr_e('Publicado por'); ?>" :entity="entity"></entity-owner>
-                                            <?php $this->applyTemplateHook('single1-entity-info-entity-owner', 'after') ?>
-                                        </div>
-                                    </template>
-                                </mc-card>
+                                <div v-else class="single-1__administration-card">
+                                    <h2 class="single-1__administration-title"><?php i::_e('Administradores do perfil'); ?></h2>
+                                    <p class="single-1__administration-intro"><?php i::_e("Administradores do perfil podem visualizar e editar os dados públicos e pessoais do agente cultural que administram, além de fazer inscrições em seu nome nas oportunidades vinculadas na plataforma e transferir,editar e/ou excluir suas entidades. A administração dos perfis só e possivel mediante a autorização do proprietário do perfil."); ?></p>
+                                    <?php $this->applyTemplateHook('single1-entity-info-entity-admins', 'before') ?>
+                                    <entity-admins :entity="entity" variant="list" classes="single-1__administration-admins"></entity-admins>
+                                    <?php $this->applyTemplateHook('single1-entity-info-entity-admins', 'after') ?>
+                                </div>
                             </mc-tab>
                         </mc-tabs>
                     </div>
@@ -429,44 +427,39 @@ $this->breadcrumb = [
             <mc-tab label="<?= i::esc_attr_e('Portfólio') ?>" slug="port">
                 <mc-container>
                     <main>
-                        <div class="single-1__inner-tabs">
+                        <div class="single-1__portfolio single-1__inner-tabs">
                             <mc-tabs class="tabs" sync-hash>
                                 <mc-tab label="<?= i::esc_attr_e('Arquivos') ?>" slug="arquivos">
-                                    <mc-card>
-                                        <template #content>
-                                            <template v-if="entity.currentUserPermissions.viewPrivateData && (entity.files?.['docs-curriculo'] || entity.files?.['docs-portfolio'])">
-                                                <div class="col-12 agent-data">
-                                                    <div class="agent-data__secondTitle">
-                                                        <h4 class="title bold"><?php i::_e("Portfólio e Currículo") ?></h4>
-                                                    </div>
-                                                    <entity-files-list v-if="entity.files?.['docs-curriculo']" :entity="entity" classes="col-12 docs-anexo-list" group="docs-curriculo" seal-prop="curriculoAnexo" title="<?php i::_e('Currículo'); ?>"></entity-files-list>
-                                                    <entity-files-list v-if="entity.files?.['docs-portfolio']" :entity="entity" classes="col-12 docs-portfolio-list" group="docs-portfolio" seal-prop="portfolioAnexo" title="<?php i::_e('Portfólio'); ?>"></entity-files-list>
-                                                </div>
-                                            </template>
-                                            <entity-files-list v-if="entity.files.downloads!= null" :entity="entity" classes="col-12" group="downloads" title="<?php i::esc_attr_e('Arquivos para download'); ?>"></entity-files-list>
+                                    <div class="single-1__portfolio-card">
+                                        <template v-if="entity.currentUserPermissions.viewPrivateData && (entity.files?.['docs-curriculo'] || entity.files?.['docs-portfolio'])">
+                                            <entity-files-list v-if="entity.files?.['docs-curriculo']" :entity="entity" classes="portfolio-files-list" group="docs-curriculo" seal-prop="curriculoAnexo" title="<?php i::_e('Currículo'); ?>" view-action></entity-files-list>
+                                            <entity-files-list v-if="entity.files?.['docs-portfolio']" :entity="entity" classes="portfolio-files-list" group="docs-portfolio" seal-prop="portfolioAnexo" title="<?php i::_e('Portfólio'); ?>" view-action></entity-files-list>
                                         </template>
-                                    </mc-card>
+                                        <entity-files-list
+                                            v-if="entity.files?.downloads"
+                                            :entity="entity"
+                                            classes="portfolio-files-list"
+                                            group="downloads"
+                                            title="<?php i::esc_attr_e('Arquivos para download'); ?>"
+                                            hide-title
+                                            view-action>
+                                        </entity-files-list>
+                                    </div>
                                 </mc-tab>
                                 <mc-tab label="<?= i::_e('Links') ?>" slug="links">
-                                    <mc-card>
-                                        <template #content>
-                                            <entity-links :entity="entity" classes="col-12" title="<?php i::_e('Links'); ?>"></entity-links>
-                                        </template>
-                                    </mc-card>
+                                    <div class="single-1__portfolio-card">
+                                        <entity-links :entity="entity" title="<?php i::_e('Links'); ?>" hide-title></entity-links>
+                                    </div>
                                 </mc-tab>
-                                <mc-tab label="<?= i::esc_attr_e('Videos') ?>" slug="videos">
-                                    <mc-card>
-                                        <template #content>
-                                            <entity-gallery-video :entity="entity" classes="col-12"></entity-gallery-video>
-                                        </template>
-                                    </mc-card>
+                                <mc-tab label="<?= i::esc_attr_e('Vídeos') ?>" slug="videos">
+                                    <div class="single-1__portfolio-card">
+                                        <entity-gallery-video :entity="entity" hide-title></entity-gallery-video>
+                                    </div>
                                 </mc-tab>
                                 <mc-tab label="<?= i::esc_attr_e('Imagens') ?>" slug="imagens">
-                                    <mc-card>
-                                        <template #content>
-                                            <entity-gallery :entity="entity" classes="col-12"></entity-gallery>
-                                        </template>
-                                    </mc-card>
+                                    <div class="single-1__portfolio-card">
+                                        <entity-gallery :entity="entity" hide-title></entity-gallery>
+                                    </div>
                                 </mc-tab>
                             </mc-tabs>
                         </div>
