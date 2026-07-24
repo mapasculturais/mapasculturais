@@ -18,6 +18,10 @@ app.component('entity-admins', {
             type: String,
             default: __('Administrado por', 'entity-admins'),
         },
+        variant: {
+            type: String,
+            default: 'default', // 'default' | 'list'
+        },
     },
 
     computed: {
@@ -59,6 +63,24 @@ app.component('entity-admins', {
 
         removeAgent(agent) {
             this.entity.removeAgentRelation('group-admin', agent);
+        },
+
+        formatRelationDate(relation) {
+            const ts = relation?.createTimestamp;
+            if (!ts) {
+                return '';
+            }
+
+            let mcDate = null;
+            if (ts instanceof McDate) {
+                mcDate = ts;
+            } else if (typeof ts === 'string') {
+                mcDate = new McDate(ts);
+            } else if (typeof ts?.date === 'string' && ts.date) {
+                mcDate = new McDate(ts.date);
+            }
+
+            return mcDate ? mcDate.date('2-digit year') : '';
         },
     },
 });
