@@ -18,13 +18,13 @@ $this->import('
         <h4 class="opportunity-reports-chart-card__title">{{ title }}</h4>
 
         <div class="opportunity-reports-chart-card__actions">
-            <a v-if="exportUrl" :href="exportUrl" download class="opportunity-reports-chart-card__export" :title="<?= i::esc_attr__('Exportar CSV') ?>">
+            <a v-if="exportUrl" :href="exportUrl" download class="opportunity-reports-chart-card__export" title="<?= i::esc_attr__('Exportar CSV') ?>">
                 <mc-icon name="download"></mc-icon>
             </a>
-            <button v-if="editable" type="button" class="opportunity-reports-chart-card__edit" @click="$emit('edit')" :title="<?= i::esc_attr__('Editar') ?>">
+            <button v-if="editable" type="button" class="opportunity-reports-chart-card__edit" @click="$emit('edit')" title="<?= i::esc_attr__('Editar') ?>">
                 <mc-icon name="edit"></mc-icon>
             </button>
-            <button v-if="deletable" type="button" class="opportunity-reports-chart-card__delete" @click="$emit('delete')" :title="<?= i::esc_attr__('Excluir') ?>">
+            <button v-if="deletable" type="button" class="opportunity-reports-chart-card__delete" @click="$emit('delete')" title="<?= i::esc_attr__('Excluir') ?>">
                 <mc-icon name="delete"></mc-icon>
             </button>
         </div>
