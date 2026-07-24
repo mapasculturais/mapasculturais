@@ -74,7 +74,7 @@ $this->breadcrumb = [
     </entity-header>
     <div class="single-1__main-tabs">
         <mc-tabs class="tabs" sync-hash>
-            <mc-tab icon="exclamation" label="<?= i::_e('Perfil') ?>" slug="info">
+            <mc-tab label="<?= i::_e('Perfil') ?>" slug="info">
                 <mc-container>
                     <!-- Agentes coletivos (filhos do perfil individual) — entre abas Perfil e abas internas -->
                     <div v-if="entity.type?.id == 1 && entity.children?.length > 0" class="single-1__collective-agents">
@@ -261,7 +261,23 @@ $this->breadcrumb = [
                             </mc-tab>
 
                             <mc-tab label="<?= i::_e('Endereço') ?>" slug="endereco">
-                                <div class="single-1__address-card">
+                                <p
+                                    v-if="!entity.publicLocation || !(
+                                        entity.En_CEP ||
+                                        entity.En_Nome_Logradouro ||
+                                        entity.En_Num ||
+                                        entity.En_Bairro ||
+                                        entity.En_Municipio ||
+                                        entity.En_Estado ||
+                                        entity.address_postalCode ||
+                                        entity.address_line1 ||
+                                        ((entity.location?.lat ?? entity.location?.latitude) && (entity.location?.lng ?? entity.location?.longitude))
+                                    )"
+                                    class="single-1__address-empty">
+                                    <?php i::_e('Essa pessoa não compartilhou dados de endereço.'); ?>
+                                </p>
+
+                                <div v-else class="single-1__address-card">
                                     <div class="single-1__address-header">
                                         <h2 class="single-1__address-title"><?php i::_e('Dados do endereço'); ?></h2>
                                         <a

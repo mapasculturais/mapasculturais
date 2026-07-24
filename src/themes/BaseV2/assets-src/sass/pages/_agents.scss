@@ -1095,6 +1095,15 @@
     }
 
     // Endereço — dados + mapa (Figma)
+    &__address-empty {
+        margin: 0;
+        padding: size(8) 0 size(24);
+        font-size: size(14);
+        font-weight: 400;
+        line-height: size(19);
+        color: var(--mc-gray-700);
+    }
+
     &__address-card {
         @extend %white-card;
         margin-bottom: size(16);
