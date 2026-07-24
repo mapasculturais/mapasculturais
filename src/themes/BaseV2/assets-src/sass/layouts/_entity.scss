@@ -41,13 +41,99 @@
     &.action-single {
         background-color: var(--mc-gray-100);
 
+        .single-1 {
+            .tabs-component {
+                &__header {
+                    display: block;
+                    margin-left: 0;
+                    margin-right: 0;
+                    max-width: none;
+                    width: 100%;
+                    box-sizing: border-box;
+                    padding-left: max(#{size(48)}, calc((100% - #{size(1360)}) / 2 + #{size(48)}));
+                    padding-right: max(#{size(48)}, calc((100% - #{size(1360)}) / 2 + #{size(48)}));
+                    padding-top: 0;
+                    padding-bottom: 0;
+
+                    @media (max-width: size(800)) {
+                        padding-left: size(16);
+                        padding-right: size(16);
+                    }
+                }
+
+                &__buttons {
+                    max-width: 100%;
+                    width: auto;
+                    margin-left: 0;
+                    margin-right: 0;
+                    padding-left: 0;
+                    padding-right: 0;
+                    box-sizing: border-box;
+                    overflow-x: auto;
+                    overflow-y: hidden;
+                }
+
+                &__panels {
+                    max-width: none;
+                    width: 100%;
+                    margin-bottom: size(16);
+                    padding-top: size(16);
+                }
+            }
+
+            // tabs internas: mesmo inset horizontal dos títulos dentro dos cards
+            .single-1__inner-tabs .tabs-component__header {
+                padding-left: size(24);
+                padding-right: size(24);
+                max-width: 100%;
+                margin-left: 0;
+                margin-right: 0;
+                box-sizing: border-box;
+                overflow-x: auto;
+                overflow-y: hidden;
+
+                @media (max-width: size(800)) {
+                    padding-left: 0;
+                    padding-right: 0;
+                }
+            }
+
+            .single-1__inner-tabs .tabs-component__buttons {
+                max-width: 100%;
+                width: auto;
+                overflow-x: auto;
+                overflow-y: hidden;
+                padding-left: 0;
+                padding-right: 0;
+
+                @media (max-width: size(800)) {
+                    padding-left: size(16);
+                    padding-right: size(16);
+                }
+            }
+
+            .container {
+                max-width: size(1360);
+                margin-left: auto;
+                margin-right: auto;
+                padding-left: size(48);
+                padding-right: size(48);
+                box-sizing: border-box;
+
+                @media (max-width: size(800)) {
+                    padding-left: size(16);
+                    padding-right: size(16);
+                }
+            }
+        }
+
         .tabs-component {
             &__header {
                 border-bottom: 1px solid;
                 padding: 0;
 
                 @media (max-width: size(1200)) {
-                    margin: 0 size(16);
+                    margin: 0;
                 }
             }
 
@@ -62,6 +148,14 @@
             &__panels .property-list {
                 padding-bottom: size(16);
             }
+        }
+
+        // single-1: sobrescreve o margin das tabs depois da regra geral
+        .single-1 .tabs-component__buttons {
+            margin-top: size(8);
+            margin-left: 0;
+            margin-right: 0;
+            margin-bottom: 0;
         }
     }
 
