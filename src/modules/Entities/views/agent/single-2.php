@@ -28,6 +28,7 @@ $this->import('
     mc-collapsible
     mc-container
     mc-share-links
+    mc-modal
     mc-tab
     mc-tabs
     mc-title
@@ -44,7 +45,34 @@ $this->breadcrumb = [
 
 <div class="main-app single-1">
     <mc-breadcrumb></mc-breadcrumb>
-    <entity-header :entity="entity"></entity-header>
+    <entity-header :entity="entity">
+        <template #actions>
+            <mc-modal title="<?= i::__('Compartilhar') ?>" classes="entity-header__share-modal">
+                <template #default>
+                    <mc-share-links classes="col-12" title="" text="<?php i::esc_attr_e('Veja este link:'); ?>"></mc-share-links>
+                    <div class="entity-header__share-copy">
+                        <p><?php i::_e('Ou copie o link'); ?></p>
+                        <button type="button" class="button button--primary-outline button--icon" onclick="navigator.clipboard.writeText(window.location.href)">
+                            <mc-icon name="link"></mc-icon>
+                            <?php i::_e('Copiar link'); ?>
+                        </button>
+                    </div>
+                </template>
+                <template #button="modal">
+                    <button type="button" class="button button--primary-outline button--icon" @click="modal.open()">
+                        <mc-icon name="share"></mc-icon>
+                        <?php i::_e('Compartilhar'); ?>
+                    </button>
+                </template>
+            </mc-modal>
+            <complaint-suggestion
+                :entity="entity"
+                :show-complaint="false"
+                contact-button-label="<?php i::esc_attr_e('Enviar mensagem') ?>"
+                contact-button-classes="button button--primary button--icon">
+            </complaint-suggestion>
+        </template>
+    </entity-header>
     <div class="single-1__main-tabs">
         <mc-tabs class="tabs" sync-hash>
             <mc-tab icon="exclamation" label="<?= i::_e('Perfil') ?>" slug="info" classes="tab-perfil">
@@ -155,7 +183,7 @@ $this->breadcrumb = [
                                     <entity-links :entity="entity" classes="col-12" title="<?php i::_e('Links'); ?>"></entity-links>
                                     <entity-gallery-video :entity="entity" classes="col-12"></entity-gallery-video>
                                     <entity-gallery :entity="entity" classes="col-12"></entity-gallery>
-                                    <complaint-suggestion :entity="entity" classes="col-12"></complaint-suggestion>
+                                    <complaint-suggestion :entity="entity" classes="col-12" :show-contact="false"></complaint-suggestion>
 
                                 </mc-tab>
 
@@ -200,10 +228,6 @@ $this->breadcrumb = [
                             <?php $this->applyTemplateHook('single2-entity-info-entity-related-agents', 'before') ?>
                             <entity-related-agents :entity="entity" classes="col-12" title="<?php i::esc_attr_e('Agentes Relacionados'); ?>"></entity-related-agents>
                             <?php $this->applyTemplateHook('single2-entity-info-entity-related-agents', 'after') ?>
-
-                            <?php $this->applyTemplateHook('single2-entity-info-mc-share-links', 'before') ?>
-                            <mc-share-links classes="col-12" title="<?php i::esc_attr_e('Compartilhar'); ?>" text="<?php i::esc_attr_e('Veja este link:'); ?>"></mc-share-links>
-                            <?php $this->applyTemplateHook('single2-entity-info-mc-share-links', 'after') ?>
 
                             <?php $this->applyTemplateHook('single2-entity-info-entity-admins', 'before') ?>
                             <entity-admins :entity="entity" classes="col-12"></entity-admins>
