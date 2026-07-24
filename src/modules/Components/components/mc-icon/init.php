@@ -125,6 +125,7 @@ $iconset = [
     'search' => 'ant-design:search-outlined',
     'selected' => 'grommet-icons:radial-selected',
     'send' => 'ic:sharp-send',
+    'share' => 'ic:round-share',
     'settings' => 'bxs:cog',
     'sort' => 'mdi:sort',
     'spaces' => 'clarity:building-line',
