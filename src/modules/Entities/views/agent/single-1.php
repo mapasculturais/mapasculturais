@@ -6,12 +6,16 @@ $this->layout = 'entity';
 
 $this->import('
     country-address-view
-    elderly-person
+    mc-avatar
     mc-collapsible
+    mc-entities
+    mc-icon
+    mc-link
     complaint-suggestion
     entity-actions
     entity-admins
     entity-data
+    entity-description-collapse
     entity-files-list
     entity-gallery
     entity-gallery-video
@@ -27,6 +31,7 @@ $this->import('
     mc-card
     mc-container
     mc-share-links
+    mc-modal
     mc-tab
     mc-tabs
     mc-title
@@ -43,44 +48,122 @@ $this->breadcrumb = [
 
 <div class="main-app single-1">
     <mc-breadcrumb></mc-breadcrumb>
-    <entity-header :entity="entity"></entity-header>
+    <entity-header :entity="entity">
+        <template #actions>
+            <mc-modal title="<?= i::__('Compartilhar') ?>" classes="entity-header__share-modal">
+                <template #default>
+                    <mc-share-links classes="col-12" title="" text="<?php i::esc_attr_e('Veja este link:'); ?>"></mc-share-links>
+                    <div class="entity-header__share-copy">
+                        <p><?php i::_e('Ou copie o link'); ?></p>
+                        <button type="button" class="button button--primary-outline button--icon" onclick="navigator.clipboard.writeText(window.location.href)">
+                            <mc-icon name="link"></mc-icon>
+                            <?php i::_e('Copiar link'); ?>
+                        </button>
+                    </div>
+                </template>
+                <template #button="modal">
+                    <button type="button" class="button button--primary-outline button--icon" @click="modal.open()">
+                        <mc-icon name="share"></mc-icon>
+                        <?php i::_e('Compartilhar'); ?>
+                    </button>
+                </template>
+            </mc-modal>
+            <complaint-suggestion
+                :entity="entity"
+                :show-complaint="false"
+                contact-button-label="<?php i::esc_attr_e('Enviar mensagem') ?>"
+                contact-button-classes="button button--primary button--icon">
+            </complaint-suggestion>
+        </template>
+    </entity-header>
     <div class="single-1__main-tabs">
         <mc-tabs class="tabs" sync-hash>
             <mc-tab icon="exclamation" label="<?= i::_e('Perfil') ?>" slug="info">
                 <mc-container>
+                    <!-- Agentes coletivos (filhos do perfil individual) — entre abas Perfil e abas internas -->
+                    <div v-if="entity.type?.id == 1 && entity.children?.length > 0" class="single-1__collective-agents">
+                        <div class="single-1__collective-agents-card">
+                            <div class="single-1__collective-agents-header">
+                                <h3 class="single-1__collective-agents-title">
+                                    <?php i::_e('Agentes coletivos de'); ?> {{ entity.name }}
+                                </h3>
+                                <a
+                                    v-if="entity.children.length > 0"
+                                    class="single-1__collective-agents-see-all"
+                                    href="<?= $app->createUrl('search', 'agents') ?>">
+                                    <?php i::_e('ver todas'); ?>
+                                    <mc-icon name="arrow-right"></mc-icon>
+                                </a>
+                            </div>
+                            <mc-entities
+                                type="agent"
+                                select="id,name,files.avatar,singleUrl"
+                                order="name ASC"
+                                :ids="entity.children.slice(0, 3).map((item) => item.id ?? item)"
+                                #default="{entities}">
+                                <ul v-if="entities.length" class="single-1__collective-agents-list">
+                                    <li v-for="agent in entities" :key="agent.id" class="single-1__collective-agents-item">
+                                        <mc-link :entity="agent" class="single-1__collective-agents-link">
+                                            <mc-avatar :entity="agent" size="small"></mc-avatar>
+                                            <span class="single-1__collective-agents-name">{{ agent.name }}</span>
+                                        </mc-link>
+                                    </li>
+                                </ul>
+                            </mc-entities>
+                        </div>
+                    </div>
+
                     <div class="single-1__inner-tabs">
                         <mc-tabs class="tabs" sync-hash>
                             <mc-tab label="<?= i::_e('Público') ?>" slug="publico">
                                 <div class="single-1__presentation-card">
-                                    <p><?php i::_e('Apresentação'); ?></p>
+                                    <h2 class="single-1__presentation-title"><?php i::_e('Apresentação'); ?></h2>
                                     <div class="single-1__presentation-content">
 
-                                        <div class="single-1__presentation-item">
+                                        <div v-if="entity.terms?.area?.length" class="single-1__presentation-item">
                                             <?php $this->applyTemplateHook('single1-entity-info-taxonomie-area', 'before') ?>
-                                            <entity-terms :entity="entity" hide-required classes="col-12" taxonomy="area" title="<?php i::esc_attr_e('Áreas de atuação'); ?>"></entity-terms>
+                                            <entity-terms
+                                                :entity="entity"
+                                                hide-required
+                                                classes="col-12"
+                                                taxonomy="area"
+                                                :title="'<?php i::esc_attr_e('Área(s) de atuação'); ?>' + (entity.terms?.area?.length ? ' (' + entity.terms.area.length + ')' : '')">
+                                            </entity-terms>
                                             <?php $this->applyTemplateHook('single1-entity-info-taxonomie-area', 'after') ?>
                                         </div>
 
-                                        <div class="single-1__presentation-item">
+                                        <div v-if="entity.terms?.funcao?.length" class="single-1__presentation-item">
                                             <?php $this->applyTemplateHook('single1-entity-info-taxonomie-funcao', 'before') ?>
-                                            <entity-terms :entity="entity" hide-required taxonomy="funcao" classes="col-12" title="<?php i::_e('Funções'); ?>"></entity-terms>
+                                            <entity-terms
+                                                :entity="entity"
+                                                hide-required
+                                                taxonomy="funcao"
+                                                classes="col-12"
+                                                :title="'<?php i::esc_attr_e('Função(ões) na cultura'); ?>' + (entity.terms?.funcao?.length ? ' (' + entity.terms.funcao.length + ')' : '')">
+                                            </entity-terms>
                                             <?php $this->applyTemplateHook('single1-entity-info-taxonomie-funcao', 'after') ?>
                                         </div>
 
-                                        <div class="single-1__presentation-item">
+                                        <div v-if="entity.terms?.tag?.length" class="single-1__presentation-item">
                                             <?php $this->applyTemplateHook('single1-entity-info-entity-terms-tag', 'before') ?>
-                                            <entity-terms :entity="entity" hide-required classes="col-12" taxonomy="tag" title="<?php i::esc_attr_e('Tags') ?>"></entity-terms>
+                                            <entity-terms
+                                                :entity="entity"
+                                                hide-required
+                                                classes="col-12"
+                                                taxonomy="tag"
+                                                :title="'<?php i::esc_attr_e('Tags'); ?>' + (entity.terms?.tag?.length ? ' (' + entity.terms.tag.length + ')' : '')">
+                                            </entity-terms>
                                             <?php $this->applyTemplateHook('single1-entity-info-entity-terms-tag', 'after') ?>
                                         </div>
 
-                                        <div v-if="entity.longDescription" class="col-12 single-1__presentation-item">
-                                            <span>
-                                                <h3 class="single-1__description bold"><?php i::_e('Descrição'); ?></h3>
-                                            </span>
-                                            <p class="description" v-html="entity.longDescription"></p>
+                                        <div v-if="entity.longDescription" class="single-1__presentation-item single-1__description-block">
+                                            <entity-description-collapse
+                                                :text="entity.longDescription"
+                                                label="<?php i::esc_attr_e('Descrição'); ?>">
+                                            </entity-description-collapse>
                                         </div>
 
-                                        <div class="grid-12 single-1__presentation-item">
+                                        <div class="grid-12 single-1__presentation-item single-1__presentation-contacts">
                                             <div class="col-4 sm:col-12">
                                                 <entity-data :entity="entity" prop="site" label="<?php i::_e('Site') ?>"></entity-data>
                                             </div>
@@ -110,7 +193,7 @@ $this->breadcrumb = [
                                             </span>
                                             <opportunity-list></opportunity-list>
                                             <div class="grid-12 col-12">
-                                                <div v-if="entity.spaces?.length > 0 || entity.children?.length > 0 || entity.events?.length > 0 || entity.projects?.length > 0" class="col-12">
+                                                <div v-if="entity.spaces?.length > 0 || entity.events?.length > 0 || entity.projects?.length > 0" class="col-12">
                                                     <mc-collapsible v-if="entity.spaces?.length>0" open class="col-12 single-1__connection-item">
                                                         <template #header>
                                                             <mc-title tag="h4" size="medium" open class="bold"><?php i::_e('Espaços'); ?></mc-title>
@@ -126,15 +209,6 @@ $this->breadcrumb = [
                                                         </template>
                                                         <template #body>
                                                             <entity-list title="" type="event" :ids="entity.events"></entity-list>
-                                                        </template>
-                                                    </mc-collapsible>
-
-                                                    <mc-collapsible v-if="entity.children?.length>0" open class="col-12 single-1__connection-item">
-                                                        <template #header>
-                                                            <mc-title tag="h4" size="medium" open class="bold"><?php i::_e('Agentes'); ?></mc-title>
-                                                        </template>
-                                                        <template #body>
-                                                            <entity-list title="" type="agent" :ids="entity.children"></entity-list>
                                                         </template>
                                                     </mc-collapsible>
 
@@ -156,99 +230,84 @@ $this->breadcrumb = [
                                     <entity-seals :entity="entity" :editable="entity.currentUserPermissions?.createSealRelation" classes="col-12" title="<?php i::esc_attr_e('Verificações'); ?>"></entity-seals>
                                     <?php $this->applyTemplateHook('single1-entity-info-entity-seals', 'after') ?>
                                 </div>
-                                <complaint-suggestion :entity="entity" classes="col-12"></complaint-suggestion>
+                                <complaint-suggestion :entity="entity" classes="col-12" :show-contact="false"></complaint-suggestion>
 
                             </mc-tab>
 
                             <mc-tab label="<?= i::_e('Dados pessoais') ?>" slug="dados-pessoais">
-                                <mc-card>
-                                    <template #content>
-                                        <div class="grid-12">
-                                            <div class="col-4 sm:col-12">
-                                                <entity-data :entity="entity" classes="col-12" prop="dataDeNascimento" label="<?= i::__('Data de Nascimento') ?>"></entity-data>
-                                                <entity-data :entity="entity" classes="col-12" prop="raca" label="<?= i::__('Raça/Cor') ?>"></entity-data>
-                                                <entity-data :entity="entity" classes="col-12" prop="comunidadesTradicional" label="<?= i::__('Comunidades tradicionais') ?>"></entity-data>
-                                            </div>
+                                <div class="single-1__personal-card">
+                                    <h2 class="single-1__personal-title"><?php i::_e('Dados pessoais'); ?></h2>
+                                    <div class="grid-12 single-1__personal-grid">
+                                        <div class="col-4 sm:col-12 single-1__personal-col">
+                                            <entity-data :entity="entity" prop="dataDeNascimento" label="<?= i::__('Data de nascimento') ?>"></entity-data>
+                                            <entity-data :entity="entity" prop="raca" label="<?= i::__('Raça/cor') ?>"></entity-data>
+                                            <entity-data :entity="entity" prop="comunidadesTradicional" label="<?= i::__('Comunidade tradicional') ?>"></entity-data>
+                                        </div>
+                                        <div class="col-4 sm:col-12 single-1__personal-col">
+                                            <entity-data :entity="entity" prop="genero" label="<?= i::__('Gênero') ?>"></entity-data>
+                                            <entity-data :entity="entity" prop="escolaridade" label="<?= i::__('Escolaridade') ?>"></entity-data>
+                                            <entity-data v-if="entity.agenteItinerante" :entity="entity" prop="agenteItinerante" label="<?= i::__('É agente itinerante?') ?>"></entity-data>
+                                        </div>
+                                        <div class="col-4 sm:col-12 single-1__personal-col">
+                                            <entity-data :entity="entity" prop="orientacaoSexual" label="<?= i::__('Orientação sexual') ?>"></entity-data>
+                                            <entity-data :entity="entity" classes="pcd" prop="pessoaDeficiente" label="<?= i::__('Deficiência(s)') ?>"></entity-data>
+                                            <entity-data v-if="entity.comunidadesTradicionalOutros" :entity="entity" prop="comunidadesTradicionalOutros" label="<?= i::__('Outra comunidade tradicional') ?>"></entity-data>
+                                        </div>
+                                    </div>
+                                </div>
 
-                                            <div class="col-4 sm:col-12">
-                                                <elderly-person :entity="entity"></elderly-person>
-                                                <entity-data :entity="entity" classes="col-12" prop="genero" label="<?= i::__('Gênero') ?>"></entity-data>
-                                                <entity-data :entity="entity" classes="col-12" prop="escolaridade" label="<?= i::__('Escolaridade') ?>"></entity-data>
-                                            </div>
+                                <?php $this->applyTemplateHook('single1-agent-documents', 'before') ?>
+                                <template v-if="entity.currentUserPermissions.viewPrivateData">
+                                    <div v-if="entity.nomeCompleto || entity.nomeSocial || entity.cpf || entity.cnpj || entity.emailPrivado || entity.telefone1 || entity.telefone2" class="single-1__personal-card">
+                                        <h2 class="single-1__personal-title"><?php i::_e('Dados de identificação'); ?></h2>
+                                        <div class="grid-12 single-1__personal-grid">
+                                            <entity-data v-if="entity.nomeCompleto" :entity="entity" classes="col-4 sm:col-12" prop="nomeCompleto" label="<?php i::_e('Nome completo') ?>"></entity-data>
+                                            <entity-data v-if="entity.nomeSocial" :entity="entity" classes="col-4 sm:col-12" prop="nomeSocial" label="<?php i::_e('Nome social') ?>"></entity-data>
+                                            <entity-data v-if="entity.cpf" :entity="entity" classes="col-4 sm:col-12" prop="cpf" label="<?php i::_e('CPF') ?>"></entity-data>
+                                            <entity-data v-if="entity.cnpj" :entity="entity" classes="col-4 sm:col-12" prop="cnpj" label="<?php i::_e('MEI (CNPJ do MEI)') ?>"></entity-data>
+                                            <entity-data v-if="entity.emailPrivado" :entity="entity" classes="col-4 sm:col-12" prop="emailPrivado" label="<?php i::_e('E-mail privado') ?>"></entity-data>
+                                            <entity-data v-if="entity.telefone1" :entity="entity" classes="col-4 sm:col-12" prop="telefone1" label="<?php i::_e('Telefone privado 1') ?>"></entity-data>
+                                            <entity-data v-if="entity.telefone2" :entity="entity" classes="col-4 sm:col-12" prop="telefone2" label="<?php i::_e('Telefone privado 2') ?>"></entity-data>
+                                        </div>
 
-                                            <div class="col-4 sm:col-12">
-                                                <entity-data :entity="entity" classes="col-12" prop="orientacaoSexual" label="<?= i::__('Orientação Sexual') ?>"></entity-data>
-                                                <entity-data :entity="entity" classes="col-12 pcd" prop="pessoaDeficiente" label="<?= i::__('Pessoa com Deficiência') ?>"></entity-data>
-                                            </div>
-
-                                            <entity-data :entity="entity" classes="col-12" prop="agenteItinerante" label="<?= i::__('É agente itinerante?') ?>"></entity-data>
-                                            <entity-data :entity="entity" classes="col-12" prop="comunidadesTradicionalOutros" label="<?= i::__('Não encontrou sua comunidade Tradicional') ?>"></entity-data>
-
-                                            <?php $this->applyTemplateHook('single1-agent-documents', 'before') ?>
-                                            <template v-if="entity.currentUserPermissions.viewPrivateData">
-                                                <div class="col-12">
-                                                    <h3 class="bold"><?php i::_e("Dados de identificação"); ?></h3>
-                                                </div>
-                                                <entity-data v-if="entity.nomeCompleto" :entity="entity" classes="col-6 sm:col-12" prop="nomeCompleto" label="<?php i::_e('Nome completo') ?>"></entity-data>
-                                                <entity-data v-if="entity.nomeSocial" :entity="entity" classes="col-6 sm:col-12" prop="nomeSocial" label="<?php i::_e('Nome social') ?>"></entity-data>
-                                                <entity-data v-if="entity.cpf" :entity="entity" classes="col-6 sm:col-12" prop="cpf" label="<?php i::_e('CPF') ?>"></entity-data>
-                                                <entity-data v-if="entity.cnpj" :entity="entity" classes="col-6 sm:col-12" prop="cnpj" label="<?php i::_e('MEI (CNPJ do MEI)') ?>"></entity-data>
-                                                <entity-data v-if="entity.emailPrivado" :entity="entity" classes="col-6 sm:col-12" prop="emailPrivado" label="<?php i::_e('E-mail privado') ?>"></entity-data>
-                                                <entity-data v-if="entity.telefone2" :entity="entity" classes="col-6 sm:col-12" prop="telefone2" label="<?php i::_e('Telefone privado 2') ?>"></entity-data>
-
-                                                <div v-if="entity.rgNumero || entity.cnhNumero || entity.passaporteNumero" class="col-12 agent-data">
-                                                    <div class="agent-data__secondTitle">
-                                                        <h4 class="title bold"><?php i::_e("Documentos") ?></h4>
-                                                    </div>
-                                                    <div class="grid-12">
-                                                        <div v-if="entity.rgNumero" class="col-4 sm:col-12"><entity-data class="agent-data__fields--field" :entity="entity" prop="rgNumero" label="<?php i::_e('RG') ?>"></entity-data></div>
-                                                        <div v-if="entity.rgOrgaoEmissor" class="col-4 sm:col-12"><entity-data class="agent-data__fields--field" :entity="entity" prop="rgOrgaoEmissor" label="<?php i::_e('Órgão Emissor') ?>"></entity-data></div>
-                                                        <div v-if="entity.rgUF" class="col-4 sm:col-12"><entity-data class="agent-data__fields--field" :entity="entity" prop="rgUF" label="<?php i::_e('UF') ?>"></entity-data></div>
-                                                        <div v-if="entity.rgNumero || entity.rgOrgaoEmissor || entity.rgUF" class="col-12 divider"></div>
-
-                                                        <div v-if="entity.cnhNumero" class="col-4 sm:col-12"><entity-data class="agent-data__fields--field" :entity="entity" prop="cnhNumero" label="<?php i::_e('CNH') ?>"></entity-data></div>
-                                                        <div v-if="entity.cnhCategoria" class="col-4 sm:col-12"><entity-data class="agent-data__fields--field" :entity="entity" prop="cnhCategoria" label="<?php i::_e('Categoria') ?>"></entity-data></div>
-                                                        <div v-if="entity.cnhValidade" class="col-4 sm:col-12"><entity-data class="agent-data__fields--field" :entity="entity" prop="cnhValidade" label="<?php i::_e('Validade') ?>"></entity-data></div>
-                                                        <div v-if="entity.cnhNumero || entity.cnhCategoria || entity.cnhValidade" class="col-12 divider"></div>
-
-                                                        <div v-if="entity.passaporteNumero" class="col-12"><entity-data class="agent-data__fields--field" :entity="entity" prop="passaporteNumero" label="<?php i::_e('Passaporte') ?>"></entity-data></div>
-                                                    </div>
-                                                </div>
-
-                                                <div v-if="entity.files?.['docs-cpf'] || entity.files?.['docs-rg'] || entity.files?.['docs-cnh'] || entity.files?.['docs-passaporte'] || entity.files?.['docs-residencia'] || entity.files?.['docs-vinculo-territorial'] || entity.files?.['docs-raca'] || entity.files?.['docs-pcd'] || entity.files?.['docs-comunidades']" class="col-12 agent-data">
-                                                    <div class="agent-data__secondTitle">
-                                                        <h4 class="title bold"><?php i::_e("Comprovantes") ?></h4>
-                                                    </div>
-                                                    <entity-files-list v-if="entity.files?.['docs-cpf']" :entity="entity" classes="col-12 docs-anexo-list" group="docs-cpf" seal-prop="cpfAnexo" title="<?php i::_e('Comprovante de CPF'); ?>"></entity-files-list>
-                                                    <entity-files-list v-if="entity.files?.['docs-rg']" :entity="entity" classes="col-12 docs-anexo-list" group="docs-rg" seal-prop="rgAnexo" title="<?php i::_e('Comprovante de RG'); ?>"></entity-files-list>
-                                                    <entity-files-list v-if="entity.files?.['docs-cnh']" :entity="entity" classes="col-12 docs-anexo-list" group="docs-cnh" seal-prop="cnhAnexo" title="<?php i::_e('Comprovante de CNH'); ?>"></entity-files-list>
-                                                    <entity-files-list v-if="entity.files?.['docs-passaporte']" :entity="entity" classes="col-12 docs-anexo-list" group="docs-passaporte" seal-prop="passaporteAnexo" title="<?php i::_e('Comprovante de Passaporte'); ?>"></entity-files-list>
-                                                    <entity-files-list v-if="entity.files?.['docs-residencia']" :entity="entity" classes="col-12 docs-anexo-list" group="docs-residencia" seal-prop="comprovanteResidenciaAnexo" title="<?php i::_e('Comprovante de Residência'); ?>"></entity-files-list>
-                                                    <entity-files-list v-if="entity.files?.['docs-vinculo-territorial']" :entity="entity" classes="col-12 docs-anexo-list" group="docs-vinculo-territorial" seal-prop="comprovanteVinculoTerritorialAnexo" title="<?php i::_e('Comprovante de Vínculo Territorial'); ?>"></entity-files-list>
-                                                    <entity-files-list v-if="entity.files?.['docs-raca']" :entity="entity" classes="col-12 docs-anexo-list" group="docs-raca" seal-prop="racaAnexo" title="<?php i::_e('Comprovação de Raça/Cor'); ?>"></entity-files-list>
-                                                    <entity-files-list v-if="entity.files?.['docs-pcd']" :entity="entity" classes="col-12 docs-anexo-list" group="docs-pcd" seal-prop="pessoaDeficienciaAnexo" title="<?php i::_e('Comprovação de Pessoa com Deficiência'); ?>"></entity-files-list>
-                                                    <entity-files-list v-if="entity.files?.['docs-comunidades']" :entity="entity" classes="col-12 docs-anexo-list" group="docs-comunidades" seal-prop="comunidadesTradicionalAnexo" title="<?php i::_e('Comprovação de Comunidade Tradicional'); ?>"></entity-files-list>
-                                                </div>
-
-                                                <div v-if="entity.files?.['docs-certidao-fiscal'] || entity.files?.['docs-certidao-trabalhista'] || entity.files?.['docs-certidao-contas']" class="col-12 agent-data">
-                                                    <div class="agent-data__secondTitle">
-                                                        <h4 class="title bold"><?php i::_e("Documentos e Certidões") ?></h4>
-                                                    </div>
-                                                    <entity-files-list v-if="entity.files?.['docs-certidao-fiscal']" :entity="entity" classes="col-12 docs-anexo-list" group="docs-certidao-fiscal" seal-prop="certidaoFiscalAnexo" title="<?php i::_e('Certidão de Regularidade Fiscal'); ?>"></entity-files-list>
-                                                    <entity-files-list v-if="entity.files?.['docs-certidao-trabalhista']" :entity="entity" classes="col-12 docs-anexo-list" group="docs-certidao-trabalhista" seal-prop="certidaoTrabalhistaAnexo" title="<?php i::_e('Certidão de Regularidade Trabalhista'); ?>"></entity-files-list>
-                                                    <entity-files-list v-if="entity.files?.['docs-certidao-contas']" :entity="entity" classes="col-12 docs-anexo-list" group="docs-certidao-contas" seal-prop="certidaoPrestacaoContasAnexo" title="<?php i::_e('Certidão de Prestação de Contas'); ?>"></entity-files-list>
-                                                </div>
-                                            </template>
-                                            <?php $this->applyTemplateHook('single1-agent-documents', 'after') ?>
-
-                                            <div class="col-12">
-                                                <h3 class="bold"><?php i::_e("Outros documentos"); ?></h3>
-                                                <p class="data-subtitle"><?php i::_e("Outros documentos"); ?></p>
-                                                <entity-files-list v-if="entity.files.downloads != null" :entity="entity" classes="col-12" group="downloads" title="" hide-title></entity-files-list>
+                                        <div v-if="entity.rgNumero || entity.cnhNumero || entity.passaporteNumero" class="single-1__personal-docs-meta">
+                                            <h3 class="single-1__personal-subtitle"><?php i::_e('Documentos de identificação'); ?></h3>
+                                            <div class="grid-12 single-1__personal-grid">
+                                                <entity-data v-if="entity.rgNumero" :entity="entity" classes="col-4 sm:col-12" prop="rgNumero" label="<?php i::_e('RG') ?>"></entity-data>
+                                                <entity-data v-if="entity.rgOrgaoEmissor" :entity="entity" classes="col-4 sm:col-12" prop="rgOrgaoEmissor" label="<?php i::_e('Órgão emissor') ?>"></entity-data>
+                                                <entity-data v-if="entity.rgUF" :entity="entity" classes="col-4 sm:col-12" prop="rgUF" label="<?php i::_e('UF') ?>"></entity-data>
+                                                <entity-data v-if="entity.cnhNumero" :entity="entity" classes="col-4 sm:col-12" prop="cnhNumero" label="<?php i::_e('CNH') ?>"></entity-data>
+                                                <entity-data v-if="entity.cnhCategoria" :entity="entity" classes="col-4 sm:col-12" prop="cnhCategoria" label="<?php i::_e('Categoria') ?>"></entity-data>
+                                                <entity-data v-if="entity.cnhValidade" :entity="entity" classes="col-4 sm:col-12" prop="cnhValidade" label="<?php i::_e('Validade') ?>"></entity-data>
+                                                <entity-data v-if="entity.passaporteNumero" :entity="entity" classes="col-4 sm:col-12" prop="passaporteNumero" label="<?php i::_e('Passaporte') ?>"></entity-data>
                                             </div>
                                         </div>
-                                    </template>
-                                </mc-card>
+                                    </div>
+                                </template>
+
+                                <div
+                                    v-if="entity.files?.['docs-cpf'] || entity.files?.['docs-rg'] || entity.files?.['docs-cnh'] || entity.files?.['docs-passaporte'] || entity.files?.['docs-residencia'] || entity.files?.['docs-vinculo-territorial'] || entity.files?.['docs-raca'] || entity.files?.['docs-pcd'] || entity.files?.['docs-comunidades'] || entity.files?.['docs-certidao-fiscal'] || entity.files?.['docs-certidao-trabalhista'] || entity.files?.['docs-certidao-contas'] || entity.files?.downloads"
+                                    class="single-1__personal-card single-1__documents-card">
+                                    <h2 class="single-1__personal-title"><?php i::_e('Documentos'); ?></h2>
+                                    <div class="single-1__documents-list">
+                                        <template v-if="entity.currentUserPermissions.viewPrivateData">
+                                            <entity-files-list v-if="entity.files?.['docs-cpf']" :entity="entity" classes="docs-anexo-list" group="docs-cpf" seal-prop="cpfAnexo" title="<?php i::_e('Comprovante de CPF'); ?>"></entity-files-list>
+                                            <entity-files-list v-if="entity.files?.['docs-rg']" :entity="entity" classes="docs-anexo-list" group="docs-rg" seal-prop="rgAnexo" title="<?php i::_e('Comprovante de RG'); ?>"></entity-files-list>
+                                            <entity-files-list v-if="entity.files?.['docs-cnh']" :entity="entity" classes="docs-anexo-list" group="docs-cnh" seal-prop="cnhAnexo" title="<?php i::_e('Comprovante de CNH'); ?>"></entity-files-list>
+                                            <entity-files-list v-if="entity.files?.['docs-passaporte']" :entity="entity" classes="docs-anexo-list" group="docs-passaporte" seal-prop="passaporteAnexo" title="<?php i::_e('Comprovante de Passaporte'); ?>"></entity-files-list>
+                                            <entity-files-list v-if="entity.files?.['docs-residencia']" :entity="entity" classes="docs-anexo-list" group="docs-residencia" seal-prop="comprovanteResidenciaAnexo" title="<?php i::_e('Comprovante de Residência'); ?>"></entity-files-list>
+                                            <entity-files-list v-if="entity.files?.['docs-vinculo-territorial']" :entity="entity" classes="docs-anexo-list" group="docs-vinculo-territorial" seal-prop="comprovanteVinculoTerritorialAnexo" title="<?php i::_e('Comprovante de Vínculo Territorial'); ?>"></entity-files-list>
+                                            <entity-files-list v-if="entity.files?.['docs-raca']" :entity="entity" classes="docs-anexo-list" group="docs-raca" seal-prop="racaAnexo" title="<?php i::_e('Comprovação de Raça/Cor'); ?>"></entity-files-list>
+                                            <entity-files-list v-if="entity.files?.['docs-pcd']" :entity="entity" classes="docs-anexo-list" group="docs-pcd" seal-prop="pessoaDeficienciaAnexo" title="<?php i::_e('Comprovação de Pessoa com Deficiência'); ?>"></entity-files-list>
+                                            <entity-files-list v-if="entity.files?.['docs-comunidades']" :entity="entity" classes="docs-anexo-list" group="docs-comunidades" seal-prop="comunidadesTradicionalAnexo" title="<?php i::_e('Comprovação de Comunidade Tradicional'); ?>"></entity-files-list>
+                                            <entity-files-list v-if="entity.files?.['docs-certidao-fiscal']" :entity="entity" classes="docs-anexo-list" group="docs-certidao-fiscal" seal-prop="certidaoFiscalAnexo" title="<?php i::_e('Certidão de Regularidade Fiscal'); ?>"></entity-files-list>
+                                            <entity-files-list v-if="entity.files?.['docs-certidao-trabalhista']" :entity="entity" classes="docs-anexo-list" group="docs-certidao-trabalhista" seal-prop="certidaoTrabalhistaAnexo" title="<?php i::_e('Certidão de Regularidade Trabalhista'); ?>"></entity-files-list>
+                                            <entity-files-list v-if="entity.files?.['docs-certidao-contas']" :entity="entity" classes="docs-anexo-list" group="docs-certidao-contas" seal-prop="certidaoPrestacaoContasAnexo" title="<?php i::_e('Certidão de Prestação de Contas'); ?>"></entity-files-list>
+                                        </template>
+                                        <entity-files-list v-if="entity.files?.downloads" :entity="entity" group="downloads" title="<?php i::_e('Outros documentos'); ?>" hide-title></entity-files-list>
+                                    </div>
+                                </div>
+                                <?php $this->applyTemplateHook('single1-agent-documents', 'after') ?>
                             </mc-tab>
 
                             <mc-tab label="<?= i::_e('Endereço') ?>" slug="endereco">
@@ -287,10 +346,6 @@ $this->breadcrumb = [
                             <?php $this->applyTemplateHook('single1-entity-info-entity-related-agents', 'before') ?>
                             <entity-related-agents :entity="entity" classes="col-12" title="<?php i::esc_attr_e('Agentes Relacionados'); ?>"></entity-related-agents>
                             <?php $this->applyTemplateHook('single1-entity-info-entity-related-agents', 'after') ?>
-
-                            <?php $this->applyTemplateHook('single1-entity-info-mc-share-links', 'before') ?>
-                            <mc-share-links classes="col-12" title="<?php i::esc_attr_e('Compartilhar'); ?>" text="<?php i::esc_attr_e('Veja este link:'); ?>"></mc-share-links>
-                            <?php $this->applyTemplateHook('single1-entity-info-mc-share-links', 'after') ?>
                         </div>
                     </aside>
                 </mc-container>
