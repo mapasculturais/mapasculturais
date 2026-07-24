@@ -4,6 +4,7 @@ public/router.php
 vendor
 src/modules/Components/assets/js/media-query.js
 src/modules/Components/assets/js/media-query/
+src/modules/Components/assets/js/media-query.js.LICENSE.txt
 node_modules
 mix-manifest.json
 .pnpm-store
@@ -20,4 +21,3 @@ public/evaluators-default-profiles
 public/files
 public/files/distributionslog
 public/entity-table-columns
-src/modules/Components/assets/js/media-query.js.LICENSE.txt
