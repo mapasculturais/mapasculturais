@@ -8,6 +8,7 @@
 use MapasCulturais\i;
 
 $this->import('
+    mc-icon
     mc-loading
     mc-modal
     opportunity-reports-chart-card
@@ -17,7 +18,9 @@ $this->import('
 <div class="opportunity-reports-chart-builder">
     <header class="opportunity-reports-chart-builder__header">
         <h3><?= i::__('Gráficos personalizados') ?></h3>
-        <button type="button" class="button" @click="openCreateForm()"><?= i::__('Novo gráfico') ?></button>
+        <button type="button" class="button button--primary button--icon" @click="openCreateForm()">
+            <mc-icon name="add"></mc-icon><?= i::__('Novo gráfico') ?>
+        </button>
     </header>
 
     <mc-loading :condition="loading"></mc-loading>
