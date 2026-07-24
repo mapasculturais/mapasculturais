@@ -28,6 +28,13 @@
         display: grid;
         gap: size(24);
         grid-template-columns: repeat(auto-fit, minmax(size(320), 1fr));
+
+        // sem isso, os itens do grid herdam min-width:auto e assumem o tamanho
+        // intrínseco do canvas; como o Chart.js redimensiona o canvas com base
+        // no espaço disponível, isso cria um loop de resize (tela tremendo)
+        > * {
+            min-width: 0;
+        }
     }
 }
 
@@ -80,6 +87,7 @@
 
 .mc-chart {
     height: size(280);
+    min-width: 0;
     position: relative;
     width: 100%;
 
