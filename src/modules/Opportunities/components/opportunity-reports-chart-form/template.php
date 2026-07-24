@@ -100,9 +100,9 @@ $this->import('
     </div>
 
     <div class="opportunity-reports-chart-form__actions">
-        <button type="button" class="button button--outline" @click="$emit('cancelled')"><?= i::__('Cancelar') ?></button>
-        <button v-if="step === 2" type="button" class="button button--outline" @click="goToStep1()"><?= i::__('Voltar') ?></button>
-        <button v-if="step === 1" type="button" class="button" :disabled="!typeGraphic" @click="goToStep2()"><?= i::__('Próxima etapa') ?></button>
-        <button v-if="step === 2" type="submit" class="button" :disabled="saving || !canSubmit"><?= i::__('Gerar gráfico') ?></button>
+        <button type="button" class="button button--text" @click="$emit('cancelled')"><?= i::__('Cancelar') ?></button>
+        <button v-if="step === 2" type="button" class="button button--text" @click="goToStep1()"><?= i::__('Voltar') ?></button>
+        <button v-if="step === 1" type="button" class="button button--primary" :class="{disabled: !typeGraphic}" :disabled="!typeGraphic" @click="goToStep2()"><?= i::__('Próxima etapa') ?></button>
+        <button v-if="step === 2" type="submit" class="button button--primary" :class="{disabled: saving || !canSubmit}" :disabled="saving || !canSubmit"><?= i::__('Gerar gráfico') ?></button>
     </div>
 </form>
