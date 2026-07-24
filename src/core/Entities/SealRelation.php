@@ -160,8 +160,10 @@ abstract class SealRelation extends \MapasCulturais\Entity
             $result['computedStatus'] = 'hidden';
             $result['fields'] = [];
         } else {
-            $result['seal'] = $this->seal->simplify('id,name,files,singleUrl,validateDate');
+            $result['seal'] = $this->seal->simplify('id,name,files,singleUrl,shortDescription,validPeriod');
             $result['computedStatus'] = $this->computedStatus;
+            $result['agent'] = $this->agent ? $this->agent->simplify('id,name,singleUrl,files') : null;
+            $result['creator'] = $this->seal->owner ? $this->seal->owner->simplify('id,name,singleUrl,files') : null;
 
             $fields = [];
             foreach ($this->getSealRelationFields() as $field) {

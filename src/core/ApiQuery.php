@@ -3108,14 +3108,22 @@ class ApiQuery {
                     IDENTITY(sr.owner) as entity_id,
                     sr.id as relation_id,
                     sr.createTimestamp as relation_create_timestamp,
+                    sr.validateDate as relation_validate_date,
                     sr.computedStatus as computed_status,
                     s.id as seal_id,
                     s.name as seal_name,
                     s.shortDescription as seal_short_description,
-                    s.sensitive as seal_sensitive
+                    s.sensitive as seal_sensitive,
+                    s.validPeriod as seal_valid_period,
+                    IDENTITY(s.owner) as seal_owner_id,
+                    sealOwner.name as seal_owner_name,
+                    IDENTITY(sr.agent) as agent_id,
+                    agent.name as agent_name
                 FROM
                     {$this->sealRelationClassName} sr
                     JOIN sr.seal s
+                    JOIN s.owner sealOwner
+                    LEFT JOIN sr.agent agent
                 WHERE
                     sr.owner IN ($dql_in) AND
                     sr.status >= 0 AND
@@ -3159,6 +3167,24 @@ class ApiQuery {
                     $this->_relatedSeals[$entity_id] = [];
                 }
 
+                $creator = null;
+                if (!empty($relation->seal_owner_id)) {
+                    $creator = [
+                        'id' => $relation->seal_owner_id,
+                        'name' => $relation->seal_owner_name,
+                        'singleUrl' => $app->createUrl('agent', 'single', [$relation->seal_owner_id]),
+                    ];
+                }
+
+                $attributed_by = null;
+                if (!empty($relation->agent_id)) {
+                    $attributed_by = [
+                        'id' => $relation->agent_id,
+                        'name' => $relation->agent_name,
+                        'singleUrl' => $app->createUrl('agent', 'single', [$relation->agent_id]),
+                    ];
+                }
+
                 $this->_relatedSeals[$entity_id][] = [
                     '__objectType' => 'seal', // Added for compatibility with <mc-avatar>
                     'sealRelationId' => $relation->relation_id,
@@ -3166,11 +3192,16 @@ class ApiQuery {
                     'name' => $relation->seal_name,
                     'files' => $files[$relation->seal_id] ?? null,
                     'singleUrl' => $app->createUrl('seal', 'sealRelation', [$relation->relation_id]),
+                    'sealUrl' => $app->createUrl('seal', 'single', [$relation->seal_id]),
                     'createTimestamp' => $relation->relation_create_timestamp,
+                    'validateDate' => $relation->relation_validate_date,
+                    'validPeriod' => (int) ($relation->seal_valid_period ?? 0),
                     'computedStatus' => $relation->computed_status,
                     'isVerificationSeal' => in_array($relation->seal_id, $app->config['app.verifiedSealsIds']),
                     'enableCertificatePage' => $enable_certificate_page[$relation->seal_id] ?? true,
-                    'shortDescription' => $relation->seal_short_description
+                    'shortDescription' => $relation->seal_short_description,
+                    'creator' => $creator,
+                    'attributedBy' => $attributed_by,
                 ];
             }
         }

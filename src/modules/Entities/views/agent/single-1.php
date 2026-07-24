@@ -23,7 +23,7 @@ $this->import('
     entity-links
     entity-list
     entity-related-agents
-    entity-seals
+    entity-seals-list
     entity-social-media
     entity-terms
     mc-breadcrumb
@@ -223,11 +223,6 @@ $this->breadcrumb = [
                                             </div>
                                         </template>
                                     </mc-card>
-                                </div>
-                                <div class="col-12">
-                                    <?php $this->applyTemplateHook('single1-entity-info-entity-seals', 'before') ?>
-                                    <entity-seals :entity="entity" :editable="entity.currentUserPermissions?.createSealRelation" classes="col-12" title="<?php i::esc_attr_e('Verificações'); ?>"></entity-seals>
-                                    <?php $this->applyTemplateHook('single1-entity-info-entity-seals', 'after') ?>
                                 </div>
                                 <complaint-suggestion :entity="entity" classes="col-12" :show-contact="false"></complaint-suggestion>
 
@@ -463,6 +458,23 @@ $this->breadcrumb = [
                                 </mc-tab>
                             </mc-tabs>
                         </div>
+                    </main>
+                </mc-container>
+            </mc-tab>
+
+            <mc-tab label="<?= i::esc_attr_e('Selos') ?>" slug="selos">
+                <mc-container>
+                    <main>
+                        <?php $this->applyTemplateHook('single1-entity-seals', 'before') ?>
+                        <div class="single-1__seals">
+                            <entity-seals-list
+                                :entity="entity"
+                                :editable="!!entity.currentUserPermissions?.createSealRelation"
+                                classes="single-1__seals-list"
+                                empty-message="<?php i::esc_attr_e('Essa pessoa não possui selos.') ?>">
+                            </entity-seals-list>
+                        </div>
+                        <?php $this->applyTemplateHook('single1-entity-seals', 'after') ?>
                     </main>
                 </mc-container>
             </mc-tab>

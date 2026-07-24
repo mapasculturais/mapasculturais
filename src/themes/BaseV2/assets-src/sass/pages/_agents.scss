@@ -1795,4 +1795,196 @@
             }
         }
     }
+
+    // Selos — lista detalhada (Figma)
+    &__seals {
+        width: 100%;
+    }
+
+    &__seals-list {
+        width: 100%;
+    }
+
+    .entity-seals-list {
+        width: 100%;
+
+        &__actions {
+            display: flex;
+            justify-content: flex-end;
+            margin-bottom: size(16);
+        }
+
+        &__body {
+            @extend %white-card;
+            margin-bottom: 0;
+        }
+
+        &__empty {
+            margin: 0;
+            padding: size(8) 0;
+            font-size: size(14);
+            font-weight: 400;
+            line-height: size(19);
+            color: var(--mc-gray-700);
+        }
+
+        &__items {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        &__item {
+            display: flex;
+            align-items: flex-start;
+            gap: size(16);
+            margin: 0;
+            padding: size(20) 0;
+            border-bottom: 1px solid var(--mc-gray-300);
+
+            &:first-child {
+                padding-top: 0;
+            }
+
+            &:last-child {
+                border-bottom: 0;
+                padding-bottom: 0;
+            }
+        }
+
+        &__avatar {
+            flex-shrink: 0;
+
+            .mc-avatar {
+                width: size(48);
+                height: size(48);
+            }
+        }
+
+        &__content {
+            flex: 1;
+            min-width: 0;
+        }
+
+        &__header {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: size(8) size(12);
+            margin-bottom: size(8);
+        }
+
+        &__name {
+            @extend %link-color;
+            font-size: size(16);
+            font-weight: 700;
+            line-height: size(22);
+            text-decoration: none;
+        }
+
+        &__expired {
+            display: inline-flex;
+            align-items: center;
+            gap: size(4);
+            font-size: size(13);
+            font-weight: 600;
+            line-height: size(18);
+            color: var(--mc-warning-500, #e67e22);
+
+            .iconify,
+            .mc-icon {
+                font-size: size(16);
+                color: var(--mc-warning-500, #e67e22);
+            }
+        }
+
+        &__remove {
+            margin-left: auto;
+        }
+
+        &__remove-btn {
+            color: var(--mc-gray-700);
+            padding: 0;
+            min-height: auto;
+
+            .iconify,
+            .mc-icon {
+                font-size: size(18);
+            }
+        }
+
+        &__meta {
+            margin: 0 0 size(4);
+            font-size: size(14);
+            font-weight: 400;
+            line-height: size(20);
+            color: var(--mc-gray-700);
+        }
+
+        &__meta-label {
+            color: var(--mc-gray-700);
+            margin-right: size(4);
+            font-weight: 700;
+        }
+
+        &__meta-link {
+            @extend %link-color;
+            font-weight: 600;
+            text-decoration: none;
+        }
+
+        &__description {
+            margin: size(8) 0 size(12);
+            font-size: size(14);
+            font-weight: 400;
+            line-height: size(20);
+            color: var(--mc-gray-700);
+        }
+
+        &__dates {
+            display: flex;
+            flex-wrap: wrap;
+            gap: size(8) size(32);
+            margin-top: size(12);
+        }
+
+        &__date {
+            display: inline-flex;
+            align-items: flex-start;
+            gap: size(8);
+            margin: 0;
+            font-size: size(13);
+            font-weight: 400;
+            line-height: size(18);
+            color: var(--mc-gray-700);
+
+            .iconify,
+            .mc-icon {
+                flex-shrink: 0;
+                margin-top: size(1);
+                font-size: size(16);
+                color: var(--mc-gray-700);
+            }
+        }
+
+        @include mobile {
+            &__item {
+                gap: size(12);
+            }
+
+            &__dates {
+                flex-direction: column;
+                gap: size(8);
+            }
+
+            &__header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            &__remove {
+                margin-left: 0;
+            }
+        }
+    }
 }

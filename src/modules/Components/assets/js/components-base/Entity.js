@@ -904,13 +904,21 @@ class Entity {
             this.doPromise(res, (r) => {
 
                 const seal = {
+                    __objectType: 'seal',
                     sealId: r.seal.id,
                     sealRelationId: r.id,
-                    singleUrl: Utils.createUrl('sealRelation', 'single', [r.id]),
+                    singleUrl: Utils.createUrl('seal', 'sealRelation', [r.id]),
+                    sealUrl: r.seal.singleUrl || Utils.createUrl('seal', 'single', [r.seal.id]),
                     name: r.seal.name,
                     createTimestamp: r.createTimestamp,
+                    validateDate: r.validateDate,
+                    validPeriod: Number(r.seal.validPeriod || 0),
+                    computedStatus: r.computedStatus || 'fully_valid',
+                    shortDescription: r.seal.shortDescription || '',
                     files: r.seal.files,
-                };          
+                    creator: r.creator || null,
+                    attributedBy: r.agent || null,
+                };
                 
                 this.seals = this.seals || [];
                 this.seals.push(seal);
