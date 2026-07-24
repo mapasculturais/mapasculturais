@@ -140,6 +140,7 @@ $iconset = [
     'up' => 'mdi:chevron-up',
     'upload' => 'ic:baseline-file-upload',
     'user-config' => 'fa-solid:users-cog',
+    'wheelchair' => 'fa6-solid:wheelchair',
     'agent-default-account-user' => 'ph:user-check-bold'
 
 ];

@@ -7,13 +7,13 @@ $this->layout = 'entity';
 $this->import('
     entity-map
     mc-avatar
-    mc-collapsible
     mc-entities
     mc-icon
     mc-link
     complaint-suggestion
     entity-actions
     entity-admins
+    entity-connections-list
     entity-data
     entity-description-collapse
     entity-files-list
@@ -21,7 +21,6 @@ $this->import('
     entity-gallery-video
     entity-header
     entity-links
-    entity-list
     entity-related-agents
     entity-seals-list
     entity-social-media
@@ -33,8 +32,6 @@ $this->import('
     mc-modal
     mc-tab
     mc-tabs
-    mc-title
-    opportunity-list
 ');
 
 $label = $this->isRequestedEntityMine() ? i::__('Meus agentes') : i::__('Agentes');
@@ -89,7 +86,7 @@ $this->breadcrumb = [
                                 <a
                                     v-if="entity.children.length > 0"
                                     class="single-1__collective-agents-see-all"
-                                    href="<?= $app->createUrl('search', 'agents') ?>">
+                                    href="#organizacoes">
                                     <?php i::_e('ver todas'); ?>
                                     <mc-icon name="arrow-right"></mc-icon>
                                 </a>
@@ -180,47 +177,6 @@ $this->breadcrumb = [
                                     <mc-card>
                                         <template #content>
                                             <entity-social-media :entity="entity" classes="col-12"></entity-social-media>
-                                        </template>
-                                    </mc-card>
-                                </div>
-
-                                <div class="col-12 single-1__connections">
-                                    <mc-card>
-                                        <template #content>
-                                            <span>
-                                                <h3 class="single-1__description bold"><?php i::_e('Conexões'); ?></h3>
-                                            </span>
-                                            <opportunity-list></opportunity-list>
-                                            <div class="grid-12 col-12">
-                                                <div v-if="entity.spaces?.length > 0 || entity.events?.length > 0 || entity.projects?.length > 0" class="col-12">
-                                                    <mc-collapsible v-if="entity.spaces?.length>0" open class="col-12 single-1__connection-item">
-                                                        <template #header>
-                                                            <mc-title tag="h4" size="medium" open class="bold"><?php i::_e('Espaços'); ?></mc-title>
-                                                        </template>
-                                                        <template #body>
-                                                            <entity-list title="" type="space" :ids="entity.spaces"></entity-list>
-                                                        </template>
-                                                    </mc-collapsible>
-
-                                                    <mc-collapsible v-if="entity.events?.length>0" open class="col-12 single-1__connection-item">
-                                                        <template #header>
-                                                            <mc-title tag="h4" size="medium" open class="bold"><?php i::_e('Eventos'); ?></mc-title>
-                                                        </template>
-                                                        <template #body>
-                                                            <entity-list title="" type="event" :ids="entity.events"></entity-list>
-                                                        </template>
-                                                    </mc-collapsible>
-
-                                                    <mc-collapsible v-if="entity.projects?.length>0" open class="col-12 single-1__connection-item">
-                                                        <template #header>
-                                                            <mc-title tag="h4" size="medium" open class="bold"><?php i::_e('Projetos'); ?></mc-title>
-                                                        </template>
-                                                        <template #body>
-                                                            <entity-list title="" type="project" :ids="entity.projects"></entity-list>
-                                                        </template>
-                                                    </mc-collapsible>
-                                                </div>
-                                            </div>
                                         </template>
                                     </mc-card>
                                 </div>
@@ -475,6 +431,79 @@ $this->breadcrumb = [
                             </entity-seals-list>
                         </div>
                         <?php $this->applyTemplateHook('single1-entity-seals', 'after') ?>
+                    </main>
+                </mc-container>
+            </mc-tab>
+
+            <mc-tab label="<?= i::esc_attr_e('Conexões') ?>" slug="conexoes">
+                <mc-container>
+                    <main>
+                        <?php
+                        $opportunity_count = is_array($this->jsObject['opportunityList']['opportunity'] ?? null)
+                            ? count($this->jsObject['opportunityList']['opportunity'])
+                            : 0;
+                        ?>
+                        <div class="single-1__connections single-1__inner-tabs">
+                            <mc-tabs class="tabs" sync-hash default-tab="organizacoes">
+                                <template #header="{ tab }">
+                                    <span>{{ tab.label }}</span>
+                                    <span v-if="tab.meta?.count > 0" class="single-1__connections-count">
+                                        {{ tab.meta.count }}
+                                    </span>
+                                </template>
+
+                                <mc-tab
+                                    label="<?= i::esc_attr_e('Organizações') ?>"
+                                    :meta="{ count: entity.children?.length || 0 }"
+                                    slug="organizacoes">
+                                    <div class="single-1__connections-card">
+                                        <entity-connections-list
+                                            type="agent"
+                                            :ids="entity.children || []"
+                                            empty-message="<?php i::esc_attr_e('Essa pessoa não possui organizações.') ?>">
+                                        </entity-connections-list>
+                                    </div>
+                                </mc-tab>
+
+                                <mc-tab
+                                    label="<?= i::esc_attr_e('Projetos') ?>"
+                                    :meta="{ count: entity.projects?.length || 0 }"
+                                    slug="projetos">
+                                    <div class="single-1__connections-card">
+                                        <entity-connections-list
+                                            type="project"
+                                            :ids="entity.projects || []"
+                                            empty-message="<?php i::esc_attr_e('Essa pessoa não possui projetos.') ?>">
+                                        </entity-connections-list>
+                                    </div>
+                                </mc-tab>
+
+                                <mc-tab
+                                    label="<?= i::esc_attr_e('Espaços') ?>"
+                                    :meta="{ count: entity.spaces?.length || 0 }"
+                                    slug="espacos">
+                                    <div class="single-1__connections-card">
+                                        <entity-connections-list
+                                            type="space"
+                                            :ids="entity.spaces || []"
+                                            empty-message="<?php i::esc_attr_e('Essa pessoa não possui espaços.') ?>">
+                                        </entity-connections-list>
+                                    </div>
+                                </mc-tab>
+
+                                <mc-tab
+                                    label="<?= i::esc_attr_e('Oportunidades') ?>"
+                                    :meta="{ count: <?= (int) $opportunity_count ?> }"
+                                    slug="oportunidades">
+                                    <div class="single-1__connections-card">
+                                        <entity-connections-list
+                                            type="opportunity"
+                                            empty-message="<?php i::esc_attr_e('Essa pessoa não possui oportunidades.') ?>">
+                                        </entity-connections-list>
+                                    </div>
+                                </mc-tab>
+                            </mc-tabs>
+                        </div>
                     </main>
                 </mc-container>
             </mc-tab>

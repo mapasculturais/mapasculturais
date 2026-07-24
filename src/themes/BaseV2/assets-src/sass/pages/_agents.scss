@@ -1258,54 +1258,228 @@
         }
     }
 
-    // Connections — card separado + colapsáveis
-    &__connections {
-        @extend %full-width;
-        margin: 0 0 size(24);
+    // Connections — aba Conexões com sub-abas (Figma)
+    &__connections-count {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-width: size(20);
+        height: size(20);
+        margin-left: size(6);
+        padding: 0 size(6);
+        border-radius: 50%;
+        background-color: var(--mc-gray-300);
+        color: var(--mc-low-500);
+        font-size: size(11);
+        font-weight: 700;
+        line-height: 1;
+    }
 
-        .mc-card {
-            @extend %full-width;
-            @extend %white-card;
-            margin-bottom: 0;
-            padding: size(24);
-            box-sizing: border-box;
+    &__connections {
+        width: 100%;
+
+        .tabs-component__button a {
+            display: inline-flex;
+            align-items: center;
         }
 
-        .grid-12 {
-            display: block;
+        .tabs-component__button--active .single-1__connections-count {
+            background-color: #117C83;
+            color: var(--mc-white);
         }
     }
 
+    &__connections-card {
+        @extend %white-card;
+        margin-bottom: 0;
+    }
+
+    .entity-connections-list {
+        width: 100%;
+
+        &__empty {
+            margin: 0;
+            padding: size(8) 0;
+            font-size: size(14);
+            font-weight: 400;
+            line-height: size(19);
+            color: var(--mc-gray-700);
+        }
+
+        &__items {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        &__item {
+            display: flex;
+            align-items: flex-start;
+            gap: size(16);
+            margin: 0;
+            padding: size(20) 0;
+            border-bottom: 1px solid var(--mc-gray-300);
+
+            &:first-child {
+                padding-top: 0;
+            }
+
+            &:last-child {
+                border-bottom: 0;
+                padding-bottom: 0;
+            }
+        }
+
+        &__avatar {
+            flex-shrink: 0;
+
+            .mc-avatar {
+                width: size(48);
+                height: size(48);
+            }
+        }
+
+        &__content {
+            flex: 1;
+            min-width: 0;
+        }
+
+        &__header {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: flex-start;
+            gap: size(8) size(12);
+            margin-bottom: size(8);
+        }
+
+        &__name {
+            @extend %link-color;
+            font-size: size(16);
+            font-weight: 700;
+            line-height: size(22);
+            text-decoration: none;
+        }
+
+        &__badge {
+            margin-left: auto;
+            display: inline-flex;
+            align-items: center;
+            padding: size(4) size(10);
+            border-radius: var(--mc-border-radius-sm);
+            background-color: var(--mc-warning-500, #f0a500);
+            color: var(--mc-low-500);
+            font-size: size(12);
+            font-weight: 700;
+            line-height: size(16);
+            white-space: nowrap;
+        }
+
+        &__meta {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: baseline;
+            gap: size(4) size(6);
+            margin: 0 0 size(4);
+            font-size: size(14);
+            font-weight: 400;
+            line-height: size(20);
+            color: var(--mc-gray-700);
+        }
+
+        &__meta-label {
+            font-weight: 700;
+            color: var(--mc-gray-700);
+        }
+
+        &__meta-link {
+            @extend %link-color;
+            font-weight: 600;
+            text-decoration: none;
+        }
+
+        &__areas {
+            color: var(--mc-warning-500, #e67e22);
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.02em;
+        }
+
+        &__description {
+            margin: size(4) 0 size(8);
+            font-size: size(14);
+            font-weight: 400;
+            line-height: size(20);
+            color: var(--mc-gray-700);
+        }
+
+        &__location,
+        &__accessibility,
+        &__responsible {
+            align-items: flex-start;
+
+            .iconify,
+            .mc-icon {
+                flex-shrink: 0;
+                margin-top: size(2);
+                font-size: size(16);
+                color: var(--mc-gray-700);
+            }
+        }
+
+        &__dates {
+            display: flex;
+            flex-wrap: wrap;
+            gap: size(8) size(32);
+            margin-top: size(8);
+        }
+
+        &__date {
+            display: inline-flex;
+            align-items: flex-start;
+            gap: size(8);
+            margin: size(8) 0 0;
+            font-size: size(13);
+            font-weight: 400;
+            line-height: size(18);
+            color: var(--mc-gray-700);
+
+            .iconify,
+            .mc-icon {
+                flex-shrink: 0;
+                margin-top: size(1);
+                font-size: size(16);
+                color: var(--mc-gray-700);
+            }
+        }
+
+        @include mobile {
+            &__item {
+                gap: size(12);
+            }
+
+            &__header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            &__badge {
+                margin-left: 0;
+            }
+
+            &__dates {
+                flex-direction: column;
+                gap: size(8);
+            }
+        }
+    }
+
+    // Legacy connection collapsibles (kept if reused elsewhere)
     &__connection-item {
         @extend %full-width;
         margin-bottom: size(24);
 
         &:last-child {
             margin-bottom: 0;
-        }
-
-        .collapsible-content__header,
-        .mc-collapsible__header {
-            @extend %collapsible-header;
-
-            .mc-title {
-                font-size: var(--mc-font-size-xs);
-            }
-        }
-
-        .collapsible-content__body {
-            @extend %full-width;
-            padding-top: size(12);
-        }
-
-        .entity-list {
-            margin-bottom: 0;
-            padding-bottom: 0;
-            border-bottom: none;
-
-            &__title {
-                display: none;
-            }
         }
     }
 
