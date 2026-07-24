@@ -5,6 +5,23 @@ Todas as mudanças notáveis no projeto serão documentadas neste arquivo.
 O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/)
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+### Novas Funcionalidades
+- Substitui o iframe legado (AngularJS) da aba Relatórios da gestão de oportunidade por componentes Vue nativos, incluindo os gráficos estáticos e o construtor de gráficos personalizados (criar, editar, pré-visualizar e excluir)
+- Adiciona filtro por tipo de proponente e por faixa/linha aos relatórios da oportunidade, disponíveis como campos selecionáveis no construtor de gráficos e na exportação em CSV
+
+### Correções
+- Corrige "Tipo de proponente" e "Faixa/Linha" que não apareciam como opções de campo no construtor de gráficos de relatórios
+- Corrige gráfico personalizado salvo nos relatórios que podia colidir ou ser sobrescrito por outro com os mesmos campos em uma oportunidade diferente
+- Corrige erro ao carregar os gráficos estáticos de relatórios em oportunidades sem avaliação técnica configurada
+- Corrige loop de redimensionamento nos gráficos dos relatórios que fazia a tela tremer continuamente
+
+### Melhorias
+- Ajusta ícones, botões e campos do construtor de gráficos de relatórios para seguir o padrão visual da plataforma
+
+### Melhorias não funcionais
+- Adiciona testes automatizados para os filtros de tipo de proponente e faixa/linha e para a correção de duplicação de gráficos personalizados nos relatórios
+
 ## [7.8.2] - 2026-07-24
 ### Correções
 - O botão Voltar da tela de avaliação leva de volta à lista de onde a pessoa veio (lista completa da gestão ou lista do avaliador), mesmo depois de trocar de inscrição pelo menu lateral
