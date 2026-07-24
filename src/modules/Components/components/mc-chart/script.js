@@ -50,7 +50,10 @@ app.component('mc-chart', {
         },
 
         chartOptions() {
-            const options = { responsive: true, maintainAspectRatio: false };
+            // resizeDelay evita o loop de resize do Chart.js quando o canvas
+            // está dentro de um grid/flex (diferenças de subpixel no
+            // ResizeObserver faziam a tela "tremer")
+            const options = { responsive: true, maintainAspectRatio: false, resizeDelay: 100 };
             if (this.type === 'horizontalBar') {
                 options.indexAxis = 'y';
             }
