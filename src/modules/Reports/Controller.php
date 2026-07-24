@@ -768,7 +768,7 @@ class Controller extends \MapasCulturais\Controller
             $source .= is_array($v['source']) ? implode(",", $v['source']) : $v['source'];
         }
 
-        return md5($opp->id . "-" . $request['typeGraphic'] . "-" . $source . "-" . $value);
+        return hash('sha256', $opp->id . "-" . $request['typeGraphic'] . "-" . $source . "-" . $value);
     }
 
     /**
