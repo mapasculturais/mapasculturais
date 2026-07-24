@@ -9,10 +9,11 @@ use MapasCulturais\i;
 $this->import(" 
     mc-modal
     mc-captcha
+    mc-icon
 ");
 ?>
-<div class="complaint-suggestion col-12">
-    <div class="complaint-sugestion__complaint">
+<div :class="['complaint-suggestion', classes]">
+    <div v-if="showComplaint" class="complaint-sugestion__complaint">
         <mc-modal title="<?= i::__('Denúncia') ?>" classes="complaint-sugestion__modal">
             <template v-if="!sendSuccess" #default>
                 <div class="complaint-suggestion__modal-content">
@@ -79,8 +80,8 @@ $this->import("
         </mc-modal>
     </div>
 
-    <div class="complaint-suggestion__suggestion">
-        <mc-modal title="<?= i::__('Contato') ?>" classes="complaint-sugestion__modal">
+    <div v-if="showContact && !disableContact" class="complaint-suggestion__suggestion">
+        <mc-modal title="<?= i::__('Enviar mensagem') ?>" classes="complaint-sugestion__modal">
             <template v-if="!sendSuccess" #default>
                 <div class="complaint-suggestion__modal-content">
 
@@ -134,7 +135,7 @@ $this->import("
                 <div class="complaint-suggestion__modal-content">
                     <label class="bold"><?= i::__('Mensagem enviada com sucesso') ?></label>
                     <label v-if="formData.anonimous"><?php i::_e('Sua mensagem foi enviada.'); ?> </label>
-                    <label v-else><?php i::_e('Sua mensagem foi enviada para '); ?> {{ formData.name }} </label>
+                    <label v-else><?php i::_e('Sua mensagem foi enviada para '); ?> {{ entity.name }} </label>
                 </div>
             </template>
 
@@ -150,7 +151,11 @@ $this->import("
             </template>
 
             <template #button="modal">
-                <button v-if="!disableContact" type="button" @click="modal.open(); initFormData('sendSuggestionMessage')" class="button button--primary"><?= i::__('Contato') ?></button>
+                <button type="button" @click="modal.open(); initFormData('sendSuggestionMessage')" :class="contactButtonClasses">
+                    <mc-icon name="email"></mc-icon>
+                    <span v-if="contactButtonLabel">{{ contactButtonLabel }}</span>
+                    <span v-else><?= i::__('Contato') ?></span>
+                </button>
             </template>
         </mc-modal>
     </div>
