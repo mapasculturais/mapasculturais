@@ -5,7 +5,7 @@ Todas as mudanças notáveis no projeto serão documentadas neste arquivo.
 O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/)
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [UNRELEASED]
+## [7.8.2] - 2026-07-24
 ### Correções
 - O botão Voltar da tela de avaliação leva de volta à lista de onde a pessoa veio (lista completa da gestão ou lista do avaliador), mesmo depois de trocar de inscrição pelo menu lateral
 - No menu lateral da avaliação, os links continuam apontando para o avaliador certo quando um gestor navega em nome de outra pessoa
