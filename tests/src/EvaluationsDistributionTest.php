@@ -15,6 +15,7 @@ use Tests\Builders\PhasePeriods\Past;
 use Tests\Builders\PhasePeriods\After;
 use Tests\Traits\RegistrationDirector;
 use MapasCulturais\Entities\Opportunity;
+use MapasCulturais\Entities\User;
 use MapasCulturais\Entities\RegistrationEvaluation;
 use Tests\Builders\PhasePeriods\ConcurrentEndingAfter;
 use MapasCulturais\Entities\EvaluationMethodConfiguration;
@@ -2511,5 +2512,473 @@ class EvaluationsDistributionTest extends TestCase
             'Garantindo que o total de avaliações na fase corresponde a 3 por inscrição'
         );
     }
-     
+
+    function testCustomDistributionComparatorBalancesPendingAssignmentsPerCommittee()
+    {
+        $admin = $this->userDirector->createUser('admin');
+        $this->login($admin);
+
+        $opportunity = $this->opportunityBuilder
+            ->reset(owner: $admin->profile, owner_entity: $admin->profile)
+            ->fillRequiredProperties()
+            ->firstPhase()
+                ->setRegistrationPeriod(new Open)
+                ->done()
+            ->save()
+            ->createSentRegistrations(35)
+            ->addEvaluationPhase(EvaluationMethods::simple)
+                ->setEvaluationPeriod(new ConcurrentEndingAfter)
+                ->setCommitteeValuersPerRegistration('committee 1', 1)
+                ->save()
+                ->addValuer('committee 1', name: 'avaliador01')->done()
+                ->addValuer('committee 1', name: 'avaliador02')->done()
+                ->addValuer('committee 1', name: 'avaliador03')->done()
+                ->addValuer('committee 1', name: 'avaliador04')->done()
+                ->done()
+            ->getInstance();
+
+        $emc = $opportunity->evaluationMethodConfiguration;
+        $emc->ignoreStartedEvaluations = (object) ['committee 1' => true];
+        $emc->save(true);
+
+        $registrations = $this->app->repo('Registration')->findBy(
+            ['opportunity' => $opportunity],
+            ['id' => 'ASC']
+        );
+        $relations = $emc->agentRelations;
+        $historical_counts = [5, 1, 4, 2];
+        $historical_statuses = [
+            RegistrationEvaluation::STATUS_DRAFT,
+            RegistrationEvaluation::STATUS_EVALUATED,
+            RegistrationEvaluation::STATUS_SENT,
+        ];
+        $historical_registration_ids = [];
+        $offset = 0;
+
+        $this->app->disableAccessControl();
+        try {
+            foreach ($historical_counts as $relation_index => $count) {
+                $user = $relations[$relation_index]->agent->user;
+
+                for ($i = 0; $i < $count; $i++) {
+                    $registration = $registrations[$offset++];
+                    $historical_registration_ids[$registration->id] = $user->id;
+
+                    $evaluation = new RegistrationEvaluation();
+                    $evaluation->registration = $registration;
+                    $evaluation->user = $user;
+                    $evaluation->committee = 'committee 1';
+                    $evaluation->evaluationData = ['status' => null];
+                    $evaluation->status = $historical_statuses[$offset % count($historical_statuses)];
+                    $evaluation->save(true);
+                }
+            }
+        } finally {
+            $this->app->enableAccessControl();
+        }
+
+        $target_opportunity_id = $opportunity->id;
+        $this->app->hook('evaluationMethod.distributionComparator', function (&$comparator, Opportunity $hook_opportunity) use ($target_opportunity_id) {
+            if ($hook_opportunity->id !== $target_opportunity_id) {
+                return;
+            }
+
+            $comparator = function (User $valuer1, User $valuer2, string $committee, array $pending_assignments): ?int {
+                $pending1 = $pending_assignments[$valuer1->id] ?? 0;
+                $pending2 = $pending_assignments[$valuer2->id] ?? 0;
+
+                if ($pending1 !== $pending2) {
+                    return $pending1 <=> $pending2;
+                }
+
+                return $valuer1->id <=> $valuer2->id;
+            };
+        });
+
+        $emc->redistributeCommitteeRegistrations();
+
+        $pending_by_user = [];
+        foreach ($relations as $relation) {
+            $pending_by_user[$relation->agent->user->id] = 0;
+        }
+
+        foreach ($registrations as $registration) {
+            $registration = $registration->refreshed();
+            $valuers = (array) $registration->valuers;
+
+            if (isset($historical_registration_ids[$registration->id])) {
+                $this->assertArrayHasKey(
+                    $historical_registration_ids[$registration->id],
+                    $valuers,
+                    'A redistribuição deve preservar todas as avaliações existentes'
+                );
+                $this->assertCount(1, $valuers);
+                continue;
+            }
+
+            $this->assertCount(1, $valuers);
+            $pending_by_user[(int) array_key_first($valuers)]++;
+        }
+
+        sort($pending_by_user);
+        $this->assertSame([5, 6, 6, 6], array_values($pending_by_user));
+    }
+
+    function testManualInclusionCountsTowardCustomComparatorPendingAssignments()
+    {
+        $admin = $this->userDirector->createUser('admin');
+        $this->login($admin);
+
+        $opportunity = $this->opportunityBuilder
+            ->reset(owner: $admin->profile, owner_entity: $admin->profile)
+            ->fillRequiredProperties()
+            ->firstPhase()
+                ->setRegistrationPeriod(new Open)
+                ->done()
+            ->save()
+            ->addEvaluationPhase(EvaluationMethods::simple)
+                ->setEvaluationPeriod(new ConcurrentEndingAfter)
+                ->setCommitteeValuersPerRegistration('committee 1', 1)
+                ->save()
+                ->addValuer('committee 1', name: 'valuerA')->done()
+                ->addValuer('committee 1', name: 'valuerB')->done()
+                ->done()
+            ->getInstance();
+
+        $this->registrationDirector->createSentRegistrations(
+            $opportunity,
+            number_of_registrations: 2
+        );
+
+        $emc = $opportunity->evaluationMethodConfiguration;
+        $relations = $emc->agentRelations;
+        $valuerA_user_id = $relations[0]->agent->user->id;
+        $valuerB_user_id = $relations[1]->agent->user->id;
+
+        $registrations = $this->app->repo('Registration')->findBy(
+            ['opportunity' => $opportunity],
+            ['id' => 'ASC']
+        );
+
+        /** @var Connection */
+        $conn = $this->app->em->getConnection();
+
+        // Força a inclusão manual do avaliador A na primeira inscrição, fora do fluxo normal do usort.
+        // Usa SQL direto (como o próprio core faz ao persistir `valuers`) porque
+        // Registration::setValuersIncludeList muta o objeto interno in-place e o
+        // Doctrine, ao comparar por identidade, não detecta a mudança no flush.
+        $conn->update(
+            'registration',
+            ['valuers_exceptions_list' => json_encode(['include' => [$valuerA_user_id], 'exclude' => []])],
+            ['id' => $registrations[0]->id]
+        );
+
+        $target_opportunity_id = $opportunity->id;
+        $this->app->hook('evaluationMethod.distributionComparator', function (&$comparator, Opportunity $hook_opportunity) use ($target_opportunity_id) {
+            if ($hook_opportunity->id !== $target_opportunity_id) {
+                return;
+            }
+
+            $comparator = function (object $valuer1, object $valuer2, string $committee, array $pending_assignments): ?int {
+                $pending1 = $pending_assignments[$valuer1->id] ?? 0;
+                $pending2 = $pending_assignments[$valuer2->id] ?? 0;
+
+                if ($pending1 !== $pending2) {
+                    return $pending1 <=> $pending2;
+                }
+
+                return $valuer1->id <=> $valuer2->id;
+            };
+        });
+
+        $emc->redistributeCommitteeRegistrations();
+
+        $registration_0 = $registrations[0]->refreshed();
+        $registration_1 = $registrations[1]->refreshed();
+
+        $valuers_0 = array_map('intval', array_keys((array) $registration_0->valuers));
+        $valuers_1 = array_map('intval', array_keys((array) $registration_1->valuers));
+
+        $this->assertEquals(
+            [$valuerA_user_id],
+            $valuers_0,
+            'A inclusão manual deve atribuir a primeira inscrição ao avaliador incluído'
+        );
+
+        $this->assertEquals(
+            [$valuerB_user_id],
+            $valuers_1,
+            'A carga da inclusão manual deve contar como pendência no comparador, fazendo a segunda inscrição ir para o avaliador B (sem pendências)'
+        );
+    }
+
+    function testCustomComparatorPendingAssignmentsAreIsolatedPerCommittee()
+    {
+        $admin = $this->userDirector->createUser('admin');
+        $this->login($admin);
+
+        $multi_valuer = $this->userDirector->createUser();
+
+        $opportunity = $this->opportunityBuilder
+            ->reset(owner: $admin->profile, owner_entity: $admin->profile)
+            ->fillRequiredProperties()
+            ->firstPhase()
+                ->setRegistrationPeriod(new Open)
+                ->done()
+            ->save()
+            ->addEvaluationPhase(EvaluationMethods::simple)
+                ->setEvaluationPeriod(new ConcurrentEndingAfter)
+                ->setCommitteeValuersPerRegistration('committee 1', 1)
+                ->setCommitteeValuersPerRegistration('committee 2', 1)
+                ->save()
+                ->addValuer('committee 1', 'multi', $multi_valuer->profile)->done()
+                ->addValuer('committee 1', name: 'uniqueA')->done()
+                ->addValuer('committee 2', 'multi', $multi_valuer->profile)->done()
+                ->addValuer('committee 2', name: 'uniqueB')->done()
+                ->done()
+            ->getInstance();
+
+        $this->registrationDirector->createSentRegistrations(
+            $opportunity,
+            number_of_registrations: 4
+        );
+
+        $target_opportunity_id = $opportunity->id;
+        $this->app->hook('evaluationMethod.distributionComparator', function (&$comparator, Opportunity $hook_opportunity) use ($target_opportunity_id) {
+            if ($hook_opportunity->id !== $target_opportunity_id) {
+                return;
+            }
+
+            $comparator = function (object $valuer1, object $valuer2, string $committee, array $pending_assignments): ?int {
+                $pending1 = $pending_assignments[$valuer1->id] ?? 0;
+                $pending2 = $pending_assignments[$valuer2->id] ?? 0;
+
+                if ($pending1 !== $pending2) {
+                    return $pending1 <=> $pending2;
+                }
+
+                return $valuer1->id <=> $valuer2->id;
+            };
+        });
+
+        $opportunity->evaluationMethodConfiguration->redistributeCommitteeRegistrations();
+
+        /** @var Connection */
+        $conn = $this->app->em->getConnection();
+
+        $count_per_committee = function (string $committee) use ($conn, $opportunity): array {
+            $rows = $conn->fetchAllAssociative(
+                "SELECT valuer_user_id, COUNT(*) AS total FROM evaluations WHERE opportunity_id = :opportunity_id AND valuer_committee = :committee GROUP BY valuer_user_id",
+                ['opportunity_id' => $opportunity->id, 'committee' => $committee]
+            );
+
+            $values = array_map(fn($row) => (int) $row['total'], $rows);
+            sort($values);
+
+            return $values;
+        };
+
+        $this->assertSame(
+            [2, 2],
+            $count_per_committee('committee 1'),
+            'A comissão 1 deve distribuir as 4 inscrições igualmente entre seus 2 avaliadores'
+        );
+
+        $this->assertSame(
+            [2, 2],
+            $count_per_committee('committee 2'),
+            'A comissão 2 deve distribuir as 4 inscrições igualmente entre seus 2 avaliadores, sem interferência da carga acumulada na comissão 1 pelo avaliador compartilhado'
+        );
+    }
+
+    function testCustomComparatorDoesNotBypassMaxRegistrationsPerValuerLimit()
+    {
+        $admin = $this->userDirector->createUser('admin');
+        $this->login($admin);
+
+        $max_registrations_valuerA = 2;
+
+        $opportunity = $this->opportunityBuilder
+            ->reset(owner: $admin->profile, owner_entity: $admin->profile)
+            ->fillRequiredProperties()
+            ->firstPhase()
+                ->setRegistrationPeriod(new Open)
+                ->done()
+            ->save()
+            ->createSentRegistrations(5)
+            ->addEvaluationPhase(EvaluationMethods::simple)
+                ->setEvaluationPeriod(new ConcurrentEndingAfter)
+                ->setCommitteeValuersPerRegistration('committee 1', 1)
+                ->save()
+                ->addValuer('committee 1', name: 'valuerA')
+                    ->maxRegistrations($max_registrations_valuerA)
+                    ->done()
+                ->addValuer('committee 1', name: 'valuerB')
+                    ->done()
+                ->done()
+            ->getInstance();
+
+        $emc = $opportunity->evaluationMethodConfiguration;
+        $valuerA_user_id = $emc->agentRelations[0]->agent->user->id;
+        $valuerB_user_id = $emc->agentRelations[1]->agent->user->id;
+
+        $target_opportunity_id = $opportunity->id;
+        $this->app->hook('evaluationMethod.distributionComparator', function (&$comparator, Opportunity $hook_opportunity) use ($target_opportunity_id, $valuerA_user_id) {
+            if ($hook_opportunity->id !== $target_opportunity_id) {
+                return;
+            }
+
+            // Comparador deliberadamente "trapaceiro": sempre tenta priorizar o avaliador A,
+            // ignorando a carga pendente, para provar que o limite (maxRegistrations) é
+            // aplicado de forma independente do critério de ordenação do comparador.
+            $comparator = function (object $v1, object $v2, string $committee, array $pending) use ($valuerA_user_id): ?int {
+                if ($v1->id === $valuerA_user_id) {
+                    return -1;
+                }
+                if ($v2->id === $valuerA_user_id) {
+                    return 1;
+                }
+                return 0;
+            };
+        });
+
+        $emc->redistributeCommitteeRegistrations();
+
+        /** @var Connection */
+        $conn = $this->app->em->getConnection();
+        $count = fn(int $user_id): int => (int) $conn->fetchScalar(
+            "SELECT COUNT(*) FROM evaluations WHERE opportunity_id = :opportunity_id AND valuer_user_id = :user_id",
+            ['opportunity_id' => $opportunity->id, 'user_id' => $user_id]
+        );
+
+        $this->assertEquals(
+            $max_registrations_valuerA,
+            $count($valuerA_user_id),
+            'Mesmo com o comparador sempre priorizando o avaliador A, o limite de maxRegistrations deve ser respeitado'
+        );
+
+        $this->assertEquals(
+            5 - $max_registrations_valuerA,
+            $count($valuerB_user_id),
+            'As inscrições que excedem o limite do avaliador A devem ser redirecionadas para o avaliador B'
+        );
+    }
+
+    private function buildDistributionComparatorContractScenario(): Opportunity
+    {
+        $admin = $this->userDirector->createUser('admin');
+        $this->login($admin);
+
+        $opportunity = $this->opportunityBuilder
+            ->reset(owner: $admin->profile, owner_entity: $admin->profile)
+            ->fillRequiredProperties()
+            ->firstPhase()
+                ->setRegistrationPeriod(new Open)
+                ->done()
+            ->save()
+            ->addEvaluationPhase(EvaluationMethods::simple)
+                ->setEvaluationPeriod(new ConcurrentEndingAfter)
+                ->setCommitteeValuersPerRegistration('committee 1', 1)
+                ->save()
+                ->addValuer('committee 1', name: 'valuerA')->done()
+                ->addValuer('committee 1', name: 'valuerB')->done()
+                ->done()
+            ->getInstance();
+
+        $this->registrationDirector->createSentRegistrations(
+            $opportunity,
+            number_of_registrations: 5
+        );
+
+        $emc = $opportunity->evaluationMethodConfiguration;
+        $valuerA = $emc->agentRelations[0]->agent->user;
+
+        $registrations = $this->app->repo('Registration')->findBy(
+            ['opportunity' => $opportunity],
+            ['id' => 'ASC']
+        );
+
+        // Cria 3 avaliações já concluídas do avaliador A, deixando-o à frente na contagem
+        // o suficiente para que as 2 pendências restantes nunca empatem com o avaliador B
+        // (evita depender do desempate não especificado do fallback por contagem do core).
+        $this->app->disableAccessControl();
+        try {
+            foreach (array_slice($registrations, 0, 3) as $registration) {
+                $evaluation = new RegistrationEvaluation();
+                $evaluation->registration = $registration;
+                $evaluation->user = $valuerA;
+                $evaluation->committee = 'committee 1';
+                $evaluation->evaluationData = ['status' => null];
+                $evaluation->status = RegistrationEvaluation::STATUS_EVALUATED;
+                $evaluation->save(true);
+            }
+        } finally {
+            $this->app->enableAccessControl();
+        }
+
+        return $opportunity;
+    }
+
+    function testDistributionComparatorNullFallsThroughToQuotaFallback()
+    {
+        $opportunity = $this->buildDistributionComparatorContractScenario();
+
+        $target_opportunity_id = $opportunity->id;
+        $this->app->hook('evaluationMethod.distributionComparator', function (&$comparator, Opportunity $hook_opportunity) use ($target_opportunity_id) {
+            if ($hook_opportunity->id !== $target_opportunity_id) {
+                return;
+            }
+
+            // Nunca opina: sempre delega ao critério padrão do core (contagem/quotas).
+            $comparator = fn(object $v1, object $v2, string $committee, array $pending): ?int => null;
+        });
+
+        $opportunity->evaluationMethodConfiguration->redistributeCommitteeRegistrations();
+
+        $emc = $opportunity->evaluationMethodConfiguration->refreshed();
+        $valuerA_id = $emc->agentRelations[0]->agent->user->id;
+        $valuerB_id = $emc->agentRelations[1]->agent->user->id;
+
+        /** @var Connection */
+        $conn = $this->app->em->getConnection();
+        $count = fn(int $user_id): int => (int) $conn->fetchScalar(
+            "SELECT COUNT(*) FROM evaluations WHERE opportunity_id = :opportunity_id AND valuer_user_id = :user_id",
+            ['opportunity_id' => $opportunity->id, 'user_id' => $user_id]
+        );
+
+        $this->assertEquals(3, $count($valuerA_id), 'Retornando null, o core cai no fallback por contagem e o avaliador A (que já tinha 2) termina com 3');
+        $this->assertEquals(2, $count($valuerB_id), 'Retornando null, o core cai no fallback por contagem e o avaliador B (que tinha 0) termina com 2');
+    }
+
+    function testDistributionComparatorZeroShortCircuitsQuotaFallback()
+    {
+        $opportunity = $this->buildDistributionComparatorContractScenario();
+
+        $target_opportunity_id = $opportunity->id;
+        $this->app->hook('evaluationMethod.distributionComparator', function (&$comparator, Opportunity $hook_opportunity) use ($target_opportunity_id) {
+            if ($hook_opportunity->id !== $target_opportunity_id) {
+                return;
+            }
+
+            // Declara empate definitivo para todo par: o core não deve cair no fallback por contagem.
+            $comparator = fn(object $v1, object $v2, string $committee, array $pending): ?int => 0;
+        });
+
+        $opportunity->evaluationMethodConfiguration->redistributeCommitteeRegistrations();
+
+        $emc = $opportunity->evaluationMethodConfiguration->refreshed();
+        $valuerA_id = $emc->agentRelations[0]->agent->user->id;
+        $valuerB_id = $emc->agentRelations[1]->agent->user->id;
+
+        /** @var Connection */
+        $conn = $this->app->em->getConnection();
+        $count = fn(int $user_id): int => (int) $conn->fetchScalar(
+            "SELECT COUNT(*) FROM evaluations WHERE opportunity_id = :opportunity_id AND valuer_user_id = :user_id",
+            ['opportunity_id' => $opportunity->id, 'user_id' => $user_id]
+        );
+
+        $this->assertEquals(5, $count($valuerA_id), 'Retornando 0, o core não deve cair no fallback por contagem, então o avaliador A concentra todas as pendências');
+        $this->assertEquals(0, $count($valuerB_id), 'Retornando 0, o avaliador B não deve receber nenhuma pendência nova');
+    }
+
 }

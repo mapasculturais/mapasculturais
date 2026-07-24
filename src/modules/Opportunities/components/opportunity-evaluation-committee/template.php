@@ -103,10 +103,20 @@ $this->import('
                             </div>
 
                             <mc-alert v-else type="warning" small>
-                                
-                                <p v-if="!hasEvaluationConfiguration(infoReviewer)"> <strong>{{infoReviewer.agent.name}}</strong> <?= i::__('ainda não tem avaliações disponíveis') ?> </p>
-                                <p v-if="infoReviewer.status == -5"> <strong>{{infoReviewer.agent.name}}</strong> <?= i::__('ainda não aceitou o convite para avaliar esta oportunidade') ?> </p>
+                                <template v-if="!hasEvaluationConfiguration(infoReviewer)">
+                                    <strong>{{infoReviewer.agent.name}}</strong> <?= i::__('ainda não tem avaliações disponíveis') ?>
+                                </template>
+                                <template v-if="infoReviewer.status == -5">
+                                    <strong>{{infoReviewer.agent.name}}</strong> <?= i::__('ainda não aceitou o convite para avaliar esta oportunidade') ?>
+                                </template>
                             </mc-alert>
+
+                            <div v-if="infoReviewer.ownRegistrationsWarning" class="opportunity-evaluation-committee__own-registration">
+                                <mc-icon name="info"></mc-icon>
+                                <span>
+                                    <?= i::__('Também é proponente neste edital e, por isso, não avaliará a própria inscrição. As quantidades para ele podem ser diferentes do esperado.') ?>
+                                </span>
+                            </div>
 
                             <mc-confirm-button v-if="infoReviewer.status == -5" @confirm="delReviewer(infoReviewer)" no="<?= i::esc_attr__('Não') ?>" yes="<?= i::esc_attr__('Sim') ?>">
                                 <template #button="{open}">

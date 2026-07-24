@@ -6,6 +6,7 @@ use MapasCulturais\App;
 use MapasCulturais\Controller;
 use MapasCulturais\Entities\EvaluationMethodConfiguration as EvaluationMethodConfigurationEntity;
 use MapasCulturais\Entities\EvaluationMethodConfigurationAgentRelation;
+use MapasCulturais\Exceptions\WorkflowRequest;
 use MapasCulturais\Traits;
 use Opportunities\Jobs\RedistributeCommitteeRegistrations;
 
@@ -55,6 +56,63 @@ class EvaluationMethodConfiguration extends Controller {
         }
 
         return $relation;
+    }
+
+    /**
+     * Cria relação de avaliador e, se ele tiver inscrição própria no edital,
+     * devolve aviso no JSON (não bloqueia a inclusão).
+     *
+     * @WriteAPI POST createAgentRelation
+     */
+    public function POST_createAgentRelation()
+    {
+        $this->requireAuthentication();
+
+        $app = App::i();
+
+        if (!$this->urlData['id']) {
+            $app->pass();
+        }
+
+        $has_control = key_exists('has_control', $this->postData) && $this->postData['has_control'];
+
+        /** @var EvaluationMethodConfigurationEntity $owner */
+        $owner = $this->repository->find($this->data['id']);
+
+        if (!key_exists('agentId', $this->postData)) {
+            $app->pass();
+        }
+
+        $agent = $app->repo('Agent')->find($this->data['agentId']);
+        if (!$agent) {
+            $app->pass();
+        }
+
+        try {
+            $relation = $owner->createAgentRelation($agent, $this->postData['group'], $has_control, false);
+        } catch (\Exception $e) {
+            $this->errorJson($e->getMessage(), 403);
+        }
+
+        $status = 200;
+        try {
+            $relation->save(true);
+        } catch (WorkflowRequest $e) {
+            $status = 202;
+            $reqs = [];
+            foreach ($e->requests as $request) {
+                $reqs[] = $request->getRequestType();
+            }
+            header('CreatedRequests: ' . json_encode($reqs));
+        }
+
+        $data = $relation->jsonSerialize();
+        $warning = $owner->buildOwnRegistrationsWarning($agent->user, $agent->name);
+        if ($warning) {
+            $data['ownRegistrationsWarning'] = $warning;
+        }
+
+        $this->json($data, $status);
     }
 
     function POST_reopenValuerEvaluations(){
@@ -249,7 +307,18 @@ class EvaluationMethodConfiguration extends Controller {
         if($relation = $app->repo('EvaluationMethodConfigurationAgentRelation')->find($this->data['relation'])){
             $newValuer = $app->repo('Agent')->find($this->data['newValuerAgentId']);
             $new_valuer = $relation->replaceEvaluator($newValuer->user);
-            $this->json($new_valuer);
+            $data = is_object($new_valuer) && method_exists($new_valuer, 'jsonSerialize')
+                ? $new_valuer->jsonSerialize()
+                : $new_valuer;
+
+            if (is_array($data)) {
+                $warning = $emc->buildOwnRegistrationsWarning($newValuer->user, $newValuer->name);
+                if ($warning) {
+                    $data['ownRegistrationsWarning'] = $warning;
+                }
+            }
+
+            $this->json($data);
         } else {
             $this->json(false);
         }

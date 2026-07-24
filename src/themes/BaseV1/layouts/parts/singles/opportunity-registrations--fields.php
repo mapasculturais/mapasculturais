@@ -50,7 +50,7 @@ $app->applyHookBoundTo($this, 'opportunity.blockedFields', [$entity]);
             </label>
             <label>
                 <?php i::_e('Tipo do campo') ?><br>
-                <select ng-model="data.newFieldConfiguration.fieldType" ng-options="value.slug as value.name disable when value.disabled for value in data.fieldTypes"></select>
+                <select ng-model="data.newFieldConfiguration.fieldType" ng-change="normalizeNumberFieldAllowZero(data.newFieldConfiguration)" ng-options="value.slug as value.name disable when value.disabled for value in data.fieldTypes"></select>
             </label>
             {{ (field = data.newFieldConfiguration) && false ? '' : ''}}
 
@@ -198,7 +198,7 @@ $app->applyHookBoundTo($this, 'opportunity.blockedFields', [$entity]);
                         </label>
                         <label>
                             <?php i::_e('Tipo do campo') ?><br>
-                            <select ng-model="field.fieldType" ng-options="value.slug as value.name disable when value.disabled for value in data.fieldTypes"></select>
+                            <select ng-model="field.fieldType" ng-change="normalizeNumberFieldAllowZero(field)" ng-options="value.slug as value.name disable when value.disabled for value in data.fieldTypes"></select>
                         </label>
 
                         <?php

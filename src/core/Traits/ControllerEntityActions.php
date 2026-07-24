@@ -35,10 +35,16 @@ trait ControllerEntityActions {
                     } else {
                         $value = (bool) $value;
                     }
-                } else if(in_array($type, ['int', 'integer', 'smallint'])) {
-                    $value = (int) $value;
-                } else if(in_array($type, ['numeric', 'float', 'number'])) {
-                    $value = (float) $value;
+                } else if(in_array($type, ['int', 'integer', 'smallint', 'numeric', 'float', 'number'])) {
+                    // Vazio não é número: ""/null não podem virar 0 (quebra obrigatório e inventa valor).
+                    // Zero explícito ("0"/0) continua sendo 0.
+                    if ($value === null || (is_string($value) && trim($value) === '')) {
+                        $value = null;
+                    } else if(in_array($type, ['int', 'integer', 'smallint'])) {
+                        $value = (int) $value;
+                    } else {
+                        $value = (float) $value;
+                    }
                 }
             }
             

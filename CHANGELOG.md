@@ -20,7 +20,33 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Exibe corretamente os anexos `@` do agente na inscrição, na edição do perfil, na single e nas listagens/planilhas (com link para download)
 
 ### Correções
+- Na redistribuição de avaliações, inclusões manuais passam a contar na carga pendente do comparador antes da distribuição automática (e a ordem das inscrições fica estável por `id`), evitando que o mesmo avaliador receba a próxima inscrição por acaso
 - Na avaliação documental, o link de download do arquivo não cobre mais o campo inteiro: clicar no campo abre o formulário de avaliação e clicar no nome do arquivo continua baixando
+
+## [7.8.2] - 2026-07-24
+### Correções
+- O botão Voltar da tela de avaliação leva de volta à lista de onde a pessoa veio (lista completa da gestão ou lista do avaliador), mesmo depois de trocar de inscrição pelo menu lateral
+- No menu lateral da avaliação, os links continuam apontando para o avaliador certo quando um gestor navega em nome de outra pessoa
+- Se a pessoa abrir a avaliação da própria inscrição, o sistema mostra um aviso e bloqueia o formulário
+- Na lista de um avaliador específico, aparecem só as avaliações dele — mesmo que essa pessoa também seja gestora do edital
+- Impede salvar avaliação em inscrição que não foi atribuída à pessoa, e também impede o proponente de avaliar a própria inscrição; o gestor ainda pode editar uma avaliação já feita por outro avaliador
+- Na tabela de avaliações, o link abre a avaliação do avaliador daquela linha, evitando que o gestor acabe criando avaliação em nome próprio por engano
+- Ajusta as cores do status no acompanhamento da inscrição para bater com a legenda oficial: Pendente e Rascunho em preto, Inválida em roxo, Não selecionada em vermelho, Suplente em laranja e Selecionada em verde
+- Impede que um campo numérico deixado em branco seja salvo como zero, o que fazia o sistema achar que havia valor preenchido
+- Mostra corretamente o valor zero (0) na inscrição, em vez de aparecer como “campo não informado”
+- Corrige erro de renderização na galeria de vídeos ao editar o título, quando o popover montava o formulário antes de `newData` existir
+
+### Melhorias
+- Ao adicionar ou trocar um avaliador na comissão, avisa se a pessoa também está inscrita no edital e que não avaliará a própria inscrição
+- Deixa esse aviso mais visível e fácil de entender nos cards da comissão de avaliação
+- No campo numérico do formulário, permite escolher se o zero é aceito e limitar a quantidade mínima e máxima de dígitos
+- Adiciona testes automatizados para o aviso de inscrição própria do avaliador
+- Adiciona testes automatizados para as regras do campo numérico (aceitação do zero e quantidade de dígitos)
+- Adiciona testes automatizados para o bloqueio de avaliação indevida e de autoavaliação
+- Adiciona testes de regressão para a lista do avaliador, o aviso na autoavaliação, o botão Voltar e a navegação correta
+
+### Melhorias não funcionais
+- Adiciona hook `evaluationMethod.distributionComparator` para permitir que temas personalizem a ordem de prioridade dos avaliadores durante a redistribuição de comissões
 
 ## [7.8.1] - 2026-07-21
 ### Melhorias

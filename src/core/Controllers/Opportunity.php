@@ -459,6 +459,10 @@ class Opportunity extends EntityController {
                 $r->agent = $e->agent->simplify('id,name,type,singleUrl,avatar,user');
                 $r->agentUserId = $e->agent->userId;
                 $r->group = $e->group;
+                $warning = $e->owner->buildOwnRegistrationsWarning($e->agent->user, $e->agent->name);
+                if ($warning) {
+                    $r->ownRegistrationsWarning = $warning;
+                }
                 return $r;
             }, $relations);
         } else {
