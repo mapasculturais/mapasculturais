@@ -8,6 +8,7 @@
 use MapasCulturais\i;
 
 $this->import('
+    mc-icon
     mc-loading
     opportunity-reports-chart-card
 ');
@@ -22,31 +23,31 @@ $this->import('
         <div class="opportunity-reports-chart-form__type-options">
             <label class="opportunity-reports-chart-form__type-option">
                 <input type="radio" v-model="typeGraphic" value="pie" />
-                <i class="fas fa-chart-pie"></i>
+                <mc-icon name="chart-pie"></mc-icon>
                 <span><b><?= i::__('Gráfico de pizza') ?></b></span>
             </label>
 
             <label class="opportunity-reports-chart-form__type-option">
                 <input type="radio" v-model="typeGraphic" value="line" />
-                <i class="fas fa-chart-area"></i>
+                <mc-icon name="chart-area"></mc-icon>
                 <span><b><?= i::__('Gráfico de linha') ?></b></span>
             </label>
 
             <label class="opportunity-reports-chart-form__type-option">
                 <input type="radio" v-model="typeGraphic" value="bar" />
-                <i class="far fa-chart-bar"></i>
+                <mc-icon name="chart-bar"></mc-icon>
                 <span><b><?= i::__('Gráfico de coluna') ?></b></span>
             </label>
 
             <label class="opportunity-reports-chart-form__type-option">
                 <input type="radio" v-model="typeGraphic" value="horizontalBar" />
-                <i class="fas fa-bars"></i>
+                <mc-icon name="bars"></mc-icon>
                 <span><b><?= i::__('Gráfico de barra') ?></b></span>
             </label>
 
             <label class="opportunity-reports-chart-form__type-option">
                 <input type="radio" v-model="typeGraphic" value="table" />
-                <i class="fas fa-th-list"></i>
+                <mc-icon name="table-view"></mc-icon>
                 <span><b><?= i::__('Gráfico de tabela') ?></b></span>
             </label>
         </div>

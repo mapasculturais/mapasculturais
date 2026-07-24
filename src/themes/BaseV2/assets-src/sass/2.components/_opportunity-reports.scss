@@ -121,12 +121,12 @@
         display: flex;
         gap: size(12);
 
-        i {
+        iconify {
             color: var(--mc-gray-500);
             font-size: size(20);
         }
 
-        input:checked ~ i,
+        input:checked ~ iconify,
         input:checked ~ span {
             color: var(--mc-primary-500);
         }
