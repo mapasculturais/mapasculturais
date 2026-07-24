@@ -4,15 +4,7 @@ app.component('opportunity-reports-filters', {
     props: {
         modelValue: {
             type: Object,
-            required: true, // { status, proponentTypes, ranges }
-        },
-        proponentTypeOptions: {
-            type: Array,
-            default: () => [],
-        },
-        rangeOptions: {
-            type: Array,
-            default: () => [],
+            required: true, // { status }
         },
     },
 
@@ -22,13 +14,6 @@ app.component('opportunity-reports-filters', {
         // os textos estão localizados no arquivo texts.php deste componente
         const text = Utils.getTexts('opportunity-reports-filters');
         return { text };
-    },
-
-    data() {
-        return {
-            selectedProponentTypes: [...(this.modelValue.proponentTypes || [])],
-            selectedRanges: [...(this.modelValue.ranges || [])],
-        };
     },
 
     computed: {
@@ -43,41 +28,11 @@ app.component('opportunity-reports-filters', {
                 { value: 'approved', label: this.text('status_approved') },
             ];
         },
-
-        proponentTypeItems() {
-            if (!this.proponentTypeOptions.length) {
-                return null;
-            }
-            const result = {};
-            for (const type of this.proponentTypeOptions) {
-                result[type.replace(/,/g, '\\,')] = type;
-            }
-            return result;
-        },
-
-        rangeItems() {
-            if (!this.rangeOptions.length) {
-                return null;
-            }
-            const result = {};
-            for (const range of this.rangeOptions) {
-                result[range.replace(/,/g, '\\,')] = range;
-            }
-            return result;
-        },
     },
 
     methods: {
         onStatusChange(status) {
             this.$emit('update:modelValue', { ...this.modelValue, status });
-        },
-
-        onProponentTypesChange() {
-            this.$emit('update:modelValue', { ...this.modelValue, proponentTypes: [...this.selectedProponentTypes] });
-        },
-
-        onRangesChange() {
-            this.$emit('update:modelValue', { ...this.modelValue, ranges: [...this.selectedRanges] });
         },
     },
 });
