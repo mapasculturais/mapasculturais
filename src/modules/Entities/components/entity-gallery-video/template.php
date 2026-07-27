@@ -21,21 +21,43 @@ $this->import('
         <div v-for="(metalist, index) in videos" class="entity-gallery__list--video">
             <div>
                 <div @click="openVideo(index); open()" class="entity-gallery__list--video-img">
-                    <img :src="metalist.video.thumbnail" />
+                    <img :src="metalist.video?.thumbnail" />
                     <span class="entity-gallery__list--video-play" aria-hidden="true">
                         <mc-icon name="play"></mc-icon>
                     </span>
                 </div>                
                 <p @click="openVideo(index); open()" class="entity-gallery__list--video-label"> {{metalist.title}} </p>
             </div>
-            <div v-if="editable" class="entity-gallery__list--video-actions">                
-                <mc-popover  openside="down-right">
+            <div v-if="editable" class="entity-gallery__list--video-actions" :class="{ 'entity-gallery__list--video-actions--labeled': labeledActions }">
+                <mc-confirm-button @confirm="metalist.delete()">
+                    <template #button="{open}">
+                        <a class="edit__action edit__action--delete" @click="open()">
+                            <mc-icon name="trash"></mc-icon>
+                            <span v-if="labeledActions"><?php i::_e('Excluir vídeo') ?></span>
+                        </a>
+                    </template> 
+                    <template #message="message">
+                        <?php i::_e('Deseja remover este vídeo?') ?>
+                    </template> 
+                </mc-confirm-button>
+                <mc-popover
+                    @open="metalist.newData = { title: metalist.title, value: metalist.value }"
+                    openside="down-right">
                     <template #button="popover">
-                        <a @click="metalist.newData = {title: metalist.title, value: metalist.value}; popover.toggle()"> <mc-icon name="edit"></mc-icon> </a>
+                        <a class="edit__action edit__action--edit" @click="popover.toggle()">
+                            <mc-icon name="edit"></mc-icon>
+                            <span v-if="labeledActions"><?php i::_e('Editar vídeo') ?></span>
+                        </a>
                     </template>
                     <template #default="popover">
-                        <form @submit="save(metalist, popover); $event.preventDefault()" class="entity-related-agents__addNew--newGroup">
+                        <form v-if="metalist.newData" @submit="save(metalist, popover); $event.preventDefault()" class="entity-related-agents__addNew--newGroup">
                             <div class="grid-12">
+                                <div class="col-12">
+                                    <div class="field">
+                                        <label><?php i::_e('URL do vídeo') ?></label>
+                                        <input v-model="metalist.newData.value" type="url" />
+                                    </div>
+                                </div>
                                 <div class="col-12">
                                     <div class="field">
                                         <label><?php i::_e('Título do vídeo') ?></label>
@@ -48,25 +70,17 @@ $this->import('
                         </form>
                     </template>
                 </mc-popover>
-                <mc-confirm-button @confirm="metalist.delete()">
-                    <template #button="{open}">
-                        <a @click="open()"> <mc-icon name="trash"></mc-icon> </a>
-                    </template> 
-                    <template #message="message">
-                        <?php i::_e('Deseja remover este vídeo?') ?>
-                    </template> 
-                </mc-confirm-button>
             </div>
         </div>
     </div>
 
     <div v-if="editable" title="<?php i::_e('Adicionar Vídeo')?>" class="entity-gallery__addNew">
-        <mc-popover v-if="editable" title="<?php i::_e('Adicionar Vídeo')?>" openside="right-up">
+        <mc-popover v-if="editable" title="<?php i::_e('Adicionar Vídeo')?>" openside="down-right">
             <template #button="popover">
-                <slot name="button"> 
-                    <a @click="popover.toggle()" class="button button--primary button--icon button--primary-outline">
+                <slot name="button" v-bind="popover"> 
+                    <a @click="popover.toggle()" :class="['button', 'button--icon', buttonPrimary ? 'button--primary' : 'button--primary button--primary-outline', 'edit-1__portfolio-cta']">
                         <mc-icon name="add"></mc-icon>
-                        <?php i::_e("Adicionar vídeo")?>
+                        {{ buttonLabel || '<?= i::__("Adicionar vídeo") ?>' }}
                     </a>
                 </slot>
             </template>

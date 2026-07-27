@@ -76,6 +76,24 @@ app.component('entity-files-list', {
             required: false,
         },
 
+        /** Exibe rótulos "Editar título" / "Excluir arquivo" nas ações. */
+        labeledActions: {
+            type: Boolean,
+            default: false
+        },
+
+        /** Texto do botão de adicionar. */
+        buttonLabel: {
+            type: String,
+            default: ''
+        },
+
+        /** Usa botão sólido primary (CTA do Figma). */
+        buttonPrimary: {
+            type: Boolean,
+            default: false
+        },
+
     },
     
     data() {

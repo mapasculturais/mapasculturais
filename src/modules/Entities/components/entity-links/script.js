@@ -29,6 +29,18 @@ app.component('entity-links', {
             type: Boolean,
             default: false
         },
+        labeledActions: {
+            type: Boolean,
+            default: false
+        },
+        buttonLabel: {
+            type: String,
+            default: ''
+        },
+        buttonPrimary: {
+            type: Boolean,
+            default: false
+        },
     },
 
     data() {

@@ -44,10 +44,25 @@ $this->import('
                 <span>{{ viewActionLabel }}</span>
             </a>
 
-            <div v-if="editable" class="edit">
+            <div v-if="editable" class="edit" :class="{ 'edit--labeled': labeledActions }">
+                <mc-confirm-button @confirm="file.delete()">
+                    <template #button="modal">
+                        <a class="edit__action edit__action--delete" @click="modal.open()">
+                            <mc-icon name="trash"></mc-icon>
+                            <span v-if="labeledActions"><?php i::_e('Excluir arquivo') ?></span>
+                        </a>
+                    </template> 
+                    <template #message="message">
+                        <?php i::_e('Deseja remover este arquivo?') ?>
+                    </template> 
+                </mc-confirm-button>
+
                 <mc-popover @open="file.newDescription = file.description" openside="down-right">
                     <template #button="{toggle}">
-                        <a @click="toggle"> <mc-icon name="edit"></mc-icon> </a>
+                        <a class="edit__action edit__action--edit" @click="toggle">
+                            <mc-icon name="edit"></mc-icon>
+                            <span v-if="labeledActions"><?php i::_e('Editar título') ?></span>
+                        </a>
                     </template>
                     <template #default="{popover, close}">
                         <form @submit="rename(file, popover); $event.preventDefault()" class="entity-related-agents__addNew--newGroup">
@@ -65,25 +80,16 @@ $this->import('
                         </form>
                     </template>
                 </mc-popover>
-                
-                <mc-confirm-button @confirm="file.delete()">
-                    <template #button="modal">
-                        <a @click="modal.open()"> <mc-icon name="trash"></mc-icon> </a>
-                    </template> 
-                    <template #message="message">
-                        <?php i::_e('Deseja remover o link?') ?>
-                    </template> 
-                </mc-confirm-button>                
             </div>
         </li>
     </ul>
 
     <mc-popover v-if="editable" title="<?php i::_e('Adicionar arquivo')?>" openside="down-right">
         <template #button="popover">
-            <slot name="button"> 
-                <a @click="popover.toggle()" class="button button--primary button--icon button--primary-outline button-up">
-                    <mc-icon name="upload"></mc-icon>
-                    <?php i::_e("Enviar")?>
+            <slot name="button" v-bind="popover"> 
+                <a @click="popover.toggle()" :class="['button', 'button--icon', buttonPrimary ? 'button--primary' : 'button--primary button--primary-outline', 'button-up', 'edit-1__portfolio-cta']">
+                    <mc-icon :name="buttonPrimary ? 'add' : 'upload'"></mc-icon>
+                    {{ buttonLabel || '<?= i::__("Enviar") ?>' }}
                 </a>
             </slot>
         </template>

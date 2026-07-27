@@ -52,6 +52,18 @@ app.component('entity-gallery', {
             type: Boolean,
             default: false
         },
+        labeledActions: {
+            type: Boolean,
+            default: false
+        },
+        buttonLabel: {
+            type: String,
+            default: ''
+        },
+        buttonPrimary: {
+            type: Boolean,
+            default: false
+        },
     },
     
     methods: {
@@ -86,9 +98,9 @@ app.component('entity-gallery', {
             this.openImg(this.actualImgIndex);
         },
 
-        rename(img, popopver) {
+        rename(img, popover) {
             img.description = img.newDescription;
-            img.save().then(() => popopver.close());
+            img.save().then(() => popover?.close?.());
         } 
     },
 });
