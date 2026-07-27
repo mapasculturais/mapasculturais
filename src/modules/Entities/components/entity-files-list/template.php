@@ -102,7 +102,7 @@ $this->import('
                         <div class="field">
                             <label><?php i::_e('Arquivo') ?></label>
                             <input type="file" @change="setFile" ref="file"> 
-                            <small>Tamanho máximo do arquivo: <strong>{{maxFileSize}}</strong></small>
+                            <small><?= i::__('Tamanho máximo do arquivo:') ?> <strong>{{maxFileSize}}</strong></small>
                         </div>
                     </div> 
 
