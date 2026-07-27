@@ -2539,7 +2539,7 @@ class ApiQuery {
                 $entity['agentRelations'] = $relations_by_owner_id[$entity_id] ?? [];
                 $permisions = $entity['currentUserPermissions'] ?? [];
 
-                $can_view_pending = ($permisions['@controll'] ?? false) || 
+                $can_view_pending = ($permisions['@control'] ?? false) || 
                                     ($permisions['viewPrivateData'] ?? false) ||
                                     ($permisions['createAgentRelation'] ?? false) ||
                                     ($permisions['removeAgentRelation'] ?? false);
@@ -2678,7 +2678,7 @@ class ApiQuery {
                 
                 $permisions = $entity['currentUserPermissions'] ?? [];
                 
-                $can_view_pending = ($permisions['@controll'] ?? false) || 
+                $can_view_pending = ($permisions['@control'] ?? false) || 
                                     ($permisions['viewPrivateData'] ?? false) ||
                                     ($permisions['createAgentRelation'] ?? false) ||
                                     ($permisions['removeAgentRelation'] ?? false);
