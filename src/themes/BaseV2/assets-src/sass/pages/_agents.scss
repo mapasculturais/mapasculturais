@@ -2408,3 +2408,141 @@
         }
     }
 }
+
+// Edição do agente — seções colapsáveis na aba Perfil
+.edit-1 {
+    .container {
+        display: block;
+        grid-template-columns: none;
+        max-width: size(1170);
+        width: 100%;
+        margin-left: auto;
+        margin-right: auto;
+        padding-left: size(24);
+        padding-right: size(24);
+        box-sizing: border-box;
+
+        @include mobile {
+            padding-left: size(16);
+            padding-right: size(16);
+        }
+    }
+
+    &__perfil-main {
+        display: block;
+        width: 100%;
+        max-width: 100%;
+    }
+
+    &__section {
+        background-color: var(--mc-white);
+        padding: size(24);
+        margin-bottom: 0;
+        border-radius: var(--mc-border-radius-sm);
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        box-sizing: border-box;
+        max-width: 100%;
+
+        @include mobile {
+            padding: size(16);
+        }
+
+        .mc-collapsible__header {
+            width: 100%;
+            min-height: size(48);
+            padding: size(4) 0;
+            align-items: flex-start;
+            gap: size(12);
+            cursor: pointer;
+        }
+
+        .mc-collapsible__header-content {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .mc-collapsible__header-icon {
+            flex-shrink: 0;
+            min-width: size(24);
+            margin-top: size(4);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            .iconify {
+                font-size: size(20);
+                width: size(20);
+                height: size(20);
+                color: var(--mc-gray-700);
+            }
+        }
+
+        .mc-collapsible__body {
+            padding-top: size(16);
+        }
+
+        &--social {
+            .mc-collapsible__header {
+                align-items: center;
+            }
+
+            .mc-title {
+                margin: 0;
+                font-size: size(16);
+                font-weight: 700;
+                line-height: size(22);
+                color: var(--mc-low-500);
+            }
+
+            .mc-collapsible__body {
+                padding-top: size(8);
+            }
+        }
+    }
+
+    &__section-heading {
+        display: flex;
+        flex-direction: column;
+        gap: size(4);
+        min-width: 0;
+    }
+
+    &__section-title {
+        display: inline-flex;
+        align-items: center;
+        gap: size(8);
+        margin: 0;
+        padding: 0;
+        font-size: size(16);
+        font-weight: 700;
+        line-height: size(22);
+        color: var(--mc-low-500);
+
+        // faq-info / mc-popover dentro do título: ícone ao lado do texto
+        .mc-popover {
+            display: inline-flex;
+            width: auto;
+            flex-shrink: 0;
+            vertical-align: middle;
+        }
+
+        .faq-info__button {
+            display: inline-flex;
+            width: auto;
+        }
+    }
+
+    &__section-subtitle {
+        margin: 0;
+        padding: 0;
+        font-size: size(14);
+        font-weight: 400;
+        line-height: size(19);
+        color: var(--mc-gray-700);
+    }
+}
+
+// Sobrescreve o gap: 40px de .layout-entity.action-edit .container > main
+.layout-entity.action-edit .edit-1 .container > main {
+    gap: size(8);
+}
