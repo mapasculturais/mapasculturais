@@ -5,10 +5,9 @@ use MapasCulturais\i;
 $this->layout = 'entity';
 
 $this->import('
-    confirm-before-exit 
+    confirm-before-exit
     country-address-form
     entity-actions
-    entity-admins
     entity-cover
     entity-field
     entity-files-list
@@ -17,19 +16,18 @@ $this->import('
     entity-header
     entity-links
     entity-location
-    entity-owner
     entity-profile
-    entity-related-agents
     entity-renew-lock
     entity-social-media
     entity-status
     entity-terms
     mc-breadcrumb
     mc-card
+    mc-collapsible
     mc-container
     mc-tabs
     mc-tab
-    entity-registration
+    mc-title
 ');
 
 $label = $this->isRequestedEntityMine() ? i::__('Meus agentes') : i::__('Agentes');
@@ -40,7 +38,7 @@ $this->breadcrumb = [
 ];
 ?>
 
-<div class="main-app">
+<div class="main-app edit-1">
     <entity-renew-lock :entity="entity"></entity-renew-lock>
     <mc-breadcrumb></mc-breadcrumb>
     <entity-header :entity="entity" editable></entity-header>
@@ -50,110 +48,124 @@ $this->breadcrumb = [
             <?php $this->applyTemplateHook('entity-info-validation', 'begin') ?>
             <mc-container>
                 <entity-status :entity="entity"></entity-status>
-                <mc-card class="feature">
-                    <template #title>
-                        <label><?php i::_e("Informações de Apresentação") ?></label>
-                        <p><?php i::_e("Os dados inseridos abaixo serão exibidos para todos os usuários") ?></p>
-                    </template>
-                    <template #content>
-                        <div class="left">
-                            <div class="grid-12 v-bottom">
-                                <entity-cover :entity="entity" classes="col-12"></entity-cover>
-
-                                <div class="col-12 grid-12">
-                                    <?php $this->applyTemplateHook('entity-info', 'begin') ?>
-                                    <div class="col-3 sm:col-12">
-                                        <entity-profile :entity="entity"></entity-profile>
-                                    </div>
-                                    <div class="col-9 sm:col-12 grid-12 v-bottom">
-                                        <entity-field :entity="entity" classes="col-12" prop="name" label="<?php i::_e('Nome do Agente') ?>"></entity-field>
-                                    </div>
-                                    <?php $this->applyTemplateHook('entity-info', 'end') ?>
+                <main class="edit-1__perfil-main">
+                    <div class="stack--sm">
+                    <div class="edit-1__section">
+                        <mc-collapsible :open="true">
+                            <template #header>
+                                <div class="edit-1__section-heading">
+                                    <h3 class="edit-1__section-title"><?php i::_e("Informações de Apresentação") ?></h3>
+                                    <p class="edit-1__section-subtitle"><?php i::_e("Os dados inseridos abaixo serão exibidos para todos os usuários") ?></p>
                                 </div>
+                            </template>
+                            <template #body>
+                                <div class="grid-12 v-bottom">
+                                    <entity-cover :entity="entity" classes="col-12"></entity-cover>
 
-                                <?php $this->applyTemplateHook('edit2-entity-info-taxonomie-area', 'before') ?>
-                                <entity-terms :entity="entity" taxonomy="area" editable classes="col-12" title="<?php i::_e('Área de atuação'); ?>"></entity-terms>
-                                <entity-terms :entity="entity" taxonomy="tag" classes="col-12" title="Tags" editable></entity-terms>
-                                <?php $this->applyTemplateHook('edit2-entity-info-taxonomie-area', 'after') ?>
+                                    <div class="col-12 grid-12">
+                                        <?php $this->applyTemplateHook('entity-info', 'begin') ?>
+                                        <div class="col-3 sm:col-12">
+                                            <entity-profile :entity="entity"></entity-profile>
+                                        </div>
+                                        <div class="col-9 sm:col-12 grid-12 v-bottom">
+                                            <entity-field :entity="entity" classes="col-12" prop="name" label="<?php i::_e('Nome do Agente') ?>"></entity-field>
+                                        </div>
+                                        <?php $this->applyTemplateHook('entity-info', 'end') ?>
+                                    </div>
 
-                                <entity-field :entity="entity" classes="col-12" prop="shortDescription" :max-length="400"></entity-field>
-                                <entity-field :entity="entity" classes="col-12" prop="longDescription" editable></entity-field>
-                                <entity-field :entity="entity" classes="col-6" prop="site" label="<?php i::_e('Link (URL)') ?>"></entity-field>
-                                <entity-field :entity="entity" classes="col-6 sm:col-12" prop="telefone1" label="<?= i::__('Telefone privado 1 com DDD') ?>"></entity-field>
-                                <entity-field :entity="entity" classes="col-12" prop="emailPublico" label="<?= i::__('E-mail público') ?>"></entity-field>
-                            </div>
-                        </div>
+                                    <?php $this->applyTemplateHook('edit2-entity-info-taxonomie-area', 'before') ?>
+                                    <entity-terms :entity="entity" taxonomy="area" editable classes="col-12" title="<?php i::_e('Área de atuação'); ?>"></entity-terms>
+                                    <entity-terms :entity="entity" taxonomy="tag" classes="col-12" title="Tags" editable></entity-terms>
+                                    <?php $this->applyTemplateHook('edit2-entity-info-taxonomie-area', 'after') ?>
 
-                    </template>
-                </mc-card>
-                <main>
-                    <mc-card>
-                        <template #title>
-                            <label><?php i::_e("Dados do Agente Coletivo"); ?></label>
-                            <p class="data-subtitle"><?php i::_e("Os dados inseridos abaixo serão registrados apenas no sistemas e não serão exibidos publicamente") ?></p>
-                        </template>
-                        <template #content>
-                            <div class="grid-12">
-                                <entity-field v-if="global.auth.is('admin')" :entity="entity" prop="type" @change="entity.save(true).then(() => global.reload())" classes="col-6 sm:col-12"></entity-field>
-                                <entity-field :entity="entity" classes="col-6 sm:col-12" prop="cnpj" label="CNPJ"></entity-field>
-                                <entity-field :entity="entity" classes="col-6 sm:col-12" prop="emailPrivado" label="<?= i::__('E-mail privado ') ?>"></entity-field>
-                                <entity-field :entity="entity" classes="col-6 sm:col-12" prop="telefonePublico" label="<?= i::__('Telefone público com DDD') ?>"></entity-field>
-                                <entity-field :entity="entity" classes="col-6 sm:col-12" prop="nomeCompleto" label="<?php i::_e('Razão Social') ?>"></entity-field>
-                                <entity-field :entity="entity" classes="col-6 sm:col-12" prop="telefone2" label="<?= i::__('Telefone privado 2 com DDD') ?>"></entity-field>
-                                <entity-field :entity="entity" classes="col-12" prop="nomeSocial" label="<?php i::_e('Nome Fantasia') ?>"></entity-field>
-                                <entity-field :disabled="!(entity?.cnpj?.length == 18)" :entity="entity" classes="col-12" prop="cnpjAnexo" title-modal="<?php i::_e('Anexar CNPJ - Formatos: (png, jpeg, pdf)') ?>" group-name="docs-cnpj" :hide-label="true"></entity-field>
-                                <entity-field :entity="entity" classes="col-12" prop="dataDeNascimento" label="<?= i::__('Data de fundação') ?>"></entity-field>
+                                    <entity-field :entity="entity" classes="col-12" prop="shortDescription" :max-length="400"></entity-field>
+                                    <entity-field :entity="entity" classes="col-12" prop="longDescription" editable></entity-field>
+                                    <entity-field :entity="entity" classes="col-6" prop="site" label="<?php i::_e('Link (URL)') ?>"></entity-field>
+                                    <entity-field :entity="entity" classes="col-6 sm:col-12" prop="telefone1" label="<?= i::__('Telefone privado 1 com DDD') ?>"></entity-field>
+                                    <entity-field :entity="entity" classes="col-12" prop="emailPublico" label="<?= i::__('E-mail público') ?>"></entity-field>
+                                </div>
+                            </template>
+                        </mc-collapsible>
+                    </div>
 
-                                <div class="col-12 divider"></div>
-                                <country-address-form :entity="entity" class="col-12"></country-address-form>
-                            </div>
-                        </template>
-                    </mc-card>
-                    <mc-card>
-                        <template #title>
-                            <h3 class="bold"><?php i::_e("Documentos e Certidões"); ?></h3>
-                            <p class="data-subtitle"><?php i::_e("Certidões de regularidade do agente coletivo"); ?></p>
-                        </template>
-                        <template #content>
-                            <div class="grid-12">
-                                <entity-field :entity="entity" classes="col-12" prop="certidaoFiscalAnexo" label="<?= i::__('Certidão de Regularidade Fiscal') ?>" title-modal="<?php i::_e('Anexar Certidão Fiscal - Formatos: (png, jpeg, pdf)') ?>" group-name="docs-certidao-fiscal"></entity-field>
-                                <div class="col-12 divider"></div>
-                                <entity-field :entity="entity" classes="col-12" prop="certidaoTrabalhistaAnexo" label="<?= i::__('Certidão de Regularidade Trabalhista') ?>" title-modal="<?php i::_e('Anexar Certidão Trabalhista - Formatos: (png, jpeg, pdf)') ?>" group-name="docs-certidao-trabalhista"></entity-field>
-                                <div class="col-12 divider"></div>
-                                <entity-field :entity="entity" classes="col-12" prop="certidaoPrestacaoContasAnexo" label="<?= i::__('Certidão de Prestação de Contas') ?>" title-modal="<?php i::_e('Anexar Certidão de Prestação de Contas - Formatos: (png, jpeg, pdf)') ?>" group-name="docs-certidao-contas"></entity-field>
-                            </div>
-                        </template>
-                    </mc-card>
-                    <mc-card>
-                        <template #title>
-                            <label><?php i::_e("informações públicas"); ?></label>
-                            <p><?php i::_e("Os dados inseridos abaixo assim como as informações de apresentação também são exibidos publicamente"); ?></p>
-                        </template>
-                        <template #content>
-                            <div class="grid-12">
-                                <p class="col-12 data-subtitle bold"><?php i::_e("CNH"); ?></p>
-                                <entity-field :entity="entity" classes="col-4 sm:col-12" prop="cnhNumero" label="<?= i::__('Número de registro') ?>"></entity-field>
-                                <entity-field :entity="entity" classes="col-4 sm:col-12" prop="cnhCategoria" label="<?= i::__('Categoria') ?>"></entity-field>
-                                <entity-field :entity="entity" classes="col-4 sm:col-12" prop="cnhValidade" label="<?= i::__('Validade') ?>"></entity-field>
-                                <entity-field :disabled="!(entity?.cnhNumero && entity?.cnhCategoria?.length && entity?.cnhValidade)" :entity="entity" classes="col-12" prop="cnhAnexo" title-modal="<?php i::_e('Anexar CNH - Formatos: (png, jpeg, pdf)') ?>" group-name="docs-cnh" :hide-label="true"></entity-field>
-                                <div class="col-12 divider"></div>
-                                <p class="col-12 data-subtitle bold"><?php i::_e("RG"); ?></p>
-                                <entity-field :entity="entity" classes="col-5 sm:col-12" prop="rgNumero" label="<?= i::__('Documento') ?>"></entity-field>
-                                <entity-field :entity="entity" classes="col-3 sm:col-12" prop="rgOrgaoEmissor" label="<?= i::__('Órgão Emissor') ?>"></entity-field>
-                                <entity-field :entity="entity" classes="col-4 sm:col-12" prop="rgUF" label="<?= i::__('UF') ?>"></entity-field>
-                                <entity-field :disabled="!(entity?.rgNumero && entity?.rgOrgaoEmissor && entity?.rgUF)" :entity="entity" classes="col-12" prop="rgAnexo" title-modal="<?php i::_e('Anexar RG - Formatos: (png, jpeg, pdf)') ?>" group-name="docs-rg" :hide-label="true"></entity-field>
-                            </div>
-                        </template>
-                    </mc-card>
-                    <mc-card>
-                        <template #content>
-                            <entity-social-media :entity="entity" editable classes="col-12"></entity-social-media>
-                        </template>
-                    </mc-card>
+                    <div class="edit-1__section">
+                        <mc-collapsible :open="false">
+                            <template #header>
+                                <div class="edit-1__section-heading">
+                                    <h3 class="edit-1__section-title"><?php i::_e("Dados do Agente Coletivo"); ?></h3>
+                                    <p class="edit-1__section-subtitle"><?php i::_e("Os dados inseridos abaixo serão registrados apenas no sistemas e não serão exibidos publicamente") ?></p>
+                                </div>
+                            </template>
+                            <template #body>
+                                <div class="grid-12">
+                                    <entity-field v-if="global.auth.is('admin')" :entity="entity" prop="type" @change="entity.save(true).then(() => global.reload())" classes="col-6 sm:col-12"></entity-field>
+                                    <entity-field :entity="entity" classes="col-6 sm:col-12" prop="cnpj" label="CNPJ"></entity-field>
+                                    <entity-field :entity="entity" classes="col-6 sm:col-12" prop="emailPrivado" label="<?= i::__('E-mail privado ') ?>"></entity-field>
+                                    <entity-field :entity="entity" classes="col-6 sm:col-12" prop="telefonePublico" label="<?= i::__('Telefone público com DDD') ?>"></entity-field>
+                                    <entity-field :entity="entity" classes="col-6 sm:col-12" prop="nomeCompleto" label="<?php i::_e('Razão Social') ?>"></entity-field>
+                                    <entity-field :entity="entity" classes="col-6 sm:col-12" prop="telefone2" label="<?= i::__('Telefone privado 2 com DDD') ?>"></entity-field>
+                                    <entity-field :entity="entity" classes="col-12" prop="nomeSocial" label="<?php i::_e('Nome Fantasia') ?>"></entity-field>
+                                    <entity-field :disabled="!(entity?.cnpj?.length == 18)" :entity="entity" classes="col-12" prop="cnpjAnexo" title-modal="<?php i::_e('Anexar CNPJ - Formatos: (png, jpeg, pdf)') ?>" group-name="docs-cnpj" :hide-label="true"></entity-field>
+                                    <entity-field :entity="entity" classes="col-12" prop="dataDeNascimento" label="<?= i::__('Data de fundação') ?>"></entity-field>
+
+                                    <div class="col-12 divider"></div>
+                                    <country-address-form :entity="entity" class="col-12"></country-address-form>
+                                </div>
+                            </template>
+                        </mc-collapsible>
+                    </div>
+
+                    <div class="edit-1__section">
+                        <mc-collapsible :open="false">
+                            <template #header>
+                                <div class="edit-1__section-heading">
+                                    <h3 class="edit-1__section-title"><?php i::_e("Documentos e Certidões"); ?></h3>
+                                    <p class="edit-1__section-subtitle"><?php i::_e("Certidões de regularidade do agente coletivo"); ?></p>
+                                </div>
+                            </template>
+                            <template #body>
+                                <div class="grid-12">
+                                    <entity-field :entity="entity" classes="col-12" prop="certidaoFiscalAnexo" label="<?= i::__('Certidão de Regularidade Fiscal') ?>" title-modal="<?php i::_e('Anexar Certidão Fiscal - Formatos: (png, jpeg, pdf)') ?>" group-name="docs-certidao-fiscal"></entity-field>
+                                    <div class="col-12 divider"></div>
+                                    <entity-field :entity="entity" classes="col-12" prop="certidaoTrabalhistaAnexo" label="<?= i::__('Certidão de Regularidade Trabalhista') ?>" title-modal="<?php i::_e('Anexar Certidão Trabalhista - Formatos: (png, jpeg, pdf)') ?>" group-name="docs-certidao-trabalhista"></entity-field>
+                                    <div class="col-12 divider"></div>
+                                    <entity-field :entity="entity" classes="col-12" prop="certidaoPrestacaoContasAnexo" label="<?= i::__('Certidão de Prestação de Contas') ?>" title-modal="<?php i::_e('Anexar Certidão de Prestação de Contas - Formatos: (png, jpeg, pdf)') ?>" group-name="docs-certidao-contas"></entity-field>
+                                </div>
+                            </template>
+                        </mc-collapsible>
+                    </div>
+
+                    <div class="edit-1__section">
+                        <mc-collapsible :open="false">
+                            <template #header>
+                                <div class="edit-1__section-heading">
+                                    <h3 class="edit-1__section-title"><?php i::_e("informações públicas"); ?></h3>
+                                    <p class="edit-1__section-subtitle"><?php i::_e("Os dados inseridos abaixo assim como as informações de apresentação também são exibidos publicamente"); ?></p>
+                                </div>
+                            </template>
+                            <template #body>
+                                <div class="grid-12">
+                                    <p class="col-12 data-subtitle bold"><?php i::_e("CNH"); ?></p>
+                                    <entity-field :entity="entity" classes="col-4 sm:col-12" prop="cnhNumero" label="<?= i::__('Número de registro') ?>"></entity-field>
+                                    <entity-field :entity="entity" classes="col-4 sm:col-12" prop="cnhCategoria" label="<?= i::__('Categoria') ?>"></entity-field>
+                                    <entity-field :entity="entity" classes="col-4 sm:col-12" prop="cnhValidade" label="<?= i::__('Validade') ?>"></entity-field>
+                                    <entity-field :disabled="!(entity?.cnhNumero && entity?.cnhCategoria?.length && entity?.cnhValidade)" :entity="entity" classes="col-12" prop="cnhAnexo" title-modal="<?php i::_e('Anexar CNH - Formatos: (png, jpeg, pdf)') ?>" group-name="docs-cnh" :hide-label="true"></entity-field>
+                                    <div class="col-12 divider"></div>
+                                    <p class="col-12 data-subtitle bold"><?php i::_e("RG"); ?></p>
+                                    <entity-field :entity="entity" classes="col-5 sm:col-12" prop="rgNumero" label="<?= i::__('Documento') ?>"></entity-field>
+                                    <entity-field :entity="entity" classes="col-3 sm:col-12" prop="rgOrgaoEmissor" label="<?= i::__('Órgão Emissor') ?>"></entity-field>
+                                    <entity-field :entity="entity" classes="col-4 sm:col-12" prop="rgUF" label="<?= i::__('UF') ?>"></entity-field>
+                                    <entity-field :disabled="!(entity?.rgNumero && entity?.rgOrgaoEmissor && entity?.rgUF)" :entity="entity" classes="col-12" prop="rgAnexo" title-modal="<?php i::_e('Anexar RG - Formatos: (png, jpeg, pdf)') ?>" group-name="docs-rg" :hide-label="true"></entity-field>
+                                </div>
+                            </template>
+                        </mc-collapsible>
+                    </div>
+
+                    <div class="edit-1__section edit-1__section--social">
+                        <entity-social-media :entity="entity" editable classes="col-12"></entity-social-media>
+                    </div>
+                    </div>
                 </main>
-                <aside>
-                    <entity-registration :entity="entity"></entity-registration>
-                </aside>
             </mc-container>
             <?php $this->applyTemplateHook('entity-info-validation', 'end') ?>
         </mc-tab>
