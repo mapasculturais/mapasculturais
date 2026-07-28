@@ -9,11 +9,12 @@ use MapasCulturais\i;
 $this->import('
     entity-field 
     entity-terms
+    mc-icon
     mc-link
     mc-modal 
 '); 
 ?>
-<mc-modal :title="modalTitle" :teleport="teleport" :click-to-close="clickToClose" classes="create-modal create-agent-modal" button-label="<?php i::_e('Criar Agente')?>"  @open="createEntity()" @close="destroyEntity()">
+<mc-modal :title="modalTitle" :teleport="teleport" :click-to-close="clickToClose" classes="create-modal create-agent-modal" :button-label="null"  @open="createEntity()" @close="destroyEntity()">
     <template v-if="entity && !entity.id" #default>
         <label><?php i::_e('Crie um agente com informações básicas')?><br><?php i::_e('e de forma rápida')?></label>
         <div class="create-modal__fields">
@@ -30,7 +31,12 @@ $this->import('
     </template>
 
     <template #button="modal">
-        <slot :modal="modal"></slot>
+        <slot :modal="modal">
+            <button class="button button--primary button--icon" @click="modal.open()">
+                <mc-icon name="add"></mc-icon>
+                <span>{{ resolvedButtonLabel }}</span>
+            </button>
+        </slot>
     </template>
     <template v-if="!entity?.id" #actions="modal">
         <button class="button button--primary" @click="createPublic(modal)"><?php i::_e('Criar e Publicar')?></button>

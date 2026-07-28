@@ -41,6 +41,14 @@ app.component('create-agent', {
             type: null,
             default: false
         },
+        parent: {
+            type: [Entity, Object, Number],
+            default: null
+        },
+        buttonLabel: {
+            type: String,
+            default: null
+        },
     },
 
     computed: {
@@ -49,6 +57,9 @@ app.component('create-agent', {
         },
         areaClasses() {
             return this.areaErrors ? 'field error' : 'field';
+        },
+        resolvedButtonLabel() {
+            return this.buttonLabel || __('criarAgente', 'create-agent');
         },
         modalTitle() {
             if (this.entity?.id) {
@@ -87,6 +98,9 @@ app.component('create-agent', {
             this.entity = Vue.ref(new Entity('agent'));
             this.entity.type = this.initialType;
             this.entity.terms = { area: [] }
+            if (this.parent) {
+                this.entity.parent = this.parent;
+            }
         },
         createDraft(modal) {
             this.entity.status = 0;
