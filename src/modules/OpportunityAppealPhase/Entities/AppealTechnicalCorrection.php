@@ -12,8 +12,18 @@ use MapasCulturais\Entities\User;
 /**
  * @ORM\Table(
  *     name="appeal_technical_correction",
+ *     indexes={
+ *         @ORM\Index(name="appeal_technical_correction_source_idx", columns={"source_registration_id"}),
+ *         @ORM\Index(name="appeal_technical_correction_appeal_evaluation_idx", columns={"appeal_evaluation_id"}),
+ *         @ORM\Index(name="appeal_technical_correction_relator_idx", columns={"relator_user_id"})
+ *     },
  *     uniqueConstraints={
- *         @ORM\UniqueConstraint(name="appeal_technical_correction_sequence_uidx", columns={"appeal_registration_id", "sequence"})
+ *         @ORM\UniqueConstraint(name="appeal_technical_correction_sequence_uidx", columns={"appeal_registration_id", "sequence"}),
+ *         @ORM\UniqueConstraint(
+ *             name="appeal_technical_correction_active_draft_uidx",
+ *             columns={"appeal_registration_id"},
+ *             options={"where": "(status = 0)"}
+ *         )
  *     }
  * )
  * @ORM\Entity(repositoryClass="MapasCulturais\Repository")
@@ -35,7 +45,7 @@ class AppealTechnicalCorrection extends Entity
 
     /**
      * @ORM\ManyToOne(targetEntity="MapasCulturais\Entities\Registration")
-     * @ORM\JoinColumn(name="appeal_registration_id", referencedColumnName="id", nullable=false, onDelete="CASCADE")
+     * @ORM\JoinColumn(name="appeal_registration_id", referencedColumnName="id", nullable=false, onDelete="RESTRICT")
      */
     protected $appealRegistration;
 
@@ -47,7 +57,7 @@ class AppealTechnicalCorrection extends Entity
 
     /**
      * @ORM\ManyToOne(targetEntity="MapasCulturais\Entities\Registration")
-     * @ORM\JoinColumn(name="source_registration_id", referencedColumnName="id", nullable=false, onDelete="CASCADE")
+     * @ORM\JoinColumn(name="source_registration_id", referencedColumnName="id", nullable=false, onDelete="RESTRICT")
      */
     protected $sourceRegistration;
 
@@ -87,7 +97,7 @@ class AppealTechnicalCorrection extends Entity
     /** @ORM\Column(name="after_eligible", type="boolean", nullable=true) */
     protected $afterEligible;
 
-    /** @ORM\Column(name="criteria_configuration_snapshot", type="json", nullable=false) */
+    /** @ORM\Column(name="criteria_configuration_snapshot", type="json", nullable=false, options={"jsonb": true}) */
     protected $criteriaConfigurationSnapshot = [];
 
     /**

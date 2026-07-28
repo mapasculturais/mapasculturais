@@ -9,6 +9,10 @@ use MapasCulturais\Entity;
 /**
  * @ORM\Table(
  *     name="appeal_technical_correction_item",
+ *     indexes={
+ *         @ORM\Index(name="appeal_technical_correction_item_evaluation_idx", columns={"target_evaluation_id"}),
+ *         @ORM\Index(name="appeal_technical_correction_item_original_valuer_idx", columns={"original_valuer_user_id"})
+ *     },
  *     uniqueConstraints={
  *         @ORM\UniqueConstraint(name="appeal_technical_correction_item_target_uidx", columns={"correction_id", "target_evaluation_id"})
  *     }
@@ -46,10 +50,10 @@ class AppealTechnicalCorrectionItem extends Entity
     /** @ORM\Column(name="is_tiebreaker", type="boolean", nullable=false, options={"default": false}) */
     protected $isTiebreaker = false;
 
-    /** @ORM\Column(name="before_evaluation_data", type="json", nullable=false) */
+    /** @ORM\Column(name="before_evaluation_data", type="json", nullable=false, options={"jsonb": true}) */
     protected $beforeEvaluationData = [];
 
-    /** @ORM\Column(name="after_evaluation_data", type="json", nullable=false) */
+    /** @ORM\Column(name="after_evaluation_data", type="json", nullable=false, options={"jsonb": true}) */
     protected $afterEvaluationData = [];
 
     /** @ORM\Column(name="before_result", type="float", nullable=true) */
@@ -58,7 +62,7 @@ class AppealTechnicalCorrectionItem extends Entity
     /** @ORM\Column(name="after_result", type="float", nullable=true) */
     protected $afterResult;
 
-    /** @ORM\Column(name="changed_criteria", type="json", nullable=false) */
+    /** @ORM\Column(name="changed_criteria", type="json", nullable=false, options={"jsonb": true}) */
     protected $changedCriteria = [];
 
     /** @ORM\Column(name="create_timestamp", type="datetime", nullable=false) */
