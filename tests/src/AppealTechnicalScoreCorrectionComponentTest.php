@@ -28,6 +28,8 @@ class AppealTechnicalScoreCorrectionComponentTest extends Abstract\TestCase
         $this->assertStringContainsString('<fieldset', $template);
         $this->assertStringContainsString('confirmNoScoreChange', $template);
         $this->assertStringContainsString('history', $template);
+        $this->assertStringContainsString('<output v-if="loading" class="col-12">', $template);
+        $this->assertStringNotContainsString('role="status"', $template);
         $this->assertStringContainsString('hasAppealTechnicalCorrection', $technicalScript);
         $this->assertStringContainsString('hasAppealTechnicalCorrection', $technicalTemplate);
     }

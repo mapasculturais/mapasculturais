@@ -10,7 +10,7 @@ $this->import('mc-alert mc-confirm-button mc-icon');
 
     <div class="section__content col-12">
         <div class="card owner grid-12">
-            <p v-if="loading" class="col-12" role="status"><?= i::__('Carregando dados da correção...') ?></p>
+            <output v-if="loading" class="col-12"><?= i::__('Carregando dados da correção...') ?></output>
             <mc-alert v-if="error" class="col-12" type="danger" role="alert">{{ error }}</mc-alert>
             <mc-alert v-if="conflict" class="col-12" type="warning" role="alert">
                 <?= i::__('Os dados foram atualizados devido a uma alteração concorrente. Revise o caso antes de continuar.') ?>
