@@ -18,7 +18,7 @@ $this->import('mc-alert mc-confirm-button mc-icon');
 
             <template v-if="!loading && context">
                 <div v-if="context.canManageRelator" class="field col-12">
-                    <label class="field__label" for="appeal-correction-relator"><?= i::__('Relator responsável pela correção') ?></label>
+                    <label class="field__label" for="appeal-correction-relator"><?= i::__('Avaliador responsável pela correção') ?></label>
                     <div class="grid-12">
                         <select id="appeal-correction-relator" v-model="selectedRelatorId" class="col-8" :disabled="submitting || hasFinalCorrection">
                             <option value=""><?= i::__('Selecione um avaliador distribuído') ?></option>
@@ -27,14 +27,14 @@ $this->import('mc-alert mc-confirm-button mc-icon');
                             </option>
                         </select>
                         <button type="button" class="button button--primary-outline col-4" :disabled="submitting || !selectedRelatorId || hasFinalCorrection" @click="saveRelator">
-                            <?= i::__('Definir relator') ?>
+                            <?= i::__('Definir avaliador') ?>
                         </button>
                     </div>
-                    <small><?= i::__('Somente o relator designado poderá propor e aplicar mudanças de nota.') ?></small>
+                    <small><?= i::__('Somente o avaliador designado poderá propor e aplicar mudanças de nota.') ?></small>
                 </div>
 
                 <mc-alert v-if="!context.relatorUserId" class="col-12" type="warning">
-                    <?= i::__('Defina o relator para habilitar a revisão da nota.') ?>
+                    <?= i::__('Defina o avaliador para habilitar a revisão da nota.') ?>
                 </mc-alert>
 
                 <form v-if="canEditCorrection" class="col-12 grid-12" @submit.prevent="saveDraft">

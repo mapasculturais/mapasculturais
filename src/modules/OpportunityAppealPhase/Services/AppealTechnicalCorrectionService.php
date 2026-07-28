@@ -133,13 +133,13 @@ class AppealTechnicalCorrectionService
     {
         $this->assertAppealWithTechnicalSource($appeal);
         if (!$appeal->opportunity->canUser('@control', $actor) && !$actor->is('admin')) {
-            throw new PermissionDenied($actor, $appeal, 'designar relator');
+            throw new PermissionDenied($actor, $appeal, 'designar avaliador');
         }
 
         $valuers = (array) $appeal->valuers;
         if (!array_key_exists((string) $relator->id, $valuers)
             && !array_key_exists($relator->id, $valuers)) {
-            throw new DomainException('O relator deve ser um avaliador distribuído para este recurso.');
+            throw new DomainException('O avaliador deve estar distribuído para este recurso.');
         }
 
         $app = App::i();
@@ -152,7 +152,7 @@ class AppealTechnicalCorrectionService
             ['sequence' => 'DESC']
         );
         if ($latest && !$draft) {
-            throw new DomainException('Uma correção finalizada só pode ter o relator alterado após a reabertura.');
+            throw new DomainException('Uma correção finalizada só pode ter o avaliador alterado após a reabertura.');
         }
 
         $appeal->appealTechnicalCorrectionRelatorUserId = $relator->id;
@@ -424,7 +424,7 @@ class AppealTechnicalCorrectionService
         $source = $this->findSourceRegistration($appeal);
         $relator = App::i()->repo('User')->find((int) ($appeal->appealTechnicalCorrectionRelatorUserId ?? 0));
         if (!$relator) {
-            throw new DomainException('Defina um relator antes de reabrir a correção.');
+            throw new DomainException('Defina um avaliador antes de reabrir a correção.');
         }
         $latest = App::i()->repo(AppealTechnicalCorrection::class)->findOneBy(
             ['appealRegistration' => $appeal],
@@ -456,7 +456,7 @@ class AppealTechnicalCorrectionService
         }
         $valuers = (array) $appeal->valuers;
         if (!array_key_exists((string) $actor->id, $valuers) && !array_key_exists($actor->id, $valuers)) {
-            throw new DomainException('O relator não está mais distribuído para este recurso.');
+            throw new DomainException('O avaliador não está mais distribuído para este recurso.');
         }
     }
 
@@ -626,7 +626,7 @@ class AppealTechnicalCorrectionService
                 'status' => RegistrationEvaluation::STATUS_SENT,
             ]);
             if (!$evaluation) {
-                throw new DomainException('Todos os avaliadores do recurso devem enviar seus pareceres antes do relator.');
+                throw new DomainException('Todos os avaliadores do recurso devem enviar seus pareceres antes do avaliador.');
             }
         }
     }

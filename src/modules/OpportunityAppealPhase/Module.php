@@ -86,7 +86,7 @@ class Module extends \MapasCulturais\Module {
                         $this->user,
                         $appeal,
                         'finalizar parecer antes dos demais avaliadores',
-                        i::__('O relator deve finalizar por último, após o envio de todos os demais pareceres do recurso.')
+                        i::__('O avaliador deve finalizar por último, após o envio de todos os demais pareceres do recurso.')
                     );
                 }
             }
@@ -112,7 +112,7 @@ class Module extends \MapasCulturais\Module {
                 $user_id = (int) ($this->data['userId'] ?? 0);
                 $relator = $user_id ? App::i()->repo('User')->find($user_id) : null;
                 if (!$relator) {
-                    throw new DomainException(i::__('O relator informado não foi encontrado.'));
+                    throw new DomainException(i::__('O avaliador informado não foi encontrado.'));
                 }
                 $service->assignRelator($appeal, $relator, App::i()->user);
                 return $service->getContext($appeal->refreshed(), App::i()->user);
@@ -421,7 +421,7 @@ class Module extends \MapasCulturais\Module {
         ]);
 
         $this->registerRegistrationMetadata('appealTechnicalCorrectionRelatorUserId', [
-            'label' => i::__('Relator da correção de nota técnica'),
+            'label' => i::__('Avaliador da correção de nota técnica'),
             'type' => 'integer',
             'private' => true,
         ]);

@@ -31,4 +31,28 @@ class AppealTechnicalScoreCorrectionComponentTest extends Abstract\TestCase
         $this->assertStringContainsString('hasAppealTechnicalCorrection', $technicalScript);
         $this->assertStringContainsString('hasAppealTechnicalCorrection', $technicalTemplate);
     }
+
+    public function testUserFacingTerminologyUsesEvaluatorInsteadOfRelator(): void
+    {
+        $modulePath = APPLICATION_PATH . 'modules/OpportunityAppealPhase/';
+        $template = file_get_contents($modulePath . 'components/appeal-technical-score-correction/template.php');
+        $texts = file_get_contents($modulePath . 'components/appeal-technical-score-correction/texts.php');
+        $module = file_get_contents($modulePath . 'Module.php');
+        $service = file_get_contents($modulePath . 'Services/AppealTechnicalCorrectionService.php');
+
+        $this->assertStringContainsString('Avaliador responsável pela correção', $template);
+        $this->assertStringContainsString('Definir avaliador', $template);
+        $this->assertStringContainsString('Somente o avaliador designado', $template);
+        $this->assertStringContainsString('Defina o avaliador para habilitar', $template);
+        $this->assertStringContainsString('Avaliador definido.', $texts);
+        $this->assertStringContainsString('O avaliador deve finalizar por último', $module);
+        $this->assertStringContainsString('O avaliador informado não foi encontrado.', $module);
+        $this->assertStringContainsString('Avaliador da correção de nota técnica', $module);
+        $this->assertStringContainsString('designar avaliador', $service);
+        $this->assertStringContainsString('O avaliador deve estar distribuído', $service);
+        $this->assertStringContainsString('o avaliador alterado após a reabertura', $service);
+        $this->assertStringContainsString('Defina um avaliador antes de reabrir', $service);
+        $this->assertStringContainsString('O avaliador não está mais distribuído', $service);
+        $this->assertStringContainsString('antes do avaliador.', $service);
+    }
 }
