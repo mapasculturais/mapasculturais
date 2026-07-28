@@ -7,6 +7,11 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ## [Unreleased]
 ### Novas Funcionalidades
+- Permite que o avaliador de um recurso deferido corrija uma ou mais avaliações técnicas individuais, alterando somente os critérios reconhecidos na decisão do recurso
+- Adiciona à ficha do recurso o fluxo completo para designar o avaliador, selecionar avaliações e critérios, salvar um rascunho, conferir a prévia dos novos resultados e confirmar a correção ou o deferimento sem mudança de nota
+- Substitui imediatamente as notas corrigidas e recalcula o resultado consolidado, os bônus por pontuação, a nota final e a elegibilidade, sem alterar automaticamente o status da inscrição, a classificação publicada ou o avanço de fase
+- Mantém histórico interno e imutável de cada decisão, com justificativa obrigatória, valores anteriores e posteriores, critérios alterados, configuração técnica utilizada e responsável pela correção
+- Protege a confirmação contra alterações simultâneas e mudanças na configuração dos critérios, permite reabrir a correção em uma nova sequência e notifica os avaliadores técnicos cujas notas foram modificadas
 - **Avaliação automática por selos**: o gestor pode indicar, em uma fase de avaliação, quais selos validam o proponente. Se a pessoa já tiver esses selos válidos no perfil, a inscrição é **dispensada automaticamente** daquela fase (marcada como “Dispensada por selos”) e segue para a próxima etapa, sem precisar de avaliador
 - **Novos anexos no cadastro do agente** (também usáveis como campos `@` no formulário de inscrição): CPF, CNPJ, CNH, RG, passaporte, comprovante de residência, vínculo territorial, currículo, portfólio, certidões fiscal, trabalhista e de prestação de contas, além de comprovantes de raça/cor, pessoa com deficiência e comunidades tradicionais. Os arquivos ficam no perfil e acompanham a inscrição automaticamente
 

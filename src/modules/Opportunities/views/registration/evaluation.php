@@ -10,6 +10,7 @@ $this->layout = 'registrations';
 $this->import('
     evaluation-form
     appeal-previous-evaluation-results
+    appeal-technical-score-correction
     mc-alert
     mc-breadcrumb
     mc-container
@@ -146,6 +147,10 @@ $this->breadcrumb = $breadcrumb;
                     <mc-summary-agent-info :entity="entity" classes="col-12"></mc-summary-agent-info>
 
                     <appeal-previous-evaluation-results></appeal-previous-evaluation-results>
+
+                    <?php if ($entity->opportunity->isAppealPhase && $entity->opportunity->parent?->evaluationMethod?->slug === 'technical') : ?>
+                        <appeal-technical-score-correction :entity="entity"></appeal-technical-score-correction>
+                    <?php endif; ?>
 
                     <!-- Caso seja uma fase de recurso -->
                     <section v-if="entity.opportunity?.isAppealPhase" class="col-12 grid-12 section">
