@@ -17,6 +17,7 @@ $this->import('
     entity-gallery-video
     entity-header
     entity-links
+    entity-organizations-edit
     entity-profile
     entity-renew-lock
     entity-social-media
@@ -475,6 +476,14 @@ $this->breadcrumb = [
                             </mc-tab>
                         </mc-tabs>
                     </div>
+                </main>
+            </mc-container>
+        </mc-tab>
+
+        <mc-tab label="<?= i::esc_attr_e('Organizações') ?>" slug="organizacoes">
+            <mc-container>
+                <main>
+                    <entity-organizations-edit :entity="entity" editable></entity-organizations-edit>
                 </main>
             </mc-container>
         </mc-tab>
