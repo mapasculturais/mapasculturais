@@ -9,6 +9,7 @@ $this->import('
     country-address-form
     elderly-person
     entity-actions
+    entity-admins
     entity-cover
     entity-field
     entity-files-list
@@ -25,6 +26,10 @@ $this->import('
     mc-card
     mc-collapsible
     mc-container
+    mc-avatar
+    mc-confirm-button
+    mc-entities
+    mc-icon
     mc-tabs
     mc-tab
     mc-title
@@ -304,7 +309,177 @@ $this->breadcrumb = [
                 </main>
             </mc-container>
         </mc-tab>
-        <?php $this->applyTemplateHook('tabs','end') ?>
+<mc-tab label="<?= i::esc_attr_e('Administração') ?>" slug="admin">
+            <mc-container>
+                <main>
+                    <div class="edit-1__admin edit-1__inner-tabs">
+                        <mc-tabs class="tabs" sync-hash>
+                            <template #header="{ tab }">
+                                <span>{{ tab.label }}</span>
+                                <span
+                                    v-if="tab.meta?.count > 0"
+                                    class="edit-1__admin-count"
+                                    :class="{ 'edit-1__admin-count--danger': tab.meta?.danger }">
+                                    {{ tab.meta.count }}
+                                </span>
+                            </template>
+
+                            <mc-tab
+                                label="<?= i::esc_attr_e('Administradores do meu perfil') ?>"
+                                slug="admins-perfil"
+                                :meta="{ count: (entity.agentRelations?.['group-admin'] || []).filter(r => Number(r.status) > 0).length }">
+                                <div class="edit-1__admin-card">
+                                    <div class="edit-1__admin-alert">
+                                        <mc-icon name="exclamation"></mc-icon>
+                                        <p>
+                                            <strong><?php i::_e('Atenção:') ?></strong>
+                                            <?php i::_e('administradores do seu perfil poderão visualizar e editar os seus dados públicos e pessoais, além de fazer inscrições em seu nome nas oportunidades vinculadas na plataforma e transferir, editar e/ou excluir suas entidades. A administração dos perfis só é possível mediante a autorização do proprietário do perfil. Não delegue essa função a alguém que não confie.') ?>
+                                        </p>
+                                    </div>
+
+                                    <entity-admins
+                                        :entity="entity"
+                                        classes="edit-1__admin-admins"
+                                        variant="edit"
+                                        editable>
+                                    </entity-admins>
+                                </div>
+                            </mc-tab>
+
+                            <mc-tab
+                                label="<?= i::esc_attr_e('Perfis que administro') ?>"
+                                slug="admins-perfis">
+                                <div class="edit-1__admin-card">
+                                    <div class="edit-1__admin-alert">
+                                        <mc-icon name="exclamation"></mc-icon>
+                                        <p>
+                                            <strong><?php i::_e('Atenção:') ?></strong>
+                                            <?php i::_e('ao administrar o perfil de outra pessoa você poderá visualizar e editar os dados públicos e pessoais desse agente, além de fazer inscrições em seu nome nas oportunidades vinculadas na plataforma e transferir, editar e/ou excluir suas entidades.') ?>
+                                            <strong><?php i::_e('Não divulgue dados pessoais do agente que lhe deu a função de administrador, e não realize ações na plataforma que não foram expressamente permitidas por esse agente.') ?></strong>
+                                        </p>
+                                    </div>
+
+                                    <mc-entities
+                                        type="agent"
+                                        name="edit-admin-granted"
+                                        select="id,name,type,terms,files.avatar,singleUrl,createTimestamp"
+                                        :query="{
+                                            '@permissions': '@control',
+                                            '@order': 'name ASC',
+                                            status: 'GTE(0)',
+                                            user: '!EQ(@me)'
+                                        }"
+                                        watch-query>
+                                        <template #default="{entities}">
+                                            <ul v-if="entities.length" class="entity-admins-edit__items">
+                                                <li v-for="agent in entities" :key="agent.id" class="entity-admins-edit__item">
+                                                    <div class="entity-admins-edit__avatar">
+                                                        <mc-avatar :entity="agent" size="medium"></mc-avatar>
+                                                    </div>
+                                                    <div class="entity-admins-edit__content">
+                                                        <a class="entity-admins-edit__name" :href="agent.singleUrl">{{ agent.name }}</a>
+                                                        <p v-if="agent.type?.name" class="entity-admins-edit__meta">
+                                                            <span class="entity-admins-edit__meta-label"><?php i::_e('Tipo de agente:') ?></span>
+                                                            {{ agent.type.name }}
+                                                        </p>
+                                                        <p v-if="agent.terms?.area?.length" class="entity-admins-edit__meta">
+                                                            <span class="entity-admins-edit__meta-label">
+                                                                <?php i::_e('Áreas de atuação') ?> ({{ agent.terms.area.length }}):
+                                                            </span>
+                                                            <span
+                                                                v-for="area in agent.terms.area"
+                                                                :key="area"
+                                                                class="entity-admins-edit__area">
+                                                                {{ String(area).toUpperCase() }}
+                                                            </span>
+                                                        </p>
+                                                    </div>
+                                                </li>
+                                            </ul>
+                                        </template>
+                                        <template #empty>
+                                            <p class="entity-admins-edit__empty"><?php i::_e('Você não administra nenhum outro perfil.') ?></p>
+                                        </template>
+                                    </mc-entities>
+                                </div>
+                            </mc-tab>
+
+                            <mc-tab
+                                label="<?= i::esc_attr_e('Pendentes') ?>"
+                                slug="admins-pendentes"
+                                :meta="{
+                                    count: (entity.agentRelations?.['group-admin'] || []).filter(r => Number(r.status) === -5).length,
+                                    danger: true
+                                }">
+                                <div class="edit-1__admin-stack">
+                                    <div class="edit-1__admin-card">
+                                        <h3 class="edit-1__admin-section-title"><?php i::_e('Convites enviados') ?></h3>
+                                        <p class="edit-1__admin-section-text">
+                                            <?php i::_e('Convites que você enviou para outras pessoas administrarem o seu perfil. A administração só começa após o aceite. Não delegue essa função a alguém que não confie.') ?>
+                                        </p>
+
+                                        <ul
+                                            v-if="(entity.agentRelations?.['group-admin'] || []).filter(r => Number(r.status) === -5).length"
+                                            class="entity-admins-edit__items">
+                                            <li
+                                                v-for="relation in (entity.agentRelations?.['group-admin'] || []).filter(r => Number(r.status) === -5)"
+                                                :key="relation.id"
+                                                class="entity-admins-edit__item">
+                                                <div class="entity-admins-edit__avatar">
+                                                    <mc-avatar :entity="relation.agent" size="medium"></mc-avatar>
+                                                </div>
+                                                <div class="entity-admins-edit__content">
+                                                    <a class="entity-admins-edit__name" :href="relation.agent.singleUrl">{{ relation.agent.name }}</a>
+                                                    <p v-if="relation.agent.type?.name" class="entity-admins-edit__meta">
+                                                        <span class="entity-admins-edit__meta-label"><?php i::_e('Tipo de agente:') ?></span>
+                                                        {{ relation.agent.type.name }}
+                                                    </p>
+                                                    <p v-if="relation.agent.terms?.area?.length" class="entity-admins-edit__meta">
+                                                        <span class="entity-admins-edit__meta-label">
+                                                            <?php i::_e('Áreas de atuação') ?> ({{ relation.agent.terms.area.length }}):
+                                                        </span>
+                                                        <span
+                                                            v-for="area in relation.agent.terms.area"
+                                                            :key="area"
+                                                            class="entity-admins-edit__area">
+                                                            {{ String(area).toUpperCase() }}
+                                                        </span>
+                                                    </p>
+                                                </div>
+                                                <div class="entity-admins-edit__actions">
+                                                    <mc-confirm-button @confirm="entity.removeAgentRelation('group-admin', relation.agent)">
+                                                        <template #button="modal">
+                                                            <button type="button" class="button button--icon button--sm entity-admins-edit__delete" @click="modal.open()">
+                                                                <mc-icon name="close"></mc-icon>
+                                                                <?php i::_e('cancelar convite') ?>
+                                                            </button>
+                                                        </template>
+                                                        <template #message="message">
+                                                            <?php i::_e('Cancelar este convite?') ?>
+                                                        </template>
+                                                    </mc-confirm-button>
+                                                </div>
+                                            </li>
+                                        </ul>
+                                        <p v-else class="entity-admins-edit__empty"><?php i::_e('Nenhum convite enviado pendente.') ?></p>
+                                    </div>
+
+                                    <div class="edit-1__admin-card">
+                                        <h3 class="edit-1__admin-section-title"><?php i::_e('Convites recebidos') ?></h3>
+                                        <p class="edit-1__admin-section-text">
+                                            <?php i::_e('Convites de outros agentes para você administrar os perfis deles. Não divulgue dados pessoais do agente que lhe deu a função de administrador.') ?>
+                                        </p>
+                                        <p class="entity-admins-edit__empty"><?php i::_e('Nenhum convite recebido pendente.') ?></p>
+                                    </div>
+                                </div>
+                            </mc-tab>
+                        </mc-tabs>
+                    </div>
+                </main>
+            </mc-container>
+        </mc-tab>
+
+                <?php $this->applyTemplateHook('tabs','end') ?>
     </mc-tabs>
 
     <entity-actions :entity="entity" editable></entity-actions>
