@@ -23,12 +23,12 @@ $this->import('
     entity-social-media
     entity-terms
     entity-status
+    mc-avatar
     mc-breadcrumb
     mc-card
     mc-collapsible
-    mc-container
-    mc-avatar
     mc-confirm-button
+    mc-container
     mc-entities
     mc-icon
     mc-tabs
@@ -203,34 +203,6 @@ $this->breadcrumb = [
                         </mc-collapsible>
                     </div>
 
-                    <div class="edit-1__section">
-                        <mc-collapsible :open="false">
-                            <template #header>
-                                <div class="edit-1__section-heading">
-                                    <h3 class="edit-1__section-title"><?php i::_e("Documentos e Certidões"); ?></h3>
-                                    <p class="edit-1__section-subtitle"><?php i::_e("Anexos comprobatórios complementares (residência, vínculo, currículo, portfólio e certidões de regularidade)"); ?></p>
-                                </div>
-                            </template>
-                            <template #body>
-                                <div class="grid-12">
-                                    <entity-field :entity="entity" classes="col-12" prop="comprovanteResidenciaAnexo" label="<?= i::__('Comprovante de Residência') ?>" title-modal="<?php i::_e('Anexar Comprovante de Residência - Formatos: (png, jpeg, pdf)') ?>" group-name="docs-residencia"></entity-field>
-                                    <div class="col-12 divider"></div>
-                                    <entity-field :entity="entity" classes="col-12" prop="comprovanteVinculoTerritorialAnexo" label="<?= i::__('Comprovante de Vínculo Territorial') ?>" title-modal="<?php i::_e('Anexar Comprovante de Vínculo Territorial - Formatos: (png, jpeg, pdf)') ?>" group-name="docs-vinculo-territorial"></entity-field>
-                                    <div class="col-12 divider"></div>
-                                    <entity-field :entity="entity" classes="col-12" prop="curriculoAnexo" label="<?= i::__('Currículo') ?>" title-modal="<?php i::_e('Anexar Currículo - Formatos: (png, jpeg, pdf)') ?>" group-name="docs-curriculo"></entity-field>
-                                    <div class="col-12 divider"></div>
-                                    <entity-files-list :entity="entity" classes="col-12 docs-portfolio-list" group="docs-portfolio" title="<?php i::_e('Portfólio'); ?>" editable></entity-files-list>
-                                    <div class="col-12 divider"></div>
-                                    <entity-field :entity="entity" classes="col-12" prop="certidaoFiscalAnexo" label="<?= i::__('Certidão de Regularidade Fiscal') ?>" title-modal="<?php i::_e('Anexar Certidão Fiscal - Formatos: (png, jpeg, pdf)') ?>" group-name="docs-certidao-fiscal"></entity-field>
-                                    <div class="col-12 divider"></div>
-                                    <entity-field :entity="entity" classes="col-12" prop="certidaoTrabalhistaAnexo" label="<?= i::__('Certidão de Regularidade Trabalhista') ?>" title-modal="<?php i::_e('Anexar Certidão Trabalhista - Formatos: (png, jpeg, pdf)') ?>" group-name="docs-certidao-trabalhista"></entity-field>
-                                    <div class="col-12 divider"></div>
-                                    <entity-field :entity="entity" classes="col-12" prop="certidaoPrestacaoContasAnexo" label="<?= i::__('Certidão de Prestação de Contas') ?>" title-modal="<?php i::_e('Anexar Certidão de Prestação de Contas - Formatos: (png, jpeg, pdf)') ?>" group-name="docs-certidao-contas"></entity-field>
-                                </div>
-                            </template>
-                        </mc-collapsible>
-                    </div>
-
                     <div class="edit-1__section edit-1__section--social">
                         <entity-social-media :entity="entity" editable classes="col-12"></entity-social-media>
                     </div>
@@ -310,7 +282,8 @@ $this->breadcrumb = [
                 </main>
             </mc-container>
         </mc-tab>
-<mc-tab label="<?= i::esc_attr_e('Administração') ?>" slug="admin">
+
+        <mc-tab label="<?= i::esc_attr_e('Administração') ?>" slug="admin">
             <mc-container>
                 <main>
                     <div class="edit-1__admin edit-1__inner-tabs">
@@ -488,7 +461,35 @@ $this->breadcrumb = [
             </mc-container>
         </mc-tab>
 
-                <?php $this->applyTemplateHook('tabs','end') ?>
+        <mc-tab label="<?= i::esc_attr_e('Documentos') ?>" slug="documentos">
+            <mc-container>
+                <main class="edit-1__perfil-main">
+                    <div class="edit-1__section">
+                        <p class="edit-1__section-subtitle">
+                            <?php i::_e('Os documentos registrados no perfil do agente cultural podem ser utilizados no processo de inscrição em oportunidades.') ?>
+                        </p>
+
+                        <div class="grid-12">
+                            <div class="col-12 divider"></div>
+                            <entity-field :entity="entity" classes="col-12" prop="comprovanteResidenciaAnexo" label="<?= i::__('Comprovante de Residência') ?>" title-modal="<?php i::_e('Anexar Comprovante de Residência - Formatos: (png, jpeg, pdf)') ?>" group-name="docs-residencia"></entity-field>
+                            <div class="col-12 divider"></div>
+                            <entity-field :entity="entity" classes="col-12" prop="comprovanteVinculoTerritorialAnexo" label="<?= i::__('Comprovante de Vínculo Territorial') ?>" title-modal="<?php i::_e('Anexar Comprovante de Vínculo Territorial - Formatos: (png, jpeg, pdf)') ?>" group-name="docs-vinculo-territorial"></entity-field>
+                            <div class="col-12 divider"></div>
+                            <entity-field :entity="entity" classes="col-12" prop="curriculoAnexo" label="<?= i::__('Currículo') ?>" title-modal="<?php i::_e('Anexar Currículo - Formatos: (png, jpeg, pdf)') ?>" group-name="docs-curriculo"></entity-field>
+                            <div class="col-12 divider"></div>
+                            <entity-files-list :entity="entity" classes="col-12" group="docs-portfolio" title="<?php i::_e('Portfólio'); ?>" editable></entity-files-list>
+                            <div class="col-12 divider"></div>
+                            <entity-field :entity="entity" classes="col-12" prop="certidaoFiscalAnexo" label="<?= i::__('Certidão de Regularidade Fiscal') ?>" title-modal="<?php i::_e('Anexar Certidão Fiscal - Formatos: (png, jpeg, pdf)') ?>" group-name="docs-certidao-fiscal"></entity-field>
+                            <div class="col-12 divider"></div>
+                            <entity-field :entity="entity" classes="col-12" prop="certidaoTrabalhistaAnexo" label="<?= i::__('Certidão de Regularidade Trabalhista') ?>" title-modal="<?php i::_e('Anexar Certidão Trabalhista - Formatos: (png, jpeg, pdf)') ?>" group-name="docs-certidao-trabalhista"></entity-field>
+                            <div class="col-12 divider"></div>
+                            <entity-field :entity="entity" classes="col-12" prop="certidaoPrestacaoContasAnexo" label="<?= i::__('Certidão de Prestação de Contas') ?>" title-modal="<?php i::_e('Anexar Certidão de Prestação de Contas - Formatos: (png, jpeg, pdf)') ?>" group-name="docs-certidao-contas"></entity-field>
+                        </div>
+                    </div>
+                </main>
+            </mc-container>
+        </mc-tab>
+        <?php $this->applyTemplateHook('tabs','end') ?>
     </mc-tabs>
 
     <entity-actions :entity="entity" editable></entity-actions>
