@@ -17,13 +17,7 @@ class AppealTechnicalCorrectionService
 {
     public function buildCorrectedEvaluationData(array $criteria, array $before, array $changes): array
     {
-        $criteriaById = [];
-        foreach ($criteria as $criterion) {
-            $criterion = (array) $criterion;
-            if (!empty($criterion['id'])) {
-                $criteriaById[(string) $criterion['id']] = $criterion;
-            }
-        }
+        $criteriaById = $this->indexCriteriaById($criteria);
 
         if ($changes === []) {
             throw new DomainException('Selecione ao menos um critério para correção.');
@@ -498,6 +492,18 @@ class AppealTechnicalCorrectionService
             ], $correction->items->toArray());
         }
         return $data;
+    }
+
+    private function indexCriteriaById(array $criteria): array
+    {
+        $criteriaById = [];
+        foreach ($criteria as $criterion) {
+            $criterion = (array) $criterion;
+            if (!empty($criterion['id'])) {
+                $criteriaById[(string) $criterion['id']] = $criterion;
+            }
+        }
+        return $criteriaById;
     }
 
     private function calculateEvaluationResult(array $criteria, array $evaluationData): float
