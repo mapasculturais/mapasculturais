@@ -20,7 +20,7 @@ app.component('entity-admins', {
         },
         variant: {
             type: String,
-            default: 'default', // 'default' | 'list'
+            default: 'default', // 'default' | 'list' | 'edit'
         },
     },
 
@@ -53,7 +53,13 @@ app.component('entity-admins', {
         },
         group() {
             return this.entity.agentRelations?.['group-admin'] || [];
-        }
+        },
+        activeRelations() {
+            return this.group.filter((relation) => Number(relation.status) > 0);
+        },
+        pendingRelations() {
+            return this.group.filter((relation) => Number(relation.status) === -5);
+        },
     },
 
     methods: {
@@ -63,6 +69,11 @@ app.component('entity-admins', {
 
         removeAgent(agent) {
             this.entity.removeAgentRelation('group-admin', agent);
+        },
+
+        areas(agent) {
+            const terms = agent?.terms?.area || [];
+            return Array.isArray(terms) ? terms : [];
         },
 
         formatRelationDate(relation) {
