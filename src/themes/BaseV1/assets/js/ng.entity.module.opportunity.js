@@ -35,6 +35,56 @@
         return field.groupName || field.fieldName || ('id-' + field.id);
     }
 
+    var NUMERIC_FIELD_CONFIG_KEYS = ['maxOptions', 'minRows', 'maxRows', 'maxFiles', 'maxVideos'];
+
+    function normalizeNumericFieldConfig(config) {
+        if (!config || typeof config !== 'object' || Array.isArray(config)) {
+            return;
+        }
+
+        NUMERIC_FIELD_CONFIG_KEYS.forEach(function(key) {
+            var value = config[key];
+
+            if (typeof value !== 'string') {
+                return;
+            }
+
+            var trimmed = value.trim();
+            if (trimmed === '') {
+                return;
+            }
+
+            var numberValue = Number(trimmed);
+            if (Number.isFinite(numberValue)) {
+                config[key] = numberValue;
+            }
+        });
+    }
+
+    // Campo number: legado aceita 0 → UI já vem com "Sim" marcado quando allowZero não existe.
+    function normalizeNumberFieldAllowZero(field) {
+        if (!field || field.fieldType !== 'number') {
+            return;
+        }
+
+        if (typeof field.config !== 'object' || field.config instanceof Array || !field.config) {
+            field.config = {};
+        }
+
+        var value = field.config.allowZero;
+        if (value === undefined || value === null || value === '') {
+            field.config.allowZero = true;
+            return;
+        }
+
+        if (value === false || value === 0 || value === '0' || value === 'false') {
+            field.config.allowZero = false;
+            return;
+        }
+
+        field.config.allowZero = true;
+    }
+
     function _getStatusSlug(status) {
         switch (status) {
             case 0: return 'draft'; break;
@@ -207,6 +257,8 @@
                     if (typeof field.config !== 'object' || field.config instanceof Array) {
                         field.config = {};
                     }
+                    normalizeNumericFieldConfig(field.config);
+                    normalizeNumberFieldAllowZero(field);
 
                     // Suporte ao novo formato (Brazil/Other) e retrocompatibilidade (requiredAddressFields)
                     if (field.config && field.config.entityField === '@location') {
@@ -451,6 +503,7 @@ module.controller('RegistrationConfigurationsController', ['$scope', '$rootScope
         ownerId: MapasCulturais.entity.id,
         fieldType: null,
         fieldOptions: null,
+        config: {},
         title: null,
         description: null,
         maxSize: null,
@@ -518,6 +571,8 @@ module.controller('RegistrationConfigurationsController', ['$scope', '$rootScope
         if (typeof field.config !== 'object' || field.config instanceof Array) {
             field.config = {};
         }
+        normalizeNumericFieldConfig(field.config);
+        normalizeNumberFieldAllowZero(field);
         if (field.config && field.config.entityField === '@location') {
             // Suporta novo formato (Brazil/Other) ou legado
             var hasBrazil = field.config.requiredAddressFieldsBrazil !== undefined;
@@ -613,6 +668,16 @@ module.controller('RegistrationConfigurationsController', ['$scope', '$rootScope
 
         $scope.data.newFieldConfiguration.fieldType = fieldTypes[0].slug;
 
+        $scope.normalizeNumberFieldAllowZero = function(field) {
+            normalizeNumberFieldAllowZero(field);
+        };
+
+        $scope.$watch('data.newFieldConfiguration.fieldType', function(fieldType) {
+            if (fieldType === 'number') {
+                normalizeNumberFieldAllowZero($scope.data.newFieldConfiguration);
+            }
+        });
+
         // --- Field Integrity Validation ---
         $scope.fieldValidationErrors = {};
         $scope.invalidFieldsCount = 0;
@@ -634,6 +699,9 @@ module.controller('RegistrationConfigurationsController', ['$scope', '$rootScope
             } else if (typeof config !== 'object' || Array.isArray(config)) {
                 field.config = {};
             }
+
+            normalizeNumericFieldConfig(field.config);
+            normalizeNumberFieldAllowZero(field);
         }
 
         function normalizeFieldOptionsForDisplay(field) {
@@ -2538,7 +2606,12 @@ module.controller('RegistrationFieldsController', ['$scope', '$rootScope', '$int
             if (field.conditionalField === 'appliedForQuota') {
                 result = result && $scope.appliedForQuota;
             } else {
-                result = result && $scope.entity[field.conditionalField] === field.conditionalValue;
+                const parentValue = $scope.entity[field.conditionalField];
+                if (Array.isArray(parentValue)) {
+                    result = result && parentValue.includes(field.conditionalValue);
+                } else {
+                    result = result && parentValue == field.conditionalValue;
+                }
             }
         }
 
@@ -2604,6 +2677,20 @@ module.controller('RegistrationFieldsController', ['$scope', '$rootScope', '$int
         return !!field.config.requiredAddressFields[addrKey];
     };
 
+    $scope.hasFieldValue = function(value) {
+        if (value === null || value === undefined) {
+            return false;
+        }
+        if (typeof value === 'string' && value.trim() === '') {
+            return false;
+        }
+        if (Array.isArray(value)) {
+            return value.length > 0;
+        }
+        // 0 e false são valores válidos (número / checkbox)
+        return true;
+    };
+
     $scope.checkField =  function(field) {
         
         if((field?.length === 1 && field[0] === '') || (field?.length === 1 && field[0] === 'null')) {
@@ -2617,10 +2704,29 @@ module.controller('RegistrationFieldsController', ['$scope', '$rootScope', '$int
         return field;
     }
 
+    $scope.isAgentFileField = function(field) {
+        if (!field || !field.config || !field.config.entityField) {
+            return false;
+        }
+
+        var definition = MapasCulturais.EntitiesDescription.agent[field.config.entityField];
+        return definition && definition.type === 'file';
+    };
+
     $scope.printField = function(field, value){
         
         let entityFiel = ['agent-owner-field', 'agent-collective-field']
         let fieldType = entityFiel.includes(field.fieldType) ? field.config.entityField : field.fieldType;
+
+        if ($scope.isAgentFileField(field) || (value && typeof value === 'object' && !Array.isArray(value) && value.url)) {
+            if (!value || !value.url) {
+                return null;
+            }
+
+            var escapedUrl = String(value.url).replace(/"/g, '&quot;').replace(/>/g, '&gt;').replace(/</g, '&lt;');
+            var escapedName = String(value.name || value.url).replace(/"/g, '&quot;').replace(/>/g, '&gt;').replace(/</g, '&lt;');
+            return '<a class="attachment-title" href="' + escapedUrl + '" target="_blank" rel="noopener noreferrer">' + escapedName + '</a>';
+        }
 
         if (field.fieldType === 'date' || field?.config?.entityField === 'dataDeNascimento') {
             return moment(value).format('DD-MM-YYYY');
@@ -3110,7 +3216,22 @@ module.controller('OpportunityController', ['$scope', '$rootScope', '$anchorScro
         $(opportunity_main_tab).hide();
     }
 
+    var hasSealExemptionConfig = (function() {
+        var config = MapasCulturais.entity?.evaluationMethodConfiguration?.sealExemptionConfig;
+        if (typeof config === 'string') {
+            try {
+                config = JSON.parse(config);
+            } catch (e) {
+                config = null;
+            }
+        }
+        return Array.isArray(config?.seals) && config.seals.length > 0;
+    })();
+
     var select_fields = MapasCulturais.opportunitySelectFields.map(function(e){ return e.fieldName; });
+    if (hasSealExemptionConfig) {
+        select_fields = select_fields.concat(['sealExemptionStatus', 'sealExemptionTimestamp']);
+    }
     var registrationsApi;
     var evaluationsApi;
 
@@ -3280,6 +3401,10 @@ module.controller('OpportunityController', ['$scope', '$rootScope', '$anchorScro
         {fieldName: "status", title:labels['Status'] ,required:true},
     ];
 
+    if (hasSealExemptionConfig) {
+        defaultSelectFields.push({fieldName: "sealExemption", title:labels['Isenção'] ,required:true});
+    }
+
     MapasCulturais.opportunitySelectFields.forEach(function(e){
         e.options = [{ value: null, label: e.title }].concat(e.fieldOptions.map(function(e){
             return {value: e, label: e};
@@ -3351,6 +3476,12 @@ module.controller('OpportunityController', ['$scope', '$rootScope', '$anchorScro
 
         registrationStatusesNames: RegistrationService.registrationStatusesNames,
 
+        sealStatuses: [
+            {value: 'fully_valid', label: 'Totalmente Válido'},
+            {value: 'partially_valid', label: 'Parcialmente Válido'},
+            {value: 'invalid', label: 'Inválido'}
+        ],
+
         publishedRegistrationStatuses: RegistrationService.publishedRegistrationStatuses,
 
         publishedRegistrationStatusesNames: RegistrationService.publishedRegistrationStatusesNames,
@@ -3377,10 +3508,14 @@ module.controller('OpportunityController', ['$scope', '$rootScope', '$anchorScro
             agents: true,
             attachments: true,
             evaluation: true,
-            status: true
+            status: true,
+            sealStatus: true,
+            sealExemption: false
         },
 
         confirmEvaluationLabel: labels['confirmEvaluationLabel'],
+
+        hasSealExemptionConfig: hasSealExemptionConfig,
 
         fields: RegistrationService.getFields(),
 

@@ -12,9 +12,70 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Substitui imediatamente as notas corrigidas e recalcula o resultado consolidado, os bônus por pontuação, a nota final e a elegibilidade, sem alterar automaticamente o status da inscrição, a classificação publicada ou o avanço de fase
 - Mantém histórico interno e imutável de cada decisão, com justificativa obrigatória, valores anteriores e posteriores, critérios alterados, configuração técnica utilizada e responsável pela correção
 - Protege a confirmação contra alterações simultâneas e mudanças na configuração dos critérios, permite reabrir a correção em uma nova sequência e notifica os avaliadores técnicos cujas notas foram modificadas
+- **Avaliação automática por selos**: o gestor pode indicar, em uma fase de avaliação, quais selos validam o proponente. Se a pessoa já tiver esses selos válidos no perfil, a inscrição é **dispensada automaticamente** daquela fase (marcada como “Dispensada por selos”) e segue para a próxima etapa, sem precisar de avaliador
+- **Novos anexos no cadastro do agente** (também usáveis como campos `@` no formulário de inscrição): CPF, CNPJ, CNH, RG, passaporte, comprovante de residência, vínculo territorial, currículo, portfólio, certidões fiscal, trabalhista e de prestação de contas, além de comprovantes de raça/cor, pessoa com deficiência e comunidades tradicionais. Os arquivos ficam no perfil e acompanham a inscrição automaticamente
+
+### Melhorias nos selos validadores
+- Mostra o **status de cada campo** do selo (válido, prestes a vencer, vencido etc.) na ficha e no formulário de avaliação, para o avaliador entender o que está ok e o que precisa de atenção
+- Permite **concessão parcial do selo** na avaliação documental: o selo pode ser aplicado só aos campos que passaram, conforme os invalidadores configurados
+- Permite configurar **condições nos invalidadores**: um documento só é exigido quando o proponente responde de determinado jeito no formulário (por exemplo, só pedir comprovante de PCD se a pessoa se declarar PCD)
+- A **concessão de selos após a avaliação documental** também respeita essas condições: invalidadores relevados (condição não aplicável à inscrição) não impedem a concessão do selo
+- Avisa o gestor quando o formulário da inscrição ainda **não tem os campos** necessários para a validação automática por selos funcionar
+- Inclui coluna, filtros e indicação de isenção por selos na tabela e na planilha de avaliações
+- Exibe corretamente os anexos `@` do agente na inscrição, na edição do perfil, na single e nas listagens/planilhas (com link para download)
 
 ### Correções
+- Na redistribuição de avaliações, inclusões manuais passam a contar na carga pendente do comparador antes da distribuição automática (e a ordem das inscrições fica estável por `id`), evitando que o mesmo avaliador receba a próxima inscrição por acaso
+- Na avaliação documental, o link de download do arquivo não cobre mais o campo inteiro: clicar no campo abre o formulário de avaliação e clicar no nome do arquivo continua baixando
+
+## [7.8.2] - 2026-07-24
+### Correções
+- O botão Voltar da tela de avaliação leva de volta à lista de onde a pessoa veio (lista completa da gestão ou lista do avaliador), mesmo depois de trocar de inscrição pelo menu lateral
+- No menu lateral da avaliação, os links continuam apontando para o avaliador certo quando um gestor navega em nome de outra pessoa
+- Se a pessoa abrir a avaliação da própria inscrição, o sistema mostra um aviso e bloqueia o formulário
+- Na lista de um avaliador específico, aparecem só as avaliações dele — mesmo que essa pessoa também seja gestora do edital
+- Impede salvar avaliação em inscrição que não foi atribuída à pessoa, e também impede o proponente de avaliar a própria inscrição; o gestor ainda pode editar uma avaliação já feita por outro avaliador
+- Na tabela de avaliações, o link abre a avaliação do avaliador daquela linha, evitando que o gestor acabe criando avaliação em nome próprio por engano
+- Ajusta as cores do status no acompanhamento da inscrição para bater com a legenda oficial: Pendente e Rascunho em preto, Inválida em roxo, Não selecionada em vermelho, Suplente em laranja e Selecionada em verde
+- Impede que um campo numérico deixado em branco seja salvo como zero, o que fazia o sistema achar que havia valor preenchido
+- Mostra corretamente o valor zero (0) na inscrição, em vez de aparecer como “campo não informado”
+- Corrige erro de renderização na galeria de vídeos ao editar o título, quando o popover montava o formulário antes de `newData` existir
+
+### Melhorias
+- Ao adicionar ou trocar um avaliador na comissão, avisa se a pessoa também está inscrita no edital e que não avaliará a própria inscrição
+- Deixa esse aviso mais visível e fácil de entender nos cards da comissão de avaliação
+- No campo numérico do formulário, permite escolher se o zero é aceito e limitar a quantidade mínima e máxima de dígitos
+- Adiciona testes automatizados para o aviso de inscrição própria do avaliador
+- Adiciona testes automatizados para as regras do campo numérico (aceitação do zero e quantidade de dígitos)
+- Adiciona testes automatizados para o bloqueio de avaliação indevida e de autoavaliação
+- Adiciona testes de regressão para a lista do avaliador, o aviso na autoavaliação, o botão Voltar e a navegação correta
+
+### Melhorias não funcionais
+- Adiciona hook `evaluationMethod.distributionComparator` para permitir que temas personalizem a ordem de prioridade dos avaliadores durante a redistribuição de comissões
+
+## [7.8.1] - 2026-07-21
+### Melhorias
+- Melhora a exportação do PDF de inscrição para exibir campos de endereço e tabela em formato legível
+- Melhora a exportação do PDF de inscrição para exibir links e arquivos de agente de forma legível
+- Melhora o uso de modelos de oportunidades para criar novas oportunidades sem copiar as datas das fases
+
+### Correções
+- Ordena os cards do painel (inscrições recentes, oportunidades abertas e avaliações disponíveis) do mais recente para o mais antigo
+- Corrige warning de variável indefinida (`$committee_where`) no repositório de avaliações quando a comissão não é informada
+- Corrige campos condicionais do formulário de inscrição quando o campo pai é um `checkboxes`, considerando o valor esperado dentro do array marcado
 - Corrige a listagem de fases da oportunidade para exibir corretamente fases de avaliação na configuração
+- Corrige o cálculo do bônus de pontuação para campos de múltipla escolha (`checkboxes`) quando configurados com `eligibleValues`, aplicando apenas o bônus correspondente às opções efetivamente selecionadas
+- Corrige avisos de validação do monitoramento que apareciam indevidamente na fase de inscrição
+- Corrige exportação de campos multiselect do plano de trabalho para evitar valores "Array | Array"
+- Corrige o carregamento da configuração de cotas em oportunidades antigas sem regras de cotas cadastradas.
+- Corrige erro na configuração de formulário causado por valores numéricos salvos como texto em campos de limite de opções, linhas e arquivos
+- Corrige a validação da resposta do recurso para impedir concluir ou enviar avaliação contínua sem selecionar o status da inscrição
+- Corrige o importador de eventos para aceitar eventos noturnos que ultrapassam a meia-noite (ex.: das 18h às 3h)
+- Impede o reprocessamento de uma mesma planilha no importador de eventos para evitar duplicações silenciosas
+- Reverte as alterações do importador de eventos quando ocorre falha durante a importação, evitando eventos parcialmente criados
+- Amplia os tipos de CSV aceitos no importador de eventos para contemplar variações enviadas por diferentes navegadores
+- Atualiza a biblioteca de leitura de planilhas do importador de eventos para uma versão mantida ativamente
+- Melhora as mensagens de erro exibidas ao usuário durante o processamento da planilha de eventos
 
 ## [7.8.0] - 2026-07-02
 ### Novas Funcionalidades

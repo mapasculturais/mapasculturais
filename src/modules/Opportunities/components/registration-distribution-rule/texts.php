@@ -18,4 +18,6 @@ return [
     'A data inicial não pode ser maior que a data final' => i::__('A data inicial não pode ser maior que a data final'),
     'Marcado' => i::__('Marcado'),
     'Desmarcado' => i::__('Desmarcado'),
+    'Sim' => i::__('Sim'),
+    'Não' => i::__('Não'),
 ];

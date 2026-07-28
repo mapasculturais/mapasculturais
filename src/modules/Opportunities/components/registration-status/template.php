@@ -8,18 +8,14 @@ use MapasCulturais\i;
 
 $this->import('
     mc-icon
+    mc-status
     registration-results
     mc-loading
 ');
 ?>
 <div v-if="!phase.isLastPhase" class="opportunity-phases-timeline__box">
     <label class="semibold opportunity-phases-timeline__label"><?= i::__('Resultado da fase:')?></label>
-    <div class="opportunity-phases-timeline__status">
-        <mc-icon name="circle" :class="verifyState(registration)"></mc-icon>
-        <p>
-            {{showRegistrationStatus(registration)}}
-        </p>
-    </div>
+    <mc-status :status-name="getStatusDisplay(registration)"></mc-status>
 
     <div v-if="showResults(phase)">
         <div v-if="phase.type == 'qualification'"><?= i::__('Resultado:') ?> <strong>{{registration.consolidatedResult}}</strong></div>
@@ -65,10 +61,7 @@ $this->import('
         <div v-if="appealRegistration.status > 0" class="opportunity-phases-timeline__box">
             <div>
                 <label class="semibold opportunity-phases-timeline__label"><?= i::__('Resultado do recurso:')?></label>
-                <div class="opportunity-phases-timeline__status">
-                    <mc-icon name="circle" :class="verifyState(appealRegistration)"></mc-icon>
-                    <p>{{showRegistrationStatus(appealRegistration)}}</p>
-                </div>
+                <mc-status :status-name="getStatusDisplay(appealRegistration)"></mc-status>
             </div>
             <registration-results :registration="appealRegistration" :phase="appealRegistration.opportunity.evaluationMethodConfiguration"></registration-results>
         </div>

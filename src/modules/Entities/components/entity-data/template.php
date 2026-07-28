@@ -15,7 +15,7 @@ $this->import('
 <div class="entity-data">
     <div class="entity-data__label">{{propertyLabel}}</div>
 
-    <div class="entity-data__data" v-if="propertyData">
+    <div class="entity-data__data" v-if="propertyData || hasSeals">
         <!-- #region entity-data__value -->
         <div v-if="propertyType == 'date'" class="entity-data__value">
             {{propertyData.date('2-digit year')}}
@@ -36,9 +36,15 @@ $this->import('
         <div v-else-if="propertyType == 'location' || propertyType == 'addresses'" class="entity-data__data">
             {{getAddress(propertyData)}}
         </div>
-        
-        <div v-else class="entity-data__value">
+
+        <div v-else-if="propertyData" class="entity-data__value">
             {{propertyData}}
+        </div>
+
+        <div v-else class="entity-data__value">
+            <small class="bold">
+                <?= i::__('Não informado') ?>
+            </small>
         </div>
         <!-- #endregion entity-data__value -->
 
@@ -49,7 +55,7 @@ $this->import('
 
     <div v-else class="entity-data__data">
         <div class="entity-data__value">
-            <small v-if="!propertyData" class="bold">
+            <small class="bold">
                 <?= i::__('Não informado') ?>
             </small>
         </div>

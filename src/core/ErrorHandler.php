@@ -34,6 +34,14 @@ class ErrorHandler implements ErrorHandlerInterface {
     public function __invoke(ServerRequestInterface $request, Throwable $exception, bool $displayErrorDetails, bool $logErrors, bool $logErrorDetails): ResponseInterface {
         $app = App::i();
         
+        // Requisições malformadas ou de validação devem retornar 400 em vez de 500.
+        if ($exception instanceof Exceptions\BadRequest) {
+            $response = $app->response ?? $app->slim->getResponseFactory()->createResponse();
+            $response = $response->withStatus(400)->withHeader('Content-Type', 'application/json');
+            $response->getBody()->write(json_encode(['error' => true, 'message' => $exception->getMessage()], JSON_THROW_ON_ERROR));
+            return $response;
+        }
+        
         if($logErrors) {
 
                 $sanitize = function($value) {

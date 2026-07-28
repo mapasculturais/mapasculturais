@@ -263,6 +263,7 @@ app.component('opportunity-evaluation-committee', {
             };
 
             api.POST(url, evaluatorData).then(res => res.json()).then(data => {
+                this.showOwnRegistrationsWarning(data);
                 this.messages.success(this.text('reviewerReplaced'));
                 this.loadReviewers();
                 this.loadFetchs();
@@ -280,10 +281,18 @@ app.component('opportunity-evaluation-committee', {
             }; 
 
             api.POST(url, this.agentData).then(res => res.json()).then(data => {
+                this.showOwnRegistrationsWarning(data);
                 this.loadReviewers();
                 this.loadFetchs();
                 this.refreshEntityPermissions();
             });
+        },
+
+        showOwnRegistrationsWarning(data) {
+            const warning = data?.ownRegistrationsWarning;
+            if (warning?.message) {
+                this.messages.warning(warning.message);
+            }
         },
         
         loadReviewers() {

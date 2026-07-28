@@ -14,6 +14,7 @@ class Entity {
 
         this.__lockedFields = [];
         this.__lockedFieldSeals = {};
+        this.__fieldSealStatuses = {};
 
         // as traduções estão no arquivo texts.php do componente <entity>
         this.text = Utils.getTexts('mc-entity');
@@ -43,6 +44,10 @@ class Entity {
 
         if(obj.__lockedFieldSeals) {
             this.__lockedFieldSeals = obj.__lockedFieldSeals;
+        }
+
+        if(obj.__fieldSealStatuses) {
+            this.__fieldSealStatuses = obj.__fieldSealStatuses;
         }
 
         for (const prop of defaultProperties) {
@@ -221,7 +226,11 @@ class Entity {
             this.sendMessage(message || this.text('erro inesperado'), 'error');
         } else if(res.status == 400) {
             if (data.error) {
-                this.__validationErrors = data.data;
+                // data.data pode ser string (BadRequest genérico) ou mapa prop→erros.
+                // Sempre manter objeto para não quebrar entity-field.hasErrors.
+                this.__validationErrors = (data.data && typeof data.data === 'object' && !Array.isArray(data.data))
+                    ? data.data
+                    : {};
                 this.sendMessage(message || this.text('erro de validacao'), 'error');
             }
         } else if(res.status == 403) {
@@ -363,7 +372,7 @@ class Entity {
         const result = {};
         if(this.seals && this.seals.length > 0) {
             const sealsById = {};
-            
+
             for (const seal of this.seals) {
                 sealsById[seal.sealId] = seal;
             }
@@ -372,6 +381,26 @@ class Entity {
                 result[field] = this.__lockedFieldSeals[field].map((sealId) => {
                     return sealsById[sealId];
                 });
+            }
+        }
+
+        return result;
+    }
+
+    get $fieldSealStatuses() {
+        const result = {};
+        if(this.seals && this.seals.length > 0) {
+            const sealsById = {};
+
+            for (const seal of this.seals) {
+                sealsById[seal.sealId] = seal;
+            }
+
+            for (const field in this.__fieldSealStatuses) {
+                result[field] = this.__fieldSealStatuses[field].map((fieldSeal) => {
+                    const seal = sealsById[fieldSeal.sealId];
+                    return seal ? {...seal, ...fieldSeal} : null;
+                }).filter((seal) => seal);
             }
         }
 

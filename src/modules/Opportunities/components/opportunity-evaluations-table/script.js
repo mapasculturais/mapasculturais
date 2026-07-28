@@ -29,17 +29,26 @@ app.component('opportunity-evaluations-table', {
     data() {
         const defaultHeaders = $MAPAS.config.opportunityEvaluationsTable.defaultHeaders;
         const defaultSelect = $MAPAS.config.opportunityEvaluationsTable.defaultSelect;
+        const hasSealExemptionConfig = $MAPAS.config.opportunityEvaluationsTable.hasSealExemptionConfig === true;
+        // Em /avaliacoes/.../user:X (modo avaliador), sempre filtra por esse usuário —
+        // inclusive se a pessoa também for gestor (@control). Lista completa só em allEvaluations.
+        const query = {
+            '@opportunity': this.phase.opportunity.id,
+        };
+        if (this.user != 'all' && this.user != null && this.user !== '') {
+            query['@evaluationId'] = `${this.user}`;
+        }
         return {
-            query: {
-                '@opportunity': this.phase.opportunity.id,
-            },
+            query,
             locale: $MAPAS.config.locale,
             firstDate: null,
             lastDate: null,
             selectedStatus: null,
             evaluatiorFilter: null,
+            sealExemptionFilter: null,
             defaultHeaders,
             defaultSelect,
+            hasSealExemptionConfig,
             deleteContext: null,
         }
     },
@@ -47,6 +56,10 @@ app.component('opportunity-evaluations-table', {
     computed: {
         hasControl() {
             return this.phase.opportunity.currentUserPermissions['@control'];
+        },
+        // Filtro por avaliador só faz sentido na lista gerencial (user=all)
+        showEvaluatorFilter() {
+            return this.hasControl && this.user == 'all';
         },
         evaluationsFiltersOptions() {
             return $MAPAS.config.opportunityEvaluationsTable.committee
@@ -101,6 +114,23 @@ app.component('opportunity-evaluations-table', {
                 },
             ]
         },
+
+        sealExemptionStatusOptions() {
+            return [
+                {
+                    value: 'all',
+                    label: __('Todas', 'opportunity-evaluations-table'),
+                },
+                {
+                    value: 'granted',
+                    label: __('Isentos', 'opportunity-evaluations-table'),
+                },
+                {
+                    value: 'not_granted',
+                    label: __('Não isentos', 'opportunity-evaluations-table'),
+                }
+            ]
+        },
     },
     
     methods: {
@@ -133,10 +163,17 @@ app.component('opportunity-evaluations-table', {
         },
         createUrl(entity) {
             let user = this.user;
-            if (user === 'all' && entity.evaluation?.status == null) {
-                return 'javascript:void(0)';
-            } else if (user === 'all' && entity.evaluation) {
-                user = entity.evaluation?.user;
+            const rowValuerUser = entity.valuer?.user ?? entity.evaluation?.user ?? null;
+
+            if (user === 'all') {
+                if (rowValuerUser == null) {
+                    return 'javascript:void(0)';
+                }
+                user = rowValuerUser;
+            } else if (rowValuerUser != null) {
+                // Prefere o avaliador da linha (lista da comissão para o gestor)
+                // para não abrir /avaliacao/.../user:<gestor>/ em inscrição de outro
+                user = rowValuerUser;
             }
             
             return Utils.createUrl('registration', 'evaluation', { id: entity._id, user });
@@ -181,10 +218,21 @@ app.component('opportunity-evaluations-table', {
             reg.valuer = rawData.valuer;
             reg.committee = rawData.committee;
 
+            // Campos de isenção por selos (spec §4.3). Atribuídos explicitamente
+            // para garantir disponibilidade independentemente de serem colunas
+            // ou campos derivados no Registration.
+            reg.sealExemptionStatus = rawData.registration?.sealExemptionStatus ?? null;
+            reg.sealExemptionTimestamp = rawData.registration?.sealExemptionTimestamp ?? null;
+
             return reg;
         },
 
-        getStatus(status) {
+        getStatus(entity) {
+            if (entity?.sealExemptionStatus === 'granted') {
+                return __('Dispensada por selos', 'opportunity-evaluations-table');
+            }
+
+            const status = entity?.evaluation?.status;
             switch(status) {
                 case 0:
                     return  __('Avaliação iniciada', 'opportunity-evaluations-table');
@@ -197,8 +245,12 @@ app.component('opportunity-evaluations-table', {
             }
         },
 
-        getResultString(result) {
-            return result ?? __('não avaliado', 'opportunity-evaluations-table');
+        getResultString(entity) {
+            if (entity?.sealExemptionStatus === 'granted') {
+                return __('Dispensada por selos', 'opportunity-evaluations-table');
+            }
+
+            return entity?.evaluation?.resultString ?? __('não avaliado', 'opportunity-evaluations-table');
         },
 
         filterByStatus(option, entities) {
@@ -214,6 +266,13 @@ app.component('opportunity-evaluations-table', {
         },
 
         filterByEvaluator(option, entities) {
+            // Só aplica na lista gerencial; em modo avaliador o @evaluationId é fixo
+            if (this.user != 'all') {
+                this.query['@evaluationId'] = `${this.user}`;
+                entities.refresh();
+                return;
+            }
+
             this.evaluatiorFilter = option.value;
 
             if (this.evaluatiorFilter != "all") {
@@ -223,6 +282,42 @@ app.component('opportunity-evaluations-table', {
             }
 
             entities.refresh();
+        },
+
+        filterBySealExemption(option, entities) {
+            if (!this.hasSealExemptionConfig) {
+                return;
+            }
+
+            this.sealExemptionFilter = option.value;
+
+            if (this.sealExemptionFilter && this.sealExemptionFilter !== 'all') {
+                this.query['sealExemptionStatusFilter'] = this.sealExemptionFilter;
+            } else {
+                delete this.query['sealExemptionStatusFilter'];
+            }
+
+            entities.refresh();
+        },
+
+        // Tooltip do badge de isenção: timestamp formatado. NÃO lista nomes de
+        // selos (LGPD — spec §4.3 / §5.3).
+        sealExemptionTooltip(entity) {
+            if (entity?.sealExemptionStatus !== 'granted') {
+                return '';
+            }
+            if (!entity?.sealExemptionTimestamp) {
+                return this.text('isento');
+            }
+
+            const rawTimestamp = entity.sealExemptionTimestamp?.date ?? entity.sealExemptionTimestamp;
+            const timestamp = rawTimestamp ? new Date(rawTimestamp) : null;
+            if (!timestamp || Number.isNaN(timestamp.getTime())) {
+                return this.text('isento');
+            }
+
+            const mcdate = new McDate(timestamp);
+            return `${this.text('isentoEm')} ${mcdate.date('2-digit year')} ${this.text('as')} ${mcdate.time()}`;
         },
 
         dateFormat(date) {
@@ -252,8 +347,10 @@ app.component('opportunity-evaluations-table', {
             this.firstDate = null;
             this.lastDate = null;
             this.selectedStatus = null;
+            this.sealExemptionFilter = null;
             delete this.query['status'];
             delete this.query['@date'];
+            delete this.query['sealExemptionStatusFilter'];
 
             entities.refresh();
         },
@@ -279,6 +376,11 @@ app.component('opportunity-evaluations-table', {
             if (filter.prop == 'status' || filter.prop == '@pending') {
                 this.selectedStatus = null;
                 delete this.query['status'];
+            }
+
+            if (filter.prop == 'sealExemptionStatusFilter') {
+                this.sealExemptionFilter = null;
+                delete this.query['sealExemptionStatusFilter'];
             }
         },
 

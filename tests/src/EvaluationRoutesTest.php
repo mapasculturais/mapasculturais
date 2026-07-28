@@ -152,6 +152,65 @@ class EvaluationRoutesTest extends Abstract\TestCase
         $this->assertNotNull($evaluation_id, 'Garantindo que DEPOIS de salvar a avaliação pela rota /registration/saveEvaluation a avaliação foi criada e o id da avaliação NÃO é mais NULL');
     }
 
+    function testContinuousEvaluationRequiresStatusWhenFinishing()
+    {
+        $admin = $this->userDirector->createUser('admin');
+        $this->login($admin);
+
+        $opportunity = $this->opportunityBuilder
+            ->reset(owner: $admin->profile, owner_entity: $admin->profile)
+            ->fillRequiredProperties()
+            ->firstPhase()
+                ->setRegistrationPeriod(new Open)
+                ->done()
+            ->save()
+            ->addEvaluationPhase(EvaluationMethods::simple)
+                ->setEvaluationPeriod(new ConcurrentEndingAfter)
+                ->setCommitteeValuersPerRegistration('committee 1', 1)
+                ->save()
+                ->addValuers(2, 'committee 1')
+                ->done()
+            ->getInstance();
+
+        $opportunity->evaluationMethodConfiguration->type = 'continuous';
+        $opportunity->evaluationMethodConfiguration->save(true);
+
+        $registration = $this->registrationDirector->createSentRegistration(
+            $opportunity,
+            data: []
+        );
+
+        $committee = $opportunity->evaluationMethodConfiguration->relatedAgents['committee 1'];
+
+        $opportunity->evaluationMethodConfiguration->redistributeCommitteeRegistrations();
+
+        $registration = $registration->refreshed();
+
+        $valuer_user_id = array_keys($registration->valuers)[0];
+
+        foreach ($committee as $valuer) {
+            if ($valuer->user->id == $valuer_user_id) {
+                $registration_valuer = $valuer->user->refreshed();
+            }
+        }
+
+        $this->login($registration_valuer);
+
+        $request = $this->requestFactory->POST(
+            controller_id: 'registration',
+            action: 'saveEvaluation',
+            url_params: [
+                'id' => $registration->id,
+                'status' => 'evaluated'
+            ],
+            payload: [
+                'data' => []
+            ]
+        );
+
+        $this->assertStatus400($request, 'Garantindo que avaliação contínua finalizada sem status retorna 400');
+    }
+
     function testValuerAccessToAnotherValuerRegistration()
     {
         $admin = $this->userDirector->createUser('admin');

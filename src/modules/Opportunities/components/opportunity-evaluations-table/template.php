@@ -6,8 +6,20 @@
  */
 
 use MapasCulturais\i;
+use SealExemption\SealExemptionService;
 
 $this->layout = 'entity';
+
+$opportunity = $this->getOpportunityFromEntity($entity);
+$has_seal_exemption_config = SealExemptionService::hasActiveConfig(
+    $opportunity->evaluationMethodConfiguration?->sealExemptionConfig
+);
+$required_fields = 'number,committeeSequentialNumber,valuerUserId,valuerAgentId,evaluator,result,status,delete';
+$visible_fields = "['agent', 'number', 'committeeSequentialNumber', 'valuerUserId', 'valuerAgentId', 'evaluator', 'result', 'status', 'coletivo', 'goalStatuses']";
+if ($has_seal_exemption_config) {
+    $required_fields = 'number,committeeSequentialNumber,valuerUserId,valuerAgentId,evaluator,result,status,sealExemptionStatus,sealExemptionTimestamp,delete';
+    $visible_fields = "['agent', 'number', 'committeeSequentialNumber', 'valuerUserId', 'valuerAgentId', 'evaluator', 'result', 'status', 'sealExemption', 'coletivo', 'goalStatuses']";
+}
 
 $this->import('
     mc-export-spreadsheet
@@ -20,7 +32,7 @@ $this->import('
 
     <template v-if="!isFuture()">
         <div class="col-12">
-            <entity-table controller="opportunity" show-index :select="defaultSelect" :raw-processor="rawProcessor" :identifier="identifier" endpoint="findEvaluations" type="registration" :headers="headers" :phase="phase" required="number,committeeSequentialNumber,valuerUserId,valuerAgentId,evaluator,result,status,delete" :visible="['agent', 'number', 'committeeSequentialNumber', 'valuerUserId', 'valuerAgentId', 'evaluator', 'result', 'status', 'coletivo', 'goalStatuses']" :query="query" :limit="100" @clear-filters="clearFilters" @remove-filter="removeFilter($event)" :filtersDictComplement="filtersDictComplement"> 
+            <entity-table controller="opportunity" show-index :select="defaultSelect" :raw-processor="rawProcessor" :identifier="identifier" endpoint="findEvaluations" type="registration" :headers="headers" :phase="phase" required="<?= $required_fields ?>" :visible="<?= $visible_fields ?>" :query="query" :limit="100" @clear-filters="clearFilters" @remove-filter="removeFilter($event)" :filtersDictComplement="filtersDictComplement">
                 <template #title>
                     <h2 v-if="isPast()"><?= i::__("As avaliações já estão encerradas") ?></h2>
                     <h2 v-if="isHappening()"><?= i::__("As avaliações estão em andamento") ?></h2>
@@ -60,15 +72,19 @@ $this->import('
                 <template #filters="{entities,filters}">
                     <div class="opportunity-evaluations-table__filters grid-12">
 
-                        <div v-if="hasControl" :class="hasControl ? 'col-3' : 'col-4'">
+                        <div v-if="showEvaluatorFilter" :class="showEvaluatorFilter ? 'col-3' : 'col-4'">
                             <mc-select :options="evaluationsFiltersOptions" v-model:default-value="evaluatiorFilter" @change-option="filterByEvaluator($event, entities)" placeholder="<?= i::__("Avaliador") ?>" hide-filters></mc-select>
                         </div>
 
-                        <div :class="hasControl ? 'col-3' : 'col-4'">
+                        <div :class="showEvaluatorFilter ? 'col-3' : 'col-4'">
                             <mc-select :options="status" v-model:default-value="selectedStatus" @change-option="filterByStatus($event, entities)" placeholder="<?= i::__("Estado da avaliação") ?>" hide-filters></mc-select>
                         </div>
 
-                        <div class="field" :class="hasControl ? 'col-3' : 'col-4'">
+                        <div v-if="hasControl && hasSealExemptionConfig" class="col-3">
+                            <mc-select :options="sealExemptionStatusOptions" v-model:default-value="sealExemptionFilter" @change-option="filterBySealExemption($event, entities)" placeholder="<?= i::__("Isenção por selos") ?>" hide-filters></mc-select>
+                        </div>
+
+                        <div class="field" :class="showEvaluatorFilter ? 'col-3' : 'col-4'">
                             <datepicker 
                                 teleport
                                 v-model="firstDate" 
@@ -84,7 +100,7 @@ $this->import('
                             </datepicker>
                         </div>
 
-                        <div class="field" :class="hasControl ? 'col-3' : 'col-4'">
+                        <div class="field" :class="showEvaluatorFilter ? 'col-3' : 'col-4'">
                             <datepicker 
                                 teleport
                                 v-model="lastDate" 
@@ -120,7 +136,7 @@ $this->import('
                 </template>
 
                 <template #result="{entity}">
-                    {{getResultString(entity.evaluation?.resultString)}}
+                    {{getResultString(entity)}}
                 </template>
 
                 <template #coletivo="{entity}">
@@ -129,7 +145,29 @@ $this->import('
                 </template>
 
                 <template #status="{entity}">
-                    <mc-status :status-name="getStatus(entity.evaluation?.status)"></mc-status>
+                    <mc-status :status-name="getStatus(entity)"></mc-status>
+                </template>
+
+                <template #sealExemption="{entity}">
+                    <span
+                        v-if="entity.sealExemptionStatus === 'granted'"
+                        class="seal-exemption-badge seal-exemption-badge--granted"
+                        v-tooltip="sealExemptionTooltip(entity)"
+                    >
+                        <mc-icon name="circle-checked"></mc-icon>
+                        <span class="seal-exemption-badge__label"><?= i::__('Dispensada por selos') ?></span>
+                    </span>
+                    <span
+                        v-else-if="entity.sealExemptionStatus === 'agent_missing'"
+                        class="seal-exemption-badge seal-exemption-badge--warning"
+                        v-tooltip="text('semAgenteTooltip')"
+                    >
+                        <mc-icon name="exclamation"></mc-icon>
+                        <?= i::__('Sem agente') ?>
+                    </span>
+                    <span v-else class="seal-exemption-badge seal-exemption-badge--not-granted">
+                        <?= i::__('Não isenta') ?>
+                    </span>
                 </template>
 
                 <template #goalStatuses="{entity}">
