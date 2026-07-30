@@ -1540,6 +1540,19 @@
         }
     }
 
+    // Aba "Pessoas" na edição do agente coletivo — mantém layout do Figma
+    .edit-2__people-collaborators {
+        .entity-related-agents > h4 {
+            display: none !important;
+        }
+
+        .entity-related-agents__addNew {
+            .add-agent {
+                display: none !important;
+            }
+        }
+    }
+
     .entity-connections-list {
         width: 100%;
 
