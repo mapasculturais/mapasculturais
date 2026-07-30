@@ -11,6 +11,10 @@ app.component('entity-people-collaborators', {
             type: Entity,
             required: true,
         },
+        manage: {
+            type: Boolean,
+            default: false,
+        },
         emptyMessage: {
             type: String,
             default: __('empty', 'entity-people-collaborators'),

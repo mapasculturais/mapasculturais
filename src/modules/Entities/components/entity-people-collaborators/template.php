@@ -23,8 +23,8 @@ $this->import('
                     <h3 class="single-1__people-preview-title">
                         {{ text('people') }} <template v-if="totalCount">({{ totalCount }})</template>
                     </h3>
-                    <a class="single-1__people-preview-see-all" href="#colaboradores">
-                        {{ text('seeAll') }}
+                        <a class="single-1__people-preview-see-all" href="#pessoas">
+                            {{ manage ? text('managePeople') : text('seeAll') }}
                         <mc-icon name="arrow-right"></mc-icon>
                     </a>
                 </div>

@@ -7,6 +7,7 @@ return [
     'people' => i::__('Pessoas'),
     'peopleOf' => i::__('Pessoas de'),
     'seeAll' => i::__('ver todas'),
+    'managePeople' => i::__('Gerenciar pessoas'),
     'typeAgent' => i::__('Tipo:'),
     'areas' => i::__('Áreas de atuação'),
     'ownerRole' => i::__('Proprietário(a)'),
