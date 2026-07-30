@@ -8,6 +8,7 @@ $this->import('
     confirm-before-exit
     country-address-form
     entity-actions
+    entity-admins
     entity-cover
     entity-field
     entity-files-list
@@ -16,8 +17,11 @@ $this->import('
     entity-header
     entity-links
     entity-location
+    entity-owner
+    entity-people-collaborators
     entity-profile
     entity-renew-lock
+    entity-related-agents
     entity-social-media
     entity-status
     entity-terms
@@ -36,21 +40,53 @@ $this->breadcrumb = [
     ['label' => $label, 'url' => $app->createUrl('panel', 'agents')],
     ['label' => $entity->name, 'url' => $app->createUrl('agent', 'edit', [$entity->id])],
 ];
+
+// Contagens usadas na aba "Pessoas" (inclui relações pendentes apenas quando o usuário tem permissão).
+$include_pending_relations = $entity->canUser('viewPrivateData')
+    || $entity->canUser('createAgentRelation')
+    || $entity->canUser('removeAgentRelation')
+    || $entity->canUser('@control');
+
+$collaborator_count = 0;
+$admin_count = 0;
+foreach ($entity->getAgentRelationsGrouped(null, $include_pending_relations) as $group => $relations) {
+    if ($group === 'group-admin') {
+        $admin_count = count($relations);
+        continue;
+    }
+
+    if ($group === '@support') {
+        continue;
+    }
+
+    $collaborator_count += count($relations);
+}
+
+$owner_count = $entity->parent ? 1 : 0;
 ?>
 
-<div class="main-app edit-1">
+<div class="main-app edit-1 single-1">
     <entity-renew-lock :entity="entity"></entity-renew-lock>
     <mc-breadcrumb></mc-breadcrumb>
     <entity-header :entity="entity" editable></entity-header>
-    <mc-tabs class="tabs" sync-hash>
-        <?php $this->applyTemplateHook('tabs', 'begin') ?>
-        <mc-tab label="<?= i::_e('Perfil') ?>" slug="info">
-            <?php $this->applyTemplateHook('entity-info-validation', 'begin') ?>
-            <mc-container>
-                <entity-status :entity="entity"></entity-status>
-                <main class="edit-1__perfil-main">
-                    <div class="stack--sm">
-                    <div class="edit-1__section">
+    <div class="single-1__main-tabs">
+        <mc-tabs class="tabs" sync-hash>
+            <?php $this->applyTemplateHook('tabs', 'begin') ?>
+            <mc-tab label="<?= i::_e('Perfil') ?>" slug="info">
+                <?php $this->applyTemplateHook('entity-info-validation', 'begin') ?>
+                <mc-container>
+                    <entity-status :entity="entity"></entity-status>
+                    <main class="edit-1__perfil-main single-1__perfil-main">
+                        <div class="stack--sm">
+                        <div class="edit-1__section">
+                            <entity-people-collaborators
+                                :entity="entity"
+                                preview
+                                manage
+                                classes="single-1__people-preview-wrap"></entity-people-collaborators>
+                        </div>
+
+                        <div class="edit-1__section">
                         <mc-collapsible :open="true">
                             <template #header>
                                 <div class="edit-1__section-heading">
@@ -165,12 +201,85 @@ $this->breadcrumb = [
                         <entity-social-media :entity="entity" editable classes="col-12"></entity-social-media>
                     </div>
                     </div>
-                </main>
-            </mc-container>
-            <?php $this->applyTemplateHook('entity-info-validation', 'end') ?>
-        </mc-tab>
-        <?php $this->applyTemplateHook('tabs', 'end') ?>
-    </mc-tabs>
+                    </main>
+                </mc-container>
+                <?php $this->applyTemplateHook('entity-info-validation', 'end') ?>
+            </mc-tab>
+
+            <mc-tab label="<?= i::esc_attr_e('Pessoas') ?>" slug="pessoas">
+                <mc-container>
+                    <main>
+                        <div class="single-1__people single-1__inner-tabs">
+                            <mc-tabs class="tabs" sync-hash default-tab="colaboradores">
+                                <template #header="{ tab }">
+                                    <span>{{ tab.label }}</span>
+                                    <span v-if="tab.meta?.count > 0" class="single-1__connections-count">
+                                        {{ tab.meta.count }}
+                                    </span>
+                                </template>
+
+                                <mc-tab
+                                    label="<?= i::esc_attr_e('Colaboradores') ?>"
+                                    :meta="{ count: <?= (int) $collaborator_count ?> }"
+                                    slug="colaboradores">
+                                    <div class="single-1__people-card edit-2__people-collaborators">
+                                        <?php if ($collaborator_count === 0) { ?>
+                                            <p class="single-1__administration-empty">
+                                                <?php i::_e('Você ainda não adicionou nenhum colaborador na organização. Crie um grupo e edite novos colaboradores.') ?>
+                                            </p>
+                                        <?php } ?>
+
+                                        <entity-related-agents
+                                            :entity="entity"
+                                            editable></entity-related-agents>
+                                    </div>
+                                </mc-tab>
+
+                                <mc-tab
+                                    label="<?= i::esc_attr_e('Administradores') ?>"
+                                    :meta="{ count: <?= (int) $admin_count ?> }"
+                                    slug="administradores">
+                                    <?php if ($admin_count === 0) { ?>
+                                        <p class="single-1__administration-empty">
+                                            <?php i::_e('Essa pessoa não possui administradores.') ?>
+                                        </p>
+                                    <?php } else { ?>
+                                        <div class="single-1__administration-card">
+                                            <h2 class="single-1__administration-title"><?php i::_e('Administradores do perfil'); ?></h2>
+                                            <p class="single-1__administration-intro">
+                                                <?php i::_e("Administradores do perfil podem visualizar e editar os dados públicos e pessoais do agente cultural que administram, além de fazer inscrições em seu nome nas oportunidades vinculadas na plataforma e transferir,editar e/ou excluir suas entidades. A administração dos perfis só e possivel mediante a autorização do proprietário do perfil."); ?>
+                                            </p>
+                                            <entity-admins
+                                                :entity="entity"
+                                                variant="edit"
+                                                editable
+                                                classes="single-1__administration-admins"></entity-admins>
+                                        </div>
+                                    <?php } ?>
+                                </mc-tab>
+
+                                <mc-tab
+                                    label="<?= i::esc_attr_e('Proprietário(a)') ?>"
+                                    :meta="{ count: <?= (int) $owner_count ?> }"
+                                    slug="proprietario">
+                                    <div class="single-1__people-card">
+                                        <entity-owner
+                                            :entity="entity"
+                                            title="<?php i::_e('Proprietário(a)') ?>"
+                                            classes="col-12"
+                                            editable>
+                                        </entity-owner>
+                                    </div>
+                                </mc-tab>
+                            </mc-tabs>
+                        </div>
+                    </main>
+                </mc-container>
+            </mc-tab>
+
+            <?php $this->applyTemplateHook('tabs', 'end') ?>
+        </mc-tabs>
+    </div>
 
     <entity-actions :entity="entity" editable></entity-actions>
 </div>
