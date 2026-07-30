@@ -155,27 +155,7 @@ $owner_count = $entity->parent ? 1 : 0;
                         <mc-collapsible :open="false">
                             <template #header>
                                 <div class="edit-1__section-heading">
-                                    <h3 class="edit-1__section-title"><?php i::_e("Documentos e Certidões"); ?></h3>
-                                    <p class="edit-1__section-subtitle"><?php i::_e("Certidões de regularidade do agente coletivo"); ?></p>
-                                </div>
-                            </template>
-                            <template #body>
-                                <div class="grid-12">
-                                    <entity-field :entity="entity" classes="col-12" prop="certidaoFiscalAnexo" label="<?= i::__('Certidão de Regularidade Fiscal') ?>" title-modal="<?php i::_e('Anexar Certidão Fiscal - Formatos: (png, jpeg, pdf)') ?>" group-name="docs-certidao-fiscal"></entity-field>
-                                    <div class="col-12 divider"></div>
-                                    <entity-field :entity="entity" classes="col-12" prop="certidaoTrabalhistaAnexo" label="<?= i::__('Certidão de Regularidade Trabalhista') ?>" title-modal="<?php i::_e('Anexar Certidão Trabalhista - Formatos: (png, jpeg, pdf)') ?>" group-name="docs-certidao-trabalhista"></entity-field>
-                                    <div class="col-12 divider"></div>
-                                    <entity-field :entity="entity" classes="col-12" prop="certidaoPrestacaoContasAnexo" label="<?= i::__('Certidão de Prestação de Contas') ?>" title-modal="<?php i::_e('Anexar Certidão de Prestação de Contas - Formatos: (png, jpeg, pdf)') ?>" group-name="docs-certidao-contas"></entity-field>
-                                </div>
-                            </template>
-                        </mc-collapsible>
-                    </div>
-
-                    <div class="edit-1__section">
-                        <mc-collapsible :open="false">
-                            <template #header>
-                                <div class="edit-1__section-heading">
-                                    <h3 class="edit-1__section-title"><?php i::_e("informações públicas"); ?></h3>
+                                    <h3 class="edit-1__section-title"><?php i::_e("Informações Públicas"); ?></h3>
                                     <p class="edit-1__section-subtitle"><?php i::_e("Os dados inseridos abaixo assim como as informações de apresentação também são exibidos publicamente"); ?></p>
                                 </div>
                             </template>
@@ -343,6 +323,27 @@ $owner_count = $entity->parent ? 1 : 0;
                                     </div>
                                 </mc-tab>
                             </mc-tabs>
+                        </div>
+                    </main>
+                </mc-container>
+            </mc-tab>
+
+            <mc-tab label="<?= i::esc_attr_e('Documentos') ?>" slug="documentos">
+                <mc-container>
+                    <main class="edit-1__perfil-main">
+                        <div class="edit-1__section">
+                            <p class="edit-1__section-subtitle">
+                                <?php i::_e("Os documentos registrados no perfil da organização podem ser utilizados no processo de inscrição em oportunidades. Os documentos apenas aparecerão publicamente no seu perfil se marcar a opção 'Mostrar publicamente'.") ?>
+                            </p>
+
+                            <div class="grid-12">
+                                <div class="col-12 divider"></div>
+                                <entity-field :entity="entity" classes="col-12" prop="certidaoFiscalAnexo" label="<?= i::__('Certidão de Regularidade Fiscal') ?>" title-modal="<?php i::_e('Anexar Certidão Fiscal - Formatos: (png, jpeg, pdf)') ?>" group-name="docs-certidao-fiscal"></entity-field>
+                                <div class="col-12 divider"></div>
+                                <entity-field :entity="entity" classes="col-12" prop="certidaoTrabalhistaAnexo" label="<?= i::__('Certidão de Regularidade Trabalhista') ?>" title-modal="<?php i::_e('Anexar Certidão Trabalhista - Formatos: (png, jpeg, pdf)') ?>" group-name="docs-certidao-trabalhista"></entity-field>
+                                <div class="col-12 divider"></div>
+                                <entity-field :entity="entity" classes="col-12" prop="certidaoPrestacaoContasAnexo" label="<?= i::__('Certidão de Prestação de Contas') ?>" title-modal="<?php i::_e('Anexar Certidão de Prestação de Contas - Formatos: (png, jpeg, pdf)') ?>" group-name="docs-certidao-contas"></entity-field>
+                            </div>
                         </div>
                     </main>
                 </mc-container>
