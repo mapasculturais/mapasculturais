@@ -277,6 +277,77 @@ $owner_count = $entity->parent ? 1 : 0;
                 </mc-container>
             </mc-tab>
 
+            <mc-tab label="<?= i::esc_attr_e('Portfólio') ?>" slug="port">
+                <mc-container>
+                    <main>
+                        <div class="edit-1__portfolio edit-1__inner-tabs">
+                            <mc-tabs class="tabs" sync-hash>
+                                <mc-tab label="<?= i::esc_attr_e('Arquivos') ?>" slug="arquivos">
+                                    <div class="edit-1__portfolio-card">
+                                        <p class="edit-1__portfolio-helper"><?php i::_e('Insira arquivos de até <strong>' . $app->getMaxUploadSize() . '</strong>. Os arquivos serão exibidos publicamente e poderão ser baixados por qualquer pessoa.') ?></p>
+                                        <entity-files-list
+                                            :entity="entity"
+                                            classes="portfolio-edit-list"
+                                            group="downloads"
+                                            title="<?php i::_e('Arquivos') ?>"
+                                            editable
+                                            hide-title
+                                            labeled-actions
+                                            button-label="<?php i::esc_attr_e('Adicionar arquivo') ?>"
+                                            button-primary>
+                                        </entity-files-list>
+                                    </div>
+                                </mc-tab>
+                                <mc-tab label="<?= i::_e('Links') ?>" slug="links">
+                                    <div class="edit-1__portfolio-card">
+                                        <p class="edit-1__portfolio-helper"><?php i::_e('Os links serão exibidos publicamente e poderão ser acessados por qualquer pessoa.') ?></p>
+                                        <entity-links
+                                            :entity="entity"
+                                            classes="portfolio-edit-list"
+                                            title="<?php i::esc_attr_e('Links'); ?>"
+                                            editable
+                                            hide-title
+                                            labeled-actions
+                                            button-label="<?php i::esc_attr_e('Adicionar link') ?>"
+                                            button-primary>
+                                        </entity-links>
+                                    </div>
+                                </mc-tab>
+                                <mc-tab label="<?= i::esc_attr_e('Vídeos') ?>" slug="videos">
+                                    <div class="edit-1__portfolio-card">
+                                        <p class="edit-1__portfolio-helper"><?php i::_e('Faça upload do seu vídeo em alguma plataforma de hospedagem de vídeos e insira na plataforma Mapas através da URL. Os vídeos serão exibidos publicamente e poderão ser acessados por qualquer pessoa.') ?></p>
+                                        <entity-gallery-video
+                                            :entity="entity"
+                                            classes="portfolio-edit-videos"
+                                            title="<?php i::esc_attr_e('Vídeos') ?>"
+                                            editable
+                                            hide-title
+                                            labeled-actions
+                                            button-label="<?php i::esc_attr_e('Adicionar vídeo') ?>"
+                                            button-primary>
+                                        </entity-gallery-video>
+                                    </div>
+                                </mc-tab>
+                                <mc-tab label="<?= i::esc_attr_e('Imagens') ?>" slug="imagens">
+                                    <div class="edit-1__portfolio-card">
+                                        <p class="edit-1__portfolio-helper"><?php i::_e('Insira imagens de até <strong>' . $app->getMaxUploadSize() . '</strong>. As imagens serão exibidas publicamente e poderão ser baixadas por qualquer pessoa.') ?></p>
+                                        <entity-gallery
+                                            :entity="entity"
+                                            classes="portfolio-edit-images"
+                                            title="<?php i::esc_attr_e('Fotos') ?>"
+                                            editable
+                                            hide-title
+                                            button-label="<?php i::esc_attr_e('Adicionar imagem') ?>"
+                                            button-primary>
+                                        </entity-gallery>
+                                    </div>
+                                </mc-tab>
+                            </mc-tabs>
+                        </div>
+                    </main>
+                </mc-container>
+            </mc-tab>
+
             <?php $this->applyTemplateHook('tabs', 'end') ?>
         </mc-tabs>
     </div>
