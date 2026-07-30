@@ -17,6 +17,7 @@ class Module extends \MapasCulturais\Module {
      * - complaint.bcc: array de e-mails. Se preenchido, BCC = lista; vazio = sem BCC (atual).
      * - suggestion.to: array de e-mails. Se preenchido, To = lista + responsável (se válido); vazio = só responsável ou saasSuperAdmin.
      * - suggestion.bcc: false = BCC desligado; null = atual (todos admins); array = lista fixa.
+     * - suggestion.sendToEntityAdmins: true = envia contato para o dono da entidade + agentes do grupo 'Administrado por'.
      */
     public function __construct(array $config = array()) {
         $config += [
@@ -26,6 +27,7 @@ class Module extends \MapasCulturais\Module {
             'complaint.bcc' => [],
             'suggestion.to' => [],
             'suggestion.bcc' => null,
+            'suggestion.sendToEntityAdmins' => false,
         ];
 
         parent::__construct($config);
@@ -71,6 +73,42 @@ class Module extends \MapasCulturais\Module {
     }
 
     /**
+     * Retorna e-mails do dono da entidade e dos agentes relacionados no grupo 'Administrado por' (group-admin).
+     */
+    private function getEntityAdminEmails(\MapasCulturais\App $app, \MapasCulturais\Entity $entity) {
+        $app->disableAccessControl();
+        $emails = [];
+        $mail_validator = new Email();
+
+        if ($entity->owner) {
+            $owner_emails = $this->getResponsibleEmailsInOrder($app, $entity);
+            foreach ($owner_emails as $email) {
+                if ($mail_validator->validate($email)) {
+                    $emails[] = $email;
+                }
+            }
+        }
+
+        $group = 'group-admin';
+        if (method_exists($entity, 'getRelatedAgents')) {
+            $admin_agents = $entity->getRelatedAgents($group);
+            foreach ($admin_agents as $agent) {
+                foreach ([$agent->emailPrivado, $agent->emailPublico] as $email) {
+                    if ($email && $mail_validator->validate($email)) {
+                        $emails[] = $email;
+                    }
+                }
+                if ($agent->user && $agent->user->email && $mail_validator->validate($agent->user->email)) {
+                    $emails[] = $agent->user->email;
+                }
+            }
+        }
+
+        $app->enableAccessControl();
+        return array_values(array_unique(array_filter($emails)));
+    }
+
+    /**
      * Destinatários da denúncia conforme config: complaint.to, complaint.bcc.
      */
     public function getComplaintRecipients(\MapasCulturais\App $app, \MapasCulturais\Entity $entity) {
@@ -98,29 +136,55 @@ class Module extends \MapasCulturais\Module {
     }
 
     /**
-     * Destinatários do contato/sugestão conforme config: suggestion.to, suggestion.bcc.
+     * Destinatários do contato/sugestão conforme config: suggestion.to, suggestion.bcc, suggestion.sendToEntityAdmins.
      * To: responsável (ordem getResponsibleEmailsInOrder) ou um saasSuperAdmin; se houver lista na config, lista + responsável válido.
+     *      Quando suggestion.sendToEntityAdmins = true, To = dono + agentes do grupo 'Administrado por' + suggestion.to.
      * BCC: off = ninguém; null = comportamento atual (todos admins); array = lista fixa.
+     *      Quando suggestion.sendToEntityAdmins = true e suggestion.bcc não estiver definido, BCC padrão é vazio.
      */
     private function getSuggestionRecipients(\MapasCulturais\App $app, \MapasCulturais\Entity $entity) {
         $config = $app->config['module.CompliantSuggestion'];
+        $send_to_entity_admins = !empty($config['suggestion.sendToEntityAdmins']);
         $suggestion_bcc = array_key_exists('suggestion.bcc', $config) ? $config['suggestion.bcc'] : null;
 
         $mail_validator = new Email();
-        $responsibleList = $this->getResponsibleEmailsInOrder($app, $entity);
         $tos = [];
-        foreach ($responsibleList as $email) {
-            if ($mail_validator->validate($email)) {
-                $tos[] = $email;
+
+        if ($send_to_entity_admins) {
+            $entity_admin_emails = $this->getEntityAdminEmails($app, $entity);
+            foreach ($entity_admin_emails as $email) {
+                if ($mail_validator->validate($email)) {
+                    $tos[] = $email;
+                }
+            }
+        } else {
+            $responsibleList = $this->getResponsibleEmailsInOrder($app, $entity);
+            foreach ($responsibleList as $email) {
+                if ($mail_validator->validate($email)) {
+                    $tos[] = $email;
+                }
             }
         }
 
-        if($suggestion_bcc === "off") { // desligado
+        $listTo = isset($config['suggestion.to']) ? (array) $config['suggestion.to'] : [];
+        if (!empty($listTo)) {
+            foreach ($listTo as $email) {
+                if ($email && $mail_validator->validate($email)) {
+                    $tos[] = $email;
+                }
+            }
+            $tos = array_values(array_unique(array_filter($tos)));
+        }
+
+        $bccs = [];
+        if($suggestion_bcc === "off" || $suggestion_bcc === false) { // desligado
             $bccs = [];
-        } else if(is_null($suggestion_bcc)) { // comportamento atual (todos admins)
-            $_subsite_admins = $app->repo('User')->getAdmins($entity->subsiteId);
-            foreach ($_subsite_admins as $user) {
-                $bccs[] = $user->email;
+        } else if(is_null($suggestion_bcc)) { // comportamento atual (todos admins), exceto no modo sendToEntityAdmins
+            if (!$send_to_entity_admins) {
+                $_subsite_admins = $app->repo('User')->getAdmins($entity->subsiteId);
+                foreach ($_subsite_admins as $user) {
+                    $bccs[] = $user->email;
+                }
             }
         } else if(is_array($suggestion_bcc) && $suggestion_bcc) { // lista fixa
             $bccs = array_values(array_unique(array_filter($suggestion_bcc)));
@@ -182,14 +246,16 @@ class Module extends \MapasCulturais\Module {
         $app->hook('POST(<<agent|space|event|project|opportunity>>.sendComplaintMessage)', function() use ($plugin) {
             $app = App::i();
 
+            $captcha_token = $this->data['g-recaptcha-response'] ?? $_POST['g-recaptcha-response'] ?? '';
+
             // Se não recebemos o token, não há motivo para avançar para a verificação
-            if (!isset($_POST["g-recaptcha-response"]) || empty($_POST["g-recaptcha-response"])) {
-                throw new \Exception(\MapasCulturais\i::__('Recaptcha não selecionado ou inválido, tente novamente.'));
+            if (empty($captcha_token)) {
+                $this->errorJson(\MapasCulturais\i::__('Recaptcha não selecionado ou inválido, tente novamente.'), 400);
             }
 
             //Verificando recaptcha v2
-            if (!$app->verifyCaptcha($_POST['g-recaptcha-response'])) {
-                throw new \Exception(\MapasCulturais\i::__('Recaptcha não selecionado ou inválido, tente novamente.'));
+            if (!$app->verifyCaptcha($captcha_token)) {
+                $this->errorJson(\MapasCulturais\i::__('Recaptcha não selecionado ou inválido, tente novamente.'), 400);
             }
 
             $entity = $app->repo($this->entityClassName)->find($this->data['entityId']);
@@ -278,19 +344,21 @@ class Module extends \MapasCulturais\Module {
                     $today = new \DateTime('now');
                     $birthDate = new \DateTime($profile->dataDeNascimento);
                     if ($birthDate->diff($today)->y < 18) {
-                        throw new \Exception(\MapasCulturais\i::__('Menores de 18 anos não podem enviar mensagens de contato.'));
+                        $this->errorJson(\MapasCulturais\i::__('Menores de 18 anos não podem enviar mensagens de contato.'), 400);
                     }
                 }
             }
 
+            $captcha_token = $this->data['g-recaptcha-response'] ?? $_POST['g-recaptcha-response'] ?? '';
+
             // Se não recebemos o token, não há motivo para avançar para a verificação
-            if (!isset($_POST["g-recaptcha-response"]) || empty($_POST["g-recaptcha-response"])) {
-                throw new \Exception(\MapasCulturais\i::__('Recaptcha não selecionado ou inválido, tente novamente.'));
+            if (empty($captcha_token)) {
+                $this->errorJson(\MapasCulturais\i::__('Recaptcha não selecionado ou inválido, tente novamente.'), 400);
             }
 
             //Verificando recaptcha v2
-            if (!$app->verifyCaptcha($_POST['g-recaptcha-response'])) {
-                throw new \Exception(\MapasCulturais\i::__('Recaptcha não selecionado ou inválido, tente novamente.'));
+            if (!$app->verifyCaptcha($captcha_token)) {
+                $this->errorJson(\MapasCulturais\i::__('Recaptcha não selecionado ou inválido, tente novamente.'), 400);
             }
 
             $entity = $app->repo($this->entityClassName)->find($this->data['entityId']);
@@ -339,7 +407,9 @@ class Module extends \MapasCulturais\Module {
 
                 $app->createAndSendMailMessage($suggestion_mail);
 
-                if(isset($entity->owner->user->email) && !empty($entity->owner->user->email)) {
+                $send_to_entity_admins = !empty($app->config['module.CompliantSuggestion']['suggestion.sendToEntityAdmins'] ?? false);
+
+                if(!$send_to_entity_admins && isset($entity->owner->user->email) && !empty($entity->owner->user->email)) {
                     if(array_key_exists('anonimous', $this->data) && $this->data['anonimous']) {
                         $email = "<Anonimous>";
                     } else {
