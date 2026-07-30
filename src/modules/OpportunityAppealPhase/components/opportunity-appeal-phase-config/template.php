@@ -153,7 +153,7 @@ $this->import('
                     </div>
                 </mc-alert>
 
-                <div class="opportunity-appeal-phase-config__config-button opportunity-appeal-phase-config__add-evaluation-committee">
+                <div class="opportunity-appeal-phase-config__add-evaluation-committee">
                     <opportunity-committee-groups :entity="entity.evaluationMethodConfiguration"></opportunity-committee-groups>
                 </div>
 
