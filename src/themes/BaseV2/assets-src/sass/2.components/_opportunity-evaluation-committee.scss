@@ -194,12 +194,25 @@
         display: flex;
         align-items: center;
         justify-content: space-between;
+        flex-wrap: wrap;
+        gap: size(16);
         padding: size(17);
+        max-width: 100%;
+        box-sizing: border-box;
 
         &-actions {
             display: flex;
+            flex-wrap: wrap;
             gap: size(16);
+            min-width: 0;
+            max-width: 100%;
         }
+    }
+
+    &__card-content {
+        max-width: 100%;
+        overflow: hidden;
+        box-sizing: border-box;
     }
 
     &__max-registrations {

@@ -23,6 +23,16 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Na redistribuição de avaliações, inclusões manuais passam a contar na carga pendente do comparador antes da distribuição automática (e a ordem das inscrições fica estável por `id`), evitando que o mesmo avaliador receba a próxima inscrição por acaso
 - Na avaliação documental, o link de download do arquivo não cobre mais o campo inteiro: clicar no campo abre o formulário de avaliação e clicar no nome do arquivo continua baixando
 
+## [7.8.3] - 2026-07-30
+### Correções
+- Corrige o overflow da comissão de avaliação na fase de recurso, evitando que botões internos fiquem com largura estourada
+- Mantém o botão "Salvar e publicar" visível em oportunidades em rascunho que já possuem configuração de método de avaliação
+- No envio de denúncia e contato/sugestão, retorna erro em JSON quando o captcha é inválido ou ausente, em vez de falha genérica
+
+### Melhorias
+- Permite enviar o contato/sugestão ao dono da entidade e aos agentes do grupo "Administrado por", via configuração `suggestion.sendToEntityAdmins`
+- Adiciona testes automatizados do módulo CompliantSuggestion e da regressão do botão "Salvar e publicar"
+
 ## [7.8.2] - 2026-07-24
 ### Correções
 - O botão Voltar da tela de avaliação leva de volta à lista de onde a pessoa veio (lista completa da gestão ou lista do avaliador), mesmo depois de trocar de inscrição pelo menu lateral

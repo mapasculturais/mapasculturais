@@ -1075,6 +1075,17 @@ abstract class Theme {
                 $e['__fieldSealStatuses'] = $request_entity->fieldSealStatuses;
             }
 
+            // Evita sobrescrever currentUserPermissions no Vue: a opportunity
+            // aninhada no EMC (mesmo id) vem do pcache sem "publish" e colide
+            // no cache Entity(opportunity:id).
+            if (
+                $entity_class_name === Opportunity::class &&
+                isset($e['evaluationMethodConfiguration']['opportunity']['id']) &&
+                (int) $e['evaluationMethodConfiguration']['opportunity']['id'] === (int) $entity_id
+            ) {
+                unset($e['evaluationMethodConfiguration']['opportunity']);
+            }
+
             $app->applyHookBoundTo($this, "view.requestedEntity($_entity).result", [&$e, $entity_class_name, $entity_id]);
             $this->jsObject['requestedEntity'] = $e;
         }
