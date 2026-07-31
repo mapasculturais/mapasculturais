@@ -17,8 +17,8 @@ $this->import('
     entity-header
     entity-links
     entity-location
-    entity-owner
     entity-people-collaborators
+    entity-people-owner
     entity-profile
     entity-renew-lock
     entity-social-media
@@ -237,13 +237,11 @@ $owner_count = $entity->parent ? 1 : 0;
                                     label="<?= i::esc_attr_e('Proprietário(a)') ?>"
                                     :meta="{ count: <?= (int) $owner_count ?> }"
                                     slug="proprietario">
-                                    <div class="single-1__people-card">
-                                        <entity-owner
+                                    <div class="single-1__people-owner">
+                                        <entity-people-owner
                                             :entity="entity"
-                                            title="<?php i::_e('Proprietário(a)') ?>"
-                                            classes="col-12"
-                                            editable>
-                                        </entity-owner>
+                                            empty-message="<?php i::esc_attr_e('Essa organização não possui proprietário.') ?>">
+                                        </entity-people-owner>
                                     </div>
                                 </mc-tab>
                             </mc-tabs>
