@@ -15,6 +15,10 @@ app.component('entity-people-collaborators', {
             type: Boolean,
             default: false,
         },
+        editable: {
+            type: Boolean,
+            default: false,
+        },
         emptyMessage: {
             type: String,
             default: __('empty', 'entity-people-collaborators'),
@@ -36,6 +40,7 @@ app.component('entity-people-collaborators', {
     data() {
         return {
             viewMode: 'group', // group | people
+            newGroupName: '',
         };
     },
 
@@ -53,7 +58,8 @@ app.component('entity-people-collaborators', {
                     .map((relation) => relation?.agent)
                     .filter((agent) => agent?.id);
 
-                if (!agents.length) {
+                // Na edição, mantém grupos vazios para permitir adicionar agentes.
+                if (!agents.length && !this.editable) {
                     continue;
                 }
 
@@ -61,6 +67,24 @@ app.component('entity-people-collaborators', {
                     name: groupName,
                     agents,
                 });
+            }
+
+            return result;
+        },
+
+        queries() {
+            const result = {};
+
+            for (const group of this.groups) {
+                const ids = group.agents.map((agent) => agent.id).join(',');
+
+                if (this.entity.__objectType === 'agent') {
+                    result[group.name] = ids
+                        ? { id: `!IN(${ids}, ${this.entity.id})` }
+                        : { id: `!EQ(${this.entity.id})` };
+                } else {
+                    result[group.name] = ids ? { id: `!IN(${ids})` } : {};
+                }
             }
 
             return result;
@@ -92,6 +116,10 @@ app.component('entity-people-collaborators', {
 
         hasItems() {
             return this.flatAgents.length > 0;
+        },
+
+        hasGroups() {
+            return this.groups.length > 0;
         },
 
         totalCount() {
@@ -154,6 +182,9 @@ app.component('entity-people-collaborators', {
 
     methods: {
         setViewMode(mode) {
+            if (this.editable) {
+                return;
+            }
             this.viewMode = mode;
         },
 
@@ -172,6 +203,34 @@ app.component('entity-people-collaborators', {
 
         areasText(entity) {
             return this.areas(entity).map((term) => String(term).toUpperCase()).join(', ');
+        },
+
+        addGroup(group) {
+            const name = String(group || '').trim();
+            if (!name) {
+                return;
+            }
+
+            if (!this.entity.relatedAgents[name]) {
+                this.entity.relatedAgents[name] = [];
+            }
+            if (!this.entity.agentRelations[name]) {
+                this.entity.agentRelations[name] = [];
+            }
+
+            this.newGroupName = '';
+        },
+
+        addAgent(group, agent) {
+            this.entity.addRelatedAgent(group, agent);
+        },
+
+        removeAgent(group, agent) {
+            this.entity.removeAgentRelation(group, agent);
+        },
+
+        removeGroup(group) {
+            this.entity.removeAgentRelationGroup(group);
         },
     },
 });

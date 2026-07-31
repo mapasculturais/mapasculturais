@@ -12,4 +12,13 @@ return [
     'areas' => i::__('Áreas de atuação'),
     'ownerRole' => i::__('Proprietário(a)'),
     'adminRole' => i::__('Administrador(a)'),
+    'createGroup' => i::__('criar grupo'),
+    'deleteGroup' => i::__('excluir grupo'),
+    'deleteGroupConfirm' => i::__('Remover grupo de agentes relacionados?'),
+    'addAgent' => i::__('adicionar agente'),
+    'deleteAgent' => i::__('excluir agente'),
+    'deleteAgentConfirm' => i::__('Remover agente relacionado?'),
+    'groupNamePlaceholder' => i::__('Digite o nome do grupo'),
+    'cancel' => i::__('Cancelar'),
+    'confirm' => i::__('Confirmar'),
 ];
