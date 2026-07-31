@@ -1605,6 +1605,170 @@
         }
     }
 
+    .entity-people-owner {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        gap: size(16);
+
+        &__intro {
+            margin: 0;
+            padding: size(16);
+            border-radius: var(--mc-border-radius-sm);
+            background-color: var(--mc-gray-100, #f5f5f5);
+
+            p {
+                margin: 0;
+                font-size: size(14);
+                font-weight: 400;
+                line-height: size(22);
+                color: var(--mc-gray-700);
+            }
+        }
+
+        &__empty {
+            margin: 0;
+            padding: size(8) 0;
+            font-size: size(14);
+            font-weight: 400;
+            line-height: size(19);
+            color: var(--mc-gray-700);
+        }
+
+        &__card {
+            @extend %white-card;
+            margin-bottom: 0;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            gap: size(20);
+        }
+
+        &__item {
+            display: flex;
+            align-items: flex-start;
+            gap: size(16);
+            width: 100%;
+        }
+
+        &__avatar {
+            flex-shrink: 0;
+
+            .mc-avatar {
+                width: size(48);
+                height: size(48);
+            }
+        }
+
+        &__content {
+            flex: 1;
+            min-width: 0;
+        }
+
+        &__header {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: flex-start;
+            gap: size(8) size(12);
+            margin-bottom: size(8);
+        }
+
+        &__name {
+            @extend %link-color;
+            font-size: size(16);
+            font-weight: 700;
+            line-height: size(22);
+            text-decoration: none;
+        }
+
+        &__tags {
+            margin-left: auto;
+            display: inline-flex;
+            flex-wrap: wrap;
+            justify-content: flex-end;
+            align-items: center;
+            gap: size(6);
+        }
+
+        &__tag {
+            display: inline-flex;
+            align-items: center;
+            padding: size(4) size(10);
+            border-radius: var(--mc-border-radius-sm, size(16));
+            background-color: var(--mc-warning-500, #f0a500);
+            color: var(--mc-low-500);
+            font-size: size(12);
+            font-weight: 700;
+            line-height: size(16);
+            text-transform: capitalize;
+            white-space: nowrap;
+        }
+
+        &__meta {
+            margin: 0 0 size(4);
+            font-size: size(14);
+            font-weight: 400;
+            line-height: size(19);
+            color: var(--mc-gray-700);
+        }
+
+        &__meta-label {
+            font-weight: 700;
+            color: var(--mc-gray-700);
+        }
+
+        &__areas {
+            color: var(--mc-agents-500);
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        &__footer {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            gap: size(12) size(16);
+            margin-top: size(8);
+            width: 100%;
+        }
+
+        &__date {
+            display: flex;
+            align-items: center;
+            gap: size(8);
+            margin: 0;
+            font-size: size(14);
+            font-weight: 400;
+            line-height: size(19);
+            color: var(--mc-gray-700);
+
+            .iconify,
+            .mc-icon {
+                flex-shrink: 0;
+                font-size: size(16);
+                color: var(--mc-gray-700);
+            }
+        }
+
+        &__actions {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: flex-end;
+            align-items: center;
+            gap: size(12);
+            margin-left: auto;
+        }
+
+        &__pending {
+            width: 100%;
+            margin: 0;
+        }
+
+        &__transfer {
+            white-space: nowrap;
+        }
+    }
 
     .entity-connections-list {
         width: 100%;
