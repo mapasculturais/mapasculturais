@@ -21,7 +21,6 @@ $this->import('
     entity-people-collaborators
     entity-profile
     entity-renew-lock
-    entity-related-agents
     entity-social-media
     entity-status
     entity-terms
@@ -202,16 +201,12 @@ $owner_count = $entity->parent ? 1 : 0;
                                     label="<?= i::esc_attr_e('Colaboradores') ?>"
                                     :meta="{ count: <?= (int) $collaborator_count ?> }"
                                     slug="colaboradores">
-                                    <div class="single-1__people-card edit-2__people-collaborators">
-                                        <?php if ($collaborator_count === 0) { ?>
-                                            <p class="single-1__administration-empty">
-                                                <?php i::_e('Você ainda não adicionou nenhum colaborador na organização. Crie um grupo e edite novos colaboradores.') ?>
-                                            </p>
-                                        <?php } ?>
-
-                                        <entity-related-agents
+                                    <div class="single-1__people-collaborators">
+                                        <entity-people-collaborators
                                             :entity="entity"
-                                            editable></entity-related-agents>
+                                            editable
+                                            empty-message="<?php i::esc_attr_e('Você ainda não adicionou nenhum colaborador na organização.') ?>">
+                                        </entity-people-collaborators>
                                     </div>
                                 </mc-tab>
 
