@@ -1453,6 +1453,12 @@
             margin: 0 0 size(24);
         }
 
+        &__edit-toolbar {
+            display: flex;
+            justify-content: flex-end;
+            margin: 0 0 size(24);
+        }
+
         &__toolbar-label {
             font-size: size(14);
             font-weight: 400;
@@ -1500,6 +1506,14 @@
             }
         }
 
+        &__group-header {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            gap: size(8) size(16);
+        }
+
         &__section-card {
             @extend %white-card;
             margin-bottom: 0;
@@ -1538,20 +1552,59 @@
             background-color: var(--mc-agents-500);
             white-space: nowrap;
         }
-    }
 
-    // Aba "Pessoas" na edição do agente coletivo — mantém layout do Figma
-    .edit-2__people-collaborators {
-        .entity-related-agents > h4 {
-            display: none !important;
+        &__agent-actions {
+            flex-shrink: 0;
+            margin-left: auto;
+            align-self: center;
         }
 
-        .entity-related-agents__addNew {
-            .add-agent {
-                display: none !important;
+        &__delete-agent {
+            color: var(--mc-danger-500, #D14343) !important;
+            border: 1px solid var(--mc-danger-500, #D14343) !important;
+            background: transparent !important;
+            white-space: nowrap;
+
+            .iconify,
+            .mc-icon {
+                color: var(--mc-danger-500, #D14343);
+            }
+
+            &:hover {
+                background-color: rgba(209, 67, 67, 0.06) !important;
+            }
+        }
+
+        &__group-actions {
+            display: flex;
+            justify-content: center;
+            padding-top: size(20);
+            margin-top: size(8);
+        }
+
+        &__new-group {
+            min-width: size(280);
+
+            .input {
+                width: 100%;
+            }
+        }
+
+        &--editable {
+            .entity-connections-list__item {
+                align-items: center;
+            }
+
+            .entity-connections-list__header {
+                width: 100%;
+            }
+
+            .entity-people-collaborators__tags {
+                margin-left: 0;
             }
         }
     }
+
 
     .entity-connections-list {
         width: 100%;
