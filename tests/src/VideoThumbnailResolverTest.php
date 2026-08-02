@@ -4,11 +4,14 @@ namespace Tests;
 
 use Entities\Services\VideoThumbnailResolver;
 use InvalidArgumentException;
+use MapasCulturais\Cache;
+use Symfony\Component\Cache\Adapter\ArrayAdapter;
 use Tests\Abstract\TestCase;
 
 class VideoThumbnailResolverTest extends TestCase
 {
     private array $requests = [];
+    private Cache $resolverCache;
 
     private function resolver(array $responses = []): VideoThumbnailResolver
     {
@@ -23,7 +26,8 @@ class VideoThumbnailResolverTest extends TestCase
             return array_shift($responses[$key]);
         };
 
-        return new VideoThumbnailResolver($transport, $this->app->cache);
+        $this->resolverCache = new Cache(new ArrayAdapter());
+        return new VideoThumbnailResolver($transport, $this->resolverCache);
     }
 
     private function response(int $status, string $body = '', ?string $location = null): array
@@ -191,6 +195,44 @@ class VideoThumbnailResolverTest extends TestCase
         ]);
 
         $this->assertNull($resolver->resolve($tiktok));
+    }
+
+    public function testCachesSuccessfulThumbnailForOneHour(): void
+    {
+        $this->assertSame(3600, VideoThumbnailResolver::POSITIVE_CACHE_TTL);
+
+        $url = 'https://www.tiktok.com/@creator/video/7123456789012345678';
+        $oembed = 'https://www.tiktok.com/oembed?url=' . rawurlencode($url);
+        $resolver = $this->resolver([
+            "GET {$oembed}" => [
+                $this->response(200, '{"thumbnail_url":"https://cdn.tiktok.com/cover.jpg"}'),
+            ],
+        ]);
+
+        $this->assertSame('https://cdn.tiktok.com/cover.jpg', $resolver->resolve($url));
+        $this->assertSame('https://cdn.tiktok.com/cover.jpg', $resolver->resolve($url));
+        $this->assertCount(1, $this->requests);
+
+        $key = 'video-thumbnail:tiktok:' . hash('sha256', $url);
+        $this->assertTrue($this->resolverCache->contains($key));
+    }
+
+    public function testCachesNullResultWithoutRepeatingRequest(): void
+    {
+        $this->assertSame(300, VideoThumbnailResolver::NEGATIVE_CACHE_TTL);
+
+        $url = 'https://www.instagram.com/reel/Missing123/';
+        $embed = 'https://www.instagram.com/reel/Missing123/embed/captioned/';
+        $resolver = $this->resolver([
+            "GET {$embed}" => [$this->response(404)],
+        ]);
+
+        $this->assertNull($resolver->resolve($url));
+        $this->assertNull($resolver->resolve($url));
+        $this->assertCount(1, $this->requests);
+        $this->assertTrue($this->resolverCache->contains(
+            'video-thumbnail:instagram:' . hash('sha256', $url)
+        ));
     }
 
     /** @dataProvider invalidUrlProvider */
