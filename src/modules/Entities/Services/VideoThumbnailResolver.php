@@ -9,6 +9,13 @@ use MapasCulturais\Cache;
 
 class VideoThumbnailResolver
 {
+    public const POSITIVE_CACHE_TTL = 3600;
+    public const NEGATIVE_CACHE_TTL = 300;
+
+    private const CONNECT_TIMEOUT_MS = 3000;
+    private const TOTAL_TIMEOUT_MS = 5000;
+    private const MAX_RESPONSE_BYTES = 2097152;
+
     private Closure $httpRequest;
     private Cache $cache;
 
@@ -176,14 +183,34 @@ class VideoThumbnailResolver
     {
         try {
             $normalized = $this->normalize($url);
-            return $normalized['provider'] === 'tiktok'
+            $cacheKey = $this->cacheKey($normalized['provider'], $normalized['url']);
+
+            if ($this->cache->contains($cacheKey)) {
+                $cached = $this->cache->fetch($cacheKey);
+                return is_string($cached) ? $cached : null;
+            }
+
+            $thumbnail = $normalized['provider'] === 'tiktok'
                 ? $this->resolveTikTok($normalized['url'])
                 : $this->resolveInstagram($normalized['url']);
+
+            $this->cache->save(
+                $cacheKey,
+                $thumbnail,
+                $thumbnail ? self::POSITIVE_CACHE_TTL : self::NEGATIVE_CACHE_TTL
+            );
+
+            return $thumbnail;
         } catch (InvalidArgumentException $exception) {
             throw $exception;
         } catch (\Throwable $exception) {
             return null;
         }
+    }
+
+    private function cacheKey(string $provider, string $url): string
+    {
+        return "video-thumbnail:{$provider}:" . hash('sha256', $url);
     }
 
     private function resolveTikTok(string $url): ?string
@@ -258,6 +285,55 @@ class VideoThumbnailResolver
 
     private function request(string $url, bool $headersOnly): array
     {
-        throw new \RuntimeException('HTTP transport not implemented');
+        $headers = [];
+        $body = '';
+        $tooLarge = false;
+        $handle = curl_init($url);
+
+        curl_setopt_array($handle, [
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_FOLLOWLOCATION => false,
+            CURLOPT_CONNECTTIMEOUT_MS => self::CONNECT_TIMEOUT_MS,
+            CURLOPT_TIMEOUT_MS => self::TOTAL_TIMEOUT_MS,
+            CURLOPT_USERAGENT => 'MapasCulturais/VideoThumbnailResolver',
+            CURLOPT_PROTOCOLS => CURLPROTO_HTTPS,
+            CURLOPT_HTTPHEADER => ['Accept: application/json, text/html;q=0.9, */*;q=0.1'],
+            CURLOPT_HEADERFUNCTION => function ($handle, string $line) use (&$headers): int {
+                $length = strlen($line);
+                if (str_contains($line, ':')) {
+                    [$name, $value] = explode(':', $line, 2);
+                    $headers[strtolower(trim($name))] = trim($value);
+                }
+                return $length;
+            },
+        ]);
+
+        if ($headersOnly) {
+            curl_setopt($handle, CURLOPT_NOBODY, true);
+        } else {
+            curl_setopt($handle, CURLOPT_WRITEFUNCTION, function ($handle, string $chunk) use (&$body, &$tooLarge): int {
+                if (strlen($body) + strlen($chunk) > self::MAX_RESPONSE_BYTES) {
+                    $tooLarge = true;
+                    return 0;
+                }
+                $body .= $chunk;
+                return strlen($chunk);
+            });
+        }
+
+        $result = curl_exec($handle);
+        $status = (int) curl_getinfo($handle, CURLINFO_RESPONSE_CODE);
+        $error = curl_error($handle);
+        curl_close($handle);
+
+        if ($tooLarge) {
+            throw new \RuntimeException('Provider response exceeded size limit');
+        }
+
+        if ($result === false) {
+            throw new \RuntimeException($error ?: 'Provider request failed');
+        }
+
+        return ['status' => $status, 'headers' => $headers, 'body' => $body];
     }
 }
