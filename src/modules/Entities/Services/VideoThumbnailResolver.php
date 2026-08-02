@@ -15,6 +15,21 @@ class VideoThumbnailResolver
     private const CONNECT_TIMEOUT_MS = 3000;
     private const TOTAL_TIMEOUT_MS = 5000;
     private const MAX_RESPONSE_BYTES = 2097152;
+    private const PROVIDER_HOSTS = [
+        'tiktok' => [
+            'tiktok.com',
+            'www.tiktok.com',
+            'm.tiktok.com',
+            'vm.tiktok.com',
+            'vt.tiktok.com',
+        ],
+        'instagram' => [
+            'instagram.com',
+            'www.instagram.com',
+            'm.instagram.com',
+            'instagr.am',
+        ],
+    ];
 
     private Closure $httpRequest;
     private Cache $cache;
@@ -42,14 +57,34 @@ class VideoThumbnailResolver
                 throw new InvalidArgumentException('Unsupported video URL');
             }
 
-            $url = $this->resolveRedirects($url, $provider);
-            [$parts, $host] = $this->parseHttpsUrl($url);
+            $redirectCacheKey = $this->redirectCacheKey($provider, $url);
+            if ($this->cache->contains($redirectCacheKey)) {
+                $cached = $this->cache->fetch($redirectCacheKey);
+                if (is_string($cached)) {
+                    return ['provider' => $provider, 'url' => $cached];
+                }
 
-            if ($this->providerForHost($host) !== $provider) {
-                throw new InvalidArgumentException('Provider changed after redirect');
+                throw new \RuntimeException('Cached short video URL failure');
             }
 
-            $canonical = $this->canonicalize($provider, $parts);
+            try {
+                $url = $this->resolveRedirects($url, $provider);
+                [$parts, $host] = $this->parseHttpsUrl($url);
+
+                if ($this->providerForHost($host) !== $provider) {
+                    throw new \RuntimeException('Provider changed after redirect');
+                }
+
+                $canonical = $this->canonicalize($provider, $parts);
+                if (!$canonical) {
+                    throw new \RuntimeException('Unsupported redirected video URL');
+                }
+            } catch (\Throwable $exception) {
+                $this->cache->save($redirectCacheKey, null, self::NEGATIVE_CACHE_TTL);
+                throw new \RuntimeException('Unable to resolve short video URL', 0, $exception);
+            }
+
+            $this->cache->save($redirectCacheKey, $canonical, self::POSITIVE_CACHE_TTL);
         }
 
         if (!$canonical) {
@@ -88,20 +123,13 @@ class VideoThumbnailResolver
 
     private function providerForHost(string $host): ?string
     {
-        if ($this->hostMatches($host, 'tiktok.com')) {
-            return 'tiktok';
-        }
-
-        if ($this->hostMatches($host, 'instagram.com') || $host === 'instagr.am') {
-            return 'instagram';
+        foreach (self::PROVIDER_HOSTS as $provider => $hosts) {
+            if (in_array($host, $hosts, true)) {
+                return $provider;
+            }
         }
 
         return null;
-    }
-
-    private function hostMatches(string $host, string $domain): bool
-    {
-        return $host === $domain || str_ends_with($host, ".{$domain}");
     }
 
     private function canonicalize(string $provider, array $parts): ?string
@@ -190,9 +218,14 @@ class VideoThumbnailResolver
                 return is_string($cached) ? $cached : null;
             }
 
-            $thumbnail = $normalized['provider'] === 'tiktok'
-                ? $this->resolveTikTok($normalized['url'])
-                : $this->resolveInstagram($normalized['url']);
+            try {
+                $thumbnail = $normalized['provider'] === 'tiktok'
+                    ? $this->resolveTikTok($normalized['url'])
+                    : $this->resolveInstagram($normalized['url']);
+            } catch (\Throwable $exception) {
+                $this->cache->save($cacheKey, null, self::NEGATIVE_CACHE_TTL);
+                return null;
+            }
 
             $this->cache->save(
                 $cacheKey,
@@ -211,6 +244,11 @@ class VideoThumbnailResolver
     private function cacheKey(string $provider, string $url): string
     {
         return "video-thumbnail:{$provider}:" . hash('sha256', $url);
+    }
+
+    private function redirectCacheKey(string $provider, string $url): string
+    {
+        return "video-thumbnail:redirect:{$provider}:" . hash('sha256', $url);
     }
 
     private function resolveTikTok(string $url): ?string

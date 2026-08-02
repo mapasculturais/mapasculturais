@@ -87,11 +87,10 @@ app.component('entity-gallery-video', {
                     provider = 'vimeo';
                     videoID = parsedURL.href.match(vmRegex)[1];
                     videoThumbnail = 'https://vumbnail.com/'+videoID+'.jpg';
-                } else if (this.hostMatches(host, 'tiktok.com')) {
+                } else if (this.isSupportedVideoHost(host, 'tiktok')) {
                     provider = 'tiktok';
                 } else if (
-                    this.hostMatches(host, 'instagram.com') ||
-                    host === 'instagr.am'
+                    this.isSupportedVideoHost(host, 'instagram')
                 ) {
                     provider = 'instagram';
                 }
@@ -113,8 +112,24 @@ app.component('entity-gallery-video', {
                 return {};
             }
         },
-        hostMatches(host, domain) {
-            return host === domain || host.endsWith(`.${domain}`);
+        isSupportedVideoHost(host, provider) {
+            const providerHosts = {
+                tiktok: [
+                    'tiktok.com',
+                    'www.tiktok.com',
+                    'm.tiktok.com',
+                    'vm.tiktok.com',
+                    'vt.tiktok.com',
+                ],
+                instagram: [
+                    'instagram.com',
+                    'www.instagram.com',
+                    'm.instagram.com',
+                    'instagr.am',
+                ],
+            };
+
+            return providerHosts[provider].includes(host);
         },
         async loadRemoteThumbnail(url) {
             try {
