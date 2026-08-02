@@ -6,6 +6,11 @@ O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+### Melhorias
+- Adiciona resolução segura de miniaturas de vídeos públicos do TikTok e Instagram para uso na galeria de vídeos da BaseV2, incluindo URLs canônicas e links compartilhados
+- Adiciona testes automatizados para normalização das URLs, redirecionamentos permitidos e extração das miniaturas
+
+## [Unreleased]
 ### Correções
 - Corrige o overflow da comissão de avaliação na fase de recurso, evitando que botões internos fiquem com largura estourada
 - Mantém o botão "Salvar e publicar" visível em oportunidades em rascunho que já possuem configuração de método de avaliação
