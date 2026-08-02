@@ -83,6 +83,23 @@ test('keeps Instagram blank when no thumbnail is available', async () => {
     assert.equal(data.thumbnail, '');
 });
 
+test('does not request thumbnails from unlisted provider subdomains', async () => {
+    let requests = 0;
+    context.fetch = async () => {
+        requests++;
+        return { ok: true, async json() { return { thumbnailUrl: null }; } };
+    };
+
+    const instance = createInstance();
+    const instagram = instance.getVideoBasicData('https://unlisted.instagram.com/reel/Reel123/');
+    const tiktok = instance.getVideoBasicData('https://unlisted.tiktok.com/@creator/video/123');
+
+    await new Promise(setImmediate);
+    assert.equal(instagram.provider, '');
+    assert.equal(tiktok.provider, '');
+    assert.equal(requests, 0);
+});
+
 test('preserves YouTube and Vimeo thumbnail behavior', () => {
     const instance = createInstance();
 

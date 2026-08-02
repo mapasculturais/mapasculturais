@@ -102,6 +102,8 @@ class VideoThumbnailResolverTest extends TestCase
         ]);
 
         $this->assertSame('https://p16.tiktokcdn.com/cover.jpg', $resolver->resolve($short));
+        $this->assertSame('https://p16.tiktokcdn.com/cover.jpg', $resolver->resolve($short));
+        $this->assertCount(3, $this->requests);
     }
 
     public function testResolvesInstagramShareLinkWithinAllowlist(): void
@@ -163,6 +165,22 @@ class VideoThumbnailResolverTest extends TestCase
 
         $this->assertNull($resolver->resolve('https://vm.tiktok.com/ZMshort/'));
         $this->assertSame(['HEAD https://vm.tiktok.com/ZMshort/'], $this->requests);
+    }
+
+    public function testRejectsRedirectToUnlistedProviderSubdomain(): void
+    {
+        $short = 'https://vm.tiktok.com/ZMshort/';
+        $resolver = $this->resolver([
+            "HEAD {$short}" => [
+                $this->response(
+                    302,
+                    location: 'https://unlisted.tiktok.com/@creator/video/7123456789012345678'
+                ),
+            ],
+        ]);
+
+        $this->assertNull($resolver->resolve($short));
+        $this->assertSame(["HEAD {$short}"], $this->requests);
     }
 
     public function testRejectsMoreThanThreeRedirects(): void
@@ -235,6 +253,28 @@ class VideoThumbnailResolverTest extends TestCase
         ));
     }
 
+    public function testCachesOperationalFailureWithoutRepeatingRequest(): void
+    {
+        $url = 'https://www.tiktok.com/@creator/video/7123456789012345678';
+        $resolver = $this->resolver();
+
+        $this->assertNull($resolver->resolve($url));
+        $this->assertNull($resolver->resolve($url));
+        $this->assertCount(1, $this->requests);
+    }
+
+    public function testCachesShortLinkFailureWithoutRepeatingRequest(): void
+    {
+        $short = 'https://vm.tiktok.com/Unavailable/';
+        $resolver = $this->resolver([
+            "HEAD {$short}" => [$this->response(503)],
+        ]);
+
+        $this->assertNull($resolver->resolve($short));
+        $this->assertNull($resolver->resolve($short));
+        $this->assertCount(1, $this->requests);
+    }
+
     /** @dataProvider invalidUrlProvider */
     public function testRejectsInvalidOrUnsupportedUrls(string $url): void
     {
@@ -250,6 +290,8 @@ class VideoThumbnailResolverTest extends TestCase
             'custom port' => ['https://www.instagram.com:8443/reel/Code/'],
             'deceptive Instagram host' => ['https://instagram.com.example.org/reel/Code/'],
             'deceptive TikTok host' => ['https://tiktok.com.example.org/@user/video/123'],
+            'unlisted Instagram subdomain' => ['https://unlisted.instagram.com/reel/Code/'],
+            'unlisted TikTok subdomain' => ['https://unlisted.tiktok.com/@user/video/123'],
             'Instagram profile' => ['https://www.instagram.com/mapasculturais/'],
             'TikTok profile' => ['https://www.tiktok.com/@mapasculturais'],
             'unsupported provider' => ['https://example.org/video/123'],
