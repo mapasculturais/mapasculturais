@@ -2,6 +2,7 @@
 
 namespace Entities;
 
+use Entities\Services\VideoThumbnailResolver;
 use MapasCulturais\App;
 use MapasCulturais\Entity;
 use MapasCulturais\Exceptions\PermissionDenied;
@@ -62,6 +63,17 @@ class Module extends \MapasCulturais\Module{
 
     function _init(){
         $app = App::i();
+
+        $app->hook('GET(site.videoThumbnail)', function () {
+            $url = (string) ($this->data['url'] ?? '');
+
+            try {
+                $resolver = new VideoThumbnailResolver();
+                $this->json(['thumbnailUrl' => $resolver->resolve($url)]);
+            } catch (\InvalidArgumentException $exception) {
+                $this->json(['thumbnailUrl' => null], 400);
+            }
+        });
 
         // Remove espaços múltiplos e espaços no início/fim do nome e nome completo
         $app->hook('entity(<<*>>).save:before', function() use($app) {

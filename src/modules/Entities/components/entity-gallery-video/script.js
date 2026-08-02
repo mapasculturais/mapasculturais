@@ -65,35 +65,91 @@ app.component('entity-gallery-video', {
     methods: {
         // separa os dados do vídeo pela URL
         getVideoBasicData(url) {
+            if (this.videoList[url]) {
+                return this.videoList[url];
+            }
+
             try {
-                var parsedURL = new URL(url);
-                var host = parsedURL.host;
-                var provider = '';
-                var videoID = '';
-                var videoThumbnail = '';
+                const parsedURL = new URL(url);
+                const host = parsedURL.hostname.toLowerCase().replace(/\.$/, '');
+                let provider = '';
+                let videoID = '';
+                let videoThumbnail = '';
 
-                var ytRegex = /(youtu.*be.*)\/(watch\?v=|embed\/|v|shorts|)(.*?((?=[&#?])|$))/;
-                var vmRegex = /(?:www\.|player\.)?vimeo.com\/(?:channels\/(?:\w+\/)?|groups\/(?:[^\/]*)\/videos\/|album\/(?:\d+)\/video\/|video\/|)(\d+)(?:[a-zA-Z0-9_\-]+)?/i;
+                const ytRegex = /(youtu.*be.*)\/(watch\?v=|embed\/|v|shorts|)(.*?((?=[&#?])|$))/;
+                const vmRegex = /(?:www\.|player\.)?vimeo.com\/(?:channels\/(?:\w+\/)?|groups\/(?:[^\/]*)\/videos\/|album\/(?:\d+)\/video\/|video\/|)(\d+)(?:[a-zA-Z0-9_\-]+)?/i;
 
-                if (host.indexOf('youtube') != -1 || host.indexOf('youtu.be') != -1) {
+                if (parsedURL.host.indexOf('youtube') != -1 || parsedURL.host.indexOf('youtu.be') != -1) {
                     provider = 'youtube';
                     videoID = parsedURL.href.match(ytRegex)[3];
                     videoThumbnail = 'https://img.youtube.com/vi/'+videoID+'/0.jpg';
-                } else if (host.indexOf('vimeo') != -1) {
+                } else if (parsedURL.host.indexOf('vimeo') != -1) {
                     provider = 'vimeo';
                     videoID = parsedURL.href.match(vmRegex)[1];
                     videoThumbnail = 'https://vumbnail.com/'+videoID+'.jpg';
+                } else if (this.isSupportedVideoHost(host, 'tiktok')) {
+                    provider = 'tiktok';
+                } else if (
+                    this.isSupportedVideoHost(host, 'instagram')
+                ) {
+                    provider = 'instagram';
                 }
 
-                return {
-                    'parsedURL': parsedURL,
-                    'provider': provider,
-                    'videoID': videoID,
-                    'thumbnail': videoThumbnail
+                this.videoList[url] = {
+                    parsedURL,
+                    provider,
+                    videoID,
+                    thumbnail: videoThumbnail,
+                };
+
+                if (provider === 'tiktok' || provider === 'instagram') {
+                    this.loadRemoteThumbnail(url);
                 }
-            } catch (e) {
-                console.error(`erro na galeria - ${e}`);
+
+                return this.videoList[url];
+            } catch (error) {
+                console.error(`erro na galeria - ${error}`);
                 return {};
+            }
+        },
+        isSupportedVideoHost(host, provider) {
+            const providerHosts = {
+                tiktok: [
+                    'tiktok.com',
+                    'www.tiktok.com',
+                    'm.tiktok.com',
+                    'vm.tiktok.com',
+                    'vt.tiktok.com',
+                ],
+                instagram: [
+                    'instagram.com',
+                    'www.instagram.com',
+                    'm.instagram.com',
+                    'instagr.am',
+                ],
+            };
+
+            return providerHosts[provider].includes(host);
+        },
+        async loadRemoteThumbnail(url) {
+            try {
+                const endpoint = Utils.createUrl('site', 'videoThumbnail');
+                endpoint.searchParams.set('url', url);
+
+                const response = await fetch(endpoint, {
+                    headers: { Accept: 'application/json' },
+                });
+
+                if (!response.ok) {
+                    return;
+                }
+
+                const data = await response.json();
+                if (typeof data.thumbnailUrl === 'string' && this.videoList[url]) {
+                    this.videoList[url].thumbnail = data.thumbnailUrl;
+                }
+            } catch (error) {
+                // A ausência de thumbnail mantém o comportamento visual atual.
             }
         },
         // Abertura da modal
