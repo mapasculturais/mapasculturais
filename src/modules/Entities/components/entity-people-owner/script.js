@@ -44,11 +44,19 @@ app.component('entity-people-owner', {
 
     computed: {
         owner() {
-            const parent = this.entity?.parent;
-            if (parent == null || typeof parent !== 'object') {
+            if (this.entity.__objectType === 'agent') {
+                const parent = this.entity?.parent;
+                if (parent == null || typeof parent !== 'object') {
+                    return null;
+                }
+                return parent;
+            }
+
+            const owner = this.entity?.owner;
+            if (owner == null || typeof owner !== 'object') {
                 return null;
             }
-            return parent;
+            return owner;
         },
 
         ownerTags() {
