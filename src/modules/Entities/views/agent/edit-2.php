@@ -185,7 +185,7 @@ $owner_count = $entity->parent ? 1 : 0;
                 <?php $this->applyTemplateHook('entity-info-validation', 'end') ?>
             </mc-tab>
 
-            <mc-tab label="<?= i::esc_attr_e('Pessoas') ?>" slug="pessoas">
+            <mc-tab label="<?= i::esc_attr_e('Administração e relações') ?>" slug="pessoas">
                 <mc-container>
                     <main>
                         <div class="single-1__people single-1__inner-tabs">

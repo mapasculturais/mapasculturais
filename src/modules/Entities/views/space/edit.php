@@ -273,7 +273,7 @@ $owner_count = $entity->owner ? 1 : 0;
             </mc-container>
         </mc-tab>
 
-        <mc-tab label="<?= i::esc_attr_e('Pessoas') ?>" slug="pessoas">
+        <mc-tab label="<?= i::esc_attr_e('Administração e relações') ?>" slug="pessoas">
             <mc-container>
                 <main>
                     <div class="single-1__people single-1__inner-tabs">
