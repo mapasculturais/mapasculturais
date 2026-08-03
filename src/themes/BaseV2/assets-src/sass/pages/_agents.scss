@@ -987,6 +987,20 @@
             }
         }
 
+        .single-1__presentation-accessibility {
+            display: flex;
+            flex-direction: column;
+            gap: size(8);
+        }
+
+        .single-1__presentation-label {
+            font-weight: 700;
+            font-size: size(14);
+            line-height: size(19);
+            color: var(--mc-gray-700);
+            margin: 0;
+        }
+
         .entity-data {
             display: flex;
             flex-direction: column;
