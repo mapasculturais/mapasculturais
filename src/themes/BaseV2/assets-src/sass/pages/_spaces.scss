@@ -2,9 +2,51 @@
 
 .controller-space {
     &.action-single {
-        .single-space{
+        .single-space {
             &__longdescription {
                 white-space: pre-line;
+            }
+        }
+    }
+
+    &.action-edit {
+        .edit-1 {
+            .edit-1__section-title,
+            .edit-1__section--social .mc-title {
+                color: var(--mc-spaces-500);
+            }
+
+            .tabs-component__button--active {
+                color: var(--mc-spaces-500);
+                border-bottom-color: var(--mc-spaces-500);
+            }
+        }
+
+        // Espaçamento entre abas principais e conteúdo / sub-abas
+        .edit-1.single-1,
+        .edit-1 {
+            .single-1__main-tabs > .tabs-component > .tabs-component__header {
+                margin-top: 0;
+            }
+
+            .single-1__main-tabs > .tabs-component > .tabs-component__panels {
+                padding-top: size(24);
+            }
+
+            .edit-1__inner-tabs {
+                padding-top: size(24);
+
+                > .tabs-component > .tabs-component__header {
+                    margin-top: 0;
+                }
+            }
+
+            .single-1__people.single-1__inner-tabs {
+                padding-top: size(24);
+
+                > .tabs-component > .tabs-component__header {
+                    margin-top: 0;
+                }
             }
         }
     }

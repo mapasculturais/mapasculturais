@@ -2686,6 +2686,14 @@
         max-width: 100%;
     }
 
+    &__required-hint {
+        margin: size(8) 0 size(16);
+        font-size: size(14);
+        font-weight: 400;
+        line-height: size(19);
+        color: var(--mc-gray-700);
+    }
+
     &__section {
         background-color: var(--mc-white);
         padding: size(24);
@@ -2749,6 +2757,64 @@
             .mc-collapsible__body {
                 padding-top: size(8);
             }
+
+            .entity-social-media__description {
+                margin: 0 0 size(16);
+                font-size: size(14);
+                font-weight: 400;
+                line-height: size(19);
+                color: var(--mc-gray-700);
+            }
+
+            .entity-social-media__edit--link {
+                .field {
+                    margin: 0;
+                    width: 100%;
+                }
+
+                .field__title {
+                    min-height: size(40);
+                    margin-bottom: size(8);
+                    font-size: size(14);
+                    font-weight: 700;
+                    line-height: size(19);
+                }
+
+                .field__input > .entity-social-media__input-wrapper {
+                    margin-top: 0;
+                    width: 100%;
+                }
+
+                .entity-social-media__input-wrapper {
+                    position: relative;
+                    display: block;
+                    width: 100%;
+
+                    .iconify,
+                    .mc-icon,
+                    svg {
+                        position: absolute;
+                        left: size(12);
+                        top: 50%;
+                        transform: translateY(-50%);
+                        margin: 0;
+                        z-index: 2;
+                        pointer-events: none;
+                        color: var(--mc-gray-500);
+                        font-size: size(20);
+                        width: size(20);
+                        height: size(20);
+                    }
+
+                    input {
+                        width: 100%;
+                        margin: 0;
+                        padding-left: size(44) !important;
+                        padding-right: size(14);
+                        box-sizing: border-box;
+                    }
+                }
+            }
         }
     }
 
@@ -2799,7 +2865,7 @@
         max-width: 100%;
         background: transparent;
         // Espaço entre as abas principais e as sub-abas
-        padding: size(16) 0 0;
+        padding: size(24) 0 0;
         margin-top: 0;
         box-shadow: none;
         border-radius: 0;
@@ -3520,9 +3586,147 @@
     &__orgs {
         width: 100%;
     }
+
+    &__spaces {
+        width: 100%;
+    }
+}
+
+.entity-spaces-edit {
+    &__items {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        flex-direction: column;
+        gap: size(16);
+    }
+
+    &__item {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: flex-start;
+        gap: size(16);
+        width: 100%;
+        padding: size(16);
+        border: 1px solid var(--mc-gray-300);
+        border-radius: var(--mc-border-radius-sm);
+        background: var(--mc-white);
+        box-sizing: border-box;
+    }
+
+    &__avatar {
+        flex-shrink: 0;
+    }
+
+    &__content {
+        flex: 1;
+        min-width: 0;
+    }
+
+    &__header {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: size(8) size(16);
+        margin-bottom: size(4);
+    }
+
+    &__name {
+        font-size: size(16);
+        font-weight: 700;
+        line-height: size(22);
+        color: var(--mc-spaces-500, var(--mc-primary-500));
+        text-decoration: none;
+    }
+
+    &__id {
+        font-size: size(12);
+        font-weight: 400;
+        color: var(--mc-gray-700);
+        white-space: nowrap;
+    }
+
+    &__meta,
+    &__description,
+    &__address {
+        margin: 0 0 size(4);
+        font-size: size(14);
+        font-weight: 400;
+        line-height: size(19);
+        color: var(--mc-gray-700);
+    }
+
+    &__meta-label {
+        font-weight: 700;
+    }
+
+    &__areas {
+        color: var(--mc-spaces-500, var(--mc-primary-500));
+        font-weight: 700;
+        text-transform: uppercase;
+    }
+
+    &__address {
+        display: flex;
+        align-items: center;
+        gap: size(8);
+    }
+
+    &__actions {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: flex-end;
+        align-items: center;
+        gap: size(8);
+        margin-left: auto;
+
+        &--pair {
+            flex-direction: row;
+        }
+    }
+
+    &__delete {
+        color: var(--mc-danger-500, #D14343) !important;
+        border: 1px solid var(--mc-danger-500, #D14343) !important;
+        background: transparent !important;
+        white-space: nowrap;
+    }
+
+    &__add {
+        display: flex;
+        justify-content: center;
+        width: 100%;
+        margin-top: size(16);
+    }
+
+    &__add-btn {
+        min-width: size(280);
+    }
 }
 
 // Sobrescreve o gap: 40px de .layout-entity.action-edit .container > main
 .layout-entity.action-edit .edit-1 .container > main {
     gap: size(8);
+}
+
+// O layout-entity.action-edit aplica margin-top: -34px em todas as tabs;
+// no edit-1 isso cola o conteúdo / sub-abas nas abas principais.
+.layout-entity.action-edit .edit-1 {
+    > .tabs-component > .tabs-component__header,
+    .single-1__main-tabs > .tabs-component > .tabs-component__header {
+        margin-top: 0;
+    }
+
+    > .tabs-component > .tabs-component__panels,
+    .single-1__main-tabs > .tabs-component > .tabs-component__panels {
+        padding-top: size(24);
+    }
+
+    .edit-1__inner-tabs > .tabs-component > .tabs-component__header,
+    .single-1__inner-tabs > .tabs-component > .tabs-component__header,
+    .single-1__people > .tabs-component > .tabs-component__header {
+        margin-top: 0;
+    }
 }
