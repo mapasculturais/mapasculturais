@@ -10,6 +10,7 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Corrige a configuração do formulário da fase de recurso para criar a etapa inicial automaticamente e exibir corretamente a obrigatoriedade de campos e anexos ao editá-los
 - Torna idempotente o db-update que cria índices em diversas tabelas, evitando erro no boot quando os índices já existem
 - Inclui a fonte ElegantIcons no BaseV2 para que o publish de assets a disponibilize em `/assets/fonts/`, evitando ícones quebrados no EmbedTools (form-builder)
+- Corrige login via Google que não salvava o nome do usuário no perfil, por não solicitar o escopo de perfil na autenticação
 
 ## [7.8.3] - 2026-07-30
 ### Correções
