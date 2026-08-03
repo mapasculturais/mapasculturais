@@ -16,4 +16,21 @@
     line-height: size(16);
     color: var(--mc-error);
   }
+
+  &.edit-1 {
+    .entity-file__title {
+      font-size: size(18);
+      font-weight: 700;
+      line-height: size(25);
+      margin-bottom: size(8);
+    }
+
+    .entity-links {
+      margin-top: 0;
+    }
+
+    .edit-1__section .grid-12 {
+      row-gap: size(16);
+    }
+  }
 }

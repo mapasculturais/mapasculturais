@@ -51,46 +51,15 @@ $this->import('
                                     </div>
                                     <div class="col-12 sm:col-12 grid-12 v-bottom">
                                         <entity-field :entity="entity" prop="name" classes="col-12"></entity-field>
-                                        <entity-field :entity="entity" label="<?php i::esc_attr_e('Selecione o tipo da oportunidade') ?>" prop="type" classes="col-12"></entity-field>
+                                        <entity-field :entity="entity" label="<?php i::esc_attr_e('Tipo da oportunidade') ?>" prop="type" classes="col-12"></entity-field>
                                     </div>
                                 </div>
 
+                                <entity-terms :entity="entity" classes="col-12" taxonomy="area" title="<?php i::_e('Área de interesse') ?>" editable></entity-terms>
+                                <entity-terms :entity="entity" classes="col-12" taxonomy="tag" title="<?php i::_e('Tags') ?>" editable></entity-terms>
+
                                 <entity-field :entity="entity" classes="col-12" prop="shortDescription" :max-length="400"></entity-field>
                                 <entity-field :entity="entity" classes="col-12" prop="longDescription"></entity-field>
-                            </div>
-                        </template>
-                    </mc-collapsible>
-                </div>
-
-                <div class="edit-1__section">
-                    <mc-collapsible :open="true">
-                        <template #header>
-                            <div class="edit-1__section-heading">
-                                <h3 class="edit-1__section-title"><?php i::_e('Arquivos, links e galerias') ?></h3>
-                            </div>
-                        </template>
-                        <template #body>
-                            <div class="grid-12">
-                                <entity-files-list :entity="entity" classes="content-fileList col-12" group="downloads" title="<?php i::esc_attr_e('Adicionar arquivos'); ?>" editable></entity-files-list>
-                                <entity-links :entity="entity" classes="col-12" title="<?php i::esc_attr_e('Adicionar links'); ?>" editable></entity-links>
-                                <entity-gallery-video :entity="entity" classes="col-12" editable></entity-gallery-video>
-                                <entity-gallery :entity="entity" classes="col-12" editable></entity-gallery>
-                            </div>
-                        </template>
-                    </mc-collapsible>
-                </div>
-
-                <div class="edit-1__section">
-                    <mc-collapsible :open="true">
-                        <template #header>
-                            <div class="edit-1__section-heading">
-                                <h3 class="edit-1__section-title"><?php i::_e('Vínculo e regulamento') ?></h3>
-                            </div>
-                        </template>
-                        <template #body>
-                            <div class="grid-12">
-                                <link-opportunity :entity="entity" editable class="col-12"></link-opportunity>
-                                <entity-file :entity="entity" titleModal="<?php i::_e('Adicionar regulamento') ?>" groupName="rules" classes="col-12" title="<?php i::esc_attr_e('Adicionar regulamento'); ?>" editable></entity-file>
                             </div>
                         </template>
                     </mc-collapsible>
@@ -105,11 +74,30 @@ $this->import('
                         </template>
                         <template #body>
                             <div class="grid-12">
+                                <link-opportunity :entity="entity" editable class="col-12"></link-opportunity>
+                                <entity-owner :entity="entity" classes="col-12" title="Publicado por" editable></entity-owner>
                                 <entity-admins :entity="entity" classes="col-12" editable></entity-admins>
                                 <entity-related-agents :entity="entity" classes="col-12" title="<?php i::esc_attr_e('Agentes Relacionados'); ?>" editable></entity-related-agents>
                                 <entity-seals :entity="entity" :editable="entity.currentUserPermissions?.createSealRelation" classes="col-12" title="<?php i::esc_attr_e('Verificações'); ?>"></entity-seals>
-                                <entity-terms :entity="entity" classes="col-12" taxonomy="tag" title="<?php i::_e('Tags') ?>" editable></entity-terms>
-                                <entity-owner :entity="entity" classes="col-12" title="Publicado por" editable></entity-owner>
+                            </div>
+                        </template>
+                    </mc-collapsible>
+                </div>
+
+                <div class="edit-1__section">
+                    <mc-collapsible :open="true">
+                        <template #header>
+                            <div class="edit-1__section-heading">
+                                <h3 class="edit-1__section-title"><?php i::_e('Arquivos, links e galerias') ?></h3>
+                            </div>
+                        </template>
+                        <template #body>
+                            <div class="grid-12">
+                                <entity-file :entity="entity" titleModal="<?php i::_e('Adicionar regulamento') ?>" groupName="rules" classes="col-12" title="<?php i::esc_attr_e('Adicionar regulamento'); ?>" editable></entity-file>
+                                <entity-files-list :entity="entity" classes="content-fileList col-12" group="downloads" title="<?php i::esc_attr_e('Adicionar arquivos'); ?>" editable></entity-files-list>
+                                <entity-links :entity="entity" classes="col-12" title="<?php i::esc_attr_e('Adicionar links'); ?>" editable></entity-links>
+                                <entity-gallery-video :entity="entity" classes="col-12" editable></entity-gallery-video>
+                                <entity-gallery :entity="entity" classes="col-12" editable></entity-gallery>
                             </div>
                         </template>
                     </mc-collapsible>
