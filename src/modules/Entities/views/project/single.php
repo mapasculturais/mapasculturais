@@ -5,27 +5,32 @@ use MapasCulturais\i;
 $this->layout = 'entity';
 
 $this->import('
+    mc-avatar
+    mc-entities
+    mc-icon
+    mc-link
     complaint-suggestion
     entity-actions
     entity-admins
     entity-card
-    entity-data 
+    entity-connections-list
+    entity-data
+    entity-description-collapse
     entity-files-list
     entity-gallery
     entity-gallery-video
     entity-header
     entity-links
-    entity-list
     entity-owner
     entity-related-agents
-    entity-seals
+    entity-seals-list
     entity-social-media
     entity-terms
-    opportunity-list
     mc-breadcrumb
-    mc-link
+    mc-card
     mc-container
     mc-share-links
+    mc-modal
     mc-tab
     mc-tabs
 ');
@@ -37,164 +42,333 @@ $this->breadcrumb = [
     ['label' => $entity->name, 'url' => $app->createUrl('project', 'single', [$entity->id])],
 ];
 
-$children_id = [];
-foreach($entity->children as $children) {
-    $children_id[] = $children->id;
-}
-
-$children_id  = implode(",", $children_id );
-
+$events = method_exists($entity, 'getEvents') ? $entity->getEvents() : [];
+$has_events = is_countable($events) ? count($events) > 0 : false;
 ?>
 
-<div class="main-app">
+<div class="main-app single-1">
     <mc-breadcrumb></mc-breadcrumb>
     <entity-header :entity="entity">
         <template #metadata>
             <dl v-if="entity.id && global.showIds[entity.__objectType]" class="metadata__id">
-                <entity-data class="metadata__id" :entity="entity" prop="id" label="<?php i::_e("ID:")?>"></entity-data>
-            </dl> 
+                <entity-data class="metadata__id" :entity="entity" prop="id" label="<?php i::_e('ID:') ?>"></entity-data>
+            </dl>
             <dl v-if="entity.type">
                 <dt><?= i::__('Tipo') ?></dt>
-                <dd :class="[entity.__objectType+'__color', 'type']"> {{entity.type.name}} </dd>
+                <dd :class="[entity.__objectType + '__color', 'type']">{{ entity.type.name }}</dd>
             </dl>
             <dl v-if="entity.parent">
                 <dt><?= i::__('Projeto integrante de') ?></dt>
-                <dd><mc-link :entity="entity.parent"></mc-link></dd>
+                <dd :class="[entity.__objectType + '__color', 'type']">
+                    <mc-link :entity="entity.parent">{{ entity.parent.name }}</mc-link>
+                </dd>
             </dl>
         </template>
+        <template #actions>
+            <mc-modal title="<?= i::__('Compartilhar') ?>" classes="entity-header__share-modal">
+                <template #default>
+                    <mc-share-links classes="col-12" title="" text="<?php i::esc_attr_e('Veja este link:'); ?>"></mc-share-links>
+                    <div class="entity-header__share-copy">
+                        <p><?php i::_e('Ou copie o link'); ?></p>
+                        <button type="button" class="button button--primary-outline button--icon" onclick="navigator.clipboard.writeText(window.location.href)">
+                            <mc-icon name="link"></mc-icon>
+                            <?php i::_e('Copiar link'); ?>
+                        </button>
+                    </div>
+                </template>
+                <template #button="modal">
+                    <button type="button" class="button button--primary-outline button--icon" @click="modal.open()">
+                        <mc-icon name="share"></mc-icon>
+                        <?php i::_e('Compartilhar'); ?>
+                    </button>
+                </template>
+            </mc-modal>
+            <complaint-suggestion
+                :entity="entity"
+                :show-complaint="false"
+                contact-button-label="<?php i::esc_attr_e('Enviar mensagem') ?>"
+                contact-button-classes="button button--primary button--icon">
+            </complaint-suggestion>
+        </template>
     </entity-header>
-    <mc-tabs class="tabs" sync-hash>
-        <mc-tab icon="exclamation" label="<?= i::_e('Informações') ?>" slug="info">
-            <div class="tabs__info">
+
+    <div class="single-1__main-tabs">
+        <mc-tabs class="tabs" sync-hash>
+            <?php $this->applyTemplateHook('tabs', 'begin') ?>
+
+            <mc-tab label="<?= i::_e('Perfil') ?>" slug="info">
                 <mc-container>
-                    <main>
-                        <opportunity-list></opportunity-list>
-                        <div class="grid-12">
-                            <div v-if="entity.emailPublico || entity.telefonePublico" class="col-12 additional-info">
-                                <h4 class="additional-info__title"><?php i::_e("Informações adicionais"); ?></h4>
-                                <entity-data v-if="entity.telefonePublico" class="additional-info__item" :entity="entity" prop="telefonePublico" label="<?php i::_e("telefone:")?>"></entity-data>
-                                <entity-data v-if="entity.emailPublico" class="additional-info__item" :entity="entity" prop="emailPublico" label="<?php i::_e("email:")?>"></entity-data>
+                    <div v-if="entity.children?.length > 0" class="single-1__collective-agents">
+                        <div class="single-1__collective-agents-card">
+                            <div class="single-1__collective-agents-header">
+                                <h3 class="single-1__collective-agents-title">
+                                    <?php i::_e('Subprojetos de'); ?> {{ entity.name }}
+                                </h3>
+                                <a
+                                    v-if="entity.children.length > 0"
+                                    class="single-1__collective-agents-see-all"
+                                    href="#subprojetos">
+                                    <?php i::_e('ver todos'); ?>
+                                    <mc-icon name="arrow-right"></mc-icon>
+                                </a>
                             </div>
-                            <div v-if="entity.longDescription!=null" class="col-12">
-                                <entity-data v-if="entity.longDescription!=null" class="additional-info__item col-12" :entity="entity" prop="longDescription" label="<?php i::_e("Descrição Detalhada")?>"></entity-data>
-                            </div>
-                            <entity-files-list v-if="entity.files.downloads!= null" :entity="entity" classes="col-12" group="downloads" title="<?php i::esc_attr_e('Arquivos para download'); ?>"></entity-files-list>
-                            <entity-links :entity="entity" classes="col-12" title="<?php i::_e('Links'); ?>"></entity-links>
-                            <entity-gallery-video :entity="entity" classes="col-12"></entity-gallery-video>
-                            <entity-gallery :entity="entity" classes="col-12"></entity-gallery>
+                            <mc-entities
+                                type="project"
+                                select="id,name,files.avatar,singleUrl"
+                                order="name ASC"
+                                :ids="entity.children.slice(0, 3).map((item) => item.id ?? item)"
+                                #default="{entities}">
+                                <ul v-if="entities.length" class="single-1__collective-agents-list">
+                                    <li v-for="project in entities" :key="project.id" class="single-1__collective-agents-item">
+                                        <mc-link :entity="project" class="single-1__collective-agents-link">
+                                            <mc-avatar :entity="project" size="small"></mc-avatar>
+                                            <span class="single-1__collective-agents-name">{{ project.name }}</span>
+                                        </mc-link>
+                                    </li>
+                                </ul>
+                            </mc-entities>
                         </div>
-                    </main>
+                    </div>
+
+                    <div class="single-1__inner-tabs">
+                        <mc-tabs class="tabs" sync-hash>
+                            <mc-tab label="<?= i::_e('Público') ?>" slug="publico">
+                                <div class="single-1__presentation-card">
+                                    <h2 class="single-1__presentation-title"><?php i::_e('Apresentação'); ?></h2>
+                                    <div class="single-1__presentation-content">
+                                        <div v-if="entity.terms?.tag?.length" class="single-1__presentation-item">
+                                            <?php $this->applyTemplateHook('single1-entity-info-entity-terms-tag', 'before') ?>
+                                            <entity-terms
+                                                :entity="entity"
+                                                hide-required
+                                                classes="col-12"
+                                                taxonomy="tag"
+                                                :title="'<?php i::esc_attr_e('Tags'); ?>' + (entity.terms?.tag?.length ? ' (' + entity.terms.tag.length + ')' : '')">
+                                            </entity-terms>
+                                            <?php $this->applyTemplateHook('single1-entity-info-entity-terms-tag', 'after') ?>
+                                        </div>
+
+                                        <div v-if="entity.longDescription" class="single-1__presentation-item single-1__description-block">
+                                            <entity-description-collapse
+                                                :text="entity.longDescription"
+                                                label="<?php i::esc_attr_e('Descrição'); ?>">
+                                            </entity-description-collapse>
+                                        </div>
+
+                                        <div v-if="entity.startsOn || entity.endsOn" class="grid-12 single-1__presentation-item">
+                                            <div v-if="entity.startsOn" class="col-6 sm:col-12">
+                                                <entity-data :entity="entity" prop="startsOn" label="<?php i::_e('Data de início') ?>"></entity-data>
+                                            </div>
+                                            <div v-if="entity.endsOn" class="col-6 sm:col-12">
+                                                <entity-data :entity="entity" prop="endsOn" label="<?php i::_e('Data de fim') ?>"></entity-data>
+                                            </div>
+                                        </div>
+
+                                        <div class="grid-12 single-1__presentation-item single-1__presentation-contacts">
+                                            <div class="col-4 sm:col-12">
+                                                <entity-data :entity="entity" prop="site" label="<?php i::_e('Site') ?>"></entity-data>
+                                            </div>
+                                            <div class="col-4 sm:col-12">
+                                                <entity-data :entity="entity" prop="telefonePublico" label="<?php i::_e('Telefone') ?>"></entity-data>
+                                            </div>
+                                            <div class="col-4 sm:col-12">
+                                                <entity-data :entity="entity" prop="emailPublico" label="<?php i::_e('E-mail público') ?>"></entity-data>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-12 single-1__social-media">
+                                    <mc-card>
+                                        <template #content>
+                                            <entity-social-media :entity="entity" classes="col-12"></entity-social-media>
+                                        </template>
+                                    </mc-card>
+                                </div>
+
+                                <template v-if="entity.currentUserPermissions.viewPrivateData">
+                                    <div
+                                        v-if="entity.emailPrivado || entity.telefone1 || entity.telefone2"
+                                        class="single-1__personal-card">
+                                        <h2 class="single-1__personal-title"><?php i::_e('Dados de contato privado'); ?></h2>
+                                        <div class="grid-12 single-1__personal-grid">
+                                            <entity-data v-if="entity.emailPrivado" :entity="entity" classes="col-4 sm:col-12" prop="emailPrivado" label="<?php i::_e('E-mail privado') ?>"></entity-data>
+                                            <entity-data v-if="entity.telefone1" :entity="entity" classes="col-4 sm:col-12" prop="telefone1" label="<?php i::_e('Telefone privado 1') ?>"></entity-data>
+                                            <entity-data v-if="entity.telefone2" :entity="entity" classes="col-4 sm:col-12" prop="telefone2" label="<?php i::_e('Telefone privado 2') ?>"></entity-data>
+                                        </div>
+                                    </div>
+                                </template>
+
+                                <complaint-suggestion :entity="entity" classes="col-12" :show-contact="false"></complaint-suggestion>
+                            </mc-tab>
+
+                            <mc-tab label="<?= i::_e('Administração') ?>" slug="administracao">
+                                <p
+                                    v-if="!entity.agentRelations?.['group-admin']?.length"
+                                    class="single-1__administration-empty">
+                                    <?php i::_e('Esse projeto não possui administradores.'); ?>
+                                </p>
+
+                                <div v-else class="single-1__administration-card">
+                                    <h2 class="single-1__administration-title"><?php i::_e('Administradores do perfil'); ?></h2>
+                                    <p class="single-1__administration-intro"><?php i::_e('Administradores do perfil podem visualizar e editar os dados públicos do projeto que administram, além de transferir, editar e/ou excluir a entidade. A administração dos perfis só é possível mediante a autorização do proprietário do perfil.'); ?></p>
+                                    <?php $this->applyTemplateHook('single1-entity-info-entity-admins', 'before') ?>
+                                    <entity-admins :entity="entity" variant="list" classes="single-1__administration-admins"></entity-admins>
+                                    <?php $this->applyTemplateHook('single1-entity-info-entity-admins', 'after') ?>
+                                </div>
+
+                                <div class="single-1__personal-card">
+                                    <h2 class="single-1__personal-title"><?php i::_e('Publicado por'); ?></h2>
+                                    <entity-owner :entity="entity" classes="col-12" title=""></entity-owner>
+                                </div>
+                            </mc-tab>
+                        </mc-tabs>
+                    </div>
+
                     <aside>
                         <div class="grid-12">
-                            <entity-social-media :entity="entity" classes="col-12"></entity-social-media>
-                            <entity-seals :entity="entity" :editable="entity.currentUserPermissions?.createSealRelation" classes="col-12" title="<?php i::esc_attr_e('Verificações'); ?>"></entity-seals>
+                            <?php $this->applyTemplateHook('single1-entity-info-entity-related-agents', 'before') ?>
                             <entity-related-agents :entity="entity" classes="col-12" title="<?php i::esc_attr_e('Agentes Relacionados'); ?>"></entity-related-agents>
-                            <entity-terms :entity="entity" hide-required classes="col-12" taxonomy="tag" title="<?php i::esc_attr_e('Tags') ?>"></entity-terms>
-                            <mc-share-links classes="col-12" title="<?php i::esc_attr_e('Compartilhar'); ?>" text="<?php i::esc_attr_e('Veja este link:'); ?>"></mc-share-links>
-                            <entity-owner classes="col-12" title="<?php i::esc_attr_e('Publicado por'); ?>" :entity="entity"></entity-owner>
-                            <entity-admins :entity="entity" classes="col-12"></entity-admins>
-                        </div>
-                    </aside>
-                    <aside>
-                        <div class="grid-12">
-                            <complaint-suggestion :entity="entity" classes="col-12"></complaint-suggestion>
+                            <?php $this->applyTemplateHook('single1-entity-info-entity-related-agents', 'after') ?>
                         </div>
                     </aside>
                 </mc-container>
-            </div>
-        </mc-tab>
+            </mc-tab>
 
-        <mc-tab icon="list" label="<?= i::_e('Subprojetos') ?>" slug="subprojects">
-            <div class="single-project__subproject">
+            <mc-tab label="<?= i::esc_attr_e('Portfólio') ?>" slug="port">
+                <mc-container>
+                    <main>
+                        <div class="single-1__portfolio single-1__inner-tabs">
+                            <mc-tabs class="tabs" sync-hash>
+                                <mc-tab label="<?= i::esc_attr_e('Arquivos') ?>" slug="arquivos">
+                                    <div class="single-1__portfolio-card">
+                                        <entity-files-list
+                                            v-if="entity.files?.downloads"
+                                            :entity="entity"
+                                            classes="portfolio-files-list"
+                                            group="downloads"
+                                            title="<?php i::esc_attr_e('Arquivos para download'); ?>"
+                                            hide-title
+                                            view-action>
+                                        </entity-files-list>
+                                    </div>
+                                </mc-tab>
+                                <mc-tab label="<?= i::_e('Links') ?>" slug="links">
+                                    <div class="single-1__portfolio-card">
+                                        <entity-links :entity="entity" title="<?php i::_e('Links'); ?>" hide-title></entity-links>
+                                    </div>
+                                </mc-tab>
+                                <mc-tab label="<?= i::esc_attr_e('Vídeos') ?>" slug="videos">
+                                    <div class="single-1__portfolio-card">
+                                        <entity-gallery-video :entity="entity" hide-title></entity-gallery-video>
+                                    </div>
+                                </mc-tab>
+                                <mc-tab label="<?= i::esc_attr_e('Imagens') ?>" slug="imagens">
+                                    <div class="single-1__portfolio-card">
+                                        <entity-gallery :entity="entity" hide-title></entity-gallery>
+                                    </div>
+                                </mc-tab>
+                            </mc-tabs>
+                        </div>
+                    </main>
+                </mc-container>
+            </mc-tab>
+
+            <mc-tab label="<?= i::esc_attr_e('Selos') ?>" slug="selos">
+                <mc-container>
+                    <main>
+                        <?php $this->applyTemplateHook('single1-entity-seals', 'before') ?>
+                        <div class="single-1__seals">
+                            <entity-seals-list
+                                :entity="entity"
+                                :editable="!!entity.currentUserPermissions?.createSealRelation"
+                                classes="single-1__seals-list"
+                                empty-message="<?php i::esc_attr_e('Esse projeto não possui selos.') ?>">
+                            </entity-seals-list>
+                        </div>
+                        <?php $this->applyTemplateHook('single1-entity-seals', 'after') ?>
+                    </main>
+                </mc-container>
+            </mc-tab>
+
+            <mc-tab label="<?= i::esc_attr_e('Conexões') ?>" slug="conexoes">
+                <mc-container>
+                    <main>
+                        <?php
+                        $opportunity_count = is_array($this->jsObject['opportunityList']['opportunity'] ?? null)
+                            ? count($this->jsObject['opportunityList']['opportunity'])
+                            : 0;
+                        ?>
+                        <div class="single-1__connections single-1__inner-tabs">
+                            <mc-tabs class="tabs" sync-hash default-tab="subprojetos">
+                                <template #header="{ tab }">
+                                    <span>{{ tab.label }}</span>
+                                    <span v-if="tab.meta?.count > 0" class="single-1__connections-count">
+                                        {{ tab.meta.count }}
+                                    </span>
+                                </template>
+
+                                <mc-tab
+                                    label="<?= i::esc_attr_e('Subprojetos') ?>"
+                                    :meta="{ count: entity.children?.length || 0 }"
+                                    slug="subprojetos">
+                                    <div class="single-1__connections-card">
+                                        <entity-connections-list
+                                            type="project"
+                                            :ids="entity.children || []"
+                                            empty-message="<?php i::esc_attr_e('Esse projeto não possui subprojetos.') ?>">
+                                        </entity-connections-list>
+                                    </div>
+                                </mc-tab>
+
+                                <mc-tab
+                                    label="<?= i::esc_attr_e('Oportunidades') ?>"
+                                    :meta="{ count: <?= (int) $opportunity_count ?> }"
+                                    slug="oportunidades">
+                                    <div class="single-1__connections-card">
+                                        <entity-connections-list
+                                            type="opportunity"
+                                            empty-message="<?php i::esc_attr_e('Esse projeto não possui oportunidades.') ?>">
+                                        </entity-connections-list>
+                                    </div>
+                                </mc-tab>
+                            </mc-tabs>
+                        </div>
+                    </main>
+                </mc-container>
+            </mc-tab>
+
+            <?php if ($has_events) { ?>
+            <mc-tab icon="event" label="<?= i::_e('Eventos') ?>" slug="eventos">
                 <mc-container>
                     <main class="grid-12">
-                        <mc-entities v-if="entity.children" type="project" select="name,type,shortDescription,files.avatar,seals,terms" :query="{id: `IN(<?=$children_id?>)`}" :limit="20" watch-query>
+                        <mc-entities
+                            type="event"
+                            select="name,shortDescription,files.avatar,seals,terms,occurrences,project,status,singleUrl"
+                            :query="{project: `EQ(${entity.id})`, status: 'EQ(1)'}"
+                            :limit="20"
+                            watch-query>
                             <template #default="{entities}">
-                                <entity-card :entity="entity" v-for="entity in entities" :key="entity.__objectId" class="col-12">
+                                <entity-card :entity="event" v-for="event in entities" :key="event.__objectId" class="col-12">
                                     <template #avatar>
-                                        <mc-avatar :entity="entity" size="medium"></mc-avatar>
+                                        <mc-avatar :entity="event" size="medium"></mc-avatar>
                                     </template>
-                                    <template #type> 
-                                        <span> 
-                                            <?= i::__('TIPO: ') ?> 
-                                            <span :class="['upper', entity.__objectType+'__color']">{{entity.type.name}}</span>
+                                    <template #type>
+                                        <span>
+                                            <?= i::__('EVENTO') ?>
+                                            <span class="event__status">{{ event.status == 1 ? '<?= i::__('Ativo') ?>' : '<?= i::__('Inativo') ?>' }}</span>
                                         </span>
                                     </template>
                                 </entity-card>
-                            </template>                                
-                        </mc-entities>
-
-                        <div v-if="!entity.children" class="single-project__not-found">
-                            <p class="semibold"><?= i::__('Nenhum subprojeto vinculado.') ?></p>
-                        </div>
-                    </main>
-                    <aside>
-                        <div class="grid-12">
-                            <entity-social-media :entity="entity" classes="col-12"></entity-social-media>
-                            <entity-seals :entity="entity" :editable="entity.currentUserPermissions?.createSealRelation" classes="col-12" title="<?php i::esc_attr_e('Verificações'); ?>"></entity-seals>
-                            <entity-related-agents :entity="entity" classes="col-12" title="<?php i::esc_attr_e('Agentes Relacionados'); ?>"></entity-related-agents>
-                            <entity-terms :entity="entity" hide-required classes="col-12" taxonomy="tag" title="<?php i::esc_attr_e('Tags') ?>"></entity-terms>
-                            <mc-share-links classes="col-12" title="<?php i::esc_attr_e('Compartilhar'); ?>" text="<?php i::esc_attr_e('Veja este link:'); ?>"></mc-share-links>
-                            <entity-owner classes="col-12" title="<?php i::esc_attr_e('Publicado por'); ?>" :entity="entity"></entity-owner>
-                            <entity-admins :entity="entity" classes="col-12"></entity-admins>
-                        </div>
-                    </aside>
-                </mc-container>
-            </div>
-        </mc-tab>
-
-        <mc-tab icon="event" label="<?= i::_e('Eventos') ?>" slug="events">
-            <div class="single-project__events">
-                <mc-container>
-                    <main class="grid-12">
-                        <mc-entities type="event" select="name,shortDescription,files.avatar,seals,terms,occurrences,project" :query="{project: `EQ(${entity.id})`, status: 'EQ(1)'}" :limit="20" watch-query>
-                            <template #default="{entities}">
-                                <div v-if="entities.length > 0" class="col-12">
-                                    <entity-card :entity="event" v-for="event in entities" :key="event.__objectId" class="col-12">
-                                        <template #avatar>
-                                            <mc-avatar :entity="event" size="medium"></mc-avatar>
-                                        </template>
-                                        <template #type> 
-                                            <span> 
-                                                <?= i::__('EVENTO') ?> 
-                                                <span class="event__status">{{event.status == 1 ? '<?= i::__('Ativo') ?>' : '<?= i::__('Inativo') ?>'}}</span>
-                                            </span>
-                                        </template>
-                                        <template #extra-content>
-                                            <div v-if="event.occurrences && event.occurrences.length > 0" class="event__occurrences">
-                                                <h5><?= i::__('Ocorrências:') ?></h5>
-                                                <div v-for="occurrence in event.occurrences" :key="occurrence.id" class="occurrence">
-                                                    <strong>{{occurrence.space?.name || '<?= i::__('Local não informado') ?>'}}</strong>
-                                                    <div class="occurrence__datetime">
-                                                        <span v-if="occurrence.startsAt">{{occurrence.startsAt | formatDate}}</span>
-                                                        <span v-if="occurrence.startsAt && occurrence.endsAt"> - </span>
-                                                        <span v-if="occurrence.endsAt">{{occurrence.endsAt | formatDate}}</span>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </template>
-                                    </entity-card>
-                                </div>
-                                <div v-else class="single-project__not-found col-12">
-                                    <p class="semibold"><?= i::__('Nenhum evento vinculado a este projeto.') ?></p>
-                                </div>
-                            </template>                                
+                            </template>
                         </mc-entities>
                     </main>
-                    <aside>
-                        <div class="grid-12">
-                            <entity-social-media :entity="entity" classes="col-12"></entity-social-media>
-                            <entity-seals :entity="entity" :editable="entity.currentUserPermissions?.createSealRelation" classes="col-12" title="<?php i::esc_attr_e('Verificações'); ?>"></entity-seals>
-                            <entity-related-agents :entity="entity" classes="col-12" title="<?php i::esc_attr_e('Agentes Relacionados'); ?>"></entity-related-agents>
-                            <entity-terms :entity="entity" hide-required classes="col-12" taxonomy="tag" title="<?php i::esc_attr_e('Tags') ?>"></entity-terms>
-                            <mc-share-links classes="col-12" title="<?php i::esc_attr_e('Compartilhar'); ?>" text="<?php i::esc_attr_e('Veja este link:'); ?>"></mc-share-links>
-                            <entity-owner classes="col-12" title="<?php i::esc_attr_e('Publicado por'); ?>" :entity="entity"></entity-owner>
-                            <entity-admins :entity="entity" classes="col-12"></entity-admins>
-                        </div>
-                    </aside>
                 </mc-container>
-            </div>
-        </mc-tab>
-    </mc-tabs>
+            </mc-tab>
+            <?php } ?>
+
+            <?php $this->applyTemplateHook('tabs', 'end') ?>
+        </mc-tabs>
+    </div>
     <entity-actions :entity="entity"></entity-actions>
 </div>
