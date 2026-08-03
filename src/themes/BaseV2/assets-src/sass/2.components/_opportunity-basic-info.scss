@@ -1,15 +1,6 @@
 @use '../0.settings/mixins' as *;
 
 .opportunity-basic-info {
-  &__container {
-    max-width: size(1200);
-    display: flex;
-    flex-direction: column;
-    gap: size(24);
-    margin: 0 auto;
-    padding: 0 1rem;
-  }
-
   &__label {
     font-weight: 600;
     font-size: size(14);

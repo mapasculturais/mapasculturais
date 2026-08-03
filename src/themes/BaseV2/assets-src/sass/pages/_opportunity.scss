@@ -55,6 +55,32 @@
                 max-width: size(1170);
             }
         }
+
+        .edit-1 {
+            .edit-1__section-title,
+            .edit-1__section--social .mc-title {
+                color: var(--mc-opportunities-500);
+            }
+
+            .tabs-component__button--active {
+                color: var(--mc-opportunities-500);
+                border-bottom-color: var(--mc-opportunities-500);
+            }
+        }
+
+        .opportunity-basic-info.edit-1 {
+            .edit-1__perfil-main {
+                max-width: size(1200);
+                margin: 0 auto;
+                width: 100%;
+            }
+
+            .stack--sm {
+                display: flex;
+                flex-direction: column;
+                gap: size(16);
+            }
+        }
     }
 
     &.action-single {
