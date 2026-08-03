@@ -8,6 +8,7 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 ## [UNRELEASED]
 ### Correções
 - Corrige a configuração do formulário da fase de recurso para criar a etapa inicial automaticamente e exibir corretamente a obrigatoriedade de campos e anexos ao editá-los
+- Inclui a fonte ElegantIcons no BaseV2 para que o publish de assets a disponibilize em `/assets/fonts/`, evitando ícones quebrados no EmbedTools (form-builder)
 
 ## [7.8.3] - 2026-07-30
 ### Correções
