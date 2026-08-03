@@ -10,6 +10,7 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Corrige o overflow da comissão de avaliação na fase de recurso, evitando que botões internos fiquem com largura estourada
 - Mantém o botão "Salvar e publicar" visível em oportunidades em rascunho que já possuem configuração de método de avaliação
 - No envio de denúncia e contato/sugestão, retorna erro em JSON quando o captcha é inválido ou ausente, em vez de falha genérica
+- Corrige a configuração do formulário da fase de recurso para criar a etapa inicial automaticamente e exibir corretamente a obrigatoriedade de campos e anexos ao editá-los
 
 ### Melhorias
 - Permite enviar o contato/sugestão ao dono da entidade e aos agentes do grupo "Administrado por", via configuração `suggestion.sendToEntityAdmins`

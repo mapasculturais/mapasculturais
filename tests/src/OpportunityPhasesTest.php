@@ -1305,6 +1305,55 @@ class OpportunityPhasesTest extends TestCase
 
 
     /**
+     * Garante que uma fase de recurso seja criada com a etapa inicial do formulário.
+     */
+    function testCreateAppealPhaseCreatesDefaultRegistrationStep(): void
+    {
+        $app = $this->app;
+        $admin = $this->userDirector->createUser('admin');
+        $this->login($admin);
+
+        /** @var Opportunity $opportunity */
+        $opportunity = $this->opportunityBuilder
+            ->reset(owner: $admin->profile, owner_entity: $admin->profile)
+            ->fillRequiredProperties()
+            ->firstPhase()
+                ->setRegistrationPeriod(new Open)
+                ->done()
+            ->save()
+            ->addEvaluationPhase(EvaluationMethods::simple)
+                ->setEvaluationPeriod(new ConcurrentEndingAfter)
+                ->save()
+                ->done()
+            ->refresh()
+            ->getInstance();
+
+        $opportunityId = $opportunity->id;
+        $app->request = $this->requestFactory->mapasPOST('opportunity', 'createAppealPhase', [$opportunityId], ['id' => $opportunityId]);
+        $app->response = new Response();
+
+        /** @var OpportunityController $controller */
+        $controller = $app->controller('opportunity');
+        $controller->setRequestData(['id' => $opportunityId]);
+
+        try {
+            $controller->callAction('POST', 'createAppealPhase', []);
+        } catch (Halt) {
+        }
+
+        $app->em->clear();
+
+        $opportunity = $app->repo('Opportunity')->find($opportunityId);
+        $appealPhase = $opportunity->appealPhase;
+        $steps = $app->repo('RegistrationStep')->findBy(['opportunity' => $appealPhase]);
+
+        $this->assertNotNull($appealPhase, 'Garantindo que a fase de recurso tenha sido criada');
+        $this->assertCount(1, $steps, 'Garantindo que a fase de recurso tenha uma etapa inicial');
+        $this->assertSame('', $steps[0]->name, 'Garantindo que a etapa inicial tenha nome vazio');
+        $this->assertSame(0, $steps[0]->displayOrder, 'Garantindo que a etapa inicial seja a primeira');
+    }
+
+    /**
      * Garante que uma falha durante a criação da fase de recurso não deixa
      * fase órfã no banco (sem metadado appealPhase).
      */
@@ -1331,6 +1380,9 @@ class OpportunityPhasesTest extends TestCase
             ->getInstance();
 
         $opportunityId = $opportunity->id;
+        $stepCountBefore = (int) $app->em->getConnection()->fetchOne(
+            'SELECT COUNT(*) FROM registration_step'
+        );
 
         // Adiciona um hook que simula uma falha (timeout/erro) durante o save
         // da oportunidade principal, APÓS a fase de recurso ser criada mas ANTES
@@ -1377,6 +1429,12 @@ class OpportunityPhasesTest extends TestCase
         ]);
 
         $this->assertNull($appealPhaseMeta, 'Garantindo que o metadado appealPhase não foi salvo parcialmente no edital');
+
+        $stepCountAfter = (int) $app->em->getConnection()->fetchOne(
+            'SELECT COUNT(*) FROM registration_step'
+        );
+
+        $this->assertSame($stepCountBefore, $stepCountAfter, 'Garantindo que nenhuma etapa órfã permaneça no banco após falha');
     }
 
 }

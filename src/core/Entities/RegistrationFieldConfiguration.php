@@ -272,7 +272,7 @@ class RegistrationFieldConfiguration extends \MapasCulturais\Entity {
         'title' => $this->title,
         'description' => $this->description,
         'maxSize' => $this->maxSize,
-        'required' => $this->required,
+        'required' => filter_var($this->required, FILTER_VALIDATE_BOOLEAN),
         'fieldType' => $this->fieldType,
         'fieldOptions' => $this->fieldOptions,
         'config' => $this->config ?: [],
