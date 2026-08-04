@@ -2,21 +2,17 @@ app.component('entity-link-project', {
     template: $TEMPLATES['entity-link-project'],
     emits: [],
 
-    setup(props, { slots }) {
-        const hasSlot = name => !!slots[name]
-        return { hasSlot }
-    },
-
-    data() {
-        return {  }
+    setup() {
+        const text = Utils.getTexts('entity-link-project');
+        return { text };
     },
 
     computed: {
         project() {
-            return this.entity.project || null
+            return this.entity.project || null;
         },
     },
-    
+
     props: {
         entity: {
             type: Entity,
@@ -24,7 +20,7 @@ app.component('entity-link-project', {
         },
         title: {
             type: String,
-            default: __('vinculado','entity-link-project'),
+            default: __('vinculado', 'entity-link-project'),
         },
         type: {
             type: String,
@@ -40,16 +36,23 @@ app.component('entity-link-project', {
         },
         label: {
             type: String,
-            required: true
+            default: __('link', 'entity-link-project'),
+        },
+        emptyMessage: {
+            type: String,
+            default: __('empty', 'entity-link-project'),
         }
-
     },
 
     methods: {
         changeProject(entity) {
             this.entity.project = entity;
-            console.log(entity);
+            this.entity.save();
+        },
+
+        removeProject() {
+            this.entity.project = null;
+            this.entity.save();
         },
     }
-    
 });
