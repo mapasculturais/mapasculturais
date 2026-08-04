@@ -13,6 +13,7 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Corrige login via Google que não salvava o nome do usuário no perfil, por não solicitar o escopo de perfil na autenticação
 - Corrige a opção de obrigatoriedade ao adicionar campos e anexos sucessivos no formulário de inscrição, evitando que o próximo item apareça marcado como obrigatório por causa da configuração anterior
 - Corrige erro na ficha do agente ao listar agentes relacionados quando o mesmo grupo tem convite pendente e relação ativa
+- Corrige visualização mobile da aba 'Inscrições e Resultados' na edição da oportunidade
 
 ### Melhorias
 - Adiciona teste automatizado para evitar que volte a quebrar a listagem de agentes relacionados com convite pendente
