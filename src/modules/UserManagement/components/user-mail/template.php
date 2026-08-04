@@ -9,6 +9,7 @@ use MapasCulturais\i;
 $this->import('
     entity-field
     mc-icon
+    user-management--resend-account-validation
 ');
 ?>
 <?php $this->applyTemplateHook('user-mail', 'before'); ?>
@@ -28,6 +29,7 @@ $this->import('
                 <mc-icon name="edit"></mc-icon>
                 <?php i::_e('Alterar email') ?>
             </a>
+            <user-management--resend-account-validation :entity="entity"></user-management--resend-account-validation>
         </div>
     </div>
 
