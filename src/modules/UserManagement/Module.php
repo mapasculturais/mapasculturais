@@ -619,6 +619,17 @@ class Module extends \MapasCulturais\Module {
                 throw new PermissionDenied($app->user, null, i::__('Gerenciar Usuários'));
             }
 
+            // O estado da validação vem do provedor de autenticação, não do metadado:
+            // a ApiQuery só devolve metadados existentes, e um usuário anterior à
+            // validação por e-mail chegaria ao front sem a chave.
+            $supports_validation = $app->auth->supportsAccountValidation();
+
+            $app->view->jsObject['accountValidation'] = [
+                'supported' => $supports_validation,
+                'validated' => $supports_validation ? $app->auth->isAccountValidated($user) : true,
+                'canResend' => self::canUserResendAccountValidationEmail(),
+            ];
+
             $app->view->addRequestedEntityToJs(User::class, $this->data['id']);
             $this->render('user-detail');
         });
