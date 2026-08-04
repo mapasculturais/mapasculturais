@@ -1,12 +1,99 @@
 @use '../0.settings/mixins' as *;
 
 .controller-event {
+    &.action-single {
+        .single-1 {
+            .tabs-component__button--active {
+                color: var(--mc-events-500);
+                border-bottom-color: var(--mc-events-500);
+            }
+
+            .single-1__main-tabs > .tabs-component > .tabs-component__header {
+                margin-top: 0;
+            }
+
+            .single-1__main-tabs > .tabs-component > .tabs-component__panels {
+                padding-top: size(24);
+            }
+
+            .single-1__inner-tabs {
+                padding-top: size(24);
+
+                > .tabs-component > .tabs-component__header {
+                    margin-top: 0;
+                }
+            }
+        }
+    }
+
     &.action-edit {
         .long-description {
             .field__title {
                 font-weight: 700;
                 font-size: size(18);
                 line-height: size(25);
+            }
+        }
+
+        .edit-1 {
+            .edit-1__section-title,
+            .edit-1__section--social .mc-title {
+                color: var(--mc-events-500);
+            }
+
+            .tabs-component__button--active {
+                color: var(--mc-events-500);
+                border-bottom-color: var(--mc-events-500);
+            }
+        }
+
+        .edit-1.single-1,
+        .edit-1 {
+            .single-1__main-tabs > .tabs-component > .tabs-component__header {
+                margin-top: 0;
+            }
+
+            .single-1__main-tabs > .tabs-component > .tabs-component__panels {
+                padding-top: size(24);
+            }
+
+            .stack--sm {
+                display: flex;
+                flex-direction: column;
+                gap: size(16);
+            }
+
+            // Evita título duplicado: o collapsible já tem o cabeçalho da seção
+            .entity-occurrence-list__editable--title {
+                display: none;
+            }
+
+            .entity-occurrence-list__editable--description {
+                display: none;
+            }
+
+            .entity-links {
+                margin-top: 0;
+            }
+
+            .edit-1__section .grid-12 {
+                row-gap: size(16);
+            }
+
+            .single-1__people.single-1__inner-tabs {
+                padding-top: size(24);
+
+                > .tabs-component > .tabs-component__header {
+                    margin-top: 0;
+                }
+            }
+
+            .edit-1__inner-tabs {
+                padding-top: size(24);
+
+                > .tabs-component > .tabs-component__header {
+                    margin-top: 0;
+                }
             }
         }
     }
