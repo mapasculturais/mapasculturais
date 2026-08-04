@@ -5,7 +5,7 @@ Todas as mudanças notáveis no projeto serão documentadas neste arquivo.
 O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/)
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [UNRELEASED]
+## [7.8.4] - 2026-08-04
 ### Correções
 - Corrige a configuração do formulário da fase de recurso para criar a etapa inicial automaticamente e exibir corretamente a obrigatoriedade de campos e anexos ao editá-los
 - Torna idempotente o db-update que cria índices em diversas tabelas, evitando erro no boot quando os índices já existem
