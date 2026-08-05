@@ -11,6 +11,9 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - **Avaliação automática por selos**: o gestor pode indicar, em uma fase de avaliação, quais selos validam o proponente. Se a pessoa já tiver esses selos válidos no perfil, a inscrição é **dispensada automaticamente** daquela fase (marcada como “Dispensada por selos”) e segue para a próxima etapa, sem precisar de avaliador
 - **Novos anexos no cadastro do agente** (também usáveis como campos `@` no formulário de inscrição): CPF, CNPJ, CNH, RG, passaporte, comprovante de residência, vínculo territorial, currículo, portfólio, certidões fiscal, trabalhista e de prestação de contas, além de comprovantes de raça/cor, pessoa com deficiência e comunidades tradicionais. Os arquivos ficam no perfil e acompanham a inscrição automaticamente
 
+### Melhorias
+- Permite aplicar um status do resultado da avaliação a uma lista específica de inscrições, nos métodos técnico, simplificado, documental e contínuo
+
 ### Melhorias nos selos validadores
 - Mostra o **status de cada campo** do selo (válido, prestes a vencer, vencido etc.) na ficha e no formulário de avaliação, para o avaliador entender o que está ok e o que precisa de atenção
 - Permite **concessão parcial do selo** na avaliação documental: o selo pode ser aplicado só aos campos que passaram, conforme os invalidadores configurados

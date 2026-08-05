@@ -165,7 +165,7 @@ class Module extends \MapasCulturais\EvaluationMethod
             $sections = $result;
         });
 
-        $app->hook('POST(opportunity.applyEvaluationsSimple)', function() {
+        $app->hook('POST(opportunity.applyEvaluationsSimple)', function() use ($self) {
             $this->requireAuthentication();
 
             set_time_limit(0);
@@ -190,37 +190,36 @@ class Module extends \MapasCulturais\EvaluationMethod
 
             $new_status = intval($this->data['to']);
             
-            $apply_status = $this->data['status'] ?? false;
-            if ($apply_status == 'all') {
-                $status = 'r.status > 0';
-            } else {
-                $status = 'r.status = 1';
-            }
-    
             $opp->checkPermission('@control');
-            
-            // pesquise todas as registrations da opportunity que esta vindo na request
-            $dql = "
-            SELECT 
-                r.id
-            FROM
-                MapasCulturais\Entities\Registration r
-            WHERE 
-                r.opportunity = :opportunity_id AND
-                r.consolidatedResult = :consolidated_result AND
-                r.status <> $new_status AND
-                $status 
-            ";
-            $query = $app->em->createQuery($dql);
-        
-            $params = [
-                'opportunity_id' => $opp->id,
-                'consolidated_result' => $this->data['from']
-            ];
-    
-            $query->setParameters($params);
-    
-            $registrations = $query->getScalarResult();
+
+            if (($this->data['tabSelected'] ?? 'result') === 'registration') {
+                $registrations = $self->findRegistrationIdsForResultApplication(
+                    $opp,
+                    $this->data['registrationNumbers'] ?? [],
+                    $new_status
+                );
+            } else {
+                $apply_status = $this->data['status'] ?? false;
+                $status = $apply_status == 'all' ? 'r.status > 0' : 'r.status = 1';
+
+                $dql = "
+                SELECT
+                    r.id
+                FROM
+                    MapasCulturais\Entities\Registration r
+                WHERE
+                    r.opportunity = :opportunity_id AND
+                    r.consolidatedResult = :consolidated_result AND
+                    r.status <> $new_status AND
+                    $status
+                ";
+                $query = $app->em->createQuery($dql);
+                $query->setParameters([
+                    'opportunity_id' => $opp->id,
+                    'consolidated_result' => $this->data['from']
+                ]);
+                $registrations = $query->getScalarResult();
+            }
             
             $count = 0;
             $total = count($registrations);
@@ -232,7 +231,8 @@ class Module extends \MapasCulturais\EvaluationMethod
             // faça um foreach em cada registration e pegue as suas avaliações
             foreach ($registrations as $reg) {
                 $count++;
-                $registration = $app->repo('Registration')->find($reg['id']);
+                $registration_id = is_array($reg) ? $reg['id'] : $reg;
+                $registration = $app->repo('Registration')->find($registration_id);
                 $registration->__skipQueuingPCacheRecreation = true;
 
                 $app->log->debug("{$count}/{$total} Alterando status da inscrição {$registration->number} para {$new_status}");

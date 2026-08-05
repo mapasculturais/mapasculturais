@@ -20,12 +20,12 @@ app.component('evaluation-method-documentary--apply', {
     },
 
     data() {
-        applyAll = false;
-        applyData = {};
         return {
-            applyData,
-            applyAll
-        }
+            applyData: {},
+            applyAll: false,
+            registrationListText: '',
+            tabSelected: 'result'
+        };
     },
 
     computed: {
@@ -41,7 +41,7 @@ app.component('evaluation-method-documentary--apply', {
         apply(modal) {
             const messages = useMessages();
 
-            this.applyData.status = this.applyAll ? 'all' : 'pending';
+            this.prepareApplyData();
             this.entity.disableMessages();
             
             this.entity.POST('applyEvaluationsDocumentary', {
@@ -54,6 +54,41 @@ app.component('evaluation-method-documentary--apply', {
             }).catch((data) => {
                 messages.error(data.data)
             });
+        },
+        changed(event) {
+            this.tabSelected = event.tab.slug;
+        },
+        modalClose() {
+            this.resetApplyData();
+        },
+        parseRegistrationList(text) {
+            if (!text || !text.trim()) {
+                return [];
+            }
+
+            return text
+                .split(/[,;\s\n\r]+/)
+                .map(number => number.trim())
+                .filter(number => number.length > 0);
+        },
+        prepareApplyData() {
+            this.applyData.tabSelected = this.tabSelected;
+
+            if (this.tabSelected === 'registration') {
+                this.applyData.registrationNumbers = this.parseRegistrationList(this.registrationListText);
+                delete this.applyData.from;
+                delete this.applyData.status;
+                return;
+            }
+
+            this.applyData.status = this.applyAll ? 'all' : 'pending';
+            delete this.applyData.registrationNumbers;
+        },
+        resetApplyData() {
+            this.applyData = {};
+            this.applyAll = false;
+            this.registrationListText = '';
+            this.tabSelected = 'result';
         },
         valueToString(value) {
             switch (value) {
