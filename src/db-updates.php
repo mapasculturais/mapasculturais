@@ -2901,18 +2901,18 @@ $$
     },
 
     'Adiciona novos índices em diversas tabelas' => function() {
-        __exec('CREATE INDEX idx_usr_profile ON usr (profile_id);');
-        __exec('CREATE INDEX id_agent_relation_agent ON agent_relation (agent_id);');
-        __exec('CREATE INDEX idx_space_agent_id ON space (agent_id);');
-        __exec('CREATE INDEX idx_event_agent_id ON event (agent_id);');
-        __exec('CREATE INDEX idx_seal_relation_agent_id ON seal_relation (agent_id);');
-        __exec('CREATE INDEX idx_seal_relation_owner_id ON seal_relation (owner_id);');
-        __exec('CREATE INDEX idx_seal_relation_object ON seal_relation (object_type, object_id);');
-        __exec('CREATE INDEX idx_project_agent_id ON project (agent_id);');
-        __exec('CREATE INDEX idx_project_type ON project (type);');
-        __exec('CREATE INDEX idx_registration_meta_key ON registration_meta (key);');
-        __exec('CREATE INDEX idx_opportunity_meta_key ON registration_meta (key);');
-        __exec('CREATE INDEX idx_agent_usr ON agent (user_id);');
+        __exec('CREATE INDEX IF NOT EXISTS idx_usr_profile ON usr (profile_id);');
+        __exec('CREATE INDEX IF NOT EXISTS id_agent_relation_agent ON agent_relation (agent_id);');
+        __exec('CREATE INDEX IF NOT EXISTS idx_space_agent_id ON space (agent_id);');
+        __exec('CREATE INDEX IF NOT EXISTS idx_event_agent_id ON event (agent_id);');
+        __exec('CREATE INDEX IF NOT EXISTS idx_seal_relation_agent_id ON seal_relation (agent_id);');
+        __exec('CREATE INDEX IF NOT EXISTS idx_seal_relation_owner_id ON seal_relation (owner_id);');
+        __exec('CREATE INDEX IF NOT EXISTS idx_seal_relation_object ON seal_relation (object_type, object_id);');
+        __exec('CREATE INDEX IF NOT EXISTS idx_project_agent_id ON project (agent_id);');
+        __exec('CREATE INDEX IF NOT EXISTS idx_project_type ON project (type);');
+        __exec('CREATE INDEX IF NOT EXISTS idx_registration_meta_key ON registration_meta (key);');
+        __exec('CREATE INDEX IF NOT EXISTS idx_opportunity_meta_key ON registration_meta (key);');
+        __exec('CREATE INDEX IF NOT EXISTS idx_agent_usr ON agent (user_id);');
     },
 
     'Adiciona novas áreas de atuação' => function() {

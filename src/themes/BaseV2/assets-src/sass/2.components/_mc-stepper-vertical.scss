@@ -10,6 +10,10 @@
         padding-inline: 55px;
     }
 
+    @media (max-width:size(600)) {
+        padding-inline: 16px;
+    }
+
 }
 
 ol.mc-stepper-vertical {
@@ -23,7 +27,7 @@ ol.mc-stepper-vertical {
     }
 
     @media (max-width:size(600)) {
-        margin: 0 45px;
+        margin: 0 16px;
     }
 
     & > li {
@@ -33,7 +37,7 @@ ol.mc-stepper-vertical {
         padding: 0 0 20px 45px;
     
         @media (max-width:size(600)) {
-            padding: 0 16px 20px 45px;
+            padding: 0 8px 16px 32px;
         }
     
         .mc-card {
@@ -435,6 +439,12 @@ ol.mc-stepper-vertical>li.active::before {
         align-items: center;
         gap: size(48);
 
+        @media (max-width:size(600)) {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: size(16);
+        }
+
         &.open {
             border-radius: size(4) size(4) 0 0;
         }
@@ -445,6 +455,12 @@ ol.mc-stepper-vertical>li.active::before {
             justify-content: space-between;
             width: 100%;
 
+            @media (max-width:size(600)) {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: size(16);
+            }
+
             .info {
                 display: flex;
                 flex-direction: column;
@@ -454,11 +470,20 @@ ol.mc-stepper-vertical>li.active::before {
                     font-size: size(24);
                     font-weight: 700;
                     line-height: size(28);
+
+                    @media (max-width:size(600)) {
+                        font-size: size(18);
+                        line-height: size(22);
+                    }
                 }
 
                 &__type {
                     display: flex;
                     gap: size(8);
+
+                    @media (max-width:size(600)) {
+                        flex-wrap: wrap;
+                    }
                     
                     .title {
                         color: var(--mc-gray-700);
@@ -480,6 +505,12 @@ ol.mc-stepper-vertical>li.active::before {
             .dates {
                 display: flex;
                 gap: size(48);
+
+                @media (max-width:size(600)) {
+                    flex-direction: column;
+                    gap: size(8);
+                    width: 100%;
+                }
 
                 .date {
                     display: flex;
@@ -517,6 +548,15 @@ ol.mc-stepper-vertical>li.active::before {
 
             @media (max-width:size(800)) {
                 flex-direction: column;
+            }
+
+            @media (max-width:size(600)) {
+                flex-direction: column;
+                flex-wrap: wrap;
+                gap: size(12) size(16);
+                width: 100%;
+                justify-content: flex-start;
+                align-items: flex-start;
             }
 
             a.support {
