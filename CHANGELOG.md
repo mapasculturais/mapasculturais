@@ -9,6 +9,9 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 ### Correções
 - Exibe todas as mensagens retornadas pelo backend quando o salvamento de uma entidade falha por validação, incluindo erros de campos ocultos ou somente leitura
 
+### Melhorias
+- Ajusta tamanho dos cards da seção "Oportunidades do momento" na página inicial
+
 ## [7.8.4] - 2026-08-04
 ### Correções
 - Corrige a configuração do formulário da fase de recurso para criar a etapa inicial automaticamente e exibir corretamente a obrigatoriedade de campos e anexos ao editá-los
