@@ -1062,7 +1062,7 @@ module.controller('RegistrationConfigurationsController', ['$scope', '$rootScope
                     $scope.fieldValidationErrors[getFieldKey(response)] = $scope.validateFieldIntegrity(response);
                     $scope.invalidFieldsCount = $scope.countInvalidFields();
                     EditBox.close('editbox-registration-fields');
-                    $scope.data.newFieldConfiguration = angular.copy(fieldConfigurationSkeleton);
+                    angular.copy(fieldConfigurationSkeleton, $scope.data.newFieldConfiguration);
                     MapasCulturais.Messages.success(labels['fieldCreated']);
                 }
             });
@@ -1329,7 +1329,7 @@ module.controller('RegistrationConfigurationsController', ['$scope', '$rootScope
                     $scope.data.fields.push(response);
                     sortFields();
                     EditBox.close('editbox-registration-files');
-                    $scope.data.newFileConfiguration = angular.copy(fileConfigurationSkeleton);
+                    angular.copy(fileConfigurationSkeleton, $scope.data.newFileConfiguration);
                     MapasCulturais.Messages.success(labels['attachmentCreated']);
                 }
             });

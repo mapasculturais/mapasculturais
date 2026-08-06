@@ -2473,11 +2473,11 @@ class ApiQuery {
 
                 if (!$can_view_pending) {
                     foreach ($entity['agentRelations'] as $group => &$relations) {
-                        $relations = array_filter($relations, function($item) {
+                        $relations = array_values(array_filter($relations, function($item) {
                             if($item['status'] > 0) {
                                 return $item;
                             }
-                        });
+                        }));
 
                         if (empty($relations)) {
                             unset($entity['agentRelations'][$group]);
@@ -2612,11 +2612,11 @@ class ApiQuery {
 
                 if (!$can_view_pending) {
                     foreach ($entity['relatedAgents'] as $group => &$relations) {
-                        $relations = array_filter($relations, function($item) {
+                        $relations = array_values(array_filter($relations, function($item) {
                             if($item['relationStatus'] > 0) {
                                 return $item;
                             }
-                        });
+                        }));
 
                         if (empty($relations)) {
                             unset($entity['relatedAgents'][$group]);
