@@ -14,6 +14,11 @@ app.component('entity-data', {
 
         label: {
             type: String,
+        },
+
+        classes: {
+            type: [String, Array, Object],
+            default: '',
         }
     },
 

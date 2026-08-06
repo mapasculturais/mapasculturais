@@ -12,7 +12,7 @@ $this->import('
     mc-tag-list
 ');
 ?>
-<div class="entity-data">
+<div :class="['entity-data', classes]">
     <div class="entity-data__label">{{propertyLabel}}</div>
 
     <div class="entity-data__data" v-if="propertyData || hasSeals">
