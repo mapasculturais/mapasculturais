@@ -221,17 +221,15 @@ $has_events = is_countable($events) ? count($events) > 0 : false;
                                     <h2 class="single-1__personal-title"><?php i::_e('Publicado por'); ?></h2>
                                     <entity-owner :entity="entity" classes="col-12" title=""></entity-owner>
                                 </div>
+
+                                <?php $this->applyTemplateHook('single1-entity-info-entity-related-agents', 'before') ?>
+                                <div class="single-1__related-agents">
+                                    <entity-related-agents :entity="entity" classes="col-12" title="<?php i::esc_attr_e('Agentes Relacionados'); ?>"></entity-related-agents>
+                                </div>
+                                <?php $this->applyTemplateHook('single1-entity-info-entity-related-agents', 'after') ?>
                             </mc-tab>
                         </mc-tabs>
                     </div>
-
-                    <aside>
-                        <div class="grid-12">
-                            <?php $this->applyTemplateHook('single1-entity-info-entity-related-agents', 'before') ?>
-                            <entity-related-agents :entity="entity" classes="col-12" title="<?php i::esc_attr_e('Agentes Relacionados'); ?>"></entity-related-agents>
-                            <?php $this->applyTemplateHook('single1-entity-info-entity-related-agents', 'after') ?>
-                        </div>
-                    </aside>
                 </mc-container>
             </mc-tab>
 

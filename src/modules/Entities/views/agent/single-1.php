@@ -377,17 +377,15 @@ $this->breadcrumb = [
                                     <entity-admins :entity="entity" variant="list" classes="single-1__administration-admins"></entity-admins>
                                     <?php $this->applyTemplateHook('single1-entity-info-entity-admins', 'after') ?>
                                 </div>
+
+                                <?php $this->applyTemplateHook('single1-entity-info-entity-related-agents', 'before') ?>
+                                <div class="single-1__related-agents">
+                                    <entity-related-agents :entity="entity" classes="col-12" title="<?php i::esc_attr_e('Agentes Relacionados'); ?>"></entity-related-agents>
+                                </div>
+                                <?php $this->applyTemplateHook('single1-entity-info-entity-related-agents', 'after') ?>
                             </mc-tab>
                         </mc-tabs>
                     </div>
-
-                    <aside>
-                        <div class="grid-12">
-                            <?php $this->applyTemplateHook('single1-entity-info-entity-related-agents', 'before') ?>
-                            <entity-related-agents :entity="entity" classes="col-12" title="<?php i::esc_attr_e('Agentes Relacionados'); ?>"></entity-related-agents>
-                            <?php $this->applyTemplateHook('single1-entity-info-entity-related-agents', 'after') ?>
-                        </div>
-                    </aside>
                 </mc-container>
             </mc-tab>
 
