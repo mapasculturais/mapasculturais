@@ -27,6 +27,19 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Na redistribuição de avaliações, inclusões manuais passam a contar na carga pendente do comparador antes da distribuição automática (e a ordem das inscrições fica estável por `id`), evitando que o mesmo avaliador receba a próxima inscrição por acaso
 - Na avaliação documental, o link de download do arquivo não cobre mais o campo inteiro: clicar no campo abre o formulário de avaliação e clicar no nome do arquivo continua baixando
 
+## [7.8.5] - 2026-08-06
+### Correções
+- Exibe todas as mensagens retornadas pelo backend quando o salvamento de uma entidade falha por validação, incluindo erros de campos ocultos ou somente leitura
+- No e-mail de solicitação de exclusão de conta, as quebras de linha da mensagem aparecem corretamente, sem mostrar códigos HTML
+- Na edição do agente, o aviso de campos obrigatórios fica alinhado com os demais avisos e cards da página
+- Após publicar, despublicar, excluir ou recuperar uma entidade no painel, o status na tela é atualizado de imediato
+
+### Melhorias
+- Ajusta tamanho dos cards da seção "Oportunidades do momento" na página inicial
+- Quando a conta é excluída de forma parcial ou permanente, a pessoa recebe um e-mail confirmando o que foi feito
+- Melhora a aparência e a organização do bloco de e-mail e senha na página de detalhes do usuário
+- Por padrão, se o perfil ainda não estiver completo, a pessoa é direcionada para terminá-lo antes de seguir no sistema
+
 ## [7.8.4] - 2026-08-04
 ### Correções
 - Corrige a configuração do formulário da fase de recurso para criar a etapa inicial automaticamente e exibir corretamente a obrigatoriedade de campos e anexos ao editá-los
