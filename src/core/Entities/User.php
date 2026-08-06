@@ -141,6 +141,13 @@ class User extends \MapasCulturais\Entity implements \MapasCulturais\UserInterfa
     */
     protected $__metadata;
 
+    /**
+     * @var \MapasCulturais\Entities\UserFile[]
+     *
+     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\UserFile", mappedBy="owner", cascade={"remove"})
+     */
+    protected $__files;
+
     protected $_isDeleting = false;
 
     static function getPublicApiFields(): array 
@@ -962,6 +969,8 @@ class User extends \MapasCulturais\Entity implements \MapasCulturais\UserInterfa
         
         $this->_isDeleting = true;
 
+        $app->applyHookBoundTo($this, 'entity(' . $this->getHookClassPath() . ').delete:before');
+
         foreach(['agents', 'spaces', 'projects', 'opportunities', 'events'] as $entity_type){
             $entities = $this->$entity_type;
             foreach($entities as $entity){
@@ -972,6 +981,8 @@ class User extends \MapasCulturais\Entity implements \MapasCulturais\UserInterfa
 
         $this->status = self::STATUS_TRASH;
         $this->save($flush);
+
+        $app->applyHookBoundTo($this, 'entity(' . $this->getHookClassPath() . ').delete:after');
         
         $app->enableAccessControl();
 
