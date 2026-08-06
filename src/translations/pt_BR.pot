@@ -33813,3 +33813,55 @@ msgid ""
 "avaliações existentes."
 msgstr ""
 
+
+#: config/entities.php:30
+msgid "Slug"
+msgstr ""
+
+#: config/entities.php:33
+msgid "Data de Atualização"
+msgstr ""
+
+#: config/entities.php:36
+msgid "Descrição Longa"
+msgstr ""
+
+#: config/entities.php:38
+msgid "Período de Validade"
+msgstr ""
+
+#: config/entities.php:41
+msgid "Data final das inscrições"
+msgstr ""
+
+#: config/entities.php:42
+msgid "Data de início das avaliações"
+msgstr ""
+
+#: config/entities.php:43
+msgid "Data final das avaliações"
+msgstr ""
+
+#: config/entities.php:50
+msgid "ID usuário"
+msgstr ""
+
+#: config/entities.php:54
+msgid "Data e hora de publicação dos resultados"
+msgstr ""
+
+#: config/entities.php:55
+msgid "Publicar resultado automaticamente"
+msgstr ""
+
+#: config/entities.php:63
+msgid "Data e hora de envio"
+msgstr ""
+
+#: config/entities.php:65
+msgid "Elegível"
+msgstr ""
+
+#: config/entities.php:66
+msgid "Resultado consolidado"
+msgstr ""
