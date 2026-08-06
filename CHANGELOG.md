@@ -5,6 +5,10 @@ Todas as mudanças notáveis no projeto serão documentadas neste arquivo.
 O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/)
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [UNRELEASED]
+### Correções
+- Exibe todas as mensagens retornadas pelo backend quando o salvamento de uma entidade falha por validação, incluindo erros de campos ocultos ou somente leitura
+
 ## [7.8.4] - 2026-08-04
 ### Correções
 - Corrige a configuração do formulário da fase de recurso para criar a etapa inicial automaticamente e exibir corretamente a obrigatoriedade de campos e anexos ao editá-los
