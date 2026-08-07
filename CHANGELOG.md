@@ -5,7 +5,7 @@ Todas as mudanças notáveis no projeto serão documentadas neste arquivo.
 O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/)
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [UNRELEASED]
+## [7.8.5] - 2026-08-06
 ### Correções
 - Exibe todas as mensagens retornadas pelo backend quando o salvamento de uma entidade falha por validação, incluindo erros de campos ocultos ou somente leitura
 - No e-mail de solicitação de exclusão de conta, as quebras de linha da mensagem aparecem corretamente, sem mostrar códigos HTML
