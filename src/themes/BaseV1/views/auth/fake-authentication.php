@@ -140,7 +140,7 @@
                         '<tr>',
                         '    <td colspan="5"',
                         '       style="text-align: center; color: #0000cc; background: #ddddff;">',
-                        '       <strong>Filtrando usuários</strong>',
+                        '       <strong><?php echo \MapasCulturais\i::__('Filtrando usuários'); ?></strong>',
                         '    </td>',
                         '</tr>'
                     ].join(''));
@@ -166,7 +166,7 @@
                             '<tr>',
                             '    <td colspan="5"',
                             '       style="text-align: center;color: #ee0000;background: #ffdddd;">',
-                            '       <strong>Nenhum registro encontrado</strong>',
+                            '       <strong><?php echo \MapasCulturais\i::__('Nenhum registro encontrado'); ?></strong>',
                             '    </td>',
                             '</tr>'
                         ].join(''));

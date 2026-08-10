@@ -2961,7 +2961,7 @@ module.controller('OpportunityController', ['$scope', '$rootScope', '$anchorScro
             };
 
             $scope.removeRegistrationRulesFile = function (id, $index) {
-                if(confirm('Deseja remover este anexo?')){
+                if(confirm(MapasCulturais.gettext.moduleOpportunity['confirmAttachmentRemoved'])){
                     let url = MapasCulturais.createUrl('file','single',{id:$scope.data.entity.registrationRulesFile.id});
                     $http.delete(url).success(function(response){
                         $scope.data.entity.registrationRulesFile = null;
