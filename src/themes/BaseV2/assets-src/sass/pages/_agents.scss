@@ -223,7 +223,6 @@
                 &:not(:last-child)::after {
                     content: ', ';
                     color: #D99D03;
-                    margin-left: size(4);
                 }
             }
         }
