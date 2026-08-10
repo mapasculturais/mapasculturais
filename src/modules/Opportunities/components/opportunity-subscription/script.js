@@ -65,6 +65,15 @@ app.component('opportunity-subscription' , {
                 this.registrationProponentTypes.length
             ].filter(i => i).length;
         },
+
+        rulesFile() {
+            const rules = this.entity.files?.rules || this.entity.files?.['rules'];
+            if (!rules) {
+                return null;
+            }
+            return Array.isArray(rules) ? (rules[0] || null) : rules;
+        },
+
         infoRegistration() {
             let description = ''
 

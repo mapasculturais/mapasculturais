@@ -1,30 +1,71 @@
 @use '../0.settings/mixins'as *;
 
 .opportunity-subscription-list {
-    padding-top: size(48);
-
     p {
         margin: 0;
     }
 
-    &__header {
-        .title {
-            color: var(--mc-black);
-            font-size: size(24);
-            font-weight: 700;
-            line-height: size(33);
-            margin: 0 0 size(8);
-        }
+    &__heading {
+        display: flex;
+        flex-direction: column;
+        gap: size(4);
+    }
 
-        .description {
-            color: var(--mc-black);
-            font-size: size(16);
-            font-weight: 400;
-            line-height: size(22);
+    &__title.title {
+        color: var(--mc-low-500);
+        font-size: size(20);
+        font-weight: 700;
+        line-height: size(24);
+        margin: 0;
+    }
+
+    &__subtitle.description {
+        color: var(--mc-low-500);
+        font-size: size(16);
+        font-weight: 400;
+        line-height: size(22);
+    }
+
+    .mc-collapsible__header {
+        align-items: flex-start;
+        cursor: pointer;
+        gap: size(16);
+        min-height: auto;
+        padding: 0;
+    }
+
+    .mc-collapsible__header-content {
+        flex: 1;
+        min-width: 0;
+    }
+
+    .mc-collapsible__header-icon {
+        flex-shrink: 0;
+        margin-top: size(2);
+
+        .iconify {
+            font-size: size(24);
+            color: var(--mc-low-500);
+        }
+    }
+
+    .mc-collapsible__body {
+        padding-top: size(16);
+    }
+
+    &__header {
+        display: flex;
+        flex-direction: column;
+        gap: size(16);
+        margin-bottom: size(16);
+
+        &:empty {
+            display: none;
+            margin: 0;
         }
     }
 
     &__content {
-        
+        width: 100%;
     }
 }

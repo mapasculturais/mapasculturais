@@ -8,128 +8,144 @@
 use MapasCulturais\i;
 
 $this->import('
+	entity-terms
 	mc-avatar
+	mc-icon
 	mc-loading
 	select-entity
 ');
 ?>
-<div class="grid-12 opportunity-subscription">
-	<div class="col-12 opportunity-subscription__info">
-		<p class="title">
-			<?= i::__("Período de inscrição") ?>
-		</p>
-
+<div class="opportunity-subscription">
+	<div class="opportunity-subscription__info">
 		<div class="content">
 			<div class="content__description" v-html="infoRegistration"></div>
 		</div>
 	</div>
-	<!-- Mensagem para oportunidades de divulgação -->
-	<div v-if="entity.publicityOnly" class="col-12 opportunity-subscription__publicity-notice alert helper">
-		<div class="alert__message">
-			<mc-icon name="info-full"></mc-icon>
-			<div class="text">
-				<strong><?= i::__("Oportunidade apenas para divulgação") ?></strong>
-				<p><?= i::__("As inscrições para esta oportunidade não são feitas pela plataforma.") ?></p>
-			</div>
-		</div>
+
+	<div v-if="rulesFile" class="opportunity-subscription__rules">
+		<a
+			:href="rulesFile.url"
+			class="button button--primary-outline button--icon"
+			target="_blank"
+			:download="rulesFile.name">
+			<mc-icon name="download"></mc-icon>
+			<?= i::__("Baixar regulamento") ?>
+		</a>
 	</div>
 
-	<div v-if="!entity.publicityOnly && isOpen && !isPublished && !registrationLimit && !registrationLimitPerOwner" class="col-12 opportunity-subscription__subscription">
-		<p class="title"> <?= i::__("Inscreva-se") ?> </p>
+	<div v-if="entity.terms?.area?.length" class="opportunity-subscription__area">
+		<entity-terms
+			:entity="entity"
+			hide-required
+			classes="col-12"
+			taxonomy="area"
+			title="<?php i::esc_attr_e('Área de Interesse'); ?>">
+		</entity-terms>
+	</div>
 
-		<div v-if="global.auth.isLoggedIn" class="logged">
-			<p v-if="numberFields > 1" class="logged__description">
-				<?= i::__('Selecione as opções abaixo e clique no botão para se inscrever') ?>
-			</p>
-			<p v-if="numberFields == 1" class="logged__description">
-				<?= i::__('Selecione uma opções abaixo e clique no botão para se inscrever') ?>
-			</p>
-			<p v-if="numberFields == 0" class="logged__description">
-				<?= i::__('Clique no botão para se inscrever') ?>
-			</p>
-
-			<!-- Logado -->
-			<form class="logged__form grid-12" @submit.prevent>
-				<div class="col-6 sm:col-12 opportunity-subscription__selectAgents" v-if="entitiesLength > 1">
-					<select-entity type="agent" openside="down-right" :createNew="canCreateIndividualAgent" :create-new-type="1" :query="{'type': 'EQ(1)'}" select="name,files.avatar,endereco,location" @fetch="fetch($event)" @select="selectAgent($event)" classes="opportunity-subscription__popover">
-						<template #button="{ toggle }">
-							<span v-if="!agent" class="fakeInput" @click="toggle()">
-								<div class="fakeInput__img">
-									<mc-icon name="image"></mc-icon>
-								</div>
-								<?= i::_e('Agente Cultural') ?>
-							</span>
-
-							<span v-if="agent" class="fakeInput" @click="toggle()">
-								<mc-icon name="selected"></mc-icon>
-								<mc-avatar :entity="agent" size="xsmall"></mc-avatar>
-								{{agent.name}}
-							</span>
-						</template>
-					</select-entity>
+	<div class="opportunity-subscription__center">
+		<!-- Mensagem para oportunidades de divulgação -->
+		<div v-if="entity.publicityOnly" class="opportunity-subscription__publicity-notice alert helper">
+			<div class="alert__message">
+				<mc-icon name="info-full"></mc-icon>
+				<div class="text">
+					<strong><?= i::__("Oportunidade apenas para divulgação") ?></strong>
+					<p><?= i::__("As inscrições para esta oportunidade não são feitas pela plataforma.") ?></p>
 				</div>
-				<div class="col-6 sm:col-12 opportunity-subscription__selectAgents" v-if="selectAgentRelationColetivo">
-					<select-entity type="agent" openside="down-right" :createNew="true" :create-new-type="2" :query="{'type': 'EQ(2)'}" select="name,files.avatar,endereco,location,type" @fetch="fetch($event)" @select="selectAgent($event)" classes="opportunity-subscription__popover">
-						<template #button="{ toggle }">
-							<span v-if="!agentCollective" class="fakeInput" @click="toggle()">
-								<div class="fakeInput__img">
-									<mc-icon name="image"></mc-icon>
-								</div>
-								<?= i::_e('Agente Coletivo') ?>
-							</span>
-
-							<span v-if="agentCollective" class="fakeInput" @click="toggle()">
-								<mc-icon name="selected"></mc-icon>
-								<mc-avatar :entity="agentCollective" size="xsmall"></mc-avatar>
-									{{agentCollective.name}}
-							</span>
-						</template>	
-					</select-entity>
-				</div>
-
-				<div v-if="categories.length > 0" class="col-6 sm:col-12 field">
-					<select name="category" v-model="category">
-						<option value="null" disabled selected> <?= $this->text('placeholder-category', i::__('Selecione a categoria')) ?> </option>
-						<option v-for="category in categories" :value="category"> {{category}} </option>
-					</select>
-				</div>
-				<div v-if="registrationRanges.length > 0" class="col-6 sm:col-12 field">
-					<select name="registrationRanges" v-model="registrationRange">
-						<option value="null" disabled selected> <?= $this->text('placeholder-range', i::__('Selecione a faixa')) ?> </option>
-						<option v-for="registrationRange in registrationRanges" :value="registrationRange.label"> {{registrationRange.label}} </option>
-					</select>
-				</div>
-
-				<div v-if="registrationProponentTypes.length > 0" class="col-6 sm:col-12 field">
-					<select name="registrationProponentTypes" v-model="registrationProponentType">
-						<option value="null" disabled selected> <?= $this->text('placeholder-proponentType', i::__('Selecione o tipo de proponente')) ?> </option>
-						<option v-for="registrationProponentType in registrationProponentTypes" :value="registrationProponentType"> {{registrationProponentType}} </option>
-					</select>
-				</div>
-
-
-				<div class="logged__button col-12">
-					<button v-if="!processing" @click="subscribe()" class="button button--xbg button--primary">
-						<?= i::__("Fazer inscrição") ?>
-					</button>
-				</div>
-
-				<div v-if="processing" class="col-12">
-					<mc-loading :condition="processing"> <?= i::__('Fazendo inscrição') ?></mc-loading>
-				</div>
-			</form>
+			</div>
 		</div>
 
-		<!-- Deslogado -->
-		<div v-if="!global.auth.isLoggedIn" class="loggedOut">
-			<p class="loggedOut__description">
-				<?= i::__("Você precisa acessar sua conta ou criar um cadastro na plataforma para poder se inscrever em editais ou oportunidades") ?>
-			</p>
+		<div v-if="!entity.publicityOnly && isOpen && !isPublished && !registrationLimit && !registrationLimitPerOwner" class="opportunity-subscription__subscription">
+			<div v-if="global.auth.isLoggedIn" class="logged">
+				<p v-if="numberFields > 1" class="logged__description">
+					<?= i::__('Selecione as opções abaixo e clique no botão para se inscrever') ?>
+				</p>
+				<p v-if="numberFields == 1" class="logged__description">
+					<?= i::__('Selecione uma opções abaixo e clique no botão para se inscrever') ?>
+				</p>
 
-			<div class="loggedOut__button col-12">
-				<button @click="redirectLogin" class="button button--xbg button--primary">
-					<?= i::__("Acessar ou criar conta") ?>
-				</button>
+				<!-- Logado -->
+				<form class="logged__form grid-12" @submit.prevent>
+					<div class="col-12 opportunity-subscription__selectAgents" v-if="entitiesLength > 1">
+						<select-entity type="agent" openside="down-right" :createNew="canCreateIndividualAgent" :create-new-type="1" :query="{'type': 'EQ(1)'}" select="name,files.avatar,endereco,location" @fetch="fetch($event)" @select="selectAgent($event)" classes="opportunity-subscription__popover">
+							<template #button="{ toggle }">
+								<span v-if="!agent" class="fakeInput" @click="toggle()">
+									<div class="fakeInput__img">
+										<mc-icon name="image"></mc-icon>
+									</div>
+									<?= i::_e('Agente Cultural') ?>
+								</span>
+
+								<span v-if="agent" class="fakeInput" @click="toggle()">
+									<mc-icon name="selected"></mc-icon>
+									<mc-avatar :entity="agent" size="xsmall"></mc-avatar>
+									{{agent.name}}
+								</span>
+							</template>
+						</select-entity>
+					</div>
+					<div class="col-12 opportunity-subscription__selectAgents" v-if="selectAgentRelationColetivo">
+						<select-entity type="agent" openside="down-right" :createNew="true" :create-new-type="2" :query="{'type': 'EQ(2)'}" select="name,files.avatar,endereco,location,type" @fetch="fetch($event)" @select="selectAgent($event)" classes="opportunity-subscription__popover">
+							<template #button="{ toggle }">
+								<span v-if="!agentCollective" class="fakeInput" @click="toggle()">
+									<div class="fakeInput__img">
+										<mc-icon name="image"></mc-icon>
+									</div>
+									<?= i::_e('Agente Coletivo') ?>
+								</span>
+
+								<span v-if="agentCollective" class="fakeInput" @click="toggle()">
+									<mc-icon name="selected"></mc-icon>
+									<mc-avatar :entity="agentCollective" size="xsmall"></mc-avatar>
+										{{agentCollective.name}}
+								</span>
+							</template>
+						</select-entity>
+					</div>
+
+					<div v-if="categories.length > 0" class="col-12 field">
+						<select name="category" v-model="category">
+							<option value="null" disabled selected> <?= $this->text('placeholder-category', i::__('Selecione a categoria')) ?> </option>
+							<option v-for="category in categories" :value="category"> {{category}} </option>
+						</select>
+					</div>
+					<div v-if="registrationRanges.length > 0" class="col-12 field">
+						<select name="registrationRanges" v-model="registrationRange">
+							<option value="null" disabled selected> <?= $this->text('placeholder-range', i::__('Selecione a faixa')) ?> </option>
+							<option v-for="registrationRange in registrationRanges" :value="registrationRange.label"> {{registrationRange.label}} </option>
+						</select>
+					</div>
+
+					<div v-if="registrationProponentTypes.length > 0" class="col-12 field">
+						<select name="registrationProponentTypes" v-model="registrationProponentType">
+							<option value="null" disabled selected> <?= $this->text('placeholder-proponentType', i::__('Selecione o tipo de proponente')) ?> </option>
+							<option v-for="registrationProponentType in registrationProponentTypes" :value="registrationProponentType"> {{registrationProponentType}} </option>
+						</select>
+					</div>
+
+					<div class="logged__button col-12">
+						<button v-if="!processing" @click="subscribe()" class="button button--xbg button--primary">
+							<?= i::__("Fazer inscrição") ?>
+						</button>
+					</div>
+
+					<div v-if="processing" class="col-12">
+						<mc-loading :condition="processing"> <?= i::__('Fazendo inscrição') ?></mc-loading>
+					</div>
+				</form>
+			</div>
+
+			<!-- Deslogado -->
+			<div v-if="!global.auth.isLoggedIn" class="loggedOut">
+				<p class="loggedOut__description">
+					<?= i::__("Você precisa acessar sua conta ou criar um cadastro na plataforma para poder se inscrever em editais ou oportunidades") ?>
+				</p>
+
+				<div class="loggedOut__button col-12">
+					<button @click="redirectLogin" class="button button--xbg button--primary">
+						<?= i::__("Acessar ou criar conta") ?>
+					</button>
+				</div>
 			</div>
 		</div>
 	</div>

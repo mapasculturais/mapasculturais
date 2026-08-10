@@ -16,7 +16,11 @@ app.component('opportunity-subscription-list' , {
     props: {
         hideTitle: Boolean,
         hideSubtitle: Boolean,
-        hideInfos: Boolean
+        hideInfos: Boolean,
+        classes: {
+            type: [String, Array, Object],
+            default: '',
+        },
     },
 
     data() {
