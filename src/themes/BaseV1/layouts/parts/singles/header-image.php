@@ -23,7 +23,7 @@ if ($header = $entity->getFile('header')){
     <?php if($this->isEditable()): ?>
         <div id="remove-background-button" class="<?php echo $removeBackgroundButtonClass; ?>">            
             <a class="btn btn-default delete banner-delete button-position-delete" title="<?php \MapasCulturais\i::esc_attr_e("Excluir capa");?>" 
-                data-href="<?php echo $removeBackgroundButtonUrl; ?>">Excluir</a>
+                data-href="<?php echo $removeBackgroundButtonUrl; ?>"><?php \MapasCulturais\i::_e("Excluir");?></a>
         </div>
     <?php endif; ?>
 </div>
