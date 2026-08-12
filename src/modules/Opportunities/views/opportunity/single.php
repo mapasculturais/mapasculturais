@@ -17,7 +17,6 @@ $this->import('
     entity-admins
     entity-actions
     entity-connections-list
-    entity-data
     entity-description-collapse
     entity-files-list
     entity-gallery
@@ -43,7 +42,6 @@ $this->import('
     opportunity-phases-timeline
     opportunity-subscription
     opportunity-subscription-list
-    opportunity-owner-type
     v1-embed-tool
 ');
 
@@ -79,15 +77,22 @@ $owner_count = $entity->owner ? 1 : 0;
   <entity-header :entity="entity">
     <template #metadata>
         <dl v-if="entity.id && global.showIds[entity.__objectType]" class="metadata__id">
-            <entity-data class="metadata__id" :entity="entity" prop="id" label="<?php i::_e('ID:') ?>"></entity-data>
+            <dt><?= i::__('ID') ?></dt>
+            <dd><strong>{{ entity.id }}</strong></dd>
         </dl>
         <dl v-if="entity.type">
             <dt><?= i::__('Tipo') ?></dt>
             <dd :class="[entity.__objectType+'__color', 'type']">{{ entity.type.name }}</dd>
         </dl>
         <dl v-if="entity.ownerEntity" class="single-opportunity__owner">
-            <dt><?= i::__('Vinculado com ') ?><opportunity-owner-type :entity="entity"></opportunity-owner-type></dt>
-            <dd><mc-link :entity="entity.ownerEntity"></mc-link></dd>
+            <dt v-if="entity.ownerEntity.__objectType === 'agent'"><?= i::__('Conexão com o agente') ?></dt>
+            <dt v-else-if="entity.ownerEntity.__objectType === 'project'"><?= i::__('Conexão com o projeto') ?></dt>
+            <dt v-else-if="entity.ownerEntity.__objectType === 'event'"><?= i::__('Conexão com o evento') ?></dt>
+            <dt v-else-if="entity.ownerEntity.__objectType === 'space'"><?= i::__('Conexão com o espaço') ?></dt>
+            <dt v-else><?= i::__('Conexão') ?></dt>
+            <dd>
+                <mc-link :entity="entity.ownerEntity"></mc-link>
+            </dd>
         </dl>
     </template>
     <template #actions>
@@ -132,26 +137,40 @@ $owner_count = $entity->owner ? 1 : 0;
                             </div>
                             <aside class="single-opportunity__timeline">
                                 <opportunity-phases-timeline :entity-status="entity.status"></opportunity-phases-timeline>
+
+                                <div
+                                    v-if="entity.terms?.area?.length || entity.terms?.tag?.length"
+                                    class="single-opportunity__timeline-terms">
+                                    <div v-if="entity.terms?.area?.length" class="single-opportunity__timeline-terms-item">
+                                        <entity-terms
+                                            :entity="entity"
+                                            hide-required
+                                            classes="col-12"
+                                            taxonomy="area"
+                                            title="<?php i::esc_attr_e('Área de Interesse'); ?>">
+                                        </entity-terms>
+                                    </div>
+
+                                    <div v-if="entity.terms?.tag?.length" class="single-opportunity__timeline-terms-item">
+                                        <entity-terms
+                                            :entity="entity"
+                                            hide-required
+                                            classes="col-12"
+                                            taxonomy="tag"
+                                            :title="'<?php i::esc_attr_e('Tags'); ?>' + (entity.terms?.tag?.length ? ' (' + entity.terms.tag.length + ')' : '')">
+                                        </entity-terms>
+                                    </div>
+                                </div>
                             </aside>
                         </div>
                     </div>
 
                     <div
-                        v-if="entity.terms?.tag?.length || entity.longDescription"
+                        v-if="entity.longDescription"
                         class="single-1__presentation-card">
                         <h2 class="single-1__presentation-title"><?php i::_e('Apresentação'); ?></h2>
                         <div class="single-1__presentation-content">
-                            <div v-if="entity.terms?.tag?.length" class="single-1__presentation-item">
-                                <entity-terms
-                                    :entity="entity"
-                                    hide-required
-                                    classes="col-12"
-                                    taxonomy="tag"
-                                    :title="'<?php i::esc_attr_e('Tags'); ?>' + (entity.terms?.tag?.length ? ' (' + entity.terms.tag.length + ')' : '')">
-                                </entity-terms>
-                            </div>
-
-                            <div v-if="entity.longDescription" class="single-1__presentation-item single-1__description-block">
+                            <div class="single-1__presentation-item single-1__description-block">
                                 <entity-description-collapse
                                     :text="entity.longDescription"
                                     label="<?php i::esc_attr_e('Descrição'); ?>">
