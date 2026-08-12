@@ -17,7 +17,6 @@ $this->import('
     entity-admins
     entity-actions
     entity-connections-list
-    entity-description-collapse
     entity-files-list
     entity-gallery
     entity-gallery-video
@@ -171,9 +170,11 @@ $owner_count = $entity->owner ? 1 : 0;
                         <h2 class="single-1__presentation-title"><?php i::_e('Sobre'); ?></h2>
                         <div class="single-1__presentation-content">
                             <div class="single-1__presentation-item single-1__description-block">
-                                <entity-description-collapse
-                                    :text="entity.longDescription">
-                                </entity-description-collapse>
+                                <div class="entity-description-collapse">
+                                    <div class="entity-description-collapse__body">
+                                        <p class="entity-description-collapse__text" v-html="entity.longDescription"></p>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
