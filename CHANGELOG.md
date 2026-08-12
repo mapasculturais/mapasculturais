@@ -5,6 +5,13 @@ Todas as mudanças notáveis no projeto serão documentadas neste arquivo.
 O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/)
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [UNRELEASED]
+### Correções
+- Corrige erro que podia interromper o carregamento da página quando a data de um selo de verificação estava em branco
+
+### Melhorias
+- Passa a limpar automaticamente arquivos antigos de CSS, JavaScript e imagens publicados que ficavam acumulados no servidor, sem remover nada que ainda está em uso
+
 ## [7.8.5] - 2026-08-06
 ### Correções
 - Exibe todas as mensagens retornadas pelo backend quando o salvamento de uma entidade falha por validação, incluindo erros de campos ocultos ou somente leitura
