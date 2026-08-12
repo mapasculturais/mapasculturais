@@ -8,7 +8,6 @@
 use MapasCulturais\i;
 
 $this->import('
-	entity-terms
 	mc-avatar
 	mc-icon
 	mc-loading
@@ -17,30 +16,27 @@ $this->import('
 ?>
 <div class="opportunity-subscription">
 	<div class="opportunity-subscription__info">
-		<div class="content">
-			<div class="content__description" v-html="infoRegistration"></div>
+		<div class="content" :class="{ 'content--with-rules': !!rulesFile }">
+			<template v-if="rulesFile">
+				<div class="content__text">
+					<p class="content__title" v-html="infoRegistrationTitle"></p>
+					<p v-if="infoRegistrationPeriod" class="content__period" v-html="infoRegistrationPeriod"></p>
+				</div>
+
+				<div class="content__rules">
+					<a
+						:href="rulesFile.url"
+						class="button button--primary-outline button--icon"
+						target="_blank"
+						:download="rulesFile.name">
+						<mc-icon name="download"></mc-icon>
+						<?= i::__("Baixar regulamento") ?>
+					</a>
+				</div>
+			</template>
+
+			<div v-else class="content__description" v-html="infoRegistration"></div>
 		</div>
-	</div>
-
-	<div v-if="rulesFile" class="opportunity-subscription__rules">
-		<a
-			:href="rulesFile.url"
-			class="button button--primary-outline button--icon"
-			target="_blank"
-			:download="rulesFile.name">
-			<mc-icon name="download"></mc-icon>
-			<?= i::__("Baixar regulamento") ?>
-		</a>
-	</div>
-
-	<div v-if="entity.terms?.area?.length" class="opportunity-subscription__area">
-		<entity-terms
-			:entity="entity"
-			hide-required
-			classes="col-12"
-			taxonomy="area"
-			title="<?php i::esc_attr_e('Área de Interesse'); ?>">
-		</entity-terms>
 	</div>
 
 	<div class="opportunity-subscription__center">
@@ -66,7 +62,7 @@ $this->import('
 
 				<!-- Logado -->
 				<form class="logged__form grid-12" @submit.prevent>
-					<div class="col-12 opportunity-subscription__selectAgents" v-if="entitiesLength > 1">
+					<div class="col-6 opportunity-subscription__selectAgents" v-if="entitiesLength > 1">
 						<select-entity type="agent" openside="down-right" :createNew="canCreateIndividualAgent" :create-new-type="1" :query="{'type': 'EQ(1)'}" select="name,files.avatar,endereco,location" @fetch="fetch($event)" @select="selectAgent($event)" classes="opportunity-subscription__popover">
 							<template #button="{ toggle }">
 								<span v-if="!agent" class="fakeInput" @click="toggle()">
@@ -84,7 +80,7 @@ $this->import('
 							</template>
 						</select-entity>
 					</div>
-					<div class="col-12 opportunity-subscription__selectAgents" v-if="selectAgentRelationColetivo">
+					<div class="col-6 opportunity-subscription__selectAgents" v-if="selectAgentRelationColetivo">
 						<select-entity type="agent" openside="down-right" :createNew="true" :create-new-type="2" :query="{'type': 'EQ(2)'}" select="name,files.avatar,endereco,location,type" @fetch="fetch($event)" @select="selectAgent($event)" classes="opportunity-subscription__popover">
 							<template #button="{ toggle }">
 								<span v-if="!agentCollective" class="fakeInput" @click="toggle()">
@@ -103,20 +99,20 @@ $this->import('
 						</select-entity>
 					</div>
 
-					<div v-if="categories.length > 0" class="col-12 field">
+					<div v-if="categories.length > 0" class="col-6 field">
 						<select name="category" v-model="category">
 							<option value="null" disabled selected> <?= $this->text('placeholder-category', i::__('Selecione a categoria')) ?> </option>
 							<option v-for="category in categories" :value="category"> {{category}} </option>
 						</select>
 					</div>
-					<div v-if="registrationRanges.length > 0" class="col-12 field">
+					<div v-if="registrationRanges.length > 0" class="col-6 field">
 						<select name="registrationRanges" v-model="registrationRange">
 							<option value="null" disabled selected> <?= $this->text('placeholder-range', i::__('Selecione a faixa')) ?> </option>
 							<option v-for="registrationRange in registrationRanges" :value="registrationRange.label"> {{registrationRange.label}} </option>
 						</select>
 					</div>
 
-					<div v-if="registrationProponentTypes.length > 0" class="col-12 field">
+					<div v-if="registrationProponentTypes.length > 0" class="col-6 field">
 						<select name="registrationProponentTypes" v-model="registrationProponentType">
 							<option value="null" disabled selected> <?= $this->text('placeholder-proponentType', i::__('Selecione o tipo de proponente')) ?> </option>
 							<option v-for="registrationProponentType in registrationProponentTypes" :value="registrationProponentType"> {{registrationProponentType}} </option>
