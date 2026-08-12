@@ -13,6 +13,7 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ### Melhorias
 - Permite aplicar um status do resultado da avaliação a uma lista específica de inscrições, nos métodos técnico, simplificado, documental e contínuo
+- Passa a limpar automaticamente arquivos antigos de CSS, JavaScript e imagens publicados que ficavam acumulados no servidor, sem remover nada que ainda está em uso
 
 ### Melhorias nos selos validadores
 - Mostra o **status de cada campo** do selo (válido, prestes a vencer, vencido etc.) na ficha e no formulário de avaliação, para o avaliador entender o que está ok e o que precisa de atenção
@@ -26,6 +27,7 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 ### Correções
 - Na redistribuição de avaliações, inclusões manuais passam a contar na carga pendente do comparador antes da distribuição automática (e a ordem das inscrições fica estável por `id`), evitando que o mesmo avaliador receba a próxima inscrição por acaso
 - Na avaliação documental, o link de download do arquivo não cobre mais o campo inteiro: clicar no campo abre o formulário de avaliação e clicar no nome do arquivo continua baixando
+- Corrige erro que podia interromper o carregamento da página quando a data de um selo de verificação estava em branco
 
 ## [7.8.5] - 2026-08-06
 ### Correções
