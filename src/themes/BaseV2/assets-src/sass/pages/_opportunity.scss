@@ -2,22 +2,103 @@
 
 .controller-opportunity {
     &.action-single {
-       .entity-header__single--content {
-            .rightSide {
+        .single-1 {
+            .entity-header {
+                .entity-header__single--content {
+                    flex-wrap: wrap !important;
+
+                    .leftSide {
+                        flex: 1 1 0%;
+                        min-width: 0;
+                        max-width: none;
+
+                        .data {
+                            flex: 1 1 auto;
+                            min-width: 0;
+                            max-width: 100%;
+                            overflow: visible;
+                        }
+                    }
+
+                    .rightSide {
+                        flex: 0 0 auto;
+                        flex-shrink: 0;
+                        align-self: flex-start;
+                    }
+                }
+
+                .entity-header__identity {
+                    min-width: 0;
+                    max-width: 100%;
+                }
+
+                .entity-header__title,
+                .entity-header__title.mc-title {
+                    display: block !important;
+                    max-width: 100%;
+                    white-space: normal !important;
+                    overflow-wrap: break-word;
+                    word-break: break-word;
+                }
+
                 .metadata {
-                    .single-opportunity__owner {
+                    display: flex;
+                    flex-wrap: wrap;
+                    align-items: baseline;
+                    gap: size(16) size(24);
+                    margin-top: size(8);
+                    min-width: 0;
+                    max-width: 100%;
+
+                    dl {
+                        display: inline-flex;
+                        flex-wrap: wrap;
+                        align-items: baseline;
+                        gap: size(4);
+                        margin: 0;
+                        min-width: 0;
+                        max-width: 100%;
+                    }
+
+                    dt {
+                        flex-shrink: 0;
+                        color: var(--mc-gray-700);
+                        font-size: size(14);
+                        font-weight: 600;
+                        line-height: size(19);
+                        text-transform: uppercase;
+
+                        &::after {
+                            content: ':';
+                        }
+                    }
+
+                    dd {
+                        margin: 0;
+                        min-width: 0;
+                        font-size: size(14);
+                        font-weight: 700;
+                        line-height: size(19);
+                        color: var(--mc-low-500);
+                        overflow-wrap: break-word;
+                        word-break: break-word;
+
+                        &.type {
+                            text-transform: uppercase;
+                        }
+
                         a {
                             text-decoration: none;
-                            margin-left: size(5);
                             font-size: size(14);
-                            font-weight: 400;
+                            font-weight: 700;
+                            color: var(--mc-opportunities-500);
+                            overflow-wrap: break-word;
+                            word-break: break-word;
                         }
                     }
                 }
             }
-       }
 
-        .single-1 {
             .tabs-component__button--active {
                 color: var(--mc-opportunities-500);
                 border-bottom-color: var(--mc-opportunities-500);
@@ -120,6 +201,9 @@
             &__timeline {
                 min-width: 0;
                 align-self: start;
+                display: flex;
+                flex-direction: column;
+                gap: size(20);
                 background: var(--mc-gray-100);
                 border-radius: var(--mc-border-radius-sm);
                 padding: size(20) size(24);
@@ -128,6 +212,21 @@
                 .timeline {
                     margin: 0;
                 }
+            }
+
+            &__timeline-terms {
+                display: flex;
+                flex-direction: column;
+                gap: size(16);
+                width: 100%;
+                padding-top: size(20);
+                border-top: size(1) solid var(--mc-gray-300);
+                box-sizing: border-box;
+            }
+
+            &__timeline-terms-item {
+                width: 100%;
+                min-width: 0;
             }
 
             .opportunity-subscription {
@@ -144,44 +243,86 @@
                     .content {
                         background: var(--mc-gray-100);
                         border-radius: var(--mc-border-radius-sm);
-                        padding: size(20) size(24);
+                        padding: size(36) size(24);
                         box-sizing: border-box;
 
-                        &__description {
+                        &--with-rules {
+                            display: flex;
+                            align-items: center;
+                            justify-content: space-between;
+                            gap: size(24);
+
+                            @include mobile {
+                                flex-direction: column;
+                                align-items: flex-start;
+                            }
+                        }
+
+                        &__text {
+                            flex: 1;
+                            min-width: 0;
+                            width: 100%;
+                            display: flex;
+                            flex-direction: column;
+                            gap: size(4);
+                        }
+
+                        &__title {
                             margin: 0;
                             padding: 0;
                             color: var(--mc-low-500);
-                            font-size: size(16);
+                            font-size: size(24);
                             font-weight: 600;
-                            line-height: size(22);
+                            line-height: size(32);
+                        }
+
+                        &__period {
+                            margin: 0;
+                            padding: 0;
+                            color: var(--mc-low-500);
+                            font-size: size(24);
+                            font-weight: 600;
+                            line-height: size(32);
 
                             strong,
                             span {
                                 font-weight: 700;
                             }
                         }
+
+                        &__description {
+                            margin: 0;
+                            padding: 0;
+                            width: 100%;
+                            color: var(--mc-low-500);
+                            font-size: size(24);
+                            font-weight: 600;
+                            line-height: size(32);
+
+                            strong,
+                            span {
+                                font-weight: 700;
+                            }
+                        }
+
+                        &__rules {
+                            flex-shrink: 0;
+
+                            .button {
+                                width: auto;
+                                max-width: 100%;
+                                white-space: nowrap;
+                            }
+                        }
                     }
                 }
 
-                &__rules {
-                    width: 100%;
-
-                    .button {
-                        width: auto;
-                        max-width: 100%;
-                    }
-                }
-
-                &__area,
                 &__center {
                     min-width: 0;
                     width: 100%;
                     padding-top: size(20);
                     border-top: size(1) solid var(--mc-gray-300);
                     box-sizing: border-box;
-                }
-
-                &__center {
                     display: flex;
                     flex-direction: column;
                     align-items: flex-start;
@@ -190,19 +331,20 @@
 
                 &__subscription {
                     width: 100%;
-                    max-width: size(420);
+                    max-width: none;
 
                     .logged,
                     .loggedOut {
                         display: flex;
                         flex-direction: column;
-                        align-items: flex-start;
+                        align-items: stretch;
                         gap: size(16);
+                        width: 100%;
 
                         &__description {
                             margin: 0;
                             text-align: left;
-                            max-width: size(420);
+                            max-width: 100%;
                         }
 
                         &__form {
@@ -210,11 +352,24 @@
                             border-bottom: 0;
                             padding-bottom: 0;
                             row-gap: size(16);
+                            column-gap: size(16);
                             justify-items: stretch;
+
+                            > .col-6 {
+                                min-width: 0;
+                            }
+
+                            @include mobile {
+                                > .col-6 {
+                                    grid-column: span 12;
+                                }
+                            }
                         }
 
                         &__button {
-                            justify-content: flex-start;
+                            display: flex;
+                            justify-content: center;
+                            width: 100%;
                             margin-top: size(8);
 
                             &::before {
@@ -225,6 +380,13 @@
 
                     .fakeInput {
                         text-align: left;
+                        width: 100%;
+                        box-sizing: border-box;
+                    }
+
+                    .field select,
+                    .opportunity-subscription__selectAgents {
+                        width: 100%;
                     }
                 }
 
