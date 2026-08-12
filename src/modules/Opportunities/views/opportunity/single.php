@@ -168,12 +168,11 @@ $owner_count = $entity->owner ? 1 : 0;
                     <div
                         v-if="entity.longDescription"
                         class="single-1__presentation-card">
-                        <h2 class="single-1__presentation-title"><?php i::_e('Apresentação'); ?></h2>
+                        <h2 class="single-1__presentation-title"><?php i::_e('Sobre'); ?></h2>
                         <div class="single-1__presentation-content">
                             <div class="single-1__presentation-item single-1__description-block">
                                 <entity-description-collapse
-                                    :text="entity.longDescription"
-                                    label="<?php i::esc_attr_e('Descrição'); ?>">
+                                    :text="entity.longDescription">
                                 </entity-description-collapse>
                             </div>
                         </div>
