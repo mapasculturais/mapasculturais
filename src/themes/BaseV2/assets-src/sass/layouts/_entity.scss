@@ -75,6 +75,11 @@
                     box-sizing: border-box;
                     overflow-x: auto;
                     overflow-y: hidden;
+                    gap: size(49);
+
+                    @media (max-width: size(600)) {
+                        gap: size(40);
+                    }
                 }
 
                 &__panels {
