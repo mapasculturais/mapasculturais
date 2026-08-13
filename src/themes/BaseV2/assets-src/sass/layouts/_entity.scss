@@ -90,21 +90,16 @@
                 }
             }
 
-            // tabs internas: mesmo inset horizontal dos títulos dentro dos cards
+            // tabs internas: alinhadas à esquerda com as tabs de topo
             .single-1__inner-tabs .tabs-component__header {
-                padding-left: size(24);
-                padding-right: size(24);
+                padding-left: 0;
+                padding-right: 0;
                 max-width: 100%;
                 margin-left: 0;
                 margin-right: 0;
                 box-sizing: border-box;
                 overflow-x: auto;
                 overflow-y: hidden;
-
-                @media (max-width: size(800)) {
-                    padding-left: 0;
-                    padding-right: 0;
-                }
             }
 
             .single-1__inner-tabs .tabs-component__buttons {
@@ -114,11 +109,6 @@
                 overflow-y: hidden;
                 padding-left: 0;
                 padding-right: 0;
-
-                @media (max-width: size(800)) {
-                    padding-left: size(16);
-                    padding-right: size(16);
-                }
             }
 
             .container {

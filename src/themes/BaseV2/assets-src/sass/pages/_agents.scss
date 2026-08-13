@@ -591,17 +591,13 @@
             background-color: transparent;
             border-bottom: 1px solid var(--mc-gray-300);
             margin: 0 0 size(16);
-            padding: 0 size(24);
+            padding: 0;
             max-width: 100%;
             width: 100%;
             box-sizing: border-box;
             overflow-x: auto;
             overflow-y: hidden;
             -webkit-overflow-scrolling: touch;
-
-            @include mobile {
-                padding: 0;
-            }
         }
 
         .tabs-component__buttons {
@@ -612,11 +608,11 @@
             overflow-y: hidden;
             -webkit-overflow-scrolling: touch;
             scrollbar-width: thin;
+            padding-left: 0;
+            padding-right: 0;
 
             @include mobile {
                 gap: size(8);
-                padding-left: size(16);
-                padding-right: size(24);
                 rotate: none;
 
                 &::-webkit-scrollbar {
