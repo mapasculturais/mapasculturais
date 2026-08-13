@@ -17,8 +17,7 @@ $this->import('
     entity-header
     entity-links
     entity-occurrence-list
-    entity-owner
-    entity-related-agents
+    entity-people-collaborators
     entity-seals-list
     entity-social-media
     entity-terms
@@ -42,6 +41,25 @@ $this->breadcrumb = [
     ['label' => $label, 'url' => $app->createUrl('search', 'events')],
     ['label' => $entity->name, 'url' => $app->createUrl('event', 'single', [$entity->id])],
 ];
+
+$include_pending_relations = $entity->canUser('viewPrivateData')
+    || $entity->canUser('createAgentRelation')
+    || $entity->canUser('removeAgentRelation')
+    || $entity->canUser('@control');
+
+$collaborator_count = 0;
+$admin_count = 0;
+foreach ($entity->getAgentRelationsGrouped(null, $include_pending_relations) as $group => $relations) {
+    if ($group === 'group-admin') {
+        $admin_count = count($relations);
+        continue;
+    }
+    if ($group === '@support') {
+        continue;
+    }
+    $collaborator_count += count($relations);
+}
+$owner_count = $entity->owner ? 1 : 0;
 ?>
 
 <div class="main-app single-1">
@@ -96,111 +114,127 @@ $this->breadcrumb = [
 
             <mc-tab label="<?= i::_e('Perfil') ?>" slug="info">
                 <mc-container>
-                    <div class="single-1__inner-tabs">
-                        <mc-tabs class="tabs" sync-hash>
-                            <mc-tab label="<?= i::_e('Público') ?>" slug="publico">
-                                <opportunity-list></opportunity-list>
+                    <opportunity-list></opportunity-list>
 
-                                <div class="single-1__presentation-card">
-                                    <h2 class="single-1__presentation-title"><?php i::_e('Apresentação'); ?></h2>
-                                    <div class="single-1__presentation-content">
-                                        <div v-if="entity.terms?.linguagem?.length" class="single-1__presentation-item">
-                                            <entity-terms
-                                                :entity="entity"
-                                                hide-required
-                                                classes="col-12"
-                                                taxonomy="linguagem"
-                                                :title="'<?php i::esc_attr_e('Linguagens culturais'); ?>' + (entity.terms?.linguagem?.length ? ' (' + entity.terms.linguagem.length + ')' : '')">
-                                            </entity-terms>
-                                        </div>
+                    <div class="single-1__presentation-card">
+                        <h2 class="single-1__presentation-title"><?php i::_e('Apresentação'); ?></h2>
+                        <div class="single-1__presentation-content">
+                            <div v-if="entity.terms?.linguagem?.length" class="single-1__presentation-item">
+                                <entity-terms
+                                    :entity="entity"
+                                    hide-required
+                                    classes="col-12"
+                                    taxonomy="linguagem"
+                                    :title="'<?php i::esc_attr_e('Linguagens culturais'); ?>' + (entity.terms?.linguagem?.length ? ' (' + entity.terms.linguagem.length + ')' : '')">
+                                </entity-terms>
+                            </div>
 
-                                        <div v-if="entity.terms?.tag?.length" class="single-1__presentation-item">
-                                            <entity-terms
-                                                :entity="entity"
-                                                hide-required
-                                                classes="col-12"
-                                                taxonomy="tag"
-                                                :title="'<?php i::esc_attr_e('Tags'); ?>' + (entity.terms?.tag?.length ? ' (' + entity.terms.tag.length + ')' : '')">
-                                            </entity-terms>
-                                        </div>
+                            <div v-if="entity.terms?.tag?.length" class="single-1__presentation-item">
+                                <entity-terms
+                                    :entity="entity"
+                                    hide-required
+                                    classes="col-12"
+                                    taxonomy="tag"
+                                    :title="'<?php i::esc_attr_e('Tags'); ?>' + (entity.terms?.tag?.length ? ' (' + entity.terms.tag.length + ')' : '')">
+                                </entity-terms>
+                            </div>
 
-                                        <div v-if="entity.longDescription" class="single-1__presentation-item single-1__description-block">
-                                            <entity-description-collapse
-                                                :text="entity.longDescription"
-                                                label="<?php i::esc_attr_e('Descrição'); ?>">
-                                            </entity-description-collapse>
-                                        </div>
+                            <div v-if="entity.longDescription" class="single-1__presentation-item single-1__description-block">
+                                <entity-description-collapse
+                                    :text="entity.longDescription"
+                                    label="<?php i::esc_attr_e('Descrição'); ?>">
+                                </entity-description-collapse>
+                            </div>
 
-                                        <div class="grid-12 single-1__presentation-item">
-                                            <div v-if="entity.classificacaoEtaria" class="col-4 sm:col-12">
-                                                <event-age-rating :event="entity"></event-age-rating>
-                                            </div>
-                                            <div v-if="entity.event_attendance" class="col-4 sm:col-12">
-                                                <entity-data :entity="entity" prop="event_attendance" label="<?php i::_e('Capacidade máxima de pessoas') ?>"></entity-data>
-                                            </div>
-                                            <div v-if="entity.telefonePublico" class="col-4 sm:col-12">
-                                                <entity-data :entity="entity" prop="telefonePublico" label="<?php i::_e('Telefone para informações') ?>"></entity-data>
-                                            </div>
-                                        </div>
-
-                                        <div v-if="entity.registrationInfo" class="single-1__presentation-item">
-                                            <entity-data :entity="entity" prop="registrationInfo" label="<?php i::_e('Informações sobre a inscrição') ?>"></entity-data>
-                                        </div>
-
-                                        <div class="grid-12 single-1__presentation-item single-1__presentation-contacts">
-                                            <div class="col-4 sm:col-12">
-                                                <entity-data :entity="entity" prop="site" label="<?php i::_e('Site') ?>"></entity-data>
-                                            </div>
-                                        </div>
-
-                                        <event-info :entity="entity" classes="single-1__presentation-item"></event-info>
-                                    </div>
+                            <div class="grid-12 single-1__presentation-item">
+                                <div v-if="entity.classificacaoEtaria" class="col-4 sm:col-12">
+                                    <event-age-rating :event="entity"></event-age-rating>
                                 </div>
-
-                                <div class="single-1__presentation-card">
-                                    <h2 class="single-1__presentation-title"><?php i::_e('Data, hora e local'); ?></h2>
-                                    <entity-occurrence-list :entity="entity"></entity-occurrence-list>
+                                <div v-if="entity.event_attendance" class="col-4 sm:col-12">
+                                    <entity-data :entity="entity" prop="event_attendance" label="<?php i::_e('Capacidade máxima de pessoas') ?>"></entity-data>
                                 </div>
-
-                                <div class="col-12 single-1__social-media">
-                                    <mc-card>
-                                        <template #content>
-                                            <entity-social-media :entity="entity" classes="col-12"></entity-social-media>
-                                        </template>
-                                    </mc-card>
+                                <div v-if="entity.telefonePublico" class="col-4 sm:col-12">
+                                    <entity-data :entity="entity" prop="telefonePublico" label="<?php i::_e('Telefone para informações') ?>"></entity-data>
                                 </div>
+                            </div>
 
-                                <complaint-suggestion :entity="entity" classes="col-12" :show-contact="false"></complaint-suggestion>
-                            </mc-tab>
+                            <div v-if="entity.registrationInfo" class="single-1__presentation-item">
+                                <entity-data :entity="entity" prop="registrationInfo" label="<?php i::_e('Informações sobre a inscrição') ?>"></entity-data>
+                            </div>
 
-                            <mc-tab label="<?= i::_e('Administração') ?>" slug="administracao">
-                                <p
-                                    v-if="!entity.agentRelations?.['group-admin']?.length"
-                                    class="single-1__administration-empty">
-                                    <?php i::_e('Esse evento não possui administradores.'); ?>
-                                </p>
+                            <div class="grid-12 single-1__presentation-item single-1__presentation-contacts">
+                                <div class="col-4 sm:col-12">
+                                    <entity-data :entity="entity" prop="site" label="<?php i::_e('Site') ?>"></entity-data>
+                                </div>
+                            </div>
 
-                                <div v-else class="single-1__administration-card">
-                                    <h2 class="single-1__administration-title"><?php i::_e('Administradores do perfil'); ?></h2>
+                            <event-info :entity="entity" classes="single-1__presentation-item"></event-info>
+                        </div>
+                    </div>
+
+                    <div class="single-1__presentation-card">
+                        <h2 class="single-1__presentation-title"><?php i::_e('Data, hora e local'); ?></h2>
+                        <entity-occurrence-list :entity="entity"></entity-occurrence-list>
+                    </div>
+
+                    <div class="col-12 single-1__social-media">
+                        <mc-card>
+                            <template #content>
+                                <entity-social-media :entity="entity" classes="col-12"></entity-social-media>
+                            </template>
+                        </mc-card>
+                    </div>
+
+                    <complaint-suggestion :entity="entity" classes="col-12" :show-contact="false"></complaint-suggestion>
+                </mc-container>
+            </mc-tab>
+
+            <mc-tab label="<?= i::esc_attr_e('Administração e relações') ?>" slug="pessoas">
+                <mc-container>
+                    <main>
+                        <div class="single-1__people">
+                            <?php if ($owner_count > 0): ?>
+                            <section class="single-1__people-section">
+                                <h2 class="single-1__people-section-title">
+                                    <?php i::_e('Proprietário'); ?> (<?= (int) $owner_count ?>)
+                                </h2>
+                                <div class="single-1__people-card">
+                                    <entity-connections-list
+                                        type="agent"
+                                        :ids="entity.owner ? [entity.owner.id ?? entity.owner] : []"
+                                        role-label="<?php i::esc_attr_e('Proprietário(a)') ?>">
+                                    </entity-connections-list>
+                                </div>
+                            </section>
+                            <?php endif; ?>
+
+                            <?php if ($admin_count > 0): ?>
+                            <section class="single-1__people-section">
+                                <h2 class="single-1__people-section-title">
+                                    <?php i::_e('Administradores'); ?> (<?= (int) $admin_count ?>)
+                                </h2>
+
+                                <div class="single-1__administration-card">
                                     <p class="single-1__administration-intro"><?php i::_e('Administradores do perfil podem visualizar e editar os dados públicos do evento que administram, além de transferir, editar e/ou excluir a entidade. A administração dos perfis só é possível mediante a autorização do proprietário do perfil.'); ?></p>
                                     <?php $this->applyTemplateHook('single1-entity-info-entity-admins', 'before') ?>
                                     <entity-admins :entity="entity" variant="list" classes="single-1__administration-admins"></entity-admins>
                                     <?php $this->applyTemplateHook('single1-entity-info-entity-admins', 'after') ?>
                                 </div>
+                            </section>
+                            <?php endif; ?>
 
-                                <div class="single-1__personal-card">
-                                    <h2 class="single-1__personal-title"><?php i::_e('Publicado por'); ?></h2>
-                                    <entity-owner :entity="entity" classes="col-12" title=""></entity-owner>
+                            <?php if ($collaborator_count > 0): ?>
+                            <section class="single-1__people-section">
+                                <h2 class="single-1__people-section-title">
+                                    <?php i::_e('Colaboradores'); ?> (<?= (int) $collaborator_count ?>)
+                                </h2>
+                                <div class="single-1__people-collaborators">
+                                    <entity-people-collaborators :entity="entity"></entity-people-collaborators>
                                 </div>
-
-                                <?php $this->applyTemplateHook('single1-entity-info-entity-related-agents', 'before') ?>
-                                <div class="single-1__related-agents">
-                                    <entity-related-agents :entity="entity" classes="col-12" title="<?php i::esc_attr_e('Agentes Relacionados'); ?>"></entity-related-agents>
-                                </div>
-                                <?php $this->applyTemplateHook('single1-entity-info-entity-related-agents', 'after') ?>
-                            </mc-tab>
-                        </mc-tabs>
-                    </div>
+                            </section>
+                            <?php endif; ?>
+                        </div>
+                    </main>
                 </mc-container>
             </mc-tab>
 
