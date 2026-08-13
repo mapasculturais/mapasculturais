@@ -415,14 +415,14 @@ $owner_count = $entity->owner ? 1 : 0;
                                         <entity-links :entity="entity" title="<?php i::_e('Links'); ?>" hide-title></entity-links>
                                     </div>
                                 </mc-tab>
-                                <mc-tab label="<?= i::esc_attr_e('Vídeos') ?>" slug="videos">
-                                    <div class="single-1__portfolio-card">
-                                        <entity-gallery-video :entity="entity" hide-title></entity-gallery-video>
-                                    </div>
-                                </mc-tab>
                                 <mc-tab label="<?= i::esc_attr_e('Imagens') ?>" slug="imagens">
                                     <div class="single-1__portfolio-card">
                                         <entity-gallery :entity="entity" hide-title></entity-gallery>
+                                    </div>
+                                </mc-tab>
+                                <mc-tab label="<?= i::esc_attr_e('Vídeos') ?>" slug="videos">
+                                    <div class="single-1__portfolio-card">
+                                        <entity-gallery-video :entity="entity" hide-title></entity-gallery-video>
                                     </div>
                                 </mc-tab>
                             </mc-tabs>
