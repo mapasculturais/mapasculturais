@@ -21,8 +21,7 @@ $this->import('
     entity-gallery-video
     entity-header
     entity-links
-    entity-owner
-    entity-related-agents
+    entity-people-collaborators
     entity-seals-list
     entity-social-media
     entity-terms
@@ -44,6 +43,25 @@ $this->breadcrumb = [
 
 $events = method_exists($entity, 'getEvents') ? $entity->getEvents() : [];
 $has_events = is_countable($events) ? count($events) > 0 : false;
+
+$include_pending_relations = $entity->canUser('viewPrivateData')
+    || $entity->canUser('createAgentRelation')
+    || $entity->canUser('removeAgentRelation')
+    || $entity->canUser('@control');
+
+$collaborator_count = 0;
+$admin_count = 0;
+foreach ($entity->getAgentRelationsGrouped(null, $include_pending_relations) as $group => $relations) {
+    if ($group === 'group-admin') {
+        $admin_count = count($relations);
+        continue;
+    }
+    if ($group === '@support') {
+        continue;
+    }
+    $collaborator_count += count($relations);
+}
+$owner_count = $entity->owner ? 1 : 0;
 ?>
 
 <div class="main-app single-1">
@@ -130,106 +148,122 @@ $has_events = is_countable($events) ? count($events) > 0 : false;
                         </div>
                     </div>
 
-                    <div class="single-1__inner-tabs">
-                        <mc-tabs class="tabs" sync-hash>
-                            <mc-tab label="<?= i::_e('Público') ?>" slug="publico">
-                                <div class="single-1__presentation-card">
-                                    <h2 class="single-1__presentation-title"><?php i::_e('Apresentação'); ?></h2>
-                                    <div class="single-1__presentation-content">
-                                        <div v-if="entity.terms?.tag?.length" class="single-1__presentation-item">
-                                            <?php $this->applyTemplateHook('single1-entity-info-entity-terms-tag', 'before') ?>
-                                            <entity-terms
-                                                :entity="entity"
-                                                hide-required
-                                                classes="col-12"
-                                                taxonomy="tag"
-                                                :title="'<?php i::esc_attr_e('Tags'); ?>' + (entity.terms?.tag?.length ? ' (' + entity.terms.tag.length + ')' : '')">
-                                            </entity-terms>
-                                            <?php $this->applyTemplateHook('single1-entity-info-entity-terms-tag', 'after') ?>
-                                        </div>
+                    <div class="single-1__presentation-card">
+                        <h2 class="single-1__presentation-title"><?php i::_e('Apresentação'); ?></h2>
+                        <div class="single-1__presentation-content">
+                            <div v-if="entity.terms?.tag?.length" class="single-1__presentation-item">
+                                <?php $this->applyTemplateHook('single1-entity-info-entity-terms-tag', 'before') ?>
+                                <entity-terms
+                                    :entity="entity"
+                                    hide-required
+                                    classes="col-12"
+                                    taxonomy="tag"
+                                    :title="'<?php i::esc_attr_e('Tags'); ?>' + (entity.terms?.tag?.length ? ' (' + entity.terms.tag.length + ')' : '')">
+                                </entity-terms>
+                                <?php $this->applyTemplateHook('single1-entity-info-entity-terms-tag', 'after') ?>
+                            </div>
 
-                                        <div v-if="entity.longDescription" class="single-1__presentation-item single-1__description-block">
-                                            <entity-description-collapse
-                                                :text="entity.longDescription"
-                                                label="<?php i::esc_attr_e('Descrição'); ?>">
-                                            </entity-description-collapse>
-                                        </div>
+                            <div v-if="entity.longDescription" class="single-1__presentation-item single-1__description-block">
+                                <entity-description-collapse
+                                    :text="entity.longDescription"
+                                    label="<?php i::esc_attr_e('Descrição'); ?>">
+                                </entity-description-collapse>
+                            </div>
 
-                                        <div v-if="entity.startsOn || entity.endsOn" class="grid-12 single-1__presentation-item">
-                                            <div v-if="entity.startsOn" class="col-6 sm:col-12">
-                                                <entity-data :entity="entity" prop="startsOn" label="<?php i::_e('Data de início') ?>"></entity-data>
-                                            </div>
-                                            <div v-if="entity.endsOn" class="col-6 sm:col-12">
-                                                <entity-data :entity="entity" prop="endsOn" label="<?php i::_e('Data de fim') ?>"></entity-data>
-                                            </div>
-                                        </div>
-
-                                        <div class="grid-12 single-1__presentation-item single-1__presentation-contacts">
-                                            <div class="col-4 sm:col-12">
-                                                <entity-data :entity="entity" prop="site" label="<?php i::_e('Site') ?>"></entity-data>
-                                            </div>
-                                            <div class="col-4 sm:col-12">
-                                                <entity-data :entity="entity" prop="telefonePublico" label="<?php i::_e('Telefone') ?>"></entity-data>
-                                            </div>
-                                            <div class="col-4 sm:col-12">
-                                                <entity-data :entity="entity" prop="emailPublico" label="<?php i::_e('E-mail público') ?>"></entity-data>
-                                            </div>
-                                        </div>
-                                    </div>
+                            <div v-if="entity.startsOn || entity.endsOn" class="grid-12 single-1__presentation-item">
+                                <div v-if="entity.startsOn" class="col-6 sm:col-12">
+                                    <entity-data :entity="entity" prop="startsOn" label="<?php i::_e('Data de início') ?>"></entity-data>
                                 </div>
-
-                                <div class="col-12 single-1__social-media">
-                                    <mc-card>
-                                        <template #content>
-                                            <entity-social-media :entity="entity" classes="col-12"></entity-social-media>
-                                        </template>
-                                    </mc-card>
+                                <div v-if="entity.endsOn" class="col-6 sm:col-12">
+                                    <entity-data :entity="entity" prop="endsOn" label="<?php i::_e('Data de fim') ?>"></entity-data>
                                 </div>
+                            </div>
 
-                                <template v-if="entity.currentUserPermissions.viewPrivateData">
-                                    <div
-                                        v-if="entity.emailPrivado || entity.telefone1 || entity.telefone2"
-                                        class="single-1__personal-card">
-                                        <h2 class="single-1__personal-title"><?php i::_e('Dados de contato privado'); ?></h2>
-                                        <div class="grid-12 single-1__personal-grid">
-                                            <entity-data v-if="entity.emailPrivado" :entity="entity" classes="col-4 sm:col-12" prop="emailPrivado" label="<?php i::_e('E-mail privado') ?>"></entity-data>
-                                            <entity-data v-if="entity.telefone1" :entity="entity" classes="col-4 sm:col-12" prop="telefone1" label="<?php i::_e('Telefone privado 1') ?>"></entity-data>
-                                            <entity-data v-if="entity.telefone2" :entity="entity" classes="col-4 sm:col-12" prop="telefone2" label="<?php i::_e('Telefone privado 2') ?>"></entity-data>
-                                        </div>
-                                    </div>
-                                </template>
+                            <div class="grid-12 single-1__presentation-item single-1__presentation-contacts">
+                                <div class="col-4 sm:col-12">
+                                    <entity-data :entity="entity" prop="site" label="<?php i::_e('Site') ?>"></entity-data>
+                                </div>
+                                <div class="col-4 sm:col-12">
+                                    <entity-data :entity="entity" prop="telefonePublico" label="<?php i::_e('Telefone') ?>"></entity-data>
+                                </div>
+                                <div class="col-4 sm:col-12">
+                                    <entity-data :entity="entity" prop="emailPublico" label="<?php i::_e('E-mail público') ?>"></entity-data>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
 
-                                <complaint-suggestion :entity="entity" classes="col-12" :show-contact="false"></complaint-suggestion>
-                            </mc-tab>
+                    <div class="col-12 single-1__social-media">
+                        <mc-card>
+                            <template #content>
+                                <entity-social-media :entity="entity" classes="col-12"></entity-social-media>
+                            </template>
+                        </mc-card>
+                    </div>
 
-                            <mc-tab label="<?= i::_e('Administração') ?>" slug="administracao">
-                                <p
-                                    v-if="!entity.agentRelations?.['group-admin']?.length"
-                                    class="single-1__administration-empty">
-                                    <?php i::_e('Esse projeto não possui administradores.'); ?>
-                                </p>
+                    <template v-if="entity.currentUserPermissions.viewPrivateData">
+                        <div
+                            v-if="entity.emailPrivado || entity.telefone1 || entity.telefone2"
+                            class="single-1__personal-card">
+                            <h2 class="single-1__personal-title"><?php i::_e('Dados de contato privado'); ?></h2>
+                            <div class="grid-12 single-1__personal-grid">
+                                <entity-data v-if="entity.emailPrivado" :entity="entity" classes="col-4 sm:col-12" prop="emailPrivado" label="<?php i::_e('E-mail privado') ?>"></entity-data>
+                                <entity-data v-if="entity.telefone1" :entity="entity" classes="col-4 sm:col-12" prop="telefone1" label="<?php i::_e('Telefone privado 1') ?>"></entity-data>
+                                <entity-data v-if="entity.telefone2" :entity="entity" classes="col-4 sm:col-12" prop="telefone2" label="<?php i::_e('Telefone privado 2') ?>"></entity-data>
+                            </div>
+                        </div>
+                    </template>
 
-                                <div v-else class="single-1__administration-card">
-                                    <h2 class="single-1__administration-title"><?php i::_e('Administradores do perfil'); ?></h2>
+                    <complaint-suggestion :entity="entity" classes="col-12" :show-contact="false"></complaint-suggestion>
+                </mc-container>
+            </mc-tab>
+
+            <mc-tab label="<?= i::esc_attr_e('Administração e relações') ?>" slug="pessoas">
+                <mc-container>
+                    <main>
+                        <div class="single-1__people">
+                            <?php if ($owner_count > 0): ?>
+                            <section class="single-1__people-section">
+                                <h2 class="single-1__people-section-title">
+                                    <?php i::_e('Proprietário'); ?> (<?= (int) $owner_count ?>)
+                                </h2>
+                                <div class="single-1__people-card">
+                                    <entity-connections-list
+                                        type="agent"
+                                        :ids="entity.owner ? [entity.owner.id ?? entity.owner] : []"
+                                        role-label="<?php i::esc_attr_e('Proprietário(a)') ?>">
+                                    </entity-connections-list>
+                                </div>
+                            </section>
+                            <?php endif; ?>
+
+                            <?php if ($admin_count > 0): ?>
+                            <section class="single-1__people-section">
+                                <h2 class="single-1__people-section-title">
+                                    <?php i::_e('Administradores'); ?> (<?= (int) $admin_count ?>)
+                                </h2>
+
+                                <div class="single-1__administration-card">
                                     <p class="single-1__administration-intro"><?php i::_e('Administradores do perfil podem visualizar e editar os dados públicos do projeto que administram, além de transferir, editar e/ou excluir a entidade. A administração dos perfis só é possível mediante a autorização do proprietário do perfil.'); ?></p>
                                     <?php $this->applyTemplateHook('single1-entity-info-entity-admins', 'before') ?>
                                     <entity-admins :entity="entity" variant="list" classes="single-1__administration-admins"></entity-admins>
                                     <?php $this->applyTemplateHook('single1-entity-info-entity-admins', 'after') ?>
                                 </div>
+                            </section>
+                            <?php endif; ?>
 
-                                <div class="single-1__personal-card">
-                                    <h2 class="single-1__personal-title"><?php i::_e('Publicado por'); ?></h2>
-                                    <entity-owner :entity="entity" classes="col-12" title=""></entity-owner>
+                            <?php if ($collaborator_count > 0): ?>
+                            <section class="single-1__people-section">
+                                <h2 class="single-1__people-section-title">
+                                    <?php i::_e('Colaboradores'); ?> (<?= (int) $collaborator_count ?>)
+                                </h2>
+                                <div class="single-1__people-collaborators">
+                                    <entity-people-collaborators :entity="entity"></entity-people-collaborators>
                                 </div>
-
-                                <?php $this->applyTemplateHook('single1-entity-info-entity-related-agents', 'before') ?>
-                                <div class="single-1__related-agents">
-                                    <entity-related-agents :entity="entity" classes="col-12" title="<?php i::esc_attr_e('Agentes Relacionados'); ?>"></entity-related-agents>
-                                </div>
-                                <?php $this->applyTemplateHook('single1-entity-info-entity-related-agents', 'after') ?>
-                            </mc-tab>
-                        </mc-tabs>
-                    </div>
+                            </section>
+                            <?php endif; ?>
+                        </div>
+                    </main>
                 </mc-container>
             </mc-tab>
 
