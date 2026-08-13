@@ -554,6 +554,23 @@
 
     &__people {
         width: 100%;
+        display: flex;
+        flex-direction: column;
+        gap: size(24);
+    }
+
+    &__people-section {
+        width: 100%;
+        min-width: 0;
+    }
+
+    &__people-section-title {
+        margin: 0 0 size(16);
+        padding: 0;
+        font-weight: 700;
+        font-size: size(20);
+        line-height: size(24);
+        color: var(--mc-low-500);
     }
 
     &__people-card {
