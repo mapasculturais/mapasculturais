@@ -101,7 +101,7 @@ $this->addRelatedSealsToJs($entity);
                         </ul>
 
                         <p>
-                            <span ng-if="relation.toExpire === 2"><b>Não expira</b></span>
+                            <span ng-if="relation.toExpire === 2"><b><?php \MapasCulturais\i::_e("Não expira");?></b></span>
                             <span ng-if="relation.toExpire === 1"><b>Expira em: {{relation.validateDate}}</b></span>
                             <span ng-if="relation.toExpire === 0"><b>Expirou em: {{relation.validateDate}}</b></span>
                         </p>

@@ -41,9 +41,8 @@ function copyToClipboard(element) {
     }
 }
 
-/**@TODO Internacionalizar */
 function alertPublish(id){
-    MapasCulturais.confirm('ATENÇÃO, Essa ação é uma ação irreversível. Caso a próxima fase seja uma prestação de contas, primeiro crie a fase de prestação de contas para só depois fazer a publicação.', function () {
+    MapasCulturais.confirm(MapasCulturais.gettext.mapas['confirmPublishRegistrations'], function () {
         var url = MapasCulturais.createUrl('opportunity', 'publishRegistrations', [id]);
         $.get(url, function() {
             MapasCulturais.Messages.success('Resultado publicado');
@@ -813,7 +812,7 @@ MapasCulturais.Remove = {
         $('body').on('click', '.js-remove-item', function (e) {
             e.stopPropagation();
             var $this = $(this);
-            MapasCulturais.confirm('Deseja remover este item?', function () {
+            MapasCulturais.confirm(MapasCulturais.gettext.mapas['confirmRemoveItem'], function () {
                 var $target = $($this.data('target'));
                 var href = $this.data('href');
 
