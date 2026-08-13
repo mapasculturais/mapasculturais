@@ -35261,77 +35261,135 @@ msgstr ""
 msgid "Sobre o Site"
 msgstr "Acerca del Sitio"
 
-#~ msgid "Comunidades Tradicionais"
-#~ msgstr "Comunidades tradicionales"
+#: core/Controllers/Registration.php:794
+msgid "Não existem arquivos a serem baixados."
+msgstr "No hay archivos para descargar."
 
-#, fuzzy
-#~| msgid "Não existem gráficos a serem filtrados no momento"
-#~ msgid "Não existem arquivos a serem baixados."
-#~ msgstr "No hay gráficos para filtrar en este momento"
+#: core/Controllers/Registration.php:806
+msgid "Houve um problema ao preparar o arquivo. Fale com o administrador."
+msgstr "Hubo un problema al preparar el archivo. Comuníquese con el administrador."
 
-#, fuzzy
-#~| msgid "Não foi possível alterar o status, fale com admnistrador"
-#~ msgid "Houve um problema ao preparar o arquivo. Fale com o administrador."
-#~ msgstr "No se puede cambiar el estado, comuníquese con el administrador"
+#: core/Controllers/Registration.php:827
+msgid "Não foi possível gerar o arquivo. Tente novamente."
+msgstr "No fue posible generar el archivo. Inténtelo nuevamente."
 
-#, fuzzy
-#~| msgid "Não foi possível alterar o status, fale com admnistrador"
-#~ msgid "Não foi possível gerar o arquivo. Tente novamente."
-#~ msgstr "No se puede cambiar el estado, comuníquese con el administrador"
+#: modules/Components/components/main-footer/template.php:46
+msgid "editais e oportunidades"
+msgstr "convocatorias y oportunidades"
 
-#~ msgid "Email Pessoal"
-#~ msgstr "E-mail Personal"
+#: modules/Components/components/main-footer/template.php:124
+msgid "mapas culturais,"
+msgstr "mapas culturales,"
 
-#~ msgid "E-mail pessoal"
-#~ msgstr "E-mail personal"
+#: modules/Components/components/main-footer/template.php:125
+msgid "desenvolvida por "
+msgstr "desarrollada por "
 
-#~ msgid "toda semana"
-#~ msgstr "toda la semana"
+#: modules/Entities/components/agent-data-1/template.php:31
+#: modules/Entities/components/agent-data-2/template.php:23
+msgid "Email Pessoal"
+msgstr "E-mail Personal"
 
-#~ msgid "weekly"
-#~ msgstr "semanal"
+#: modules/Entities/components/agent-data-1/template.php:57
+msgid "Não sou"
+msgstr "No soy"
 
-#~ msgid " e "
-#~ msgstr " es "
+#: modules/Entities/components/agent-data-1/template.php:59
+msgid "Outras Comunidades Tradicionais"
+msgstr "Otras comunidades tradicionales"
 
-#~ msgid ", "
-#~ msgstr ","
+#: modules/Entities/components/create-agent/template.php:23
+msgid "Adicione uma Descrição curta para o Agente"
+msgstr "Agregue una Descripción corta para el Agente"
 
-#~ msgid " "
-#~ msgstr " "
+#: modules/Entities/components/create-event/template.php:23
+msgid "Adicione uma Descrição curta para o Evento"
+msgstr "Agregue una Descripción corta para el Evento"
 
-#~ msgid " de "
-#~ msgstr " de"
+#: modules/Entities/components/create-project/template.php:23
+msgid "Adicione uma Descrição curta para o Projeto"
+msgstr "Agregue una Descripción corta para el Proyecto"
 
-#~ msgid ")}"
-#~ msgstr ")}"
+#: modules/Entities/components/create-space/template.php:23
+msgid "Adicione uma Descrição curta para o Espaço"
+msgstr "Agregue una Descripción corta para el Espacio"
 
-#~ msgid "once"
-#~ msgstr "una vez"
+#: modules/Entities/views/agent/edit-1.php:115
+msgid "E-mail pessoal"
+msgstr "E-mail personal"
 
-#~ msgid "Digite o novo nome do grupo"
-#~ msgstr "Ingrese el nuevo nombre del grupo"
+#: modules/Opportunities/components/opportunity-owner-type/template.php:9
+msgid "{{ownerType(entity)}}"
+msgstr "{{ownerType(entity)}}"
 
-#~ msgid "Status das avaliações:"
-#~ msgstr "Estado de las evaluaciones:"
+#: modules/Entities/components/agent-data-1/template.php:58
+msgid "Comunidades Tradicionais"
+msgstr "Comunidades tradicionales"
 
-#~ msgid "{{ownerType(entity)}}"
-#~ msgstr "{{propietarioTipo(entidad)}}"
+#: modules/EventImporter/Controller.php:810
+msgid "toda semana"
+msgstr "toda la semana"
 
-#~ msgid "(dado não informado)"
-#~ msgstr "(dato no informado)"
+#: modules/EventImporter/Controller.php:811
+msgid "weekly"
+msgstr "semanal"
 
-#~ msgid "Faixa etária"
-#~ msgstr "Rango de edad"
+#: modules/EventImporter/Controller.php:839
+msgid " e "
+msgstr " y "
 
-#~ msgid "Área de atuação do agente responsável"
-#~ msgstr "Área de actuación del agente responsable"
+#: modules/EventImporter/Controller.php:845
+msgid ", "
+msgstr ", "
 
-#~ msgid "Área de atuação do agente coletivo"
-#~ msgstr "Área de actuación del agente colectivo"
+#: modules/EventImporter/Controller.php:851
+msgid " "
+msgstr " "
 
-#~ msgid "Área de atuação da instituição"
-#~ msgstr "Área de Actuación de la institución"
+#: modules/EventImporter/Controller.php:869
+#: modules/EventImporter/Controller.php:872
+#: modules/EventImporter/Controller.php:873
+#: modules/EventImporter/Controller.php:875
+msgid " de "
+msgstr " de "
+
+#: modules/EventImporter/Controller.php:881
+#: modules/EventImporter/Controller.php:884
+#: modules/EventImporter/Controller.php:896
+msgid ")}"
+msgstr ")}"
+
+#: modules/EventImporter/Controller.php:890
+msgid "once"
+msgstr "una vez"
+
+#: modules/Opportunities/components/opportunity-committee-groups/template.php:69
+msgid "Digite o novo nome do grupo"
+msgstr "Ingrese el nuevo nombre del grupo"
+
+#: modules/Opportunities/components/opportunity-evaluation-committee/template.php:75
+msgid "Status das avaliações:"
+msgstr "Estado de las evaluaciones:"
+
+#: modules/Reports/Controller.php:1007
+msgid "(dado não informado)"
+msgstr "(dato no informado)"
+
+#: modules/Reports/Controller.php:1055
+msgid "Faixa etária"
+msgstr "Rango de edad"
+
+#: modules/Reports/Controller.php:1057
+msgid "Área de atuação do agente responsável"
+msgstr "Área de actuación del agente responsable"
+
+#: modules/Reports/Controller.php:1060
+msgid "Área de atuação do agente coletivo"
+msgstr "Área de actuación del agente colectivo"
+
+#: modules/Reports/Controller.php:1064
+msgid "Área de atuação da instituição"
+msgstr "Área de actuación de la institución"
 
 #~ msgid "Autorizo o uso de imagem"
 #~ msgstr "Autorizo el uso de imagen"
@@ -35580,8 +35638,9 @@ msgstr "Acerca del Sitio"
 #~ msgid "Cenotécnico(a)"
 #~ msgstr "Técnico de escena"
 
-#~ msgid "Iluminador"
-#~ msgstr "Iluminador"
+#: modules/OpportunityWorkplan/Module.php:1806
+msgid "Iluminador"
+msgstr "Iluminador"
 
 #~ msgid "Outra função técnica"
 #~ msgstr "Otra función técnica"
@@ -35673,8 +35732,9 @@ msgstr "Acerca del Sitio"
 #~ msgid "Ocorreu um erro ao tentar enviar o recurso"
 #~ msgstr "Ocurrió un error al intentar enviar el recurso"
 
-#~ msgid "Inscrição não encontrada"
-#~ msgstr "Inscripción no encontrada"
+#: modules/OpportunityExecution/Module.php:577
+msgid "Inscrição não encontrada"
+msgstr "Inscripción no encontrada"
 
 #, php-format
 #~ msgid "Solicitação de Recurso na Oportunidade %s"
