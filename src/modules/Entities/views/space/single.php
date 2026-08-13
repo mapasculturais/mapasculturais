@@ -22,8 +22,7 @@ $this->import('
     entity-gallery-video
     entity-header
     entity-links
-    entity-owner
-    entity-related-agents
+    entity-people-collaborators
     entity-seals-list
     entity-social-media
     entity-terms
@@ -43,6 +42,25 @@ $this->breadcrumb = [
     ['label' => $label, 'url' => $app->createUrl('search', 'spaces')],
     ['label' => $entity->name, 'url' => $app->createUrl('space', 'single', [$entity->id])],
 ];
+
+$include_pending_relations = $entity->canUser('viewPrivateData')
+    || $entity->canUser('createAgentRelation')
+    || $entity->canUser('removeAgentRelation')
+    || $entity->canUser('@control');
+
+$collaborator_count = 0;
+$admin_count = 0;
+foreach ($entity->getAgentRelationsGrouped(null, $include_pending_relations) as $group => $relations) {
+    if ($group === 'group-admin') {
+        $admin_count = count($relations);
+        continue;
+    }
+    if ($group === '@support') {
+        continue;
+    }
+    $collaborator_count += count($relations);
+}
+$owner_count = $entity->owner ? 1 : 0;
 ?>
 
 <div class="main-app single-1">
@@ -320,35 +338,57 @@ $this->breadcrumb = [
                                     </div>
                                 </div>
                             </mc-tab>
+                        </mc-tabs>
+                    </div>
+                </mc-container>
+            </mc-tab>
 
-                            <mc-tab label="<?= i::_e('Administração') ?>" slug="administracao">
-                                <p
-                                    v-if="!entity.agentRelations?.['group-admin']?.length"
-                                    class="single-1__administration-empty">
-                                    <?php i::_e('Esse espaço não possui administradores.'); ?>
-                                </p>
+            <mc-tab label="<?= i::esc_attr_e('Administração e relações') ?>" slug="pessoas">
+                <mc-container>
+                    <main>
+                        <div class="single-1__people">
+                            <?php if ($owner_count > 0): ?>
+                            <section class="single-1__people-section">
+                                <h2 class="single-1__people-section-title">
+                                    <?php i::_e('Proprietário'); ?> (<?= (int) $owner_count ?>)
+                                </h2>
+                                <div class="single-1__people-card">
+                                    <entity-connections-list
+                                        type="agent"
+                                        :ids="entity.owner ? [entity.owner.id ?? entity.owner] : []"
+                                        role-label="<?php i::esc_attr_e('Proprietário(a)') ?>">
+                                    </entity-connections-list>
+                                </div>
+                            </section>
+                            <?php endif; ?>
 
-                                <div v-else class="single-1__administration-card">
-                                    <h2 class="single-1__administration-title"><?php i::_e('Administradores do perfil'); ?></h2>
+                            <?php if ($admin_count > 0): ?>
+                            <section class="single-1__people-section">
+                                <h2 class="single-1__people-section-title">
+                                    <?php i::_e('Administradores'); ?> (<?= (int) $admin_count ?>)
+                                </h2>
+
+                                <div class="single-1__administration-card">
                                     <p class="single-1__administration-intro"><?php i::_e('Administradores do perfil podem visualizar e editar os dados públicos do espaço que administram, além de transferir, editar e/ou excluir a entidade. A administração dos perfis só é possível mediante a autorização do proprietário do perfil.'); ?></p>
                                     <?php $this->applyTemplateHook('single1-entity-info-entity-admins', 'before') ?>
                                     <entity-admins :entity="entity" variant="list" classes="single-1__administration-admins"></entity-admins>
                                     <?php $this->applyTemplateHook('single1-entity-info-entity-admins', 'after') ?>
                                 </div>
+                            </section>
+                            <?php endif; ?>
 
-                                <div class="single-1__personal-card">
-                                    <h2 class="single-1__personal-title"><?php i::_e('Publicado por'); ?></h2>
-                                    <entity-owner :entity="entity" classes="col-12" title=""></entity-owner>
+                            <?php if ($collaborator_count > 0): ?>
+                            <section class="single-1__people-section">
+                                <h2 class="single-1__people-section-title">
+                                    <?php i::_e('Colaboradores'); ?> (<?= (int) $collaborator_count ?>)
+                                </h2>
+                                <div class="single-1__people-collaborators">
+                                    <entity-people-collaborators :entity="entity"></entity-people-collaborators>
                                 </div>
-
-                                <?php $this->applyTemplateHook('single1-entity-info-entity-related-agents', 'before') ?>
-                                <div class="single-1__related-agents">
-                                    <entity-related-agents :entity="entity" classes="col-12" title="<?php i::esc_attr_e('Agentes Relacionados'); ?>"></entity-related-agents>
-                                </div>
-                                <?php $this->applyTemplateHook('single1-entity-info-entity-related-agents', 'after') ?>
-                            </mc-tab>
-                        </mc-tabs>
-                    </div>
+                            </section>
+                            <?php endif; ?>
+                        </div>
+                    </main>
                 </mc-container>
             </mc-tab>
 
