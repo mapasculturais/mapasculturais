@@ -390,46 +390,32 @@ foreach ($entity->getAgentRelationsGrouped(null, $include_pending_relations) as 
             <mc-tab label="<?= i::esc_attr_e('Administração e relações') ?>" slug="pessoas">
                 <mc-container>
                     <main>
-                        <div class="single-1__people single-1__inner-tabs">
-                            <mc-tabs class="tabs" sync-hash default-tab="colaboradores">
-                                <template #header="{ tab }">
-                                    <span>{{ tab.label }}</span>
-                                    <span v-if="tab.meta?.count > 0" class="single-1__connections-count">
-                                        {{ tab.meta.count }}
-                                    </span>
-                                </template>
+                        <div class="single-1__people">
+                            <?php if ($admin_count > 0): ?>
+                            <section class="single-1__people-section">
+                                <h2 class="single-1__people-section-title">
+                                    <?php i::_e('Administradores'); ?> (<?= (int) $admin_count ?>)
+                                </h2>
 
-                                <mc-tab
-                                    label="<?= i::esc_attr_e('Colaboradores') ?>"
-                                    :meta="{ count: <?= (int) $collaborator_count ?> }"
-                                    slug="colaboradores">
-                                    <div class="single-1__people-collaborators">
-                                        <entity-people-collaborators
-                                            :entity="entity"
-                                            empty-message="<?php i::esc_attr_e('Essa pessoa não possui colaboradores.') ?>">
-                                        </entity-people-collaborators>
-                                    </div>
-                                </mc-tab>
+                                <div class="single-1__administration-card">
+                                    <p class="single-1__administration-intro"><?php i::_e("Administradores do perfil podem visualizar e editar os dados públicos e pessoais do agente cultural que administram, além de fazer inscrições em seu nome nas oportunidades vinculadas na plataforma e transferir,editar e/ou excluir suas entidades. A administração dos perfis só e possivel mediante a autorização do proprietário do perfil."); ?></p>
+                                    <?php $this->applyTemplateHook('single1-entity-info-entity-admins', 'before') ?>
+                                    <entity-admins :entity="entity" variant="list" classes="single-1__administration-admins"></entity-admins>
+                                    <?php $this->applyTemplateHook('single1-entity-info-entity-admins', 'after') ?>
+                                </div>
+                            </section>
+                            <?php endif; ?>
 
-                                <mc-tab
-                                    label="<?= i::esc_attr_e('Administradores') ?>"
-                                    :meta="{ count: <?= (int) $admin_count ?> }"
-                                    slug="administradores">
-                                    <p
-                                        v-if="!entity.agentRelations?.['group-admin']?.length"
-                                        class="single-1__administration-empty">
-                                        <?php i::_e('Essa pessoa não possui administradores.'); ?>
-                                    </p>
-
-                                    <div v-else class="single-1__administration-card">
-                                        <h2 class="single-1__administration-title"><?php i::_e('Administradores do perfil'); ?></h2>
-                                        <p class="single-1__administration-intro"><?php i::_e("Administradores do perfil podem visualizar e editar os dados públicos e pessoais do agente cultural que administram, além de fazer inscrições em seu nome nas oportunidades vinculadas na plataforma e transferir,editar e/ou excluir suas entidades. A administração dos perfis só e possivel mediante a autorização do proprietário do perfil."); ?></p>
-                                        <?php $this->applyTemplateHook('single1-entity-info-entity-admins', 'before') ?>
-                                        <entity-admins :entity="entity" variant="list" classes="single-1__administration-admins"></entity-admins>
-                                        <?php $this->applyTemplateHook('single1-entity-info-entity-admins', 'after') ?>
-                                    </div>
-                                </mc-tab>
-                            </mc-tabs>
+                            <?php if ($collaborator_count > 0): ?>
+                            <section class="single-1__people-section">
+                                <h2 class="single-1__people-section-title">
+                                    <?php i::_e('Colaboradores'); ?> (<?= (int) $collaborator_count ?>)
+                                </h2>
+                                <div class="single-1__people-collaborators">
+                                    <entity-people-collaborators :entity="entity"></entity-people-collaborators>
+                                </div>
+                            </section>
+                            <?php endif; ?>
                         </div>
                     </main>
                 </mc-container>
