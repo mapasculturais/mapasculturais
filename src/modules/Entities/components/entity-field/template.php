@@ -73,9 +73,11 @@ $this->import('
 
             <template v-else-if="is('select')">
                 <template v-if="description.registrationFieldConfiguration?.config?.viewMode === 'radio'">
-                    <label class="input__label input__radioLabel" v-for="(optionLabel, optionValue) in description.options">
-                        <input :checked="isRadioChecked(value, optionValue)" type="radio" :value="optionValue" @input="change($event,true)" @blur="change($event)" :disabled="readonly || disabled"> {{description.options[optionValue]}}
-                    </label>
+                    <div class="field__group">
+                        <label class="input__label input__radioLabel" v-for="(optionLabel, optionValue) in description.options">
+                            <input :checked="isRadioChecked(value, optionValue)" type="radio" :value="optionValue" @input="change($event,true)" @blur="change($event)" :disabled="readonly || disabled"> {{description.options[optionValue]}}
+                        </label>
+                    </div>
                 </template>
 
                 <select v-else :value="value" :id="propId" :name="prop" @input="change($event)" @blur="change($event,true)" :disabled="readonly || disabled">
@@ -294,4 +296,4 @@ $this->import('
     </small>
     <?php $this->applyTemplateHook('entity-field','end') ?>
 </div>
-<?php $this->applyTemplateHook('entity-field','after') ?>   
+<?php $this->applyTemplateHook('entity-field','after') ?>

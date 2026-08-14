@@ -218,4 +218,12 @@ class RegistrationFieldBuilder extends Builder
 
         return $this;
     }
+
+    public function setConfig(array $config): self
+    {
+        $current = (array) ($this->instance->config ?? []);
+        $this->instance->config = array_merge($current, $config);
+
+        return $this;
+    }
 }

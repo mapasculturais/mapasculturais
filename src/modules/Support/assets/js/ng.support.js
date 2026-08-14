@@ -195,7 +195,7 @@
             };
 
           
-            if(confirm('Voce realmente deseja remover a relação deste agente?')){
+            if(confirm(MapasCulturais.gettext.support['confirmRemoveAgentRelation'])){
                 SupportService.deleteRelation(MapasCulturais.entity.id, data).success(function (data, status, headers) {
                     $scope.data.agentsRelations.forEach(function (item, index){
                         if(item.agent.id == agentId){

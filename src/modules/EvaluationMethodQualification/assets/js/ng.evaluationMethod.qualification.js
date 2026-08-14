@@ -69,11 +69,26 @@
                 }
             });
 
-            QualificationEvaluationMethodService.patchEvaluationMethodConfiguration(data).success(function () {
+            QualificationEvaluationMethodService.patchEvaluationMethodConfiguration(data).then(function () {
                 MapasCulturais.Messages.success(labels.changesSaved);
                 $scope.data.sections = data.sections;
                 $scope.data.criteria = data.criteria;
                 $scope.data.enableViability = data.enableViability;
+            }, function (response) {
+                var message = labels.changesError || 'Erro ao salvar configuração da avaliação';
+                if (response && response.data) {
+                    var errors = response.data;
+                    var firstError = null;
+                    Object.keys(errors).forEach(function (key) {
+                        if (Array.isArray(errors[key]) && errors[key].length > 0 && !firstError) {
+                            firstError = errors[key][0];
+                        }
+                    });
+                    if (firstError) {
+                        message = firstError;
+                    }
+                }
+                MapasCulturais.Messages.error(message);
             });
         };
 

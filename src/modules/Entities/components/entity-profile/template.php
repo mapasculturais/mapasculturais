@@ -12,7 +12,7 @@ $this->import('
 ');
 ?>
 
-<div class="entity-profile" :class="{error: entity.__validationErrors['file:avatar']}">
+<div class="entity-profile" :class="{'entity-profile--required': isRequired, error: entity.__validationErrors?.['file:avatar']}">
     <mc-image-uploader :entity="entity" group="avatar" :aspect-ratio="1" :circular="true">
         <template #default="modal">
             <div class="entity-profile__profile">
@@ -20,11 +20,14 @@ $this->import('
                     <mc-icon v-if="!entity.files.avatar" name="image"></mc-icon>
                     <img v-if="entity.files.avatar" :src="entity.files.avatar?.transformations?.avatarMedium?.url" class="select-profileImg__img--img" />
                 </div>
-                <label class="entity-profile__profile--label" for="avatar<?= date('Ymd') ?>"> <?php i::_e("Adicionar imagem de perfil"); ?> </label>
+                <label class="entity-profile__profile--label" for="avatar<?= date('Ymd') ?>"> 
+                    <?php i::_e("Adicionar imagem de perfil"); ?> 
+                </label>
+                <span v-if="isRequired" class="entity-profile__profile--label-required">* <?php i::_e("obrigatório"); ?></span>
             </div>
         </template>
     </mc-image-uploader>
-    <div v-if="entity.__validationErrors['file:avatar']" class="field__error">
-        {{entity.__validationErrors['file:avatar'].join(', ')}}
+    <div v-if="entity.__validationErrors?.['file:avatar']" class="field__error">
+        {{entity.__validationErrors?.['file:avatar'].join(', ')}}
     </div>
 </div>

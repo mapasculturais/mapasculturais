@@ -96,30 +96,23 @@ app.component('registration-status', {
 			note = parseFloat(note);
 			return note.toLocaleString($MAPAS.config.locale);
 		},
-		verifyState(registration) {
+        /**
+         * Retorna o status no formato esperado por <mc-status>,
+         * respeitando a legenda oficial de cores da inscrição:
+         * 0 Rascunho (preto), 1 Pendente (preto), 2 Inválida (roxo),
+         * 3 Não selecionada (vermelho), 8 Suplente (laranja), 10 Selecionada (verde).
+         */
+        getStatusDisplay(registration) {
             let status = registration.status;
-            if(registration.opportunity?.isAppealPhase) {
+            if (registration.opportunity?.isAppealPhase) {
                 status = this.shouldDisplayEvaluationResults(registration) ? status : 1;
             }
 
-            switch (status) {
-                case 10:
-                case 1:
-                    return 'success__color';
-                    
-                case 2 : 
-                case 0 : 
-				case 3 : 
-                    return 'danger__color';
-				case 8 : 
-                case 1 :
-                case undefined:
-                    return 'warning__color';
-
-                case null:
-                default:
-                    return '';
-            }
+            return {
+                key: status,
+                value: status,
+                label: this.showRegistrationStatus(registration),
+            };
         },
 
         async createAppealPhaseRegistration() {

@@ -39,7 +39,7 @@ app.component('opportunity-registrations-table', {
             readonly: true,
             type: "array",
             length: 255,
-            label: text("Elegível para as cotas"),
+            label: text("Elegível para cotas"),
             isPK: false
         };
 
@@ -335,7 +335,7 @@ app.component('opportunity-registrations-table', {
 
             if(this.phase.isLastPhase){
                 itens.splice(2,0,{ text: "Status", value: "consolidatedResult"});
-                itens.push({ text: __('resultado final', 'opportunity-registrations-table'), value: "status", width: '250px', stickyRight: true})
+                itens.push({ text: __('Resultado final', 'opportunity-registrations-table'), value: "status", width: '250px', stickyRight: true})
             } else {
                 itens.push({ text: __('status', 'opportunity-registrations-table'), value: "status", width: '250px', stickyRight: true})
             }

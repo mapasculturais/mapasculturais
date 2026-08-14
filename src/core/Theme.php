@@ -960,7 +960,7 @@ abstract class Theme {
                     $query->setParameter('id', $e['id'] ?? 0);
                     $opportunity = $query->getSingleResult();
                 }
-                $e['opportunity'] = $opportunity->simplify('id,name,type,files,terms,seals');
+                $e['opportunity'] = $opportunity->simplify('id,name,registrationFrom,registrationTo,type,files,terms,seals');
                 if($opportunity->parent){
                     $e['opportunity']->parent = $opportunity->parent->simplify('id,name,type,files,terms,seals');
                 }
@@ -1069,6 +1069,17 @@ abstract class Theme {
 
             if(method_exists($entity_class_name, 'getLockedFieldSeals')) {
                 $e['__lockedFieldSeals'] = $request_entity->lockedFieldSeals;
+            }
+
+            // Evita sobrescrever currentUserPermissions no Vue: a opportunity
+            // aninhada no EMC (mesmo id) vem do pcache sem "publish" e colide
+            // no cache Entity(opportunity:id).
+            if (
+                $entity_class_name === Opportunity::class &&
+                isset($e['evaluationMethodConfiguration']['opportunity']['id']) &&
+                (int) $e['evaluationMethodConfiguration']['opportunity']['id'] === (int) $entity_id
+            ) {
+                unset($e['evaluationMethodConfiguration']['opportunity']);
             }
 
             $app->applyHookBoundTo($this, "view.requestedEntity($_entity).result", [&$e, $entity_class_name, $entity_id]);

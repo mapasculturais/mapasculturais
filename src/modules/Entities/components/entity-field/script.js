@@ -344,7 +344,10 @@ app.component('entity-field', {
 
         change(event, now) {
             clearTimeout(this.__timeout);
-            let oldValue = this.entity[this.prop] ? JSON.parse(JSON.stringify(this.entity[this.prop])) : null;
+            const currentValue = this.entity[this.prop];
+            let oldValue = (currentValue === null || currentValue === undefined || currentValue === '')
+                ? null
+                : JSON.parse(JSON.stringify(currentValue));
             
             this.__timeout = setTimeout(() => {
                if(this.is('date') || this.is('datetime') || this.is('time')) {

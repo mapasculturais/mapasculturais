@@ -26,6 +26,33 @@
             };
         }]);
 
+    function _normalizePointRewardRule(rule) {
+        var bonusValue = parseFloat(rule.bonusValue);
+        if (isNaN(bonusValue)) {
+            bonusValue = parseFloat(rule.fieldPercent) || 0;
+        }
+        return {
+            id: rule.id,
+            field: rule.field || '',
+            value: rule.value || '',
+            bonusValue: bonusValue,
+            viewDataValues: rule.viewDataValues || null,
+            valuesList: rule.valuesList || null
+        };
+    }
+
+    function _normalizePointReward(raw) {
+        if (!raw || (Array.isArray(raw) && raw.length === 0)) {
+            return { type: 'percentage', rules: [] };
+        }
+        if (Array.isArray(raw)) {
+            return { type: 'percentage', rules: raw.map(_normalizePointRewardRule) };
+        }
+        var type = (raw.type === 'percentage' || raw.type === 'fixed') ? raw.type : 'percentage';
+        var rules = Array.isArray(raw.rules) ? raw.rules.map(_normalizePointRewardRule) : [];
+        return { type: type, rules: rules };
+    }
+
     module.controller('TechnicalEvaluationMethodConfigurationController', ['$scope', '$rootScope', '$timeout', 'TechnicalEvaluationMethodService', 'EditBox', function ($scope, $rootScope, $timeout, TechnicalEvaluationMethodService, EditBox) {
             $scope.editbox = EditBox;
 
@@ -46,7 +73,8 @@
                 quotas: MapasCulturais.evaluationConfiguration.quotas || [],
                 enableViability: MapasCulturais.evaluationConfiguration.enableViability || false,
                 registrationFieldConfigurations: [],
-                criteriaAffirmativePolicies: MapasCulturais.pointReward || [],
+                criteriaAffirmativePolicies: _normalizePointReward(MapasCulturais.pointReward).rules,
+                bonusType: _normalizePointReward(MapasCulturais.pointReward).type,
                 fieldsAffiermativePolicie: {},
                 isActivePointReward: MapasCulturais.isActivePointReward ? true : false,
                 pointRewardRoof: parseFloat(MapasCulturais.pointRewardRoof) || 0.00,
@@ -71,7 +99,7 @@
                     criteria: [],
                     quotas: $scope.data.quotas,
                     enableViability: $scope.data.enableViability,
-                    pointReward: JSON.stringify($scope.data.criteriaAffirmativePolicies) == "[]" ? null : $scope.data.criteriaAffirmativePolicies,
+                    pointReward: $scope.data.criteriaAffirmativePolicies.length === 0 ? null : { type: $scope.data.bonusType, rules: $scope.data.criteriaAffirmativePolicies },
                     isActivePointReward: $scope.data.isActivePointReward,
                     pointRewardRoof: $scope.data.pointRewardRoof || 0.00
                 };
@@ -150,7 +178,7 @@
             $scope.addSessionAffirmativePolice = function(){
                 var date = new Date;
                 var new_id = 'p-' + date.getTime();
-                $scope.data.criteriaAffirmativePolicies.push({ id: new_id, fieldPercent: 0, field: '', value: ''});
+                $scope.data.criteriaAffirmativePolicies.push({ id: new_id, bonusValue: 0, field: '', value: ''});
             }
             
             $scope.removeSessionAffirmativePolice = function(policy){
@@ -165,7 +193,7 @@
             $scope.$watch('data.fieldsAffiermativePolicie', function(new_val,old_val){
                 if(new_val != old_val){
                     Object.keys(new_val).forEach(function(id, index){
-                        $scope.data.criteriaAffirmativePolicies[index].fieldPercent = $scope.data.fieldsAffiermativePolicie[id].fieldPercent || 0.00;
+                        $scope.data.criteriaAffirmativePolicies[index].bonusValue = $scope.data.fieldsAffiermativePolicie[id].bonusValue || 0.00;
                         $scope.data.criteriaAffirmativePolicies[index].value = $scope.data.fieldsAffiermativePolicie[id].value;
                         $scope.data.criteriaAffirmativePolicies[index].field = $scope.data.fieldsAffiermativePolicie[id].field;
                     })
@@ -192,8 +220,8 @@
 
             // Execuções no carregamento da página
             $scope.data.criteriaAffirmativePolicies.forEach(function(item){
-                $scope.data.fieldsAffiermativePolicie[item.id] =  item
-                $scope.data.fieldsAffiermativePolicie[item.id].fieldPercent = parseFloat(item.fieldPercent);
+                $scope.data.fieldsAffiermativePolicie[item.id] =  item;
+                $scope.data.fieldsAffiermativePolicie[item.id].bonusValue = parseFloat(item.bonusValue) || 0.00;
                 if((typeof item.value === 'object')){
                     Object.keys(item.value).forEach(function(v,i){
                         item.value[v] = (item.value[v] == "true") ? true : false;

@@ -1381,6 +1381,9 @@ class Registration extends \MapasCulturais\Entity
             $errorsResult['avatar'] = [sprintf(\MapasCulturais\i::__('A imagem avatar do agente "%s" é obrigatório.'),$this->owner->name)];
         }
 
+        $proponent_agent_relation = $this->opportunity->proponentAgentRelation ?? null;
+        $proponent_agent_relation_avatar = $this->opportunity->proponentAgentRelationAvatar ?? null;
+
         $definitionsWithAgents = $this->_getDefinitionsWithAgents();
         
         // validate agents
@@ -1415,6 +1418,17 @@ class Registration extends \MapasCulturais\Entity
             }
 
             if($def->agent){
+                $requires_avatar = false;
+                if ($proponent_agent_relation && $proponent_agent_relation_avatar) {
+                    $requires_avatar = ($proponent_agent_relation->{$this->proponentType} ?? false)
+                        && ($proponent_agent_relation_avatar->{$this->proponentType} ?? false);
+                }
+
+                if ($group_name === 'coletivo' && $requires_avatar && !array_key_exists('avatar', $def->agent->files)) {
+                    $errorsResult[$agent_prefix . $def->agentRelationGroupName . '_avatar'] = [
+                        sprintf(i::__('A imagem avatar do agente "%s" é obrigatório.'), $def->agent->name)
+                    ];
+                }
 
                 if($def->relationStatus < 0){
                     $errors[] = sprintf(i::__('O agente %s ainda não confirmou sua participação neste projeto.'), $def->agent->name);
@@ -1827,6 +1841,11 @@ class Registration extends \MapasCulturais\Entity
         if($user->is('guest')){
             return false;
         }
+
+        // Proponente nunca avalia a própria inscrição (mesmo se estiver em valuers)
+        if($this->owner->user->equals($user)){
+            return false;
+        }
         
         $evaluation_method_configuration = $this->getEvaluationMethodConfiguration();
         
@@ -2045,11 +2064,38 @@ class Registration extends \MapasCulturais\Entity
         $evaluation->save(true);
     }
 
+    /**
+     * Garante que só avaliador atribuído (valuers) salve avaliação, e nunca o proponente.
+     * Legado: gestor com @control na oportunidade pode editar avaliação já existente de outro avaliador.
+     *
+     * @throws PermissionDenied
+     */
+    protected function assertCanSaveUserEvaluation(User $user): void {
+        $app = App::i();
+
+        if($this->owner->user->equals($user)){
+            throw new PermissionDenied($app->user, $this, 'evaluate');
+        }
+
+        if($this->canUser('evaluate', $user)){
+            return;
+        }
+
+        $existing = $this->getUserEvaluation($user);
+        if($existing && $this->opportunity->canUser('@control', $app->user)){
+            return;
+        }
+
+        throw new PermissionDenied($app->user, $this, 'evaluate');
+    }
+
     function saveUserEvaluation(array $data, User $user = null, $evaluation_status = null){
         $app = App::i();
         if(is_null($user)){
             $user = $app->user;
         }
+
+        $this->assertCanSaveUserEvaluation($user);
 
         $lockname = "save-user-evauation--{$this->id}--{$user->id}";
 

@@ -7,7 +7,9 @@ use MapasCulturais\i;
 use MapasCulturais\App;
 use MapasCulturais\Traits;
 use MapasCulturais\GuestUser;
+use MapasCulturais\Entities\User;
 use Doctrine\ORM\Mapping as ORM;
+use MapasCulturais\Exceptions\PermissionDenied;
 use Opportunities\Jobs\UpdateSummaryCaches;
 
 /**
@@ -121,7 +123,8 @@ class EvaluationMethodConfiguration extends \MapasCulturais\Entity {
 
         $validations = [
             'name' => [
-                'required' => \MapasCulturais\i::__('O nome da fase de avaliação é obrigatório')
+                'required' => \MapasCulturais\i::__('O nome da fase de avaliação é obrigatório'),
+                '$this->validateCriteriaSectionsIntegrity()' => \MapasCulturais\i::__('A configuração de critérios e seções contém erros de integridade')
             ],
             'evaluationFrom' => [
                 'required' => \MapasCulturais\i::__('A data inicial das avaliações é obrigatória'),
@@ -139,6 +142,238 @@ class EvaluationMethodConfiguration extends \MapasCulturais\Entity {
         $app->applyHook("entity($hook_class)::validations", [&$validations]);
 
         return $validations;
+    }
+
+    /**
+     * Valida a integridade entre seções e critérios.
+     * 
+     * Verifica:
+     * - Se há critérios com 'sid' apontando para seção inexistente (critérios órfãos)
+     * - Se há critérios sem campos obrigatórios preenchidos conforme o tipo de avaliação
+     * 
+     * @return bool true se válido, false se há erros
+     */
+    function validateCriteriaSectionsIntegrity() {
+        // Só valida para métodos que usam seções e critérios
+        $types_with_sections = ['technical', 'qualification'];
+        if (!in_array($this->_type, $types_with_sections)) {
+            return true;
+        }
+
+        $sections = $this->sections ?? [];
+        $criteria = $this->criteria ?? [];
+
+        // Se os dados vierem como string JSON (antes do unserialize do metadata), converte
+        if (is_string($sections)) {
+            $sections = json_decode($sections);
+        }
+        if (is_string($criteria)) {
+            $criteria = json_decode($criteria);
+        }
+
+        // Normaliza para arrays
+        $sections = (array) $sections;
+        $criteria = (array) $criteria;
+
+        // Coleta IDs das seções existentes
+        $section_ids = [];
+        foreach ($sections as $section) {
+            $section = (object) $section;
+            if (isset($section->id)) {
+                $section_ids[$section->id] = true;
+            }
+        }
+
+        // Se há critérios mas não há seções, é inválido
+        if (!empty($criteria) && empty($sections)) {
+            return false;
+        }
+
+        // Se há seções, cada uma deve ter pelo menos um critério.
+        // Exceção: avaliação técnica possui hook que remove seções sem critérios
+        // automaticamente antes de salvar, portanto não rejeitamos aqui.
+        if (!empty($sections) && $this->_type !== 'technical') {
+            $section_ids_with_criteria = [];
+            foreach ($criteria as $criterion) {
+                $criterion = (object) $criterion;
+                if (isset($criterion->sid) && isset($section_ids[$criterion->sid])) {
+                    $section_ids_with_criteria[$criterion->sid] = true;
+                }
+            }
+
+            foreach ($sections as $section) {
+                $section = (object) $section;
+                if (!isset($section->id) || !isset($section_ids_with_criteria[$section->id])) {
+                    return false;
+                }
+            }
+        }
+
+        // Se não há critérios, não há mais o que validar
+        if (empty($criteria)) {
+            return true;
+        }
+
+        // Valida cada critério
+        foreach ($criteria as $criterion) {
+            $criterion = (object) $criterion;
+            
+            // Verifica se o critério tem sid
+            if (!isset($criterion->sid)) {
+                return false;
+            }
+
+            // Verifica se a seção referenciada existe
+            if (!isset($section_ids[$criterion->sid])) {
+                return false;
+            }
+
+            if ($this->_type === 'technical') {
+                if (empty($criterion->title) || trim($criterion->title) === '') {
+                    return false;
+                }
+                if (!isset($criterion->max) || !is_numeric($criterion->max)) {
+                    return false;
+                }
+                if (!isset($criterion->weight) || !is_numeric($criterion->weight)) {
+                    return false;
+                }
+            }
+
+            if ($this->_type === 'qualification') {
+                if (empty($criterion->name) || trim($criterion->name) === '') {
+                    return false;
+                }
+
+                $options = $criterion->options ?? [];
+                if (is_object($options)) {
+                    $options = get_object_vars($options);
+                }
+                if (!is_array($options) || empty(array_filter($options, fn($option) => trim((string) $option) !== ''))) {
+                    return false;
+                }
+            }
+        }
+
+        return true;
+    }
+
+    /**
+     * Remove draft/empty criteria configuration entries before persistence.
+     *
+     * The UI autosaves while managers are still typing, so intermediate values
+     * such as a section without criteria must not become effective config.
+     */
+    function sanitizeCriteriaSectionsDraft(): void {
+        $types_with_sections = ['technical', 'qualification'];
+        if (!in_array($this->_type, $types_with_sections)) {
+            return;
+        }
+
+        $sections = $this->normalizeCriteriaSectionsValue($this->sections ?? []);
+        $criteria = $this->normalizeCriteriaSectionsValue($this->criteria ?? []);
+
+        $sections_by_id = [];
+        foreach ($sections as $section) {
+            $section = (object) $section;
+            $section_id = $section->id ?? null;
+            $section_name = trim((string) ($section->name ?? ''));
+
+            if (!$section_id || $section_name === '') {
+                continue;
+            }
+
+            $section->name = $section_name;
+            $sections_by_id[$section_id] = $section;
+        }
+
+        $clean_criteria = [];
+        $section_ids_with_criteria = [];
+        foreach ($criteria as $criterion) {
+            $criterion = (object) $criterion;
+            $section_id = $criterion->sid ?? null;
+
+            if (!$section_id || !isset($sections_by_id[$section_id])) {
+                continue;
+            }
+
+            if (!$this->isPersistableCriterion($criterion)) {
+                continue;
+            }
+
+            $clean_criteria[] = $criterion;
+            $section_ids_with_criteria[$section_id] = true;
+        }
+
+        $clean_sections = [];
+        foreach ($sections_by_id as $section_id => $section) {
+            if (isset($section_ids_with_criteria[$section_id])) {
+                $clean_sections[] = $section;
+            }
+        }
+
+        $this->sections = $clean_sections;
+        $this->criteria = $clean_criteria;
+    }
+
+    private function normalizeCriteriaSectionsValue($value): array {
+        if (is_string($value)) {
+            $decoded = json_decode($value);
+            $value = $decoded ?: [];
+        }
+
+        if (is_object($value)) {
+            $value = get_object_vars($value);
+        }
+
+        return is_array($value) ? $value : [];
+    }
+
+    private function isPersistableCriterion(object $criterion): bool {
+        if ($this->_type === 'technical') {
+            $criterion->title = trim((string) ($criterion->title ?? ''));
+
+            if ($criterion->title === '') {
+                return false;
+            }
+
+            if (!isset($criterion->max) || !is_numeric($criterion->max)) {
+                return false;
+            }
+
+            if (!isset($criterion->weight) || !is_numeric($criterion->weight)) {
+                return false;
+            }
+
+            return true;
+        }
+
+        if ($this->_type === 'qualification') {
+            $criterion->name = trim((string) ($criterion->name ?? ''));
+
+            if ($criterion->name === '') {
+                return false;
+            }
+
+            $options = $criterion->options ?? [];
+            if (is_object($options)) {
+                $options = get_object_vars($options);
+            }
+
+            if (!is_array($options)) {
+                return false;
+            }
+
+            $options = array_values(array_filter($options, fn($option) => trim((string) $option) !== ''));
+            if (empty($options)) {
+                return false;
+            }
+
+            $criterion->options = $options;
+            return true;
+        }
+
+        return false;
     }
 
     function validateDate($value){
@@ -609,6 +844,12 @@ class EvaluationMethodConfiguration extends \MapasCulturais\Entity {
     }
 
     protected function canUserRemove($user){
+        if($this->opportunity->isContinuousFlow) {
+            if($this->opportunity->canUser('@control') && !$this->getCommittee()) {
+                return true;
+            }
+        }
+        
         if ($this->opportunity->publishedRegistrations) {
             return false;
         }
@@ -656,10 +897,230 @@ class EvaluationMethodConfiguration extends \MapasCulturais\Entity {
     }
     
     
+    /**
+     * Verifica se existem avaliações iniciadas, concluídas ou enviadas nesta fase.
+     */
+    public function hasStartedEvaluations(): bool {
+        if ($this->isNew()) {
+            return false;
+        }
+
+        $app = App::i();
+        $count = $app->em->getConnection()->fetchOne("
+            SELECT COUNT(re.id)
+            FROM registration_evaluation re
+            INNER JOIN registration r ON r.id = re.registration_id
+            WHERE r.opportunity_id = :opportunity_id
+        ", ['opportunity_id' => $this->opportunity->id]);
+
+        return (int) $count > 0;
+    }
+
+    /**
+     * Retorna os IDs de critérios removidos entre duas configurações.
+     */
+    public function getRemovedCriterionIds(array $old_criteria, array $new_criteria): array {
+        $old_criteria = $this->normalizeCriteriaSectionsValue($old_criteria);
+        $new_criteria = $this->normalizeCriteriaSectionsValue($new_criteria);
+
+        $new_criterion_ids = [];
+        foreach ($new_criteria as $criterion) {
+            $criterion = (object) $criterion;
+            if (!empty($criterion->id)) {
+                $new_criterion_ids[$criterion->id] = true;
+            }
+        }
+
+        $removed = [];
+        foreach ($old_criteria as $criterion) {
+            $criterion = (object) $criterion;
+            if (!empty($criterion->id) && !isset($new_criterion_ids[$criterion->id])) {
+                $removed[] = $criterion->id;
+            }
+        }
+
+        return array_values(array_unique($removed));
+    }
+
+    /**
+     * Impede exclusão de critérios/seções por não-admin quando há avaliações iniciadas.
+     *
+     * @return string[] IDs dos critérios removidos autorizados
+     */
+    protected function validateCriteriaDeletion(): array {
+        $types_with_sections = ['technical', 'qualification'];
+        if (!in_array($this->_type, $types_with_sections, true) || $this->isNew()) {
+            return [];
+        }
+
+        $app = App::i();
+        $conn = $app->em->getConnection();
+
+        $old_criteria = json_decode((string) $conn->fetchOne("
+            SELECT value FROM evaluationmethodconfiguration_meta
+            WHERE object_id = :id AND key = 'criteria'
+        ", ['id' => $this->id]) ?: '[]', true) ?: [];
+
+        $removed_criterion_ids = $this->getRemovedCriterionIds(
+            $old_criteria,
+            (array) ($this->criteria ?? [])
+        );
+
+        if (empty($removed_criterion_ids) || !$this->hasStartedEvaluations()) {
+            return $removed_criterion_ids;
+        }
+
+        if (!$app->user->is('admin')) {
+            throw new PermissionDenied(
+                $app->user,
+                message: i::__('Já existem avaliações iniciadas, concluídas ou enviadas. Por isso, não é possível excluir critérios ou seções. Solicite a um administrador do sistema.')
+            );
+        }
+
+        return $removed_criterion_ids;
+    }
+
+    /**
+     * Remove critérios excluídos do evaluation_data das avaliações existentes.
+     */
+    public function removeDeletedCriteriaFromEvaluations(array $removed_criterion_ids): void {
+        if (empty($removed_criterion_ids)) {
+            return;
+        }
+
+        $app = App::i();
+        $app->disableAccessControl();
+
+        $evaluations = $app->em->createQuery("
+            SELECT re
+            FROM MapasCulturais\\Entities\\RegistrationEvaluation re
+            JOIN re.registration r
+            WHERE r.opportunity = :opportunity
+        ")->setParameter('opportunity', $this->opportunity)->getResult();
+
+        $registrations_to_consolidate = [];
+
+        foreach ($evaluations as $evaluation) {
+            $data = (array) $evaluation->evaluationData;
+            $changed = false;
+
+            foreach ($removed_criterion_ids as $criterion_id) {
+                if (array_key_exists($criterion_id, $data)) {
+                    unset($data[$criterion_id]);
+                    $changed = true;
+                }
+
+                $reason_key = "{$criterion_id}_reason";
+                if (array_key_exists($reason_key, $data)) {
+                    unset($data[$reason_key]);
+                    $changed = true;
+                }
+            }
+
+            if (!$changed) {
+                continue;
+            }
+
+            $evaluation->setEvaluationData($data);
+            $evaluation->__skipQueuingPCacheRecreation = true;
+            $evaluation->save(true);
+
+            $registrations_to_consolidate[$evaluation->registration->id] = $evaluation->registration;
+        }
+
+        foreach ($registrations_to_consolidate as $registration) {
+            $registration->consolidateResult(true);
+        }
+
+        $app->enableAccessControl();
+    }
+
     function save($flush = false){
+        $removed_criterion_ids = $this->validateCriteriaDeletion();
+
+        $this->sanitizeCriteriaSectionsDraft();
+
         parent::save($flush);
+
+        if ($removed_criterion_ids) {
+            $this->removeDeletedCriteriaFromEvaluations($removed_criterion_ids);
+        }
         
         $this->enqueueToPCacheRecreation();
+    }
+
+    /**
+     * Retorna as inscrições enviadas do edital cujo dono é o usuário informado.
+     * Usado para avisar que o avaliador não poderá avaliar a própria inscrição.
+     *
+     * @return array<int, array{id:int|string, number:string}>
+     */
+    public function findSentRegistrationsOwnedByUser(User $user): array
+    {
+        $app = App::i();
+        $first_phase = $this->opportunity->firstPhase ?? $this->opportunity;
+
+        $phase_ids = [(int) $first_phase->id];
+        foreach ($app->repo('Opportunity')->findBy(['parent' => $first_phase]) as $phase) {
+            $phase_ids[] = (int) $phase->id;
+        }
+
+        if (!in_array((int) $this->opportunity->id, $phase_ids, true)) {
+            $phase_ids[] = (int) $this->opportunity->id;
+        }
+
+        $placeholders = implode(',', array_fill(0, count($phase_ids), '?'));
+        $params = array_merge([(int) $user->id], $phase_ids);
+
+        return $app->em->getConnection()->fetchAllAssociative(
+            "SELECT r.id, r.number
+             FROM registration r
+             INNER JOIN agent a ON a.id = r.agent_id
+             WHERE a.user_id = ?
+               AND r.status > 0
+               AND r.opportunity_id IN ($placeholders)
+             ORDER BY r.id",
+            $params
+        );
+    }
+
+    /**
+     * Monta payload de aviso quando o usuário/agente tem inscrição própria no edital.
+     *
+     * @return array{count:int, numbers:string[], message:string}|null
+     */
+    public function buildOwnRegistrationsWarning(User $user, ?string $agent_name = null): ?array
+    {
+        $registrations = $this->findSentRegistrationsOwnedByUser($user);
+        if (!$registrations) {
+            return null;
+        }
+
+        $numbers = array_values(array_filter(array_map(
+            fn ($row) => (string) ($row['number'] ?? ''),
+            $registrations
+        )));
+        $count = count($numbers);
+        $name = $agent_name ?: ($user->profile->name ?? ("#{$user->id}"));
+
+        if ($count === 1) {
+            $message = sprintf(
+                i::__('%s também é proponente neste edital e, por isso, não avaliará a própria inscrição. As quantidades para ele podem ser diferentes do esperado.'),
+                $name
+            );
+        } else {
+            $message = sprintf(
+                i::__('%s também é proponente neste edital (%d inscrições) e, por isso, não avaliará as próprias. As quantidades para ele podem ser diferentes do esperado.'),
+                $name,
+                $count
+            );
+        }
+
+        return [
+            'count' => $count,
+            'numbers' => $numbers,
+            'message' => $message,
+        ];
     }
 
     //============================================================= //

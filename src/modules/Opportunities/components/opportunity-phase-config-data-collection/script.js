@@ -110,6 +110,21 @@ app.component('opportunity-phase-config-data-collection' , {
                 && this.firstPhase?.isContinuousFlow
                 && !this.firstPhase?.hasEndDate;
         },
+
+        hasRegistrations() {
+            return this.phase.totalRegistrations > 0;
+        },
+
+        canDelete() {
+            return this.phase.currentUserPermissions?.remove && !this.hasRegistrations;
+        },
+
+        deleteTooltip() {
+            if (this.hasRegistrations) {
+                return this.text('tooltip_nao_pode_excluir_inscricoes');
+            }
+            return '';
+        },
     },
 
     methods: {

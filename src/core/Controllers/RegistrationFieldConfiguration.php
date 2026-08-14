@@ -58,4 +58,41 @@ class RegistrationFieldConfiguration extends EntityController {
     function GET_index() {
         App::i()->pass();
     }
+
+    /**
+     * Valida a configuração de um campo de inscrição sob demanda
+     * 
+     * @api POST validateConfig
+     * @return void Retorna JSON com erros de validação ou true se válido
+     */
+    function POST_validateConfig() {
+        $this->requireAuthentication();
+
+        $entity = $this->requestedEntity;
+
+        // Se não houver entidade requisitada, cria uma nova para validação
+        if (!$entity) {
+            $entity = new \MapasCulturais\Entities\RegistrationFieldConfiguration();
+        }
+
+        // Verifica permissão de modificação (create para novos, modify para existentes)
+        if ($entity->id) {
+            $entity->checkPermission('modify');
+        } else {
+            $entity->checkPermission('create');
+        }
+
+        // Aplica os dados da requisição na entidade
+        foreach ($this->postData as $field => $value) {
+            $entity->$field = $value;
+        }
+
+        $errors = $entity->getValidationErrors();
+
+        if (!empty($errors)) {
+            $this->errorJson($errors);
+        } else {
+            $this->json(true);
+        }
+    }
 }

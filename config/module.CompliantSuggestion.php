@@ -13,6 +13,8 @@
  * Contato/Sugestão:
  * - suggestion.to: lista no To; se preenchida = lista + responsável (se válido); vazia = só responsável ou saasSuperAdmin.
  * - suggestion.bcc: 'off' ou false = BCC desligado; vazio/null = atual (todos admins); lista = e-mails separados por vírgula.
+ * - suggestion.sendToEntityAdmins: quando true, envia o contato para o dono da entidade e para os agentes do grupo
+ *   'Administrado por' (group-admin), sem incluir os admins do sistema por padrão.
  */
 return [
     'module.CompliantSuggestion' => [
@@ -21,6 +23,7 @@ return [
         'complaint.to'   => env('COMPLAINT_TO', ''),
         'complaint.bcc'  => env('COMPLAINT_BCC', ''),
         'suggestion.to'  => env('SUGGESTION_TO', ''),
-        'suggestion.bcc' => env('SUGGESTION_BCC'),
+        'suggestion.bcc' => env('SUGGESTION_BCC', 'off'),
+        'suggestion.sendToEntityAdmins' => env('SUGGESTION_SEND_TO_ENTITY_ADMINS', true),
     ],
 ];

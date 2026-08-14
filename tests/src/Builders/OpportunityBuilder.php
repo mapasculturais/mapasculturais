@@ -93,6 +93,14 @@ class OpportunityBuilder extends Builder
         return $builder;
     }
 
+    public function addExecutionPhase(): ExecutionPhaseBuilder
+    {
+        $builder = new ExecutionPhaseBuilder($this);
+        $builder->reset($this->instance);
+
+        return $builder;
+    }
+
     public function fillRequiredProperties(): self
     {
         $instance = $this->instance;

@@ -11,6 +11,7 @@ $this->import('
     mc-stepper-vertical
     opportunity-create-data-collect-phase
     opportunity-create-evaluation-phase
+    opportunity-create-execution-phase
     opportunity-create-reporting-phase
     opportunity-phase-config-data-collection
     opportunity-phase-config-evaluation
@@ -28,6 +29,7 @@ $this->import('
                         <?= i::__('Tipo') ?>: 
                         <template v-if="item.__objectType == 'opportunity' && !item.isLastPhase">
                             <span v-if="item.isReportingPhase" class="type"><?= i::__('Prestação de informações') ?></span>
+                            <span v-else-if="item.isExecutionPhase" class="type"><?= i::__('Fase de Execução') ?></span>
                             <span v-else class="type"><?= i::__('Coleta de dados') ?></span>
                         </template>
                         <span v-else-if="item.__objectType == 'evaluationmethodconfiguration'" class="type">{{item.type.name}}</span>
@@ -130,6 +132,14 @@ $this->import('
 
         <template v-else-if="index === phases.length - 1">
             <div class="add-phase grid-12">
+                <div class="col-12" v-if="!hasExecutionPhase">
+                    <mc-alert v-if="!firstPhase?.isContinuousFlow && !lastPhase?.publishTimestamp" type="warning">
+                        <p><small class="required"><?= i::__("A data e hora da 'Publicação final' precisa estar preenchida para adicionar a fase de execução.") ?></small></p>
+                    </mc-alert>
+
+                    <opportunity-create-execution-phase v-if="!firstPhase?.isContinuousFlow && lastPhase?.publishTimestamp" :opportunity="entity" @create="addExecutionPhases"></opportunity-create-execution-phase>
+                </div>
+
                 <div class="col-12" v-if="!finalReportingPhase">
                     <mc-alert v-if="!firstPhase?.isContinuousFlow && !lastPhase?.publishTimestamp" type="warning">
                         <p><small class="required"><?= i::__("A data e hora da 'Publicação final' precisa estar preenchida para adicionar novas fases de prestação de informações.") ?></small></p>

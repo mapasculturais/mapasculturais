@@ -5,6 +5,7 @@ namespace Test;
 use MapasCulturais\API;
 use MapasCulturais\App;
 use MapasCulturais\ApiQuery;
+use Opportunities\Module as OpportunitiesModule;
 use Tests\Abstract\TestCase;
 use Tests\Traits\UserDirector;
 use Tests\Enums\ProponentTypes;
@@ -25,6 +26,63 @@ class OpportunityRegistrationsTest extends TestCase
         AgentDirector,
         UserDirector,
         RequestFactory;
+
+
+    function testApproveCollectiveRegistrationWithoutAgentRelationAndWithoutSealDoesNotFail() {
+        $app = App::i();
+        $admin = $this->userDirector->createUser('admin');
+        $this->login($admin);
+
+        /** @var Opportunity */
+        $opportunity = $this->opportunityBuilder
+                            ->reset(owner: $admin->profile, owner_entity: $admin->profile)
+                            ->fillRequiredProperties()
+                            ->setProponentTypes()
+                            ->save()
+                            ->firstPhase()
+                                ->setRegistrationPeriod(new Open)
+                                ->done()
+                            ->save()
+                            ->refresh()
+                            ->getInstance();
+
+        $app->disableAccessControl();
+        $opportunity->publishRegistrations();
+        $app->enableAccessControl();
+
+        $registration = $this->registrationDirector->createSentRegistrations(
+            $opportunity,
+            number_of_registrations: 1,
+            proponent_type: ProponentTypes::COLETIVO->value
+        )[0];
+
+        $registration->opportunity->proponentSeals = (object) [
+            ProponentTypes::COLETIVO->value => []
+        ];
+        $registration->opportunity->proponentAgentRelation = (object) [
+            ProponentTypes::COLETIVO->value => false,
+            ProponentTypes::PESSOA_JURIDICA->value => false,
+        ];
+
+        $this->assertTrue($opportunity->publishedRegistrations);
+        $this->assertIsObject($registration->opportunity->proponentSeals);
+        $this->assertEquals([ProponentTypes::COLETIVO->value => []], (array) $registration->opportunity->proponentSeals);
+        $this->assertCount(0, $registration->getAgentRelations());
+
+        $registration->setStatusToApproved(true);
+
+        $this->assertEquals(Registration::STATUS_APPROVED, $registration->status);
+    }
+
+
+    function testApplySealIgnoresMissingAgent() {
+        /** @var OpportunitiesModule $module */
+        $module = App::i()->modules['Opportunities'];
+
+        $module->applySeal(null, []);
+
+        $this->assertTrue(true);
+    }
 
 
     function testRequiredOneLevelConditionalField() {
@@ -121,6 +179,88 @@ class OpportunityRegistrationsTest extends TestCase
         $this->assertEmpty($registration->validationErrors, 
             'Certificando que um CAMPO OBRIGATÓRIO NÃO PREENCHIDO, quando condicionado a outro campo condicionado, NÃO causa erro de validação quando a condição para sua exibição NÃO foi ATENDIDA APÓS TER SIDO ATENDIDA ANTERIORMENTE');
 
+    }
+
+    function testConditionalFieldVisibleWhenParentIsCheckboxesArrayContainingValue() {
+        $admin = $this->userDirector->createUser('admin');
+        $this->login($admin);
+
+        /** @var Opportunity */
+        $opportunity = $this->opportunityBuilder
+                            ->reset(owner: $admin->profile, owner_entity: $admin->profile)
+                            ->fillRequiredProperties()
+                            ->save()
+                            ->firstPhase()
+                                ->setRegistrationPeriod(new Open)
+                                ->createStep('etapa')
+                                ->createField(
+                                    'areas',
+                                    'checkboxes',
+                                    required: true,
+                                    options: [
+                                        'Audiovisual e cinema',
+                                        'Música, som e produção sonora',
+                                        'Comercial, vendas e varejo',
+                                    ]
+                                )
+                                ->createField(
+                                    'habilidades-av',
+                                    'checkboxes',
+                                    required: true,
+                                    field_condition: 'areas:Audiovisual e cinema',
+                                    options: [
+                                        'Edição / montagem',
+                                        'Roteiro (cinema, ficção, documentário)',
+                                    ]
+                                )
+                                ->done()
+                            ->save()
+                            ->refresh()
+                            ->getInstance();
+
+        $field_areas = $this->opportunityBuilder->getFieldName('areas');
+        $field_habilidades = $this->opportunityBuilder->getFieldName('habilidades-av');
+        $habilidades_config = $this->opportunityBuilder->getField('habilidades-av');
+
+        $registrations = $this->registrationDirector->createDraftRegistrations(
+            $opportunity,
+            number_of_registrations: 2
+        );
+
+        list($com_audiovisual, $sem_audiovisual) = $registrations;
+
+        $com_audiovisual->$field_areas = [
+            'Audiovisual e cinema',
+            'Música, som e produção sonora',
+            'Comercial, vendas e varejo',
+        ];
+
+        $this->assertTrue(
+            $com_audiovisual->isFieldVisisble($habilidades_config),
+            'Campo condicionado a checkboxes deve ficar visível quando o valor esperado está entre os itens marcados'
+        );
+
+        $this->assertArrayHasKey(
+            $field_habilidades,
+            $com_audiovisual->validationErrors,
+            'Campo obrigatório condicionado a checkboxes deve validar quando a condição foi atendida'
+        );
+
+        $sem_audiovisual->$field_areas = [
+            'Música, som e produção sonora',
+            'Comercial, vendas e varejo',
+        ];
+
+        $this->assertFalse(
+            $sem_audiovisual->isFieldVisisble($habilidades_config),
+            'Campo condicionado a checkboxes não deve ficar visível quando o valor esperado não está entre os itens marcados'
+        );
+
+        $this->assertArrayNotHasKey(
+            $field_habilidades,
+            $sem_audiovisual->validationErrors,
+            'Campo obrigatório condicionado a checkboxes não deve validar quando a condição não foi atendida'
+        );
     }
 
     function testRequiredFirstPhaseFieldOnSecondDataCollectionPhase() {

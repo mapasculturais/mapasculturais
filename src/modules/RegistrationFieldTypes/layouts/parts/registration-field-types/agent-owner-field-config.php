@@ -75,6 +75,10 @@ foreach ($agent_fields as $field) {
     }
 }
 
+uasort($fields_options, function ($a, $b) {
+    return strcasecmp((string) trim($a), (string) trim($b));
+});
+
 $this->jsObject['registered_terms'] = array_keys($taxonomie_options);
 ?>
 <div ng-if="field.fieldType === 'agent-owner-field'" >

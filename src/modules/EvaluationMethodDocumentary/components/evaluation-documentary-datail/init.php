@@ -5,6 +5,7 @@
 */
 
 use MapasCulturais\Entities\Registration;
+use Opportunities\Module as OpportunitiesModule;
 
 $entity = $this->controller->requestedEntity;
 
@@ -49,7 +50,7 @@ if($class == Registration::class) {
 
         foreach ($evaluations as $eval) {
             $detail = $em->getEvaluationDetails($eval);
-            $detail['valuer'] = $eval->user->profile->simplify('id,name,singleUrl');
+            OpportunitiesModule::enrichEvaluationDetailWithValuerInfo($detail, $entity, $evaluation_configuration, $eval, $app);
             $data['evaluationsDetails'][] = $detail;
         }
     }

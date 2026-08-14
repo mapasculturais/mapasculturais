@@ -48,8 +48,8 @@ $this->breadcrumb = [
     <mc-tabs class="tabs" sync-hash>
         <?php $this->applyTemplateHook('tabs','begin') ?>
         <mc-tab label="<?= i::_e('Informações') ?>" slug="info">
-            <?php $this->applyTemplateHook('entity-info-validation','begin') ?>
             <mc-container>
+                <?php $this->applyTemplateHook('entity-info-validation','begin') ?>
                 <entity-status :entity="entity"></entity-status>
                 <mc-card class="feature">
                     <template #title>
@@ -136,11 +136,6 @@ $this->breadcrumb = [
                                 <entity-field :entity="entity" classes="col-4 sm:col-12" prop="cnhValidade" label="<?= i::__('Validade') ?>"></entity-field>
                                 <entity-field :disabled="!(entity?.cnhNumero && entity?.cnhCategoria?.length && entity?.cnhValidade)" :entity="entity" classes="col-12" prop="cnhAnexo" title-modal="<?php i::_e('Anexar CNH - Formatos: (png, jpeg, pdf)') ?>" group-name="docs-cnh" :hide-label="true"></entity-field>
                                 <div class="col-12 divider"></div>
-                                <p class="col-12 data-subtitle bold"><?php i::_e("RG"); ?></p>
-                                <entity-field :entity="entity" classes="col-5 sm:col-12" prop="rgNumero" label="<?= i::__('Documento') ?>"></entity-field>
-                                <entity-field :entity="entity" classes="col-3 sm:col-12" prop="rgOrgaoEmissor" label="<?= i::__('Órgão Emissor') ?>"></entity-field>
-                                <entity-field :entity="entity" classes="col-4 sm:col-12" prop="rgUF" label="<?= i::__('UF') ?>"></entity-field>                            
-                                <entity-field :disabled="!(entity?.rgNumero && entity?.rgOrgaoEmissor && entity?.rgUF)" :entity="entity" classes="col-12" prop="rgAnexo" title-modal="<?php i::_e('Anexar RG - Formatos: (png, jpeg, pdf)') ?>" group-name="docs-rg" :hide-label="true"></entity-field>
 
                             </div>
                         </template>
@@ -195,8 +190,8 @@ $this->breadcrumb = [
                         </template>
                     </mc-card>
                 </aside>
+                <?php $this->applyTemplateHook('entity-info-validation','end') ?>
             </mc-container>
-            <?php $this->applyTemplateHook('entity-info-validation','end') ?>
         </mc-tab>
         <?php $this->applyTemplateHook('tabs','end') ?>
     </mc-tabs>

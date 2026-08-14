@@ -61,7 +61,7 @@ return [
             'proponentType' => i::__('Tipo de proponente'),
             'number' => i::__('Número da inscrição'),
             'sentTimestamp' => i::__('Data e hora de envio'),
-            'score' => i::__('Pontuação'),
+            'score' => i::__('Resultado final'),
             'eligible' => i::__('Elegível'),
             'consolidatedResult' => i::__('Resultado consolidado'),
         ]

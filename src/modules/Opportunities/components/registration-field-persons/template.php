@@ -52,6 +52,22 @@ $this->import('
                     <input type="text" v-maska data-maska="###.###.###-##" v-model="person.cpf" @change="save()" :disabled="disabled" />
                 </div>
 
+                <div v-if="rules.cnpj" class="field col-12" :class="[{'error': fieldError(person, 'cnpj')}]">
+                    <label>
+                        <?= i::__('CNPJ:') ?>
+                        <span v-if="isFieldRequired?.cnpj" class="required">*<?= i::__('obrigatório') ?></span>
+                    </label>
+                    <input type="text" v-maska data-maska="##.###.###/####-##" v-model="person.cnpj" @change="save()" :disabled="disabled" />
+                </div>
+
+                <div v-if="rules.miniCurriculum" class="field col-12" :class="[{'error': fieldError(person, 'miniCurriculum')}]">
+                    <label>
+                        <?= i::__('Mini currículo') ?>
+                        <span v-if="isFieldRequired?.miniCurriculum" class="required">*<?= i::__('obrigatório') ?></span>
+                    </label>
+                    <textarea v-model="person.miniCurriculum" @change="save()" :disabled="disabled"></textarea>
+                </div>
+
                 <div v-if="rules.income" class="field col-12" :class="[{'error': fieldError(person, 'income')}]">
                     <label>
                         <?= $this->text('renda', i::__('Renda individual em reais (calcular a renda média individual dos últimos três meses)')) ?>

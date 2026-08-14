@@ -2901,18 +2901,18 @@ $$
     },
 
     'Adiciona novos índices em diversas tabelas' => function() {
-        __exec('CREATE INDEX idx_usr_profile ON usr (profile_id);');
-        __exec('CREATE INDEX id_agent_relation_agent ON agent_relation (agent_id);');
-        __exec('CREATE INDEX idx_space_agent_id ON space (agent_id);');
-        __exec('CREATE INDEX idx_event_agent_id ON event (agent_id);');
-        __exec('CREATE INDEX idx_seal_relation_agent_id ON seal_relation (agent_id);');
-        __exec('CREATE INDEX idx_seal_relation_owner_id ON seal_relation (owner_id);');
-        __exec('CREATE INDEX idx_seal_relation_object ON seal_relation (object_type, object_id);');
-        __exec('CREATE INDEX idx_project_agent_id ON project (agent_id);');
-        __exec('CREATE INDEX idx_project_type ON project (type);');
-        __exec('CREATE INDEX idx_registration_meta_key ON registration_meta (key);');
-        __exec('CREATE INDEX idx_opportunity_meta_key ON registration_meta (key);');
-        __exec('CREATE INDEX idx_agent_usr ON agent (user_id);');
+        __exec('CREATE INDEX IF NOT EXISTS idx_usr_profile ON usr (profile_id);');
+        __exec('CREATE INDEX IF NOT EXISTS id_agent_relation_agent ON agent_relation (agent_id);');
+        __exec('CREATE INDEX IF NOT EXISTS idx_space_agent_id ON space (agent_id);');
+        __exec('CREATE INDEX IF NOT EXISTS idx_event_agent_id ON event (agent_id);');
+        __exec('CREATE INDEX IF NOT EXISTS idx_seal_relation_agent_id ON seal_relation (agent_id);');
+        __exec('CREATE INDEX IF NOT EXISTS idx_seal_relation_owner_id ON seal_relation (owner_id);');
+        __exec('CREATE INDEX IF NOT EXISTS idx_seal_relation_object ON seal_relation (object_type, object_id);');
+        __exec('CREATE INDEX IF NOT EXISTS idx_project_agent_id ON project (agent_id);');
+        __exec('CREATE INDEX IF NOT EXISTS idx_project_type ON project (type);');
+        __exec('CREATE INDEX IF NOT EXISTS idx_registration_meta_key ON registration_meta (key);');
+        __exec('CREATE INDEX IF NOT EXISTS idx_opportunity_meta_key ON registration_meta (key);');
+        __exec('CREATE INDEX IF NOT EXISTS idx_agent_usr ON agent (user_id);');
     },
 
     'Adiciona novas áreas de atuação' => function() {
@@ -3228,6 +3228,75 @@ $$
         }
 
         $app->log->debug("Migração concluída! Atualizados: {$updated} | Sem relations: {$skipped}");
+        return true;
+    },
+
+    'normaliza metadado pointReward para tipo configuravel' => function() use ($conn, $app) {
+        $normalizeRule = function(array $rule): array {
+            $rule['bonusValue'] = $rule['bonusValue'] ?? $rule['fieldPercent'] ?? 0;
+            return $rule;
+        };
+
+        $updateMeta = function(string $id, array $normalized) use ($conn): void {
+            $conn->executeQuery(
+                "UPDATE evaluationmethodconfiguration_meta SET value = :value WHERE id = :id",
+                ['value' => json_encode($normalized), 'id' => $id]
+            );
+        };
+
+        $normalizeLegacyArray = function(array $decoded, string $id) use ($normalizeRule, $updateMeta): void {
+            $updateMeta($id, ['type' => 'percentage', 'rules' => array_map($normalizeRule, $decoded)]);
+        };
+
+        $normalizeObject = function(array $decoded, string $id) use ($app, $normalizeRule, $updateMeta): bool {
+            $type = $decoded['type'] ?? 'percentage';
+            if (!in_array($type, ['percentage', 'fixed'], true)) {
+                $app->log->debug("pointReward id={$id}: type '{$type}' inválido, definindo como percentage");
+                $type = 'percentage';
+            }
+            $rules = array_map($normalizeRule, $decoded['rules'] ?? []);
+            if (isset($decoded['type']) && $decoded['type'] === $type && ($decoded['rules'] ?? []) === $rules) {
+                return false;
+            }
+            $updateMeta($id, array_merge($decoded, ['type' => $type, 'rules' => $rules]));
+            return true;
+        };
+
+        $metas        = $conn->fetchAll("SELECT id, object_id, value FROM evaluationmethodconfiguration_meta WHERE key = 'pointReward'");
+        $total        = count($metas);
+        $migrados     = 0;
+        $normalizados = 0;
+        $ignorados    = 0;
+
+        foreach ($metas as $meta) {
+            $decoded = json_decode((string) $meta['value'], true);
+
+            if ($meta['value'] === null || $meta['value'] === '' || json_last_error() !== JSON_ERROR_NONE || !is_array($decoded)) {
+                $app->log->debug("pointReward id={$meta['id']} ignorado: valor ausente ou JSON inválido");
+                $ignorados++;
+                continue;
+            }
+
+            if (array_values($decoded) === $decoded) {
+                $normalizeLegacyArray($decoded, $meta['id']);
+                $migrados++;
+                continue;
+            }
+
+            $normalizeObject($decoded, $meta['id']) ? $migrados++ : $normalizados++;
+        }
+
+        $app->log->debug("normaliza pointReward: total={$total}, migrados={$migrados}, já normalizados={$normalizados}, ignorados={$ignorados}");
+        return true;
+    },
+
+    "Backfill committeeSequentialNumber para avaliadores da comissão" => function () use ($app) {
+        $result = \Opportunities\Module::backfillCommitteeSequentialNumbers($app);
+        $app->log->debug(sprintf(
+            'Backfill committeeSequentialNumber: %d editais processados, %d relações atualizadas',
+            $result['opportunities'],
+            $result['relations_updated']
+        ));
         return true;
     },
     

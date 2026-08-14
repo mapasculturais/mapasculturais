@@ -73,6 +73,10 @@ app.component('select-entity', {
             type: Boolean,
             default: false
         },
+        createNewType: {
+            type: Number,
+            default: 1
+        },
         scope: {
             type: String
         },
@@ -97,6 +101,10 @@ app.component('select-entity', {
         selectEntity(entity, close) {
             this.$emit('select', entity);
             close();
+        },
+
+        refreshEntities() {
+            this.$refs.entitiesList?.refresh?.();
         },
         
         fetch(entities) {

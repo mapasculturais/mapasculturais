@@ -420,6 +420,13 @@ return array(
             'unserialize' => function($v) {
                 return (array) json_decode((string) $v);
             },
-        ]
+        ],
+        'email_exclusao_conta' => [
+            'label' => i::__('E-mail para solicitações de exclusão de conta'),
+            'type' => 'text',
+            'validations' => [
+                'v::optional(v::email())' => i::__('O e-mail informado é inválido.')
+            ]
+        ],
     )
 );

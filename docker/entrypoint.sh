@@ -22,10 +22,13 @@ while(true){
 '
 
 mkdir -p /var/www/var/DoctrineProxies /var/www/var/logs
+mkdir -p /var/www/public/entity-table-columns
 
 touch /var/www/var/logs/app.log
 
 chown -R www-data: /var/www/var/DoctrineProxies /var/www/var/logs
+chown -R www-data:www-data /var/www/public/entity-table-columns
+chmod -R 775 /var/www/public/entity-table-columns
 
 sudo -E -u www-data /var/www/scripts/db-update.sh
 sudo -E -u www-data /var/www/scripts/mc-db-updates.sh
@@ -54,6 +57,7 @@ touch /nohup.out
 chown www-data: /nohup.out
 sudo -E -u www-data nohup /jobs-cron.sh >> /dev/stdout &
 sudo -E -u www-data nohup /recreate-pending-pcache-cron.sh >> /dev/stdout &
+sudo -E -u www-data nohup /cleanup-orphan-assets-cron.sh >> /dev/stdout &
 
 tail -f /nohup.out > /dev/stdout &
 touch /mapas-ready

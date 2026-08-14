@@ -138,6 +138,7 @@ class EvaluationMethodConfigurationAgentRelation extends AgentRelation {
         $this->metadata->ranges = $this->metadata->ranges ?? null;
         $this->metadata->distribution = $this->metadata->distribution ?? null;
         $this->metadata->selectionFields = $this->metadata->selectionFields ?? null;
+        $this->metadata->committeeSequentialNumber = $this->metadata->committeeSequentialNumber ?? null;
 
         return $this->metadata;
     }
@@ -281,6 +282,19 @@ class EvaluationMethodConfigurationAgentRelation extends AgentRelation {
     {
         $this->initializeMetadata();
         $this->metadata->selectionFields = $selection_fields ? (object) $selection_fields : null;
+        $this->metadata = (object) (array) $this->metadata;
+    }
+
+    public function getCommitteeSequentialNumber(): ?int
+    {
+        $this->initializeMetadata();
+        return $this->metadata->committeeSequentialNumber ?? null;
+    }
+
+    public function setCommitteeSequentialNumber(?int $number): void
+    {
+        $this->initializeMetadata();
+        $this->metadata->committeeSequentialNumber = $number;
         $this->metadata = (object) (array) $this->metadata;
     }
 

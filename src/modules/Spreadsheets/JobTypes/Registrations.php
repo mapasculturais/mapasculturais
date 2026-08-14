@@ -46,12 +46,22 @@ class Registrations extends SpreadsheetJob
         /*if($job->owner_properties) {
             $query['@select'] .= ",owner.{{$job->owner_properties}}";
         }*/
-        $query['@select'] .= ',projectName,owner.{name}';
+        $select = $query['@select'] ?? '';
+        if ($select === '' || !preg_match('/(^|,)projectName($|,)/', $select)) {
+            $select .= ($select === '' ? '' : ',') . 'projectName';
+        }
+        if (!preg_match('/owner\.\{[^}]*\bname\b[^}]*\}/', $select)) {
+            $select .= ',owner.{name}';
+        }
+        $query['@select'] = $select;
         $properties = FieldParser::parse($query['@select']);
 
         foreach(array_keys($properties) as $property) {
-            if(str_starts_with($property, 'field_')) {
-                continue;
+            if (str_starts_with($property, 'field_')) {
+                $etf = $this->is_entity_type_field($property);
+                if ($etf['status']) {
+                    continue;
+                }
             }
             if($property == 'singleUrl') {
                 $header[$property] = i::__('Link da inscrição');
@@ -168,24 +178,36 @@ class Registrations extends SpreadsheetJob
                 if($entity_type_field['status']) {
                      
                     if($entity_type_field['ft'] == '@location') {
-                        $header['UF'] = i::__('UF');
-                        $header['Municipio'] = i::__('Município');
+                        if (!isset($header['UF'])) {
+                            $header['UF'] = i::__('UF');
+                        }
+                        if (!isset($header['Municipio'])) {
+                            $header['Municipio'] = i::__('Município');
+                        }
                     }
 
                     if($entity_type_field['ft'] == '@links') {
-                        $header['Links'] = i::__('Links');
+                        if (!isset($header['Links'])) {
+                            $header['Links'] = i::__('Links');
+                        }
                     }
 
                     if($entity_type_field['ft'] == 'pessoaDeficiente') {
-                        $header[$field->fieldName] = $field->title;
+                        if (!isset($header[$field->fieldName])) {
+                            $header[$field->fieldName] = $field->title;
+                        }
                     }
 
                     if($entity_type_field['ft'] == 'persons') {
-                        $header[$field->fieldName] = $field->title;
+                        if (!isset($header[$field->fieldName])) {
+                            $header[$field->fieldName] = $field->title;
+                        }
                     }
                     
                 } else {
-                    $header[$field->fieldName] = $field->title;
+                    if (!isset($header[$field->fieldName])) {
+                        $header[$field->fieldName] = $field->title;
+                    }
                 }
             }
         } while($opportunity = $opportunity->previousPhase);
@@ -590,6 +612,10 @@ class Registrations extends SpreadsheetJob
                     $entity['eligible'] = $entity['eligible'] ?  i::__('Sim') : i::__('Não');
                 }
 
+                if(isset($entity['appliedPointReward'])) {
+                    $entity['appliedPointReward'] = $this->formatAppliedPointReward($entity['appliedPointReward']);
+                }
+
                 if(isset($entity['editableUntil'])) {
                     $date = $entity['editableUntil'];
                     $entity['editableUntil'] = $date->format('d/m/Y H:i:s');
@@ -635,6 +661,30 @@ class Registrations extends SpreadsheetJob
         ]));
 
         return "registrationsSpreadsheet:{$md5}";
+    }
+
+    private function formatAppliedPointReward($applied_point_reward): string
+    {
+        if (is_array($applied_point_reward)) {
+            $applied_point_reward = (object) $applied_point_reward;
+        }
+
+        if (!is_object($applied_point_reward) || ($applied_point_reward->raw ?? null) === null) {
+            return '';
+        }
+
+        if (($applied_point_reward->type ?? 'percentage') === 'fixed') {
+            $fixed = (float) ($applied_point_reward->fixed ?? 0);
+            return $fixed > 0 ? '+' . $this->formatBonusNumber($fixed) . ' ' . i::__('pt(s)') : '';
+        }
+
+        $percentage = (float) ($applied_point_reward->percentage ?? 0);
+        return $percentage > 0 ? $this->formatBonusNumber($percentage) . '%' : '';
+    }
+
+    private function formatBonusNumber(float $value): string
+    {
+        return fmod($value, 1.0) === 0.0 ? (string) (int) $value : (string) $value;
     }
 
     function is_entity_type_field($field_name) {

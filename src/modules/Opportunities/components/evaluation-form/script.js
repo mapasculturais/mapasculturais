@@ -33,8 +33,11 @@ app.component('evaluation-form', {
 
     methods: {
         resizeForm() {
-            const buttonsHeight = this.$refs.buttons.offsetHeight;
-            const headerHeight = this.$refs.header.offsetHeight;
+            if (!this.$refs.form) {
+                return;
+            }
+            const buttonsHeight = this.$refs.buttons?.offsetHeight || 0;
+            const headerHeight = this.$refs.header?.offsetHeight || 0;
             const height = Math.max(window.innerHeight - buttonsHeight - headerHeight - 200, 500); 
             this.$refs.form.style.height = height + 'px';
         }

@@ -459,6 +459,10 @@ class Opportunity extends EntityController {
                 $r->agent = $e->agent->simplify('id,name,type,singleUrl,avatar,user');
                 $r->agentUserId = $e->agent->userId;
                 $r->group = $e->group;
+                $warning = $e->owner->buildOwnRegistrationsWarning($e->agent->user, $e->agent->name);
+                if ($warning) {
+                    $r->ownRegistrationsWarning = $warning;
+                }
                 return $r;
             }, $relations);
         } else {
@@ -852,12 +856,18 @@ class Opportunity extends EntityController {
         }
 
         $committee_relations = [];
+        $sequential_by_agent = [];
         if($relations = $app->repo('EvaluationMethodConfigurationAgentRelation')->findBy(['owner' => $opportunity->evaluationMethodConfiguration->id])) {
             foreach($relations as $relation) {
+                if ($relation->status <= 0) {
+                    continue;
+                }
+                $agent_id = (int) $relation->agent->id;
                 $committee_relations[] = [
                     'id' => $relation->id,
-                    'agent' => $relation->agent->id,
+                    'agent' => $agent_id,
                 ];
+                $sequential_by_agent[$agent_id] = $relation->getCommitteeSequentialNumber();
             }
         }
 
@@ -892,7 +902,15 @@ class Opportunity extends EntityController {
             $committee = [];
         }
 
-        return $committee;
+        $enriched_committee = [];
+        foreach ($committee as $valuer) {
+            $row = is_object($valuer) ? $valuer->jsonSerialize() : (array) $valuer;
+            $agent_id = (int) ($row['id'] ?? 0);
+            $row['committeeSequentialNumber'] = $sequential_by_agent[$agent_id] ?? null;
+            $enriched_committee[] = $row;
+        }
+
+        return $enriched_committee;
     }
 
     /**

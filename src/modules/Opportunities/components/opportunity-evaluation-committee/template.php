@@ -33,7 +33,7 @@ $this->import('
                 <span class="icon">
                     <mc-avatar :entity="entity" size="xsmall"></mc-avatar>
                 </span>
-                <span class="label"> #{{entity.id}} - {{entity.name}}</span>
+                <span class="label"> #{{entity.id}} - {{entity.name}}<template v-if="entity.user?.email"> - {{entity.user.email}}</template></span>
             </template>
         </select-entity>
         <?php $this->applyComponentHook('select-entity', 'end'); ?>
@@ -66,6 +66,7 @@ $this->import('
                 <div class="opportunity-evaluation-committee__card-header-content">
                     <div class="opportunity-evaluation-committee__card-header-content-info">
                         <small>
+                            <strong><?= i::__('Nº Avaliador')?>:</strong> #{{infoReviewer.metadata.committeeSequentialNumber || '-'}} | 
                             <strong><?= i::__('E-mail')?>:</strong> {{infoReviewer.agent.user.email}} | 
                             <strong><?= i::__('ID Agente')?>:</strong> #{{infoReviewer.agent.id}} | 
                             <strong><?= i::__('ID Usuário')?>:</strong> #{{infoReviewer.agent.user.id}}
@@ -102,10 +103,20 @@ $this->import('
                             </div>
 
                             <mc-alert v-else type="warning" small>
-                                
-                                <p v-if="!hasEvaluationConfiguration(infoReviewer)"> <strong>{{infoReviewer.agent.name}}</strong> <?= i::__('ainda não tem avaliações disponíveis') ?> </p>
-                                <p v-if="infoReviewer.status == -5"> <strong>{{infoReviewer.agent.name}}</strong> <?= i::__('ainda não aceitou o convite para avaliar esta oportunidade') ?> </p>
+                                <template v-if="!hasEvaluationConfiguration(infoReviewer)">
+                                    <strong>{{infoReviewer.agent.name}}</strong> <?= i::__('ainda não tem avaliações disponíveis') ?>
+                                </template>
+                                <template v-if="infoReviewer.status == -5">
+                                    <strong>{{infoReviewer.agent.name}}</strong> <?= i::__('ainda não aceitou o convite para avaliar esta oportunidade') ?>
+                                </template>
                             </mc-alert>
+
+                            <div v-if="infoReviewer.ownRegistrationsWarning" class="opportunity-evaluation-committee__own-registration">
+                                <mc-icon name="info"></mc-icon>
+                                <span>
+                                    <?= i::__('Também é proponente neste edital e, por isso, não avaliará a própria inscrição. As quantidades para ele podem ser diferentes do esperado.') ?>
+                                </span>
+                            </div>
 
                             <mc-confirm-button v-if="infoReviewer.status == -5" @confirm="delReviewer(infoReviewer)" no="<?= i::esc_attr__('Não') ?>" yes="<?= i::esc_attr__('Sim') ?>">
                                 <template #button="{open}">
@@ -177,7 +188,7 @@ $this->import('
                                 <span class="icon">
                                     <mc-avatar :entity="entity" size="xsmall"></mc-avatar>
                                 </span>
-                                <span class="label"> #{{entity.id}} - {{entity.name}}</span>
+                                <span class="label"> #{{entity.id}} - {{entity.name}}<template v-if="entity.user?.email"> - {{entity.user.email}}</template></span>
                             </template>
                         </select-entity>
                         <mc-confirm-button v-if="infoReviewer.metadata?.summary.sent > 0" @confirm="reopenEvaluations(infoReviewer.agentUserId)">
@@ -243,7 +254,7 @@ $this->import('
                 <span class="icon">
                     <mc-avatar :entity="entity" size="xsmall"></mc-avatar>
                 </span>
-                <span class="label"> #{{entity.id}} - {{entity.name}}</span>
+                <span class="label"> #{{entity.id}} - {{entity.name}}<template v-if="entity.user?.email"> - {{entity.user.email}}</template></span>
             </template>
         </select-entity>
     </div>

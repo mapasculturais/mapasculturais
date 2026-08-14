@@ -103,7 +103,8 @@
     &__user-delete {
         display: block;
 
-        svg {
+        .button.delete .iconify,
+        .button.delete svg {
             color: var(--mc-danger-500);
             margin-right: size(6);
         }
@@ -148,6 +149,11 @@
                 }
             }
         }
+    }
+
+    &__user-config,
+    .account-config {
+        margin: size(24) 0;
     }
 
     &__properties {

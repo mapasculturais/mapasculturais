@@ -27,9 +27,11 @@ A plataforma já está em uso em diversos municipios, estados, no governo federa
 - Pernambuco - https://www.mapacultural.pe.gov.br/
 - Paraíba - https://mapacultural.pb.gov.br/
 - Piauí - https://www.mapadacultura.pi.gov.br/
+- Sergipe - https://mapacultural.se.gov.br/
 - Tocantins - https://mapadacultura.secult.to.gov.br/
 
 ### Instalações municipais
+- Anápolis - https://culturaemrede.anapolis.go.gov.br/
 - Aparecida de Goiânia - https://portaldacultura.aparecida.go.gov.br/
 - Apucarana - https://cultura.apucarana.pr.gov.br/
 - Aracaju - http://mapa.cultura.aracaju.se.gov.br/
@@ -40,6 +42,7 @@ A plataforma já está em uso em diversos municipios, estados, no governo federa
 - Camaçari - https://mapacultural.camacari.ba.gov.br/
 - Campinas - https://mapacultural.campinas.sp.gov.br/
 - Chorozinho - https://mapacultural.chorozinho.ce.gov.br/
+- Cianorte - https://cultura.cianorte.pr.gov.br/
 - Gravataí - https://mapacultural.gravatai.rs.gov.br/
 - Iguatu - http://mapacultural.iguatu.ce.gov.br/
 - João Pessoa - https://jpcultura.joaopessoa.pb.gov.br/
@@ -53,6 +56,7 @@ A plataforma já está em uso em diversos municipios, estados, no governo federa
 - Petrolina - https://mapacultural.petrolina.pe.gov.br/
 - Ribeirão das Neves - http://mapaculturaneves.com.br/
 - Santa Luzia - http://mapacultural.santaluzia.mg.gov.br/
+- Santo Anastácio - https://cultura.santoanastacio.sp.gov.br/
 - Santo André - https://culturaz.santoandre.sp.gov.br/
 - São Gonçalo do Amarante - https://mapacultural.saogoncalodoamarante.ce.gov.br/
 - São Bernardo - https://mapacultural.saobernardo.sp.gov.br/

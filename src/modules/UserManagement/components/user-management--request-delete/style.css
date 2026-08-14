@@ -1,0 +1,82 @@
+.user-management__request-delete-modal .modal-content {
+    max-width: 36rem;
+    width: 100%;
+}
+
+.user-management__request-delete {
+    display: grid;
+    gap: 1.5rem;
+    padding-bottom: 0.25rem;
+}
+
+.user-management__request-delete-alert {
+    margin: 0;
+}
+
+.user-management__request-delete-alert .alert__message .text {
+    margin: 0;
+    line-height: 1.5;
+}
+
+.user-management__request-delete-field {
+    margin: 0;
+}
+
+.user-management__request-delete-textarea {
+    width: 100%;
+    min-height: 10rem;
+    resize: vertical;
+    font-family: inherit;
+    font-size: inherit;
+    line-height: 1.5;
+}
+
+.user-management__request-delete-help {
+    color: var(--mc-gray-500, #666);
+    display: block;
+    font-size: 0.875rem;
+    line-height: 1.4;
+    margin-top: 0.375rem;
+}
+
+.user-management__request-delete-copy-box {
+    background: var(--mc-gray-100, #f5f5f5);
+    border: 1px solid var(--mc-gray-300, #e2e8f0);
+    border-radius: 0.25rem;
+    display: grid;
+    gap: 1rem;
+    padding: 1rem 1.25rem;
+}
+
+.user-management__request-delete-copy,
+.user-management__request-delete-copy-email {
+    margin: 0;
+}
+
+.user-management__request-delete-checkbox {
+    align-items: flex-start;
+    cursor: pointer;
+    display: flex;
+    gap: 0.625rem;
+    margin: 0;
+}
+
+.user-management__request-delete-checkbox input[type="checkbox"] {
+    flex-shrink: 0;
+    height: 1rem;
+    margin-top: 0.125rem;
+    width: 1rem;
+}
+
+.user-management__request-delete-checkbox span {
+    line-height: 1.5;
+}
+
+.user-management__request-delete-info p {
+    margin-bottom: 0.75rem;
+}
+
+.user-management__request-delete-info p:last-child {
+    font-weight: 600;
+    margin-bottom: 0;
+}

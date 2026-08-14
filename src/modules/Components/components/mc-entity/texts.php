@@ -8,6 +8,7 @@ $app = App::i();
 $texts = [
     'erro inesperado' => i::__('Houve um erro inesperado'),
     'erro de validacao' => i::__('Corrija os erros indicados'),
+    'nao foi possivel salvar' => i::__('Não foi possível salvar:'),
     'permissao negada' => i::__('Você não tem permissão para executar esta operação'),
     'erro de conexao' => i::__('Não foi possível se conectar ao servidor'),
 

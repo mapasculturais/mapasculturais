@@ -186,7 +186,7 @@ return array(
         ),
         'cpf' => array(
             'private' => true,
-            'label' => \MapasCulturais\i::__('CPF'),
+            'label' => \MapasCulturais\i::__('CPF / Carteira de Identidade Nacional (CIN)'),
             'type' => 'cpf',
             'serialize' => function($value, $entity = null) {
                 /**@var MapasCulturais\App $this */
@@ -261,20 +261,17 @@ return array(
             'private' => true,
             'label' => \MapasCulturais\i::__('RG - Documento'),
             'type' => 'rgNumero',
-            'available_for_opportunities' => true,
             'readonly' => false
         ),
         'rgAnexo' => array(
             'private' => true,
             'label' => \MapasCulturais\i::__('RG - anexo'),
             'type' => 'file',
-            'available_for_opportunities' => true
         ),
         'rgOrgaoEmissor' => array(
             'private' => true,
             'label' => \MapasCulturais\i::__('RG - Órgão Emissor'),
             'type' => 'text',
-            'available_for_opportunities' => true
         ),
         'rgUF' => [
             'private' => true,
