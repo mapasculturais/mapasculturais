@@ -139,18 +139,16 @@ class Registration extends \MapasCulturais\Entity
      * agente proponente identificável) ou NULL (avaliação normal / não isenta).
      *
      * @var string|null
-     *
-     * @ORM\Column(name="seal_exemption_status", type="string", length=20, nullable=true)
      */
+    #[ORM\Column(name: "seal_exemption_status", type: "string", length: 20, nullable: true)]
     protected $sealExemptionStatus;
 
     /**
      * Momento em que a verificação de isenção por selos foi processada.
      *
      * @var \DateTime|null
-     *
-     * @ORM\Column(name="seal_exemption_timestamp", type="datetime", nullable=true)
      */
+    #[ORM\Column(name: "seal_exemption_timestamp", type: "datetime", nullable: true)]
     protected $sealExemptionTimestamp;
 
 

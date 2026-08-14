@@ -1711,7 +1711,7 @@ class Module extends \MapasCulturais\Module{
         foreach (self::getEvaluationMethodConfigurationIdsForCommitteeSequentialNumber($firstPhase) as $emc_id) {
             $relations = $conn->fetchAllAssociative(
                 "SELECT ar.metadata, ar.agent_id FROM agent_relation ar
-                 WHERE ar.object_type = 'MapasCulturais\\Entities\\EvaluationMethodConfiguration'
+                 WHERE ar.object_type = 'evaluationmethodconfigurationagentrelation'
                  AND ar.object_id = :emcId AND ar.status > 0",
                 ['emcId' => $emc_id]
             );
@@ -1773,7 +1773,7 @@ class Module extends \MapasCulturais\Module{
         } else {
             $emc_rows = $conn->fetchAllAssociative(
                 "SELECT DISTINCT ar.object_id AS emc_id FROM agent_relation ar
-                 WHERE ar.object_type = 'MapasCulturais\\Entities\\EvaluationMethodConfiguration'
+                 WHERE ar.object_type = 'evaluationmethodconfigurationagentrelation'
                  AND ar.status > 0"
             );
 
@@ -1807,7 +1807,7 @@ class Module extends \MapasCulturais\Module{
                 $relations = $conn->fetchAllAssociative(
                     "SELECT ar.id, ar.metadata, ar.agent_id, ar.create_timestamp
                      FROM agent_relation ar
-                     WHERE ar.object_type = 'MapasCulturais\\Entities\\EvaluationMethodConfiguration'
+                     WHERE ar.object_type = 'evaluationmethodconfigurationagentrelation'
                      AND ar.object_id = :emcId AND ar.status > 0",
                     ['emcId' => $emc_id]
                 );

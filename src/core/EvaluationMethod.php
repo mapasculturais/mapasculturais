@@ -1167,7 +1167,15 @@ abstract class EvaluationMethod extends Module implements \JsonSerializable{
                     }
                 }
 
-                usort($users, function($u1, $u2) use ($registration, $registration_lists_per_valuer, $registration_list_exclusive_per_valuer, $committee_name, $valuers_committee_registrations_count, $committee_quotas, $distribution_comparator, $pending_assignments_count) {
+                // Índice original para desempate estável: usort do PHP não é estável, e um
+                // comparador que retorna 0 (empate definitivo) precisa preservar a ordem de entrada.
+                $users = array_values($users);
+                $user_order = [];
+                foreach ($users as $index => $user) {
+                    $user_order[$user->id] = $index;
+                }
+
+                usort($users, function($u1, $u2) use ($registration, $registration_lists_per_valuer, $registration_list_exclusive_per_valuer, $committee_name, $valuers_committee_registrations_count, $committee_quotas, $distribution_comparator, $pending_assignments_count, $user_order) {
                     $registration_number = $registration->number;
 
                     $list1 = $registration_lists_per_valuer[$committee_name][$u1->id] ?? [];
@@ -1205,7 +1213,9 @@ abstract class EvaluationMethod extends Module implements \JsonSerializable{
                         );
 
                         if($custom_result !== null) {
-                            return (int) $custom_result;
+                            $cmp = (int) $custom_result;
+                            // 0 = empate definitivo (não cai no fallback por contagem); preserva ordem original.
+                            return $cmp !== 0 ? $cmp : ($user_order[$u1->id] <=> $user_order[$u2->id]);
                         }
                     }
 

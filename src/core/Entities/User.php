@@ -669,7 +669,7 @@ class User extends \MapasCulturais\Entity implements \MapasCulturais\UserInterfa
                     LEFT JOIN agent a ON a.id = ar.agent_id 
                     LEFT JOIN usr u ON u.id = a.id 
             WHERE 
-                ar.object_type = 'MapasCulturais\Entities\EvaluationMethodConfiguration' AND
+                ar.object_type = 'evaluationmethodconfigurationagentrelation' AND
                 u.id = {$this->id}");
         
         return (bool) $result;

@@ -821,7 +821,8 @@ class OpportunityPhasesTest extends TestCase
             $numbers[] = $number;
         }
 
-        $this->assertEquals([1, 2, 3], $numbers, 'Garantindo que os números sejam sequenciais 1, 2, 3');
+        // getAgentRelations() não garante ordem de inserção; o contrato é o conjunto 1..n.
+        $this->assertEqualsCanonicalizing([1, 2, 3], $numbers, 'Garantindo que os números sejam sequenciais 1, 2, 3');
     }
 
     /**
@@ -1034,7 +1035,7 @@ class OpportunityPhasesTest extends TestCase
         $conn = $this->app->em->getConnection();
         $count = (int) $conn->fetchOne(
             "SELECT COUNT(*) FROM agent_relation 
-             WHERE object_type = 'MapasCulturais\\Entities\\EvaluationMethodConfiguration' 
+             WHERE object_type = 'evaluationmethodconfigurationagentrelation' 
              AND object_id = ?",
             [$evalPhase->id]
         );

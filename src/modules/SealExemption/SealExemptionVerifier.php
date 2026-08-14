@@ -21,9 +21,9 @@ use MapasCulturais\Entities\Agent;
 class SealExemptionVerifier
 {
     /**
-     * Discriminator value para relações de selo com agentes.
+     * Discriminator value para relações de selo com agentes (Doctrine short name, 8.0+).
      */
-    private const AGENT_OBJECT_TYPE = 'MapasCulturais\Entities\Agent';
+    private const AGENT_OBJECT_TYPE = 'agentsealrelation';
 
     /**
      * Status ativo da SealRelation.

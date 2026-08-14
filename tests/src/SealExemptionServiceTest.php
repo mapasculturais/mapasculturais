@@ -114,7 +114,7 @@ class SealExemptionServiceTest extends TestCase
                AND object_id = :agent_id
                AND seal_id = :seal_id",
             [
-                'object_type' => 'MapasCulturais\Entities\Agent',
+                'object_type' => 'agentsealrelation',
                 'agent_id'    => $agent->id,
                 'seal_id'     => $seal->id,
             ]
@@ -138,7 +138,7 @@ class SealExemptionServiceTest extends TestCase
                AND object_id = :agent_id
                AND seal_id = :seal_id",
             [
-                'object_type' => 'MapasCulturais\Entities\Agent',
+                'object_type' => 'agentsealrelation',
                 'agent_id'    => $agent->id,
                 'seal_id'     => $seal->id,
             ]

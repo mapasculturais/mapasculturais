@@ -63,18 +63,13 @@ abstract class SealRelation extends \MapasCulturais\Entity
     #[ORM\Column(name: "renovation_request", type: "boolean", nullable: false)]
     protected $renovationRequest;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="computed_status", type="string", length=20, nullable=true)
-     */
+    #[ORM\Column(name: "computed_status", type: "string", length: 20, nullable: true)]
     protected $computedStatus;
 
     /**
      * @var \MapasCulturais\Entities\SealRelationField[]
-     *
-     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\SealRelationField", mappedBy="sealRelation", cascade={"remove","persist"}, fetch="LAZY")
      */
+    #[ORM\OneToMany(targetEntity: "MapasCulturais\Entities\SealRelationField", mappedBy: "sealRelation", cascade: ["remove", "persist"], fetch: "LAZY")]
     protected $__sealRelationFields;
     
     function setSeal(Seal $seal){

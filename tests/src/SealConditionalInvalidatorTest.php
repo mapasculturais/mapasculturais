@@ -99,7 +99,7 @@ class SealConditionalInvalidatorTest extends TestCase
             "UPDATE seal_relation SET computed_status = 'invalid'
              WHERE object_type = :ot AND object_id = :aid AND seal_id = :sid",
             [
-                'ot' => 'MapasCulturais\Entities\Agent',
+                'ot' => 'agentsealrelation',
                 'aid' => $agent->id,
                 'sid' => $seal->id,
             ]

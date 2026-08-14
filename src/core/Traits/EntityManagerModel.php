@@ -156,7 +156,7 @@ trait EntityManagerModel {
                 SELECT 1
                 FROM seal_relation sr
                 WHERE sr.object_id = o.id
-                  AND sr.object_type = 'MapasCulturais\\Entities\\Opportunity'
+                  AND sr.object_type = 'opportunitysealrelation'
                   AND sr.seal_id IN ($placeholders)
                 LIMIT 1
             ) AS model_is_official";
@@ -354,11 +354,21 @@ trait EntityManagerModel {
             $ownerEntity = $this->cachedOwnerEntity;
             $app->em->beginTransaction();
             $app->em->getConnection()->update('opportunity', [
-                    'object_type' => $ownerEntity->getClassName(),
+                    'object_type' => $this->resolveOpportunityDiscriminator($ownerEntity),
                     'object_id' => $ownerEntity->id
                 ], ['id' => $id]);
             $app->em->commit();
         }
+    }
+
+    /**
+     * Discriminator da STI de Opportunity no 8.0 (short name em minúsculas).
+     * Ex.: Agent → agentopportunity; Project → projectopportunity.
+     */
+    private function resolveOpportunityDiscriminator(Entity $ownerEntity): string
+    {
+        $parts = explode('\\', $ownerEntity->getClassName());
+        return strtolower(end($parts) . 'Opportunity');
     }
 
     /**

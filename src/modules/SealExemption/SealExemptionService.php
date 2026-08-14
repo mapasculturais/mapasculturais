@@ -1304,7 +1304,7 @@ class SealExemptionService
         ";
 
         return (int) $conn->executeQuery($sql, [
-            'MapasCulturais\Entities\Agent',
+            'agentsealrelation',
             $agentId,
             $sealId,
         ])->fetchOne() > 0;

@@ -34,6 +34,15 @@ abstract class EvaluationBuilder extends Builder
         return $this;
     }
 
+    public function save(bool $flush = true): static
+    {
+        $app = \MapasCulturais\App::i();
+        $app->disableAccessControl();
+        parent::save($flush);
+        $app->enableAccessControl();
+        return $this;
+    }
+
     public function send(bool $flush = true): self
     {
         $app = \MapasCulturais\App::i();

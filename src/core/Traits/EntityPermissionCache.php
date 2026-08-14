@@ -61,6 +61,15 @@ trait EntityPermissionCache {
         return $class_name;
     }
 
+    /**
+     * Valor do discriminator em pcache (8.0+: short name em minúsculas + permissioncache).
+     */
+    function getPCacheDbObjectType(): string
+    {
+        $class_parts = explode('\\', $this->getPCacheObjectType());
+        return strtolower(end($class_parts)) . 'permissioncache';
+    }
+
     function createPermissionsCacheForUsers(?array $users = null, $flush = false, $delete_old = true) {
         /** @var \MapasCulturais\Entity $this */
 
@@ -154,16 +163,13 @@ trait EntityPermissionCache {
                 if ($this->canUser($permission, $user)) {
                     $allowed_permissions[] = $permission;
 
-                    $class_parts = explode('\\', $class_name);
-                    $object_type = strtolower(end($class_parts)) . 'permissioncache';
-
                     $conn->executeQuery("
                         INSERT INTO pcache (user_id, action, object_type, object_id, create_timestamp)
                         VALUES (:user_id, :action, :object_type, :object_id, now()) ON CONFLICT DO NOTHING", 
                         [
                             'user_id' => $user->id,
                             'action' => $permission,
-                            'object_type' => $object_type,
+                            'object_type' => $this->getPCacheDbObjectType(),
                             'object_id' => $this->id,
                         ]
                     );
@@ -182,7 +188,7 @@ trait EntityPermissionCache {
     function deletePermissionsCache($users = null){
         $app = App::i();
         $conn = $app->em->getConnection();
-        $class_name = $this->getPCacheObjectType();
+        $class_name = $this->getPCacheDbObjectType();
         if(!$this->id){
             return;
         }

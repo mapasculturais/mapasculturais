@@ -3669,7 +3669,7 @@ $$
         // leitores; o WHERE parcial já elimina não-agentes e relações pendentes/desativadas.
         __try("CREATE INDEX IF NOT EXISTS idx_seal_relation_agent_valid
             ON seal_relation (object_id, seal_id, computed_status)
-            WHERE object_type = 'MapasCulturais\Entities\Agent' AND status = 1");
+            WHERE object_type = 'agentsealrelation' AND status = 1");
 
         // Índice 2: um único índice parcial cobre os dois filtros operacionais do PM:
         //   - "isentos"     → WHERE seal_exemption_status = 'granted'

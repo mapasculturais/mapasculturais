@@ -67,7 +67,7 @@ class Opportunity extends EntityController {
             $app->em->beginTransaction();
             
             $app->em->getConnection()->update('opportunity', [
-                    'object_type' => $entity->getClassName(), 
+                    'object_type' => strtolower(substr(strrchr($entity->getClassName(), '\\') ?: $entity->getClassName(), 1) . 'Opportunity'),
                     'object_id' => $entity->id
                 ], ['id' => $this->data['id']]);
 
@@ -1101,7 +1101,7 @@ class Opportunity extends EntityController {
             registration r
         INNER JOIN pcache pc
             ON pc.object_id = r.id
-                AND pc.object_type = 'MapasCulturais\Entities\Registration'
+                AND pc.object_type = 'registrationpermissioncache'
                 AND pc.action = 'evaluate'
                 AND pc.user_id = :user_id
         WHERE r.status > 0
@@ -1142,7 +1142,7 @@ class Opportunity extends EntityController {
                 registration r
                 INNER JOIN pcache pc ON
                     pc.object_id = r.id
-                    AND pc.object_type = 'MapasCulturais\Entities\Registration'
+                    AND pc.object_type = 'registrationpermissioncache'
                     AND pc.action = 'evaluate'
                     AND pc.user_id = :user_id
                 LEFT JOIN registration_evaluation re ON
@@ -1178,7 +1178,7 @@ class Opportunity extends EntityController {
                 registration r
                 INNER JOIN pcache pc ON
                     pc.object_id = r.id
-                    AND pc.object_type = 'MapasCulturais\Entities\Registration'
+                    AND pc.object_type = 'registrationpermissioncache'
                     AND pc.action = 'evaluate'
                     AND pc.user_id = :user_id
                 LEFT JOIN registration_evaluation re ON
