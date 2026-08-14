@@ -282,6 +282,10 @@ class Module extends \MapasCulturais\Module
         $app->view->enqueueStyle('app', 'support', 'css/support.css');
         $app->view->enqueueScript('app', 'support', 'js/ng.support.js', ['entity.module.opportunity']);
         $app->view->jsObject['angularAppDependencies'][] = 'ng.support';
+
+        $app->view->localizeScript('support', [
+            'confirmRemoveAgentRelation' => \MapasCulturais\i::__('Voce realmente deseja remover a relação deste agente?'),
+        ]);
     }
 
     public function isSupportUser($opportunity, $user)

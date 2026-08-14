@@ -74,6 +74,13 @@ app.component('entity-data', {
             }
             return true;
         },
+
+        hasSeals() {
+            const statuses = this.entity.$fieldSealStatuses?.[this.prop] ?? [];
+            const locked = this.entity.$lockedFieldSeals?.[this.prop] ?? [];
+
+            return statuses.length > 0 || locked.length > 0;
+        },
     },
 
     methods: {

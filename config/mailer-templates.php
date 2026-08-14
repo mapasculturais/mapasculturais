@@ -91,6 +91,14 @@ return [
             'title' => i::__('Solicitação de exclusão de conta'),
             'template' => 'request_account_deletion.html'
         ],
+        'account_deletion_partial' => [
+            'title' => i::__('Confirmação de exclusão parcial do cadastro'),
+            'template' => 'account_deletion_partial.html'
+        ],
+        'account_deletion_permanent' => [
+            'title' => i::__('Confirmação de exclusão permanente do cadastro'),
+            'template' => 'account_deletion_permanent.html'
+        ],
 
     ]
 ];

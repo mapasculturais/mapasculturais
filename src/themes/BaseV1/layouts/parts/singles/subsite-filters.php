@@ -48,7 +48,7 @@ function printSubsiteFilter($property){
 
     <?php $this->applyTemplateHook('subsite-filters-space','before'); ?>
     <section class="filter-section">
-        <header>Espaços</header>
+        <header><?php i::_e('Espaços'); ?></header>
         <?php $this->applyTemplateHook('subsite-filters-space','begin'); ?>
         <p>
           <span class="label <?php echo ($entity->isPropertyRequired($entity,"filtro_space_term_area") && $editEntity? 'required': '');?>"><?php i::_e('Área de Atuação do Espaço:'); ?> </span>
@@ -77,7 +77,7 @@ function printSubsiteFilter($property){
 
     <?php $this->applyTemplateHook('subsite-filters-event','before'); ?>
     <section class="filter-section">
-        <header>Eventos</header>
+        <header><?php i::_e('Eventos'); ?></header>
         <?php $this->applyTemplateHook('subsite-filters-event','begin'); ?>
         <p>
             <span class="label <?php echo ($entity->isPropertyRequired($entity,"filtro_event_term_linguagem") && $editEntity? 'required': '');?>"><?php i::_e('Linguagem:'); ?> </span>

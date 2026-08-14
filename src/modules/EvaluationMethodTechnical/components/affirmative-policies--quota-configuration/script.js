@@ -18,10 +18,11 @@ app.component('affirmative-policies--quota-configuration', {
     },
 
     mounted() {
+        this.normalizeQuotaConfiguration();
         
-        if(this.phase.quotaConfiguration && this.phase.quotaConfiguration.rules.length > 0) {
+        if(this.quotaRules.length > 0) {
             if(this.totalVacancies > 0) {
-                this.phase.quotaConfiguration.rules.forEach((quota, index) => {
+                this.quotaRules.forEach((quota, index) => {
                     this.updateRuleQuotaPercentage(quota, true);
                 });
             } else {
@@ -54,7 +55,7 @@ app.component('affirmative-policies--quota-configuration', {
             autoSaveTime: 3000,
             firstPhase,
             totalVacancies: firstPhase.vacancies ?? 0,
-            totalQuota: this.phase.quotaConfiguration ? this.phase.quotaConfiguration.vacancies : 0,
+            totalQuota: this.phase.quotaConfiguration?.vacancies ?? 0,
             totalPercentage: 0,
             fields: $MAPAS.config.affirmativePoliciesQuotaConfiguration.fields[this.phase.opportunity.id]
         }
@@ -62,7 +63,11 @@ app.component('affirmative-policies--quota-configuration', {
 
     computed: {
         isActive() {
-            return this.phase?.quotaConfiguration?.rules.length > 0;
+            return this.quotaRules.length > 0;
+        },
+
+        quotaRules() {
+            return this.phase?.quotaConfiguration?.rules || [];
         },
 
         proponentTypes() {
@@ -77,6 +82,22 @@ app.component('affirmative-policies--quota-configuration', {
     },
 
     methods: {
+        normalizeQuotaConfiguration() {
+            if (Array.isArray(this.phase.quotaConfiguration)) {
+                this.phase.quotaConfiguration = { rules: this.phase.quotaConfiguration };
+                return;
+            }
+
+            if (!this.phase.quotaConfiguration) {
+                this.phase.quotaConfiguration = { rules: [] };
+                return;
+            }
+
+            if (!Array.isArray(this.phase.quotaConfiguration.rules)) {
+                this.phase.quotaConfiguration.rules = [];
+            }
+        },
+
         skeleton() {
             const fields = {};
 
@@ -111,24 +132,19 @@ app.component('affirmative-policies--quota-configuration', {
         },
 
         addConfig() {
-            if (!this.phase.quotaConfiguration) {
-                this.phase.quotaConfiguration = {
-                    rules: [{
-                        title: '',
-                        vacancies: 0,
-                        fields: this.skeleton()
-                    }]
-                };
-            } else {
-                this.phase.quotaConfiguration.rules.push({
-                    vacancies: 0,
-                    fields: this.skeleton()
-                });
-            }
+            this.normalizeQuotaConfiguration();
+
+            this.phase.quotaConfiguration.rules.push({
+                title: '',
+                vacancies: 0,
+                fields: this.skeleton()
+            });
         },
 
         removeConfig(item) {
-            this.phase.quotaConfiguration.rules = this.phase.quotaConfiguration.rules.filter(function(value, key) {
+            this.normalizeQuotaConfiguration();
+
+            this.phase.quotaConfiguration.rules = this.quotaRules.filter(function(value, key) {
                 return item != key;
             });
             this.distributeQuotas(true);
@@ -156,8 +172,8 @@ app.component('affirmative-policies--quota-configuration', {
             let countVacancies = 0;
             let removeQuota = deleteQuota;
 
-            if(this.phase.quotaConfiguration && this.phase.quotaConfiguration.rules.length > 0 || removeQuota) {
-                this.phase.quotaConfiguration.rules.forEach((quota, index) => {
+            if(this.quotaRules.length > 0 || removeQuota) {
+                this.quotaRules.forEach((quota, index) => {
                     countVacancies += quota.vacancies;
                 });
                 this.totalQuota = countVacancies;
@@ -177,7 +193,7 @@ app.component('affirmative-policies--quota-configuration', {
         },
 
         autoSave(updated = false) {
-            const filled = Object.values(this.phase.quotaConfiguration.rules).filter(
+            const filled = Object.values(this.quotaRules).filter(
                 quotaConfiguration => {
                     return quotaConfiguration.title !== undefined 
                         && quotaConfiguration.title 
@@ -196,7 +212,7 @@ app.component('affirmative-policies--quota-configuration', {
         },
 
         validateFields() {
-            for (let quota of this.phase.quotaConfiguration.rules) {
+            for (let quota of this.quotaRules) {
                 for (let field of Object.values(quota.fields)) {
                     // Verifica se o campo foi selecionado
                     if (!field.fieldName) {
@@ -226,7 +242,7 @@ app.component('affirmative-policies--quota-configuration', {
 
         fixConfiguration() {
             const proponentTypes = this.proponentTypes;
-            for (let quota of this.phase.quotaConfiguration?.rules || []) {
+            for (let quota of this.quotaRules) {
                 for(let key in quota.fields) {
                     if(!proponentTypes.includes(key)) {
                         delete quota.fields[key];
@@ -234,7 +250,7 @@ app.component('affirmative-policies--quota-configuration', {
                 }
             }
 
-            for (let quota of this.phase.quotaConfiguration?.rules || []) {
+            for (let quota of this.quotaRules) {
                 for (let proponentType of proponentTypes) {
                     if(!quota.fields[proponentType]) {
                         quota.fields[proponentType] = {

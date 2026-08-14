@@ -14,7 +14,7 @@ $this->import('
     <div class="seal-relation-view__main">
         <div id="print">
             <div class="seal-relation-view__backlink">
-                <mc-icon name="arrow-left" class="seal-relation-view__backlink--icon"></mc-icon><a href="#">Voltar</a>
+                <mc-icon name="arrow-left" class="seal-relation-view__backlink--icon"></mc-icon><a href="#"><?= \MapasCulturais\i::__('Voltar') ?></a>
             </div>
             <div class="seal-relation-view__content">
                 <div class="seal-relation-view__content--top">

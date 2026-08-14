@@ -160,7 +160,10 @@
     }
 
     &__config-button {
-        .button {
+        // Apenas botões/links diretos (ex.: "Configurar formulário").
+        // Não usar esta classe como wrapper de comissão — vaza width para todos os .button internos.
+        > .button,
+        > a.button {
             max-width: 100%;
             width: size(362);
         }

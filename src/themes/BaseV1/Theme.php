@@ -1809,6 +1809,8 @@ class Theme extends MapasCulturais\Theme {
             'Cancelar'      => i::__('Cancelar'),
             'confirmRemoveEntity'  => i::__('Você deseja excluir a entidade?'),
             'confirmDestroyEntity'  => i::__('Você deseja excluir definitivamente a entidade? Esta operação não poderá ser desfeita.'),
+            'confirmPublishRegistrations'  => i::__('ATENÇÃO, Essa ação é uma ação irreversível. Caso a próxima fase seja uma prestação de contas, primeiro crie a fase de prestação de contas para só depois fazer a publicação.'),
+            'confirmRemoveItem'  => i::__('Deseja remover este item?'),
         ]);
         $locale_specific_js = file_exists(dirname(__FILE__)  . '/assets/js/locale-specific/' . i::get_locale() . '.js') ? 'js/locale-specific/' . i::get_locale() . '.js' : 'js/locale-specific/default.js' ;
         $this->enqueueScript('app', 'mapasculturais-locale-specific', $locale_specific_js, array('mapasculturais'));
@@ -1869,6 +1871,7 @@ class Theme extends MapasCulturais\Theme {
 
         $this->enqueueScript('app', 'editable', 'js/editable.js', array('mapasculturais'));
         $this->localizeScript('editable', [
+            'confirmDeleteMetalistItem'    => i::__('Tem Certeza de que deseja excluir este item?'),
             'cancel'    => i::__('Cancelar Alteração (Esc)'),
             'confirm'    => i::__('Confirmar Alteração (Enter)'),
             'confirmC'    => i::__('Confirmar Alteração (Ctrl+Enter)'),
@@ -2147,6 +2150,7 @@ class Theme extends MapasCulturais\Theme {
             'Anexos' => i::__('Anexos'),
             'Avaliação' => i::__('Avaliação'),
             'Status' => i::__('Status'),
+            'Isenção' => i::__('Isenção'),
             'spaceRelationRequestSent' =>  i::__('Sua requisição para relacionar o espaço {{space}} foi enviada.'),
 
             'conditionMandatory' => i::__('Informe a qual campo quer condicionar a obrigatoriedade'),

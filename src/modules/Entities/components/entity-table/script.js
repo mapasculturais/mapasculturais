@@ -679,6 +679,35 @@ app.component('entity-table', {
             return header.value;
         },
 
+        isAgentFileFieldValue(val) {
+            return Boolean(
+                val
+                && typeof val === 'object'
+                && !Array.isArray(val)
+                && !(val instanceof McDate)
+                && val.url
+                && (val.name || val.id || val.mimeType)
+            );
+        },
+
+        formatFileFieldValue(val) {
+            if (!val) {
+                return '';
+            }
+            if (typeof val === 'string') {
+                return val;
+            }
+            if (typeof val !== 'object') {
+                return String(val);
+            }
+            const url = val.url || '';
+            const name = val.name || url || '';
+            if (url) {
+                return `<a href="${url}" target="_blank" rel="noopener noreferrer">${name || url}</a>`;
+            }
+            return name;
+        },
+
         getEntityData(obj, prop) {
             try {
                 let val = eval(`obj.${prop}`);
@@ -748,8 +777,17 @@ app.component('entity-table', {
                                 val = val;
                             }
                             break;
+                        case 'file':
+                            val = this.formatFileFieldValue(val);
+                            break;
                         
                     }
+                }
+
+                // Anexos de agent-owner-field (type=file) podem chegar como objeto
+                // mesmo quando description.type permanece agent-owner-field.
+                if (this.isAgentFileFieldValue(val)) {
+                    val = this.formatFileFieldValue(val);
                 }
 
                 if(prop == 'singleUrl' ) {

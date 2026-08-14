@@ -151,6 +151,11 @@
         }
     }
 
+    &__user-config,
+    .account-config {
+        margin: size(24) 0;
+    }
+
     &__properties {
         margin-bottom: size(24);
     }

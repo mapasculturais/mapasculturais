@@ -55,15 +55,17 @@ app.component('panel--entity-actions', {
         deleteEntity(modal) {
             const entity = this.entity;
             const promise = entity.delete(this.onDeleteRemoveFromLists)
+            promise.then((data) => { entity.status = data.status; });
             this.$emit('deleted', {entity, modal, promise});
         },
-        
+
         undeleteEntity(modal) {
             const entity = this.entity;
             const promise = entity.undelete();
+            promise.then((data) => { entity.status = data.status; });
             this.$emit('undeleted', {entity, modal, promise});
         },
-        
+
         destroyEntity(modal) {
             const entity = this.entity;
             const promise = entity.destroy()
@@ -73,12 +75,14 @@ app.component('panel--entity-actions', {
         publishEntity(modal) {
             const entity = this.entity;
             const promise = entity.publish();
+            promise.then((data) => { entity.status = data.status; });
             this.$emit('published', {entity, modal, promise});
         },
 
         unpublishEntity(modal) {
             const entity = this.entity;
             const promise = entity.unpublish()
+            promise.then((data) => { entity.status = data.status; });
             this.$emit('unpublished', {entity, modal, promise});
         },
     },

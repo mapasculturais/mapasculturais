@@ -683,8 +683,10 @@ class Module extends \MapasCulturais\EvaluationMethod
                 '@order' => 'score DESC'
             ];
 
-            // TAB POR PONTUAÇÃO
-            if($this->data['tabSelected'] === 'score') {
+            $tab_selected = $this->data['tabSelected'] ?? null;
+            $applies_single_status = in_array($tab_selected, ['score', 'registration'], true);
+
+            if($applies_single_status) {
                 if(!isset($this->data['setStatusTo'])) {
                     $this->errorJson(i::__('Por favor selecione um status para ser aplicado.'), 400);
                 }
@@ -695,6 +697,10 @@ class Module extends \MapasCulturais\EvaluationMethod
                 }
 
                 $new_status = intval($this->data['setStatusTo']);
+            }
+
+            // TAB POR PONTUAÇÃO
+            if($tab_selected === 'score') {
                 $statusNotEqual =  API::NOT_EQ($new_status);
                 $min = $this->data['from'][0];
                 $max = $this->data['from'][1];
@@ -704,6 +710,18 @@ class Module extends \MapasCulturais\EvaluationMethod
 
                 $query = new ApiQuery(Registration::class, $query_params);
                 $registrations = $query->findIds();
+            }
+
+            // TAB POR INSCRIÇÃO
+            if($tab_selected === 'registration') {
+                $registrations = $self->findRegistrationIdsForResultApplication(
+                    $opp,
+                    $this->data['registrationNumbers'] ?? [],
+                    $new_status
+                );
+            }
+
+            if($applies_single_status) {
                 $total = count($registrations);
 
                 foreach($registrations as $i => $reg) {
@@ -742,7 +760,7 @@ class Module extends \MapasCulturais\EvaluationMethod
             }
 
             // TAB POR CLASSIFICAÇÃO
-            if($this->data['tabSelected'] === 'classification') {
+            if($tab_selected === 'classification') {
                 $early_registrations = $this->data['earlyRegistrations'];
                 $wait_list = $this->data['waitList'];
                 $invalidate_registrations = $this->data['invalidateRegistrations'];
@@ -1312,6 +1330,51 @@ class Module extends \MapasCulturais\EvaluationMethod
         $registration->save(true);
     }
 
+    private function getPointRewardRuleMatch(object $rule, mixed $registration_value): array
+    {
+        $result = ['applied' => false, 'value' => null];
+
+        if (isset($rule->eligibleValues)) {
+            $eligible_values = is_object($rule->eligibleValues)
+                ? get_object_vars($rule->eligibleValues)
+                : (array) $rule->eligibleValues;
+
+            if (!array_is_list($eligible_values)) {
+                $eligible_values = array_keys($eligible_values);
+            }
+
+            $eligible_values = array_map(
+                fn($value) => is_string($value) ? explode(':', $value, 2)[0] : $value,
+                $eligible_values
+            );
+
+            $registration_values = is_array($registration_value) ? $registration_value : [$registration_value];
+            $matched_values = array_values(array_intersect($registration_values, $eligible_values));
+
+            if ($matched_values) {
+                return ['applied' => true, 'value' => $matched_values[0]];
+            }
+
+            return $result;
+        }
+
+        if (isset($rule->value) && (is_object($rule->value) || is_array($rule->value))) {
+            foreach ($rule->value as $key => $value) {
+                if (is_array($registration_value)) {
+                    if (in_array($key, $registration_value) && filter_var($value, FILTER_VALIDATE_BOOL)) {
+                        $result = ['applied' => true, 'value' => $key];
+                    }
+                } elseif ($registration_value == $key && filter_var($value, FILTER_VALIDATE_BOOL)) {
+                    $result = ['applied' => true, 'value' => $key];
+                }
+            }
+        } elseif (isset($rule->value) && filter_var($registration_value, FILTER_VALIDATE_BOOL) == filter_var($rule->value, FILTER_VALIDATE_BOOL)) {
+            $result = ['applied' => true, 'value' => $registration_value];
+        }
+
+        return $result;
+    }
+
     public function applyPointReward($result, \MapasCulturais\Entities\Registration $registration)
     {
         $app = App::i();
@@ -1347,8 +1410,6 @@ class Module extends \MapasCulturais\EvaluationMethod
             }
 
             $fieldName  = 'field_' . $rule->field;
-            $applied    = false;
-            $_value     = null;
 
             if (empty($metadata[$fieldName])) {
                 continue;
@@ -1367,28 +1428,9 @@ class Module extends \MapasCulturais\EvaluationMethod
                 }
             }
 
-            if (is_object($rule->value) || is_array($rule->value)) {
-                foreach ($rule->value as $key => $value) {
-                    if (is_array($registration->$fieldName)) {
-                        if (in_array($key, $registration->$fieldName) && filter_var($value, FILTER_VALIDATE_BOOL)) {
-                            $_value  = $key;
-                            $applied = true;
-                        }
-                    } else {
-                        if ($registration->$fieldName == $key && filter_var($value, FILTER_VALIDATE_BOOL)) {
-                            $_value  = $key;
-                            $applied = true;
-                        }
-                    }
-                }
-            } else {
-                if (filter_var($registration->$fieldName, FILTER_VALIDATE_BOOL) == filter_var($rule->value, FILTER_VALIDATE_BOOL)) {
-                    $applied = true;
-                    $_value  = $registration->$fieldName;
-                }
-            }
+            $match = $this->getPointRewardRuleMatch($rule, $registration->$fieldName);
 
-            if (!$applied) {
+            if (!$match['applied']) {
                 continue;
             }
 
@@ -1400,7 +1442,7 @@ class Module extends \MapasCulturais\EvaluationMethod
                 'field'      => ['title' => $field->title, 'id' => $rule->field],
                 'type'       => $config->type,
                 'bonusValue' => $bonusValue,
-                'value'      => $_value,
+                'value'      => $match['value'],
             ];
 
             // Mantém 'percentage' para compatibilidade de leitura legada

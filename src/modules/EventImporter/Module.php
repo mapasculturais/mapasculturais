@@ -401,7 +401,15 @@ class Module extends \MapasCulturais\Module
             'agent',
             new Definitions\FileGroup(
                 'event-import-file',
-                ['text/csv', 'application/excel', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', 'application/vnd.ms-excel'],
+                [
+                    'text/csv',
+                    'text/plain',
+                    'text/x-csv',
+                    'application/csv',
+                    'application/excel',
+                    'application/vnd.ms-excel',
+                    'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+                ],
                 'O arquivo não e valido'
             )
         );

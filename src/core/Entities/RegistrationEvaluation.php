@@ -181,6 +181,16 @@ class RegistrationEvaluation extends \MapasCulturais\Entity {
     }
 
     protected function genericPermissionVerification($user) {
+        // Nunca criar avaliação do proponente da inscrição (autoavaliação)
+        if($this->registration->owner->user->equals($this->user)){
+            return false;
+        }
+
+        // Criação exige estar atribuído em valuers (mesma regra do evaluate)
+        if(!$this->registration->canUser('evaluate', $this->user)){
+            return false;
+        }
+
         return $this->registration->opportunity->evaluationMethodConfiguration->canUser('@control', $user) && $this->user->profile->canUser('@control', $user);
     }
     
@@ -189,8 +199,9 @@ class RegistrationEvaluation extends \MapasCulturais\Entity {
             return false;
         }
 
-        if ($this->registration->opportunity->canUser('@control')) {
-            return true;
+        // Nunca permitir editar autoavaliação
+        if($this->registration->owner->user->equals($this->user)){
+            return false;
         }
 
         if($this->registration->opportunity->canUser('@control', $user)){

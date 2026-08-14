@@ -20,6 +20,7 @@ class RegistrationEvaluation extends \MapasCulturais\Repository{
             'user' => $user
         ];
 
+        $committee_where = '';
         if($committee){
             $committee_where = " AND e.committee = :committee";
             $params['committee'] = $committee;

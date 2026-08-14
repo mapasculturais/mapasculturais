@@ -17,7 +17,7 @@ $this->import('
         <span v-if="showRequiredMark && fieldRequired" class="entity-data__required" aria-hidden="true">*</span> {{ propertyLabel }}
     </div>
 
-    <div class="entity-data__data" v-if="shouldShowValueBlock">
+    <div class="entity-data__data" v-if="shouldShowValueBlock || hasSeals">
         <!-- #region entity-data__value -->
         <div v-if="propertyType == 'date'" class="entity-data__value">
             {{propertyData.date('2-digit year')}}
@@ -43,8 +43,14 @@ $this->import('
             {{getCheckboxValue(propertyData)}}
         </div>
         
-        <div v-else class="entity-data__value">
+        <div v-else-if="shouldShowValueBlock" class="entity-data__value">
             {{normalizeText(propertyData)}}
+        </div>
+
+        <div v-else class="entity-data__value">
+            <small class="bold">
+                <?= i::__('Não informado') ?>
+            </small>
         </div>
         <!-- #endregion entity-data__value -->
 

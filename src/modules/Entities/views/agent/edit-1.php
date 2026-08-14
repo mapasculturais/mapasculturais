@@ -48,8 +48,8 @@ $this->breadcrumb = [
     <mc-tabs class="tabs" sync-hash>
         <?php $this->applyTemplateHook('tabs','begin') ?>
         <mc-tab label="<?= i::_e('Informações') ?>" slug="info">
-            <?php $this->applyTemplateHook('entity-info-validation','begin') ?>
             <mc-container>
+                <?php $this->applyTemplateHook('entity-info-validation','begin') ?>
                 <entity-status :entity="entity"></entity-status>
                 <mc-card class="feature">
                     <template #title>
@@ -137,6 +137,20 @@ $this->breadcrumb = [
                                 <entity-field :disabled="!(entity?.cnhNumero && entity?.cnhCategoria?.length && entity?.cnhValidade)" :entity="entity" classes="col-12" prop="cnhAnexo" title-modal="<?php i::_e('Anexar CNH - Formatos: (png, jpeg, pdf)') ?>" group-name="docs-cnh" :hide-label="true"></entity-field>
                                 <div class="col-12 divider"></div>
 
+                                <!-- RG -->
+                                <p class="col-12 data-subtitle bold"><?php i::_e("RG"); ?></p>
+                                <entity-field :entity="entity" classes="col-4 sm:col-12" prop="rgNumero" label="<?= i::__('Número do RG') ?>"></entity-field>
+                                <entity-field :entity="entity" classes="col-4 sm:col-12" prop="rgOrgaoEmissor" label="<?= i::__('Órgão Emissor') ?>"></entity-field>
+                                <entity-field :entity="entity" classes="col-4 sm:col-12" prop="rgUF" label="<?= i::__('UF') ?>"></entity-field>
+                                <entity-field :disabled="!(entity?.rgNumero)" :entity="entity" classes="col-12" prop="rgAnexo" title-modal="<?php i::_e('Anexar RG - Formatos: (png, jpeg, pdf)') ?>" group-name="docs-rg" :hide-label="true"></entity-field>
+                                <div class="col-12 divider"></div>
+
+                                <!-- Passaporte -->
+                                <p class="col-12 data-subtitle bold"><?php i::_e("Passaporte"); ?></p>
+                                <entity-field :entity="entity" classes="col-12" prop="passaporteNumero" label="<?= i::__('Número do passaporte') ?>"></entity-field>
+                                <entity-field :disabled="!(entity?.passaporteNumero)" :entity="entity" classes="col-12" prop="passaporteAnexo" title-modal="<?php i::_e('Anexar Passaporte - Formatos: (png, jpeg, pdf)') ?>" group-name="docs-passaporte" :hide-label="true"></entity-field>
+                                <div class="col-12 divider"></div>
+
                             </div>
                         </template>
                     </mc-card>
@@ -152,11 +166,40 @@ $this->breadcrumb = [
                                 <entity-field :entity="entity" classes="col-6 sm:col-12" prop="genero" label="<?= i::__('Selecione o Gênero') ?>"></entity-field>
                                 <entity-field :entity="entity" classes="col-6 sm:col-12" prop="orientacaoSexual" label="<?= i::__('Selecione a Orientação Sexual') ?>"></entity-field>
                                 <entity-field :entity="entity" classes="col-6 sm:col-12" prop="raca" label="<?= i::__('Selecione a Raça/Cor') ?>"></entity-field>
+                                <entity-field :disabled="!entity?.raca" :entity="entity" classes="col-12" prop="racaAnexo" title-modal="<?php i::_e('Anexar comprovação de Raça/Cor - Formatos: (png, jpeg, pdf)') ?>" group-name="docs-raca" :hide-label="true"></entity-field>
+                                <div class="col-12 divider"></div>
                                 <entity-field :entity="entity" classes="col-6 sm:col-12" prop="escolaridade" label="<?= i::__('Selecione a sua Escolaridade') ?>"></entity-field>
                                 <entity-field :entity="entity" classes="col-6 sm:col-12" prop="agenteItinerante" label="<?= i::__('É agente itinerante?') ?>"></entity-field>
                                 <entity-field :entity="entity" classes="col-12 pcd" prop="pessoaDeficiente" label="<?= i::__('Pessoa com Deficiência') ?>"></entity-field>
+                                <entity-field :disabled="!entity?.pessoaDeficiente?.length" :entity="entity" classes="col-12" prop="pessoaDeficienciaAnexo" title-modal="<?php i::_e('Anexar comprovação de Pessoa com Deficiência - Formatos: (png, jpeg, pdf)') ?>" group-name="docs-pcd" :hide-label="true"></entity-field>
+                                <div class="col-12 divider"></div>
                                 <entity-field :entity="entity" classes="col-12" prop="comunidadesTradicional" label="<?= i::__('Comunidades tradicionais') ?>"></entity-field>
                                 <entity-field :entity="entity" classes="col-12" prop="comunidadesTradicionalOutros" label="<?= i::__('Não encontrou sua comunidade Tradicional') ?>"></entity-field>
+                                <entity-field :disabled="!entity?.comunidadesTradicional" :entity="entity" classes="col-12" prop="comunidadesTradicionalAnexo" title-modal="<?php i::_e('Anexar comprovação de Comunidade Tradicional - Formatos: (png, jpeg, pdf)') ?>" group-name="docs-comunidades" :hide-label="true"></entity-field>
+                                <div class="col-12 divider"></div>
+                            </div>
+                        </template>
+                    </mc-card>
+                    <mc-card>
+                        <template #title>
+                            <h3 class="bold"><?php i::_e("Documentos e Certidões"); ?></h3>
+                            <p class="data-subtitle"><?php i::_e("Anexos comprobatórios complementares (residência, vínculo, currículo, portfólio e certidões de regularidade)"); ?></p>
+                        </template>
+                        <template #content>
+                            <div class="grid-12">
+                                <entity-field :entity="entity" classes="col-12" prop="comprovanteResidenciaAnexo" label="<?= i::__('Comprovante de Residência') ?>" title-modal="<?php i::_e('Anexar Comprovante de Residência - Formatos: (png, jpeg, pdf)') ?>" group-name="docs-residencia"></entity-field>
+                                <div class="col-12 divider"></div>
+                                <entity-field :entity="entity" classes="col-12" prop="comprovanteVinculoTerritorialAnexo" label="<?= i::__('Comprovante de Vínculo Territorial') ?>" title-modal="<?php i::_e('Anexar Comprovante de Vínculo Territorial - Formatos: (png, jpeg, pdf)') ?>" group-name="docs-vinculo-territorial"></entity-field>
+                                <div class="col-12 divider"></div>
+                                <entity-field :entity="entity" classes="col-12" prop="curriculoAnexo" label="<?= i::__('Currículo') ?>" title-modal="<?php i::_e('Anexar Currículo - Formatos: (png, jpeg, pdf)') ?>" group-name="docs-curriculo"></entity-field>
+                                <div class="col-12 divider"></div>
+                                <entity-files-list :entity="entity" classes="col-12 docs-portfolio-list" group="docs-portfolio" title="<?php i::_e('Portfólio'); ?>" editable></entity-files-list>
+                                <div class="col-12 divider"></div>
+                                <entity-field :entity="entity" classes="col-12" prop="certidaoFiscalAnexo" label="<?= i::__('Certidão de Regularidade Fiscal') ?>" title-modal="<?php i::_e('Anexar Certidão Fiscal - Formatos: (png, jpeg, pdf)') ?>" group-name="docs-certidao-fiscal"></entity-field>
+                                <div class="col-12 divider"></div>
+                                <entity-field :entity="entity" classes="col-12" prop="certidaoTrabalhistaAnexo" label="<?= i::__('Certidão de Regularidade Trabalhista') ?>" title-modal="<?php i::_e('Anexar Certidão Trabalhista - Formatos: (png, jpeg, pdf)') ?>" group-name="docs-certidao-trabalhista"></entity-field>
+                                <div class="col-12 divider"></div>
+                                <entity-field :entity="entity" classes="col-12" prop="certidaoPrestacaoContasAnexo" label="<?= i::__('Certidão de Prestação de Contas') ?>" title-modal="<?php i::_e('Anexar Certidão de Prestação de Contas - Formatos: (png, jpeg, pdf)') ?>" group-name="docs-certidao-contas"></entity-field>
                             </div>
                         </template>
                     </mc-card>
@@ -190,8 +233,8 @@ $this->breadcrumb = [
                         </template>
                     </mc-card>
                 </aside>
+                <?php $this->applyTemplateHook('entity-info-validation','end') ?>
             </mc-container>
-            <?php $this->applyTemplateHook('entity-info-validation','end') ?>
         </mc-tab>
         <?php $this->applyTemplateHook('tabs','end') ?>
     </mc-tabs>
