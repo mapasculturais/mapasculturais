@@ -89,7 +89,7 @@ use MapasCulturais\i;
                 <?php i::_e("Avaliação");?>
             </th>
             <th ng-show="data.registrationTableColumns.status" class="registration-status-col">
-                <mc-select placeholder="Status" model="registrationsFilters['status']" data="data.registrationStatuses"></mc-select>
+                <mc-select placeholder="<?php i::esc_attr_e("Status");?>" model="registrationsFilters['status']" data="data.registrationStatuses"></mc-select>
             </th>
 
             <?php $this->applyTemplateHook('registration-list-header','end'); ?>

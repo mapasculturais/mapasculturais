@@ -44,8 +44,8 @@ $this->import('
             </div>
 
             <template #actions="modal">
-                <button class="button" @click="modal.close()">Cancelar</button>
-                <button class="button button--primary" @click="changeLabels(modal)">Alterar</button>
+                <button class="button" @click="modal.close()"><?= i::__('Cancelar') ?></button>
+                <button class="button button--primary" @click="changeLabels(modal)"><?= i::__('Alterar') ?></button>
             </template>
 
             <template #button="modal">
@@ -104,8 +104,8 @@ $this->import('
                         </div>
 
                         <template #actions="modal">
-                            <button class="button" @click="modal.close()">Cancelar</button>
-                            <button class="button button--primary" @click="changeLabels(modal)">Alterar</button>
+                            <button class="button" @click="modal.close()"><?= i::__('Cancelar') ?></button>
+                            <button class="button button--primary" @click="changeLabels(modal)"><?= i::__('Alterar') ?></button>
                         </template>
 
                         <template #button="modal">
@@ -171,8 +171,8 @@ $this->import('
                         </div>
 
                         <template #actions="modal">
-                            <button class="button" @click="modal.close()">Cancelar</button>
-                            <button class="button button--primary" @click="changeLabels(modal)">Alterar</button>
+                            <button class="button" @click="modal.close()"><?= i::__('Cancelar') ?></button>
+                            <button class="button button--primary" @click="changeLabels(modal)"><?= i::__('Alterar') ?></button>
                         </template>
 
                         <template #button="modal">

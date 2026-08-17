@@ -34,7 +34,7 @@ $arquivo_num = count($user->archivedSeals);
     </ul>
     <!-- #ativos-->
     <div id="ativos">
-        <p>Aqui estão listados todos os selos que você tem permissão de editar</p>
+        <p><?php i::_e('Aqui estão listados todos os selos que você tem permissão de editar'); ?></p>
         <?php foreach($seals as $entity): if($app->user->profile->equals($entity)) continue;?>
             <?php $this->part('panel-seal', array('entity' => $entity)); ?>
         <?php endforeach; ?>
