@@ -7,7 +7,7 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ## [UNRELEASED]
 ### Correções
-- Na prévia do formulário de inscrição, as etapas condicionais passam a acompanhar corretamente a categoria, o tipo de proponente e a faixa selecionados, mantendo a navegação em uma etapa válida quando a seleção muda
+- Na prévia do formulário de inscrição, restaura os seletores de categoria, tipo de proponente e faixa e faz as etapas condicionais acompanharem a seleção, mantendo a navegação em uma etapa válida quando ela muda
 
 ### Melhorias
 - Ajusta tamanho dos cards da seção "Em destaque" na página inicial
