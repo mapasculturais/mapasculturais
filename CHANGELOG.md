@@ -14,8 +14,6 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Corrige erro que podia interromper o carregamento da página quando a data de um selo de verificação estava em branco
 - Envolve textos hardcoded em funções de tradução em telas BaseV1, componentes Vue e confirmações em JavaScript
 - Completa as traduções em espanhol (es_ES) com as strings novas
-- Envolve textos hardcoded em funções de tradução em telas BaseV1, componentes Vue e confirmações em JavaScript
-- Completa as traduções em espanhol (es_ES) com as strings novas
 
 ### Melhorias
 - Passa a limpar automaticamente arquivos antigos de CSS, JavaScript e imagens publicados que ficavam acumulados no servidor, sem remover nada que ainda está em uso
