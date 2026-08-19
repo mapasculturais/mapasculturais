@@ -43,7 +43,7 @@ class Module extends \MapasCulturais\Module
         $app->hook("entity(Registration).save:finish", function() use($module, $app) {
             
             foreach($module->entities as $entity) {
-                if ($entity->changedByRegistration) {
+                if ($entity->changedByRegistration && $app->em->contains($entity)) {
                     $entity->save(true);
                 }
             }
@@ -914,16 +914,14 @@ class Module extends \MapasCulturais\Module
 
     function register_agent_field() {
         $app = App::i();
+        $module = $this;
 
-        $agent_fields = Agent::getPropertiesMetadata();
-        $app->hook('controller(registration).registerFieldType(agent-<<owner|collective>>-field)', function (RegistrationFieldConfiguration $field, &$registration_field_config) use ($agent_fields, $app) {
-            if(!isset($field->config['entityField'])){
+        $bind = function (RegistrationFieldConfiguration $field, &$registration_field_config) use ($app, $module) {
+            $agent_field_name = $module->getConfigEntityField($field);
+            if (!$agent_field_name) {
                 return;
             }
 
-            $agent_field_name = $field->config['entityField'];
-
-            // Tratamento especial para campos de galeria/vídeos/downloads
             if($agent_field_name === '@gallery') {
                 $registration_field_config['type'] = 'gallery';
                 return;
@@ -936,71 +934,129 @@ class Module extends \MapasCulturais\Module
                 $registration_field_config['type'] = 'downloads';
                 return;
             }
-
-            if(!isset($agent_fields[$agent_field_name])){
-                return;
-            }
-            
-            $agent_field = $agent_fields[$agent_field_name];
-            
-            $registration_field_config['type'] = $agent_field['type'];
-
-            if(isset($agent_field['options'])){
-                $registration_field_config['options'] = $agent_field['options'];
-                $field->fieldOptions = $agent_field['options'];
-            }
-            if(isset($agent_field['optionsOrder'])){
-                $registration_field_config['optionsOrder'] = $agent_field['optionsOrder'];
+            if($agent_field_name === '@bankFields') {
+                $registration_field_config['type'] = 'bankFields';
             }
 
-            $definitions = $app->getRegisteredMetadata('MapasCulturais\Entities\Agent');
+            $agent_fields = Agent::getPropertiesMetadata();
+            if(isset($agent_fields[$agent_field_name])){
+                $agent_field = $agent_fields[$agent_field_name];
+                $registration_field_config['type'] = $agent_field['type'] ?? $registration_field_config['type'] ?? 'text';
 
-            if (isset($definitions[$agent_field_name])) {
-                $metadata_definition = $definitions[$agent_field_name];
-                if(isset($metadata_definition->config['validations'])){
-                    $registration_field_config['validations'] = $metadata_definition->config['validations'];
-                };
+                if(isset($agent_field['options'])){
+                    $registration_field_config['options'] = $agent_field['options'];
+                    $field->fieldOptions = $agent_field['options'];
+                }
+                if(isset($agent_field['optionsOrder'])){
+                    $registration_field_config['optionsOrder'] = $agent_field['optionsOrder'];
+                }
             }
-        });
+
+            $copied = $module->getSyncedEntityFieldValidations($field->fieldType, $agent_field_name);
+            if ($copied) {
+                $registration_field_config['validations'] = array_merge(
+                    $registration_field_config['validations'] ?? [],
+                    $copied
+                );
+            }
+        };
+
+        $app->hook('controller(opportunity).registerFieldType(agent-<<owner|collective>>-field)', $bind);
+        $app->hook('controller(registration).registerFieldType(agent-<<owner|collective>>-field)', $bind);
     }
 
     function register_space_field() {
         $app = App::i();
+        $module = $this;
 
-        $space_fields = Agent::getPropertiesMetadata();
-        $app->hook('controller(registration).registerFieldType(space-field)', function (RegistrationFieldConfiguration $field, &$registration_field_config) use ($space_fields, $app) {
-            if(!isset($field->config['entityField'])){
+        $bind = function (RegistrationFieldConfiguration $field, &$registration_field_config) use ($app, $module) {
+            $space_field_name = $module->getConfigEntityField($field);
+            if (!$space_field_name) {
                 return;
             }
 
-            $space_field_name = $field->config['entityField'];
+            $space_fields = Space::getPropertiesMetadata();
+            if(isset($space_fields[$space_field_name])){
+                $space_field = $space_fields[$space_field_name];
+                $registration_field_config['type'] = $space_field['type'] ?? $registration_field_config['type'] ?? 'text';
 
-            if(!isset($space_fields[$space_field_name])){
-                return;
-            }
-            
-            $space_field = $space_fields[$space_field_name];
-            
-            $registration_field_config['type'] = $space_field['type'];
-
-            if(isset($space_field['options'])){
-                $registration_field_config['options'] = $space_field['options'];
-                $field->fieldOptions = $space_field['options'];
-            }
-            if(isset($space_field['optionsOrder'])){
-                $registration_field_config['optionsOrder'] = $space_field['optionsOrder'];
+                if(isset($space_field['options'])){
+                    $registration_field_config['options'] = $space_field['options'];
+                    $field->fieldOptions = $space_field['options'];
+                }
+                if(isset($space_field['optionsOrder'])){
+                    $registration_field_config['optionsOrder'] = $space_field['optionsOrder'];
+                }
             }
 
-            $definitions = $app->getRegisteredMetadata('MapasCulturais\Entities\Space');
-
-            if (isset($definitions[$space_field_name])) {
-                $metadata_definition = $definitions[$space_field_name];
-                if(isset($metadata_definition->config['validations'])){
-                    $registration_field_config['validations'] = $metadata_definition->config['validations'];
-                };
+            $copied = $module->getSyncedEntityFieldValidations($field->fieldType, $space_field_name);
+            if ($copied) {
+                $registration_field_config['validations'] = array_merge(
+                    $registration_field_config['validations'] ?? [],
+                    $copied
+                );
             }
-        });
+        };
+
+        $app->hook('controller(opportunity).registerFieldType(space-field)', $bind);
+        $app->hook('controller(registration).registerFieldType(space-field)', $bind);
         $this->_config['availableSpaceFields'] = $this->getSpaceFields();
+    }
+
+    public function getConfigEntityField(RegistrationFieldConfiguration $field): ?string
+    {
+        $config = $field->config;
+        if (is_array($config)) {
+            $value = $config['entityField'] ?? null;
+        } elseif (is_object($config)) {
+            $value = $config->entityField ?? null;
+        } else {
+            $value = null;
+        }
+
+        return is_string($value) && $value !== '' ? $value : null;
+    }
+
+    /**
+     * Regras v:: do metadado do Agent/Space (e do tipo bankFields para @bankFields)
+     * que o campo @ da inscrição deve herdar.
+     *
+     * @return array<string,string>
+     */
+    public function getSyncedEntityFieldValidations(string $field_type, ?string $entity_field): array
+    {
+        if (!$entity_field) {
+            return [];
+        }
+
+        $app = App::i();
+        $entity_class = $field_type === 'space-field' ? Space::class : Agent::class;
+
+        $validations = [];
+        $properties = $entity_class::getPropertiesMetadata();
+        if (!empty($properties[$entity_field]['validations']) && is_array($properties[$entity_field]['validations'])) {
+            $validations = $properties[$entity_field]['validations'];
+        }
+
+        $definition = $app->getRegisteredMetadataByMetakey($entity_field, $entity_class);
+        if ($definition) {
+            $from_def = $definition->_validations ?: [];
+            if (!$from_def && isset($definition->config['validations']) && is_array($definition->config['validations'])) {
+                $from_def = $definition->config['validations'];
+            }
+            $validations = array_merge($validations, $from_def);
+        }
+
+        if ($entity_field === '@bankFields') {
+            $bank = $app->getRegisteredRegistrationFieldTypeBySlug('bankFields');
+            if ($bank && !empty($bank->validations) && is_array($bank->validations)) {
+                $validations = array_merge($validations, $bank->validations);
+            }
+        }
+
+        unset($validations['required'], $validations['unique']);
+
+        return $validations;
     }
 
     /**
@@ -1863,6 +1919,10 @@ class Module extends \MapasCulturais\Module
                     }
                 }
             } else if($value) {
+                if ($this->syncedEntityFieldValidationErrors($entity, $entity_field, $value)) {
+                    $app->applyHookBoundTo($entity, "registrationFieldTypes.saveToEntity", ["entity_field" => $entity_field, "value" => $value]);
+                    return json_encode($value);
+                }
                 $entity->$entity_field = $value;
             }
          
@@ -1874,6 +1934,25 @@ class Module extends \MapasCulturais\Module
         }
 
         return json_encode($value);
+    }
+
+    /**
+     * @return string[]
+     */
+    public function syncedEntityFieldValidationErrors(Entity $entity, string $entity_field, mixed $value): array
+    {
+        if ($entity_field === '' || str_starts_with($entity_field, '@')) {
+            return [];
+        }
+
+        $definition = App::i()->getRegisteredMetadataByMetakey($entity_field, $entity);
+        if (!$definition) {
+            return [];
+        }
+
+        $result = $definition->validate($entity, $value);
+
+        return is_array($result) ? $result : [];
     }
 
     function fetchFromEntity (Entity $entity, $value, Registration $registration = null, $metadata_definition = null)

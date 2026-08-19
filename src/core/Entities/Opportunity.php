@@ -1663,34 +1663,45 @@ abstract class Opportunity extends \MapasCulturais\Entity
                 continue;
             }
             $field_validations = [];
-            if(in_array($field->fieldType, ['agent-owner-field', 'agent-collective-field'])) {
-                $agent_properties_metadata = \MapasCulturais\Entities\Agent::getPropertiesMetadata();
-                $agent_field_name = $field->config['entityField'] ?? null;
-                $agent_field = $agent_properties_metadata[$agent_field_name] ?? null;
-                $field_type = $agent_field['field_type'] ?? $agent_field['type'] ?? 'text';
+            if(in_array($field->fieldType, ['agent-owner-field', 'agent-collective-field', 'space-field'])) {
+                $entity_field_name = $field->config['entityField'] ?? null;
+                $properties_metadata = $field->fieldType === 'space-field'
+                    ? \MapasCulturais\Entities\Space::getPropertiesMetadata()
+                    : \MapasCulturais\Entities\Agent::getPropertiesMetadata();
+                $entity_field = ($entity_field_name && isset($properties_metadata[$entity_field_name]))
+                    ? $properties_metadata[$entity_field_name]
+                    : null;
+                $field_type = is_array($entity_field)
+                    ? ($entity_field['field_type'] ?? $entity_field['type'] ?? 'text')
+                    : 'text';
                 
-                if(str_starts_with($field->config['entityField'], '@terms')) {
+                if(is_string($entity_field_name) && str_starts_with($entity_field_name, '@terms')) {
                     $field_type = 'multiselect';
                 }
 
-                if($field->config['entityField'] == '@location') {
+                if($entity_field_name == '@location') {
                     $field_type = 'location';
                 }
                 
-                if($field->config['entityField'] == '@links') {
+                if($entity_field_name == '@links') {
                     $field_type = 'links';
                 }
 
-                if($field->config['entityField'] == '@bankFields'){
+                if($entity_field_name == '@bankFields'){
                     $field_type = 'bankFields';
                 }
                 
-                if(in_array($field->config['entityField'], ['longDescription', 'shortDescription'])){
+                if(is_string($entity_field_name) && in_array($entity_field_name, ['longDescription', 'shortDescription'], true)){
                     $field_type = 'textarea';
                 }
                 
-                $field_validations = $agent_field['validations'] ?? [];
-                unset($field_validations['required']);
+                $field_types_module = $app->modules['RegistrationFieldTypes'] ?? null;
+                if ($field_types_module instanceof \RegistrationFieldTypes\Module) {
+                    $field_validations = $field_types_module->getSyncedEntityFieldValidations($field->fieldType, $entity_field_name);
+                } else {
+                    $field_validations = $entity_field['validations'] ?? [];
+                    unset($field_validations['required']);
+                }
 
             } else if ($field->fieldType == 'checkboxes') {
                 $field_type = 'checklist';
@@ -1738,7 +1749,7 @@ abstract class Opportunity extends \MapasCulturais\Entity
                 $cfg['validations'] = [];
             }
 
-            $cfg['validations'] = array_unique(array_merge($cfg['validations'], $field_validations));
+            $cfg['validations'] = array_merge($cfg['validations'], $field_validations);
 
             if($field->required){
                 $cfg['validations']['required'] = \MapasCulturais\i::__('O campo é obrigatório');

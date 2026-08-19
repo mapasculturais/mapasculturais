@@ -1503,6 +1503,7 @@ class Registration extends \MapasCulturais\Entity
             $errors = [];
             $prop_name = $field->getFieldName();
             $val = $this->$prop_name;
+            $val = $this->resolveEntitySyncFieldPostedValue($field, $val);
 
             $empty = false;
 
@@ -1556,6 +1557,32 @@ class Registration extends \MapasCulturais\Entity
         $app->applyHookBoundTo($this, "{$this->hookPrefix}.sendValidationErrors", [&$errorsResult]);
 
         return $errorsResult;
+    }
+
+    /**
+     * Campos @ serializam no metadado da inscrição e, em rascunho, o getter
+     * lê o agente/espaço. A regra v:: tem de rodar no valor postado.
+     */
+    protected function resolveEntitySyncFieldPostedValue($field, $unserialized_val)
+    {
+        if (!in_array($field->fieldType ?? '', ['agent-owner-field', 'agent-collective-field', 'space-field'], true)) {
+            return $unserialized_val;
+        }
+
+        $meta = $this->getMetadata($field->getFieldName(), true);
+        $raw = is_object($meta) ? $meta->value : null;
+        if ($raw === null || $raw === '') {
+            return $unserialized_val;
+        }
+
+        if (is_string($raw) && $raw !== '' && in_array($raw[0], ['{', '['], true)) {
+            $decoded = json_decode($raw, true);
+            if (json_last_error() === JSON_ERROR_NONE) {
+                return $decoded;
+            }
+        }
+
+        return $raw;
     }
 
     function registerFieldsMetadata() {
