@@ -15,6 +15,7 @@ A plataforma já está em uso em diversos municipios, estados, no governo federa
 - SNIIC - https://mapa.cultura.gov.br/
 - Cultura Viva - https://culturaviva.cultura.gov.br/
 - Rede das Artes - https://rededasartes.cultura.gov.br/
+- Mapa dos Comitês de Cultura - https://comitedecultura.org.br/  
 
 ### Instalações estaduais
 - Amapá - https://mapacultural.ap.gov.br/
@@ -64,12 +65,13 @@ A plataforma já está em uso em diversos municipios, estados, no governo federa
 - Toledo/PR - https://cultura.toledo.pr.gov.br/
 
 ### Outras instalações
-- Floresta Ativista - https://rede.florestaativista.org/
-- AMFRIMapa Cultural CIM-AMFRI / SC - https://mapacultural.cim-amfri.sc.gov.br/
-- Mapa Cultural AGIMOS - UFPel - https://mapacultural.ufpel.edu.br/
+- Rede Floresta Ativista - https://rede.florestaativista.org/
+- Mapa Cultural CIM-AMFRI / SC - https://mapacultural.cim-amfri.sc.gov.br/
 - Mapa da Inovação do ES - https://mapa.inovacao.es.gov.br/
 - Balaio Cultural UFPR - https://mapadacultura.ufpr.br/
 - Periferia Viva - Ministério das Cidades - https://iniciativas-mapadasperiferias.cidades.gov.br/
+- Cacicadas Digitais - https://mapa.cacicadasdigitais.org.br/
+- Em cena (Juventude de Heliópolis/SP) - https://emcena.unas.org.br/
 
 ## Sobre a aplicação
 Mapas Culturais é uma aplicação web server-side baseada em linguagem PHP e banco de dados Postgres, entre outras tecnologias e componentes, que propicia um ambiente virtual para mapeamento, divulgação e gestão de ativos culturais. 
