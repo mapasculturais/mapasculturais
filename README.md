@@ -46,8 +46,10 @@ A plataforma já está em uso em diversos municipios, estados, no governo federa
 - Cianorte/PR - https://cultura.cianorte.pr.gov.br/
 - Gravataí/RS - https://mapacultural.gravatai.rs.gov.br/
 - Iguatu/CE - http://mapacultural.iguatu.ce.gov.br/
+- Itatiba - https://mapacultural.itatiba.sp.gov.br/
 - João Pessoa/PB - https://jpcultura.joaopessoa.pb.gov.br/
 - Lagoa Santa/MG - https://mapacultural.lagoasanta.mg.gov.br/
+- Limeira - https://mapasculturais.limeira.sp.gov.br/
 - Londrina/PR - https://londrinacultura.londrina.pr.gov.br/
 - Maringá/PR - https://maringacultura.maringa.pr.gov.br/
 - Mauá/SP - https://mapacultural.maua.sp.gov.br/
@@ -63,6 +65,7 @@ A plataforma já está em uso em diversos municipios, estados, no governo federa
 - São Bernardo do Campo/SP - https://mapacultural.saobernardo.sp.gov.br/
 - Sarandi/PR - https://cultura.sarandi.pr.gov.br/
 - Toledo/PR - https://cultura.toledo.pr.gov.br/
+- Triunfo - https://mapacultural.triunfo.pe.gov.br/
 
 ### Outras instalações
 - Rede Floresta Ativista - https://rede.florestaativista.org/
