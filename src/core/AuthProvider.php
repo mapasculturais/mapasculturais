@@ -43,7 +43,10 @@ abstract class AuthProvider {
     function __construct(array $config = []) {
         $this->_config = $config;
         $this->_init();
-        $this->_authenticatedUser = $this->_getAuthenticatedUser();
+        // A sessão local (módulo LocalAuth) resolve primeiro para TODOS os
+        // drivers (coexistência local+social); drivers sociais preservam o
+        // comportamento dele no _getAuthenticatedUser() quando não há sessão local.
+        $this->_authenticatedUser = $this->_resolveLocalSessionUser() ?? $this->_getAuthenticatedUser();
         $this->_guestUser = new GuestUser();
         $app = App::i();
 
@@ -58,6 +61,20 @@ abstract class AuthProvider {
             $user->lastLoginTimestamp = new \DateTime;
             $user->save(true);
         });
+    }
+
+    /**
+     * Extensão aditiva — chaves de sessão próprias, zero interferência com
+     * drivers existentes e com o plugin MultipleLocalAuth (que usa
+     * 'multipleLocalUserId'): resolve a sessão do login local do core, se houver.
+     */
+    protected function _resolveLocalSessionUser(): ?Entities\User {
+        $user_id = $_SESSION['mapasculturais.auth.local_user_id'] ?? null;
+        if (!$user_id) {
+            return null;
+        }
+        $user = App::i()->repo('User')->find($user_id);
+        return $user instanceof Entities\User ? $user : null;
     }
 
     /**
@@ -115,6 +132,8 @@ abstract class AuthProvider {
 
         $this->_authenticatedUser = null;
         $this->_cleanUserSession();
+        // limpa também a sessão local do core (independente do driver)
+        unset($_SESSION['mapasculturais.auth.local_user_id']);
 
         App::i()->applyHookBoundTo($this, 'auth.logout:after');
     }
@@ -156,14 +175,22 @@ abstract class AuthProvider {
 
     /**
      * Define a URL para redirecionar após a autenticação (interno)
+     *
+     * Validação no write time — apenas caminho relativo
+     * iniciado por '/', nunca '//' nem scheme/URL absoluta.
+     *
      * @param string $redirect_path
      */
     protected function _setRedirectPath(string $redirect_path) {
-        $_SESSION['mapasculturais.auth.redirect_path'] = $redirect_path;
+        $_SESSION['mapasculturais.auth.redirect_path'] = self::sanitizeRedirectPath($redirect_path);
     }
 
     /**
      * Retorna a URL de redirecionamento pós-autenticação
+     *
+     * A validação é reaplicada no read time sobre o valor
+     * pós-hook 'auth.redirectUrl' (que pode alterar o redirect), imediatamente
+     * antes do return — fecha o open redirect B1 também pela porta do hook.
      * 
      * @return string
      */
@@ -174,7 +201,57 @@ abstract class AuthProvider {
 
         $app->applyHookBoundTo($this, 'auth.redirectUrl', [&$redirect]);
         
-        return $redirect;
+        return self::sanitizeRedirectPath($redirect);
+    }
+
+    /**
+     * Wrapper PÚBLICO de getRedirectPath() para consumidores fora da
+     * hierarquia de drivers (ex.: módulo LocalAuth) — chamar o protected de
+     * fora da hierarquia aciona o MagicCallers e lançaria Error no caminho de
+     * SUCESSO do login. Aplica a mesma sanitização (read time, pós-hook) e o
+     * mesmo comportamento de consumo da sessão.
+     */
+    public function getRedirectPathForConsumer(): string
+    {
+        return $this->getRedirectPath();
+    }
+
+    /**
+     * Normaliza um caminho de redirecionamento para uso interno.
+     *
+     * Aceita apenas caminhos relativos iniciados por '/' que não começem com
+     * '//' e não contenham scheme; qualquer outra coisa (URL absoluta, '//',
+     * '\/', scheme-relative) reseta para o painel.
+     */
+    public static function sanitizeRedirectPath(string $path): string {
+        if ($path === '') {
+            return self::redirectFallback();
+        }
+        // caminho relativo: inicia com '/', não com '//' nem '/\'
+        if ($path[0] !== '/' || (isset($path[1]) && ($path[1] === '/' || $path[1] === '\\'))) {
+            return self::redirectFallback();
+        }
+        // sem scheme (ex.: 'https:', 'mailto:') no início
+        if (preg_match('#^[a-zA-Z][a-zA-Z0-9+.\-]*:#', $path)) {
+            return self::redirectFallback();
+        }
+        return $path;
+    }
+
+    /**
+     * Fallback seguro do redirect: painel quando o roteador está disponível;
+     * '/' caso contrário (CLI/boot inicial, onde não há view/controller).
+     */
+    private static function redirectFallback(): string {
+        try {
+            $app = App::i();
+            if (isset($app->view) && $app->view !== null) {
+                return $app->createUrl('panel', 'index');
+            }
+        } catch (\Throwable $e) {
+            // sem app/roteador utilizável
+        }
+        return '/';
     }
 
     /**
@@ -195,6 +272,22 @@ abstract class AuthProvider {
      */
     protected function setAuthenticatedUser(Entities\User|null $user = null){
         $this->_authenticatedUser = $user;
+    }
+
+    /**
+     * Finaliza uma autenticação bem-sucedida DE FORA da hierarquia de drivers
+     * Wrapper público com a MESMA semântica de
+     * _setAuthenticatedUser — grava o usuário na instância do provider e
+     * dispara o hook 'auth.login'.
+     *
+     * Contexto: módulos do core (LocalAuth) autenticam usuários sem pertencer
+     * à hierarquia de AuthProvider; chamar _setAuthenticatedUser (protected
+     * final) de fora acionava __call (MagicCallers) e lançava Error APÓS a
+     * gravação da sessão. Este método é aditivo (R2): drivers existentes e o
+     * plugin MultipleLocalAuth não são afetados.
+     */
+    public function finalizeAuthentication(Entities\User $user): void {
+        $this->_setAuthenticatedUser($user);
     }
 
     /**
@@ -236,15 +329,23 @@ abstract class AuthProvider {
 
     /**
      * Define os cookies de autenticação
-     * 
+     *
+     * '.uid' não tem consumidor em JS — HttpOnly+Secure. '.adm' é lido pelo
+     * tema BaseV1 (mapasculturais.js) — recebe Secure+SameSite; HttpOnly fica
+     * pendente de um refactor do tema.
+     *
      * @return void
      */
     function setCookies(){
         $user_id = $this->isUserAuthenticated() ? $this->getAuthenticatedUser()->id : 0;
         $user_is_adm = $this->getAuthenticatedUser()->is('admin');
         if (php_sapi_name() != "cli") {
-            setcookie('mapasculturais.uid', $user_id, 0, '/');
-            setcookie('mapasculturais.adm', $user_is_adm, 0, '/');
+            $secure = (bool) env('MAPAS_HTTPS', false);
+            if (filter_var(env('MAPAS_HTTPS', false), FILTER_VALIDATE_BOOLEAN)) {
+                $secure = true;
+            }
+            setcookie('mapasculturais.uid', $user_id, ['expires' => 0, 'path' => '/', 'httponly' => true, 'samesite' => 'Lax'] + ($secure ? ['secure' => true] : []));
+            setcookie('mapasculturais.adm', $user_is_adm, ['expires' => 0, 'path' => '/', 'samesite' => 'Lax'] + ($secure ? ['secure' => true] : []));
         }
     }
 }

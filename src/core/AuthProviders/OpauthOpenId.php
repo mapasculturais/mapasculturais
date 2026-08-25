@@ -2,98 +2,52 @@
 namespace MapasCulturais\AuthProviders;
 
 use MapasCulturais\App;
-use MapasCulturais\Entities;
+use MapasCulturais\i;
 
 /**
- * Provedor de autenticação Opauth para OpenID
- * 
- * Implementa autenticação via Opauth para provedores OpenID
- * 
- * @package MapasCulturais\AuthProviders
+ * SHIM DE DEPRECAÇÃO — OpenID 2.0 (protocolo descontinuado).
+ *
+ * O protocolo OpenID 2.0 está descontinuado e o endpoint default do driver
+ * legado (Google o8) foi desativado em 2015; nenhuma biblioteca do motor novo
+ * cobre o protocolo. Este driver permanece instanciável para não quebrar
+ * configs existentes ('auth.provider' => 'OpauthOpenId'), mas o fluxo de
+ * autenticação SEMPRE falha de forma graciosa com mensagem amigável e log de
+ * deprecação. A identidade histórica (auth_provider=1 'OpenID') permanece
+ * registrada e preservada no banco.
+ *
+ * Migração: utilize um provedor OIDC (ver UPGRADING.md e docs/plugins/auth/).
  */
 class OpauthOpenId extends \MapasCulturais\AuthProvider{
-    /**
-     * Instância do Opauth
-     * @var \Opauth
-     */
-    protected $opauth;
 
     /**
-     * Inicializa o provedor de autenticação
-     * 
-     * Configura as rotas e hooks necessários para autenticação via OpenID
-     * 
+     * Inicializa o shim: registra as rotas com comportamento de deprecação.
+     *
      * @return void
      */
     protected function _init() {
         $app = App::i();
 
-        $url = $app->createUrl('auth');
-        
-        $config = array_merge([
-            'timeout' => '24 hours',
-            'salt' => 'LT_SECURITY_SALT_SECURITY_SALT_SECURITY_SALT_SECURITY_SALT_SECU',
-            'login_url' => 'https://www.google.com/accounts/o8/id',
-            'path' => preg_replace('#^https?\:\/\/[^\/]*(/.*)#', '$1', $url)
-
-        ], $this->_config);
-
-        $opauth_config = [
-            'Strategy' => [
-                'OpenID' => [
-                    'identifier_form' => THEMES_PATH . 'active/views/auth-form.php',
-                    'url' => $config['login_url']
-                ]
-            ],
-            'security_salt' => $config['salt'],
-            'security_timeout' => $config['timeout'],
-            'host' => preg_replace('#^(https?\:\/\/[^\/]*)/.*#', '$1', $url),
-            'path' => $config['path'],
-            'callback_url' => $app->createUrl('auth','response')
-        ];
-
-        $opauth = new \Opauth($opauth_config, false );
-
-        $this->opauth = $opauth;
-
-        if($config['logout_url']){
-            $app->hook('auth.logout:after', function() use($app, $config){
-                $app->redirect($config['logout_url'] . '?next=' . $app->baseUrl);
-            });
-        }
-
+        $app->log->warning('[auth] OpauthOpenId está DEPRECADO: OpenID 2.0 é um protocolo descontinuado e não possui motor na linha 8.x. Migre para um provedor OIDC (ver UPGRADING.md).');
 
         // add actions to auth controller
         $app->hook('GET(auth.index)', function () use($app){
-            $app->redirect($this->createUrl('openid'));
+            $app->redirect($app->createUrl('site', 'index'));
         });
 
-
-        $app->hook('<<GET|POST>>(auth.openid)', function () use($opauth, $config){
-            $_POST['openid_url'] = $config['login_url'];
-            $opauth->run();
+        $app->hook('<<GET|POST>>(auth.openid)', function () use($app){
+            $app->log->warning('[auth] Tentativa de login via OpenID 2.0 (deprecado) — fluxo encerrado.');
+            $app->redirect($app->createUrl('site', 'index'));
         });
 
         $app->hook('GET(auth.response)', function () use($app){
             $app->auth->processResponse();
-
-            if($app->auth->isUserAuthenticated()){
-                $app->redirect ($app->auth->getRedirectPath());
-            }else{
-                if($app->config['app.mode'] === 'production'){
-                    $app->redirect ($this->createUrl('error'));
-                }else{
-                    echo '<pre>';
-                    var_dump($this->data, $_POST, $_GET, $_REQUEST, $_SESSION);
-                    die;
-                }
-            }
+            $app->redirect($app->controller('auth')->createUrl(''));
         });
     }
 
     /**
      * Limpa a sessão do usuário
-     * 
+     *
      * @return void
      */
     public function _cleanUserSession() {
@@ -101,8 +55,23 @@ class OpauthOpenId extends \MapasCulturais\AuthProvider{
     }
 
     /**
+     * Requer autenticação do usuário
+     *
+     * @return void
+     */
+    public function _requireAuthentication() {
+        $app = App::i();
+        if($app->request->isAjax()){
+            $app->halt(401, i::__('This action requires authentication'));
+        }else{
+            $this->_setRedirectPath($app->request->getPathInfo());
+            $app->redirect($app->controller('auth')->createUrl(''), 401);
+        }
+    }
+
+    /**
      * Retorna a URL para redirecionamento após autenticação
-     * 
+     *
      * @return string
      */
     public function getRedirectPath(){
@@ -115,166 +84,28 @@ class OpauthOpenId extends \MapasCulturais\AuthProvider{
     }
 
     /**
-     * Retorna a resposta de autenticação do Opauth ou null se o usuário não tentou autenticar
-     * 
-     * @return array|null
-     */
-    protected function _getResponse(){
-        $app = App::i();
-        /**
-        * Fetch auth response, based on transport configuration for callback
-        */
-        $response = null;
-
-        switch($this->opauth->env['callback_transport']) {
-            case 'session':
-                $response = key_exists('opauth', $_SESSION) ? $_SESSION['opauth'] : null;
-                break;
-            case 'post':
-                $response = unserialize(base64_decode( $_POST['opauth'] ));
-                break;
-            case 'get':
-                $response = unserialize(base64_decode( $_GET['opauth'] ));
-                break;
-            default:
-                $app->log->error('Opauth Error: Unsupported callback_transport.');
-                break;
-        }
-        return $response;
-    }
-
-
-    /**
-     * Verifica se a resposta do Opauth é válida
-     * 
-     * Se for válida, o usuário está autenticado
-     * 
-     * @return boolean
-     */
-    protected function _validateResponse(){
-        $app = App::i();
-
-        $reason = '';
-
-        $response = $this->_getResponse();
-
-        $valid = false;
-
-        // o usuário ainda não tentou se autenticar
-        if(!is_array($response))
-            return false;
-
-        // verifica se a resposta é um erro
-        if (array_key_exists('error', $response)) {
-            $app->flash('auth error', 'Opauth returns error auth response');
-        } else {
-            /**
-            * Auth response validation
-            *
-            * To validate that the auth response received is unaltered, especially auth response that
-            * is sent through GET or POST.
-            */
-            if (empty($response['auth']) || empty($response['timestamp']) || empty($response['signature']) || empty($response['auth']['provider']) || empty($response['auth']['uid'])) {
-                $app->flash('auth error', 'Invalid auth response: Missing key auth response components.');
-            } elseif (!$this->opauth->validate(sha1(print_r($response['auth'], true)), $response['timestamp'], $response['signature'], $reason)) {
-                $app->flash('auth error', "Invalid auth response: {$reason}");
-            } else {
-                $valid = true;
-            }
-        }
-
-        return $valid;
-    }
-
-
-    /**
-     * Obtém o usuário autenticado
-     * 
-     * @return \MapasCulturais\Entities\User|null
+     * Sempre null: o protocolo não possui motor.
+     *
+     * @return null
      */
     public function _getAuthenticatedUser() {
-        $user = null;
-        if($this->_validateResponse()){
-            $app = App::i();
-            $response = $this->_getResponse();
-            $auth_uid = $response['auth']['uid'];
-            $auth_provider = $app->getRegisteredAuthProviderId('OpenId');
-            $user = $app->repo('User')->getByAuth($auth_provider, $auth_uid);
-
-            return $user;
-
-        }else{
-            return null;
-        }
+        return null;
     }
 
-
     /**
-     * Processa a resposta de autenticação do Opauth e cria o usuário se não existir
-     * 
-     * @return boolean true se a resposta for válida ou false se não for válida
+     * Sempre falha gracioso (auth.failed) — nunca autentica.
+     *
+     * @return boolean
      */
     public function processResponse(){
-        // se autenticou
-        if($this->_validateResponse()){
-            // e ainda não existe um usuário no sistema
-            $user = $this->_getAuthenticatedUser();
-            if(!$user){
-                $response = $this->_getResponse();
-                $user = $this->createUser($response);
-                
-                $profile = $user->profile;
-                $this->_setRedirectPath($profile->editUrl);
-
-            }
-            $this->_setAuthenticatedUser($user);
-
-            App::i()->applyHook('auth.successful');
-            return true;
-        } else {
-            $this->_setAuthenticatedUser();
-            App::i()->applyHook('auth.failed');
-            return false;
-        }
+        App::i()->applyHook('auth.failed');
+        return false;
     }
 
     /**
-     * Cria um novo usuário a partir da resposta de autenticação
-     * 
-     * @param array $response Resposta de autenticação do Opauth
-     * @return \MapasCulturais\Entities\User
+     * Nunca alcançado (processResponse sempre falha antes).
      */
-    protected function _createUser($response) {
-        $app = App::i();
-
-        $app->disableAccessControl();
-
-        // cria o usuário
-        $user = new Entities\User;
-        $user->authProvider = $response['auth']['provider'];
-        $user->authUid = $response['auth']['uid'];
-        $user->email = $response['auth']['info']['email'];
-        $app->em->persist($user);
-
-        // cria um agente do tipo user profile para o usuário criado acima
-        $agent = new Entities\Agent($user);
-
-        if(isset($response['auth']['info']['name']))
-            $agent->name = $response['auth']['info']['name'];
-        elseif(isset($response['auth']['info']['first_name']) && isset($response['auth']['info']['last_name']))
-            $agent->name = $response['auth']['info']['first_name'] . ' ' . $response['auth']['info']['last_name'];
-        else
-            $agent->name = 'Sem nome';
-
-
-        $app->em->persist($agent);
-        $app->em->flush();
-
-        $user->profile = $agent;
-        $user->save(true);
-
-        $app->enableAccessControl();
-
-        return $user;
+    protected function _createUser($data) {
+        return null;
     }
 }

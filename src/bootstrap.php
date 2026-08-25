@@ -52,13 +52,27 @@ if(!is_dir(DOCTRINE_PROXIES_PATH)){
 }
 
 if (REDIS_SESSION) {
-    ini_set('session.save_handler', 'redis'); 
+    ini_set('session.save_handler', 'redis');
 } else if(!is_dir(SESSIONS_SAVE_PATH)){
-    mkdir(SESSIONS_SAVE_PATH);
+    // Diretório de sessões com permissões restritas (0770) — as sessões
+    // contêm tokens/id_token no fluxo OAuth.
+    mkdir(SESSIONS_SAVE_PATH, 0770);
 }
 
 ini_set( "session.gc_maxlifetime", SESSION_TIMEOUT );
 ini_set( "session.cookie_lifetime", SESSION_TIMEOUT );
+
+// Flags de cookie de sessão — HttpOnly, SameSite=Lax e Secure quando
+// MAPAS_HTTPS (ou proxy https detectado acima). Lax preserva a navegação
+// top-level e o AJAX same-site dos temas.
+$is_https = !empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off';
+session_set_cookie_params([
+    'lifetime' => SESSION_TIMEOUT,
+    'path' => '/',
+    'httponly' => true,
+    'samesite' => 'Lax',
+    'secure' => $is_https,
+]);
 
 if(!isset($_SERVER['HTTP_HOST'])) {
     $_SERVER['HTTP_HOST'] = 'localhost';

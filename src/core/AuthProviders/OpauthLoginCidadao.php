@@ -1,21 +1,26 @@
 <?php
 namespace MapasCulturais\AuthProviders;
+
 use MapasCulturais\App;
+use MapasCulturais\Auth\OAuth2ClientHelper;
 use MapasCulturais\Entities;
+use MapasCulturais\i;
 
 /**
- * Provedor de autenticação Opauth para Login Cidadão
- * 
- * Implementa autenticação via Opauth para o provedor Login Cidadão
- * 
- * @package MapasCulturais\AuthProviders
+ * Provedor de autenticação OAuth2 (Login Cidadão) — motor league/oauth2-client.
+ *
+ * Login Cidadão é OAuth2 puro
+ * (sem ID token no fluxo legado). PKCE 'off' por padrão com WARNING em produção
+ * (condição de saída: flip para 'on' quando o IdP confirmar suporte).
+ * Logout federado via logout_url?next= com next construído
+ * exclusivamente server-side a partir do BASE_URL.
  */
 class OpauthLoginCidadao extends \MapasCulturais\AuthProvider{
     /**
-     * Instância do Opauth
-     * @var \Opauth
+     * Helper do motor OAuth2 (interno do core)
+     * @var OAuth2ClientHelper
      */
-    protected $opauth;
+    protected OAuth2ClientHelper $oauth;
 
     /**
      * URL do primeiro login
@@ -25,51 +30,47 @@ class OpauthLoginCidadao extends \MapasCulturais\AuthProvider{
 
     /**
      * Inicializa o provedor de autenticação
-     * 
-     * Configura as rotas e hooks necessários para autenticação via Login Cidadão
-     * 
+     *
      * @return void
      */
     protected function _init() {
         $app = App::i();
-        
+
         $url = $app->createUrl('auth');
         $config = array_merge([
-            'timeout' => '24 hours',
-            'salt' => 'LT_SECURITY_SALT_SECURITY_SALT_SECURITY_SALT_SECURITY_SALT_SECU',
+            'timeout' => '24 hours',           // legado Opauth: aceito no config, ignorado na segurança de fluxo
+            'salt' => '',                      // legado Opauth: sem uso no motor novo
 
             'client_secret' => '',
-            'cliente_id' => '',
-            'path' => preg_replace('#^https?\:\/\/[^\/]*(/.*)#', '$1', $url)
+            'client_id' => '',
+            'path' => preg_replace('#^https?\:\/\/[^\/]*(/.*)#', '$1', $url),
+
+            'pkce' => 'off',                   // R-R8: LC legado sem PKCE; 'off' + WARNING em produção; sem downgrade silencioso
+            'state_ttl' => 600,
+            'scope' => env('AUTH_LOGIN_CIDADAO_SCOPE', 'openid profile email'),
+            'urlAuthorize' => env('AUTH_LOGIN_CIDADAO_AUTH_ENDPOINT', ''),
+            'urlAccessToken' => env('AUTH_LOGIN_CIDADAO_TOKEN_ENDPOINT', ''),
+            'urlResourceOwnerDetails' => env('AUTH_LOGIN_CIDADAO_USERINFO_ENDPOINT', ''),
         ], $this->_config);
-        
-        
-         $opauth_config = [
-            'strategy_dir' => PROTECTED_PATH . '/vendor/opauth/',
-            'Strategy' => [
-                'logincidadao' => $config
-            ],
-            'security_salt' => $config['salt'],
-            'security_timeout' => $config['timeout'],
-            'host' => preg_replace('#^(https?\:\/\/[^\/]*)/.*#', '$1', $url),
-            'path' => $config['path'],
-            'callback_url' => $app->createUrl('auth','response')
-        ];
-        
-        
+
+        // typo histórico 'cliente_id' (chave jamais funcional) é corrigido por merge
+        if (isset($this->_config['cliente_id']) && !isset($this->_config['client_id'])) {
+            $config['client_id'] = $this->_config['cliente_id'];
+        }
+
         //  SaaS -- BEGIN
         $app->hook('template(subsite.<<*>>.tabs):end', function() use($app){
             if($app->user->is('saasAdmin') || $app->user->is('superSaasAdmin')) {
                 $this->part('singles/subsite--login-cidadao--tab');
             }
         });
-        
+
         $app->hook('template(subsite.<<*>>.tabs-content):end', function() use($app){
             if($app->user->is('saasAdmin') || $app->user->is('superSaasAdmin')) {
                 $this->part('singles/subsite--login-cidadao--content');
             }
         });
-        
+
         $metadata = [
             'login_cidaddao__id' => ['label' => 'Login Cidadão Client ID', 'private' => 'true'],
             'login_cidaddao__secret' => ['label' => 'Login Cidadão Client Secret', 'private' => 'true']
@@ -79,37 +80,43 @@ class OpauthLoginCidadao extends \MapasCulturais\AuthProvider{
             $def = new \MapasCulturais\Definitions\Metadata($k, $cfg);
             $app->registerMetadata($def, 'MapasCulturais\Entities\Subsite');
         }
-        
-        if($subsite = $app->getCurrentSubsite()){
 
-            
+        if($subsite = $app->getCurrentSubsite()){
             $login_cidaddao__id = $subsite->getMetadata('login_cidaddao__id');
             $login_cidaddao__secret = $subsite->getMetadata('login_cidaddao__secret');
-            
+
             if($login_cidaddao__id && $login_cidaddao__secret){
-                $opauth_config['Strategy']['logincidadao']['client_id'] = $login_cidaddao__id;
-                $opauth_config['Strategy']['logincidadao']['client_secret'] = $login_cidaddao__secret;
+                $config['client_id'] = $login_cidaddao__id;
+                $config['client_secret'] = $login_cidaddao__secret;
             }
         }
-        
+
         // SaaS -- END
 
         if(isset($config['onCreateRedirectUrl'])){
             $this->onCreateRedirectUrl = $config['onCreateRedirectUrl'];
         }
 
-        $opauth = new \Opauth($opauth_config, false );
-        $this->opauth = $opauth;
+        $this->oauth = new OAuth2ClientHelper('logincidadao', $config);
 
+        $provider = $this->oauth;
 
         // add actions to auth controller
+        // Com login local ATIVO (módulo LocalAuth) e sem MLA, o módulo renderiza
+        // a página combinada em hook de prioridade anterior (-100); este redirect
+        // ao IdP só roda quando o local está desligado.
         $app->hook('GET(auth.index)', function () use($app){
+            if (\LocalAuth\Module::isEnabled() && !\LocalAuth\Module::multipleLocalAuthActive()) {
+                return; // o módulo LocalAuth já respondeu (hook -100)
+            }
             $app->redirect($this->createUrl('logincidadao'));
         });
-        $app->hook('<<GET|POST>>(auth.logincidadao)', function () use($opauth, $config){
-//            $_POST['openid_url'] = $config['login_url'];
-            $opauth->run();
+
+        $app->hook('<<GET|POST>>(auth.logincidadao)', function () use($app, $provider){
+            $transaction = $provider->beginAuthorization();
+            $app->redirect($provider->buildAuthorizationUrl($transaction));
         });
+
         $app->hook('GET(auth.response)', function () use($app){
             $app->auth->processResponse();
             if($app->auth->isUserAuthenticated()){
@@ -118,53 +125,56 @@ class OpauthLoginCidadao extends \MapasCulturais\AuthProvider{
                 $app->redirect ($this->createUrl(''));
             }
         });
-        
-        if($config['logout_url']){
+
+        if(isset($config['logout_url']) && $config['logout_url']){
             $app->hook('auth.logout:after', function() use($app, $config){
-                $app->redirect($config['logout_url'] . '?next=' . $app->baseUrl);
+                // 'next' construído exclusivamente server-side a partir do
+                // BASE_URL — nunca de input do usuário (endurece o comportamento legado).
+                $app->redirect($config['logout_url'] . '?next=' . urlencode($app->getBaseUrl()));
             });
         }
-        
     }
-    
+
     /**
      * Limpa a sessão do usuário
-     * 
+     *
      * @return void
      */
     public function _cleanUserSession() {
-        unset($_SESSION['opauth']);
+        if (isset($this->oauth)) {
+            $this->oauth->cleanSession();
+        }
+        unset($_SESSION['opauth']); // chave legada: limpeza de resíduos de sessões pré-migração
     }
-    
+
     /**
      * Requer autenticação do usuário
-     * 
+     *
      * @return void
-     * @throws \Exception Se a requisição for AJAX, retorna erro 401
      */
     public function _requireAuthentication() {
         $app = App::i();
         if($app->request->isAjax()){
-            $app->halt(401, \MapasCulturais\i::__('This action requires authentication'));
+            $app->halt(401, i::__('This action requires authentication'));
         }else{
             $this->_setRedirectPath($app->request->getPathInfo());
             $app->redirect($app->controller('auth')->createUrl(''), 401);
         }
     }
-    
+
     /**
      * Define a URL para redirecionamento após autenticação
-     * 
+     *
      * @param string $redirect_path Caminho para redirecionamento
      * @return void
      */
     protected function _setRedirectPath($redirect_path) {
         parent::_setRedirectPath($redirect_path);
     }
-    
+
     /**
      * Retorna a URL para redirecionamento após autenticação
-     * 
+     *
      * @return string
      */
     public function getRedirectPath(){
@@ -173,135 +183,115 @@ class OpauthLoginCidadao extends \MapasCulturais\AuthProvider{
         unset($_SESSION['mapasculturais.auth.redirect_path']);
         return $path;
     }
-    
-    /**
-     * Retorna a resposta de autenticação do Opauth ou null se o usuário não tentou autenticar
-     * 
-     * @return array|null
-     */
-    protected function _getResponse(){
-        $app = App::i();
-        /**
-        * Fetch auth response, based on transport configuration for callback
-        */
-        $response = null;
-        switch($this->opauth->env['callback_transport']) {
-            case 'session':
-                $response = key_exists('opauth', $_SESSION) ? $_SESSION['opauth'] : null;
-                break;
-            case 'post':
-                $response = unserialize(base64_decode( $_POST['opauth'] ));
-                break;
-            case 'get':
-                $response = unserialize(base64_decode( $_GET['opauth'] ));
-                break;
-            default:
-                $app->log->error('Opauth Error: Unsupported callback_transport.');
-                break;
-        }
-        return $response;
-    }
-    
-    /**
-     * Verifica se a resposta do Opauth é válida
-     * 
-     * Se for válida, o usuário está autenticado
-     * 
-     * @return boolean
-     */
-    protected function _validateResponse(){
-        $app = App::i();
-        $reason = '';
-        $response = $this->_getResponse();
-        $valid = false;
-        // o usuário ainda não tentou se autenticar
-        if(!is_array($response))
-            return false;
-        // verifica se a resposta é um erro
-        if (array_key_exists('error', $response)) {
 
-            $app->flash('auth error', 'Opauth returns error auth response');
-        } else {
-            /**
-            * Auth response validation
-            *
-            * To validate that the auth response received is unaltered, especially auth response that
-            * is sent through GET or POST.
-            */
-            if (empty($response['auth']) || empty($response['timestamp']) || empty($response['signature']) || empty($response['auth']['provider']) || empty($response['auth']['uid'])) {
-                $app->flash('auth error', 'Invalid auth response: Missing key auth response components.');
-            } elseif (!$this->opauth->validate(sha1(print_r($response['auth'], true)), $response['timestamp'], $response['signature'], $reason)) {
-                $app->flash('auth error', "Invalid auth response: {$reason}");
-            } else {
-                $valid = true;
-            }
-        }
-        return $valid;
-    }
-    
     /**
-     * Obtém o usuário autenticado
-     * 
+     * Obtém o usuário autenticado a partir da sessão do driver.
+     *
      * @return \MapasCulturais\Entities\User|null
      */
     public function _getAuthenticatedUser() {
-        $user = null;
-        if($this->_validateResponse()){
-            $app = App::i();
-            $response = $this->_getResponse();
-            $auth_uid = $response['auth']['uid'];
-            $auth_provider = $app->getRegisteredAuthProviderId('logincidadao');
-
-            $user = $app->repo('User')->getByAuth($auth_provider, $auth_uid);
-            return $user;
-        }else{
+        $user_id = $_SESSION['auth.oauth.user']['logincidadao'] ?? null;
+        if (!$user_id) {
             return null;
         }
+        return App::i()->repo('User')->find($user_id);
     }
-    
+
     /**
-     * Processa a resposta de autenticação do Opauth e cria o usuário se não existir
-     * 
+     * Processa a resposta de autenticação do IdP e cria o usuário se não existir
+     *
      * @return boolean true se a resposta for válida ou false se não for válida
      */
     public function processResponse(){
-        // se autenticou
-        if($this->_validateResponse()){
-            // e ainda não existe um usuário no sistema
-            $user = $this->_getAuthenticatedUser();
-            if(!$user){
-                $response = $this->_getResponse();
-                $user = $this->createUser($response);
+        $app = App::i();
 
-                $profile = $user->profile;
-                $this->_setRedirectPath($this->onCreateRedirectUrl ? $this->onCreateRedirectUrl : $profile->editUrl);
+        try {
+            $callback = $this->oauth->validateCallback();
+            if (!$callback['ok']) {
+                $this->_setAuthenticatedUser();
+                $app->applyHook('auth.failed');
+                return false;
             }
+
+            $providerLeague = $this->oauth->buildProvider();
+            $token = $this->oauth->exchangeCode($providerLeague, $callback['code'], $callback['code_verifier']);
+
+            $userinfo = $providerLeague->getResourceOwner($token)->toArray();
+
+            // Compat de identidade com a strategy legada (fork opauth/google): o uid é o
+            // campo 'id' do userinfo do Login Cidadão; 'sub' é o equivalente OIDC.
+            $auth_uid = (string) ($userinfo['id'] ?? $userinfo['sub'] ?? '');
+            if ($auth_uid === '') {
+                throw new \RuntimeException('auth_failed');
+            }
+
+            $auth_provider = $app->getRegisteredAuthProviderId('logincidadao');
+            $user = $app->repo('User')->getByAuth($auth_provider, $auth_uid);
+
+            if (!$user) {
+                $user = $this->createUser([
+                    'uid' => $auth_uid,
+                    'email' => $this->verifiedEmail($userinfo),
+                    'first_name' => (string) ($userinfo['first_name'] ?? ''),
+                    'surname' => (string) ($userinfo['surname'] ?? ($userinfo['family_name'] ?? '')),
+                    'name' => (string) ($userinfo['name'] ?? ''),
+                ]);
+            }
+
+            OAuth2ClientHelper::rotateSession();
+            $_SESSION['auth.oauth.user']['logincidadao'] = $user->id; // sessão do driver
             $this->_setAuthenticatedUser($user);
-            App::i()->applyHook('auth.successful');
+            $this->oauth->audit('auth.login.success', $user, $auth_uid);
+            $app->applyHook('auth.successful');
             return true;
-        } else {
+
+        } catch (\Throwable $e) {
+            $app->log->error('[auth] logincidadao processResponse: ' . $e->getMessage());
+            $this->oauth->audit('auth.login.failed', null, 'exception');
             $this->_setAuthenticatedUser();
-            App::i()->applyHook('auth.failed');
+            $app->applyHook('auth.failed');
             return false;
         }
+    }
+
+    /**
+     * E-mail somente com email_verified=true (quando o claim existe);
+     * colisão de e-mail nunca auto-linka (criação usa e-mail verificado ou
+     * placeholder — o repositório continua casando por (provider, uid)).
+     */
+    protected function verifiedEmail(array $userinfo): string {
+        $email = (string) ($userinfo['email'] ?? '');
+        if ($email === '') {
+            return '';
+        }
+        $verified = $userinfo['email_verified'] ?? null;
+        if ($verified === null) {
+            // IdP que não fornece o claim: política conservadora com opt-in documentado
+            $allow = filter_var($this->_config['allow_unverified_email'] ?? false, FILTER_VALIDATE_BOOL);
+            return $allow ? $email : '';
+        }
+        if ($verified === true || $verified === 'true' || $verified === 1 || $verified === '1') {
+            return $email;
+        }
+        return '';
     }
 
     /**
      * Cria um novo usuário a partir da resposta de autenticação
-     * 
-     * @param array $response Resposta de autenticação do Opauth
+     *
+     * @param array $data Resposta de autenticação normalizada
      * @return \MapasCulturais\Entities\User
      */
-    protected function _createUser($response) {
+    protected function _createUser($data) {
         $app = App::i();
 
         $app->disableAccessControl();
 
         // cria o usuário
         $user = new Entities\User;
-        $user->authProvider = $response['auth']['provider'];
-        $user->authUid = $response['auth']['uid'];
-        $user->email = $response['auth']['raw']['email'];
+        $user->authProvider = 'logincidadao';
+        $user->authUid = $data['uid'];
+        $user->email = $data['email'] !== '' ? $data['email'] : uniqid('logincidadao-') . '@invalid.local';
         $app->em->persist($user);
 
         // cria um agente do tipo user profile para o usuário criado acima
@@ -309,10 +299,12 @@ class OpauthLoginCidadao extends \MapasCulturais\AuthProvider{
 
         $agent->status = 0;
 
-        if(isset($response['auth']['raw']['first_name']) && isset($response['auth']['raw']['surname'])){
-            $agent->name = $response['auth']['raw']['first_name'] . ' ' . $response['auth']['raw']['surname'];
-        }else if(isset($response['auth']['raw']['first_name'])){
-            $agent->name = $response['auth']['raw']['first_name'];
+        if(isset($data['first_name']) && $data['first_name'] !== '' && isset($data['surname']) && $data['surname'] !== ''){
+            $agent->name = $data['first_name'] . ' ' . $data['surname'];
+        }elseif(isset($data['name']) && $data['name'] !== ''){
+            $agent->name = $data['name'];
+        }elseif(isset($data['first_name']) && $data['first_name'] !== ''){
+            $agent->name = $data['first_name'];
         }else{
             $agent->name = '';
         }

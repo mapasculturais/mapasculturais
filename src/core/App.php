@@ -1051,14 +1051,34 @@ class App
 
     /**
      * Inicializa o provedor de autenticação
+     *
+     * Guard fail-fast — os providers Fake e Test permitem login como
+     * qualquer usuário e NÃO podem ser utilizados em produção. A exceção no
+     * boot é intencional (mensagem explícita no log); a suíte de testes roda
+     * em app.mode != production e não é afetada.
+     *
      * @return void
      */
     protected function _initAuthProvider()
     {
         // register auth providers
+        // AVISO: a ORDEM de registro define os valores persistidos em
+        // usr.auth_provider (1=OpenID, 2=logincidadao, 3=authentik).
+        // NÃO reordenar, NÃO remover, NÃO adicionar nomes aqui.
         $this->registerAuthProvider("OpenID");
         $this->registerAuthProvider("logincidadao");
         $this->registerAuthProvider("authentik");
+
+        // guard de ambiente (Fake/Test em produção)
+        if (
+            in_array($this->config["auth.provider"], ["Fake", "Test", "MapasCulturais\\AuthProviders\\Fake", "MapasCulturais\\AuthProviders\\Test"], true)
+            && ($this->config["app.mode"] ?? "") === "production"
+        ) {
+            throw new \RuntimeException(
+                "auth.provider '{$this->config["auth.provider"]}' não é permitido em produção (app.mode=production). " .
+                "Configure um provedor de autenticação real em config/authentication.php."
+            );
+        }
 
         $auth_class_name =
             strpos($this->config["auth.provider"], "\\") !== false

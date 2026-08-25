@@ -1,17 +1,17 @@
 {
     "require": {
+        "php": ">=8.2",
         "acelaya/doctrine-enum-type": "^2.3",
         "akrabat/ip-address-middleware": "^2.1",
         "doctrine/annotations": "^2.0",
         "doctrine/dbal": "^3.6",
         "doctrine/orm": "2.20.*",
-        "firebase/php-jwt": "^6.4",
+        "firebase/php-jwt": "^7.0.5",
+        "league/oauth2-client": "^2.9",
         "michelf/php-markdown": "1.*",
         "monolog/monolog": "^3.4",
         "mustache/mustache": "^2.11",
-        "opauth/openid": "*",
-        "opauth/logincidadao" : "*",
-        "opauth/authentik" : "*",
+        "opauth/opauth": "*",
         "pomo/pomo": "^1.5",
         "respect/validation": "^2.2",
         "sinergi/browser-detector": "^6.1",
@@ -42,18 +42,11 @@
             "MapasCulturais\\": "src/core",
             "MapasCulturais\\Modules\\": "src/modules",
             "MapasCulturais\\Themes\\": "src/themes",
+            "LocalAuth\\": "src/modules/LocalAuth",
             "Tests\\": "tests"
         }
     },
     "repositories": [
-        {
-            "type": "git",
-            "url": "https://github.com/hacklabr/opauth-logincidadao.git"
-        },
-        {
-            "type": "git",
-            "url": "https://github.com/mapasculturais/opauth-authentik.git"
-        },
         {
             "type": "git",
             "url": "https://github.com/mapasculturais/opauth.git"
