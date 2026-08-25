@@ -1,0 +1,113 @@
+{
+    "generated_with": "PHP 8.4.24",
+    "vectors": [
+        {
+            "name": "baseline-ascii",
+            "kind": "default-cost12-php84",
+            "plain": "S3nh@Forte",
+            "hash": "$2y$12$9Psi1Rgcodkk5HRQYFADJ./dVPCSOr1MnX9R31aGrx0BqaddsUPom"
+        },
+        {
+            "name": "baseline-ascii-cost10",
+            "kind": "legacy-cost10",
+            "plain": "S3nh@Forte",
+            "hash": "$2y$10$u1Ft1cJolKipJ33gnr0toOp1yGTE5C47wA3YwHwKUz3Rd5gn.ombu"
+        },
+        {
+            "name": "baseline-ascii-2a",
+            "kind": "interop-2a",
+            "plain": "S3nh@Forte",
+            "hash": "$2a$10$Mtlk6TzDkaoOVoyex40C0eJYJmp5duY2HE8AOlInU0HljuDJdW3Ee"
+        },
+        {
+            "name": "ascii-long-72",
+            "kind": "default-cost12-php84",
+            "plain": "a1B!a1B!a1B!a1B!a1B!a1B!a1B!a1B!a1B!a1B!a1B!a1B!a1B!a1B!a1B!a1B!a1B!a1B!",
+            "hash": "$2y$12$AaM70yNHz3d7UQRJk5qr2OkYA1.IFOpxgZq1asT4EmpFAnkmnIcjC"
+        },
+        {
+            "name": "ascii-long-72-cost10",
+            "kind": "legacy-cost10",
+            "plain": "a1B!a1B!a1B!a1B!a1B!a1B!a1B!a1B!a1B!a1B!a1B!a1B!a1B!a1B!a1B!a1B!a1B!a1B!",
+            "hash": "$2y$10$ss0NrTynOiANqL4j.I9JHups7dSBmwdcKTX4tyursG7iA24G9lqSu"
+        },
+        {
+            "name": "ascii-long-72-2a",
+            "kind": "interop-2a",
+            "plain": "a1B!a1B!a1B!a1B!a1B!a1B!a1B!a1B!a1B!a1B!a1B!a1B!a1B!a1B!a1B!a1B!a1B!a1B!",
+            "hash": "$2a$10$F1xTCKdXTfgAvA/jJSvS6etZMFj8fjXE1J.u2.e1LTmHV9duVb04."
+        },
+        {
+            "name": "special-chars-plugin",
+            "kind": "default-cost12-php84",
+            "plain": "abc££{}#",
+            "hash": "$2y$12$zbYHYJt1jtZtCoiDcMCHT.OD6qdFz75ZPaXkXdxzMXdihz4BAiOPy"
+        },
+        {
+            "name": "special-chars-plugin-cost10",
+            "kind": "legacy-cost10",
+            "plain": "abc££{}#",
+            "hash": "$2y$10$ADX07C/KKATXLig27nX/wuJLMrVmnP4DOMbuZk73ugsW6UOGjqkOm"
+        },
+        {
+            "name": "special-chars-plugin-2a",
+            "kind": "interop-2a",
+            "plain": "abc££{}#",
+            "hash": "$2a$10$.SY5hfvL/WBTjD6JhHqiMOyaZHg48NSFrr./QG5/S9pH0RfB1lOBi"
+        },
+        {
+            "name": "latin1-acentos",
+            "kind": "default-cost12-php84",
+            "plain": "SênhaÇão1@",
+            "hash": "$2y$12$d.WYfGSmH9t/ZvMlvhorC.TZQzKwBJUmFSarx3NAbwWHa71GvPO7S"
+        },
+        {
+            "name": "latin1-acentos-cost10",
+            "kind": "legacy-cost10",
+            "plain": "SênhaÇão1@",
+            "hash": "$2y$10$.eppIkdCb.tlhXAPgQ67X.mmq3fNbFtIA5WH7WgcriaIR71fPMAi."
+        },
+        {
+            "name": "latin1-acentos-2a",
+            "kind": "interop-2a",
+            "plain": "SênhaÇão1@",
+            "hash": "$2a$10$myEzLz/wusXY39J0A3k8m.HKXPHil2mYVY6Y/R3fxy8JGV0Ke4WNW"
+        },
+        {
+            "name": "utf8-emoji",
+            "kind": "default-cost12-php84",
+            "plain": "senha1A🙂",
+            "hash": "$2y$12$fuFlizcmXI2sxPFZWOghk.Es9wH7Kchz7EeEPajfIb7oSxhrz8aDm"
+        },
+        {
+            "name": "utf8-emoji-cost10",
+            "kind": "legacy-cost10",
+            "plain": "senha1A🙂",
+            "hash": "$2y$10$.MSuqBi50E1QgOHROn6AOOrwRovP2wbwm2yQR5AeLzaz1Mcy1.eDm"
+        },
+        {
+            "name": "utf8-emoji-2a",
+            "kind": "interop-2a",
+            "plain": "senha1A🙂",
+            "hash": "$2a$10$4IFMhjqL7llCps0BjQ9fbObHXzv8ANj4f6anmeoN5JsR6n7sHvdcy"
+        },
+        {
+            "name": "short-min",
+            "kind": "default-cost12-php84",
+            "plain": "A1!aaa",
+            "hash": "$2y$12$PicD7yUjgYnTQIWcg7xcFurNYthCmYiFLOILkori44v72C7Lr9tBa"
+        },
+        {
+            "name": "short-min-cost10",
+            "kind": "legacy-cost10",
+            "plain": "A1!aaa",
+            "hash": "$2y$10$M1BXdxzwd4NGhpyKKdH1z.lCnPCCo1MykXVrSb28F30b/Rsz7d79."
+        },
+        {
+            "name": "short-min-2a",
+            "kind": "interop-2a",
+            "plain": "A1!aaa",
+            "hash": "$2a$10$vvixSPQYhXqVtYJbYpOA8OOIY1BPvvNH3uVh4j7y2115rIIZd.lde"
+        }
+    ]
+}

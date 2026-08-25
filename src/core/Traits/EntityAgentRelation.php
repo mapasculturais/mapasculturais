@@ -178,8 +178,10 @@ trait EntityAgentRelation {
         foreach($relations as $relation){
             $u = $relation->agent->user;
 
-            // excui o usuário guest se por algum motivo ele estiver na lista
-            if ($u->is('guest')) {
+            // Agente de relação sem usuário vinculado (dado órfão presente em
+            // dumps reais) — tratar como guest em vez de fatal "is() on null"
+            // no cálculo de permissões (login/lastLogin save).
+            if ($u === null || $u->is('guest')) {
                 continue;
             }
 

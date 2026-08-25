@@ -59,6 +59,23 @@ class ApiQuery {
     use Traits\MagicGetter,
         Traits\MagicSetter,
         Traits\MagicCallers;
+
+    /**
+     * Propriedades JAMAIS selecionáveis via @select da API, para qualquer
+     * entidade que as tenha registradas como metadata — hash de senha local,
+     * tokens de recuperação/confirmação e contadores de bloqueio. Mantida em
+     * paridade com a denylist de User::jsonSerialize; a remoção aqui é
+     * logada como warning.
+     */
+    public const DENYLISTED_SELECT_PROPERTIES = [
+        'localAuthenticationPassword',
+        'recover_token',
+        'recover_token_time',
+        'tokenVerifyAccount',
+        'accountIsActive',
+        'loginAttemp',
+        'timeBlockedloginAttemp',
+    ];
     
     /**
      * Número de objetos de consulta para gerar ids de consulta
@@ -4268,6 +4285,18 @@ class ApiQuery {
 
         foreach ($this->_selecting as $i => $prop) {
             if(!$prop){
+                continue;
+            }
+            // Denylist fixa: chaves de metadata de autenticação local são
+            // REMOVIDAS do @select (com warning) para qualquer entidade que as
+            // tenha registradas. Espelha a denylist de User::jsonSerialize — são
+            // dois caminhos para o mesmo dado; sem isto, `@select
+            // localAuthenticationPassword` contornaria a serialização. Remoção
+            // silenciosa-de-erro (não rejeita a query) para não quebrar consumers
+            // que peçam seleções expansivas.
+            if (in_array($prop, self::DENYLISTED_SELECT_PROPERTIES, true)) {
+                App::i()->log->warning("ApiQuery: propriedade sensível '{$prop}' removida do @select (denylist de segurança).");
+                unset($this->_selecting[$i]);
                 continue;
             }
             if (in_array($prop, $this->entityProperties)) {

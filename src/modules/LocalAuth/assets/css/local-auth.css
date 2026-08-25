@@ -1,0 +1,551 @@
+/* ----- 1: SETTINGS ------- */
+.controller-auth {
+  background-color: var(--mc-gray-100);
+}
+.controller-auth .mc-card {
+  padding: 25px 45px;
+}
+.controller-auth .mc-card.no-title .mc-card__title {
+  display: none;
+}
+.controller-auth .v-popper__inner {
+  padding: 3px 10px;
+}
+
+/* ----- 2: ATOMS ------- */
+/* ----- 3: LAYOUT ------- */
+/* ----- 4: COMPONENTS ------- */
+.change-password {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  padding: 16px 0 13px;
+}
+.change-password__title {
+  line-height: 19px;
+  font-size: 14px;
+  font-weight: 600;
+}
+.change-password__password {
+  align-items: center;
+  display: flex;
+  gap: 18px;
+}
+.change-password__password--fakePassword {
+  align-items: center;
+  display: flex;
+  gap: 4px;
+}
+.change-password__password--fakePassword .dot {
+  background: black;
+  border-radius: 50%;
+  height: 8px;
+  width: 8px;
+}
+.change-password__password--edit {
+  align-items: center;
+  color: var(--mc-helper-500);
+  cursor: pointer;
+  display: flex;
+  gap: 6px;
+}
+.change-password__password--edit .iconify {
+  font-size: 15px;
+}
+.change-password__password--edit .label {
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 19px;
+}
+.change-password__modal .modal-content {
+  max-width: 570px;
+}
+.change-password__modal .modal-content .password {
+  position: relative;
+  margin-top: 1em;
+}
+.change-password__modal .modal-content .password-rules {
+  font-size: 14px;
+  line-height: 19px;
+  margin-top: 1em;
+}
+.change-password__modal .modal-content .password-rules strong {
+  color: var(--mc-secondary-500);
+}
+.change-password__modal .modal-content .password .seePassword {
+  background: url("https://api.iconify.design/carbon/view-filled.svg");
+  background-repeat: no-repeat;
+  background-size: 22.5px;
+  background-position-x: center;
+  background-position-y: center;
+  content: "";
+  height: 48px;
+  position: absolute;
+  right: 0;
+  top: 27px;
+  width: 48px;
+}
+
+.mc-breadcrumb li {
+  display: flex;
+  color: var(--mc-primary-500);
+}
+.mc-breadcrumb li::before {
+  content: url("https://api.iconify.design/fe/arrow-left.svg?width=16&height=16");
+  height: 16px;
+  margin-inline-end: 5px;
+  width: 16px;
+  color: var(--mc-primary-500);
+}
+
+.create-account {
+  max-width: 602px;
+  margin: 32px auto;
+  padding: 0 16px;
+}
+.create-account .mc-card {
+  padding: 24px;
+}
+.create-account .mc-card.card-created {
+  margin: 80px 0;
+}
+.create-account__title {
+  margin: 35px 0;
+}
+@media (max-width: 760px) {
+  .create-account__title {
+    margin: 58px 0 35px;
+  }
+}
+.create-account__title label {
+  font-weight: 700;
+  font-size: 24px;
+  line-height: 28px;
+}
+.create-account__title p {
+  margin: 8px 0 0;
+  font-size: 14px;
+  line-height: 19px;
+}
+.create-account__timeline {
+  margin-bottom: 24px;
+  width: 100%;
+}
+.create-account__timeline .stepper {
+  overflow: hidden;
+  margin: 0px -3.7%;
+  width: 108%;
+}
+@media (max-width: 560px) {
+  .create-account__timeline .stepper .step {
+    min-width: unset;
+  }
+  .create-account__timeline .stepper .step::before {
+    top: 16px;
+  }
+  .create-account__timeline .stepper .step .count {
+    width: 32px;
+    height: 32px;
+  }
+}
+.create-account__step .title {
+  font-weight: 700;
+  font-size: 18px;
+  line-height: 25px;
+  margin: 8px 0 4px;
+}
+.create-account__step .title .subtitle {
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 19px;
+  margin-top: 16px;
+}
+.create-account__step .document-label {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.create-account__step .document-label .question {
+  display: flex;
+  gap: 4px;
+  align-items: center;
+  background: unset;
+  border: unset;
+}
+.create-account__step .password {
+  position: relative;
+}
+.create-account__step .password-rules {
+  margin-top: 1em;
+  font-size: 14px;
+  line-height: 19px;
+}
+.create-account__step .password-rules > strong {
+  color: var(--mc-secondary-500);
+}
+.create-account__step .password .seePassword {
+  background: url("https://api.iconify.design/carbon/view-filled.svg");
+  background-repeat: no-repeat;
+  background-size: 22.5px;
+  background-position-x: center;
+  background-position-y: center;
+  content: "";
+  height: 48px;
+  position: absolute;
+  right: 0;
+  top: 27px;
+  width: 48px;
+}
+.create-account__step .g-recaptcha {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.create-account__step .divider {
+  width: 100%;
+  border-bottom: 1px solid #BBBBBB;
+}
+.create-account__step .social-login {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  align-items: center;
+}
+.create-account__step .social-login--button {
+  text-align: center;
+  display: block;
+}
+.create-account__step .social-login--button .img {
+  width: 50px;
+  float: left;
+  text-align: left;
+  display: flex;
+  align-items: center;
+}
+.create-account__step .social-login--button .img img {
+  height: 16px;
+}
+@media (max-width: 500px) {
+  .create-account__step .social-login--button .img {
+    width: 39px;
+  }
+  .create-account__step .social-login--button .img img {
+    height: 14px;
+  }
+}
+.create-account__step .social-login--button.google {
+  border: var(--mc-border-hairline) var(--mc-low-500);
+  color: var(--mc-low-700);
+}
+.create-account__step .social-login--button.govbr {
+  border: var(--mc-border-hairline) #1351B4;
+  background-color: #1351B4;
+  color: var(--mc-high-500);
+}
+@media (max-width: 380px) {
+  .create-account__step .social-login--button.google, .create-account__step .social-login--button.govbr {
+    font-size: 13px;
+  }
+}
+.create-account__step .term {
+  padding-right: 20px;
+  /* entire scrollbar */
+}
+.create-account__step .term::-webkit-scrollbar {
+  width: 6px;
+}
+.create-account__step .term {
+  /* tracking area */
+}
+.create-account__step .term::-webkit-scrollbar-track {
+  background: unset;
+}
+.create-account__step .term {
+  /* scroll thumb */
+}
+.create-account__step .term::-webkit-scrollbar-thumb {
+  background-color: #6C6C6C;
+  border-radius: var(--mc-border-radius-pill);
+}
+@media (max-width: 500px) {
+  .create-account__step .term ol {
+    padding: 0;
+    margin-top: 16px;
+    padding-left: 16px;
+  }
+  .create-account__step .term ol:first-child {
+    margin-top: 0;
+  }
+  .create-account__step .term ol li {
+    margin-top: 16px;
+  }
+  .create-account__step .term ol li:first-child {
+    margin-top: 0;
+  }
+  .create-account__step .term ul {
+    padding-left: 25px;
+  }
+}
+.create-account__step .button--text {
+  color: var(--mc-primary-500);
+}
+.create-account__created .title {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.create-account__created .title__icon {
+  color: green;
+  font-size: 96px;
+}
+.create-account__created .title__label {
+  font-weight: 700;
+  font-size: 24px;
+  line-height: 28px;
+  text-align: center;
+}
+.create-account__created .emailSent {
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 19px;
+  margin: 0;
+  text-align: center;
+}
+
+.progressbar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.progressbar progress[value] {
+  -webkit-appearance: none;
+     -moz-appearance: none;
+          appearance: none;
+  height: 8px;
+  width: 210px;
+}
+.progressbar progress[value]::-webkit-progress-bar {
+  background-color: var(--mc-low-300);
+  border-radius: var(--mc-border-radius-sm);
+}
+.progressbar progress[value]::-webkit-progress-value {
+  border-radius: var(--mc-border-radius-sm);
+  -webkit-transition: 1s;
+  transition: 1s;
+}
+.progressbar progress[value].fraco::-webkit-progress-value {
+  background: red;
+}
+.progressbar progress[value].medio::-webkit-progress-value {
+  background: yellow;
+}
+.progressbar progress[value].forte::-webkit-progress-value {
+  background: green;
+}
+
+.login {
+  max-width: 602px;
+  margin: 32px auto;
+  padding: 0 16px;
+}
+@media (max-width: 500px) {
+  .login {
+    margin: 24px auto;
+  }
+}
+.login__card {
+  padding: 24px 48px;
+  background-color: var(--mc-white);
+  border-radius: var(--mc-border-radius-xs);
+  display: grid;
+  gap: 16px;
+}
+@media (max-width: 500px) {
+  .login__card {
+    padding: 16px;
+  }
+}
+.login__card__header {
+  display: grid;
+  gap: 5px;
+}
+.login__form {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+.login__fields {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+@media (max-width: 500px) {
+  .login__fields {
+    gap: 8px;
+  }
+}
+.login__recover-link {
+  color: var(--mc-primary-500);
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 19px;
+  text-align: right;
+  text-decoration: none;
+  margin-top: 8px;
+}
+.login__buttons {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 16px;
+}
+.login__social-buttons {
+  display: grid;
+  gap: 31px;
+}
+.login__social-buttons--multiple {
+  grid-template-columns: 1fr 1fr;
+}
+.login__social-buttons .social-login {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.login__social-buttons .social-login--button.google {
+  border: var(--mc-border-hairline) var(--mc-low-500);
+  color: var(--mc-low-700);
+}
+.login__social-buttons .social-login--button.govbr {
+  background-color: #1351B4;
+  border: var(--mc-border-hairline) #1351B4;
+  color: var(--mc-high-500);
+}
+@media (max-width: 380px) {
+  .login__social-buttons .social-login--button.google, .login__social-buttons .social-login--button.govbr {
+    font-size: 13px;
+  }
+}
+.login .divider {
+  width: 100%;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.login .divider::before {
+  content: "";
+  width: 100%;
+  height: 1px;
+  background-color: var(--mc-gray-300);
+  position: absolute;
+}
+.login .divider__text {
+  background: var(--mc-white);
+  z-index: 1;
+  padding: 0 16px;
+}
+.login .field .recover {
+  color: var(--mc-primary-500);
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 19px;
+  text-align: right;
+  text-decoration: none;
+}
+.login .g-recaptcha {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+@media (max-width: 500px) {
+  .login__action .mc-card {
+    padding: 16px;
+  }
+}
+.login__action .create {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: 100%;
+}
+.login__action .password {
+  position: relative;
+}
+.login__action .password .seePassword {
+  background: url("https://api.iconify.design/carbon/view-filled.svg");
+  background-repeat: no-repeat;
+  background-size: 22.5px;
+  background-position-x: center;
+  background-position-y: center;
+  content: "";
+  height: 48px;
+  position: absolute;
+  right: 0;
+  top: 27px;
+  width: 48px;
+}
+.login__recovery--request .header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+.login__recovery--request .header__title {
+  font-weight: 700;
+  font-size: 24px;
+  line-height: 28px;
+}
+.login__recovery--request .header__icon {
+  color: green;
+  font-size: 96px;
+}
+.login__recovery--request .header__label {
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 22px;
+  text-align: center;
+}
+.login__recovery--action .password-rules {
+  font-size: 14px;
+  line-height: 19px;
+  margin-top: 1em;
+}
+.login__recovery--action .password-rules strong {
+  color: var(--mc-danger-500);
+}
+
+/* ----- 5: AREAS ------- */
+.confirm-email {
+  max-width: 602px;
+  margin: 32px auto;
+  padding: 0 16px;
+}
+.confirm-email .mc-card {
+  margin: 80px 0;
+}
+.confirm-email .mc-card .header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+.confirm-email .mc-card .header__title {
+  font-weight: 700;
+  font-size: 24px;
+  line-height: 28px;
+}
+.confirm-email .mc-card .header__icon {
+  color: green;
+  font-size: 96px;
+}
+.confirm-email .mc-card .header__label {
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 22px;
+  text-align: center;
+}

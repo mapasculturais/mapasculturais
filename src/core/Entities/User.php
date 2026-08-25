@@ -196,10 +196,31 @@ class User extends \MapasCulturais\Entity implements \MapasCulturais\UserInterfa
         $agent->setParentAsNull(true);
     }
 
+    /**
+     * Chaves de metadata de autenticação local que NUNCA são serializadas —
+     * para ninguém (nem dono, nem admin via viewPrivateData). Espelha o
+     * precedente do unset(authUid) abaixo. Vetor fechado: dump em massa de
+     * hashes bcrypt via api/user/find com sessão admin comprometida (a
+     * visibilidade 'private' sozinha concede viewPrivateData a admins sobre
+     * qualquer usuário — EntityMetadata::canUserViewPrivateData).
+     */
+    private const LOCAL_AUTH_SECRET_META = [
+        'localAuthenticationPassword',
+        'recover_token',
+        'recover_token_time',
+        'tokenVerifyAccount',
+        'accountIsActive',
+        'loginAttemp',
+        'timeBlockedloginAttemp',
+    ];
+
     function jsonSerialize(): array {
         $result = parent::jsonSerialize();
         $result['profile'] = $this->profile->simplify('id,name,type,terms,avatar,singleUrl');
         unset($result['authUid']);
+        foreach (self::LOCAL_AUTH_SECRET_META as $neverSerialized) {
+            unset($result[$neverSerialized]);
+        }
         return $result;
     }
 
@@ -1001,7 +1022,16 @@ class User extends \MapasCulturais\Entity implements \MapasCulturais\UserInterfa
         }
     }
 
-    protected function canUserDeleteAccount(User $user){
+    /**
+     * O typehint estrito `User` explode com TypeError quando a checagem de
+     * permissão é avaliada para um GuestUser (serialização anônima da entidade
+     * — ex.: view de confirmação de e-mail, api/user para visitante). Aceita
+     * null/GuestUser e retorna false: guest NUNCA pode deletar conta.
+     */
+    protected function canUserDeleteAccount(\MapasCulturais\UserInterface|null $user = null){
+        if (!$user instanceof User) {
+            return false; // guest (ou null): nunca pode deletar a conta
+        }
         return $user->is('admin') || $user->equals($this);
     }
 
