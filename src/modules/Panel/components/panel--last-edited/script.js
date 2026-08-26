@@ -67,6 +67,9 @@ app.component('panel--last-edited', {
             projects: [],
             opportunities: [],
             expandedDescriptions: {},
+            descriptionOverflow: {},
+            descriptionRefs: {},
+            resizeTimeout: null,
 
             // carousel settings
             settings: {
@@ -107,18 +110,56 @@ app.component('panel--last-edited', {
             
         }
     },
+    mounted() {
+        window.addEventListener('resize', this.debouncedCheckOverflow);
+        this.checkDescriptionOverflow();
+    },
+
+    unmounted() {
+        window.removeEventListener('resize', this.debouncedCheckOverflow);
+        clearTimeout(this.resizeTimeout);
+    },
+
+    updated() {
+        this.checkDescriptionOverflow();
+    },
+
     methods: {
-        showShort(shortDescription) {
-            if (shortDescription) {
-                if (shortDescription.length > 400) {
-                    return shortDescription.substring(0, 400) + '...';
-                } else {
-                    return shortDescription;
-                }
+        setDescriptionRef(el, entityId) {
+            if (el) {
+                this.descriptionRefs[entityId] = el;
+            } else {
+                delete this.descriptionRefs[entityId];
             }
+        },
+        checkDescriptionOverflow() {
+            this.$nextTick(() => {
+                const overflow = {};
+                for (const entityId in this.descriptionRefs) {
+                    const el = this.descriptionRefs[entityId];
+                    if (!el) {
+                        continue;
+                    }
+                    const isOverflowing = el.scrollHeight > el.clientHeight;
+                    overflow[entityId] = isOverflowing;
+                }
+                this.descriptionOverflow = overflow;
+            });
+        },
+        debouncedCheckOverflow() {
+            clearTimeout(this.resizeTimeout);
+            this.resizeTimeout = setTimeout(() => {
+                this.checkDescriptionOverflow();
+            }, 150);
         },
         toggleDescription(entityId) {
             this.expandedDescriptions[entityId] = !this.expandedDescriptions[entityId];
+            this.$nextTick(() => {
+                this.checkDescriptionOverflow();
+                if (this.$refs.carousel) {
+                    this.$refs.carousel.updateSlideWidth();
+                }
+            });
         },
         resizeSlides() {
             this.$refs.carousel.updateSlideWidth();

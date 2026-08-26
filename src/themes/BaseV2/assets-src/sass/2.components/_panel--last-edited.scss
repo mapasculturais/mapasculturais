@@ -245,7 +245,16 @@
                                 gap: size(4);
 
                                 small {
-                                    display: block;
+                                    display: -webkit-box;
+                                    -webkit-line-clamp: 3;
+                                    -webkit-box-orient: vertical;
+                                    overflow: hidden;
+                                    word-break: break-word;
+                                }
+
+                                &.expanded small {
+                                    -webkit-line-clamp: unset;
+                                    overflow: visible;
                                 }
 
                                 .panel--last-edited__toggle-description {
@@ -254,6 +263,7 @@
                                     font-size: size(12);
                                     font-weight: 600;
                                     line-height: size(16);
+                                    margin-top: size(8);
                                     padding: 0;
                                     text-decoration: underline;
                                 }
