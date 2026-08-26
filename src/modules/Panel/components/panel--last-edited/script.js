@@ -69,9 +69,10 @@ app.component('panel--last-edited', {
             expandedDescriptions: {},
             descriptionOverflow: {},
             descriptionRefs: {},
+            descriptionObservers: {},
             resizeTimeout: null,
-            // Approximate character limit that corresponds to 3 lines in the available width
-            CHARACTER_OVERFLOW_LIMIT: 165,
+            // Same heuristic used by the home entity-card: descriptions longer than this get the toggle button
+            CHARACTER_OVERFLOW_LIMIT: 120,
 
             // carousel settings
             settings: {
@@ -116,6 +117,12 @@ app.component('panel--last-edited', {
     watch: {
         entities: {
             handler() {
+                // Apply the character-length heuristic immediately, before any geometric measurement
+                const overflow = {};
+                for (const entity of this.entities) {
+                    overflow[entity.id] = (entity.shortDescription || '').trim().length > this.CHARACTER_OVERFLOW_LIMIT;
+                }
+                this.descriptionOverflow = { ...this.descriptionOverflow, ...overflow };
                 this.$nextTick(() => {
                     this.checkDescriptionOverflow();
                 });
@@ -134,6 +141,10 @@ app.component('panel--last-edited', {
     unmounted() {
         window.removeEventListener('resize', this.debouncedCheckOverflow);
         clearTimeout(this.resizeTimeout);
+        for (const entityId in this.descriptionObservers) {
+            this.descriptionObservers[entityId].disconnect();
+        }
+        this.descriptionObservers = {};
     },
 
     updated() {
@@ -142,8 +153,21 @@ app.component('panel--last-edited', {
 
     methods: {
         setDescriptionRef(el, entityId) {
+            if (this.descriptionObservers[entityId]) {
+                this.descriptionObservers[entityId].disconnect();
+                delete this.descriptionObservers[entityId];
+            }
+
             if (el) {
                 this.descriptionRefs[entityId] = el;
+
+                if (window.ResizeObserver) {
+                    const observer = new ResizeObserver(() => {
+                        this.debouncedCheckOverflow();
+                    });
+                    observer.observe(el);
+                    this.descriptionObservers[entityId] = observer;
+                }
             } else {
                 delete this.descriptionRefs[entityId];
             }
@@ -157,11 +181,12 @@ app.component('panel--last-edited', {
                         continue;
                     }
 
-                    // Reset clamp temporarily so we can compare the natural height
-                    const wasExpanded = el.classList.contains('panel--last-edited__description--force-measure');
-                    el.classList.add('panel--last-edited__description--force-measure');
+                    // Reset clamp temporarily so we can compare the natural height.
+                    // The force-measure class must be set on the wrapper, not on the <small> itself.
+                    const wrapper = el.closest('.panel--last-edited__description');
+                    wrapper?.classList.add('panel--last-edited__description--force-measure');
                     const naturalHeight = el.scrollHeight;
-                    el.classList.remove('panel--last-edited__description--force-measure');
+                    wrapper?.classList.remove('panel--last-edited__description--force-measure');
 
                     const renderedHeight = el.getBoundingClientRect().height;
                     const isOverflowing = naturalHeight > Math.ceil(renderedHeight + 1);
