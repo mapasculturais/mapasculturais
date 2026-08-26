@@ -114,8 +114,12 @@ app.component('panel--last-edited', {
         shouldShowMoreButton(entity) {
             return (entity.shortDescription || '').trim().length > this.CHARACTER_OVERFLOW_LIMIT;
         },
-        toggleDescription(entityId) {
-            this.expandedDescriptions[entityId] = !this.expandedDescriptions[entityId];
+        descriptionKey(entity) {
+            return `${entity.__objectType}-${entity.id}`;
+        },
+        toggleDescription(entity) {
+            const key = this.descriptionKey(entity);
+            this.expandedDescriptions[key] = !this.expandedDescriptions[key];
             this.$nextTick(() => {
                 if (this.$refs.carousel) {
                     this.$refs.carousel.updateSlideWidth();
