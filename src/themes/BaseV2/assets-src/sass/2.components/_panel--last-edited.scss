@@ -213,6 +213,15 @@
                                 align-items: center;
                                 flex: 1 1 auto;
                                 min-width: 0;
+                                column-gap: size(8);
+
+                                .mc-avatar {
+                                    width: size(48);
+                                    height: size(48);
+                                    min-width: size(48);
+                                    min-height: size(48);
+                                    flex-shrink: 0;
+                                }
 
                                 @media (max-width:size(956)) {
                                     display: flex;
@@ -330,18 +339,23 @@
                 &-actions {
                     &--tag {
                         border-radius: var(--mc-border-radius-pill);
-                        min-width: size(137);
+                        min-width: 0;
+                        width: auto;
+                        max-width: fit-content;
                         padding: size(6) size(19);
-                        display: block;
+                        display: inline-flex;
+                        align-items: center;
+                        justify-content: center;
+                        gap: size(8);
+                        flex-shrink: 0;
                         font-size: size(12);
                         text-align: center;
                         line-height: size(18);
                         white-space: nowrap;
 
                         .iconify {
-                            float: left;
                             font-size: size(16);
-                            margin-right: size(8);
+                            flex-shrink: 0;
                         }
 
                         @media (max-width: size(956)) {
