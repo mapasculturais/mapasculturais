@@ -203,7 +203,8 @@
                                 }
 
                                 .mc-title {
-                                    word-break: break-word;
+                                    word-break: normal;
+                                    overflow-wrap: break-word;
                                 }
                             }
 
@@ -258,12 +259,6 @@
                                     -webkit-line-clamp: unset;
                                     overflow: visible;
                                     display: block;
-                                }
-
-                                &--force-measure small {
-                                    -webkit-line-clamp: unset !important;
-                                    overflow: visible !important;
-                                    display: block !important;
                                 }
 
                                 .panel--last-edited__toggle-description {

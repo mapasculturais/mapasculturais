@@ -43,8 +43,8 @@ $this->import('
                                 </div>
                             </div>
                             <div v-if="entity.shortDescription" class="panel--last-edited__description" :class="{'expanded': expandedDescriptions[entity.id]}">
-                                <small :ref="el => setDescriptionRef(el, entity.id)">{{entity.shortDescription}}</small>
-                                <button v-if="descriptionOverflow[entity.id] || expandedDescriptions[entity.id]" @click="toggleDescription(entity.id)" class="button button--text panel--last-edited__toggle-description">
+                                <small>{{entity.shortDescription}}</small>
+                                <button v-if="shouldShowMoreButton(entity) || expandedDescriptions[entity.id]" @click="toggleDescription(entity.id)" class="button button--text panel--last-edited__toggle-description">
                                     {{ expandedDescriptions[entity.id] ? text('Ver menos') : text('Ver mais') }}
                                 </button>
                             </div>

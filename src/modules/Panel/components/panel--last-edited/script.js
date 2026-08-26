@@ -67,10 +67,6 @@ app.component('panel--last-edited', {
             projects: [],
             opportunities: [],
             expandedDescriptions: {},
-            descriptionOverflow: {},
-            descriptionRefs: {},
-            descriptionObservers: {},
-            resizeTimeout: null,
             // Same heuristic used by the home entity-card: descriptions longer than this get the toggle button
             CHARACTER_OVERFLOW_LIMIT: 120,
 
@@ -114,108 +110,18 @@ app.component('panel--last-edited', {
         }
     },
 
-    watch: {
-        entities: {
-            handler() {
-                // Apply the character-length heuristic immediately, before any geometric measurement
-                const overflow = {};
-                for (const entity of this.entities) {
-                    overflow[entity.id] = (entity.shortDescription || '').trim().length > this.CHARACTER_OVERFLOW_LIMIT;
-                }
-                this.descriptionOverflow = { ...this.descriptionOverflow, ...overflow };
-                this.$nextTick(() => {
-                    this.checkDescriptionOverflow();
-                });
-            },
-            deep: true
-        }
-    },
-
-    mounted() {
-        window.addEventListener('resize', this.debouncedCheckOverflow);
-        this.$nextTick(() => {
-            this.checkDescriptionOverflow();
-        });
-    },
-
-    unmounted() {
-        window.removeEventListener('resize', this.debouncedCheckOverflow);
-        clearTimeout(this.resizeTimeout);
-        for (const entityId in this.descriptionObservers) {
-            this.descriptionObservers[entityId].disconnect();
-        }
-        this.descriptionObservers = {};
-    },
-
-    updated() {
-        this.checkDescriptionOverflow();
-    },
-
     methods: {
-        setDescriptionRef(el, entityId) {
-            if (this.descriptionObservers[entityId]) {
-                this.descriptionObservers[entityId].disconnect();
-                delete this.descriptionObservers[entityId];
-            }
-
-            if (el) {
-                this.descriptionRefs[entityId] = el;
-
-                if (window.ResizeObserver) {
-                    const observer = new ResizeObserver(() => {
-                        this.debouncedCheckOverflow();
-                    });
-                    observer.observe(el);
-                    this.descriptionObservers[entityId] = observer;
-                }
-            } else {
-                delete this.descriptionRefs[entityId];
-            }
-        },
-        checkDescriptionOverflow() {
-            this.$nextTick(() => {
-                const overflow = {};
-                for (const entityId in this.descriptionRefs) {
-                    const el = this.descriptionRefs[entityId];
-                    if (!el) {
-                        continue;
-                    }
-
-                    // Reset clamp temporarily so we can compare the natural height.
-                    // The force-measure class must be set on the wrapper, not on the <small> itself.
-                    const wrapper = el.closest('.panel--last-edited__description');
-                    wrapper?.classList.add('panel--last-edited__description--force-measure');
-                    const naturalHeight = el.scrollHeight;
-                    wrapper?.classList.remove('panel--last-edited__description--force-measure');
-
-                    const renderedHeight = el.getBoundingClientRect().height;
-                    const isOverflowing = naturalHeight > Math.ceil(renderedHeight + 1);
-
-                    // Fallback: if the geometric check is inconclusive, use a character limit
-                    const textLength = (this.descriptionRefs[entityId].textContent || '').trim().length;
-                    const exceedsCharacterLimit = textLength > this.CHARACTER_OVERFLOW_LIMIT;
-
-                    overflow[entityId] = isOverflowing || exceedsCharacterLimit;
-                }
-                this.descriptionOverflow = overflow;
-            });
-        },
-        debouncedCheckOverflow() {
-            clearTimeout(this.resizeTimeout);
-            this.resizeTimeout = setTimeout(() => {
-                this.checkDescriptionOverflow();
-            }, 150);
+        shouldShowMoreButton(entity) {
+            return (entity.shortDescription || '').trim().length > this.CHARACTER_OVERFLOW_LIMIT;
         },
         toggleDescription(entityId) {
             this.expandedDescriptions[entityId] = !this.expandedDescriptions[entityId];
             this.$nextTick(() => {
-                this.checkDescriptionOverflow();
                 if (this.$refs.carousel) {
                     this.$refs.carousel.updateSlideWidth();
                     this.$refs.carousel.updateSlideHeight?.();
                     this.$refs.carousel.restartCarousel?.();
                 }
-                this.debouncedCheckOverflow();
             });
         },
         resizeSlides() {
