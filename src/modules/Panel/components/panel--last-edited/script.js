@@ -66,6 +66,7 @@ app.component('panel--last-edited', {
             events: [],
             projects: [],
             opportunities: [],
+            expandedDescriptions: {},
 
             // carousel settings
             settings: {
@@ -115,6 +116,9 @@ app.component('panel--last-edited', {
                     return shortDescription;
                 }
             }
+        },
+        toggleDescription(entityId) {
+            this.expandedDescriptions[entityId] = !this.expandedDescriptions[entityId];
         },
         resizeSlides() {
             this.$refs.carousel.updateSlideWidth();

@@ -42,9 +42,13 @@ $this->import('
                                     <?php i::_e('Modificado em') ?> <strong>{{entity.updateTimestamp.date('2-digit year')}} {{entity.updateTimestamp.time('full')}}</strong>
                                 </div>
                             </div>
-                            <span v-if="entity.shortDescription" class="panel--last-edited__description">
-                               {{showShort(entity.shortDescription)}}
-                            </span>
+                            <div v-if="entity.shortDescription" class="panel--last-edited__description" :class="{'expanded': expandedDescriptions[entity.id]}">
+                                <small v-if="!expandedDescriptions[entity.id]">{{showShort(entity.shortDescription)}}</small>
+                                <small v-else>{{entity.shortDescription}}</small>
+                                <button v-if="entity.shortDescription.length > 120" @click="toggleDescription(entity.id)" class="button button--text panel--last-edited__toggle-description">
+                                    {{ expandedDescriptions[entity.id] ? text('Ver menos') : text('Ver mais') }}
+                                </button>
+                            </div>
                         </template>
                         <template #entity-actions-left="{entity}">
                             &nbsp;
