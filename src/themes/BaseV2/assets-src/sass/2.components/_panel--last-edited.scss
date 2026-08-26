@@ -40,6 +40,8 @@
         &-cards {
             .carousel {
                 &__viewport {
+                    overflow: visible;
+
                     @media (max-width:size(500px)) {
                         .carousel__track {}
                     }
@@ -122,6 +124,11 @@
 
                     }
 
+                    .carousel__track {
+                        display: flex;
+                        align-items: stretch;
+                    }
+
 
                     .panel-entity-card {
                         border-radius: var(--mc-border-radius-xs);
@@ -134,6 +141,7 @@
                         flex-direction: column;
                         justify-content: space-between;
                         margin: 0;
+                        height: auto;
 
 
                         .panel__row,
@@ -232,6 +240,7 @@
                             padding: 0;
                             flex: 1 1 auto;
                             overflow: visible;
+                            min-height: 0;
 
                             span {
                                 word-break: break-word;
@@ -255,6 +264,13 @@
                                 &.expanded small {
                                     -webkit-line-clamp: unset;
                                     overflow: visible;
+                                    display: block;
+                                }
+
+                                &--force-measure small {
+                                    -webkit-line-clamp: unset !important;
+                                    overflow: visible !important;
+                                    display: block !important;
                                 }
 
                                 .panel--last-edited__toggle-description {
@@ -278,8 +294,10 @@
 
                         &__footer {
                             margin-top: auto;
+                            flex-shrink: 0;
 
                             &-actions {
+                                flex-wrap: wrap;
 
                                 @media (max-width: size(956)) {
                                     display: flex;

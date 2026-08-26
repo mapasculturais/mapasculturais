@@ -70,6 +70,8 @@ app.component('panel--last-edited', {
             descriptionOverflow: {},
             descriptionRefs: {},
             resizeTimeout: null,
+            // Approximate character limit that corresponds to 3 lines in the available width
+            CHARACTER_OVERFLOW_LIMIT: 165,
 
             // carousel settings
             settings: {
@@ -110,9 +112,23 @@ app.component('panel--last-edited', {
             
         }
     },
+
+    watch: {
+        entities: {
+            handler() {
+                this.$nextTick(() => {
+                    this.checkDescriptionOverflow();
+                });
+            },
+            deep: true
+        }
+    },
+
     mounted() {
         window.addEventListener('resize', this.debouncedCheckOverflow);
-        this.checkDescriptionOverflow();
+        this.$nextTick(() => {
+            this.checkDescriptionOverflow();
+        });
     },
 
     unmounted() {
@@ -140,8 +156,21 @@ app.component('panel--last-edited', {
                     if (!el) {
                         continue;
                     }
-                    const isOverflowing = el.scrollHeight > el.clientHeight;
-                    overflow[entityId] = isOverflowing;
+
+                    // Reset clamp temporarily so we can compare the natural height
+                    const wasExpanded = el.classList.contains('panel--last-edited__description--force-measure');
+                    el.classList.add('panel--last-edited__description--force-measure');
+                    const naturalHeight = el.scrollHeight;
+                    el.classList.remove('panel--last-edited__description--force-measure');
+
+                    const renderedHeight = el.getBoundingClientRect().height;
+                    const isOverflowing = naturalHeight > Math.ceil(renderedHeight + 1);
+
+                    // Fallback: if the geometric check is inconclusive, use a character limit
+                    const textLength = (this.descriptionRefs[entityId].textContent || '').trim().length;
+                    const exceedsCharacterLimit = textLength > this.CHARACTER_OVERFLOW_LIMIT;
+
+                    overflow[entityId] = isOverflowing || exceedsCharacterLimit;
                 }
                 this.descriptionOverflow = overflow;
             });
@@ -158,7 +187,10 @@ app.component('panel--last-edited', {
                 this.checkDescriptionOverflow();
                 if (this.$refs.carousel) {
                     this.$refs.carousel.updateSlideWidth();
+                    this.$refs.carousel.updateSlideHeight?.();
+                    this.$refs.carousel.restartCarousel?.();
                 }
+                this.debouncedCheckOverflow();
             });
         },
         resizeSlides() {
