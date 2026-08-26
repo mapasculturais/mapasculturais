@@ -69,28 +69,20 @@ app.component('panel--last-edited', {
 
             // carousel settings
             settings: {
-                itemsToScrool: 1.4,
-                itemsToShow: 1.2,
+                itemsToScroll: 1,
+                itemsToShow: 1,
                 snapAlign: 'center',
             },
             breakpoints: {
-            
+                700: {
+                    itemsToScroll: 1,
+                    itemsToShow: 2,
+                    snapAlign: "start"
+                },
                 1200: {
-                    itemsToScrool: 2.8,
-                    itemsToShow: 2.2,
+                    itemsToScroll: 1,
+                    itemsToShow: 3,
                     snapAlign: "start"
-                },
-          
-                900: {
-                    itemsToShow: 1.6,
-                    snapAlign: "start"
-                },
-               
-                400: {
-                    itemsToScrool: 1.25,
-
-                    itemsToShow: 1.15,
-                    snapAlign: "center"
                 },
             }
         }

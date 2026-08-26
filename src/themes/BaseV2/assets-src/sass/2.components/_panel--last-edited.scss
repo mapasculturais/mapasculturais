@@ -109,16 +109,12 @@
 
 
                 &__slide {
-                    align-items: flex-start;
+                    align-items: stretch;
                     display: flex;
+                    padding: 0 size(12);
 
-                    &--active {
-                        &.carousel__slide {
-                            &--active {
-                                min-width: 318px;
-                                max-width: 100%;
-                            }
-                        }
+                    & > * {
+                        width: 100%;
                     }
 
                     .panel__row {
@@ -129,14 +125,17 @@
 
                     .panel-entity-card {
                         border-radius: var(--mc-border-radius-xs);
-                        min-height: size(224);
+                        box-sizing: border-box;
+                        height: size(280);
+                        max-height: size(280);
+                        min-height: size(280);
                         padding: size(16);
                         width: 100%;
                         display: flex;
                         gap: size(8);
                         flex-direction: column;
                         justify-content: space-between;
-                        margin: 0 size(12);
+                        margin: 0;
 
 
                         .panel__row,
@@ -211,11 +210,20 @@
                             line-height: size(16);
                             text-align: left;
                             padding: 0;
+                            flex: 1 1 auto;
+                            overflow: hidden;
 
                             span {
                                 word-break: break-word;
                                 white-space: pre-line;
 
+                            }
+
+                            .panel--last-edited__description {
+                                display: -webkit-box;
+                                -webkit-line-clamp: 3;
+                                -webkit-box-orient: vertical;
+                                overflow: hidden;
                             }
 
                             @media (max-width:size(400)) {

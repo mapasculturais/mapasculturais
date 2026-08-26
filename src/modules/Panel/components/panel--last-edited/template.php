@@ -42,7 +42,7 @@ $this->import('
                                     <?php i::_e('Modificado em') ?> <strong>{{entity.updateTimestamp.date('2-digit year')}} {{entity.updateTimestamp.time('full')}}</strong>
                                 </div>
                             </div>
-                            <span v-if="entity.shortDescription">
+                            <span v-if="entity.shortDescription" class="panel--last-edited__description">
                                {{showShort(entity.shortDescription)}}
                             </span>
                         </template>
