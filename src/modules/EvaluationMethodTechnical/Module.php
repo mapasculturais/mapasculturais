@@ -494,7 +494,7 @@ class Module extends \MapasCulturais\EvaluationMethod
                         'id' => $registration->id
                     ]);
                 }
-                while($registration = $this->nexPhase);
+                while ($registration = $registration->nextPhase);
                
                 $app->enableAccessControl();
                 
