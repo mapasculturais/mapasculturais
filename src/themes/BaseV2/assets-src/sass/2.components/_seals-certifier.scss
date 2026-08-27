@@ -103,4 +103,46 @@
             cursor: pointer;
         }
     }
+
+    // Overrides com escopo para o mc-accordion de "Selos certificadores"
+    // (não alterar o base — outros consumidores dependem dele).
+    .mc-accordion {
+        background-color: transparent;
+
+        &__header {
+            background-color: transparent;
+            grid-template-columns: 1fr size(124);
+            max-width: 100%;
+            padding: size(8) 0;
+
+            @media (max-width: 488px) {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        &__content {
+            background-color: transparent;
+            border-top: var(--mc-border-hairline) var(--mc-gray-300);
+            max-width: 100%;
+            padding: size(16) 0;
+        }
+
+        &__icon {
+            align-items: center;
+            color: var(--mc-primary-500);
+            display: flex;
+            gap: size(4);
+            justify-content: flex-end;
+
+            @media (max-width: 488px) {
+                justify-content: center;
+            }
+
+            label {
+                font-size: size(14);
+                font-weight: 700;
+                line-height: size(19);
+            }
+        }
+    }
 }
