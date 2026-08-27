@@ -8,6 +8,7 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 ## [UNRELEASED]
 ### Melhorias
 - Ajusta tamanho dos cards da seção "Em destaque" na página inicial
+- Torna colapsáveis as seções de textos explicativos e selos na config de avaliação
 
 ## [7.8.6] - 2026-08-13
 ### Correções
