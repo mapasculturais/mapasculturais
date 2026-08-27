@@ -10,6 +10,7 @@ use MapasCulturais\i;
 $this->import('
     entity-field
     fields-visible-evaluators
+    mc-accordion
     mc-confirm-button
     mc-modal
     opportunity-committee-groups
@@ -69,20 +70,28 @@ $evaluation_methods = $app->getRegisteredEvaluationMethods();
         </section>
 
         <section class="evaluation-section col-12">
-            <div class="evaluation-section__header">
-                <span class="title"><?= i::__("Adicionar textos explicativos das avaliações") ?></span>
-            </div>
+            <mc-accordion :withText="true">
+                <template #title>
+                    <div class="evaluation-section__header">
+                        <span class="title"><?= i::__("Adicionar textos explicativos das avaliações") ?></span>
+                    </div>
+                </template>
+                <template #content>
+                    <div class="field evaluation-section__field">
+                        <label for="field-info-general" class="evaluation-section__label semibold"><?= i::__("Texto configuração geral") ?></label>
+                        <textarea id="field-info-general" v-model="phase.infos['general']" @change="savePhase()" class="evaluation-config__area" rows="10"></textarea>
+                    </div>
 
-            <div class="field evaluation-section__field">
-                <label for="field-info-general" class="evaluation-section__label semibold"><?= i::__("Texto configuração geral") ?></label>
-                <textarea id="field-info-general" v-model="phase.infos['general']" @change="savePhase()" class="evaluation-config__area" rows="10"></textarea>
-            </div>
+                    <!-- Keep the category fields in a grid so they keep the original two-column layout inside the accordion content -->
+                    <div class="grid-12">
+                        <div class="col-6 sm:col-12 field evaluation-section__field" v-for="(category, index) in categories">
+                            <label :for="`field-info-${category}`" class="evaluation-section__label semibold" :key="index"> {{ category }}</label>
+                            <textarea :id="`field-info-${category}`" v-model="phase.infos[category]" @change="savePhase()" style="width: 100%" rows="10" class="evaluation-config__input"></textarea>
+                        </div>
+                    </div>
+                </template>
+            </mc-accordion>
         </section>
-
-        <div class="col-6 sm:col-12 field evaluation-section__field" v-for="(category, index) in categories">
-            <label :for="`field-info-${category}`" class="evaluation-section__label semibold" :key="index"> {{ category }}</label>
-            <textarea :id="`field-info-${category}`" v-model="phase.infos[category]" @change="savePhase()" style="width: 100%" rows="10" class="evaluation-config__input"></textarea>
-        </div>
         
         <opportunity-phase-config-status :phase="phase.opportunity"></opportunity-phase-config-status>
 
