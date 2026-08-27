@@ -70,7 +70,7 @@ $evaluation_methods = $app->getRegisteredEvaluationMethods();
         </section>
 
         <section class="evaluation-section col-12">
-            <mc-accordion :withText="true">
+            <mc-accordion :withText="true" open>
                 <template #title>
                     <div class="evaluation-section__header">
                         <span class="title"><?= i::__("Adicionar textos explicativos das avaliações") ?></span>

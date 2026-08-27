@@ -18,7 +18,7 @@ $this->import('
 ?>
 
 <div v-if="entity.seals.length > 0 || editable" class="seals-certifier col-12">
-    <mc-accordion :withText="true">
+    <mc-accordion :withText="true" open>
         <template #title>
             <h3><?= i::__('Selos certificadores') ?></h3>
         </template>
