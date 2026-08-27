@@ -321,9 +321,10 @@ ol.mc-stepper-vertical>li.active::before {
 
         &__header {
             background-color: transparent;
+            border-bottom: var(--mc-border-hairline) var(--mc-gray-300);
             grid-template-columns: 1fr size(124);
             max-width: 100%;
-            padding: size(8) 0;
+            padding: size(8) 0 size(16);
 
             @media (max-width: 488px) {
                 grid-template-columns: 1fr;
@@ -332,7 +333,9 @@ ol.mc-stepper-vertical>li.active::before {
 
         &__content {
             background-color: transparent;
-            border-top: var(--mc-border-hairline) var(--mc-gray-300);
+            display: flex;
+            flex-direction: column;
+            gap: size(24);
             max-width: 100%;
             padding: size(16) 0;
         }
