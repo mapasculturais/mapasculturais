@@ -129,7 +129,7 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Permite tornar a **foto de perfil obrigatória** em agentes, espaços, projetos, eventos e oportunidades, configurável por variáveis de ambiente em cada tipo de entidade
 - Adiciona botão para **duplicar campos** do formulário de inscrição, logo abaixo do original
 - Adiciona botão para **duplicar anexos** do formulário de inscrição, copiando também o arquivo modelo
-
+ 
 ### Melhorias no Plano de Metas e Monitoramento
 - Amplia o **Plano de Metas e Monitoramento** com dezenas de campos novos e configuráveis para planejar metas e entregas (período, orçamento, equipe, comunicação, acessibilidade, comunidades, receita, evidências etc.) e registrar o que foi executado no acompanhamento
 - Permite ao gestor escolher quais campos são obrigatórios e tornar o **segmento artístico-cultural** configurável por oportunidade
@@ -198,7 +198,8 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Permite configurar o cabeçalho HTTP usado para identificar o IP do visitante em ambientes com proxy (ex.: Cloudflare), via variável `PROXY_HEADER`
 - Evita que a subida do ambiente falhe quando a tabela de papéis do sistema ainda não existe no banco
 - Adiciona atualizações automáticas de banco para normalizar bônus de pontuação antigos e preencher números sequenciais de avaliadores em editais existentes
-
+- Integração com o **Sentry** para monitoramento de erros em tempo real, habilitada pela variável de ambiente `SENTRY_DSN` (sem a variável, a integração permanece desligada). Captura erros fatais, exceções não tratadas, exceções tratadas pela aplicação (incluindo erros de banco/Doctrine) e logs de erro registrados via Monolog, enviando os eventos com stack trace estruturado. A captura automática de erros do PHP é restrita a erros graves — warnings, notices e deprecations permanecem apenas nos logs convencionais — e o envio de logs ao Sentry pode ser controlado pela variável `SENTRY_ENABLE_LOGS`.
+ 
 ## [7.7.64] - 2026-07-02
 ### Melhorias
 - Restringe a exclusão de critérios e seções de avaliação técnica e de qualificação documental: somente administradores podem excluir quando já existem avaliações iniciadas, concluídas ou enviadas
