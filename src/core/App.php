@@ -2515,7 +2515,7 @@ class App
             $this->applyHookBoundTo($this, "app.executeJob:after");
             // $this->enableAccessControl();
             $this->persistPCachePendingQueue();
-            return (int) $job_id;
+            return (int) $job->pk;
         } else {
             return false;
         }
