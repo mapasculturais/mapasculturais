@@ -3,3 +3,8 @@ packages:
   - 'plugins/*'
   - 'themes/*'
   - 'node_scripts'
+
+allowBuilds:
+  '@parcel/watcher': false
+  '@scarf/scarf': false
+  vue-demi: false

@@ -68,6 +68,11 @@ trait ControllerUploads{
 
         // if no files uploaded or no id in request data, return an error
         if(empty($_FILES) || !$this->data['id']){
+            if($this->postExceededMaxUploadSize()){
+                $this->errorJson(\MapasCulturais\i::__('O arquivo enviado é maior do que o permitido.'));
+                return ;
+            }
+
             $this->errorJson(\MapasCulturais\i::__('Nenhum arquivo enviado'));
             return ;
         }
@@ -197,6 +202,16 @@ trait ControllerUploads{
         $app->em->flush();
         $this->json($result);
         return;
+    }
+
+    /**
+     * Indica que o corpo do POST passou do limite efetivo de upload.
+     * @return bool
+     */
+    protected function postExceededMaxUploadSize(){
+        $content_length = (int) ($_SERVER['CONTENT_LENGTH'] ?? 0);
+
+        return $content_length > App::i()->getMaxUploadSize(false) * 1024;
     }
 
     /**
