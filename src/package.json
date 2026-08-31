@@ -1,6 +1,7 @@
 {
     "name": "mapasculturais",
     "private": true,
+    "packageManager": "pnpm@12.1.0",
     "scripts": {
         "dev": "pnpm run --parallel --recursive dev",
         "build": "pnpm run --parallel --recursive build",
