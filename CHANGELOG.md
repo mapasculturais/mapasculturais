@@ -13,6 +13,8 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 ### Melhorias
 - Ajusta tamanho dos cards da seção "Em destaque" na página inicial
 - Ajusta tamanho dos cards da seção "Editados recentemente" no painel de controle
+- Nova flag opcional (AGENTS_REQUIRED_DOCUMENTS_BY_TYPE) para exigir CPF em agentes Individuais e CNPJ em agentes Coletivos em todo salvamento, com os formulários marcando o campo obrigatório conforme o tipo; desativada por padrão
+- Modal de criação de agente exibe automaticamente CPF/CNPJ conforme o tipo quando a flag está ativa (sem *obrigatório, padrão hide-required dos modais de criação)
 - Torna colapsáveis as seções de textos explicativos e selos na config de avaliação
 
 ## [7.8.6] - 2026-08-13
