@@ -122,7 +122,7 @@ app.component('opportunity-evaluations-list', {
                 args['@onlyMe'] = true;
             }
             
-            if(this.entity.opportunity.avaliableEvaluationFields?.['agentsSummary']) {
+            if(Utils.isEvaluationFieldVisible(this.entity.opportunity.avaliableEvaluationFields, 'agentsSummary')) {
                 args['registration:@select']+= ',agentsData';
             }
             
