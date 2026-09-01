@@ -46,7 +46,9 @@ class RegistrationDirector extends Director
             }
 
             $registration = $this->registrationBuilder->getInstance();
-            $this->setRegistrationData($registration, data: $data, save: true);
+            if ($data) {
+                $this->setRegistrationData($registration, data: $data, save: true);
+            }
 
             $registrations[] = $registration;
         }
@@ -58,18 +60,20 @@ class RegistrationDirector extends Director
     {
         $registrations = [];
         for ($i = 0; $i < $number_of_registrations; $i++) {
+            // send() já faz save — evita flush intermediário + save extra com $data vazio
             $registration = $this->registrationBuilder
                 ->reset($opportunity)
                 ->setCategory($category)
                 ->setProponentType($proponent_type)
                 ->setRange($range)
                 ->fillRequiredProperties()
-                ->save()
                 ->send()
                 ->getInstance();
-            
-            $this->setRegistrationData($registration, data: $data, save: true);
-            
+
+            if ($data) {
+                $this->setRegistrationData($registration, data: $data, save: true);
+            }
+
             $registrations[] = $registration;
         }
 

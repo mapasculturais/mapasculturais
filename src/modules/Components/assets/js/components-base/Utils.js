@@ -75,6 +75,11 @@ globalThis.Utils = {
         return false;
     },
 
+    isEvaluationFieldVisible(fields, key) {
+        const value = fields?.[key];
+        return value === true || value === 'true';
+    },
+
     createUrl(controllerId, action_name, args) {
         const shortcuts = $MAPAS.routes.shortcuts;
         const actions = $MAPAS.routes.actions;

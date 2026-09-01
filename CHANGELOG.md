@@ -11,6 +11,18 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - **Avaliação automática por selos**: o gestor pode indicar, em uma fase de avaliação, quais selos validam o proponente. Se a pessoa já tiver esses selos válidos no perfil, a inscrição é **dispensada automaticamente** daquela fase (marcada como “Dispensada por selos”) e segue para a próxima etapa, sem precisar de avaliador
 - **Novos anexos no cadastro do agente** (também usáveis como campos `@` no formulário de inscrição): CPF, CNPJ, CNH, RG, passaporte, comprovante de residência, vínculo territorial, currículo, portfólio, certidões fiscal, trabalhista e de prestação de contas, além de comprovantes de raça/cor, pessoa com deficiência e comunidades tradicionais. Os arquivos ficam no perfil e acompanham a inscrição automaticamente
 
+## [7.8.7] - 2026-09-01
+### Correções
+- Corrige os filtros de período de inscrição nas listas de oportunidades para enviar o timestamp completo (YYYY-MM-DD HH:mm) em vez de apenas a data, classificando corretamente as inscrições abertas, futuras e encerradas
+- Corrige ocultação do resumo do agente ao desmarcar campo visível para avaliadores
+
+### Melhorias
+- Ajusta tamanho dos cards da seção "Em destaque" na página inicial
+- Ajusta tamanho dos cards da seção "Editados recentemente" no painel de controle
+- Nova flag opcional (AGENTS_REQUIRED_DOCUMENTS_BY_TYPE) para exigir CPF em agentes Individuais e CNPJ em agentes Coletivos em todo salvamento, com os formulários marcando o campo obrigatório conforme o tipo; desativada por padrão
+- Modal de criação de agente exibe automaticamente CPF/CNPJ conforme o tipo quando a flag está ativa (sem *obrigatório, padrão hide-required dos modais de criação)
+- Torna colapsáveis as seções de textos explicativos e selos na config de avaliação
+
 ## [7.8.6] - 2026-08-13
 ### Correções
 - Corrige erro que podia interromper o carregamento da página quando a data de um selo de verificação estava em branco
