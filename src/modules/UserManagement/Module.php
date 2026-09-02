@@ -125,6 +125,27 @@ class Module extends \MapasCulturais\Module {
         return $app->user->is('admin') || $app->user->is('superAdmin');
     }
 
+    /**
+     * Indica se o usuário logado pode reenviar o link de validação de conta de outro usuário.
+     * Usa o mesmo critério de acesso da tela de detalhe do usuário.
+     *
+     * @return bool
+     */
+    public static function canUserResendAccountValidationEmail(): bool
+    {
+        $app = App::i();
+
+        if ($app->user->is('guest')) {
+            return false;
+        }
+
+        $can = $app->user->is('admin');
+
+        $app->applyHook('module(UserManagement).canResendAccountValidationEmail', [&$can]);
+
+        return $can;
+    }
+
     private static function getGlobalAccountDeletionEmailFromFile(): ?string
     {
         $file = self::getGlobalEmailConfigFilePath();
@@ -504,6 +525,58 @@ class Module extends \MapasCulturais\Module {
         });
 
         /**
+         * Reenvia ao usuário o e-mail com o link de validação de conta.
+         *
+         * O core apenas orquestra: quem sabe gerar o link e montar o e-mail é o
+         * provedor de autenticação (\MapasCulturais\AuthProvider).
+         *
+         * A permissão é verificada antes de buscar o usuário para que quem não
+         * administra não consiga descobrir se um id existe pela diferença entre 403 e 404.
+         */
+        $app->hook('POST(panel.resendAccountValidationEmail)', function () use ($app) {
+            /** @var \MapasCulturais\Controllers\Panel $this */
+            $this->requireAuthentication();
+
+            if (!self::canUserResendAccountValidationEmail()) {
+                $this->errorJson(i::__('Permissão negada.'), 403);
+                return;
+            }
+
+            if (!$app->auth->supportsAccountValidation()) {
+                $this->errorJson(i::__('O provedor de autenticação não utiliza validação de conta por e-mail.'), 400);
+                return;
+            }
+
+            $user = $app->repo('User')->find($this->data['userId'] ?? -1);
+            if (!$user) {
+                $this->errorJson(i::__('Usuário não encontrado.'), 404);
+                return;
+            }
+
+            if ($app->auth->isAccountValidated($user)) {
+                $this->errorJson(i::__('Esta conta já está validada.'), 400);
+                return;
+            }
+
+            $send_error = i::__('Não foi possível reenviar o link de validação. Tente novamente mais tarde.');
+
+            try {
+                if (!$app->auth->resendAccountValidationEmail($user)) {
+                    $this->errorJson($send_error, 500);
+                    return;
+                }
+            } catch (Halt $e) {
+                throw $e;
+            } catch (\Throwable $e) {
+                $app->log->error($e->getMessage());
+                $this->errorJson($send_error, 500);
+                return;
+            }
+
+            $this->json(['success' => true, 'message' => i::__('Link de validação reenviado com sucesso.')]);
+        });
+
+        /**
          * Processa solicitação de exclusão de conta (LGPD).
          */
         $app->hook('POST(user.requestAccountDeletion)', function () use ($app) {
@@ -592,6 +665,17 @@ class Module extends \MapasCulturais\Module {
             if (!$app->user->is('admin')) {
                 throw new PermissionDenied($app->user, null, i::__('Gerenciar Usuários'));
             }
+
+            // O estado da validação vem do provedor de autenticação, não do metadado:
+            // a ApiQuery só devolve metadados existentes, e um usuário anterior à
+            // validação por e-mail chegaria ao front sem a chave.
+            $supports_validation = $app->auth->supportsAccountValidation();
+
+            $app->view->jsObject['accountValidation'] = [
+                'supported' => $supports_validation,
+                'validated' => $supports_validation ? $app->auth->isAccountValidated($user) : true,
+                'canResend' => self::canUserResendAccountValidationEmail(),
+            ];
 
             $app->view->addRequestedEntityToJs(User::class, $this->data['id']);
             $this->render('user-detail');
