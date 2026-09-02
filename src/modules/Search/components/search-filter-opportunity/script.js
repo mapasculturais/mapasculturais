@@ -44,8 +44,10 @@ app.component('search-filter-opportunity', {
             var dia = String(data.getDate()).padStart(2, '0');
             var mes = String(data.getMonth() + 1).padStart(2, '0');
             var ano = data.getFullYear();
+            var hora = String(data.getHours()).padStart(2, '0');
+            var minuto = String(data.getMinutes()).padStart(2, '0');
 
-            return (ano + '-' + mes + '-' + dia);
+            return (ano + '-' + mes + '-' + dia + ' ' + hora + ':' + minuto);
         },
 
         futureDate() {

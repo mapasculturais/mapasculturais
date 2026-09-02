@@ -66,31 +66,26 @@ app.component('panel--last-edited', {
             events: [],
             projects: [],
             opportunities: [],
+            expandedDescriptions: {},
+            // Same heuristic used by the home entity-card: descriptions longer than this get the toggle button
+            CHARACTER_OVERFLOW_LIMIT: 120,
 
             // carousel settings
             settings: {
-                itemsToScrool: 1.4,
-                itemsToShow: 1.2,
+                itemsToScroll: 1,
+                itemsToShow: 1,
                 snapAlign: 'center',
             },
             breakpoints: {
-            
+                700: {
+                    itemsToScroll: 1,
+                    itemsToShow: 2,
+                    snapAlign: "start"
+                },
                 1200: {
-                    itemsToScrool: 2.8,
-                    itemsToShow: 2.2,
+                    itemsToScroll: 1,
+                    itemsToShow: 3,
                     snapAlign: "start"
-                },
-          
-                900: {
-                    itemsToShow: 1.6,
-                    snapAlign: "start"
-                },
-               
-                400: {
-                    itemsToScrool: 1.25,
-
-                    itemsToShow: 1.15,
-                    snapAlign: "center"
                 },
             }
         }
@@ -114,15 +109,24 @@ app.component('panel--last-edited', {
             
         }
     },
+
     methods: {
-        showShort(shortDescription) {
-            if (shortDescription) {
-                if (shortDescription.length > 400) {
-                    return shortDescription.substring(0, 400) + '...';
-                } else {
-                    return shortDescription;
+        shouldShowMoreButton(entity) {
+            return (entity.shortDescription || '').trim().length > this.CHARACTER_OVERFLOW_LIMIT;
+        },
+        descriptionKey(entity) {
+            return `${entity.__objectType}-${entity.id}`;
+        },
+        toggleDescription(entity) {
+            const key = this.descriptionKey(entity);
+            this.expandedDescriptions[key] = !this.expandedDescriptions[key];
+            this.$nextTick(() => {
+                if (this.$refs.carousel) {
+                    this.$refs.carousel.updateSlideWidth();
+                    this.$refs.carousel.updateSlideHeight?.();
+                    this.$refs.carousel.restartCarousel?.();
                 }
-            }
+            });
         },
         resizeSlides() {
             this.$refs.carousel.updateSlideWidth();

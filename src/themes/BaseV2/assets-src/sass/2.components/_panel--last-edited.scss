@@ -5,7 +5,6 @@
     &__content {
         &-title {
             .mc-title {
-                background-color: red;
                 &--long,
                 &--short {
                     font-size: var($font-size-xs);
@@ -40,6 +39,8 @@
         &-cards {
             .carousel {
                 &__viewport {
+                    overflow: visible;
+
                     @media (max-width:size(500px)) {
                         .carousel__track {}
                     }
@@ -109,16 +110,12 @@
 
 
                 &__slide {
-                    align-items: flex-start;
+                    align-items: stretch;
                     display: flex;
+                    padding: 0 size(12);
 
-                    &--active {
-                        &.carousel__slide {
-                            &--active {
-                                min-width: 318px;
-                                max-width: 100%;
-                            }
-                        }
+                    & > * {
+                        width: 100%;
                     }
 
                     .panel__row {
@@ -126,32 +123,33 @@
 
                     }
 
+                    .carousel__track {
+                        display: flex;
+                        align-items: stretch;
+                    }
+
 
                     .panel-entity-card {
                         border-radius: var(--mc-border-radius-xs);
-                        min-height: size(224);
+                        box-sizing: border-box;
+                        min-height: size(280);
                         padding: size(16);
                         width: 100%;
                         display: flex;
-                        gap: size(8);
+                        gap: size(12);
                         flex-direction: column;
                         justify-content: space-between;
-                        margin: 0 size(12);
+                        margin: 0;
+                        height: auto;
 
 
                         .panel__row,
                         &.panel-entity-card,
                         &.card {
                             @media (max-width: 400px) {
-                                //background-color: red;
                                 margin-left: 0;
                                 max-width: 300px;
                                 width: 100%;
-
-                                .panel-entity-card__footer-actions.right .button-action {
-                                    max-width: 75%;
-                                    gap: 28%;
-                                }
 
                                 &.panel-home__tabs,
                                 &.tab-component {
@@ -166,15 +164,26 @@
                         }
 
                         &__header {
+                            align-items: flex-start;
+                            display: flex;
+                            gap: size(12);
+                            justify-content: space-between;
+                            min-height: size(56);
+                            position: relative;
+
                             &-actions {
-                                right: size(16);
-                                position: absolute;
+                                flex-shrink: 0;
+                                margin-left: size(8);
+                                position: relative;
+                                right: auto;
+                                top: auto;
                             }
 
                             &--picture {
                                 width: size(48);
                                 height: size(48);
                                 margin-right: size(8);
+                                flex-shrink: 0;
 
                                 img {
                                     width: size(48);
@@ -186,22 +195,43 @@
                                 display: block;
                                 line-height: size(21);
                                 text-align: left;
+                                min-width: 0;
+                                flex: 1 1 auto;
 
                                 &-subtitle {
                                     display: none;
                                 }
+
+                                .mc-title {
+                                    word-break: normal;
+                                    overflow-wrap: break-word;
+                                }
                             }
 
                             .left {
-                                display: grid;
-                                grid-template-columns: 1fr;
-                                flex-wrap: wrap;
+                                display: flex;
+                                align-items: center;
+                                flex: 1 1 auto;
+                                min-width: 0;
+                                column-gap: size(8);
+
+                                .mc-avatar {
+                                    width: size(48);
+                                    height: size(48);
+                                    min-width: size(48);
+                                    min-height: size(48);
+                                    flex-shrink: 0;
+                                }
 
                                 @media (max-width:size(956)) {
                                     display: flex;
                                     // gap: size(12);
                                     text-align: left;
                                 }
+                            }
+
+                            .right {
+                                flex-shrink: 0;
                             }
                         }
 
@@ -211,11 +241,45 @@
                             line-height: size(16);
                             text-align: left;
                             padding: 0;
+                            flex: 1 1 auto;
+                            overflow: visible;
+                            min-height: 0;
 
                             span {
                                 word-break: break-word;
                                 white-space: pre-line;
 
+                            }
+
+                            .panel--last-edited__description {
+                                display: flex;
+                                flex-direction: column;
+                                gap: size(4);
+
+                                small {
+                                    display: -webkit-box;
+                                    -webkit-line-clamp: 3;
+                                    -webkit-box-orient: vertical;
+                                    overflow: hidden;
+                                    word-break: break-word;
+                                }
+
+                                &.expanded small {
+                                    -webkit-line-clamp: unset;
+                                    overflow: visible;
+                                    display: block;
+                                }
+
+                                .panel--last-edited__toggle-description {
+                                    align-self: flex-start;
+                                    color: var(--mc-primary-500);
+                                    font-size: size(12);
+                                    font-weight: 600;
+                                    line-height: size(16);
+                                    margin-top: size(8);
+                                    padding: 0;
+                                    text-decoration: underline;
+                                }
                             }
 
                             @media (max-width:size(400)) {
@@ -226,23 +290,43 @@
                         }
 
                         &__footer {
+                            margin-top: auto;
+                            flex-shrink: 0;
+
                             &-actions {
+                                display: flex;
+                                flex-direction: row;
+                                flex-wrap: nowrap;
+                                align-items: center;
+                                justify-content: flex-end;
+                                gap: size(8);
 
-                                @media (max-width: size(956)) {
+                                &.left {
+                                    display: none;
+                                }
+
+                                &.right {
                                     display: flex;
-                                    justify-content: center;
+                                    flex-direction: row;
+                                    flex-wrap: nowrap;
                                     align-items: center;
+                                    justify-content: flex-end;
+                                    gap: size(8);
+                                    width: 100%;
 
-                                    &.left {
-                                        display: none;
+                                    .button-action {
+                                        display: inline-flex;
+                                        flex-direction: row;
+                                        align-items: center;
+                                        justify-content: center;
+                                        gap: size(8);
+                                        width: auto;
+                                        max-width: none;
+                                        white-space: nowrap;
                                     }
 
-                                    &.right {
-                                        gap: size(8);
-
-                                        .content {
-                                            display: none;
-                                        }
+                                    .content {
+                                        display: none;
                                     }
                                 }
                             }
@@ -255,18 +339,23 @@
                 &-actions {
                     &--tag {
                         border-radius: var(--mc-border-radius-pill);
-                        min-width: size(137);
+                        min-width: 0;
+                        width: auto;
+                        max-width: fit-content;
                         padding: size(6) size(19);
-                        display: block;
+                        display: inline-flex;
+                        align-items: center;
+                        justify-content: center;
+                        gap: size(8);
+                        flex-shrink: 0;
                         font-size: size(12);
                         text-align: center;
                         line-height: size(18);
                         white-space: nowrap;
 
                         .iconify {
-                            float: left;
                             font-size: size(16);
-                            margin-right: size(8);
+                            flex-shrink: 0;
                         }
 
                         @media (max-width: size(956)) {

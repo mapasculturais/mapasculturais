@@ -19,6 +19,27 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Adiciona controle para ocultar título e subtítulo do logo no ThemeCustomizer
 - Remove configurações de aparência redundantes da tela de edição de subsites
 
+## [7.8.9] - 2026-09-02
+### Correções
+- Na prévia do formulário de inscrição, restaura os seletores de categoria, tipo de proponente e faixa e faz as etapas condicionais acompanharem a seleção, mantendo a navegação em uma etapa válida quando ela muda
+- Impede que a limpeza de assets órfãos apague templates HTML ainda referenciados no cache (ex.: `edit-box.html` do form-builder/embedTools), passando a proteger `.html`/`.htm` e chaves Redis de `publishAsset`
+
+## [7.8.8] - 2026-09-01
+### Correções
+- Corrige falha no build Docker do CI com pnpm 10 (ERR_PNPM_IGNORED_BUILDS), aprovando os build scripts necessários e fixando a versão do pnpm
+
+## [7.8.7] - 2026-09-01
+### Correções
+- Corrige os filtros de período de inscrição nas listas de oportunidades para enviar o timestamp completo (YYYY-MM-DD HH:mm) em vez de apenas a data, classificando corretamente as inscrições abertas, futuras e encerradas
+- Corrige ocultação do resumo do agente ao desmarcar campo visível para avaliadores
+
+### Melhorias
+- Ajusta tamanho dos cards da seção "Em destaque" na página inicial
+- Ajusta tamanho dos cards da seção "Editados recentemente" no painel de controle
+- Nova flag opcional (AGENTS_REQUIRED_DOCUMENTS_BY_TYPE) para exigir CPF em agentes Individuais e CNPJ em agentes Coletivos em todo salvamento, com os formulários marcando o campo obrigatório conforme o tipo; desativada por padrão
+- Modal de criação de agente exibe automaticamente CPF/CNPJ conforme o tipo quando a flag está ativa (sem *obrigatório, padrão hide-required dos modais de criação)
+- Torna colapsáveis as seções de textos explicativos e selos na config de avaliação
+
 ## [7.8.6] - 2026-08-13
 ### Correções
 - Corrige erro que podia interromper o carregamento da página quando a data de um selo de verificação estava em branco
