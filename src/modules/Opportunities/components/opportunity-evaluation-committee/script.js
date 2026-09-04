@@ -568,13 +568,35 @@ app.component('opportunity-evaluation-committee', {
                         }
                     }
 
-                    this.evaluatorDistributionRules[info.agentUserId] = this.getEvaluatorDistributionRule(info.agentUserId);
+                    this.evaluatorDistributionRules[info.agentUserId] = this.getEvaluatorDistributionRule(info);
                     info.default = (this.entity.fetch[info.agentUserId] || this.entity.fetchCategories[info.agentUserId].length > 0 || this.entity.fetchRanges[info.agentUserId].length > 0 || this.entity.fetchProponentTypes[info.agentUserId].length > 0) ? false : true;
                 });
             }
         },
 
-        getEvaluatorDistributionRule(agentUserId) {
+        getEvaluatorDistributionRule(infoReviewer) {
+            const agentUserId = infoReviewer.agentUserId;
+            const metadata = infoReviewer.metadata || {};
+            const hasRelationFilters = metadata.filtersStoredOnRelation === true ||
+                (Array.isArray(metadata.categories) && metadata.categories.length > 0) ||
+                (Array.isArray(metadata.proponentTypes) && metadata.proponentTypes.length > 0) ||
+                (Array.isArray(metadata.ranges) && metadata.ranges.length > 0) ||
+                (typeof metadata.distribution === 'string' && metadata.distribution.length > 0) ||
+                (metadata.selectionFields && typeof metadata.selectionFields === 'object' && Object.keys(metadata.selectionFields).length > 0);
+
+            if (hasRelationFilters) {
+                return {
+                    categories: Array.isArray(metadata.categories) ? [...metadata.categories] : [],
+                    proponentTypes: Array.isArray(metadata.proponentTypes) ? [...metadata.proponentTypes] : [],
+                    ranges: Array.isArray(metadata.ranges) ? [...metadata.ranges] : [],
+                    distribution: typeof metadata.distribution === 'string' ? metadata.distribution : '',
+                    sentTimestamp: { from: '', to: '' },
+                    fields: metadata.selectionFields && typeof metadata.selectionFields === 'object'
+                        ? { ...metadata.selectionFields }
+                        : {}
+                };
+            }
+
             return {
                 categories: Array.isArray(this.entity.fetchCategories?.[agentUserId]) ? [...this.entity.fetchCategories[agentUserId]] : [],
                 proponentTypes: Array.isArray(this.entity.fetchProponentTypes?.[agentUserId]) ? [...this.entity.fetchProponentTypes[agentUserId]] : [],
