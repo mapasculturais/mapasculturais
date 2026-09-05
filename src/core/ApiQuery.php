@@ -3579,7 +3579,7 @@ class ApiQuery {
             }
         }
         
-        if($class::isPrivateEntity() && !isset($this->apiParams['@permissions'])){
+        if($class::isPrivateEntity() && empty($this->apiParams['@permissions'])){
             $this->_addFilterByPermissions('view');
         }
 
