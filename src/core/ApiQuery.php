@@ -1596,6 +1596,14 @@ class ApiQuery {
                 }
             }
 
+            if($this->permissionCacheClassName && !($permissions[$entity[$this->pk]] ?? false)){
+                foreach(['agentsData', '_spaceData'] as $snapshot){
+                    if(isset($entity[$snapshot])){
+                        $entity[$snapshot] = [];
+                    }
+                }
+            }
+
             foreach($this->_selectingUrls as $action){
                 $entity["{$action}Url"] = $this->entityController->createUrl($action, [$entity[$this->pk]]);
             }
