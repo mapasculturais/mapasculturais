@@ -22,6 +22,7 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ## [7.8.7] - 2026-09-01
 ### Correções
+- Corrige falha na API pública que permitia a visitantes anônimos listar inscrições privadas e acessar dados pessoais dos proponentes
 - Corrige os filtros de período de inscrição nas listas de oportunidades para enviar o timestamp completo (YYYY-MM-DD HH:mm) em vez de apenas a data, classificando corretamente as inscrições abertas, futuras e encerradas
 - Corrige ocultação do resumo do agente ao desmarcar campo visível para avaliadores
 
