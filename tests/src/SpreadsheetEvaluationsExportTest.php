@@ -219,6 +219,16 @@ class SpreadsheetEvaluationsExportTest extends TestCase
         $this->assertSame('', $row['coletivo'] ?? null, 'Sem agente coletivo, a coluna existe e vem vazia');
     }
 
+    public function testDateColumnsAreExportedAsReadableText(): void
+    {
+        $opportunity = $this->createOpportunityWithEvaluationPhase();
+
+        $row = $this->getFirstRow($opportunity, 'number,createTimestamp,sentTimestamp,user,result,status,evaluationData');
+
+        $this->assertMatchesRegularExpression('#^\d{2}/\d{2}/\d{4} \d{2}:\d{2}:\d{2}$#', $row['createTimestamp'] ?? '', 'A data de criação precisa sair legível');
+        $this->assertMatchesRegularExpression('#^\d{2}/\d{2}/\d{4} \d{2}:\d{2}:\d{2}$#', $row['sentTimestamp'] ?? '', 'A data de envio precisa sair legível');
+    }
+
     public function testColumnsWithoutRegistrationLabelAreNamedInTheHeader(): void
     {
         $opportunity = $this->createOpportunityWithEvaluationPhase();
