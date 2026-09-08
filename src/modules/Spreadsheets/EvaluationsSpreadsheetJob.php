@@ -13,6 +13,22 @@ use MapasCulturais\i;
  */
 abstract class EvaluationsSpreadsheetJob extends SpreadsheetJob
 {
+    protected const REQUIRED_REGISTRATION_PROPERTIES = [
+        'id',
+        'number',
+        'status',
+        'category',
+        'range',
+        'score',
+        'proponentType',
+        'eligible',
+        'projectName',
+        'consolidatedResult',
+        'goalStatuses',
+        'agentsData',
+        'owner.{name}',
+    ];
+
     function _getHeader(Job $job): array
     {
         // Parte comum a todos os métodos de avaliação
@@ -125,6 +141,7 @@ abstract class EvaluationsSpreadsheetJob extends SpreadsheetJob
         $query['@limit'] = $this->limit;
         $query['@page'] = $this->page;
         $query['@order'] = $job->query['@order'] ?? 'id ASC';
+        $query['registration:@select'] = $this->getRegistrationSelect($job);
         $opportunity_controller = $app->controller('opportunity');
         $opportunity_controller->data = $opportunity_controller->postData;
         $evaluations = $opportunity_controller->apiFindEvaluations($opportunity->id, $query);
@@ -132,6 +149,54 @@ abstract class EvaluationsSpreadsheetJob extends SpreadsheetJob
 
         $result = $this->getEvaluationDataBatch($job, $evaluations);
         return $result;
+    }
+
+    /**
+     * Propriedades da inscrição a buscar na API: as que a planilha sempre usa, mais as escolhidas pelo usuário.
+     */
+    protected function getRegistrationSelect(Job $job): string
+    {
+        $job->owner->registerRegistrationMetadata(true);
+        $registration_properties = array_keys(Registration::getPropertiesMetadata());
+
+        $selected = array_filter(
+            $this->splitSelect($job->query['@select'] ?? ''),
+            fn ($property) => str_starts_with($property, 'owner.') || in_array($property, $registration_properties, true)
+        );
+
+        $properties = array_merge(static::REQUIRED_REGISTRATION_PROPERTIES, $selected);
+
+        return implode(',', array_unique($properties));
+    }
+
+    /**
+     * Separa as propriedades de um `@select` sem quebrar os grupos entre chaves.
+     */
+    protected function splitSelect(string $select): array
+    {
+        $properties = [];
+        $current = '';
+        $depth = 0;
+
+        foreach (str_split($select) as $char) {
+            if ($char === ',' && $depth === 0) {
+                $properties[] = trim($current);
+                $current = '';
+                continue;
+            }
+
+            if ($char === '{') {
+                $depth++;
+            } elseif ($char === '}') {
+                $depth--;
+            }
+
+            $current .= $char;
+        }
+
+        $properties[] = trim($current);
+
+        return array_values(array_filter($properties, fn ($property) => $property !== ''));
     }
 
     function getSpreadsheetColumnName($index) {
