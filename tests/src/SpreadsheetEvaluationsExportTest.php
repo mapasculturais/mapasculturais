@@ -219,6 +219,20 @@ class SpreadsheetEvaluationsExportTest extends TestCase
         $this->assertSame('', $row['coletivo'] ?? null, 'Sem agente coletivo, a coluna existe e vem vazia');
     }
 
+    public function testHeaderFollowsTheOrderOfTheSelectedColumns(): void
+    {
+        $opportunity = $this->createOpportunityWithEvaluationPhase();
+        $field_name = $this->opportunityBuilder->getFieldName(self::FIELD_IDENTIFIER);
+
+        $columns = array_keys($this->getSubHeader($opportunity, "number,status,{$field_name},result,user,evaluationData"));
+
+        $this->assertSame(
+            ['number', 'status', $field_name, 'result', 'user'],
+            array_slice($columns, 0, 5),
+            'O cabeçalho precisa seguir a ordem em que as colunas foram selecionadas'
+        );
+    }
+
     public function testDateColumnsAreExportedAsReadableText(): void
     {
         $opportunity = $this->createOpportunityWithEvaluationPhase();
