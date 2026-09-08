@@ -35,7 +35,7 @@ $this->import('
                     </button>
                 </template>
 
-                <template #actions="{entities,filters}">
+                <template #actions="{entities,filters,spreadsheetQuery}">
                     <div class="opportunity-evaluations-table__actions">
                         <h4 class="bold"><?= i::__('Ações:') ?></h4>
                         
@@ -51,7 +51,7 @@ $this->import('
                                     :param="phase.opportunity.id"><?= i::__("Enviar avaliações") ?></mc-link>
                             </div>
                             <div v-if="user == 'all'">
-                                <mc-export-spreadsheet :owner="phase.opportunity" endpoint="evaluations" :params="{entityType: 'registrationEvaluation', '@select': 'projectName,category,owner.{name},number,score,proponentType,range,eligible,goalStatuses,committeeSequentialNumber,valuerUserId,valuerAgentId,user,result,status,evaluationData', query}" group="evaluations-spreadsheets"></mc-export-spreadsheet>
+                                <mc-export-spreadsheet :owner="phase.opportunity" endpoint="evaluations" :params="{entityType: 'registrationEvaluation', '@select': exportSelect(spreadsheetQuery), query}" group="evaluations-spreadsheets"></mc-export-spreadsheet>
                             </div>
                         </div>
                     </div>

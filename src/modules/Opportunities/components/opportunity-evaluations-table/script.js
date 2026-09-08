@@ -134,6 +134,15 @@ app.component('opportunity-evaluations-table', {
 
             return null;
         },
+        exportSelect(spreadsheetQuery) {
+            const select = spreadsheetQuery?.['@select'] || '';
+
+            if (/(^|,)evaluationData(,|$)/.test(select)) {
+                return select;
+            }
+
+            return select ? `${select},evaluationData` : 'evaluationData';
+        },
         avaliableEvaluationFields(field) {
             if(this.phase.opportunity.currentUserPermissions['@control']) {
                 return true;
