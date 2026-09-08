@@ -237,11 +237,24 @@ abstract class EvaluationsSpreadsheetJob extends SpreadsheetJob
 
         $columns['name'] = $registration['owner']['name'] ?? '';
         $columns['coletivo'] = $registration['agentsData']['coletivo']['name'] ?? '';
+
         $columns['status'] = $this->statusName($registration['status'] ?? null);
 
         unset($columns['owner'], $columns['agentsData']);
 
-        return $columns;
+        return array_map($this->formatDate(...), $columns);
+    }
+
+    /**
+     * O lote passa por json_encode e as datas chegam aqui como array; converte só essas, devolvendo o resto intacto.
+     */
+    protected function formatDate(mixed $value): mixed
+    {
+        if (!is_array($value) || !isset($value['date'], $value['timezone_type'], $value['timezone'])) {
+            return $value;
+        }
+
+        return date_create($value['date'])?->format('d/m/Y H:i:s') ?: $value['date'];
     }
 
     protected function getEvaluatorSpreadsheetColumns(?array $valuer): array
