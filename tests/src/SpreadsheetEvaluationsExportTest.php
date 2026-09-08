@@ -218,6 +218,15 @@ class SpreadsheetEvaluationsExportTest extends TestCase
         $this->assertSame('', $row['coletivo'] ?? null, 'Sem agente coletivo, a coluna existe e vem vazia');
     }
 
+    public function testStatusColumnCarriesTheEvaluationProgress(): void
+    {
+        $opportunity = $this->createOpportunityWithEvaluationPhase();
+
+        $row = $this->getFirstRow($opportunity, 'number,status,user,result,evaluationData');
+
+        $this->assertSame('Avaliação enviada', $row['status'] ?? null, 'A coluna Status traz o andamento da avaliação, como na tela');
+    }
+
     public function testHeaderFollowsTheOrderOfTheSelectedColumns(): void
     {
         $opportunity = $this->createOpportunityWithEvaluationPhase();
