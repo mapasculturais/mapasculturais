@@ -9,7 +9,7 @@ app.component('registration-form', {
 
         step: {
             type: Entity,
-            required: true
+            default: null
         },
     },
     
@@ -165,6 +165,10 @@ app.component('registration-form', {
         },
 
         stepFields () {
+            if (!this.step) {
+                return [];
+            }
+
             return this.fields.filter((field) => {
                 return field.step?.id === this.step._id;
             });

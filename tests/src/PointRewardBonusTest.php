@@ -75,6 +75,62 @@ class PointRewardBonusTest extends TestCase
     }
 
     /**
+     * Oportunidade com campo multivalorado (checkboxes) como gatilho condicional
+     * e campo select de raça (com bônus) visível apenas quando "Cultura" está marcada.
+     *
+     * Retorna [opportunity, evaluation_phase_builder, raca_field, interesses_field].
+     */
+    private function createOpportunityWithConditionalBonusField(): array
+    {
+        $admin = $this->userDirector->createUser('admin');
+        $this->login($admin);
+
+        $evaluation_phase_builder = $this->opportunityBuilder
+            ->reset(owner: $admin->profile, owner_entity: $admin->profile)
+            ->fillRequiredProperties()
+            ->save()
+            ->firstPhase()
+                ->setRegistrationPeriod(new Open)
+                ->createStep('Dados')
+                ->createField(
+                    identifier: 'interesses',
+                    field_type: 'checkboxes',
+                    title: 'Interesses',
+                    options: ['Cultura', 'Esporte']
+                )
+                ->createField(
+                    identifier: 'raca',
+                    field_type: 'select',
+                    title: 'Raça/Cor',
+                    field_condition: 'interesses:Cultura',
+                    options: ['Preta', 'Parda', 'Branca']
+                )
+                ->done()
+            ->save()
+            ->addEvaluationPhase(EvaluationMethods::technical)
+                ->setEvaluationPeriod(new ConcurrentEndingAfter)
+                ->setCommitteeValuersPerRegistration('Comissão', 1)
+                ->config()
+                    ->addSection('s1', 'Qualidade')
+                    ->addCriterion('c1', 's1', 'Critério 1', min: 0, max: 10, weight: 1)
+                    ->done()
+                ->save()
+                ->addValuers(1, 'Comissão');
+
+        $opportunity = $this->opportunityBuilder
+            ->save()
+            ->refresh()
+            ->getInstance();
+
+        return [
+            $opportunity,
+            $evaluation_phase_builder,
+            $this->opportunityBuilder->getField('raca'),
+            $this->opportunityBuilder->getField('interesses'),
+        ];
+    }
+
+    /**
      * Cria uma inscrição enviada com valor "Preta" no campo raça.
      */
     private function createRegistrationWithRacaPreta($opportunity, $field, string|array $value = 'Preta'): Registration
@@ -572,6 +628,93 @@ class PointRewardBonusTest extends TestCase
         $this->assertEquals(5, $registration->appliedPointReward->percentage);
         $this->assertCount(1, $registration->appliedPointReward->rules);
         $this->assertEquals('Preta', $registration->appliedPointReward->rules[0]->value);
+    }
+
+    /**
+     * Campo condicionante multivalorado (checkboxes): bônus aplica quando o valor
+     * esperado está no array — regressão para trim() em applyPointReward.
+     */
+    public function testPointRewardAppliesWhenConditionalTriggerFieldIsArrayAndMatches(): void
+    {
+        [$opportunity, $eval_builder, $raca_field, $interesses_field] = $this->createOpportunityWithConditionalBonusField();
+
+        $emc = $opportunity->evaluationMethodConfiguration;
+        $emc->isActivePointReward = true;
+        $emc->pointRewardRoof = 0;
+        $emc->pointReward = (object) [
+            'type'  => 'percentage',
+            'rules' => [
+                (object) [
+                    'field'      => $raca_field->id,
+                    'value'      => (object) ['Preta' => 'true'],
+                    'bonusValue' => 10,
+                ],
+            ],
+        ];
+        $this->saveEvaluationMethodConfiguration($emc);
+
+        $registration = $this->registrationDirector->createSentRegistration(
+            $opportunity,
+            data: [
+                $interesses_field->fieldName => ['Cultura', 'Esporte'],
+                $raca_field->fieldName       => 'Preta',
+            ]
+        );
+        $this->sendTechnicalEvaluation($eval_builder, $registration, 8.0);
+
+        $app = App::i();
+        $app->disableAccessControl();
+        $registration = $registration->refreshed();
+        $registration->consolidateResult();
+        $app->enableAccessControl();
+
+        $registration = $registration->refreshed();
+
+        $this->assertEquals('8.80', $registration->score, 'Bônus deve aplicar quando condicional array contém o valor esperado');
+        $this->assertEquals(10, $registration->appliedPointReward->percentage);
+    }
+
+    /**
+     * Campo condicionante multivalorado: bônus não aplica quando o valor esperado
+     * não está no array (campo condicional invisível para a inscrição).
+     */
+    public function testPointRewardNotAppliedWhenConditionalTriggerFieldIsArrayAndDoesNotMatch(): void
+    {
+        [$opportunity, $eval_builder, $raca_field, $interesses_field] = $this->createOpportunityWithConditionalBonusField();
+
+        $emc = $opportunity->evaluationMethodConfiguration;
+        $emc->isActivePointReward = true;
+        $emc->pointRewardRoof = 0;
+        $emc->pointReward = (object) [
+            'type'  => 'percentage',
+            'rules' => [
+                (object) [
+                    'field'      => $raca_field->id,
+                    'value'      => (object) ['Preta' => 'true'],
+                    'bonusValue' => 10,
+                ],
+            ],
+        ];
+        $this->saveEvaluationMethodConfiguration($emc);
+
+        $registration = $this->registrationDirector->createSentRegistration(
+            $opportunity,
+            data: [
+                $interesses_field->fieldName => ['Esporte'],
+                $raca_field->fieldName       => 'Preta',
+            ]
+        );
+        $this->sendTechnicalEvaluation($eval_builder, $registration, 8.0);
+
+        $app = App::i();
+        $app->disableAccessControl();
+        $registration = $registration->refreshed();
+        $registration->consolidateResult();
+        $app->enableAccessControl();
+
+        $registration = $registration->refreshed();
+
+        $this->assertEquals('8.00', $registration->score, 'Bônus não deve aplicar quando condicional array não contém o valor esperado');
     }
 
     // =====================================================================

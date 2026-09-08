@@ -423,6 +423,7 @@ class EvaluationMethodConfiguration extends Controller {
             $relation->setSelectionFields($this->data['selectionFields']);
         }
 
+        $relation->setFiltersStoredOnRelation(true);
         $relation->save(true);
         $this->json(true);
     }

@@ -31,7 +31,7 @@
 <?php $this->applyTemplateHook('header-fieldset', 'after');?>
 
 <?php if($entity->projectName): ?>
-    <div class="registration-fieldset" ng-if="data.avaliableEvaluationFields['projectName'] || (data.entity.userHasControl)">
+    <div class="registration-fieldset" ng-if="data.avaliableEvaluationFields['projectName'] === 'true' || data.avaliableEvaluationFields['projectName'] === true || (data.entity.userHasControl)">
         <div class="label"><?php \MapasCulturais\i::_e("Nome do Projeto"); ?> </div>
         <h5> {{data.entity.object.projectName}} </h5>
     </div>

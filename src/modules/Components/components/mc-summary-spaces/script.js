@@ -28,7 +28,7 @@ app.component('mc-summary-spaces', {
                 can = true
             }
 
-            if (can &&!this.avaliableEvaluationFields[item]) {
+            if (can && !Utils.isEvaluationFieldVisible(this.avaliableEvaluationFields, item)) {
                 can = false;
             }
             
