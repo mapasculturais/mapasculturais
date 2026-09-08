@@ -53,6 +53,25 @@ foreach ($definitions as $field => $def) {
     }
 }
 
+$form_position = [];
+$position = 0;
+$phase = $opportunity;
+do {
+    $phase_fields = $phase->registrationFieldConfigurations;
+    usort($phase_fields, fn($a, $b) => $a->displayOrder <=> $b->displayOrder);
+
+    foreach ($phase_fields as $phase_field) {
+        $form_position[$phase_field->fieldName] ??= $position++;
+    }
+} while ($phase = $phase->previousPhase);
+
+$form_fields = array_values(array_filter($default_headers, fn($h) => isset($form_position[$h['slug']])));
+$properties = array_values(array_filter($default_headers, fn($h) => !isset($form_position[$h['slug']])));
+
+usort($form_fields, fn($a, $b) => $form_position[$a['slug']] <=> $form_position[$b['slug']]);
+
+$default_headers = array_merge($properties, $form_fields);
+
 $default_headers[] = [
     'text' => i::__('Comissão de avaliação'),
     'value' => 'committee',
