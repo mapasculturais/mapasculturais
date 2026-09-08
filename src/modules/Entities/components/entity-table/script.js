@@ -372,6 +372,10 @@ app.component('entity-table', {
         },
 
         columnToExportSelectFragments(column) {
+            if (Object.hasOwn(column, 'exportField')) {
+                return column.exportField ? [String(column.exportField)] : [];
+            }
+
             const raw = (column.value !== undefined && column.value !== null && String(column.value).trim() !== '')
                 ? String(column.value).trim()
                 : String(column.slug || '').trim();
