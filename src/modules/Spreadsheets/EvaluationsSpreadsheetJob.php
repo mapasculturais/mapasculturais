@@ -243,9 +243,7 @@ abstract class EvaluationsSpreadsheetJob extends SpreadsheetJob
         $columns['name'] = $registration['owner']['name'] ?? '';
         $columns['coletivo'] = $registration['agentsData']['coletivo']['name'] ?? '';
 
-        $columns['status'] = $this->statusName($registration['status'] ?? null);
-
-        unset($columns['owner'], $columns['agentsData']);
+        unset($columns['owner'], $columns['agentsData'], $columns['status']);
 
         return array_map($this->formatDate(...), $columns);
     }
@@ -288,6 +286,22 @@ abstract class EvaluationsSpreadsheetJob extends SpreadsheetJob
             'valuerAgentId' => $valuer['id'] ?? '',
             'user' => $valuer['name'] ?? '',
         ];
+    }
+
+    /**
+     * Andamento da avaliação, com os mesmos textos da coluna Status da tela de avaliações.
+     */
+    function evaluationStatusName($status) {
+        if ($status === null || $status === '') {
+            return i::__('Avaliação pendente');
+        }
+
+        return match ((int) $status) {
+            0 => i::__('Avaliação iniciada'),
+            1 => i::__('Avaliação concluída'),
+            2 => i::__('Avaliação enviada'),
+            default => i::__('Avaliação pendente'),
+        };
     }
 
     function statusName($status) {

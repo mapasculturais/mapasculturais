@@ -215,7 +215,6 @@ class SpreadsheetEvaluationsExportTest extends TestCase
         $row = $this->getFirstRow($opportunity, $select);
 
         $this->assertSame($this->registration->owner->name, $row['name'] ?? null, 'A coluna do agente responsável vem do dono da inscrição');
-        $this->assertSame($this->invoke('statusName', $this->registration->status), $row['status'] ?? null, 'O status da inscrição vem traduzido');
         $this->assertSame('', $row['coletivo'] ?? null, 'Sem agente coletivo, a coluna existe e vem vazia');
     }
 

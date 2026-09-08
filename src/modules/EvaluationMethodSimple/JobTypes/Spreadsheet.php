@@ -51,6 +51,7 @@ class Spreadsheet extends EvaluationsSpreadsheetJob
             $result[] = $this->getRegistrationSpreadsheetColumns($registration_data)
                 + $this->getEvaluatorSpreadsheetColumns($evaluation['valuer'] ?? null) + [
                 'result' => $evaluation['evaluation']['resultString'],
+                'status' => $this->evaluationStatusName($evaluation['evaluation']['status'] ?? null),
                 'obs' => $evaluation['evaluation']['evaluationData']['obs']
             ];
         }
