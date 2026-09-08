@@ -57,6 +57,7 @@ $default_headers[] = [
     'text' => i::__('Comissão de avaliação'),
     'value' => 'committee',
     'slug' => 'committee',
+    'exportField' => null,
     'required' => true,
     'visible' => true
 ];
@@ -144,16 +145,16 @@ $default_select = implode(',', $final_select);
 
 
 $headers = [
-    [ 'text' => i::__('inscrição', 'opportunity-evaluations-table'), 'value' => 'number', 'slug' => 'number', 'sticky' => true, 'width' => '160px' ],
-    [ 'text' => i::__('Nº avaliador', 'opportunity-evaluations-table'), 'value' => 'valuer?.committeeSequentialNumber', 'slug' => 'committeeSequentialNumber', 'visible' => true, 'width' => '100px' ],
-    [ 'text' => i::__('ID usuário avaliador', 'opportunity-evaluations-table'), 'value' => 'valuer?.user', 'slug' => 'valuerUserId', 'visible' => true, 'width' => '120px' ],
-    [ 'text' => i::__('ID agente avaliador', 'opportunity-evaluations-table'), 'value' => 'valuer?.id', 'slug' => 'valuerAgentId', 'visible' => true, 'width' => '120px' ],
-    [ 'text' => i::__('avaliador', 'opportunity-evaluations-table'), 'value' =>  'valuer?.name', 'slug' => 'evaluator', 'visible' => true],
-    [ 'text' => i::__('Resultado do avaliador', 'opportunity-evaluations-table'), 'value' => 'evaluation?.resultString', 'slug' => 'result'],
+    [ 'text' => i::__('inscrição', 'opportunity-evaluations-table'), 'value' => 'number', 'slug' => 'number', 'exportField' => 'number', 'sticky' => true, 'width' => '160px' ],
+    [ 'text' => i::__('Nº avaliador', 'opportunity-evaluations-table'), 'value' => 'valuer?.committeeSequentialNumber', 'slug' => 'committeeSequentialNumber', 'exportField' => 'committeeSequentialNumber', 'visible' => true, 'width' => '100px' ],
+    [ 'text' => i::__('ID usuário avaliador', 'opportunity-evaluations-table'), 'value' => 'valuer?.user', 'slug' => 'valuerUserId', 'exportField' => 'valuerUserId', 'visible' => true, 'width' => '120px' ],
+    [ 'text' => i::__('ID agente avaliador', 'opportunity-evaluations-table'), 'value' => 'valuer?.id', 'slug' => 'valuerAgentId', 'exportField' => 'valuerAgentId', 'visible' => true, 'width' => '120px' ],
+    [ 'text' => i::__('avaliador', 'opportunity-evaluations-table'), 'value' =>  'valuer?.name', 'slug' => 'evaluator', 'exportField' => 'user', 'visible' => true],
+    [ 'text' => i::__('Resultado do avaliador', 'opportunity-evaluations-table'), 'value' => 'evaluation?.resultString', 'slug' => 'result', 'exportField' => 'result'],
     [ 'text' => i::__('Tipo de proponente', 'opportunity-evaluations-table'), 'value' => 'proponentType', 'slug' => 'proponentType'],
     [ 'text' => i::__('Categoria', 'opportunity-evaluations-table'), 'value' => 'category', 'slug' => 'category'],
     [ 'text' => i::__('Faixa', 'opportunity-evaluations-table'), 'value' => 'range', 'slug' => 'range'],
-    [ 'text' => i::__('Ações', 'opportunity-evaluations-table'), 'value' => '', 'slug' => 'delete', 'visible' => true, 'width' => '100px'],
+    [ 'text' => i::__('Ações', 'opportunity-evaluations-table'), 'value' => '', 'slug' => 'delete', 'exportField' => null, 'visible' => true, 'width' => '100px'],
 ];
 
 $default_headers = array_merge($default_headers, $headers);
