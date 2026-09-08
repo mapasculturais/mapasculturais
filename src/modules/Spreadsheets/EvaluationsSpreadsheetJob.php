@@ -223,6 +223,22 @@ abstract class EvaluationsSpreadsheetJob extends SpreadsheetJob
         return $sheet;
     }
 
+    /**
+     * Colunas da inscrição a partir do que a API devolveu, para que toda propriedade selecionada tenha valor.
+     */
+    protected function getRegistrationSpreadsheetColumns(array $registration): array
+    {
+        $columns = $registration;
+
+        $columns['name'] = $registration['owner']['name'] ?? '';
+        $columns['coletivo'] = $registration['agentsData']['coletivo']['name'] ?? '';
+        $columns['status'] = $this->statusName($registration['status'] ?? null);
+
+        unset($columns['owner'], $columns['agentsData']);
+
+        return $columns;
+    }
+
     protected function getEvaluatorSpreadsheetColumns(?array $valuer): array
     {
         if (!$valuer) {

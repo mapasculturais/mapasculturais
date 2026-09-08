@@ -115,18 +115,9 @@ class Spreadsheet extends EvaluationsSpreadsheetJob
             $evaluation_data = array_merge($evaluation_data, $section_data);
             $registration_data = $evaluation['registration'];
             
-            $result[] = [
-                'projectName' => $registration_data['projectName'],
-                'category' => $registration_data['category'],
-                'name' => $registration_data['owner']['name'],
-                'number' => $registration_data['number'],
-                'range' => $registration_data['range'],
-                'score' => $registration_data['score'],
-                'proponentType' => $registration_data['proponentType'],
-                'eligible' => $registration_data['eligible'],
-            ] + $this->getEvaluatorSpreadsheetColumns($evaluation['valuer'] ?? null) + [
+            $result[] = $this->getRegistrationSpreadsheetColumns($registration_data)
+                + $this->getEvaluatorSpreadsheetColumns($evaluation['valuer'] ?? null) + [
                 'result' => $evaluation['evaluation']['resultString'] ?? null,
-                'status' => $this->statusName($registration_data['status']),
                 'obs' => $evaluation['evaluation']['evaluationData']['obs'] ?? null,
                 'viability' => $evaluation['evaluation']['evaluationData']['viability'] ?? null
             ] + $evaluation_data;

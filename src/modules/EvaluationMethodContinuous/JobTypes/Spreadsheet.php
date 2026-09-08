@@ -63,19 +63,10 @@ class Spreadsheet extends EvaluationsSpreadsheetJob
                 $goal_statuses = $registration_data['goalStatuses'][10] . '/' . $registration_data['goalStatuses']['numGoals'] . " " . i::__('concluídas');
             }
 
-            $result[] = [
-                'projectName' => $registration_data['projectName'],
-                'category' => $registration_data['category'],
-                'name' => $registration_data['owner']['name'],
-                'number' => $registration_data['number'],
-                'range' => $registration_data['range'],
-                'score' => $registration_data['score'],
-                'proponentType' => $registration_data['proponentType'],
-                'eligible' => $registration_data['eligible'],
-                'goalStatuses' => $goal_statuses,
-            ] + $this->getEvaluatorSpreadsheetColumns($evaluation['valuer'] ?? null) + [
+            $result[] = ['goalStatuses' => $goal_statuses]
+                + $this->getRegistrationSpreadsheetColumns($registration_data)
+                + $this->getEvaluatorSpreadsheetColumns($evaluation['valuer'] ?? null) + [
                 'result' => $evaluation['evaluation']['resultString'],
-                'status' => $this->statusName($registration_data['status']),
                 'obs' => $evaluation['evaluation']['evaluationData']['obs']
             ];
         }

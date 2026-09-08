@@ -99,18 +99,9 @@ class Spreadsheet extends EvaluationsSpreadsheetJob
                 }
             }
 
-            $result[] = [
-                'projectName' => $registration_data['projectName'],
-                'category' => $registration_data['category'],
-                'name' => $registration_data['owner']['name'],
-                'number' => $registration_data['number'],
-                'range' => $registration_data['range'],
-                'score' => $registration_data['score'],
-                'proponentType' => $registration_data['proponentType'],
-                'eligible' => $registration_data['eligible'],
-            ] + $this->getEvaluatorSpreadsheetColumns($evaluation['valuer'] ?? null) + [
+            $result[] = $this->getRegistrationSpreadsheetColumns($registration_data)
+                + $this->getEvaluatorSpreadsheetColumns($evaluation['valuer'] ?? null) + [
                 'result' => $evaluation['evaluation']['resultString'] ?? null,
-                'status' => $this->statusName($registration_data['status']),
                 'reasonDisqualification' => $registration_data['evaluationResultString']
             ] + $evaluation_data;
         }
