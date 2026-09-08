@@ -77,6 +77,11 @@ abstract class EvaluationsSpreadsheetJob extends SpreadsheetJob
                     continue;
                 }
 
+                if($property === 'coletivo') {
+                    $sub_header[$property] = i::__('Agente coletivo');
+                    continue;
+                }
+
                 if($property === 'committeeSequentialNumber') {
                     $sub_header[$property] = i::__('Nº sequencial do avaliador');
                     continue;
