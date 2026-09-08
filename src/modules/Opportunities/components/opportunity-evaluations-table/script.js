@@ -148,7 +148,7 @@ app.component('opportunity-evaluations-table', {
                 return true;
             }
             
-            return this.phase.opportunity.avaliableEvaluationFields[field]
+            return Utils.isEvaluationFieldVisible(this.phase.opportunity.avaliableEvaluationFields, field)
         },
         createUrl(entity) {
             let user = this.user;

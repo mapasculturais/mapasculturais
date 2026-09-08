@@ -44,20 +44,14 @@ app.component('registration-edition', {
             const filteredSteps = steps.filter((step) => {
                 const conditional = step.metadata?.conditional;
                 if (conditional) {
-                    if (conditional.categories) {
-                        if (category && !conditional.categories.includes(category)) {
-                            return false;
-                        }
+                    if (conditional.categories?.length && !conditional.categories.includes(category)) {
+                        return false;
                     }
-                    if (conditional.proponentTypes) {
-                        if (proponentType && !conditional.proponentTypes.includes(proponentType)) {
-                            return false;
-                        }
+                    if (conditional.proponentTypes?.length && !conditional.proponentTypes.includes(proponentType)) {
+                        return false;
                     }
-                    if (conditional.ranges) {
-                        if (range && !conditional.ranges.includes(range)) {
-                            return false;
-                        }
+                    if (conditional.ranges?.length && !conditional.ranges.includes(range)) {
+                        return false;
                     }
                 }
                 return true;
@@ -100,6 +94,14 @@ app.component('registration-edition', {
     },
 
     watch: {
+        steps(steps, previousSteps) {
+            const previousStep = previousSteps[this.stepIndex];
+            const previousStepId = previousStep?._id ?? previousStep?.id;
+            const newStepIndex = steps.findIndex((step) => (step._id ?? step.id) === previousStepId);
+
+            this.stepIndex = newStepIndex >= 0 ? newStepIndex : 0;
+        },
+
         stepIndex() {
             window.location.hash = `#etapa_${this.stepIndex + 1}`;
         },

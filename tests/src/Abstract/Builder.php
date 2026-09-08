@@ -2,8 +2,6 @@
 
 namespace Tests\Abstract;
 
-use MapasCulturais\App;
-use MapasCulturais\Entities\Registration;
 use MapasCulturais\Entity;
 
 /** @property Entity $instance */
@@ -32,8 +30,8 @@ abstract class Builder
     function save(bool $flush = true): static
     {
         $this->getInstance()->save($flush);
-        $app = App::i();
-        $app->persistPCachePendingQueue();
+        // Defer persistPCachePendingQueue: fixtures em massa geravam centenas de
+        // INSERTs por save. Quem precisa do pcache chama processPCache().
         return $this;
     }
 

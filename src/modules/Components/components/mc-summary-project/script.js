@@ -27,7 +27,7 @@ app.component('mc-summary-project', {
                 can = true
             }
 
-            if (can &&!this.avaliableEvaluationFields[item]) {
+            if (can && !Utils.isEvaluationFieldVisible(this.avaliableEvaluationFields, item)) {
                 can = false;
             }
             

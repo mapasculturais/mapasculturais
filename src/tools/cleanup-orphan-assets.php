@@ -20,6 +20,22 @@ function cleanup_orphan_assets_format_bytes(int $bytes): string {
     return round($bytes, 2) . $units[$i];
 }
 
+/**
+ * Extrai nomes de arquivos publicados de um valor de cache Redis.
+ * Inclui html (templates Angular do embedTools/form-builder) e map (source maps).
+ */
+function cleanup_orphan_assets_extract_filenames(string $value): array {
+    if (!preg_match_all(
+        '/[\w][\w.\-]*\.(?:js|css|html?|png|jpe?g|gif|ico|svg|woff2?|ttf|eot|map)\b/i',
+        $value,
+        $matches
+    )) {
+        return [];
+    }
+
+    return $matches[0];
+}
+
 $app = App::i();
 
 $dry_run = in_array('--dry-run', $argv, true) || (bool) env('ASSET_CLEANUP_DRY_RUN', false);
@@ -42,14 +58,18 @@ if (!$redis_host) {
 
 // 1. Descobre, a partir do que ainda está vivo no cache (Redis já expira sozinho
 //    o que passou do TTL), quais nomes de arquivo publicados ainda podem estar em uso.
-//    Isso cobre ASSETS_SCRIPTS/ASSETS_STYLES (grupos mergeados - printScripts/printStyles)
-//    e ASSET_URL (assets individuais, ex.: imagens - assetUrl()).
+//    Cobre printScripts/printStyles (ASSETS_*), assetUrl() (ASSET_URL) e publishAsset().
 $redis = new \Redis();
 $redis->connect($redis_host);
 $redis->setOption(\Redis::OPT_SCAN, \Redis::SCAN_RETRY);
 
 $protected = [];
-$patterns = ['*ASSETS_SCRIPTS*', '*ASSETS_STYLES*', '*ASSET_URL*'];
+$patterns = [
+    '*ASSETS_SCRIPTS*',
+    '*ASSETS_STYLES*',
+    '*ASSET_URL*',
+    '*publishAsset*',
+];
 $seen_keys = [];
 
 foreach ($patterns as $pattern) {
@@ -68,10 +88,13 @@ foreach ($patterns as $pattern) {
                     continue;
                 }
 
-                if (preg_match_all('/[\w][\w.\-]*\.(?:js|css|png|jpe?g|gif|ico|svg|woff2?|ttf|eot)\b/i', $value, $matches)) {
-                    foreach ($matches[0] as $filename) {
-                        $protected[$filename] = true;
-                    }
+                // valor serializado do Symfony pode ser string ou blob; normaliza para string
+                if (!is_string($value)) {
+                    $value = (string) $value;
+                }
+
+                foreach (cleanup_orphan_assets_extract_filenames($value) as $filename) {
+                    $protected[$filename] = true;
                 }
             }
         }

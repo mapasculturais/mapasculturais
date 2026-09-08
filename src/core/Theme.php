@@ -960,7 +960,11 @@ abstract class Theme {
                     $query->setParameter('id', $e['id'] ?? 0);
                     $opportunity = $query->getSingleResult();
                 }
-                $e['opportunity'] = $opportunity->simplify('id,name,registrationFrom,registrationTo,type,files,terms,seals');
+                $opportunity_properties = 'id,name,registrationFrom,registrationTo,type,files,terms,seals';
+                if ($entity_class_name === Registration::class) {
+                    $opportunity_properties .= ',registrationCategories,registrationProponentTypes,registrationRanges';
+                }
+                $e['opportunity'] = $opportunity->simplify($opportunity_properties);
                 if($opportunity->parent){
                     $e['opportunity']->parent = $opportunity->parent->simplify('id,name,type,files,terms,seals');
                 }
