@@ -47,7 +47,7 @@ abstract class EvaluationsSpreadsheetJob extends SpreadsheetJob
         $total_properties = 0;
         $job->owner->registerRegistrationMetadata(true);
         foreach($properties as $property) {
-            if (!in_array($property, ['result', 'status', 'evaluationData'])) {
+            if ($property !== 'evaluationData') {
                 if($this->slug !== 'continuous-spreadsheets' && $property === 'goalStatuses') {
                     continue;
                 }
@@ -99,6 +99,11 @@ abstract class EvaluationsSpreadsheetJob extends SpreadsheetJob
                 
                 if($property === 'user') {
                     $sub_header[$property] = i::__('Nome do avaliador');
+                    continue;
+                }
+
+                if($property === 'result') {
+                    $sub_header[$property] = i::__('Resultado do avaliador');
                     continue;
                 }
 
