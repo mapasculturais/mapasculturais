@@ -8,7 +8,7 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 ## [UNRELEASED]
 ### Correções
 - Mantém visíveis, após recarregar a página, os filtros individuais configurados para cada pessoa avaliadora na distribuição das avaliações
-- Corrige erro que impedia a exportaçao de planilha de inscritos ser gerada 
+- Corrige erro que impedia a exportação de planilha de inscritos funcionar corretamente 
 
 ## [7.8.9] - 2026-09-02
 ### Correções
