@@ -36,6 +36,20 @@ function cleanup_orphan_assets_extract_filenames(string $value): array {
     return $matches[0];
 }
 
+/**
+ * Templates Angular do BaseV1 (edit-box, find-entity, etc.). São poucos/pequenos
+ * e o custo de apagá-los com ASSET_URL ainda vivo é 404 permanente no form-builder.
+ */
+function cleanup_orphan_assets_is_angular_html_template(string $pathname, string $filename): bool {
+    if (preg_match('/\.directives\.[a-z0-9]+\.html$/i', $filename)) {
+        return true;
+    }
+
+    // qualquer .html sob .../html/ (publishAsset publica templates Angular aí)
+    $normalized = str_replace('\\', '/', $pathname);
+    return str_contains($normalized, '/html/') && str_ends_with(strtolower($filename), '.html');
+}
+
 $app = App::i();
 
 $dry_run = in_array('--dry-run', $argv, true) || (bool) env('ASSET_CLEANUP_DRY_RUN', false);
@@ -56,14 +70,27 @@ if (!$redis_host) {
     exit(1);
 }
 
-// 1. Descobre, a partir do que ainda está vivo no cache (Redis já expira sozinho
-//    o que passou do TTL), quais nomes de arquivo publicados ainda podem estar em uso.
-//    Cobre printScripts/printStyles (ASSETS_*), assetUrl() (ASSET_URL) e publishAsset().
+// 0. Índice do que realmente existe no disco (basename → true).
+//    Usado para reconciliar cache zumbi (ASSET_URL apontando para arquivo já apagado).
+$on_disk = [];
+$disk_iterator = new \RecursiveIteratorIterator(
+    new \RecursiveDirectoryIterator($assets_path, \FilesystemIterator::SKIP_DOTS)
+);
+foreach ($disk_iterator as $disk_file) {
+    if ($disk_file->isFile()) {
+        $on_disk[$disk_file->getFilename()] = true;
+    }
+}
+
 $redis = new \Redis();
 $redis->connect($redis_host);
 $redis->setOption(\Redis::OPT_SCAN, \Redis::SCAN_RETRY);
 
+// 1. Descobre, a partir do que ainda está vivo no cache, quais nomes ainda podem
+//    estar em uso + quais chaves apontam para arquivo inexistente (cache zumbi).
+//    Cobre printScripts/printStyles (ASSETS_*), assetUrl() (ASSET_URL) e publishAsset().
 $protected = [];
+$stale_keys = [];
 $patterns = [
     '*ASSETS_SCRIPTS*',
     '*ASSETS_STYLES*',
@@ -93,15 +120,25 @@ foreach ($patterns as $pattern) {
                     $value = (string) $value;
                 }
 
-                foreach (cleanup_orphan_assets_extract_filenames($value) as $filename) {
+                $filenames = cleanup_orphan_assets_extract_filenames($value);
+                $missing = false;
+
+                foreach ($filenames as $filename) {
                     $protected[$filename] = true;
+                    if (!isset($on_disk[$filename])) {
+                        $missing = true;
+                    }
+                }
+
+                // Só invalida ASSET_URL/publishAsset: são URLs individuais.
+                // ASSETS_SCRIPTS/STYLES misturam vários arquivos; um ausente não invalida o grupo inteiro.
+                if ($missing && (str_contains($key, 'ASSET_URL') || str_contains($key, 'publishAsset'))) {
+                    $stale_keys[$key] = true;
                 }
             }
         }
     } while ($cursor !== 0 && $cursor !== null);
 }
-
-$redis->close();
 
 // os .js.map nunca aparecem no HTML cacheado (são referenciados de dentro do
 // próprio .js via sourceMappingURL), então protegemos o par pelo nome do .js
@@ -111,8 +148,28 @@ foreach (array_keys($protected) as $name) {
     }
 }
 
+// 1b. Reconciliação: apaga cache que aponta para arquivo inexistente.
+//     Na próxima request o AssetManager republica (cache miss → publishAsset).
+//     Sem isso, o fix de "proteger .html" não cura 404 já instalado.
+$stale_cleared = 0;
+foreach (array_keys($stale_keys) as $key) {
+    $stale_cleared++;
+    if ($dry_run) {
+        echo "[cleanup-orphan-assets] (dry-run) invalidaria cache zumbi: {$key}\n";
+    } else {
+        $redis->del($key);
+        echo "[cleanup-orphan-assets] cache zumbi invalidado: {$key}\n";
+    }
+}
+
+$redis->close();
+
 if ($app->config['app.log.assetManager'] ?? false) {
-    $app->log->debug(sprintf('[cleanup-orphan-assets] %d nomes de arquivo protegidos encontrados no cache', count($protected)));
+    $app->log->debug(sprintf(
+        '[cleanup-orphan-assets] %d nomes protegidos, %d caches zumbis',
+        count($protected),
+        $stale_cleared
+    ));
 }
 
 // 2. Percorre o disco e remove o que não está protegido e já passou da janela
@@ -121,6 +178,7 @@ if ($app->config['app.log.assetManager'] ?? false) {
 $now = time();
 $scanned = 0;
 $deleted = 0;
+$skipped_html = 0;
 $bytes_freed = 0;
 
 $iterator = new \RecursiveIteratorIterator(
@@ -133,8 +191,17 @@ foreach ($iterator as $file) {
     }
 
     $scanned++;
+    $filename = $file->getFilename();
+    $pathname = $file->getPathname();
 
-    if (isset($protected[$file->getFilename()])) {
+    if (isset($protected[$filename])) {
+        continue;
+    }
+
+    // Cinto de segurança: nunca apagar templates Angular em html/, mesmo se o
+    // regex/cache falhar de novo. Ocupam pouco espaço; 404 no form-builder é grave.
+    if (cleanup_orphan_assets_is_angular_html_template($pathname, $filename)) {
+        $skipped_html++;
         continue;
     }
 
@@ -146,20 +213,22 @@ foreach ($iterator as $file) {
     $deleted++;
 
     if ($dry_run) {
-        echo "[cleanup-orphan-assets] (dry-run) removeria: {$file->getPathname()}\n";
+        echo "[cleanup-orphan-assets] (dry-run) removeria: {$pathname}\n";
     } else {
-        @unlink($file->getPathname());
+        @unlink($pathname);
     }
 }
 
 $mode = $dry_run ? 'dry-run' : 'aplicado';
 echo sprintf(
-    "[cleanup-orphan-assets] modo=%s pasta=%s arquivos_verificados=%d protegidos=%d removidos=%d espaco_liberado=%s\n",
+    "[cleanup-orphan-assets] modo=%s pasta=%s arquivos_verificados=%d protegidos=%d removidos=%d html_preservados=%d caches_zumbis=%d espaco_liberado=%s\n",
     $mode,
     $assets_path,
     $scanned,
     count($protected),
     $deleted,
+    $skipped_html,
+    $stale_cleared,
     cleanup_orphan_assets_format_bytes($bytes_freed)
 );
 
