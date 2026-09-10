@@ -6,7 +6,9 @@ renice +19 -p "$bash_pid" >/dev/null 2>&1
 ionice -c 3 -p "$bash_pid" >/dev/null 2>&1
 
 while [ true ]; do
-    /var/www/scripts/cleanup-orphan-assets.sh 2>/dev/null
+    # stdout/stderr vão para o log do container (entrypoint redireciona o cron).
+    # Não engolir stderr: precisamos ver falhas e caches zumbis invalidados.
+    /var/www/scripts/cleanup-orphan-assets.sh
 
     if [ -z "$ASSET_CLEANUP_INTERVAL" ]; then
         sleep 21600
