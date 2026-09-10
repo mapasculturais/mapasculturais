@@ -25,6 +25,7 @@ use Symfony\Component\VarDumper\Cloner\Data;
 use PhpOffice\PhpSpreadsheet\Cell\Coordinate;
 use PhpOffice\PhpSpreadsheet\Style\Alignment;
 use MapasCulturais\Entities\RegistrationEvaluation;
+use MapasCulturais\Entities\User;
 
 /**
  * @property-read string $fileGroup
@@ -205,6 +206,20 @@ abstract class SpreadsheetJob extends JobType
         }
 
         $writer->save($path);
+
+        $owner_class = get_class($job->owner);
+        $owner_id = $job->owner->id;
+        $authenticated_user_id = $job->authenticatedUser?->id;
+
+        // Hooks de exportação podem instanciar entidades transitórias de metadata
+        // durante a montagem do lote. Limpar o EM aqui evita que o flush do File
+        // tente persisti-las junto com a planilha.
+        $app->em->clear();
+
+        /** @var \MapasCulturais\Entity $owner */
+        $owner = $app->repo($owner_class)->find($owner_id);
+        /** @var User|null $authenticated_user */
+        $authenticated_user = $authenticated_user_id ? $app->repo(User::class)->find($authenticated_user_id) : null;
         
         $mimeTypes = [
             'csv' => 'text/csv',
@@ -223,15 +238,19 @@ abstract class SpreadsheetJob extends JobType
         
         $file->private = true;
         $file->group = $this->fileGroup;
-        $file->owner = $job->owner;
+        $file->owner = $owner;
         $file->save(true);
         
         // Disparo de e-mail
         if(file_exists($file->path)) {
-            $this->sendSuccessMailNotification($job->authenticatedUser, $file, $entity_class_name);
+            if ($authenticated_user) {
+                $this->sendSuccessMailNotification($authenticated_user, $file, $entity_class_name);
+            }
         } else {
             $file->delete(true);
-            $this->sendErrorMailNotification($job->authenticatedUser, $entity_class_name);
+            if ($authenticated_user) {
+                $this->sendErrorMailNotification($authenticated_user, $entity_class_name);
+            }
         }
     
        return true;

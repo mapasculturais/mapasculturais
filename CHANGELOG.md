@@ -19,6 +19,15 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Adiciona controle para ocultar título e subtítulo do logo no ThemeCustomizer
 - Remove configurações de aparência redundantes da tela de edição de subsites
 
+## [7.8.11] - 2026-09-10
+### Correções
+- Na limpeza de assets órfãos, preserva templates Angular em `html/` e invalida caches Redis zumbis (`ASSET_URL`/`publishAsset` apontando para arquivo inexistente), evitando 404 no form-builder; o cron deixa de engolir stderr para que falhas e invalidações apareçam no log do container
+
+## [7.8.10] - 2026-09-09
+### Correções
+- Mantém visíveis, após recarregar a página, os filtros individuais configurados para cada pessoa avaliadora na distribuição das avaliações
+- Corrige erro que impedia a exportação de planilha de inscritos funcionar corretamente 
+
 ## [7.8.9] - 2026-09-02
 ### Correções
 - Na prévia do formulário de inscrição, restaura os seletores de categoria, tipo de proponente e faixa e faz as etapas condicionais acompanharem a seleção, mantendo a navegação em uma etapa válida quando ela muda
