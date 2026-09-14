@@ -68,7 +68,7 @@ foreach ($patterns as $pattern) {
                     continue;
                 }
 
-                if (preg_match_all('/[\w][\w.\-]*\.(?:js|css|png|jpe?g|gif|ico|svg|woff2?|ttf|eot)\b/i', $value, $matches)) {
+                if (preg_match_all('/[\w][\w.\-]*\.(?:js|css|html|png|jpe?g|gif|ico|svg|woff2?|ttf|eot)\b/i', $value, $matches)) {
                     foreach ($matches[0] as $filename) {
                         $protected[$filename] = true;
                     }
