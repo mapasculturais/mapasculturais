@@ -78,6 +78,9 @@ class PublicApiRegistrationPrivacyTest extends TestCase
 
         $this->assertNotContains($registration->id, $this->findIds(['@select' => 'id', '@permissions' => '0']),
             '@permissions=0 não deve derrubar a proteção da entidade privada');
+
+        $this->assertNotContains($registration->id, $this->findIds(['@select' => 'id', '@permissions' => ' ']),
+            '@permissions só com whitespace não deve derrubar a proteção da entidade privada');
     }
 
     function testAgentsDataSnapshotHiddenFromUserWithoutPrivateDataPermission()

@@ -3587,7 +3587,9 @@ class ApiQuery {
             }
         }
         
-        if($class::isPrivateEntity() && empty($this->apiParams['@permissions'])){
+        // Private entities must always filter by permission. Covers missing,
+        // empty, "0" and whitespace @permissions (trim makes _addFilter no-op).
+        if($class::isPrivateEntity() && !$this->_filteringByPermissions){
             $this->_addFilterByPermissions('view');
         }
 
