@@ -11,6 +11,11 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - **Avaliação automática por selos**: o gestor pode indicar, em uma fase de avaliação, quais selos validam o proponente. Se a pessoa já tiver esses selos válidos no perfil, a inscrição é **dispensada automaticamente** daquela fase (marcada como “Dispensada por selos”) e segue para a próxima etapa, sem precisar de avaliador
 - **Novos anexos no cadastro do agente** (também usáveis como campos `@` no formulário de inscrição): CPF, CNPJ, CNH, RG, passaporte, comprovante de residência, vínculo territorial, currículo, portfólio, certidões fiscal, trabalhista e de prestação de contas, além de comprovantes de raça/cor, pessoa com deficiência e comunidades tradicionais. Os arquivos ficam no perfil e acompanham a inscrição automaticamente
 
+## [7.8.12] - 2026-09-16
+### Correções
+- Corrige falha na API pública que permitia a visitantes anônimos listar inscrições privadas e acessar dados pessoais dos proponentes
+- Corrige a exportação de planilha da lista de avaliações, que ignorava as colunas escolhidas em "Selecionar dados" e gerava sempre o mesmo conjunto fixo, passando a trazer exatamente as colunas selecionadas com os respectivos dados, inclusive os campos do formulário de inscrição
+
 ## [7.8.11] - 2026-09-10
 ### Correções
 - Na limpeza de assets órfãos, preserva templates Angular em `html/` e invalida caches Redis zumbis (`ASSET_URL`/`publishAsset` apontando para arquivo inexistente), evitando 404 no form-builder; o cron deixa de engolir stderr para que falhas e invalidações apareçam no log do container
