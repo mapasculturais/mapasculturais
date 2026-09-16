@@ -5,6 +5,10 @@ Todas as mudanças notáveis no projeto serão documentadas neste arquivo.
 O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/)
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [UNRELEASED]
+### Correções
+- Corrige a limpeza automática de arquivos publicados, que removia templates `.html` ainda em uso pelas telas em AngularJS e deixava caixas de edição e seletores sem resposta, como "Adicionar campo" e "Adicionar anexo" na configuração do formulário
+
 ## [7.8.6] - 2026-08-13
 ### Correções
 - Corrige erro que podia interromper o carregamento da página quando a data de um selo de verificação estava em branco
