@@ -5,9 +5,13 @@ Todas as mudanças notáveis no projeto serão documentadas neste arquivo.
 O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/)
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+### Correções
+- Na redistribuição de avaliações, aplica inclusões manuais antes do balanceamento e ordena de forma estável (`num`, `id`)
+
 ## [7.8.12] - 2026-09-16
 ### Correções
-- Corrige falha na API pública que permitia a visitantes anônimos listar inscrições privadas e acessar dados pessoais dos proponentes
+- Ajusta o controle de acesso da API pública para restringir a consulta de inscrições e informações associadas a usuários não autenticados.
 - Corrige a exportação de planilha da lista de avaliações, que ignorava as colunas escolhidas em "Selecionar dados" e gerava sempre o mesmo conjunto fixo, passando a trazer exatamente as colunas selecionadas com os respectivos dados, inclusive os campos do formulário de inscrição
 
 ## [7.8.11] - 2026-09-10
