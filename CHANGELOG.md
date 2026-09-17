@@ -8,6 +8,7 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 ## [Unreleased]
 ### Correções
 - Na redistribuição de avaliações, aplica inclusões manuais antes do balanceamento e ordena de forma estável (`num`, `id`)
+- Corrige desempate por campos agent-owner/collective resolvendo o tipo real do metadado do agente
 
 ## [7.8.12] - 2026-09-16
 ### Correções

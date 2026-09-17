@@ -799,9 +799,21 @@ class Quotas {
 
         foreach ($this->firstPhase->registrationFieldConfigurations as $field) {
             if ($field->fieldName === $criterion_type) {
+                $field_type = $field->fieldType;
+
+                // agent-owner/collective fields store the entity field type (select, date, …)
+                // in Agent metadata; without resolving it, tiebreaker comparisons are skipped.
+                if (in_array($field_type, ['agent-owner-field', 'agent-collective-field'], true)) {
+                    $entity_field = $field->config['entityField'] ?? null;
+                    $agent_meta = \MapasCulturais\Entities\Agent::getPropertiesMetadata();
+                    if ($entity_field && isset($agent_meta[$entity_field]['type'])) {
+                        $field_type = $agent_meta[$entity_field]['type'];
+                    }
+                }
+
                 return (object) [
                     'title' => $field->title,
-                    'fieldType' => $field->fieldType,
+                    'fieldType' => $field_type,
                 ];
             }
         }
