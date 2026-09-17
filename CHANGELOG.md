@@ -9,6 +9,13 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 ### Correções
 - Na redistribuição de avaliações, aplica inclusões manuais antes do balanceamento e ordena de forma estável (`num`, `id`)
 - Corrige desempate por campos agent-owner/collective resolvendo o tipo real do metadado do agente
+- Na lista de inscrições da 1ª fase, a coluna Pontuação deixa de sumir quando o edital tem fase técnica posterior
+
+### Melhorias
+- Facilita a reordenação de colunas no entity-table com auto-scroll e indicador visual ao arrastar
+- Padrão de colunas do entity-table por contexto (`@control` na entidade); listagens gerais com saasSuperAdmin
+- Define padrão inicial de sistema para a tabela de inscrições (sem `field_*`) quando ainda não há padrão salvo
+- Exibe "Sim"/"Não" na coluna de inscritos para "A inscrição está concorrendo por cotas?" (`appliedForQuota`)
 
 ## [7.8.12] - 2026-09-16
 ### Correções
