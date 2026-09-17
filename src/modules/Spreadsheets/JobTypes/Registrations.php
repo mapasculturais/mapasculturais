@@ -105,6 +105,15 @@ class Registrations extends SpreadsheetJob
                 continue;
             }
 
+            if($property == 'score') {
+                $header[$property] = i::__('Pontuação');
+                continue;
+            }
+
+            if($property == 'consolidatedResult') {
+                $header[$property] = i::__('Avaliação');
+                continue;
+            }
             
             if($property == 'usingQuota') {
                 $header[$property] = i::__('Cotas aplicadas');
@@ -152,6 +161,10 @@ class Registrations extends SpreadsheetJob
                 continue;
             }
 
+            if($property == 'appliedForQuota') {
+                $header[$property] = i::__('A inscrição está concorrendo por cotas?');
+                continue;
+            }
 
             if($property == 'editableUntil') {
                 $header[$property] = i::__('Função editar inscrição: Prazo final para edição');
@@ -615,6 +628,11 @@ class Registrations extends SpreadsheetJob
                     $entity['eligible'] = $entity['eligible'] ?  i::__('Sim') : i::__('Não');
                 }
 
+                if(array_key_exists('appliedForQuota', $entity)) {
+                    $applied = $entity['appliedForQuota'];
+                    $is_yes = $applied === true || $applied === 'true' || $applied === 1 || $applied === '1';
+                    $entity['appliedForQuota'] = $is_yes ? i::__('Sim') : i::__('Não');
+                }
 
                 if(isset($entity['appliedPointReward'])) {
                     $entity['appliedPointReward'] = $this->formatAppliedPointReward($entity['appliedPointReward']);

@@ -16,7 +16,7 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Facilita a reordenação de colunas no entity-table com auto-scroll e indicador visual ao arrastar
 - Padrão de colunas do entity-table por contexto (`@control` na entidade); listagens gerais com saasSuperAdmin
 - Define padrão inicial de sistema para a tabela de inscrições (sem `field_*`) quando ainda não há padrão salvo
-- Exibe "Sim"/"Não" na coluna de inscritos para "A inscrição está concorrendo por cotas?" (`appliedForQuota`)
+- Exibe "Sim"/"Não" na coluna e na planilha para "A inscrição está concorrendo por cotas?" (`appliedForQuota`)
 
 ## [7.8.12] - 2026-09-16
 ### Correções
