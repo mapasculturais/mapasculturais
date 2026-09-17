@@ -58,10 +58,15 @@ class Registrations extends SpreadsheetJob
 
         foreach(array_keys($properties) as $property) {
             if (str_starts_with($property, 'field_')) {
-                $etf = $this->is_entity_type_field($property);
+                // Paths aninhados (ex.: field_121.address_level4) usam o metakey base
+                $base_field = explode('.', $property, 2)[0];
+                $etf = $this->is_entity_type_field($base_field);
                 if ($etf['status']) {
                     continue;
                 }
+                // Reserva a posição da coluna conforme @select; o título vem do field config abaixo
+                $header[$property] = $property;
+                continue;
             }
             if($property == 'singleUrl') {
                 $header[$property] = i::__('Link da inscrição');
@@ -97,6 +102,17 @@ class Registrations extends SpreadsheetJob
 
             if($property == 'files') {
                 $header[$property] = i::__('Anexos');
+                continue;
+            }
+
+            if($property == 'score') {
+                $header[$property] = i::__('Pontuação');
+                continue;
+            }
+
+            if($property == 'consolidatedResult') {
+                $header[$property] = i::__('Avaliação');
+                continue;
             }
             
             if($property == 'usingQuota') {
@@ -142,6 +158,11 @@ class Registrations extends SpreadsheetJob
 
             if($property == 'eligible') {
                 $header[$property] = i::__('Concorrendo por cota');
+                continue;
+            }
+
+            if($property == 'appliedForQuota') {
+                $header[$property] = i::__('A inscrição está concorrendo por cotas?');
                 continue;
             }
 
@@ -193,21 +214,16 @@ class Registrations extends SpreadsheetJob
                     }
 
                     if($entity_type_field['ft'] == 'pessoaDeficiente') {
-                        if (!isset($header[$field->fieldName])) {
-                            $header[$field->fieldName] = $field->title;
-                        }
+                        $this->setFieldHeaderLabel($header, $field->fieldName, $field->title);
                     }
 
                     if($entity_type_field['ft'] == 'persons') {
-                        if (!isset($header[$field->fieldName])) {
-                            $header[$field->fieldName] = $field->title;
-                        }
+                        $this->setFieldHeaderLabel($header, $field->fieldName, $field->title);
                     }
                     
                 } else {
-                    if (!isset($header[$field->fieldName])) {
-                        $header[$field->fieldName] = $field->title;
-                    }
+                    // Sempre sobrescreve: o 1º loop pode ter reservado a chave com field_*
+                    $this->setFieldHeaderLabel($header, $field->fieldName, $field->title);
                 }
             }
         } while($opportunity = $opportunity->previousPhase);
@@ -612,6 +628,12 @@ class Registrations extends SpreadsheetJob
                     $entity['eligible'] = $entity['eligible'] ?  i::__('Sim') : i::__('Não');
                 }
 
+                if(array_key_exists('appliedForQuota', $entity)) {
+                    $applied = $entity['appliedForQuota'];
+                    $is_yes = $applied === true || $applied === 'true' || $applied === 1 || $applied === '1';
+                    $entity['appliedForQuota'] = $is_yes ? i::__('Sim') : i::__('Não');
+                }
+
                 if(isset($entity['appliedPointReward'])) {
                     $entity['appliedPointReward'] = $this->formatAppliedPointReward($entity['appliedPointReward']);
                 }
@@ -685,6 +707,21 @@ class Registrations extends SpreadsheetJob
     private function formatBonusNumber(float $value): string
     {
         return fmod($value, 1.0) === 0.0 ? (string) (int) $value : (string) $value;
+    }
+
+    /**
+     * Define o rótulo do campo na planilha, preservando a ordem da coluna já reservada
+     * e atualizando paths aninhados (ex.: field_121.address_level4).
+     */
+    private function setFieldHeaderLabel(array &$header, string $field_name, string $title): void
+    {
+        $header[$field_name] = $title;
+
+        foreach (array_keys($header) as $key) {
+            if (str_starts_with($key, $field_name . '.')) {
+                $header[$key] = $title;
+            }
+        }
     }
 
     function is_entity_type_field($field_name) {

@@ -19,6 +19,24 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Adiciona controle para ocultar título e subtítulo do logo no ThemeCustomizer
 - Remove configurações de aparência redundantes da tela de edição de subsites
 
+## [7.8.13] - 2026-09-17
+### Correções
+- Na redistribuição de avaliações, aplica inclusões manuais antes do balanceamento e ordena de forma estável (`num`, `id`)
+- Corrige desempate por campos agent-owner/collective resolvendo o tipo real do metadado do agente
+- Na lista de inscrições da 1ª fase, a coluna Pontuação deixa de sumir quando o edital tem fase técnica posterior
+- Na planilha de inscritos, os cabeçalhos dos campos do formulário voltam a usar o título (label) em vez de `field_*`
+
+### Melhorias
+- Facilita a reordenação de colunas no entity-table com auto-scroll e indicador visual ao arrastar
+- Padrão de colunas do entity-table por contexto (`@control` na entidade); listagens gerais com saasSuperAdmin
+- Define padrão inicial de sistema para a tabela de inscrições (sem `field_*`) quando ainda não há padrão salvo
+- Exibe "Sim"/"Não" na coluna e na planilha para "A inscrição está concorrendo por cotas?" (`appliedForQuota`)
+
+## [7.8.12] - 2026-09-16
+### Correções
+- Ajusta o controle de acesso da API pública para restringir a consulta de inscrições e informações associadas a usuários não autenticados.
+- Corrige a exportação de planilha da lista de avaliações, que ignorava as colunas escolhidas em "Selecionar dados" e gerava sempre o mesmo conjunto fixo, passando a trazer exatamente as colunas selecionadas com os respectivos dados, inclusive os campos do formulário de inscrição
+
 ## [7.8.11] - 2026-09-10
 ### Correções
 - Na limpeza de assets órfãos, preserva templates Angular em `html/` e invalida caches Redis zumbis (`ASSET_URL`/`publishAsset` apontando para arquivo inexistente), evitando 404 no form-builder; o cron deixa de engolir stderr para que falhas e invalidações apareçam no log do container
