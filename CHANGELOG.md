@@ -10,6 +10,7 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Na redistribuição de avaliações, aplica inclusões manuais antes do balanceamento e ordena de forma estável (`num`, `id`)
 - Corrige desempate por campos agent-owner/collective resolvendo o tipo real do metadado do agente
 - Na lista de inscrições da 1ª fase, a coluna Pontuação deixa de sumir quando o edital tem fase técnica posterior
+- Na planilha de inscritos, os cabeçalhos dos campos do formulário voltam a usar o título (label) em vez de `field_*`
 
 ### Melhorias
 - Facilita a reordenação de colunas no entity-table com auto-scroll e indicador visual ao arrastar
