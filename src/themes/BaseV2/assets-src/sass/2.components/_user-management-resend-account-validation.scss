@@ -1,0 +1,35 @@
+@use '../0.settings/mixins' as *;
+
+.user-management-resend-account-validation {
+    // Alinha à direita da linha do e-mail sem alterar o layout do container,
+    // que não tem estilo próprio e é compartilhado com a tela de conta do usuário.
+    float: right;
+
+    &__status,
+    &__action {
+        align-items: center;
+        display: inline-flex;
+        gap: size(12);
+    }
+
+    &__status {
+        color: var(--mc-gray-500);
+    }
+
+    &__action {
+        cursor: pointer;
+
+        &--sending {
+            opacity: 0.6;
+            pointer-events: none;
+        }
+    }
+
+    // Em tela estreita o float encavalaria o endereço de e-mail. A ação passa para
+    // a linha de baixo em vez de ser escondida — é a única forma de reenviar o link.
+    @media (max-width: size(800)) {
+        display: block;
+        float: none;
+        margin-top: size(8);
+    }
+}
