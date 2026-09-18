@@ -23,7 +23,7 @@ return [
     ex: 'file:WARNING,error_log:DEBUG,browser:DEBUG'
     ex: [new \Monolog\Handler\ErrorLogHandler(level: Level::Debug)]
     */
-    'monolog.handlers' => env('LOG_HANDLERS', 'file:WARNING,error_log:DEBUG,telegram:CRITICAL'),
+    'monolog.handlers' => env('LOG_HANDLERS', 'file:WARNING,error_log:DEBUG,telegram:CRITICAL,sentry:ERROR'),
 
     'monolog.processors' => [],
 
