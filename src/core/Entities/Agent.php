@@ -57,6 +57,16 @@ class Agent extends \MapasCulturais\Entity
     const STATUS_RELATED = -1;
     const STATUS_INVITED = -2;
 
+    /**
+     * Issue #32: metadado de documento exigido por tipo de agente
+     * quando a config "agents.requiredDocumentsByType" está ativa
+     * (1 = Individual exige CPF; 2 = Coletivo exige CNPJ).
+     */
+    public const DOCUMENT_METADATA_BY_TYPE = [
+        1 => 'cpf',
+        2 => 'cnpj',
+    ];
+
     protected $__enableMagicGetterHook = true;
 
     protected function validateLocation(){
@@ -328,6 +338,42 @@ class Agent extends \MapasCulturais\Entity
         $app->applyHook("{$prefix}::validations", [&$validations]);
 
         return $validations;
+    }
+
+    /**
+     * Issue #32: retorna o metadado de documento (cpf/cnpj) exigido para este
+     * agente, combinando a config "agents.requiredDocumentsByType" (env
+     * AGENTS_REQUIRED_DOCUMENTS_BY_TYPE, default false) com o tipo atual.
+     *
+     * Retorna null quando a flag está desativada, quando o tipo não tem
+     * documento exigido ou quando o tipo ainda não foi definido.
+     */
+    public function requiredDocumentMetadata(): ?string
+    {
+        $app = App::i();
+
+        if (!($app->config['agents.requiredDocumentsByType'] ?? false)) {
+            return null;
+        }
+
+        $type_id = $this->_type ? (int) $this->_type : null;
+
+        return self::DOCUMENT_METADATA_BY_TYPE[$type_id] ?? null;
+    }
+
+    /**
+     * Issue #32: além das regras estáticas de metadados/validações, cpf/cnpj
+     * tornam-se obrigatórios conforme o tipo do agente quando a flag
+     * "agents.requiredDocumentsByType" está ativa. É o mesmo critério injetado
+     * na validação server-side (hook entity(Agent).validations do módulo
+     * AgentDocuments), garantindo que formulários e validação permaneçam
+     * coerentes. A exigência em si é sempre server-side: aqui apenas marcamos
+     * o campo para a interface.
+     */
+    public function isPropertyRequired($entity, $property)
+    {
+        return parent::isPropertyRequired($entity, $property)
+            || $this->requiredDocumentMetadata() === $property;
     }
 
     public function setType($type)

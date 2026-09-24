@@ -5,7 +5,43 @@ Todas as mudanças notáveis no projeto serão documentadas neste arquivo.
 O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/)
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [UNRELEASED]
+## [7.8.13] - 2026-09-17
+### Correções
+- Na redistribuição de avaliações, aplica inclusões manuais antes do balanceamento e ordena de forma estável (`num`, `id`)
+- Corrige desempate por campos agent-owner/collective resolvendo o tipo real do metadado do agente
+- Na lista de inscrições da 1ª fase, a coluna Pontuação deixa de sumir quando o edital tem fase técnica posterior
+- Na planilha de inscritos, os cabeçalhos dos campos do formulário voltam a usar o título (label) em vez de `field_*`
+
+### Melhorias
+- Facilita a reordenação de colunas no entity-table com auto-scroll e indicador visual ao arrastar
+- Padrão de colunas do entity-table por contexto (`@control` na entidade); listagens gerais com saasSuperAdmin
+- Define padrão inicial de sistema para a tabela de inscrições (sem `field_*`) quando ainda não há padrão salvo
+- Exibe "Sim"/"Não" na coluna e na planilha para "A inscrição está concorrendo por cotas?" (`appliedForQuota`)
+
+## [7.8.12] - 2026-09-16
+### Correções
+- Ajusta o controle de acesso da API pública para restringir a consulta de inscrições e informações associadas a usuários não autenticados.
+- Corrige a exportação de planilha da lista de avaliações, que ignorava as colunas escolhidas em "Selecionar dados" e gerava sempre o mesmo conjunto fixo, passando a trazer exatamente as colunas selecionadas com os respectivos dados, inclusive os campos do formulário de inscrição
+
+## [7.8.11] - 2026-09-10
+### Correções
+- Na limpeza de assets órfãos, preserva templates Angular em `html/` e invalida caches Redis zumbis (`ASSET_URL`/`publishAsset` apontando para arquivo inexistente), evitando 404 no form-builder; o cron deixa de engolir stderr para que falhas e invalidações apareçam no log do container
+
+## [7.8.10] - 2026-09-09
+### Correções
+- Mantém visíveis, após recarregar a página, os filtros individuais configurados para cada pessoa avaliadora na distribuição das avaliações
+- Corrige erro que impedia a exportação de planilha de inscritos funcionar corretamente 
+
+## [7.8.9] - 2026-09-02
+### Correções
+- Na prévia do formulário de inscrição, restaura os seletores de categoria, tipo de proponente e faixa e faz as etapas condicionais acompanharem a seleção, mantendo a navegação em uma etapa válida quando ela muda
+- Impede que a limpeza de assets órfãos apague templates HTML ainda referenciados no cache (ex.: `edit-box.html` do form-builder/embedTools), passando a proteger `.html`/`.htm` e chaves Redis de `publishAsset`
+
+## [7.8.8] - 2026-09-01
+### Correções
+- Corrige falha no build Docker do CI com pnpm 10 (ERR_PNPM_IGNORED_BUILDS), aprovando os build scripts necessários e fixando a versão do pnpm
+
+## [7.8.7] - 2026-09-01
 ### Correções
 - Corrige os filtros de período de inscrição nas listas de oportunidades para enviar o timestamp completo (YYYY-MM-DD HH:mm) em vez de apenas a data, classificando corretamente as inscrições abertas, futuras e encerradas
 - Corrige ocultação do resumo do agente ao desmarcar campo visível para avaliadores
@@ -14,6 +50,8 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 ### Melhorias
 - Ajusta tamanho dos cards da seção "Em destaque" na página inicial
 - Ajusta tamanho dos cards da seção "Editados recentemente" no painel de controle
+- Nova flag opcional (AGENTS_REQUIRED_DOCUMENTS_BY_TYPE) para exigir CPF em agentes Individuais e CNPJ em agentes Coletivos em todo salvamento, com os formulários marcando o campo obrigatório conforme o tipo; desativada por padrão
+- Modal de criação de agente exibe automaticamente CPF/CNPJ conforme o tipo quando a flag está ativa (sem *obrigatório, padrão hide-required dos modais de criação)
 - Torna colapsáveis as seções de textos explicativos e selos na config de avaliação
 
 ## [7.8.6] - 2026-08-13

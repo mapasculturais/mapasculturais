@@ -897,7 +897,7 @@ abstract class EvaluationMethod extends Module implements \JsonSerializable{
                     opportunity_id = {$opportunity->id} AND
                     r.status > 0
                 GROUP BY r.id, v.id
-                ORDER BY num ASC
+                ORDER BY num ASC, r.id ASC
             ";
 
         /**
@@ -1030,28 +1030,27 @@ abstract class EvaluationMethod extends Module implements \JsonSerializable{
             }
         }
 
+        // 1ª passagem: aplica todas as inclusões manuais antes de preencher o restante.
+        // Assim a carga entra em $pending_assignments_count e o comparador customizado
+        // enxerga o desequilíbrio mesmo se a ordem das inscrições variar (empate em num).
         foreach($registration_evaluations as &$registration) {
-            $registration_entity = null;
-
             $include_list = $registration->valuers_exceptions_list->include ?? [];
-
-            if($registration->status > 1 && !count($include_list)) {
+            if(!count($include_list)) {
                 continue;
             }
 
-            // adiciona os usuários da lista de inclusões (valuers_exceptions_list->include)
-            foreach($registration->valuers_exceptions_list->include as $user_id) {
+            foreach($include_list as $user_id) {
                 // se o usuário já é avaliador da inscrição, não precisa adicionar
                 if(isset($result[$registration->id][$user_id])) {
                     continue;
                 }
 
-                /** 
+                /**
                  * Lista de comissões que o usuário está
-                 * @var array 
+                 * @var array
                  **/
                 $user_committees = [];
-                
+
                 // encontra em quais comissões o usuário está
                 foreach($committees as $committee_name => $users) {
                     if(in_array($user_id, array_map(fn($user) => $user->id, $users))) {
@@ -1079,6 +1078,18 @@ abstract class EvaluationMethod extends Module implements \JsonSerializable{
                     // incrementa o número total de avaliações que o avaliador tem
                     $valuers_total_registrations_count[$user_id]++;
                 }
+            }
+        }
+        unset($registration);
+
+        // 2ª passagem: completa as vagas restantes com o balanceamento / comparador
+        foreach($registration_evaluations as &$registration) {
+            $registration_entity = null;
+
+            $include_list = $registration->valuers_exceptions_list->include ?? [];
+
+            if($registration->status > 1 && !count($include_list)) {
+                continue;
             }
 
             // passa por cada comissão adicionando os avaliadores até o limite de avaliadores por inscrição configurado na comissão

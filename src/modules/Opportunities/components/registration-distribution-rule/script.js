@@ -403,7 +403,11 @@ app.component('registration-distribution-rule', {
                 }
             }
 
-            if (this.parentFilters && this.parentFilters.fields && typeof this.parentFilters.fields === 'object') {
+            const hasParentFieldRestrictions = this.parentFilters?.fields &&
+                typeof this.parentFilters.fields === 'object' &&
+                Object.values(this.parentFilters.fields).some(values => Array.isArray(values) && values.length > 0);
+
+            if (hasParentFieldRestrictions) {
                 const nextFields = {};
                 const disabledFields = disabled.fields || {};
 
