@@ -26,6 +26,22 @@ class Module extends \MapasCulturais\Module {
         $app = App::i();
         $self = $this;
 
+        $app->hook('entity(EvaluationMethodConfiguration).save:before', function() use ($self) {
+            /** @var EvaluationMethodConfiguration $this */
+            // Na criação, OpportunityPhases ainda pode mudar a oportunidade da avaliação.
+            if (!$this->isNew()) {
+                $self->syncAppealPhaseName($this->opportunity, $this->name);
+            }
+        });
+
+        $app->hook('entity(Opportunity).save:before', function() use ($self) {
+            /** @var Opportunity $this */
+            if (!$this->isNew()) {
+                $phase_name = $this->evaluationMethodConfiguration?->name ?? $this->name;
+                $self->syncAppealPhaseName($this, $phase_name);
+            }
+        });
+
         /* Endpoint de criação de fase de recurso na oportunidade */
         $app->hook('POST(opportunity.createAppealPhase)', function() use ($app) {
             /** @var Controllers\Opportunity $this  */
@@ -64,7 +80,7 @@ class Module extends \MapasCulturais\Module {
             $appeal_phase = new $class_name();
             $appeal_phase->parent = $opportunity;
             $appeal_phase->status = Opportunity::STATUS_APPEAL_PHASE;
-            $appeal_phase->name = sprintf(i::__('Recurso para %s'), $phase_name);
+            $appeal_phase->name = self::buildAppealPhaseName($phase_name);
             $appeal_phase->ownerEntity = $opportunity->ownerEntity;
             $appeal_phase->registrationCategories = $opportunity->registrationCategories;
             $appeal_phase->registrationRanges = $opportunity->registrationRanges;
@@ -323,6 +339,53 @@ class Module extends \MapasCulturais\Module {
                 return $evaluationMethodConfiguration->opportunity->appealPhase;
             }
         ]);
+    }
+
+    /**
+     * Mantém o formato automático, inclusive o legado, e preserva títulos fora desses formatos.
+     * Sem nome anterior, usa o formato atual de criação do recurso.
+     */
+    public static function buildAppealPhaseName(string $phase_name, ?string $previous_name = null): ?string
+    {
+        $templates = $previous_name === null ? [i::__('Recurso para %s')] : array_unique([
+            i::__('Recurso para %s'),
+            i::__('Fase de recurso para %s'),
+            'Recurso para %s',
+            'Fase de recurso para %s',
+        ]);
+
+        foreach ($templates as $template) {
+            [$prefix, $suffix] = explode('%s', $template, 2);
+            if ($previous_name !== null && (!str_starts_with($previous_name, $prefix) || !str_ends_with($previous_name, $suffix))) {
+                continue;
+            }
+
+            return mb_substr(sprintf($template, $phase_name), 0, 255, 'UTF-8');
+        }
+
+        return null;
+    }
+
+    public function syncAppealPhaseName(Opportunity $opportunity, string $phase_name): void
+    {
+        if ($opportunity->isAppealPhase || $opportunity->status === Opportunity::STATUS_APPEAL_PHASE) {
+            return;
+        }
+
+        $appeal_phase = $opportunity->appealPhase;
+        if (!$appeal_phase || $appeal_phase->status !== Opportunity::STATUS_APPEAL_PHASE || !$appeal_phase->parent?->equals($opportunity)) {
+            return;
+        }
+
+        $name = self::buildAppealPhaseName($phase_name, $appeal_phase->name);
+        if ($name === null || $name === $appeal_phase->name) {
+            return;
+        }
+
+        $appeal_phase->checkPermission('modify');
+        // A entidade já está gerenciada pelo Doctrine. O flush do pai persiste o nome
+        // sem executar novamente os hooks de save do recurso, que reagendam jobs.
+        $appeal_phase->name = $name;
     }
 
     /**
