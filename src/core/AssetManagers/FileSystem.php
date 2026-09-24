@@ -91,6 +91,24 @@ class FileSystem extends \MapasCulturais\AssetManager{
     }
     
     /**
+     * Evita reutilizar URLs de arquivos removidos após a publicação.
+     * URLs externas não correspondem a arquivos deste gerenciador.
+     */
+    protected function _isPublishedAssetAvailable($asset_url){
+        if(!is_string($asset_url) || $asset_url === ''){
+            return false;
+        }
+
+        $base_url = App::i()->assetUrl;
+        if(!str_starts_with($asset_url, $base_url)){
+            return true;
+        }
+
+        $output_file = substr($asset_url, strlen($base_url));
+        return is_file($this->config['publishPath'] . $output_file);
+    }
+
+    /**
      * Publica um asset individual
      * 
      * @param string $asset_filename Caminho do arquivo do asset

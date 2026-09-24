@@ -218,14 +218,15 @@ abstract class AssetManager{
 
         if($app->config['app.useAssetsUrlCache'] && $app->cache->contains($cache_id)){
             $asset_url = $app->cache->fetch($cache_id);
-
-        }else{
-            $asset_url = $this->publishAsset($asset, null, $include_hash_in_filename);
-
-            if($app->config['app.useAssetsUrlCache'])
-                $app->cache->save ($cache_id, $asset_url, (int) $app->config['app.assetsUrlCache.lifetime']);
-
+            if($this->_isPublishedAssetAvailable($asset_url)){
+                return $asset_url;
+            }
         }
+
+        $asset_url = $this->publishAsset($asset, null, $include_hash_in_filename);
+
+        if($app->config['app.useAssetsUrlCache'])
+            $app->cache->save ($cache_id, $asset_url, (int) $app->config['app.assetsUrlCache.lifetime']);
 
         return $asset_url;
 
@@ -365,18 +366,30 @@ abstract class AssetManager{
         
         $cache_id = __METHOD__ . '::' . $asset_filename . '->' . $destination;
         if($app->config['app.useAssetsUrlCache'] && $app->cache->contains($cache_id)){
-            $result = $app->cache->fetch($cache_id);
-        }else{
-            $asset_url = $this->_publishAsset($asset_filename, $destination);
-            
-            if($app->config['app.useAssetsUrlCache']){
-                $app->cache->save($cache_id, $asset_url);
+            $asset_url = $app->cache->fetch($cache_id);
+            if($this->_isPublishedAssetAvailable($asset_url)){
+                return $asset_url;
             }
-            
-            $result = $asset_url;
         }
 
-        return $result;
+        $asset_url = $this->_publishAsset($asset_filename, $destination);
+
+        if($app->config['app.useAssetsUrlCache']){
+            $app->cache->save($cache_id, $asset_url);
+        }
+
+        return $asset_url;
+    }
+
+    /**
+     * Verifica se uma URL em cache ainda pode ser reutilizada.
+     * Drivers podem verificar o destino; por padrão mantém a política de cache.
+     *
+     * @param string $asset_url
+     * @return bool
+     */
+    protected function _isPublishedAssetAvailable($asset_url){
+        return true;
     }
 
     /**
