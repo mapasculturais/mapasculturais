@@ -5,6 +5,10 @@ Todas as mudanças notáveis no projeto serão documentadas neste arquivo.
 O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/)
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [UNRELEASED]
+### Correções
+- Implementa db-update que corrige dados legados das etapas de inscrição dos editais: campos e anexos sem etapa são associados a uma etapa existente (ou a uma nova, quando não houver) e etapas vazias duplicadas são removidas
+
 ## [7.8.13] - 2026-09-17
 ### Correções
 - Na redistribuição de avaliações, aplica inclusões manuais antes do balanceamento e ordena de forma estável (`num`, `id`)
@@ -45,7 +49,6 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 ### Correções
 - Corrige os filtros de período de inscrição nas listas de oportunidades para enviar o timestamp completo (YYYY-MM-DD HH:mm) em vez de apenas a data, classificando corretamente as inscrições abertas, futuras e encerradas
 - Corrige ocultação do resumo do agente ao desmarcar campo visível para avaliadores
-- Implementa db-update que corrige dados legados das etapas de inscrição dos editais: campos e anexos sem etapa são associados a uma etapa existente (ou a uma nova, quando não houver) e etapas vazias duplicadas são removidas
 
 ### Melhorias
 - Ajusta tamanho dos cards da seção "Em destaque" na página inicial
