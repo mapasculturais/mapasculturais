@@ -3299,5 +3299,39 @@ $$
         ));
         return true;
     },
+
+    'atualiza nomes automáticos das fases de recurso' => function() use ($app, $conn) {
+        $phases = $conn->iterateAssociative('
+            SELECT appeal.id, appeal.parent_id, appeal.name, COALESCE(evaluation.name, parent.name) AS phase_name
+            FROM opportunity appeal
+            JOIN opportunity parent ON parent.id = appeal.parent_id
+            LEFT JOIN evaluation_method_configuration evaluation ON evaluation.opportunity_id = parent.id
+            WHERE appeal.status = :status AND parent.status <> :status
+        ', ['status' => Entities\Opportunity::STATUS_APPEAL_PHASE]);
+
+        $updated = 0;
+        foreach ($phases as $phase) {
+            $name = \OpportunityAppealPhase\Module::buildAppealPhaseName($phase['phase_name'], $phase['name']);
+            if ($name === null || $name === $phase['name']) {
+                continue;
+            }
+
+            // Altera somente o título, sem disparar hooks, revisões ou reagendamento de jobs.
+            // A comparação com o nome lido também preserva alterações concorrentes.
+            $updated += $conn->executeStatement('
+                UPDATE opportunity SET name = :name
+                WHERE id = :id AND name = :previous_name AND status = :status AND parent_id = :parent_id
+            ', [
+                'name' => $name,
+                'id' => $phase['id'],
+                'previous_name' => $phase['name'],
+                'status' => Entities\Opportunity::STATUS_APPEAL_PHASE,
+                'parent_id' => $phase['parent_id'],
+            ]);
+        }
+
+        $app->log->debug("Nomes automáticos das fases de recurso: {$updated} atualizados");
+        return true;
+    },
     
 ] + $updates ;   

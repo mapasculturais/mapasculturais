@@ -5,6 +5,7 @@ namespace Test;
 use Laminas\Diactoros\Response;
 use MapasCulturais\Entities\Opportunity;
 use MapasCulturais\Exceptions\Halt;
+use MapasCulturais\i;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Tests\Abstract\TestCase;
 use Tests\Builders\PhasePeriods\ConcurrentEndingAfter;
@@ -183,6 +184,111 @@ class OpportunityAppealPhaseNameTest extends TestCase
         $parent->evaluationMethodConfiguration->save(true);
 
         $this->assertSame(mb_substr('Recurso para ' . str_repeat('á', 250), 0, 255), $this->persistedName($appeal));
+    }
+
+    public static function historicalNames(): array
+    {
+        return [
+            'formato atual' => ['Recurso para Avaliação antiga', 'Recurso para Avaliação técnica', 'pt_BR'],
+            'formato legado' => ['Fase de recurso para Avaliação antiga', 'Fase de recurso para Avaliação técnica', 'pt_BR'],
+            'já correto' => ['Recurso para Avaliação técnica', 'Recurso para Avaliação técnica', 'pt_BR'],
+            'personalizado' => ['Revisão administrativa especial', 'Revisão administrativa especial', 'pt_BR'],
+            'inglês' => ['Resource for Old evaluation', 'Resource for Avaliação técnica', 'en_US'],
+            'espanhol' => ['Reclamo para Evaluación anterior', 'Reclamo para Avaliação técnica', 'es_ES'],
+            'português com tradução ativa em inglês' => ['Recurso para Avaliação antiga', 'Recurso para Avaliação técnica', 'en_US'],
+        ];
+    }
+
+    #[DataProvider('historicalNames')]
+    public function testBackfillUpdatesOnlyAutomaticNameAndIsIdempotent(string $oldName, string $expectedName, string $locale): void
+    {
+        $parent = $this->createParentPhase(secondEvaluation: true);
+        $appeal = $this->createAppealPhase($parent);
+        // Simula dados gravados antes da sincronização, sem executar os novos hooks.
+        $this->app->conn->executeStatement('UPDATE opportunity SET name = ? WHERE id = ?', [$oldName, $appeal->id]);
+        $before = $this->app->conn->fetchAssociative('SELECT * FROM opportunity WHERE id = ?', [$appeal->id]);
+        $beforePosition = $this->rowPosition($appeal);
+
+        i::load_default_textdomain($locale);
+        try {
+            $this->runNameMigration();
+            $after = $this->app->conn->fetchAssociative('SELECT * FROM opportunity WHERE id = ?', [$appeal->id]);
+            $this->assertSame($expectedName, $after['name']);
+            unset($before['name'], $after['name']);
+            $this->assertSame($before, $after, 'Preserva datas, status, vínculos e demais colunas');
+
+            $afterPosition = $this->rowPosition($appeal);
+            if ($oldName === $expectedName) {
+                $this->assertSame($beforePosition, $afterPosition, 'Não regrava títulos corretos ou personalizados');
+            }
+
+            $this->runNameMigration();
+            $this->assertSame($expectedName, $this->persistedName($appeal));
+            $this->assertSame($afterPosition, $this->rowPosition($appeal), 'A segunda execução não regrava a linha');
+        } finally {
+            i::load_default_textdomain('pt_BR');
+        }
+    }
+
+    public function testBackfillUsesCollectionNameWhenThereIsNoEvaluation(): void
+    {
+        $parent = $this->createParentPhase(withEvaluation: false);
+        $appeal = $this->createAppealPhase($parent);
+        $this->app->conn->executeStatement('UPDATE opportunity SET name = ? WHERE id = ?', ['Coleta atualizada', $parent->id]);
+
+        $this->runNameMigration();
+
+        $this->assertSame('Recurso para Coleta atualizada', $this->persistedName($appeal));
+    }
+
+    public function testBackfillDoesNotRenameOrdinaryPhasesWithAppealPrefix(): void
+    {
+        $parent = $this->createParentPhase();
+        $name = 'Recurso para outro assunto';
+        $this->app->conn->executeStatement('UPDATE opportunity SET name = ? WHERE id = ?', [$name, $parent->id]);
+        $position = $this->rowPosition($parent);
+
+        $this->runNameMigration();
+
+        $this->assertSame($name, $this->persistedName($parent));
+        $this->assertSame($position, $this->rowPosition($parent));
+    }
+
+    public function testBackfillDoesNotRunAppealSaveHooks(): void
+    {
+        $parent = $this->createParentPhase();
+        $appeal = $this->createAppealPhase($parent);
+        $this->app->conn->executeStatement('UPDATE opportunity SET name = ? WHERE id = ?', ['Recurso para título antigo', $appeal->id]);
+        $appealId = $appeal->id;
+        $saves = 0;
+        $this->app->hook('entity(Opportunity).save:before', function () use ($appealId, &$saves) {
+            if ($this->id === $appealId) {
+                $saves++;
+            }
+        });
+
+        $this->runNameMigration();
+
+        $this->assertSame('Recurso para Avaliação técnica', $this->persistedName($appeal));
+        $this->assertSame(0, $saves);
+    }
+
+    private function runNameMigration(): void
+    {
+        static $updates;
+
+        // Carrega o registro geral no contexto do App, como o atualizador do sistema.
+        $updates ??= (function () {
+            return require APPLICATION_PATH . 'db-updates.php';
+        })->call($this->app);
+
+        $this->assertArrayHasKey('atualiza nomes automáticos das fases de recurso', $updates);
+        $this->assertTrue($updates['atualiza nomes automáticos das fases de recurso']());
+    }
+
+    private function rowPosition(Opportunity $phase): string
+    {
+        return $this->app->conn->fetchOne('SELECT ctid::text FROM opportunity WHERE id = ?', [$phase->id]);
     }
 
     private function createParentPhase(bool $withEvaluation = true, bool $secondEvaluation = false): Opportunity
