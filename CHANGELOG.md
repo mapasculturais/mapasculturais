@@ -5,6 +5,12 @@ Todas as mudanças notáveis no projeto serão documentadas neste arquivo.
 O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/)
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Correções
+
+- Corrige falha ao abrir "Adicionar campo" na fase de recurso quando o template Angular foi removido dos assets publicados, republicando arquivos ausentes mesmo quando suas URLs ainda estão em cache
+
 ## [7.8.13] - 2026-09-17
 ### Correções
 - Na redistribuição de avaliações, aplica inclusões manuais antes do balanceamento e ordena de forma estável (`num`, `id`)
