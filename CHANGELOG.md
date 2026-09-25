@@ -5,7 +5,7 @@ Todas as mudanças notáveis no projeto serão documentadas neste arquivo.
 O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/)
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [UNRELEASED]
+## [7.8.14] - 2026-09-25
 ### Correções
 - Implementa db-update que corrige dados legados das etapas de inscrição dos editais: campos e anexos sem etapa são associados a uma etapa existente (ou a uma nova, quando não houver) e etapas vazias duplicadas são removidas
 - Deixa de exibir o título "Publicação de Resultados" nas fases de coleta de dados e na fase de publicação final do resultado de editais de fluxo contínuo sem data final; nas fases de avaliação, o título e os checkboxes de publicação de pareceres/nomes permanecem
