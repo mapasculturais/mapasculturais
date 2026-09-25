@@ -20,7 +20,7 @@ app.component('panel--last-registrations', {
         
         const query = this.query;
         query['@select'] = 'id,number,status,opportunity.{name,files.avatar,registrationFrom,registrationTo},owner.{name},category,range,proponentType,agentRelations,createTimestamp';
-        query['@order'] = 'updateTimestamp ASC';
+        query['@order'] = 'updateTimestamp DESC';
         query['@permissions'] = 'view';
         query['status'] = 'GTE(0)';
         query['user'] = `EQ(@me)`;

@@ -23,7 +23,7 @@ app.component('mc-status', {
 
             const classesMap = {
                 'mc-status--draft': [
-                    'rascunho', 'iniciado'
+                    'rascunho', 'iniciado', 'pendente'
                 ],
 
                 'mc-status--success': [
@@ -138,7 +138,7 @@ app.component('mc-status', {
                 } else if(statusKey == 2) {
                     classes.push('mc-status--invalid');
                     matched = true;
-                } else if(statusKey == 0) {
+                } else if(statusKey == 1 || statusKey == 0) {
                     classes.push('mc-status--draft');
                     matched = true;
                 }

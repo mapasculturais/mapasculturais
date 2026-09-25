@@ -120,7 +120,7 @@ class DataCollectionPhaseBuilder extends Builder
         return [];
     }
 
-    public function createField(string $identifier, string $field_type, string $title = '', bool $required = false, array $categories = [], array $ranges = [], array $proponent_types = [], string $field_condition = '', array $options = [], ?string $step_name = null, bool $save = true, bool $flush = false): self
+    public function createField(string $identifier, string $field_type, string $title = '', bool $required = false, array $categories = [], array $ranges = [], array $proponent_types = [], string $field_condition = '', array $options = [], ?string $step_name = null, bool $save = true, bool $flush = false, array $config = []): self
     {
         $builder = $this->registrationFieldBuilder;
 
@@ -140,6 +140,10 @@ class DataCollectionPhaseBuilder extends Builder
             ->setProponentTypes($proponent_types)
             ->setFieldCondition($field_condition)
             ->setOptions($options);
+
+        if ($config) {
+            $builder->setConfig($config);
+        }
 
         if($save) {
             $builder->save($flush);

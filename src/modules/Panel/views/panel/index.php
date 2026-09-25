@@ -59,6 +59,9 @@ $this->import('
         <mc-tab label="<?php i::esc_attr_e('Principal') ?>" slug="main">
             <div class="panel-home__tabs--main">
 
+                <?php $this->applyTemplateHook('panel-home-main', 'before') ?>
+                <?php $this->applyTemplateHook('panel-home-main', 'begin') ?>
+
                 <panel--entities-summary></panel--entities-summary>
 
                 <panel--pending-evaluations></panel--pending-evaluations>
@@ -68,6 +71,9 @@ $this->import('
                 <panel--last-registrations></panel--last-registrations>
 
                 <panel--last-edited></panel--last-edited>
+
+                <?php $this->applyTemplateHook('panel-home-main', 'end') ?>
+                <?php $this->applyTemplateHook('panel-home-main', 'after') ?>
 
             </div>
         </mc-tab>

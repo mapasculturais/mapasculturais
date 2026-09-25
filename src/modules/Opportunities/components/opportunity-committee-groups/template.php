@@ -18,7 +18,7 @@ $this->import('
     mc-toggle
     mc-alert
     opportunity-evaluation-committee
-    opportunity-registration-filter-configuration
+    registration-distribution-rule
 ');
 
 ?>
@@ -74,7 +74,20 @@ $this->import('
                                 </a>
                             </template>
                             <template #message="message">
-                                <?php i::_e('Remover comissão de avaliadores?') ?>
+                                <div class="grid-12">
+                                    <div class="col-12">
+                                        <p>
+                                            <?= i::__('Você tem certeza que deseja remover a comissão <strong>{{groupName}}</strong>?') ?>
+                                        </p>
+                                    </div>
+                                    <div class="col-12">
+                                        <p>
+                                            <mc-alert type="danger">
+                                                <strong><?= i::__('ATENÇÃO') ?>: </strong> <?= i::__('TODAS as avaliações realizadas pelos avaliadores desta comissão serão') ?> <strong><?= i::__('excluídas permanentemente') ?></strong>.
+                                            </mc-alert>
+                                        </p>
+                                    </div>
+                                </div>
                             </template>
                         </mc-confirm-button>
                     </div> 
@@ -88,7 +101,7 @@ $this->import('
                             label="<?= i::__('Limitar número de avaliadores por inscrição') ?>"
                         />
                         <input v-if="entity.valuersPerRegistration[groupName] !== undefined" 
-                            v-model="entity.valuersPerRegistration[groupName]" type="number" @change="autoSave()"/>
+                            v-model="entity.valuersPerRegistration[groupName]" type="number" min="0" @change="validateAndSave($event, groupName)"/>
 
                         <div v-if="entity.valuersPerRegistration[groupName] !== undefined" class="has-info">
                             <mc-toggle 
@@ -108,16 +121,21 @@ $this->import('
                             @update:modelValue="enableRegisterFilterConf($event, groupName)"
                             label="<?= i::__('Configuração filtro de inscrição para avaliadores/comissão') ?>"
                         />
-                        <opportunity-registration-filter-configuration 
-                            v-if="entity.fetchFields[groupName] !== undefined" 
-                            :entity="entity"
-                            v-model:default-value="entity.fetchFields[groupName]"
-                            :excludeFields="globalExcludeFields"
-                            @updateExcludeFields="updateExcludedFields('global', $event)"
-                            useDistributionField
-                            is-global
-                        >
-                        </opportunity-registration-filter-configuration>
+                        <mc-alert v-if="hasFilterConfiguration(groupName)" type="warning">
+                            <div>
+                                {{filterConfigurationWarning}}
+                            </div>
+                        </mc-alert>
+
+                        <registration-distribution-rule
+                            v-if="entity.fetchFields[groupName] !== undefined"
+                            :key="groupName"
+                            :opportunity="entity.opportunity"
+                            v-model="distributionRules[groupName]"
+                            @update:modelValue="onDistributionRuleChange($event, groupName)"
+                            :disable-filters="distributionDisabledFilters[groupName]"
+                            enable-filter-by-sent-timestamp
+                        />
                     </div>
 
                     <div class="field">

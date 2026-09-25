@@ -19,6 +19,7 @@ $this->import('
     registration-related-project
     registration-steps
     registration-workplan-form
+    request-agent-avatar
 ');
 
 ?>
@@ -59,10 +60,15 @@ $this->import('
                             </div>
                         </div>
                     </div>
-                    <div class="card collective" v-if="!preview && entity.agentRelations.coletivo?.length > 0">
-                        <div class="card__content" v-for="agentCollective in entity.agentRelations.coletivo">
+                    <div class="card collective" v-if="!preview && collectiveRelations.length > 0">
+                        <div class="card__content" v-for="agentCollective in collectiveRelations">
                             <div class="collective">
-                                <mc-avatar :entity="agentCollective.agent" size="small"></mc-avatar>
+                                <mc-avatar v-if="!collectiveAvatarRequired" :entity="agentCollective.agent" size="small"></mc-avatar>
+                                <request-agent-avatar
+                                    v-if="collectiveAvatarRequired"
+                                    :entity="entity"
+                                    :agent="agentCollective.agent"
+                                    error-key="agent_coletivo_avatar"></request-agent-avatar>
                                 <div class="collective__content">
                                     <div class="collective__content--title">
                                         <h3 class="card__title">
@@ -71,6 +77,9 @@ $this->import('
                                         <div class="collective__name">
                                             {{agentCollective.agent.name}}
                                         </div>
+                                    </div>
+                                    <div v-if="collectiveAvatarRequired" class="card__mandatory">
+                                        <div class="obrigatory"> <?= i::__('*obrigatório') ?> </div>
                                     </div>
                                 </div>
                             </div>

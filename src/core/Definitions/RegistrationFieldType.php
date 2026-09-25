@@ -3,7 +3,20 @@
 namespace MapasCulturais\Definitions;
 
 /**
- * This class defines an Registration Field.
+ * Esta classe define um Tipo de Campo de Inscrição
+ * 
+ * Define as propriedades e comportamentos de um tipo de campo em formulários de inscrição
+ * 
+ * @property-read array $config Configuração do tipo de campo
+ * @property-read string $slug Slug do tipo de campo
+ * @property-read string $name Nome do tipo de campo
+ * @property-read callable $serialize Função de serialização do metadado
+ * @property-read callable $unserialize Função de deserialização do metadado
+ * @property-read mixed $defaultValue Valor padrão do campo
+ * @property-read bool $requireValuesConfiguration Indica se requer configuração de opções
+ * @property-read string $viewTemplate Template do tipo de campo no formulário
+ * @property-read string $configTemplate Template de configuração do tipo de campo
+ * @property-read array $validations Validações do tipo de campo
  */
 class RegistrationFieldType extends \MapasCulturais\Definition {
     /**
@@ -62,11 +75,16 @@ class RegistrationFieldType extends \MapasCulturais\Definition {
     public string $configTemplate = '';
 
     /**
-     * Validações do tipo de campocampo
+     * Validações do tipo de campo
      * @var array
      */
     public $validations = [];
 
+    /**
+     * Construtor da classe
+     * 
+     * @param array $config Configuração do tipo de campo
+     */
     public function __construct(array $config) {
         $default = [
             'validations' => []

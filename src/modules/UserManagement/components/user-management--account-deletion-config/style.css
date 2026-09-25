@@ -1,0 +1,49 @@
+.user-management__account-deletion-config {
+    margin-bottom: 2rem;
+    padding: 0 2rem;
+}
+
+@media (max-width: 25rem) {
+    .user-management__account-deletion-config {
+        padding: 0 1rem;
+    }
+}
+
+.user-management__account-deletion-config .user-management__account-deletion-header {
+    padding: 0 0 1rem;
+}
+
+.user-management__account-deletion-config .panel-page__header-title .title__title {
+    font-size: 1rem;
+    font-weight: 700;
+    line-height: 1.35;
+    margin: 0;
+}
+
+.user-management__account-deletion-config .panel-page__header-subtitle {
+    font-size: 0.8125rem;
+    line-height: 1.5;
+    margin: 0.5rem 0 1rem;
+}
+
+.user-management__account-deletion-form .field {
+    margin: 0;
+}
+
+.user-management__account-deletion-row {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.user-management__account-deletion-row input[type="email"] {
+    flex: 1 1 320px;
+    min-width: 0;
+}
+
+.user-management__account-deletion-help {
+    font-size: 0.875rem;
+    color: var(--mc-gray-500, #666);
+    margin-top: 0.25rem;
+}

@@ -157,6 +157,10 @@ app.component('opportunity-subscription' , {
             return this.entity.proponentAgentRelation ?? {};
         },
 
+        canCreateIndividualAgent() {
+            return ($MAPAS.currentUserRoles || []).some((role) => String(role).toLowerCase().includes('admin'));
+        },
+
         selectAgentRelationColetivo() {
             return (this.registrationProponentType == 'Coletivo' && this.proponentAgentRelation['Coletivo'] == true) 
                 || (this.registrationProponentType == 'Pessoa Jurídica' && this.proponentAgentRelation['Pessoa Jurídica'] == true);
@@ -247,7 +251,11 @@ app.component('opportunity-subscription' , {
                         registration.addRelatedAgent('coletivo', this.agentCollective);
                         registration.save();
                     }
-                    window.location.href = registration.editUrl;
+                    if (this.entity.noRegistrationForm) {
+                        window.location.href = registration.singleUrl;
+                    } else {
+                        window.location.href = registration.editUrl;
+                    }
                 });    
             } catch (error) {
                 if (error.error) {

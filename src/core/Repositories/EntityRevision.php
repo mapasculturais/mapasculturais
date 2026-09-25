@@ -3,9 +3,25 @@ namespace MapasCulturais\Repositories;
 use MapasCulturais\Traits;
 use MapasCulturais\App;
 
+/**
+ * Repositório para revisões de entidades
+ * 
+ * Este repositório fornece métodos específicos para consulta
+ * e manipulação de revisões de entidades no sistema,
+ * permitindo o controle de versões e histórico de alterações.
+ * 
+ * @package MapasCulturais\Repositories
+ */
 class EntityRevision extends \MapasCulturais\Repository{
     use Traits\EntityGeoLocation;
 
+    /**
+     * Encontra a última revisão por tipo de objeto e ID
+     * 
+     * @param string $object_type Tipo do objeto
+     * @param int $object_id ID do objeto
+     * @return \MapasCulturais\Entities\EntityRevision|null Última revisão encontrada
+     */
     public function findLastRevisionByObjectTypeAndId(string $object_type, int $object_id) {
         $query = $this->_em->createQuery("SELECT e
                                             FROM MapasCulturais\Entities\EntityRevision e
@@ -15,6 +31,12 @@ class EntityRevision extends \MapasCulturais\Repository{
         return $query->getOneOrNullResult();
     }
 
+    /**
+     * Encontra a última revisão de uma entidade
+     * 
+     * @param \MapasCulturais\Entity $entity Entidade
+     * @return \MapasCulturais\Entities\EntityRevision|null Última revisão encontrada
+     */
     public function findLastRevision($entity) {
         $objectId = $entity->id;
         $objectType = $entity->getClassName();
@@ -26,6 +48,12 @@ class EntityRevision extends \MapasCulturais\Repository{
         return $query->getOneOrNullResult();
     }
 
+    /**
+     * Encontra todas as revisões de uma entidade
+     * 
+     * @param \MapasCulturais\Entity $entity Entidade
+     * @return array Todas as revisões da entidade
+     */
     public function findEntityRevisions($entity) {
         $objectId = $entity->id;
         $objectType = $entity->getClassName();
@@ -36,6 +64,13 @@ class EntityRevision extends \MapasCulturais\Repository{
         return $query->getResult();
     }
 
+    /**
+     * Encontra a revisão de uma entidade por data
+     * 
+     * @param \MapasCulturais\Entity $entity Entidade
+     * @param \DateTime $date Data limite
+     * @return \MapasCulturais\Entities\EntityRevision|null Revisão encontrada
+     */
     public function findEntityRevisionsByDate($entity, $date) {
         $objectId = $entity->id;
         $objectType = $entity->getClassName();
@@ -53,6 +88,12 @@ class EntityRevision extends \MapasCulturais\Repository{
         return $query->getOneOrNullResult();
     }
 
+    /**
+     * Cria um objeto de revisão a partir do ID da revisão
+     * 
+     * @param int $id ID da revisão
+     * @return \stdClass Objeto com dados da revisão
+     */
     public function findCreateRevisionObject($id) {
         $app = App::i();
         $qryRev = $this->_em->createQuery("SELECT e
@@ -97,6 +138,13 @@ class EntityRevision extends \MapasCulturais\Repository{
         return $entityRevisioned;
     }
 
+    /**
+     * Encontra o ID da última revisão de uma entidade
+     * 
+     * @param string $classEntity Classe da entidade
+     * @param int $entityId ID da entidade
+     * @return int ID da última revisão (0 se não houver)
+     */
     public function findEntityLastRevisionId($classEntity, $entityId) {
         $query = $this->_em->createQuery("SELECT e.id
                                             FROM MapasCulturais\Entities\EntityRevision e

@@ -60,7 +60,8 @@ app.component('registration-status', {
                 return false;
             }
 
-            return this.registration.status > 1 && this.registration.status < 10;
+
+            return this.registration.status > 1 && this.registration.status <= 10;
         },
 
         opportunity () {
@@ -88,6 +89,11 @@ app.component('registration-status', {
     },
 
     methods: {
+        showPhaseDates() {
+            const firstPhase = $MAPAS.opportunityPhases?.find((phase) => phase.isFirstPhase) || this.firstPhase;
+            return !firstPhase?.hidePhaseDates;
+        },
+
         shouldDisplayEvaluationResults(registration) {
             return $MAPAS.config.registrationResults.shouldDisplayEvaluationResults[registration.id];
         },
@@ -95,30 +101,23 @@ app.component('registration-status', {
 			note = parseFloat(note);
 			return note.toLocaleString($MAPAS.config.locale);
 		},
-		verifyState(registration) {
+        /**
+         * Retorna o status no formato esperado por <mc-status>,
+         * respeitando a legenda oficial de cores da inscrição:
+         * 0 Rascunho (preto), 1 Pendente (preto), 2 Inválida (roxo),
+         * 3 Não selecionada (vermelho), 8 Suplente (laranja), 10 Selecionada (verde).
+         */
+        getStatusDisplay(registration) {
             let status = registration.status;
-            if(registration.opportunity?.isAppealPhase) {
+            if (registration.opportunity?.isAppealPhase) {
                 status = this.shouldDisplayEvaluationResults(registration) ? status : 1;
             }
 
-            switch (status) {
-                case 10:
-                case 1:
-                    return 'success__color';
-                    
-                case 2 : 
-                case 0 : 
-				case 3 : 
-                    return 'danger__color';
-				case 8 : 
-                case 1 :
-                case undefined:
-                    return 'warning__color';
-
-                case null:
-                default:
-                    return '';
-            }
+            return {
+                key: status,
+                value: status,
+                label: this.showRegistrationStatus(registration),
+            };
         },
 
         async createAppealPhaseRegistration() {
@@ -215,11 +214,11 @@ app.component('registration-status', {
             }
 
             if(registration.status == 0) {
-                return this.text('Não enviada');
+                return this.statuses[registration.status] || this.text('Não enviada');
             }
 
             if(registration.status == 1) {
-                return this.text('Enviada');
+                return this.statuses[registration.status] || this.text('Enviada');
             }
 
             return this.statuses[registration.status];

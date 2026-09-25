@@ -28,6 +28,63 @@
         }
     }
 
+    function getFieldKey(field) {
+        if (!field) {
+            return '';
+        }
+        return field.groupName || field.fieldName || ('id-' + field.id);
+    }
+
+    var NUMERIC_FIELD_CONFIG_KEYS = ['maxOptions', 'minRows', 'maxRows', 'maxFiles', 'maxVideos'];
+
+    function normalizeNumericFieldConfig(config) {
+        if (!config || typeof config !== 'object' || Array.isArray(config)) {
+            return;
+        }
+
+        NUMERIC_FIELD_CONFIG_KEYS.forEach(function(key) {
+            var value = config[key];
+
+            if (typeof value !== 'string') {
+                return;
+            }
+
+            var trimmed = value.trim();
+            if (trimmed === '') {
+                return;
+            }
+
+            var numberValue = Number(trimmed);
+            if (Number.isFinite(numberValue)) {
+                config[key] = numberValue;
+            }
+        });
+    }
+
+    // Campo number: legado aceita 0 → UI já vem com "Sim" marcado quando allowZero não existe.
+    function normalizeNumberFieldAllowZero(field) {
+        if (!field || field.fieldType !== 'number') {
+            return;
+        }
+
+        if (typeof field.config !== 'object' || field.config instanceof Array || !field.config) {
+            field.config = {};
+        }
+
+        var value = field.config.allowZero;
+        if (value === undefined || value === null || value === '') {
+            field.config.allowZero = true;
+            return;
+        }
+
+        if (value === false || value === 0 || value === '0' || value === 'false') {
+            field.config.allowZero = false;
+            return;
+        }
+
+        field.config.allowZero = true;
+    }
+
     function _getStatusSlug(status) {
         switch (status) {
             case 0: return 'draft'; break;
@@ -105,8 +162,22 @@
                 jQuery('a.js-submit-button').click();
             },
 
-            validateEntity: function(registrationId) {
-                return $http.post(this.getUrl('validateEntity', registrationId)).
+            validateEntity: function(registrationId, entityData) {
+                var data = entityData || {};
+                if (entityData && typeof entityData === 'object' && !Array.isArray(entityData)) {
+                    data = {};
+                    Object.keys(entityData).forEach(function(key) {
+                        if (key.indexOf('$$') === -1) {
+                            data[key] = entityData[key];
+                            if (data[key] instanceof Date) {
+                                data[key] = moment(data[key]).format('YYYY-MM-DD');
+                            } else if (data[key] instanceof Array && data[key].length === 0) {
+                                data[key] = null;
+                            }
+                        }
+                    });
+                }
+                return $http.post(this.getUrl('validateEntity', registrationId), data).
                 success(function(data, status){
                     $rootScope.$emit('registration.validate', {message: "Opportunity registration was validated ", data: data, status: status});
                 }).
@@ -150,13 +221,61 @@
                     fieldTypesBySlug[e.slug] = e;
                 });
 
+                // Subcampos de endereço considerados para o Brasil (segue o padrão da BrasilLocalization)
+                var KEYS_BRAZIL = [
+                    'address_level0',    // País
+                    'address_postalCode',// CEP
+                    'address_line1',     // Endereço
+                    'address_number',    // Número
+                    'address_line2',     // Complemento
+                    'address_level2',    // Estado (UF)
+                    'address_level4',    // Município/Cidade
+                    'address_level6'     // Bairro
+                ];
+                var KEYS_OTHER = ['address_level0', 'address_level1', 'address_level2', 'address_level3', 'address_level4', 'address_level5', 'address_level6', 'address_postalCode', 'address_line1', 'address_line2'];
+
+                function normalizeConfig(raw, keys) {
+                    var out = {};
+                    if (Array.isArray(raw)) {
+                        keys.forEach(function (k) { out[k] = raw.indexOf(k) >= 0; });
+                    } else if (raw && typeof raw === 'object') {
+                        keys.forEach(function (k) {
+                            var v = raw[k];
+                            out[k] = !!(v === true || v === 1 || v === '1' || v === 'true');
+                        });
+                    } else {
+                        keys.forEach(function (k) { out[k] = false; });
+                    }
+                    return out;
+                }
+
                 function processFieldConfiguration(field) {
-                    if(typeof field.fieldOptions === 'string'){
+                    if (typeof field.fieldOptions === 'string') {
                         field.fieldOptions = field.fieldOptions ? field.fieldOptions.split("\n") : [];
                     }
 
-                    if(typeof field.config !== 'object' || field.config instanceof Array) {
+                    if (typeof field.config !== 'object' || field.config instanceof Array) {
                         field.config = {};
+                    }
+                    normalizeNumericFieldConfig(field.config);
+                    normalizeNumberFieldAllowZero(field);
+
+                    // Suporte ao novo formato (Brazil/Other) e retrocompatibilidade (requiredAddressFields)
+                    if (field.config && field.config.entityField === '@location') {
+                        var hasBrazil = field.config.requiredAddressFieldsBrazil !== undefined;
+                        var hasOther = field.config.requiredAddressFieldsOther !== undefined;
+                        var hasLegacy = field.config.requiredAddressFields !== undefined;
+
+                        if (hasBrazil || hasOther) {
+                            field.config.requiredAddressFieldsBrazil = normalizeConfig(field.config.requiredAddressFieldsBrazil, KEYS_BRAZIL);
+                            field.config.requiredAddressFieldsOther = normalizeConfig(field.config.requiredAddressFieldsOther, KEYS_OTHER);
+                        } else if (hasLegacy) {
+                            field.config.requiredAddressFieldsBrazil = normalizeConfig(field.config.requiredAddressFields, KEYS_BRAZIL);
+                            field.config.requiredAddressFieldsOther = normalizeConfig({}, KEYS_OTHER);
+                        } else {
+                            field.config.requiredAddressFieldsBrazil = normalizeConfig({}, KEYS_BRAZIL);
+                            field.config.requiredAddressFieldsOther = normalizeConfig({}, KEYS_OTHER);
+                        }
                     }
 
                     return field;
@@ -251,7 +370,12 @@ module.factory('RegistrationConfigurationService', ['$rootScope', '$q', '$http',
                     function(response){
                         deferred.resolve(response);
                     }
-                    );
+                )
+                .error(
+                    function(response){
+                        deferred.resolve({error: true, data: response});
+                    }
+                );
                 return deferred.promise;
             },
             delete: function(id){
@@ -320,13 +444,17 @@ module.factory('EvaluationMethodConfigurationService', ['$rootScope', '$q', '$ht
     };
 }]);
 
-module.controller('RegistrationConfigurationsController', ['$scope', '$rootScope', '$window', '$interval', 'UrlService', 'RegistrationConfigurationService', 'EditBox', '$http', function ($scope, $rootScope, $window, $interval, UrlService, RegistrationConfigurationService, EditBox, $http) {
+module.controller('RegistrationConfigurationsController', ['$scope', '$rootScope', '$window', '$interval', 'UrlService', 'RegistrationConfigurationService', 'EditBox', '$http', 'FocusTrap', function ($scope, $rootScope, $window, $interval, UrlService, RegistrationConfigurationService, EditBox, $http, FocusTrap) {
     var fileService = RegistrationConfigurationService('registrationfileconfiguration');
     var fieldService = RegistrationConfigurationService('registrationfieldconfiguration');
 
     var labels = MapasCulturais.gettext.moduleOpportunity;
 
     let blockedOpportunityFields = $scope.data?.blockedOpportunityFields;
+
+    // Focus trap management
+    $scope.lastFocus = null;
+    $scope.currentFocusTrap = null;
 
     $scope.isEditable = MapasCulturais.isEditable;
     $scope.maxUploadSize = MapasCulturais.maxUploadSize;
@@ -343,7 +471,10 @@ module.controller('RegistrationConfigurationsController', ['$scope', '$rootScope
     fieldTypes.forEach(function(e){
         fieldTypesBySlug[e.slug] = e;
         if (e.slug === 'agent-collective-field') {
-            e.disabled = $scope.data.entity.object.useAgentRelationColetivo === 'dontUse';
+            var entity = $scope.data.entity.object;
+            var firstPhase = entity.firstPhase || entity;
+            
+            e.disabled = firstPhase.useAgentRelationColetivo === 'dontUse';
         }
     });
 
@@ -372,6 +503,7 @@ module.controller('RegistrationConfigurationsController', ['$scope', '$rootScope
         ownerId: MapasCulturais.entity.id,
         fieldType: null,
         fieldOptions: null,
+        config: {},
         title: null,
         description: null,
         maxSize: null,
@@ -394,7 +526,72 @@ module.controller('RegistrationConfigurationsController', ['$scope', '$rootScope
         return foundField ? true : false;
     }
 
+    /** Chaves de subcampos de endereço que podem ser obrigatórios. */
+    var LOCATION_REQUIRED_KEYS_BRAZIL = [
+        'address_level0',     // País
+        'address_postalCode', // CEP
+        'address_line1',      // Endereço
+        'address_number',     // Número
+        'address_line2',      // Complemento
+        'address_level2',     // Estado (UF)
+        'address_level4',     // Município/Cidade
+        'address_level6'      // Bairro
+    ];
+    var LOCATION_REQUIRED_KEYS_OTHER = ['address_level0', 'address_level1', 'address_level2', 'address_level3', 'address_level4', 'address_level5', 'address_level6', 'address_postalCode', 'address_line1', 'address_line2'];
+
+    function normalizeRequiredConfig(raw, keys) {
+        var out = {};
+        if (Array.isArray(raw)) {
+            keys.forEach(function(k) { out[k] = raw.indexOf(k) >= 0; });
+        } else if (raw && typeof raw === 'object' && !Array.isArray(raw)) {
+            keys.forEach(function(k) {
+                var v = raw[k];
+                out[k] = !!(v === true || v === 1 || v === '1' || v === 'true');
+            });
+        } else {
+            keys.forEach(function(k) { out[k] = false; });
+        }
+        return out;
+    }
+
+    function normalizeRequiredAddressFields(config, type) {
+        if (typeof config !== 'object' || config instanceof Array) {
+            config = {};
+        }
+        if (type === 'brazil') {
+            return normalizeRequiredConfig(config.requiredAddressFieldsBrazil, LOCATION_REQUIRED_KEYS_BRAZIL);
+        } else if (type === 'other') {
+            return normalizeRequiredConfig(config.requiredAddressFieldsOther, LOCATION_REQUIRED_KEYS_OTHER);
+        }
+        // Retrocompatibilidade: campo legado único
+        return normalizeRequiredConfig(config.requiredAddressFields, LOCATION_REQUIRED_KEYS_BRAZIL);
+    }
+
     function processFieldConfiguration(field){
+        if (typeof field.config !== 'object' || field.config instanceof Array) {
+            field.config = {};
+        }
+        normalizeNumericFieldConfig(field.config);
+        normalizeNumberFieldAllowZero(field);
+        if (field.config && field.config.entityField === '@location') {
+            // Suporta novo formato (Brazil/Other) ou legado
+            var hasBrazil = field.config.requiredAddressFieldsBrazil !== undefined;
+            var hasOther = field.config.requiredAddressFieldsOther !== undefined;
+            var hasLegacy = field.config.requiredAddressFields !== undefined;
+
+            if (hasBrazil || hasOther) {
+                field.config.requiredAddressFieldsBrazil = normalizeRequiredAddressFields(field.config, 'brazil');
+                field.config.requiredAddressFieldsOther = normalizeRequiredAddressFields(field.config, 'other');
+            } else if (hasLegacy) {
+                // Migra legado para os dois conjuntos
+                var legacy = normalizeRequiredAddressFields(field.config);
+                field.config.requiredAddressFieldsBrazil = legacy;
+                field.config.requiredAddressFieldsOther = normalizeRequiredConfig({}, LOCATION_REQUIRED_KEYS_OTHER);
+            } else {
+                field.config.requiredAddressFieldsBrazil = normalizeRequiredConfig({}, LOCATION_REQUIRED_KEYS_BRAZIL);
+                field.config.requiredAddressFieldsOther = normalizeRequiredConfig({}, LOCATION_REQUIRED_KEYS_OTHER);
+            }
+        }
         if(field.fieldOptions instanceof Array){
             field.fieldOptions = field.fieldOptions.join("\n");
         }
@@ -417,25 +614,29 @@ module.controller('RegistrationConfigurationsController', ['$scope', '$rootScope
 
             // ao reordenar, atualiza displayOrder dos campos e salva
             stop: function(e, ui) {
-
-                var ii = 1;
-
-                var _fields = [];
-
-                $.each(fields, function(i,f) {
-                    f.displayOrder = ii;
-                    _fields.push({id: f.id, displayOrder: ii, fieldType: f.fieldType});
-                    ii++;
-                });
-
-                var url = new UrlService('opportunity');
-                var saveOrderUrl = url.create('saveFieldsOrder', MapasCulturais.entity.id);
-                // requisição para salvar ordem
-                $http.post(saveOrderUrl, {fields: _fields}).success(function(){
-                    MapasCulturais.Messages.success(labels['changesSaved']);
-                });
+                persistFieldsOrder(true);
             }
         };
+
+        function persistFieldsOrder(showSuccessMessage) {
+            var ii = 1;
+            var reorderedFields = [];
+
+            $.each(fields, function(i, f) {
+                f.displayOrder = ii;
+                reorderedFields.push({id: f.id, displayOrder: ii, fieldType: f.fieldType});
+                ii++;
+            });
+
+            var url = new UrlService('opportunity');
+            var saveOrderUrl = url.create('saveFieldsOrder', MapasCulturais.entity.id);
+
+            return $http.post(saveOrderUrl, {fields: reorderedFields}).success(function(){
+                if (showSuccessMessage) {
+                    MapasCulturais.Messages.success(labels['changesSaved']);
+                }
+            });
+        }
 
         $scope.data = {
             fieldSpinner: false,
@@ -467,6 +668,148 @@ module.controller('RegistrationConfigurationsController', ['$scope', '$rootScope
 
         $scope.data.newFieldConfiguration.fieldType = fieldTypes[0].slug;
 
+        $scope.normalizeNumberFieldAllowZero = function(field) {
+            normalizeNumberFieldAllowZero(field);
+        };
+
+        $scope.$watch('data.newFieldConfiguration.fieldType', function(fieldType) {
+            if (fieldType === 'number') {
+                normalizeNumberFieldAllowZero($scope.data.newFieldConfiguration);
+            }
+        });
+
+        // --- Field Integrity Validation ---
+        $scope.fieldValidationErrors = {};
+        $scope.invalidFieldsCount = 0;
+
+        function normalizeFieldConfig(field) {
+            if (!field) {
+                return;
+            }
+
+            var config = field.config;
+            if (config === null || config === undefined || config === '') {
+                field.config = {};
+            } else if (typeof config === 'string') {
+                try {
+                    field.config = JSON.parse(config) || {};
+                } catch (e) {
+                    field.config = {};
+                }
+            } else if (typeof config !== 'object' || Array.isArray(config)) {
+                field.config = {};
+            }
+
+            normalizeNumericFieldConfig(field.config);
+            normalizeNumberFieldAllowZero(field);
+        }
+
+        function normalizeFieldOptionsForDisplay(field) {
+            if (!field || field.fieldOptions === null || field.fieldOptions === undefined) {
+                return;
+            }
+
+            if (Array.isArray(field.fieldOptions)) {
+                field.fieldOptions = field.fieldOptions.join("\n");
+            }
+        }
+
+        $scope.validateFieldIntegrity = function(field) {
+            var errors = [];
+            var fieldType = field.fieldType;
+
+            if (fieldType === 'file' || fieldType === 'section') {
+                return errors;
+            }
+
+            normalizeFieldConfig(field);
+            normalizeFieldOptionsForDisplay(field);
+
+            switch(fieldType) {
+                case 'select':
+                case 'checkboxes':
+                    // Verificar se fieldOptions tem pelo menos 1 opção válida
+                    var options = field.fieldOptions;
+                    if (typeof options === 'string') {
+                        options = options ? options.split('\n') : [];
+                    }
+                    if (!Array.isArray(options) || options.length === 0) {
+                        errors.push(labels['fieldOptionsRequired'] || 'É necessário informar pelo menos uma opção para este campo.');
+                    } else {
+                        var hasValidOption = options.some(function(opt) {
+                            return opt && opt.trim && opt.trim() !== '';
+                        });
+                        if (!hasValidOption) {
+                            errors.push(labels['fieldOptionsRequired'] || 'É necessário informar pelo menos uma opção válida para este campo.');
+                        }
+                    }
+                    break;
+
+                case 'agent-owner-field':
+                case 'agent-collective-field':
+                case 'space-field':
+                    // Verificar se config.entityField está definido
+                    if (!field.config || !field.config.entityField) {
+                        errors.push(labels['entityFieldRequired'] || 'É necessário selecionar um campo de entidade para este tipo de campo.');
+                    }
+                    break;
+
+                case 'custom-table':
+                    // Verificar se config.columns tem pelo menos 1 coluna
+                    if (!field.config || !field.config.columns || !Array.isArray(field.config.columns) || field.config.columns.length === 0) {
+                        errors.push(labels['columnsRequired'] || 'É necessário configurar pelo menos uma coluna para a tabela.');
+                    }
+                    break;
+
+                case 'persons':
+                    var personFields = [
+                        'name', 'fullName', 'socialName', 'cpf', 'income', 'education',
+                        'telephone', 'email', 'race', 'gender', 'sexualOrientation',
+                        'deficiencies', 'comunty', 'area', 'funcao'
+                    ];
+                    var hasPersonField = personFields.some(function(personField) {
+                        var value = field.config[personField];
+                        return value !== false && value !== null && value !== '' && value !== 'false';
+                    });
+                    if (!hasPersonField) {
+                        errors.push(labels['personsFieldsRequired'] || 'É necessário selecionar pelo menos um campo de pessoa.');
+                    }
+                    break;
+            }
+
+            return errors;
+        };
+
+        $scope.isFieldValid = function(field) {
+            if (!field || field.fieldType === 'file') return true;
+            var key = getFieldKey(field);
+            if (!key) return true;
+            return !$scope.fieldValidationErrors[key] ||
+                   $scope.fieldValidationErrors[key].length === 0;
+        };
+
+        $scope.countInvalidFields = function() {
+            if (!$scope.data.fields) return 0;
+            return $scope.data.fields.filter(function(field) {
+                return field.fieldType !== 'file' && !$scope.isFieldValid(field);
+            }).length;
+        };
+
+        $scope.validateAllFields = function() {
+            $scope.fieldValidationErrors = {};
+            if (!$scope.data.fields) return;
+
+            $scope.data.fields.forEach(function(field) {
+                if (field.fieldType !== 'file') {
+                    $scope.fieldValidationErrors[getFieldKey(field)] = $scope.validateFieldIntegrity(field);
+                }
+            });
+            $scope.invalidFieldsCount = $scope.countInvalidFields();
+        };
+
+        // Validação on-load: após carregar campos existentes
+        $scope.validateAllFields();
+        // --- End Field Integrity Validation ---
 
         if(jQuery('#registration-categories').length) {
             $interval(function(){
@@ -508,11 +851,41 @@ module.controller('RegistrationConfigurationsController', ['$scope', '$rootScope
         sortFields();
 
         function validationErrors(response){
-            Object.keys(response.data).forEach(function(prop){
-                Object.keys(response.data[prop]).forEach(function(error){
-                    MapasCulturais.Messages.error(response.data[prop][error]);
+            // Verificar se response.data existe e é um objeto
+            if (!response || !response.data) {
+                // Se não houver data, tentar exibir mensagem de erro genérica
+                if (response && response.message) {
+                    MapasCulturais.Messages.error(response.message);
+                } else if (response && response.statusText) {
+                    MapasCulturais.Messages.error(response.statusText);
+                } else {
+                    MapasCulturais.Messages.error(labels['processingError']);
+                }
+                return;
+            }
+
+            // Tratamento para objeto simples de erro (exceção genérica do backend)
+            if (typeof response.data === 'string') {
+                MapasCulturais.Messages.error(response.data);
+                return;
+            }
+
+            // Formato padrão de validação (objeto com propriedades)
+            try {
+                Object.keys(response.data).forEach(function(prop){
+                    if (response.data[prop] && typeof response.data[prop] === 'object') {
+                        Object.keys(response.data[prop]).forEach(function(error){
+                            MapasCulturais.Messages.error(response.data[prop][error]);
+                        });
+                    } else if (typeof response.data[prop] === 'string') {
+                        // Se for string direta, mostrar
+                        MapasCulturais.Messages.error(response.data[prop]);
+                    }
                 });
-            });
+            } catch (e) {
+                console.error(labels['validationProcessingError'], e);
+                MapasCulturais.Messages.error(labels['validationError']);
+            }
         }
 
         // Fields
@@ -572,18 +945,86 @@ module.controller('RegistrationConfigurationsController', ['$scope', '$rootScope
             return field.categories.includes($scope.data.filterFieldConfigurationByCategory);
         };
 
+        $scope.openNewFieldConfigurationEditBox = function(event) {
+            $scope.lastFocus = document.activeElement;
+            EditBox.open('editbox-registration-fields', event);
+            setTimeout(function() {
+                if ($scope.currentFocusTrap) {
+                    $scope.currentFocusTrap();
+                }
+                $scope.currentFocusTrap = FocusTrap.trap('#editbox-registration-fields');
+            }, 300);
+        };
+
+        $scope.closeNewFieldConfigurationEditBox = function() {
+            EditBox.close('editbox-registration-fields');
+            if ($scope.currentFocusTrap) {
+                $scope.currentFocusTrap();
+                $scope.currentFocusTrap = null;
+            }
+            if ($scope.lastFocus) {
+                $scope.lastFocus.focus();
+                $scope.lastFocus = null;
+            }
+        };
+
+        $scope.openNewFileConfigurationEditBox = function(event) {
+            $scope.lastFocus = document.activeElement;
+            EditBox.open('editbox-registration-files', event);
+            setTimeout(function() {
+                if ($scope.currentFocusTrap) {
+                    $scope.currentFocusTrap();
+                }
+                $scope.currentFocusTrap = FocusTrap.trap('#editbox-registration-files');
+            }, 300);
+        };
+
+        $scope.closeNewFileConfigurationEditBox = function() {
+            EditBox.close('editbox-registration-files');
+            if ($scope.currentFocusTrap) {
+                $scope.currentFocusTrap();
+                $scope.currentFocusTrap = null;
+            }
+            if ($scope.lastFocus) {
+                $scope.lastFocus.focus();
+                $scope.lastFocus = null;
+            }
+        };
+
         $scope.createFieldConfiguration = function(){
             var labels = MapasCulturais.gettext.moduleOpportunity;
+
+            // --- Frontend Validation ---
+            var field = $scope.data.newFieldConfiguration;
+
+            // Normalizar fieldOptions antes de validar
+            if (Array.isArray(field.fieldOptions)) {
+                field.fieldOptions = field.fieldOptions.filter(function(opt) {
+                    return opt && opt.trim && opt.trim() !== '';
+                });
+            }
+
+            var errors = $scope.validateFieldIntegrity(field);
+            if (errors.length > 0) {
+                errors.forEach(function(error) {
+                    MapasCulturais.Messages.error(error);
+                });
+                return;
+            }
+            // --- End Frontend Validation ---
+
             $scope.data.fieldSpinner = true;
             $scope.data.newFieldConfiguration.displayOrder = $scope.data.fields.length +1;
 
             if($scope.data.newFieldConfiguration.conditional){
                 if(!$scope.data.newFieldConfiguration.conditionalField){
                     MapasCulturais.Messages.error(labels['conditionMandatory']);
+                    $scope.data.fieldSpinner = false;
                     return;
                 }
                 if($scope.data.newFieldConfiguration.conditionalField !== 'appliedForQuota' && !$scope.data.newFieldConfiguration.conditionalValue){
                     MapasCulturais.Messages.error(labels['fieldCondition']);
+                    $scope.data.fieldSpinner = false;
                     return;
                 }
             }
@@ -595,7 +1036,14 @@ module.controller('RegistrationConfigurationsController', ['$scope', '$rootScope
             fieldService.create($scope.data.newFieldConfiguration).then(function(response){
                 $scope.data.fieldSpinner = false;
                 if (response.error) {
-                    validationErrors(response);
+                    // Tratar erro de validação ou exceção do backend
+                    if (response.data && typeof response.data === 'object' && response.data.message) {
+                        // Erro com mensagem estruturada (Exception do PHP)
+                        MapasCulturais.Messages.error(response.data.message);
+                    } else {
+                        // Erros de validação padrão
+                        validationErrors(response);
+                    }
                 } else {
                     if(response.fieldType == 'checkboxes') {
                         response.config.maxOptions = response.config.maxOptions ? Number(response.config.maxOptions) : 0;
@@ -607,10 +1055,14 @@ module.controller('RegistrationConfigurationsController', ['$scope', '$rootScope
                         }
                     }
 
+                    normalizeFieldOptionsForDisplay(response);
                     $scope.data.fields.push(response);
                     sortFields();
+                    // Validar novo campo após criação
+                    $scope.fieldValidationErrors[getFieldKey(response)] = $scope.validateFieldIntegrity(response);
+                    $scope.invalidFieldsCount = $scope.countInvalidFields();
                     EditBox.close('editbox-registration-fields');
-                    $scope.data.newFieldConfiguration = angular.copy(fieldConfigurationSkeleton);
+                    angular.copy(fieldConfigurationSkeleton, $scope.data.newFieldConfiguration);
                     MapasCulturais.Messages.success(labels['fieldCreated']);
                 }
             });
@@ -627,20 +1079,78 @@ module.controller('RegistrationConfigurationsController', ['$scope', '$rootScope
             }
         };
 
+        $scope.duplicateFieldConfiguration = function(field, index) {
+            var duplicatedField = angular.copy(field);
+
+            delete duplicatedField.id;
+            delete duplicatedField.fieldName;
+            delete duplicatedField.step;
+
+            duplicatedField.ownerId = MapasCulturais.entity.id;
+            duplicatedField.displayOrder = $scope.data.fields.length + 1;
+            duplicatedField.categories = duplicatedField.categories || [];
+            duplicatedField.registrationRanges = duplicatedField.registrationRanges || [];
+            duplicatedField.proponentTypes = duplicatedField.proponentTypes || [];
+            duplicatedField.config = duplicatedField.config || {};
+            duplicatedField.step = field.step?.id ?? null;
+
+            $scope.data.fieldSpinner = true;
+
+            fieldService.create(duplicatedField).then(function(response) {
+                $scope.data.fieldSpinner = false;
+
+                if (response.error) {
+                    if (response.data && typeof response.data === 'object' && response.data.message) {
+                        MapasCulturais.Messages.error(response.data.message);
+                    } else {
+                        validationErrors(response);
+                    }
+                    return;
+                }
+
+                response = processFieldConfiguration(response);
+                $scope.data.fields.push(response);
+
+                var newIndex = $scope.data.fields.length - 1;
+                var movedField = $scope.data.fields.splice(newIndex, 1)[0];
+                $scope.data.fields.splice(index + 1, 0, movedField);
+
+                persistFieldsOrder(false).then(function() {
+                    MapasCulturais.Messages.success(labels['fieldDuplicated']);
+                });
+            });
+        };
+
         $scope.editFieldConfiguration = function(attrs) {
             var labels = MapasCulturais.gettext.moduleOpportunity;
             var model = $scope.data.fields[attrs.index];
 
-            var field_types_entity_list = [];
-            Object.values(MapasCulturais.registrationFieldTypes).forEach(function(item){
-                if(item.name.match(/^@[a-zA-Z0-9\- ]{1,90}/)){
-                    field_types_entity_list.push(item.slug)
-                }
-            })
+            // --- Frontend Validation ---
+            // Criar cópia para validação sem modificar o modelo da UI
+            var validationModel = angular.copy(model);
+            if (Array.isArray(validationModel.fieldOptions)) {
+                validationModel.fieldOptions = validationModel.fieldOptions.filter(function(opt) {
+                    return opt && opt.trim && opt.trim() !== '';
+                });
+            }
 
-            if(!field_types_entity_list.includes(model.fieldType)){
-                delete model.config.entityField;
-                if(Object.keys(model.config).length == 0){
+            var errors = $scope.validateFieldIntegrity(validationModel);
+            if (errors.length > 0) {
+                errors.forEach(function(error) {
+                    MapasCulturais.Messages.error(error);
+                });
+                return;
+            }
+            // --- End Frontend Validation ---
+
+            normalizeFieldConfig(model);
+
+            var entityFieldTypes = ['agent-owner-field', 'agent-collective-field', 'space-field'];
+            if (!entityFieldTypes.includes(model.fieldType)) {
+                if (model.config.entityField) {
+                    delete model.config.entityField;
+                }
+                if (Object.keys(model.config).length === 0) {
                     model.config = "";
                 }
             }
@@ -680,6 +1190,13 @@ module.controller('RegistrationConfigurationsController', ['$scope', '$rootScope
 
             };
 
+            // Normalizar fieldOptions antes de enviar ao backend
+            if (Array.isArray(data.fieldOptions)) {
+                data.fieldOptions = data.fieldOptions.filter(function(opt) {
+                    return opt && opt.trim && opt.trim() !== '';
+                });
+            }
+
             if(data.fieldType == "section"){
                 data.required = false;
             }
@@ -688,10 +1205,19 @@ module.controller('RegistrationConfigurationsController', ['$scope', '$rootScope
             fieldService.edit(data).then(function(response){
                 $scope.data.fieldSpinner = false;
                 if (response.error) {
-                    validationErrors(response);
-
+                    if (response.data && typeof response.data === 'object' && response.data.message) {
+                        MapasCulturais.Messages.error(response.data.message);
+                    } else {
+                        validationErrors(response);
+                    }
                 } else {
+                    // Atualizar o model com os dados retornados do backend
+                    angular.extend(model, response);
+                    normalizeFieldOptionsForDisplay(model);
                     sortFields();
+                    // Revalidar o campo após edição bem-sucedida
+                    $scope.fieldValidationErrors[getFieldKey(model)] = $scope.validateFieldIntegrity(model);
+                    $scope.invalidFieldsCount = $scope.countInvalidFields();
                     EditBox.close('editbox-registration-field-'+data.id);
                     MapasCulturais.Messages.success(labels['changesSaved']);
                 }
@@ -704,8 +1230,79 @@ module.controller('RegistrationConfigurationsController', ['$scope', '$rootScope
         };
 
         $scope.openFieldConfigurationEditBox = function(id, index, event){
-            $scope.fieldConfigurationBackups[index] = angular.copy($scope.data.fields[index]);
+            $scope.lastFocus = document.activeElement;
+            var field = $scope.data.fields[index];
+            normalizeFieldConfig(field);
+            normalizeFieldOptionsForDisplay(field);
+            // Normaliza requiredAddressFields (Brazil e Other) para booleanos antes de abrir o modal
+            if (field.config && field.config.entityField === '@location') {
+                field.config.requiredAddressFieldsBrazil = normalizeRequiredAddressFields(field.config, 'brazil');
+                field.config.requiredAddressFieldsOther = normalizeRequiredAddressFields(field.config, 'other');
+            }
+            $scope.fieldConfigurationBackups[index] = angular.copy(field);
             EditBox.open('editbox-registration-field-'+id, event);
+
+            // Ativar focus trap no modal de edição
+            setTimeout(function() {
+                if ($scope.currentFocusTrap) {
+                    $scope.currentFocusTrap();
+                }
+                $scope.currentFocusTrap = FocusTrap.trap('#editbox-registration-field-' + id);
+            }, 300);
+        };
+
+        $scope.closeFieldConfigurationEditBox = function(id) {
+            EditBox.close('editbox-registration-field-' + id);
+            if ($scope.currentFocusTrap) {
+                $scope.currentFocusTrap();
+                $scope.currentFocusTrap = null;
+            }
+            if ($scope.lastFocus) {
+                $scope.lastFocus.focus();
+                $scope.lastFocus = null;
+            }
+        };
+
+        // Quando field.required muda para campos @location
+        $scope.onRequiredChange = function(field) {
+            if (!field || !field.config || field.config.entityField !== '@location') {
+                return;
+            }
+
+            // Garante estrutura básica dos dois conjuntos
+            if (typeof field.config.requiredAddressFieldsBrazil !== 'object' || Array.isArray(field.config.requiredAddressFieldsBrazil)) {
+                field.config.requiredAddressFieldsBrazil = normalizeRequiredAddressFields(field.config, 'brazil');
+            }
+            if (typeof field.config.requiredAddressFieldsOther !== 'object' || Array.isArray(field.config.requiredAddressFieldsOther)) {
+                field.config.requiredAddressFieldsOther = normalizeRequiredAddressFields(field.config, 'other');
+            }
+
+            if (!field.required) {
+                // Ao desmarcar obrigatoriedade, limpa todos os subcampos obrigatórios de ambos os conjuntos
+                LOCATION_REQUIRED_KEYS_BRAZIL.forEach(function(k) {
+                    field.config.requiredAddressFieldsBrazil[k] = false;
+                });
+                LOCATION_REQUIRED_KEYS_OTHER.forEach(function(k) {
+                    field.config.requiredAddressFieldsOther[k] = false;
+                });
+                return;
+            }
+
+            // Modal de criação: ao marcar como obrigatório, se nenhum subcampo estiver marcado,
+            // marca País (address_level0) por padrão em ambos os conjuntos.
+            var hasAnyBrazil = LOCATION_REQUIRED_KEYS_BRAZIL.some(function(k) {
+                return !!field.config.requiredAddressFieldsBrazil[k];
+            });
+            if (!hasAnyBrazil) {
+                field.config.requiredAddressFieldsBrazil.address_level0 = true;
+            }
+
+            var hasAnyOther = LOCATION_REQUIRED_KEYS_OTHER.some(function(k) {
+                return !!field.config.requiredAddressFieldsOther[k];
+            });
+            if (!hasAnyOther) {
+                field.config.requiredAddressFieldsOther.address_level0 = true;
+            }
         };
 
         // Files
@@ -722,14 +1319,17 @@ module.controller('RegistrationConfigurationsController', ['$scope', '$rootScope
             fileService.create($scope.data.newFileConfiguration).then(function(response){
                 $scope.data.uploadSpinner = false;
                 if (response.error) {
-                    validationErrors(response);
-
+                    if (response.data && typeof response.data === 'object' && response.data.message) {
+                        MapasCulturais.Messages.error(response.data.message);
+                    } else {
+                        validationErrors(response);
+                    }
                 } else {
                     response = processFileConfiguration(response);
                     $scope.data.fields.push(response);
                     sortFields();
                     EditBox.close('editbox-registration-files');
-                    $scope.data.newFileConfiguration = angular.copy(fileConfigurationSkeleton);
+                    angular.copy(fileConfigurationSkeleton, $scope.data.newFileConfiguration);
                     MapasCulturais.Messages.success(labels['attachmentCreated']);
                 }
             });
@@ -748,6 +1348,38 @@ module.controller('RegistrationConfigurationsController', ['$scope', '$rootScope
                     }
                 });
             }
+        };
+
+        $scope.duplicateFileConfiguration = function(file, index) {
+            $scope.data.uploadSpinner = true;
+
+            $http.post(fileService.getUrl('duplicate', file.id)).then(function(result) {
+                var response = result.data;
+                $scope.data.uploadSpinner = false;
+
+                if (response.error) {
+                    if (response.data && typeof response.data === 'object' && response.data.message) {
+                        MapasCulturais.Messages.error(response.data.message);
+                    } else {
+                        validationErrors(response);
+                    }
+                    return;
+                }
+
+                response = processFileConfiguration(response);
+                $scope.data.fields.push(response);
+
+                var newIndex = $scope.data.fields.length - 1;
+                var movedFile = $scope.data.fields.splice(newIndex, 1)[0];
+                $scope.data.fields.splice(index + 1, 0, movedFile);
+
+                persistFieldsOrder(false).then(function() {
+                    MapasCulturais.Messages.success(labels['attachmentDuplicated']);
+                });
+            }, function(response) {
+                $scope.data.uploadSpinner = false;
+                validationErrors(response);
+            });
         };
 
         $scope.editFileConfiguration = function(attrs) {
@@ -792,8 +1424,11 @@ module.controller('RegistrationConfigurationsController', ['$scope', '$rootScope
             fileService.edit(data).then(function(response){
                 $scope.data.uploadSpinner = false;
                 if (response.error) {
-                    validationErrors(response);
-
+                    if (response.data && typeof response.data === 'object' && response.data.message) {
+                        MapasCulturais.Messages.error(response.data.message);
+                    } else {
+                        validationErrors(response);
+                    }
                 } else {
                     sortFields();
                     EditBox.close('editbox-registration-files-'+data.id);
@@ -812,14 +1447,53 @@ module.controller('RegistrationConfigurationsController', ['$scope', '$rootScope
         };
 
         $scope.openFileConfigurationEditBox = function(id, index, event){
+            $scope.lastFocus = document.activeElement;
             $scope.fileConfigurationBackups[index] = angular.copy($scope.data.fields[index]);
             EditBox.open('editbox-registration-files-'+id, event);
+
+            setTimeout(function() {
+                if ($scope.currentFocusTrap) {
+                    $scope.currentFocusTrap();
+                }
+                $scope.currentFocusTrap = FocusTrap.trap('#editbox-registration-files-' + id);
+            }, 300);
+        };
+
+        $scope.closeFileConfigurationEditBox = function(id) {
+            EditBox.close('editbox-registration-files-' + id);
+            if ($scope.currentFocusTrap) {
+                $scope.currentFocusTrap();
+                $scope.currentFocusTrap = null;
+            }
+            if ($scope.lastFocus) {
+                $scope.lastFocus.focus();
+                $scope.lastFocus = null;
+            }
         };
 
         $scope.openFileConfigurationTemplateEditBox = function(id, index, event){
+            $scope.lastFocus = document.activeElement;
             EditBox.open('editbox-registration-files-template-'+id, event);
             initAjaxUploader(id, index);
 
+            setTimeout(function() {
+                if ($scope.currentFocusTrap) {
+                    $scope.currentFocusTrap();
+                }
+                $scope.currentFocusTrap = FocusTrap.trap('#editbox-registration-files-template-' + id);
+            }, 300);
+        };
+
+        $scope.closeFileConfigurationTemplateEditBox = function(id) {
+            EditBox.close('editbox-registration-files-template-' + id);
+            if ($scope.currentFocusTrap) {
+                $scope.currentFocusTrap();
+                $scope.currentFocusTrap = null;
+            }
+            if ($scope.lastFocus) {
+                $scope.lastFocus.focus();
+                $scope.lastFocus = null;
+            }
         };
 
         $scope.removeFileConfigurationTemplate = function (id, $index) {
@@ -1014,6 +1688,41 @@ module.controller('OpportunityEventsController', ['$scope', '$rootScope', '$time
 
 
     $scope.toggle = false;
+}]);
+
+module.factory('FocusTrap', ['$document', function($document) {
+    return {
+        trap: function(containerSelector) {
+            var container = angular.element(document.querySelector(containerSelector));
+            if (!container.length) return;
+
+            var focusableElements = container.find('input, select, textarea, button, a[href], [tabindex]:not([tabindex="-1"])');
+            if (!focusableElements.length) return;
+
+            var firstElement = focusableElements[0];
+            var lastElement = focusableElements[focusableElements.length - 1];
+
+            container.on('keydown', function(event) {
+                if (event.key !== 'Tab') return;
+
+                if (event.shiftKey && document.activeElement === firstElement) {
+                    event.preventDefault();
+                    lastElement.focus();
+                } else if (!event.shiftKey && document.activeElement === lastElement) {
+                    event.preventDefault();
+                    firstElement.focus();
+                }
+            });
+
+            setTimeout(function() {
+                firstElement.focus();
+            }, 100);
+
+            return function() {
+                container.off('keydown');
+            };
+        }
+    };
 }]);
 
 module.factory('EvaluationsFieldsConfigService', ['$http', '$rootScope', function ($http, $rootScope) {
@@ -1528,7 +2237,7 @@ module.controller('RegistrationFieldsController', ['$scope', '$rootScope', '$int
     });
 
     $scope.validateRegistration = function(callback='') {
-        return RegistrationService.validateEntity(MapasCulturais.entity.object.id)
+        return RegistrationService.validateEntity(MapasCulturais.entity.object.id, $scope.data.editableEntity)
             .success(function(response) {
                 if(response.error) {
                     $scope.entityValidated = false;
@@ -1897,7 +2606,12 @@ module.controller('RegistrationFieldsController', ['$scope', '$rootScope', '$int
             if (field.conditionalField === 'appliedForQuota') {
                 result = result && $scope.appliedForQuota;
             } else {
-                result = result && $scope.entity[field.conditionalField] == field.conditionalValue;
+                const parentValue = $scope.entity[field.conditionalField];
+                if (Array.isArray(parentValue)) {
+                    result = result && parentValue.includes(field.conditionalValue);
+                } else {
+                    result = result && parentValue == field.conditionalValue;
+                }
             }
         }
 
@@ -1941,6 +2655,42 @@ module.controller('RegistrationFieldsController', ['$scope', '$rootScope', '$int
         return false;
     }
 
+    /** Para campo @location: retorna true só se o subcampo (En_*) estiver em requiredAddressFields. */
+    $scope.requiredLocationSubfield = function(field, enKey) {
+        if (!field || !field.required || (field.config && field.config.entityField !== '@location')) {
+            return false;
+        }
+        var locationKeyMap = {
+            'En_Pais': 'address_level0',
+            'En_Estado': 'address_level1',
+            'En_Municipio': 'address_level2',
+            'En_Bairro': 'address_level3',
+            'En_CEP': 'address_postalCode',
+            'En_Nome_Logradouro': 'address_line1',
+            'En_Num': 'address_number',
+            'En_Complemento': 'address_line2'
+        };
+        var addrKey = locationKeyMap[enKey];
+        if (!addrKey || !field.config || !field.config.requiredAddressFields) {
+            return false;
+        }
+        return !!field.config.requiredAddressFields[addrKey];
+    };
+
+    $scope.hasFieldValue = function(value) {
+        if (value === null || value === undefined) {
+            return false;
+        }
+        if (typeof value === 'string' && value.trim() === '') {
+            return false;
+        }
+        if (Array.isArray(value)) {
+            return value.length > 0;
+        }
+        // 0 e false são valores válidos (número / checkbox)
+        return true;
+    };
+
     $scope.checkField =  function(field) {
         
         if((field?.length === 1 && field[0] === '') || (field?.length === 1 && field[0] === 'null')) {
@@ -1954,10 +2704,29 @@ module.controller('RegistrationFieldsController', ['$scope', '$rootScope', '$int
         return field;
     }
 
+    $scope.isAgentFileField = function(field) {
+        if (!field || !field.config || !field.config.entityField) {
+            return false;
+        }
+
+        var definition = MapasCulturais.EntitiesDescription.agent[field.config.entityField];
+        return definition && definition.type === 'file';
+    };
+
     $scope.printField = function(field, value){
         
         let entityFiel = ['agent-owner-field', 'agent-collective-field']
         let fieldType = entityFiel.includes(field.fieldType) ? field.config.entityField : field.fieldType;
+
+        if ($scope.isAgentFileField(field) || (value && typeof value === 'object' && !Array.isArray(value) && value.url)) {
+            if (!value || !value.url) {
+                return null;
+            }
+
+            var escapedUrl = String(value.url).replace(/"/g, '&quot;').replace(/>/g, '&gt;').replace(/</g, '&lt;');
+            var escapedName = String(value.name || value.url).replace(/"/g, '&quot;').replace(/>/g, '&gt;').replace(/</g, '&lt;');
+            return '<a class="attachment-title" href="' + escapedUrl + '" target="_blank" rel="noopener noreferrer">' + escapedName + '</a>';
+        }
 
         if (field.fieldType === 'date' || field?.config?.entityField === 'dataDeNascimento') {
             return moment(value).format('DD-MM-YYYY');
@@ -1965,9 +2734,11 @@ module.controller('RegistrationFieldsController', ['$scope', '$rootScope', '$int
             return ["true", "1"].includes(value) ? "Sim" : "Não";
         }
          else if (fieldType === 'url'){
-            return '<a href="' + value + '" target="_blank" rel="noopener noreferrer">' + value + '</a>';
+            var escapedValue = value.replace(/"/g, '&quot;').replace(/>/g, '&gt;').replace(/</g, '&lt;');
+            return '<a href="' + escapedValue + '" target="_blank" rel="noopener noreferrer">' + escapedValue + '</a>';
         } else if (fieldType === 'email'){
-            return '<a href="mailto:' + value + '"  target="_blank" rel="noopener noreferrer">' + value + '</a>';
+            var escapedValue = value.replace(/"/g, '&quot;').replace(/>/g, '&gt;').replace(/</g, '&lt;');
+            return '<a href="mailto:' + escapedValue + '"  target="_blank" rel="noopener noreferrer">' + escapedValue + '</a>';
         } else if (field.fieldType == 'addresses') {
             if (value.length === 0) {
                 return 'Não informado';
@@ -2445,7 +3216,22 @@ module.controller('OpportunityController', ['$scope', '$rootScope', '$anchorScro
         $(opportunity_main_tab).hide();
     }
 
+    var hasSealExemptionConfig = (function() {
+        var config = MapasCulturais.entity?.evaluationMethodConfiguration?.sealExemptionConfig;
+        if (typeof config === 'string') {
+            try {
+                config = JSON.parse(config);
+            } catch (e) {
+                config = null;
+            }
+        }
+        return Array.isArray(config?.seals) && config.seals.length > 0;
+    })();
+
     var select_fields = MapasCulturais.opportunitySelectFields.map(function(e){ return e.fieldName; });
+    if (hasSealExemptionConfig) {
+        select_fields = select_fields.concat(['sealExemptionStatus', 'sealExemptionTimestamp']);
+    }
     var registrationsApi;
     var evaluationsApi;
 
@@ -2475,6 +3261,15 @@ module.controller('OpportunityController', ['$scope', '$rootScope', '$anchorScro
         }
         object[key] = value;
         return;
+    };
+
+    /** Label de campo de endereço por país (MapasCulturais.config.countryLocalization.labelsByCountry) */
+    $scope.getAddressLabel = function(key, country) {
+        var conf = MapasCulturais.config && MapasCulturais.config.countryLocalization;
+        var byCountry = conf && conf.labelsByCountry;
+        if (byCountry && country && byCountry[country] && byCountry[country][key]) return byCountry[country][key];
+        if (byCountry && byCountry.BR && byCountry.BR[key]) return byCountry.BR[key];
+        return (key && key.split('_').pop()) || key;
     };
 
     $scope.toggleSelectionColumn = function(object, key){
@@ -2606,6 +3401,10 @@ module.controller('OpportunityController', ['$scope', '$rootScope', '$anchorScro
         {fieldName: "status", title:labels['Status'] ,required:true},
     ];
 
+    if (hasSealExemptionConfig) {
+        defaultSelectFields.push({fieldName: "sealExemption", title:labels['Isenção'] ,required:true});
+    }
+
     MapasCulturais.opportunitySelectFields.forEach(function(e){
         e.options = [{ value: null, label: e.title }].concat(e.fieldOptions.map(function(e){
             return {value: e, label: e};
@@ -2677,6 +3476,12 @@ module.controller('OpportunityController', ['$scope', '$rootScope', '$anchorScro
 
         registrationStatusesNames: RegistrationService.registrationStatusesNames,
 
+        sealStatuses: [
+            {value: 'fully_valid', label: 'Totalmente Válido'},
+            {value: 'partially_valid', label: 'Parcialmente Válido'},
+            {value: 'invalid', label: 'Inválido'}
+        ],
+
         publishedRegistrationStatuses: RegistrationService.publishedRegistrationStatuses,
 
         publishedRegistrationStatusesNames: RegistrationService.publishedRegistrationStatusesNames,
@@ -2703,10 +3508,14 @@ module.controller('OpportunityController', ['$scope', '$rootScope', '$anchorScro
             agents: true,
             attachments: true,
             evaluation: true,
-            status: true
+            status: true,
+            sealStatus: true,
+            sealExemption: false
         },
 
         confirmEvaluationLabel: labels['confirmEvaluationLabel'],
+
+        hasSealExemptionConfig: hasSealExemptionConfig,
 
         fields: RegistrationService.getFields(),
 
@@ -2993,7 +3802,7 @@ module.controller('OpportunityController', ['$scope', '$rootScope', '$anchorScro
             };
 
             $scope.removeRegistrationRulesFile = function (id, $index) {
-                if(confirm('Deseja remover este anexo?')){
+                if(confirm(MapasCulturais.gettext.moduleOpportunity['confirmAttachmentRemoved'])){
                     let url = MapasCulturais.createUrl('file','single',{id:$scope.data.entity.registrationRulesFile.id});
                     $http.delete(url).success(function(response){
                         $scope.data.entity.registrationRulesFile = null;

@@ -47,6 +47,10 @@ app.component('opportunity-phases-timeline', {
 	},
 
 	methods: {
+		showPhaseDates(item) {
+			return !this.firstPhase?.hidePhaseDates;
+		},
+
 		dateFrom(item) {
 			if (item.registrationFrom) {
 				return item.registrationFrom.date('2-digit year');
@@ -78,6 +82,14 @@ app.component('opportunity-phases-timeline', {
 		},
 
 		isActive(item, registration) {
+			if (item.isExecutionPhase) {
+				return item.registrationFrom?.isPast() && item.registrationTo?.isFuture();
+			}
+
+			if (item.__objectType == 'evaluationmethodconfiguration') {
+				return item.evaluationFrom?.isPast() && item.evaluationTo?.isFuture();
+			}
+
 			if (!registration) {
 				return false;
 			}
@@ -110,6 +122,14 @@ app.component('opportunity-phases-timeline', {
 		},
 
 		itHappened(item, registration) {
+			if (item.isExecutionPhase) {
+				return item.registrationTo?.isPast();
+			}
+
+			if (item.__objectType == 'evaluationmethodconfiguration') {
+				return item.evaluationTo?.isPast();
+			}
+
 			if (!registration) {
 				return false;
 			}

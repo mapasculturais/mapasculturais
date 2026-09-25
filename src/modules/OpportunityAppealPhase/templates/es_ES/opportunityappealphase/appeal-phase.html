@@ -1,0 +1,41 @@
+{{{_header}}}
+<table role="presentation" class="main">
+    <tr>
+        <td class="wrapper">
+            <table role="presentation" border="0" cellpadding="0" cellspacing="0">
+                <tr>
+                    <td>
+                        <p>{{message}}</p>
+
+                        {{#isEvaluator}}
+                            <p>Hay un recurso disponible para evaluación.</p>
+                        {{/isEvaluator}}
+
+                        {{#isProponent}}
+                            <p>Recibimos su solicitud de recurso.</p>
+                        {{/isProponent}}
+
+                        {{#isManager}}
+                            <p>Se registró una nueva solicitud de recurso.</p>
+                        {{/isManager}}
+
+                        <p>
+                            <strong>Oportunidad: </strong> <a href="{{opportunityUrl}}" rel="noopener noreferrer">{{opportunityName}}</a><br>
+                            <strong>Fase de recurso: </strong> <a href="{{phaseUrl}}" rel="noopener noreferrer">{{phaseName}}</a><br>
+                            <strong>Inscripción: </strong> <a href="{{registrationUrl}}" rel="noopener noreferrer">{{registrationNumber}}</a><br>
+                            <strong>Proponente: </strong> {{requesterName}}
+                        </p>
+
+                        <br>
+                        <a href="{{registrationUrl}}" rel="noopener noreferrer">
+                            <div class="status-card status-card--primary">
+                                <h2 class="status-card--title">Acceder a la inscripción</h2>
+                            </div>
+                        </a>
+                    </td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+</table>
+{{{_footer}}}

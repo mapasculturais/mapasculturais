@@ -42,7 +42,7 @@ app.component('registration-workplan-form', {
             }
         },
         workplansLabel () {
-            const opportunity = this.registrationModel.opportunity.parent ?? this.registrationModel.opportunity;
+            const opportunity = this.registrationModel.workplanOpportunity ?? this.registrationModel.opportunity.parent ?? this.registrationModel.opportunity;
             return opportunity.workplanLabelDefault ?? $MAPAS.EntitiesDescription.opportunity.workplanLabelDefault.default_value;
         },
     },

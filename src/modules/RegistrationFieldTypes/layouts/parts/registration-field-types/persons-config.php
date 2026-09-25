@@ -13,6 +13,8 @@ use MapasCulturais\i; ?>
     <label class="checkbox-label"><input type="checkbox" ng-model="field.config.fullName" ng-true-value="'true'" ng-false-value=""> <?php i::_e('nome completo') ?></label>
     <label class="checkbox-label"><input type="checkbox" ng-model="field.config.socialName" ng-true-value="'true'" ng-false-value=""> <?php i::_e('nome social') ?></label>
     <label class="checkbox-label"><input type="checkbox" ng-model="field.config.cpf" ng-true-value="'true'" ng-false-value=""> <?php i::_e('CPF') ?></label>
+    <label class="checkbox-label"><input type="checkbox" ng-model="field.config.cnpj" ng-true-value="'true'" ng-false-value=""> <?php i::_e('CNPJ') ?></label>
+    <label class="checkbox-label"><input type="checkbox" ng-model="field.config.miniCurriculum" ng-true-value="'true'" ng-false-value=""> <?php i::_e('Mini currículo') ?></label>
     <label class="checkbox-label"><input type="checkbox" ng-model="field.config.income" ng-true-value="'true'" ng-false-value=""> <?php i::_e('Renda') ?></label>
     <label class="checkbox-label"><input type="checkbox" ng-model="field.config.education" ng-true-value="'true'" ng-false-value=""> <?php i::_e('Escolaridade') ?></label>
     <label class="checkbox-label"><input type="checkbox" ng-model="field.config.telephone" ng-true-value="'true'" ng-false-value=""> <?php i::_e('Telefone do representante') ?></label>
@@ -33,6 +35,8 @@ use MapasCulturais\i; ?>
     <label ng-if="field.config.fullName" class="checkbox-label"><input type="checkbox" ng-model="field.config.requiredFields.fullName" ng-true-value="'true'" ng-false-value=""> <?php i::_e('nome completo') ?></label>
     <label ng-if="field.config.socialName" class="checkbox-label"><input type="checkbox" ng-model="field.config.requiredFields.socialName" ng-true-value="'true'" ng-false-value=""> <?php i::_e('nome social') ?></label>
     <label ng-if="field.config.cpf" class="checkbox-label"><input type="checkbox" ng-model="field.config.requiredFields.cpf" ng-true-value="'true'" ng-false-value=""> <?php i::_e('CPF') ?></label>
+    <label ng-if="field.config.cnpj" class="checkbox-label"><input type="checkbox" ng-model="field.config.requiredFields.cnpj" ng-true-value="'true'" ng-false-value=""> <?php i::_e('CNPJ') ?></label>
+    <label ng-if="field.config.miniCurriculum" class="checkbox-label"><input type="checkbox" ng-model="field.config.requiredFields.miniCurriculum" ng-true-value="'true'" ng-false-value=""> <?php i::_e('Mini currículo') ?></label>
     <label ng-if="field.config.income" class="checkbox-label"><input type="checkbox" ng-model="field.config.requiredFields.income" ng-true-value="'true'" ng-false-value=""> <?php i::_e('Renda') ?></label>
     <label ng-if="field.config.education" class="checkbox-label"><input type="checkbox" ng-model="field.config.requiredFields.education" ng-true-value="'true'" ng-false-value=""> <?php i::_e('Escolaridade') ?></label>
     <label ng-if="field.config.telephone" class="checkbox-label"><input type="checkbox" ng-model="field.config.requiredFields.telephone" ng-true-value="'true'" ng-false-value=""> <?php i::_e('Telefone do representante') ?></label>

@@ -11,11 +11,20 @@ app.component('mc-toggle', {
         modelValue: {
             type: Boolean, 
             default: false,
-        }
+        },
+
+        disabled: {
+            type: Boolean,
+            default: false,
+        },
     },
 
     methods: {
         toggleSwitch(event) {
+            if (this.disabled) {
+                event.target.checked = this.modelValue;
+                return;
+            }
             this.$emit('update:modelValue', event.target.checked);
         }
     },

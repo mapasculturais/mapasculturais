@@ -3,12 +3,33 @@ namespace MapasCulturais\AuthProviders;
 use MapasCulturais\App;
 use MapasCulturais\Entities;
 
-
+/**
+ * Provedor de autenticação Opauth para Login Cidadão
+ * 
+ * Implementa autenticação via Opauth para o provedor Login Cidadão
+ * 
+ * @package MapasCulturais\AuthProviders
+ */
 class OpauthLoginCidadao extends \MapasCulturais\AuthProvider{
+    /**
+     * Instância do Opauth
+     * @var \Opauth
+     */
     protected $opauth;
 
+    /**
+     * URL do primeiro login
+     * @var string|null
+     */
     protected $_firstLloginUrl = null;
 
+    /**
+     * Inicializa o provedor de autenticação
+     * 
+     * Configura as rotas e hooks necessários para autenticação via Login Cidadão
+     * 
+     * @return void
+     */
     protected function _init() {
         $app = App::i();
         
@@ -105,9 +126,22 @@ class OpauthLoginCidadao extends \MapasCulturais\AuthProvider{
         }
         
     }
+    
+    /**
+     * Limpa a sessão do usuário
+     * 
+     * @return void
+     */
     public function _cleanUserSession() {
         unset($_SESSION['opauth']);
     }
+    
+    /**
+     * Requer autenticação do usuário
+     * 
+     * @return void
+     * @throws \Exception Se a requisição for AJAX, retorna erro 401
+     */
     public function _requireAuthentication() {
         $app = App::i();
         if($app->request->isAjax()){
@@ -117,15 +151,20 @@ class OpauthLoginCidadao extends \MapasCulturais\AuthProvider{
             $app->redirect($app->controller('auth')->createUrl(''), 401);
         }
     }
+    
     /**
-     * Defines the URL to redirect after authentication
-     * @param string $redirect_path
+     * Define a URL para redirecionamento após autenticação
+     * 
+     * @param string $redirect_path Caminho para redirecionamento
+     * @return void
      */
     protected function _setRedirectPath($redirect_path) {
         parent::_setRedirectPath($redirect_path);
     }
+    
     /**
-     * Returns the URL to redirect after authentication
+     * Retorna a URL para redirecionamento após autenticação
+     * 
      * @return string
      */
     public function getRedirectPath(){
@@ -134,8 +173,10 @@ class OpauthLoginCidadao extends \MapasCulturais\AuthProvider{
         unset($_SESSION['mapasculturais.auth.redirect_path']);
         return $path;
     }
+    
     /**
-     * Returns the Opauth authentication response or null if the user not tried to authenticate
+     * Retorna a resposta de autenticação do Opauth ou null se o usuário não tentou autenticar
+     * 
      * @return array|null
      */
     protected function _getResponse(){
@@ -160,8 +201,12 @@ class OpauthLoginCidadao extends \MapasCulturais\AuthProvider{
         }
         return $response;
     }
+    
     /**
-     * Check if the Opauth response is valid. If it is valid, the user is authenticated.
+     * Verifica se a resposta do Opauth é válida
+     * 
+     * Se for válida, o usuário está autenticado
+     * 
      * @return boolean
      */
     protected function _validateResponse(){
@@ -193,6 +238,12 @@ class OpauthLoginCidadao extends \MapasCulturais\AuthProvider{
         }
         return $valid;
     }
+    
+    /**
+     * Obtém o usuário autenticado
+     * 
+     * @return \MapasCulturais\Entities\User|null
+     */
     public function _getAuthenticatedUser() {
         $user = null;
         if($this->_validateResponse()){
@@ -207,9 +258,11 @@ class OpauthLoginCidadao extends \MapasCulturais\AuthProvider{
             return null;
         }
     }
+    
     /**
-     * Process the Opauth authentication response and creates the user if it not exists
-     * @return boolean true if the response is valid or false if the response is not valid
+     * Processa a resposta de autenticação do Opauth e cria o usuário se não existir
+     * 
+     * @return boolean true se a resposta for válida ou false se não for válida
      */
     public function processResponse(){
         // se autenticou
@@ -233,6 +286,12 @@ class OpauthLoginCidadao extends \MapasCulturais\AuthProvider{
         }
     }
 
+    /**
+     * Cria um novo usuário a partir da resposta de autenticação
+     * 
+     * @param array $response Resposta de autenticação do Opauth
+     * @return \MapasCulturais\Entities\User
+     */
     protected function _createUser($response) {
         $app = App::i();
 

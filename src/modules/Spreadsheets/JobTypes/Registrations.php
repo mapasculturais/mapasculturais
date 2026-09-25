@@ -20,6 +20,21 @@ class Registrations extends SpreadsheetJob
         return [Registration::class];
     }
 
+    /**
+     * Obtém valor de localização aceitando tanto objeto quanto array (address_level* ou En_*).
+     */
+    private static function _getLocationValue($location, string $prop1, string $prop2): ?string {
+        if ($location === null) {
+            return null;
+        }
+        if (is_array($location)) {
+            $v = $location[$prop1] ?? $location[$prop2] ?? null;
+            return $v !== '' && $v !== null ? (string) $v : null;
+        }
+        $v = $location->$prop1 ?? $location->$prop2 ?? null;
+        return $v !== '' && $v !== null ? (string) $v : null;
+    }
+
     protected function _getHeader(Job $job) : array {
         $header = [];
 
@@ -31,20 +46,47 @@ class Registrations extends SpreadsheetJob
         /*if($job->owner_properties) {
             $query['@select'] .= ",owner.{{$job->owner_properties}}";
         }*/
-        $query['@select'] .= ',projectName,owner.{name}';
+        $select = $query['@select'] ?? '';
+        if ($select === '' || !preg_match('/(^|,)projectName($|,)/', $select)) {
+            $select .= ($select === '' ? '' : ',') . 'projectName';
+        }
+        if (!preg_match('/owner\.\{[^}]*\bname\b[^}]*\}/', $select)) {
+            $select .= ',owner.{name}';
+        }
+        $query['@select'] = $select;
         $properties = FieldParser::parse($query['@select']);
 
         foreach(array_keys($properties) as $property) {
-            if(str_starts_with($property, 'field_')) {
-                continue;
+            if (str_starts_with($property, 'field_')) {
+                $etf = $this->is_entity_type_field($property);
+                if ($etf['status']) {
+                    continue;
+                }
             }
             if($property == 'singleUrl') {
                 $header[$property] = i::__('Link da inscrição');
                 continue;
             }
 
-            if($property == 'ownerGeoMesoregiao') {
-                $header[$property] = i::__('Mesorregião do responsável');
+            // Ordem alinhada ao bloco de dados (ownerGeo* / geo*), mesmas labels
+            if($property == 'ownerGeoMesorregiao') {
+                $header[$property] = i::__('Divisão geográfica do responsável – Mesorregião');
+                continue;
+            }
+            if($property == 'ownerGeoMunicipio') {
+                $header[$property] = i::__('Divisão geográfica do responsável – Município');
+                continue;
+            }
+            if($property == 'ownerGeoPais') {
+                $header[$property] = i::__('Divisão geográfica do responsável – País');
+                continue;
+            }
+            if($property == 'ownerGeoEstado') {
+                $header[$property] = i::__('Divisão geográfica do responsável – Estado');
+                continue;
+            }
+            if($property == 'ownerGeoMicrorregiao') {
+                $header[$property] = i::__('Divisão geográfica do responsável – Microrregião');
                 continue;
             }
 
@@ -136,24 +178,36 @@ class Registrations extends SpreadsheetJob
                 if($entity_type_field['status']) {
                      
                     if($entity_type_field['ft'] == '@location') {
-                        $header['UF'] = i::__('UF');
-                        $header['Municipio'] = i::__('Município');
+                        if (!isset($header['UF'])) {
+                            $header['UF'] = i::__('UF');
+                        }
+                        if (!isset($header['Municipio'])) {
+                            $header['Municipio'] = i::__('Município');
+                        }
                     }
 
                     if($entity_type_field['ft'] == '@links') {
-                        $header['Links'] = i::__('Links');
+                        if (!isset($header['Links'])) {
+                            $header['Links'] = i::__('Links');
+                        }
                     }
 
                     if($entity_type_field['ft'] == 'pessoaDeficiente') {
-                        $header[$field->fieldName] = $field->title;
+                        if (!isset($header[$field->fieldName])) {
+                            $header[$field->fieldName] = $field->title;
+                        }
                     }
 
                     if($entity_type_field['ft'] == 'persons') {
-                        $header[$field->fieldName] = $field->title;
+                        if (!isset($header[$field->fieldName])) {
+                            $header[$field->fieldName] = $field->title;
+                        }
                     }
                     
                 } else {
-                    $header[$field->fieldName] = $field->title;
+                    if (!isset($header[$field->fieldName])) {
+                        $header[$field->fieldName] = $field->title;
+                    }
                 }
             }
         } while($opportunity = $opportunity->previousPhase);
@@ -296,13 +350,19 @@ class Registrations extends SpreadsheetJob
                                 if (isset($field_config['deficiencies']) && $field_config['deficiencies'] === 'true') {
                                     $deficiencies_str = '';
                                     if (isset($person['deficiencies'])) {
-                                        if (is_array($person['deficiencies'])) {
-                                            $deficiencies_filtered = array_filter($person['deficiencies'], function($v) { return $v !== false && $v !== null && $v !== ''; });
+                                        $deficiencies = $person['deficiencies'];
+
+                                        if ($deficiencies instanceof \stdClass) {
+                                            $deficiencies = (array) $deficiencies;
+                                        }
+
+                                        if (is_array($deficiencies)) {
+                                            $deficiencies_filtered = array_filter($deficiencies, function($v) { return $v !== false && $v !== null && $v !== ''; });
                                             $deficiencies_str = !empty($deficiencies_filtered) 
-                                                ? implode(', ', array_keys($deficiencies_filtered)) 
+                                                ? implode(', ', array_keys($deficiencies_filtered))
                                                 : i::__('Não informado');
                                         } else {
-                                            $deficiencies_str = $person['deficiencies'] ?: i::__('Não informado');
+                                            $deficiencies_str = $deficiencies ?: i::__('Não informado');
                                         }
                                     } else {
                                         $deficiencies_str = i::__('Não informado');
@@ -374,9 +434,8 @@ class Registrations extends SpreadsheetJob
 
                         if($entity_type_field['ft'] == '@location') {
                             $location = $entity[$field->fieldName] ?? null;
-                            
-                            $entity['UF'] = $location->address_level2 ?? $location->En_Estado ?? null;
-                            $entity['Municipio'] = $location->address_level4 ?: $location->En_Municipio ?: null;
+                            $entity['UF'] = self::_getLocationValue($location, 'address_level2', 'En_Estado');
+                            $entity['Municipio'] = self::_getLocationValue($location, 'address_level4', 'En_Municipio');
                             unset($entity[$field->fieldName]);
                         }
 
@@ -400,6 +459,11 @@ class Registrations extends SpreadsheetJob
                                 $entity[$field->fieldName] = $entity_field_value;
                             }
                         }
+                    }
+
+                    if ($file_url = $this->extractAgentFileUrl($entity[$field->fieldName] ?? null)) {
+                        $entity[$field->fieldName] = $file_url;
+                        continue;
                     }
 
                     if (isset($entity[$field->fieldName]) && $entity[$field->fieldName] instanceof \stdClass) {
@@ -474,11 +538,33 @@ class Registrations extends SpreadsheetJob
                     $entity['files'] = $app->createUrl('registration', 'createZipFiles', [$entity['id']]);
                 }
 
-                if (isset($entity['geoMesoregiao'])) {
-                    $entity['ownerGeoMesoregiao'] = eval('return $entity' . $properties['ownerGeoMesoregiao'] . ';');
-                     unset($entity['geoMesoregiao']);
+                // Dados do owner já foram mesclados em $entity (owner foi unset); geo* estão no nível raiz
+                $geoMesorregiao = $entity['geoMesorregiao'] ?? $entity['geoMesoregiao'] ?? null;
+                if ($geoMesorregiao !== null) {
+                    $entity['ownerGeoMesorregiao'] = $geoMesorregiao;
+                    $entity['ownerGeoMesoregiao'] = $geoMesorregiao; // fallback para typo no @select
+                    unset($entity['geoMesorregiao'], $entity['geoMesoregiao']);
                 }
-                
+
+                if (isset($entity['geoMunicipio'])) {
+                    $entity['ownerGeoMunicipio'] = $entity['geoMunicipio'];
+                    unset($entity['geoMunicipio']);
+                }
+
+                if (isset($entity['geoPais'])) {
+                    $entity['ownerGeoPais'] = $entity['geoPais'];
+                    unset($entity['geoPais']);
+                }
+
+                if (isset($entity['geoEstado'])) {
+                    $entity['ownerGeoEstado'] = $entity['geoEstado'];
+                    unset($entity['geoEstado']);
+                }
+
+                if (isset($entity['geoMicrorregiao'])) {
+                    $entity['ownerGeoMicrorregiao'] = $entity['geoMicrorregiao'];
+                    unset($entity['geoMicrorregiao']);
+                }
                 if(isset($entity['sentTimestamp']) && !is_null($entity['sentTimestamp'])) {
                     $entity['sentDate'] = $entity['sentTimestamp']->format('d-m-Y');
                     $entity['sentTime'] = $entity['sentTimestamp']->format('H:i:s');
@@ -531,6 +617,10 @@ class Registrations extends SpreadsheetJob
                     $entity['eligible'] = $entity['eligible'] ?  i::__('Sim') : i::__('Não');
                 }
 
+                if(isset($entity['appliedPointReward'])) {
+                    $entity['appliedPointReward'] = $this->formatAppliedPointReward($entity['appliedPointReward']);
+                }
+
                 if(isset($entity['editableUntil'])) {
                     $date = $entity['editableUntil'];
                     $entity['editableUntil'] = $date->format('d/m/Y H:i:s');
@@ -576,6 +666,61 @@ class Registrations extends SpreadsheetJob
         ]));
 
         return "registrationsSpreadsheet:{$md5}";
+    }
+
+    /**
+     * Extrai a URL de um valor de campo anexo (agent type=file).
+     *
+     * Formato esperado (RegistrationFieldTypes::fetchAgentFileFieldFromEntity):
+     * ['id' => int, 'name' => string, 'url' => string, 'mimeType' => string]
+     *
+     * @param mixed $value
+     * @return string|null URL do arquivo, ou null se não for um anexo.
+     */
+    public function extractAgentFileUrl($value): ?string
+    {
+        if ($value instanceof \stdClass) {
+            $value = (array) $value;
+        }
+
+        if (!is_array($value) || $value === [] || array_is_list($value)) {
+            return null;
+        }
+
+        $url = $value['url'] ?? null;
+        if (!is_string($url) || $url === '') {
+            return null;
+        }
+
+        if (!isset($value['name']) && !isset($value['id']) && !isset($value['mimeType'])) {
+            return null;
+        }
+
+        return $url;
+    }
+
+    private function formatAppliedPointReward($applied_point_reward): string
+    {
+        if (is_array($applied_point_reward)) {
+            $applied_point_reward = (object) $applied_point_reward;
+        }
+
+        if (!is_object($applied_point_reward) || ($applied_point_reward->raw ?? null) === null) {
+            return '';
+        }
+
+        if (($applied_point_reward->type ?? 'percentage') === 'fixed') {
+            $fixed = (float) ($applied_point_reward->fixed ?? 0);
+            return $fixed > 0 ? '+' . $this->formatBonusNumber($fixed) . ' ' . i::__('pt(s)') : '';
+        }
+
+        $percentage = (float) ($applied_point_reward->percentage ?? 0);
+        return $percentage > 0 ? $this->formatBonusNumber($percentage) . '%' : '';
+    }
+
+    private function formatBonusNumber(float $value): string
+    {
+        return fmod($value, 1.0) === 0.0 ? (string) (int) $value : (string) $value;
     }
 
     function is_entity_type_field($field_name) {

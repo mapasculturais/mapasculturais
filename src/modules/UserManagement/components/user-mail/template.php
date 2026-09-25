@@ -32,12 +32,12 @@ $this->import('
     </div>
 
     <form class="grid-12 user-mail__form" v-if="entity.editingEmail" @submit="entity.save().then(() => entity.editingEmail = false); $event.preventDefault();">
-        <div class="col-4">
-            <entity-field :entity="entity" prop="email" hide-required></entity-field>
+        <div class="col-6">
+            <entity-field :entity="entity" prop="email" label="<?= i::esc_attr__('E-mail') ?>" hide-required></entity-field>
         </div>
-        <div class="mail-buttons">
-            <button class="col-2 button button--primary button--md"><?php i::_e('Salvar') ?></button>
-            <button class="col-2 button button--secondary button--md" @click="entity.editingEmail = false"><?php i::_e('Cancelar') ?></button>
+        <div class="col-6 mail-buttons">
+            <button type="submit" class="button button--primary button--md"><?php i::_e('Salvar') ?></button>
+            <button type="button" class="button button--text button--text-del" @click="entity.editingEmail = false"><?php i::_e('Cancelar') ?></button>
         </div>
     </form>
     <?php $this->applyTemplateHook('user-mail', 'end'); ?>

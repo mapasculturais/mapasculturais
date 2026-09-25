@@ -6,6 +6,7 @@ use MapasCulturais\App;
 use MapasCulturais\Controller;
 use MapasCulturais\Entities\EvaluationMethodConfiguration as EvaluationMethodConfigurationEntity;
 use MapasCulturais\Entities\EvaluationMethodConfigurationAgentRelation;
+use MapasCulturais\Exceptions\WorkflowRequest;
 use MapasCulturais\Traits;
 use Opportunities\Jobs\RedistributeCommitteeRegistrations;
 
@@ -55,6 +56,63 @@ class EvaluationMethodConfiguration extends Controller {
         }
 
         return $relation;
+    }
+
+    /**
+     * Cria relação de avaliador e, se ele tiver inscrição própria no edital,
+     * devolve aviso no JSON (não bloqueia a inclusão).
+     *
+     * @WriteAPI POST createAgentRelation
+     */
+    public function POST_createAgentRelation()
+    {
+        $this->requireAuthentication();
+
+        $app = App::i();
+
+        if (!$this->urlData['id']) {
+            $app->pass();
+        }
+
+        $has_control = key_exists('has_control', $this->postData) && $this->postData['has_control'];
+
+        /** @var EvaluationMethodConfigurationEntity $owner */
+        $owner = $this->repository->find($this->data['id']);
+
+        if (!key_exists('agentId', $this->postData)) {
+            $app->pass();
+        }
+
+        $agent = $app->repo('Agent')->find($this->data['agentId']);
+        if (!$agent) {
+            $app->pass();
+        }
+
+        try {
+            $relation = $owner->createAgentRelation($agent, $this->postData['group'], $has_control, false);
+        } catch (\Exception $e) {
+            $this->errorJson($e->getMessage(), 403);
+        }
+
+        $status = 200;
+        try {
+            $relation->save(true);
+        } catch (WorkflowRequest $e) {
+            $status = 202;
+            $reqs = [];
+            foreach ($e->requests as $request) {
+                $reqs[] = $request->getRequestType();
+            }
+            header('CreatedRequests: ' . json_encode($reqs));
+        }
+
+        $data = $relation->jsonSerialize();
+        $warning = $owner->buildOwnRegistrationsWarning($agent->user, $agent->name);
+        if ($warning) {
+            $data['ownRegistrationsWarning'] = $warning;
+        }
+
+        $this->json($data, $status);
     }
 
     function POST_reopenValuerEvaluations(){
@@ -219,6 +277,18 @@ class EvaluationMethodConfiguration extends Controller {
         $this->json(true);
     }
 
+    function POST_setValuerCategories()
+    {
+        $relation = $this->_getValuerAgentRelation();
+
+        $categories = $this->data['categories'] ?? null;
+
+        $relation->setCategories($categories);
+
+        $relation->save(true);
+        $this->json(true);
+    }
+
     /**
      * Substitui um avaliador por outro
      * 
@@ -237,7 +307,18 @@ class EvaluationMethodConfiguration extends Controller {
         if($relation = $app->repo('EvaluationMethodConfigurationAgentRelation')->find($this->data['relation'])){
             $newValuer = $app->repo('Agent')->find($this->data['newValuerAgentId']);
             $new_valuer = $relation->replaceEvaluator($newValuer->user);
-            $this->json($new_valuer);
+            $data = is_object($new_valuer) && method_exists($new_valuer, 'jsonSerialize')
+                ? $new_valuer->jsonSerialize()
+                : $new_valuer;
+
+            if (is_array($data)) {
+                $warning = $emc->buildOwnRegistrationsWarning($newValuer->user, $newValuer->name);
+                if ($warning) {
+                    $data['ownRegistrationsWarning'] = $warning;
+                }
+            }
+
+            $this->json($data);
         } else {
             $this->json(false);
         }
@@ -262,6 +343,85 @@ class EvaluationMethodConfiguration extends Controller {
         $exclusive = $this->data['exclusive'] ?? false;
 
         $relation->setRegistrationListExclusive($exclusive);
+
+        $relation->save(true);
+        $this->json(true);
+    }
+
+    function POST_setValuerProponentTypes()
+    {
+        $relation = $this->_getValuerAgentRelation();
+
+        $proponent_types = $this->data['proponentTypes'] ?? null;
+
+        $relation->setProponentTypes($proponent_types);
+
+        $relation->save(true);
+        $this->json(true);
+    }
+
+    function POST_setValuerRanges()
+    {
+        $relation = $this->_getValuerAgentRelation();
+
+        $ranges = $this->data['ranges'] ?? null;
+
+        $relation->setRanges($ranges);
+
+        $relation->save(true);
+        $this->json(true);
+    }
+
+    function POST_setValuerDistribution()
+    {
+        $relation = $this->_getValuerAgentRelation();
+
+        $distribution = $this->data['distribution'] ?? null;
+
+        $relation->setDistribution($distribution);
+
+        $relation->save(true);
+        $this->json(true);
+    }
+
+    function POST_setValuerSelectionFields()
+    {
+        $relation = $this->_getValuerAgentRelation();
+
+        $selection_fields = $this->data['selectionFields'] ?? null;
+
+        $relation->setSelectionFields($selection_fields);
+
+        $relation->save(true);
+        $this->json(true);
+    }
+
+    /**
+     * Endpoint genérico para salvar todos os filtros de um avaliador de uma vez
+     */
+    function POST_setValuerFilters()
+    {
+        $relation = $this->_getValuerAgentRelation();
+
+        if (array_key_exists('categories', $this->data)) {
+            $relation->setCategories($this->data['categories']);
+        }
+
+        if (array_key_exists('proponentTypes', $this->data)) {
+            $relation->setProponentTypes($this->data['proponentTypes']);
+        }
+
+        if (array_key_exists('ranges', $this->data)) {
+            $relation->setRanges($this->data['ranges']);
+        }
+
+        if (array_key_exists('distribution', $this->data)) {
+            $relation->setDistribution($this->data['distribution']);
+        }
+
+        if (array_key_exists('selectionFields', $this->data)) {
+            $relation->setSelectionFields($this->data['selectionFields']);
+        }
 
         $relation->save(true);
         $this->json(true);

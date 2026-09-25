@@ -102,8 +102,8 @@ class Module extends \MapasCulturais\Module
                         if( $relation->metadata) {
                             $userAllowedFields = $relation->metadata['registrationPermissions'];
                             foreach($result as $key => $field){
-                                $field = "field_".$field->id;
-                                if(!isset($userAllowedFields[$field])){
+                                $field_name = $field->getFieldName();
+                                if(!isset($userAllowedFields[$field_name])){
                                     unset($result[$key]);
                                 }
                             }
@@ -209,7 +209,7 @@ class Module extends \MapasCulturais\Module
         $app->hook('GET(registration.view):before', function() use($app) {
             $registration = $this->requestedEntity;
             if ($registration->canUser('support', $app->user)){
-                if(!$registration->isUserAdmin($app->user) && !$registration->canUser('evaluate') && !$registration->opportunity->canUser('@control')){
+                if(!$app->user->is('admin') && !$registration->canUser('evaluate') && !$registration->opportunity->canUser('@control')){
                     $app->redirect($app->createUrl('support','registration', [$registration->id]) ) ;
                 }
             }
@@ -252,7 +252,7 @@ class Module extends \MapasCulturais\Module
                 );
 
                 foreach ($fields as $field) {
-                    $key = $field->group ?? $field->fieldName;
+                    $key = $field->fileGroupName ?? $field->fieldName;
                     
                     if(($permissions[$key] ?? 'ro') == 'ro') {
                         $result['__lockedFields'][] = $key;
@@ -282,6 +282,10 @@ class Module extends \MapasCulturais\Module
         $app->view->enqueueStyle('app', 'support', 'css/support.css');
         $app->view->enqueueScript('app', 'support', 'js/ng.support.js', ['entity.module.opportunity']);
         $app->view->jsObject['angularAppDependencies'][] = 'ng.support';
+
+        $app->view->localizeScript('support', [
+            'confirmRemoveAgentRelation' => \MapasCulturais\i::__('Voce realmente deseja remover a relação deste agente?'),
+        ]);
     }
 
     public function isSupportUser($opportunity, $user)

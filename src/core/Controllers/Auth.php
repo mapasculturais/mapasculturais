@@ -3,7 +3,23 @@ namespace MapasCulturais\Controllers;
 use \MapasCulturais\App;
 use \MapasCulturais\i;
 
+/**
+ * Controlador de Autenticação
+ *
+ * Este controlador gerencia as operações de autenticação e autorização no sistema Mapas Culturais.
+ * Ele fornece endpoints para login, logout e gerenciamento de procurações (autorizações temporárias).
+ *
+ * @property-read \MapasCulturais\AuthProvider $auth Provedor de autenticação
+ * @property-read \MapasCulturais\Entities\User $user Usuário autenticado
+ * 
+ * @package MapasCulturais\Controllers
+ */
 class Auth extends \MapasCulturais\Controller {
+    /**
+     * Construtor do controlador de autenticação
+     *
+     * Configura hooks para redirecionamento após autenticação.
+     */
     function __construct()
     {
         $app = App::i();
@@ -15,12 +31,37 @@ class Auth extends \MapasCulturais\Controller {
         },-10);
     }
 
+    /**
+     * Realiza logout do usuário atual
+     *
+     * Esta ação invalida a sessão do usuário e redireciona para a página inicial.
+     * 
+     * @api {ALL} /auth/logout Logout do usuário
+     * @apiDescription Realiza logout do usuário atual
+     * @apiGroup AUTH
+     * @apiName logout
+     * 
+     * @return void
+     */
     function ALL_logout(){
         $app = App::i();
         $app->auth->logout();
         $app->redirect($app->baseUrl);
     }
     
+    /**
+     * Realiza login do usuário
+     *
+     * Esta ação requer autenticação e pode redirecionar para uma URL específica após o login.
+     * 
+     * @api {GET} /auth/login Login do usuário
+     * @apiDescription Realiza login do usuário
+     * @apiGroup AUTH
+     * @apiName login
+     * @apiParam {String} [redirectTo] URL para redirecionar após login bem-sucedido
+     * 
+     * @return void
+     */
     function GET_login(){
         $app = App::i();
         if(isset($this->data['redirectTo'])){
@@ -31,8 +72,20 @@ class Auth extends \MapasCulturais\Controller {
     }
 
     /**
-     * Authorize Public Key to 
+     * Gera uma procuração (autorização temporária) para um usuário
      *
+     * Esta ação permite que um usuário autorize outro usuário (procurador) a realizar
+     * ações específicas em seu nome por um período limitado.
+     * 
+     * @api {GET} /auth/getProcuration Gerar procuração
+     * @apiDescription Gera uma autorização temporária (procuração) para outro usuário
+     * @apiGroup AUTH
+     * @apiName getProcuration
+     * @apiPermission user
+     * @apiParam {String|Number} attorney Identificador do usuário procurador (ID ou chave de app)
+     * @apiParam {String} permission Permissão a ser concedida (ex: 'manageEventAttendance')
+     * @apiParam {String} [until] Data limite da procuração (formato ISO 8601)
+     * 
      * @return void
      */
     function GET_getProcuration(){

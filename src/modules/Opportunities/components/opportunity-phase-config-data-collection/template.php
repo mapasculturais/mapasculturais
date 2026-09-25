@@ -25,28 +25,46 @@ $this->import('
             <entity-field v-if="!phase.isFirstPhase" :entity="phase" prop="name" :autosave="3000" classes="col-12 sm:col-12"></entity-field>
             <entity-field :entity="phase" prop="registrationFrom" :autosave="3000"  classes="col-6 sm:col-12"></entity-field>
             <entity-field v-if="!firstPhase?.isContinuousFlow || firstPhase?.hasEndDate" :entity="phase" prop="registrationTo" :autosave="3000"  classes="col-6 sm:col-12"></entity-field>
+            <entity-field v-if="phase.isFirstPhase" :entity="phase" prop="hidePhaseDates" type="checkbox" :autosave="3000" hide-required classes="col-12 sm:col-12">
+                <template #info>
+                    <?php $this->info('editais-oportunidades -> configuracoes -> ocultar-datas-fases') ?>
+                </template>
+            </entity-field>
             <entity-field v-if="phase.isReportingPhase" :entity="phase" prop="includesWorkPlan" classes="col-12"></entity-field>
+
+            <div v-if="phase.isFirstPhase && firstPhase?.isContinuousFlow && !firstPhase?.hasEndDate" class="col-12 opportunity-data-collection__enable-end-date">
+                <mc-alert type="warning">
+                    <p>{{ text('alerta fluxo continuo sem data final') }}</p>
+                </mc-alert>
+                <mc-confirm-button :message="text('confirmar habilitar data final')" @confirm="enableEndDate()">
+                    <template #button="modal">
+                        <button type="button" class="button button--primary-outline" :disabled="enablingEndDate" @click="modal.open()">
+                            {{ text('habilitar data final das inscricoes') }}
+                        </button>
+                    </template>
+                </mc-confirm-button>
+            </div>
 
             <?php $this->applyTemplateHook('opportunity-data-collection-config','end')?>
         </div>
         <div class="opportunity-data-collection__limits col-12" v-if="phase.isFirstPhase">
                 <div class="opportunity-data-collection__fields">
-                    <entity-field :entity="phase" prop="vacancies" :min="0" :autosave="3000" class="field__limits">
+                    <entity-field :entity="phase" prop="vacancies" :min="0" :autosave="3000" :classes="'field__limits'">
                         <template #info>
                             <?php $this->info('editais-oportunidades -> configuracoes -> total-vagas') ?>
                         </template>
                     </entity-field>
-                    <entity-field :entity="phase" prop="totalResource" :min="0" :autosave="3000" class="field__limits">
+                    <entity-field :entity="phase" prop="totalResource" :min="0" :autosave="3000" :classes="'field__limits'">
                         <template #info>
                             <?php $this->info('editais-oportunidades -> configuracoes -> valor-total') ?>
                         </template>
                     </entity-field>
-                    <entity-field :entity="phase" prop="registrationLimit" :min="0" :autosave="3000" class="field__limits">
+                    <entity-field :entity="phase" prop="registrationLimit" :min="0" :autosave="3000" :classes="'field__limits'">
                         <template #info>
                             <?php $this->info('editais-oportunidades -> configuracoes -> limite-inscricoes') ?>
                         </template>
                     </entity-field>
-                    <entity-field :entity="phase" prop="registrationLimitPerOwner" :min="0" :autosave="3000" class="field__limits">
+                    <entity-field :entity="phase" prop="registrationLimitPerOwner" :min="0" :autosave="3000" :classes="'field__limits'">
                         <template #info>
                             <?php $this->info('editais-oportunidades -> configuracoes -> limite-inscritos-por-agente') ?>
                         </template>
@@ -76,7 +94,9 @@ $this->import('
         <?php $this->applyTemplateHook('opportunity-data-collection-config-form','before')?>
         <div class="col-12 grid-12 opportunity-data-collection__config-button">
             <?php $this->applyTemplateHook('opportunity-data-collection-config-form','begin')?>
-            <mc-link :entity="phase" route='formBuilder' class="config-phase__info-button button--primary button col-6" icon="external" right-icon>
+            <entity-field :entity="phase" type="checkbox" prop="noRegistrationForm" label="<?php i::esc_attr_e('Esta oportunidade não possui formulário de inscrição') ?>" :autosave="3000" classes="col-12"></entity-field>
+            <entity-field :entity="phase" type="checkbox" prop="disableRegistrationEmail" label="<?php i::esc_attr_e('Desabilitar o envio do email de confirmação de inscrição') ?>" :autosave="3000" classes="col-12"></entity-field>
+            <mc-link v-if="!phase.noRegistrationForm" :entity="phase" route='formBuilder' class="config-phase__info-button button--primary button col-6" icon="external" right-icon>
             <?= i::__("Configurar formulário") ?>
             </mc-link>
             <?php $this->applyTemplateHook('opportunity-data-collection-config-form','end')?>
@@ -102,13 +122,30 @@ $this->import('
         <div class="opportunity-data-collection__delete col-12" v-if="!phase.isLastPhase && !phase.isFirstPhase">
             <mc-confirm-button :message="confirmDeleteMessage" @confirm="deletePhase(phase, index)">
                 <template #button="modal">
-                    <button :class="['phase-delete__trash button button--text button--sm', {'disabled' : !phase.currentUserPermissions.remove}]" @click="modal.open()">
+                    <button 
+                        :class="['phase-delete__trash button button--text button--sm', {'disabled' : !canDelete}]" 
+                        @click="modal.open()"
+                        v-tooltip="deleteTooltip"
+                    >
                         <div class="icon">
                             <mc-icon name="trash" class="secondary__color"></mc-icon> 
                         </div>
                         <h5 v-if="phase.isReportingPhase"><?= i::__("Excluir fase de prestação de informações") ?></h5>
                         <h5 v-else><?= i::__("Excluir fase de coleta de dados") ?></h5>
                     </button>
+                </template>
+                <template #message="message">
+                    <div class="grid-12">
+                        <div class="col-12">
+                            <p>{{ confirmDeleteMessage }}</p>
+                        </div>
+                        <div class="col-12" v-if="hasRegistrations">
+                            <mc-alert type="warning">
+                                <strong><?= i::__('ATENÇÃO') ?>: </strong> 
+                                <?= i::__('Esta fase possui inscrições realizadas. Não é possível excluir uma fase de coleta de dados que já possui inscrições.') ?>
+                            </mc-alert>
+                        </div>
+                    </div>
                 </template>
             </mc-confirm-button>
         </div>

@@ -19,6 +19,19 @@
         margin-bottom: size(8);
     }
 
+    // Padroniza o título do Portfólio (lista de múltiplos arquivos) ao tamanho
+    // dos labels padrão dos demais campos (entity-field .field__title) dentro
+    // do card "Documentos e Certidões".
+    &.docs-portfolio-list,
+    &.docs-anexo-list {
+        .files-list__title {
+            font-weight: 400;
+            font-size: size(14);
+            line-height: size(20);
+            margin-bottom: size(4);
+        }
+    }
+
     &__list {
         list-style: none;
         padding: 0;
@@ -64,6 +77,42 @@
                     font-size: size(14);
                 }
             }
+        }
+    }
+
+    &.docs-portfolio-list,
+    &.docs-anexo-list {
+        .files-list__list--item-link {
+            font-size: size(14);
+            font-weight: 400;
+            line-height: size(20);
+            margin: size(4) 0;
+        }
+
+        .files-list__list--item-main {
+            align-items: center;
+            display: flex;
+            flex: 1;
+            gap: size(8);
+            justify-content: space-between;
+            min-width: 0;
+        }
+
+        .files-list__list--item-link {
+            flex: 1;
+            justify-items: start;
+            margin: size(4) 0;
+        }
+    }
+
+    &.docs-portfolio-list {
+        .files-list__list--item-main {
+            align-items: center;
+            display: flex;
+            flex: 1;
+            gap: size(8);
+            justify-content: space-between;
+            min-width: 0;
         }
     }
 }

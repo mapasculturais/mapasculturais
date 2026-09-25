@@ -158,6 +158,10 @@ class Module extends \MapasCulturais\Module
         $app->view->enqueueStyle('app', 'reports', 'css/reports.css');
         $app->view->enqueueScript('app', 'reports', 'js/ng.reports.js', ['entity.module.opportunity']);
         $app->view->jsObject['angularAppDependencies'][] = 'ng.reports';
+
+        $app->view->localizeScript('reports', [
+            'confirmDeleteChart' => i::__('Você tem certeza que deseja deletar esse gráfico?'),
+        ]);
     }
 
     /**

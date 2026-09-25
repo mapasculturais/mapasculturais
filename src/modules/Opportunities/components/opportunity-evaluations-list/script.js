@@ -130,6 +130,7 @@ app.component('opportunity-evaluations-list', {
             let url = api.createApiUrl('findEvaluations', args);
 
             await api.GET(url).then(response => response.json().then(objs => {
+                const userEvaluatorId = this.userEvaluatorId;
                 this.evaluations = objs.map(function(item){
                     return {
                         agentsData: item.registration?.agentsData || [],
@@ -140,7 +141,10 @@ app.component('opportunity-evaluations-list', {
                         agentname: item.registration.owner?.name,
                         status: item?.evaluation?.status,
                         resultString: item?.evaluation?.resultString || null,
-                        url: Utils.createUrl('registration', 'evaluation', [item.registration.id]),
+                        url: Utils.createUrl('registration', 'evaluation', {
+                            id: item.registration.id,
+                            user: userEvaluatorId,
+                        }),
                         valuer: item?.valuer
                     }
                 });
@@ -170,8 +174,7 @@ app.component('opportunity-evaluations-list', {
             });
             
             if (index >= 0 && index < this.evaluations.length) {
-                var url = this.evaluations[index].url.href;
-                window.location.href = url +`user:${this.userEvaluatorId}`;
+                window.location.href = this.evaluations[index].url.href;
             }
 
         },

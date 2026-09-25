@@ -179,9 +179,24 @@ class RegistrationFieldConfiguration extends \MapasCulturais\Entity {
     }
 
     public function getFieldName(){
+        if (in_array($this->fieldType, ['agent-owner-field', 'agent-collective-field'], true)) {
+            $entity_field = $this->config['entityField'] ?? '';
+            $entity_field = preg_replace('/^@terms:/', '', (string) $entity_field);
+            $entity_field = preg_replace('/^@/', '', $entity_field);
+            $entity_field = preg_replace('/[^a-zA-Z0-9_]+/', '_', $entity_field);
+            $entity_field = trim((string) $entity_field, '_');
+            $entity_field = $entity_field ?: (string) $this->id;
+
+            if ($this->fieldType === 'agent-owner-field') {
+                return 'field_owner_' . $entity_field;
+            }
+
+            return 'field_collective_' . $entity_field;
+        }
+
         return 'field_' . $this->id;
     }
-
+    
     /**
      *
      * @return \MapasCulturais\Definitions\RegistrationFieldType
@@ -198,10 +213,10 @@ class RegistrationFieldConfiguration extends \MapasCulturais\Entity {
         'title' => $this->title,
         'description' => $this->description,
         'maxSize' => $this->maxSize,
-        'required' => $this->required,
+        'required' => filter_var($this->required, FILTER_VALIDATE_BOOLEAN),
         'fieldType' => $this->fieldType,
         'fieldOptions' => $this->fieldOptions,
-        'config' => $this->config,
+        'config' => $this->config ?: [],
         'categories' => $this->categories ?: [],
         'fieldName' => $this->getFieldName(),
         'displayOrder' => $this->displayOrder,
@@ -210,7 +225,7 @@ class RegistrationFieldConfiguration extends \MapasCulturais\Entity {
         'conditionalValue' => $this->conditionalValue,
         'registrationRanges' => $this->registrationRanges ?: [],
         'proponentTypes' => $this->proponentTypes ?: [],
-        'step' => $this->step ?? null,
+        'step' => $this->step ? $this->step->simplify('id,name,displayOrder,metadata') : null,
         ];
 
         $app = App::i();

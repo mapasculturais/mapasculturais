@@ -11,7 +11,7 @@ $this->import('
 ');
 ?>
 <div class="mc-popover" ref="content">
-    <VDropdown v-if="!$media('max-width: 500px')" :triggers="[]" :shown="active" :autoHide="false" :popperClass="classes" @apply-show="focus()">
+    <VDropdown v-if="!$media('max-width: 500px')" :triggers="[]" :shown="active" :autoHide="false" :eager-mount="true" :popperClass="classes" @apply-show="focus()">
         <slot name="button" :open="open" :close="close" :toggle="toggle" :active="active">
             <button :class="['button', buttonClasses]">{{buttonLabel || '<?= i::__('Defina a propriedade button-label do componente popover') ?>'}}</button>
         </slot>

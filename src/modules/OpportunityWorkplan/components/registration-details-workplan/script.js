@@ -9,6 +9,10 @@ app.component('registration-details-workplan', {
             type: Entity,
             required: true
         },
+        evaluationFields: {
+            type: Object,
+            default: null
+        },
     },
     data() {
         this.getWorkplan();
@@ -16,7 +20,7 @@ app.component('registration-details-workplan', {
         const entityWorkplan = new Entity('workplan');
 
         return {
-            opportunity: this.registration.opportunity,
+            opportunity: this.registration.workplanOpportunity || this.registration.opportunity.parent || this.registration.opportunity,
             workplan: entityWorkplan,
         };
     },
@@ -31,6 +35,15 @@ app.component('registration-details-workplan', {
         getDeliveryLabelDefault() {
             const label = this.opportunity.deliveryLabelDefault ? this.opportunity.deliveryLabelDefault : $MAPAS.EntitiesDescription.opportunity.deliveryLabelDefault.default_value;
             return this.pluralParaSingular(label);
+        },
+        fields() {
+            return this.evaluationFields || this.opportunity.avaliableEvaluationFields || {};
+        },
+        showField() {
+            return (fieldName) => {
+                if (!this.evaluationFields) return true;
+                return this.fields[fieldName] === "true";
+            };
         },
     },
     methods: {
@@ -50,42 +63,43 @@ app.component('registration-details-workplan', {
                 currency: "BRL"
               }).format(field);
         },
+        parseJson(value) {
+            if (!value) {
+                return null;
+            }
+
+            if (Array.isArray(value) || typeof value === 'object') {
+                return value;
+            }
+
+            try {
+                return JSON.parse(value);
+            } catch (error) {
+                return null;
+            }
+        },
         pluralParaSingular(texto) {
             const palavras = texto.split(' ');
         
             const palavrasNoSingular = palavras.map(palavra => {
-                if (palavra.endsWith('s')) {
+                if (palavra.endsWith('ões')) {
+                    palavra = palavra.slice(0, -3) + 'ão';
+                } else if (palavra.endsWith('ães')) {
+                    palavra = palavra.slice(0, -3) + 'ão';
+                } else if (palavra.endsWith('ais')) {
+                    palavra = palavra.slice(0, -2) + 'al';
+                } else if (palavra.endsWith('éis')) {
+                    palavra = palavra.slice(0, -2) + 'el';
+                } else if (palavra.endsWith('óis')) {
+                    palavra = palavra.slice(0, -2) + 'ol';
+                } else if (palavra.endsWith('uis')) {
+                    palavra = palavra.slice(0, -2) + 'ul';
+                } else if (palavra.endsWith('is')) {
+                    palavra = palavra.slice(0, -2) + 'il';
+                } else if (palavra.endsWith('ns')) {
+                    palavra = palavra.slice(0, -2) + 'm';
+                } else if (palavra.endsWith('s')) {
                     palavra = palavra.slice(0, -1);
-        
-                    if (palavra.endsWith('e')) {
-                        palavra = palavra.slice(0, -1);
-                    }
-    
-                    if (palavra.endsWith('ã')) {
-                        palavra = palavra.slice(0, -1) + 'ão';
-                    } else if (palavra.endsWith('õ')) {
-                        palavra = palavra.slice(0, -1) + 'ão';
-                    } else if (palavra.endsWith('is')) {
-                        palavra = palavra.slice(0, -2) + 'il';
-                    } else if (palavra.endsWith('ns')) {
-                        palavra = palavra.slice(0, -2) + 'm';
-                    } else if (palavra.endsWith('ões')) {
-                        palavra = palavra.slice(0, -3) + 'ão';
-                    } else if (palavra.endsWith('ães')) {
-                        palavra = palavra.slice(0, -3) + 'ão';
-                    } else if (palavra.endsWith('ais')) {
-                        palavra = palavra.slice(0, -2) + 'al';
-                    } else if (palavra.endsWith('éis')) {
-                        palavra = palavra.slice(0, -2) + 'el';
-                    } else if (palavra.endsWith('óis')) {
-                        palavra = palavra.slice(0, -2) + 'ol';
-                    } else if (palavra.endsWith('uis')) {
-                        palavra = palavra.slice(0, -2) + 'ul';
-                    } else if (palavra.endsWith('ões')) {
-                        palavra = palavra.slice(0, -3) + 'ão';
-                    } else if (palavra.endsWith('ães')) {
-                        palavra = palavra.slice(0, -3) + 'ão';
-                    }
                 }
         
                 return palavra.toLowerCase();

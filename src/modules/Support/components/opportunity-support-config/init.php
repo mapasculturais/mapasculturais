@@ -1,4 +1,8 @@
 <?php
+
+use MapasCulturais\App;
+
+$app = App::i();
 $entity = $this->controller->requestedEntity;
 
 $result = [];
@@ -31,5 +35,7 @@ foreach ($fields_list as $field) {
 usort($result, function ($a, $b) {
     return $a['order'] <=> $b['order'];
 });
+
+$app->applyHook('component(opportunity-support-config).fields', [&$result, $entity]);
 
 $this->jsObject['config']['opportunitySupportConfig'] = $result;

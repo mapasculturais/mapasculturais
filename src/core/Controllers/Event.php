@@ -219,6 +219,11 @@ class Event extends EntityController {
         }else{
             $space_query_data['id'] = "IN({$space_ids})";
         }
+        
+        // Ensure type filter doesn't exclude virtual space (id=0)
+        if(isset($space_query_data['type'])){
+            unset($space_query_data['type']);
+        }
 
         if(isset($space_query_data['@select'])){
             $props = explode(',', $space_query_data['@select']);
@@ -278,6 +283,26 @@ class Event extends EntityController {
                 $events_by_id[$event['id']] = $event;
             }
 
+            // Fetch occurrence types and metadata
+            $occurrence_ids = [];
+            foreach($_result as $occ){
+                $occurrence_ids[] = $occ['occurrence_id'];
+            }
+            
+            $occurrence_data = [];
+            if($occurrence_ids){
+                $occurrence_ids_str = implode(',', array_unique($occurrence_ids));
+                $occurrences_result = $app->em->getConnection()->fetchAllAssociative(
+                    "SELECT id, type, metadata FROM event_occurrence WHERE id IN ($occurrence_ids_str)"
+                );
+                foreach($occurrences_result as $occ_row){
+                    $occurrence_data[$occ_row['id']] = [
+                        'type' => $occ_row['type'],
+                        'metadata' => $occ_row['metadata'] ? json_decode($occ_row['metadata'], true) : null
+                    ];
+                }
+            }
+
             $result = [];
 
             foreach($_result as $i => $occ){
@@ -299,6 +324,13 @@ class Event extends EntityController {
                     $occ['rule'] = json_decode($occ['rule']);
 
                     $occ['space'] = $space;
+                    
+                    // Add occurrence type and metadata
+                    $occ_id = $occ['occurrence_id'];
+                    if(isset($occurrence_data[$occ_id])){
+                        $occ['type'] = $occurrence_data[$occ_id]['type'];
+                        $occ['metadata'] = $occurrence_data[$occ_id]['metadata'];
+                    }
 
                     $item = array_merge($event, $occ);
 
@@ -523,6 +555,26 @@ class Event extends EntityController {
                 $events_by_id[$event['id']] = $event;
             }
 
+            // Fetch occurrence types and metadata
+            $occurrence_ids = [];
+            foreach($_result as $occ){
+                $occurrence_ids[] = $occ['occurrence_id'];
+            }
+            
+            $occurrence_data = [];
+            if($occurrence_ids){
+                $occurrence_ids_str = implode(',', array_unique($occurrence_ids));
+                $occurrences_result = $app->em->getConnection()->fetchAllAssociative(
+                    "SELECT id, type, metadata FROM event_occurrence WHERE id IN ($occurrence_ids_str)"
+                );
+                foreach($occurrences_result as $occ_row){
+                    $occurrence_data[$occ_row['id']] = [
+                        'type' => $occ_row['type'],
+                        'metadata' => $occ_row['metadata'] ? json_decode($occ_row['metadata'], true) : null
+                    ];
+                }
+            }
+
             $result = [];
 
             foreach($_result as $i => $occ){
@@ -548,7 +600,7 @@ class Event extends EntityController {
                     $starts = new \DateTime("{$occ->starts_on} {$occ->starts_at}");
                     $ends = new \DateTime(date('Y-m-d H:i:s', strtotime("+{$occ->rule->duration} minutes", strtotime("{$occ->starts_on} {$occ->starts_at}"))));
 
-                    $result[] = [
+                    $occ_item = [
                         'occurrence_id' => $occ->occurrence_id,
                         'starts' => $starts,
                         'ends' => $ends,
@@ -559,6 +611,15 @@ class Event extends EntityController {
                         'event' => $event,
                         '_reccurrence_string' => "{$occ->occurrence_id}.{$occ->starts_on}.{$occ->starts_at}.{$occ->ends_on}.{$occ->ends_at}"
                     ];
+                    
+                    // Add occurrence type and metadata
+                    $occ_id = $occ->occurrence_id;
+                    if(isset($occurrence_data[$occ_id])){
+                        $occ_item['type'] = $occurrence_data[$occ_id]['type'];
+                        $occ_item['metadata'] = $occurrence_data[$occ_id]['metadata'];
+                    }
+                    
+                    $result[] = $occ_item;
 
                 }
             }

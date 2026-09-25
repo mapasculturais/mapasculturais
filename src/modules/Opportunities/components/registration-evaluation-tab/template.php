@@ -63,17 +63,19 @@ $this->import('
                 <p class="registration-evaluation-tab__text"><?= i::__('Os agentes selecionados serão incluídos como avaliadores desta inscrição')?></p>
             </div>
     
-            <div class="registration-evaluation-tab__list field">
-                <div v-for="valuer in allValuers" :key="valuer.id" class="registration-evaluation-tab__list-item field">
+            <div v-for="(valuers, groupName) in valuersByGroup" :key="'include-' + groupName" class="registration-evaluation-tab__list field">
+                <h4 :class="['semibold', 'registration-evaluation-tab__committee-title', { tiebreaker: groupName === '@tiebreaker' }]">
+                    {{ getGroupName(groupName) }}
+                </h4>
+                <div v-for="valuer in valuers" :key="'include-' + valuer.userId + '-' + groupName" class="registration-evaluation-tab__list-item field">
                     <label>
                         <input 
                             type="checkbox" 
-                            :checked="isIncluded(valuer.userId)"
-                            @change="toggleValuer(valuer, $event.target.checked, 'include')"
+                            :checked="isIncluded(valuer, groupName)"
+                            @change="toggleValuer(valuer, $event.target.checked, 'include', groupName)"
                         >
                         <span class="valuer-info">
                             <span>{{ valuer.name }}</span>
-                            <span class="valuer-committees" v-if="getValuerCommittees(valuer)"> ({{ getValuerCommittees(valuer) }})</span>
                         </span>
                     </label>
                 </div>
@@ -85,18 +87,18 @@ $this->import('
                 <h3><?= i::__('Lista de exclusão')?></h3>
                 <p class="registration-evaluation-tab__text"><?= i::__('Os avaliadores selecionados NÃO serão incluídos como avaliadores desta inscrição')?></p>
             </div>
-    
+
+            <!-- exclusão é por avaliador (não por comissão): selecionar remove de todas as comissões -->
             <div class="registration-evaluation-tab__list field">
-                <div v-for="valuer in allValuers" :key="valuer.id" class="registration-evaluation-tab__list-item field">
+                <div v-for="valuer in allValuers" :key="'exclude-' + valuer.userId" class="registration-evaluation-tab__list-item field">
                     <label>
-                        <input 
-                            type="checkbox" 
-                            :checked="isExcluded(valuer.userId)"
+                        <input
+                            type="checkbox"
+                            :checked="isExcluded(valuer)"
                             @change="toggleValuer(valuer, $event.target.checked, 'exclude')"
                         >
                         <span class="valuer-info">
                             <span>{{ valuer.name }}</span>
-                            <span class="valuer-committees" v-if="getValuerCommittees(valuer)"> ({{ getValuerCommittees(valuer) }})</span>
                         </span>
                     </label>
                 </div>

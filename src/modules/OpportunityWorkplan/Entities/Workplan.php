@@ -34,10 +34,10 @@ class Workplan extends \MapasCulturais\Entity {
     #[ORM\JoinColumn(name: "registration_id", referencedColumnName: "id", nullable: false, onDelete: "CASCADE")]
     protected $registration;
 
-    #[ORM\OneToMany(targetEntity: \OpportunityWorkplan\Entities\Goal::class, mappedBy: "workplan", cascade: ["persist", "remove"], orphanRemoval: true)]
+    #[ORM\OneToMany(targetEntity: \OpportunityWorkplan\Entities\Goal::class, mappedBy: "workplan", cascade: ["persist", "remove"])]
     protected $goals;
 
-    #[ORM\OneToMany(targetEntity: \OpportunityWorkplan\Entities\WorkplanMeta::class, mappedBy: "owner", cascade: ["remove", "persist"], orphanRemoval: true)]
+    #[ORM\OneToMany(targetEntity: \OpportunityWorkplan\Entities\WorkplanMeta::class, mappedBy: "owner", cascade: ["remove", "persist"])]
     protected $__metadata;
 
     /**

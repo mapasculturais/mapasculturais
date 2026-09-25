@@ -27,7 +27,6 @@ $this->import('
     entity-seals
     entity-social-media
     entity-terms
-    evaluations-list
     mc-breadcrumb
     mc-container
     mc-share-links
@@ -42,11 +41,9 @@ $this->import('
     v1-embed-tool
 ');
 
-$label = $this->isRequestedEntityMine() ? i::__('Minhas oportunidades') : i::__('Oportunidades');
-
 $this->breadcrumb = [
   ['label' => i::__('Inicio'), 'url' => $app->createUrl('panel', 'index')],
-  ['label' => $label, 'url' => $app->createUrl('panel', 'opportunity')],
+  ['label' => i::__('Oportunidades'), 'url' => $app->createUrl('search', 'opportunities')],
   ['label' => $entity->name, 'url' => $app->createUrl('opportunity', 'single', [$entity->id])],
 ];
 ?>

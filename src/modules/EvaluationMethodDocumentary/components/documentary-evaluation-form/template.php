@@ -35,17 +35,17 @@ $this->import('
         </div>
         <input type="hidden" v-model="formData.data[fieldId].label" @change="setEvaluationData(fieldId)" />
 
-        <div v-if="lockedFields()" class="field documentary-evaluation-form__verification">
+        <div v-if="hasSealInfo(fieldId)" class="field documentary-evaluation-form__verification documentary-evaluation-form__seal-alert" :class="sealAlertClass(getSealInfo(fieldId))">
             <div class="documentary-evaluation-form__verification__seals-image">
-                <div v-for="seal in getSealInfo(fieldId)" :key="seal.name">
+                <div v-for="seal in getSealInfo(fieldId)" :key="`${seal.sealRelationId || seal.sealId}-${seal.fieldName || fieldId}`">
                     <mc-avatar :entity="seal" size="small" square></mc-avatar>
                 </div>
             </div>
 
-            <h4 class="bold"><?= i::__('Documento verificado') ?></h4>
-            <p><?= i::__('Este documento foi verificado automaticamente via ') ?>
-                <span v-html="formatSealsInfo(getSealInfo(fieldId))"></span>
-            </p>
+            <div class="documentary-evaluation-form__seal-alert-content">
+                <h4 class="bold">{{ sealAlertTitle(getSealInfo(fieldId)) }}</h4>
+                <p v-html="sealAlertMessage(getSealInfo(fieldId))"></p>
+            </div>
         </div>
 
         <div class="documentary-evaluation-form__fields field">

@@ -12,12 +12,12 @@ $this->import('
     mc-summary-project
     mc-summary-spaces
     registration-info
-    v1-embed-tool
+    registration-print-form-sections
     opportunity-phases-timeline
     mc-card
 ');
 
-$entity = $entity->firstPhase;
+$this->addRegistrationPhasesToJs();
 
 $this->enqueueScript('app-v2', 'registration-print', 'js/registration-print.js');
 ?>
@@ -38,20 +38,7 @@ $this->enqueueScript('app-v2', 'registration-print', 'js/registration-print.js')
         <?php $this->applyTemplateHook('section', 'begin') ?>
         <div class="section__content">
             <div class="card owner">
-
-                <?php while($entity): $opportunity = $entity->opportunity;?>
-                    <?php if($opportunity->isDataCollection):?>
-                        <?php if($opportunity->isFirstPhase):?>
-                            <h2><?= i::__('Inscrição') ?></h2>
-                        <?php else: ?>
-                            <h2><?= $opportunity->name ?></h2>
-                        <?php endif; ?>
-
-                        <v1-embed-tool route="registrationview" :id="<?=$entity->id?>"></v1-embed-tool>
-                    <?php endif ?>
-                    <?php $entity = $entity->nextPhase; ?>
-                <?php endwhile ?>
-                
+                <registration-print-form-sections :registration="entity"></registration-print-form-sections>
             </div>
         </div>
         <?php $this->applyTemplateHook('section', 'end') ?>

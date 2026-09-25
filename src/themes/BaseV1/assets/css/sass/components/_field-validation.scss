@@ -1,0 +1,316 @@
+// ============================================
+// Field Validation System - Issue #3641
+// ============================================
+
+// Header Alert
+.field-validation__header {
+    position: relative;
+    margin-bottom: $line-height-base;
+    padding: $padding-base $padding-large;
+    padding-left: 2.5rem;
+    background: $alert-danger-bg;
+    border: 1px solid $alert-danger-border;
+    border-left-width: 4px;
+    border-left-color: $brand-danger;
+    border-radius: $border-radius-base;
+    color: $alert-danger-text;
+    font-size: $font-size-small;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: $padding-small;
+    
+    &:before {
+        position: absolute;
+        left: $padding-base;
+        top: 50%;
+        transform: translateY(-50%);
+        content: $unicode-danger;
+        font-family: $icon-font-family;
+        font-size: $font-size-base;
+        color: $brand-danger;
+    }
+}
+
+.field-validation__header-count {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 1.5rem;
+    height: 1.5rem;
+    padding: 0 0.375rem;
+    margin-left: $padding-small;
+    background: $brand-danger;
+    color: #fff;
+    border-radius: 0.75rem;
+    font-size: $font-size-smaller;
+    font-weight: bold;
+}
+
+// Field Item States
+.attachment-list-item {
+    &--has-error {
+        background-color: $field-error-bg !important;
+        border-left: 3px solid $brand-danger;
+        padding-left: calc($padding-base - 3px + 7px);
+        
+        .label {
+            color: $field-error-text;
+            font-weight: bold;
+        }
+        
+        &:hover {
+            background-color: darken($field-error-bg, 3%) !important;
+            
+            // Nao alterar fundo dos botoes no hover do item
+            .btn-group .btn {
+                background-color: $btn-default-bg !important;
+            }
+        }
+        
+        // Garantir visibilidade dos botoes de acao
+        .btn-group {
+            .btn {
+                // Manter cores originais dos botoes
+                color: $btn-default-color !important;
+                background-color: $btn-default-bg !important;
+                border-color: $btn-default-border !important;
+                
+                &:hover {
+                    color: darken($btn-default-color, 20%) !important;
+                    background-color: lighten($btn-default-bg, 5%) !important;
+                    border-color: darken($btn-default-border, 10%) !important;
+                }
+                
+                // Garantir que icones FontAwesome sejam visiveis
+                .fa,
+                .fas,
+                .far {
+                    color: inherit !important;
+                }
+            }
+        }
+    }
+    
+    &--is-blocked {
+        opacity: 0.85;
+        background-color: $gray-lighter !important;
+        border-left: 3px dashed $gray;
+        padding-left: calc($padding-base - 3px);
+        
+        .label {
+            color: $gray-dark;
+        }
+    }
+}
+
+// Badge
+.field-validation__badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 1.25rem;
+    height: 1.25rem;
+    border-radius: 50%;
+    background: $brand-danger;
+    color: #fff;
+    font-size: 0.625rem;
+    font-weight: bold;
+    margin-right: 0.5rem;
+    vertical-align: middle;
+    flex-shrink: 0;
+    
+    .fas {
+        font-size: 0.75rem;
+    }
+}
+
+// Error message in modal
+.field-validation__message {
+    display: flex;
+    align-items: flex-start;
+    gap: $padding-small;
+    margin-bottom: $line-height-base;
+    padding: $padding-base;
+    background: $field-error-message-bg;
+    border: 1px solid $field-error-message-border;
+    border-radius: $border-radius-base;
+    border-left-width: 3px;
+    border-left-color: $brand-danger;
+    
+    &-icon {
+        flex-shrink: 0;
+        color: $brand-danger;
+        font-size: $font-size-base;
+        line-height: 1.3;
+    }
+    
+    &-content {
+        flex: 1;
+    }
+    
+    &-title {
+        font-size: $font-size-small;
+        font-weight: bold;
+        color: $field-error-text;
+        margin: 0 0 0.25rem;
+    }
+    
+    &-text {
+        font-size: $font-size-smaller;
+        color: $gray-dark;
+        margin: 0;
+        line-height: 1.4;
+    }
+}
+
+// Input error state
+.field-validation__input--error {
+    border-color: $brand-danger !important;
+    background-color: #fff8f8 !important;
+    
+    &:focus {
+        border-color: darken($brand-danger, 10%) !important;
+        box-shadow: 0 0 0 3px rgba(204, 51, 51, 0.15) !important;
+        outline: none !important;
+    }
+}
+
+// Mobile adaptations
+@media screen and (max-width: $screen-tablet) {
+    .field-validation__header {
+        margin: 0.5rem;
+        padding: 0.75rem 1rem;
+        padding-left: 2rem;
+        font-size: $font-size-smaller;
+        
+        &:before {
+            left: 0.5rem;
+        }
+    }
+    
+    .attachment-list-item--has-error {
+        border-left-width: 4px;
+        padding-left: calc($padding-base - 4px + 8px);
+    }
+    
+    .field-validation__badge {
+        width: 1.5rem;
+        height: 1.5rem;
+        
+        .fas {
+            font-size: 0.875rem;
+        }
+    }
+}
+
+// Reduced motion
+@media (prefers-reduced-motion: reduce) {
+    .field-validation__header,
+    .field-validation__message {
+        animation: none;
+        transition: none;
+    }
+}
+
+// Alert in header
+.field-validation-alert {
+    margin: 0.5rem 0;
+    padding: 0.75rem 1rem;
+    padding-left: 2.5rem;
+    background: #fff3cd;
+    border: 1px solid #ffc107;
+    border-left-width: 4px;
+    border-radius: 4px;
+    color: #856404;
+    font-size: 0.875rem;
+    position: relative;
+
+    &:before {
+        position: absolute;
+        left: 0.75rem;
+        top: 50%;
+        transform: translateY(-50%);
+        content: "\f071";
+        font-family: "FontAwesome";
+        font-size: 1rem;
+        color: #ffc107;
+    }
+
+    strong {
+        margin-right: 0.25rem;
+    }
+}
+
+// Badge in invalid field list item
+.field-validation-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 1.25rem;
+    height: 1.25rem;
+    margin-left: 0.5rem;
+    color: #cc3333;
+    font-size: 1rem;
+    vertical-align: middle;
+    cursor: help;
+
+    .fa-exclamation-circle {
+        font-size: 1rem;
+    }
+}
+
+// Message inside edit modal
+.field-validation-message {
+    margin-bottom: 1rem;
+    padding: 0.75rem 1rem;
+    background: #fff3cd;
+    border: 1px solid #ffc107;
+    border-radius: 4px;
+    color: #856404;
+    font-size: 0.875rem;
+
+    strong {
+        display: block;
+        margin-bottom: 0.5rem;
+        color: #856404;
+    }
+
+    ul {
+        margin: 0;
+        padding-left: 1.25rem;
+
+        li {
+            margin-bottom: 0.25rem;
+
+            &:last-child {
+                margin-bottom: 0;
+            }
+        }
+    }
+}
+
+// Blocked field message (replaces inline style="color: red")
+.field-blocked-message {
+    color: #cc3333;
+    font-size: 0.875rem;
+    margin-top: 0.5rem;
+
+    strong em small {
+        font-style: italic;
+    }
+}
+
+// Screen reader only text
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}

@@ -11,8 +11,8 @@ $this->import('
 ');
 ?>
 <div class="registration-field-persons" :data-field="prop">
-    <div class="registration-field-persons__list field">
-        <label> {{ title }} </label>
+    <div class="registration-field-persons__list field" :class="[{'error': registration.__validationErrors[prop]?.length}]">
+        <label> {{ title }} <span v-if="required" class="required">*<?= i::__('obrigatório') ?></span></label>
         <small class="field__description"> {{ description }} </small>
 
         <div v-for="(person, index) in registration[prop]" class="registration-field-persons__person">
@@ -50,6 +50,22 @@ $this->import('
                         <span v-if="isFieldRequired?.cpf" class="required">*<?= i::__('obrigatório') ?></span>
                     </label>
                     <input type="text" v-maska data-maska="###.###.###-##" v-model="person.cpf" @change="save()" :disabled="disabled" />
+                </div>
+
+                <div v-if="rules.cnpj" class="field col-12" :class="[{'error': fieldError(person, 'cnpj')}]">
+                    <label>
+                        <?= i::__('CNPJ:') ?>
+                        <span v-if="isFieldRequired?.cnpj" class="required">*<?= i::__('obrigatório') ?></span>
+                    </label>
+                    <input type="text" v-maska data-maska="##.###.###/####-##" v-model="person.cnpj" @change="save()" :disabled="disabled" />
+                </div>
+
+                <div v-if="rules.miniCurriculum" class="field col-12" :class="[{'error': fieldError(person, 'miniCurriculum')}]">
+                    <label>
+                        <?= i::__('Mini currículo') ?>
+                        <span v-if="isFieldRequired?.miniCurriculum" class="required">*<?= i::__('obrigatório') ?></span>
+                    </label>
+                    <textarea v-model="person.miniCurriculum" @change="save()" :disabled="disabled"></textarea>
                 </div>
 
                 <div v-if="rules.income" class="field col-12" :class="[{'error': fieldError(person, 'income')}]">
@@ -115,7 +131,7 @@ $this->import('
                     </label>
                     <div class="field__group">
                         <label v-for="deficiency in deficiencies" class="input__label input__checkboxLabel input__multiselect">
-                            <input type="checkbox" :checked="person.deficiencies[deficiency]" v-model="person.deficiencies[deficiency]" @checked="save()" @change="save()" :disabled="disabled"/> <!-- :checked="" -->
+                            <input type="checkbox" v-model="person.deficiencies[deficiency]" @change="save()" :disabled="disabled"/>
                             <slot>{{deficiency}}</slot>
                         </label>
                     </div>

@@ -57,8 +57,14 @@ class EvaluationMethod extends \MapasCulturais\EvaluationMethod {
 
         $app->view->enqueueScript('app', 'accountability-evaluation', 'js/ng.evaluationMethod.accountability.js', ['entity.module.opportunity']);
         $app->view->enqueueStyle('app', 'accountability-evaluation-method', 'css/accountability-evaluation-method.css');
-        
+
         $app->view->jsObject['angularAppDependencies'][] = 'ng.evaluationMethod.accountability';
+
+        $app->view->localizeScript('accountability', [
+            'confirmFinishTechnicalOpinion' => i::__("Você tem certeza que deseja finalizer o parecer técnico?\n\nApós a finalização não será mais possível modificar o parecer."),
+            'confirmReopenAccountability' => i::__("Você tem certeza que deseja reabrir a prestação de contas?\n\nA abertura dos campos para edição deverá ser feita manualmente."),
+            'confirmPublishResult' => i::__('ATENÇÃO, essa ação é irreversível! Você tem certeza que deseja publicar o resultado dessa inscrição?'),
+        ]);
     }
 
     public function _init() {

@@ -72,7 +72,7 @@ class Subsite extends \MapasCulturais\Entity
     /**
      * @var \MapasCulturais\Entities\Role[] Role
      */
-    #[ORM\OneToMany(targetEntity: "MapasCulturais\Entities\Role", mappedBy: "subsite", cascade: ["remove"], orphanRemoval: true)]
+    #[ORM\OneToMany(targetEntity: "MapasCulturais\Entities\Role", mappedBy: "subsite", cascade: ["remove"])]
     #[ORM\JoinColumn(name: "id", referencedColumnName: "subsite_id", onDelete: "CASCADE")]
     protected $_roles;
 
@@ -332,7 +332,9 @@ class Subsite extends \MapasCulturais\Entity
         $assets_folder = "assets/{$domain}/";
 
         $app->config['base.assetUrl'] = $app->baseUrl . $assets_folder;
-        $app->assetManager->config['publishPath'] = BASE_PATH . $assets_folder;
+        $config = $app->assetManager->config;
+        $config['publishPath'] = BASE_PATH . $assets_folder;
+        $app->assetManager->config = $config;
 
         // @TODO: passar esta parte abaixo para o tema
         $entidades = $this->entidades_habilitadas ?: ['Agents', 'Projects', 'Spaces', 'Events', 'Opportunities'];

@@ -494,6 +494,14 @@ $alert-danger-bg:             #fcc !default;
 $alert-danger-text:           $brand-danger !default;
 $alert-danger-border:         darken(#fcc, 10%) !default;
 
+//== Field Validation
+//## Issue #3641 - Field validation error states
+
+$field-error-bg:              #fff5f5 !default;
+$field-error-message-bg:      #fff0f0 !default;
+$field-error-message-border:  darken(#fff0f0, 10%) !default;
+$field-error-text:            #a32929 !default;
+
 
 //== Registration Form
 //

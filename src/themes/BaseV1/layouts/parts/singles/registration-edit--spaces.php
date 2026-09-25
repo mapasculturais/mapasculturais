@@ -7,7 +7,7 @@
     <div class="registration-fieldset">
         <h4 id="registration-space-title"><?php \MapasCulturais\i::_e("Espaço Vinculado"); ?>
         <span class="registration-label"></span></h4> 
-            <div class="registration-help">Selecione um espaço a ser vinculado à inscrição</div>
+            <div class="registration-help"><?php \MapasCulturais\i::_e("Selecione um espaço a ser vinculado à inscrição");?></div>
                 <div id="registration-space" class="registration-list-item registration-edit-mode ng-scope">
                     <p ng-if="data.entity.registrationSpace.status < 0" class="alert warning" 
                         style="display:block !important /* está oculto no scss */" ><?php \MapasCulturais\i::_e("Aguardando confirmação");?>

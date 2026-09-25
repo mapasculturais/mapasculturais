@@ -34,8 +34,19 @@ app.component('mc-tag-list', {
     computed: {
         validTags() {
             const tagsArray = Array.isArray(this.tags) ? this.tags : [];
-            
-            return tagsArray.filter(tag => tag && tag.trim() !== '');
+
+            return tagsArray.filter((tag) => {
+                if (tag === null || tag === undefined) {
+                    return false;
+                }
+
+                if (typeof tag === 'string') {
+                    return tag.trim() !== '';
+                }
+
+                // IDs numéricos (ex.: selos em seal-validator-config) são válidos.
+                return true;
+            });
         }
     },
 

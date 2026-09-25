@@ -98,6 +98,7 @@ RUN sass themes/BaseV1/assets/css/sass/main.scss:themes/BaseV1/assets/css/main.c
 
 COPY docker/recreate-pending-pcache-cron.sh /recreate-pending-pcache-cron.sh
 COPY docker/jobs-cron.sh /jobs-cron.sh
+COPY docker/cleanup-orphan-assets-cron.sh /cleanup-orphan-assets-cron.sh
 COPY docker/entrypoint.sh /entrypoint.sh
 
 COPY version.txt /var/www/version.txt

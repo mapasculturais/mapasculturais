@@ -20,6 +20,22 @@ app.component('panel--pending-evaluations', {
            opportunity.populate(raw);
            entities.push(opportunity);
         }
+
+        entities.sort((a, b) => {
+            const dateA = a.evaluationMethodConfiguration?.evaluationFrom?._date
+                || a.evaluationMethodConfiguration?.evaluationFrom?.date?.('sql')
+                || '';
+            const dateB = b.evaluationMethodConfiguration?.evaluationFrom?._date
+                || b.evaluationMethodConfiguration?.evaluationFrom?.date?.('sql')
+                || '';
+            if (dateA < dateB) {
+                return 1;
+            }
+            if (dateA > dateB) {
+                return -1;
+            }
+            return (b.id || 0) - (a.id || 0);
+        });
         
         return { text, entities }
     },

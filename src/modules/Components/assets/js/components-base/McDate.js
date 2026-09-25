@@ -13,6 +13,9 @@ class McDate {
     }
 
     format(config) {
+        if (isNaN(this._date?.getTime?.())) {
+            return '';
+        }
         return Intl.DateTimeFormat(this.locale, config).format(this._date);
     }
 

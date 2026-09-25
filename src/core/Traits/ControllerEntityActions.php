@@ -35,10 +35,16 @@ trait ControllerEntityActions {
                     } else {
                         $value = (bool) $value;
                     }
-                } else if(in_array($type, ['int', 'integer', 'smallint'])) {
-                    $value = (int) $value;
-                } else if(in_array($type, ['numeric', 'float', 'number'])) {
-                    $value = (float) $value;
+                } else if(in_array($type, ['int', 'integer', 'smallint', 'numeric', 'float', 'number'])) {
+                    // Vazio não é número: ""/null não podem virar 0 (quebra obrigatório e inventa valor).
+                    // Zero explícito ("0"/0) continua sendo 0.
+                    if ($value === null || (is_string($value) && trim($value) === '')) {
+                        $value = null;
+                    } else if(in_array($type, ['int', 'integer', 'smallint'])) {
+                        $value = (int) $value;
+                    } else {
+                        $value = (float) $value;
+                    }
                 }
             }
             
@@ -164,6 +170,14 @@ trait ControllerEntityActions {
 
         $app = App::i();
 
+        $force_save = false;
+
+        foreach($app->request->headers as $key => $value) {
+            if(strtolower($key) == 'mapas-force-save') {
+                $force_save = true;
+            }
+        }
+
         $app->applyHookBoundTo($this, "PUT({$this->id}.single):data", ['data' => &$data]);
 
         $entity = $this->requestedEntity;
@@ -181,6 +195,10 @@ trait ControllerEntityActions {
         $this->setEntityProperties($entity, $data);
 
         if($errors = $entity->validationErrors){
+            if($force_save){
+                $entity->save(true);
+            }
+            
             $this->errorJson($errors);
         }else{
             $this->_finishRequest($entity, true, $function);

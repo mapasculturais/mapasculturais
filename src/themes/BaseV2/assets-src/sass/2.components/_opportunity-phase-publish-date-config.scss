@@ -6,10 +6,31 @@
         width: 100%;
     }
 
+    &__content {
+        @media (max-width:size(600)) {
+            > .col-4,
+            > .col-6 {
+                grid-column: span 12;
+                width: 100%;
+            }
+        }
+    }
+
     &__left {
         display: flex;
         flex-direction: column-reverse;
         gap: size(16);
+
+        @media (max-width:size(600)) {
+            grid-column: span 12;
+            width: 100%;
+
+            > .col-4,
+            > .col-6 {
+                grid-column: span 12;
+                width: 100%;
+            }
+        }
 
         .field {
             &__title {
@@ -18,11 +39,33 @@
         }
     }
 
+    &__date {
+        @media (max-width:size(600)) {
+            grid-column: span 12;
+            width: 100%;
+        }
+    }
+
+    &__subtitle {
+        @media (max-width:size(600)) {
+            grid-column: span 12;
+            width: 100%;
+        }
+    }
+
     &__checkbox {
         flex-direction: row;
         display: flex;
         align-items: flex-end;
         padding-bottom: 13px;
+
+        @media (max-width:size(600)) {
+            grid-column: span 12;
+            width: 100%;
+            align-items: flex-start;
+            padding-bottom: 0;
+        }
+
         label {
             display: flex;
             flex-direction: row;

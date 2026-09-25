@@ -61,6 +61,10 @@ app.component('entity-file', {
             type: Boolean,
             default: false,
         },
+        showEmpty: {
+            type: Boolean,
+            default: false,
+        },
         defaultFile: {
             type: Object,
             required: false

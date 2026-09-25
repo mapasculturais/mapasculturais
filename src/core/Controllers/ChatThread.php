@@ -6,11 +6,23 @@ use MapasCulturais\Controller;
 use MapasCulturais\Entities;
 
 /**
- * @property-read Entities\ChatThread $requestedEntity
+ * Controlador de Threads de Chat
+ *
+ * Este controlador gerencia as operações relacionadas a threads de chat (ChatThread)
+ * no sistema Mapas Culturais. Threads de chat são conversas entre usuários
+ * que podem ser abertas ou fechadas conforme necessário.
+ *
+ * @property-read Entities\ChatThread $requestedEntity Thread de chat solicitada
+ * 
+ * @package MapasCulturais\Controllers
  */
 class ChatThread extends Controller {
     /**
-     * @return Entities\ChatThread
+     * Retorna a thread de chat solicitada
+     *
+     * Busca a thread de chat pelo ID fornecido nos dados da requisição.
+     *
+     * @return Entities\ChatThread|null Thread de chat encontrada ou null se não existir
      */
     function getRequestedEntity() : ?Entities\ChatThread
     {
@@ -21,6 +33,21 @@ class ChatThread extends Controller {
         return $app->repo('ChatThread')->find($chat_id);
     }
 
+    /**
+     * Fecha uma thread de chat
+     *
+     * Esta ação requer autenticação e permissão de controle sobre a thread.
+     * Altera o status da thread para DESABILITADA, impedindo novas mensagens.
+     *
+     * @api {POST} /chatthread/close Fechar thread de chat
+     * @apiDescription Fecha uma thread de chat, impedindo novas mensagens
+     * @apiGroup CHATTHREAD
+     * @apiName close
+     * @apiPermission @control
+     * @apiParam {Number} id ID da thread de chat
+     *
+     * @return void
+     */
     function POST_close ()
     {
         $this->requireAuthentication();
@@ -36,6 +63,21 @@ class ChatThread extends Controller {
         $this->json($chat);
     }
 
+    /**
+     * Abre uma thread de chat
+     *
+     * Esta ação requer autenticação e permissão de controle sobre a thread.
+     * Altera o status da thread para HABILITADA, permitindo novas mensagens.
+     *
+     * @api {POST} /chatthread/open Abrir thread de chat
+     * @apiDescription Abre uma thread de chat, permitindo novas mensagens
+     * @apiGroup CHATTHREAD
+     * @apiName open
+     * @apiPermission @control
+     * @apiParam {Number} id ID da thread de chat
+     *
+     * @return void
+     */
     function POST_open ()
     {
         $this->requireAuthentication();

@@ -28,11 +28,11 @@ class Procuration extends \MapasCulturais\Entity{
     #[ORM\Column(name: "action", type: "string", length: 255, nullable: false)]
     protected $action;
 
-    #[ORM\ManyToOne(targetEntity: "MapasCulturais\Entities\User", cascade: ["persist"])]
+    #[ORM\ManyToOne(targetEntity: "MapasCulturais\Entities\User", inversedBy: "_userProcurations")]
     #[ORM\JoinColumn(name: "usr_id", referencedColumnName: "id", nullable: false, onDelete: "CASCADE")]
     protected $user;
 
-    #[ORM\ManyToOne(targetEntity: "MapasCulturais\Entities\User", cascade: ["persist"])]
+    #[ORM\ManyToOne(targetEntity: "MapasCulturais\Entities\User", inversedBy: "_attorneyProcurations")]
     #[ORM\JoinColumn(name: "attorney_user_id", referencedColumnName: "id", nullable: false, onDelete: "CASCADE")]
     protected $attorney;
 

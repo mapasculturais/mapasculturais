@@ -1,4 +1,5 @@
 @use '../0.settings/mixins' as *;
+@use '../0.settings/variables' as v;
 
 .entity-data {
     display: flex;
@@ -8,6 +9,12 @@
     &__label {
         font-size: var(--mc-font-size-xxs);
         font-weight: 600;
+    }
+
+    &__label &__required {
+        color: v.$error;
+        font-weight: 700;
+        margin-right: size(2);
     }
 
     &__data {

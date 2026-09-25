@@ -10,14 +10,22 @@ use MapasCulturais\ApiQuery;
 trait ControllerAPI{
 
     /**
-     * Array with key => value of params for the API find DQL
+     * Array com chave => valor de parâmetros para a consulta DQL da API
      *
      * @var array
      */
     private $_apiFindParamList = [];
 
+    /**
+     * Metadados da última consulta API executada
+     * @var object|null
+     */
     public $_lastQueryMetadata;
 
+    /**
+     * IDs de entidades do subsite atual
+     * @var array|null
+     */
     protected $_subsiteEntityIds;
 
     public static function usesAPI(){
@@ -25,15 +33,17 @@ trait ControllerAPI{
     }
 
     /**
-     * Execute a API Query
+     * Executa uma consulta API
      *
-     * @param array $api_params
-     * @param array $options
-     * @return array
+     * @param array $api_params Parâmetros da API
+     * @param array $options Opções da consulta
+     * @return array Resultado da consulta
      */
-    public function apiQuery(array $api_params, array $options = []){        
+    public function apiQuery(array $api_params, array $options = []){
         $app = App::i();
         $findOne =  key_exists('findOne', $options) ? $options['findOne'] : false;
+        $distinct = key_exists('distinct', $options) ? $options['distinct'] : false;
+        $countGrouped = key_exists('countGrouped', $options) ? $options['countGrouped'] : false;
         $counting = key_exists('@count', $api_params);
         if($counting){
             unset($api_params['@count']);
@@ -45,7 +55,11 @@ trait ControllerAPI{
         
         $app->applyHookBoundTo($this, "API.query($this->id)", [&$query, $api_params]);
         
-        if($counting){
+        if($distinct){
+            $result = $query->getDistinctResult();
+        } elseif($countGrouped){
+            $result = $query->getCountGroupedResult();
+        } elseif($counting){
             $result = $query->getCountResult();
         } elseif( $findOne ) {
             $result = $query->getFindOneResult();
@@ -65,7 +79,7 @@ trait ControllerAPI{
     }
 
     /**
-     * Returns the ApiOutput Object.
+     * Retorna o objeto ApiOutput.
      *
      * @return \MapasCulturais\ApiOutput
      */
@@ -81,9 +95,11 @@ trait ControllerAPI{
         }
     }
 
-    /*
-     * Outputs an API Error Response
+    /**
+     * Emite uma resposta de erro da API
      *
+     * @param string $error_message Mensagem de erro
+     * @return void
      */
     protected function apiErrorResponse($error_message){
         $responder = $this->getApiOutput();
@@ -98,11 +114,11 @@ trait ControllerAPI{
     }
 
     /**
-     * Outputs an API Array Respose
+     * Emite uma resposta de array da API
      *
-     * @param array $data
-     * @param string $singular_name the singular name of the response itens
-     * @param string $plural_name the plural name of the response itens
+     * @param array $data Dados da resposta
+     * @param string $singular_name Nome singular dos itens da resposta
+     * @param string $plural_name Nome plural dos itens da resposta
      */
     protected function apiArrayResponse(array $data, $singular_name = 'Entity', $plural_name = 'Entities'){
         $responder = $this->getApiOutput();
@@ -132,11 +148,11 @@ trait ControllerAPI{
     }
 
     /**
-     * Ouputs an API Item Reponse
+     * Emite uma resposta de item da API
      *
-     * @param mixed $data
-     * @param string $singular_name the singular name of the response itens
-     * @param string $plural_name the plural name of the response itens
+     * @param mixed $data Dados da resposta
+     * @param string $singular_name Nome singular dos itens da resposta
+     * @param string $plural_name Nome plural dos itens da resposta
      */
     protected function apiItemResponse($data, $singular_name = 'Entity', $plural_name = 'Entities'){
         $responder = $this->getApiOutput();
@@ -144,9 +160,9 @@ trait ControllerAPI{
     }
 
     /**
-     * A generic API findOne method.
+     * Um método genérico API findOne.
      *
-     * This action finds one entity by the requested params and send the result to the API Responder.
+     * Esta ação encontra uma entidade pelos parâmetros solicitados e envia o resultado para o Responder da API.
      *
      * @see \MapasCulturais\ApiOutput::outputItem()
      */
@@ -226,6 +242,16 @@ trait ControllerAPI{
      */
     public function API_find(){
         $data = $this->apiQuery($this->getData);
+        $this->apiResponse($data);
+    }
+
+    public function API_distinct(){
+        $data = $this->apiQuery($this->getData, ['distinct' => true]);
+        $this->apiResponse($data);
+    }
+
+    public function API_countGrouped(){
+        $data = $this->apiQuery($this->getData, ['countGrouped' => true]);
         $this->apiResponse($data);
     }
 

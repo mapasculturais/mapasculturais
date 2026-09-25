@@ -158,7 +158,13 @@ class Controller extends \MapasCulturais\Controller
         $files = $entity->files;
 
         if($files && in_array($this->data['group'], array_keys($files))) {
-            return $this->json($files[$this->data['group']]);
+            $group_files = $files[$this->data['group']];
+
+            if (is_array($group_files)) {
+                $group_files = Module::sortExportedFilesByNewestFirst($group_files);
+            }
+
+            return $this->json($group_files);
         }
     }
 }

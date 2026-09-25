@@ -74,7 +74,7 @@ class Event extends \MapasCulturais\Entity
     #[ORM\Column(name: "status", type: "smallint", nullable: false)]
     protected $status = self::STATUS_ENABLED;
 
-    #[ORM\OneToMany(targetEntity: "MapasCulturais\Entities\EventOccurrence", mappedBy: "event", cascade: ["remove"], orphanRemoval: true)]
+    #[ORM\OneToMany(targetEntity: "MapasCulturais\Entities\EventOccurrence", mappedBy: "event", cascade: ["remove"])]
     protected $occurrences = [];
 
     #[ORM\ManyToOne(targetEntity: "MapasCulturais\Entities\Project", fetch: "LAZY")]
@@ -178,7 +178,11 @@ class Event extends \MapasCulturais\Entity
     }
 
     function setProject($project) {
-        if(is_numeric($project)) {
+        if (is_null($project)) {
+            if ($this->project) {
+                $this->_newProject = null;
+            }
+        } else if(is_numeric($project)) {
             $this->setProjectId($project);
         } else if (is_object($project)) {
             if(!$this->project || !$this->project->equals($project)) {

@@ -10,6 +10,7 @@ use MapasCulturais\Entities\Registration as EntityRegistration;
 use MapasCulturais\Entities\OpportunityMeta;
 use MapasCulturais\Entities\RegistrationEvaluation;
 use MapasCulturais\Entities\RegistrationSpaceRelation as RegistrationSpaceRelationEntity;
+use MapasCulturais\i;
 
 /**
  * Registration Controller
@@ -156,7 +157,7 @@ class Registration extends EntityController {
         // passar somente os que estão abertos para edição
         if ($entity->status > 0 && $entity->canUser('sendEditableFields')) {
             foreach(array_keys($data) as $key) {
-                if(!in_array($key, $entity->editableFields)) {
+                if($key !== 'editableFields' && !in_array($key, $entity->editableFields)) {
                     unset($data[$key]);
                 }
             }
@@ -238,6 +239,14 @@ class Registration extends EntityController {
         $this->json($result);
     }
 
+    /**
+    * Exclui uma inscrição (apenas se estiver com status rascunho)
+    * 
+    * Esta ação requer autenticação e permissão 'remove' na inscrição.
+    * Apenas inscrições com status 0 (rascunho) podem ser excluídas.
+    * 
+    * @return void
+    */
     public function POST_deleteRegistration()
     {
         $this->requireAuthentication();
@@ -257,6 +266,15 @@ class Registration extends EntityController {
         $this->json($result);
     }
 
+    /**
+    * Reabre uma avaliação para edição
+    * 
+    * Esta ação requer autenticação e permite que um avaliador reabra
+    * uma avaliação que já foi enviada, desde que ainda esteja dentro
+    * do período de avaliação.
+    * 
+    * @return void
+    */
     public function POST_reopenEvaluation()
     {
         $this->requireAuthentication();
@@ -287,6 +305,14 @@ class Registration extends EntityController {
         }
     }
 
+    /**
+    * Envia uma avaliação
+    * 
+    * Esta ação requer autenticação e permite que um avaliador envie
+    * sua avaliação, desde que ainda esteja dentro do período de avaliação.
+    * 
+    * @return void
+    */
     public function POST_sendEvaluation(){
         $this->requireAuthentication();
 
@@ -313,6 +339,16 @@ class Registration extends EntityController {
         }
     }
 
+    /**
+    * Cria URL para ações do controlador
+    * 
+    * Sobrescreve o método padrão para mapear ações 'single' e 'edit'
+    * para a ação 'view'.
+    * 
+    * @param string $actionName Nome da ação
+    * @param array $data Dados para a URL
+    * @return string URL gerada
+    */
     public function createUrl($actionName, array $data = array()) {
         if($actionName == 'single' || $actionName == 'edit'){
             $actionName = 'view';
@@ -448,7 +484,15 @@ class Registration extends EntityController {
                     'number' => $entity->number
                 ]);
 
-                $app->redirect($parent_registration->singleUrl);
+                // Fallback para fases sem vínculo por number (ex: fase de execução):
+                // redireciona para a inscrição linkada via previousPhaseRegistrationId.
+                if (!$parent_registration && $entity->previousPhaseRegistrationId) {
+                    $parent_registration = $app->repo('Registration')->find($entity->previousPhaseRegistrationId);
+                }
+
+                if ($parent_registration) {
+                    $app->redirect($parent_registration->singleUrl);
+                }
             }
             parent::GET_single();
         }
@@ -535,6 +579,15 @@ class Registration extends EntityController {
         }
     }
 
+    /**
+    * Obtém os menores status de um conjunto de avaliações
+    * 
+    * Processa um array de avaliações e retorna um array com os menores
+    * status encontrados para cada ID de inscrição.
+    * 
+    * @param array $registrations Array de avaliações
+    * @return array Array com os menores status por ID de inscrição
+    */
     private function getSmallerStatuses($registrations) {
         if (is_array($registrations)) {
             $filtered = [];
@@ -568,7 +621,6 @@ class Registration extends EntityController {
         if($errors = $registration->getSendValidationErrors()){
             $this->errorJson($errors);
         }else{
-            $registration->cleanMaskedRegistrationFields();
             $registration->send();
 
             if($this->isAjax()){
@@ -684,6 +736,87 @@ class Registration extends EntityController {
         $this->_finishRequest($registration);
         $app->enableAccessControl();
     
+    }
+
+    function POST_deleteEvaluationAndRemoveValuer() {
+        $app = App::i();
+        $registration = $this->getRequestedEntity();
+        if(!$registration) {
+            $this->errorJson(['message' => [i::__('Inscrição não encontrada.')]], 400);
+            return;
+        }
+
+        $registration->checkPermission('modifyValuers');
+
+        $valuer_user_id = (int) ($this->data['valuerUserId'] ?? 0);
+        $valuer_committee = (string) ($this->data['committee'] ?? '');
+        $evaluation_id = (int) ($this->data['evaluationId'] ?? 0);
+
+        if ($valuer_user_id <= 0) {
+            $this->errorJson(['valuerUserId' => i::__('O id do avaliador é obrigatório.')], 400);
+            return;
+        }
+
+        $exclude = array_map('intval', (array) $registration->valuersExcludeList);
+        $include = array_map('intval', (array) $registration->valuersIncludeList);
+
+        if (!in_array($valuer_user_id, $exclude, true)) {
+            $exclude[] = $valuer_user_id;
+        }
+
+        $include = array_values(array_filter($include, fn($id) => (int) $id !== $valuer_user_id));
+        $exclude = array_values(array_unique($exclude));
+
+        $registration->setValuersIncludeList($include);
+        $registration->setValuersExcludeList($exclude);
+
+        $valuer_key = (string) $valuer_user_id;
+        $conn = $app->em->getConnection();
+        $conn->executeQuery(
+            "UPDATE registration
+                SET valuers = CASE
+                    WHEN COALESCE(valuers->>:valuer_key, '') = :valuer_committee THEN valuers - :valuer_key
+                    ELSE valuers
+                END
+              WHERE id = :registration_id",
+            [
+                'valuer_key' => $valuer_key,
+                'valuer_committee' => $valuer_committee,
+                'registration_id' => $registration->id,
+            ]
+        );
+
+        $evaluation = null;
+        if ($evaluation_id > 0) {
+            $evaluation = $app->repo('RegistrationEvaluation')->find($evaluation_id);
+        }
+
+        if (
+            !$evaluation &&
+            $valuer_committee !== ''
+        ) {
+            $evaluation = $app->repo('RegistrationEvaluation')->findOneBy([
+                'registration' => $registration->id,
+                'user' => $valuer_user_id,
+                'committee' => $valuer_committee,
+            ]);
+        }
+
+        if (!$evaluation) {
+            $evaluation = $app->repo('RegistrationEvaluation')->findOneBy([
+                'registration' => $registration->id,
+                'user' => $valuer_user_id,
+            ]);
+        }
+
+        if ($evaluation instanceof RegistrationEvaluation) {
+            $evaluation->checkPermission('remove');
+            $evaluation->delete(true);
+        } else {
+            $app->em->flush();
+        }
+
+        $this->json(['success' => true]);
     }
 
     /**
@@ -890,10 +1023,15 @@ class Registration extends EntityController {
         $entity->checkPermission('view');
         
         try {
+            $historyItems = $this->getPDFHistoryItems($entity);
+
             // 1. Renderizar HTML da ficha usando template
             $html = $app->view->partialRender(
                 __template: 'registration/pdf', 
-                __data: ['registration' => $entity],
+                __data: [
+                    'registration' => $entity,
+                    'historyItems' => $historyItems,
+                ],
                 _is_part: false
             );
             
@@ -927,6 +1065,15 @@ class Registration extends EntityController {
         }
     }
 
+    /**
+    * Gera PDF a partir de HTML
+    * 
+    * Utiliza DomPDF para converter HTML em PDF.
+    * 
+    * @param string $html Conteúdo HTML
+    * @param \MapasCulturais\Entities\Registration $registration Inscrição
+    * @return string Conteúdo do PDF gerado
+    */
     private function generatePDFFromHTML($html, $registration) {
         $options = new \Dompdf\Options();
         $options->set('isRemoteEnabled', true);
@@ -941,24 +1088,192 @@ class Registration extends EntityController {
         return $dompdf->output();
     }
 
+    /**
+    * Coleta anexos PDF de uma inscrição
+    * 
+    * Percorre os arquivos da inscrição e coleta os que são PDF.
+    * 
+    * @param \MapasCulturais\Entities\Registration $registration Inscrição
+    * @return array Array com caminhos dos arquivos PDF
+    */
+    private function getPDFRegistrationPhases($registration) {
+        $phases = [];
+        foreach ($this->getPDFHistoryItems($registration) as $item) {
+            if ($item['type'] !== 'data_collection') {
+                continue;
+            }
+
+            $phaseRegistration = $item['registration'] ?? null;
+            if ($phaseRegistration) {
+                $phases[] = $phaseRegistration;
+            }
+        }
+
+        return $phases ?: [$registration];
+    }
+
+    private function getPDFRegistrationsByOpportunity(EntityRegistration $registration): array {
+        $registrations = App::i()->repo('Registration')->findBy(['number' => $registration->number]);
+        $result = [];
+
+        foreach ($registrations as $phaseRegistration) {
+            $result[(int) $phaseRegistration->opportunity->id] = $phaseRegistration;
+        }
+
+        return $result;
+    }
+
+    private function getPDFHistoryItems(EntityRegistration $registration): array {
+        $items = [];
+        $registrationsByOpportunity = $this->getPDFRegistrationsByOpportunity($registration);
+        $currentOpportunity = $registration->opportunity->firstPhase ?? $registration->opportunity;
+
+        while ($currentOpportunity) {
+            $phaseRegistration = $registrationsByOpportunity[(int) $currentOpportunity->id] ?? null;
+
+            if ($currentOpportunity->isDataCollection && $phaseRegistration) {
+                $items[] = [
+                    'type' => 'data_collection',
+                    'title' => $currentOpportunity->isFirstPhase ? i::__('Inscrição') : $currentOpportunity->name,
+                    'opportunity' => $currentOpportunity,
+                    'registration' => $phaseRegistration,
+                ];
+            }
+
+            if ($currentOpportunity->evaluationMethodConfiguration && $phaseRegistration) {
+                $items[] = $this->getPDFEvaluationHistoryItem($phaseRegistration);
+            }
+
+            $currentOpportunity = $currentOpportunity->nextPhase;
+        }
+
+        return $items;
+    }
+
+    private function getPDFEvaluationHistoryItem(EntityRegistration $registration): array {
+        $opportunity = $registration->opportunity;
+        $evaluationConfiguration = $opportunity->evaluationMethodConfiguration;
+        $evaluationMethod = $evaluationConfiguration->getEvaluationMethod();
+        $canDisplayResults = $this->canDisplayPDFEvaluationResults($registration);
+        $canDisplayDetails = $this->canDisplayPDFEvaluationDetails($registration);
+        $evaluations = [];
+
+        if ($canDisplayDetails) {
+            foreach ($registration->sentEvaluations as $evaluation) {
+                $detail = $evaluationMethod->getEvaluationDetails($evaluation);
+
+                if ($evaluationConfiguration->publishValuerNames) {
+                    $detail['valuer'] = $evaluation->user->profile->simplify('id,name,singleUrl');
+                }
+
+                $evaluations[] = [
+                    'detail' => $detail,
+                    'statusLabel' => $evaluation->getStatusString(),
+                    'resultLabel' => $evaluationMethod->evaluationToString($evaluation),
+                    'valuerName' => $detail['valuer']->name ?? null,
+                    'evaluation' => $evaluation,
+                ];
+            }
+        }
+
+        return [
+            'type' => 'evaluation',
+            'title' => $evaluationConfiguration->name,
+            'opportunity' => $opportunity,
+            'registration' => $registration,
+            'evaluationMethodConfiguration' => $evaluationConfiguration,
+            'evaluationMethodSlug' => $evaluationConfiguration->getDefinition()->slug,
+            'statusLabel' => $this->getPDFRegistrationStatusLabel($registration),
+            'statusClass' => $this->getPDFRegistrationStatusClass($registration),
+            'showResults' => $canDisplayResults,
+            'showDetails' => $canDisplayDetails,
+            'consolidatedResult' => $canDisplayResults ? $registration->consolidatedResult : null,
+            'consolidatedResultLabel' => $canDisplayResults ? $evaluationMethod->valueToString($registration->consolidatedResult) : null,
+            'consolidatedDetails' => $canDisplayDetails ? $evaluationMethod->getConsolidatedDetails($registration) : [],
+            'evaluations' => $evaluations,
+        ];
+    }
+
+    private function canDisplayPDFEvaluationResults(EntityRegistration $registration): bool {
+        $app = App::i();
+        $opportunity = $registration->opportunity;
+        $user = $app->user;
+
+        if ($user && ($registration->canUser('evaluate', $user) || $opportunity->canUser('@control', $user))) {
+            return true;
+        }
+
+        return (bool) ($opportunity->publishedRegistrations || $opportunity->allow_proponent_response);
+    }
+
+    private function canDisplayPDFEvaluationDetails(EntityRegistration $registration): bool {
+        $app = App::i();
+        $opportunity = $registration->opportunity;
+        $evaluationConfiguration = $opportunity->evaluationMethodConfiguration;
+        $user = $app->user;
+
+        if (!$evaluationConfiguration) {
+            return false;
+        }
+
+        if ($user && ($registration->canUser('evaluate', $user) || $opportunity->canUser('@control', $user))) {
+            return true;
+        }
+
+        return $this->canDisplayPDFEvaluationResults($registration) &&
+            (bool) ($evaluationConfiguration->publishEvaluationDetails || $opportunity->allow_proponent_response);
+    }
+
+    private function getPDFRegistrationStatusLabel(EntityRegistration $registration): string {
+        if ($registration->status == 0) {
+            return i::__('Não enviada');
+        }
+
+        if ($registration->status == 1) {
+            return i::__('Enviada');
+        }
+
+        return $registration->opportunity->statusLabels[$registration->status] ?? (string) $registration->status;
+    }
+
+    private function getPDFRegistrationStatusClass(EntityRegistration $registration): string {
+        return match ((int) $registration->status) {
+            10, 1 => 'success',
+            2, 0, 3 => 'danger',
+            8 => 'warning',
+            default => 'neutral',
+        };
+    }
+
     private function collectPDFAttachments($registration) {
         $pdfs = [];
-        
-        foreach ($registration->files as $group => $files) {
-            if (!is_array($files)) {
-                $files = [$files];
-            }
-            
-            foreach ($files as $file) {
-                if ($file->mimeType === 'application/pdf' && file_exists($file->path)) {
-                    $pdfs[] = $file->path;
+
+        foreach ($this->getPDFRegistrationPhases($registration) as $phaseRegistration) {
+            foreach ($phaseRegistration->files as $group => $files) {
+                if (!is_array($files)) {
+                    $files = [$files];
+                }
+
+                foreach ($files as $file) {
+                    if ($file->mimeType === 'application/pdf' && file_exists($file->path)) {
+                        $pdfs[] = $file->path;
+                    }
                 }
             }
         }
-        
-        return $pdfs;
+
+        return array_values(array_unique($pdfs));
     }
 
+    /**
+    * Mescla múltiplos PDFs em um único PDF
+    * 
+    * Utiliza FPDI para mesclar o PDF principal com os anexos.
+    * 
+    * @param string $mainPdfContent Conteúdo do PDF principal
+    * @param array $attachmentPaths Caminhos dos PDFs anexos
+    * @return string Conteúdo do PDF mesclado
+    */
     private function mergePDFs($mainPdfContent, $attachmentPaths) {
         $pdf = new \setasign\Fpdi\Fpdi();
         
@@ -1000,6 +1315,14 @@ class Registration extends EntityController {
         return $pdf->Output('S'); // Retorna como string
     }
 
+    /**
+    * Sanitiza nome de arquivo
+    * 
+    * Remove caracteres inválidos de nomes de arquivo.
+    * 
+    * @param string $str String original
+    * @return string String sanitizada
+    */
     private function sanitizeFilename($str) {
         return preg_replace('/[^a-zA-Z0-9_\-]/', '_', $str);
     }

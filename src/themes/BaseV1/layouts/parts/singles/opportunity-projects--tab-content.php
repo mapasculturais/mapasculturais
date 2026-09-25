@@ -45,7 +45,7 @@ $app = \MapasCulturais\App::i();
     </div><!-- /.card -->
 
     <footer>
-        <button ng-if="!(data.projectsAPIMetadata.numPages == data.projectsAPIMetadata.page)" ng-click="loadMore()">Carregar mais</button>
+        <button ng-if="!(data.projectsAPIMetadata.numPages == data.projectsAPIMetadata.page)" ng-click="loadMore()"><?php i::_e('Carregar mais'); ?></button>
     </footer>
 
 </div><!-- /ng-controller OpportunityProjects -->

@@ -42,6 +42,10 @@ class Module extends \MapasCulturais\Module
                 return;
             }
 
+            if($this->opportunity->disableRegistrationEmail) {
+                return;
+            }
+
             $sendMail = false;
             if($this->opportunity->isDataCollection) {
                 if($this->opportunity->isFirstPhase) {
@@ -60,6 +64,10 @@ class Module extends \MapasCulturais\Module
 
         $app->hook("entity(Registration).insert:finish", function () use ($self) {
             if(!$self->config['sendMailNotification.startRegistration']) {
+                return;
+            }
+
+            if($this->opportunity->disableRegistrationEmail) {
                 return;
             }
 

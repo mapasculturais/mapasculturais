@@ -48,6 +48,23 @@ app.component('opportunity-registration-filter-configuration', {
             type: String,
             default: ''
         },
+
+        groupFilters: {
+            type: Object,
+            required: false,
+            default: null
+        },
+
+        group: {
+            type: String,
+            required: false,
+            default: null
+        },
+
+        saveToAgentRelation: {
+            type: Boolean,
+            default: false
+        },
     },
 
     setup() {
@@ -110,12 +127,59 @@ app.component('opportunity-registration-filter-configuration', {
                     ),
                 };
             } else {
+                // Se for avaliador individual e houver filtros globais da comissão, usar apenas esses filtros
+                if (!this.isGlobal && !this.isSection && this.groupFilters) {
+                    const globalCategories = Array.isArray(this.groupFilters.category) ? this.groupFilters.category : [];
+                    const globalProponentTypes = Array.isArray(this.groupFilters.proponentType) ? this.groupFilters.proponentType : [];
+                    const globalRanges = Array.isArray(this.groupFilters.range) ? this.groupFilters.range : [];
+                    
+                    return {
+                        categories: globalCategories.length > 1 
+                            ? globalCategories
+                            : (globalCategories.length > 0 
+                                ? globalCategories 
+                                : this.registrationCategories.filter(cat => !this.excludeFields.includes('category'))),
+                        proponentTypes: globalProponentTypes.length > 1
+                            ? globalProponentTypes
+                            : (globalProponentTypes.length > 0
+                                ? globalProponentTypes
+                                : this.registrationProponentTypes.filter(type => !this.excludeFields.includes('proponentType'))),
+                        ranges: globalRanges.length > 1
+                            ? globalRanges
+                            : (globalRanges.length > 0
+                                ? globalRanges
+                                : this.registrationRanges.filter(range => !this.excludeFields.includes('range'))),
+                    };
+                }
+                
                 return {
                     categories: this.registrationCategories.filter(cat => !this.excludeFields.includes('category')),
                     proponentTypes: this.registrationProponentTypes.filter(type => !this.excludeFields.includes('proponentType')),
                     ranges: this.registrationRanges.filter(range => !this.excludeFields.includes('range')),
                 };
             }
+        },
+
+        filteredSelectionFieldOptions() {
+            if (!this.isGlobal && !this.isSection && !this.isCriterion && this.groupFilters && this.selectedField) {
+                const reservedFields = ['category', 'proponentType', 'range', 'sentTimestamp', 'distribution'];
+                
+                if (!reservedFields.includes(this.selectedField)) {
+                    const globalFieldOptions = Array.isArray(this.groupFilters[this.selectedField]) 
+                        ? this.groupFilters[this.selectedField] 
+                        : [];
+                    
+                    if (globalFieldOptions.length > 1) {
+                        return globalFieldOptions;
+                    }
+                    
+                    if (globalFieldOptions.length > 0) {
+                        return globalFieldOptions;
+                    }
+                }
+            }
+            
+            return this.registrationSelectionFields?.[this.selectedField]?.fieldOptions ?? [];
         },
 
         canConfirm() {
@@ -340,6 +404,36 @@ app.component('opportunity-registration-filter-configuration', {
         },
 
         isFieldExcluded(field) {
+            if (!this.isGlobal && !this.isSection && !this.isCriterion && this.groupFilters) {
+                if (field === 'category') {
+                    const globalCategories = Array.isArray(this.groupFilters.category) ? this.groupFilters.category : [];
+                    if (globalCategories.length > 1) {
+                        return false;
+                    }
+                }
+                if (field === 'proponentType') {
+                    const globalProponentTypes = Array.isArray(this.groupFilters.proponentType) ? this.groupFilters.proponentType : [];
+                    if (globalProponentTypes.length > 1) {
+                        return false;
+                    }
+                }
+                if (field === 'range') {
+                    const globalRanges = Array.isArray(this.groupFilters.range) ? this.groupFilters.range : [];
+                    if (globalRanges.length > 1) {
+                        return false;
+                    }
+                }
+                
+                // Verifica campos de seleção customizados
+                const reservedFields = ['category', 'proponentType', 'range', 'sentTimestamp', 'distribution'];
+                if (!reservedFields.includes(field) && this.groupFilters[field]) {
+                    const globalFieldOptions = Array.isArray(this.groupFilters[field]) ? this.groupFilters[field] : [];
+                    if (globalFieldOptions.length > 1) {
+                        return false; // Permite subdividir os campos de seleção entre avaliadores
+                    }
+                }
+            }
+            
             return this.excludeFields.includes(field);
         },
 
@@ -383,7 +477,50 @@ app.component('opportunity-registration-filter-configuration', {
         },
 
         async save() {
-            this.entity.save();
+            if (this.saveToAgentRelation && this.infoReviewer) {
+                await this.saveValuerFilters();
+            } else {
+                this.entity.save();
+            }
+        },
+
+        async saveValuerFilters() {
+            const agentData = this.getAgentData();
+            const url = Utils.createUrl('evaluationMethodConfiguration', 'setValuerFilters', { id: this.entity.id });
+            
+            const data = {
+                relationId: this.infoReviewer.id,
+                categories: agentData.category || null,
+                proponentTypes: agentData.proponentType || null,
+                ranges: agentData.range || null,
+                distribution: agentData.distribution || null,
+                selectionFields: this.buildSelectionFieldsPayload(agentData),
+            };
+
+            try {
+                await fetch(url, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(data),
+                });
+            } catch (error) {
+                console.error('Erro ao salvar filtros do avaliador:', error);
+            }
+        },
+
+        buildSelectionFieldsPayload(agentData) {
+            const reservedFields = ['category', 'proponentType', 'range', 'distribution', 'sentTimestamp'];
+            const selectionFields = {};
+
+            Object.entries(agentData).forEach(([key, value]) => {
+                if (!reservedFields.includes(key) && value) {
+                    selectionFields[key] = value;
+                }
+            });
+
+            return Object.keys(selectionFields).length > 0 ? selectionFields : null;
         },
 
         dictTypes(type, reverse = false) {
@@ -540,6 +677,11 @@ app.component('opportunity-registration-filter-configuration', {
         },
         
         updateAgentData(agentId, key, value) {
+            if (this.saveToAgentRelation && this.infoReviewer?.metadata) {
+                this.updateAgentDataInMetadata(key, value);
+                return;
+            }
+
             if (!this.entity.fetchCategories[agentId]) {
                 this.entity.fetchCategories[agentId] = [];
             }
@@ -557,6 +699,29 @@ app.component('opportunity-registration-filter-configuration', {
 
                 if (Object.keys(this.entity.fetchSelectionFields[agentId][key]).length === 0) {
                     delete this.entity.fetchSelectionFields[agentId][key];
+                }
+            }
+        },
+
+        updateAgentDataInMetadata(key, value) {
+            const metadata = this.infoReviewer.metadata;
+
+            if (key === 'category') {
+                metadata.categories = value || null;
+            } else if (key === 'proponentType') {
+                metadata.proponentTypes = value || null;
+            } else if (key === 'range') {
+                metadata.ranges = value || null;
+            } else if (key === 'distribution') {
+                metadata.distribution = value || null;
+            } else {
+                if (!metadata.selectionFields) {
+                    metadata.selectionFields = {};
+                }
+                if (value && (Array.isArray(value) ? value.length > 0 : Object.keys(value).length > 0)) {
+                    metadata.selectionFields[key] = value;
+                } else {
+                    delete metadata.selectionFields[key];
                 }
             }
         },
@@ -612,6 +777,11 @@ app.component('opportunity-registration-filter-configuration', {
                         this.configs[agentId][this.selectedField].push(config);
                     }
                 });
+            }
+
+            if (this.saveToAgentRelation) {
+                this.updateInfoReviewerMetadata(agentId);
+                return;
             }
 
             Object.entries(this.configs).forEach(([agentId, values]) => {
@@ -681,11 +851,38 @@ app.component('opportunity-registration-filter-configuration', {
             });
         },
 
+        updateInfoReviewerMetadata(agentId) {
+            const values = this.configs[agentId] || {};
+            const metadata = this.infoReviewer.metadata;
+
+            Object.entries(values).forEach(([key, configs]) => {
+                if (key === 'category') {
+                    metadata.categories = Array.isArray(configs) ? [...configs] : null;
+                } else if (key === 'proponentType') {
+                    metadata.proponentTypes = Array.isArray(configs) ? [...configs] : null;
+                } else if (key === 'range') {
+                    metadata.ranges = Array.isArray(configs) ? [...configs] : null;
+                } else if (key === 'distribution') {
+                    metadata.distribution = configs || null;
+                } else {
+                    // Selection fields
+                    if (!metadata.selectionFields) {
+                        metadata.selectionFields = {};
+                    }
+                    metadata.selectionFields[key] = configs;
+                }
+            });
+        },
+
         getAgentData() {
             const agentId = this.infoReviewer?.agentUserId;
 
             if (!agentId) {
                 return null;
+            }
+
+            if (this.saveToAgentRelation && this.infoReviewer?.metadata) {
+                return this.getAgentDataFromMetadata();
             }
 
             let agentData = {};
@@ -710,6 +907,35 @@ app.component('opportunity-registration-filter-configuration', {
             if (this.entity.fetchSelectionFields && this.entity.fetchSelectionFields[agentId]) {
                 for (const field in this.entity.fetchSelectionFields[agentId]) {
                     agentData[field] = this.entity.fetchSelectionFields[agentId][field];
+                }
+            }
+
+            return agentData;
+        },
+
+        getAgentDataFromMetadata() {
+            const metadata = this.infoReviewer.metadata;
+            let agentData = {};
+
+            if (metadata.categories && metadata.categories.length > 0) {
+                agentData['category'] = metadata.categories;
+            }
+
+            if (metadata.proponentTypes && metadata.proponentTypes.length > 0) {
+                agentData['proponentType'] = metadata.proponentTypes;
+            }
+
+            if (metadata.ranges && metadata.ranges.length > 0) {
+                agentData['range'] = metadata.ranges;
+            }
+
+            if (metadata.distribution) {
+                agentData['distribution'] = metadata.distribution;
+            }
+
+            if (metadata.selectionFields) {
+                for (const field in metadata.selectionFields) {
+                    agentData[field] = metadata.selectionFields[field];
                 }
             }
 
@@ -826,6 +1052,29 @@ app.component('opportunity-registration-filter-configuration', {
                         }
                 }
             } else {
+                if (!this.isGlobal && !this.isSection && this.groupFilters) {
+                    switch (type) {
+                        case 'category':
+                            const globalCategories = Array.isArray(this.groupFilters.category) ? this.groupFilters.category : [];
+                            if (globalCategories.length > 0) {
+                                return globalCategories.length > 1;
+                            }
+                            return this.registrationCategories.length > 0;
+                        case 'proponentType':
+                            const globalProponentTypes = Array.isArray(this.groupFilters.proponentType) ? this.groupFilters.proponentType : [];
+                            if (globalProponentTypes.length > 0) {
+                                return globalProponentTypes.length > 1;
+                            }
+                            return this.registrationProponentTypes.length > 0;
+                        case 'range':
+                            const globalRanges = Array.isArray(this.groupFilters.range) ? this.groupFilters.range : [];
+                            if (globalRanges.length > 0) {
+                                return globalRanges.length > 1;
+                            }
+                            return this.registrationRanges.length > 0;
+                    }
+                }
+                
                 switch (type) {
                     case 'category':
                         return this.registrationCategories.length > 0; 

@@ -47,12 +47,12 @@ $entity = $this->controller->requestedEntity;
                 </template>
                 
                 <?php $this->applyTemplateHook('registration-list-actions-entity-table', 'before', ['entity' => $entity]); ?>
-                <template v-if="!hideActions" #actions="{entities,filters}">
+                <template v-if="!hideActions" #actions="{entities,filters,spreadsheetQuery}">
                     <div class="opportunity-registration-table__actions">
                         <h4 class="bold"><?= i::__('Ações:') ?></h4>
                         <div class="opportunity-registration-table__actions-buttons">
                         <?php $this->applyTemplateHook('registration-list-actions-entity-table', 'begin', ['entity' => $entity]); ?>
-                            <mc-export-spreadsheet :owner="phase" endpoint="registrations" :params="{entityType: 'registration', '@select': select, '@order': order, query}" group="registrations-spreadsheets"></mc-export-spreadsheet>
+                            <mc-export-spreadsheet :owner="phase" endpoint="registrations" :params="{entityType: 'registration', '@select': spreadsheetQuery['@select'], '@order': spreadsheetQuery['@order'], query: spreadsheetQuery}" group="registrations-spreadsheets"></mc-export-spreadsheet>
                         <?php $this->applyTemplateHook('registration-list-actions-entity-table', 'end', ['entity' => $entity]); ?>
                         </div>
                     </div>
@@ -112,6 +112,22 @@ $entity = $this->controller->requestedEntity;
                     <span v-else>&nbsp;</span>
                 </template>
 
+                <template #appliedPointReward="{entity}">
+                    <template v-if="entity.appliedPointReward && entity.appliedPointReward.raw != null">
+                        <div class="entity-table__applied-point-reward">
+                            <template v-if="entity.appliedPointReward.type === 'fixed'">
+                                <span v-if="entity.appliedPointReward.fixed > 0">+{{ entity.appliedPointReward.fixed }} pt(s)</span>
+                                <span v-else>&nbsp;</span>
+                            </template>
+                            <template v-else>
+                                <span v-if="entity.appliedPointReward.percentage > 0">{{ entity.appliedPointReward.percentage }}%</span>
+                                <span v-else>&nbsp;</span>
+                            </template>
+                        </div>
+                    </template>
+                    <span v-else>&nbsp;</span>
+                </template>
+
                 <template #consolidatedResult="{entity}"> 
                     {{consolidatedResultToString(entity)}}
                 </template>
@@ -129,8 +145,9 @@ $entity = $this->controller->requestedEntity;
                 </template>
 
                 <template #eligible="{entity}">
-                    <span v-if="entity.eligible"><?= i::__('Sim') ?></span>
-                    <span v-else> &nbsp; </span>
+                    <span v-if="entity.eligible === true || entity.eligible === 'true' || entity.eligible === 1"><?= i::__('Sim') ?></span>
+                    <span v-else-if="entity.eligible === false || entity.eligible === 'false' || entity.eligible === 0"><?= i::__('Não') ?></span>
+                    <span v-else>&nbsp;</span>
                 </template>
 
                 <template #editable={entity}>

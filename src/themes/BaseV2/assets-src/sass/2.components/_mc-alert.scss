@@ -18,6 +18,10 @@
 
     &.helper {
         background-color: var(--mc-helper-300);
+
+        .alert__message .iconify {
+            color: var(--mc-helper-500);
+        }
     }
 
     &.warning {

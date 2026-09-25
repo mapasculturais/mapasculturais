@@ -270,7 +270,7 @@
         };
 
         $scope.sendEvaluation = function () {
-            if (!confirm("Você tem certeza que deseja finalizer o parecer técnico?\n\nApós a finalização não será mais possível modificar o parecer.")) {
+            if (!confirm(MapasCulturais.gettext.accountability['confirmFinishTechnicalOpinion'])) {
                 return;
             }
 
@@ -292,8 +292,7 @@
                 return;  
             }
 
-            // TODO: i18n
-            if (!confirm("Você tem certeza que deseja reabrir a prestação de contas?\n\nA abertura dos campos para edição deverá ser feita manualmente.")) {
+            if (!confirm(MapasCulturais.gettext.accountability['confirmReopenAccountability'])) {
                 return;
             }
             AccountabilityEvaluationService.reopen(registrationId, $scope.evaluationData, MapasCulturais.evaluation.user).success(function () {
@@ -386,7 +385,7 @@
         }
         
         $scope.publishedResult = function(registration){
-            if (!confirm("ATENÇÃO, essa ação é irreversível! Você tem certeza que deseja publicar o resultado dessa inscrição?")) {
+            if (!confirm(MapasCulturais.gettext.accountability['confirmPublishResult'])) {
                 return;
             }
 

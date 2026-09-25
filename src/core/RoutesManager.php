@@ -10,32 +10,35 @@ use RuntimeException;
 use Throwable;
 
 /**
- * The MapasCulturais default route manager.
+ * Gerenciador de rotas do MapasCulturais
  *
- * This class adds a rule to the Slim map function that captures all requests.
+ * Esta classe adiciona uma regra à função map do Slim que captura todas as requisições.
  *
- * If no route is requested (/) the default controller and action will be used (site/index by default).
+ * Se nenhuma rota for solicitada (/) o controlador e ação padrão serão usados (site/index por padrão).
  *
- * If the route is a shortcut, calls the controller and action with the params defined in the shortcut.
+ * Se a rota for um atalho (shortcut), chama o controlador e ação com os parâmetros definidos no atalho.
  *
- * If the route is a controller id or a controller alias, calls the default action of this controller
+ * Se a rota for um ID de controlador ou um alias de controlador, chama a ação padrão deste controlador.
  *
- * If the route contains a controller id or a controller alias and an action or action alias, calls the action of this controller.
+ * Se a rota contiver um ID de controlador ou um alias de controlador e uma ação ou alias de ação, chama a ação deste controlador.
  *
- *
- *
+ * @package MapasCulturais
  */
 class RoutesManager{
     use Traits\MagicGetter;
+    
     /**
-     * Creates the Routes Menager
-     *
-     * @param array $config
+     * Cria o gerenciador de rotas
      */
     public function __construct() {
         $this->addRoutes();
     }
 
+    /**
+     * Retorna a configuração de rotas
+     * 
+     * @return array
+     */
     function getConfig(){
         $app = App::i();
         $config = $app->config['routes'];
@@ -50,17 +53,18 @@ class RoutesManager{
     }
 
     /**
-     * Faz o roteamento de uma rota
-     * @param RequestInterface $request 
-     * @param ResponseInterface $response 
-     * @param mixed $controller_id 
-     * @param mixed $action 
-     * @param array $params 
-     * @param bool $api 
-     * @return void 
-     * @throws NotFound 
-     * @throws InvalidArgumentException 
-     * @throws RuntimeException 
+     * Executa o roteamento de uma rota
+     * 
+     * @param RequestInterface $request Requisição PSR-7
+     * @param ResponseInterface $response Resposta PSR-7
+     * @param string $controller_id ID do controlador
+     * @param string $action Nome da ação
+     * @param array $params Parâmetros da rota
+     * @param bool $api Indica se é uma chamada à API
+     * @return ResponseInterface Resposta processada
+     * @throws NotFound Quando o controlador não é encontrado
+     * @throws InvalidArgumentException Quando os argumentos são inválidos
+     * @throws RuntimeException Quando ocorre um erro de execução
      */
     protected function route(RequestInterface $request, ResponseInterface $response, $controller_id, $action, $params = [], $api = false): ResponseInterface {
         $app = App::i();
@@ -103,7 +107,8 @@ class RoutesManager{
     }
 
     /**
-     * Adiciona as rotas no slim
+     * Adiciona as rotas no Slim
+     * 
      * @return void 
      */
     protected function addRoutes(){
@@ -134,10 +139,10 @@ class RoutesManager{
 
 
     /**
-     * Substitui os shortcuts e alias pelos slugs utilizados no código
+     * Substitui os atalhos (shortcuts) e aliases pelos slugs utilizados no código
      * 
-     * @param array $parts partes da path
-     * @return array 
+     * @param array $parts Partes do caminho da URL
+     * @return array Partes do caminho com atalhos substituídos
      */
     protected function replaceShortcuts(array $parts): array {
         $app = App::i();
@@ -175,16 +180,16 @@ class RoutesManager{
 
 
     /**
-     * Extrai os argumentos do caminho da uri, deixando no $path somente o controller e a action 
-     * e retornando um array com os url args, como nos exemplos abaixo
+     * Extrai os argumentos do caminho da URI, deixando no $path somente o controller e a action
+     * e retornando um array com os argumentos da URL, como nos exemplos abaixo:
      * 
      * ['agent', 11] => retorna ['id' => 11] e o path fica ['agent']
      * ['agent', 'edit', '11'] => retorna um array ['id' => 11] e o $path fica ['agent', 'edit']
-     * ['agent', 'test', 'name:Fulano', [idade:33] => retorna ['name' => 'Fulano', 'idade' => 33]
-     * ['agent', 'test', 11, 'name:Fulano', [idade:33] => retorna ['id' => 11, 'name' => 'Fulano', 'idade' => 33]
+     * ['agent', 'test', 'name:Fulano', 'idade:33'] => retorna ['name' => 'Fulano', 'idade' => 33]
+     * ['agent', 'test', 11, 'name:Fulano', 'idade:33'] => retorna ['id' => 11, 'name' => 'Fulano', 'idade' => 33]
      * 
-     * @param array $path 
-     * @return array 
+     * @param array &$path Referência ao array do caminho (será modificado)
+     * @return array Argumentos extraídos
      */
     protected function extractArgs(array &$path){
         $args = [];
@@ -208,6 +213,15 @@ class RoutesManager{
         return $args;
     }
 
+    /**
+     * Chama uma ação em um controlador
+     * 
+     * @param Controller $controller Controlador
+     * @param string $action_name Nome da ação
+     * @param array $args Argumentos para a ação
+     * @param bool $api_call Indica se é uma chamada à API
+     * @return void
+     */
     final function callAction(Controller $controller, $action_name, array $args, $api_call) {
         $app = App::i();
         $controller->setRequestData( $args );
@@ -223,6 +237,14 @@ class RoutesManager{
         }
     }
 
+    /**
+     * Cria uma URL para um controlador e ação específicos
+     * 
+     * @param string $controller_id ID do controlador
+     * @param string $action_name Nome da ação (opcional, padrão: ação padrão)
+     * @param array $args Argumentos para a URL
+     * @return string URL gerada
+     */
     public function createUrl($controller_id, $action_name = '', array $args = []){
         $app = App::i();
 

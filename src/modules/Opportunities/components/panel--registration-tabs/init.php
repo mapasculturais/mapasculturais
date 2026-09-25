@@ -16,6 +16,7 @@ $qa = new MapasCulturais\ApiQuery(MapasCulturais\Entities\Agent::class, $qa_para
 $q = new MapasCulturais\ApiQuery(MapasCulturais\Entities\Registration::class, [
     'status' => 'EQ(0)',
     '@permissions' => 'view',
+    'user' => 'EQ(@me)',
 ]);
 
 $q->addFilterByApiQuery($qa, 'id', 'owner');

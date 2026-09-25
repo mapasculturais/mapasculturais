@@ -8,6 +8,18 @@
         gap: size(40) size(20);
     }
 
+    &__enable-end-date {
+        display: flex;
+        flex-direction: column;
+        gap: size(16);
+        margin-top: size(8);
+        margin-bottom: size(8);
+
+        .mc-alert {
+            margin-bottom: 0;
+        }
+    }
+
     &__horizontal-line {
         max-width: size(1038);
         border-bottom: 1px solid var(--mc-gray-100);
@@ -98,17 +110,6 @@
             position: relative;
             white-space: nowrap;
 
-            &::after {
-                position: absolute ;
-                content: '';
-                grid-column: 1 / span 12;
-                height: 10px; 
-                width: 100%;
-                background-color: var(--mc-gray-100);
-                top: size(45);
-                left: 0;
-            }     
-
             &__limits {
                 & input {
                     max-width: size(100);
@@ -128,7 +129,7 @@
     &__fields {
         display: grid;
         grid-template-columns: repeat(4, 1fr);
-        gap: size(20) 0;
+        gap: size(20) size(8);
         z-index: 0;
 
         @media (max-width: 1181px) {
@@ -143,9 +144,11 @@
 
     &__config-button {
         display: flex;
-        justify-content: center;
+        flex-direction: column;
+        align-items: center;
         position: relative;
         padding-top: size(32);
+        gap: size(16);
 
         &::before {
             background: var(--mc-gray-100);
@@ -154,6 +157,31 @@
             width: 100%;
             height: size(10);
             top: size(52);
+        }
+
+        .field {
+            &--checkbox {
+                display: flex;
+                flex-direction: column;
+                width: 100%;
+                max-width: size(600);
+                z-index: 1;
+
+                .input__label {
+                    display: flex;
+                    align-items: center;
+                    gap: size(8);
+                    font-size: size(14);
+                    line-height: size(20);
+                    cursor: pointer;
+
+                    input[type="checkbox"] {
+                        width: size(18);
+                        height: size(18);
+                        cursor: pointer;
+                    }
+                }
+            }
         }
 
         .config-phase__info-button {
@@ -165,6 +193,7 @@
             max-width: 100%;
             width: 35%;
             height: size(52);
+            margin-top: size(8);
 
             @media (max-width: 680px) {
                 width: 60%;

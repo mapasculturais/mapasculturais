@@ -15,6 +15,18 @@
         display: flex;
         gap: 10px;
         align-items: flex-end;
+
+        @media (max-width:size(600)) {
+            grid-column: span 12;
+            width: 100%;
+            flex-direction: column;
+            align-items: stretch;
+            padding-top: size(16);
+
+            > div {
+                width: 100%;
+            }
+        }
     }
     &_action {
 
@@ -31,6 +43,11 @@
             border-radius: size(8);
             padding: size(16);
 
+            @media (max-width:size(600)) {
+                grid-column: span 12;
+                width: 100%;
+            }
+
             a {
                 margin-top: size(8);
                 color: var(--mc-white);
@@ -44,6 +61,17 @@
         }
 
         &--center {
+            @media (max-width:size(600)) {
+                grid-column: span 12;
+                width: 100%;
+            }
+        }
+    }
+
+    &__status {
+        @media (max-width:size(600)) {
+            grid-column: span 12;
+            width: 100%;
         }
     }
 

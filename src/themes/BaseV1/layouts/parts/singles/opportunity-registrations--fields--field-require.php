@@ -2,7 +2,7 @@
 
 <div ng-if="field.fieldType !== 'section'">
     <label class="checkbox-label">
-        <input type="checkbox" ng-model="field.required"> 
+        <input type="checkbox" ng-model="field.required" ng-change="onRequiredChange(field)"> 
             <?php i::_e("Marca campo como obrigatório") ?>
     </label>
     <div ng-if="data.fields.length >= 1">

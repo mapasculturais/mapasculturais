@@ -22,7 +22,10 @@ $this->import('
         <p class="entity-occurrence-list__editable--description">
             <?= i::_e('Adicione data, hora e local da ocorrência do seu evento. Você pode criar várias ocorrências com informações diferentes.') ?>
         </p>
-        <create-occurrence :entity="entity" @create="addToOccurrenceList($event)"></create-occurrence>
+        <div class="button-group">
+            <create-occurrence v-if="showInPersonButton" :entity="entity" occurrence-type="in-person" @create="addToOccurrenceList($event)"></create-occurrence>
+            <create-occurrence v-if="showVirtualButton" :entity="entity" occurrence-type="virtual" @create="addToOccurrenceList($event)"></create-occurrence>
+        </div>
     </div>
     <div v-if="editable && createEvent" class="entity-occurrence-list__editable">
         <label class="entity-occurrence-list__editable--title">
@@ -31,7 +34,10 @@ $this->import('
         <p class="entity-occurrence-list__editable--description">
             <?= i::_e('Você pode inserir agora uma ocorrência do seu evento ou a ocorrência única.') ?>
         </p>
-        <create-occurrence :entity="entity" @create="addToOccurrenceList($event)"></create-occurrence>
+        <div class="button-group">
+            <create-occurrence v-if="showInPersonButton" :entity="entity" occurrence-type="in-person" @create="addToOccurrenceList($event)"></create-occurrence>
+            <create-occurrence v-if="showVirtualButton" :entity="entity" occurrence-type="virtual" @create="addToOccurrenceList($event)"></create-occurrence>
+        </div>
     </div>
     <div class="entity-occurrence-list__occurrences">
         <mc-entities name="occurrenceList" type="eventoccurrence" endpoint="find" :query="{event: `EQ(${entity.id})`}" select="*,space.{name,endereco,files.avatar,location}">
@@ -41,16 +47,25 @@ $this->import('
                         <div class="header">
                             <div class="header__title">
                                 <mc-icon name="pin"></mc-icon>
-                                <span class="title">
+                                <span class="title" v-if="occurrence.type !== 'virtual'">
                                     <mc-link :entity="occurrence.space">{{occurrence.space?.name}}</mc-link>
                                 </span>
+                                <span class="title" v-if="occurrence.type === 'virtual'">
+                                    <?= i::_e('Evento Online') ?>
+                                </span>
                             </div>
-                            <span v-if="occurrence.space?.endereco" @click="toggleMap($event)" class="header__link button--icon">
+                            <span v-if="occurrence.space?.endereco && occurrence.type !== 'virtual'" @click="toggleMap($event)" class="header__link button--icon">
                                 <mc-icon name="map"></mc-icon> <?= i::_e('Ver mapa') ?>
                             </span>
                         </div>
-                        <div class="address">
+                        <div class="address" v-if="occurrence.type !== 'virtual'">
                             <p>{{occurrence.space?.endereco}}</p>
+                        </div>
+                        <div class="occurrence__links" v-if="occurrence.type === 'virtual' && occurrence.metadata?.links">
+                            <a v-for="link in occurrence.metadata.links" :key="link.url" :href="link.url" target="_blank" rel="noopener noreferrer" class="occurrence__link">
+                                <mc-icon name="link"></mc-icon>
+                                {{formatPlatform(link.platform)}}
+                            </a>
                         </div>
                         <div class="content">
                             <div class="content__ticket">

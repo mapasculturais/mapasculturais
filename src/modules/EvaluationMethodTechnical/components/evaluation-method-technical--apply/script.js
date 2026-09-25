@@ -19,9 +19,11 @@ app.component('evaluation-method-technical--apply', {
         return {
             processing: false,
             vacancies: this.entity.parent?.vacancies || this.entity.vacancies,
+            registrationListText: '',
             applyData: {
                 from: [0, max],
                 setStatusTo: '',
+                registrationNumbers: [],
                 cutoffScore: 0,
                 earlyRegistrations: false,
                 waitList: false,
@@ -93,6 +95,17 @@ app.component('evaluation-method-technical--apply', {
             this.tabSelected = event.tab.slug;
         },
 
+        parseRegistrationList(text) {
+            if (!text || !text.trim()) {
+                return [];
+            }
+
+            return text
+                .split(/[,;\s\n\r]+/)
+                .map(number => number.trim())
+                .filter(number => number.length > 0);
+        },
+
         setTabClassification() {
             this.applyData.cutoffScore = this.cutoffScore;
             this.applyData.earlyRegistrations = this.selectionType.includes('earlyRegistrations') ? true : false;
@@ -102,16 +115,29 @@ app.component('evaluation-method-technical--apply', {
             this.applyData.quantityVacancies = this.vacancies;
             delete this.applyData.from;
             delete this.applyData.setStatusTo;
+            delete this.applyData.registrationNumbers;
         },
 
         setTabScore() {
-            const propertiesToRemove = ['cutoffScore', 'earlyRegistrations', 'waitList', 'invalidateRegistrations', 'considerQuotas'];
+            const propertiesToRemove = ['cutoffScore', 'earlyRegistrations', 'waitList', 'invalidateRegistrations', 'considerQuotas', 'registrationNumbers'];
 
             for (const prop of propertiesToRemove) {
                 if (this.applyData.hasOwnProperty(prop)) {
                     delete this.applyData[prop];
                 }
             }
+        },
+
+        setTabRegistration() {
+            const propertiesToRemove = ['from', 'cutoffScore', 'earlyRegistrations', 'waitList', 'invalidateRegistrations', 'considerQuotas', 'quantityVacancies'];
+
+            for (const prop of propertiesToRemove) {
+                if (this.applyData.hasOwnProperty(prop)) {
+                    delete this.applyData[prop];
+                }
+            }
+
+            this.applyData.registrationNumbers = this.parseRegistrationList(this.registrationListText);
         },
 
         infosApplyData() {
@@ -123,6 +149,10 @@ app.component('evaluation-method-technical--apply', {
                 this.setTabScore();
             }
 
+            if (this.tabSelected === 'registration') {
+                this.setTabRegistration();
+            }
+
             this.applyData.tabSelected = this.tabSelected;
         },
 
@@ -131,6 +161,7 @@ app.component('evaluation-method-technical--apply', {
             this.applyData = {
                 from: [0, max],
                 setStatusTo: '',
+                registrationNumbers: [],
                 cutoffScore: 0,
                 earlyRegistrations: false,
                 waitList: false,
@@ -138,6 +169,7 @@ app.component('evaluation-method-technical--apply', {
                 considerQuotas: true,
                 quantityVacancies: this.vacancies
             };
+            this.registrationListText = '';
             this.selectionType = [];
             this.tabSelected = 'score';
             this.cutoffScore = this.entity.evaluationMethodConfiguration?.cutoffScore ?? 0;

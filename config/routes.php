@@ -18,15 +18,19 @@ return [
             'usuario'           => ['user', 'single'],
             'agente'            => ['agent', 'single'],
             'espaco'            => ['space', 'single'],
+            'eventos-virtuais'  => ['space', 'single', [0]],
             'projeto'           => ['project', 'single'],
             'selo'              => ['seal', 'single'],
             'oportunidade'      => ['opportunity', 'single'],
             'instalacao'        => ['subsite', 'single'],
-            
+
+            'cadastro-unico'    => ['cadastroUnico', 'single'],
+
             'edicao-de-evento'            => ['event', 'edit'],
             'edicao-de-usuario'           => ['user', 'edit'],
             'edicao-de-agente'            => ['agent', 'edit'],
             'edicao-de-espaco'            => ['space', 'edit'],
+            'edicao-de-eventos-virtuais'  => ['space', 'edit', [0]],
             'edicao-de-projeto'           => ['project', 'edit'],
             'edicao-de-selo'              => ['seal', 'edit'],
             'gestao-de-oportunidade'      => ['opportunity', 'edit'],
@@ -79,8 +83,6 @@ return [
             'inscricao' => ['registration', 'edit'],
             'inscricao' => ['registration', 'single'],
             'inscricao' => ['registration', 'view'],
-            'inscricao' => ['registration', 'exportPDF'],
-            'inscricao' => ['registration', 'createZipFiles'],
 
             'visualizacao-de-formulario' => ['opportunity', 'formPreview'],
 
@@ -92,6 +94,8 @@ return [
 
             'file/arquivo-privado' => ['file', 'privateFile'],
 
+            'inscricao-exportar-pdf' => ['registration', 'exportPDF'],
+            'inscricao-baixar-arquivos' => ['registration', 'createZipFiles'],
         ],
         'controllers' => [
             'painel'         => 'panel',

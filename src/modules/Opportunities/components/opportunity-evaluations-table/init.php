@@ -6,6 +6,7 @@
 
 use MapasCulturais\i;
 use MapasCulturais\Entities\Registration;
+use SealExemption\SealExemptionService;
 
 $committee = [];
 $valuersMetadata = [];
@@ -142,16 +143,38 @@ foreach ($parentOrder as $parent) {
 }
 $default_select = implode(',', $final_select);
 
+$seal_exemption_config = $opportunity->evaluationMethodConfiguration?->sealExemptionConfig;
+$has_seal_exemption_config = SealExemptionService::hasActiveConfig($seal_exemption_config);
+
+if ($has_seal_exemption_config) {
+    // Campos de isenção por selos além do status (header). O timestamp alimenta o
+    // tooltip ("Isento em ...").
+    $default_select .= ',sealExemptionStatus,sealExemptionTimestamp';
+}
+
 
 $headers = [
     [ 'text' => i::__('inscrição', 'opportunity-evaluations-table'), 'value' => 'number', 'slug' => 'number', 'sticky' => true, 'width' => '160px' ],
+    [ 'text' => i::__('Nº avaliador', 'opportunity-evaluations-table'), 'value' => 'valuer?.committeeSequentialNumber', 'slug' => 'committeeSequentialNumber', 'visible' => true, 'width' => '100px' ],
+    [ 'text' => i::__('ID usuário avaliador', 'opportunity-evaluations-table'), 'value' => 'valuer?.user', 'slug' => 'valuerUserId', 'visible' => true, 'width' => '120px' ],
+    [ 'text' => i::__('ID agente avaliador', 'opportunity-evaluations-table'), 'value' => 'valuer?.id', 'slug' => 'valuerAgentId', 'visible' => true, 'width' => '120px' ],
     [ 'text' => i::__('avaliador', 'opportunity-evaluations-table'), 'value' =>  'valuer?.name', 'slug' => 'evaluator', 'visible' => true],
-    [ 'text' => i::__('resultado final', 'opportunity-evaluations-table'), 'value' => 'evaluation?.resultString', 'slug' => 'result'],
+    [ 'text' => i::__('Resultado do avaliador', 'opportunity-evaluations-table'), 'value' => 'evaluation?.resultString', 'slug' => 'result'],
     [ 'text' => i::__('Tipo de proponente', 'opportunity-evaluations-table'), 'value' => 'proponentType', 'slug' => 'proponentType'],
     [ 'text' => i::__('Categoria', 'opportunity-evaluations-table'), 'value' => 'category', 'slug' => 'category'],
     [ 'text' => i::__('Faixa', 'opportunity-evaluations-table'), 'value' => 'range', 'slug' => 'range'],
     [ 'text' => i::__('Ações', 'opportunity-evaluations-table'), 'value' => '', 'slug' => 'delete', 'visible' => true, 'width' => '100px'],
 ];
+
+if ($has_seal_exemption_config) {
+    array_splice($headers, 6, 0, [[
+        'text' => i::__('Dispensada por selos'),
+        'value' => 'sealExemptionStatus',
+        'slug' => 'sealExemption',
+        'visible' => true,
+        'width' => '180px'
+    ]]);
+}
 
 $default_headers = array_merge($default_headers, $headers);
 
@@ -164,4 +187,5 @@ $this->jsObject['config']['opportunityEvaluationsTable'] = [
     'defaultHeaders' => $default_headers,
     'defaultSelect' => $default_select,
     'headers' => $headers,
+    'hasSealExemptionConfig' => $has_seal_exemption_config,
 ];

@@ -15,10 +15,22 @@ if($isAUth){
     }
 }
 
+$disableContact = false;
+if ($isAUth) {
+    $birthDate = $app->user->profile->dataDeNascimento;
+    if ($birthDate) {
+        $today = new \DateTime('now');
+        $birthDateTime = new \DateTime($birthDate);
+        $age = $birthDateTime->diff($today)->y;
+        $disableContact = $age < 18;
+    }
+}
+
 $config = [
     'isAuth' => $isAUth,
     'senderName' => $isAUth ? $app->user->profile->name : "",
     'senderEmail' => $isAUth ? $ownerEmail : "",
+    'disableContact' => $disableContact,
 ];
 
 $this->jsObject['complaintSuggestionConfig'] = $config;

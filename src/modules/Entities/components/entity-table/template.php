@@ -135,15 +135,41 @@ $this->import('
                             <div class="entity-table__popover">
                                 <label class="field__title bold"><?= i::__('Selecione as colunas que deseja exibir:')?></label>
 
+                                <div class="field entity-table__columns-search">
+                                    <input
+                                        v-model.trim="columnsSearchText"
+                                        type="text"
+                                        class="field__input"
+                                        :placeholder="text('buscar colunas')">
+                                </div>
+
                                 <label class="field__checkbox">
                                     <input ref="allHeaders" type="checkbox" @click="showAllHeaders()" :checked="allHeadersActive"> <?= i::__('Todas as colunas') ?>
                                 </label>
 
-                                <template v-for="column in columns">
-                                    <label v-if="column.text" class="field__checkbox">
-                                        <input :checked="column.visible" type="checkbox" :value="column.slug" @click="toggleHeaders($event)"> {{column.text}} 
+                                <template v-for="column in filteredColumns">
+                                    <label
+                                        v-if="column.text"
+                                        class="field__checkbox entity-table__column-row"
+                                        :draggable="showIndex"
+                                        @dragstart="onColumnDragStart($event, column.slug)"
+                                        @dragover.prevent
+                                        @drop="onColumnDrop($event, column.slug)">
+                                        <input :checked="column.visible" type="checkbox" :value="column.slug" @click="toggleHeaders($event)"> {{column.text}}
                                     </label>
                                 </template>
+                                <small v-if="!filteredColumns.length" class="entity-table__columns-empty">{{ text('nenhuma coluna encontrada') }}</small>
+
+                                <div v-if="showIndex || canManageColumnsGlobal" class="entity-table__columns-actions">
+                                    <small v-if="showIndex" class="entity-table__columns-help"><?= i::__('Arraste para reordenar') ?></small>
+
+                                    <button
+                                        v-if="canManageColumnsGlobal"
+                                        class="button button--sm button--primary button--icon"
+                                        @click.prevent="saveGlobalColumnsConfig()">
+                                        <?= i::__('Salvar padrão global') ?>
+                                    </button>
+                                </div>
                             </div>
 
                             <template #button="popover">

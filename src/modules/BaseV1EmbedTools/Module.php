@@ -53,10 +53,6 @@ class Module extends \MapasCulturais\Module
                 }
             });
         }
-
-        $app->hook('GET(registration.evaluation):before', function() use($app) {
-            $app->view->enqueueScript('app-v2', 'embedtools-evaluations', 'js/embedtools-evaluations.js');
-        });
     }
 
     public function register()

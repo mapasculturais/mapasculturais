@@ -1,11 +1,13 @@
 class Entity {
     static __pkCache = new Map();
+    static __handledError = Symbol('handled entity error');
   
     constructor(objectType, id, scope = 'default') {
         this.__objectType = objectType;
         this.id = id;
         this.__scope = (scope || 'default');
         this.__validationErrors = {};
+        this.__validationMessages = [];
         
         this.__messagesEnabled = true;
         this.__processing = false;
@@ -14,9 +16,32 @@ class Entity {
 
         this.__lockedFields = [];
         this.__lockedFieldSeals = {};
+        this.__fieldSealStatuses = {};
 
         // as traduções estão no arquivo texts.php do componente <entity>
         this.text = Utils.getTexts('mc-entity');
+    }
+
+    static normalizeValidationMessages(errors) {
+        const messages = [];
+        const uniqueMessages = new Set();
+
+        const visit = (value) => {
+            if (typeof value === 'string') {
+                const message = value.trim();
+                if (message && !uniqueMessages.has(message)) {
+                    uniqueMessages.add(message);
+                    messages.push(message);
+                }
+            } else if (Array.isArray(value)) {
+                value.forEach(visit);
+            } else if (value && typeof value === 'object') {
+                Object.values(value).forEach(visit);
+            }
+        };
+
+        visit(errors);
+        return messages;
     }
 
     static fromJson(object, scope = 'default') {
@@ -32,6 +57,7 @@ class Entity {
             'terms', 'seals', , 'currentUserPermissions', 
             'relatedAgents', 'agentRelations',
             'relatedSpaces', 'spaceRelations',
+            'editableFields', 'allowedFields',
         ];
         
         this.populateId(obj);
@@ -42,6 +68,10 @@ class Entity {
 
         if(obj.__lockedFieldSeals) {
             this.__lockedFieldSeals = obj.__lockedFieldSeals;
+        }
+
+        if(obj.__fieldSealStatuses) {
+            this.__fieldSealStatuses = obj.__fieldSealStatuses;
         }
 
         for (const prop of defaultProperties) {
@@ -74,8 +104,10 @@ class Entity {
             if ((definition.type == 'datetime' || definition.type == 'date' ) && val && !(val instanceof McDate)) {
                 if (typeof val == 'string') {
                     val = new McDate(val);
-                } else {
+                } else if (typeof val?.date == 'string' && val.date) {
                     val = new McDate(val.date);
+                } else {
+                    val = null;
                 }
             }
 
@@ -158,7 +190,8 @@ class Entity {
         const type = prop?.['@entityType'] || this.$RELATIONS[key]?.targetEntity?.toLocaleLowerCase();
         const id = typeof prop == 'number' ? prop : prop?.id 
 
-        if (type && id) {
+        // id 0 é PK válida; `if (id)` descartava relações (ex.: owner) e quebrava templates (.singleUrl)
+        if (type && id !== undefined && id !== null && id !== '') {
             const propAPI = new API(type, this.__scope);
             const instance = propAPI.getEntityInstance(id);
             if(typeof prop != 'number') {
@@ -171,7 +204,9 @@ class Entity {
     }
 
     populateId(obj) {
-        this.id = obj[this.$PK];
+        if (obj[this.$PK] !== undefined && obj[this.$PK] !== null) {
+            this.id = obj[this.$PK];
+        }
     }
 
     populateFiles(files) {        
@@ -197,10 +232,12 @@ class Entity {
 
     cleanErrors() {
         this.__validationErrors = {};
+        this.__validationMessages = [];
     }
 
     catchErrors(res, data) {
         let message = null;
+        let handled = false;
         
         if (typeof data.data === 'string') {
             message = data.data;
@@ -214,14 +251,33 @@ class Entity {
         
         if (res.status >= 500 && res.status <= 599) {
             this.sendMessage(message || this.text('erro inesperado'), 'error');
+            handled = true;
         } else if(res.status == 400) {
             if (data.error) {
-                this.__validationErrors = data.data;
-                this.sendMessage(message || this.text('erro de validacao'), 'error');
+                // data.data pode ser string (BadRequest genérico) ou mapa prop→erros.
+                // Sempre manter objeto para não quebrar entity-field.hasErrors.
+                this.__validationErrors = (data.data && typeof data.data === 'object' && !Array.isArray(data.data))
+                    ? data.data
+                    : {};
+                this.__validationMessages = Entity.normalizeValidationMessages(data.data);
+
+                if (this.__validationMessages.length) {
+                    this.sendMessage({
+                        title: this.text('nao foi possivel salvar'),
+                        messages: this.__validationMessages,
+                        persistent: true,
+                    }, 'error');
+                } else {
+                    this.sendMessage(message || this.text('erro de validacao'), 'error');
+                }
+                handled = true;
             }
         } else if(res.status == 403) {
             this.sendMessage(message || this.text('permissao negada'), 'error');
+            handled = true;
         }
+
+        return handled;
     }
 
     data(onlyModifiedFields) {
@@ -358,7 +414,7 @@ class Entity {
         const result = {};
         if(this.seals && this.seals.length > 0) {
             const sealsById = {};
-            
+
             for (const seal of this.seals) {
                 sealsById[seal.sealId] = seal;
             }
@@ -367,6 +423,26 @@ class Entity {
                 result[field] = this.__lockedFieldSeals[field].map((sealId) => {
                     return sealsById[sealId];
                 });
+            }
+        }
+
+        return result;
+    }
+
+    get $fieldSealStatuses() {
+        const result = {};
+        if(this.seals && this.seals.length > 0) {
+            const sealsById = {};
+
+            for (const seal of this.seals) {
+                sealsById[seal.sealId] = seal;
+            }
+
+            for (const field in this.__fieldSealStatuses) {
+                result[field] = this.__fieldSealStatuses[field].map((fieldSeal) => {
+                    const seal = sealsById[fieldSeal.sealId];
+                    return seal ? {...seal, ...fieldSeal} : null;
+                }).filter((seal) => seal);
             }
         }
 
@@ -449,9 +525,13 @@ class Entity {
             data = cb(data) || data;
             result = Promise.resolve(data);
         } else {
-            this.catchErrors(res, data);
-            data.status = res.status;
-            result = Promise.reject(data);
+            const handled = this.catchErrors(res, data);
+            const error = data && typeof data === 'object' ? data : {error: true, data};
+            error.status = res.status;
+            if (handled) {
+                error[Entity.__handledError] = true;
+            }
+            result = Promise.reject(error);
         }
 
         this.__processing = false;
@@ -475,6 +555,11 @@ class Entity {
 
     async doCatch(error) {
         this.__processing = false;
+
+        if (error?.[Entity.__handledError]) {
+            return Promise.reject(error);
+        }
+
         this.sendMessage(this.text('erro inesperado'), 'error');
         return Promise.reject({error: true, status:0, data: this.text('erro inesperado'), exception: error});
     }
@@ -518,7 +603,7 @@ class Entity {
             }
         }
 
-        if(!this.id) {
+        if(this.id === undefined || this.id === null) {
             preserveValues = false;
         }
         
@@ -547,7 +632,7 @@ class Entity {
 
                     const res = await this.API.persistEntity(this, forceSave, updateMethod);                    
                     this.doPromise(res, (entity) => {
-                        if (this.id) {
+                        if (this.id !== undefined && this.id !== null) {
                             this.sendMessage(this.text('modificacoes salvas'));
                         } else {
                             this.sendMessage(this.text('entidade salva'));
@@ -832,11 +917,15 @@ class Entity {
             this.doPromise(res, (data) => {
                 let index;
                 
-                index = this.agentRelations[group].indexOf(agent);
-                this.agentRelations[group].splice(index,1);
+                index = this.agentRelations[group]?.findIndex(relation => relation.agent?.id === agent.id);
+                if (index != undefined && index != -1) {
+                    this.agentRelations[group].splice(index, 1);
+                }
                 
-                index = this.relatedAgents[group].indexOf(agent);
-                this.relatedAgents[group].splice(index,1);
+                index = this.relatedAgents[group]?.findIndex(a => a.id === agent.id);
+                if (index != undefined && index != -1) {
+                    this.relatedAgents[group].splice(index, 1);
+                }
             
             });
         } catch (error) {

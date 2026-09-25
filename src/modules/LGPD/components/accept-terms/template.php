@@ -19,7 +19,7 @@ $this->import('
     <header class="mapas-terms__header">
         <div class="mapas-terms__header-title">
             <div class="title">
-                <h1 class="title__title"> <?= i::_e('Termos e condições') ?> </h1>
+                <h1 class="title__title"> <?= $this->text('title', i::__('Termos e condições')) ?> </h1>
             </div>
         </div>
     </header>

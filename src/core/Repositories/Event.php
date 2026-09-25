@@ -3,10 +3,26 @@ namespace MapasCulturais\Repositories;
 use MapasCulturais\Traits;
 use MapasCulturais\App;
 
+/**
+ * Repositório para entidades de evento
+ * 
+ * Este repositório fornece métodos específicos para consulta
+ * e manipulação de entidades do tipo Event no sistema,
+ * com foco em buscas por espaço, projeto, agente e intervalo de datas.
+ * 
+ * @package MapasCulturais\Repositories
+ */
 class Event extends \MapasCulturais\Repository{
     use Traits\RepositoryKeyword,
         Traits\RepositoryAgentRelation;
 
+    /**
+     * Obtém os IDs dos espaços do subsite atual
+     * 
+     * @param bool $implode Se true, retorna string SQL; se false, retorna array
+     * @return string|array IDs dos espaços
+     * @access protected
+     */
     protected function _getCurrentSubsiteSpaceIds($implode = true){
         $app = App::i();
         if($app->getCurrentSubsiteId()){
@@ -18,6 +34,16 @@ class Event extends \MapasCulturais\Repository{
         return $space_ids;
     }
 
+    /**
+     * Encontra eventos por espaço
+     * 
+     * @param mixed $space Espaço ou array de espaços/IDs
+     * @param string|\DateTime|null $date_from Data de início (padrão: hoje)
+     * @param string|\DateTime|null $date_to Data de fim (padrão: igual a date_from)
+     * @param int|null $limit Limite de resultados
+     * @param int|null $offset Offset dos resultados
+     * @return array Eventos encontrados
+     */
     public function findBySpace($space, $date_from = null, $date_to = null, $limit = null, $offset = null){
 
         $app = App::i();
@@ -105,6 +131,16 @@ class Event extends \MapasCulturais\Repository{
         return $result;
     }
 
+    /**
+     * Encontra eventos por projeto
+     * 
+     * @param mixed $project Projeto ou array de projetos/IDs
+     * @param string|\DateTime|null $date_from Data de início (padrão: hoje)
+     * @param string|\DateTime|null $date_to Data de fim (padrão: igual a date_from)
+     * @param int|null $limit Limite de resultados
+     * @param int|null $offset Offset dos resultados
+     * @return array Eventos encontrados
+     */
     public function findByProject($project, $date_from = null, $date_to = null, $limit = null, $offset = null){
 
         if($project instanceof \MapasCulturais\Entities\Project){
@@ -190,6 +226,16 @@ class Event extends \MapasCulturais\Repository{
     }
 
 
+    /**
+     * Encontra eventos por agente
+     * 
+     * @param \MapasCulturais\Entities\Agent $agent Agente
+     * @param string|\DateTime|null $date_from Data de início (padrão: hoje)
+     * @param string|\DateTime|null $date_to Data de fim (padrão: igual a date_from)
+     * @param int|null $limit Limite de resultados
+     * @param int|null $offset Offset dos resultados
+     * @return array Eventos encontrados
+     */
     public function findByAgent(\MapasCulturais\Entities\Agent $agent, $date_from = null, $date_to = null, $limit = null, $offset = null){
         
         if(is_null($date_from)){
@@ -235,7 +281,7 @@ class Event extends \MapasCulturais\Repository{
                         FROM
                             agent_relation
                         WHERE
-                            object_type = 'MapasCulturais\Entities\Event' AND
+                            object_type = 'MapasCulturais\\Entities\\Event' AND
                             agent_id = :agent_id
                     ) OR
 
@@ -267,6 +313,16 @@ class Event extends \MapasCulturais\Repository{
     }
 
 
+    /**
+     * Encontra eventos por intervalo de datas
+     * 
+     * @param string|\DateTime|null $date_from Data de início (padrão: hoje)
+     * @param string|\DateTime|null $date_to Data de fim (padrão: igual a date_from)
+     * @param int|null $limit Limite de resultados
+     * @param int|null $offset Offset dos resultados
+     * @param bool $only_ids Se true, retorna apenas IDs
+     * @return array Eventos ou IDs encontrados
+     */
     public function findByDateInterval($date_from = null, $date_to = null, $limit = null, $offset = null, $only_ids = false){
                 
         if(is_null($date_from)){
@@ -330,6 +386,14 @@ class Event extends \MapasCulturais\Repository{
         return $result;
     }
     
+    /**
+     * Obtém eventos executando SQL e processando resultados
+     * 
+     * @param string $sql Consulta SQL
+     * @param array $params Parâmetros da consulta
+     * @return array Eventos encontrados
+     * @access protected
+     */
     function _getEventsBySQL($sql, $params = []){
         $ids = $this->_getIdsBySQL($sql, $params);
         $events = $this->_getEventsByIds($ids);
@@ -337,6 +401,14 @@ class Event extends \MapasCulturais\Repository{
         return $events;
     }
     
+    /**
+     * Obtém IDs de eventos executando SQL
+     * 
+     * @param string $sql Consulta SQL
+     * @param array $params Parâmetros da consulta
+     * @return array IDs dos eventos
+     * @access protected
+     */
     function _getIdsBySQL($sql, $params = []){
         $conn = $this->_em->getConnection();
     
@@ -353,6 +425,13 @@ class Event extends \MapasCulturais\Repository{
         return $ids;
     }
 
+    /**
+     * Obtém eventos por seus IDs
+     * 
+     * @param array $ids IDs dos eventos
+     * @return array Eventos encontrados
+     * @access protected
+     */
     function _getEventsByIds($ids){
         if(!$ids){
             return [];

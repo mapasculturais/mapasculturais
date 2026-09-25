@@ -6,7 +6,7 @@ app.component('opportunity-form-import', {
 
     setup() {
         // os textos estão localizados no arquivo texts.php deste componente 
-        const text = Utils.getTexts('entity-files-list')
+        const text = Utils.getTexts('opportunity-form-import');
         return { text }
     },
 
@@ -34,7 +34,7 @@ app.component('opportunity-form-import', {
 
     data() {
         return {
-            newFile: {},
+            newFile: null,
             maxFileSize: $MAPAS.maxUploadSizeFormatted,
         }
     },
@@ -44,23 +44,32 @@ app.component('opportunity-form-import', {
             this.newFile = this.$refs.file.files[0];
         },
 
-        upload(popover) {
-            let data = {
-                group: this.group,
-                description: this.newFile.description
-            };
+        async importFields(popover, close) {
+            if (!this.newFile) {
+                return;
+            }
 
-            this.entity.upload(this.newFile, data).then((response) => {
-                this.$emit('uploaded', this);
-                popover.close()
-            });
+            const formData = new FormData();
+            formData.append('fieldsFile', this.newFile);
 
-            return true;
+            const api = new API('opportunity');
+            const url = api.createUrl('importFields', { id: this.entity.id });
+
+            try {
+                const response = await api.POST(url, formData);
+                const result = await response.json();
+
+                if (result) {
+                    const messages = useMessages();
+                    messages.success(this.text('Importado com sucesso, você deve receber um e-mail ao terminar o processo de importação.'));
+                }
+            } catch (e) {
+                console.error(e);
+                const messages = useMessages();
+                messages.error(this.text('Ocorreu um erro ao importar o formulário.'));
+            } finally {
+                close();
+            }
         },
-
-        rename(file, popopver) {
-            file.description = file.newDescription;
-            file.save().then(() => popopver.close());
-        }
     },
 });

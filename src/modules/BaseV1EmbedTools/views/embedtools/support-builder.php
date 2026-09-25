@@ -1,1 +1,0 @@
-<?php $this->part('support/opportunity-support-settings', ['entity' => $entity]);?>

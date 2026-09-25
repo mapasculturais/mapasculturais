@@ -80,6 +80,13 @@ class EventOccurrence extends \MapasCulturais\Entity
     #[ORM\Column(name: "status", type: "smallint", nullable: false)]
     protected $status = self::STATUS_ENABLED;
 
+    #[ORM\Column(name: "type", type: "text", nullable: false)]
+    protected $type;
+
+    #[ORM\Column(name: "metadata", type: "json", nullable: true)]
+    protected $metadata;
+
+
     static function getValidations() {
         $app = App::i();
         $validations = [
@@ -337,6 +344,8 @@ class EventOccurrence extends \MapasCulturais\Entity
             '@entityType' => $this->getControllerId(),
             'id' => $this->id,
             'rule'=> $this->getRule(),
+            'type' => $this->type,
+            'metadata' => $this->metadata,
             'startsOn' => $this->getStartsOn(),
             'startsAt' => $this->getStartsAt(),
             'endsOn' => $this->getEndsOn(),

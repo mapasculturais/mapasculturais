@@ -6,7 +6,9 @@ use MapasCulturais\Entities\User;
 use MapasCulturais\Exceptions\PermissionDenied;
 
 /**
- * @property Entities\User|GuestUser $authenticatedUser
+ * Classe abstrata base para provedores de autenticação
+ * 
+ * @property Entities\User|null $authenticatedUser O usuário autenticado ou null
  * 
  * @package MapasCulturais
  */
@@ -15,12 +17,29 @@ abstract class AuthProvider {
         Traits\MagicGetter,
         Traits\MagicSetter;
 
+    /**
+     * Configurações do provedor de autenticação
+     * @var array
+     */
     protected $_config = [];
 
+    /**
+     * Instância do usuário autenticado
+     * @var Entities\User|null
+     */
     private $_authenticatedUser = null;
 
+    /**
+     * Instância do usuário convidado
+     * @var GuestUser|null
+     */
     private $_guestUser = null;
 
+    /**
+     * Construtor da classe
+     * 
+     * @param array $config
+     */
     function __construct(array $config = []) {
         $this->_config = $config;
         $this->_init();
@@ -41,15 +60,30 @@ abstract class AuthProvider {
         });
     }
 
+    /**
+     * Inicializa o provedor (implementação dependente do driver)
+     */
     abstract protected function _init();
 
+    /**
+     * Limpa a sessão do usuário (implementação dependente do driver)
+     */
     abstract function _cleanUserSession();
 
     /**
+     * Cria um novo usuário (implementação dependente do driver)
+     * 
+     * @param array $data
      * @return \MapasCulturais\Entities\User
      */
     abstract protected function _createUser($data);
 
+    /**
+     * Cria um novo usuário e executa ações pós-criação (cache, e-mail de boas-vindas)
+     * 
+     * @param array $data
+     * @return \MapasCulturais\Entities\User
+     */
     final protected function createUser($data){
         $app = App::i();
         $app->applyHookBoundTo($this, 'auth.createUser:before', [$data]);
@@ -71,6 +105,11 @@ abstract class AuthProvider {
         return $user;
     }
 
+    /**
+     * Realiza o logout do usuário
+     * 
+     * @return void
+     */
     final function logout(){
         App::i()->applyHookBoundTo($this, 'auth.logout:before', [$this->_authenticatedUser]);
 
@@ -80,6 +119,12 @@ abstract class AuthProvider {
         App::i()->applyHookBoundTo($this, 'auth.logout:after');
     }
 
+    /**
+     * Exige autenticação para prosseguir
+     * 
+     * @param string|null $redirect_url URL para redirecionar após o login
+     * @return void
+     */
     final function requireAuthentication($redirect_url = null){
         $app = App::i();
         $app->applyHookBoundTo($this, 'auth.requireAuthentication');
@@ -87,6 +132,11 @@ abstract class AuthProvider {
         $this->_requireAuthentication();
     }
 
+    /**
+     * Executa a ação de exigir autenticação (redirecionamento ou erro JSON)
+     * 
+     * @return void
+     */
     protected function _requireAuthentication() {
         $app = App::i();
         if($app->request->isAjax() || $app->request->getHeaderLine('Content-Type') === 'application/json'){
@@ -97,7 +147,7 @@ abstract class AuthProvider {
     }
 
     /**
-     * Defines the URL to redirect after authentication
+     * Define a URL para redirecionar após a autenticação
      * @param string $redirect_path
      */
     public function setRedirectPath(string $redirect_path) {
@@ -105,13 +155,18 @@ abstract class AuthProvider {
     }
 
     /**
-     * Defines the URL to redirect after authentication
+     * Define a URL para redirecionar após a autenticação (interno)
      * @param string $redirect_path
      */
     protected function _setRedirectPath(string $redirect_path) {
         $_SESSION['mapasculturais.auth.redirect_path'] = $redirect_path;
     }
 
+    /**
+     * Retorna a URL de redirecionamento pós-autenticação
+     * 
+     * @return string
+     */
     protected function getRedirectPath() {
         $app = App::i();
         
@@ -122,6 +177,12 @@ abstract class AuthProvider {
         return $redirect;
     }
 
+    /**
+     * Define o usuário autenticado e dispara o hook de login
+     * 
+     * @param Entities\User|null $user
+     * @return void
+     */
     protected final function _setAuthenticatedUser(Entities\User|null $user = null){
         $this->_authenticatedUser = $user;
         App::i()->applyHookBoundTo($this, 'auth.login', [$user]);
@@ -136,8 +197,17 @@ abstract class AuthProvider {
         $this->_authenticatedUser = $user;
     }
 
+    /**
+     * Obtém o usuário autenticado da sessão ou cookie (implementação dependente do driver)
+     */
     abstract function _getAuthenticatedUser();
 
+    /**
+     * Retorna o usuário autenticado ou a instância de GuestUser
+     * 
+     * @return Entities\User|GuestUser
+     * @throws PermissionDenied caso o usuário esteja inativo
+     */
     final function getAuthenticatedUser(){
         $user = $this->_authenticatedUser;
         
@@ -154,11 +224,21 @@ abstract class AuthProvider {
 
     }
 
+    /**
+     * Verifica se o usuário está autenticado
+     * 
+     * @return bool
+     */
     final function isUserAuthenticated(){
         return !is_null($this->_authenticatedUser);
     }
 
 
+    /**
+     * Define os cookies de autenticação
+     * 
+     * @return void
+     */
     function setCookies(){
         $user_id = $this->isUserAuthenticated() ? $this->getAuthenticatedUser()->id : 0;
         $user_is_adm = $this->getAuthenticatedUser()->is('admin');

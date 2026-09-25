@@ -111,13 +111,25 @@ app.component('mc-multiselect', {
 
         filteredItems() {
             const result = [];
-            for (let value in this.dataItems) {
-                let label = typeof this.dataItems[value] == 'object' ? this.dataItems[value].label : this.dataItems[value];
+            for (let key in this.dataItems) {
+                const entry = this.dataItems[key];
+                let value;
+                let label;
+
+                if (typeof entry === 'object' && entry !== null && Object.prototype.hasOwnProperty.call(entry, 'value')) {
+                    value = entry.value;
+                    label = entry.label ?? entry.value;
+                } else {
+                    // Objeto simples {id: label} ou primitivo: a chave é o valor persistido no model.
+                    value = key;
+                    label = entry;
+                }
+
                 const _filter = this.filter.toLocaleUpperCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
-                const _item = label.toLocaleUpperCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+                const _item = String(label).toLocaleUpperCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
 
                 if(_item.indexOf(_filter) >= 0) {
-                    result.push({value, label});
+                    result.push({ value, label });
                 }
             }
 
@@ -142,6 +154,15 @@ app.component('mc-multiselect', {
     },
 
     methods: {
+        /** Comparação tolerante: IDs numéricos vs string ("4" == 4). */
+        modelContains(value) {
+            return this.model.findIndex((item) => item == value) >= 0;
+        },
+
+        modelIndexOf(value) {
+            return this.model.findIndex((item) => item == value);
+        },
+
         highlightedItem(item) {
             const _filter = this.filter.toLocaleUpperCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
             const _item = item.toLocaleUpperCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
@@ -157,8 +178,11 @@ app.component('mc-multiselect', {
         },
 
         remove(key) {
-            const indexOf = this.model.indexOf(key);
-            this.model.splice(indexOf,1);
+            const indexOf = this.modelIndexOf(key);
+            if (indexOf < 0) {
+                return;
+            }
+            this.model.splice(indexOf, 1);
             this.$emit('removed', key);
 
         },
@@ -199,13 +223,13 @@ app.component('mc-multiselect', {
                     this.$emit('selected', key);
                 }
             } else {
-                const ndIndex = this.model.indexOf('@NA');
+                const ndIndex = this.modelIndexOf('@NA');
                 
                 if (ndIndex >= 0) {
                     this.model.splice(ndIndex, 1);
                 }
 
-                if (this.model.indexOf(key) >= 0) {
+                if (this.modelContains(key)) {
                     this.remove(key);
                 } else if(this.canSelectMore) {
                     this.model.push(key);

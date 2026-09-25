@@ -13,5 +13,8 @@ $this->import('
 
 ?>
 <span class="icon">
-    <entity-profile :entity="entity.owner" size="small"></entity-profile>
+    <entity-profile :entity="targetEntity" size="small"></entity-profile>
 </span>
+<div v-if="errorMessages.length" class="field__error">
+    {{ errorMessages.join(', ') }}
+</div>

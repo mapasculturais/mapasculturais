@@ -226,8 +226,8 @@ class PrivateEntityTest extends TestCase
         $this->processPCache();
 
         $query_params = [
-            ['@select' => 'id,name,owner.{name},status'],
-            ['@select' => 'id,name,status'],
+            ['@select' => 'id,name,owner.{name},status', 'id' => 'GT(0)'],
+            ['@select' => 'id,name,status', 'id' => 'GT(0)'],
         ];
 
         

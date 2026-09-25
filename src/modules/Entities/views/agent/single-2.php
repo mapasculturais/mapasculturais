@@ -23,6 +23,7 @@ $this->import('
     entity-social-media
     entity-terms
     mc-breadcrumb
+    mc-card
     mc-container
     mc-share-links
     mc-tab
@@ -49,6 +50,18 @@ $this->breadcrumb = [
                         <opportunity-list></opportunity-list>
                         <div class="grid-12">
                             <agent-data-2 :entity="entity"></agent-data-2>
+                            <?php $this->applyTemplateHook('single2-agent-documents','before') ?>
+                            <template v-if="entity.currentUserPermissions.viewPrivateData">
+                                <div class="col-12 agent-data">
+                                    <div class="agent-data__secondTitle">
+                                        <h4 class="title bold"><?php i::_e("Documentos e Certidões") ?></h4>
+                                    </div>
+                                    <entity-files-list v-if="entity.files?.['docs-certidao-fiscal']" :entity="entity" classes="col-12 docs-anexo-list" group="docs-certidao-fiscal" seal-prop="certidaoFiscalAnexo" title="<?php i::_e('Certidão de Regularidade Fiscal'); ?>"></entity-files-list>
+                                    <entity-files-list v-if="entity.files?.['docs-certidao-trabalhista']" :entity="entity" classes="col-12 docs-anexo-list" group="docs-certidao-trabalhista" seal-prop="certidaoTrabalhistaAnexo" title="<?php i::_e('Certidão de Regularidade Trabalhista'); ?>"></entity-files-list>
+                                    <entity-files-list v-if="entity.files?.['docs-certidao-contas']" :entity="entity" classes="col-12 docs-anexo-list" group="docs-certidao-contas" seal-prop="certidaoPrestacaoContasAnexo" title="<?php i::_e('Certidão de Prestação de Contas'); ?>"></entity-files-list>
+                                </div>
+                            </template>
+                            <?php $this->applyTemplateHook('single2-agent-documents','after') ?>
                             <country-address-view v-if="entity.publicLocation" :entity="entity" class="col-12"></country-address-view>
                             <div v-if="entity.longDescription" class="col-12">
                                 <h2><?php i::_e('Descrição Detalhada'); ?></h2>

@@ -60,7 +60,7 @@ abstract class Request extends \MapasCulturais\Entity{
     #[ORM\JoinColumn(name: "requester_user_id", referencedColumnName: "id", onDelete: "CASCADE")]
     protected $requesterUser;
 
-    #[ORM\OneToMany(targetEntity: "MapasCulturais\Entities\Notification", mappedBy: "request", cascade: ["all"], orphanRemoval: true)]
+    #[ORM\OneToMany(targetEntity: "MapasCulturais\Entities\Notification", mappedBy: "request", cascade: ["all"])]
     protected $notifications;
 
     #[ORM\Column(name: "metadata", type: "json", nullable: true)]

@@ -23,7 +23,7 @@ class Role extends \MapasCulturais\Entity{
     #[ORM\Column(name: "name", type: "string", length: 32, nullable: false)]
     public $name;
 
-    #[ORM\ManyToOne(targetEntity: "MapasCulturais\Entities\User", cascade: ["persist"], fetch: "LAZY")]
+    #[ORM\ManyToOne(targetEntity: "MapasCulturais\Entities\User", inversedBy: "roles")]
     #[ORM\JoinColumn(name: "usr_id", referencedColumnName: "id", nullable: false, onDelete: "CASCADE")]
     protected $user;
 

@@ -26,6 +26,10 @@ app.component('opportunity-proponent-types', {
                 "Coletivo": false,
                 "Pessoa Jurídica": false
             },
+            proponentAgentRelationAvatar: this.entity.proponentAgentRelationAvatar || {
+                "Coletivo": false,
+                "Pessoa Jurídica": false
+            },
         };
     },
 
@@ -51,6 +55,7 @@ app.component('opportunity-proponent-types', {
     
                 if (optionValue === 'Coletivo' || optionValue === 'Pessoa Jurídica') {
                     this.proponentAgentRelation[optionValue] = false;
+                    this.proponentAgentRelationAvatar[optionValue] = false;
                 }
             }
 
@@ -60,6 +65,17 @@ app.component('opportunity-proponent-types', {
 
         toggleAgentRelation(event, type) {
             this.proponentAgentRelation[type] = event.target.checked;
+
+            if (!event.target.checked) {
+                this.proponentAgentRelationAvatar[type] = false;
+            }
+
+            this.updateProponentAgentRelation();
+            this.entity.save();
+        },
+
+        toggleAgentRelationAvatar(event, type) {
+            this.proponentAgentRelationAvatar[type] = event.target.checked;
             this.updateProponentAgentRelation();
             this.entity.save();
         },
@@ -68,6 +84,7 @@ app.component('opportunity-proponent-types', {
             const anyAgentRelationChecked = Object.values(this.proponentAgentRelation).includes(true);
             this.entity.useAgentRelationColetivo = anyAgentRelationChecked ? 'required' : 'dontUse';
             this.entity.proponentAgentRelation = this.proponentAgentRelation;
+            this.entity.proponentAgentRelationAvatar = this.proponentAgentRelationAvatar;
         }
     }
 });

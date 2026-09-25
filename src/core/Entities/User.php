@@ -92,10 +92,10 @@ class User extends \MapasCulturais\Entity implements \MapasCulturais\UserInterfa
     /**
      * @var \MapasCulturais\Entities\Role[] User Roles
      */
-    #[ORM\OneToMany(targetEntity: "MapasCulturais\Entities\Role", mappedBy: "user", cascade: ["remove"], orphanRemoval: true)]
+    #[ORM\OneToMany(targetEntity: "MapasCulturais\Entities\Role", mappedBy: "user", cascade: ["remove"])]
     protected $roles;
 
-    #[ORM\OneToMany(targetEntity: "MapasCulturais\Entities\Agent", mappedBy: "user", cascade: ["remove"], orphanRemoval: true, fetch: "LAZY")]
+    #[ORM\OneToMany(targetEntity: "MapasCulturais\Entities\Agent", mappedBy: "user", cascade: ["remove"], fetch: "LAZY")]
     #[ORM\OrderBy(["createTimestamp" => "ASC"])]
     protected $agents;
 
@@ -109,13 +109,13 @@ class User extends \MapasCulturais\Entity implements \MapasCulturais\UserInterfa
     /**
      * @var \MapasCulturais\Entities\Procuration[] 
      */
-    #[ORM\OneToMany(targetEntity: "MapasCulturais\Entities\Procuration", mappedBy: "user", cascade: ["remove"], orphanRemoval: true, fetch: "LAZY")]
+    #[ORM\OneToMany(targetEntity: "MapasCulturais\Entities\Procuration", mappedBy: "user", cascade: ["remove"], fetch: "LAZY")]
     protected $_userProcurations;
 
     /**
      * @var \MapasCulturais\Entities\Procuration[] 
      */
-    #[ORM\OneToMany(targetEntity: "MapasCulturais\Entities\Procuration", mappedBy: "attorney", cascade: ["remove"], orphanRemoval: true, fetch: "LAZY")]
+    #[ORM\OneToMany(targetEntity: "MapasCulturais\Entities\Procuration", mappedBy: "attorney", cascade: ["remove"], fetch: "LAZY")]
     protected $_attorneyProcurations;
 
     protected $_isDeleting = false;
@@ -669,7 +669,7 @@ class User extends \MapasCulturais\Entity implements \MapasCulturais\UserInterfa
                     LEFT JOIN agent a ON a.id = ar.agent_id 
                     LEFT JOIN usr u ON u.id = a.id 
             WHERE 
-                ar.object_type = 'MapasCulturais\Entities\EvaluationMethodConfiguration' AND
+                ar.object_type = 'evaluationmethodconfigurationagentrelation' AND
                 u.id = {$this->id}");
         
         return (bool) $result;
@@ -704,7 +704,16 @@ class User extends \MapasCulturais\Entity implements \MapasCulturais\UserInterfa
         $opportunities = $app->repo('Opportunity')->findBy(['id' => $opportunity_ids]);
 
         usort($opportunities, function(Opportunity $opp1, Opportunity $opp2) {
-            return $opp2->evaluationMethodConfiguration->evaluationFrom <=> $opp1->evaluationMethodConfiguration->evaluationFrom;
+            $from1 = $opp1->evaluationMethodConfiguration->evaluationFrom;
+            $from2 = $opp2->evaluationMethodConfiguration->evaluationFrom;
+            $ts1 = $from1 instanceof \DateTimeInterface ? $from1->getTimestamp() : 0;
+            $ts2 = $from2 instanceof \DateTimeInterface ? $from2->getTimestamp() : 0;
+
+            if ($ts2 !== $ts1) {
+                return $ts2 <=> $ts1;
+            }
+
+            return $opp2->id <=> $opp1->id;
         });
 
         return $opportunities;
@@ -934,6 +943,8 @@ class User extends \MapasCulturais\Entity implements \MapasCulturais\UserInterfa
         
         $this->_isDeleting = true;
 
+        $app->applyHookBoundTo($this, 'entity(' . $this->getHookClassPath() . ').delete:before');
+
         foreach(['agents', 'spaces', 'projects', 'opportunities', 'events'] as $entity_type){
             $entities = $this->$entity_type;
             foreach($entities as $entity){
@@ -944,6 +955,8 @@ class User extends \MapasCulturais\Entity implements \MapasCulturais\UserInterfa
 
         $this->status = self::STATUS_TRASH;
         $this->save($flush);
+
+        $app->applyHookBoundTo($this, 'entity(' . $this->getHookClassPath() . ').delete:after');
         
         $app->enableAccessControl();
 

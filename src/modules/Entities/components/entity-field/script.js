@@ -4,7 +4,8 @@ app.component('entity-field', {
 
     setup(props) {
         const propId = Vue.useId();
-        return { propId };
+        const text = Utils.getTexts('entity-field');
+        return { propId, text };
     },
 
     data() {         
@@ -19,6 +20,21 @@ app.component('entity-field', {
             } else {
                 value = [value];
             }
+        }
+        
+        // Garantir que custom-table é sempre um array
+        if (description.registrationFieldConfiguration?.fieldType === 'custom-table') {
+            if (typeof value === 'string') {
+                try {
+                    value = JSON.parse(value);
+                } catch(e) {
+                    value = [];
+                }
+            }
+            if (!Array.isArray(value)) {
+                value = [];
+            }
+            this.entity[this.prop] = value;
         }
         
         let isAdmin = function() {
@@ -191,6 +207,10 @@ app.component('entity-field', {
             type: Boolean,
             default: false
         },
+        registrationFieldConfiguration: {
+            type: Object,
+            default: null
+        },
         titleModal: {
             type: String,
             required: false,
@@ -219,6 +239,35 @@ app.component('entity-field', {
             
             this.selectedOptions[this.prop] = [...this.entity[this.prop]];
         }
+
+        // Inicializar dados da tabela customizável
+        if (this.is('custom-table')) {
+            if (!this.entity[this.prop]) {
+                this.entity[this.prop] = [];
+            } else if (!Array.isArray(this.entity[this.prop])) {
+                // Se não for array, tentar fazer parse
+                if (typeof this.entity[this.prop] === 'string') {
+                    try {
+                        this.entity[this.prop] = JSON.parse(this.entity[this.prop]);
+                    } catch(e) {
+                        this.entity[this.prop] = [];
+                    }
+                } else {
+                    this.entity[this.prop] = [];
+                }
+            }
+            
+            // Remover linhas que não são objetos válidos (arrays vazios, null, etc)
+            this.entity[this.prop] = this.entity[this.prop].filter(row => {
+                return row && typeof row === 'object' && !Array.isArray(row);
+            });
+            
+            // Adicionar linhas mínimas se necessário
+            const minRows = this.description.registrationFieldConfiguration?.config?.minRows || 0;
+            while (this.entity[this.prop].length < minRows) {
+                this.entity[this.prop].push({});
+            }
+        }
     },
 
     mounted() {
@@ -230,18 +279,40 @@ app.component('entity-field', {
 
     computed: {
         hasErrors() {
-            let errors = this.entity.__validationErrors[this.prop] || [];
-            if(errors.length > 0){
-                return true;
-            } else {
+            const bag = this.entity.__validationErrors;
+            const errors = (bag && typeof bag === 'object' && !Array.isArray(bag))
+                ? (bag[this.prop] || [])
+                : [];
+
+            // Para campos @location, deixamos a sinalização visual por conta
+            // do componente de endereço, que destaca apenas os subcampos faltando.
+            if (errors.length > 0 && this.is('location')) {
                 return false;
             }
+
+            return errors.length > 0;
         },
         errors() {
-            return this.entity.__validationErrors[this.prop];
+            const bag = this.entity.__validationErrors;
+            if (!bag || typeof bag !== 'object' || Array.isArray(bag)) {
+                return undefined;
+            }
+            return bag[this.prop];
         },
         value() {
+            if (this.is('file')) {
+                return this.fileEntity?.files?.[this.resolvedGroupName]
+                    || this.entity[this.prop]?.id
+                    || this.entity[this.prop];
+            }
+
             return this.entity[this.prop]?.id ?? this.entity[this.prop];
+        },
+        tableData() {
+            if (this.is('custom-table')) {
+                return this.entity[this.prop] || [];
+            }
+            return [];
         },
         entitiesFildTypes() {
             return ['agent-owner-field', 'agent-collective-field']
@@ -266,6 +337,53 @@ app.component('entity-field', {
             }
             return false;
         },
+        registrationFieldConfig() {
+            return this.registrationFieldConfiguration
+                || this.description?.registrationFieldConfiguration
+                || null;
+        },
+        /**
+         * Anexos type=file do agente vivem em Agent.files[file_group], não na inscrição.
+         * No formulário de inscrição, entity-file deve apontar para o owner/coletivo.
+         */
+        fileEntity() {
+            if (!this.is('file') || this.entity.__objectType !== 'registration') {
+                return this.entity;
+            }
+
+            const fieldType = this.registrationFieldConfig?.fieldType;
+            if (fieldType === 'agent-owner-field') {
+                return this.entity.owner || this.entity;
+            }
+
+            if (fieldType === 'agent-collective-field') {
+                const collective = this.entity.relatedAgents?.coletivo?.[0]
+                    || this.entity.agentRelations?.coletivo?.[0]?.agent;
+
+                return collective || this.entity;
+            }
+
+            return this.entity;
+        },
+        /**
+         * Resolve o FileGroup do anexo (ex.: docs-cpf) a partir do prop, da config
+         * do campo @ ou da descrição do metadado no Agent.
+         */
+        resolvedGroupName() {
+            if (this.groupName) {
+                return this.groupName;
+            }
+
+            if (this.description?.file_group) {
+                return this.description.file_group;
+            }
+
+            const entityField = this.registrationFieldConfig?.config?.entityField;
+            const agentField = entityField || (this.entity.__objectType === 'agent' ? this.prop : null);
+            const agentDescription = agentField ? ($DESCRIPTIONS.agent?.[agentField] || null) : null;
+
+            return agentDescription?.file_group || this.groupName;
+        },
     },
     
     methods: {
@@ -286,7 +404,10 @@ app.component('entity-field', {
 
         change(event, now) {
             clearTimeout(this.__timeout);
-            let oldValue = this.entity[this.prop] ? JSON.parse(JSON.stringify(this.entity[this.prop])) : null;
+            const currentValue = this.entity[this.prop];
+            let oldValue = (currentValue === null || currentValue === undefined || currentValue === '')
+                ? null
+                : JSON.parse(JSON.stringify(currentValue));
             
             this.__timeout = setTimeout(() => {
                if(this.is('date') || this.is('datetime') || this.is('time')) {
@@ -430,6 +551,25 @@ app.component('entity-field', {
         isReadonly() {
             const userPermission = this.entity.currentUserPermissions?.modifyReadonlyData;
             const lockedFieldSeals = this.entity.__lockedFieldSeals;
+            const fieldSealStatuses = this.entity.__fieldSealStatuses || {};
+            const hasUnlockedSealStatus = (fieldSealStatuses[this.prop] || []).some((seal) => seal?.isUnlocked);
+
+            if(this.entity.__objectType == "registration") {
+                const editableFields = this.entity.editableFields || [];
+                const allowedFields = this.entity.allowedFields;
+
+                // Se estamos no modo suporte (allowedFields definido), marca como readonly
+                // campos que estão em allowedFields mas não em editableFields
+                if (Array.isArray(allowedFields) && allowedFields.length > 0) {
+                    if (allowedFields.includes(this.prop) && !editableFields.includes(this.prop) && !userPermission) {
+                        this.readonly = true;
+                        return this.readonly;
+                    }
+                } else if(editableFields.length > 0 && !editableFields.includes(this.prop) && !userPermission) {
+                    this.readonly = true;
+                    return this.readonly;
+                }
+            }
 
             if(this.entity.__objectType == "registration" && this.description.registrationFieldConfiguration) {
                 const registrationConfig = this.description.registrationFieldConfiguration;
@@ -441,7 +581,7 @@ app.component('entity-field', {
                         const agentDescription = $DESCRIPTIONS.agent[agentFieldName];
                         
                         if(agentDescription.readonly) {
-                            this.readonly = !(userPermission || !this.value);
+                            this.readonly = !hasUnlockedSealStatus && !(userPermission || !this.value);
                             return this.readonly;
                         }
                     }
@@ -449,20 +589,231 @@ app.component('entity-field', {
             }
 
             if(this.description.readonly) {
-                this.readonly = !(userPermission || !this.value);
+                this.readonly = !hasUnlockedSealStatus && !(userPermission || !this.value);
             }
 
-            if(lockedFieldSeals && lockedFieldSeals[this.prop]) {
+            if(!hasUnlockedSealStatus && lockedFieldSeals && lockedFieldSeals[this.prop]) {
                 this.readonly = true;
             }
 
             const lockedFields = this.entity.__lockedFields || [];
 
-            if(lockedFields.includes(this.prop)) {
+            if(!hasUnlockedSealStatus && lockedFields.includes(this.prop)) {
                 this.readonly = true;
             }
 
             return this.readonly;
+        },
+
+        validateTableCell(row, columnIndex, column) {
+            const value = row[`col${columnIndex}`];
+            
+            // Campo obrigatório vazio — inválido
+            if (column.required === 'true') {
+                if (value === null || value === undefined || value === '') {
+                    return false;
+                }
+            }
+
+            // Se vazio e não obrigatório — válido
+            if (value === null || value === undefined || value === '') {
+                return true;
+            }
+
+            // Validação de formato por tipo (feedback visual na célula)
+            switch (column.type) {
+                case 'cpf': {
+                    const digits = String(value).replace(/\D/g, '');
+                    if (digits.length !== 11 || /^(\d)\1+$/.test(digits)) return false;
+                    let sum = 0;
+                    for (let i = 0; i < 9; i++) sum += parseInt(digits[i]) * (10 - i);
+                    let r = (sum * 10) % 11;
+                    if (r === 10 || r === 11) r = 0;
+                    if (r !== parseInt(digits[9])) return false;
+                    sum = 0;
+                    for (let i = 0; i < 10; i++) sum += parseInt(digits[i]) * (11 - i);
+                    r = (sum * 10) % 11;
+                    if (r === 10 || r === 11) r = 0;
+                    return r === parseInt(digits[10]);
+                }
+                case 'email':
+                    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(String(value));
+                case 'number':
+                    return !isNaN(Number(value)) && String(value).trim() !== '';
+            }
+
+            return true;
+        },
+
+        getCellValidationClass(row, columnIndex, column) {
+            const value = row[`col${columnIndex}`];
+            
+            // Não mostrar erro em campos vazios não obrigatórios
+            if (!value && column.required !== 'true') {
+                return '';
+            }
+            
+            const isValid = this.validateTableCell(row, columnIndex, column);
+            return isValid ? '' : 'invalid-cell';
+        },
+
+        validateCustomTable() {
+            // Validação básica apenas de campos obrigatórios
+            // Backend faz validações de formato (CPF, email, número)
+            if (!this.is('custom-table')) return true;
+            
+            const tableData = this.entity[this.prop];
+            const columns = this.description.registrationFieldConfiguration?.config?.columns || [];
+            
+            if (!Array.isArray(tableData) || tableData.length === 0) {
+                return true;
+            }
+            
+            for (let rowIndex = 0; rowIndex < tableData.length; rowIndex++) {
+                const row = tableData[rowIndex];
+                
+                for (let colIndex = 0; colIndex < columns.length; colIndex++) {
+                    const column = columns[colIndex];
+                    const value = row[`col${colIndex}`];
+                    
+                    // Verificar apenas campo obrigatório vazio
+                    if (column.required === 'true') {
+                        if (value === null || value === undefined || value === '') {
+                            const messages = useMessages();
+                            const errorMessage = this.text('Campo obrigatório não preenchido')
+                                .replace('{{columnName}}', column.name)
+                                .replace('{{rowNumber}}', rowIndex + 1);
+                            messages.error(errorMessage);
+                            return false;
+                        }
+                    }
+                }
+            }
+            
+            return true;
+        },
+
+        addRow() {
+            if (this.is('custom-table')) {
+                // Garantir que é um array
+                if (!Array.isArray(this.entity[this.prop])) {
+                    this.entity[this.prop] = [];
+                }
+                
+                const maxRows = this.description.registrationFieldConfiguration?.config?.maxRows;
+                
+                if (!maxRows || maxRows <= 0 || this.entity[this.prop].length < maxRows) {
+                    this.entity[this.prop].push({});
+                    this.updateTableData();
+                }
+            }
+        },
+
+        removeRow(index) {
+            if (this.is('custom-table')) {
+                // Garantir que é um array
+                if (!Array.isArray(this.entity[this.prop])) {
+                    this.entity[this.prop] = [];
+                    return;
+                }
+                
+                const minRows = this.description.registrationFieldConfiguration?.config?.minRows || 0;
+                
+                if (this.entity[this.prop].length > minRows) {
+                    this.entity[this.prop].splice(index, 1);
+                    this.updateTableData();
+                }
+            }
+        },
+
+        updateTableData() {
+            if (this.is('custom-table')) {
+                // Cancelar save anterior
+                if (this._saveTimeout) {
+                    clearTimeout(this._saveTimeout);
+                }
+                
+                // Aguardar 2 segundos antes de salvar (debounce)
+                this._saveTimeout = setTimeout(() => {
+                    // Validar dados antes de salvar
+                    if (!this.validateCustomTable()) {
+                        this._saveTimeout = null;
+                        return; // Não salva se houver erros de validação
+                    }
+                    
+                    // Obter configuração de colunas para processar tipos
+                    const columns = this.description.registrationFieldConfiguration?.config?.columns || [];
+                    
+                    // CRÍTICO: Criar uma cópia SIMPLES do array, sem Proxy
+                    const plainData = this.entity[this.prop]
+                        .filter(row => row && typeof row === 'object' && !Array.isArray(row))
+                        .map(row => {
+                            const plainRow = {};
+                            for (const key in row) {
+                                if (key.substring(0, 2) !== '$$') {
+                                    let value = row[key];
+                                    
+                                    // Processar campos numéricos: converter string vazia para null
+                                    if (key.startsWith('col')) {
+                                        const colIndexMatch = key.match(/^col(\d+)$/);
+                                        if (colIndexMatch) {
+                                            const colIndex = parseInt(colIndexMatch[1]);
+                                            const column = columns[colIndex];
+                                            
+                                            if (column && column.type === 'number') {
+                                                // Converter para número ou null se vazio
+                                                if (value === '' || value === null || value === undefined) {
+                                                    value = null;
+                                                } else {
+                                                    const numValue = Number(value);
+                                                    value = isNaN(numValue) ? null : numValue;
+                                                }
+                                            }
+                                        }
+                                    }
+                                    
+                                    plainRow[key] = value;
+                                }
+                            }
+                            return plainRow;
+                        });
+                    
+                    // Substituir por objetos simples
+                    this.entity[this.prop] = plainData;
+                    
+                    // CRÍTICO: Forçar __originalValues para [] para garantir que data(true) envie tudo
+                    if (!this.entity.__originalValues) {
+                        this.entity.__originalValues = {};
+                    }
+                    this.entity.__originalValues[this.prop] = [];
+                    
+                    // Garantir que o campo seja marcado como modificado
+                    if (!this.entity.__changedKeys) {
+                        this.entity.__changedKeys = [];
+                    }
+                    if (!this.entity.__changedKeys.includes(this.prop)) {
+                        this.entity.__changedKeys.push(this.prop);
+                    }
+                    
+                    // Salvar (erros 400 são esperados durante preenchimento parcial)
+                    // Snapshot do erro anterior: pode ter sido gerado por validação explícita ("Validar")
+                    const previousFieldError = this.entity.__validationErrors?.[this.prop];
+                    this.entity.save().then(() => {
+                        this._customTableSaveTimeout = null;
+                    }).catch(() => {
+                        this._customTableSaveTimeout = null;
+                        // Auto-save não deve sobrescrever o estado de validação explícita.
+                        // Restaura o erro anterior (ou remove se não havia nenhum).
+                        if (this.entity.__validationErrors) {
+                            if (previousFieldError !== undefined) {
+                                this.entity.__validationErrors[this.prop] = previousFieldError;
+                            } else {
+                                delete this.entity.__validationErrors[this.prop];
+                            }
+                        }
+                    });
+                }, 2000);
+            }
         }
     },
 });

@@ -1,75 +1,79 @@
 @use '../0.settings/mixins' as *;
 
 .user-mail {
-    &__account-config {
-        margin: size(24) 0;
-        padding: size(16);
-        background-color: var(--mc-high-500);
+    background-color: var(--mc-high-500);
+    display: flex;
+    flex-direction: column;
+    gap: size(16);
+    padding: size(16);
 
-
-        &-label {
-
-            font-weight: 700;
-            font-size: size(18);
-            margin-bottom: size(16);
-        }
-
-        &-email {
-            font-style: normal;
-            font-weight: 700;
-            font-size: size(14);
-            gap: size(8);
-            padding-right: size(18);
-        }
-
-        &-edit {
-            gap: size(18);
-
-            svg {
-                color: var(--mc-helper-500);
-                margin-right: size(8);
-            }
-
-            &-label {
-                margin-left: size(8);
-                font-weight: 700;
-                font-size: size(14);
-                color: var(--mc-helper-500);
-            }
-        }
-
-        &-form {
-            margin: size(16) 0;
-            align-items: center;
-
-            &:last-child {
-                margin-bottom: 0;
-            }
-
-            .field {
-                gap: 0;
-            }
-        }
-
-
+    &__title {
+        font-size: size(18);
+        font-weight: 700;
+        line-height: size(25);
     }
 
-    @media (max-width: size(800)) {
-        &__account-config {
+    &__config {
+        display: flex;
+        flex-direction: column;
+        gap: size(5);
+    }
 
-            &-form {
-                display: flex;
-                flex-direction: column;
+    &__config-title {
+        font-size: size(14);
+        font-weight: 600;
+        line-height: size(19);
+    }
 
-                .mail-buttons {
-                    flex-direction: column;
-                    display: flex;
-                    gap: size(8);
-                }
-            }
+    &__config-content {
+        align-items: center;
+        display: flex;
+        font-size: size(14);
+        gap: size(18);
+        line-height: size(19);
+    }
 
-            p {
-                display: flex;
+    &__config-edit {
+        align-items: center;
+        color: var(--mc-helper-500);
+        cursor: pointer;
+        display: flex;
+        font-weight: 700;
+        gap: size(6);
+        white-space: nowrap;
+
+        .iconify {
+            font-size: size(15);
+        }
+    }
+
+    &__form {
+        align-items: end;
+        margin: 0;
+
+        .field {
+            gap: 0;
+        }
+
+        .mail-buttons {
+            align-items: center;
+            display: flex;
+            gap: size(8);
+        }
+    }
+
+    @include mobile {
+        &__config-content {
+            align-items: flex-start;
+            flex-direction: column;
+            gap: size(8);
+        }
+
+        &__form {
+            display: flex;
+            flex-direction: column;
+
+            .mail-buttons {
                 flex-direction: column;
             }
         }

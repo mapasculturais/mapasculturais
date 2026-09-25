@@ -71,9 +71,12 @@ $this->import('
 			</div>
 		</template>
 
-		<div v-if="entity.shortDescription" class="entity-card__content-shortDescription">
+		<div v-if="entity.shortDescription" class="entity-card__content-shortDescription" :class="{'expanded': expandedDescription}">
 			<small v-if="sliceDescription">{{slice(entity.shortDescription, 300)}}</small>
-			<small v-if="!sliceDescription">{{showShortDescription}}</small>
+			<small v-else>{{showShortDescription}}</small>
+			<button v-if="entity.shortDescription.length > 120" @click="expandedDescription = !expandedDescription" class="button button--text entity-card__toggle-description">
+				{{ expandedDescription ? text('Ver menos') : text('Ver mais') }}
+			</button>
 		</div>
 
 		<div v-if="entity.__objectType=='space'" class="entity-card__content--description">

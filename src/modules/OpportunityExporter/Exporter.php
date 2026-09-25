@@ -188,6 +188,7 @@ class Exporter
             'registrationProponentTypes' => $this->opportunity->registrationProponentTypes ?: [],
             'useAgentRelationColetivo' => $this->opportunity->useAgentRelationColetivo,
             'proponentAgentRelation' => $this->opportunity->proponentAgentRelation,
+            'proponentAgentRelationAvatar' => $this->opportunity->proponentAgentRelationAvatar,
         ];
 
         return $result;
@@ -344,6 +345,11 @@ class Exporter
     public function exportFormFields(Opportunity $phase): array
     {
         $result = [];
+        $field_ids_by_name = [];
+
+        foreach ($phase->registrationFieldConfigurations as $field) {
+            $field_ids_by_name[$field->fieldName] = $field->id;
+        }
 
         foreach ($phase->registrationFieldConfigurations as $field) {
             $field_id = "FIELD(" . base_convert($field->id, 10, 36) . ")";
@@ -368,8 +374,9 @@ class Exporter
                 'conditional' => false,
             ];
 
-            if ($field->conditional && $field->conditionalField && preg_match('#field_(\d+)#', $field->conditionalField, $matches)) {
-                $conditional_field = "FIELD(" . base_convert($matches[1], 10, 36) . ")";
+            if ($field->conditional && $field->conditionalField && isset($field_ids_by_name[$field->conditionalField])) {
+                $conditional_id = $field_ids_by_name[$field->conditionalField];
+                $conditional_field = "FIELD(" . base_convert($conditional_id, 10, 36) . ")";
                 $field_result = [
                     ...$field_result,
                     'conditional' => true,
@@ -387,6 +394,11 @@ class Exporter
     public function exportFormAttachments(Opportunity $phase): array
     {
         $result = [];
+        $field_ids_by_name = [];
+
+        foreach ($phase->registrationFieldConfigurations as $field) {
+            $field_ids_by_name[$field->fieldName] = $field->id;
+        }
 
         foreach ($phase->registrationFileConfigurations as $rfc) {
             $rfc_id = "FILE(" . base_convert($rfc->id, 10, 36) . ")";
@@ -401,12 +413,14 @@ class Exporter
                 'categories' => $rfc->categories,
                 'registrationRanges' => $rfc->registrationRanges,
                 'proponentTypes' => $rfc->proponentTypes,
+                'allowedFileTypes' => $rfc->allowedFileTypes,
 
                 'conditional' => false,
             ];
 
-            if ($rfc->conditional && $rfc->conditionalField && preg_match('#field_(\d+)#', $rfc->conditionalField, $matches)) {
-                $conditional_field = "FIELD(" . base_convert($matches[1], 10, 36) . ")";
+            if ($rfc->conditional && $rfc->conditionalField && isset($field_ids_by_name[$rfc->conditionalField])) {
+                $conditional_id = $field_ids_by_name[$rfc->conditionalField];
+                $conditional_field = "FIELD(" . base_convert($conditional_id, 10, 36) . ")";
                 $rfc_result = [
                     ...$rfc_result,
                     'conditional' => true,
@@ -432,9 +446,6 @@ class Exporter
         $result = [
             'name' => $phase->name,
             'type' => $phase->type->id,
-            'evaluationFrom' => $phase->evaluationFrom ? $phase->evaluationFrom->format('Y-m-d H:i:s') : null,
-            'evaluationTo' => $phase->evaluationTo ? $phase->evaluationTo->format('Y-m-d H:i:s') : null,
-
             ...$result,
 
             'infos' => $phase->infos,
@@ -444,6 +455,11 @@ class Exporter
 
             'avaliableEvaluationFields' => $phase->opportunity->avaliableEvaluationFields,
         ];
+
+        if ($this->dates) {
+            $result['evaluationFrom'] = $phase->evaluationFrom ? $phase->evaluationFrom->format('Y-m-d H:i:s') : null;
+            $result['evaluationTo'] = $phase->evaluationTo ? $phase->evaluationTo->format('Y-m-d H:i:s') : null;
+        }
 
         $result_json = json_encode($result);
 

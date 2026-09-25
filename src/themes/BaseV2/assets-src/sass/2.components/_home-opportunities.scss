@@ -89,6 +89,10 @@
 			.carousel {
 				margin-top: size(20);
 
+				&__track {
+					align-items: stretch;
+				}
+
 				&__prev {
 					background: url('https://api.iconify.design/akar-icons/arrow-left.svg?color=%23d50200') no-repeat center center / size(27);
 					background-color: var(--mc-white);
@@ -146,5 +150,47 @@
 				}
 			}
 		}
+	}
+}
+
+.home-opportunities .entity-card.portrait {
+	display: flex;
+	flex-direction: column;
+	height: 100%;
+
+	.entity-card__content {
+		flex: 1;
+
+		&-shortDescription {
+			small {
+				display: -webkit-box;
+				-webkit-line-clamp: 3;
+				-webkit-box-orient: vertical;
+				overflow: hidden;
+			}
+
+			&.expanded small {
+				-webkit-line-clamp: unset;
+				overflow: visible;
+			}
+		}
+	}
+
+	.entity-card__footer {
+		margin-top: auto;
+	}
+
+	.entity-card__toggle-description {
+		display: block;
+		background: none;
+		border: none;
+		color: var(--mc-primary-500);
+		cursor: pointer;
+		font-size: size(14);
+		font-weight: 700;
+		margin-top: size(4);
+		padding: 0;
+		text-align: left;
+		text-decoration: underline;
 	}
 }
