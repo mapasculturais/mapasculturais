@@ -111,7 +111,7 @@ $this->import('
 
         <template v-if="nextPhase?.__objectType != 'evaluationmethodconfiguration'">
             <div class="opportunity-data-collection__horizontal-line col-12 "></div>
-            <opportunity-phase-publish-date-config  :phase="phase" :phases="phases" hide-description hide-button useSealsCertification></opportunity-phase-publish-date-config>
+            <opportunity-phase-publish-date-config :phase="phase" :phases="phases" :hide-title="phases[0]?.isContinuousFlow" hide-description hide-button useSealsCertification></opportunity-phase-publish-date-config>
         </template>
 
         <template v-if="nextPhase?.__objectType != 'evaluationmethodconfiguration'">

@@ -14,6 +14,22 @@ use SealExemption\SealExemptionService;
  */
 abstract class EvaluationsSpreadsheetJob extends SpreadsheetJob
 {
+    protected const REQUIRED_REGISTRATION_PROPERTIES = [
+        'id',
+        'number',
+        'status',
+        'category',
+        'range',
+        'score',
+        'proponentType',
+        'eligible',
+        'projectName',
+        'consolidatedResult',
+        'goalStatuses',
+        'agentsData',
+        'owner.{name}',
+    ];
+
     function _getHeader(Job $job): array
     {
         // Parte comum a todos os métodos de avaliação
@@ -32,7 +48,7 @@ abstract class EvaluationsSpreadsheetJob extends SpreadsheetJob
         $total_properties = 0;
         $job->owner->registerRegistrationMetadata(true);
         foreach($properties as $property) {
-            if (!in_array($property, ['result', 'status', 'evaluationData'])) {
+            if ($property !== 'evaluationData') {
                 if($this->slug !== 'continuous-spreadsheets' && $property === 'goalStatuses') {
                     continue;
                 }
@@ -62,6 +78,11 @@ abstract class EvaluationsSpreadsheetJob extends SpreadsheetJob
                     continue;
                 }
 
+                if($property === 'coletivo') {
+                    $sub_header[$property] = i::__('Agente coletivo');
+                    continue;
+                }
+
                 if($property === 'committeeSequentialNumber') {
                     $sub_header[$property] = i::__('Nº sequencial do avaliador');
                     continue;
@@ -79,6 +100,11 @@ abstract class EvaluationsSpreadsheetJob extends SpreadsheetJob
                 
                 if($property === 'user') {
                     $sub_header[$property] = i::__('Nome do avaliador');
+                    continue;
+                }
+
+                if($property === 'result') {
+                    $sub_header[$property] = i::__('Resultado do avaliador');
                     continue;
                 }
 
@@ -137,6 +163,7 @@ abstract class EvaluationsSpreadsheetJob extends SpreadsheetJob
         $query['@limit'] = $this->limit;
         $query['@page'] = $this->page;
         $query['@order'] = $job->query['@order'] ?? 'id ASC';
+        $query['registration:@select'] = $this->getRegistrationSelect($job);
         $opportunity_controller = $app->controller('opportunity');
         $opportunity_controller->data = $opportunity_controller->postData;
         $evaluations = $opportunity_controller->apiFindEvaluations($opportunity->id, $query);
@@ -153,6 +180,7 @@ abstract class EvaluationsSpreadsheetJob extends SpreadsheetJob
     }
 
     /**
+<<<<<<< HEAD
      * Constrói o cabeçalho das duas colunas de isenção por selos (spec-c49fa0bb §4.4):
      *  - sealExemption (booleana): cabeçalho "Isento", conteúdo Sim/Não.
      *  - sealExemptionLabel (textual): cabeçalho fixo "Dispensada por selos",
@@ -280,6 +308,53 @@ abstract class EvaluationsSpreadsheetJob extends SpreadsheetJob
         $opportunity = $job->owner;
         $emc = $opportunity->evaluationMethodConfiguration ?? null;
         return SealExemptionService::hasActiveConfig($emc?->sealExemptionConfig);
+=======
+     * Propriedades da inscrição a buscar na API: as que a planilha sempre usa, mais as escolhidas pelo usuário.
+     */
+    protected function getRegistrationSelect(Job $job): string
+    {
+        $job->owner->registerRegistrationMetadata(true);
+        $registration_properties = array_keys(Registration::getPropertiesMetadata());
+
+        $selected = array_filter(
+            $this->splitSelect($job->query['@select'] ?? ''),
+            fn ($property) => str_starts_with($property, 'owner.') || in_array($property, $registration_properties, true)
+        );
+
+        $properties = array_merge(static::REQUIRED_REGISTRATION_PROPERTIES, $selected);
+
+        return implode(',', array_unique($properties));
+    }
+
+    /**
+     * Separa as propriedades de um `@select` sem quebrar os grupos entre chaves.
+     */
+    protected function splitSelect(string $select): array
+    {
+        $properties = [];
+        $current = '';
+        $depth = 0;
+
+        foreach (str_split($select) as $char) {
+            if ($char === ',' && $depth === 0) {
+                $properties[] = trim($current);
+                $current = '';
+                continue;
+            }
+
+            if ($char === '{') {
+                $depth++;
+            } elseif ($char === '}') {
+                $depth--;
+            }
+
+            $current .= $char;
+        }
+
+        $properties[] = trim($current);
+
+        return array_values(array_filter($properties, fn ($property) => $property !== ''));
+>>>>>>> master
     }
 
     function getSpreadsheetColumnName($index) {
@@ -304,6 +379,33 @@ abstract class EvaluationsSpreadsheetJob extends SpreadsheetJob
             }
         }
         return $sheet;
+    }
+
+    /**
+     * Colunas da inscrição a partir do que a API devolveu, para que toda propriedade selecionada tenha valor.
+     */
+    protected function getRegistrationSpreadsheetColumns(array $registration): array
+    {
+        $columns = $registration;
+
+        $columns['name'] = $registration['owner']['name'] ?? '';
+        $columns['coletivo'] = $registration['agentsData']['coletivo']['name'] ?? '';
+
+        unset($columns['owner'], $columns['agentsData'], $columns['status']);
+
+        return array_map($this->formatDate(...), $columns);
+    }
+
+    /**
+     * O lote passa por json_encode e as datas chegam aqui como array; converte só essas, devolvendo o resto intacto.
+     */
+    protected function formatDate(mixed $value): mixed
+    {
+        if (!is_array($value) || !isset($value['date'], $value['timezone_type'], $value['timezone'])) {
+            return $value;
+        }
+
+        return date_create($value['date'])?->format('d/m/Y H:i:s') ?: $value['date'];
     }
 
     protected function getEvaluatorSpreadsheetColumns(?array $valuer): array
@@ -332,6 +434,22 @@ abstract class EvaluationsSpreadsheetJob extends SpreadsheetJob
             'valuerAgentId' => $valuer['id'] ?? '',
             'user' => $valuer['name'] ?? '',
         ];
+    }
+
+    /**
+     * Andamento da avaliação, com os mesmos textos da coluna Status da tela de avaliações.
+     */
+    function evaluationStatusName($status) {
+        if ($status === null || $status === '') {
+            return i::__('Avaliação pendente');
+        }
+
+        return match ((int) $status) {
+            0 => i::__('Avaliação iniciada'),
+            1 => i::__('Avaliação concluída'),
+            2 => i::__('Avaliação enviada'),
+            default => i::__('Avaliação pendente'),
+        };
     }
 
     function statusName($status) {

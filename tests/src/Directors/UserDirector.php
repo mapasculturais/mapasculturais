@@ -38,4 +38,32 @@ class UserDirector extends Director
         $app->enableAccessControl();
         return $user;
     }
+
+    /**
+     * Usuário mínimo para dono de inscrição em fixtures em massa.
+     * Evita taxonomias/descrições que não entram nas asserções de distribuição/cotas.
+     */
+    function createRegistrationOwnerUser(): User
+    {
+        $app = App::i();
+        $app->disableAccessControl();
+
+        $user = $this->userBuilder->reset()
+            ->fillRequiredProperties()
+            ->save()
+            ->getInstance();
+
+        $agent = $this->agentBuilder
+            ->reset($user)
+            ->getInstance();
+        $agent->name = 'Owner ' . uniqid();
+        $agent->type = 1;
+        $agent->save(true);
+
+        $user->profile = $agent;
+        $user->save(true);
+
+        $app->enableAccessControl();
+        return $user;
+    }
 }

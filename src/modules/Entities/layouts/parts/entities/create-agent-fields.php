@@ -7,8 +7,9 @@
 use MapasCulturais\i;
 $taxonomies = $app->getRegisteredTaxonomies("MapasCulturais\Entities\Agent");
 ?>
-<entity-field v-if="!lockType" :entity="entity" hide-required  :editable="true" label="<?php i::esc_attr_e("Selecione o tipo do agente")?>" prop="type"></entity-field>
+<entity-field v-if="!lockType" :entity="entity" hide-required :editable="true" label="<?php i::esc_attr_e("Selecione o tipo do agente")?>" prop="type" @change="onAgentTypeChange"></entity-field>
 <entity-field :entity="entity" hide-required label="<?php i::esc_attr_e("Nome ou título")?>" prop="name"></entity-field>
+<entity-field v-if="requiredDocumentProp" :key="requiredDocumentProp" :entity="entity" hide-required :prop="requiredDocumentProp"></entity-field>
 
 <?php foreach($taxonomies as $taxonomy): ?>
     <?php if($taxonomy->required): ?>

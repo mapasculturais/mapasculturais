@@ -103,6 +103,7 @@ class TestCase extends PHPUnitTestCase
     {
         $app = App::i();
         $app->clearRecreatedPermissionCacheList();
+        $app->persistPCachePendingQueue();
 
         /** @var Connection */
         $conn = $app->em->getConnection();

@@ -32,7 +32,7 @@ $this->import('
     <?php $this->applyTemplateHook('entity-field-label','before') ?>
     <label class="field__title" v-if="!hideLabel && !is('checkbox')" :for="propId">
         <slot>{{label || description.label}}</slot>
-        <span v-if="description.required && !hideRequired" class="required">*<?php i::_e('obrigatório') ?></span>
+        <span v-if="(required === true || (required === null && description.required)) && !hideRequired" class="required">*<?php i::_e('obrigatório') ?></span>
         <slot name="info"></slot>
     </label>
     <?php $this->applyTemplateHook('entity-field-label','after') ?>

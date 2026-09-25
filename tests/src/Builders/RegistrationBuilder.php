@@ -16,12 +16,19 @@ class RegistrationBuilder extends Builder
 
     protected Registration $instance;
 
+    /** @var array<int|string, true> */
+    private static array $metadataRegisteredForOpportunity = [];
+
     public function reset(Opportunity $opportunity, ?Agent $owner = null): self
     {
-        $opportunity->registerRegistrationMetadata();
+        $opportunity_id = $opportunity->id ?? spl_object_id($opportunity);
+        if (!isset(self::$metadataRegisteredForOpportunity[$opportunity_id])) {
+            $opportunity->registerRegistrationMetadata();
+            self::$metadataRegisteredForOpportunity[$opportunity_id] = true;
+        }
         $this->instance = new Registration;
         $this->instance->opportunity = $opportunity;
-        $this->instance->owner = $owner ?: $this->userDirector->createUser()->profile;
+        $this->instance->owner = $owner ?: $this->userDirector->createRegistrationOwnerUser()->profile;
 
         return $this;
     }

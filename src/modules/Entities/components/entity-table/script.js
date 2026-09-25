@@ -71,6 +71,15 @@ app.component('entity-table', {
         hideActions: Boolean,
         hideHeader: Boolean,
         rawProcessor: Function,
+        /**
+         * Entidade dona do contexto da tabela (ex.: opportunity/phase).
+         * Quem tem @control nela pode salvar o padrão para os demais usuários.
+         * Listagens gerais (agent/space/…) não passam isso — só saasSuperAdmin.
+         */
+        columnsConfigEntity: {
+            type: [Entity, Object],
+            default: null,
+        },
     },
 
     created() {
@@ -167,10 +176,17 @@ app.component('entity-table', {
             spaceTypes: $DESCRIPTIONS.space.type.options,
             seals,
             dragColumnSlug: null,
+            dropTargetSlug: null,
+            dropPosition: null,
             columnsSearchText: '',
             globalColumnsConfigs: $MAPAS.config.entityTable.columnsConfig?.tables || {},
-            canManageColumnsGlobal: !!$MAPAS.config.entityTable.canManageColumnsGlobal,
+            _columnDragLastY: null,
+            _columnDragRaf: null,
         }
+    },
+
+    beforeUnmount() {
+        this.stopColumnDragAutoScroll();
     },
 
     watch: {
@@ -188,8 +204,53 @@ app.component('entity-table', {
     },
 
     computed: {
+        /**
+         * Chave única do padrão da tabela.
+         * Ex.: opportunity-findRegistrations-65-registrationsList
+         * Listagens gerais: agent-find-agentTable
+         */
         globalColumnsKey() {
-            return this.controller || this.type;
+            const scopeId = this.query?.['@opportunity']
+                ?? this.columnsConfigEntity?.id
+                ?? '';
+            const parts = [
+                this.controller || this.type || 'entity',
+                this.endpoint || 'find',
+                scopeId,
+                this.identifier || 'default',
+            ];
+
+            return parts
+                .map((part) => String(part ?? '').replace(/[^a-zA-Z0-9_-]/g, '-'))
+                .filter((part) => part !== '')
+                .join('-')
+                .replace(/-+/g, '-');
+        },
+
+        /**
+         * Fallback sem o id da entidade (padrão de sistema daquele tipo de tabela).
+         * Ex.: opportunity-findRegistrations-registrationsList
+         */
+        globalColumnsFallbackKey() {
+            const parts = [
+                this.controller || this.type || 'entity',
+                this.endpoint || 'find',
+                this.identifier || 'default',
+            ];
+
+            return parts
+                .map((part) => String(part ?? '').replace(/[^a-zA-Z0-9_-]/g, '-'))
+                .filter((part) => part !== '')
+                .join('-')
+                .replace(/-+/g, '-');
+        },
+
+        canManageColumnsGlobal() {
+            const entity = this.columnsConfigEntity;
+            if (entity?.currentUserPermissions?.['@control']) {
+                return true;
+            }
+            return !!$MAPAS.config.entityTable.canManageColumnsGlobal;
         },
 
         visibleColumns() {
@@ -219,7 +280,26 @@ app.component('entity-table', {
         },
 
         globalColumnsConfig() {
-            return this.globalColumnsConfigs[this.globalColumnsKey] || this.globalColumnsConfigs[this.identifier] || null;
+            const tables = this.globalColumnsConfigs || {};
+            const key = this.globalColumnsKey;
+            if (tables[key]) {
+                return tables[key];
+            }
+
+            // Padrão de sistema (sem id da oportunidade/entidade)
+            const fallbackKey = this.globalColumnsFallbackKey;
+            if (fallbackKey && fallbackKey !== key && tables[fallbackKey]) {
+                return tables[fallbackKey];
+            }
+
+            // Compatível com chaves antigas (ex.: opportunity.json / identifier)
+            for (const legacy of [this.identifier, this.controller, this.type, this.apiController]) {
+                if (legacy && tables[legacy]) {
+                    return tables[legacy];
+                }
+            }
+
+            return null;
         },
 
         advancedFilters() {
@@ -372,6 +452,10 @@ app.component('entity-table', {
         },
 
         columnToExportSelectFragments(column) {
+            if (Object.hasOwn(column, 'exportField')) {
+                return column.exportField ? [String(column.exportField)] : [];
+            }
+
             const raw = (column.value !== undefined && column.value !== null && String(column.value).trim() !== '')
                 ? String(column.value).trim()
                 : String(column.slug || '').trim();
@@ -433,6 +517,22 @@ app.component('entity-table', {
             (globalConfig?.order || []).forEach(pushUnique);
             currentSlugs.forEach(pushUnique);
 
+            // Avaliacao → Bonus → Pontuacao sempre contiguas na tabela de inscricoes
+            if (this.type === 'registration') {
+                const scoreGroup = ['consolidatedResult', 'appliedPointReward', 'score'];
+                const present = scoreGroup.filter(slug => orderedSlugs.includes(slug));
+                if (present.length > 1) {
+                    const firstIndex = Math.min(...present.map(slug => orderedSlugs.indexOf(slug)));
+                    const withoutGroup = orderedSlugs.filter(slug => !scoreGroup.includes(slug));
+                    orderedSlugs.length = 0;
+                    orderedSlugs.push(
+                        ...withoutGroup.slice(0, firstIndex),
+                        ...present,
+                        ...withoutGroup.slice(firstIndex)
+                    );
+                }
+            }
+
             const headerBySlug = {};
             normalized.forEach(header => {
                 headerBySlug[this.parseSlug(header)] = header;
@@ -447,8 +547,31 @@ app.component('entity-table', {
                 visible = this.columns.map(column => column.slug);
             } else if (Array.isArray(localColumnsConfig?.visible) && localColumnsConfig.visible.length) {
                 visible = [...localColumnsConfig.visible];
+
+                // Colunas novas do default que o usuário nunca configurou (não estão
+                // no order/visible salvos) — ex.: "score"/Pontuação reintroduzida.
+                const known = new Set([
+                    ...(localColumnsConfig.visible || []),
+                    ...(localColumnsConfig.order || []),
+                ]);
+                defaultVisible.forEach(slug => {
+                    if (slug && !known.has(slug) && !visible.includes(slug)) {
+                        visible.push(slug);
+                    }
+                });
             } else if (Array.isArray(globalConfig?.visible) && globalConfig.visible.length) {
                 visible = [...globalConfig.visible];
+
+                const known = new Set([
+                    ...(globalConfig.visible || []),
+                    ...(globalConfig.order || []),
+                    ...(globalConfig.known || []),
+                ]);
+                defaultVisible.forEach(slug => {
+                    if (slug && !known.has(slug) && !visible.includes(slug)) {
+                        visible.push(slug);
+                    }
+                });
             } else {
                 visible = [...defaultVisible];
             }
@@ -472,34 +595,130 @@ app.component('entity-table', {
             localStorage.setItem(this.sessionTitle, JSON.stringify(data));
         },
 
+        columnIndex(slug) {
+            return this.columns.findIndex(column => column.slug === slug);
+        },
+
+        clearColumnDropIndicator() {
+            this.dropTargetSlug = null;
+            this.dropPosition = null;
+        },
+
+        startColumnDragAutoScroll() {
+            this.stopColumnDragAutoScroll();
+
+            const tick = () => {
+                if (!this.dragColumnSlug) {
+                    this._columnDragRaf = null;
+                    return;
+                }
+
+                const list = this.$refs.columnsList;
+                if (list && this._columnDragLastY != null) {
+                    const rect = list.getBoundingClientRect();
+                    const threshold = 48;
+                    const maxSpeed = 22;
+                    const y = this._columnDragLastY;
+
+                    if (y < rect.top + threshold) {
+                        const intensity = Math.min(1, (rect.top + threshold - y) / threshold);
+                        list.scrollTop -= Math.ceil(maxSpeed * intensity);
+                    } else if (y > rect.bottom - threshold) {
+                        const intensity = Math.min(1, (y - (rect.bottom - threshold)) / threshold);
+                        list.scrollTop += Math.ceil(maxSpeed * intensity);
+                    }
+                }
+
+                this._columnDragRaf = requestAnimationFrame(tick);
+            };
+
+            this._columnDragRaf = requestAnimationFrame(tick);
+        },
+
+        stopColumnDragAutoScroll() {
+            if (this._columnDragRaf) {
+                cancelAnimationFrame(this._columnDragRaf);
+                this._columnDragRaf = null;
+            }
+            this._columnDragLastY = null;
+        },
+
         onColumnDragStart(event, slug) {
             if (!this.showIndex) {
                 return;
             }
             this.dragColumnSlug = slug;
+            this.clearColumnDropIndicator();
+            this._columnDragLastY = event.clientY;
             event.dataTransfer.effectAllowed = 'move';
             event.dataTransfer.setData('text/plain', slug);
+            this.startColumnDragAutoScroll();
+        },
+
+        onColumnDragOver(event, targetSlug = null) {
+            if (!this.showIndex || !this.dragColumnSlug) {
+                return;
+            }
+            event.preventDefault();
+            this._columnDragLastY = event.clientY;
+            event.dataTransfer.dropEffect = 'move';
+
+            if (!targetSlug || targetSlug === this.dragColumnSlug) {
+                this.clearColumnDropIndicator();
+                return;
+            }
+
+            const row = event.currentTarget;
+            if (!row?.getBoundingClientRect) {
+                return;
+            }
+
+            const rect = row.getBoundingClientRect();
+            const position = event.clientY < rect.top + (rect.height / 2) ? 'before' : 'after';
+            this.dropTargetSlug = targetSlug;
+            this.dropPosition = position;
         },
 
         onColumnDrop(event, targetSlug) {
             if (!this.showIndex) {
                 return;
             }
+            event.preventDefault();
+            event.stopPropagation();
+
             const sourceSlug = this.dragColumnSlug || event.dataTransfer.getData('text/plain');
-            this.dragColumnSlug = null;
-            if (!sourceSlug || sourceSlug === targetSlug) {
+            const position = (this.dropTargetSlug === targetSlug && this.dropPosition)
+                ? this.dropPosition
+                : 'before';
+
+            this.onColumnDragEnd();
+
+            if (!sourceSlug || !targetSlug || sourceSlug === targetSlug) {
                 return;
             }
 
-            const sourceIndex = this.columns.findIndex(column => column.slug === sourceSlug);
-            const targetIndex = this.columns.findIndex(column => column.slug === targetSlug);
+            const sourceIndex = this.columnIndex(sourceSlug);
+            let targetIndex = this.columnIndex(targetSlug);
             if (sourceIndex < 0 || targetIndex < 0) {
                 return;
             }
 
+            if (position === 'after') {
+                targetIndex += 1;
+            }
+
             const [sourceColumn] = this.columns.splice(sourceIndex, 1);
+            if (sourceIndex < targetIndex) {
+                targetIndex -= 1;
+            }
             this.columns.splice(targetIndex, 0, sourceColumn);
             this.persistLocalColumnsConfig();
+        },
+
+        onColumnDragEnd() {
+            this.dragColumnSlug = null;
+            this.clearColumnDropIndicator();
+            this.stopColumnDragAutoScroll();
         },
 
         async saveGlobalColumnsConfig() {
@@ -507,9 +726,13 @@ app.component('entity-table', {
                 return;
             }
 
-            const api = new API(this.globalColumnsKey);
+            const apiController = this.controller || this.type;
+            const api = new API(apiController);
+            const entity = this.columnsConfigEntity;
             const payload = {
                 tableKey: this.globalColumnsKey,
+                entityType: entity?.__objectType || null,
+                entityId: entity?.id || null,
                 order: this.columns.map(column => column.slug),
                 visible: this.visibleColumns.map(column => column.slug),
                 required: this.columns.filter(column => column.required).map(column => column.slug),
@@ -771,10 +994,12 @@ app.component('entity-table', {
                             val = val?.address ? val.address : val?.endereco ? val.endereco : null;
                             break;
                         case 'boolean':
-                            if (prop === 'publicLocation' || prop === 'eligible' || prop === 'public') {
-                                val = val ? this.text('sim') : (val === false || val === 'false' || val === 0) ? this.text('nao') : '';
+                            if (val === true || val === 'true' || val === 1 || val === '1') {
+                                val = this.text('sim');
+                            } else if (val === false || val === 'false' || val === 0 || val === '0') {
+                                val = this.text('nao');
                             } else {
-                                val = val;
+                                val = '';
                             }
                             break;
                         case 'file':
