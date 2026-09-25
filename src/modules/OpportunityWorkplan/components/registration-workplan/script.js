@@ -9,6 +9,10 @@ app.component('registration-workplan', {
             type: Entity,
             required: true
         },
+        isLastStep: {
+            type: Boolean,
+            required: true
+        },
     },
     data() {
         this.getWorkplan();
