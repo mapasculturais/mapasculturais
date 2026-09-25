@@ -19,6 +19,15 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Adiciona controle para ocultar título e subtítulo do logo no ThemeCustomizer
 - Remove configurações de aparência redundantes da tela de edição de subsites
 
+## [7.8.14] - 2026-09-25
+### Correções
+- Implementa db-update que corrige dados legados das etapas de inscrição dos editais: campos e anexos sem etapa são associados a uma etapa existente (ou a uma nova, quando não houver) e etapas vazias duplicadas são removidas
+- Deixa de exibir o título "Publicação de Resultados" nas fases de coleta de dados e na fase de publicação final do resultado de editais de fluxo contínuo sem data final; nas fases de avaliação, o título e os checkboxes de publicação de pareceres/nomes permanecem
+- Corrige a exportação da planilha da tabela de agentes, que gerava cabeçalhos quebrados com expressões técnicas (ex.: `terms?.area?.join('...')`, `type.name`) e deixava Área de atuação e Tipo de agente vazios; a planilha passa a trazer exatamente as colunas visíveis/selecionadas na tabela, com os títulos corretos e os dados preenchidos
+
+### Melhorias não funcionais
+- Adiciona o template hook `opportunity-basic-info-information-fields`, com sufixo `end`, para permitir que plugins e temas incluam campos após a descrição longa na edição de oportunidades
+
 ## [7.8.13] - 2026-09-17
 ### Correções
 - Na redistribuição de avaliações, aplica inclusões manuais antes do balanceamento e ordena de forma estável (`num`, `id`)
