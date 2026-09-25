@@ -11,9 +11,29 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - **Avaliação automática por selos**: o gestor pode indicar, em uma fase de avaliação, quais selos validam o proponente. Se a pessoa já tiver esses selos válidos no perfil, a inscrição é **dispensada automaticamente** daquela fase (marcada como “Dispensada por selos”) e segue para a próxima etapa, sem precisar de avaliador
 - **Novos anexos no cadastro do agente** (também usáveis como campos `@` no formulário de inscrição): CPF, CNPJ, CNH, RG, passaporte, comprovante de residência, vínculo territorial, currículo, portfólio, certidões fiscal, trabalhista e de prestação de contas, além de comprovantes de raça/cor, pessoa com deficiência e comunidades tradicionais. Os arquivos ficam no perfil e acompanham a inscrição automaticamente
 
+### Correções
+- Implementa db-update que corrige dados legados das etapas de inscrição dos editais: campos e anexos sem etapa são associados a uma etapa existente (ou a uma nova, quando não houver) e etapas vazias duplicadas são removidas
+- Deixa de exibir o título "Publicação de Resultados" nas fases de coleta de dados e na fase de publicação final do resultado de editais de fluxo contínuo sem data final; nas fases de avaliação, o título e os checkboxes de publicação de pareceres/nomes permanecem
+
+### Melhorias não funcionais
+- Adiciona o template hook `opportunity-basic-info-information-fields`, com sufixo `end`, para permitir que plugins e temas incluam campos após a descrição longa na edição de oportunidades
+
+## [7.8.13] - 2026-09-17
+### Correções
+- Na redistribuição de avaliações, aplica inclusões manuais antes do balanceamento e ordena de forma estável (`num`, `id`)
+- Corrige desempate por campos agent-owner/collective resolvendo o tipo real do metadado do agente
+- Na lista de inscrições da 1ª fase, a coluna Pontuação deixa de sumir quando o edital tem fase técnica posterior
+- Na planilha de inscritos, os cabeçalhos dos campos do formulário voltam a usar o título (label) em vez de `field_*`
+
+### Melhorias
+- Facilita a reordenação de colunas no entity-table com auto-scroll e indicador visual ao arrastar
+- Padrão de colunas do entity-table por contexto (`@control` na entidade); listagens gerais com saasSuperAdmin
+- Define padrão inicial de sistema para a tabela de inscrições (sem `field_*`) quando ainda não há padrão salvo
+- Exibe "Sim"/"Não" na coluna e na planilha para "A inscrição está concorrendo por cotas?" (`appliedForQuota`)
+
 ## [7.8.12] - 2026-09-16
 ### Correções
-- Corrige falha na API pública que permitia a visitantes anônimos listar inscrições privadas e acessar dados pessoais dos proponentes
+- Ajusta o controle de acesso da API pública para restringir a consulta de inscrições e informações associadas a usuários não autenticados.
 - Corrige a exportação de planilha da lista de avaliações, que ignorava as colunas escolhidas em "Selecionar dados" e gerava sempre o mesmo conjunto fixo, passando a trazer exatamente as colunas selecionadas com os respectivos dados, inclusive os campos do formulário de inscrição
 
 ## [7.8.11] - 2026-09-10

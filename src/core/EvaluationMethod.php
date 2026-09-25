@@ -1075,29 +1075,27 @@ abstract class EvaluationMethod extends Module implements \JsonSerializable{
             }
         }
 
-        // Passo 1: aplica todas as inclusões manuais antes da distribuição automática.
-        // Assim a carga pendente dessas inclusões já está visível no comparador em
-        // qualquer inscrição da rodada, independentemente da ordem de processamento.
+        // 1ª passagem: aplica todas as inclusões manuais antes de preencher o restante.
+        // Assim a carga entra em $pending_assignments_count e o comparador customizado
+        // enxerga o desequilíbrio mesmo se a ordem das inscrições variar (empate em num).
         foreach($registration_evaluations as &$registration) {
             $include_list = $registration->valuers_exceptions_list->include ?? [];
-
-            if($registration->status > 1 && !count($include_list)) {
+            if(!count($include_list)) {
                 continue;
             }
 
-            // adiciona os usuários da lista de inclusões (valuers_exceptions_list->include)
-            foreach($registration->valuers_exceptions_list->include as $user_id) {
+            foreach($include_list as $user_id) {
                 // se o usuário já é avaliador da inscrição, não precisa adicionar
                 if(isset($result[$registration->id][$user_id])) {
                     continue;
                 }
 
-                /** 
+                /**
                  * Lista de comissões que o usuário está
-                 * @var array 
+                 * @var array
                  **/
                 $user_committees = [];
-                
+
                 // encontra em quais comissões o usuário está
                 foreach($committees as $committee_name => $users) {
                     if(in_array($user_id, array_map(fn($user) => $user->id, $users))) {
@@ -1129,8 +1127,7 @@ abstract class EvaluationMethod extends Module implements \JsonSerializable{
         }
         unset($registration);
 
-        // Passo 2: distribui as vagas restantes com o comparador/quotas já enxergando
-        // as inclusões manuais aplicadas no passo anterior.
+        // 2ª passagem: completa as vagas restantes com o balanceamento / comparador
         foreach($registration_evaluations as &$registration) {
             $registration_entity = null;
 

@@ -3533,4 +3533,101 @@ $$
             WHERE seal_exemption_status IS NOT NULL");
     },
 
+    'Corrige dados legados das etapas de inscrição das oportunidades (campos e anexos sem etapa e etapas vazias duplicadas)' => function () {
+        // Legacy data fix for registration steps (RegistrationStep entity).
+        //
+        // Background: the db-update that created the registration_step table and the
+        // mc-update that backfilled step_id on form fields/files did not check whether
+        // a step already existed (e.g. the one created by the Opportunity insert:after
+        // hook) and did not filter by step_id IS NULL when attaching configurations.
+        // Legacy databases can therefore contain:
+        //   1. form fields/files with step_id IS NULL, in opportunities that have no
+        //      step at all (the mc-update never reached them);
+        //   2. opportunities with exactly two steps where one step has zero
+        //      fields/files attached and the other one already holds every field/file
+        //      of the opportunity (the signature of the duplicated step created by the
+        //      unguarded legacy mc-update).
+        //
+        // Every statement below is idempotent by construction: each one filters the
+        // exact rows it fixes, so a second run matches no rows and changes nothing.
+
+        // Safety guard: only run when the whole RegistrationStep structure is in place.
+        if (!__table_exists('registration_step') ||
+            !__column_exists('registration_field_configuration', 'step_id') ||
+            !__column_exists('registration_file_configuration', 'step_id')) {
+            return;
+        }
+
+        // Scenario 1a - identified by: opportunity with NO step that still has form
+        // fields or files with step_id IS NULL. Fix: create exactly one empty step,
+        // with the same defaults the application uses for auto-created steps. The
+        // NOT EXISTS guard makes it impossible to create a duplicate step.
+        __exec("INSERT INTO registration_step (name, display_order, opportunity_id, create_timestamp, update_timestamp)
+                SELECT '', 0, o.id, NOW(), NOW()
+                  FROM opportunity o
+                 WHERE NOT EXISTS (SELECT 1 FROM registration_step rs WHERE rs.opportunity_id = o.id)
+                   AND (EXISTS (SELECT 1 FROM registration_field_configuration rfc
+                                 WHERE rfc.opportunity_id = o.id AND rfc.step_id IS NULL)
+                     OR EXISTS (SELECT 1 FROM registration_file_configuration rfc
+                                 WHERE rfc.opportunity_id = o.id AND rfc.step_id IS NULL))");
+
+        // Scenario 1b - identified by: every field/file with step_id IS NULL whose
+        // opportunity already has at least one step (guaranteed after 1a). Fix:
+        // attach the stepless rows to a single existing step, never creating a new
+        // one. Step preference: a step without any field/file attached (the empty
+        // step auto-created by the application), then lowest display_order, then
+        // lowest id. DISTINCT ON resolves one step per opportunity, so all stepless
+        // rows of the same opportunity converge on it.
+        __exec("UPDATE registration_field_configuration rfc
+                   SET step_id = chosen.step_id
+                  FROM (SELECT DISTINCT ON (rs.opportunity_id) rs.opportunity_id, rs.id AS step_id
+                          FROM registration_step rs
+                         ORDER BY rs.opportunity_id,
+                                  (EXISTS (SELECT 1 FROM registration_field_configuration f WHERE f.step_id = rs.id)
+                                   OR EXISTS (SELECT 1 FROM registration_file_configuration fl WHERE fl.step_id = rs.id)) ASC,
+                                  rs.display_order ASC,
+                                  rs.id ASC) AS chosen
+                 WHERE rfc.opportunity_id = chosen.opportunity_id
+                   AND rfc.step_id IS NULL");
+
+        __exec("UPDATE registration_file_configuration rfc
+                   SET step_id = chosen.step_id
+                  FROM (SELECT DISTINCT ON (rs.opportunity_id) rs.opportunity_id, rs.id AS step_id
+                          FROM registration_step rs
+                         ORDER BY rs.opportunity_id,
+                                  (EXISTS (SELECT 1 FROM registration_field_configuration f WHERE f.step_id = rs.id)
+                                   OR EXISTS (SELECT 1 FROM registration_file_configuration fl WHERE fl.step_id = rs.id)) ASC,
+                                  rs.display_order ASC,
+                                  rs.id ASC) AS chosen
+                 WHERE rfc.opportunity_id = chosen.opportunity_id
+                   AND rfc.step_id IS NULL");
+
+        // Scenario 2 - identified by: opportunity with EXACTLY two steps where one
+        // step has zero fields/files attached while the other one holds EVERY
+        // field/file of the opportunity (the opportunity must really have at least
+        // one field or file, otherwise the "holds everything" check would be
+        // vacuously true for two empty steps). Fix: remove the leftover empty step
+        // and keep the complete one. Safety: the only foreign keys referencing
+        // registration_step are registration_field_configuration.step_id and
+        // registration_file_configuration.step_id, both ON DELETE CASCADE, and the
+        // removed step has no rows referencing it by definition; the plain DELETE
+        // mirrors how the application itself removes steps. Two-step opportunities
+        // outside this exact pattern are not touched.
+        __exec("DELETE FROM registration_step rs_empty
+                 USING registration_step rs_full
+                 WHERE rs_empty.opportunity_id = rs_full.opportunity_id
+                   AND rs_empty.id <> rs_full.id
+                   AND (SELECT COUNT(*) FROM registration_step x WHERE x.opportunity_id = rs_empty.opportunity_id) = 2
+                   AND (EXISTS (SELECT 1 FROM registration_field_configuration f WHERE f.opportunity_id = rs_empty.opportunity_id)
+                     OR EXISTS (SELECT 1 FROM registration_file_configuration fl WHERE fl.opportunity_id = rs_empty.opportunity_id))
+                   AND NOT EXISTS (SELECT 1 FROM registration_field_configuration f WHERE f.step_id = rs_empty.id)
+                   AND NOT EXISTS (SELECT 1 FROM registration_file_configuration fl WHERE fl.step_id = rs_empty.id)
+                   AND NOT EXISTS (SELECT 1 FROM registration_field_configuration f
+                                    WHERE f.opportunity_id = rs_empty.opportunity_id
+                                      AND (f.step_id IS NULL OR f.step_id <> rs_full.id))
+                   AND NOT EXISTS (SELECT 1 FROM registration_file_configuration fl
+                                    WHERE fl.opportunity_id = rs_empty.opportunity_id
+                                      AND (fl.step_id IS NULL OR fl.step_id <> rs_full.id))");
+    },
+
 ] + $updates ;
