@@ -23,8 +23,8 @@ app.component('mc-summary-agent-info', {
                 can = true
             }
 
-            if (can && !this.avaliableEvaluationFields[item]) {
-                can = true;
+            if (can && !Utils.isEvaluationFieldVisible(this.avaliableEvaluationFields, item)) {
+                can = false;
             }
             
             return can;

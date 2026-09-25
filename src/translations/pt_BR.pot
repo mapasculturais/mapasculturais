@@ -29475,3 +29475,4393 @@ msgstr ""
 #: themes/Subsite/layouts/parts/header-about-nav.php:21
 msgid "Sobre o Site"
 msgstr ""
+
+#: conf/event-types.php:139 conf/opportunity-types.php:171
+#: conf/project-types.php:128 conf/space-types.php:508
+#: conf/agent-types.php:693
+msgid "O valor deve ser uma URL válida do Spotify ou um identificador válido."
+msgstr ""
+
+
+#: conf/event-types.php:144 conf/opportunity-types.php:176
+#: conf/project-types.php:133 conf/space-types.php:513
+#: conf/agent-types.php:698
+msgid "URL ou identificador do Spotify"
+msgstr ""
+
+
+#: conf/event-types.php:185 conf/opportunity-types.php:217
+#: conf/project-types.php:174 conf/space-types.php:554
+#: conf/agent-types.php:739
+msgid "Fediverso"
+msgstr ""
+
+
+#: conf/event-types.php:193 conf/opportunity-types.php:225
+#: conf/project-types.php:182 conf/space-types.php:562
+#: conf/agent-types.php:747
+msgid "https://nomedoservidor.com.br/@nomedousuario"
+msgstr ""
+
+
+#: conf/space-types.php:353
+msgid "Não possui"
+msgstr ""
+
+
+#: conf/subsite-types.php:425
+msgid "E-mail para solicitações de exclusão de conta"
+msgstr ""
+
+
+#: conf/subsite-types.php:428 modules/UserManagement/Module.php:441
+#: modules/UserManagement/components/user-management--account-deletion-config/texts.php:8
+msgid "O e-mail informado é inválido."
+msgstr ""
+
+
+#: conf/taxonomies.php:150
+msgid "Cultura do Povo Tupiniquin"
+msgstr ""
+
+
+#: conf/agent-types.php:189
+msgid "CPF / Carteira de Identidade Nacional (CIN)"
+msgstr ""
+
+
+#: core/Traits/EntityRevision.php:232
+msgid "Registro deletado permanentemente."
+msgstr ""
+
+
+#: modules/UserManagement/Module.php:435
+msgid "Permissão negada."
+msgstr ""
+
+
+#: modules/UserManagement/Module.php:454
+#: modules/UserManagement/components/user-management--account-deletion-config/texts.php:10
+msgid "Não foi possível salvar a configuração."
+msgstr ""
+
+
+#: modules/UserManagement/Module.php:474
+msgid "A mensagem de solicitação é obrigatória."
+msgstr ""
+
+
+#: modules/UserManagement/Module.php:480
+msgid ""
+"Não foi possível identificar destinatários para a solicitação de exclusão de"
+" conta."
+msgstr ""
+
+
+#: modules/UserManagement/Module.php:511 modules/UserManagement/Module.php:527
+#: modules/UserManagement/components/user-management--request-delete/texts.php:15
+msgid "Não foi possível enviar a solicitação. Tente novamente mais tarde."
+msgstr ""
+
+
+#: modules/UserManagement/Module.php:531
+msgid "Solicitação enviada com sucesso."
+msgstr ""
+
+
+#: modules/OpportunityExecution/Module.php:53
+msgid "A data deve ser posterior à data de publicação final do resultado"
+msgstr ""
+
+
+#: modules/OpportunityExecution/Module.php:418
+msgid "Pedido #%s"
+msgstr ""
+
+
+#: modules/OpportunityExecution/Module.php:445
+msgid "Já existe uma fase de execução para esta oportunidade"
+msgstr ""
+
+
+#: modules/OpportunityExecution/Module.php:487
+#: modules/OpportunityExecution/components/opportunity-create-execution-phase/template.php:19
+#: modules/Opportunities/components/opportunity-phases-config/template.php:32
+msgid "Fase de Execução"
+msgstr ""
+
+
+#: modules/OpportunityExecution/Module.php:505
+#: modules/OpportunityExecution/components/opportunity-create-execution-phase/template.php:30
+msgid "Avaliação dos pedidos"
+msgstr ""
+
+
+#: modules/OpportunityExecution/Module.php:538
+msgid "Fase de execução não encontrada"
+msgstr ""
+
+
+#: modules/OpportunityExecution/Module.php:545
+#: modules/OpportunityAppealPhase/Module.php:141
+msgid "ID da inscrição é obrigatório"
+msgstr ""
+
+
+#: modules/OpportunityExecution/Module.php:556
+msgid "Você não tem permissão para abrir pedidos nesta inscrição"
+msgstr ""
+
+
+#: modules/OpportunityExecution/Module.php:577
+msgid "Inscrição não encontrada"
+msgstr ""
+
+
+#: modules/OpportunityExecution/Module.php:586
+msgid "A inscrição não está aprovada na publicação final do resultado"
+msgstr ""
+
+
+#: modules/OpportunityExecution/Module.php:630
+msgid "É fase de execução?"
+msgstr ""
+
+
+#: modules/OpportunityExecution/Module.php:640
+msgid "Fase de execução vinculada"
+msgstr ""
+
+
+#: core/Controllers/Registration.php:745
+msgid "Inscrição não encontrada."
+msgstr ""
+
+
+#: core/Controllers/Registration.php:756
+msgid "O id do avaliador é obrigatório."
+msgstr ""
+
+
+#: core/Controllers/Registration.php:1058
+msgid "Erro ao gerar PDF. Tente novamente."
+msgstr ""
+
+
+#: core/Controllers/Opportunity.php:2042
+msgid "Esta oportunidade não possui avaliação técnica configurada."
+msgstr ""
+
+
+#: core/Controllers/Opportunity.php:2048
+msgid "Esta oportunidade não possui cotas configuradas."
+msgstr ""
+
+
+#: core/Controllers/Opportunity.php:2115
+msgid "Campo eligible recalculado com sucesso."
+msgstr ""
+
+
+#: core/Definitions/FileGroup.php:62
+msgid "Extensão de arquivo não permitida."
+msgstr ""
+
+
+#: core/Definitions/FileGroup.php:101
+msgid "Tipo de arquivo não permitido."
+msgstr ""
+
+
+#: core/Entities/User.php:258
+msgid "Role adcionado: "
+msgstr ""
+
+
+#: core/Entities/User.php:288
+msgid "Role removido: "
+msgstr ""
+
+
+#: core/Entities/EvaluationMethodConfiguration.php:127
+msgid "A configuração de critérios e seções contém erros de integridade"
+msgstr ""
+
+
+#: core/Entities/EvaluationMethodConfiguration.php:976
+msgid ""
+"Já existem avaliações iniciadas, concluídas ou enviadas. Por isso, não é "
+"possível excluir critérios ou seções. Solicite a um administrador do "
+"sistema."
+msgstr ""
+
+
+#: core/Entities/EvaluationMethodConfiguration.php:1108
+msgid ""
+"%s também é proponente neste edital e, por isso, não avaliará a própria "
+"inscrição. As quantidades para ele podem ser diferentes do esperado."
+msgstr ""
+
+
+#: core/Entities/EvaluationMethodConfiguration.php:1113
+msgid ""
+"%s também é proponente neste edital (%d inscrições) e, por isso, não "
+"avaliará as próprias. As quantidades para ele podem ser diferentes do "
+"esperado."
+msgstr ""
+
+
+#: modules/DeleteAccount/Module.php:24
+msgid "A exclusão de conta deve ser solicitada em Conta e Privacidade."
+msgstr ""
+
+
+#: modules/Entities/Module.php:119
+msgid "Gerenciar configuração global das colunas"
+msgstr ""
+
+
+#: modules/Entities/Module.php:129
+msgid "Identificador da tabela inválido"
+msgstr ""
+
+
+#: modules/Entities/Module.php:134
+msgid "Nenhuma coluna conhecida foi enviada"
+msgstr ""
+
+
+#: modules/Entities/Module.php:184
+msgid "A imagem do perfil é obrigatória."
+msgstr ""
+
+
+#: modules/EvaluationMethodQualification/Module.php:326
+msgid "Erro ao salvar as alterações"
+msgstr ""
+
+
+#: modules/EvaluationMethodTechnical/Module.php:328
+msgid ""
+"Não é possível alterar o bônus de pontuação após a publicação do resultado "
+"da fase."
+msgstr ""
+
+
+#: modules/EventImporter/Controller.php:367
+msgid ""
+"Linha inválida: ainda é a linha de instruções/exemplo da planilha modelo. "
+"Apague as linhas de exemplo e deixe apenas o cabeçalho + seus dados reais"
+msgstr ""
+
+
+#: modules/EventImporter/Controller.php:520
+msgid "A hora inicial e a hora final não podem ser iguais."
+msgstr ""
+
+
+#: modules/EventImporter/Controller.php:572
+msgid ""
+"Este arquivo já foi processado. Envie a planilha novamente ou use outro "
+"arquivo para importar."
+msgstr ""
+
+
+#: modules/EventImporter/Controller.php:600
+msgid "Falha ao salvar o evento. Verifique os dados da linha."
+msgstr ""
+
+
+#: modules/EventImporter/Controller.php:637
+msgid "Erro ao processar a linha: "
+msgstr ""
+
+
+#: modules/EventImporter/Controller.php:643
+msgid ""
+"Nenhum evento foi criado ou atualizado. Verifique os dados da planilha."
+msgstr ""
+
+
+#: modules/EventImporter/Controller.php:806
+msgid "Espaço não encontrado para criar a ocorrência"
+msgstr ""
+
+
+#: modules/EventImporter/Controller.php:814
+msgid "Frequência inválida para criar a ocorrência"
+msgstr ""
+
+
+#: modules/EventImporter/Controller.php:965
+msgid "Frequência não suportada para criar a ocorrência"
+msgstr ""
+
+
+#: modules/CompliantSuggestion/Module.php:347
+msgid "Menores de 18 anos não podem enviar mensagens de contato."
+msgstr ""
+
+
+#: themes/BaseV1/Theme.php:2098
+msgid "Campo duplicado."
+msgstr ""
+
+
+#: themes/BaseV1/Theme.php:2102
+msgid "Anexo duplicado."
+msgstr ""
+
+
+#: themes/BaseV1/Theme.php:2167
+msgid "Erro ao processar a solicitação"
+msgstr ""
+
+
+#: themes/BaseV1/Theme.php:2168
+msgid "Erro ao processar validationErrors:"
+msgstr ""
+
+
+#: themes/BaseV1/Theme.php:2169
+msgid "Erro de validação"
+msgstr ""
+
+
+#: modules/Opportunities/Module.php:349
+msgid ""
+"Critérios com erros: existe(m) critério(s) sem seção associada ou com campos"
+" obrigatórios vazios"
+msgstr ""
+
+
+#: modules/Opportunities/Module.php:353
+msgid "Seções com erros: existe(m) seção(ões) sem critérios associados"
+msgstr ""
+
+
+#: modules/Opportunities/Module.php:1318
+#: modules/Entities/components/create-opportunity/template.php:38
+#: modules/Opportunities/components/opportunity-subscription/template.php:31
+msgid "Oportunidade apenas para divulgação"
+msgstr ""
+
+
+#: modules/Opportunities/Module.php:1330
+msgid "Solicitação de avatar do Agente coletivo para tipos de proponente"
+msgstr ""
+
+
+#: modules/Opportunities/Module.php:1332
+msgid ""
+"Armazena se o avatar do agente coletivo é obrigatório para Coletivo ou "
+"Pessoa Jurídica"
+msgstr ""
+
+
+#: modules/Opportunities/Module.php:1385
+msgid "Distribuição por hora"
+msgstr ""
+
+
+#: modules/Opportunities/Module.php:1386
+msgid "Distribuição por dia"
+msgstr ""
+
+
+#: modules/Opportunities/Module.php:1387
+msgid "Desativar distribuição"
+msgstr ""
+
+
+#: modules/OpportunityAppealPhase/Module.php:305
+msgid "Exibir detalhamento da avaliação anterior para avaliadores do recurso"
+msgstr ""
+
+
+#: modules/OpportunityAppealPhase/Module.php:311
+msgid "Sincronizar inscrições para fase seguinte"
+msgstr ""
+
+
+#: modules/OpportunityAppealPhase/Module.php:469
+msgid "O status da sua inscrição na fase de recurso %s foi alterado."
+msgstr ""
+
+
+#: modules/OpportunityExporter/Module.php:55
+msgid "oportunidade-exportada-{id}.export"
+msgstr ""
+
+
+#: modules/OpportunityExporter/Module.php:77
+msgid "Os dados para importação não foram enviados"
+msgstr ""
+
+
+#: modules/OpportunityExporter/Module.php:83
+msgid "As definição do que deve ser importado não foi enviada"
+msgstr ""
+
+
+#: modules/OpportunityExporter/Module.php:89
+msgid "A entidade vinculada é obrigatória"
+msgstr ""
+
+
+#: modules/OpportunityExporter/Module.php:99
+msgid "Status inválido para importação"
+msgstr ""
+
+
+#: modules/OpportunityExporter/Module.php:112
+msgid "Tipo inválido para a entidade vinculada"
+msgstr ""
+
+
+#: modules/OpportunityExporter/Module.php:118
+msgid "Entidade vinculada não encontrada"
+msgstr ""
+
+
+#: modules/OpportunityExporter/Importer.php:392
+msgid ""
+"Importação de oportunidade: alguns campos tinham condição apontando para "
+"outro campo inexistente ou em dependência circular; a condição foi ignorada "
+"para permitir concluir a importação."
+msgstr ""
+
+
+#: modules/OpportunityExporter/Importer.php:461
+msgid "Importação de oportunidade: anexo com condição apontando para o campo "
+msgstr ""
+
+
+#: modules/OpportunityWorkplan/Module.php:104
+msgid "Plano de metas - Segmento artístico-cultural obrigatório."
+msgstr ""
+
+
+#: modules/OpportunityWorkplan/Module.php:114
+msgid "Título da meta obrigatório"
+msgstr ""
+
+
+#: modules/OpportunityWorkplan/Module.php:117
+msgid "Descrição da meta obrigatória"
+msgstr ""
+
+
+#: modules/OpportunityWorkplan/Module.php:120
+msgid "Mês inicial da meta obrigatório."
+msgstr ""
+
+
+#: modules/OpportunityWorkplan/Module.php:123
+msgid "Mês final da meta obrigatório."
+msgstr ""
+
+
+#: modules/OpportunityWorkplan/Module.php:126
+msgid "Etapa do fazer cultural obrigatória."
+msgstr ""
+
+
+#: modules/OpportunityWorkplan/Module.php:144
+msgid "Campo 'Nome' obrigatório em uma das entregas."
+msgstr ""
+
+
+#: modules/OpportunityWorkplan/Module.php:328
+#: modules/Opportunities/components/fields-visible-evaluators/init.php:36
+msgid "Entregas"
+msgstr ""
+
+
+#: modules/OpportunityWorkplan/Module.php:331
+#: modules/Opportunities/components/fields-visible-evaluators/init.php:48
+msgid "Segmento artístico-cultural"
+msgstr ""
+
+
+#: modules/OpportunityWorkplan/Module.php:345
+#: modules/Opportunities/components/fields-visible-evaluators/init.php:120
+msgid "Detalhamento de receita (quantidade e valores)"
+msgstr ""
+
+
+#: modules/OpportunityWorkplan/Module.php:346
+#: modules/Opportunities/components/fields-visible-evaluators/init.php:126
+msgid "Período de realização"
+msgstr ""
+
+
+#: modules/OpportunityWorkplan/Module.php:347
+#: modules/Opportunities/components/fields-visible-evaluators/init.php:132
+#: modules/OpportunityWorkplan/components/registration-details-workplan/template.php:137
+msgid "Principal elo das artes"
+msgstr ""
+
+
+#: modules/OpportunityWorkplan/Module.php:348
+#: modules/Opportunities/components/fields-visible-evaluators/init.php:138
+#: modules/OpportunityWorkplan/components/registration-details-workplan/template.php:142
+msgid "Orçamento total"
+msgstr ""
+
+
+#: modules/OpportunityWorkplan/Module.php:349
+#: modules/Opportunities/components/fields-visible-evaluators/init.php:144
+#: modules/OpportunityWorkplan/components/registration-details-workplan/template.php:147
+msgid "Número de municípios"
+msgstr ""
+
+
+#: modules/OpportunityWorkplan/Module.php:350
+#: modules/Opportunities/components/fields-visible-evaluators/init.php:150
+#: modules/OpportunityWorkplan/components/registration-details-workplan/template.php:152
+msgid "Número de bairros"
+msgstr ""
+
+
+#: modules/OpportunityWorkplan/Module.php:351
+#: modules/Opportunities/components/fields-visible-evaluators/init.php:156
+#: modules/OpportunityWorkplan/components/registration-details-workplan/template.php:157
+msgid "Ações de mediação previstas"
+msgstr ""
+
+
+#: modules/OpportunityWorkplan/Module.php:352
+#: modules/Opportunities/components/fields-visible-evaluators/init.php:162
+#: modules/OpportunityWorkplan/components/registration-details-workplan/template.php:163
+msgid "Tipo de receita"
+msgstr ""
+
+
+#: modules/OpportunityWorkplan/Module.php:353
+#: modules/Opportunities/components/fields-visible-evaluators/init.php:168
+#: modules/OpportunityWorkplan/components/registration-details-workplan/template.php:172
+msgid "Unidades para comercialização"
+msgstr ""
+
+
+#: modules/OpportunityWorkplan/Module.php:354
+#: modules/Opportunities/components/fields-visible-evaluators/init.php:174
+#: modules/OpportunityWorkplan/components/registration-details-workplan/template.php:183
+msgid "Pessoas remuneradas por função"
+msgstr ""
+
+
+#: modules/OpportunityWorkplan/Module.php:355
+#: modules/Opportunities/components/fields-visible-evaluators/init.php:180
+msgid "Composição da equipe (gênero e raça/cor)"
+msgstr ""
+
+
+#: modules/OpportunityWorkplan/Module.php:356
+#: modules/Opportunities/components/fields-visible-evaluators/init.php:186
+msgid "Envolvimento de comunidades como coautores"
+msgstr ""
+
+
+#: modules/OpportunityWorkplan/Module.php:357
+#: modules/Opportunities/components/fields-visible-evaluators/init.php:192
+msgid "Estratégias de inclusão Trans e Travestis"
+msgstr ""
+
+
+#: modules/OpportunityWorkplan/Module.php:358
+#: modules/Opportunities/components/fields-visible-evaluators/init.php:198
+#: modules/OpportunityWorkplan/components/registration-details-workplan/template.php:242
+msgid "Medidas de acessibilidade previstas"
+msgstr ""
+
+
+#: modules/OpportunityWorkplan/Module.php:359
+#: modules/Opportunities/components/fields-visible-evaluators/init.php:204
+msgid "Práticas socioambientais"
+msgstr ""
+
+
+#: modules/OpportunityWorkplan/Module.php:360
+#: modules/Opportunities/components/fields-visible-evaluators/init.php:210
+#: modules/OpportunityWorkplan/components/registration-details-workplan/template.php:261
+msgid "Estratégia de imprensa"
+msgstr ""
+
+
+#: modules/OpportunityWorkplan/Module.php:361
+#: modules/Opportunities/components/fields-visible-evaluators/init.php:216
+#: modules/OpportunityWorkplan/components/registration-details-workplan/template.php:267
+msgid "Canais de comunicação"
+msgstr ""
+
+
+#: modules/OpportunityWorkplan/Module.php:362
+#: modules/Opportunities/components/fields-visible-evaluators/init.php:222
+msgid "Experimentação/inovação"
+msgstr ""
+
+
+#: modules/OpportunityWorkplan/Module.php:363
+#: modules/Opportunities/components/fields-visible-evaluators/init.php:228
+#: modules/OpportunityWorkplan/components/registration-details-workplan/template.php:289
+msgid "Tipos de documentação"
+msgstr ""
+
+
+#: modules/OpportunityWorkplan/Module.php:687
+#: modules/OpportunityWorkplan/Module.php:691
+#: modules/OpportunityWorkplan/Module.php:762
+#: modules/OpportunityWorkplan/Module.php:766
+msgid "Deve ser um número inteiro maior ou igual a um"
+msgstr ""
+
+
+#: modules/OpportunityWorkplan/Module.php:719
+#: modules/OpportunityWorkplan/components/opportunity-enable-workplan/template.php:122
+msgid "Informar título da meta"
+msgstr ""
+
+
+#: modules/OpportunityWorkplan/Module.php:725
+msgid "Título da meta é obrigatório"
+msgstr ""
+
+
+#: modules/OpportunityWorkplan/Module.php:731
+#: modules/OpportunityWorkplan/components/opportunity-enable-workplan/template.php:131
+msgid "Informar descrição da meta"
+msgstr ""
+
+
+#: modules/OpportunityWorkplan/Module.php:737
+msgid "Descrição da meta é obrigatória"
+msgstr ""
+
+
+#: modules/OpportunityWorkplan/Module.php:774
+msgid "Informar período de realização da atividade"
+msgstr ""
+
+
+#: modules/OpportunityWorkplan/Module.php:780
+msgid "Período de realização obrigatório"
+msgstr ""
+
+
+#: modules/OpportunityWorkplan/Module.php:828
+#: modules/OpportunityWorkplan/components/opportunity-enable-workplan/template.php:454
+msgid "Informar número de participantes executado"
+msgstr ""
+
+
+#: modules/OpportunityWorkplan/Module.php:844
+#: modules/OpportunityWorkplan/components/opportunity-enable-workplan/template.php:247
+msgid "Informar principal elo das artes acionado"
+msgstr ""
+
+
+#: modules/OpportunityWorkplan/Module.php:850
+msgid "Informar orçamento total da atividade"
+msgstr ""
+
+
+#: modules/OpportunityWorkplan/Module.php:856
+#: modules/OpportunityWorkplan/components/opportunity-enable-workplan/template.php:265
+msgid "Informar número de municípios"
+msgstr ""
+
+
+#: modules/OpportunityWorkplan/Module.php:862
+#: modules/OpportunityWorkplan/components/opportunity-enable-workplan/template.php:274
+msgid "Informar número de bairros"
+msgstr ""
+
+
+#: modules/OpportunityWorkplan/Module.php:868
+msgid "Informar número de ações de mediação/formação de público"
+msgstr ""
+
+
+#: modules/OpportunityWorkplan/Module.php:874
+#: modules/OpportunityWorkplan/components/opportunity-enable-workplan/template.php:292
+msgid "Informar pessoas remuneradas por função"
+msgstr ""
+
+
+#: modules/OpportunityWorkplan/Module.php:880
+#: modules/OpportunityWorkplan/components/opportunity-enable-workplan/template.php:331
+msgid "Informar composição da equipe (gênero e raça/cor)"
+msgstr ""
+
+
+#: modules/OpportunityWorkplan/Module.php:886
+#: modules/OpportunityWorkplan/components/opportunity-enable-workplan/template.php:307
+msgid "Informar tipo de receita previsto"
+msgstr ""
+
+
+#: modules/OpportunityWorkplan/Module.php:892
+#: modules/OpportunityWorkplan/components/opportunity-enable-workplan/template.php:316
+msgid "Informar unidades para comercialização"
+msgstr ""
+
+
+#: modules/OpportunityWorkplan/Module.php:898
+#: modules/OpportunityWorkplan/components/opportunity-enable-workplan/template.php:343
+msgid "Informar envolvimento de comunidades como coautores"
+msgstr ""
+
+
+#: modules/OpportunityWorkplan/Module.php:904
+#: modules/OpportunityWorkplan/components/opportunity-enable-workplan/template.php:352
+msgid "Informar estratégias de inclusão Trans e Travestis"
+msgstr ""
+
+
+#: modules/OpportunityWorkplan/Module.php:910
+#: modules/OpportunityWorkplan/components/opportunity-enable-workplan/template.php:361
+msgid "Informar medidas de acessibilidade previstas"
+msgstr ""
+
+
+#: modules/OpportunityWorkplan/Module.php:916
+#: modules/OpportunityWorkplan/components/opportunity-enable-workplan/template.php:370
+msgid "Informar práticas socioambientais"
+msgstr ""
+
+
+#: modules/OpportunityWorkplan/Module.php:922
+msgid "Informar estratégia de relacionamento com imprensa"
+msgstr ""
+
+
+#: modules/OpportunityWorkplan/Module.php:928
+msgid "Estratégias de comunicação são obrigatórias"
+msgstr ""
+
+
+#: modules/OpportunityWorkplan/Module.php:934
+#: modules/OpportunityWorkplan/components/opportunity-enable-workplan/template.php:391
+msgid "Informar canais de comunicação"
+msgstr ""
+
+
+#: modules/OpportunityWorkplan/Module.php:940
+#: modules/OpportunityWorkplan/components/opportunity-enable-workplan/template.php:400
+msgid "Informar ações de experimentação/inovação"
+msgstr ""
+
+
+#: modules/OpportunityWorkplan/Module.php:946
+#: modules/OpportunityWorkplan/components/opportunity-enable-workplan/template.php:409
+msgid "Informar tipo de documentação"
+msgstr ""
+
+
+#: modules/OpportunityWorkplan/Module.php:956
+#: modules/OpportunityWorkplan/components/opportunity-enable-workplan/template.php:511
+msgid "Informar número de municípios executados"
+msgstr ""
+
+
+#: modules/OpportunityWorkplan/Module.php:962
+#: modules/OpportunityWorkplan/components/opportunity-enable-workplan/template.php:520
+msgid "Informar número de bairros executados"
+msgstr ""
+
+
+#: modules/OpportunityWorkplan/Module.php:968
+#: modules/OpportunityWorkplan/components/opportunity-enable-workplan/template.php:529
+msgid "Informar ações de mediação executadas"
+msgstr ""
+
+
+#: modules/OpportunityWorkplan/Module.php:974
+#: modules/OpportunityWorkplan/components/opportunity-enable-workplan/template.php:538
+msgid "Informar unidades comercializadas executadas"
+msgstr ""
+
+
+#: modules/OpportunityWorkplan/Module.php:980
+#: modules/OpportunityWorkplan/components/opportunity-enable-workplan/template.php:550
+msgid "Informar pessoas remuneradas executadas por função"
+msgstr ""
+
+
+#: modules/OpportunityWorkplan/Module.php:986
+#: modules/OpportunityWorkplan/components/opportunity-enable-workplan/template.php:559
+msgid "Informar composição da equipe executada (gênero e raça/cor)"
+msgstr ""
+
+
+#: modules/OpportunityWorkplan/Module.php:992
+#: modules/OpportunityWorkplan/components/opportunity-enable-workplan/template.php:502
+msgid "Informar tipo de receita executada"
+msgstr ""
+
+
+#: modules/OpportunityWorkplan/Module.php:998
+msgid "Informar período executado de realização da entrega"
+msgstr ""
+
+
+#: modules/OpportunityWorkplan/Module.php:1004
+msgid "Informar orçamento total executado da entrega"
+msgstr ""
+
+
+#: modules/OpportunityWorkplan/Module.php:1010
+msgid ""
+"Informar envolvimento executado de comunidades/coletivos como "
+"coautores/coexecutores"
+msgstr ""
+
+
+#: modules/OpportunityWorkplan/Module.php:1016
+#: modules/OpportunityWorkplan/components/opportunity-enable-workplan/template.php:610
+msgid "Informar estratégias executadas de inclusão Trans e Travestis"
+msgstr ""
+
+
+#: modules/OpportunityWorkplan/Module.php:1022
+msgid "Informar plano de acessibilidade executado"
+msgstr ""
+
+
+#: modules/OpportunityWorkplan/Module.php:1028
+#: modules/OpportunityWorkplan/components/opportunity-enable-workplan/template.php:634
+msgid "Informar práticas socioambientais executadas"
+msgstr ""
+
+
+#: modules/OpportunityWorkplan/Module.php:1034
+#: modules/OpportunityWorkplan/components/opportunity-enable-workplan/template.php:646
+msgid "Informar estratégia executada de relacionamento com imprensa"
+msgstr ""
+
+
+#: modules/OpportunityWorkplan/Module.php:1040
+#: modules/OpportunityWorkplan/components/opportunity-enable-workplan/template.php:655
+msgid "Informar estratégias de comunicação executadas"
+msgstr ""
+
+
+#: modules/OpportunityWorkplan/Module.php:1046
+#: modules/OpportunityWorkplan/components/opportunity-enable-workplan/template.php:664
+msgid "Informar ações executadas de experimentação/inovação"
+msgstr ""
+
+
+#: modules/OpportunityWorkplan/Module.php:1052
+msgid "Informar tipos de documentação produzida (executado)"
+msgstr ""
+
+
+#: modules/OpportunityWorkplan/Module.php:1058
+msgid "Informar segmento artístico-cultural executado da entrega"
+msgstr ""
+
+
+#: modules/OpportunityWorkplan/Module.php:1069
+msgid "Segmento artístico-cultural é obrigatório"
+msgstr ""
+
+
+#: modules/OpportunityWorkplan/Module.php:1076
+msgid "Segmento artístico-cultural (entrega) é obrigatório"
+msgstr ""
+
+
+#: modules/OpportunityWorkplan/Module.php:1082
+msgid "Quantidade estimada de público é obrigatória"
+msgstr ""
+
+
+#: modules/OpportunityWorkplan/Module.php:1089
+msgid "Principal elo das artes é obrigatório"
+msgstr ""
+
+
+#: modules/OpportunityWorkplan/Module.php:1095
+msgid "Orçamento total é obrigatório"
+msgstr ""
+
+
+#: modules/OpportunityWorkplan/Module.php:1101
+msgid "Número de municípios é obrigatório"
+msgstr ""
+
+
+#: modules/OpportunityWorkplan/Module.php:1107
+msgid "Número de bairros é obrigatório"
+msgstr ""
+
+
+#: modules/OpportunityWorkplan/Module.php:1113
+msgid "Número de ações de mediação é obrigatório"
+msgstr ""
+
+
+#: modules/OpportunityWorkplan/Module.php:1119
+msgid "Pessoas remuneradas por função é obrigatório"
+msgstr ""
+
+
+#: modules/OpportunityWorkplan/Module.php:1125
+msgid "Composição da equipe por gênero é obrigatória"
+msgstr ""
+
+
+#: modules/OpportunityWorkplan/Module.php:1131
+msgid "Composição da equipe por raça/cor é obrigatória"
+msgstr ""
+
+
+#: modules/OpportunityWorkplan/Module.php:1137
+msgid "Tipo de receita previsto é obrigatório"
+msgstr ""
+
+
+#: modules/OpportunityWorkplan/Module.php:1143
+msgid "Unidades para comercialização é obrigatório"
+msgstr ""
+
+
+#: modules/OpportunityWorkplan/Module.php:1149
+msgid "Valor unitário previsto é obrigatório"
+msgstr ""
+
+
+#: modules/OpportunityWorkplan/Module.php:1155
+msgid "Detalhamento de coautoria com comunidades é obrigatório"
+msgstr ""
+
+
+#: modules/OpportunityWorkplan/Module.php:1161
+msgid "Ações de inclusão Trans/Travestis são obrigatórias"
+msgstr ""
+
+
+#: modules/OpportunityWorkplan/Module.php:1167
+msgid "Medidas de acessibilidade previstas são obrigatórias"
+msgstr ""
+
+
+#: modules/OpportunityWorkplan/Module.php:1173
+msgid "Descrição de práticas socioambientais é obrigatória"
+msgstr ""
+
+
+#: modules/OpportunityWorkplan/Module.php:1179
+msgid "Canais de comunicação são obrigatórios"
+msgstr ""
+
+
+#: modules/OpportunityWorkplan/Module.php:1185
+msgid "Tipos de experimentação/inovação são obrigatórios"
+msgstr ""
+
+
+#: modules/OpportunityWorkplan/Module.php:1191
+msgid "Tipos de documentação são obrigatórios"
+msgstr ""
+
+
+#: modules/OpportunityWorkplan/Module.php:1198
+msgid "Forma de disponibilização é obrigatória"
+msgstr ""
+
+
+#: modules/OpportunityWorkplan/Module.php:1204
+#: modules/OpportunityWorkplan/Module.php:1331
+msgid "Medidas de acessibilidade executadas são obrigatórias"
+msgstr ""
+
+
+#: modules/OpportunityWorkplan/Module.php:1210
+msgid "Perfil do público é obrigatório"
+msgstr ""
+
+
+#: modules/OpportunityWorkplan/Module.php:1216
+msgid "Territórios prioritários são obrigatórios"
+msgstr ""
+
+
+#: modules/OpportunityWorkplan/Module.php:1222
+msgid "Receita executada é obrigatória"
+msgstr ""
+
+
+#: modules/OpportunityWorkplan/Module.php:1228
+msgid "Período executado da entrega é obrigatório"
+msgstr ""
+
+
+#: modules/OpportunityWorkplan/Module.php:1234
+msgid "Orçamento total executado é obrigatório"
+msgstr ""
+
+
+#: modules/OpportunityWorkplan/Module.php:1241
+msgid "Número de municípios executados é obrigatório"
+msgstr ""
+
+
+#: modules/OpportunityWorkplan/Module.php:1247
+msgid "Número de bairros executados é obrigatório"
+msgstr ""
+
+
+#: modules/OpportunityWorkplan/Module.php:1253
+msgid "Ações de mediação executadas são obrigatórias"
+msgstr ""
+
+
+#: modules/OpportunityWorkplan/Module.php:1259
+msgid "Número de participantes executado é obrigatório"
+msgstr ""
+
+
+#: modules/OpportunityWorkplan/Module.php:1265
+msgid "Unidades comercializadas executadas são obrigatórias"
+msgstr ""
+
+
+#: modules/OpportunityWorkplan/Module.php:1271
+msgid "Valor unitário executado é obrigatório"
+msgstr ""
+
+
+#: modules/OpportunityWorkplan/Module.php:1277
+msgid "Pessoas remuneradas executadas por função é obrigatório"
+msgstr ""
+
+
+#: modules/OpportunityWorkplan/Module.php:1283
+msgid "Composição da equipe executada por gênero é obrigatória"
+msgstr ""
+
+
+#: modules/OpportunityWorkplan/Module.php:1289
+msgid "Composição da equipe executada por raça/cor é obrigatória"
+msgstr ""
+
+
+#: modules/OpportunityWorkplan/Module.php:1295
+msgid "Tipo de receita executada é obrigatório"
+msgstr ""
+
+
+#: modules/OpportunityWorkplan/Module.php:1301
+msgid "Coautoria/coexecução executada com comunidades/coletivos é obrigatória"
+msgstr ""
+
+
+#: modules/OpportunityWorkplan/Module.php:1307
+msgid "Detalhamento de coautoria/coexecução executada é obrigatório"
+msgstr ""
+
+
+#: modules/OpportunityWorkplan/Module.php:1313
+msgid "Estratégias executadas de inclusão Trans e Travestis são obrigatórias"
+msgstr ""
+
+
+#: modules/OpportunityWorkplan/Module.php:1319
+msgid "Ações executadas de inclusão Trans e Travestis são obrigatórias"
+msgstr ""
+
+
+#: modules/OpportunityWorkplan/Module.php:1325
+msgid "Plano de acessibilidade executado é obrigatório"
+msgstr ""
+
+
+#: modules/OpportunityWorkplan/Module.php:1337
+#: modules/OpportunityWorkplan/Module.php:1343
+msgid "Práticas socioambientais executadas são obrigatórias"
+msgstr ""
+
+
+#: modules/OpportunityWorkplan/Module.php:1349
+msgid "Estratégia executada de relacionamento com imprensa é obrigatória"
+msgstr ""
+
+
+#: modules/OpportunityWorkplan/Module.php:1355
+msgid "Estratégias de comunicação executadas são obrigatórias"
+msgstr ""
+
+
+#: modules/OpportunityWorkplan/Module.php:1361
+msgid "Ação executada de experimentação/inovação é obrigatória"
+msgstr ""
+
+
+#: modules/OpportunityWorkplan/Module.php:1367
+msgid "Tipos de experimentação/inovação executados são obrigatórios"
+msgstr ""
+
+
+#: modules/OpportunityWorkplan/Module.php:1373
+msgid "Tipos de documentação produzida são obrigatórios"
+msgstr ""
+
+
+#: modules/OpportunityWorkplan/Module.php:1379
+msgid "Segmento artístico-cultural executado é obrigatório"
+msgstr ""
+
+
+#: modules/OpportunityWorkplan/Module.php:1385
+#: modules/OpportunityWorkplan/components/opportunity-enable-workplan/template.php:571
+msgid "Informar principal elo das artes acionado (executado)"
+msgstr ""
+
+
+#: modules/OpportunityWorkplan/Module.php:1391
+msgid "Principal elo das artes (executado) é obrigatório"
+msgstr ""
+
+
+#: modules/OpportunityWorkplan/Module.php:1397
+#: modules/OpportunityWorkplan/components/opportunity-enable-workplan/template.php:580
+msgid "Informar canais de comunicação utilizados (executado)"
+msgstr ""
+
+
+#: modules/OpportunityWorkplan/Module.php:1403
+msgid "Canais de comunicação utilizados são obrigatórios"
+msgstr ""
+
+
+#: modules/OpportunityWorkplan/Module.php:1727
+msgid "Principal elo das artes acionado"
+msgstr ""
+
+
+#: modules/OpportunityWorkplan/Module.php:1730
+#: modules/ProjectMonitoring/Module.php:556
+msgid "Acesso"
+msgstr ""
+
+
+#: modules/OpportunityWorkplan/Module.php:1732
+#: modules/ProjectMonitoring/Module.php:558
+msgid "Produção"
+msgstr ""
+
+
+#: modules/OpportunityWorkplan/Module.php:1733
+#: modules/ProjectMonitoring/Module.php:559
+msgid "Difusão"
+msgstr ""
+
+
+#: modules/OpportunityWorkplan/Module.php:1734
+#: modules/ProjectMonitoring/Module.php:560
+msgid "Circulação"
+msgstr ""
+
+
+#: modules/OpportunityWorkplan/Module.php:1735
+#: modules/ProjectMonitoring/Module.php:561
+msgid "Internacionalização"
+msgstr ""
+
+
+#: modules/OpportunityWorkplan/Module.php:1736
+#: modules/ProjectMonitoring/Module.php:562
+msgid "Formação"
+msgstr ""
+
+
+#: modules/OpportunityWorkplan/Module.php:1737
+#: modules/ProjectMonitoring/Module.php:563
+msgid "Fruição"
+msgstr ""
+
+
+#: modules/OpportunityWorkplan/Module.php:1738
+#: modules/ProjectMonitoring/Module.php:564
+msgid "Memória/Preservação"
+msgstr ""
+
+
+#: modules/OpportunityWorkplan/Module.php:1740
+#: modules/ProjectMonitoring/Module.php:566
+msgid "Reflexão"
+msgstr ""
+
+
+#: modules/OpportunityWorkplan/Module.php:1748
+msgid "Qual o orçamento total da atividade?"
+msgstr ""
+
+
+#: modules/OpportunityWorkplan/Module.php:1755
+msgid "Em quantos municípios a atividade vai ser realizada?"
+msgstr ""
+
+
+#: modules/OpportunityWorkplan/Module.php:1758
+#: modules/OpportunityWorkplan/Module.php:1768
+#: modules/OpportunityWorkplan/Module.php:1778
+#: modules/OpportunityWorkplan/Module.php:1949
+#: modules/ProjectMonitoring/Module.php:423
+#: modules/ProjectMonitoring/Module.php:439
+#: modules/ProjectMonitoring/Module.php:455
+#: modules/ProjectMonitoring/Module.php:471
+msgid "Deve ser um número maior ou igual a zero"
+msgstr ""
+
+
+#: modules/OpportunityWorkplan/Module.php:1765
+msgid "Em quantos bairros a atividade vai ser realizada?"
+msgstr ""
+
+
+#: modules/OpportunityWorkplan/Module.php:1775
+msgid "Quantas ações de mediação/formação de público estão previstas?"
+msgstr ""
+
+
+#: modules/OpportunityWorkplan/Module.php:1785
+msgid "Quantas pessoas serão remuneradas, por função?"
+msgstr ""
+
+
+#: modules/OpportunityWorkplan/Module.php:1792
+msgid "Produtor Cultural"
+msgstr ""
+
+
+#: modules/OpportunityWorkplan/Module.php:1796
+msgid "Curador"
+msgstr ""
+
+
+#: modules/OpportunityWorkplan/Module.php:1802
+msgid "Bailarino"
+msgstr ""
+
+
+#: modules/OpportunityWorkplan/Module.php:1803
+msgid "Dançarino"
+msgstr ""
+
+
+#: modules/OpportunityWorkplan/Module.php:1805
+msgid "Dramaturgo"
+msgstr ""
+
+
+#: modules/OpportunityWorkplan/Module.php:1806
+msgid "Iluminador"
+msgstr ""
+
+
+#: modules/OpportunityWorkplan/Module.php:1807
+msgid "Cenotécnico"
+msgstr ""
+
+
+#: modules/OpportunityWorkplan/Module.php:1809
+msgid "Maquiador"
+msgstr ""
+
+
+#: modules/OpportunityWorkplan/Module.php:1820
+msgid "DJ"
+msgstr ""
+
+
+#: modules/OpportunityWorkplan/Module.php:1824
+msgid "Pintor"
+msgstr ""
+
+
+#: modules/OpportunityWorkplan/Module.php:1828
+msgid "Ilustrador"
+msgstr ""
+
+
+#: modules/OpportunityWorkplan/Module.php:1829
+msgid "Grafiteiro"
+msgstr ""
+
+
+#: modules/OpportunityWorkplan/Module.php:1834
+msgid "Operador de Câmera"
+msgstr ""
+
+
+#: modules/OpportunityWorkplan/Module.php:1835
+msgid "Editor de Vídeo"
+msgstr ""
+
+
+#: modules/OpportunityWorkplan/Module.php:1837
+#: modules/OpportunityWorkplan/Module.php:1859
+msgid "Técnico de Iluminação"
+msgstr ""
+
+
+#: modules/OpportunityWorkplan/Module.php:1843
+msgid "Contador de Histórias"
+msgstr ""
+
+
+#: modules/OpportunityWorkplan/Module.php:1845
+msgid "Redator"
+msgstr ""
+
+
+#: modules/OpportunityWorkplan/Module.php:1846
+msgid "Editor de Livros"
+msgstr ""
+
+
+#: modules/OpportunityWorkplan/Module.php:1847
+msgid "Revisor"
+msgstr ""
+
+
+#: modules/OpportunityWorkplan/Module.php:1848
+msgid "Tradutor"
+msgstr ""
+
+
+#: modules/OpportunityWorkplan/Module.php:1851
+msgid "Educador Cultural"
+msgstr ""
+
+
+#: modules/OpportunityWorkplan/Module.php:1853
+msgid "Oficineiro"
+msgstr ""
+
+
+#: modules/OpportunityWorkplan/Module.php:1855
+msgid "Instrutor"
+msgstr ""
+
+
+#: modules/OpportunityWorkplan/Module.php:1858
+msgid "Técnico de Som"
+msgstr ""
+
+
+#: modules/OpportunityWorkplan/Module.php:1866
+msgid "Mestre de Cultura Popular"
+msgstr ""
+
+
+#: modules/OpportunityWorkplan/Module.php:1868
+msgid "Artesão"
+msgstr ""
+
+
+#: modules/OpportunityWorkplan/Module.php:1872
+msgid "Desenvolvedor de Software"
+msgstr ""
+
+
+#: modules/OpportunityWorkplan/Module.php:1878
+msgid "Coordenador"
+msgstr ""
+
+
+#: modules/OpportunityWorkplan/Module.php:1879
+msgid "Secretário"
+msgstr ""
+
+
+#: modules/OpportunityWorkplan/Module.php:1881
+msgid "Contador"
+msgstr ""
+
+
+#: modules/OpportunityWorkplan/Module.php:1884
+msgid "Pesquisador"
+msgstr ""
+
+
+#: modules/OpportunityWorkplan/Module.php:1885
+msgid "Consultor Cultural"
+msgstr ""
+
+
+#: modules/OpportunityWorkplan/Module.php:1886
+msgid "Assessor de Imprensa"
+msgstr ""
+
+
+#: modules/OpportunityWorkplan/Module.php:1900
+msgid "Composição prevista da equipe por gênero"
+msgstr ""
+
+
+#: modules/OpportunityWorkplan/Module.php:1913
+msgid "Composição prevista da equipe por raça/cor"
+msgstr ""
+
+
+#: modules/OpportunityWorkplan/Module.php:1926
+msgid "Qual o tipo de receita previsto?"
+msgstr ""
+
+
+#: modules/OpportunityWorkplan/Module.php:1929
+#: modules/ProjectMonitoring/Module.php:614
+msgid "Venda de ingressos"
+msgstr ""
+
+
+#: modules/OpportunityWorkplan/Module.php:1930
+#: modules/ProjectMonitoring/Module.php:615
+msgid "Venda de produtos"
+msgstr ""
+
+
+#: modules/OpportunityWorkplan/Module.php:1931
+#: modules/ProjectMonitoring/Module.php:616
+msgid "Patrocínio privado"
+msgstr ""
+
+
+#: modules/OpportunityWorkplan/Module.php:1932
+#: modules/ProjectMonitoring/Module.php:617
+msgid "Apoio cultural"
+msgstr ""
+
+
+#: modules/OpportunityWorkplan/Module.php:1933
+#: modules/ProjectMonitoring/Module.php:618
+msgid "Doações"
+msgstr ""
+
+
+#: modules/OpportunityWorkplan/Module.php:1934
+#: modules/ProjectMonitoring/Module.php:619
+msgid "Cachê"
+msgstr ""
+
+
+#: modules/OpportunityWorkplan/Module.php:1935
+#: modules/ProjectMonitoring/Module.php:620
+msgid "Prestação de serviços"
+msgstr ""
+
+
+#: modules/OpportunityWorkplan/Module.php:1936
+#: modules/ProjectMonitoring/Module.php:621
+msgid "Direitos autorais"
+msgstr ""
+
+
+#: modules/OpportunityWorkplan/Module.php:1937
+#: modules/ProjectMonitoring/Module.php:622
+msgid "Licenciamento"
+msgstr ""
+
+
+#: modules/OpportunityWorkplan/Module.php:1938
+#: modules/ProjectMonitoring/Module.php:623
+msgid "Não haverá receita"
+msgstr ""
+
+
+#: modules/OpportunityWorkplan/Module.php:1946
+msgid "Quantidade de unidades previstas para comercialização"
+msgstr ""
+
+
+#: modules/OpportunityWorkplan/Module.php:1956
+msgid "Valor unitário previsto (R$)"
+msgstr ""
+
+
+#: modules/OpportunityWorkplan/Module.php:1963
+msgid ""
+"A atividade prevê envolvimento de comunidades/coletivos como "
+"coautores/coexecutores?"
+msgstr ""
+
+
+#: modules/OpportunityWorkplan/Module.php:1973
+msgid ""
+"Descreva o envolvimento das comunidades/coletivos como "
+"coautores/coexecutores"
+msgstr ""
+
+
+#: modules/OpportunityWorkplan/Module.php:1980
+msgid ""
+"A atividade prevê estratégias voltadas à promoção do acesso de pessoas Trans"
+" e Travestis?"
+msgstr ""
+
+
+#: modules/OpportunityWorkplan/Module.php:1991
+msgid ""
+"Quais ações foram previstas para incorporar estratégias voltadas à promoção "
+"do acesso de pessoas Trans e Travestis?"
+msgstr ""
+
+
+#: modules/OpportunityWorkplan/Module.php:1998
+msgid "A atividade prevê medidas de acessibilidade?"
+msgstr ""
+
+
+#: modules/OpportunityWorkplan/Module.php:2009
+msgid "Quais medidas de acessibilidade estão previstas na atividade?"
+msgstr ""
+
+
+#: modules/OpportunityWorkplan/Module.php:2047
+msgid "A atividade prevê medidas ou práticas socioambientais?"
+msgstr ""
+
+
+#: modules/OpportunityWorkplan/Module.php:2058
+msgid "Quais medidas e práticas socioambientais estão previstas na atividade?"
+msgstr ""
+
+
+#: modules/OpportunityWorkplan/Module.php:2065
+msgid ""
+"A atividade contará com uma estratégia de relacionamento com a imprensa?"
+msgstr ""
+
+
+#: modules/OpportunityWorkplan/Module.php:2076
+msgid "Quais canais de comunicação estão previstos para difusão da atividade?"
+msgstr ""
+
+
+#: modules/OpportunityWorkplan/Module.php:2081
+#: modules/ProjectMonitoring/Module.php:584
+msgid "TikTok"
+msgstr ""
+
+
+#: modules/OpportunityWorkplan/Module.php:2083
+#: modules/ProjectMonitoring/Module.php:586
+msgid "X/Twitter"
+msgstr ""
+
+
+#: modules/OpportunityWorkplan/Module.php:2084
+#: modules/ProjectMonitoring/Module.php:587
+msgid "WhatsApp (listas/grupos)"
+msgstr ""
+
+
+#: modules/OpportunityWorkplan/Module.php:2085
+#: modules/ProjectMonitoring/Module.php:588
+msgid "Telegram (canais/grupos)"
+msgstr ""
+
+
+#: modules/OpportunityWorkplan/Module.php:2086
+#: modules/ProjectMonitoring/Module.php:589
+msgid "Site/página oficial do projeto"
+msgstr ""
+
+
+#: modules/OpportunityWorkplan/Module.php:2087
+#: modules/ProjectMonitoring/Module.php:590
+msgid "E-mail marketing/newsletter"
+msgstr ""
+
+
+#: modules/OpportunityWorkplan/Module.php:2088
+#: modules/ProjectMonitoring/Module.php:591
+msgid "Plataformas de eventos/inscrição (ex.: Sympla/Shotgun/Eventbrite)"
+msgstr ""
+
+
+#: modules/OpportunityWorkplan/Module.php:2089
+#: modules/ProjectMonitoring/Module.php:592
+msgid "Portais, blogs e influenciadores/as locais"
+msgstr ""
+
+
+#: modules/OpportunityWorkplan/Module.php:2090
+#: modules/ProjectMonitoring/Module.php:593
+msgid "Rádio comunitária"
+msgstr ""
+
+
+#: modules/OpportunityWorkplan/Module.php:2091
+#: modules/ProjectMonitoring/Module.php:594
+msgid "Rádio comercial"
+msgstr ""
+
+
+#: modules/OpportunityWorkplan/Module.php:2092
+#: modules/ProjectMonitoring/Module.php:595
+msgid "TV local"
+msgstr ""
+
+
+#: modules/OpportunityWorkplan/Module.php:2093
+#: modules/ProjectMonitoring/Module.php:596
+msgid "Mídia impressa"
+msgstr ""
+
+
+#: modules/OpportunityWorkplan/Module.php:2094
+#: modules/ProjectMonitoring/Module.php:597
+msgid "Cartazes e materiais impressos"
+msgstr ""
+
+
+#: modules/OpportunityWorkplan/Module.php:2095
+#: modules/ProjectMonitoring/Module.php:598
+msgid "Carro de som"
+msgstr ""
+
+
+#: modules/OpportunityWorkplan/Module.php:2103
+msgid "A atividade prevê ao menos uma ação de experimentação/inovação?"
+msgstr ""
+
+
+#: modules/OpportunityWorkplan/Module.php:2114
+msgid "Quais tipos de experimentação/inovação previstos na atividade?"
+msgstr ""
+
+
+#: modules/OpportunityWorkplan/Module.php:2117
+#: modules/ProjectMonitoring/Module.php:823
+msgid "Uso de novas tecnologias (AR, VR, IA, etc.)"
+msgstr ""
+
+
+#: modules/OpportunityWorkplan/Module.php:2118
+#: modules/ProjectMonitoring/Module.php:824
+msgid "Novas linguagens artísticas"
+msgstr ""
+
+
+#: modules/OpportunityWorkplan/Module.php:2119
+#: modules/ProjectMonitoring/Module.php:825
+msgid "Fusão de linguagens"
+msgstr ""
+
+
+#: modules/OpportunityWorkplan/Module.php:2120
+#: modules/ProjectMonitoring/Module.php:826
+msgid "Metodologias participativas inovadoras"
+msgstr ""
+
+
+#: modules/OpportunityWorkplan/Module.php:2121
+#: modules/ProjectMonitoring/Module.php:827
+msgid "Novos modelos de gestão cultural"
+msgstr ""
+
+
+#: modules/OpportunityWorkplan/Module.php:2122
+#: modules/ProjectMonitoring/Module.php:828
+msgid "Economia criativa e novos modelos de negócio"
+msgstr ""
+
+
+#: modules/OpportunityWorkplan/Module.php:2123
+#: modules/ProjectMonitoring/Module.php:829
+msgid "Sustentabilidade e práticas ambientais inovadoras"
+msgstr ""
+
+
+#: modules/OpportunityWorkplan/Module.php:2124
+#: modules/ProjectMonitoring/Module.php:830
+msgid "Inclusão e acessibilidade de forma inovadora"
+msgstr ""
+
+
+#: modules/OpportunityWorkplan/Module.php:2125
+#: modules/ProjectMonitoring/Module.php:831
+msgid "Experimentação em espaços não convencionais"
+msgstr ""
+
+
+#: modules/OpportunityWorkplan/Module.php:2126
+#: modules/ProjectMonitoring/Module.php:832
+msgid "Coprodução/cocriação com públicos"
+msgstr ""
+
+
+#: modules/OpportunityWorkplan/Module.php:2134
+msgid "Tipo de documentação que será produzida"
+msgstr ""
+
+
+#: modules/OpportunityWorkplan/Module.php:2139
+#: modules/ProjectMonitoring/Module.php:850
+msgid "Áudio"
+msgstr ""
+
+
+#: modules/OpportunityWorkplan/Module.php:2140
+#: modules/ProjectMonitoring/Module.php:851
+msgid "Relatório textual"
+msgstr ""
+
+
+#: modules/OpportunityWorkplan/Module.php:2141
+#: modules/ProjectMonitoring/Module.php:852
+msgid "Caderno de processo"
+msgstr ""
+
+
+#: modules/OpportunityWorkplan/Module.php:2142
+#: modules/ProjectMonitoring/Module.php:853
+msgid "Publicação impressa"
+msgstr ""
+
+
+#: modules/OpportunityWorkplan/Module.php:2143
+#: modules/ProjectMonitoring/Module.php:854
+msgid "Publicação digital"
+msgstr ""
+
+
+#: modules/OpportunityWorkplan/Module.php:2144
+#: modules/ProjectMonitoring/Module.php:855
+msgid "Website/Plataforma online"
+msgstr ""
+
+
+#: modules/OpportunityWorkplan/Module.php:2146
+#: modules/ProjectMonitoring/Module.php:857
+msgid "Depoimentos"
+msgstr ""
+
+
+#: modules/OpportunityWorkplan/Module.php:2147
+#: modules/ProjectMonitoring/Module.php:858
+msgid "Registros de processo"
+msgstr ""
+
+
+#: modules/OpportunityWorkplan/Module.php:2148
+#: modules/ProjectMonitoring/Module.php:859
+msgid "Acervo digitalizado"
+msgstr ""
+
+
+#: modules/OpportunityWorkplan/Module.php:2149
+#: modules/ProjectMonitoring/Module.php:860
+msgid "Não haverá documentação específica"
+msgstr ""
+
+
+#: modules/EvaluationMethodDocumentary/JobTypes/Spreadsheet.php:56
+#: modules/EvaluationMethodContinuous/JobTypes/Spreadsheet.php:39
+#: modules/EvaluationMethodTechnical/JobTypes/Spreadsheet.php:69
+#: modules/Opportunities/components/opportunity-evaluations-table/init.php:152
+#: modules/Opportunities/components/opportunity-evaluations-table/texts.php:8
+#: modules/EvaluationMethodQualification/JobTypes/Spreadsheet.php:64
+#: modules/EvaluationMethodSimple/JobTypes/Spreadsheet.php:39
+msgid "Resultado do avaliador"
+msgstr ""
+
+
+#: modules/OpportunityExecution/components/opportunity-create-execution-phase/template.php:14
+#: modules/OpportunityExecution/components/opportunity-create-execution-phase/template.php:50
+msgid "Adicionar fase de execução"
+msgstr ""
+
+
+#: modules/OpportunityExecution/components/opportunity-create-execution-phase/template.php:17
+msgid "Para criar a fase de execução, preencha os dados abaixo."
+msgstr ""
+
+
+#: modules/OpportunityExecution/components/opportunity-execution-requests/template.php:19
+msgid "Fase de Execução:"
+msgstr ""
+
+
+#: modules/OpportunityExecution/components/opportunity-execution-requests/template.php:21
+msgid "Abrir novo pedido"
+msgstr ""
+
+
+#: modules/OpportunityExecution/components/opportunity-execution-requests/template.php:23
+msgid "abrindo"
+msgstr ""
+
+
+#: modules/OpportunityExecution/components/opportunity-execution-requests/template.php:31
+msgid "[Pedido]"
+msgstr ""
+
+
+#: modules/OpportunityExecution/components/opportunity-execution-requests/template.php:34
+msgid "Resultado do pedido:"
+msgstr ""
+
+
+#: modules/OpportunityExecution/components/opportunity-execution-requests/template.php:41
+msgid "Visualizar pedido"
+msgstr ""
+
+
+#: modules/OpportunityExecution/components/opportunity-execution-requests/texts.php:5
+msgid "Pedido criado com sucesso"
+msgstr ""
+
+
+#: modules/OpportunityExecution/components/opportunity-execution-requests/texts.php:6
+msgid "Status desconhecido"
+msgstr ""
+
+
+#: modules/OpportunityExecution/components/opportunity-execution-requests/texts.php:7
+msgid "Em preenchimento"
+msgstr ""
+
+
+#: modules/ProjectMonitoring/Module.php:151
+msgid "(sem metas)"
+msgstr ""
+
+
+#: modules/ProjectMonitoring/Module.php:155
+msgid "programada"
+msgstr ""
+
+
+#: modules/ProjectMonitoring/Module.php:156
+msgid "em andamento"
+msgstr ""
+
+
+#: modules/ProjectMonitoring/Module.php:157
+msgid "atrasada"
+msgstr ""
+
+
+#: modules/ProjectMonitoring/Module.php:158
+msgid "cancelada"
+msgstr ""
+
+
+#: modules/ProjectMonitoring/Module.php:159
+msgid "concluída"
+msgstr ""
+
+
+#: modules/ProjectMonitoring/Module.php:178
+msgid "meta(s)"
+msgstr ""
+
+
+#: modules/ProjectMonitoring/Module.php:179
+msgid "entrega(s) total"
+msgstr ""
+
+
+#: modules/ProjectMonitoring/Module.php:233
+#: modules/OpportunityWorkplan/components/registration-workplan-form-goal/template.php:59
+msgid "Detalhamento da execução"
+msgstr ""
+
+
+#: modules/ProjectMonitoring/Module.php:377
+msgid "Mês inicial executado da entrega"
+msgstr ""
+
+
+#: modules/ProjectMonitoring/Module.php:380
+#: modules/ProjectMonitoring/Module.php:395
+msgid "Deve ser um número maior ou igual a um"
+msgstr ""
+
+
+#: modules/ProjectMonitoring/Module.php:392
+msgid "Mês final executado da entrega"
+msgstr ""
+
+
+#: modules/ProjectMonitoring/Module.php:407
+msgid "Qual o orçamento total executado da atividade?"
+msgstr ""
+
+
+#: modules/ProjectMonitoring/Module.php:420
+msgid "Em quantos municípios a atividade foi realizada?"
+msgstr ""
+
+
+#: modules/ProjectMonitoring/Module.php:436
+msgid "Em quantos bairros a atividade foi realizada?"
+msgstr ""
+
+
+#: modules/ProjectMonitoring/Module.php:452
+msgid "Quantas ações de mediação/formação de público foram realizadas?"
+msgstr ""
+
+
+#: modules/ProjectMonitoring/Module.php:468
+msgid "Quantidade de unidades efetivamente comercializadas"
+msgstr ""
+
+
+#: modules/ProjectMonitoring/Module.php:484
+#: modules/OpportunityWorkplan/components/registration-workplan-form-delivery/template.php:265
+msgid "Valor unitário praticado (R$)"
+msgstr ""
+
+
+#: modules/ProjectMonitoring/Module.php:497
+msgid "Quantas pessoas foram remuneradas, por função?"
+msgstr ""
+
+
+#: modules/ProjectMonitoring/Module.php:516
+msgid "Composição efetiva da equipe por gênero"
+msgstr ""
+
+
+#: modules/ProjectMonitoring/Module.php:535
+msgid "Composição efetiva da equipe por raça/cor"
+msgstr ""
+
+
+#: modules/ProjectMonitoring/Module.php:553
+#: modules/OpportunityWorkplan/components/registration-workplan-form-delivery/template.php:188
+msgid "Principal elo das artes acionado (executado)"
+msgstr ""
+
+
+#: modules/ProjectMonitoring/Module.php:579
+#: modules/OpportunityWorkplan/components/registration-workplan-form-delivery/template.php:583
+msgid "Canais de comunicação utilizados (executado)"
+msgstr ""
+
+
+#: modules/ProjectMonitoring/Module.php:611
+msgid "Qual o tipo de receita executada?"
+msgstr ""
+
+
+#: modules/ProjectMonitoring/Module.php:636
+msgid "Segmento artístico-cultural executado da entrega"
+msgstr ""
+
+
+#: modules/ProjectMonitoring/Module.php:669
+msgid "Quais estratégias de comunicação foram efetivamente executadas?"
+msgstr ""
+
+
+#: modules/ProjectMonitoring/Module.php:681
+msgid ""
+"A atividade executada contou com envolvimento de comunidades/coletivos como "
+"coautores/coexecutores?"
+msgstr ""
+
+
+#: modules/ProjectMonitoring/Module.php:691
+msgid ""
+"Descreva o envolvimento executado das comunidades/coletivos como "
+"coautores/coexecutores"
+msgstr ""
+
+
+#: modules/ProjectMonitoring/Module.php:703
+msgid ""
+"A atividade executada contou com estratégias voltadas à promoção do acesso "
+"de pessoas Trans e Travestis?"
+msgstr ""
+
+
+#: modules/ProjectMonitoring/Module.php:713
+msgid ""
+"Quais ações executadas promoveram o acesso de pessoas Trans e Travestis?"
+msgstr ""
+
+
+#: modules/ProjectMonitoring/Module.php:725
+msgid "A atividade executada contou com medidas de acessibilidade?"
+msgstr ""
+
+
+#: modules/ProjectMonitoring/Module.php:735
+msgid "Quais medidas de acessibilidade foram executadas na atividade?"
+msgstr ""
+
+
+#: modules/ProjectMonitoring/Module.php:778
+msgid "A atividade executada contou com medidas ou práticas socioambientais?"
+msgstr ""
+
+
+#: modules/ProjectMonitoring/Module.php:788
+msgid ""
+"Quais medidas e práticas socioambientais foram executadas na atividade?"
+msgstr ""
+
+
+#: modules/ProjectMonitoring/Module.php:800
+msgid ""
+"A atividade executada contou com estratégia de relacionamento com a "
+"imprensa?"
+msgstr ""
+
+
+#: modules/ProjectMonitoring/Module.php:810
+msgid "A atividade executada contou com ação de experimentação/inovação?"
+msgstr ""
+
+
+#: modules/ProjectMonitoring/Module.php:820
+#: modules/OpportunityWorkplan/components/registration-workplan-form-delivery/template.php:610
+msgid "Quais tipos de experimentação/inovação foram executados?"
+msgstr ""
+
+
+#: modules/ProjectMonitoring/Module.php:845
+msgid "Tipo de documentação produzida (executado)"
+msgstr ""
+
+
+#: modules/RegistrationFieldTypes/Module.php:190
+msgid "É necessário configurar pelo menos uma coluna para o campo de tabela"
+msgstr ""
+
+
+#: modules/RegistrationFieldTypes/Module.php:194
+msgid "Todas as colunas devem ter um nome configurado"
+msgstr ""
+
+
+#: modules/RegistrationFieldTypes/Module.php:198
+msgid "O campo de seleção deve ter pelo menos uma opção"
+msgstr ""
+
+
+#: modules/RegistrationFieldTypes/Module.php:234
+msgid "O campo de seleção deve ter pelo menos uma opção configurada"
+msgstr ""
+
+
+#: modules/RegistrationFieldTypes/Module.php:257
+msgid "É necessário selecionar um campo do agente responsável"
+msgstr ""
+
+
+#: modules/RegistrationFieldTypes/Module.php:259
+msgid "É necessário selecionar um campo do agente coletivo"
+msgstr ""
+
+
+#: modules/RegistrationFieldTypes/Module.php:261
+msgid "É necessário selecionar um campo do espaço"
+msgstr ""
+
+
+#: modules/RegistrationFieldTypes/Module.php:295
+msgid "É necessário selecionar pelo menos um campo de pessoa"
+msgstr ""
+
+
+#: modules/RegistrationFieldTypes/Module.php:669
+msgid "Campo \"%s\" (linha %d) é obrigatório"
+msgstr ""
+
+
+#: modules/RegistrationFieldTypes/Module.php:683
+msgid "CPF inválido no campo \"%s\" (linha %d)"
+msgstr ""
+
+
+#: modules/RegistrationFieldTypes/Module.php:687
+msgid "E-mail inválido no campo \"%s\" (linha %d)"
+msgstr ""
+
+
+#: modules/RegistrationFieldTypes/Module.php:691
+msgid "Número inválido no campo \"%s\" (linha %d)"
+msgstr ""
+
+
+#: modules/RegistrationFieldTypes/Module.php:713
+#: modules/Entities/components/agent-data-1/template.php:25
+#: modules/Spreadsheets/JobTypes/Registrations.php:289
+#: modules/Spreadsheets/JobTypes/Registrations.php:290
+#: themes/BaseV1/layouts/parts/singles/registration-field-view.php:43
+msgid "Nome social"
+msgstr ""
+
+
+#: modules/RegistrationFieldTypes/Module.php:716
+#: modules/Opportunities/components/registration-field-persons/template.php:65
+#: themes/BaseV1/layouts/parts/singles/registration-field-view.php:46
+#: modules/RegistrationFieldTypes/layouts/parts/registration-field-types/persons-config.php:17
+#: modules/RegistrationFieldTypes/layouts/parts/registration-field-types/persons-config.php:39
+#: modules/RegistrationFieldTypes/layouts/parts/registration-field-types/persons.php:27
+msgid "Mini currículo"
+msgstr ""
+
+
+#: modules/RegistrationFieldTypes/Module.php:724
+#: modules/Spreadsheets/JobTypes/Registrations.php:370
+#: themes/BaseV1/layouts/parts/singles/registration-field-view.php:55
+msgid "Deficiências"
+msgstr ""
+
+
+#: modules/RegistrationFieldTypes/Module.php:725
+#: modules/Spreadsheets/JobTypes/Registrations.php:376
+#: modules/Spreadsheets/JobTypes/Registrations.php:377
+#: themes/BaseV1/layouts/parts/singles/registration-field-view.php:57
+msgid "Comunidade tradicional"
+msgstr ""
+
+
+#: modules/RegistrationFieldTypes/Module.php:746
+msgid "O campo %s da pessoa %d é obrigatório."
+msgstr ""
+
+
+#: modules/RegistrationFieldTypes/Module.php:755
+msgid "CPF inválido na pessoa %d."
+msgstr ""
+
+
+#: modules/RegistrationFieldTypes/Module.php:759
+msgid "CNPJ inválido na pessoa %d."
+msgstr ""
+
+
+#: modules/RegistrationFieldTypes/Module.php:870
+msgid "O valor zero (0) não é permitido neste campo."
+msgstr ""
+
+
+#: modules/RegistrationFieldTypes/Module.php:879
+msgid "O valor deve ter no mínimo %s dígito(s) (valor salvo tem %s)."
+msgstr ""
+
+
+#: modules/RegistrationFieldTypes/Module.php:887
+msgid "O valor deve ter no máximo %s dígito(s) (valor salvo tem %s)."
+msgstr ""
+
+
+#: modules/RegistrationFieldTypes/Module.php:1475
+msgid "Tabela Customizável"
+msgstr ""
+
+
+#: modules/RegistrationFieldTypes/Module.php:2040
+msgid "Mesorregião"
+msgstr ""
+
+
+#: modules/RegistrationFieldTypes/Module.php:2068
+msgid "Município/Cidade"
+msgstr ""
+
+
+#: modules/Seals/Module.php:62
+msgid "Habilitar página de certificado"
+msgstr ""
+
+
+#: modules/Spreadsheets/EvaluationsSpreadsheetJob.php:65
+#: modules/Opportunities/components/opportunity-evaluations-table/texts.php:10
+msgid "Nº sequencial do avaliador"
+msgstr ""
+
+
+#: modules/Spreadsheets/EvaluationsSpreadsheetJob.php:70
+#: modules/Opportunities/components/opportunity-evaluations-table/texts.php:11
+msgid "ID do usuário do avaliador"
+msgstr ""
+
+
+#: modules/Spreadsheets/EvaluationsSpreadsheetJob.php:75
+#: modules/Opportunities/components/opportunity-evaluations-table/texts.php:12
+msgid "ID do agente avaliador"
+msgstr ""
+
+
+#: modules/Spreadsheets/EvaluationsSpreadsheetJob.php:80
+#: modules/Opportunities/components/opportunity-evaluations-table/texts.php:9
+msgid "Nome do avaliador"
+msgstr ""
+
+
+#: modules/UserManagement/components/user-management--account-deletion-config/template.php:16
+msgid "Exclusão de contas (LGPD)"
+msgstr ""
+
+
+#: modules/UserManagement/components/user-management--account-deletion-config/template.php:19
+msgid ""
+"Configure o e-mail que receberá as solicitações de exclusão de conta. Se "
+"deixar em branco, as solicitações serão enviadas aos administradores do "
+"subsite ou, sem subsite, a todos os usuários com papel administrativo na "
+"plataforma."
+msgstr ""
+
+
+#: modules/UserManagement/components/user-management--account-deletion-config/template.php:26
+msgid "E-mail do responsável pela análise e exclusão"
+msgstr ""
+
+
+#: modules/UserManagement/components/user-management--account-deletion-config/template.php:38
+msgid "Salvando..."
+msgstr ""
+
+
+#: modules/UserManagement/components/user-management--account-deletion-config/template.php:42
+msgid ""
+"Este sistema não utiliza subsites. O e-mail configurado aqui será usado "
+"globalmente."
+msgstr ""
+
+
+#: modules/UserManagement/components/user-management--account-deletion-config/texts.php:5
+msgid "configuração do subsite atual"
+msgstr ""
+
+
+#: modules/UserManagement/components/user-management--account-deletion-config/texts.php:6
+msgid "configuração global"
+msgstr ""
+
+
+#: modules/UserManagement/components/user-management--account-deletion-config/texts.php:7
+msgid "E-mail global para solicitações de exclusão"
+msgstr ""
+
+
+#: modules/UserManagement/components/user-management--account-deletion-config/texts.php:9
+msgid "Configuração salva com sucesso."
+msgstr ""
+
+
+#: modules/UserManagement/components/user-management--request-delete/template.php:34
+msgid "Solicitar exclusão da conta"
+msgstr ""
+
+
+#: modules/UserManagement/components/user-management--request-delete/template.php:76
+msgid "Enviar solicitação"
+msgstr ""
+
+
+#: modules/UserManagement/components/user-management--request-delete/texts.php:5
+msgid ""
+"Conforme a LGPD, a exclusão de contas deve ser analisada por um dos "
+"administradores da plataforma."
+msgstr ""
+
+
+#: modules/UserManagement/components/user-management--request-delete/texts.php:6
+msgid "Deseja prosseguir com a solicitação de exclusão da sua conta?"
+msgstr ""
+
+
+#: modules/UserManagement/components/user-management--request-delete/texts.php:7
+msgid "Sua solicitação será enviada aos administradores responsáveis."
+msgstr ""
+
+
+#: modules/UserManagement/components/user-management--request-delete/texts.php:8
+msgid ""
+"Faça a solicitação de exclusão de conta no formulário abaixo. Você pode "
+"alterar o texto livremente."
+msgstr ""
+
+
+#: modules/UserManagement/components/user-management--request-delete/texts.php:9
+msgid "Mensagem de solicitação"
+msgstr ""
+
+
+#: modules/UserManagement/components/user-management--request-delete/texts.php:10
+msgid "Este texto será enviado junto com os dados da sua conta."
+msgstr ""
+
+
+#: modules/UserManagement/components/user-management--request-delete/texts.php:11
+msgid "Desejo receber uma cópia desta solicitação em meu e-mail"
+msgstr ""
+
+
+#: modules/UserManagement/components/user-management--request-delete/texts.php:12
+msgid "E-mail para cópia"
+msgstr ""
+
+
+#: modules/UserManagement/components/user-management--request-delete/texts.php:13
+msgid ""
+"Prezados administradores,\n"
+"\n"
+"Solicito, nos termos da Lei Geral de Proteção de Dados (LGPD), a análise e exclusão da minha conta na plataforma.\n"
+"\n"
+"Atenciosamente,\n"
+"{{name}}"
+msgstr ""
+
+
+#: modules/UserManagement/components/user-management--request-delete/texts.php:14
+msgid "Solicitação de exclusão enviada com sucesso."
+msgstr ""
+
+
+#: modules/Entities/components/agent-data-1/template.php:17
+msgid "Dados pessoais"
+msgstr ""
+
+
+#: modules/Entities/components/agent-data-1/template.php:28
+msgid "Telefone público"
+msgstr ""
+
+
+#: modules/Entities/components/agent-data-1/template.php:31
+#: modules/Entities/components/agent-data-2/template.php:23
+#: modules/Entities/views/agent/edit-1.php:116
+msgid "E-mail privado"
+msgstr ""
+
+
+#: modules/Entities/components/agent-data-1/template.php:44
+msgid "Data de nascimento"
+msgstr ""
+
+
+#: modules/Entities/components/agent-data-1/template.php:53
+msgid "Agente itinerante"
+msgstr ""
+
+
+#: modules/Entities/components/agent-data-1/template.php:58
+msgid "Outras comunidades tradicionais"
+msgstr ""
+
+
+#: modules/Entities/components/entity-field/texts.php:5
+msgid "Campo \"{{columnName}}\" (linha {{rowNumber}}) é obrigatório"
+msgstr ""
+
+
+#: modules/Entities/components/entity-field/template.php:261
+#: modules/RegistrationFieldTypes/layouts/parts/registration-field-types/custom-table.php:86
+msgid "Selecione..."
+msgstr ""
+
+
+#: modules/Entities/components/entity-field/template.php:269
+#: modules/OpportunityWorkplan/components/registration-workplan-form-delivery/template.php:305
+#: modules/OpportunityWorkplan/components/registration-workplan/template.php:287
+#: modules/RegistrationFieldTypes/layouts/parts/registration-field-types/custom-table.php:101
+msgid "Remover"
+msgstr ""
+
+
+#: modules/Entities/components/entity-field/template.php:280
+msgid "Adicionar linha"
+msgstr ""
+
+
+#: modules/Entities/components/entity-file/template.php:26
+msgid "Nenhum arquivo anexado"
+msgstr ""
+
+
+#: modules/Entities/components/entity-file/template.php:83
+msgid "Tipos permitidos:"
+msgstr ""
+
+
+#: modules/Entities/components/entity-table/template.php:164
+#: modules/Entities/components/entity-table/texts.php:46
+msgid "Arraste para reordenar"
+msgstr ""
+
+
+#: modules/Entities/components/entity-table/template.php:170
+#: modules/Entities/components/entity-table/texts.php:47
+msgid "Salvar padrão global"
+msgstr ""
+
+
+#: modules/Entities/components/entity-table/texts.php:45
+msgid "Reordenar colunas"
+msgstr ""
+
+
+#: modules/Entities/components/entity-table/texts.php:48
+msgid "Padrão global salvo"
+msgstr ""
+
+
+#: modules/Entities/components/entity-table/texts.php:49
+msgid "Erro ao salvar padrão global"
+msgstr ""
+
+
+#: modules/Entities/components/entity-table/texts.php:50
+msgid "Buscar colunas"
+msgstr ""
+
+
+#: modules/Entities/components/entity-table/texts.php:51
+msgid "Nenhuma coluna encontrada"
+msgstr ""
+
+
+#: modules/Entities/components/entity-parent-edit/template.php:37
+#: modules/Entities/components/entity-parent-edit/texts.php:6
+msgid "Remover supra espaço"
+msgstr ""
+
+
+#: modules/Entities/components/entity-parent-edit/template.php:38
+#: modules/Entities/components/entity-parent-edit/texts.php:7
+msgid "Remover supra projeto"
+msgstr ""
+
+
+#: modules/Entities/views/project/single.php:159
+msgid "EVENTO"
+msgstr ""
+
+
+#: modules/Entities/views/project/single.php:165
+msgid "Ocorrências:"
+msgstr ""
+
+
+#: modules/Entities/views/project/single.php:167
+msgid "Local não informado"
+msgstr ""
+
+
+#: modules/Entities/views/project/single.php:179
+msgid "Nenhum evento vinculado a este projeto."
+msgstr ""
+
+
+#: modules/EvaluationMethodTechnical/components/affirmative-policy--bonus-config/template.php:27
+msgid "Tipo de bônus:"
+msgstr ""
+
+
+#: modules/EvaluationMethodTechnical/components/affirmative-policy--bonus-config/template.php:30
+#: modules/EvaluationMethodTechnical/layouts/parts/technical--affirmative-polices-configuration.php:16
+msgid "Ponto fixo"
+msgstr ""
+
+
+#: modules/EvaluationMethodTechnical/components/affirmative-policy--bonus-config/template.php:38
+msgid "Percentual máximo de bônus:"
+msgstr ""
+
+
+#: modules/EvaluationMethodTechnical/components/affirmative-policy--bonus-config/template.php:39
+#: modules/EvaluationMethodTechnical/layouts/parts/technical/evaluations-details.php:55
+msgid "Pontuação máxima de bônus:"
+msgstr ""
+
+
+#: modules/EvaluationMethodTechnical/components/affirmative-policy--bonus-config/template.php:44
+#: modules/EvaluationMethodTechnical/components/affirmative-policy--bonus-config/template.php:102
+#: modules/EvaluationMethodTechnical/layouts/parts/technical--affirmative-polices-configuration.php:24
+#: modules/EvaluationMethodTechnical/layouts/parts/technical--affirmative-polices-configuration.php:70
+#: modules/Spreadsheets/JobTypes/Registrations.php:678
+msgid "pt(s)"
+msgstr ""
+
+
+#: modules/EvaluationMethodTechnical/components/affirmative-policy--bonus-config/template.php:50
+#: modules/EvaluationMethodTechnical/components/affirmative-policy--bonus-config/texts.php:9
+msgid ""
+"O bônus de pontuação não pode ser alterado porque o resultado da fase já foi"
+" publicado."
+msgstr ""
+
+
+#: modules/EvaluationMethodTechnical/components/affirmative-policy--bonus-config/template.php:56
+msgid "Bônus"
+msgstr ""
+
+
+#: modules/EvaluationMethodTechnical/components/affirmative-policy--bonus-config/template.php:98
+#: modules/EvaluationMethodTechnical/layouts/parts/technical--affirmative-polices-configuration.php:34
+msgid "Pontos"
+msgstr ""
+
+
+#: modules/EvaluationMethodTechnical/components/affirmative-policy--bonus-config/template.php:115
+msgid "Deseja remover esta configuração de bônus?"
+msgstr ""
+
+
+#: modules/EvaluationMethodTechnical/components/affirmative-policy--bonus-config/texts.php:8
+msgid ""
+"Ao trocar o tipo de bônus, os valores cadastrados serão mantidos, mas "
+"passarão a ser interpretados na nova unidade. Deseja continuar?"
+msgstr ""
+
+
+#: modules/EvaluationMethodTechnical/components/technical-assessment-section/texts.php:10
+#: modules/EvaluationMethodQualification/components/qualification-evaluation-config/texts.php:10
+msgid "A seção"
+msgstr ""
+
+
+#: modules/EvaluationMethodTechnical/components/technical-assessment-section/texts.php:14
+msgid "seção de critérios de avaliação"
+msgstr ""
+
+
+#: modules/EvaluationMethodTechnical/components/technical-assessment-section/texts.php:15
+msgid "deve possuir ao menos um critério configurado"
+msgstr ""
+
+
+#: modules/EvaluationMethodTechnical/components/technical-assessment-section/template.php:19
+msgid ""
+"Já existem avaliações iniciadas, concluídas ou enviadas. Ao excluir "
+"critérios ou seções, as notas correspondentes serão removidas das avaliações"
+" existentes."
+msgstr ""
+
+
+#: modules/EvaluationMethodTechnical/components/technical-assessment-section/template.php:22
+#: modules/EvaluationMethodQualification/components/qualification-evaluation-config/template.php:28
+msgid ""
+"Já existem avaliações iniciadas, concluídas ou enviadas. Por isso, fale com "
+"um administrador do sistema para poder excluir critérios ou seções de "
+"avaliação."
+msgstr ""
+
+
+#: modules/EvaluationMethodTechnical/layouts/parts/technical--affirmative-polices-configuration.php:9
+msgid ""
+"Configure abaixo os valores de cada bônus por pontuação que serão aplicados "
+"na nota final, caso o proponente se enquadre. "
+msgstr ""
+
+
+#: modules/EvaluationMethodTechnical/layouts/parts/technical--affirmative-polices-configuration.php:13
+msgid "Tipo de bônus"
+msgstr ""
+
+
+#: modules/EvaluationMethodTechnical/layouts/parts/technical--affirmative-polices-configuration.php:21
+msgid "Bônus máximo a ser aplicado"
+msgstr ""
+
+
+#: modules/EventImporter/components/event-importer-files/texts.php:5
+msgid "Planilha processada com sucesso"
+msgstr ""
+
+
+#: modules/EventImporter/components/event-importer-files/texts.php:6
+msgid ""
+"Não foi possível processar a planilha. Verifique os erros listados abaixo"
+msgstr ""
+
+
+#: modules/EventImporter/components/event-importer-files/texts.php:7
+msgid ""
+"Erro ao processar a planilha. Tente novamente ou verifique o arquivo enviado"
+msgstr ""
+
+
+#: modules/Spreadsheets/JobTypes/Registrations.php:67
+#: modules/Opportunities/components/opportunity-registrations-table/init.php:53
+msgid "Link da inscrição"
+msgstr ""
+
+
+#: modules/Spreadsheets/JobTypes/Registrations.php:73
+#: modules/Opportunities/components/opportunity-registrations-table/init.php:76
+msgid "Divisão geográfica do responsável – Mesorregião"
+msgstr ""
+
+
+#: modules/Spreadsheets/JobTypes/Registrations.php:77
+#: modules/Opportunities/components/opportunity-registrations-table/init.php:88
+msgid "Divisão geográfica do responsável – Município"
+msgstr ""
+
+
+#: modules/Spreadsheets/JobTypes/Registrations.php:81
+#: modules/Opportunities/components/opportunity-registrations-table/init.php:92
+msgid "Divisão geográfica do responsável – País"
+msgstr ""
+
+
+#: modules/Spreadsheets/JobTypes/Registrations.php:85
+#: modules/Opportunities/components/opportunity-registrations-table/init.php:80
+msgid "Divisão geográfica do responsável – Estado"
+msgstr ""
+
+
+#: modules/Spreadsheets/JobTypes/Registrations.php:89
+#: modules/Opportunities/components/opportunity-registrations-table/init.php:84
+msgid "Divisão geográfica do responsável – Microrregião"
+msgstr ""
+
+
+#: modules/Spreadsheets/JobTypes/Registrations.php:317
+#: modules/Spreadsheets/JobTypes/Registrations.php:318
+#: themes/BaseV1/layouts/parts/singles/registration-field-view.php:49
+msgid "Telefone"
+msgstr ""
+
+
+#: modules/Spreadsheets/JobTypes/Registrations.php:412
+#: themes/BaseV1/layouts/parts/singles/registration-field-view.php:64
+msgid "Relação"
+msgstr ""
+
+
+#: modules/Spreadsheets/JobTypes/Registrations.php:423
+msgid "Nome não informado"
+msgstr ""
+
+
+#: modules/Spreadsheets/JobTypes/Registrations.php:424
+msgid "CPF não informado"
+msgstr ""
+
+
+#: modules/Components/components/entity-card/texts.php:8
+msgid "Ver mais"
+msgstr ""
+
+
+#: modules/Components/components/entity-card/texts.php:9
+msgid "Ver menos"
+msgstr ""
+
+
+#: modules/Components/components/main-footer/template.php:46
+msgid "editais e oportunidade"
+msgstr ""
+
+
+#: modules/Components/components/mc-summary-agent-info/template.php:42
+msgid "Fediverso:"
+msgstr ""
+
+
+#: modules/Components/components/select-entity/template.php:72
+msgid "Criar agente coletivo"
+msgstr ""
+
+
+#: modules/OpportunityExporter/components/opportunity-exporter/template.php:13
+msgid "Exportar oportunidade"
+msgstr ""
+
+
+#: modules/OpportunityExporter/components/opportunity-exporter/template.php:17
+msgid "Selecione os dados que serão exportados:"
+msgstr ""
+
+
+#: modules/OpportunityExporter/components/opportunity-exporter/template.php:35
+#: modules/OpportunityExporter/components/opportunity-importer/template.php:45
+msgid "Datas das fases"
+msgstr ""
+
+
+#: modules/OpportunityExporter/components/opportunity-exporter/template.php:39
+#: modules/OpportunityExporter/components/opportunity-importer/template.php:49
+msgid "Limites de vagas"
+msgstr ""
+
+
+#: modules/OpportunityExporter/components/opportunity-exporter/template.php:47
+#: modules/OpportunityExporter/components/opportunity-importer/template.php:57
+msgid "Configurações de status"
+msgstr ""
+
+
+#: modules/OpportunityExporter/components/opportunity-exporter/template.php:51
+#: modules/OpportunityExporter/components/opportunity-importer/template.php:65
+msgid "Fases de recurso"
+msgstr ""
+
+
+#: modules/OpportunityExporter/components/opportunity-exporter/template.php:55
+#: modules/OpportunityExporter/components/opportunity-importer/template.php:69
+msgid "Fases de monitoramento"
+msgstr ""
+
+
+#: modules/OpportunityExporter/components/opportunity-importer/template.php:18
+#: modules/OpportunityExporter/components/opportunity-importer/template.php:108
+msgid "Importar oportunidade"
+msgstr ""
+
+
+#: modules/OpportunityExporter/components/opportunity-importer/template.php:22
+msgid "Selecione o arquivo que será importado:"
+msgstr ""
+
+
+#: modules/OpportunityExporter/components/opportunity-importer/template.php:27
+msgid "Selecione os dados que serão importados:"
+msgstr ""
+
+
+#: modules/OpportunityExporter/components/opportunity-importer/template.php:75
+msgid "Status da oportunidade importada"
+msgstr ""
+
+
+#: modules/OpportunityExporter/components/opportunity-importer/template.php:78
+msgid "Publicada"
+msgstr ""
+
+
+#: modules/OpportunityExporter/components/opportunity-importer/template.php:98
+msgid "Importando…"
+msgstr ""
+
+
+#: modules/OpportunityExporter/components/opportunity-importer/template.php:99
+msgid "Importar"
+msgstr ""
+
+
+#: modules/OpportunityExporter/components/opportunity-importer/texts.php:6
+msgid "Oportunidade importada com sucesso."
+msgstr ""
+
+
+#: modules/OpportunityExporter/components/opportunity-importer/texts.php:7
+msgid "Não foi possível concluir a importação. Tente novamente."
+msgstr ""
+
+
+#: modules/Opportunities/views/registration/evaluation.php:201
+msgid "Plano de trabalho"
+msgstr ""
+
+
+#: modules/OpportunityAppealPhase/components/opportunity-appeal-phase-config/template.php:146
+msgid ""
+"Ao ativar a função <strong>Sincronizar inscrições para fase "
+"seguinte</strong>, o recurso afetará o avanço das inscrições entre fases. "
+"Inscrições selecionadas que abrirem recurso serão retiradas das fases "
+"seguintes até a análise. Inscrições não selecionadas só avançarão se o "
+"recurso for deferido."
+msgstr ""
+
+
+#: modules/OpportunityAppealPhase/components/opportunity-appeal-phase-config/template.php:152
+msgid ""
+"Ao habilitar esta função, o resultado das avaliações ficará disponível para "
+"consulta mesmo antes da divulgação oficial do resultado da fase"
+msgstr ""
+
+
+#: modules/Opportunities/components/appeal-previous-evaluation-results/template.php:15
+msgid "Avaliação da fase anterior"
+msgstr ""
+
+
+#: modules/Opportunities/components/evaluation-form/template.php:72
+msgid "Você não pode avaliar a própria inscrição"
+msgstr ""
+
+
+#: modules/Opportunities/components/evaluation-form/template.php:73
+msgid ""
+"Esta inscrição pertence a você. A avaliação deve ser feita pelos demais "
+"membros da comissão."
+msgstr ""
+
+
+#: modules/Opportunities/components/opportunity-evaluations-table/init.php:148
+msgid "Nº avaliador"
+msgstr ""
+
+
+#: modules/Opportunities/components/opportunity-evaluations-table/init.php:149
+msgid "ID usuário avaliador"
+msgstr ""
+
+
+#: modules/Opportunities/components/opportunity-evaluations-table/init.php:150
+msgid "ID agente avaliador"
+msgstr ""
+
+
+#: modules/Opportunities/components/opportunity-evaluations-table/template.php:159
+#: modules/Opportunities/components/opportunity-evaluations-table/template.php:164
+#: modules/Opportunities/components/opportunity-evaluations-table/template.php:172
+#: modules/Opportunities/components/opportunity-evaluations-table/template.php:191
+#: modules/Opportunities/components/opportunity-evaluations-table/texts.php:29
+#: modules/Opportunities/components/registration-evaluation-tab/template.php:45
+msgid "Excluir avaliação"
+msgstr ""
+
+
+#: modules/Opportunities/components/opportunity-evaluations-table/template.php:173
+msgid "remove apenas o registro da avaliação selecionada."
+msgstr ""
+
+
+#: modules/Opportunities/components/opportunity-evaluations-table/template.php:177
+#: modules/Opportunities/components/opportunity-evaluations-table/template.php:195
+msgid "Excluir avaliação e avaliador"
+msgstr ""
+
+
+#: modules/Opportunities/components/opportunity-evaluations-table/template.php:178
+msgid "remove também o avaliador vinculado NESTA AVALIAÇÃO."
+msgstr ""
+
+
+#: modules/Opportunities/components/opportunity-evaluations-table/template.php:181
+msgid "Após confirmar, a ação não pode ser desfeita."
+msgstr ""
+
+
+#: modules/Opportunities/components/opportunity-evaluations-table/texts.php:30
+#: modules/Opportunities/components/registration-evaluation-tab/template.php:50
+msgid "Tem certeza que deseja excluir esta avaliação?"
+msgstr ""
+
+
+#: modules/Opportunities/components/opportunity-evaluations-table/texts.php:31
+#: modules/Opportunities/components/registration-evaluation-tab/texts.php:6
+msgid "Erro ao excluir avaliação"
+msgstr ""
+
+
+#: modules/Opportunities/components/opportunity-form-import/template.php:47
+msgid "Atenção! Antes de importar o formulário:"
+msgstr ""
+
+
+#: modules/Opportunities/components/opportunity-form-import/template.php:49
+msgid ""
+"Certifique-se de que a oportunidade de origem está totalmente configurada "
+"antes de gerar e importar o arquivo."
+msgstr ""
+
+
+#: modules/Opportunities/components/opportunity-form-import/template.php:50
+msgid ""
+"Utilize apenas um arquivo TXT com todas as informações necessárias, pois a "
+"importação de múltiplos arquivos pode sobrescrever os campos do formulário."
+msgstr ""
+
+
+#: modules/Opportunities/components/opportunity-form-import/texts.php:5
+msgid ""
+"Importado com sucesso, você deve receber um e-mail ao terminar o processo de"
+" importação."
+msgstr ""
+
+
+#: modules/Opportunities/components/opportunity-form-import/texts.php:6
+msgid "Ocorreu um erro ao importar o formulário."
+msgstr ""
+
+
+#: modules/Opportunities/components/opportunity-committee-groups/template.php:68
+msgid "Digite o novo nome da comissão"
+msgstr ""
+
+
+#: modules/Opportunities/components/opportunity-committee-groups/template.php:80
+msgid ""
+"Você tem certeza que deseja remover a comissão "
+"<strong>{{groupName}}</strong>?"
+msgstr ""
+
+
+#: modules/Opportunities/components/opportunity-committee-groups/template.php:86
+msgid "TODAS as avaliações realizadas pelos avaliadores desta comissão serão"
+msgstr ""
+
+
+#: modules/Opportunities/components/opportunity-committee-groups/template.php:86
+msgid "excluídas permanentemente"
+msgstr ""
+
+
+#: modules/Opportunities/components/opportunity-committee-groups/texts.php:5
+msgid ""
+"Esta comissão possui filtros globais configurados. Ao aplicar um filtro "
+"diretamente em um avaliador, caso ele seja igual a um filtro já definido "
+"globalmente, somente as opções globais ficarão disponíveis."
+msgstr ""
+
+
+#: modules/Opportunities/components/opportunity-evaluation-committee/texts.php:17
+msgid "Avaliador substituído com sucesso."
+msgstr ""
+
+
+#: modules/Opportunities/components/opportunity-evaluation-committee/texts.php:18
+msgid "Erro ao substituir avaliador."
+msgstr ""
+
+
+#: modules/Opportunities/components/opportunity-evaluation-committee/template.php:69
+msgid "Nº Avaliador"
+msgstr ""
+
+
+#: modules/Opportunities/components/opportunity-evaluation-committee/template.php:71
+msgid "ID Agente"
+msgstr ""
+
+
+#: modules/Opportunities/components/opportunity-evaluation-committee/template.php:72
+msgid "ID Usuário"
+msgstr ""
+
+
+#: modules/Opportunities/components/opportunity-evaluation-committee/template.php:87
+msgid "inscrições para avaliar, estando:"
+msgstr ""
+
+
+#: modules/Opportunities/components/opportunity-evaluation-committee/template.php:117
+msgid ""
+"Também é proponente neste edital e, por isso, não avaliará a própria "
+"inscrição. As quantidades para ele podem ser diferentes do esperado."
+msgstr ""
+
+
+#: modules/Opportunities/components/opportunity-evaluation-committee/template.php:153
+msgid "Informar lista de inscrições que este avaliador deve avaliar"
+msgstr ""
+
+
+#: modules/Opportunities/components/opportunity-evaluation-committee/template.php:163
+msgid ""
+"Preencha com os números de inscrição que o avaliador deve avaliar, separados"
+" por vírgula."
+msgstr ""
+
+
+#: modules/Opportunities/components/opportunity-evaluation-committee/template.php:172
+msgid "não distribuir outras inscrições desta comissão para este avaliador"
+msgstr ""
+
+
+#: modules/Opportunities/components/opportunity-evaluation-committee/template.php:183
+msgid "Substituir avaliador"
+msgstr ""
+
+
+#: modules/Opportunities/components/opportunity-evaluation-committee/template.php:231
+msgid "Limite de inscrições:"
+msgstr ""
+
+
+#: modules/Opportunities/components/opportunity-phase-publish-config-registration/template.php:22
+msgid ""
+"Fique atento! A publicação do resultado é opcional. <strong>Esta ação "
+"deixará público o nome e o número de inscrição das pessoas "
+"inscritas.</strong>"
+msgstr ""
+
+
+#: modules/Opportunities/components/opportunity-phase-config-data-collection/template.php:138
+msgid ""
+"Esta fase possui inscrições realizadas. Não é possível excluir uma fase de "
+"coleta de dados que já possui inscrições."
+msgstr ""
+
+
+#: modules/Opportunities/components/opportunity-phase-config-data-collection/texts.php:8
+msgid ""
+"Este edital está em fluxo contínuo sem data final. As inscrições permanecem "
+"abertas até que uma data de término seja definida."
+msgstr ""
+
+
+#: modules/Opportunities/components/opportunity-phase-config-data-collection/texts.php:9
+msgid "Definir data final das inscrições"
+msgstr ""
+
+
+#: modules/Opportunities/components/opportunity-phase-config-data-collection/texts.php:10
+msgid ""
+"Ao confirmar, o edital passará a ter data final de inscrições em todas as "
+"fases. Você poderá editar as datas de término de cada fase. Deseja "
+"continuar?"
+msgstr ""
+
+
+#: modules/Opportunities/components/opportunity-phase-config-data-collection/texts.php:11
+msgid ""
+"Data final das inscrições habilitada. Defina as datas de término das fases."
+msgstr ""
+
+
+#: modules/Opportunities/components/opportunity-phase-config-data-collection/texts.php:12
+msgid "Não foi possível habilitar a data final das inscrições"
+msgstr ""
+
+
+#: modules/Opportunities/components/opportunity-phase-config-data-collection/texts.php:13
+msgid ""
+"Não é possível excluir esta fase pois ela já possui inscrições realizadas."
+msgstr ""
+
+
+#: modules/Opportunities/components/opportunity-phase-config-evaluation/texts.php:8
+msgid ""
+"Não é possível excluir esta fase pois ela possui avaliadores no comitê de "
+"avaliação. Remova todos os avaliadores para poder excluir a fase."
+msgstr ""
+
+
+#: modules/Opportunities/components/opportunity-phase-config-evaluation/template.php:128
+msgid ""
+"Esta fase possui avaliadores no comitê de avaliação. Remova todos os "
+"avaliadores do comitê antes de excluir a fase."
+msgstr ""
+
+
+#: modules/Opportunities/components/opportunity-phase-evaluation/template.php:18
+#: modules/Opportunities/components/opportunity-phase-evaluation/template.php:51
+msgid "RECURSO"
+msgstr ""
+
+
+#: modules/Opportunities/components/opportunity-phase-evaluation/template.php:25
+#: modules/Opportunities/components/opportunity-phase-evaluation/template.php:58
+msgid "Recurso da fase:"
+msgstr ""
+
+
+#: modules/Opportunities/components/opportunity-subscribe-results/template.php:97
+#: modules/Opportunities/components/opportunity-phases-config/template.php:94
+msgid "Avaliação do recurso"
+msgstr ""
+
+
+#: modules/Opportunities/components/opportunity-subscription/template.php:32
+msgid "As inscrições para esta oportunidade não são feitas pela plataforma."
+msgstr ""
+
+
+#: modules/OpportunityWorkplan/components/opportunity-enable-workplan/template.php:213
+msgid ""
+"As informações que forem marcadas abaixo poderão ser configuradas como "
+"obrigatórias ou opcionais no momento de inscrição."
+msgstr ""
+
+
+#: modules/OpportunityWorkplan/components/opportunity-enable-workplan/template.php:216
+msgid "Entregas, execução e receita"
+msgstr ""
+
+
+#: modules/OpportunityWorkplan/components/opportunity-enable-workplan/template.php:217
+msgid ""
+"Características básicas da entrega, localização, público e aspectos "
+"financeiros"
+msgstr ""
+
+
+#: modules/OpportunityWorkplan/components/opportunity-enable-workplan/template.php:221
+msgid "Informar período de realização"
+msgstr ""
+
+
+#: modules/OpportunityWorkplan/components/opportunity-enable-workplan/template.php:256
+msgid "Informar orçamento total"
+msgstr ""
+
+
+#: modules/OpportunityWorkplan/components/opportunity-enable-workplan/template.php:283
+msgid "Informar ações de mediação/formação de público"
+msgstr ""
+
+
+#: modules/OpportunityWorkplan/components/opportunity-enable-workplan/template.php:322
+#: modules/OpportunityWorkplan/components/opportunity-enable-workplan/template.php:544
+msgid "Obrigatório (valor unitário)"
+msgstr ""
+
+
+#: modules/OpportunityWorkplan/components/opportunity-enable-workplan/template.php:326
+#: modules/OpportunityWorkplan/components/registration-workplan/template.php:366
+msgid "Equipe, diversidade e acesso"
+msgstr ""
+
+
+#: modules/OpportunityWorkplan/components/opportunity-enable-workplan/template.php:327
+msgid ""
+"Composição da equipe, estratégias de inclusão e práticas socioambientais"
+msgstr ""
+
+
+#: modules/OpportunityWorkplan/components/opportunity-enable-workplan/template.php:334
+#: modules/OpportunityWorkplan/components/opportunity-enable-workplan/template.php:562
+msgid "Obrigatório (gênero)"
+msgstr ""
+
+
+#: modules/OpportunityWorkplan/components/opportunity-enable-workplan/template.php:337
+#: modules/OpportunityWorkplan/components/opportunity-enable-workplan/template.php:565
+msgid "Obrigatório (raça/cor)"
+msgstr ""
+
+
+#: modules/OpportunityWorkplan/components/opportunity-enable-workplan/template.php:346
+#: modules/OpportunityWorkplan/components/opportunity-enable-workplan/template.php:604
+#: modules/OpportunityWorkplan/components/opportunity-enable-workplan/template.php:640
+msgid "Obrigatório (detalhamento)"
+msgstr ""
+
+
+#: modules/OpportunityWorkplan/components/opportunity-enable-workplan/template.php:355
+#: modules/OpportunityWorkplan/components/opportunity-enable-workplan/template.php:616
+msgid "Obrigatório (ações)"
+msgstr ""
+
+
+#: modules/OpportunityWorkplan/components/opportunity-enable-workplan/template.php:364
+#: modules/OpportunityWorkplan/components/opportunity-enable-workplan/template.php:628
+msgid "Obrigatório (medidas)"
+msgstr ""
+
+
+#: modules/OpportunityWorkplan/components/opportunity-enable-workplan/template.php:373
+msgid "Obrigatório (descrição)"
+msgstr ""
+
+
+#: modules/OpportunityWorkplan/components/opportunity-enable-workplan/template.php:377
+#: modules/OpportunityWorkplan/components/registration-workplan/template.php:509
+msgid "Comunicação e registro"
+msgstr ""
+
+
+#: modules/OpportunityWorkplan/components/opportunity-enable-workplan/template.php:378
+msgid "Estratégias de divulgação, inovação e documentação do projeto"
+msgstr ""
+
+
+#: modules/OpportunityWorkplan/components/opportunity-enable-workplan/template.php:382
+msgid "Informar estratégias de comunicação"
+msgstr ""
+
+
+#: modules/OpportunityWorkplan/components/opportunity-enable-workplan/template.php:403
+#: modules/OpportunityWorkplan/components/opportunity-enable-workplan/template.php:670
+msgid "Obrigatório (tipos)"
+msgstr ""
+
+
+#: modules/OpportunityWorkplan/components/opportunity-enable-workplan/template.php:419
+msgid ""
+"As informações marcadas abaixo poderão ser configuradas como obrigatórias ou"
+" opcionais no monitoramento."
+msgstr ""
+
+
+#: modules/OpportunityWorkplan/components/opportunity-enable-workplan/template.php:422
+msgid "Execução e público"
+msgstr ""
+
+
+#: modules/OpportunityWorkplan/components/opportunity-enable-workplan/template.php:423
+msgid "Informações sobre realização, público alcançado e acessibilidade"
+msgstr ""
+
+
+#: modules/OpportunityWorkplan/components/opportunity-enable-workplan/template.php:470
+msgid "Dados executados"
+msgstr ""
+
+
+#: modules/OpportunityWorkplan/components/opportunity-enable-workplan/template.php:471
+msgid "Valores e quantidades realizadas durante a execução do projeto"
+msgstr ""
+
+
+#: modules/OpportunityWorkplan/components/opportunity-enable-workplan/template.php:484
+msgid "Informar período executado de realização"
+msgstr ""
+
+
+#: modules/OpportunityWorkplan/components/opportunity-enable-workplan/template.php:493
+msgid "Informar orçamento total executado"
+msgstr ""
+
+
+#: modules/OpportunityWorkplan/components/opportunity-enable-workplan/template.php:589
+msgid "Informar segmento artístico-cultural executado"
+msgstr ""
+
+
+#: modules/OpportunityWorkplan/components/opportunity-enable-workplan/template.php:598
+msgid "Informar coautoria/coexecução executada com comunidades/coletivos"
+msgstr ""
+
+
+#: modules/OpportunityWorkplan/components/opportunity-enable-workplan/template.php:622
+msgid "Informar medidas de acessibilidade executadas"
+msgstr ""
+
+
+#: modules/OpportunityWorkplan/components/opportunity-enable-workplan/template.php:676
+msgid "Informar tipos de documentação produzida"
+msgstr ""
+
+
+#: modules/OpportunityWorkplan/components/registration-details-workplan/template.php:63
+msgid "Especificar etapa do fazer cultural"
+msgstr ""
+
+
+#: modules/OpportunityWorkplan/components/registration-details-workplan/template.php:88
+msgid "Especificar tipo de entrega"
+msgstr ""
+
+
+#: modules/OpportunityWorkplan/components/registration-details-workplan/template.php:127
+msgid "Mês inicial da entrega"
+msgstr ""
+
+
+#: modules/OpportunityWorkplan/components/registration-details-workplan/template.php:131
+msgid "Mês final da entrega"
+msgstr ""
+
+
+#: modules/OpportunityWorkplan/components/registration-details-workplan/template.php:176
+msgid "Valor unitário previsto"
+msgstr ""
+
+
+#: modules/OpportunityWorkplan/components/registration-details-workplan/template.php:194
+msgid "Composição da equipe por gênero"
+msgstr ""
+
+
+#: modules/OpportunityWorkplan/components/registration-details-workplan/template.php:195
+#: modules/OpportunityWorkplan/components/registration-workplan-form-delivery/template.php:349
+#: modules/OpportunityWorkplan/components/registration-workplan-form-delivery/template.php:394
+msgid "Mulher cisg."
+msgstr ""
+
+
+#: modules/OpportunityWorkplan/components/registration-details-workplan/template.php:196
+#: modules/OpportunityWorkplan/components/registration-workplan-form-delivery/template.php:350
+#: modules/OpportunityWorkplan/components/registration-workplan-form-delivery/template.php:395
+msgid "Homem cisg."
+msgstr ""
+
+
+#: modules/OpportunityWorkplan/components/registration-details-workplan/template.php:197
+#: modules/OpportunityWorkplan/components/registration-workplan-form-delivery/template.php:351
+#: modules/OpportunityWorkplan/components/registration-workplan-form-delivery/template.php:396
+msgid "Mulher trans"
+msgstr ""
+
+
+#: modules/OpportunityWorkplan/components/registration-details-workplan/template.php:198
+#: modules/OpportunityWorkplan/components/registration-workplan-form-delivery/template.php:352
+#: modules/OpportunityWorkplan/components/registration-workplan-form-delivery/template.php:397
+msgid "Homem trans"
+msgstr ""
+
+
+#: modules/OpportunityWorkplan/components/registration-details-workplan/template.php:199
+#: modules/OpportunityWorkplan/components/registration-workplan-form-delivery/template.php:353
+#: modules/OpportunityWorkplan/components/registration-workplan-form-delivery/template.php:398
+msgid "Não-binário"
+msgstr ""
+
+
+#: modules/OpportunityWorkplan/components/registration-details-workplan/template.php:201
+#: modules/OpportunityWorkplan/components/registration-workplan-form-delivery/template.php:355
+#: modules/OpportunityWorkplan/components/registration-workplan-form-delivery/template.php:400
+msgid "Pref. não inf."
+msgstr ""
+
+
+#: modules/OpportunityWorkplan/components/registration-details-workplan/template.php:204
+msgid "Composição da equipe por raça/cor"
+msgstr ""
+
+
+#: modules/OpportunityWorkplan/components/registration-details-workplan/template.php:210
+#: modules/OpportunityWorkplan/components/registration-workplan-form-delivery/template.php:416
+#: modules/OpportunityWorkplan/components/registration-workplan-form-delivery/template.php:456
+msgid "Não decl."
+msgstr ""
+
+
+#: modules/OpportunityWorkplan/components/registration-details-workplan/template.php:216
+msgid "Envolve comunidades/coletivos como coautores?"
+msgstr ""
+
+
+#: modules/OpportunityWorkplan/components/registration-details-workplan/template.php:220
+msgid "Detalhamento de coautoria"
+msgstr ""
+
+
+#: modules/OpportunityWorkplan/components/registration-details-workplan/template.php:227
+msgid "Prevê estratégias para pessoas Trans/Travestis?"
+msgstr ""
+
+
+#: modules/OpportunityWorkplan/components/registration-details-workplan/template.php:231
+msgid "Ações de inclusão Trans/Travestis"
+msgstr ""
+
+
+#: modules/OpportunityWorkplan/components/registration-details-workplan/template.php:238
+msgid "Prevê medidas de acessibilidade?"
+msgstr ""
+
+
+#: modules/OpportunityWorkplan/components/registration-details-workplan/template.php:251
+msgid "Prevê práticas socioambientais?"
+msgstr ""
+
+
+#: modules/OpportunityWorkplan/components/registration-details-workplan/template.php:255
+msgid "Descrição das práticas socioambientais"
+msgstr ""
+
+
+#: modules/OpportunityWorkplan/components/registration-details-workplan/template.php:276
+msgid "Prevê experimentação/inovação?"
+msgstr ""
+
+
+#: modules/OpportunityWorkplan/components/registration-details-workplan/template.php:280
+msgid "Tipos de experimentação/inovação"
+msgstr ""
+
+
+#: modules/OpportunityWorkplan/components/registration-workplan-form-delivery/template.php:116
+#: modules/OpportunityWorkplan/components/registration-workplan-form-delivery/template.php:126
+#: modules/OpportunityWorkplan/components/registration-workplan-form-delivery/template.php:150
+#: modules/OpportunityWorkplan/components/registration-workplan-form-delivery/template.php:163
+#: modules/OpportunityWorkplan/components/registration-workplan-form-delivery/template.php:190
+#: modules/OpportunityWorkplan/components/registration-workplan-form-delivery/template.php:203
+#: modules/OpportunityWorkplan/components/registration-workplan-form-delivery/template.php:213
+#: modules/OpportunityWorkplan/components/registration-workplan-form-delivery/template.php:223
+#: modules/OpportunityWorkplan/components/registration-workplan-form-delivery/template.php:233
+#: modules/OpportunityWorkplan/components/registration-workplan-form-delivery/template.php:243
+#: modules/OpportunityWorkplan/components/registration-workplan-form-delivery/template.php:257
+#: modules/OpportunityWorkplan/components/registration-workplan-form-delivery/template.php:267
+#: modules/OpportunityWorkplan/components/registration-workplan-form-delivery/template.php:286
+#: modules/OpportunityWorkplan/components/registration-workplan-form-delivery/template.php:348
+#: modules/OpportunityWorkplan/components/registration-workplan-form-delivery/template.php:410
+#: modules/OpportunityWorkplan/components/registration-workplan-form-delivery/template.php:465
+#: modules/OpportunityWorkplan/components/registration-workplan-form-delivery/template.php:478
+#: modules/OpportunityWorkplan/components/registration-workplan-form-delivery/template.php:488
+#: modules/OpportunityWorkplan/components/registration-workplan-form-delivery/template.php:501
+#: modules/OpportunityWorkplan/components/registration-workplan-form-delivery/template.php:511
+#: modules/OpportunityWorkplan/components/registration-workplan-form-delivery/template.php:524
+#: modules/OpportunityWorkplan/components/registration-workplan-form-delivery/template.php:538
+#: modules/OpportunityWorkplan/components/registration-workplan-form-delivery/template.php:551
+#: modules/OpportunityWorkplan/components/registration-workplan-form-delivery/template.php:585
+#: modules/OpportunityWorkplan/components/registration-workplan-form-delivery/template.php:599
+#: modules/OpportunityWorkplan/components/registration-workplan-form-delivery/template.php:612
+#: modules/OpportunityWorkplan/components/registration-workplan-form-delivery/template.php:626
+msgid "Previsto:"
+msgstr ""
+
+
+#: modules/OpportunityWorkplan/components/registration-workplan-form-delivery/template.php:129
+msgid "Gerar receita:"
+msgstr ""
+
+
+#: modules/OpportunityWorkplan/components/registration-workplan-form-delivery/template.php:132
+msgid "Quantidade:"
+msgstr ""
+
+
+#: modules/OpportunityWorkplan/components/registration-workplan-form-delivery/template.php:135
+msgid "Valor unitário:"
+msgstr ""
+
+
+#: modules/OpportunityWorkplan/components/registration-workplan-form-delivery/template.php:138
+msgid "Valor total:"
+msgstr ""
+
+
+#: modules/OpportunityWorkplan/components/registration-workplan-form-delivery/template.php:148
+msgid "Segmento artístico-cultural executado"
+msgstr ""
+
+
+#: modules/OpportunityWorkplan/components/registration-workplan-form-delivery/template.php:161
+msgid "Período executado de realização"
+msgstr ""
+
+
+#: modules/OpportunityWorkplan/components/registration-workplan-form-delivery/template.php:167
+msgid "Mês inicial executado"
+msgstr ""
+
+
+#: modules/OpportunityWorkplan/components/registration-workplan-form-delivery/template.php:175
+msgid "Mês final executado"
+msgstr ""
+
+
+#: modules/OpportunityWorkplan/components/registration-workplan-form-delivery/template.php:201
+msgid "Orçamento total executado"
+msgstr ""
+
+
+#: modules/OpportunityWorkplan/components/registration-workplan-form-delivery/template.php:211
+msgid "Municípios realizados"
+msgstr ""
+
+
+#: modules/OpportunityWorkplan/components/registration-workplan-form-delivery/template.php:221
+msgid "Bairros realizados"
+msgstr ""
+
+
+#: modules/OpportunityWorkplan/components/registration-workplan-form-delivery/template.php:231
+msgid "Ações de mediação realizadas"
+msgstr ""
+
+
+#: modules/OpportunityWorkplan/components/registration-workplan-form-delivery/template.php:241
+msgid "Tipo de receita executada"
+msgstr ""
+
+
+#: modules/OpportunityWorkplan/components/registration-workplan-form-delivery/template.php:255
+msgid "Unidades comercializadas"
+msgstr ""
+
+
+#: modules/OpportunityWorkplan/components/registration-workplan-form-delivery/template.php:275
+msgid "Pessoas remuneradas por função (previsto)"
+msgstr ""
+
+
+#: modules/OpportunityWorkplan/components/registration-workplan-form-delivery/template.php:284
+msgid "Pessoas remuneradas por função (executado)"
+msgstr ""
+
+
+#: modules/OpportunityWorkplan/components/registration-workplan-form-delivery/template.php:296
+#: modules/OpportunityWorkplan/components/registration-workplan/template.php:278
+msgid "+ Adicionar função"
+msgstr ""
+
+
+#: modules/OpportunityWorkplan/components/registration-workplan-form-delivery/template.php:312
+#: modules/OpportunityWorkplan/components/registration-workplan/template.php:294
+msgid "Selecione a função"
+msgstr ""
+
+
+#: modules/OpportunityWorkplan/components/registration-workplan-form-delivery/template.php:318
+#: modules/OpportunityWorkplan/components/registration-workplan/template.php:300
+msgid "Quantidade de pessoas"
+msgstr ""
+
+
+#: modules/OpportunityWorkplan/components/registration-workplan-form-delivery/template.php:321
+#: modules/OpportunityWorkplan/components/registration-workplan/template.php:303
+msgid "Especifique a função"
+msgstr ""
+
+
+#: modules/OpportunityWorkplan/components/registration-workplan-form-delivery/template.php:322
+#: modules/OpportunityWorkplan/components/registration-workplan/template.php:304
+msgid "Digite o nome da função"
+msgstr ""
+
+
+#: modules/OpportunityWorkplan/components/registration-workplan-form-delivery/template.php:329
+#: modules/OpportunityWorkplan/components/registration-workplan/template.php:311
+msgid "Adicionar outra função"
+msgstr ""
+
+
+#: modules/OpportunityWorkplan/components/registration-workplan-form-delivery/template.php:346
+msgid "Composição da equipe por gênero (executado)"
+msgstr ""
+
+
+#: modules/OpportunityWorkplan/components/registration-workplan-form-delivery/template.php:360
+#: modules/OpportunityWorkplan/components/registration-workplan/template.php:373
+msgid "Mulher cisgênero"
+msgstr ""
+
+
+#: modules/OpportunityWorkplan/components/registration-workplan-form-delivery/template.php:364
+#: modules/OpportunityWorkplan/components/registration-workplan/template.php:377
+msgid "Homem cisgênero"
+msgstr ""
+
+
+#: modules/OpportunityWorkplan/components/registration-workplan-form-delivery/template.php:368
+#: modules/OpportunityWorkplan/components/registration-workplan/template.php:381
+msgid "Mulher transgênero"
+msgstr ""
+
+
+#: modules/OpportunityWorkplan/components/registration-workplan-form-delivery/template.php:372
+#: modules/OpportunityWorkplan/components/registration-workplan/template.php:385
+msgid "Homem transgênero"
+msgstr ""
+
+
+#: modules/OpportunityWorkplan/components/registration-workplan-form-delivery/template.php:376
+#: modules/OpportunityWorkplan/components/registration-workplan/template.php:389
+msgid "Pessoa não binária"
+msgstr ""
+
+
+#: modules/OpportunityWorkplan/components/registration-workplan-form-delivery/template.php:380
+#: modules/OpportunityWorkplan/components/registration-workplan/template.php:393
+msgid "Outra identidade de gênero"
+msgstr ""
+
+
+#: modules/OpportunityWorkplan/components/registration-workplan-form-delivery/template.php:384
+#: modules/OpportunityWorkplan/components/registration-workplan/template.php:397
+msgid "Prefiro não informar"
+msgstr ""
+
+
+#: modules/OpportunityWorkplan/components/registration-workplan-form-delivery/template.php:389
+#: modules/OpportunityWorkplan/components/registration-workplan-form-delivery/template.php:446
+msgid "Total executado:"
+msgstr ""
+
+
+#: modules/OpportunityWorkplan/components/registration-workplan-form-delivery/template.php:408
+msgid "Composição da equipe por raça/cor (executado)"
+msgstr ""
+
+
+#: modules/OpportunityWorkplan/components/registration-workplan-form-delivery/template.php:441
+#: modules/OpportunityWorkplan/components/registration-workplan/template.php:431
+msgid "Não declarado"
+msgstr ""
+
+
+#: modules/OpportunityWorkplan/components/registration-workplan-form-delivery/template.php:463
+msgid "Houve coautoria/coexecução com comunidades/coletivos?"
+msgstr ""
+
+
+#: modules/OpportunityWorkplan/components/registration-workplan-form-delivery/template.php:476
+msgid "Descreva a coautoria/coexecução realizada"
+msgstr ""
+
+
+#: modules/OpportunityWorkplan/components/registration-workplan-form-delivery/template.php:486
+msgid "Houve estratégias executadas de inclusão Trans e Travestis?"
+msgstr ""
+
+
+#: modules/OpportunityWorkplan/components/registration-workplan-form-delivery/template.php:499
+msgid "Quais ações foram executadas?"
+msgstr ""
+
+
+#: modules/OpportunityWorkplan/components/registration-workplan-form-delivery/template.php:509
+msgid "Houve medidas de acessibilidade executadas?"
+msgstr ""
+
+
+#: modules/OpportunityWorkplan/components/registration-workplan-form-delivery/template.php:522
+msgid "Quais medidas de acessibilidade foram executadas?"
+msgstr ""
+
+
+#: modules/OpportunityWorkplan/components/registration-workplan-form-delivery/template.php:536
+msgid "Houve medidas ou práticas socioambientais executadas?"
+msgstr ""
+
+
+#: modules/OpportunityWorkplan/components/registration-workplan-form-delivery/template.php:549
+msgid "Quais práticas socioambientais foram executadas?"
+msgstr ""
+
+
+#: modules/OpportunityWorkplan/components/registration-workplan-form-delivery/template.php:559
+msgid "Houve estratégia de relacionamento com a imprensa?"
+msgstr ""
+
+
+#: modules/OpportunityWorkplan/components/registration-workplan-form-delivery/template.php:561
+#: modules/OpportunityWorkplan/components/registration-workplan-form-delivery/template.php:574
+msgid "Estratégia de imprensa prevista:"
+msgstr ""
+
+
+#: modules/OpportunityWorkplan/components/registration-workplan-form-delivery/template.php:572
+msgid "Estratégias de comunicação executadas"
+msgstr ""
+
+
+#: modules/OpportunityWorkplan/components/registration-workplan-form-delivery/template.php:597
+msgid "Houve ação de experimentação/inovação executada?"
+msgstr ""
+
+
+#: modules/OpportunityWorkplan/components/registration-workplan-form-delivery/template.php:624
+msgid "Tipos de documentação produzida"
+msgstr ""
+
+
+#: modules/Opportunities/components/opportunity-phases-config/template.php:137
+msgid ""
+"A data e hora da 'Publicação final' precisa estar preenchida para adicionar "
+"a fase de execução."
+msgstr ""
+
+
+#: modules/Opportunities/components/opportunity-registration-filter-configuration/texts.php:20
+#: modules/Opportunities/components/registration-distribution-rule/texts.php:18
+msgid "A data inicial não pode ser maior que a data final"
+msgstr ""
+
+
+#: modules/Opportunities/components/opportunity-registration-filter-configuration/texts.php:21
+msgid "A data final não pode ser menor que a data inicial"
+msgstr ""
+
+
+#: modules/Opportunities/components/registration-distribution-rule/template.php:18
+msgid "Segmentação de inscrições"
+msgstr ""
+
+
+#: modules/Opportunities/components/registration-distribution-rule/texts.php:19
+msgid "Marcado"
+msgstr ""
+
+
+#: modules/Opportunities/components/registration-distribution-rule/texts.php:20
+msgid "Desmarcado"
+msgstr ""
+
+
+#: modules/Opportunities/components/registration-evaluation-tab/texts.php:8
+msgid "Erro ao salvar avaliadores"
+msgstr ""
+
+
+#: modules/Opportunities/components/registration-field-persons/template.php:57
+msgid "CNPJ:"
+msgstr ""
+
+
+#: modules/OpportunityWorkplan/components/registration-workplan/template.php:50
+msgid "Sobre o projeto"
+msgstr ""
+
+
+#: modules/OpportunityWorkplan/components/registration-workplan/template.php:51
+msgid ""
+"Informações gerais que ajudam a contextualizar o projeto antes do "
+"detalhamento das metas."
+msgstr ""
+
+
+#: modules/OpportunityWorkplan/components/registration-workplan/template.php:110
+msgid ""
+"Descreva o que o projeto pretende realizar. Foque nos objetivos, não na "
+"execução."
+msgstr ""
+
+
+#: modules/OpportunityWorkplan/components/registration-workplan/template.php:114
+msgid "Especificação da"
+msgstr ""
+
+
+#: modules/OpportunityWorkplan/components/registration-workplan/template.php:367
+msgid ""
+"Composição da equipe por gênero e raça, estratégias de inclusão, "
+"acessibilidade e práticas socioambientais."
+msgstr ""
+
+
+#: modules/OpportunityWorkplan/components/registration-workplan/template.php:402
+#: modules/OpportunityWorkplan/components/registration-workplan/template.php:436
+msgid "Total:"
+msgstr ""
+
+
+#: modules/OpportunityWorkplan/components/registration-workplan/template.php:510
+msgid ""
+"Estratégias de divulgação, canais de comunicação, ações de inovação e tipos "
+"de documentação previstos."
+msgstr ""
+
+
+#: themes/BaseV2/layouts/parts/change_password_other_providers.php:19
+msgid "Alterar a senha"
+msgstr ""
+
+
+#: themes/BaseV2/layouts/parts/required-fields-profile-message.php:17
+msgid "Por favor, preencha todos os campos obrigatórios."
+msgstr ""
+
+
+#: modules/Opportunities/components/registration-print/template.php:17
+msgid "Exportar PDF"
+msgstr ""
+
+
+#: modules/Opportunities/components/registration-print/template.php:21
+msgid "Baixar Anexos (ZIP)"
+msgstr ""
+
+
+#: modules/Entities/layouts/parts/entities/create-event-fields.php:12
+msgid "Adicione uma descrição curta para o evento"
+msgstr ""
+
+
+#: modules/Entities/layouts/parts/entities/create-project-fields.php:12
+msgid "Adicione uma descrição curta para o projeto"
+msgstr ""
+
+
+#: modules/Entities/layouts/parts/entities/create-space-fields.php:13
+msgid "Adicione uma descrição curta para o espaço"
+msgstr ""
+
+
+#: modules/Entities/layouts/parts/entities/create-agent-fields.php:19
+msgid "Adicione uma descrição curta para o agente"
+msgstr ""
+
+
+#: modules/Seals/views/seal/single.php:76
+msgid "Entidades com este selo"
+msgstr ""
+
+
+#: modules/Seals/views/seal/single.php:87
+msgid "Agentes certificados"
+msgstr ""
+
+
+#: modules/Seals/views/seal/single.php:105
+msgid "Nenhum agente possui este selo ainda."
+msgstr ""
+
+
+#: modules/Seals/views/seal/single.php:119
+msgid "Espaços certificados"
+msgstr ""
+
+
+#: modules/Seals/views/seal/single.php:137
+msgid "Nenhum espaço possui este selo ainda."
+msgstr ""
+
+
+#: modules/Seals/views/seal/single.php:151
+msgid "Eventos certificados"
+msgstr ""
+
+
+#: modules/Seals/views/seal/single.php:169
+msgid "Nenhum evento possui este selo ainda."
+msgstr ""
+
+
+#: modules/Seals/views/seal/single.php:183
+msgid "Projetos certificados"
+msgstr ""
+
+
+#: modules/Seals/views/seal/single.php:201
+msgid "Nenhum projeto possui este selo ainda."
+msgstr ""
+
+
+#: modules/EvaluationMethodTechnical/layouts/parts/technical/evaluations-details.php:38
+#: modules/EvaluationMethodTechnical/layouts/parts/technical/evaluations-details.php:52
+#: modules/EvaluationMethodTechnical/layouts/parts/technical/evaluations-details.php:56
+msgid "ponto(s)"
+msgstr ""
+
+
+#: modules/Search/components/search-filter-event/template.php:63
+msgid "Estado e Cidade"
+msgstr ""
+
+
+#: modules/Components/layouts/parts/main-footer/developed-by.php:13
+msgid "mapas culturais"
+msgstr ""
+
+
+#: modules/Components/layouts/parts/main-footer/developed-by.php:14
+msgid "e desenvolvida por "
+msgstr ""
+
+
+#: themes/BaseV1/layouts/parts/singles/opportunity-registrations--fields.php:23
+msgid "Atenção:"
+msgstr ""
+
+
+#: themes/BaseV1/layouts/parts/singles/opportunity-registrations--fields.php:23
+msgid "campo(s) possuem configuração incompleta."
+msgstr ""
+
+
+#: themes/BaseV1/layouts/parts/singles/opportunity-registrations--fields.php:84
+#: themes/BaseV1/layouts/parts/singles/opportunity-registrations--fields.php:292
+msgid "Tipos de arquivo permitidos (deixe em branco para permitir todos)"
+msgstr ""
+
+
+#: themes/BaseV1/layouts/parts/singles/opportunity-registrations--fields.php:86
+#: themes/BaseV1/layouts/parts/singles/opportunity-registrations--fields.php:294
+msgid "Documentos"
+msgstr ""
+
+
+#: themes/BaseV1/layouts/parts/singles/opportunity-registrations--fields.php:87
+#: themes/BaseV1/layouts/parts/singles/opportunity-registrations--fields.php:295
+msgid ".doc"
+msgstr ""
+
+
+#: themes/BaseV1/layouts/parts/singles/opportunity-registrations--fields.php:88
+#: themes/BaseV1/layouts/parts/singles/opportunity-registrations--fields.php:296
+msgid ".docx"
+msgstr ""
+
+
+#: themes/BaseV1/layouts/parts/singles/opportunity-registrations--fields.php:89
+#: themes/BaseV1/layouts/parts/singles/opportunity-registrations--fields.php:297
+msgid ".odt"
+msgstr ""
+
+
+#: themes/BaseV1/layouts/parts/singles/opportunity-registrations--fields.php:90
+#: themes/BaseV1/layouts/parts/singles/opportunity-registrations--fields.php:298
+msgid ".pdf"
+msgstr ""
+
+
+#: themes/BaseV1/layouts/parts/singles/opportunity-registrations--fields.php:91
+#: themes/BaseV1/layouts/parts/singles/opportunity-registrations--fields.php:299
+msgid ".txt"
+msgstr ""
+
+
+#: themes/BaseV1/layouts/parts/singles/opportunity-registrations--fields.php:94
+#: themes/BaseV1/layouts/parts/singles/opportunity-registrations--fields.php:302
+msgid "Planilhas"
+msgstr ""
+
+
+#: themes/BaseV1/layouts/parts/singles/opportunity-registrations--fields.php:95
+#: themes/BaseV1/layouts/parts/singles/opportunity-registrations--fields.php:303
+msgid ".xls"
+msgstr ""
+
+
+#: themes/BaseV1/layouts/parts/singles/opportunity-registrations--fields.php:96
+#: themes/BaseV1/layouts/parts/singles/opportunity-registrations--fields.php:304
+msgid ".xlsx"
+msgstr ""
+
+
+#: themes/BaseV1/layouts/parts/singles/opportunity-registrations--fields.php:97
+#: themes/BaseV1/layouts/parts/singles/opportunity-registrations--fields.php:305
+msgid ".ods"
+msgstr ""
+
+
+#: themes/BaseV1/layouts/parts/singles/opportunity-registrations--fields.php:98
+#: themes/BaseV1/layouts/parts/singles/opportunity-registrations--fields.php:306
+msgid ".csv"
+msgstr ""
+
+
+#: themes/BaseV1/layouts/parts/singles/opportunity-registrations--fields.php:101
+#: themes/BaseV1/layouts/parts/singles/opportunity-registrations--fields.php:309
+msgid "Apresentações"
+msgstr ""
+
+
+#: themes/BaseV1/layouts/parts/singles/opportunity-registrations--fields.php:102
+#: themes/BaseV1/layouts/parts/singles/opportunity-registrations--fields.php:310
+msgid ".ppt"
+msgstr ""
+
+
+#: themes/BaseV1/layouts/parts/singles/opportunity-registrations--fields.php:103
+#: themes/BaseV1/layouts/parts/singles/opportunity-registrations--fields.php:311
+msgid ".pptx"
+msgstr ""
+
+
+#: themes/BaseV1/layouts/parts/singles/opportunity-registrations--fields.php:104
+#: themes/BaseV1/layouts/parts/singles/opportunity-registrations--fields.php:312
+msgid ".odp"
+msgstr ""
+
+
+#: themes/BaseV1/layouts/parts/singles/opportunity-registrations--fields.php:108
+#: themes/BaseV1/layouts/parts/singles/opportunity-registrations--fields.php:316
+msgid ".jpg/.jpeg"
+msgstr ""
+
+
+#: themes/BaseV1/layouts/parts/singles/opportunity-registrations--fields.php:109
+#: themes/BaseV1/layouts/parts/singles/opportunity-registrations--fields.php:317
+msgid ".png"
+msgstr ""
+
+
+#: themes/BaseV1/layouts/parts/singles/opportunity-registrations--fields.php:110
+#: themes/BaseV1/layouts/parts/singles/opportunity-registrations--fields.php:318
+msgid ".gif"
+msgstr ""
+
+
+#: themes/BaseV1/layouts/parts/singles/opportunity-registrations--fields.php:113
+#: themes/BaseV1/layouts/parts/singles/opportunity-registrations--fields.php:321
+msgid "Arquivos Compactados"
+msgstr ""
+
+
+#: themes/BaseV1/layouts/parts/singles/opportunity-registrations--fields.php:114
+#: themes/BaseV1/layouts/parts/singles/opportunity-registrations--fields.php:322
+msgid ".zip"
+msgstr ""
+
+
+#: themes/BaseV1/layouts/parts/singles/opportunity-registrations--fields.php:115
+#: themes/BaseV1/layouts/parts/singles/opportunity-registrations--fields.php:323
+msgid ".rar"
+msgstr ""
+
+
+#: themes/BaseV1/layouts/parts/singles/opportunity-registrations--fields.php:119
+#: themes/BaseV1/layouts/parts/singles/opportunity-registrations--fields.php:327
+msgid ".mp4"
+msgstr ""
+
+
+#: themes/BaseV1/layouts/parts/singles/opportunity-registrations--fields.php:120
+#: themes/BaseV1/layouts/parts/singles/opportunity-registrations--fields.php:328
+msgid ".avi"
+msgstr ""
+
+
+#: themes/BaseV1/layouts/parts/singles/opportunity-registrations--fields.php:121
+#: themes/BaseV1/layouts/parts/singles/opportunity-registrations--fields.php:329
+msgid ".mov"
+msgstr ""
+
+
+#: themes/BaseV1/layouts/parts/singles/opportunity-registrations--fields.php:124
+#: themes/BaseV1/layouts/parts/singles/opportunity-registrations--fields.php:332
+msgid "Áudios"
+msgstr ""
+
+
+#: themes/BaseV1/layouts/parts/singles/opportunity-registrations--fields.php:125
+#: themes/BaseV1/layouts/parts/singles/opportunity-registrations--fields.php:333
+msgid ".mp3"
+msgstr ""
+
+
+#: themes/BaseV1/layouts/parts/singles/opportunity-registrations--fields.php:126
+#: themes/BaseV1/layouts/parts/singles/opportunity-registrations--fields.php:334
+msgid ".wav"
+msgstr ""
+
+
+#: themes/BaseV1/layouts/parts/singles/opportunity-registrations--fields.php:149
+msgid "Configuração incompleta"
+msgstr ""
+
+
+#: themes/BaseV1/layouts/parts/singles/opportunity-registrations--fields.php:181
+msgid "Configuração incompleta:"
+msgstr ""
+
+
+#: themes/BaseV1/layouts/parts/singles/opportunity-registrations--fields.php:244
+msgid "duplicar campo"
+msgstr ""
+
+
+#: themes/BaseV1/layouts/parts/singles/opportunity-registrations--fields.php:393
+msgid "duplicar anexo"
+msgstr ""
+
+
+#: themes/BaseV1/layouts/parts/singles/registration-field-view.php:95
+msgid "Nenhum dado informado."
+msgstr ""
+
+
+#: modules/RegistrationFieldTypes/layouts/parts/registration-field-types/custom-table-config.php:6
+msgid "Configuração das Colunas da Tabela"
+msgstr ""
+
+
+#: modules/RegistrationFieldTypes/layouts/parts/registration-field-types/custom-table-config.php:12
+msgid "Nome da Coluna"
+msgstr ""
+
+
+#: modules/RegistrationFieldTypes/layouts/parts/registration-field-types/custom-table-config.php:13
+msgid "Ex: Nome, Quantidade, Valor..."
+msgstr ""
+
+
+#: modules/RegistrationFieldTypes/layouts/parts/registration-field-types/custom-table-config.php:19
+msgid "Tipo de Dado"
+msgstr ""
+
+
+#: modules/RegistrationFieldTypes/layouts/parts/registration-field-types/custom-table-config.php:21
+msgid "Texto"
+msgstr ""
+
+
+#: modules/RegistrationFieldTypes/layouts/parts/registration-field-types/custom-table-config.php:26
+msgid "Lista de opções"
+msgstr ""
+
+
+#: modules/RegistrationFieldTypes/layouts/parts/registration-field-types/custom-table-config.php:34
+msgid "Campo Obrigatório"
+msgstr ""
+
+
+#: modules/RegistrationFieldTypes/layouts/parts/registration-field-types/custom-table-config.php:41
+msgid "Opções (uma por linha)"
+msgstr ""
+
+
+#: modules/RegistrationFieldTypes/layouts/parts/registration-field-types/custom-table-config.php:42
+msgid "Digite uma opção por linha"
+msgstr ""
+
+
+#: modules/RegistrationFieldTypes/layouts/parts/registration-field-types/custom-table-config.php:47
+msgid "Remover Coluna"
+msgstr ""
+
+
+#: modules/RegistrationFieldTypes/layouts/parts/registration-field-types/custom-table-config.php:52
+msgid "Adicionar Coluna"
+msgstr ""
+
+
+#: modules/RegistrationFieldTypes/layouts/parts/registration-field-types/custom-table-config.php:60
+msgid "Mínimo de linhas"
+msgstr ""
+
+
+#: modules/RegistrationFieldTypes/layouts/parts/registration-field-types/custom-table-config.php:63
+msgid "Deixe 0 para não ter mínimo"
+msgstr ""
+
+
+#: modules/RegistrationFieldTypes/layouts/parts/registration-field-types/custom-table-config.php:70
+msgid "Máximo de linhas"
+msgstr ""
+
+
+#: modules/RegistrationFieldTypes/layouts/parts/registration-field-types/custom-table-config.php:71
+#: modules/RegistrationFieldTypes/layouts/parts/registration-field-types/agent-owner-field-config.php:219
+#: modules/RegistrationFieldTypes/layouts/parts/registration-field-types/agent-owner-field-config.php:238
+#: modules/RegistrationFieldTypes/layouts/parts/registration-field-types/agent-owner-field-config.php:257
+msgid "Ilimitado"
+msgstr ""
+
+
+#: modules/RegistrationFieldTypes/layouts/parts/registration-field-types/custom-table-config.php:73
+msgid "Deixe vazio para ilimitado"
+msgstr ""
+
+
+#: modules/RegistrationFieldTypes/layouts/parts/registration-field-types/custom-table.php:114
+msgid "Adicionar Linha"
+msgstr ""
+
+
+#: modules/RegistrationFieldTypes/layouts/parts/registration-field-types/custom-table.php:120
+msgid "linha(s)"
+msgstr ""
+
+
+#: modules/RegistrationFieldTypes/layouts/parts/registration-field-types/space-field-config.php:46
+#: modules/RegistrationFieldTypes/layouts/parts/registration-field-types/agent-collective-field-config.php:102
+#: modules/RegistrationFieldTypes/layouts/parts/registration-field-types/agent-owner-field-config.php:104
+msgid "Subcampos obrigatórios do endereço no Brasil:"
+msgstr ""
+
+
+#: modules/RegistrationFieldTypes/layouts/parts/registration-field-types/space-field-config.php:60
+#: modules/RegistrationFieldTypes/layouts/parts/registration-field-types/agent-collective-field-config.php:116
+#: modules/RegistrationFieldTypes/layouts/parts/registration-field-types/agent-owner-field-config.php:118
+msgid "Subcampos obrigatórios do endereço em outros países:"
+msgstr ""
+
+
+#: modules/RegistrationFieldTypes/layouts/parts/registration-field-types/space-field-config.php:72
+#: modules/RegistrationFieldTypes/layouts/parts/registration-field-types/agent-collective-field-config.php:128
+#: modules/RegistrationFieldTypes/layouts/parts/registration-field-types/agent-owner-field-config.php:130
+msgid ""
+"Marque os subcampos que devem ser obrigatórios para cada tipo de endereço."
+msgstr ""
+
+
+#: modules/RegistrationFieldTypes/layouts/parts/registration-field-types/agent-owner-field-config.php:13
+msgid " Galeria de Fotos"
+msgstr ""
+
+
+#: modules/RegistrationFieldTypes/layouts/parts/registration-field-types/agent-owner-field-config.php:14
+msgid " Galeria de Vídeos"
+msgstr ""
+
+
+#: modules/RegistrationFieldTypes/layouts/parts/registration-field-types/agent-owner-field-config.php:15
+msgid " Downloads/Anexos"
+msgstr ""
+
+
+#: modules/RegistrationFieldTypes/layouts/parts/registration-field-types/agent-owner-field-config.php:207
+msgid ""
+"As fotos da galeria do perfil do agente responsável serão exibidas e "
+"editáveis no formulário de inscrição."
+msgstr ""
+
+
+#: modules/RegistrationFieldTypes/layouts/parts/registration-field-types/agent-owner-field-config.php:211
+msgid "Permitir adicionar novas fotos?"
+msgstr ""
+
+
+#: modules/RegistrationFieldTypes/layouts/parts/registration-field-types/agent-owner-field-config.php:215
+msgid "Permitir remover fotos?"
+msgstr ""
+
+
+#: modules/RegistrationFieldTypes/layouts/parts/registration-field-types/agent-owner-field-config.php:218
+msgid "Número máximo de fotos"
+msgstr ""
+
+
+#: modules/RegistrationFieldTypes/layouts/parts/registration-field-types/agent-owner-field-config.php:226
+msgid ""
+"Os vídeos (YouTube/Vimeo) do perfil do agente responsável serão exibidos e "
+"editáveis no formulário de inscrição."
+msgstr ""
+
+
+#: modules/RegistrationFieldTypes/layouts/parts/registration-field-types/agent-owner-field-config.php:230
+msgid "Permitir adicionar novos vídeos?"
+msgstr ""
+
+
+#: modules/RegistrationFieldTypes/layouts/parts/registration-field-types/agent-owner-field-config.php:234
+msgid "Permitir remover vídeos?"
+msgstr ""
+
+
+#: modules/RegistrationFieldTypes/layouts/parts/registration-field-types/agent-owner-field-config.php:237
+msgid "Número máximo de vídeos"
+msgstr ""
+
+
+#: modules/RegistrationFieldTypes/layouts/parts/registration-field-types/agent-owner-field-config.php:245
+msgid ""
+"Os arquivos de download do perfil do agente responsável serão exibidos e "
+"editáveis no formulário de inscrição."
+msgstr ""
+
+
+#: modules/RegistrationFieldTypes/layouts/parts/registration-field-types/agent-owner-field-config.php:249
+msgid "Permitir adicionar novos arquivos?"
+msgstr ""
+
+
+#: modules/RegistrationFieldTypes/layouts/parts/registration-field-types/agent-owner-field-config.php:253
+msgid "Permitir remover arquivos?"
+msgstr ""
+
+
+#: modules/RegistrationFieldTypes/layouts/parts/registration-field-types/agent-owner-field-config.php:256
+msgid "Número máximo de arquivos"
+msgstr ""
+
+
+#: modules/RegistrationFieldTypes/layouts/parts/registration-field-types/number-config.php:7
+msgid "Opções do campo numérico"
+msgstr ""
+
+
+#: modules/RegistrationFieldTypes/layouts/parts/registration-field-types/number-config.php:8
+msgid ""
+"Use estas opções para dizer como o sistema deve tratar o número zero e "
+"quantos dígitos o valor final pode ter (depois de salvo)."
+msgstr ""
+
+
+#: modules/RegistrationFieldTypes/layouts/parts/registration-field-types/number-config.php:13
+msgid "O número zero (0) é uma resposta válida neste campo?"
+msgstr ""
+
+
+#: modules/RegistrationFieldTypes/layouts/parts/registration-field-types/number-config.php:17
+msgid ""
+"Selecione “Sim” quando zero for uma resposta aceitável (por exemplo, "
+"quantidade de público, redes ou apoiadores). Selecione “Não” quando zero não"
+" fizer sentido no contexto do campo (por exemplo, número de conta, agência, "
+"CEP ou PIS)."
+msgstr ""
+
+
+#: modules/RegistrationFieldTypes/layouts/parts/registration-field-types/number-config.php:22
+msgid "Sim — aceitar 0"
+msgstr ""
+
+
+#: modules/RegistrationFieldTypes/layouts/parts/registration-field-types/number-config.php:26
+msgid "Não — rejeitar 0"
+msgstr ""
+
+
+#: modules/RegistrationFieldTypes/layouts/parts/registration-field-types/number-config.php:32
+msgid "Quantidade de dígitos do valor salvo"
+msgstr ""
+
+
+#: modules/RegistrationFieldTypes/layouts/parts/registration-field-types/number-config.php:36
+msgid ""
+"A validação considera o número já normalizado, sem zeros à esquerda. "
+"Exemplo: ao digitar 000963010, o sistema armazena 963010 (6 dígitos). Deixe "
+"em branco para não limitar; informe apenas o mínimo, apenas o máximo, ou "
+"ambos."
+msgstr ""
+
+
+#: modules/RegistrationFieldTypes/layouts/parts/registration-field-types/number-config.php:40
+msgid "Mínimo de dígitos"
+msgstr ""
+
+
+#: modules/RegistrationFieldTypes/layouts/parts/registration-field-types/number-config.php:44
+msgid "Máximo de dígitos"
+msgstr ""
+
+
+#: modules/EvaluationMethodQualification/components/qualification-evaluation-config/texts.php:11
+msgid "seção"
+msgstr ""
+
+
+#: modules/EvaluationMethodQualification/components/qualification-evaluation-config/texts.php:12
+msgid "deve ter pelo menos um critério"
+msgstr ""
+
+
+#: modules/EvaluationMethodQualification/components/qualification-evaluation-config/template.php:25
+msgid ""
+"Já existem avaliações iniciadas, concluídas ou enviadas. Ao excluir "
+"critérios ou seções, as respostas correspondentes serão removidas das "
+"avaliações existentes."
+msgstr ""
+
+
+#: config/entities.php:30
+msgid "Slug"
+msgstr ""
+
+#: config/entities.php:33
+msgid "Data de Atualização"
+msgstr ""
+
+#: config/entities.php:36
+msgid "Descrição Longa"
+msgstr ""
+
+#: config/entities.php:38
+msgid "Período de Validade"
+msgstr ""
+
+#: config/entities.php:41
+msgid "Data final das inscrições"
+msgstr ""
+
+#: config/entities.php:42
+msgid "Data de início das avaliações"
+msgstr ""
+
+#: config/entities.php:43
+msgid "Data final das avaliações"
+msgstr ""
+
+#: config/entities.php:50
+msgid "ID usuário"
+msgstr ""
+
+#: config/entities.php:54
+msgid "Data e hora de publicação dos resultados"
+msgstr ""
+
+#: config/entities.php:55
+msgid "Publicar resultado automaticamente"
+msgstr ""
+
+#: config/entities.php:63
+msgid "Data e hora de envio"
+msgstr ""
+
+#: config/entities.php:65
+msgid "Elegível"
+msgstr ""
+
+#: config/entities.php:66
+msgid "Resultado consolidado"
+msgstr ""

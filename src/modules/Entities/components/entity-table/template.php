@@ -147,18 +147,35 @@ $this->import('
                                     <input ref="allHeaders" type="checkbox" @click="showAllHeaders()" :checked="allHeadersActive"> <?= i::__('Todas as colunas') ?>
                                 </label>
 
-                                <template v-for="column in filteredColumns">
-                                    <label
-                                        v-if="column.text"
-                                        class="field__checkbox entity-table__column-row"
-                                        :draggable="showIndex"
-                                        @dragstart="onColumnDragStart($event, column.slug)"
-                                        @dragover.prevent
-                                        @drop="onColumnDrop($event, column.slug)">
-                                        <input :checked="column.visible" type="checkbox" :value="column.slug" @click="toggleHeaders($event)"> {{column.text}}
-                                    </label>
-                                </template>
-                                <small v-if="!filteredColumns.length" class="entity-table__columns-empty">{{ text('nenhuma coluna encontrada') }}</small>
+                                <div
+                                    ref="columnsList"
+                                    class="entity-table__columns-list custom-scrollbar"
+                                    @dragover="onColumnDragOver($event)">
+                                    <template v-for="column in filteredColumns" :key="column.slug">
+                                        <div
+                                            v-if="column.text"
+                                            class="entity-table__column-row"
+                                            :class="{
+                                                'entity-table__column-row--dragging': dragColumnSlug === column.slug,
+                                                'entity-table__column-row--drop-before': dropTargetSlug === column.slug && dropPosition === 'before',
+                                                'entity-table__column-row--drop-after': dropTargetSlug === column.slug && dropPosition === 'after',
+                                            }"
+                                            :draggable="showIndex"
+                                            @dragstart="onColumnDragStart($event, column.slug)"
+                                            @dragover="onColumnDragOver($event, column.slug)"
+                                            @drop="onColumnDrop($event, column.slug)"
+                                            @dragend="onColumnDragEnd()">
+                                            <span v-if="showIndex" class="entity-table__column-handle" aria-hidden="true">
+                                                <mc-icon name="sort"></mc-icon>
+                                            </span>
+                                            <label class="field__checkbox entity-table__column-label">
+                                                <input :checked="column.visible" type="checkbox" :value="column.slug" @mousedown.stop @click="toggleHeaders($event)">
+                                                <span>{{column.text}}</span>
+                                            </label>
+                                        </div>
+                                    </template>
+                                    <small v-if="!filteredColumns.length" class="entity-table__columns-empty">{{ text('nenhuma coluna encontrada') }}</small>
+                                </div>
 
                                 <div v-if="showIndex || canManageColumnsGlobal" class="entity-table__columns-actions">
                                     <small v-if="showIndex" class="entity-table__columns-help"><?= i::__('Arraste para reordenar') ?></small>

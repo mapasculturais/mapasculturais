@@ -22,7 +22,7 @@
         <entity-field v-if="hasProponentType && (preview || !registration.proponentType)" :entity="registration" prop="proponentType"></entity-field><br>
         <entity-field v-if="hasRange && (preview || !registration.range)" :entity="registration" prop="range"></entity-field><br>
     </div>
-    <form v-if="preview || isValid" >
+    <form v-if="step && (preview || isValid)" >
         <mc-card v-for="section in sections" class="registration-form__section">
             <template v-if="section.title" #title>
                 {{section.title}}

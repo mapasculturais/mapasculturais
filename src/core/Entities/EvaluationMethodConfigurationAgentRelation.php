@@ -130,6 +130,7 @@ class EvaluationMethodConfigurationAgentRelation extends AgentRelation {
         $this->metadata->ranges = $this->metadata->ranges ?? null;
         $this->metadata->distribution = $this->metadata->distribution ?? null;
         $this->metadata->selectionFields = $this->metadata->selectionFields ?? null;
+        $this->metadata->filtersStoredOnRelation = $this->metadata->filtersStoredOnRelation ?? false;
         $this->metadata->committeeSequentialNumber = $this->metadata->committeeSequentialNumber ?? null;
 
         return $this->metadata;
@@ -274,6 +275,19 @@ class EvaluationMethodConfigurationAgentRelation extends AgentRelation {
     {
         $this->initializeMetadata();
         $this->metadata->selectionFields = $selection_fields ? (object) $selection_fields : null;
+        $this->metadata = (object) (array) $this->metadata;
+    }
+
+    public function getFiltersStoredOnRelation(): bool
+    {
+        $this->initializeMetadata();
+        return (bool) $this->metadata->filtersStoredOnRelation;
+    }
+
+    public function setFiltersStoredOnRelation(bool $stored): void
+    {
+        $this->initializeMetadata();
+        $this->metadata->filtersStoredOnRelation = $stored;
         $this->metadata = (object) (array) $this->metadata;
     }
 

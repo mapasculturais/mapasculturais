@@ -83,8 +83,8 @@ app.component('opportunity-evaluations-table', {
             }
 
             if(this.avaliableEvaluationFields('agentsSummary')) {
-                itens.splice(2, 0, { text: __('agente', 'opportunity-evaluations-table'), value: "agentsData?.owner?.name", slug: "agent"});
-                itens.splice(2, 0, { text: __('coletivo', 'opportunity-evaluations-table'), value: "agentsData?.coletivo?.name", slug: "coletivo"});
+                itens.splice(2, 0, { text: __('agente', 'opportunity-evaluations-table'), value: "agentsData?.owner?.name", slug: "agent", exportField: "owner.{name}"});
+                itens.splice(2, 0, { text: __('coletivo', 'opportunity-evaluations-table'), value: "agentsData?.coletivo?.name", slug: "coletivo", exportField: "coletivo"});
             }
 
             return itens;
@@ -154,12 +154,21 @@ app.component('opportunity-evaluations-table', {
 
             return null;
         },
+        exportSelect(spreadsheetQuery) {
+            const select = spreadsheetQuery?.['@select'] || '';
+
+            if (/(^|,)evaluationData(,|$)/.test(select)) {
+                return select;
+            }
+
+            return select ? `${select},evaluationData` : 'evaluationData';
+        },
         avaliableEvaluationFields(field) {
             if(this.phase.opportunity.currentUserPermissions['@control']) {
                 return true;
             }
             
-            return this.phase.opportunity.avaliableEvaluationFields[field]
+            return Utils.isEvaluationFieldVisible(this.phase.opportunity.avaliableEvaluationFields, field)
         },
         createUrl(entity) {
             let user = this.user;
