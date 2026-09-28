@@ -6,6 +6,9 @@ O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+### Correções
+- Corrige erro 500 no relatório de oportunidades com avaliação técnica quando havia inscrições sem nota concluída, passando a considerar apenas notas concluídas no gráfico de faixas de nota e na exportação em CSV
+
 ### Novas Funcionalidades
 - Adiciona configuração na oportunidade para ocultar todas as datas das fases na página pública, na linha do tempo de acompanhamento da inscrição e nos avisos de prazo da ficha, mantendo as datas operacionais ativas para validações e gestão interna.
 - **Avaliação automática por selos**: o gestor pode indicar, em uma fase de avaliação, quais selos validam o proponente. Se a pessoa já tiver esses selos válidos no perfil, a inscrição é **dispensada automaticamente** daquela fase (marcada como “Dispensada por selos”) e segue para a próxima etapa, sem precisar de avaliador
