@@ -20043,7 +20043,7 @@ msgid "Justificativa para encerramento do processo:"
 msgstr ""
 
 #: modules/OpportunityAppealPhase/components/opportunity-appeal-phase-config/template.php:26
-msgid "Etapa suplementar"
+msgid "Etapa de recurso"
 msgstr ""
 
 #: modules/OpportunityAppealPhase/components/opportunity-appeal-phase-config/template.php:29
