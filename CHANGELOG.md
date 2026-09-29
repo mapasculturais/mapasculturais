@@ -6,6 +6,9 @@ O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [UNRELEASED]
+### Correções
+- Corrige a exportação da planilha de inscrições: a coluna "Critérios de desempate" saía com cabeçalho mas vazia em todas as linhas; passa a trazer o mesmo texto da tabela de inscrições ("critério: valor"), um critério por linha, com o valor do critério de data de envio formatado como data legível
+
 ### Melhorias
 - Renomeia a seção "Etapa suplementar" para "Etapa de recurso" e padroniza o tamanho do título com as demais seções da configuração de fase de avaliação
 - As seções "Selos certificadores" e "Adicionar textos explicativos das avaliações" passam a carregar recolhidas por padrão na configuração de fases
