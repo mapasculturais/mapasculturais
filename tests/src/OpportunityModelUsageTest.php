@@ -330,6 +330,31 @@ class OpportunityModelUsageTest extends TestCase
         );
     }
 
+    function testLegacyEmptyPhaseMetadataValueIsCopiedAsZero(): void
+    {
+        $owner = $this->userDirector->createUser();
+        $model = $this->markAsModel($this->createOpportunityWithRootAndPhaseConfigurations($owner));
+        $modelPhase = $this->phasesWithConfiguration($model)[0];
+
+        $conn = $this->app->em->getConnection();
+        // UPDATE cru não dispara o auto-flush do Doctrine — flushar antes para a linha existir
+        $this->app->em->flush();
+        $conn->executeStatement(
+            "UPDATE opportunity_meta SET value = '' WHERE object_id = :id AND key = 'isDataCollection'",
+            ['id' => $modelPhase->id]
+        );
+
+        $generated = $this->generateOpportunity($model, $owner->profile->id)->refreshed();
+        $generatedPhase = $this->findPhaseByName($generated, $modelPhase->name);
+
+        $this->assertNotNull($generatedPhase);
+        $this->assertSame('0', $this->phaseMetadataRows($generatedPhase)['isDataCollection'] ?? null);
+        $this->assertSame('', $conn->fetchOne(
+            "SELECT value FROM opportunity_meta WHERE object_id = :id AND key = 'isDataCollection'",
+            ['id' => $modelPhase->id]
+        ));
+    }
+
     private function createModel($owner, bool $isPublic): Opportunity
     {
         $this->login($owner);
