@@ -12,6 +12,7 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - **Novos anexos no cadastro do agente** (também usáveis como campos `@` no formulário de inscrição): CPF, CNPJ, CNH, RG, passaporte, comprovante de residência, vínculo territorial, currículo, portfólio, certidões fiscal, trabalhista e de prestação de contas, além de comprovantes de raça/cor, pessoa com deficiência e comunidades tradicionais. Os arquivos ficam no perfil e acompanham a inscrição automaticamente
 
 ### Correções
+- Resolve marcadores de conflito na exportação da planilha de avaliações que impediam a inicialização do PHP, preservando as colunas de isenção por selos e os campos de inscrição selecionados.
 - Implementa db-update que corrige dados legados das etapas de inscrição dos editais: campos e anexos sem etapa são associados a uma etapa existente (ou a uma nova, quando não houver) e etapas vazias duplicadas são removidas
 - Deixa de exibir o título "Publicação de Resultados" nas fases de coleta de dados e na fase de publicação final do resultado de editais de fluxo contínuo sem data final; nas fases de avaliação, o título e os checkboxes de publicação de pareceres/nomes permanecem
 

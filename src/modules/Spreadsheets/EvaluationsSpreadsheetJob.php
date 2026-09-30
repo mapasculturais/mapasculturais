@@ -180,7 +180,6 @@ abstract class EvaluationsSpreadsheetJob extends SpreadsheetJob
     }
 
     /**
-<<<<<<< HEAD
      * Constrói o cabeçalho das duas colunas de isenção por selos (spec-c49fa0bb §4.4):
      *  - sealExemption (booleana): cabeçalho "Isento", conteúdo Sim/Não.
      *  - sealExemptionLabel (textual): cabeçalho fixo "Dispensada por selos",
@@ -308,7 +307,9 @@ abstract class EvaluationsSpreadsheetJob extends SpreadsheetJob
         $opportunity = $job->owner;
         $emc = $opportunity->evaluationMethodConfiguration ?? null;
         return SealExemptionService::hasActiveConfig($emc?->sealExemptionConfig);
-=======
+    }
+
+    /**
      * Propriedades da inscrição a buscar na API: as que a planilha sempre usa, mais as escolhidas pelo usuário.
      */
     protected function getRegistrationSelect(Job $job): string
@@ -354,7 +355,6 @@ abstract class EvaluationsSpreadsheetJob extends SpreadsheetJob
         $properties[] = trim($current);
 
         return array_values(array_filter($properties, fn ($property) => $property !== ''));
->>>>>>> master
     }
 
     function getSpreadsheetColumnName($index) {
