@@ -1437,4 +1437,119 @@ class OpportunityPhasesTest extends TestCase
         $this->assertSame($stepCountBefore, $stepCountAfter, 'Garantindo que nenhuma etapa órfã permaneça no banco após falha');
     }
 
+    /**
+     * Garante que a fase de recurso agende o job de publicação automática do resultado
+     * (PublishResult) considerando o status da oportunidade raiz, e não apenas o pai imediato.
+     */
+    function testAppealPhaseSchedulesPublishResultJob(): void
+    {
+        $app = App::i();
+        $admin = $this->userDirector->createUser('admin');
+        $this->login($admin);
+
+        // Caso 1: fase de recurso pendurada direto no edital publicado (o bug) — o job deve ser agendado
+        $opportunity = $this->opportunityBuilder
+            ->reset(owner: $admin->profile, owner_entity: $admin->profile)
+            ->fillRequiredProperties()
+            ->firstPhase()
+                ->setRegistrationPeriod(new Open)
+                ->done()
+            ->save()
+            ->refresh()
+            ->getInstance();
+
+        $this->assertEquals(Opportunity::STATUS_ENABLED, $opportunity->status, 'Garantindo que o edital raiz do caso 1 esteja publicado');
+
+        $appeal = $this->createAppealPhaseForSchedulingTest($opportunity);
+
+        $job = $app->repo('Job')->findOneBy(['id' => md5('PublishResult:PublishResult:' . $appeal->id)]);
+        $this->assertNotNull($job, 'Garantindo que a fase de recurso pendurada direto no edital publicado agende o job de publicação do resultado');
+        $this->assertEquals(
+            $appeal->publishTimestamp->format('Y-m-d H:i:s'),
+            $job->nextExecutionTimestamp->format('Y-m-d H:i:s'),
+            'Garantindo que o job de publicação do resultado do caso 1 seja agendado para a data de publicação configurada'
+        );
+
+        // Caso 2: fase de recurso pendurada em fase de avaliação intermediária — o job deve continuar sendo agendado
+        // (a oportunidade-fase com status STATUS_PHASE só é materializada a partir da segunda fase de avaliação)
+        $opportunity = $this->opportunityBuilder
+            ->reset(owner: $admin->profile, owner_entity: $admin->profile)
+            ->fillRequiredProperties()
+            ->firstPhase()
+                ->setRegistrationPeriod(new Open)
+                ->done()
+            ->save()
+            ->addEvaluationPhase(EvaluationMethods::simple)
+                ->setEvaluationPeriod(new ConcurrentEndingAfter)
+                ->save()
+                ->done()
+            ->addEvaluationPhase(EvaluationMethods::simple)
+                ->setEvaluationPeriod(new ConcurrentEndingAfter)
+                ->save()
+                ->done()
+            ->refresh()
+            ->getInstance();
+
+        $eval_phases = array_values(array_filter(
+            $opportunity->allPhases,
+            fn (Opportunity $phase) => $phase->evaluationMethodConfiguration !== null
+        ));
+        $this->assertCount(2, $eval_phases, 'Garantindo que existam 2 fases de avaliação no caso 2');
+
+        $eval_opp = $eval_phases[1]->evaluationMethodConfiguration->opportunity;
+        $this->assertEquals(Opportunity::STATUS_PHASE, $eval_opp->status, 'Garantindo que a fase de avaliação intermediária do caso 2 tenha status de fase');
+
+        $appeal = $this->createAppealPhaseForSchedulingTest($eval_opp);
+
+        $job = $app->repo('Job')->findOneBy(['id' => md5('PublishResult:PublishResult:' . $appeal->id)]);
+        $this->assertNotNull($job, 'Garantindo que a fase de recurso pendurada em fase de avaliação intermediária agende o job de publicação do resultado');
+        $this->assertEquals(
+            $appeal->publishTimestamp->format('Y-m-d H:i:s'),
+            $job->nextExecutionTimestamp->format('Y-m-d H:i:s'),
+            'Garantindo que o job de publicação do resultado do caso 2 seja agendado para a data de publicação configurada'
+        );
+
+        // Caso 3: edital raiz em rascunho — nenhum job deve ser agendado
+        $opportunity = $this->opportunityBuilder
+            ->reset(owner: $admin->profile, owner_entity: $admin->profile, status: Opportunity::STATUS_DRAFT)
+            ->fillRequiredProperties()
+            ->firstPhase()
+                ->setRegistrationPeriod(new Open)
+                ->done()
+            ->save()
+            ->refresh()
+            ->getInstance();
+
+        $this->assertEquals(Opportunity::STATUS_DRAFT, $opportunity->status, 'Garantindo que o edital raiz do caso 3 esteja em rascunho');
+
+        $appeal = $this->createAppealPhaseForSchedulingTest($opportunity);
+
+        $job = $app->repo('Job')->findOneBy(['id' => md5('PublishResult:PublishResult:' . $appeal->id)]);
+        $this->assertNull($job, 'Garantindo que a fase de recurso de edital em rascunho não agende o job de publicação do resultado');
+    }
+
+    /**
+     * Cria e salva uma fase de recurso pendurada em $parent, com publicação automática
+     * configurada para amanhã (save:finish dispara scheduleJobs).
+     */
+    protected function createAppealPhaseForSchedulingTest(Opportunity $parent): Opportunity
+    {
+        $class_name = $parent->getSpecializedClassName();
+        $appeal = new $class_name();
+        $appeal->parent = $parent;
+        $appeal->status = Opportunity::STATUS_APPEAL_PHASE;
+        $appeal->name = 'Recurso teste';
+        $appeal->ownerEntity = $parent->ownerEntity;
+        $appeal->registrationCategories = $parent->registrationCategories;
+        $appeal->registrationRanges = $parent->registrationRanges;
+        $appeal->registrationProponentTypes = $parent->registrationProponentTypes;
+        $appeal->isDataCollection = true;
+        $appeal->isAppealPhase = true;
+        $appeal->autoPublish = true;
+        $appeal->publishTimestamp = new \DateTime('tomorrow');
+        // save:finish dispara scheduleJobs — salvar DEPOIS de setar tudo
+        $appeal->save(true);
+
+        return $appeal;
+    }
 }
