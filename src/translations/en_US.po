@@ -20914,8 +20914,8 @@ msgid "Justificativa para encerramento do processo:"
 msgstr "Justification for closing the process:"
 
 #: modules/OpportunityAppealPhase/components/opportunity-appeal-phase-config/template.php:26
-msgid "Etapa suplementar"
-msgstr "Supplementary stage"
+msgid "Etapa de recurso"
+msgstr "Appeal stage"
 
 #: modules/OpportunityAppealPhase/components/opportunity-appeal-phase-config/template.php:29
 msgid "Adicionar recurso"
