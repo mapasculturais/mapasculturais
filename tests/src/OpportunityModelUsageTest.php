@@ -277,6 +277,59 @@ class OpportunityModelUsageTest extends TestCase
         $this->assertCount(1, $phasesWithConfiguration);
     }
 
+    function testGeneratedOpportunityPreservesPhaseIdentityMetadata(): void
+    {
+        $owner = $this->userDirector->createUser();
+        $model = $this->markAsModel($this->createOpportunityWithRootAndPhaseConfigurations($owner));
+        $modelPhase = $this->phasesWithConfiguration($model)[0];
+
+        $this->assertSame('1', $this->phaseMetadataRows($modelPhase)['isOpportunityPhase'] ?? null);
+        $this->assertSame('0', $this->phaseMetadataRows($modelPhase)['isDataCollection'] ?? null);
+
+        $generated = $this->generateOpportunity($model, $owner->profile->id)->refreshed();
+        $generatedPhase = $this->findPhaseByName($generated, $modelPhase->name);
+
+        $this->assertNotNull($generatedPhase);
+        $this->assertSame(
+            $this->phaseMetadataRows($modelPhase),
+            $this->phaseMetadataRows($generatedPhase)
+        );
+    }
+
+    function testModelGeneratedFromOpportunityKeepsConfigurationOnItsPhase(): void
+    {
+        $owner = $this->userDirector->createUser();
+        $source = $this->createOpportunityWithEvaluationPhase($owner);
+        $sourcePhase = $this->phasesWithConfiguration($source)[0];
+
+        $model = $this->generateModelFromOpportunity($source, 'Modelo fiel ' . uniqid('', true));
+        $modelPhasesWithConfiguration = $this->phasesWithConfiguration($model);
+
+        $this->assertNull($this->configurationOf($model));
+        $this->assertCount(1, $modelPhasesWithConfiguration);
+        $this->assertSame(
+            $this->phaseMetadataRows($sourcePhase),
+            $this->phaseMetadataRows($modelPhasesWithConfiguration[0])
+        );
+    }
+
+    function testSecondGenerationCopyPreservesPhaseIdentityMetadata(): void
+    {
+        $owner = $this->userDirector->createUser();
+        $source = $this->createOpportunityWithRootAndPhaseConfigurations($owner);
+        $sourcePhase = $this->phasesWithConfiguration($source)[0];
+
+        $model = $this->generateModelFromOpportunity($source, 'Modelo em cadeia ' . uniqid('', true));
+        $generated = $this->generateOpportunity($model, $owner->profile->id)->refreshed();
+        $generatedPhase = $this->findPhaseByName($generated, $sourcePhase->name);
+
+        $this->assertNotNull($generatedPhase);
+        $this->assertSame(
+            $this->phaseMetadataRows($sourcePhase),
+            $this->phaseMetadataRows($generatedPhase)
+        );
+    }
+
     private function createModel($owner, bool $isPublic): Opportunity
     {
         $this->login($owner);
@@ -421,6 +474,23 @@ class OpportunityModelUsageTest extends TestCase
             $children,
             fn(Opportunity $phase) => $this->configurationOf($phase)
         ));
+    }
+
+    /** Linhas reais de opportunity_meta da fase, como chave => valor ordenado; booleanos normalizados como o banco grava. */
+    private function phaseMetadataRows(Opportunity $phase): array
+    {
+        $rows = [];
+        foreach ($this->app->repo('OpportunityMeta')->findBy(['owner' => $phase]) as $meta) {
+            $rows[$meta->key] = is_bool($meta->value) ? ($meta->value ? '1' : '0') : $meta->value;
+        }
+        ksort($rows);
+
+        return $rows;
+    }
+
+    private function findPhaseByName(Opportunity $opportunity, string $name): ?Opportunity
+    {
+        return $this->app->repo('Opportunity')->findOneBy(['parent' => $opportunity, 'name' => $name]);
     }
 
     private function countDataCollectionPhases(Opportunity $opportunity): int
