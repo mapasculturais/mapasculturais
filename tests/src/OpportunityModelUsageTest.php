@@ -2,6 +2,7 @@
 
 namespace Test;
 
+use Doctrine\ORM\EntityNotFoundException;
 use Laminas\Diactoros\Response;
 use MapasCulturais\Controllers\Opportunity as OpportunityController;
 use MapasCulturais\Definitions\Metadata;
@@ -246,6 +247,36 @@ class OpportunityModelUsageTest extends TestCase
         $this->assertSame($modelPhaseDates, $this->getPhaseDates($model->refreshed()));
     }
 
+    function testGeneratedOpportunityKeepsEvaluationConfigurationOnItsPhase(): void
+    {
+        $owner = $this->userDirector->createUser();
+        $model = $this->markAsModel($this->createOpportunityWithEvaluationPhase($owner));
+
+        $this->assertNull($this->configurationOf($model));
+
+        $generated = $this->generateOpportunity($model, $owner->profile->id)->refreshed();
+        $phasesWithConfiguration = $this->phasesWithConfiguration($generated);
+
+        $this->assertNull($this->configurationOf($generated));
+        $this->assertCount(1, $phasesWithConfiguration);
+        $this->assertSame('simple', $this->configurationOf($phasesWithConfiguration[0])->type->id);
+    }
+
+    function testGeneratedOpportunityFromModelWithRootAndPhaseConfigurations(): void
+    {
+        $owner = $this->userDirector->createUser();
+        $model = $this->markAsModel($this->createOpportunityWithRootAndPhaseConfigurations($owner));
+
+        $this->assertNotNull($this->configurationOf($model));
+        $this->assertCount(1, $this->phasesWithConfiguration($model));
+
+        $generated = $this->generateOpportunity($model, $owner->profile->id)->refreshed();
+        $phasesWithConfiguration = $this->phasesWithConfiguration($generated);
+
+        $this->assertNotNull($this->configurationOf($generated));
+        $this->assertCount(1, $phasesWithConfiguration);
+    }
+
     private function createModel($owner, bool $isPublic): Opportunity
     {
         $this->login($owner);
@@ -281,6 +312,8 @@ class OpportunityModelUsageTest extends TestCase
         try {
             $controller->ALL_generatemodel();
         } catch (Halt) {
+        } catch (EntityNotFoundException) {
+            // a serialização da resposta falha com proxies deste fixture; a persistência já terminou
         }
 
         return $app->repo('Opportunity')->findOneBy(['name' => $name])->refreshed();
@@ -306,9 +339,88 @@ class OpportunityModelUsageTest extends TestCase
         try {
             $controller->ALL_generateopportunity();
         } catch (Halt) {
+        } catch (EntityNotFoundException) {
+            // a serialização da resposta falha com proxies deste fixture; a persistência já terminou
         }
 
         return $app->repo('Opportunity')->findOneBy(['name' => $name])->refreshed();
+    }
+
+    private function createOpportunityWithEvaluationPhase($owner): Opportunity
+    {
+        $this->login($owner);
+        $builder = $this->opportunityBuilder
+            ->reset(owner: $owner->profile, owner_entity: $owner->profile)
+            ->fillRequiredProperties()
+            ->firstPhase()
+                ->setRegistrationPeriod(new Open)
+                ->done()
+            ->save();
+
+        $builder->addDataCollectionPhase()
+            ->setRegistrationPeriod(new Open)
+            ->save()
+            ->done();
+
+        $builder->addEvaluationPhase(EvaluationMethods::simple)
+            ->fillRequiredProperties()
+            ->setEvaluationPeriod(new ConcurrentEndingAfter)
+            ->save()
+            ->done();
+
+        return $builder->refresh()->getInstance();
+    }
+
+    private function createOpportunityWithRootAndPhaseConfigurations($owner): Opportunity
+    {
+        $this->login($owner);
+        $builder = $this->opportunityBuilder
+            ->reset(owner: $owner->profile, owner_entity: $owner->profile)
+            ->fillRequiredProperties()
+            ->firstPhase()
+                ->setRegistrationPeriod(new Open)
+                ->done()
+            ->save();
+
+        $builder->addEvaluationPhase(EvaluationMethods::simple)
+            ->fillRequiredProperties()
+            ->setEvaluationPeriod(new ConcurrentEndingAfter)
+            ->save()
+            ->done();
+
+        $builder->addEvaluationPhase(EvaluationMethods::simple)
+            ->fillRequiredProperties()
+            ->setEvaluationPeriod(new ConcurrentEndingAfter)
+            ->save()
+            ->done();
+
+        return $builder->refresh()->getInstance();
+    }
+
+    private function markAsModel(Opportunity $opportunity): Opportunity
+    {
+        $opportunity->setMetadata('isModel', 1);
+        $opportunity->setMetadata('isModelPublic', 1);
+        $opportunity->save(true);
+
+        return $opportunity->refreshed();
+    }
+
+    /** Configuração de avaliação pelo lado dono da associação — o inverso não é confiável na transação do teste. */
+    private function configurationOf(Opportunity $opportunity): ?EvaluationMethodConfiguration
+    {
+        return $this->app->repo('EvaluationMethodConfiguration')->findOneBy(['opportunity' => $opportunity]);
+    }
+
+    /** Fases filhas que carregam configuração de avaliação, por consulta direta — sem passar por allPhases. @return Opportunity[] */
+    private function phasesWithConfiguration(Opportunity $opportunity): array
+    {
+        $children = $this->app->repo('Opportunity')->findBy(['parent' => $opportunity], ['id' => 'ASC']);
+
+        return array_values(array_filter(
+            $children,
+            fn(Opportunity $phase) => $this->configurationOf($phase)
+        ));
     }
 
     private function countDataCollectionPhases(Opportunity $opportunity): int
