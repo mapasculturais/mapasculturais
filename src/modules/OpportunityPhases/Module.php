@@ -1895,6 +1895,11 @@ class Module extends \MapasCulturais\Module{
          * é criada para "abrigar" a fase de avaliaçao.
          */
         $app->hook('entity(EvaluationMethodConfiguration).insert:before', function () {
+            // configuração criada já apontando para uma fase é intenção explícita — não redirecionar
+            if ($this->opportunity && $this->opportunity->parent !== null) {
+                return;
+            }
+
             $phase = null;
             $phases = $this->opportunity->allPhases;
 
