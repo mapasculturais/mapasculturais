@@ -123,9 +123,9 @@ class Entity {
                 val.lng = val.lng ?? 0;
             }
 
-            if(prop == 'type' && (typeof val == 'number')) {
+            if(prop == 'type' && (typeof val == 'number' || (typeof val == 'string' && val !== '' && !isNaN(val)))) {
                 val = {
-                    id: val, 
+                    id: Number(val),
                     name: __properties['type']?.options?.[val]
                 };
             }
@@ -309,7 +309,7 @@ class Entity {
             
             if (val && (typeof val == 'object')) {
                 if (prop == 'type') {
-                    val = val.id;
+                    result[prop] = val.id;
                 } else if (definition.type != 'entity') {
                     result[prop] = JSON.parse(JSON.stringify(val));
                 }

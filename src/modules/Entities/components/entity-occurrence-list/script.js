@@ -35,7 +35,8 @@ app.component('entity-occurrence-list', {
 
     computed: {
         eventType() {
-            return this.entity.type?.id || this.entity._type || 1;
+            const type = this.entity.type?.id ?? this.entity.type ?? this.entity._type ?? 1;
+            return Number(type) || 1;
         },
         showInPersonButton() {
             return this.eventType === 1 || this.eventType === 2;
