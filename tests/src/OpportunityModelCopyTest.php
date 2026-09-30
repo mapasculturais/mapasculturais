@@ -236,6 +236,57 @@ class OpportunityModelCopyTest extends TestCase
         $this->assertNotSame($modelControllerField->fieldName, $generatedConditionalField->conditionalField);
     }
 
+    function testEvaluationConfigurationMetadataCopyAddsRegisteredDefaults(): void
+    {
+        $admin = $this->userDirector->createUser('admin');
+        $this->login($admin);
+
+        $source = $this->createSourceOpportunityWithEvaluationPhase($admin);
+        $sourceConfiguration = $this->configurationOfSomePhase($source);
+
+        $model = $this->generateModelFrom($source, 'Modelo emc meta ' . uniqid('', true));
+        $modelConfiguration = $this->configurationOfSomePhase($model);
+
+        $this->assertSame([], $this->configurationMetadataRows($sourceConfiguration->id));
+        $this->assertSame(
+            ['autoApplicationAllowed' => '', 'distributionConfiguration' => 'hourly', 'showExternalReviews' => ''],
+            $this->configurationMetadataRows($modelConfiguration->id)
+        );
+    }
+
+    function testEvaluationCommitteeRelationsAreNotCopied(): void
+    {
+        $admin = $this->userDirector->createUser('admin');
+        $this->login($admin);
+
+        $builder = $this->opportunityBuilder
+            ->reset(owner: $admin->profile, owner_entity: $admin->profile)
+            ->fillRequiredProperties()
+            ->firstPhase()
+                ->setRegistrationPeriod(new Open)
+                ->done()
+            ->save();
+
+        $builder->addEvaluationPhase(EvaluationMethods::simple)
+            ->fillRequiredProperties()
+            ->setEvaluationPeriod(new ConcurrentEndingAfter)
+            ->setCommitteeValuersPerRegistration('comite um', 1)
+            ->save()
+            ->addValuers(2, 'comite um')
+            ->done();
+
+        $source = $builder->refresh()->getInstance();
+        $sourceConfiguration = $this->configurationOfSomePhase($source) ?? $this->rootConfigurationOf($source);
+
+        $this->assertNotEmpty($sourceConfiguration->getAgentRelations());
+
+        $model = $this->generateModelFrom($source, 'Modelo comite ' . uniqid('', true));
+        $modelConfiguration = $this->configurationOfSomePhase($model) ?? $this->rootConfigurationOf($model);
+
+        $this->assertNotNull($modelConfiguration);
+        $this->assertSame([], $modelConfiguration->getAgentRelations());
+    }
+
     function testContinuousFlowFlagsAreCopied(): void
     {
         $admin = $this->userDirector->createUser('admin');
@@ -255,6 +306,50 @@ class OpportunityModelCopyTest extends TestCase
         }
     }
 
+    function testAppealPhaseReferenceOnModelPointsToSourcePhase(): void
+    {
+        $app = $this->app;
+        $admin = $this->userDirector->createUser('admin');
+        $this->login($admin);
+
+        $source = $this->createSourceOpportunityWithEvaluationPhase($admin);
+        $sourceId = $source->id;
+
+        $app->request = $this->requestFactory->mapasPOST('opportunity', 'createAppealPhase', [$sourceId], ['id' => $sourceId]);
+        $app->response = new Response();
+
+        /** @var OpportunityController $controller */
+        $controller = $app->controller('opportunity');
+        $controller->setRequestData(['id' => $sourceId]);
+
+        try {
+            $controller->callAction('POST', 'createAppealPhase', []);
+        } catch (Halt) {
+        }
+
+        $app->em->clear();
+        $source = $app->repo('Opportunity')->find($sourceId);
+        $sourceAppealPhase = $source->appealPhase;
+        $this->assertNotNull($sourceAppealPhase);
+
+        $this->login($app->repo('User')->find($admin->id));
+        $model = $this->generateModelFrom($source, 'Modelo com recurso ' . uniqid('', true));
+
+        $copiedAppealPhases = array_values(array_filter(
+            $this->app->repo('Opportunity')->findBy(['parent' => $model]),
+            fn(Opportunity $phase) => (bool) $phase->isAppealPhase
+        ));
+
+        $this->assertCount(1, $copiedAppealPhases);
+        $this->assertSame(
+            'MapasCulturais\\Entities\\Opportunity:' . $sourceAppealPhase->id,
+            (string) $this->app->em->getConnection()->fetchOne(
+                "SELECT value FROM opportunity_meta WHERE object_id = :id AND key = 'appealPhase'",
+                ['id' => $model->id]
+            )
+        );
+    }
+
     private function lastPhaseOf(Opportunity $opportunity): Opportunity
     {
         return $this->allLastPhasesOf($opportunity)[0];
@@ -267,6 +362,33 @@ class OpportunityModelCopyTest extends TestCase
             $this->app->repo('Opportunity')->findBy(['parent' => $opportunity], ['id' => 'ASC']),
             fn(Opportunity $phase) => (bool) $phase->getMetadata('isLastPhase')
         ));
+    }
+
+    private function configurationOfSomePhase(Opportunity $opportunity)
+    {
+        foreach ($this->app->repo('Opportunity')->findBy(['parent' => $opportunity], ['id' => 'ASC']) as $phase) {
+            if ($configuration = $this->app->repo('EvaluationMethodConfiguration')->findOneBy(['opportunity' => $phase])) {
+                return $configuration;
+            }
+        }
+
+        return null;
+    }
+
+    private function rootConfigurationOf(Opportunity $opportunity)
+    {
+        return $this->app->repo('EvaluationMethodConfiguration')->findOneBy(['opportunity' => $opportunity]);
+    }
+
+    private function configurationMetadataRows(int $configurationId): array
+    {
+        $rows = $this->app->em->getConnection()->fetchAllKeyValue(
+            'SELECT emcm.key, emcm.value FROM evaluationmethodconfiguration_meta emcm WHERE emcm.object_id = :id',
+            ['id' => $configurationId]
+        );
+        ksort($rows);
+
+        return $rows;
     }
 
     private function countEmptySteps(Opportunity $opportunity): int
