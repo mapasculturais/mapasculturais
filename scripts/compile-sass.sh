@@ -24,6 +24,9 @@ ASSETS_FOLDER=$(MAPASCULTURAIS_CONFIG_FILE=$CONFIG HTTP_HOST=$DOMAIN REQUEST_MET
 echo "compilando main.css do tema BaseV1"
 sass $BaseV1/css/sass/main.scss:$BaseV1/css/main.css --quiet
 
+echo "compilando theme-BaseV2.css do tema BaseV2"
+sass $DIR/src/themes/BaseV2/assets-src/sass/theme-BaseV2.scss:$DIR/src/themes/BaseV2/assets/css/theme-BaseV2.css --quiet
+
 #echo "aplicando o autoprefixer no main.css do tema BaseV1"
 #autoprefixer-cli $BaseV1/css/main.css
 
