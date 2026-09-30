@@ -7,6 +7,7 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ## [UNRELEASED]
 ### Correções
+- Corrige o agendamento da publicação automática do resultado na fase de recurso: quando a fase de recurso é criada diretamente no edital publicado, o job de publicação do resultado deixava de ser agendado e o resultado nunca era divulgado automaticamente; o gate de agendamento passa a considerar o status da oportunidade raiz (edital publicado) em vez do pai imediato
 - Corrige a exportação da planilha de inscrições: a coluna "Critérios de desempate" saía com cabeçalho mas vazia em todas as linhas; passa a trazer o mesmo texto da tabela de inscrições ("critério: valor"), um critério por linha, com o valor do critério de data de envio formatado como data legível
 - Corrige o layout das opções do campo "Tipo" na configuração de bônus de pontuação (avaliação técnica), que ficavam em linha única e estouravam a borda do card; as opções passam a quebrar linha dentro do card
 
