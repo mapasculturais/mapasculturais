@@ -25805,8 +25805,8 @@ msgid "Justificativa para encerramento do processo:"
 msgstr "Justificación del cierre del proceso:"
 
 #: mapa/mapasculturais/src/modules/OpportunityAppealPhase/components/opportunity-appeal-phase-config/template.php:26
-msgid "Etapa suplementar"
-msgstr "Etapa adicional"
+msgid "Etapa de recurso"
+msgstr "Etapa de recurso"
 
 #: mapa/mapasculturais/src/modules/OpportunityAppealPhase/components/opportunity-appeal-phase-config/template.php:29
 msgid "Adicionar recurso"
