@@ -86,7 +86,7 @@ $this->import('
                 </small>
             </div>
 
-            <div :class="['col-6', 'sm:col-12', 'create-occurrence__section', {'active' : step==1}]">
+            <div :class="['col-12', 'create-occurrence__section', {'active' : step==1}]">
                 <span class="create-occurrence__section--title"> <?= i::_e('Qual a frequência do evento?') ?> </span>
 
                 <div class="create-occurrence__section--fields">
