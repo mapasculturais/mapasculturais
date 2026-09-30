@@ -7,6 +7,7 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ## [UNRELEASED]
 ### Correções
+- O seletor de datas (`mc-datepicker`) passa a usar o idioma da instalação (`$MAPAS.config.locale`) em vez de ficar sempre em pt-BR, e os nomes dos dias da semana deixam de ser fixos em português
 - Corrige a exportação da planilha de inscrições: a coluna "Critérios de desempate" saía com cabeçalho mas vazia em todas as linhas; passa a trazer o mesmo texto da tabela de inscrições ("critério: valor"), um critério por linha, com o valor do critério de data de envio formatado como data legível
 
 ### Melhorias
