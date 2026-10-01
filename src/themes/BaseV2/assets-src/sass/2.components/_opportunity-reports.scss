@@ -59,8 +59,10 @@
     &__header {
         align-items: flex-start;
         display: flex;
-        justify-content: space-between;
+        gap: size(16);
+        justify-content: flex-start;
         margin-bottom: size(16);
+        width: 100%;
     }
 
     &__title {
