@@ -316,6 +316,93 @@ class ReportsProponentTypeRangeFilterTest extends TestCase
         );
     }
 
+    function testDynamicChartsPreserveTypeAndDataAcrossPreviewSaveAndEdit()
+    {
+        $opportunity = $this->createOpportunityWithProponentTypesAndRanges();
+        $this->registrationDirector->createSentRegistrations(
+            $opportunity, number_of_registrations: 2,
+            proponent_type: ProponentTypes::PESSOA_FISICA->value, range: 'Faixa A'
+        );
+        $this->registrationDirector->createSentRegistrations(
+            $opportunity, number_of_registrations: 1,
+            proponent_type: ProponentTypes::MEI->value, range: 'Faixa B'
+        );
+
+        $query = ['opportunity_id' => $opportunity->id, 'status' => 'send'];
+        $fields = $this->callReportsEndpoint('GET', 'reportFields', $query);
+        $fields = array_column($fields, null, 'value');
+        $savedIds = [];
+
+        foreach (['pie', 'line', 'bar', 'horizontalBar', 'table'] as $type) {
+            $columns = [$fields['proponent_type']];
+            if (in_array($type, ['bar', 'horizontalBar', 'table'])) {
+                $columns[] = $fields['range'];
+            }
+            $definition = array_merge($query, [
+                'typeGraphic' => $type,
+                'columns' => $columns,
+                'title' => "Visualização {$type}",
+                'description' => 'Inscrições por tipo de proponente',
+                'fields' => implode(' x ', array_column($columns, 'label')),
+                'groupData' => false,
+            ]);
+
+            $preview = $this->callReportsEndpoint('GET', 'graphicPreview', array_merge($query, [
+                'reportData' => json_encode($definition),
+            ]));
+            $this->assertDynamicChartData($preview, $type);
+
+            $saved = $this->callReportsEndpoint('POST', 'saveGraphic', payload: $definition);
+            $this->assertFalse($saved['error']);
+            $savedIds[] = $saved['graphicId'];
+            $graphics = $this->callReportsEndpoint('GET', 'graphics', $query);
+            $matches = array_values(array_filter($graphics, fn ($graphic) => $graphic['reportData']['graphicId'] == $saved['graphicId']));
+            $this->assertCount(1, $matches);
+            $graphic = $matches[0];
+
+            foreach (['typeGraphic', 'title', 'description', 'columns', 'groupData'] as $key) {
+                $this->assertSame($definition[$key], $graphic['reportData'][$key], "{$key} deve ser preservado para renderização e edição");
+            }
+            $this->assertDynamicChartData($graphic['data'], $type);
+        }
+        $this->assertCount(5, array_unique($savedIds));
+
+        // Editar o tipo mantém a identidade do gráfico e a nova seleção após recarregar.
+        $definition['graphicId'] = $savedIds[0];
+        $definition['typeGraphic'] = 'horizontalBar';
+        $definition['title'] = 'Pizza convertida em barras';
+        $edited = $this->callReportsEndpoint('POST', 'saveGraphic', payload: $definition);
+        $this->assertEquals($savedIds[0], $edited['graphicId']);
+        $graphics = $this->callReportsEndpoint('GET', 'graphics', $query);
+        $this->assertCount(5, $graphics);
+        $matches = array_values(array_filter($graphics, fn ($graphic) => $graphic['reportData']['graphicId'] == $savedIds[0]));
+        $this->assertSame('horizontalBar', $matches[0]['reportData']['typeGraphic']);
+        $this->assertSame($definition['title'], $matches[0]['reportData']['title']);
+        $this->assertDynamicChartData($matches[0]['data'], 'horizontalBar');
+    }
+
+    private function assertDynamicChartData(array $chart, string $type): void
+    {
+        $this->assertNotEmpty($chart['labels']);
+        if ($type === 'pie') {
+            $this->assertEquals(3, array_sum($chart['data']));
+            return;
+        }
+
+        $this->assertCount(2, $chart['datasets']);
+        $total = 0;
+        foreach ($chart['datasets'] as $dataset) {
+            $this->assertNotEmpty($dataset['label']);
+            $this->assertCount(count($chart['labels']), $dataset['data']);
+            $this->assertNotEmpty($dataset['backgroundColor']);
+            $this->assertSame($dataset['backgroundColor'], $dataset['borderColor']);
+            // O componente Vue escolhe o tipo; horizontalBar e table não são tipos de dataset no Chart.js 4.
+            $this->assertArrayNotHasKey('type', $dataset);
+            $total += array_sum($dataset['data']);
+        }
+        $this->assertEquals(3, $total);
+    }
+
     // =================== POST /reports/saveGraphic (regressão do bug de dedupe) ===================
 
     function testSaveGraphicDoesNotCollideBetweenDifferentOpportunities()

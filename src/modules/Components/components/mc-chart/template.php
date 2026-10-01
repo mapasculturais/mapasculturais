@@ -20,5 +20,5 @@
             </tr>
         </tbody>
     </table>
-    <component v-else :is="chartComponent" :data="chartData" :options="chartOptions" />
+    <component v-else :is="chartComponent" :key="type" :data="chartData" :options="chartOptions" />
 </div>

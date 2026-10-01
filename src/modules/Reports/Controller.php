@@ -655,10 +655,12 @@ class Controller extends \MapasCulturais\Controller
         $return = [];
         $metalists = $app->repo("MetaList")->findBy(['objectId' => $opp->id, "group" => "reports"]);
         foreach ($metalists as $metalist) {
-            $value = json_decode($metalist->value, true);
-            $value['reportData']['graphicId'] = $metalist->id;
-            $value['data'] = $this->getData($value, $opp, $status, $proponentTypes, $ranges);
-            $return[] = $value;
+            $reportData = json_decode($metalist->value, true);
+            $reportData['graphicId'] = $metalist->id;
+            $return[] = [
+                'reportData' => $reportData,
+                'data' => $this->formatChartData($this->getData($reportData, $opp, $status, $proponentTypes, $ranges)),
+            ];
         }
 
         $this->apiResponse($return);
@@ -679,7 +681,30 @@ class Controller extends \MapasCulturais\Controller
         $ranges = $this->getRequestRanges();
         $reportData = json_decode($request['reportData'], true);
 
-        $this->apiResponse($this->getData($reportData, $opp, $status, $proponentTypes, $ranges));
+        $this->apiResponse($this->formatChartData($this->getData($reportData, $opp, $status, $proponentTypes, $ranges)));
+    }
+
+    /**
+     * Adapta as séries legadas para o Chart.js dos componentes Vue, tanto
+     * na prévia quanto nos gráficos salvos. O tipo é definido pelo mc-chart:
+     * horizontalBar e table não são tipos de dataset no Chart.js atual.
+     */
+    private function formatChartData(array $data): array
+    {
+        if (!isset($data['series'])) {
+            return $data;
+        }
+
+        return [
+            'labels' => $data['labels'],
+            'datasets' => array_map(fn ($series) => [
+                'label' => $series['label'],
+                'data' => $series['data'],
+                'backgroundColor' => $series['colors'],
+                'borderColor' => $series['colors'],
+                'fill' => $series['fill'],
+            ], $data['series']),
+        ];
     }
 
     /**
