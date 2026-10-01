@@ -158,8 +158,53 @@ class Module extends \MapasCulturais\Module {
         return file_put_contents($file, $content) !== false;
     }
 
+    /**
+     * Envia e-mail de confirmação de exclusão (parcial ou permanente) ao titular da conta.
+     */
+    public static function sendAccountDeletionConfirmationMail(User $user, string $template): void
+    {
+        $app = App::i();
+        $email = trim($user->email ?? '');
+
+        if (!$email || !filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            return;
+        }
+
+        $profile = $user->profile;
+        $params = [
+            'siteName' => $app->siteName,
+            'userName' => $profile ? $profile->name : $email,
+            'userEmail' => $email,
+            'userId' => $user->id,
+        ];
+
+        try {
+            $rendered = $app->renderMailerTemplate($template, $params);
+            $app->createAndSendMailMessage([
+                'from' => $app->config['mailer.from'],
+                'to' => $email,
+                'subject' => sprintf('%s - %s', $app->siteName, $rendered['title']),
+                'body' => $rendered['body'],
+            ]);
+        } catch (\Throwable $e) {
+            $app->log->error('account deletion confirmation mail failed: ' . $e->getMessage());
+        }
+    }
+
     function _init() {
         $app = App::i();
+
+        // Exclusão parcial (soft delete / "Excluir" na gestão de usuários)
+        $app->hook('entity(User).delete:after', function () {
+            /** @var User $this */
+            Module::sendAccountDeletionConfirmationMail($this, 'account_deletion_partial');
+        });
+
+        // Exclusão permanente ("Excluir permanentemente")
+        $app->hook('entity(User).destroy:after', function () {
+            /** @var User $this */
+            Module::sendAccountDeletionConfirmationMail($this, 'account_deletion_permanent');
+        });
 
         $app->hook('mapas.printJsObject:before', function () {
             $this->jsObject['EntitiesDescription']['system-role'] = Entities\SystemRole::getPropertiesMetadata();
@@ -494,7 +539,9 @@ class Module extends \MapasCulturais\Module {
                 'userName' => $profile ? $profile->name : $user->email,
                 'userEmail' => $user->email,
                 'userId' => $user->id,
-                'message' => nl2br(htmlspecialchars($message, ENT_QUOTES, 'UTF-8')),
+                // htmlspecialchars + nl2br: o template usa {{{message}}} (sem escape Mustache)
+                // para que as quebras de linha renderizem como HTML no e-mail.
+                'message' => nl2br(htmlspecialchars($message, ENT_QUOTES, 'UTF-8'), false),
             ];
 
             $rendered = $app->renderMailerTemplate('request_account_deletion', $params);

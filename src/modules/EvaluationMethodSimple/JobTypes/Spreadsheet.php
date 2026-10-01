@@ -25,23 +25,13 @@ class Spreadsheet extends EvaluationsSpreadsheetJob
     }
 
     protected function _getEvaluationResultHeader(Job $job, $properties, $column_prefixes) : array {
-        $entity_class_name = $job->entityClassName;
-
         $sub_header = [];
-        foreach($properties as $property) {
-            if (in_array($property, ['result', 'status', 'evaluationData'])) {
-                if($property === 'evaluationData') {
-                    $sub_header['obs'] = i::__('Observações');
-                    continue;
-                }
-                
-                if($property === 'result') {
-                    $sub_header[$property] = i::__('Resultado do avaliador');
-                    continue;
-                }
+        if (in_array('evaluationData', $properties)) {
+            $sub_header['obs'] = i::__('Observações');
+        }
 
-                $sub_header[$property] = $entity_class_name::getPropertyLabel($property) ?: $property;
-            }
+        if (!$sub_header) {
+            return ['header' => [], 'subHeader' => []];
         }
 
         $columns_evaluations = array_splice($column_prefixes, 0, count($sub_header));
@@ -58,18 +48,10 @@ class Spreadsheet extends EvaluationsSpreadsheetJob
         foreach ($evaluations['evaluations'] as $evaluation) {
             $registration_data = $evaluation['registration'];
 
-            $result[] = [
-                'projectName' => $registration_data['projectName'],
-                'category' => $registration_data['category'],
-                'name' => $registration_data['owner']['name'],
-                'number' => $registration_data['number'],
-                'range' => $registration_data['range'],
-                'score' => $registration_data['score'],
-                'proponentType' => $registration_data['proponentType'],
-                'eligible' => $registration_data['eligible'],
-            ] + $this->getEvaluatorSpreadsheetColumns($evaluation['valuer'] ?? null) + [
+            $result[] = $this->getRegistrationSpreadsheetColumns($registration_data)
+                + $this->getEvaluatorSpreadsheetColumns($evaluation['valuer'] ?? null) + [
                 'result' => $evaluation['evaluation']['resultString'],
-                'status' => $this->statusName($registration_data['status']),
+                'status' => $this->evaluationStatusName($evaluation['evaluation']['status'] ?? null),
                 'obs' => $evaluation['evaluation']['evaluationData']['obs']
             ];
         }

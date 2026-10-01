@@ -466,7 +466,7 @@
 
         $scope.deleteGraphic = function (id) {
             
-            if (!confirm("Você tem certeza que deseja deletar esse gráfico?")) {
+            if (!confirm(MapasCulturais.gettext.reports['confirmDeleteChart'])) {
                 return;
             }
 

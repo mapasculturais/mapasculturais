@@ -15,6 +15,7 @@ A plataforma já está em uso em diversos municipios, estados, no governo federa
 - SNIIC - https://mapa.cultura.gov.br/
 - Cultura Viva - https://culturaviva.cultura.gov.br/
 - Rede das Artes - https://rededasartes.cultura.gov.br/
+- Mapa dos Comitês de Cultura - https://comitedecultura.org.br/  
 
 ### Instalações estaduais
 - Amapá - https://mapacultural.ap.gov.br/
@@ -31,45 +32,49 @@ A plataforma já está em uso em diversos municipios, estados, no governo federa
 - Tocantins - https://mapadacultura.secult.to.gov.br/
 
 ### Instalações municipais
-- Anápolis - https://culturaemrede.anapolis.go.gov.br/
-- Aparecida de Goiânia - https://portaldacultura.aparecida.go.gov.br/
-- Apucarana - https://cultura.apucarana.pr.gov.br/
-- Aracaju - http://mapa.cultura.aracaju.se.gov.br/
-- Belo Horizonte - https://mapaculturalbh.pbh.gov.br/
-- Bento Gonçalvez - http://mapacultural.bentogoncalves.rs.gov.br/
-- Campo Mourão - https://mapas.campomourao.pr.gov.br/
-- Campos dos Goytacazes - https://mapasculturais.campos.rj.gov.br/
-- Camaçari - https://mapacultural.camacari.ba.gov.br/
-- Campinas - https://mapacultural.campinas.sp.gov.br/
-- Chorozinho - https://mapacultural.chorozinho.ce.gov.br/
-- Cianorte - https://cultura.cianorte.pr.gov.br/
-- Gravataí - https://mapacultural.gravatai.rs.gov.br/
-- Iguatu - http://mapacultural.iguatu.ce.gov.br/
-- João Pessoa - https://jpcultura.joaopessoa.pb.gov.br/
-- Lagoa Santa - https://mapacultural.lagoasanta.mg.gov.br/
-- Londrina - https://londrinacultura.londrina.pr.gov.br/
-- Maringá - https://maringacultura.maringa.pr.gov.br/
-- Mauá - https://mapacultural.maua.sp.gov.br/
-- Natal - https://mapacultural.natal.rn.gov.br/
-- Nova Lima - https://mapacultural.novalima.mg.gov.br/
-- Parauapebas - https://mapacultural.parauapebas.pa.gov.br/
-- Petrolina - https://mapacultural.petrolina.pe.gov.br/
+- Anápolis/GO - https://culturaemrede.anapolis.go.gov.br/
+- Aparecida de Goiânia/GO - https://portaldacultura.aparecida.go.gov.br/
+- Apucarana/PR - https://cultura.apucarana.pr.gov.br/
+- Aracaju/SE - http://mapa.cultura.aracaju.se.gov.br/
+- Belo Horizonte/MG - https://mapaculturalbh.pbh.gov.br/
+- Bento Gonçalvez/RS - http://mapacultural.bentogoncalves.rs.gov.br/
+- Campo Mourão/PR - https://mapas.campomourao.pr.gov.br/
+- Campos dos Goytacazes/RJ - https://mapasculturais.campos.rj.gov.br/
+- Camaçari/BA - https://mapacultural.camacari.ba.gov.br/
+- Campinas/SP - https://mapacultural.campinas.sp.gov.br/
+- Chorozinho/CE - https://mapacultural.chorozinho.ce.gov.br/
+- Cianorte/PR - https://cultura.cianorte.pr.gov.br/
+- Gravataí/RS - https://mapacultural.gravatai.rs.gov.br/
+- Iguatu/CE - http://mapacultural.iguatu.ce.gov.br/
+- Itatiba - https://mapacultural.itatiba.sp.gov.br/
+- João Pessoa/PB - https://jpcultura.joaopessoa.pb.gov.br/
+- Lagoa Santa/MG - https://mapacultural.lagoasanta.mg.gov.br/
+- Limeira - https://mapasculturais.limeira.sp.gov.br/
+- Londrina/PR - https://londrinacultura.londrina.pr.gov.br/
+- Maringá/PR - https://maringacultura.maringa.pr.gov.br/
+- Mauá/SP - https://mapacultural.maua.sp.gov.br/
+- Natal/RN - https://mapacultural.natal.rn.gov.br/
+- Nova Lima/MG - https://mapacultural.novalima.mg.gov.br/
+- Parauapebas/PA - https://mapacultural.parauapebas.pa.gov.br/
+- Petrolina/PE - https://mapacultural.petrolina.pe.gov.br/
 - Ribeirão das Neves - http://mapaculturaneves.com.br/
-- Santa Luzia - http://mapacultural.santaluzia.mg.gov.br/
-- Santo Anastácio - https://cultura.santoanastacio.sp.gov.br/
-- Santo André - https://culturaz.santoandre.sp.gov.br/
-- São Gonçalo do Amarante - https://mapacultural.saogoncalodoamarante.ce.gov.br/
-- São Bernardo - https://mapacultural.saobernardo.sp.gov.br/
-- Sarandi - https://cultura.sarandi.pr.gov.br/
+- Santa Luzia/MG - http://mapacultural.santaluzia.mg.gov.br/
+- Santo Anastácio/SP - https://cultura.santoanastacio.sp.gov.br/
+- Santo André/SP - https://culturaz.santoandre.sp.gov.br/
+- São Gonçalo do Amarante/CE - https://mapacultural.saogoncalodoamarante.ce.gov.br/
+- São Bernardo do Campo/SP - https://mapacultural.saobernardo.sp.gov.br/
+- Sarandi/PR - https://cultura.sarandi.pr.gov.br/
 - Toledo/PR - https://cultura.toledo.pr.gov.br/
+- Triunfo - https://mapacultural.triunfo.pe.gov.br/
 
 ### Outras instalações
-- Floresta Ativista - https://rede.florestaativista.org/
-- AMFRIMapa Cultural CIM-AMFRI / SC - https://mapacultural.cim-amfri.sc.gov.br/
-- Mapa Cultural AGIMOS - UFPel - https://mapacultural.ufpel.edu.br/
+- Rede Floresta Ativista - https://rede.florestaativista.org/
+- Mapa Cultural CIM-AMFRI / SC - https://mapacultural.cim-amfri.sc.gov.br/
 - Mapa da Inovação do ES - https://mapa.inovacao.es.gov.br/
 - Balaio Cultural UFPR - https://mapadacultura.ufpr.br/
 - Periferia Viva - Ministério das Cidades - https://iniciativas-mapadasperiferias.cidades.gov.br/
+- Cacicadas Digitais - https://mapa.cacicadasdigitais.org.br/
+- Em cena (Juventude de Heliópolis/SP) - https://emcena.unas.org.br/
 
 ## Sobre a aplicação
 Mapas Culturais é uma aplicação web server-side baseada em linguagem PHP e banco de dados Postgres, entre outras tecnologias e componentes, que propicia um ambiente virtual para mapeamento, divulgação e gestão de ativos culturais. 

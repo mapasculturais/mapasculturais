@@ -2901,18 +2901,18 @@ $$
     },
 
     'Adiciona novos índices em diversas tabelas' => function() {
-        __exec('CREATE INDEX idx_usr_profile ON usr (profile_id);');
-        __exec('CREATE INDEX id_agent_relation_agent ON agent_relation (agent_id);');
-        __exec('CREATE INDEX idx_space_agent_id ON space (agent_id);');
-        __exec('CREATE INDEX idx_event_agent_id ON event (agent_id);');
-        __exec('CREATE INDEX idx_seal_relation_agent_id ON seal_relation (agent_id);');
-        __exec('CREATE INDEX idx_seal_relation_owner_id ON seal_relation (owner_id);');
-        __exec('CREATE INDEX idx_seal_relation_object ON seal_relation (object_type, object_id);');
-        __exec('CREATE INDEX idx_project_agent_id ON project (agent_id);');
-        __exec('CREATE INDEX idx_project_type ON project (type);');
-        __exec('CREATE INDEX idx_registration_meta_key ON registration_meta (key);');
-        __exec('CREATE INDEX idx_opportunity_meta_key ON registration_meta (key);');
-        __exec('CREATE INDEX idx_agent_usr ON agent (user_id);');
+        __exec('CREATE INDEX IF NOT EXISTS idx_usr_profile ON usr (profile_id);');
+        __exec('CREATE INDEX IF NOT EXISTS id_agent_relation_agent ON agent_relation (agent_id);');
+        __exec('CREATE INDEX IF NOT EXISTS idx_space_agent_id ON space (agent_id);');
+        __exec('CREATE INDEX IF NOT EXISTS idx_event_agent_id ON event (agent_id);');
+        __exec('CREATE INDEX IF NOT EXISTS idx_seal_relation_agent_id ON seal_relation (agent_id);');
+        __exec('CREATE INDEX IF NOT EXISTS idx_seal_relation_owner_id ON seal_relation (owner_id);');
+        __exec('CREATE INDEX IF NOT EXISTS idx_seal_relation_object ON seal_relation (object_type, object_id);');
+        __exec('CREATE INDEX IF NOT EXISTS idx_project_agent_id ON project (agent_id);');
+        __exec('CREATE INDEX IF NOT EXISTS idx_project_type ON project (type);');
+        __exec('CREATE INDEX IF NOT EXISTS idx_registration_meta_key ON registration_meta (key);');
+        __exec('CREATE INDEX IF NOT EXISTS idx_opportunity_meta_key ON registration_meta (key);');
+        __exec('CREATE INDEX IF NOT EXISTS idx_agent_usr ON agent (user_id);');
     },
 
     'Adiciona novas áreas de atuação' => function() {
@@ -3299,5 +3299,335 @@ $$
         ));
         return true;
     },
-    
-] + $updates ;   
+
+    // === FASE 1: Fundação de Dados — Selos Validadores Granulares e Ocultos (LGPD) ===
+
+    'Adiciona colunas locked_fields_config e sensitive à tabela seal' => function () use ($conn) {
+        if (!__column_exists('seal', 'locked_fields_config')) {
+            __exec("ALTER TABLE seal ADD COLUMN locked_fields_config JSONB NOT NULL DEFAULT '{}'::jsonb");
+        }
+        if (!__column_exists('seal', 'sensitive')) {
+            __exec("ALTER TABLE seal ADD COLUMN sensitive BOOLEAN NOT NULL DEFAULT FALSE");
+        }
+    },
+
+    'Adiciona coluna computed_status à tabela seal_relation' => function () use ($conn) {
+        if (!__column_exists('seal_relation', 'computed_status')) {
+            __exec("ALTER TABLE seal_relation ADD COLUMN computed_status VARCHAR(20) DEFAULT NULL");
+        }
+    },
+
+    'Cria tabela seal_relation_field' => function () use ($conn) {
+        if (__table_exists('seal_relation_field')) {
+            echo "TABELA seal_relation_field JÁ EXISTE";
+            return true;
+        }
+
+        __exec("CREATE SEQUENCE seal_relation_field_id_seq INCREMENT BY 1 MINVALUE 1 START 1");
+        __exec("CREATE TABLE seal_relation_field (
+            id INT NOT NULL DEFAULT nextval('seal_relation_field_id_seq'),
+            seal_relation_id INT NOT NULL,
+            field_name VARCHAR(255) NOT NULL,
+            expiry_date DATE DEFAULT NULL,
+            is_invalidator BOOLEAN NOT NULL DEFAULT FALSE,
+            notified_expire BOOLEAN NOT NULL DEFAULT FALSE,
+            notified_to_expire BOOLEAN NOT NULL DEFAULT FALSE,
+            created_at TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP,
+            PRIMARY KEY(id)
+        )");
+        __exec("ALTER TABLE seal_relation_field ADD CONSTRAINT FK_seal_relation_field_seal_relation
+            FOREIGN KEY (seal_relation_id) REFERENCES seal_relation (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE");
+        __exec("CREATE UNIQUE INDEX idx_srf_unique_relation_field ON seal_relation_field (seal_relation_id, field_name)");
+        __exec("CREATE INDEX idx_srf_relation ON seal_relation_field (seal_relation_id)");
+        __exec("CREATE INDEX idx_srf_expiry ON seal_relation_field (expiry_date) WHERE expiry_date IS NOT NULL");
+        __exec("CREATE INDEX idx_srf_to_expire ON seal_relation_field (seal_relation_id, expiry_date) WHERE expiry_date IS NOT NULL");
+    },
+
+    'Backfill locked_fields_config a partir de locked_fields' => function () use ($conn) {
+        $seals = $conn->fetchAll("SELECT id, locked_fields FROM seal WHERE locked_fields IS NOT NULL AND locked_fields::text != '[]'");
+        foreach ($seals as $seal) {
+            $locked_fields = json_decode($seal['locked_fields'], true);
+            if (!is_array($locked_fields)) {
+                continue;
+            }
+            $config = [];
+            foreach ($locked_fields as $field) {
+                $config[$field] = [
+                    'hasExpiry' => false,
+                    'periodValue' => null,
+                    'periodUnit' => null,
+                    'isInvalidator' => false,
+                ];
+            }
+            $conn->executeQuery(
+                "UPDATE seal SET locked_fields_config = :config WHERE id = :id",
+                ['config' => json_encode($config), 'id' => $seal['id']]
+            );
+        }
+    },
+
+    'Backfill seal_relation_field para relações existentes' => function () use ($conn, $app) {
+        $relations = $conn->fetchAll("SELECT sr.id, s.locked_fields_config
+            FROM seal_relation sr
+            JOIN seal s ON s.id = sr.seal_id
+            WHERE s.locked_fields_config IS NOT NULL AND s.locked_fields_config != '{}'::jsonb");
+
+        foreach ($relations as $relation) {
+            $config = json_decode($relation['locked_fields_config'], true);
+            if (!is_array($config)) {
+                continue;
+            }
+
+            foreach ($config as $field_name => $field_config) {
+                // Verifica se já existe registro para evitar duplicatas em re-execuções
+                $exists = $conn->fetchColumn(
+                    "SELECT COUNT(*) FROM seal_relation_field WHERE seal_relation_id = :relation_id AND field_name = :field_name",
+                    ['relation_id' => $relation['id'], 'field_name' => $field_name]
+                );
+                if ($exists > 0) {
+                    continue;
+                }
+
+                $conn->executeQuery(
+                    "INSERT INTO seal_relation_field (seal_relation_id, field_name, expiry_date, is_invalidator, notified_expire, notified_to_expire, created_at)
+                    VALUES (:relation_id, :field_name, NULL, FALSE, FALSE, FALSE, NOW())",
+                    ['relation_id' => $relation['id'], 'field_name' => $field_name]
+                );
+            }
+        }
+    },
+
+    'Backfill computed_status para relações existentes e cria índice' => function () use ($conn) {
+        if (!__column_exists('seal_relation', 'computed_status')) {
+            return true;
+        }
+
+        // Relações com campos granulares: calcula a partir dos campos
+        __exec("
+            UPDATE seal_relation sr
+            SET computed_status = CASE
+                WHEN EXISTS (
+                    SELECT 1 FROM seal_relation_field srf
+                    WHERE srf.seal_relation_id = sr.id
+                    AND srf.is_invalidator = TRUE
+                    AND srf.expiry_date < CURRENT_DATE
+                ) THEN 'invalid'
+                WHEN EXISTS (
+                    SELECT 1 FROM seal_relation_field srf
+                    WHERE srf.seal_relation_id = sr.id
+                    AND srf.is_invalidator = FALSE
+                    AND srf.expiry_date < CURRENT_DATE
+                ) AND NOT EXISTS (
+                    SELECT 1 FROM seal_relation_field srf
+                    WHERE srf.seal_relation_id = sr.id
+                    AND srf.expiry_date >= CURRENT_DATE
+                ) THEN 'invalid'
+                WHEN EXISTS (
+                    SELECT 1 FROM seal_relation_field srf
+                    WHERE srf.seal_relation_id = sr.id
+                    AND srf.is_invalidator = FALSE
+                    AND srf.expiry_date < CURRENT_DATE
+                ) THEN 'partially_valid'
+                ELSE 'fully_valid'
+            END
+            WHERE sr.computed_status IS NULL
+            AND EXISTS (
+                SELECT 1 FROM seal_relation_field srf WHERE srf.seal_relation_id = sr.id
+            )
+        ");
+
+        // Relações legadas sem campos granulares: usa lógica de validate_date
+        __exec("
+            UPDATE seal_relation sr
+            SET computed_status = CASE
+                WHEN s.valid_period > 0 AND sr.validate_date < CURRENT_DATE THEN 'invalid'
+                ELSE 'fully_valid'
+            END
+            FROM seal s
+            WHERE sr.seal_id = s.id
+            AND sr.computed_status IS NULL
+            AND NOT EXISTS (
+                SELECT 1 FROM seal_relation_field srf WHERE srf.seal_relation_id = sr.id
+            )
+        ");
+
+        __exec("CREATE INDEX IF NOT EXISTS idx_seal_relation_computed_status ON seal_relation (computed_status)");
+    },
+
+    // === Avaliação Automática por Selos — isenção de fase ===
+    //
+    // Modelo decidido em consenso (spec-c49fa0bb §3.1/3.2/3.3):
+    //   - Config de selos por fase: METADADO (sealExemptionConfig) no EMC — NÃO há DDL aqui.
+    //   - Flag de isenção: colunas físicas em registration (enum + timestamp).
+    //   - Snapshot de auditoria: metadado opcional (sealExemptionSnapshot) — NÃO há DDL aqui.
+    //
+    // NOTA SOBRE METADADOS:
+    //   sealExemptionConfig (EMC) e sealExemptionSnapshot (Registration) são registrados
+    //   via registerEvaluationMethodConfigurationMetadata() / registerRegistrationMetadata()
+    //   no Module.php do módulo responsável, em runtime. db-updates.php é DDL-only; o
+    //   registro de metadados não escreve estado no banco (as tabelas *_meta já existem
+    //   como EAV genérico).
+    //
+    // ROLLBACK COMPLETO (reverter manualmente se necessário):
+    //   DROP INDEX IF EXISTS idx_registration_seal_exemption;
+    //   DROP INDEX IF EXISTS idx_seal_relation_agent_valid;
+    //   ALTER TABLE registration DROP CONSTRAINT IF EXISTS chk_registration_seal_exemption_status;
+    //   ALTER TABLE registration DROP COLUMN IF EXISTS seal_exemption_timestamp;
+    //   ALTER TABLE registration DROP COLUMN IF EXISTS seal_exemption_status;
+    //   (Metadados sealExemptionConfig/sealExemptionSnapshot permanecem inertes — remoção
+    //    via código do módulo.)
+    //
+    // ÍNDICE seal_relation (produção com tabela grande):
+    //   O idx_seal_relation_agent_valid abaixo é criado NÃO-concorrente para caber no
+    //   runner idempotente do db-updates (que executa dentro do fluxo de boot). Em bases
+    //   de produção com seal_relation muito grande, o operador PODE criar o índice com
+    //   CONCURRENTLY antes do deploy:
+    //     CREATE INDEX CONCURRENTLY IF NOT EXISTS idx_seal_relation_agent_valid
+    //         ON seal_relation (object_id, seal_id, computed_status)
+    //         WHERE object_type = 'MapasCulturais\Entities\Agent' AND status = 1;
+    //   O `CREATE INDEX IF NOT EXISTS` abaixo então no-op (índice já existe).
+
+    'Adiciona colunas seal_exemption_status e seal_exemption_timestamp em registration' => function () use ($conn) {
+        // PG 11+: ADD COLUMN ... NULL (sem DEFAULT) é metadado-only — não reescreve a tabela.
+        if (!__column_exists('registration', 'seal_exemption_status')) {
+            __exec("ALTER TABLE registration ADD COLUMN seal_exemption_status VARCHAR(20) NULL");
+        }
+        if (!__column_exists('registration', 'seal_exemption_timestamp')) {
+            __exec("ALTER TABLE registration ADD COLUMN seal_exemption_timestamp TIMESTAMP(0) WITHOUT TIME ZONE NULL");
+        }
+
+        // CHECK constraint idempotente via DO block (PG não suporta ADD CONSTRAINT IF NOT EXISTS).
+        // Estados válidos: 'granted' (isenção concedida), 'agent_missing' (sem proponente) ou NULL.
+        // 'seals_invalid' é deliberadamente NÃO persistido (NULL = avaliação normal / não isenta)
+        // para manter o índice parcial enxuto — ver comentário do índice abaixo.
+        __exec("DO \$\$
+        BEGIN
+            IF NOT EXISTS (
+                SELECT 1 FROM information_schema.table_constraints
+                WHERE table_name = 'registration'
+                  AND constraint_name = 'chk_registration_seal_exemption_status'
+            ) THEN
+                ALTER TABLE registration
+                    ADD CONSTRAINT chk_registration_seal_exemption_status
+                    CHECK (seal_exemption_status IN ('granted','agent_missing') OR seal_exemption_status IS NULL);
+            END IF;
+        END \$\$");
+    },
+
+    'Cria índices parciais para isenção por selos' => function () use ($conn) {
+        // Índice 1: acelera a verificação de selos válidos por agente.
+        // Predicado espelha exatamente a query em lote do SealExemptionVerifier:
+        //   WHERE object_type = 'Agent' AND status = 1 AND computed_status = 'fully_valid'
+        // O filtro de computed_status fica no SELECT (não no índice) para reuso por outros
+        // leitores; o WHERE parcial já elimina não-agentes e relações pendentes/desativadas.
+        __try("CREATE INDEX IF NOT EXISTS idx_seal_relation_agent_valid
+            ON seal_relation (object_id, seal_id, computed_status)
+            WHERE object_type = 'MapasCulturais\Entities\Agent' AND status = 1");
+
+        // Índice 2: um único índice parcial cobre os dois filtros operacionais do PM:
+        //   - "isentos"     → WHERE seal_exemption_status = 'granted'
+        //   - "sem agente"  → WHERE seal_exemption_status = 'agent_missing'
+        // Pequeno porque só indexa linhas não-NULL (exceções), não a massa de avaliações normais.
+        __try("CREATE INDEX IF NOT EXISTS idx_registration_seal_exemption
+            ON registration (opportunity_id, seal_exemption_status)
+            WHERE seal_exemption_status IS NOT NULL");
+    },
+
+    'Corrige dados legados das etapas de inscrição das oportunidades (campos e anexos sem etapa e etapas vazias duplicadas)' => function () {
+        // Legacy data fix for registration steps (RegistrationStep entity).
+        //
+        // Background: the db-update that created the registration_step table and the
+        // mc-update that backfilled step_id on form fields/files did not check whether
+        // a step already existed (e.g. the one created by the Opportunity insert:after
+        // hook) and did not filter by step_id IS NULL when attaching configurations.
+        // Legacy databases can therefore contain:
+        //   1. form fields/files with step_id IS NULL, in opportunities that have no
+        //      step at all (the mc-update never reached them);
+        //   2. opportunities with exactly two steps where one step has zero
+        //      fields/files attached and the other one already holds every field/file
+        //      of the opportunity (the signature of the duplicated step created by the
+        //      unguarded legacy mc-update).
+        //
+        // Every statement below is idempotent by construction: each one filters the
+        // exact rows it fixes, so a second run matches no rows and changes nothing.
+
+        // Safety guard: only run when the whole RegistrationStep structure is in place.
+        if (!__table_exists('registration_step') ||
+            !__column_exists('registration_field_configuration', 'step_id') ||
+            !__column_exists('registration_file_configuration', 'step_id')) {
+            return;
+        }
+
+        // Scenario 1a - identified by: opportunity with NO step that still has form
+        // fields or files with step_id IS NULL. Fix: create exactly one empty step,
+        // with the same defaults the application uses for auto-created steps. The
+        // NOT EXISTS guard makes it impossible to create a duplicate step.
+        __exec("INSERT INTO registration_step (name, display_order, opportunity_id, create_timestamp, update_timestamp)
+                SELECT '', 0, o.id, NOW(), NOW()
+                  FROM opportunity o
+                 WHERE NOT EXISTS (SELECT 1 FROM registration_step rs WHERE rs.opportunity_id = o.id)
+                   AND (EXISTS (SELECT 1 FROM registration_field_configuration rfc
+                                 WHERE rfc.opportunity_id = o.id AND rfc.step_id IS NULL)
+                     OR EXISTS (SELECT 1 FROM registration_file_configuration rfc
+                                 WHERE rfc.opportunity_id = o.id AND rfc.step_id IS NULL))");
+
+        // Scenario 1b - identified by: every field/file with step_id IS NULL whose
+        // opportunity already has at least one step (guaranteed after 1a). Fix:
+        // attach the stepless rows to a single existing step, never creating a new
+        // one. Step preference: a step without any field/file attached (the empty
+        // step auto-created by the application), then lowest display_order, then
+        // lowest id. DISTINCT ON resolves one step per opportunity, so all stepless
+        // rows of the same opportunity converge on it.
+        __exec("UPDATE registration_field_configuration rfc
+                   SET step_id = chosen.step_id
+                  FROM (SELECT DISTINCT ON (rs.opportunity_id) rs.opportunity_id, rs.id AS step_id
+                          FROM registration_step rs
+                         ORDER BY rs.opportunity_id,
+                                  (EXISTS (SELECT 1 FROM registration_field_configuration f WHERE f.step_id = rs.id)
+                                   OR EXISTS (SELECT 1 FROM registration_file_configuration fl WHERE fl.step_id = rs.id)) ASC,
+                                  rs.display_order ASC,
+                                  rs.id ASC) AS chosen
+                 WHERE rfc.opportunity_id = chosen.opportunity_id
+                   AND rfc.step_id IS NULL");
+
+        __exec("UPDATE registration_file_configuration rfc
+                   SET step_id = chosen.step_id
+                  FROM (SELECT DISTINCT ON (rs.opportunity_id) rs.opportunity_id, rs.id AS step_id
+                          FROM registration_step rs
+                         ORDER BY rs.opportunity_id,
+                                  (EXISTS (SELECT 1 FROM registration_field_configuration f WHERE f.step_id = rs.id)
+                                   OR EXISTS (SELECT 1 FROM registration_file_configuration fl WHERE fl.step_id = rs.id)) ASC,
+                                  rs.display_order ASC,
+                                  rs.id ASC) AS chosen
+                 WHERE rfc.opportunity_id = chosen.opportunity_id
+                   AND rfc.step_id IS NULL");
+
+        // Scenario 2 - identified by: opportunity with EXACTLY two steps where one
+        // step has zero fields/files attached while the other one holds EVERY
+        // field/file of the opportunity (the opportunity must really have at least
+        // one field or file, otherwise the "holds everything" check would be
+        // vacuously true for two empty steps). Fix: remove the leftover empty step
+        // and keep the complete one. Safety: the only foreign keys referencing
+        // registration_step are registration_field_configuration.step_id and
+        // registration_file_configuration.step_id, both ON DELETE CASCADE, and the
+        // removed step has no rows referencing it by definition; the plain DELETE
+        // mirrors how the application itself removes steps. Two-step opportunities
+        // outside this exact pattern are not touched.
+        __exec("DELETE FROM registration_step rs_empty
+                 USING registration_step rs_full
+                 WHERE rs_empty.opportunity_id = rs_full.opportunity_id
+                   AND rs_empty.id <> rs_full.id
+                   AND (SELECT COUNT(*) FROM registration_step x WHERE x.opportunity_id = rs_empty.opportunity_id) = 2
+                   AND (EXISTS (SELECT 1 FROM registration_field_configuration f WHERE f.opportunity_id = rs_empty.opportunity_id)
+                     OR EXISTS (SELECT 1 FROM registration_file_configuration fl WHERE fl.opportunity_id = rs_empty.opportunity_id))
+                   AND NOT EXISTS (SELECT 1 FROM registration_field_configuration f WHERE f.step_id = rs_empty.id)
+                   AND NOT EXISTS (SELECT 1 FROM registration_file_configuration fl WHERE fl.step_id = rs_empty.id)
+                   AND NOT EXISTS (SELECT 1 FROM registration_field_configuration f
+                                    WHERE f.opportunity_id = rs_empty.opportunity_id
+                                      AND (f.step_id IS NULL OR f.step_id <> rs_full.id))
+                   AND NOT EXISTS (SELECT 1 FROM registration_file_configuration fl
+                                    WHERE fl.opportunity_id = rs_empty.opportunity_id
+                                      AND (fl.step_id IS NULL OR fl.step_id <> rs_full.id))");
+    },
+
+] + $updates ;

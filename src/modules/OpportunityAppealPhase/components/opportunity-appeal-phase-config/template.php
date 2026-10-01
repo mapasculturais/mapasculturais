@@ -23,7 +23,7 @@ $this->import('
 ?>
 
 <div class="opportunity-appeal-phase-config col-12">
-    <h4 v-if="tab === 'config'" class="opportunity-appeal-phase-config__title bold"><?= i::__("Etapa suplementar") ?></h4>
+    <h3 v-if="tab === 'config'" class="opportunity-appeal-phase-config__title bold"><?= i::__("Etapa de recurso") ?></h3>
     <div v-if="!entity && tab === 'config'" class="opportunity-appeal-phase-config__button">
         <button v-if="!processing" class="button button--primary" @click="createAppealPhase()">
             <?= i::__("Adicionar recurso") ?>
@@ -153,7 +153,7 @@ $this->import('
                     </div>
                 </mc-alert>
 
-                <div class="opportunity-appeal-phase-config__config-button opportunity-appeal-phase-config__add-evaluation-committee">
+                <div class="opportunity-appeal-phase-config__add-evaluation-committee">
                     <opportunity-committee-groups :entity="entity.evaluationMethodConfiguration"></opportunity-committee-groups>
                 </div>
 

@@ -16,7 +16,7 @@ $this->import('
     <div class="config-phase grid-12">
         <opportunity-phase-config-status :phase="phase"></opportunity-phase-config-status>
 
-        <opportunity-phase-publish-date-config :phase="phase" :phases="phases" hide-description hide-button useSealsCertification></opportunity-phase-publish-date-config>
+        <opportunity-phase-publish-date-config :phase="phase" :phases="phases" :hide-title="firstPhase?.isContinuousFlow && !firstPhase?.hasEndDate" hide-description hide-button useSealsCertification></opportunity-phase-publish-date-config>
         <opportunity-appeal-phase-config :phase="phase" :phases="phases" :tab="tab"></opportunity-appeal-phase-config>
 
         <seals-certifier :entity="firstPhase" :editable="seals.length > 0"></seals-certifier>

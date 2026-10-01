@@ -10,12 +10,14 @@ use MapasCulturais\i;
 $this->import('
     entity-field
     fields-visible-evaluators
+    mc-accordion
     mc-confirm-button
     mc-modal
     opportunity-committee-groups
     opportunity-phase-publish-date-config
     opportunity-appeal-phase-config
     seals-certifier
+    seal-validator-config
     tiebreaker-criteria-configuration
     v1-embed-tool
 
@@ -64,25 +66,51 @@ $evaluation_methods = $app->getRegisteredEvaluationMethods();
             <?php $this->applyComponentHook("{$evaluation_method->slug}-config", 'after') ?>
         <?php endforeach; ?>
 
+        <?php $this->applyComponentHook("seal-validators-config", 'before') ?>
+        <template v-if="phase.type.id != 'technical'">
+            <?php $this->applyComponentHook("seal-validators-config", 'begin') ?>
+            <section class="col-12 evaluation-step__section">
+                <div class="evaluation-step__section-header">
+                    <?php $this->applyComponentHook("seal-validators-config", 'header') ?>
+                    <div class="evaluation-step__section-label">
+                        <h3><?= i::__('Avaliação automática por selos') ?></h3>
+                    </div>
+                </div>
+                <div class="evaluation-step__section-content">
+                    <seal-validator-config :entity="phase"></seal-validator-config>
+                </div>
+            </section>
+            <?php $this->applyComponentHook("seal-validators-config", 'end') ?>
+        </template>
+        <?php $this->applyComponentHook("seal-validators-config", 'after') ?>
+
         <section class="evaluation-section col-12">
             <fields-visible-evaluators :entity="phase"></fields-visible-evaluators>
         </section>
 
         <section class="evaluation-section col-12">
-            <div class="evaluation-section__header">
-                <span class="title"><?= i::__("Adicionar textos explicativos das avaliações") ?></span>
-            </div>
+            <mc-accordion :withText="true">
+                <template #title>
+                    <div class="evaluation-section__header">
+                        <span class="title"><?= i::__("Adicionar textos explicativos das avaliações") ?></span>
+                    </div>
+                </template>
+                <template #content>
+                    <div class="field evaluation-section__field">
+                        <label for="field-info-general" class="evaluation-section__label semibold"><?= i::__("Texto configuração geral") ?></label>
+                        <textarea id="field-info-general" v-model="phase.infos['general']" @change="savePhase()" class="evaluation-config__area" rows="10"></textarea>
+                    </div>
 
-            <div class="field evaluation-section__field">
-                <label for="field-info-general" class="evaluation-section__label semibold"><?= i::__("Texto configuração geral") ?></label>
-                <textarea id="field-info-general" v-model="phase.infos['general']" @change="savePhase()" class="evaluation-config__area" rows="10"></textarea>
-            </div>
+                    <!-- Keep the category fields in a grid so they keep the original two-column layout inside the accordion content -->
+                    <div class="grid-12">
+                        <div class="col-6 sm:col-12 field evaluation-section__field" v-for="(category, index) in categories">
+                            <label :for="`field-info-${category}`" class="evaluation-section__label semibold" :key="index"> {{ category }}</label>
+                            <textarea :id="`field-info-${category}`" v-model="phase.infos[category]" @change="savePhase()" style="width: 100%" rows="10" class="evaluation-config__input"></textarea>
+                        </div>
+                    </div>
+                </template>
+            </mc-accordion>
         </section>
-
-        <div class="col-6 sm:col-12 field evaluation-section__field" v-for="(category, index) in categories">
-            <label :for="`field-info-${category}`" class="evaluation-section__label semibold" :key="index"> {{ category }}</label>
-            <textarea :id="`field-info-${category}`" v-model="phase.infos[category]" @change="savePhase()" style="width: 100%" rows="10" class="evaluation-config__input"></textarea>
-        </div>
         
         <opportunity-phase-config-status :phase="phase.opportunity"></opportunity-phase-config-status>
 

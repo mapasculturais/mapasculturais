@@ -12,11 +12,15 @@ app.component('mc-accordion', {
             type: Boolean,
             default: false,
         },
+        open: {
+            type: Boolean,
+            default: false,
+        },
     },
 
     data() {
         return {
-            active: false,
+            active: this.open,
         }
     },
     

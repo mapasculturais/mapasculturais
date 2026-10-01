@@ -1663,6 +1663,7 @@ abstract class Opportunity extends \MapasCulturais\Entity
                 continue;
             }
             $field_validations = [];
+            $agent_file_group = null;
             if(in_array($field->fieldType, ['agent-owner-field', 'agent-collective-field'])) {
                 $agent_properties_metadata = \MapasCulturais\Entities\Agent::getPropertiesMetadata();
                 $agent_field_name = $field->config['entityField'] ?? null;
@@ -1688,6 +1689,11 @@ abstract class Opportunity extends \MapasCulturais\Entity
                 if(in_array($field->config['entityField'], ['longDescription', 'shortDescription'])){
                     $field_type = 'textarea';
                 }
+
+                // Anexos do agente (type=file): entity-file no BaseV2 precisa do FileGroup.
+                if (($agent_field['type'] ?? null) === 'file' && !empty($agent_field['file_group'])) {
+                    $agent_file_group = $agent_field['file_group'];
+                }
                 
                 $field_validations = $agent_field['validations'] ?? [];
                 unset($field_validations['required']);
@@ -1705,6 +1711,10 @@ abstract class Opportunity extends \MapasCulturais\Entity
                 'private' => true,
                 'registrationFieldConfiguration' => $field
             ];
+
+            if ($agent_file_group) {
+                $cfg['file_group'] = $agent_file_group;
+            }
 
             $def = $field->getFieldTypeDefinition();
 

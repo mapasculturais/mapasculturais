@@ -1,6 +1,14 @@
 @use '../0.settings/mixins' as *;
 
-.entity-status {
+.entity-status,
+.required-fields-profile-message {
+    grid-column-start: 1;
+    grid-column-end: 3;
+
+    @media (max-width: size(800)) {
+        grid-column-end: 2;
+    }
+
     .alert {
         margin: 0;
     }

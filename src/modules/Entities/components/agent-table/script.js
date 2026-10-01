@@ -105,7 +105,8 @@ app.component('agent-table', {
             let itens = this.mergedHeaders;
             
             if (!this.agentType) {
-                itens.push({ text: __('type', 'agent-table'), value: "type.name", slug: "type"});
+                // exportField keeps the Vue expression "type.name" out of the export @select
+                itens.push({ text: __('type', 'agent-table'), value: "type.name", slug: "type", exportField: "type"});
             }
 
             return itens;

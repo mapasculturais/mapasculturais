@@ -34,6 +34,7 @@ return [
     'First status change should be pending' => i::__('A inscrição está atualmente como rascunho. Para alterar o status, por favor, defina-o como Pendente primeiro'), 
     'Invalid status name' => i::__('Não foi possível alterar o status, fale com admnistrador'), 
     'pontuação final' => i::__('pontuação final'),
+    'Pontuação' => i::__('Pontuação'),
     'Range' => i::__('Faixa/Linha'),
     'aguardando desempate' => i::__('Aguardando desempate'),
     'Elegível para cotas' => i::__('Elegível para cotas'),

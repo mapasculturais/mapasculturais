@@ -1387,9 +1387,14 @@ textarea {
 }
 
 .action-registrationevaluationtionformview #registration-attachments .attachment-list .attachment-list-item>div a{
-    display: flex;
+    /* Hit area só no texto/ícone — evita cobrir o campo inteiro e conflitar
+       com o clique que abre o formulário de avaliação documental. */
+    align-self: flex-start;
+    display: inline-flex;
     gap: 5px;
+    max-width: 100%;
     text-decoration: none;
+    width: fit-content;
 }
 
 

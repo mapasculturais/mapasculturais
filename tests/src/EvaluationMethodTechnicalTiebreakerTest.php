@@ -33,6 +33,13 @@ class EvaluationMethodTechnicalTiebreakerTest extends TestCase
             ->save()
             ->firstPhase()
                 ->setRegistrationPeriod(new Open)
+                ->createStep('Informações')
+                ->createOwnerField(
+                    identifier: 'genero',
+                    entity_field: 'genero',
+                    title: 'Gênero',
+                    required: false
+                )
                 ->save()
                 ->done();
 
@@ -209,6 +216,56 @@ class EvaluationMethodTechnicalTiebreakerTest extends TestCase
             $registration_newest->id,
             $ids[0],
             'Certificando que, quando a primeira regra empata, a segunda regra define a ordem'
+        );
+    }
+
+    public function testTiebreakerByAgentOwnerSelectFieldPrefersConfiguredValue(): void
+    {
+        $opportunity = $this->createTechnicalOpportunityWithTiebreaker([
+            (object) [
+                'id' => 1,
+                'name' => 'Gênero',
+                'criterionType' => 'field_pending',
+                'preferences' => ['Feminina'],
+            ],
+        ]);
+
+        $field_genero = $this->opportunityBuilder->getFieldName('genero');
+        $this->assertNotEmpty($field_genero, 'Campo agent-owner genero deve ter sido criado');
+
+        $opportunity->evaluationMethodConfiguration->tiebreakerCriteriaConfiguration = [
+            (object) [
+                'id' => 1,
+                'name' => 'Gênero',
+                'criterionType' => $field_genero,
+                'preferences' => ['Feminina'],
+            ],
+        ];
+        $opportunity->evaluationMethodConfiguration->save(true);
+
+        // Feminina primeiro; Masculina depois (id maior). Sem o fix, id DESC
+        // colocaria Masculina na frente quando o desempate por agent-owner é ignorado.
+        $registration_feminina = $this->registrationDirector->createSentRegistration($opportunity, [
+            $field_genero => 'Feminina',
+        ]);
+        $registration_masculina = $this->registrationDirector->createSentRegistration($opportunity, [
+            $field_genero => 'Masculina',
+        ]);
+
+        $this->evaluateRegistrationWithTwoValuers($opportunity, $registration_feminina, 5, 5, 5, 5);
+        $this->evaluateRegistrationWithTwoValuers($opportunity, $registration_masculina, 5, 5, 5, 5);
+
+        $ids = $this->getOrderedRegistrationIds($opportunity);
+
+        $this->assertEquals(
+            $registration_feminina->id,
+            $ids[0],
+            'Certificando que desempate por agent-owner-field (select/genero) prioriza o valor configurado'
+        );
+        $this->assertEquals(
+            $registration_masculina->id,
+            $ids[1],
+            'Certificando que a inscrição sem o valor preferido fica depois'
         );
     }
 }

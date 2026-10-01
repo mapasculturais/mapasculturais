@@ -55,6 +55,11 @@ return [
             'autoPublish' => i::__('Publicar resultado automaticamente')
         ),
 
+        'MapasCulturais\Entities\Seal' => array(
+            'sensitive' => i::__('Selo sensível/LGPD (oculto para o público)'),
+            'lockedFieldsConfig' => i::__('Configuração de campos bloqueados'),
+        ),
+
         'MapasCulturais\Entities\Registration' => [
             'category' => i::__('Categoria'),
             'range' => i::__('Faixa/Linha'),

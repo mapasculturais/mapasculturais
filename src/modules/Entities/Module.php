@@ -115,11 +115,9 @@ class Module extends \MapasCulturais\Module{
             /** @var \MapasCulturais\Controller $this */
             $this->requireAuthentication();
 
-            if (!$app->user->is('saasSuperAdmin')) {
-                throw new PermissionDenied($app->user, null, i::__('Gerenciar configuração global das colunas'));
-            }
-
             $tableKey = (string) ($this->data['tableKey'] ?? '');
+            $entity_type = strtolower((string) ($this->data['entityType'] ?? ''));
+            $entity_id = (int) ($this->data['entityId'] ?? 0);
             $order = $self->sanitizeColumns((array) ($this->data['order'] ?? []));
             $visible = $self->sanitizeColumns((array) ($this->data['visible'] ?? []));
             $required = $self->sanitizeColumns((array) ($this->data['required'] ?? []));
@@ -128,6 +126,27 @@ class Module extends \MapasCulturais\Module{
             if ($tableKey === '' || !preg_match('/^[a-zA-Z0-9_\\-]+$/', $tableKey)) {
                 $this->json(['error' => true, 'message' => i::__('Identificador da tabela inválido')], 400);
                 return;
+            }
+
+            // Com entidade: @control nela. Sem entidade (listagens gerais): só saasSuperAdmin.
+            if ($entity_type && $entity_id > 0) {
+                $class_map = [
+                    'agent' => \MapasCulturais\Entities\Agent::class,
+                    'space' => \MapasCulturais\Entities\Space::class,
+                    'event' => \MapasCulturais\Entities\Event::class,
+                    'project' => \MapasCulturais\Entities\Project::class,
+                    'opportunity' => \MapasCulturais\Entities\Opportunity::class,
+                    'registration' => \MapasCulturais\Entities\Registration::class,
+                ];
+
+                $entity_class = $class_map[$entity_type] ?? null;
+                $entity = $entity_class ? $app->repo($entity_class)->find($entity_id) : null;
+
+                if (!$entity || !$entity->canUser('@control')) {
+                    throw new PermissionDenied($app->user, $entity, i::__('Gerenciar configuração padrão das colunas'));
+                }
+            } elseif (!$app->user->is('saasSuperAdmin')) {
+                throw new PermissionDenied($app->user, null, i::__('Gerenciar configuração padrão das colunas'));
             }
 
             if (!$known) {

@@ -1062,7 +1062,7 @@ module.controller('RegistrationConfigurationsController', ['$scope', '$rootScope
                     $scope.fieldValidationErrors[getFieldKey(response)] = $scope.validateFieldIntegrity(response);
                     $scope.invalidFieldsCount = $scope.countInvalidFields();
                     EditBox.close('editbox-registration-fields');
-                    $scope.data.newFieldConfiguration = angular.copy(fieldConfigurationSkeleton);
+                    angular.copy(fieldConfigurationSkeleton, $scope.data.newFieldConfiguration);
                     MapasCulturais.Messages.success(labels['fieldCreated']);
                 }
             });
@@ -1329,7 +1329,7 @@ module.controller('RegistrationConfigurationsController', ['$scope', '$rootScope
                     $scope.data.fields.push(response);
                     sortFields();
                     EditBox.close('editbox-registration-files');
-                    $scope.data.newFileConfiguration = angular.copy(fileConfigurationSkeleton);
+                    angular.copy(fileConfigurationSkeleton, $scope.data.newFileConfiguration);
                     MapasCulturais.Messages.success(labels['attachmentCreated']);
                 }
             });
@@ -2704,10 +2704,29 @@ module.controller('RegistrationFieldsController', ['$scope', '$rootScope', '$int
         return field;
     }
 
+    $scope.isAgentFileField = function(field) {
+        if (!field || !field.config || !field.config.entityField) {
+            return false;
+        }
+
+        var definition = MapasCulturais.EntitiesDescription.agent[field.config.entityField];
+        return definition && definition.type === 'file';
+    };
+
     $scope.printField = function(field, value){
         
         let entityFiel = ['agent-owner-field', 'agent-collective-field']
         let fieldType = entityFiel.includes(field.fieldType) ? field.config.entityField : field.fieldType;
+
+        if ($scope.isAgentFileField(field) || (value && typeof value === 'object' && !Array.isArray(value) && value.url)) {
+            if (!value || !value.url) {
+                return null;
+            }
+
+            var escapedUrl = String(value.url).replace(/"/g, '&quot;').replace(/>/g, '&gt;').replace(/</g, '&lt;');
+            var escapedName = String(value.name || value.url).replace(/"/g, '&quot;').replace(/>/g, '&gt;').replace(/</g, '&lt;');
+            return '<a class="attachment-title" href="' + escapedUrl + '" target="_blank" rel="noopener noreferrer">' + escapedName + '</a>';
+        }
 
         if (field.fieldType === 'date' || field?.config?.entityField === 'dataDeNascimento') {
             return moment(value).format('DD-MM-YYYY');
@@ -3197,7 +3216,22 @@ module.controller('OpportunityController', ['$scope', '$rootScope', '$anchorScro
         $(opportunity_main_tab).hide();
     }
 
+    var hasSealExemptionConfig = (function() {
+        var config = MapasCulturais.entity?.evaluationMethodConfiguration?.sealExemptionConfig;
+        if (typeof config === 'string') {
+            try {
+                config = JSON.parse(config);
+            } catch (e) {
+                config = null;
+            }
+        }
+        return Array.isArray(config?.seals) && config.seals.length > 0;
+    })();
+
     var select_fields = MapasCulturais.opportunitySelectFields.map(function(e){ return e.fieldName; });
+    if (hasSealExemptionConfig) {
+        select_fields = select_fields.concat(['sealExemptionStatus', 'sealExemptionTimestamp']);
+    }
     var registrationsApi;
     var evaluationsApi;
 
@@ -3367,6 +3401,10 @@ module.controller('OpportunityController', ['$scope', '$rootScope', '$anchorScro
         {fieldName: "status", title:labels['Status'] ,required:true},
     ];
 
+    if (hasSealExemptionConfig) {
+        defaultSelectFields.push({fieldName: "sealExemption", title:labels['Isenção'] ,required:true});
+    }
+
     MapasCulturais.opportunitySelectFields.forEach(function(e){
         e.options = [{ value: null, label: e.title }].concat(e.fieldOptions.map(function(e){
             return {value: e, label: e};
@@ -3438,6 +3476,12 @@ module.controller('OpportunityController', ['$scope', '$rootScope', '$anchorScro
 
         registrationStatusesNames: RegistrationService.registrationStatusesNames,
 
+        sealStatuses: [
+            {value: 'fully_valid', label: 'Totalmente Válido'},
+            {value: 'partially_valid', label: 'Parcialmente Válido'},
+            {value: 'invalid', label: 'Inválido'}
+        ],
+
         publishedRegistrationStatuses: RegistrationService.publishedRegistrationStatuses,
 
         publishedRegistrationStatusesNames: RegistrationService.publishedRegistrationStatusesNames,
@@ -3464,10 +3508,14 @@ module.controller('OpportunityController', ['$scope', '$rootScope', '$anchorScro
             agents: true,
             attachments: true,
             evaluation: true,
-            status: true
+            status: true,
+            sealStatus: true,
+            sealExemption: false
         },
 
         confirmEvaluationLabel: labels['confirmEvaluationLabel'],
+
+        hasSealExemptionConfig: hasSealExemptionConfig,
 
         fields: RegistrationService.getFields(),
 
@@ -3754,7 +3802,7 @@ module.controller('OpportunityController', ['$scope', '$rootScope', '$anchorScro
             };
 
             $scope.removeRegistrationRulesFile = function (id, $index) {
-                if(confirm('Deseja remover este anexo?')){
+                if(confirm(MapasCulturais.gettext.moduleOpportunity['confirmAttachmentRemoved'])){
                     let url = MapasCulturais.createUrl('file','single',{id:$scope.data.entity.registrationRulesFile.id});
                     $http.delete(url).success(function(response){
                         $scope.data.entity.registrationRulesFile = null;

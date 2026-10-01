@@ -41,7 +41,7 @@ $entity = $this->controller->requestedEntity;
             <?php $this->applyTemplateHook('registration-list-actions', 'after', ['entity' => $entity]); ?>
         </template>
         <div class="col-12"> 
-            <entity-table controller="opportunity" endpoint="findRegistrations" :identifier="identifier" type="registration" :query="query" :limit="100" :sort-options="sortOptions" :order="order" :select="select" :headers="headers" phase:="phase" required="number,options" :visible="visible" @clear-filters="clearFilters" @remove-filter="removeFilter($event)" show-index :hide-filters="hideFilters" :hide-sort="hideSort" :hide-actions='hideActions' :hide-header="hideHeader">
+            <entity-table controller="opportunity" endpoint="findRegistrations" :identifier="identifier" type="registration" :query="query" :limit="100" :sort-options="sortOptions" :order="order" :select="select" :headers="headers" phase:="phase" :columns-config-entity="phase" required="number,options" :visible="visible" @clear-filters="clearFilters" @remove-filter="removeFilter($event)" show-index :hide-filters="hideFilters" :hide-sort="hideSort" :hide-actions='hideActions' :hide-header="hideHeader">
                 <template #title>
                     <slot name="title"></slot>
                 </template>
@@ -148,6 +148,11 @@ $entity = $this->controller->requestedEntity;
                     <span v-if="entity.eligible === true || entity.eligible === 'true' || entity.eligible === 1"><?= i::__('Sim') ?></span>
                     <span v-else-if="entity.eligible === false || entity.eligible === 'false' || entity.eligible === 0"><?= i::__('Não') ?></span>
                     <span v-else>&nbsp;</span>
+                </template>
+
+                <template #appliedForQuota="{entity}">
+                    <span v-if="entity.appliedForQuota === true || entity.appliedForQuota === 'true' || entity.appliedForQuota === 1 || entity.appliedForQuota === '1'"><?= i::__('Sim') ?></span>
+                    <span v-else><?= i::__('Não') ?></span>
                 </template>
 
                 <template #editable={entity}>

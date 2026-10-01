@@ -26,6 +26,11 @@
             justify-content: space-between;
             padding: size(15);
             width: size(478);
+            max-width: calc(100% - #{size(32)});
+
+            &-structured {
+                align-items: flex-start;
+            }
     
             @media (max-width: size(480)) {
                 display: flex;
@@ -36,17 +41,42 @@
             }
     
             &-close {
+                background: transparent;
+                border: 0;
                 color:white;
                 cursor: pointer;
+                flex: 0 0 auto;
                 font-size: size(20);
                 height: size(20);
+                margin-left: size(16);
+                padding: 0;
                 width: size(20);
+
+                &:focus-visible {
+                    outline: size(2) solid white;
+                    outline-offset: size(2);
+                }
             }
             
             &-text {
                 color: white;
                 margin-left: size(10);
+                overflow-wrap: anywhere;
                 padding-left: size(27);
+            }
+
+            &-title {
+                display: block;
+                margin-bottom: size(8);
+            }
+
+            &-list {
+                margin: 0;
+                padding-left: size(20);
+
+                li + li {
+                    margin-top: size(4);
+                }
             }
     
             &.success {

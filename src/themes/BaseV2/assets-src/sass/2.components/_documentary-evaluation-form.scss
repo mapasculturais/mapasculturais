@@ -45,4 +45,47 @@
             flex-wrap: wrap;
         }
     }
+
+    &__seal-alert {
+        align-items: center;
+        background: #f6fff7;
+        border: 1px solid #83c98b;
+        border-left: size(6) solid #2e7d32;
+        border-radius: size(8);
+        color: #173f1b;
+        display: flex;
+        gap: size(12);
+        padding: size(12) size(14);
+
+        h4 {
+            line-height: 1.2;
+            margin: 0;
+        }
+
+        p {
+            font-size: size(14);
+            line-height: 1.45;
+            margin: size(4) 0 0;
+        }
+
+        &--about-to-expire {
+            background: #fff7e6;
+            border-color: #f0b45b;
+            border-left-color: #e18414;
+            color: #3d2b12;
+        }
+
+        &--invalid {
+            background: #fff4f4;
+            border-color: #ef9a9a;
+            border-left-color: #b3261e;
+            color: #4f1111;
+        }
+    }
+
+    &__seal-alert-content {
+        display: flex;
+        flex-direction: column;
+        gap: size(2);
+    }
 }

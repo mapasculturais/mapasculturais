@@ -960,7 +960,11 @@ abstract class Theme {
                     $query->setParameter('id', $e['id'] ?? 0);
                     $opportunity = $query->getSingleResult();
                 }
-                $e['opportunity'] = $opportunity->simplify('id,name,registrationFrom,registrationTo,type,files,terms,seals');
+                $opportunity_properties = 'id,name,registrationFrom,registrationTo,type,files,terms,seals';
+                if ($entity_class_name === Registration::class) {
+                    $opportunity_properties .= ',registrationCategories,registrationProponentTypes,registrationRanges';
+                }
+                $e['opportunity'] = $opportunity->simplify($opportunity_properties);
                 if($opportunity->parent){
                     $e['opportunity']->parent = $opportunity->parent->simplify('id,name,type,files,terms,seals');
                 }
@@ -1069,6 +1073,21 @@ abstract class Theme {
 
             if(method_exists($entity_class_name, 'getLockedFieldSeals')) {
                 $e['__lockedFieldSeals'] = $request_entity->lockedFieldSeals;
+            }
+
+            if(method_exists($entity_class_name, 'getFieldSealStatuses')) {
+                $e['__fieldSealStatuses'] = $request_entity->fieldSealStatuses;
+            }
+
+            // Evita sobrescrever currentUserPermissions no Vue: a opportunity
+            // aninhada no EMC (mesmo id) vem do pcache sem "publish" e colide
+            // no cache Entity(opportunity:id).
+            if (
+                $entity_class_name === Opportunity::class &&
+                isset($e['evaluationMethodConfiguration']['opportunity']['id']) &&
+                (int) $e['evaluationMethodConfiguration']['opportunity']['id'] === (int) $entity_id
+            ) {
+                unset($e['evaluationMethodConfiguration']['opportunity']);
             }
 
             $app->applyHookBoundTo($this, "view.requestedEntity($_entity).result", [&$e, $entity_class_name, $entity_id]);

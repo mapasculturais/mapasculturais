@@ -42,6 +42,7 @@ app.component('mc-export-spreadsheet', {
         return {
             isOpenModal: false,
             processing: false,
+            fileGroup: group,
             lastExported: $MAPAS.config.mcExportSpreadsheet.files ? $MAPAS.config.mcExportSpreadsheet.files[group] : [],
             interval: null,
             exportReturn: null,
@@ -90,7 +91,7 @@ app.component('mc-export-spreadsheet', {
             let props = {
                 entityType: this.owner.__objectType,
                 id: this.owner.id,
-                group: this.group,
+                group: this.fileGroup,
             }
             let url = api.createUrl('filesByGroup', props);
 

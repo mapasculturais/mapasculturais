@@ -16,7 +16,7 @@ RUN curl -fsSL https://deb.nodesource.com/gpgkey/nodesource-repo.gpg.key | gpg -
 RUN echo "deb [signed-by=/etc/apt/keyrings/nodesource.gpg] https://deb.nodesource.com/node_20.x nodistro main" | sudo tee /etc/apt/sources.list.d/nodesource.list
 RUN apt-get update && apt-get install -y nodejs
 
-RUN npm install -g pnpm
+RUN npm install -g pnpm@10
 RUN rm -rf /var/lib/apt/lists
 
 ENV PNPM_HOME=/root/.local/share/pnpm
@@ -98,6 +98,7 @@ RUN sass themes/BaseV1/assets/css/sass/main.scss:themes/BaseV1/assets/css/main.c
 
 COPY docker/recreate-pending-pcache-cron.sh /recreate-pending-pcache-cron.sh
 COPY docker/jobs-cron.sh /jobs-cron.sh
+COPY docker/cleanup-orphan-assets-cron.sh /cleanup-orphan-assets-cron.sh
 COPY docker/entrypoint.sh /entrypoint.sh
 
 COPY version.txt /var/www/version.txt

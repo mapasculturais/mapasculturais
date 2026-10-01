@@ -11,6 +11,20 @@
     line-height: 0;
 
     &__image {
+        border: size(2) solid transparent;
+        border-radius: var(--mc-border-radius-xs);
+        padding: size(1);
+        position: relative;
+
+        &::after {
+            border-radius: 50%;
+            bottom: size(-3);
+            content: '';
+            height: size(10);
+            position: absolute;
+            right: size(-3);
+            width: size(10);
+        }
 
         .mc-avatar--square {
             border-radius: var(--mc-border-radius-xs);
@@ -33,6 +47,34 @@
             min-width: size(32);
             width: size(32);
         }
+    }
+
+    &--valid &__image {
+        border-color: var(--mc-success-500, #16a34a);
+
+        &::after {
+            background: var(--mc-success-500, #16a34a);
+        }
+    }
+
+    &--about-to-expire &__image {
+        border-color: var(--mc-warning-500, #f59e0b);
+
+        &::after {
+            background: var(--mc-warning-500, #f59e0b);
+        }
+    }
+
+    &--expired &__image {
+        border-color: var(--mc-danger-500, #dc2626);
+
+        &::after {
+            background: var(--mc-danger-500, #dc2626);
+        }
+    }
+
+    &--invalidator &__image::after {
+        box-shadow: 0 0 0 size(2) var(--mc-high-500, #fff);
     }
 }
 

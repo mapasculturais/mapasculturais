@@ -85,6 +85,13 @@ return array(
             ],
             'available_for_opportunities' => true
         ),
+        'pessoaDeficienciaAnexo' => array(
+            'private' => true,
+            'label' => \MapasCulturais\i::__('Pessoa com deficiência - Laudo (anexo)'),
+            'type' => 'file',
+            'file_group' => 'docs-pcd',
+            'available_for_opportunities' => true,
+        ),
 
         'comunidadesTradicional' => array(
             'private' => true,
@@ -123,6 +130,13 @@ return array(
                 MapasCulturais\i::__('Veredeiros'),
             ),
             'available_for_opportunities' => true
+        ),
+        'comunidadesTradicionalAnexo' => array(
+            'private' => true,
+            'label' => \MapasCulturais\i::__('Comunidades tradicionais - Comprovação (anexo)'),
+            'type' => 'file',
+            'file_group' => 'docs-comunidades',
+            'available_for_opportunities' => true,
         ),
 
         'comunidadesTradicionalOutros' => array(
@@ -182,6 +196,7 @@ return array(
             'private' => true,
             'label' => \MapasCulturais\i::__('CNPJ - anexo'),
             'type' => 'file',
+            'file_group' => 'docs-cnpj',
             'available_for_opportunities' => true
         ),
         'cpf' => array(
@@ -216,6 +231,7 @@ return array(
             'private' => true,
             'label' => \MapasCulturais\i::__('CPF - anexo'),
             'type' => 'file',
+            'file_group' => 'docs-cpf',
             'available_for_opportunities' => true
         ),
         'cnhNumero' => array(
@@ -229,6 +245,7 @@ return array(
             'private' => true,
             'label' => \MapasCulturais\i::__('CNH - anexo'),
             'type' => 'file',
+            'file_group' => 'docs-cnh',
             'available_for_opportunities' => true
         ),
         'cnhCategoria' => array(
@@ -261,17 +278,21 @@ return array(
             'private' => true,
             'label' => \MapasCulturais\i::__('RG - Documento'),
             'type' => 'rgNumero',
-            'readonly' => false
+            'readonly' => false,
+            'available_for_opportunities' => true
         ),
         'rgAnexo' => array(
             'private' => true,
             'label' => \MapasCulturais\i::__('RG - anexo'),
             'type' => 'file',
+            'file_group' => 'docs-rg',
+            'available_for_opportunities' => true,
         ),
         'rgOrgaoEmissor' => array(
             'private' => true,
             'label' => \MapasCulturais\i::__('RG - Órgão Emissor'),
             'type' => 'text',
+            'available_for_opportunities' => true,
         ),
         'rgUF' => [
             'private' => true,
@@ -305,8 +326,21 @@ return array(
                 'SP'=>'São Paulo',
                 'SE'=>'Sergipe',
                 'TO'=>'Tocantins',
-            )
+            ),
+            'available_for_opportunities' => true,
         ],
+        'passaporteNumero' => array(
+            'private' => true,
+            'label' => \MapasCulturais\i::__('Passaporte - Número'),
+            'available_for_opportunities' => true,
+        ),
+        'passaporteAnexo' => array(
+            'private' => true,
+            'label' => \MapasCulturais\i::__('Passaporte - anexo'),
+            'type' => 'file',
+            'file_group' => 'docs-passaporte',
+            'available_for_opportunities' => true,
+        ),
         'raca' => array(
             'private' => true,
             'label' => \MapasCulturais\i::__('Raça/cor'),
@@ -320,6 +354,13 @@ return array(
                 'Indígena' => \MapasCulturais\i::__('Indígena')
             ),
             'available_for_opportunities' => true
+        ),
+        'racaAnexo' => array(
+            'private' => true,
+            'label' => \MapasCulturais\i::__('Raça/cor - Declaração (anexo)'),
+            'type' => 'file',
+            'file_group' => 'docs-raca',
+            'available_for_opportunities' => true,
         ),
 
         'dataDeNascimento' => array(
@@ -745,6 +786,57 @@ return array(
                 "v::url()" => \MapasCulturais\i::__("A url informada é inválida.")
             ),
             'placeholder' => \MapasCulturais\i::__('https://nomedoservidor.com.br/@nomedousuario'),
+        ),
+
+        // === Documentos e Certidões (anexos puros) ===
+        'comprovanteResidenciaAnexo' => array(
+            'private' => true,
+            'label' => \MapasCulturais\i::__('Comprovante de Residência'),
+            'type' => 'file',
+            'file_group' => 'docs-residencia',
+            'available_for_opportunities' => true,
+        ),
+        'comprovanteVinculoTerritorialAnexo' => array(
+            'private' => true,
+            'label' => \MapasCulturais\i::__('Comprovante de Vínculo Territorial'),
+            'type' => 'file',
+            'file_group' => 'docs-vinculo-territorial',
+            'available_for_opportunities' => true,
+        ),
+        'curriculoAnexo' => array(
+            'private' => true,
+            'label' => \MapasCulturais\i::__('Currículo'),
+            'type' => 'file',
+            'file_group' => 'docs-curriculo',
+            'available_for_opportunities' => true,
+        ),
+        'portfolioAnexo' => array(
+            'private' => true,
+            'label' => \MapasCulturais\i::__('Portfólio'),
+            'type' => 'file',
+            'file_group' => 'docs-portfolio',
+            'available_for_opportunities' => true,
+        ),
+        'certidaoFiscalAnexo' => array(
+            'private' => true,
+            'label' => \MapasCulturais\i::__('Certidão de Regularidade Fiscal'),
+            'type' => 'file',
+            'file_group' => 'docs-certidao-fiscal',
+            'available_for_opportunities' => true,
+        ),
+        'certidaoTrabalhistaAnexo' => array(
+            'private' => true,
+            'label' => \MapasCulturais\i::__('Certidão de Regularidade Trabalhista'),
+            'type' => 'file',
+            'file_group' => 'docs-certidao-trabalhista',
+            'available_for_opportunities' => true,
+        ),
+        'certidaoPrestacaoContasAnexo' => array(
+            'private' => true,
+            'label' => \MapasCulturais\i::__('Certidão de Prestação de Contas'),
+            'type' => 'file',
+            'file_group' => 'docs-certidao-contas',
+            'available_for_opportunities' => true,
         ),
     ),
     'items' => array(

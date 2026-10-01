@@ -6,6 +6,7 @@ use MapasCulturais\App;
 use MapasCulturais\Entities\Job;
 use MapasCulturais\Entities\Registration;
 use MapasCulturais\i;
+use SealExemption\SealExemptionService;
 
 /**
  * @property-read string $fileGroup
@@ -13,6 +14,22 @@ use MapasCulturais\i;
  */
 abstract class EvaluationsSpreadsheetJob extends SpreadsheetJob
 {
+    protected const REQUIRED_REGISTRATION_PROPERTIES = [
+        'id',
+        'number',
+        'status',
+        'category',
+        'range',
+        'score',
+        'proponentType',
+        'eligible',
+        'projectName',
+        'consolidatedResult',
+        'goalStatuses',
+        'agentsData',
+        'owner.{name}',
+    ];
+
     function _getHeader(Job $job): array
     {
         // Parte comum a todos os métodos de avaliação
@@ -31,7 +48,7 @@ abstract class EvaluationsSpreadsheetJob extends SpreadsheetJob
         $total_properties = 0;
         $job->owner->registerRegistrationMetadata(true);
         foreach($properties as $property) {
-            if (!in_array($property, ['result', 'status', 'evaluationData'])) {
+            if ($property !== 'evaluationData') {
                 if($this->slug !== 'continuous-spreadsheets' && $property === 'goalStatuses') {
                     continue;
                 }
@@ -61,6 +78,11 @@ abstract class EvaluationsSpreadsheetJob extends SpreadsheetJob
                     continue;
                 }
 
+                if($property === 'coletivo') {
+                    $sub_header[$property] = i::__('Agente coletivo');
+                    continue;
+                }
+
                 if($property === 'committeeSequentialNumber') {
                     $sub_header[$property] = i::__('Nº sequencial do avaliador');
                     continue;
@@ -78,6 +100,11 @@ abstract class EvaluationsSpreadsheetJob extends SpreadsheetJob
                 
                 if($property === 'user') {
                     $sub_header[$property] = i::__('Nome do avaliador');
+                    continue;
+                }
+
+                if($property === 'result') {
+                    $sub_header[$property] = i::__('Resultado do avaliador');
                     continue;
                 }
 
@@ -110,7 +137,18 @@ abstract class EvaluationsSpreadsheetJob extends SpreadsheetJob
 
         $header = isset($result_header['header']) ? array_merge($header, $result_header['header']) : $header;
         $sub_header = isset($result_header['subHeader']) ? array_merge($sub_header, $result_header['subHeader']) : $sub_header;
-        
+
+        // Parte da isenção por selos (duas colunas: "Isento" + rótulo configurado).
+        // Só é adicionada quando a fase possui sealExemptionConfig ativa, evitando
+        // colunas vazias em planilhas de fases sem a funcionalidade (spec-c49fa0bb §4.4).
+        $exemption_header = $this->getSealExemptionHeader($job, $sub_header);
+        if (isset($exemption_header['header'])) {
+            $header = array_merge($header, $exemption_header['header']);
+        }
+        if (isset($exemption_header['subHeader'])) {
+            $sub_header = array_merge($sub_header, $exemption_header['subHeader']);
+        }
+
         $result = [$header, $sub_header];
 
         return $result;
@@ -125,13 +163,198 @@ abstract class EvaluationsSpreadsheetJob extends SpreadsheetJob
         $query['@limit'] = $this->limit;
         $query['@page'] = $this->page;
         $query['@order'] = $job->query['@order'] ?? 'id ASC';
+        $query['registration:@select'] = $this->getRegistrationSelect($job);
         $opportunity_controller = $app->controller('opportunity');
         $opportunity_controller->data = $opportunity_controller->postData;
         $evaluations = $opportunity_controller->apiFindEvaluations($opportunity->id, $query);
         $evaluations = json_decode(json_encode($evaluations), true);
 
         $result = $this->getEvaluationDataBatch($job, $evaluations);
+
+        // Complementa cada linha com as colunas de isenção por selos (spec-c49fa0bb §4.4).
+        // Os dados são resolvidos via query em lote sobre seal_exemption_status, de
+        // forma desacoplada do @select da ApiQuery de inscrições.
+        $this->appendSealExemptionColumns($job, $evaluations, $result);
+
         return $result;
+    }
+
+    /**
+     * Constrói o cabeçalho das duas colunas de isenção por selos (spec-c49fa0bb §4.4):
+     *  - sealExemption (booleana): cabeçalho "Isento", conteúdo Sim/Não.
+     *  - sealExemptionLabel (textual): cabeçalho fixo "Dispensada por selos",
+     *    conteúdo = rótulo fixo para isentos (vazio caso contrário).
+     *
+     * Retorna header/subHeader nulos quando a fase não tem sealExemptionConfig ativa,
+     * para que as colunas não sejam adicionadas à planilha (evita colunas vazias).
+     *
+     * Segurança: nunca expõe IDs internos de selos — apenas o enum de status e o
+     * rótulo textual de exibição.
+     *
+     * @param Job $job
+     * @param array $sub_header Sub-cabeçalho acumulado até o momento (para calcular
+     *                          a posição das novas colunas).
+     * @return array{header: ?array, subHeader: ?array}
+     */
+    protected function getSealExemptionHeader(Job $job, array $sub_header): array
+    {
+        if (!$this->hasSealExemptionConfig($job)) {
+            return ['header' => null, 'subHeader' => null];
+        }
+
+        // Rótulo fixo padronizado (não há mais configuração customizável por fase).
+        $label = i::__('Dispensada por selos');
+
+        // Posicionamento: próximas 2 colunas após as já definidas em $sub_header.
+        $start = count($sub_header) + 1;
+        $col_exempt = $this->getSpreadsheetColumnName($start);
+        $col_label = $this->getSpreadsheetColumnName($start + 1);
+
+        return [
+            'header' => [
+                "{$col_exempt}1:{$col_label}1" => i::__('Isenção por selos'),
+            ],
+            'subHeader' => [
+                'sealExemption' => i::__('Isento'),
+                // Cabeçalho da coluna textual = rótulo fixo padronizado.
+                'sealExemptionLabel' => $label,
+            ],
+        ];
+    }
+
+    /**
+     * Anexa as colunas de isenção por selos em cada linha do batch.
+     *
+     * - sealExemption: "Sim" quando seal_exemption_status = 'granted'; "Não" caso
+     *   contrário (inclui agent_missing, null e demais estados).
+     * - sealExemptionLabel: rótulo fixo padronizado para isentos; vazio para
+     *   não-isentos (evita redundância com o cabeçalho da coluna, que já é o rótulo).
+     *
+     * O status é resolvido por query em lote (1 query por página de batch), mapeado
+     * por registration_id — robusto à ordenação.
+     *
+     * @param Job $job
+     * @param array $evaluations Resultado de apiFindEvaluations (já normalizado p/ array).
+     * @param array $result Linhas produzidas por getEvaluationDataBatch (modificado in-place).
+     * @return void
+     */
+    protected function appendSealExemptionColumns(Job $job, array $evaluations, array &$result): void
+    {
+        if (empty($result)) {
+            return;
+        }
+
+        // Só popula colunas quando a fase tem config ativa. Quando não tem, as
+        // chaves não estarão no sub_header e seriam ignoradas pelo _execute; mas
+        // evitamos a query desnecessária.
+        if (!$this->hasSealExemptionConfig($job)) {
+            return;
+        }
+
+        $app = App::i();
+        $rows = $evaluations['evaluations'] ?? [];
+
+        // Coleta os IDs das inscrições presentes nesta página.
+        $reg_ids = [];
+        foreach ($rows as $evaluation) {
+            $reg_id = $evaluation['registration_id']
+                ?? ($evaluation['registration']['id'] ?? null);
+            if ($reg_id !== null) {
+                $reg_ids[] = (int) $reg_id;
+            }
+        }
+        $reg_ids = array_values(array_unique($reg_ids));
+
+        // Map: registration_id => seal_exemption_status.
+        // Usamos prepared statement (placeholders posicionais) — IDs já cast p/ int.
+        $statuses = [];
+        if ($reg_ids) {
+            $conn = $app->em->getConnection();
+            $placeholders = implode(',', array_fill(0, count($reg_ids), '?'));
+            $sql = "SELECT id, seal_exemption_status FROM registration WHERE id IN ({$placeholders})";
+            foreach ($conn->fetchAllAssociative($sql, $reg_ids) as $row) {
+                $statuses[(int) $row['id']] = $row['seal_exemption_status'];
+            }
+        }
+
+        $label = i::__('Dispensada por selos');
+
+        // Zip por índice: $result segue a mesma ordem de $evaluations['evaluations']
+        // (ambos iteram o mesmo array na mesma sequência em _getEvaluationDataBatch).
+        // A busca do status é feita por registration_id, então é robusta mesmo se
+        // a ordem eventualmente divergir.
+        $count = min(count($result), count($rows));
+        for ($i = 0; $i < $count; $i++) {
+            $reg_id = $rows[$i]['registration_id']
+                ?? ($rows[$i]['registration']['id'] ?? null);
+
+            $status = ($reg_id !== null && isset($statuses[(int) $reg_id]))
+                ? $statuses[(int) $reg_id]
+                : null;
+            $is_exempt = ($status === 'granted');
+
+            $result[$i]['sealExemption'] = $is_exempt ? i::__('Sim') : i::__('Não');
+            $result[$i]['sealExemptionLabel'] = $is_exempt ? $label : '';
+        }
+    }
+
+    /**
+     * Verifica se a fase possui configuração de isenção por selos ativa
+     * (sealExemptionConfig com ao menos um selo).
+     */
+    protected function hasSealExemptionConfig(Job $job): bool
+    {
+        $opportunity = $job->owner;
+        $emc = $opportunity->evaluationMethodConfiguration ?? null;
+        return SealExemptionService::hasActiveConfig($emc?->sealExemptionConfig);
+    }
+
+    /**
+     * Propriedades da inscrição a buscar na API: as que a planilha sempre usa, mais as escolhidas pelo usuário.
+     */
+    protected function getRegistrationSelect(Job $job): string
+    {
+        $job->owner->registerRegistrationMetadata(true);
+        $registration_properties = array_keys(Registration::getPropertiesMetadata());
+
+        $selected = array_filter(
+            $this->splitSelect($job->query['@select'] ?? ''),
+            fn ($property) => str_starts_with($property, 'owner.') || in_array($property, $registration_properties, true)
+        );
+
+        $properties = array_merge(static::REQUIRED_REGISTRATION_PROPERTIES, $selected);
+
+        return implode(',', array_unique($properties));
+    }
+
+    /**
+     * Separa as propriedades de um `@select` sem quebrar os grupos entre chaves.
+     */
+    protected function splitSelect(string $select): array
+    {
+        $properties = [];
+        $current = '';
+        $depth = 0;
+
+        foreach (str_split($select) as $char) {
+            if ($char === ',' && $depth === 0) {
+                $properties[] = trim($current);
+                $current = '';
+                continue;
+            }
+
+            if ($char === '{') {
+                $depth++;
+            } elseif ($char === '}') {
+                $depth--;
+            }
+
+            $current .= $char;
+        }
+
+        $properties[] = trim($current);
+
+        return array_values(array_filter($properties, fn ($property) => $property !== ''));
     }
 
     function getSpreadsheetColumnName($index) {
@@ -156,6 +379,33 @@ abstract class EvaluationsSpreadsheetJob extends SpreadsheetJob
             }
         }
         return $sheet;
+    }
+
+    /**
+     * Colunas da inscrição a partir do que a API devolveu, para que toda propriedade selecionada tenha valor.
+     */
+    protected function getRegistrationSpreadsheetColumns(array $registration): array
+    {
+        $columns = $registration;
+
+        $columns['name'] = $registration['owner']['name'] ?? '';
+        $columns['coletivo'] = $registration['agentsData']['coletivo']['name'] ?? '';
+
+        unset($columns['owner'], $columns['agentsData'], $columns['status']);
+
+        return array_map($this->formatDate(...), $columns);
+    }
+
+    /**
+     * O lote passa por json_encode e as datas chegam aqui como array; converte só essas, devolvendo o resto intacto.
+     */
+    protected function formatDate(mixed $value): mixed
+    {
+        if (!is_array($value) || !isset($value['date'], $value['timezone_type'], $value['timezone'])) {
+            return $value;
+        }
+
+        return date_create($value['date'])?->format('d/m/Y H:i:s') ?: $value['date'];
     }
 
     protected function getEvaluatorSpreadsheetColumns(?array $valuer): array
@@ -184,6 +434,22 @@ abstract class EvaluationsSpreadsheetJob extends SpreadsheetJob
             'valuerAgentId' => $valuer['id'] ?? '',
             'user' => $valuer['name'] ?? '',
         ];
+    }
+
+    /**
+     * Andamento da avaliação, com os mesmos textos da coluna Status da tela de avaliações.
+     */
+    function evaluationStatusName($status) {
+        if ($status === null || $status === '') {
+            return i::__('Avaliação pendente');
+        }
+
+        return match ((int) $status) {
+            0 => i::__('Avaliação iniciada'),
+            1 => i::__('Avaliação concluída'),
+            2 => i::__('Avaliação enviada'),
+            default => i::__('Avaliação pendente'),
+        };
     }
 
     function statusName($status) {

@@ -3418,6 +3418,94 @@ class App
                 null,
                 true,
             ),
+            "docs-passaporte" => new Definitions\FileGroup(
+                "docs-passaporte",
+                ["image/jpeg", "image/jpg", "image/png", "application/pdf"],
+                i::__("O arquivo enviado não é um documento válido."),
+                true,
+                null,
+                true,
+            ),
+            "docs-raca" => new Definitions\FileGroup(
+                "docs-raca",
+                ["image/jpeg", "image/jpg", "image/png", "application/pdf"],
+                i::__("O arquivo enviado não é um documento válido."),
+                true,
+                null,
+                true,
+            ),
+            "docs-pcd" => new Definitions\FileGroup(
+                "docs-pcd",
+                ["image/jpeg", "image/jpg", "image/png", "application/pdf"],
+                i::__("O arquivo enviado não é um documento válido."),
+                true,
+                null,
+                true,
+            ),
+            "docs-comunidades" => new Definitions\FileGroup(
+                "docs-comunidades",
+                ["image/jpeg", "image/jpg", "image/png", "application/pdf"],
+                i::__("O arquivo enviado não é um documento válido."),
+                true,
+                null,
+                true,
+            ),
+            "docs-residencia" => new Definitions\FileGroup(
+                "docs-residencia",
+                ["image/jpeg", "image/jpg", "image/png", "application/pdf"],
+                i::__("O arquivo enviado não é um documento válido."),
+                true,
+                null,
+                true,
+            ),
+            "docs-vinculo-territorial" => new Definitions\FileGroup(
+                "docs-vinculo-territorial",
+                ["image/jpeg", "image/jpg", "image/png", "application/pdf"],
+                i::__("O arquivo enviado não é um documento válido."),
+                true,
+                null,
+                true,
+            ),
+            "docs-curriculo" => new Definitions\FileGroup(
+                "docs-curriculo",
+                ["image/jpeg", "image/jpg", "image/png", "application/pdf"],
+                i::__("O arquivo enviado não é um documento válido."),
+                true,
+                null,
+                true,
+            ),
+            "docs-portfolio" => new Definitions\FileGroup(
+                "docs-portfolio",
+                ["image/jpeg", "image/jpg", "image/png", "application/pdf"],
+                i::__("O arquivo enviado não é um documento válido."),
+                false,
+                null,
+                true,
+            ),
+            "docs-certidao-fiscal" => new Definitions\FileGroup(
+                "docs-certidao-fiscal",
+                ["image/jpeg", "image/jpg", "image/png", "application/pdf"],
+                i::__("O arquivo enviado não é um documento válido."),
+                true,
+                null,
+                true,
+            ),
+            "docs-certidao-trabalhista" => new Definitions\FileGroup(
+                "docs-certidao-trabalhista",
+                ["image/jpeg", "image/jpg", "image/png", "application/pdf"],
+                i::__("O arquivo enviado não é um documento válido."),
+                true,
+                null,
+                true,
+            ),
+            "docs-certidao-contas" => new Definitions\FileGroup(
+                "docs-certidao-contas",
+                ["image/jpeg", "image/jpg", "image/png", "application/pdf"],
+                i::__("O arquivo enviado não é um documento válido."),
+                true,
+                null,
+                true,
+            ),
         ];
 
         // register file groups
@@ -3429,6 +3517,17 @@ class App
         $this->registerFileGroup("agent", $file_groups["docs-cnpj"]);
         $this->registerFileGroup("agent", $file_groups["docs-cnh"]);
         $this->registerFileGroup("agent", $file_groups["docs-rg"]);
+        $this->registerFileGroup("agent", $file_groups["docs-passaporte"]);
+        $this->registerFileGroup("agent", $file_groups["docs-raca"]);
+        $this->registerFileGroup("agent", $file_groups["docs-pcd"]);
+        $this->registerFileGroup("agent", $file_groups["docs-comunidades"]);
+        $this->registerFileGroup("agent", $file_groups["docs-residencia"]);
+        $this->registerFileGroup("agent", $file_groups["docs-vinculo-territorial"]);
+        $this->registerFileGroup("agent", $file_groups["docs-curriculo"]);
+        $this->registerFileGroup("agent", $file_groups["docs-portfolio"]);
+        $this->registerFileGroup("agent", $file_groups["docs-certidao-fiscal"]);
+        $this->registerFileGroup("agent", $file_groups["docs-certidao-trabalhista"]);
+        $this->registerFileGroup("agent", $file_groups["docs-certidao-contas"]);
 
         $this->registerFileGroup("space", $file_groups["downloads"]);
         $this->registerFileGroup("space", $file_groups["header"]);

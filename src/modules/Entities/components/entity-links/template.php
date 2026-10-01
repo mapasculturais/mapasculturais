@@ -51,7 +51,7 @@ $this->import('
         <div v-for="(link, index) in newLinks" class="entity-links__item">
             <div class="grid-12">
                 <div class="field col-6">
-                    <label for="">Título</label>
+                    <label for=""><?= i::__('Título') ?></label>
                     <input v-model="link.title" class="newLinkTitle" type="text" name="newLinkTitle" />
                 </div>
 

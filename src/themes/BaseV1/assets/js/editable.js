@@ -978,7 +978,7 @@ MapasCulturais.MetalistManager = {
 
         // Delete Button
         $('.js-metalist-form .js-metalist-item-delete').on('click', function(){
-            if(confirm('Tem Certeza de que deseja excluir este item?')){
+            if(confirm(MapasCulturais.gettext.editable['confirmDeleteMetalistItem'])){
                 $form = $(this).parent();
                 $form.find('input:hidden[name="metalist_action"]').val('delete');
                 $form.find('input:submit').click();

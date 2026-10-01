@@ -15,6 +15,7 @@ services:
       - ../docker/entrypoint.sh:/entrypoint.sh
       - ../docker/jobs-cron.sh:/jobs-cron.sh
       - ../docker/recreate-pending-pcache-cron.sh:/recreate-pending-pcache-cron.sh
+      - ../docker/cleanup-orphan-assets-cron.sh:/cleanup-orphan-assets-cron.sh
 
       - ../composer.json:/var/www/composer.json
       - ../composer.lock:/var/www/composer.lock

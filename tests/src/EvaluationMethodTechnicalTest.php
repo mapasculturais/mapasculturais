@@ -3247,6 +3247,51 @@ class EvaluationMethodTechnicalTest extends TestCase
         $this->assertGreaterThanOrEqual($cutoff_score, $lowest_score, "[PAGINAÇÃO] A menor nota deve ser >= {$cutoff_score} (nota de corte)");
     }
 
+    public function testFindRegistrationIdsForResultApplication()
+    {
+        $admin = $this->userDirector->createUser('admin');
+        $this->login($admin);
+
+        $opportunity = $this->createOpportunityWithQuotas($admin);
+        $technical_phase = $this->getTechnicalEvaluationOpportunity($opportunity);
+        $registrations = $this->quotaRegistrationDirector->idealQuotasScenario($opportunity);
+        $this->prepareTechnicalScenarioRegistrations($technical_phase, $registrations);
+
+        $app = App::i();
+        /** @var OpportunityController $opportunity_controller */
+        $opportunity_controller = $app->controller('opportunity');
+        $query_result = $opportunity_controller->apiFindRegistrations($technical_phase, [
+            '@select' => 'id,number,status',
+            '@order' => 'id ASC',
+        ], true);
+
+        $eligible_registrations = array_values(array_filter(
+            $query_result->registrations,
+            fn (array $registration) => in_array($registration['status'], [1, 3, 8, 10], true)
+        ));
+        $this->assertGreaterThanOrEqual(3, count($eligible_registrations));
+
+        $selected_registrations = array_slice($eligible_registrations, 0, 2);
+        $registration_numbers = array_column($selected_registrations, 'number');
+        $registration_numbers[] = $selected_registrations[0]['number'];
+        $registration_numbers[] = 'numero-inexistente';
+
+        $simple_method = $app->getRegisteredEvaluationMethodBySlug('simple')->evaluationMethod;
+
+        $found_ids = $simple_method->findRegistrationIdsForResultApplication(
+            $technical_phase,
+            $registration_numbers,
+            Registration::STATUS_APPROVED
+        );
+
+        $this->assertEqualsCanonicalizing(array_column($selected_registrations, 'id'), $found_ids);
+        $this->assertSame([], $simple_method->findRegistrationIdsForResultApplication(
+            $technical_phase,
+            [],
+            Registration::STATUS_APPROVED
+        ));
+    }
+
     public function testApplyResultsByScore()
     {
         $admin = $this->userDirector->createUser('admin');

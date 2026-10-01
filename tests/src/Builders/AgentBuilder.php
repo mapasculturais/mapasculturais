@@ -46,4 +46,11 @@ class AgentBuilder extends Builder
 
         return $this;
     }
+
+    public function addFileGroup(string $group_name): self
+    {
+        $this->addFileToInstance($group_name);
+
+        return $this;
+    }
 }

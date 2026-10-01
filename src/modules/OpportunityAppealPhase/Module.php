@@ -8,6 +8,7 @@ use MapasCulturais\Entities\EvaluationMethodConfiguration;
 use MapasCulturais\Entities\Notification;
 use MapasCulturais\Entities\Opportunity;
 use MapasCulturais\Entities\Registration;
+use MapasCulturais\Entities\RegistrationStep;
 use MapasCulturais\i;
 
 class Module extends \MapasCulturais\Module {
@@ -78,6 +79,11 @@ class Module extends \MapasCulturais\Module {
             try {
                 $appeal_phase->save(true);
 
+                $step = new RegistrationStep();
+                $step->name = '';
+                $step->opportunity = $appeal_phase;
+                $step->save(true);
+
                 $opportunity->appealPhase = $appeal_phase;
                 $opportunity->save(true);
 
@@ -104,6 +110,7 @@ class Module extends \MapasCulturais\Module {
                     'owner' => $opportunity,
                     'key' => 'appealPhase',
                 ])) {
+                    $conn->delete('registration_step', ['opportunity_id' => $orphan->id]);
                     $orphan->delete(true);
                 }
 

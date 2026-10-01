@@ -227,7 +227,7 @@ class RegistrationFileConfiguration extends \MapasCulturais\Entity {
             'ownerId' => $this->owner->id,
             'title' => $this->title,
             'description' => $this->description,
-            'required' => $this->required,
+            'required' => filter_var($this->required, FILTER_VALIDATE_BOOLEAN),
             'template' => $this->getFile('registrationFileTemplate'),
             'groupName' => $this->fileGroupName,
             'categories' => $this->categories ?: [],

@@ -10,6 +10,18 @@
 
     $this->includeMapAssets();
     $this->includeAngularEntityAssets($relation);
+
+    // LGPD safeguard: sensitive seals should not be visible to unauthorized users
+    if (property_exists($relation->seal, 'sensitive') && $relation->seal->sensitive) {
+        $canView = $app->user->is('admin') || $relation->owner->userId == $app->user->id;
+        if (property_exists($relation, 'can_view')) {
+            $canView = $canView || $relation->can_view;
+        }
+        if (!$canView) {
+            $app->pass();
+            return;
+        }
+    }
 ?>
 
 <article class="main-content seal">
@@ -53,16 +65,15 @@
             <?php $this->applyTemplateHook('print-certificate','after',[$relation]); ?>
         </div><!-- fim seal info container -->
         <!-- Data de expiração -->
-            <?php if($seal->validPeriod > 0):?>
+        <?php if($seal->validPeriod > 0):?>
             <div id="expiration-date">
-                <?php if($srelationeal->isExpired()): ?>
+                <?php if($relation->isExpired()): ?>
                     <?php \MapasCulturais\i::_e('<b>Expirado em:</b>'); ?>
+                <?php else:?>
+                    <?php \MapasCulturais\i::_e('<b>Válido até:</b>'); ?>
+                <?php endif;?>
+                <?php echo $relation->validateDate->format('d/m/Y'); ?>
 
-                    <?php else:?>
-                        <?php \MapasCulturais\i::_e('<b>Válido até:</b>'); ?>
-                    <?php endif;?>
-                    <?php echo $relation->validateDate->format('d/m/Y'); ?>
-                <?php endif; ?>
                 <?php if($seal->owner->userId <> $app->user->id): ?>
                     <?php if(!$relation->renovationRequest && $relation->isExpired() && $app->config['notifications.seal.toExpire']):?>
                         <a href="<?php echo $relation->getRequestSealRelationUrl($relation->id);?>" class="btn btn-default js-toggle-edit">
@@ -71,7 +82,7 @@
                     <?php elseif($relation->renovationRequest && $relation->isExpired() && $app->config['notifications.seal.toExpire']):?>
                         <div class="alert warning">
                             <?php \MapasCulturais\i::_e("Renovação Solicitada");?>
-                        <!--</div>-->
+                        </div>
                     <?php endif;?>
                 <?php elseif($seal->owner->userId == $app->user->id && $relation->isExpired() && $app->config['notifications.seal.toExpire']):?>
                     <a href="<?php echo $relation->getRenewSealRelationUrl($relation->id);?>" class="btn btn-default js-toggle-edit">
@@ -79,4 +90,5 @@
                     </a>
                 <?php endif;?>
             </div>
+        <?php endif; ?>
 </article>

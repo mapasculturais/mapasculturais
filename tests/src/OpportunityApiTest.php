@@ -6,6 +6,7 @@ use MapasCulturais\ApiQuery;
 use MapasCulturais\Entities\Opportunity;
 use Tests\Abstract\TestCase;
 use Tests\Builders\PhasePeriods\Open;
+use Tests\Builders\PhasePeriods\RegistrationWindow;
 use Tests\Traits\OpportunityBuilder;
 use Tests\Traits\RequestFactory;
 use Tests\Traits\RegistrationDirector;
@@ -184,5 +185,127 @@ class OpportunityApiTest extends TestCase
 
         $this->assertContains('Campo Cor', $duplicated_field_titles, 'Certificando que o campo "Campo Cor" foi duplicado');
         $this->assertContains('Campo Resumo', $duplicated_field_titles, 'Certificando que o campo "Campo Resumo" foi duplicado');
+    }
+
+    function testFiltrosDePeriodoDeInscricaoPorTimestampCompleto()
+    {
+        $admin = $this->userDirector->createUser('admin');
+        $this->login($admin);
+
+        $now = new \DateTimeImmutable();
+
+        // Cenário documentado do bug: abertura hoje às 08:00 e encerramento daqui a 15 dias às 23:59.
+        // Se a suíte rodar antes das 08:00, a abertura é ancorada 1 minuto no passado (ainda hoje,
+        // após a meia-noite) para o teste ser determinístico em qualquer horário de execução.
+        $minuto_atras = new \DateTimeImmutable($now->modify('-1 minute')->format('Y-m-d H:i:00'));
+        $abertura_hoje = max(
+            min(new \DateTimeImmutable('today 08:00'), $minuto_atras),
+            new \DateTimeImmutable('today 00:01')
+        );
+        $encerramento_em_15_dias = (new \DateTimeImmutable('+15 days'))->setTime(23, 59);
+
+        $opportunity = $this->opportunityBuilder
+            ->reset(owner: $admin->profile, owner_entity: $admin->profile)
+            ->fillRequiredProperties()
+            ->firstPhase()
+                ->setRegistrationPeriod(new RegistrationWindow($abertura_hoje, $encerramento_em_15_dias))
+                ->done()
+            ->save()
+            ->getInstance();
+
+        // Espelho do bug no filtro de encerradas: inscrições encerradas hoje às 06:00
+        // (antes do momento atual, ainda no dia de hoje).
+        $encerrada_hoje_as = min(new \DateTimeImmutable('today 06:00'), $minuto_atras);
+        $closed_opportunity = $this->opportunityBuilder
+            ->reset(owner: $admin->profile, owner_entity: $admin->profile)
+            ->fillRequiredProperties()
+            ->firstPhase()
+                ->setRegistrationPeriod(new RegistrationWindow(new \DateTimeImmutable('yesterday 08:00'), $encerrada_hoje_as))
+                ->done()
+            ->save()
+            ->getInstance();
+
+        $agora_completo = date('Y-m-d H:i');
+        $hoje_so_data = date('Y-m-d');
+
+        // CONTRATO DE TIMESTAMP COMPLETO ('YYYY-MM-DD HH:mm') — o comportamento do frontend corrigido
+
+        // Filtro "inscrições abertas": registrationFrom <= agora E registrationTo >= agora
+        $query = new ApiQuery(Opportunity::class, [
+            'registrationFrom' => 'LTE(' . $agora_completo . ')',
+            'registrationTo' => 'GTE(' . $agora_completo . ')',
+        ]);
+        $abertas_ids = $query->findIds();
+
+        $this->assertContains(
+            $opportunity->id,
+            $abertas_ids,
+            "Oportunidade aberta hoje ({$abertura_hoje->format('d/m/Y H:i')} - {$encerramento_em_15_dias->format('d/m/Y H:i')}) deve aparecer no filtro de inscrições abertas com timestamp completo"
+        );
+        $this->assertNotContains(
+            $closed_opportunity->id,
+            $abertas_ids,
+            "Oportunidade encerrada hoje às {$encerrada_hoje_as->format('H:i')} não deve aparecer no filtro de inscrições abertas com timestamp completo"
+        );
+
+        // Filtro "inscrições futuras": registrationFrom > agora
+        $query = new ApiQuery(Opportunity::class, [
+            'registrationFrom' => 'GT(' . $agora_completo . ')',
+        ]);
+        $this->assertNotContains(
+            $opportunity->id,
+            $query->findIds(),
+            'Oportunidade já aberta não deve aparecer no filtro de inscrições futuras com timestamp completo'
+        );
+
+        // Filtro "inscrições encerradas": registrationTo < agora
+        $query = new ApiQuery(Opportunity::class, [
+            'registrationTo' => 'LT(' . $agora_completo . ')',
+        ]);
+        $encerradas_ids = $query->findIds();
+
+        $this->assertContains(
+            $closed_opportunity->id,
+            $encerradas_ids,
+            "Oportunidade encerrada hoje às {$encerrada_hoje_as->format('H:i')} deve aparecer no filtro de inscrições encerradas com timestamp completo"
+        );
+        $this->assertNotContains(
+            $opportunity->id,
+            $encerradas_ids,
+            'Oportunidade ainda aberta não deve aparecer no filtro de inscrições encerradas com timestamp completo'
+        );
+
+        // PINO ANTI-REGRESSÃO — data pura ('YYYY-MM-DD' = meia-noite) classifica errado,
+        // documentando por que o frontend deve enviar timestamp completo
+
+        // "Abertas" com data pura: a abertura às 08:00 é maior que a meia-noite da data pura,
+        // então a oportunidade aberta hoje NÃO é retornada (classificação errada)
+        $query = new ApiQuery(Opportunity::class, [
+            'registrationFrom' => 'LTE(' . $hoje_so_data . ')',
+            'registrationTo' => 'GTE(' . $hoje_so_data . ')',
+        ]);
+        $abertas_so_data_ids = $query->findIds();
+
+        $this->assertNotContains(
+            $opportunity->id,
+            $abertas_so_data_ids,
+            'Com data pura a oportunidade aberta hoje depois da meia-noite é erroneamente excluída das abertas — o frontend deve enviar timestamp completo'
+        );
+        $this->assertContains(
+            $closed_opportunity->id,
+            $abertas_so_data_ids,
+            'Com data pura a oportunidade encerrada hoje é erroneamente incluída nas abertas — o frontend deve enviar timestamp completo'
+        );
+
+        // "Futuras" com data pura: a abertura às 08:00 é maior que a meia-noite da data pura,
+        // então a oportunidade aberta hoje É retornada como futura (classificação errada)
+        $query = new ApiQuery(Opportunity::class, [
+            'registrationFrom' => 'GT(' . $hoje_so_data . ')',
+        ]);
+        $this->assertContains(
+            $opportunity->id,
+            $query->findIds(),
+            'Com data pura a oportunidade aberta hoje depois da meia-noite é erroneamente classificada como futura — o frontend deve enviar timestamp completo'
+        );
     }
 }

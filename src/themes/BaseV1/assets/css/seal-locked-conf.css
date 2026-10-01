@@ -1,4 +1,3 @@
-
 .fields {
     padding: 5px;
     font-weight: normal;
@@ -23,4 +22,75 @@
     font-weight: bold;
     letter-spacing: .1em;
     text-transform: uppercase;
+}
+
+.locked-fields-list {
+    margin-bottom: 1rem;
+}
+
+.locked-field-card {
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    margin-bottom: 0.5rem;
+    background: #fff;
+}
+
+.locked-field-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.5rem 0.75rem;
+    background: #f5f5f5;
+}
+
+.locked-field-header label {
+    margin: 0;
+    font-weight: normal;
+    flex: 1;
+}
+
+.locked-field-toggle {
+    background: none;
+    border: none;
+    padding: 0.25rem;
+    cursor: pointer;
+}
+
+.locked-field-toggle::after {
+    content: '▼';
+    display: inline-block;
+    transition: transform 0.2s;
+}
+
+.locked-field-toggle[aria-expanded="true"]::after {
+    transform: rotate(180deg);
+}
+
+.locked-field-body {
+    padding: 0.75rem;
+    border-top: 1px solid #eee;
+}
+
+.locked-field-checkbox {
+    display: block;
+    margin-bottom: 0.5rem;
+}
+
+.expiry-inputs {
+    margin-bottom: 0.5rem;
+    padding-left: 1rem;
+}
+
+.expiry-inputs label {
+    display: inline-block;
+    margin-right: 0.5rem;
+}
+
+.expiry-inputs input[type="number"] {
+    width: 60px;
+}
+
+.invalidator-help {
+    margin-top: 0.25rem;
+    color: #666;
 }

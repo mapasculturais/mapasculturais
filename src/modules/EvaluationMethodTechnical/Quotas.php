@@ -799,9 +799,21 @@ class Quotas {
 
         foreach ($this->firstPhase->registrationFieldConfigurations as $field) {
             if ($field->fieldName === $criterion_type) {
+                $field_type = $field->fieldType;
+
+                // agent-owner/collective fields store the entity field type (select, date, …)
+                // in Agent metadata; without resolving it, tiebreaker comparisons are skipped.
+                if (in_array($field_type, ['agent-owner-field', 'agent-collective-field'], true)) {
+                    $entity_field = $field->config['entityField'] ?? null;
+                    $agent_meta = \MapasCulturais\Entities\Agent::getPropertiesMetadata();
+                    if ($entity_field && isset($agent_meta[$entity_field]['type'])) {
+                        $field_type = $agent_meta[$entity_field]['type'];
+                    }
+                }
+
                 return (object) [
                     'title' => $field->title,
-                    'fieldType' => $field->fieldType,
+                    'fieldType' => $field_type,
                 ];
             }
         }
@@ -975,8 +987,12 @@ class Quotas {
                 
 
                 if(in_array($selected->fieldType, ['multiselect', 'checkboxes'])) {
-                    $registration1Has = array_intersect($registration1->{$tiebreaker->criterionType}, $tiebreaker->preferences);
-                    $registration2Has = array_intersect($registration2->{$tiebreaker->criterionType}, $tiebreaker->preferences);
+                    $registration1Values = $this->normalizeQuotaFieldValue($registration1->{$tiebreaker->criterionType} ?? null);
+                    $registration2Values = $this->normalizeQuotaFieldValue($registration2->{$tiebreaker->criterionType} ?? null);
+                    $preferences = $this->normalizeQuotaFieldValue($tiebreaker->preferences ?? null);
+
+                    $registration1Has = array_intersect($registration1Values, $preferences);
+                    $registration2Has = array_intersect($registration2Values, $preferences);
 
                     $registration1Has = !empty($registration1Has);
                     $registration2Has = !empty($registration2Has);

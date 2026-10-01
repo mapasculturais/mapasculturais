@@ -8,6 +8,7 @@ $this->import('
     complaint-suggestion
     entity-actions
     entity-admins
+    entity-data
     entity-files-list
     entity-gallery
     entity-gallery-video
@@ -20,6 +21,7 @@ $this->import('
     entity-social-media
     entity-terms
     mc-breadcrumb
+    mc-card
     mc-container
     mc-share-links
     mc-tab
@@ -45,6 +47,57 @@ $this->breadcrumb = [
                     <opportunity-list></opportunity-list>
                     <div class="grid-12 col-12">
                         <agent-data-1 :entity="entity"></agent-data-1>
+                        <?php $this->applyTemplateHook('single1-agent-documents','before') ?>
+                        <template v-if="entity.currentUserPermissions.viewPrivateData">
+                            <div v-if="entity.rgNumero || entity.cnhNumero || entity.passaporteNumero" class="col-12 agent-data">
+                                <div class="agent-data__secondTitle">
+                                    <h4 class="title bold"><?php i::_e("Documentos") ?></h4>
+                                </div>
+                                <div class="grid-12">
+                                    <div v-if="entity.rgNumero" class="col-4 sm:col-12"><entity-data class="agent-data__fields--field" :entity="entity" prop="rgNumero" label="<?php i::_e('RG') ?>"></entity-data></div>
+                                    <div v-if="entity.rgOrgaoEmissor" class="col-4 sm:col-12"><entity-data class="agent-data__fields--field" :entity="entity" prop="rgOrgaoEmissor" label="<?php i::_e('Órgão Emissor') ?>"></entity-data></div>
+                                    <div v-if="entity.rgUF" class="col-4 sm:col-12"><entity-data class="agent-data__fields--field" :entity="entity" prop="rgUF" label="<?php i::_e('UF') ?>"></entity-data></div>
+                                    <div v-if="entity.rgNumero || entity.rgOrgaoEmissor || entity.rgUF" class="col-12 divider"></div>
+
+                                    <div v-if="entity.cnhNumero" class="col-4 sm:col-12"><entity-data class="agent-data__fields--field" :entity="entity" prop="cnhNumero" label="<?php i::_e('CNH') ?>"></entity-data></div>
+                                    <div v-if="entity.cnhCategoria" class="col-4 sm:col-12"><entity-data class="agent-data__fields--field" :entity="entity" prop="cnhCategoria" label="<?php i::_e('Categoria') ?>"></entity-data></div>
+                                    <div v-if="entity.cnhValidade" class="col-4 sm:col-12"><entity-data class="agent-data__fields--field" :entity="entity" prop="cnhValidade" label="<?php i::_e('Validade') ?>"></entity-data></div>
+                                    <div v-if="entity.cnhNumero || entity.cnhCategoria || entity.cnhValidade" class="col-12 divider"></div>
+
+                                    <div v-if="entity.passaporteNumero" class="col-12"><entity-data class="agent-data__fields--field" :entity="entity" prop="passaporteNumero" label="<?php i::_e('Passaporte') ?>"></entity-data></div>
+                                </div>
+                            </div>
+                            <div v-if="entity.files?.['docs-cpf'] || entity.files?.['docs-rg'] || entity.files?.['docs-cnh'] || entity.files?.['docs-passaporte'] || entity.files?.['docs-residencia'] || entity.files?.['docs-vinculo-territorial'] || entity.files?.['docs-raca'] || entity.files?.['docs-pcd'] || entity.files?.['docs-comunidades']" class="col-12 agent-data">
+                                <div class="agent-data__secondTitle">
+                                    <h4 class="title bold"><?php i::_e("Comprovantes") ?></h4>
+                                </div>
+                                <entity-files-list v-if="entity.files?.['docs-cpf']" :entity="entity" classes="col-12 docs-anexo-list" group="docs-cpf" seal-prop="cpfAnexo" title="<?php i::_e('Comprovante de CPF'); ?>"></entity-files-list>
+                                <entity-files-list v-if="entity.files?.['docs-rg']" :entity="entity" classes="col-12 docs-anexo-list" group="docs-rg" seal-prop="rgAnexo" title="<?php i::_e('Comprovante de RG'); ?>"></entity-files-list>
+                                <entity-files-list v-if="entity.files?.['docs-cnh']" :entity="entity" classes="col-12 docs-anexo-list" group="docs-cnh" seal-prop="cnhAnexo" title="<?php i::_e('Comprovante de CNH'); ?>"></entity-files-list>
+                                <entity-files-list v-if="entity.files?.['docs-passaporte']" :entity="entity" classes="col-12 docs-anexo-list" group="docs-passaporte" seal-prop="passaporteAnexo" title="<?php i::_e('Comprovante de Passaporte'); ?>"></entity-files-list>
+                                <entity-files-list v-if="entity.files?.['docs-residencia']" :entity="entity" classes="col-12 docs-anexo-list" group="docs-residencia" seal-prop="comprovanteResidenciaAnexo" title="<?php i::_e('Comprovante de Residência'); ?>"></entity-files-list>
+                                <entity-files-list v-if="entity.files?.['docs-vinculo-territorial']" :entity="entity" classes="col-12 docs-anexo-list" group="docs-vinculo-territorial" seal-prop="comprovanteVinculoTerritorialAnexo" title="<?php i::_e('Comprovante de Vínculo Territorial'); ?>"></entity-files-list>
+                                <entity-files-list v-if="entity.files?.['docs-raca']" :entity="entity" classes="col-12 docs-anexo-list" group="docs-raca" seal-prop="racaAnexo" title="<?php i::_e('Comprovação de Raça/Cor'); ?>"></entity-files-list>
+                                <entity-files-list v-if="entity.files?.['docs-pcd']" :entity="entity" classes="col-12 docs-anexo-list" group="docs-pcd" seal-prop="pessoaDeficienciaAnexo" title="<?php i::_e('Comprovação de Pessoa com Deficiência'); ?>"></entity-files-list>
+                                <entity-files-list v-if="entity.files?.['docs-comunidades']" :entity="entity" classes="col-12 docs-anexo-list" group="docs-comunidades" seal-prop="comunidadesTradicionalAnexo" title="<?php i::_e('Comprovação de Comunidade Tradicional'); ?>"></entity-files-list>
+                            </div>
+                            <div v-if="entity.files?.['docs-certidao-fiscal'] || entity.files?.['docs-certidao-trabalhista'] || entity.files?.['docs-certidao-contas']" class="col-12 agent-data">
+                                <div class="agent-data__secondTitle">
+                                    <h4 class="title bold"><?php i::_e("Documentos e Certidões") ?></h4>
+                                </div>
+                                <entity-files-list v-if="entity.files?.['docs-certidao-fiscal']" :entity="entity" classes="col-12 docs-anexo-list" group="docs-certidao-fiscal" seal-prop="certidaoFiscalAnexo" title="<?php i::_e('Certidão de Regularidade Fiscal'); ?>"></entity-files-list>
+                                <entity-files-list v-if="entity.files?.['docs-certidao-trabalhista']" :entity="entity" classes="col-12 docs-anexo-list" group="docs-certidao-trabalhista" seal-prop="certidaoTrabalhistaAnexo" title="<?php i::_e('Certidão de Regularidade Trabalhista'); ?>"></entity-files-list>
+                                <entity-files-list v-if="entity.files?.['docs-certidao-contas']" :entity="entity" classes="col-12 docs-anexo-list" group="docs-certidao-contas" seal-prop="certidaoPrestacaoContasAnexo" title="<?php i::_e('Certidão de Prestação de Contas'); ?>"></entity-files-list>
+                            </div>
+                            <div v-if="entity.files?.['docs-curriculo'] || entity.files?.['docs-portfolio']" class="col-12 agent-data">
+                                <div class="agent-data__secondTitle">
+                                    <h4 class="title bold"><?php i::_e("Portfólio e Currículo") ?></h4>
+                                </div>
+                                <entity-files-list v-if="entity.files?.['docs-curriculo']" :entity="entity" classes="col-12 docs-anexo-list" group="docs-curriculo" seal-prop="curriculoAnexo" title="<?php i::_e('Currículo'); ?>"></entity-files-list>
+                                <entity-files-list v-if="entity.files?.['docs-portfolio']" :entity="entity" classes="col-12 docs-portfolio-list" group="docs-portfolio" seal-prop="portfolioAnexo" title="<?php i::_e('Portfólio'); ?>"></entity-files-list>
+                            </div>
+                        </template>
+                        <?php $this->applyTemplateHook('single1-agent-documents','after') ?>
                         <country-address-view v-if="entity.publicLocation" :entity="entity" class="col-12"></country-address-view>
                         <div v-if="entity.longDescription" class="col-12">
                             <span>   
