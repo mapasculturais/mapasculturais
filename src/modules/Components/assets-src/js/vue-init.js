@@ -19,8 +19,12 @@ import Slider from '@vueform/slider'
 import VueQrcode from '@chenfengyuan/vue-qrcode';
 import Shepherd from 'shepherd.js';
 import 'shepherd.js/dist/css/shepherd.css'
+import { Chart as ChartJS, registerables as ChartJSRegisterables } from 'chart.js';
+import { Bar as ChartBar, Line as ChartLine, Pie as ChartPie } from 'vue-chartjs';
 
 
+
+ChartJS.register(...ChartJSRegisterables);
 
 const app = Vue.createApp({})
 const pinia = Pinia.createPinia()
@@ -35,6 +39,9 @@ app.component('Slider', Slider);
 app.component('Draggable', VueDraggable);
 app.component('VueQrcode', VueQrcode);
 app.component('Shepherd', Shepherd);
+app.component('ChartBar', ChartBar);
+app.component('ChartLine', ChartLine);
+app.component('ChartPie', ChartPie);
 app.directive('maska', vMaska);
 app.use(MediaQuery)
 

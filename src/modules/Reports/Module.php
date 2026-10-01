@@ -74,7 +74,10 @@ class Module extends \MapasCulturais\Module
             $sendHook = [];
 
             if(!$opportunity->isOpportunityPhase){
-                if ($registrationsByTime = $self->registrationsByTime($opportunity, $status)) {
+                // $status (string) nunca foi usado por registrationsByTime; o parâmetro
+                // extra era ignorado silenciosamente. Removido para não colidir com o
+                // novo parâmetro tipado $proponentTypes (array) do método.
+                if ($registrationsByTime = $self->registrationsByTime($opportunity)) {
                     $sendHook['registrationsByTime'] = $registrationsByTime;
                 }
             }
@@ -185,6 +188,9 @@ class Module extends \MapasCulturais\Module
      * Verifica se existem dados suficientes para gerar o gráfico
      */
     public function checkIfChartHasData(array $values) {
+        // TODO: a regra abaixo (>= 2 categorias com valor > 1) foi desativada sem
+        // documentação de por quê; mantida desligada até definirmos a regra de
+        // negócio correta para "dados insuficientes para gerar o gráfico".
         return true;
         if (count($values) > 1) {
 
@@ -211,23 +217,26 @@ class Module extends \MapasCulturais\Module
      *
      *
      */
-    public function registrationsByTime($opp)
+    public function registrationsByTime($opp, ?array $proponentTypes = null, ?array $ranges = null)
     {
         $app = App::i();
 
         //Pega conexão
         $conn = $app->em->getConnection();
 
+        [$ptClause, $ptParams] = QueryFilters::proponentTypeClause($proponentTypes);
+        [$rangeClause, $rangeParams] = QueryFilters::rangeClause($ranges);
+
         //Seleciona e agrupa inscrições ao longo do tempo
         $initiated = [];
         $sent = [];
-        $params = ['opportunity_id' => $opp->id];
+        $params = array_merge(['opportunity_id' => $opp->id], $ptParams, $rangeParams);
 
         $query = "SELECT
         to_char(create_timestamp , 'YYYY-MM-DD') as date,
         count(*) as total
         FROM registration r
-        WHERE opportunity_id = :opportunity_id
+        WHERE opportunity_id = :opportunity_id{$ptClause}{$rangeClause}
         GROUP BY to_char(create_timestamp , 'YYYY-MM-DD')
         ORDER BY date ASC";
         $result = $conn->fetchAll($query, $params);
@@ -240,7 +249,7 @@ class Module extends \MapasCulturais\Module
         to_char(sent_timestamp , 'YYYY-MM-DD') as date,
         count(*) as total
         FROM registration r
-        WHERE opportunity_id = :opportunity_id AND r.status > 0
+        WHERE opportunity_id = :opportunity_id AND r.status > 0{$ptClause}{$rangeClause}
         GROUP BY to_char(sent_timestamp , 'YYYY-MM-DD')
         ORDER BY date ASC";
         $result = $conn->fetchAll($query, $params);
@@ -295,18 +304,21 @@ class Module extends \MapasCulturais\Module
      *
      *
      */
-    public function registrationsByStatus($opp)
+    public function registrationsByStatus($opp, ?array $proponentTypes = null, ?array $ranges = null)
     {
         $app = App::i();
 
         //Pega conexão
         $conn = $app->em->getConnection();
 
+        [$ptClause, $ptParams] = QueryFilters::proponentTypeClause($proponentTypes);
+        [$rangeClause, $rangeParams] = QueryFilters::rangeClause($ranges);
+
         //Seleciona e agrupa inscrições ao longo do tempo
         $data = [];
-        $params = ['opportunity_id' => $opp->id];
+        $params = array_merge(['opportunity_id' => $opp->id], $ptParams, $rangeParams);
 
-        $query = "SELECT status, count(*) FROM registration r WHERE opportunity_id = :opportunity_id GROUP BY status";
+        $query = "SELECT status, count(*) FROM registration r WHERE opportunity_id = :opportunity_id{$ptClause}{$rangeClause} GROUP BY status";
 
         $result = $conn->fetchAll($query, $params);
 
@@ -347,27 +359,18 @@ class Module extends \MapasCulturais\Module
      *
      *
      */
-    public function registrationsByEvaluation($opp, $statusValue)
+    public function registrationsByEvaluation($opp, $statusValue, ?array $proponentTypes = null, ?array $ranges = null)
     {
-        switch ($statusValue) {
-            case 'all':
-                $status = '> 0';
-                break;
-            case 'draft':
-                $status = '= 0';
-                break;
-            case 'approved':
-                $status = '= 10';
-                break;
-            default:
-                $status = '> 0';
-                break;
-        }
-        
+        $status = QueryFilters::statusOperator($statusValue);
+
         $complement = "";
         if($status != "> 0"){
             $complement = " AND status $status";
         }
+
+        [$ptClause, $ptParams] = QueryFilters::proponentTypeClause($proponentTypes);
+        [$rangeClause, $rangeParams] = QueryFilters::rangeClause($ranges);
+        $complement .= $ptClause . $rangeClause;
 
         $app = App::i();
 
@@ -376,7 +379,7 @@ class Module extends \MapasCulturais\Module
 
         //Seleciona e agrupa inscrições ao longo do tempo
         $data = [];
-        $params = ['opportunity_id' => $opp->id];
+        $params = array_merge(['opportunity_id' => $opp->id], $ptParams, $rangeParams);
 
         $query = "SELECT count(*) AS evaluated FROM registration r WHERE opportunity_id = :opportunity_id  AND consolidated_result <> '0' {$complement}";
 
@@ -406,7 +409,7 @@ class Module extends \MapasCulturais\Module
      *
      *
      */
-    public function registrationsByEvaluationStatus(Opportunity $opp)
+    public function registrationsByEvaluationStatus(Opportunity $opp, ?array $proponentTypes = null, ?array $ranges = null)
     {
         $app = App::i();
 
@@ -415,11 +418,14 @@ class Module extends \MapasCulturais\Module
         //Pega conexão
         $conn = $app->em->getConnection();
 
+        [$ptClause, $ptParams] = QueryFilters::proponentTypeClause($proponentTypes);
+        [$rangeClause, $rangeParams] = QueryFilters::rangeClause($ranges);
+
         //Seleciona e agrupa inscrições ao longo do tempo
         $data = [];
-        $params = ['opportunity_id' => $opp->id];
+        $params = array_merge(['opportunity_id' => $opp->id], $ptParams, $rangeParams);
 
-        $query = "SELECT COUNT(*), consolidated_result FROM registration r WHERE opportunity_id = :opportunity_id  AND consolidated_result <> '0' GROUP BY consolidated_result";
+        $query = "SELECT COUNT(*), consolidated_result FROM registration r WHERE opportunity_id = :opportunity_id  AND consolidated_result <> '0'{$ptClause}{$rangeClause} GROUP BY consolidated_result";
 
         $evaluations = $conn->fetchAll($query, $params);
 
@@ -440,7 +446,7 @@ class Module extends \MapasCulturais\Module
      *
      *
      */
-    public function registrationsByEvaluationStatusBar(Opportunity $opp)
+    public function registrationsByEvaluationStatusBar(Opportunity $opp, ?array $proponentTypes = null, ?array $ranges = null)
     {
         $app = App::i();
 
@@ -449,9 +455,12 @@ class Module extends \MapasCulturais\Module
         //Pega conexão
         $conn = $app->em->getConnection();
 
+        [$ptClause, $ptParams] = QueryFilters::proponentTypeClause($proponentTypes);
+        [$rangeClause, $rangeParams] = QueryFilters::rangeClause($ranges);
+
         //Seleciona e agrupa inscrições ao longo do tempo
 
-        $params = ['opportunity_id' => $opp->id];
+        $params = array_merge(['opportunity_id' => $opp->id], $ptParams, $rangeParams);
 
         $result = [];
         $a = 0;
@@ -468,7 +477,7 @@ class Module extends \MapasCulturais\Module
             FROM registration r
             WHERE opportunity_id = :opportunity_id
             AND consolidated_result <> '0' AND
-            cast(consolidated_result as DECIMAL) BETWEEN {$i} AND {$b}";
+            cast(consolidated_result as DECIMAL) BETWEEN {$i} AND {$b}{$ptClause}{$rangeClause}";
 
             $label = "de " . $a . " a " . $b;
 
@@ -490,7 +499,7 @@ class Module extends \MapasCulturais\Module
      *
      *
      */
-    public function registrationsByCategory(Opportunity $opp)
+    public function registrationsByCategory(Opportunity $opp, ?array $proponentTypes = null, ?array $ranges = null)
     {
         $app = App::i();
 
@@ -499,11 +508,14 @@ class Module extends \MapasCulturais\Module
         //Pega conexão
         $conn = $app->em->getConnection();
 
+        [$ptClause, $ptParams] = QueryFilters::proponentTypeClause($proponentTypes);
+        [$rangeClause, $rangeParams] = QueryFilters::rangeClause($ranges);
+
         //Seleciona e agrupa inscrições ao longo do tempo
         $data = [];
-        $params = ['opportunity_id' => $opp->id];
+        $params = array_merge(['opportunity_id' => $opp->id], $ptParams, $rangeParams);
 
-        $query = "select  category, count(category) from registration r where r.status > 0 and r.opportunity_id = :opportunity_id group by category";
+        $query = "select  category, count(category) from registration r where r.status > 0 and r.opportunity_id = :opportunity_id{$ptClause}{$rangeClause} group by category";
 
         $data = $conn->fetchAll($query, $params);
 

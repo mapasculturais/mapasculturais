@@ -44,13 +44,16 @@ app.component('opportunity-phase-reports', {
 
                     newPhases.push({
                         label: `${this.text('periodo_inscricao')} / ${phase.name}`,
-                        id: previousPhase.id
+                        id: previousPhase.id,
+                        entity: previousPhase
                     });
                 } else {
+                    const isEvaluationPhase = phase.__objectType === 'evaluationmethodconfiguration';
                     newPhases.push({
                         type: this.evaluationMethods[phase.type] ? this.evaluationMethods[phase.type].name : '',
                         label: phase.name,
-                        id: phase.__objectType === 'evaluationmethodconfiguration' ? phase.opportunity.id : phase.id
+                        id: isEvaluationPhase ? phase.opportunity.id : phase.id,
+                        entity: isEvaluationPhase ? phase.opportunity : phase
                     });
                 }
 
