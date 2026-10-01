@@ -12,6 +12,7 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Corrige a exportação da planilha de inscrições: a coluna "Critérios de desempate" saía com cabeçalho mas vazia em todas as linhas; passa a trazer o mesmo texto da tabela de inscrições ("critério: valor"), um critério por linha, com o valor do critério de data de envio formatado como data legível
 - Corrige o layout das opções do campo "Tipo" na configuração de bônus de pontuação (avaliação técnica), que ficavam em linha única e estouravam a borda do card; as opções passam a quebrar linha dentro do card
 - Mantém o nome automático da fase de recurso sincronizado com a fase de avaliação ou coleta de origem e corrige nomes antigos nas listas de inscrições, preservando nomes personalizados
+- Ao enviar um arquivo maior que o tamanho permitido, o campo de anexo passa a exibir o motivo da recusa, em vez de uma mensagem de erro vermelha e sem texto, e informa que o arquivo excede o limite em vez de dizer que nenhum arquivo foi enviado
 
 ### Melhorias
 - Renomeia a seção "Etapa suplementar" para "Etapa de recurso" e padroniza o tamanho do título com as demais seções da configuração de fase de avaliação
@@ -65,7 +66,6 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 ## [7.8.7] - 2026-09-01
 ### Correções
 - Corrige os filtros de período de inscrição nas listas de oportunidades para enviar o timestamp completo (YYYY-MM-DD HH:mm) em vez de apenas a data, classificando corretamente as inscrições abertas, futuras e encerradas
-- Ao enviar um arquivo maior que o tamanho permitido, o campo de anexo passa a exibir o motivo da recusa, em vez de uma mensagem de erro vermelha e sem texto, e informa que o arquivo excede o limite em vez de dizer que nenhum arquivo foi enviado
 - Corrige ocultação do resumo do agente ao desmarcar campo visível para avaliadores
 
 ### Melhorias
