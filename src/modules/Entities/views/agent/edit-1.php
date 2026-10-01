@@ -109,7 +109,7 @@ $this->breadcrumb = [
                                 <entity-field :entity="entity" classes="col-12" prop="nomeSocial" label="<?= i::__('Nome Social') ?>"></entity-field>
                                 <entity-field :entity="entity" classes="col-12" prop="nomeCompleto" label="<?= i::__('Nome Completo') ?>"></entity-field>
                                 <entity-field v-if="global.auth.is('admin')" :entity="entity" prop="type" @change="entity.save(true).then(() => global.reload())" classes="col-12"></entity-field>
-                                <entity-field :entity="entity" classes="col-12" prop="cpf"></entity-field>
+                                <entity-field :entity="entity" classes="col-12" prop="cpf" :required="<?= $entity->isPropertyRequired($entity, 'cpf') ? 'true' : 'false' ?>"></entity-field>
                                 <entity-field :disabled="!(entity?.cpf?.length == 14)" :entity="entity" classes="col-12" prop="cpfAnexo" title-modal="<?php i::_e('Anexar CPF - Formatos: (png, jpeg, pdf)') ?>" group-name="docs-cpf" :hide-label="true"></entity-field>
                                 <entity-field :entity="entity" classes="col-12" prop="cnpj" label="<?= i::__('MEI (CNPJ do MEI)') ?>"></entity-field>
                                 <entity-field :disabled="!(entity?.cnpj?.length == 18)" :entity="entity" classes="col-12" prop="cnpjAnexo" title-modal="<?php i::_e('Anexar CNPJ - Formatos: (png, jpeg, pdf)') ?>" group-name="docs-cnpj" :hide-label="true"></entity-field>

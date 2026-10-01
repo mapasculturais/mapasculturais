@@ -150,6 +150,13 @@ app.component('entity-field', {
             type: Boolean,
             default: false
         },
+        // Issue #32: sobrescreve, quando informado (true/false), a marcação de
+        // obrigatório vinda da descrição da propriedade (description.required).
+        // null (default) mantém o comportamento atual baseado na descrição.
+        required: {
+            type: Boolean,
+            default: null
+        },
         debounce: {
             type: Number,
             default: 0

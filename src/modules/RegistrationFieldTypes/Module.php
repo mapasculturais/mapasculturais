@@ -618,6 +618,13 @@ class Module extends \MapasCulturais\Module
         $app->hook("entity(RegistrationMeta).save:before", function () use ($app, $module) {
             $entity = $this->owner;
             if($module->inEditableTransaction) {
+                // editableFields só lista campos do formulário (field_*).
+                // Metadados gravados pelo sistema no mesmo salvamento, como o
+                // bônus da avaliação técnica, não são edição do proponente.
+                if (!str_starts_with((string) $this->key, 'field_')) {
+                    return;
+                }
+
                 if($entity->editableFields && !in_array($this->key, $entity->editableFields, true)) {
                     $app->em->rollback();
                     $module->inEditableTransaction = false;

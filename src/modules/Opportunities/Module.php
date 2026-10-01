@@ -488,9 +488,16 @@ class Module extends \MapasCulturais\Module{
             /** @var Opportunity $this */
             $data = ['opportunity' => $this];
 
-            // verifica se a oportunidade e a fase estão públicas
-            $enabled_status = $this->isAppealPhase ? -1 : Opportunity::STATUS_ENABLED;
-            $active = in_array($this->status, [-1,-20, Opportunity::STATUS_ENABLED]) && $this->firstPhase->status === $enabled_status;
+            // verifica se a oportunidade e a fase estão públicas.
+            // Na fase de recurso, o que importa é o status da oportunidade raiz (edital publicado):
+            // o pai imediato pode ser o próprio edital (STATUS_ENABLED) ou uma fase intermediária (STATUS_PHASE).
+            $root = $this;
+            while ($root->parent) {
+                $root = $root->parent;
+            }
+
+            $active = in_array($this->status, [Opportunity::STATUS_PHASE, Opportunity::STATUS_APPEAL_PHASE, Opportunity::STATUS_ENABLED], true)
+                && $root->status === Opportunity::STATUS_ENABLED;
 
             $now = new \DateTime;
 

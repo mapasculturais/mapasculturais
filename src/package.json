@@ -1,6 +1,13 @@
 {
     "name": "mapasculturais",
     "private": true,
+    "pnpm": {
+        "onlyBuiltDependencies": [
+            "@parcel/watcher",
+            "@scarf/scarf",
+            "vue-demi"
+        ]
+    },
     "scripts": {
         "dev": "pnpm run --parallel --recursive dev",
         "build": "pnpm run --parallel --recursive build",

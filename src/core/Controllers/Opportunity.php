@@ -1482,7 +1482,7 @@ class Opportunity extends EntityController {
         if(!$opportunity->canUser("@control")){
             $avaliableEvaluationFields = (!empty($opportunity->avaliableEvaluationFields) || $opportunity->avaliableEvaluationFields != "") ? $opportunity->avaliableEvaluationFields : [];
             foreach($_result as $key => $res){
-                if(!in_array("agentsSummary", array_keys($avaliableEvaluationFields))){
+                if(!isset($avaliableEvaluationFields['agentsSummary']) || ($avaliableEvaluationFields['agentsSummary'] !== true && $avaliableEvaluationFields['agentsSummary'] !== 'true')){
                     $_result[$key]['registration']['owner'] =  [];
                     $_result[$key]['registration']['agentsData'] =  [];
                 }

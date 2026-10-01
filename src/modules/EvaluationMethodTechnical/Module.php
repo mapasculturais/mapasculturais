@@ -1405,7 +1405,14 @@ class Module extends \MapasCulturais\EvaluationMethod
 
             if ($field_conf->conditional) {
                 $_field_name = $field_conf->conditionalField;
-                if (trim($registration->$_field_name) != trim($field_conf->conditionalValue)) {
+                $_field_value = $registration->$_field_name;
+                $_conditional_value = $field_conf->conditionalValue;
+
+                if (is_array($_field_value)) {
+                    if (!in_array($_conditional_value, $_field_value)) {
+                        continue;
+                    }
+                } elseif ($_field_value != $_conditional_value) {
                     continue;
                 }
             }

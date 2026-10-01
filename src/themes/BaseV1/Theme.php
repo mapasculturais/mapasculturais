@@ -1523,7 +1523,7 @@ class Theme extends MapasCulturais\Theme {
                     $field_name = $field->fieldName;
                     
                     if($reg->canUser("viewUserEvaluation") && !$reg->canUser("@control")){
-                        if(isset($opportunity->avaliableEvaluationFields[$field_name])){
+                        if(isset($opportunity->avaliableEvaluationFields[$field_name]) && ($opportunity->avaliableEvaluationFields[$field_name] === true || $opportunity->avaliableEvaluationFields[$field_name] === 'true')){
                             $this->jsObject['entity']['object']->$field_name = $reg->$field_name;
                         }
                     }else{

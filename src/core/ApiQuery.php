@@ -1596,6 +1596,14 @@ class ApiQuery {
                 }
             }
 
+            if($this->permissionCacheClassName && !($permissions[$entity[$this->pk]] ?? false)){
+                foreach(['agentsData', '_spaceData'] as $snapshot){
+                    if(isset($entity[$snapshot])){
+                        $entity[$snapshot] = [];
+                    }
+                }
+            }
+
             foreach($this->_selectingUrls as $action){
                 $entity["{$action}Url"] = $this->entityController->createUrl($action, [$entity[$this->pk]]);
             }
@@ -3579,7 +3587,9 @@ class ApiQuery {
             }
         }
         
-        if($class::isPrivateEntity() && !isset($this->apiParams['@permissions'])){
+        // Private entities must always filter by permission. Covers missing,
+        // empty, "0" and whitespace @permissions (trim makes _addFilter no-op).
+        if($class::isPrivateEntity() && !$this->_filteringByPermissions){
             $this->_addFilterByPermissions('view');
         }
 
