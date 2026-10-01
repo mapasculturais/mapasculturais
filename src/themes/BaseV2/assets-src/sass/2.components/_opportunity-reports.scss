@@ -4,11 +4,25 @@
     display: flex;
     flex-direction: column;
     gap: size(32);
+
+    &__toolbar {
+        align-items: center;
+        display: flex;
+        flex-wrap: wrap;
+        gap: size(16);
+        justify-content: space-between;
+    }
+
+    &__print-header,
+    &--print {
+        display: none;
+    }
 }
 
 .opportunity-reports-filters {
     align-items: center;
     display: flex;
+    flex-wrap: wrap;
     gap: size(12);
 
     &__label {
@@ -19,6 +33,51 @@
 
     &__status {
         min-width: size(200);
+    }
+}
+
+@media print {
+    body.opportunity-reports-printing {
+        > :not(.opportunity-reports--print) {
+            display: none !important;
+        }
+
+        > .opportunity-reports--print {
+            display: block;
+            print-color-adjust: exact;
+            width: 100%;
+
+            .opportunity-reports__print-header {
+                display: block;
+                margin-bottom: size(24);
+            }
+
+            .opportunity-reports__toolbar,
+            .opportunity-reports-chart-card__actions,
+            .opportunity-reports-chart-builder__header button {
+                display: none !important;
+            }
+
+            .opportunity-reports-static-charts__grid,
+            .opportunity-reports-chart-builder__grid {
+                display: block;
+            }
+
+            .opportunity-reports-chart-card {
+                break-inside: avoid;
+                margin-bottom: size(24);
+            }
+
+            .mc-chart {
+                height: auto;
+
+                img {
+                    display: block;
+                    height: auto;
+                    width: 100%;
+                }
+            }
+        }
     }
 }
 

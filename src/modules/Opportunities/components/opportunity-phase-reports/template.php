@@ -29,7 +29,7 @@ $this->import('
     </template>
     <template #default="{index, item}">
         <mc-card v-if="item.id">
-            <opportunity-reports :entity="item.entity"></opportunity-reports>
+            <opportunity-reports :entity="item.entity" :phase-label="item.label"></opportunity-reports>
         </mc-card>
     </template>
 </mc-stepper-vertical>
