@@ -13,6 +13,8 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Corrige o layout das opções do campo "Tipo" na configuração de bônus de pontuação (avaliação técnica), que ficavam em linha única e estouravam a borda do card; as opções passam a quebrar linha dentro do card
 - Mantém o nome automático da fase de recurso sincronizado com a fase de avaliação ou coleta de origem e corrige nomes antigos nas listas de inscrições, preservando nomes personalizados
 - Ao enviar um arquivo maior que o tamanho permitido, o campo de anexo passa a exibir o motivo da recusa, em vez de uma mensagem de erro vermelha e sem texto, e informa que o arquivo excede o limite em vez de dizer que nenhum arquivo foi enviado
+- Corrige erro de chave duplicada que interrompia a criação de oportunidade a partir de modelo: a configuração de avaliação vinculada a uma fase deixava de ficar na fase e era desviada para a oportunidade principal
+- Corrige as cópias geradas a partir de modelo que saíam com fases sem tipo e sem exibir os campos: os metadados de cada fase passam a ser copiados fielmente do modelo, sem perdas e sem valores padrão gravados como dado
 
 ### Melhorias
 - Renomeia a seção "Etapa suplementar" para "Etapa de recurso" e padroniza o tamanho do título com as demais seções da configuração de fase de avaliação
