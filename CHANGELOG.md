@@ -17,6 +17,7 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 ### Melhorias
 - Renomeia a seção "Etapa suplementar" para "Etapa de recurso" e padroniza o tamanho do título com as demais seções da configuração de fase de avaliação
 - As seções "Selos certificadores" e "Adicionar textos explicativos das avaliações" passam a carregar recolhidas por padrão na configuração de fases
+- Adiciona o botão "Editar" à esquerda de "Acessar" na listagem de oportunidades para usuários autenticados com permissão de edição, com disposição responsiva dos botões
 
 ## [7.8.14] - 2026-09-25
 ### Correções
