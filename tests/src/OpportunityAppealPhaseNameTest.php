@@ -6,6 +6,8 @@ use Laminas\Diactoros\Response;
 use MapasCulturais\Entities\Opportunity;
 use MapasCulturais\Exceptions\Halt;
 use MapasCulturais\i;
+use Monolog\Handler\NullHandler;
+use Monolog\Level;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Tests\Abstract\TestCase;
 use Tests\Builders\PhasePeriods\ConcurrentEndingAfter;
@@ -283,7 +285,14 @@ class OpportunityAppealPhaseNameTest extends TestCase
         })->call($this->app);
 
         $this->assertArrayHasKey('atualiza nomes automáticos das fases de recurso', $updates);
-        $this->assertTrue($updates['atualiza nomes automáticos das fases de recurso']());
+
+        // Em --process-isolation, qualquer escrita em stderr (handler error_log) vira erro do PHPUnit.
+        $this->app->log->pushHandler(new NullHandler(Level::Debug));
+        try {
+            $this->assertTrue($updates['atualiza nomes automáticos das fases de recurso']());
+        } finally {
+            $this->app->log->popHandler();
+        }
     }
 
     private function rowPosition(Opportunity $phase): string
