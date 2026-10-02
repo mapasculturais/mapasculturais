@@ -15,6 +15,8 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Ao enviar um arquivo maior que o tamanho permitido, o campo de anexo passa a exibir o motivo da recusa, em vez de uma mensagem de erro vermelha e sem texto, e informa que o arquivo excede o limite em vez de dizer que nenhum arquivo foi enviado
 - Corrige erro de chave duplicada que interrompia a criação de oportunidade a partir de modelo: a configuração de avaliação vinculada a uma fase deixava de ficar na fase e era desviada para a oportunidade principal
 - Corrige as cópias geradas a partir de modelo que saíam com fases sem tipo e sem exibir os campos: os metadados de cada fase passam a ser copiados fielmente do modelo, sem perdas e sem valores padrão gravados como dado
+- Corrige a duplicação de oportunidades, que gerava uma fase de avaliação a mais na cópia: a fase clonada herdava a configuração de avaliação da origem; a cópia passa a manter a mesma estrutura de fases da origem, com configurações de avaliação próprias
+- Ajusta o controle de acesso da API na consulta de entidades, alinhando filtros e ordenação às permissões de visualização de dados do usuário
 
 ### Melhorias
 - Renomeia a seção "Etapa suplementar" para "Etapa de recurso" e padroniza o tamanho do título com as demais seções da configuração de fase de avaliação
