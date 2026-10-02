@@ -11,6 +11,24 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - **Avaliação automática por selos**: o gestor pode indicar, em uma fase de avaliação, quais selos validam o proponente. Se a pessoa já tiver esses selos válidos no perfil, a inscrição é **dispensada automaticamente** daquela fase (marcada como “Dispensada por selos”) e segue para a próxima etapa, sem precisar de avaliador
 - **Novos anexos no cadastro do agente** (também usáveis como campos `@` no formulário de inscrição): CPF, CNPJ, CNH, RG, passaporte, comprovante de residência, vínculo territorial, currículo, portfólio, certidões fiscal, trabalhista e de prestação de contas, além de comprovantes de raça/cor, pessoa com deficiência e comunidades tradicionais. Os arquivos ficam no perfil e acompanham a inscrição automaticamente
 
+## [7.8.15] - 2026-10-02
+### Correções
+- Corrige a edição aberta de campos da inscrição quando o edital tem avaliação técnica com bônus de pontuação: ao salvar um campo do formulário, o sistema recalcula e grava o bônus na mesma operação, a trava tratava esse metadado como alteração do proponente e desfazia o salvamento; a trava passa a valer só para campos do formulário (`field_*`)
+- Corrige o agendamento da publicação automática do resultado na fase de recurso: quando a fase de recurso é criada diretamente no edital publicado, o job de publicação do resultado deixava de ser agendado e o resultado nunca era divulgado automaticamente; o gate de agendamento passa a considerar o status da oportunidade raiz (edital publicado) em vez do pai imediato
+- Corrige a exportação da planilha de inscrições: a coluna "Critérios de desempate" saía com cabeçalho mas vazia em todas as linhas; passa a trazer o mesmo texto da tabela de inscrições ("critério: valor"), um critério por linha, com o valor do critério de data de envio formatado como data legível
+- Corrige o layout das opções do campo "Tipo" na configuração de bônus de pontuação (avaliação técnica), que ficavam em linha única e estouravam a borda do card; as opções passam a quebrar linha dentro do card
+- Mantém o nome automático da fase de recurso sincronizado com a fase de avaliação ou coleta de origem e corrige nomes antigos nas listas de inscrições, preservando nomes personalizados
+- Ao enviar um arquivo maior que o tamanho permitido, o campo de anexo passa a exibir o motivo da recusa, em vez de uma mensagem de erro vermelha e sem texto, e informa que o arquivo excede o limite em vez de dizer que nenhum arquivo foi enviado
+- Corrige erro de chave duplicada que interrompia a criação de oportunidade a partir de modelo: a configuração de avaliação vinculada a uma fase deixava de ficar na fase e era desviada para a oportunidade principal
+- Corrige as cópias geradas a partir de modelo que saíam com fases sem tipo e sem exibir os campos: os metadados de cada fase passam a ser copiados fielmente do modelo, sem perdas e sem valores padrão gravados como dado
+- Corrige a duplicação de oportunidades, que gerava uma fase de avaliação a mais na cópia: a fase clonada herdava a configuração de avaliação da origem; a cópia passa a manter a mesma estrutura de fases da origem, com configurações de avaliação próprias
+- Ajusta o controle de acesso da API na consulta de entidades, alinhando filtros e ordenação às permissões de visualização de dados do usuário
+
+### Melhorias
+- Renomeia a seção "Etapa suplementar" para "Etapa de recurso" e padroniza o tamanho do título com as demais seções da configuração de fase de avaliação
+- As seções "Selos certificadores" e "Adicionar textos explicativos das avaliações" passam a carregar recolhidas por padrão na configuração de fases
+- Adiciona o botão "Editar" à esquerda de "Acessar" na listagem de oportunidades para usuários autenticados com permissão de edição, com disposição responsiva dos botões
+
 ## [7.8.14] - 2026-09-25
 ### Correções
 - Implementa db-update que corrige dados legados das etapas de inscrição dos editais: campos e anexos sem etapa são associados a uma etapa existente (ou a uma nova, quando não houver) e etapas vazias duplicadas são removidas
