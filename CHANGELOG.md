@@ -5,7 +5,7 @@ Todas as mudanças notáveis no projeto serão documentadas neste arquivo.
 O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/)
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [UNRELEASED]
+## [7.8.15] - 2026-10-02
 ### Correções
 - Corrige a edição aberta de campos da inscrição quando o edital tem avaliação técnica com bônus de pontuação: ao salvar um campo do formulário, o sistema recalcula e grava o bônus na mesma operação, a trava tratava esse metadado como alteração do proponente e desfazia o salvamento; a trava passa a valer só para campos do formulário (`field_*`)
 - Corrige o agendamento da publicação automática do resultado na fase de recurso: quando a fase de recurso é criada diretamente no edital publicado, o job de publicação do resultado deixava de ser agendado e o resultado nunca era divulgado automaticamente; o gate de agendamento passa a considerar o status da oportunidade raiz (edital publicado) em vez do pai imediato
