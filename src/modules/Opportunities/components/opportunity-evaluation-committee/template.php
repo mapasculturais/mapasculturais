@@ -12,6 +12,8 @@ $this->import('
     mc-avatar
     mc-confirm-button
     mc-icon
+    mc-loading
+    mc-modal
     mc-multiselect
     mc-tag-list
     select-entity
@@ -191,17 +193,82 @@ $this->import('
                                 <span class="label"> #{{entity.id}} - {{entity.name}}<template v-if="entity.user?.email"> - {{entity.user.email}}</template></span>
                             </template>
                         </select-entity>
-                        <mc-confirm-button v-if="infoReviewer.metadata?.summary.sent > 0" @confirm="reopenEvaluations(infoReviewer.agentUserId)">
+                        <mc-modal
+                            v-if="infoReviewer.metadata?.summary.sent > 0"
+                            title="<?= i::esc_attr__('Reabrir avaliações') ?>"
+                            classes="opportunity-evaluation-committee__reopen-modal"
+                            teleport="body"
+                            @open="openReopenModal(infoReviewer)"
+                            @close="resetReopenModal()">
                             <template #button="{open}">
-                                <button class="opportunity-evaluation-committee__card-footer-button danger__border button button--icon button--sm" :class="{'disabled' : infoReviewer.metadata.summary.sent <= 0}" @click="open()">
+                                <button class="opportunity-evaluation-committee__card-footer-button danger__border button button--icon button--sm" @click="open()">
                                     <mc-icon name="lock-open" class="danger__color" ></mc-icon>
                                     <?php i::_e('Reabrir avaliações') ?>
                                 </button>
                             </template>
-                            <template #message="message">
-                                <?php i::_e('Você tem certeza que deseja reabrir as avaliações para este avaliador?') ?>
+
+                            <template #default>
+                                <div class="opportunity-evaluation-committee__reopen-content">
+                                    <p><?= i::__('Selecione as avaliações enviadas de') ?> <strong>{{infoReviewer.agent.name}}</strong> <?= i::__('que deseja reabrir.') ?></p>
+                                    <mc-alert v-if="entity.evaluationTo?.isPast()" type="warning" small>
+                                        <?= i::__('O período de avaliação terminou. Reabrir avaliações não libera a edição pelo avaliador.') ?>
+                                    </mc-alert>
+
+                                    <mc-loading :condition="loadingSentEvaluations && sentPage === 0"><?= i::__('Carregando avaliações') ?></mc-loading>
+                                    <mc-alert v-if="reopenListError" type="danger" small>
+                                        <?= i::__('Não foi possível carregar as avaliações enviadas.') ?>
+                                    </mc-alert>
+                                    <p v-if="!loadingSentEvaluations && !reopenListError && sentTotal === 0">
+                                        <?= i::__('Não há avaliações enviadas para este avaliador.') ?>
+                                    </p>
+
+                                    <template v-if="sentEvaluations.length > 0">
+                                        <p class="semibold"><?= i::__('Avaliações enviadas') ?>: {{sentTotal}}</p>
+                                        <div class="opportunity-evaluation-committee__reopen-list scrollbar">
+                                            <label v-for="evaluation in sentEvaluations" :key="evaluation.id" class="opportunity-evaluation-committee__reopen-item">
+                                                <input type="checkbox" v-model="selectedEvaluationIds" :value="evaluation.id" :disabled="reopening">
+                                                <span><?= i::__('Inscrição') ?> {{evaluation.registrationNumber}}</span>
+                                            </label>
+                                        </div>
+                                        <button v-if="sentHasMore" class="button button--text" :disabled="loadingSentEvaluations" @click="loadMoreSentEvaluations()">
+                                            <?= i::__('Carregar mais avaliações') ?>
+                                        </button>
+                                        <mc-loading :condition="loadingSentEvaluations && sentPage > 0"><?= i::__('Carregando avaliações') ?></mc-loading>
+                                    </template>
+                                    <button v-if="reopenListError" class="button button--text" @click="loadMoreSentEvaluations()">
+                                        <?= i::__('Tentar novamente') ?>
+                                    </button>
+                                </div>
                             </template>
-                        </mc-confirm-button>
+
+                            <template #actions="modal">
+                                <button class="button button--text" @click="modal.close()"><?= i::__('Cancelar') ?></button>
+                                <mc-confirm-button @confirm="reopenSelectedEvaluations(modal)" yes="<?= i::esc_attr__('Reabrir') ?>" no="<?= i::esc_attr__('Cancelar') ?>">
+                                    <template #button="{open}">
+                                        <button class="button button--primary-outline" :disabled="!selectedEvaluationIds.length || loadingSentEvaluations || reopenListError || reopening" @click="open()">
+                                            <template v-if="selectedEvaluationIds.length === 1"><?= i::__('Reabrir selecionada') ?></template>
+                                            <template v-else><?= i::__('Reabrir selecionadas') ?></template> ({{selectedEvaluationIds.length}})
+                                        </button>
+                                    </template>
+                                    <template #message>
+                                        <?= i::__('Reabrir') ?> <strong>{{selectedEvaluationIds.length}}</strong>
+                                        <template v-if="selectedEvaluationIds.length === 1"><?= i::__('avaliação selecionada de') ?></template>
+                                        <template v-else><?= i::__('avaliações selecionadas de') ?></template>
+                                        <strong>{{infoReviewer.agent.name}}</strong>?
+                                    </template>
+                                </mc-confirm-button>
+                                <mc-confirm-button @confirm="reopenAllEvaluations(modal)" yes="<?= i::esc_attr__('Reabrir todas') ?>" no="<?= i::esc_attr__('Cancelar') ?>">
+                                    <template #button="{open}">
+                                        <button class="button button--secondary" :disabled="sentTotal === 0 || loadingSentEvaluations || reopenListError || reopening" @click="open()">
+                                            <?= i::__('Reabrir todas') ?> ({{sentTotal}})
+                                        </button>
+                                    </template>
+                                    <template #message>
+                                        <?= i::__('Reabrir todas as') ?> <strong>{{sentTotal}}</strong> <?= i::__('avaliações enviadas de') ?> <strong>{{infoReviewer.agent.name}}</strong>?
+                                    </template>
+                                </mc-confirm-button>
+                            </template>
+                        </mc-modal>
 
                         <button class="opportunity-evaluation-committee__card-footer-button button button--disable button--icon button--sm" @click="disableOrEnableReviewer(infoReviewer)">
                             <mc-icon name="close"></mc-icon> {{buttonText(infoReviewer.status)}}
