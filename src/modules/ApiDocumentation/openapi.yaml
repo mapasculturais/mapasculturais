@@ -1,0 +1,1775 @@
+openapi: 3.1.0
+
+info:
+  title: API pública do Mapas Culturais
+  version: "2026-09-05"
+  summary: Leitura pública de Agentes, Eventos, Espaços, Projetos e Oportunidades.
+  description: |
+    API de leitura pública do Mapas Culturais. Não exige chave nem cadastro para
+    consultar dados públicos.
+  license:
+    name: AGPL-3.0
+    url: https://www.gnu.org/licenses/agpl-3.0.html
+
+servers:
+  - url: /
+    description: Esta instalação
+
+tags:
+  - name: Agentes
+    description: Pessoas e organizações do campo cultural.
+  - name: Eventos
+    description: Programação cultural, com suas ocorrências de data, hora e local.
+  - name: Espaços
+    description: Equipamentos e locais culturais.
+  - name: Projetos
+    description: Iniciativas e programas culturais.
+  - name: Oportunidades
+    description: Editais, chamadas e prêmios.
+  - name: Apoio
+    description: Vocabulários e informações da instalação.
+
+paths:
+  /api/agent/describe:
+    get:
+      tags: [Agentes]
+      operationId: describeAgents
+      summary: Descreve todos os campos de agentes
+      description: |
+        Inventário completo dos campos desta instalação: propriedades, metadados e
+        relações, cada um com tipo e rótulo. É o ponto de partida para descobrir o
+        que pedir em `@select` e o que filtrar.
+
+        Lista o modelo de dados completo. Campos de dado pessoal constam aqui, mas
+        não são retornados nas consultas.
+      responses:
+        '200':
+          description: Mapa de campo para definição.
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties:
+                  $ref: '#/components/schemas/DefinicaoDeCampo'
+
+  /api/agent/filters:
+    get:
+      tags: [Agentes]
+      operationId: filtersAgents
+      summary: Campos de seleção e taxonomias de agentes
+      description: |
+        Devolve `metadata` (os campos de escolha, com suas opções) e `taxonomies`
+        (os vocabulários controlados). É a lista adequada para montar uma interface
+        de busca.
+      responses:
+        '200':
+          description: Filtros disponíveis.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  metadata:
+                    type: object
+                  taxonomies:
+                    type: object
+
+  /api/agent/getTypes:
+    get:
+      tags: [Agentes]
+      operationId: getAgentsTypes
+      summary: Tipos de agentes
+      description: |
+        Os ids de tipo variam por instalação. É a fonte dos valores do filtro `type`.
+      responses:
+        '200':
+          description: Lista de tipos.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Tipo'
+
+  /api/agent/getTypeGroups:
+    get:
+      tags: [Agentes]
+      operationId: getAgentsTypeGroups
+      summary: Grupos de tipos de agentes
+      responses:
+        '200':
+          description: Grupos de tipos.
+          content:
+            application/json:
+              schema:
+                type: object
+
+  /api/agent/find:
+    get:
+      tags: [Agentes]
+      operationId: findAgents
+      summary: Lista agentes
+      description: |
+        Devolve um array de agentes públicos.
+        Sem `@select`, cada registro traz apenas o `id`.
+
+        O total e a paginação vêm no cabeçalho `API-Metadata`.
+
+        Dados pessoais — documentos, contatos privados, data de nascimento e
+        marcadores demográficos — não são retornados.
+
+        O endereço só é retornado quando o agente ligou `publicLocation`.
+
+        Filtros são pares `campo=OPERADOR(valor)` na query string, aplicáveis a
+        qualquer campo listado em `/api/agent/describe`. Os abaixo são os mais usados.
+
+        Operadores: `EQ`, `IN`, `IIN`, `LIKE`, `ILIKE`, `GT`, `GTE`, `LT`, `LTE`,
+        `BET`, `NULL`, `AND`, `OR`, `GEONEAR`, `GEOBOUNDING`. Para negar, prefixe o
+        operador com `!` — `!EQ(...)`, `!IN(...)`, `!NULL()`.
+
+        Vários filtros combinam com **E**; `@or=1` troca para **OU**.
+
+        Para recortar por entidade relacionada, filtre pelo id da relação:
+        `owner=EQ(19647)` ou `owner=IN(19647,107829)`.
+      parameters:
+        - $ref: '#/components/parameters/Select'
+        - $ref: '#/components/parameters/Order'
+        - $ref: '#/components/parameters/Limit'
+        - $ref: '#/components/parameters/Page'
+        - $ref: '#/components/parameters/Offset'
+        - $ref: '#/components/parameters/Count'
+        - $ref: '#/components/parameters/Keyword'
+        - $ref: '#/components/parameters/Seals'
+        - $ref: '#/components/parameters/Verified'
+        - $ref: '#/components/parameters/Or'
+        - $ref: '#/components/parameters/Formato'
+        - $ref: '#/components/parameters/FiltroSubsite'
+        - $ref: '#/components/parameters/FiltroId'
+        - $ref: '#/components/parameters/FiltroNome'
+        - name: publicLocation
+          in: query
+          description: Se o agente publicou a própria localização. Só nesses o endereço vem preenchido.
+          schema:
+            type: string
+            examples:
+              - 'EQ(true)'
+        - name: En_Estado
+          in: query
+          description: Unidade federativa do endereço, quando público.
+          schema:
+            type: string
+            examples:
+              - 'EQ(BA)'
+              - 'IN(BA,SE)'
+        - name: En_Municipio
+          in: query
+          description: Município do endereço, quando público.
+          schema:
+            type: string
+            examples:
+              - 'EQ(Salvador)'
+        - name: type
+          in: query
+          description: Tipo de agente. Os ids vêm de `/api/agent/getTypes`.
+          schema:
+            type: string
+            examples:
+              - 'EQ(1)'
+              - 'IN(1,2)'
+      responses:
+        '200':
+          description: |
+            Array de agentes públicos.
+          headers:
+            API-Metadata:
+              $ref: '#/components/headers/ApiMetadata'
+            Access-Control-Allow-Origin:
+              $ref: '#/components/headers/Cors'
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Agent'
+              examples:
+                exemplo:
+                  value:
+                  - id: 1
+                    name: Secretaria de Cidadania e Diversidade Cultural
+                    En_Municipio: Brasília
+                    En_Estado: DF
+                    '@entityType': agent
+
+  /api/agent/findOne:
+    get:
+      tags: [Agentes]
+      operationId: findOneAgent
+      summary: Devolve um agente
+      description: |
+        Mesma linguagem de consulta de `find`, limitada ao primeiro resultado.
+        Devolve o objeto, ou `null` quando nada casa.
+      parameters:
+        - $ref: '#/components/parameters/Select'
+        - $ref: '#/components/parameters/Order'
+        - $ref: '#/components/parameters/Keyword'
+        - $ref: '#/components/parameters/Formato'
+        - $ref: '#/components/parameters/FiltroSubsite'
+        - $ref: '#/components/parameters/FiltroId'
+        - $ref: '#/components/parameters/FiltroNome'
+        - name: publicLocation
+          in: query
+          description: Se o agente publicou a própria localização. Só nesses o endereço vem preenchido.
+          schema:
+            type: string
+            examples:
+              - 'EQ(true)'
+        - name: En_Estado
+          in: query
+          description: Unidade federativa do endereço, quando público.
+          schema:
+            type: string
+            examples:
+              - 'EQ(BA)'
+              - 'IN(BA,SE)'
+        - name: En_Municipio
+          in: query
+          description: Município do endereço, quando público.
+          schema:
+            type: string
+            examples:
+              - 'EQ(Salvador)'
+        - name: type
+          in: query
+          description: Tipo de agente. Os ids vêm de `/api/agent/getTypes`.
+          schema:
+            type: string
+            examples:
+              - 'EQ(1)'
+              - 'IN(1,2)'
+      responses:
+        '200':
+          description: |
+            Um agente encontrado, ou `null`.
+          headers:
+            Access-Control-Allow-Origin:
+              $ref: '#/components/headers/Cors'
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/Agent'
+                  - type: 'null'
+
+  /api/agent/getChildrenIds/id:{id}:
+    get:
+      tags: [Agentes]
+      operationId: getAgentsChildrenIds
+      summary: Ids dos agentes filhos
+      description: |
+        Ids dos registros filhos na hierarquia. Array vazio quando não há filhos.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Id do registro pai.
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Ids dos registros filhos.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: integer
+
+  /api/event/describe:
+    get:
+      tags: [Eventos]
+      operationId: describeEvents
+      summary: Descreve todos os campos de eventos
+      description: |
+        Inventário completo dos campos desta instalação: propriedades, metadados e
+        relações, cada um com tipo e rótulo. É o ponto de partida para descobrir o
+        que pedir em `@select` e o que filtrar.
+
+        Lista o modelo de dados completo. Campos de dado pessoal constam aqui, mas
+        não são retornados nas consultas.
+      responses:
+        '200':
+          description: Mapa de campo para definição.
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties:
+                  $ref: '#/components/schemas/DefinicaoDeCampo'
+
+  /api/event/filters:
+    get:
+      tags: [Eventos]
+      operationId: filtersEvents
+      summary: Campos de seleção e taxonomias de eventos
+      description: |
+        Devolve `metadata` (os campos de escolha, com suas opções) e `taxonomies`
+        (os vocabulários controlados). É a lista adequada para montar uma interface
+        de busca.
+      responses:
+        '200':
+          description: Filtros disponíveis.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  metadata:
+                    type: object
+                  taxonomies:
+                    type: object
+
+  /api/event/getTypes:
+    get:
+      tags: [Eventos]
+      operationId: getEventsTypes
+      summary: Tipos de eventos
+      description: |
+        Os ids de tipo variam por instalação. É a fonte dos valores do filtro `type`.
+      responses:
+        '200':
+          description: Lista de tipos.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Tipo'
+
+  /api/event/getTypeGroups:
+    get:
+      tags: [Eventos]
+      operationId: getEventsTypeGroups
+      summary: Grupos de tipos de eventos
+      responses:
+        '200':
+          description: Grupos de tipos.
+          content:
+            application/json:
+              schema:
+                type: object
+
+  /api/event/findOne:
+    get:
+      tags: [Eventos]
+      operationId: findOneEvent
+      summary: Devolve um evento
+      description: |
+        Mesma linguagem de consulta de `find`, limitada ao primeiro resultado.
+        Devolve o objeto, ou `null` quando nada casa.
+      parameters:
+        - $ref: '#/components/parameters/Select'
+        - $ref: '#/components/parameters/Order'
+        - $ref: '#/components/parameters/Keyword'
+        - $ref: '#/components/parameters/Formato'
+        - $ref: '#/components/parameters/FiltroSubsite'
+        - $ref: '#/components/parameters/FiltroId'
+        - $ref: '#/components/parameters/FiltroNome'
+        - name: classificacaoEtaria
+          in: query
+          description: Classificação etária divulgada.
+          schema:
+            type: string
+            examples:
+              - 'EQ(Livre)'
+        - name: type
+          in: query
+          description: Tipo de evento. Os ids vêm de `/api/event/getTypes`.
+          schema:
+            type: string
+            examples:
+              - 'EQ(1)'
+      responses:
+        '200':
+          description: |
+            Um evento encontrado, ou `null`.
+          headers:
+            Access-Control-Allow-Origin:
+              $ref: '#/components/headers/Cors'
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/Event'
+                  - type: 'null'
+
+  /api/event/getChildrenIds/id:{id}:
+    get:
+      tags: [Eventos]
+      operationId: getEventsChildrenIds
+      summary: Ids dos eventos filhos
+      description: |
+        Ids dos registros filhos na hierarquia. Array vazio quando não há filhos.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Id do registro pai.
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Ids dos registros filhos.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: integer
+
+  /api/space/describe:
+    get:
+      tags: [Espaços]
+      operationId: describeSpaces
+      summary: Descreve todos os campos de espaços
+      description: |
+        Inventário completo dos campos desta instalação: propriedades, metadados e
+        relações, cada um com tipo e rótulo. É o ponto de partida para descobrir o
+        que pedir em `@select` e o que filtrar.
+
+        Lista o modelo de dados completo. Campos de dado pessoal constam aqui, mas
+        não são retornados nas consultas.
+      responses:
+        '200':
+          description: Mapa de campo para definição.
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties:
+                  $ref: '#/components/schemas/DefinicaoDeCampo'
+
+  /api/space/filters:
+    get:
+      tags: [Espaços]
+      operationId: filtersSpaces
+      summary: Campos de seleção e taxonomias de espaços
+      description: |
+        Devolve `metadata` (os campos de escolha, com suas opções) e `taxonomies`
+        (os vocabulários controlados). É a lista adequada para montar uma interface
+        de busca.
+      responses:
+        '200':
+          description: Filtros disponíveis.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  metadata:
+                    type: object
+                  taxonomies:
+                    type: object
+
+  /api/space/getTypes:
+    get:
+      tags: [Espaços]
+      operationId: getSpacesTypes
+      summary: Tipos de espaços
+      description: |
+        Os ids de tipo variam por instalação. É a fonte dos valores do filtro `type`.
+      responses:
+        '200':
+          description: Lista de tipos.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Tipo'
+
+  /api/space/getTypeGroups:
+    get:
+      tags: [Espaços]
+      operationId: getSpacesTypeGroups
+      summary: Grupos de tipos de espaços
+      responses:
+        '200':
+          description: Grupos de tipos.
+          content:
+            application/json:
+              schema:
+                type: object
+
+  /api/space/find:
+    get:
+      tags: [Espaços]
+      operationId: findSpaces
+      summary: Lista espaços
+      description: |
+        Devolve um array de espaços públicos.
+        Sem `@select`, cada registro traz apenas o `id`.
+
+        O total e a paginação vêm no cabeçalho `API-Metadata`.
+
+        Diferente de agente, **o endereço do espaço é público**, sem condicional —
+        espaço é local físico e o endereço é parte do que se publica.
+
+        Filtros são pares `campo=OPERADOR(valor)` na query string, aplicáveis a
+        qualquer campo listado em `/api/space/describe`. Os abaixo são os mais usados.
+
+        Operadores: `EQ`, `IN`, `IIN`, `LIKE`, `ILIKE`, `GT`, `GTE`, `LT`, `LTE`,
+        `BET`, `NULL`, `AND`, `OR`, `GEONEAR`, `GEOBOUNDING`. Para negar, prefixe o
+        operador com `!` — `!EQ(...)`, `!IN(...)`, `!NULL()`.
+
+        Vários filtros combinam com **E**; `@or=1` troca para **OU**.
+
+        Para recortar por entidade relacionada, filtre pelo id da relação:
+        `owner=EQ(19647)` ou `owner=IN(19647,107829)`.
+      parameters:
+        - $ref: '#/components/parameters/Select'
+        - $ref: '#/components/parameters/Order'
+        - $ref: '#/components/parameters/Limit'
+        - $ref: '#/components/parameters/Page'
+        - $ref: '#/components/parameters/Offset'
+        - $ref: '#/components/parameters/Count'
+        - $ref: '#/components/parameters/Keyword'
+        - $ref: '#/components/parameters/Seals'
+        - $ref: '#/components/parameters/Verified'
+        - $ref: '#/components/parameters/Or'
+        - $ref: '#/components/parameters/Formato'
+        - $ref: '#/components/parameters/FiltroSubsite'
+        - $ref: '#/components/parameters/FiltroId'
+        - $ref: '#/components/parameters/FiltroNome'
+        - name: En_Estado
+          in: query
+          description: Unidade federativa do endereço.
+          schema:
+            type: string
+            examples:
+              - 'EQ(RJ)'
+              - 'IN(RJ,SP)'
+        - name: En_Municipio
+          in: query
+          description: Município do endereço.
+          schema:
+            type: string
+            examples:
+              - 'EQ(Niterói)'
+        - name: acessibilidade
+          in: query
+          description: Recursos de acessibilidade declarados.
+          schema:
+            type: string
+            examples:
+              - '!NULL()'
+        - name: type
+          in: query
+          description: Tipo de espaço. Os ids vêm de `/api/space/getTypes`.
+          schema:
+            type: string
+            examples:
+              - 'EQ(20)'
+      responses:
+        '200':
+          description: |
+            Array de espaços públicos.
+          headers:
+            API-Metadata:
+              $ref: '#/components/headers/ApiMetadata'
+            Access-Control-Allow-Origin:
+              $ref: '#/components/headers/Cors'
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Space'
+              examples:
+                exemplo:
+                  value:
+                  - id: 6296
+                    name: Galeria de Arte La Salle
+                    En_CEP: 24240-030
+                    En_Municipio: Niterói
+                    En_Estado: RJ
+                    '@entityType': space
+
+  /api/space/findOne:
+    get:
+      tags: [Espaços]
+      operationId: findOneSpace
+      summary: Devolve um espaço
+      description: |
+        Mesma linguagem de consulta de `find`, limitada ao primeiro resultado.
+        Devolve o objeto, ou `null` quando nada casa.
+      parameters:
+        - $ref: '#/components/parameters/Select'
+        - $ref: '#/components/parameters/Order'
+        - $ref: '#/components/parameters/Keyword'
+        - $ref: '#/components/parameters/Formato'
+        - $ref: '#/components/parameters/FiltroSubsite'
+        - $ref: '#/components/parameters/FiltroId'
+        - $ref: '#/components/parameters/FiltroNome'
+        - name: En_Estado
+          in: query
+          description: Unidade federativa do endereço.
+          schema:
+            type: string
+            examples:
+              - 'EQ(RJ)'
+              - 'IN(RJ,SP)'
+        - name: En_Municipio
+          in: query
+          description: Município do endereço.
+          schema:
+            type: string
+            examples:
+              - 'EQ(Niterói)'
+        - name: acessibilidade
+          in: query
+          description: Recursos de acessibilidade declarados.
+          schema:
+            type: string
+            examples:
+              - '!NULL()'
+        - name: type
+          in: query
+          description: Tipo de espaço. Os ids vêm de `/api/space/getTypes`.
+          schema:
+            type: string
+            examples:
+              - 'EQ(20)'
+      responses:
+        '200':
+          description: |
+            Um espaço encontrado, ou `null`.
+          headers:
+            Access-Control-Allow-Origin:
+              $ref: '#/components/headers/Cors'
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/Space'
+                  - type: 'null'
+
+  /api/space/getChildrenIds/id:{id}:
+    get:
+      tags: [Espaços]
+      operationId: getSpacesChildrenIds
+      summary: Ids dos espaços filhos
+      description: |
+        Ids dos registros filhos na hierarquia. Array vazio quando não há filhos.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Id do registro pai.
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Ids dos registros filhos.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: integer
+
+  /api/project/describe:
+    get:
+      tags: [Projetos]
+      operationId: describeProjects
+      summary: Descreve todos os campos de projetos
+      description: |
+        Inventário completo dos campos desta instalação: propriedades, metadados e
+        relações, cada um com tipo e rótulo. É o ponto de partida para descobrir o
+        que pedir em `@select` e o que filtrar.
+
+        Lista o modelo de dados completo. Campos de dado pessoal constam aqui, mas
+        não são retornados nas consultas.
+      responses:
+        '200':
+          description: Mapa de campo para definição.
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties:
+                  $ref: '#/components/schemas/DefinicaoDeCampo'
+
+  /api/project/filters:
+    get:
+      tags: [Projetos]
+      operationId: filtersProjects
+      summary: Campos de seleção e taxonomias de projetos
+      description: |
+        Devolve `metadata` (os campos de escolha, com suas opções) e `taxonomies`
+        (os vocabulários controlados). É a lista adequada para montar uma interface
+        de busca.
+      responses:
+        '200':
+          description: Filtros disponíveis.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  metadata:
+                    type: object
+                  taxonomies:
+                    type: object
+
+  /api/project/getTypes:
+    get:
+      tags: [Projetos]
+      operationId: getProjectsTypes
+      summary: Tipos de projetos
+      description: |
+        Os ids de tipo variam por instalação. É a fonte dos valores do filtro `type`.
+      responses:
+        '200':
+          description: Lista de tipos.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Tipo'
+
+  /api/project/getTypeGroups:
+    get:
+      tags: [Projetos]
+      operationId: getProjectsTypeGroups
+      summary: Grupos de tipos de projetos
+      responses:
+        '200':
+          description: Grupos de tipos.
+          content:
+            application/json:
+              schema:
+                type: object
+
+  /api/project/find:
+    get:
+      tags: [Projetos]
+      operationId: findProjects
+      summary: Lista projetos
+      description: |
+        Devolve um array de projetos públicos.
+        Sem `@select`, cada registro traz apenas o `id`.
+
+        O total e a paginação vêm no cabeçalho `API-Metadata`.
+
+        `startsOn` e `endsOn` delimitam o período do projeto. Um projeto pode reunir
+        eventos, alcançáveis pela relação inversa a partir de `/api/event/find`.
+
+        Filtros são pares `campo=OPERADOR(valor)` na query string, aplicáveis a
+        qualquer campo listado em `/api/project/describe`. Os abaixo são os mais usados.
+
+        Operadores: `EQ`, `IN`, `IIN`, `LIKE`, `ILIKE`, `GT`, `GTE`, `LT`, `LTE`,
+        `BET`, `NULL`, `AND`, `OR`, `GEONEAR`, `GEOBOUNDING`. Para negar, prefixe o
+        operador com `!` — `!EQ(...)`, `!IN(...)`, `!NULL()`.
+
+        Vários filtros combinam com **E**; `@or=1` troca para **OU**.
+
+        Para recortar por entidade relacionada, filtre pelo id da relação:
+        `owner=EQ(19647)` ou `owner=IN(19647,107829)`.
+      parameters:
+        - $ref: '#/components/parameters/Select'
+        - $ref: '#/components/parameters/Order'
+        - $ref: '#/components/parameters/Limit'
+        - $ref: '#/components/parameters/Page'
+        - $ref: '#/components/parameters/Offset'
+        - $ref: '#/components/parameters/Count'
+        - $ref: '#/components/parameters/Keyword'
+        - $ref: '#/components/parameters/Seals'
+        - $ref: '#/components/parameters/Verified'
+        - $ref: '#/components/parameters/Or'
+        - $ref: '#/components/parameters/Formato'
+        - $ref: '#/components/parameters/FiltroSubsite'
+        - $ref: '#/components/parameters/FiltroId'
+        - $ref: '#/components/parameters/FiltroNome'
+        - name: startsOn
+          in: query
+          description: Início do projeto.
+          schema:
+            type: string
+            examples:
+              - 'GTE(2026-01-01)'
+              - '!NULL()'
+        - name: endsOn
+          in: query
+          description: Fim do projeto.
+          schema:
+            type: string
+            examples:
+              - 'LTE(2026-12-31)'
+        - name: type
+          in: query
+          description: Tipo de projeto. Os ids vêm de `/api/project/getTypes`.
+          schema:
+            type: string
+            examples:
+              - 'EQ(1)'
+      responses:
+        '200':
+          description: |
+            Array de projetos públicos.
+          headers:
+            API-Metadata:
+              $ref: '#/components/headers/ApiMetadata'
+            Access-Control-Allow-Origin:
+              $ref: '#/components/headers/Cors'
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Project'
+              examples:
+                exemplo:
+                  value:
+                  - id: 12
+                    name: Festival de Inverno
+                    startsOn: '2026-07-01'
+                    endsOn: '2026-07-31'
+                    '@entityType': project
+
+  /api/project/findOne:
+    get:
+      tags: [Projetos]
+      operationId: findOneProject
+      summary: Devolve um projeto
+      description: |
+        Mesma linguagem de consulta de `find`, limitada ao primeiro resultado.
+        Devolve o objeto, ou `null` quando nada casa.
+      parameters:
+        - $ref: '#/components/parameters/Select'
+        - $ref: '#/components/parameters/Order'
+        - $ref: '#/components/parameters/Keyword'
+        - $ref: '#/components/parameters/Formato'
+        - $ref: '#/components/parameters/FiltroSubsite'
+        - $ref: '#/components/parameters/FiltroId'
+        - $ref: '#/components/parameters/FiltroNome'
+        - name: startsOn
+          in: query
+          description: Início do projeto.
+          schema:
+            type: string
+            examples:
+              - 'GTE(2026-01-01)'
+              - '!NULL()'
+        - name: endsOn
+          in: query
+          description: Fim do projeto.
+          schema:
+            type: string
+            examples:
+              - 'LTE(2026-12-31)'
+        - name: type
+          in: query
+          description: Tipo de projeto. Os ids vêm de `/api/project/getTypes`.
+          schema:
+            type: string
+            examples:
+              - 'EQ(1)'
+      responses:
+        '200':
+          description: |
+            Um projeto encontrado, ou `null`.
+          headers:
+            Access-Control-Allow-Origin:
+              $ref: '#/components/headers/Cors'
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/Project'
+                  - type: 'null'
+
+  /api/project/getChildrenIds/id:{id}:
+    get:
+      tags: [Projetos]
+      operationId: getProjectsChildrenIds
+      summary: Ids dos projetos filhos
+      description: |
+        Ids dos registros filhos na hierarquia. Array vazio quando não há filhos.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Id do registro pai.
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Ids dos registros filhos.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: integer
+
+  /api/opportunity/describe:
+    get:
+      tags: [Oportunidades]
+      operationId: describeOpportunities
+      summary: Descreve todos os campos de oportunidades
+      description: |
+        Inventário completo dos campos desta instalação: propriedades, metadados e
+        relações, cada um com tipo e rótulo. É o ponto de partida para descobrir o
+        que pedir em `@select` e o que filtrar.
+
+        Lista o modelo de dados completo. Campos de dado pessoal constam aqui, mas
+        não são retornados nas consultas.
+      responses:
+        '200':
+          description: Mapa de campo para definição.
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties:
+                  $ref: '#/components/schemas/DefinicaoDeCampo'
+
+  /api/opportunity/filters:
+    get:
+      tags: [Oportunidades]
+      operationId: filtersOpportunities
+      summary: Campos de seleção e taxonomias de oportunidades
+      description: |
+        Devolve `metadata` (os campos de escolha, com suas opções) e `taxonomies`
+        (os vocabulários controlados). É a lista adequada para montar uma interface
+        de busca.
+      responses:
+        '200':
+          description: Filtros disponíveis.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  metadata:
+                    type: object
+                  taxonomies:
+                    type: object
+
+  /api/opportunity/getTypes:
+    get:
+      tags: [Oportunidades]
+      operationId: getOpportunitiesTypes
+      summary: Tipos de oportunidades
+      description: |
+        Os ids de tipo variam por instalação. É a fonte dos valores do filtro `type`.
+      responses:
+        '200':
+          description: Lista de tipos.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Tipo'
+
+  /api/opportunity/getTypeGroups:
+    get:
+      tags: [Oportunidades]
+      operationId: getOpportunitiesTypeGroups
+      summary: Grupos de tipos de oportunidades
+      responses:
+        '200':
+          description: Grupos de tipos.
+          content:
+            application/json:
+              schema:
+                type: object
+
+  /api/opportunity/find:
+    get:
+      tags: [Oportunidades]
+      operationId: findOpportunities
+      summary: Lista oportunidades
+      description: |
+        Devolve um array de oportunidades públicas.
+        Sem `@select`, cada registro traz apenas o `id`.
+
+        O total e a paginação vêm no cabeçalho `API-Metadata`.
+
+        `registrationFrom` e `registrationTo` delimitam o período de inscrição — é o
+        par a usar para listar editais abertos.
+
+        As inscrições em si não são públicas. `publishedRegistrations` indica que o
+        organizador divulgou o resultado da seleção.
+
+        Filtros são pares `campo=OPERADOR(valor)` na query string, aplicáveis a
+        qualquer campo listado em `/api/opportunity/describe`. Os abaixo são os mais usados.
+
+        Operadores: `EQ`, `IN`, `IIN`, `LIKE`, `ILIKE`, `GT`, `GTE`, `LT`, `LTE`,
+        `BET`, `NULL`, `AND`, `OR`, `GEONEAR`, `GEOBOUNDING`. Para negar, prefixe o
+        operador com `!` — `!EQ(...)`, `!IN(...)`, `!NULL()`.
+
+        Vários filtros combinam com **E**; `@or=1` troca para **OU**.
+
+        Para recortar por entidade relacionada, filtre pelo id da relação:
+        `owner=EQ(19647)` ou `owner=IN(19647,107829)`.
+      parameters:
+        - $ref: '#/components/parameters/Select'
+        - $ref: '#/components/parameters/Order'
+        - $ref: '#/components/parameters/Limit'
+        - $ref: '#/components/parameters/Page'
+        - $ref: '#/components/parameters/Offset'
+        - $ref: '#/components/parameters/Count'
+        - $ref: '#/components/parameters/Keyword'
+        - $ref: '#/components/parameters/Seals'
+        - $ref: '#/components/parameters/Verified'
+        - $ref: '#/components/parameters/Or'
+        - $ref: '#/components/parameters/Formato'
+        - $ref: '#/components/parameters/FiltroSubsite'
+        - $ref: '#/components/parameters/FiltroId'
+        - $ref: '#/components/parameters/FiltroNome'
+        - name: registrationFrom
+          in: query
+          description: Abertura das inscrições.
+          schema:
+            type: string
+            examples:
+              - 'LTE(2026-09-05)'
+        - name: registrationTo
+          in: query
+          description: Encerramento das inscrições.
+          schema:
+            type: string
+            examples:
+              - 'GTE(2026-09-05)'
+        - name: publishedRegistrations
+          in: query
+          description: Se o resultado da seleção foi divulgado.
+          schema:
+            type: string
+            examples:
+              - 'EQ(true)'
+        - name: continuousFlow
+          in: query
+          description: Fluxo contínuo, sem data de encerramento.
+          schema:
+            type: string
+            examples:
+              - 'EQ(true)'
+        - name: type
+          in: query
+          description: Tipo de oportunidade. Os ids vêm de `/api/opportunity/getTypes`.
+          schema:
+            type: string
+            examples:
+              - 'EQ(1)'
+      responses:
+        '200':
+          description: |
+            Array de oportunidades públicas.
+          headers:
+            API-Metadata:
+              $ref: '#/components/headers/ApiMetadata'
+            Access-Control-Allow-Origin:
+              $ref: '#/components/headers/Cors'
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Opportunity'
+              examples:
+                exemplo:
+                  value:
+                  - id: 77
+                    name: Prêmio Culturas Populares
+                    registrationFrom: '2026-08-01 00:00:00'
+                    registrationTo: '2026-09-30 23:59:59'
+                    '@entityType': opportunity
+
+  /api/opportunity/findOne:
+    get:
+      tags: [Oportunidades]
+      operationId: findOneOpportunitie
+      summary: Devolve uma oportunidade
+      description: |
+        Mesma linguagem de consulta de `find`, limitada ao primeiro resultado.
+        Devolve o objeto, ou `null` quando nada casa.
+      parameters:
+        - $ref: '#/components/parameters/Select'
+        - $ref: '#/components/parameters/Order'
+        - $ref: '#/components/parameters/Keyword'
+        - $ref: '#/components/parameters/Formato'
+        - $ref: '#/components/parameters/FiltroSubsite'
+        - $ref: '#/components/parameters/FiltroId'
+        - $ref: '#/components/parameters/FiltroNome'
+        - name: registrationFrom
+          in: query
+          description: Abertura das inscrições.
+          schema:
+            type: string
+            examples:
+              - 'LTE(2026-09-05)'
+        - name: registrationTo
+          in: query
+          description: Encerramento das inscrições.
+          schema:
+            type: string
+            examples:
+              - 'GTE(2026-09-05)'
+        - name: publishedRegistrations
+          in: query
+          description: Se o resultado da seleção foi divulgado.
+          schema:
+            type: string
+            examples:
+              - 'EQ(true)'
+        - name: continuousFlow
+          in: query
+          description: Fluxo contínuo, sem data de encerramento.
+          schema:
+            type: string
+            examples:
+              - 'EQ(true)'
+        - name: type
+          in: query
+          description: Tipo de oportunidade. Os ids vêm de `/api/opportunity/getTypes`.
+          schema:
+            type: string
+            examples:
+              - 'EQ(1)'
+      responses:
+        '200':
+          description: |
+            Uma oportunidade encontrada, ou `null`.
+          headers:
+            Access-Control-Allow-Origin:
+              $ref: '#/components/headers/Cors'
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/Opportunity'
+                  - type: 'null'
+
+  /api/opportunity/getChildrenIds/id:{id}:
+    get:
+      tags: [Oportunidades]
+      operationId: getOpportunitiesChildrenIds
+      summary: Ids das oportunidades filhas
+      description: |
+        Ids dos registros filhos na hierarquia. Array vazio quando não há filhos.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Id do registro pai.
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Ids dos registros filhos.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: integer
+
+  /api/term/list/{taxonomia}:
+    get:
+      tags: [Apoio]
+      operationId: listTerms
+      summary: Termos válidos de um vocabulário
+      description: |
+        A taxonomia vai **no caminho**, não na query string: `/api/term/list/area`
+        funciona, `/api/term/list?taxonomy=area` não.
+
+        Os termos daqui são os valores aceitos pelo filtro `term:{taxonomia}` nas
+        consultas de entidade — por exemplo `term:area=EQ(Gestão Cultural)`.
+      parameters:
+        - name: taxonomia
+          in: path
+          required: true
+          description: Slug do vocabulário.
+          schema:
+            type: string
+            examples:
+              - area
+              - tag
+              - linguagem
+      responses:
+        '200':
+          description: Termos do vocabulário.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+              examples:
+                linguagem:
+                  value: [Artes Circenses, Artes Integradas, Artes Visuais, Audiovisual]
+
+  /api/geoDivisions/list:
+    get:
+      tags: [Apoio]
+      operationId: listGeoDivisions
+      summary: Divisões geográficas configuradas
+      responses:
+        '200':
+          description: Divisões geográficas e suas chaves de metadado.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    key:
+                      type: string
+                    name:
+                      type: string
+                    metakey:
+                      type: string
+                    display:
+                      type: boolean
+
+  /api/site/info:
+    get:
+      tags: [Apoio]
+      operationId: siteInfo
+      summary: Descrição da instalação e contagens globais
+      responses:
+        '200':
+          description: Informações da instalação.
+          content:
+            application/json:
+              schema:
+                type: object
+
+components:
+
+  headers:
+
+    ApiMetadata:
+      description: |
+        Total de registros e estado da paginação, em JSON. É aqui que se lê o total,
+        não no corpo.
+      schema:
+        type: string
+      example: '{"count":187570,"page":1,"limit":50,"numPages":3752,"keyword":"","order":""}'
+
+    Cors:
+      description: Política de origem cruzada da instalação.
+      schema:
+        type: string
+      example: '*'
+
+  parameters:
+
+    Select:
+      name: '@select'
+      in: query
+      required: false
+      description: |
+        Campos a devolver, separados por vírgula. **Sem este parâmetro a resposta
+        traz só o `id`.**
+
+        Aceita metadados como campos comuns (`En_Municipio`), navegação por relação
+        com ponto e chaves (`owner.{id,name}`) e campos compostos (`terms`, `files`,
+        `type`, `singleUrl`, `location`).
+
+        Uma relação vem `null` quando a entidade relacionada não é pública.
+      schema:
+        type: string
+        examples:
+          - id,name,shortDescription
+          - id,name,owner.{id,name}
+          - id,name,terms,type,singleUrl
+
+    Order:
+      name: '@order'
+      in: query
+      required: false
+      description: Ordenação. Aceita `ASC`/`DESC` e vários campos separados por vírgula.
+      schema:
+        type: string
+        examples:
+          - name ASC
+          - createTimestamp DESC
+
+    Limit:
+      name: '@limit'
+      in: query
+      required: false
+      description: |
+        Quantidade de registros por página. Sem este parâmetro a consulta devolve o
+        conjunto inteiro.
+      schema:
+        type: integer
+        minimum: 1
+        default: 100
+
+    Page:
+      name: '@page'
+      in: query
+      required: false
+      description: Página, contada a partir de 1. Só tem efeito junto com `@limit`.
+      schema:
+        type: integer
+        minimum: 1
+
+    Offset:
+      name: '@offset'
+      in: query
+      required: false
+      description: Deslocamento direto, alternativa a `@page`.
+      schema:
+        type: integer
+        minimum: 0
+
+    Count:
+      name: '@count'
+      in: query
+      required: false
+      description: |
+        Devolve apenas o número total de registros, sem os dados. Use para dimensionar
+        uma varredura antes de executá-la.
+      schema:
+        type: string
+        examples:
+          - '1'
+
+    Keyword:
+      name: '@keyword'
+      in: query
+      required: false
+      description: Busca textual livre. Vários termos separados por ponto e vírgula.
+      schema:
+        type: string
+
+    Seals:
+      name: '@seals'
+      in: query
+      required: false
+      description: |
+        Filtra por selo. Aceita um id, uma lista separada por vírgula ou `IN(...)`.
+
+        Os ids de selo variam por instalação.
+      schema:
+        type: string
+        examples:
+          - '6'
+          - '6,101'
+          - IN(6,101)
+
+    Verified:
+      name: '@verified'
+      in: query
+      required: false
+      description: |
+        Atalho para os selos que a instalação considera verificadores.
+      schema:
+        type: string
+        examples:
+          - '1'
+
+    Or:
+      name: '@or'
+      in: query
+      required: false
+      description: Combina os filtros com **OU** em vez de **E**, que é o padrão.
+      schema:
+        type: string
+        examples:
+          - '1'
+
+    Formato:
+      name: '@type'
+      in: query
+      required: false
+      description: |
+        Formato da resposta. Omitido, é `json`.
+      schema:
+        type: string
+        enum: [json, html, excel, texttable]
+        default: json
+
+    FiltroSubsite:
+      name: subsite
+      in: query
+      required: false
+      description: |
+        Recorte por site de origem. Declare quando o escopo for um site específico.
+
+        `NULL()` traz os registros criados no site principal, sem subsite de origem.
+
+        Para descobrir o id de um site, peça `subsite` no `@select` — por exemplo
+        `/api/agent/find?@select=id,name,subsite`.
+      schema:
+        type: string
+        examples:
+          - EQ(4)
+          - IN(4,8)
+          - NULL()
+
+    FiltroId:
+      name: id
+      in: query
+      required: false
+      description: Filtro pelo identificador do registro.
+      schema:
+        type: string
+        examples:
+          - EQ(42)
+          - IN(1,2,3)
+          - BET(1,100)
+
+    FiltroNome:
+      name: name
+      in: query
+      required: false
+      description: |
+        Filtro pelo nome. `ILIKE` ignora acento e caixa; `LIKE` ignora acento mas
+        diferencia maiúscula. O curinga é `*`.
+      schema:
+        type: string
+        examples:
+          - ILIKE(*cultural*)
+          - EQ(Casa de Cultura)
+
+  schemas:
+
+    Tipo:
+      type: object
+      title: Tipo
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+
+    DefinicaoDeCampo:
+      type: object
+      description: Definição de um campo, como devolvida por `describe`.
+      properties:
+        label:
+          type: string
+          description: Rótulo de exibição.
+        type:
+          type: string
+        isMetadata:
+          type: boolean
+          description: Se é metadado, e não coluna da entidade.
+        isEntityRelation:
+          type: boolean
+          description: Se aponta para outra entidade — navegável em `@select` com ponto.
+        targetEntity:
+          type: string
+          description: Entidade de destino, quando é relação.
+        required:
+          type: boolean
+        length:
+          type: integer
+        options:
+          description: Valores aceitos, quando é campo de escolha.
+        private:
+          type: boolean
+          description: |
+            Campo de dado pessoal, não retornado nas consultas.
+
+    Agent:
+      type: object
+      title: Agente
+      description: |
+        Pessoa ou organização. Dados pessoais — documentos, contatos privados,
+        data de nascimento, marcadores demográficos — não são retornados.
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        shortDescription:
+          type: string
+        longDescription:
+          type: string
+        type:
+          description: Tipo do registro; objeto quando pedido em `@select`.
+        status:
+          type: integer
+          description: Registros públicos têm status maior que zero.
+        subsite:
+          description: Subsite de origem; `null` quando criado no site principal.
+        terms:
+          type: object
+          description: Taxonomias, agrupadas por vocabulário.
+        singleUrl:
+          type: string
+          description: URL da página pública do registro.
+        createTimestamp:
+          type: string
+        updateTimestamp:
+          type: string
+        '@entityType':
+          type: string
+          const: agent
+        publicLocation:
+          type: boolean
+          description: |
+            Quando falso, endereço e coordenadas não são retornados. Filtre com
+            `publicLocation=EQ(true)` para obter só quem publicou a localização.
+        location:
+          $ref: '#/components/schemas/Ponto'
+        emailPublico:
+          type: string
+        telefonePublico:
+          type: string
+        En_Municipio:
+          type: string
+          description: Só preenchido quando `publicLocation` é verdadeiro.
+        En_Estado:
+          type: string
+          description: Só preenchido quando `publicLocation` é verdadeiro.
+        site:
+          type: string
+        instagram:
+          type: string
+        facebook:
+          type: string
+    Event:
+      type: object
+      title: Evento
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        shortDescription:
+          type: string
+        longDescription:
+          type: string
+        type:
+          description: Tipo do registro; objeto quando pedido em `@select`.
+        status:
+          type: integer
+          description: Registros públicos têm status maior que zero.
+        subsite:
+          description: Subsite de origem; `null` quando criado no site principal.
+        terms:
+          type: object
+          description: Taxonomias, agrupadas por vocabulário.
+        singleUrl:
+          type: string
+          description: URL da página pública do registro.
+        createTimestamp:
+          type: string
+        updateTimestamp:
+          type: string
+        '@entityType':
+          type: string
+          const: event
+        rules:
+          type: string
+        owner:
+          description: Agente responsável; `null` se não for público.
+          oneOf:
+            - $ref: '#/components/schemas/Agent'
+            - type: 'null'
+        project:
+          description: Projeto ao qual o evento pertence, quando houver.
+        occurrences:
+          type: array
+          description: Ocorrências — data, hora e espaço.
+          items:
+            type: object
+        classificacaoEtaria:
+          type: string
+        preco:
+          type: string
+        telefonePublico:
+          type: string
+    Space:
+      type: object
+      title: Espaço
+      description: |
+        Local físico. O endereço do espaço é público.
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        shortDescription:
+          type: string
+        longDescription:
+          type: string
+        type:
+          description: Tipo do registro; objeto quando pedido em `@select`.
+        status:
+          type: integer
+          description: Registros públicos têm status maior que zero.
+        subsite:
+          description: Subsite de origem; `null` quando criado no site principal.
+        terms:
+          type: object
+          description: Taxonomias, agrupadas por vocabulário.
+        singleUrl:
+          type: string
+          description: URL da página pública do registro.
+        createTimestamp:
+          type: string
+        updateTimestamp:
+          type: string
+        '@entityType':
+          type: string
+          const: space
+        location:
+          $ref: '#/components/schemas/Ponto'
+        owner:
+          description: Agente responsável; `null` se não for público.
+          oneOf:
+            - $ref: '#/components/schemas/Agent'
+            - type: 'null'
+        En_CEP:
+          type: string
+        En_Nome_Logradouro:
+          type: string
+        En_Num:
+          type: string
+        En_Bairro:
+          type: string
+        En_Municipio:
+          type: string
+        En_Estado:
+          type: string
+        acessibilidade:
+          type: string
+        capacidade:
+          type: string
+        emailPublico:
+          type: string
+        telefonePublico:
+          type: string
+    Project:
+      type: object
+      title: Projeto
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        shortDescription:
+          type: string
+        longDescription:
+          type: string
+        type:
+          description: Tipo do registro; objeto quando pedido em `@select`.
+        status:
+          type: integer
+          description: Registros públicos têm status maior que zero.
+        subsite:
+          description: Subsite de origem; `null` quando criado no site principal.
+        terms:
+          type: object
+          description: Taxonomias, agrupadas por vocabulário.
+        singleUrl:
+          type: string
+          description: URL da página pública do registro.
+        createTimestamp:
+          type: string
+        updateTimestamp:
+          type: string
+        '@entityType':
+          type: string
+          const: project
+        startsOn:
+          type: string
+        endsOn:
+          type: string
+        owner:
+          description: Agente responsável; `null` se não for público.
+          oneOf:
+            - $ref: '#/components/schemas/Agent'
+            - type: 'null'
+        emailPublico:
+          type: string
+    Opportunity:
+      type: object
+      title: Oportunidade
+      description: |
+        Edital ou chamada pública. As inscrições não são públicas.
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        shortDescription:
+          type: string
+        longDescription:
+          type: string
+        type:
+          description: Tipo do registro; objeto quando pedido em `@select`.
+        status:
+          type: integer
+          description: Registros públicos têm status maior que zero.
+        subsite:
+          description: Subsite de origem; `null` quando criado no site principal.
+        terms:
+          type: object
+          description: Taxonomias, agrupadas por vocabulário.
+        singleUrl:
+          type: string
+          description: URL da página pública do registro.
+        createTimestamp:
+          type: string
+        updateTimestamp:
+          type: string
+        '@entityType':
+          type: string
+          const: opportunity
+        registrationFrom:
+          type: string
+          description: Abertura das inscrições.
+        registrationTo:
+          type: string
+          description: Encerramento das inscrições.
+        publishedRegistrations:
+          type: boolean
+          description: Se o resultado da seleção foi publicado.
+        registrationCategories:
+          type: array
+          items:
+            type: string
+        registrationProponentTypes:
+          type: array
+          items:
+            type: string
+        continuousFlow:
+          type: boolean
+          description: Fluxo contínuo, sem data de encerramento.
+        publishTimestamp:
+          type: string
+        owner:
+          description: Agente responsável; `null` se não for público.
+          oneOf:
+            - $ref: '#/components/schemas/Agent'
+            - type: 'null'
+
+    Ponto:
+      type: object
+      title: Ponto geográfico
+      description: |
+        Coordenadas. Vem zerado quando a localização não é pública.
+
+        Filtre por proximidade com `location=GEONEAR(longitude,latitude,raio_em_metros)`
+        — a longitude vem antes da latitude — ou por retângulo com
+        `location=GEOBOUNDING([lng1,lat1],[lng2,lat2])`.
+
+
+      properties:
+        latitude:
+          type: number
+        longitude:
+          type: number
