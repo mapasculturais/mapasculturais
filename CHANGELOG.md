@@ -7,6 +7,7 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ## [UNRELEASED]
 ### Correções
+- Corrige a geocodificação do endereço internacional (`international-address-form`): as linhas de endereço não disparavam a busca no Nominatim, que só rodava ao trocar estado ou cidade, normalmente antes de digitar a rua; o pin ficava no centro da cidade ou em (0,0). Agora a busca também roda ao digitar o endereço, 1,5 s depois da última tecla
 - Corrige a exibição do plano de metas para aparecer somente quando habilitado e na última etapa visível da inscrição, inclusive com etapas condicionais por categoria, tipo de proponente ou faixa e na tela de suporte
 - Padroniza a ordem das opções ao adicionar e editar campos e anexos do formulário de inscrição: obrigatoriedade e condicionamento passam a aparecer depois das configurações de tipo e antes das categorias, faixas e tipos de proponente
 
