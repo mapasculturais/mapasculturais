@@ -5,6 +5,10 @@ Todas as mudanças notáveis no projeto serão documentadas neste arquivo.
 O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/)
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [UNRELEASED]
+### Correções
+- Corrige a exibição do plano de metas para aparecer somente quando habilitado e na última etapa visível da inscrição, inclusive com etapas condicionais por categoria, tipo de proponente ou faixa e na tela de suporte
+
 ## [7.8.15] - 2026-10-02
 ### Correções
 - Corrige a edição aberta de campos da inscrição quando o edital tem avaliação técnica com bônus de pontuação: ao salvar um campo do formulário, o sistema recalcula e grava o bônus na mesma operação, a trava tratava esse metadado como alteração do proponente e desfazia o salvamento; a trava passa a valer só para campos do formulário (`field_*`)
@@ -25,7 +29,6 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ## [7.8.14] - 2026-09-25
 ### Correções
-- Corrige a exibição do plano de metas para aparecer somente quando habilitado e na última etapa visível da inscrição, inclusive com etapas condicionais por categoria, tipo de proponente ou faixa e na tela de suporte
 - Implementa db-update que corrige dados legados das etapas de inscrição dos editais: campos e anexos sem etapa são associados a uma etapa existente (ou a uma nova, quando não houver) e etapas vazias duplicadas são removidas
 - Deixa de exibir o título "Publicação de Resultados" nas fases de coleta de dados e na fase de publicação final do resultado de editais de fluxo contínuo sem data final; nas fases de avaliação, o título e os checkboxes de publicação de pareceres/nomes permanecem
 - Corrige a exportação da planilha da tabela de agentes, que gerava cabeçalhos quebrados com expressões técnicas (ex.: `terms?.area?.join('...')`, `type.name`) e deixava Área de atuação e Tipo de agente vazios; a planilha passa a trazer exatamente as colunas visíveis/selecionadas na tabela, com os títulos corretos e os dados preenchidos
