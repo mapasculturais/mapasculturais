@@ -45,7 +45,7 @@ $this->import('
             <registration-info :registration="registration" classes="col-12"></registration-info>
 
             <div class="col-12">
-                <registration-form :registration="registration" :step="step"></registration-form>
+                <registration-form :registration="registration" :step="step" :is-last-step="stepIndex === steps.length - 1"></registration-form>
             </div>
         </main>
 
