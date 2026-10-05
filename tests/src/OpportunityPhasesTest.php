@@ -1529,10 +1529,78 @@ class OpportunityPhasesTest extends TestCase
     }
 
     /**
+     * Garante que a publicação automática configurada para um horário que acabou de passar
+     * (o campo de horário não tem segundos) seja publicada imediatamente, sem publicar
+     * horários antigos nem republicar resultados em salvamentos que não mexem na publicação.
+     */
+    function testAppealPhasePublishResultJobToleratesRecentlyPassedTime(): void
+    {
+        $app = App::i();
+        $admin = $this->userDirector->createUser('admin');
+        $this->login($admin);
+
+        $find_job = fn (Opportunity $phase) => $app->repo('Job')->findOneBy(['id' => md5('PublishResult:PublishResult:' . $phase->id)]);
+
+        // Caso 1: horário de publicação no minuto atual (já passou alguns segundos) — o job deve ser criado
+        $appeal = $this->createAppealPhaseForSchedulingTest($this->createPublishedOpportunityForSchedulingTest($admin), withPublishConfig: false);
+        $appeal->publishTimestamp = new \DateTime('-1 minute');
+        $appeal->autoPublish = true;
+        $appeal->save(true);
+
+        $this->assertNotNull($find_job($appeal), 'Garantindo que o horário de publicação que passou há 1 minuto agende a publicação imediata');
+
+        // Caso 2: resultado publicado e depois despublicado — não deve agendar a publicação de novo
+        $appeal->publishRegistrations();
+        $appeal->unPublishRegistrations();
+
+        $this->assertNull($find_job($appeal), 'Garantindo que despublicar o resultado não agende uma nova publicação');
+
+        // Caso 3: horário de publicação que passou há mais de 10 minutos — o job não deve ser criado
+        $appeal = $this->createAppealPhaseForSchedulingTest($this->createPublishedOpportunityForSchedulingTest($admin), withPublishConfig: false);
+        $appeal->publishTimestamp = new \DateTime('-1 hour');
+        $appeal->autoPublish = true;
+        $appeal->save(true);
+
+        $this->assertNull($find_job($appeal), 'Garantindo que o horário de publicação que passou há 1 hora não agende a publicação');
+
+        // Caso 4: ligar a publicação automática depois de salvar a data também conta como alteração
+        $appeal = $this->createAppealPhaseForSchedulingTest($this->createPublishedOpportunityForSchedulingTest($admin), withPublishConfig: false);
+        $appeal->publishTimestamp = new \DateTime('-1 minute');
+        $appeal->save(true);
+
+        $this->assertNull($find_job($appeal), 'Garantindo que sem publicação automática o job não seja criado');
+
+        $appeal->autoPublish = true;
+        $appeal->save(true);
+
+        $this->assertNotNull($find_job($appeal), 'Garantindo que ligar a publicação automática com horário recente agende a publicação imediata');
+
+        // Caso 5: salvar outro campo da fase não deve agendar a publicação de horário já passado
+        $app->unqueueJob(\Opportunities\Jobs\PublishResult::SLUG, ['opportunity' => $appeal]);
+        $appeal->name = 'Recurso teste renomeado';
+        $appeal->save(true);
+
+        $this->assertNull($find_job($appeal), 'Garantindo que salvar outro campo da fase não agende a publicação de horário já passado');
+    }
+
+    protected function createPublishedOpportunityForSchedulingTest($admin): Opportunity
+    {
+        return $this->opportunityBuilder
+            ->reset(owner: $admin->profile, owner_entity: $admin->profile)
+            ->fillRequiredProperties()
+            ->firstPhase()
+                ->setRegistrationPeriod(new Open)
+                ->done()
+            ->save()
+            ->refresh()
+            ->getInstance();
+    }
+
+    /**
      * Cria e salva uma fase de recurso pendurada em $parent, com publicação automática
      * configurada para amanhã (save:finish dispara scheduleJobs).
      */
-    protected function createAppealPhaseForSchedulingTest(Opportunity $parent): Opportunity
+    protected function createAppealPhaseForSchedulingTest(Opportunity $parent, bool $withPublishConfig = true): Opportunity
     {
         $class_name = $parent->getSpecializedClassName();
         $appeal = new $class_name();
@@ -1545,8 +1613,10 @@ class OpportunityPhasesTest extends TestCase
         $appeal->registrationProponentTypes = $parent->registrationProponentTypes;
         $appeal->isDataCollection = true;
         $appeal->isAppealPhase = true;
-        $appeal->autoPublish = true;
-        $appeal->publishTimestamp = new \DateTime('tomorrow');
+        if ($withPublishConfig) {
+            $appeal->autoPublish = true;
+            $appeal->publishTimestamp = new \DateTime('tomorrow');
+        }
         // save:finish dispara scheduleJobs — salvar DEPOIS de setar tudo
         $appeal->save(true);
 
