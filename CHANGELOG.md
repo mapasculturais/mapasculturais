@@ -13,6 +13,7 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ### Melhorias
 - Na configuração de publicação de resultados, impede salvar data e horário no passado, exibindo um aviso com botão para usar um horário sugerido, e mostra uma orientação com a data e o horário atuais como exemplo para agendar a publicação automática
+- Faz ajustes de visibilidade de metadados de projetos e agentes
 
 ## [7.8.15] - 2026-10-02
 ### Correções
