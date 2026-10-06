@@ -10,6 +10,7 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Corrige a exibição do plano de metas para aparecer somente quando habilitado e na última etapa visível da inscrição, inclusive com etapas condicionais por categoria, tipo de proponente ou faixa e na tela de suporte
 - Padroniza a ordem das opções ao adicionar e editar campos e anexos do formulário de inscrição: obrigatoriedade e condicionamento passam a aparecer depois das configurações de tipo e antes das categorias, faixas e tipos de proponente
 - Corrige a publicação automática do resultado agendada para o minuto atual: como o campo de horário não tem segundos, o horário já tinha passado no momento do salvamento e a publicação não era agendada; agora, quando a data ou a publicação automática é alterada e o horário passou há até 10 minutos, o resultado é publicado imediatamente
+- Corrige erro 500 no relatório de oportunidades com avaliação técnica quando havia inscrições sem nota concluída, passando a considerar apenas notas concluídas no gráfico de faixas de nota e na exportação em CSV
 
 ### Melhorias
 - Na configuração de publicação de resultados, impede salvar data e horário no passado, exibindo um aviso com botão para usar um horário sugerido, e mostra uma orientação com a data e o horário atuais como exemplo para agendar a publicação automática
