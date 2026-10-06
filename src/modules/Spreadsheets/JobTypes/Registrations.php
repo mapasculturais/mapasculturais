@@ -651,6 +651,10 @@ class Registrations extends SpreadsheetJob
                 if(isset($entity['quotas']) && $entity['quotas']) {
                     $entity['quotas'] = implode(",", $entity['quotas']);
                 }
+
+                if (isset($entity['tiebreaker']) && is_array($entity['tiebreaker'])) {
+                    $entity['tiebreaker'] = $this->formatTiebreakerForSpreadsheet($entity['tiebreaker']);
+                }
                 
                 $entity = $this->replaceArraysWithNull($entity);
             }
@@ -707,6 +711,40 @@ class Registrations extends SpreadsheetJob
     private function formatBonusNumber(float $value): string
     {
         return fmod($value, 1.0) === 0.0 ? (string) (int) $value : (string) $value;
+    }
+
+    /**
+     * Formats the registration's tiebreaker criteria for the spreadsheet cell,
+     * mirroring the registrations table display: "{name}: {value}", one
+     * criterion per line.
+     *
+     * The submissionDate criterion may arrive either as a \DateTime instance or
+     * as a raw SQL datetime string ("Y-m-d H:i:s"), depending on the path that
+     * assembled the tiebreaker data; both are rendered as "d/m/Y H:i:s".
+     */
+    private function formatTiebreakerForSpreadsheet(array $tiebreaker): string
+    {
+        $lines = [];
+
+        foreach ($tiebreaker as $name => $value) {
+            if ($value instanceof \DateTime) {
+                $value = $value->format('d/m/Y H:i:s');
+            } elseif (is_bool($value)) {
+                $value = $value ? 'true' : 'false';
+            } elseif (is_array($value) || is_object($value)) {
+                $value = json_encode($value);
+            } elseif ($value === null) {
+                $value = '';
+            } elseif (is_string($value) && preg_match('/^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}(\.\d+)?$/', $value)) {
+                $value = (new \DateTime($value))->format('d/m/Y H:i:s');
+            } else {
+                $value = (string) $value;
+            }
+
+            $lines[] = "{$name}: {$value}";
+        }
+
+        return implode("\n", $lines);
     }
 
     /**

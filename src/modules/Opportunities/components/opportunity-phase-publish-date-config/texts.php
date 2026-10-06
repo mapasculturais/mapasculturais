@@ -7,4 +7,5 @@ return [
   'publicacao_automatica' => i::__("Os resultados serão publicados automaticamente"),
   'publicacao_com_data' => i::__("Os resultados serão publicados em"),
   'publicacao_com_data_automatica' => i::__("Os resultados serão publicados automaticamente em"),
+  'de' => i::__("de"),
 ];

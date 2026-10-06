@@ -1497,6 +1497,10 @@ class ApiQuery {
                         $_order = str_ireplace($key, 'e.' . $key, $prop);
                     }
                 } elseif (in_array($key, $this->registeredMetadata)) {
+                    if ($this->isPrivateMetadataBlockedForUser($key)) {
+                        continue;
+                    }
+
                     $meta_alias = $this->getAlias('meta_'.$key);
 
                     $this->joins .= str_replace(['{ALIAS}', '{KEY}'], [$meta_alias, $key], $this->_templateJoinMetadata);
@@ -1557,6 +1561,10 @@ class ApiQuery {
             return;
         }
 
+        // Oportunidade é consultada por subclasse. O select currentUserPermissions.modify
+        // precisa estar registrado antes do cálculo, senão a primeira subclasse com
+        // resultados (projetos) sai sem a permissão e o botão Editar não aparece.
+        $this->registerSpecialSubquerySelects();
         $this->appendCurrentUserPermissions($entities);
         $this->appendMetadata($entities);
         $this->appendRelations($entities);
@@ -1758,39 +1766,10 @@ class ApiQuery {
             if(!$_subquery_where_id_in){
                 return;
             }
+            $this->registerSpecialSubquerySelects();
+            $special_props = ['files', 'metalists', 'currentUserPermissions', 'permissionTo', 'agentRelations', 'relatedAgents'];
             foreach ($this->_subqueriesSelect as $k => &$cfg) {
-
-                $special_relations = [
-                    'files' => '_selectingFiles',
-                    'metalists' => '_selectingMetalists',
-                    'currentUserPermissions' => '_selectingCurrentUserPermissions',
-                    'permissionTo' => '_selectingCurrentUserPermissions',
-                    'agentRelations' => '_selectingAgentRelations',
-                    'relatedAgents' => '_selectingRelatedAgents',
-                ];
-
-                $is_special = false;
-                foreach ($special_relations as $prop => $_selecting) {
-                    if($cfg['property'] == $prop) {
-                        if ($prop == 'permissionTo') { 
-                            $this->_usingLegacyPermissionFormat = true;
-                        }
-
-                        if($cfg['selectAll']) {
-                            $this->$_selecting[] = "*";
-                        } else {
-                            foreach($cfg['select'] as $sub) {
-                                if(!in_array("$sub.*", $this->$_selecting)) {
-                                    $this->$_selecting[] = $prop === 'files' ? "$sub.*" : $sub;
-                                }
-                            }
-                        }
-    
-                        $is_special = true;
-                    }
-                }
-
-                if ($is_special) {
+                if (in_array($cfg['property'], $special_props, true)) {
                     continue;
                 }
 
@@ -2846,6 +2825,50 @@ class ApiQuery {
     }
 
     /**
+     * Registra selects especiais vindos de subconsultas (currentUserPermissions.modify, files.avatar, etc.).
+     * Precisa ocorrer antes de appendCurrentUserPermissions, que roda antes de appendRelations.
+     */
+    protected function registerSpecialSubquerySelects() {
+        if (!$this->_subqueriesSelect) {
+            return;
+        }
+
+        $special_relations = [
+            'files' => '_selectingFiles',
+            'metalists' => '_selectingMetalists',
+            'currentUserPermissions' => '_selectingCurrentUserPermissions',
+            'permissionTo' => '_selectingCurrentUserPermissions',
+            'agentRelations' => '_selectingAgentRelations',
+            'relatedAgents' => '_selectingRelatedAgents',
+        ];
+
+        foreach ($this->_subqueriesSelect as $cfg) {
+            foreach ($special_relations as $prop => $_selecting) {
+                if ($cfg['property'] != $prop) {
+                    continue;
+                }
+
+                if ($prop == 'permissionTo') {
+                    $this->_usingLegacyPermissionFormat = true;
+                }
+
+                if ($cfg['selectAll']) {
+                    if (!in_array('*', $this->$_selecting, true)) {
+                        $this->$_selecting[] = '*';
+                    }
+                } else {
+                    foreach ($cfg['select'] as $sub) {
+                        $value = $prop === 'files' ? "$sub.*" : $sub;
+                        if (!in_array($value, $this->$_selecting, true)) {
+                            $this->$_selecting[] = $value;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    /**
      * Adiciona as permissões do usuário atual às entidades processadas
      * 
      * @param array $entities
@@ -3730,15 +3753,129 @@ class ApiQuery {
     }
 
     /**
+     * Metadados de endereço cujo `private` é a closure `!$this->publicLocation`.
+     *
+     * Closure em private é regra por-entidade e não dá para traduzir em SQL de
+     * forma genérica. Para estas chaves a regra é conhecida, então o filtro pode
+     * valer também nas entidades com localização pública.
+     */
+    const PUBLIC_LOCATION_METADATA = [
+        'endereco',
+        'En_CEP',
+        'En_Nome_Logradouro',
+        'En_Num',
+        'En_Complemento',
+        'En_Bairro',
+        'En_Municipio',
+        'En_Estado',
+        'address',
+        'address_postalCode',
+        'address_line1',
+        'address_line2',
+        'address_level0',
+        'address_level1',
+        'address_level2',
+        'address_level3',
+        'address_level4',
+        'address_level5',
+        'address_level6',
+    ];
+
+    /**
+     * Indica se o metadado é privado (sempre ou por-entidade via closure)
+     *
+     * @param string $key
+     * @return bool
+     */
+    protected function isPrivateMetadata($key) {
+        if (!isset($this->registeredMetadataDefinitions[$key])) {
+            return false;
+        }
+
+        $private = $this->registeredMetadataDefinitions[$key]->private;
+
+        return $private === true || $private instanceof \Closure;
+    }
+
+    /**
+     * Indica se a ordenação por um metadado privado deve ser ignorada para o
+     * usuário atual.
+     *
+     * Ordenar por metadado privado faria a ordem do resultado depender do dado
+     * escondido, então só admin pode ordenar por ele.
+     *
+     * @param string $key
+     * @return bool
+     */
+    protected function isPrivateMetadataBlockedForUser($key) {
+        return $this->isPrivateMetadata($key) && !App::i()->user->is('admin');
+    }
+
+    /**
+     * Retorna a condição DQL que limita em quais entidades o filtro por um
+     * metadado privado pode valer, ou null quando não há restrição.
+     *
+     * Segue a mesma regra de getViewPrivateDataPermissions (que esconde o dado
+     * na resposta): admin vê tudo, visitante não vê nada e usuário comum vê os
+     * dados privados das entidades em que tem alguma permissão. Fora dessas
+     * entidades o filtro não casa com nada, para que o resultado não dependa do
+     * dado escondido. Nos metadados de endereço (PUBLIC_LOCATION_METADATA) o
+     * filtro vale também nas entidades com localização pública.
+     *
+     * @param string $key
+     * @return string|null
+     */
+    protected function getPrivateMetadataFilterCondition($key) {
+        if (!$this->isPrivateMetadata($key)) {
+            return null;
+        }
+
+        $app = App::i();
+
+        if ($app->user->is('admin')) {
+            return null;
+        }
+
+        $conditions = [];
+
+        if (!$app->user->is('guest') && $this->permissionCacheClassName) {
+            $pc_alias = $this->getAlias('pcache_meta');
+            $user_id = (int) $app->user->id;
+            $conditions[] = "e.{$this->pk} IN (SELECT IDENTITY({$pc_alias}.owner) FROM {$this->permissionCacheClassName} {$pc_alias} WHERE {$pc_alias}.user = {$user_id})";
+        }
+
+        $private = $this->registeredMetadataDefinitions[$key]->private;
+
+        if ($private instanceof \Closure
+            && in_array($key, self::PUBLIC_LOCATION_METADATA)
+            && in_array('publicLocation', $this->entityProperties)) {
+            $conditions[] = 'e.publicLocation = true';
+        }
+
+        if (!$conditions) {
+            return '1 = 0';
+        }
+
+        return '(' . implode(' OR ', $conditions) . ')';
+    }
+
+    /**
      * Adiciona filtro por metadados
-     * 
+     *
      * @param string $key
      * @param string $value
      * @return void
      */
     protected function _addFilterByMetadata($key, $value) {
+        $private_condition = $this->getPrivateMetadataFilterCondition($key);
+
+        if ($private_condition === '1 = 0') {
+            $this->_whereDqls[] = $private_condition;
+            return;
+        }
+
         if (isset($this->_keys[$key])) {
-            $this->_whereDqls[] = $this->parseParam($this->_keys[$key], $value);
+            $this->_whereDqls[] = $this->wrapPrivateMetadataFilter($this->parseParam($this->_keys[$key], $value), $private_condition);
             return;
         }
     
@@ -3756,7 +3893,22 @@ class ApiQuery {
             }
         }
 
-        $this->_whereDqls[] = $this->parseParam($this->_keys[$key], $value);
+        $this->_whereDqls[] = $this->wrapPrivateMetadataFilter($this->parseParam($this->_keys[$key], $value), $private_condition);
+    }
+
+    /**
+     * Aplica a condição de getPrivateMetadataFilterCondition ao filtro
+     *
+     * @param string $filter_dql
+     * @param string|null $private_condition
+     * @return string
+     */
+    protected function wrapPrivateMetadataFilter($filter_dql, $private_condition) {
+        if ($private_condition === null) {
+            return $filter_dql;
+        }
+
+        return "({$private_condition} AND ({$filter_dql}))";
     }
 
     /**
