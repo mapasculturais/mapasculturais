@@ -5,7 +5,7 @@ Todas as mudanças notáveis no projeto serão documentadas neste arquivo.
 O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/)
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [UNRELEASED]
+## [7.8.16] - 2026-10-06
 ### Correções
 - Corrige a exibição do plano de metas para aparecer somente quando habilitado e na última etapa visível da inscrição, inclusive com etapas condicionais por categoria, tipo de proponente ou faixa e na tela de suporte
 - Padroniza a ordem das opções ao adicionar e editar campos e anexos do formulário de inscrição: obrigatoriedade e condicionamento passam a aparecer depois das configurações de tipo e antes das categorias, faixas e tipos de proponente
