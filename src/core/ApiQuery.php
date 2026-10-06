@@ -1634,6 +1634,10 @@ class ApiQuery {
             return;
         }
 
+        // Oportunidade é consultada por subclasse. O select currentUserPermissions.modify
+        // precisa estar registrado antes do cálculo, senão a primeira subclasse com
+        // resultados (projetos) sai sem a permissão e o botão Editar não aparece.
+        $this->registerSpecialSubquerySelects();
         $this->appendCurrentUserPermissions($entities);
         $this->appendMetadata($entities);
         $this->appendRelations($entities);
@@ -1835,39 +1839,10 @@ class ApiQuery {
             if(!$_subquery_where_id_in){
                 return;
             }
+            $this->registerSpecialSubquerySelects();
+            $special_props = ['files', 'metalists', 'currentUserPermissions', 'permissionTo', 'agentRelations', 'relatedAgents'];
             foreach ($this->_subqueriesSelect as $k => &$cfg) {
-
-                $special_relations = [
-                    'files' => '_selectingFiles',
-                    'metalists' => '_selectingMetalists',
-                    'currentUserPermissions' => '_selectingCurrentUserPermissions',
-                    'permissionTo' => '_selectingCurrentUserPermissions',
-                    'agentRelations' => '_selectingAgentRelations',
-                    'relatedAgents' => '_selectingRelatedAgents',
-                ];
-
-                $is_special = false;
-                foreach ($special_relations as $prop => $_selecting) {
-                    if($cfg['property'] == $prop) {
-                        if ($prop == 'permissionTo') { 
-                            $this->_usingLegacyPermissionFormat = true;
-                        }
-
-                        if($cfg['selectAll']) {
-                            $this->$_selecting[] = "*";
-                        } else {
-                            foreach($cfg['select'] as $sub) {
-                                if(!in_array("$sub.*", $this->$_selecting)) {
-                                    $this->$_selecting[] = $prop === 'files' ? "$sub.*" : $sub;
-                                }
-                            }
-                        }
-    
-                        $is_special = true;
-                    }
-                }
-
-                if ($is_special) {
+                if (in_array($cfg['property'], $special_props, true)) {
                     continue;
                 }
 
@@ -2919,6 +2894,50 @@ class ApiQuery {
                 $entity['relatedSpaces'] = $relations_by_owner_id[$entity_id] ?? (object)[]; 
             }
 
+        }
+    }
+
+    /**
+     * Registra selects especiais vindos de subconsultas (currentUserPermissions.modify, files.avatar, etc.).
+     * Precisa ocorrer antes de appendCurrentUserPermissions, que roda antes de appendRelations.
+     */
+    protected function registerSpecialSubquerySelects() {
+        if (!$this->_subqueriesSelect) {
+            return;
+        }
+
+        $special_relations = [
+            'files' => '_selectingFiles',
+            'metalists' => '_selectingMetalists',
+            'currentUserPermissions' => '_selectingCurrentUserPermissions',
+            'permissionTo' => '_selectingCurrentUserPermissions',
+            'agentRelations' => '_selectingAgentRelations',
+            'relatedAgents' => '_selectingRelatedAgents',
+        ];
+
+        foreach ($this->_subqueriesSelect as $cfg) {
+            foreach ($special_relations as $prop => $_selecting) {
+                if ($cfg['property'] != $prop) {
+                    continue;
+                }
+
+                if ($prop == 'permissionTo') {
+                    $this->_usingLegacyPermissionFormat = true;
+                }
+
+                if ($cfg['selectAll']) {
+                    if (!in_array('*', $this->$_selecting, true)) {
+                        $this->$_selecting[] = '*';
+                    }
+                } else {
+                    foreach ($cfg['select'] as $sub) {
+                        $value = $prop === 'files' ? "$sub.*" : $sub;
+                        if (!in_array($value, $this->$_selecting, true)) {
+                            $this->$_selecting[] = $value;
+                        }
+                    }
+                }
+            }
         }
     }
 

@@ -11,6 +11,18 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - **Avaliação automática por selos**: o gestor pode indicar, em uma fase de avaliação, quais selos validam o proponente. Se a pessoa já tiver esses selos válidos no perfil, a inscrição é **dispensada automaticamente** daquela fase (marcada como “Dispensada por selos”) e segue para a próxima etapa, sem precisar de avaliador
 - **Novos anexos no cadastro do agente** (também usáveis como campos `@` no formulário de inscrição): CPF, CNPJ, CNH, RG, passaporte, comprovante de residência, vínculo territorial, currículo, portfólio, certidões fiscal, trabalhista e de prestação de contas, além de comprovantes de raça/cor, pessoa com deficiência e comunidades tradicionais. Os arquivos ficam no perfil e acompanham a inscrição automaticamente
 
+## [7.8.16] - 2026-10-06
+### Correções
+- Corrige a exibição do plano de metas para aparecer somente quando habilitado e na última etapa visível da inscrição, inclusive com etapas condicionais por categoria, tipo de proponente ou faixa e na tela de suporte
+- Padroniza a ordem das opções ao adicionar e editar campos e anexos do formulário de inscrição: obrigatoriedade e condicionamento passam a aparecer depois das configurações de tipo e antes das categorias, faixas e tipos de proponente
+- Corrige a publicação automática do resultado agendada para o minuto atual: como o campo de horário não tem segundos, o horário já tinha passado no momento do salvamento e a publicação não era agendada; agora, quando a data ou a publicação automática é alterada e o horário passou há até 10 minutos, o resultado é publicado imediatamente
+- Corrige a listagem de oportunidades em que o botão "Editar" não aparecia em alguns editais, mesmo para quem pode editá-los
+- Corrige a ficha de inscrição em que textos longos sem espaço, como links, ultrapassavam a largura da página e cortavam os campos
+
+### Melhorias
+- Na configuração de publicação de resultados, impede salvar data e horário no passado, exibindo um aviso com botão para usar um horário sugerido, e mostra uma orientação com a data e o horário atuais como exemplo para agendar a publicação automática
+- Faz ajustes de visibilidade de metadados de projetos e agentes
+
 ## [7.8.15] - 2026-10-02
 ### Correções
 - Corrige a edição aberta de campos da inscrição quando o edital tem avaliação técnica com bônus de pontuação: ao salvar um campo do formulário, o sistema recalcula e grava o bônus na mesma operação, a trava tratava esse metadado como alteração do proponente e desfazia o salvamento; a trava passa a valer só para campos do formulário (`field_*`)
