@@ -7,8 +7,10 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ## [UNRELEASED]
 ### Correções
+- Corrige o aviso "Não foi possível salvar", que ficava na tela até o clique em fechar, passando a sumir sozinho depois de alguns segundos, como as demais mensagens
 - Corrige erro 500 no relatório de oportunidades com avaliação técnica quando havia inscrições sem nota concluída, passando a considerar apenas notas concluídas no gráfico de faixas de nota e na exportação em CSV
 - Corrige o login de usuários donos de muitos agentes e espaços, que demorava mais de 30 segundos e terminava em erro 500: os avisos de agentes e espaços sem atualização há muito tempo passam a ser gerados em segundo plano, por um job, em vez de durante o login
+- Corrige a geocodificação do endereço internacional (`international-address-form`): as linhas de endereço não disparavam a busca no Nominatim, que só rodava ao trocar estado ou cidade, normalmente antes de digitar a rua; o pin ficava no centro da cidade ou em (0,0). Agora a busca também roda ao digitar o endereço, 1,5 s depois da última tecla
 
 ### Melhorias
 - Ajustar o espaçamento dos elementos do header para melhorar a exibição e a organização das informações apresentadas
