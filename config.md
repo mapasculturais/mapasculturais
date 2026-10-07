@@ -5,3 +5,4 @@
 - platform: github
 - host: github.com
 - project: mapasculturais/mapasculturais
+- setup-verified: 1.5.0
