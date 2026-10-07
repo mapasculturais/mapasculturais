@@ -3554,6 +3554,9 @@ class App
         $this->registerJobType(
             new JobTypes\ReopenEvaluations(JobTypes\ReopenEvaluations::SLUG),
         );
+        $this->registerJobType(
+            new JobTypes\EntitiesUpdateNotifications(JobTypes\EntitiesUpdateNotifications::SLUG),
+        );
 
         // get types and metadata configurations
         if (
