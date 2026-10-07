@@ -8,6 +8,7 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 ## [UNRELEASED]
 ### Correções
 - Corrige erro 500 no relatório de oportunidades com avaliação técnica quando havia inscrições sem nota concluída, passando a considerar apenas notas concluídas no gráfico de faixas de nota e na exportação em CSV
+- Corrige a geocodificação do endereço internacional (`international-address-form`): as linhas de endereço não disparavam a busca no Nominatim, que só rodava ao trocar estado ou cidade, normalmente antes de digitar a rua; o pin ficava no centro da cidade ou em (0,0). Agora a busca também roda ao digitar o endereço, 1,5 s depois da última tecla
 
 ## [7.8.16] - 2026-10-06
 ### Correções
