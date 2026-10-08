@@ -75,6 +75,16 @@ class Module extends \MapasCulturais\EvaluationMethod
 
     public static $quotaData = null;
 
+    /**
+     * Classificação por cotas já calculada, reaproveitada entre as páginas de uma
+     * mesma consulta no mesmo processo (ex.: os lotes da exportação da planilha de
+     * inscrições). Fica desativada (null) fora desse contexto; quem ativa define o
+     * escopo ('scope') e limpa ao terminar.
+     *
+     * @var array{scope: mixed, items: array}|null
+     */
+    public static ?array $quotaOrderCache = null;
+
     function __construct(array $config = []) {
         self::$instance = $this;
         $config += ['step' => '0.1'];
@@ -552,15 +562,43 @@ class Module extends \MapasCulturais\EvaluationMethod
                     return;
                 }
 
-                $quota_order = Module::$quotaData->quota->getRegistrationsOrderByScoreConsideringQuotas();
+                // a mesma consulta paginada (sem @order, @limit e @page) reaproveita a classificação já calculada
+                $cache_key = null;
+                if (is_array(Module::$quotaOrderCache)) {
+                    $cache_params = $params;
+                    unset($cache_params['@order'], $cache_params['@limit'], $cache_params['@page']);
+                    ksort($cache_params);
+                    $cache_key = md5(serialize([$phase_id, $app->user->id, $cache_params]));
+                }
+
+                if ($cache_key && isset(Module::$quotaOrderCache['items'][$cache_key])) {
+                    $classification = Module::$quotaOrderCache['items'][$cache_key];
+                    Module::$quotaData->quota = $classification->quota;
+                } else {
+                    $classification = (object) [
+                        'quota' => Module::$quotaData->quota,
+                        'order' => Module::$quotaData->quota->getRegistrationsOrderByScoreConsideringQuotas(),
+                        'matchingIds' => null,
+                    ];
+
+                    if ($cache_key) {
+                        Module::$quotaOrderCache['items'][$cache_key] = $classification;
+                    }
+                }
+
+                $quota_order = $classification->order;
 
                 $opportunity = $app->repo('Opportunity')->find($phase_id);
                 $opportunity->registerRegistrationMetadata();
-                
+
                 if(Module::$quotaData->orderByQuota && $limit = (int) ($params['@limit'] ?? 0)) {
                     unset($params['@order']);
 
-                    $ids = Module::$quotaData->quota->filterRegistrationIdsMatchingParams($params, $quota_order);
+                    if (is_null($classification->matchingIds)) {
+                        $classification->matchingIds = Module::$quotaData->quota->filterRegistrationIdsMatchingParams($params, $quota_order);
+                    }
+
+                    $ids = $classification->matchingIds;
 
                     Module::$quotaData->foundIds = $ids;
 

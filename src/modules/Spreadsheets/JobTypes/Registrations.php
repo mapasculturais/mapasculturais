@@ -241,6 +241,11 @@ class Registrations extends SpreadsheetJob
         // limpa os dados do cálculo das cotas
         Module::$quotaData = null;
 
+        // a classificação por cotas é calculada no primeiro lote e reaproveitada nos demais lotes deste job
+        if ((Module::$quotaOrderCache['scope'] ?? null) !== $job->id) {
+            Module::$quotaOrderCache = ['scope' => $job->id, 'items' => []];
+        }
+
         $app = App::i();
         
         $opportunity = $job->owner;
@@ -662,7 +667,12 @@ class Registrations extends SpreadsheetJob
         
         unset($result->count);
         $result = json_decode(json_encode($result->registrations), true);
-        
+
+        // último lote: libera a classificação reaproveitada
+        if (!$result) {
+            Module::$quotaOrderCache = null;
+        }
+
         return $result;
     }
 
