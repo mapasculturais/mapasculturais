@@ -568,7 +568,7 @@ class Module extends \MapasCulturais\EvaluationMethod
                     $cache_params = $params;
                     unset($cache_params['@order'], $cache_params['@limit'], $cache_params['@page']);
                     ksort($cache_params);
-                    $cache_key = md5(serialize([$phase_id, $app->user->id, $cache_params]));
+                    $cache_key = hash('sha256', serialize([$phase_id, $app->user->id, $cache_params]));
                 }
 
                 if ($cache_key && isset(Module::$quotaOrderCache['items'][$cache_key])) {
