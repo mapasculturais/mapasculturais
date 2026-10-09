@@ -82,6 +82,7 @@ class Module extends \MapasCulturais\Module {
             $appeal_phase->status = Opportunity::STATUS_APPEAL_PHASE;
             $appeal_phase->name = self::buildAppealPhaseName($phase_name);
             $appeal_phase->ownerEntity = $opportunity->ownerEntity;
+            $appeal_phase->type = $opportunity->type;
             $appeal_phase->registrationCategories = $opportunity->registrationCategories;
             $appeal_phase->registrationRanges = $opportunity->registrationRanges;
             $appeal_phase->registrationProponentTypes = $opportunity->registrationProponentTypes;
