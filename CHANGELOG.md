@@ -5,7 +5,7 @@ Todas as mudanças notáveis no projeto serão documentadas neste arquivo.
 O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/)
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [UNRELEASED]
+## [7.8.17] - 2026-10-09
 ### Correções
 - Corrige o aviso "Não foi possível salvar", que ficava na tela até o clique em fechar, passando a sumir sozinho depois de alguns segundos, como as demais mensagens
 - Corrige erro 500 no relatório de oportunidades com avaliação técnica quando havia inscrições sem nota concluída, passando a considerar apenas notas concluídas no gráfico de faixas de nota e na exportação em CSV
