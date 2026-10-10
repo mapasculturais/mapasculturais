@@ -29,42 +29,51 @@ $skipFields = ['parent', 'user', 'subsite', 'id', 'name', 'area', 'tag', 'seals'
 
 $default_select = "name,type,shortDescription,files.avatar,seals,endereco,terms,orientacaoSexual,genero,raca";
 
+// `exportField` is the field name used by the spreadsheet export job; it must
+// never be the Vue display expression kept in `value` (e.g. "terms?.area?.join(', ')").
 $defaultHeaders = [
     [
         'text' => i::__('id', 'agent-table'),
         'value' => 'id',
+        'exportField' => 'id',
         'sticky' => true,
         'width' => '80px',
     ],
     [
         'text' => i::__('Nome', 'agent-table'),
         'value' => 'name',
+        'exportField' => 'name',
         'width' => '160px',
     ],
     [
         'text' => i::__('Área de atuação', 'agent-table'),
         'value' => 'terms?.area?.join(\', \')',
         'slug' => 'area',
+        'exportField' => 'area',
     ],
     [
         'text' => i::__('Tags', 'agent-table'),
         'value' => 'terms?.tag?.join(\', \')',
         'slug' => 'tag',
+        'exportField' => 'tag',
     ],
     [
         'text' => i::__('Função', 'agent-table'),
         'value' => 'terms?.funcao?.join(\', \')',
         'slug' => 'funcao',
+        'exportField' => 'funcao',
     ],
     [
         'text' => i::__('Selos', 'agent-table'),
         'value' => 'seals.map((seal) => seal.name).join(\', \')',
         'slug' => 'seals',
+        'exportField' => 'seals',
     ],
     [
         'text' => i::__('Endereço', 'agent-table'),
         'value' => 'endereco',
         'slug' => 'endereco',
+        'exportField' => 'endereco',
     ],
 ];
 
@@ -88,7 +97,10 @@ foreach ($definitions as $field => $def) {
         ];
 
         if(str_starts_with($field, 'geo')) {
+            // `value` receives a display label for geo divisions; the export must
+            // use the real field name instead.
             $data['value'] = $def['label'] . " - " . i::__('Divisão geográfica');
+            $data['exportField'] = $field;
         }
 
         $additionalHeaders[] = $data;

@@ -5,6 +5,7 @@ use MapasCulturais\App;
 use MapasCulturais\Entity;
 use MapasCulturais\Entities\EvaluationMethodConfiguration;
 use MapasCulturais\Entities\Opportunity;
+use MapasCulturais\Entities\OpportunityMeta;
 use MapasCulturais\Entities\RegistrationStep;
 
 /**
@@ -392,6 +393,7 @@ trait EntityManagerModel {
     private function generatePhases(bool $copyDates = true) : void
     {
         $app = App::i();
+        $conn = $app->em->getConnection();
         $postData = $this->postData;
 
         $phases = $app->repo('Opportunity')->findBy([
@@ -417,17 +419,29 @@ trait EntityManagerModel {
             $newPhase->setParent($this->entityOpportunityModel);
             $newPhase->owner = $app->user->profile;
 
-            foreach ($phase->getMetadata() as $metadataKey => $metadataValue) {
-                if (!is_null($metadataValue) && $metadataValue != '') {
-                    $newPhase->setMetadata($metadataKey, $metadataValue);
-                }
-            }
-
             $now = new \DateTime('now');
             $newPhase->createTimestamp = $now;
             $newPhase->subsite = $phase->subsite;
 
             $this->saveWithSingleFlush($newPhase);
+
+            $stmt = $conn->executeQuery(
+                'SELECT om.key, om.value FROM opportunity_meta om WHERE om.object_id = :id',
+                ['id' => $phase->id]
+            );
+            // linhas criadas direto no lado dono: setMetadata no clone resolve caches herdados da origem
+            while (($row = $stmt->fetchAssociative()) !== false) {
+                if ($row['value'] === null) {
+                    continue;
+                }
+                $newPhaseMeta = new OpportunityMeta;
+                $newPhaseMeta->owner = $newPhase;
+                $newPhaseMeta->key = $row['key'];
+                // '' legado é falsy; como valor de metadado vira null e cairia no default true
+                $newPhaseMeta->value = $row['value'] === '' ? '0' : $row['value'];
+                $newPhaseMeta->save(false);
+            }
+            $app->em->flush();
 
             $this->generateRegistrationFieldsAndFiles($phase, $newPhase);
 

@@ -50,6 +50,9 @@ class ApiTest extends TestCase
 
         $this->processPCache();
 
+        // pessoaDeficiente é privado: só admin filtra e vê o valor de qualquer agente
+        $this->login($this->userDirector->createUser('admin'));
+
         // testando a busca por 1 termo
         $query = new ApiQuery(Agent::class, [
             '@select' => 'id,pessoaDeficiente',

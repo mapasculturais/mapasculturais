@@ -539,9 +539,16 @@ class Module extends \MapasCulturais\Module{
             /** @var Opportunity $this */
             $data = ['opportunity' => $this];
 
-            // verifica se a oportunidade e a fase estão públicas
-            $enabled_status = $this->isAppealPhase ? -1 : Opportunity::STATUS_ENABLED;
-            $active = in_array($this->status, [-1,-20, Opportunity::STATUS_ENABLED]) && $this->firstPhase->status === $enabled_status;
+            // verifica se a oportunidade e a fase estão públicas.
+            // Na fase de recurso, o que importa é o status da oportunidade raiz (edital publicado):
+            // o pai imediato pode ser o próprio edital (STATUS_ENABLED) ou uma fase intermediária (STATUS_PHASE).
+            $root = $this;
+            while ($root->parent) {
+                $root = $root->parent;
+            }
+
+            $active = in_array($this->status, [Opportunity::STATUS_PHASE, Opportunity::STATUS_APPEAL_PHASE, Opportunity::STATUS_ENABLED], true)
+                && $root->status === Opportunity::STATUS_ENABLED;
 
             $now = new \DateTime;
 
@@ -549,7 +556,13 @@ class Module extends \MapasCulturais\Module{
             $registration_from_changed = $this->_changes['registrationFrom'] ?? false;
             $registration_to_changed = $this->_changes['registrationTo'] ?? false;
 
-            if($active && $this->publishTimestamp && !$this->publishedRegistrations && (($this->autoPublish && $this->publishTimestamp >= $now) || $registration_from_changed)){
+            // O campo de horário não tem segundos: quem escolhe o minuto atual salva com o horário já passado.
+            // Se a configuração de publicação mudou neste salvamento e o horário passou há até 10 minutos, publica imediatamente.
+            $publish_config_changed = ($this->_changes['publishTimestamp'] ?? false) || ($this->_changes['autoPublish'] ?? false);
+            $publish_recently_passed = $this->publishTimestamp && $this->publishTimestamp >= (clone $now)->modify('-10 minutes');
+            $publish_on_time = $this->publishTimestamp && ($this->publishTimestamp >= $now || ($publish_config_changed && $publish_recently_passed));
+
+            if($active && $this->publishTimestamp && !$this->publishedRegistrations && (($this->autoPublish && $publish_on_time) || $registration_from_changed)){
                 $app->enqueueOrReplaceJob(Jobs\PublishResult::SLUG, $data, $this->publishTimestamp->format("Y-m-d H:i:s"));
             } else {
                 $app->unqueueJob(Jobs\PublishResult::SLUG, $data);

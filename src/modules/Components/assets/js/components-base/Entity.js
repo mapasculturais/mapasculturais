@@ -234,7 +234,7 @@ class Entity {
         this.__validationMessages = [];
     }
 
-    catchErrors(res, data) {
+    catchErrors(res, data, persistentErrors = true) {
         let message = null;
         let handled = false;
         
@@ -264,7 +264,7 @@ class Entity {
                     this.sendMessage({
                         title: this.text('nao foi possivel salvar'),
                         messages: this.__validationMessages,
-                        persistent: true,
+                        persistent: persistentErrors,
                     }, 'error');
                 } else {
                     this.sendMessage(message || this.text('erro de validacao'), 'error');
@@ -516,7 +516,7 @@ class Entity {
         });
     }
 
-    async doPromise(res, cb) {
+    async doPromise(res, cb, {persistentErrors = true} = {}) {
         let data = await res.json();
         let result; 
 
@@ -524,7 +524,7 @@ class Entity {
             data = cb(data) || data;
             result = Promise.resolve(data);
         } else {
-            const handled = this.catchErrors(res, data);
+            const handled = this.catchErrors(res, data, persistentErrors);
             const error = data && typeof data === 'object' ? data : {error: true, data};
             error.status = res.status;
             if (handled) {
@@ -818,7 +818,7 @@ class Entity {
                     this.files[group] = file;
                 }
                 return file;
-            });
+            }, {persistentErrors: false});
         } catch (error) {
             return this.doCatch(error);
         }
