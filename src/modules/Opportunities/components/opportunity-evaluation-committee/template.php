@@ -251,10 +251,13 @@ $this->import('
                                         </button>
                                     </template>
                                     <template #message>
-                                        <?= i::__('Reabrir') ?> <strong>{{selectedEvaluationIds.length}}</strong>
-                                        <template v-if="selectedEvaluationIds.length === 1"><?= i::__('avaliação selecionada de') ?></template>
-                                        <template v-else><?= i::__('avaliações selecionadas de') ?></template>
-                                        <strong>{{infoReviewer.agent.name}}</strong>?
+                                        <p class="opportunity-evaluation-committee__reopen-confirmation">
+                                            <span><?= i::__('Reabrir') ?></span>
+                                            <strong>{{selectedEvaluationIds.length}}</strong>
+                                            <span v-if="selectedEvaluationIds.length === 1"><?= i::__('avaliação selecionada de') ?></span>
+                                            <span v-else><?= i::__('avaliações selecionadas de') ?></span>
+                                            <span><strong>{{infoReviewer.agent.name}}</strong>?</span>
+                                        </p>
                                     </template>
                                 </mc-confirm-button>
                                 <mc-confirm-button @confirm="reopenAllEvaluations(modal)" yes="<?= i::esc_attr__('Reabrir todas') ?>" no="<?= i::esc_attr__('Cancelar') ?>">
@@ -264,7 +267,12 @@ $this->import('
                                         </button>
                                     </template>
                                     <template #message>
-                                        <?= i::__('Reabrir todas as') ?> <strong>{{sentTotal}}</strong> <?= i::__('avaliações enviadas de') ?> <strong>{{infoReviewer.agent.name}}</strong>?
+                                        <p class="opportunity-evaluation-committee__reopen-confirmation">
+                                            <span><?= i::__('Reabrir todas as') ?></span>
+                                            <strong>{{sentTotal}}</strong>
+                                            <span><?= i::__('avaliações enviadas de') ?></span>
+                                            <span><strong>{{infoReviewer.agent.name}}</strong>?</span>
+                                        </p>
                                     </template>
                                 </mc-confirm-button>
                             </template>
