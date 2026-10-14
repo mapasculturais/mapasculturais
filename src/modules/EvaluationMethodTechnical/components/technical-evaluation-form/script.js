@@ -44,6 +44,9 @@ app.component('technical-evaluation-form', {
     },
 
     computed: {
+        usesFixedScores() {
+            return $MAPAS.config.technicalEvaluationForm.scoreMode === 'fixed';
+        },
         enableViability() {
             return $MAPAS.config.technicalEvaluationForm.enableViability;
         },
@@ -138,6 +141,9 @@ app.component('technical-evaluation-form', {
                     if (!value && value !== 0) {
                         this.messages.error(`${this.text('on_section')} ${sectionName}, ${this.text('the_field')} ${crit.title} ${this.text('is_required')}`);
                         isValid = true;
+                    } else if (this.usesFixedScores && !(crit.scoreOptions || []).some(option => Number(option) === Number(value))) {
+                        this.messages.error(`${crit.title}: ${this.text('invalid-fixed-note')}`);
+                        isValid = true;
                     }
                 }
             }
@@ -147,7 +153,7 @@ app.component('technical-evaluation-form', {
                 isValid = true;
             }
 
-            if (this.enabledViablity && !this.formData.data.viability) {
+            if (this.enableViability && !this.formData.data.viability) {
                 this.messages.error(this.text('technical-checkViability'));
                 isValid = true;
             }
@@ -172,9 +178,17 @@ app.component('technical-evaluation-form', {
         },
         
         skeleton() {
-            return {
+            const data = {
                 uid: this.userId,
             };
+            if (this.usesFixedScores) {
+                for (const section of Object.values(this.sections)) {
+                    for (const criterion of section.criteria) {
+                        data[criterion.id] = '';
+                    }
+                }
+            }
+            return data;
         },
     }
 });

@@ -334,10 +334,12 @@
 
     module.controller('TechnicalEvaluationMethodFormController', ['$scope', '$rootScope', '$timeout', 'TechnicalEvaluationMethodService', function ($scope, $rootScope, $timeout, TechnicalEvaluationMethodService) {
             var labels = MapasCulturais.gettext.technicalEvaluationMethod;
+            var fixedScores = MapasCulturais.evaluationConfiguration.scoreMode === 'fixed';
             MapasCulturais.evaluationConfiguration.criteria = MapasCulturais.evaluationConfiguration.criteria.map(function(e){
-                e.min = parseInt(e.min);
-                e.max = parseInt(e.max);
-                e.weight = parseInt(e.weight);
+                var parse = fixedScores ? parseFloat : parseInt;
+                e.min = parse(e.min);
+                e.max = parse(e.max);
+                e.weight = parse(e.weight);
                 return e;
             });
             
@@ -350,6 +352,8 @@
             }
             
             $scope.data = {
+                scoreMode: MapasCulturais.evaluationConfiguration.scoreMode || 'typed',
+                isEditable: !(MapasCulturais.evaluation && MapasCulturais.evaluation.status > 0),
                 sections: MapasCulturais.evaluationConfiguration.sections || [],
                 criteria: MapasCulturais.evaluationConfiguration.criteria || [],
                 enableViability: MapasCulturais.evaluationConfiguration.enableViability || false,
@@ -363,6 +367,14 @@
                 $scope.evaluation =  {};
             }
 
+            if (fixedScores) {
+                $scope.data.criteria.forEach(function(criterion) {
+                    if ($scope.evaluation[criterion.id] == null) {
+                        $scope.evaluation[criterion.id] = '';
+                    }
+                });
+            }
+
             $scope.subtotalSection = function(section){
                 var total = 0;
 
@@ -373,7 +385,7 @@
                     }
                 }
 
-                return total.toFixed(1);
+                return total.toFixed(fixedScores ? 2 : 1);
             };
 
             $scope.total = function(){
@@ -384,7 +396,7 @@
                     total += $scope.evaluation[cri.id] * cri.weight;
                 }
 
-                return total.toFixed(1);
+                return total.toFixed(fixedScores ? 2 : 1);
             };
 
             $scope.max = function(){
