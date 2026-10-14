@@ -26,12 +26,16 @@ app.component('technical-assessment-section', {
         return {
             editingSections: [],
             autoSaveTimeOut:  null,
+            scoreOptionInputs: {},
         }
     },
 
     computed: {
         hasEvaluationsStarted() {
-            return $MAPAS.config.technicalAssessmentsection.hasEvaluationsStarted;
+            return this.entity.hasStartedEvaluations ?? $MAPAS.config.technicalAssessmentsection.hasEvaluationsStarted;
+        },
+        scoreMode() {
+            return this.entity.scoreMode || 'typed';
         },
         isAdmin() {
             return $MAPAS.config.technicalAssessmentsection.isAdmin;
@@ -56,6 +60,48 @@ app.component('technical-assessment-section', {
     },
 
     methods: {
+        parseScoreOptions(value) {
+            const parts = `${value ?? ''}`.split(',').map(part => part.trim());
+            if (parts.some(part => !/^\d+(?:\.\d+)?$/.test(part))) {
+                return null;
+            }
+            const options = parts.map(Number);
+            if (options.some(value => !Number.isFinite(value)) || new Set(options).size !== options.length) {
+                return null;
+            }
+            return options.sort((a, b) => a - b);
+        },
+        scoreOptionsText(criterion) {
+            return this.scoreOptionInputs[criterion.id] ?? (criterion.scoreOptions || []).join(',');
+        },
+        changeScoreMode(mode) {
+            if (this.hasEvaluationsStarted || !['typed', 'fixed'].includes(mode)) {
+                return;
+            }
+            this.entity.scoreMode = mode;
+            this.save();
+        },
+        updateScoreOptions(criterion, value) {
+            if (this.hasEvaluationsStarted) {
+                return;
+            }
+            this.scoreOptionInputs[criterion.id] = value;
+            const options = this.parseScoreOptions(value);
+            if (!options) {
+                return;
+            }
+            criterion.scoreOptions = options;
+            criterion.min = options[0];
+            criterion.max = options[options.length - 1];
+            this.save(1500);
+        },
+        checkScoreOptions(criterion) {
+            if (!this.parseScoreOptions(this.scoreOptionsText(criterion))) {
+                this.messages.error(this.text('invalidScoreOptions'));
+                return false;
+            }
+            return true;
+        },
         generateUniqueNumber() {
             return Date.now() + Math.floor(Math.random() * 1000);
         },
@@ -88,7 +134,8 @@ app.component('technical-assessment-section', {
                     title: '',
                     min: 0,
                     max: null,
-                    weight: 1
+                    weight: 1,
+                    scoreOptions: []
                 });
 
 
@@ -163,6 +210,10 @@ app.component('technical-assessment-section', {
                     return false;
                 }
 
+                if (this.scoreMode === 'fixed' && !this.parseScoreOptions(this.scoreOptionsText(criterion))) {
+                    return false;
+                }
+
                 if (criterion.max === null || criterion.max === undefined || criterion.max === '' || Number.isNaN(Number(criterion.max))) {
                     return false;
                 }
@@ -193,9 +244,12 @@ app.component('technical-assessment-section', {
 
             if(this.entity.criteria) {
                 this.entity.criteria.forEach((criterion) => {
+                    if (this.scoreMode === 'fixed' && !this.checkScoreOptions(criterion)) {
+                        hasError = true;
+                    }
                     Object.keys(this.fieldsDict.criteria).forEach((field) => {
                         let _field = this.fieldsDict.criteria[field];
-                        if (_field.isRequired && !criterion[field]) {
+                        if (_field.isRequired && (criterion[field] === null || criterion[field] === undefined || criterion[field] === '')) {
                             let message = `${this.text('theField')} ${this.text(_field.label)} ${this.text('isRequired')} `;
                             
                             if(addCriteria) {

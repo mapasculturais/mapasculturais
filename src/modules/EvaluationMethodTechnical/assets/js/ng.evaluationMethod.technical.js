@@ -68,6 +68,9 @@
             }
             
             $scope.data = {
+                scoreMode: MapasCulturais.evaluationConfiguration.scoreMode || 'typed',
+                hasStartedEvaluations: !!MapasCulturais.evaluationConfiguration.hasStartedEvaluations,
+                scoreOptionInputs: {},
                 sections: MapasCulturais.evaluationConfiguration.sections || [],
                 criteria: MapasCulturais.evaluationConfiguration.criteria || [],
                 quotas: MapasCulturais.evaluationConfiguration.quotas || [],
@@ -82,6 +85,42 @@
                 debounce: 2000
             };
 
+            $scope.data.criteria.forEach(function(criterion) {
+                $scope.data.scoreOptionInputs[criterion.id] = (criterion.scoreOptions || []).join(',');
+            });
+
+            $scope.parseScoreOptions = function(value) {
+                var parts = String(value == null ? '' : value).split(',').map(function(part) { return part.trim(); });
+                if (parts.some(function(part) { return !/^\d+(?:\.\d+)?$/.test(part); })) {
+                    return null;
+                }
+                var options = parts.map(Number);
+                if (options.some(function(value) { return !Number.isFinite(value); }) || new Set(options).size !== options.length) {
+                    return null;
+                }
+                return options.sort(function(a, b) { return a - b; });
+            };
+
+            $scope.updateScoreOptions = function(criterion) {
+                if ($scope.data.hasStartedEvaluations) {
+                    return;
+                }
+                var options = $scope.parseScoreOptions($scope.data.scoreOptionInputs[criterion.id]);
+                if (!options) {
+                    return;
+                }
+                criterion.scoreOptions = options;
+                criterion.min = options[0];
+                criterion.max = options[options.length - 1];
+                $scope.save();
+            };
+
+            $scope.checkScoreOptions = function(criterion) {
+                if (!$scope.parseScoreOptions($scope.data.scoreOptionInputs[criterion.id])) {
+                    MapasCulturais.Messages.error(labels.invalidScoreOptions);
+                }
+            };
+
             function sectionExists(name) {
                 var exists = false;
                 $scope.data.sections.forEach(function (s) {
@@ -94,7 +133,13 @@
             }
 
             $scope.save = function(){
+                if ($scope.data.scoreMode === 'fixed' && $scope.data.criteria.some(function(criterion) {
+                    return !$scope.parseScoreOptions($scope.data.scoreOptionInputs[criterion.id]);
+                })) {
+                    return;
+                }
                 var data = {
+                    scoreMode: $scope.data.scoreMode,
                     sections: $scope.data.sections,
                     criteria: [],
                     quotas: $scope.data.quotas,

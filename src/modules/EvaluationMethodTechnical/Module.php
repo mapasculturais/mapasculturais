@@ -309,6 +309,7 @@ class Module extends \MapasCulturais\EvaluationMethod
         $app->view->localizeScript('technicalEvaluationMethod', [
             'sectionNameAlreadyExists' => i::__('Já existe uma seção com o mesmo nome'),
             'changesSaved' => i::__('Alteraçṍes salvas'),
+            'invalidScoreOptions' => i::__('Informe notas permitidas válidas, sem repetições, separadas por vírgula. Use ponto para decimais.'),
             'deleteSectionConfirmation' => i::__('Deseja remover a seção? Esta ação não poderá ser desfeita e também removerá todas os critérios desta seção.'),
             'deleteCriterionConfirmation' => i::__('Deseja remover este critério de avaliação? Esta ação não poderá ser desfeita.'),
             'deleteAffirmativePolicy' => i::__('Deseja remover esta política afirmativa? Esta ação não poderá ser desfeita.')
@@ -320,6 +321,20 @@ class Module extends \MapasCulturais\EvaluationMethod
         $app = App::i();
 
         $self = $this;
+
+        $app->hook('entity(EvaluationMethodConfiguration).jsonSerialize', function(&$result) {
+            if ($this->definition?->slug === 'technical') {
+                $result['hasStartedEvaluations'] = $this->hasStartedEvaluations();
+            }
+        });
+
+        $app->hook('entity(EvaluationMethodConfiguration).get(hasStartedEvaluations)', function(&$value) {
+            $value = $this->definition?->slug === 'technical' && $this->hasStartedEvaluations();
+        });
+
+        $app->hook('module(OpportunityPhases).evaluationPhaseData', function(&$properties) {
+            $properties .= ',scoreMode,criteria,sections,hasStartedEvaluations';
+        });
 
         $app->hook('entity(EvaluationMethodConfiguration).validations', function(&$validations) use($self) {
             if ($this->definition?->slug === 'technical') {

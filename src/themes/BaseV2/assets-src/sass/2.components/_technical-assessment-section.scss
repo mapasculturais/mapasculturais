@@ -1,6 +1,21 @@
 @use '../0.settings/mixins' as *;
 
 .technical-assessment-section {
+    &__score-mode {
+        margin-bottom: size(24);
+
+        select {
+            max-width: size(320);
+        }
+    }
+
+    .criterion__score-options {
+        min-width: 0;
+
+        input {
+            width: 100%;
+        }
+    }
     &__fields {
         border-radius: var(--mc-border-radius-xs);
         border: var(--mc-border-hairline) var(--mc-gray-300);
