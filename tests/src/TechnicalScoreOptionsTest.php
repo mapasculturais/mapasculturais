@@ -65,10 +65,16 @@ class TechnicalScoreOptionsTest extends TestCase
         $this->assertSame($criteria, ScoreOptions::normalizeCriteria('typed', $criteria));
     }
 
-    public function testRejectsUnknownMode(): void
+    /** @dataProvider invalidModes */
+    public function testRejectsUnknownMode($mode): void
     {
         $this->expectException(InvalidArgumentException::class);
-        ScoreOptions::normalizeCriteria('slider', []);
+        ScoreOptions::normalizeCriteria($mode, []);
+    }
+
+    public static function invalidModes(): array
+    {
+        return [['slider'], [0], [false], ['0']];
     }
 
     public function testChecksMembershipWithoutRounding(): void

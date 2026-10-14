@@ -175,4 +175,26 @@ class TechnicalFixedScoresTest extends TestCase
         $module->prepareScoreConfiguration($this->configuration);
         $this->assertSame([0.0, 5.0, 10.0], $this->configuration->criteria[0]->scoreOptions);
     }
+
+    public function testDraftRejectsFilledScoreOutsideOptions(): void
+    {
+        $this->assertNotEmpty($this->module->getFixedScoreValidationErrors($this->configuration, ['a' => 7.5], false));
+    }
+
+    public function testDraftAllowsMissingScoresAndZero(): void
+    {
+        $this->assertSame([], $this->module->getFixedScoreValidationErrors($this->configuration, [], false));
+        $this->assertSame([], $this->module->getFixedScoreValidationErrors($this->configuration, ['a' => ''], false));
+        $this->assertSame([], $this->module->getFixedScoreValidationErrors($this->configuration, ['a' => 0], false));
+    }
+
+    public function testSavingDraftRejectsInvalidFilledScore(): void
+    {
+        $evaluation = $this->getMockBuilder(\MapasCulturais\Entities\RegistrationEvaluation::class)
+            ->disableOriginalConstructor()->onlyMethods(['getEvaluationMethodConfiguration', '__get'])->getMock();
+        $evaluation->method('getEvaluationMethodConfiguration')->willReturn($this->configuration);
+        $evaluation->method('__get')->willReturnCallback(fn($field) => $field === 'evaluationData' ? (object) ['a' => 7.5] : 0);
+        $this->expectException(\MapasCulturais\Exceptions\BadRequest::class);
+        $this->module->assertFixedScoreEvaluation($evaluation);
+    }
 }

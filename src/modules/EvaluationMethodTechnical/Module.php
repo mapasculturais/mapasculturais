@@ -322,6 +322,10 @@ class Module extends \MapasCulturais\EvaluationMethod
 
         $self = $this;
 
+        $app->hook('entity(RegistrationEvaluation).save:before', function() use($self) {
+            $self->assertFixedScoreEvaluation($this);
+        });
+
         $app->hook('entity(EvaluationMethodConfiguration).jsonSerialize', function(&$result) {
             if ($this->definition?->slug === 'technical') {
                 $result['hasStartedEvaluations'] = $this->hasStartedEvaluations();
@@ -1138,22 +1142,52 @@ class Module extends \MapasCulturais\EvaluationMethod
         }
     }
 
-    function getValidationErrors(Entities\EvaluationMethodConfiguration $evaluation_method_configuration, array $data){
+    public function getFixedScoreValidationErrors(EvaluationMethodConfiguration $configuration, array $data, bool $require_all = true): array
+    {
+        if ($configuration->scoreMode !== 'fixed') {
+            return [];
+        }
         $errors = [];
-        $empty = false;
-
-        if ($evaluation_method_configuration->scoreMode === 'fixed') {
-            try {
-                $criteria = ScoreOptions::normalizeCriteria('fixed', (array) $evaluation_method_configuration->criteria);
-                foreach ($criteria as $criterion) {
-                    if (!array_key_exists($criterion->id, $data) || !ScoreOptions::contains($criterion->scoreOptions, $data[$criterion->id])) {
-                        $errors[] = sprintf(i::__('Selecione uma nota permitida para o critério "%s".'), $criterion->title);
-                    }
+        try {
+            $criteria = ScoreOptions::normalizeCriteria('fixed', (array) $configuration->criteria);
+            foreach ($criteria as $criterion) {
+                $value = $data[$criterion->id] ?? null;
+                if (!$require_all && ($value === null || $value === '')) {
+                    continue;
                 }
-            } catch (\InvalidArgumentException $e) {
-                $errors[] = i::__('A configuração das notas permitidas é inválida.');
+                if (!ScoreOptions::contains($criterion->scoreOptions, $value)) {
+                    $errors[] = sprintf(i::__('Selecione uma nota permitida para o critério "%s".'), $criterion->title);
+                }
+            }
+        } catch (\InvalidArgumentException $e) {
+            $errors[] = i::__('A configuração das notas permitidas é inválida.');
+        }
+        return $errors;
+    }
+
+    /** Valida também autosaves/rascunhos, sem exigir critérios ainda não respondidos. */
+    public function assertFixedScoreEvaluation(Entities\RegistrationEvaluation $evaluation): void
+    {
+        $configuration = $evaluation->getEvaluationMethodConfiguration();
+        if (!$configuration || $configuration->evaluationMethod?->getSlug() !== 'technical' || $configuration->scoreMode !== 'fixed') {
+            return;
+        }
+        $data = (array) $evaluation->evaluationData;
+        $errors = $this->getFixedScoreValidationErrors($configuration, $data, $evaluation->status > 0);
+        if ($errors) {
+            throw new \MapasCulturais\Exceptions\BadRequest(implode("\n", $errors));
+        }
+        foreach ($configuration->criteria as $criterion) {
+            if (isset($data[$criterion->id]) && $data[$criterion->id] !== '') {
+                $data[$criterion->id] = (float) $data[$criterion->id];
             }
         }
+        $evaluation->setEvaluationData($data);
+    }
+
+    function getValidationErrors(Entities\EvaluationMethodConfiguration $evaluation_method_configuration, array $data){
+        $errors = $this->getFixedScoreValidationErrors($evaluation_method_configuration, $data);
+        $empty = false;
 
         if ($evaluation_method_configuration->enableViability === "true" && !array_key_exists('viability',$data)) {
             $empty = true;

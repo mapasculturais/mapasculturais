@@ -9,7 +9,7 @@ class ScoreOptions
 {
     public static function mode($mode): string
     {
-        $mode = $mode ?: 'typed';
+        $mode = ($mode === null || $mode === '') ? 'typed' : $mode;
         if (!in_array($mode, ['typed', 'fixed'], true)) {
             throw new InvalidArgumentException('Modo de atribuição de notas inválido.');
         }
