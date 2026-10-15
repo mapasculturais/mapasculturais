@@ -87,6 +87,10 @@
         width: 100%;
         margin: 0 auto;
 
+        .mc-header-logo:has(.theme-logo.onlyImg) {
+            width: auto;
+        }
+
         .logIn {
             align-items: center;
             background:  var(--mc-low-500);
@@ -133,5 +137,6 @@
         align-items: center;
         display: flex;
         gap: 0 size(30);
+        margin-left: auto;
     }
 }

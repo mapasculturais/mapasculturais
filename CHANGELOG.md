@@ -11,6 +11,21 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - **Avaliação automática por selos**: o gestor pode indicar, em uma fase de avaliação, quais selos validam o proponente. Se a pessoa já tiver esses selos válidos no perfil, a inscrição é **dispensada automaticamente** daquela fase (marcada como “Dispensada por selos”) e segue para a próxima etapa, sem precisar de avaliador
 - **Novos anexos no cadastro do agente** (também usáveis como campos `@` no formulário de inscrição): CPF, CNPJ, CNH, RG, passaporte, comprovante de residência, vínculo territorial, currículo, portfólio, certidões fiscal, trabalhista e de prestação de contas, além de comprovantes de raça/cor, pessoa com deficiência e comunidades tradicionais. Os arquivos ficam no perfil e acompanham a inscrição automaticamente
 
+## [7.8.18] - 2026-10-15
+### Correções
+- Corrige a configuração de status da fase, que não era respeitada no formulário do avaliador: status desabilitados (como "Negado" na fase de recurso) continuavam sendo oferecidos e nomes renomeados não apareciam. Os formulários das avaliações simplificada e contínua e o chat da fase de recurso passam a listar apenas os status habilitados na fase, com o nome configurado, e o envio da avaliação com status desabilitado, Rascunho ou Pendente passa a ser recusado
+
+## [7.8.17] - 2026-10-09
+### Correções
+- Corrige o aviso "Não foi possível salvar", que ficava na tela até o clique em fechar, passando a sumir sozinho depois de alguns segundos, como as demais mensagens
+- Corrige erro 500 no relatório de oportunidades com avaliação técnica quando havia inscrições sem nota concluída, passando a considerar apenas notas concluídas no gráfico de faixas de nota e na exportação em CSV
+- Corrige o login de usuários donos de muitos agentes e espaços, que demorava mais de 30 segundos e terminava em erro 500: os avisos de agentes e espaços sem atualização há muito tempo passam a ser gerados em segundo plano, por um job, em vez de durante o login
+- Corrige a geocodificação do endereço internacional (`international-address-form`): as linhas de endereço não disparavam a busca no Nominatim, que só rodava ao trocar estado ou cidade, normalmente antes de digitar a rua; o pin ficava no centro da cidade ou em (0,0). Agora a busca também roda ao digitar o endereço, 1,5 s depois da última tecla
+- Corrige o salvamento da configuração do formulário de fases que não são a oportunidade principal, em especial a fase de recurso: o sistema exigia descrição curta e tipo, campos que só existem no edital, e o salvamento falhava com "A descrição curta é obrigatória" e "O Tipo é obrigatório"; a descrição curta continua obrigatória só na oportunidade principal, e a fase de recurso deixa de exigir tipo
+
+### Melhorias
+- Ajustar o espaçamento dos elementos do header para melhorar a exibição e a organização das informações apresentadas
+
 ## [7.8.16] - 2026-10-06
 ### Correções
 - Corrige a exibição do plano de metas para aparecer somente quando habilitado e na última etapa visível da inscrição, inclusive com etapas condicionais por categoria, tipo de proponente ou faixa e na tela de suporte

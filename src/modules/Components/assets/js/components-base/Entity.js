@@ -234,7 +234,7 @@ class Entity {
         this.__validationMessages = [];
     }
 
-    catchErrors(res, data, persistentErrors = true) {
+    catchErrors(res, data, persistentErrors = false) {
         let message = null;
         let handled = false;
         
@@ -516,7 +516,7 @@ class Entity {
         });
     }
 
-    async doPromise(res, cb, {persistentErrors = true} = {}) {
+    async doPromise(res, cb, {persistentErrors = false} = {}) {
         let data = await res.json();
         let result; 
 

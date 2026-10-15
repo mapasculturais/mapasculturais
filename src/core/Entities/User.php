@@ -877,39 +877,8 @@ class User extends \MapasCulturais\Entity implements \MapasCulturais\UserInterfa
       }
 
       if(isset($app->modules['Notifications']) && $app->config['notifications.entities.update'] > 0) {
-          $now = new \DateTime;
-          foreach($this->agents as $agent) {
-            $lastUpdateDate = $agent->updateTimestamp ? $agent->updateTimestamp: $agent->createTimestamp;
-            $interval = date_diff($lastUpdateDate, $now);
-            if($agent->status > 0 && !$agent->sentNotification && $interval->format('%a') >= $app->config['notifications.entities.update']) {
-              // message to user about old agent registrations
-              $notification = new Notification;
-              $notification->user = $app->user;
-              $notification->message = sprintf(\MapasCulturais\i::__("O agente <b>%s</b> não é atualizado desde de <b>%s</b>, atualize as informações se necessário. <a class='btn btn-small btn-primary' href='%s' rel='noopener noreferrer'>editar</a>'"),$agent->name,$lastUpdateDate->format("d/m/Y"),$agent->editUrl);
-              $notification->save();
-
-              // use the notification id to use it later on entity update
-              $agent->sentNotification = $notification->id;
-              $agent->save();
-            }
-          }
-
-          foreach($this->spaces as $space) {
-            $lastUpdateDate = $space->updateTimestamp ? $space->updateTimestamp: $space->createTimestamp;
-            $interval = date_diff($lastUpdateDate, $now);
-
-            if($space->status > 0 && !$space->sentNotification && $interval->format('%a') >= $app->config['notifications.entities.update']) {
-              // message to user about old space registrations
-              $notification = new Notification;
-              $notification->user = $app->user;
-              $notification->message = sprintf(\MapasCulturais\i::__("O Espaço <b>%s</b> não é atualizado desde de <b>%s</b>, atualize as informações se necessário. <a class='btn btn-small btn-primary' href='%s' rel='noopener noreferrer'>editar</a>"),$space->name,$lastUpdateDate->format("d/m/Y"),$space->editUrl);
-              $notification->save();
-              // use the notification id to use it later on entity update
-              $space->sentNotification = $notification->id;
-              $space->save();
-            }
-          }
-        $app->em->flush();
+          // runs in background to avoid blocking the login of users with many entities
+          $app->enqueueJob(\MapasCulturais\JobTypes\EntitiesUpdateNotifications::SLUG, ['userId' => $this->id], user: $this);
       }
 
       if(in_array('notifications.seal.toExpire',$app->config) && $app->config['notifications.seal.toExpire'] > 0) {

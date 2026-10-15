@@ -54,7 +54,7 @@ app.component('appeal-phase-chat', {
 
     computed: {
         statusList() {
-            return $MAPAS.config.evaluationMethodAppealPhase.statuses;
+            return $MAPAS.config.appealPhaseChatStatuses || $MAPAS.config.evaluationMethodAppealPhase.statuses;
         },
 
         userRequest() {
