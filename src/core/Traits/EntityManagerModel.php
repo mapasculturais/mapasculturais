@@ -108,7 +108,7 @@ trait EntityManagerModel {
             $this->entityOpportunityModel = $this->generateOpportunity();
 
             $this->generateEvaluationMethods(false);
-            $this->generatePhases(false);
+            $this->generatePhases(copyDates: false, useCurrentSubsite: true);
             $this->generateTerms();
             $this->generateMetadata(0, 0);
             $this->generateRegistrationFieldsAndFiles($this->entityOpportunity, $this->entityOpportunityModel);
@@ -306,9 +306,12 @@ trait EntityManagerModel {
         $this->entityOpportunityModel = clone $this->entityOpportunity;
         $this->resetClonedEvaluationMethodConfiguration($this->entityOpportunityModel);
         $this->clearOpportunityPhaseDates($this->entityOpportunityModel);
+        $this->clearOpportunityPublication($this->entityOpportunityModel);
         $this->entityOpportunityModel->name = $name;
         $this->entityOpportunityModel->status = Entity::STATUS_DRAFT;
         $this->entityOpportunityModel->owner = $app->user->profile;
+        // o clone mantém o id da origem, então o save() não aplica o subsite atual como faz em entidades novas
+        $this->entityOpportunityModel->subsite = $app->getCurrentSubsite();
 
         $now = new \DateTime('now');
         $this->entityOpportunityModel->createTimestamp = $now;
@@ -390,7 +393,7 @@ trait EntityManagerModel {
      * @return void
      * @access private
      */
-    private function generatePhases(bool $copyDates = true) : void
+    private function generatePhases(bool $copyDates = true, bool $useCurrentSubsite = false) : void
     {
         $app = App::i();
         $conn = $app->em->getConnection();
@@ -401,13 +404,15 @@ trait EntityManagerModel {
         ]);
 
         $publishDate = null;
-        $publishSubsite = null;
+        $publishSubsite = $useCurrentSubsite ? $app->getCurrentSubsite() : null;
         $newLastPhase = null;
 
         foreach ($phases as $phase) {
             if ($phase->getMetadata('isLastPhase')) {
                 $publishDate = $phase->publishTimestamp;
-                $publishSubsite = $phase->subsite;
+                if (!$useCurrentSubsite) {
+                    $publishSubsite = $phase->subsite;
+                }
                 continue;
             }
 
@@ -415,13 +420,14 @@ trait EntityManagerModel {
             $this->resetClonedEvaluationMethodConfiguration($newPhase);
             if (!$copyDates) {
                 $this->clearOpportunityPhaseDates($newPhase);
+                $this->clearOpportunityPublication($newPhase);
             }
             $newPhase->setParent($this->entityOpportunityModel);
             $newPhase->owner = $app->user->profile;
 
             $now = new \DateTime('now');
             $newPhase->createTimestamp = $now;
-            $newPhase->subsite = $phase->subsite;
+            $newPhase->subsite = $useCurrentSubsite ? $app->getCurrentSubsite() : $phase->subsite;
 
             $this->saveWithSingleFlush($newPhase);
 
@@ -478,6 +484,7 @@ trait EntityManagerModel {
                         $newPhase->setPublishTimestamp($publishDate);
                     } else {
                         $this->clearOpportunityPhaseDates($newPhase);
+                        $this->clearOpportunityPublication($newPhase);
                     }
                     $newPhase->save(true);
                     $this->changeObjectType($newPhase->id);
@@ -508,6 +515,11 @@ trait EntityManagerModel {
         $opportunity->registrationTo = null;
         $opportunity->publishTimestamp = null;
         $opportunity->autoPublish = false;
+    }
+
+    private function clearOpportunityPublication(Opportunity $opportunity): void
+    {
+        $opportunity->publishedRegistrations = false;
     }
 
     private function clearEvaluationDates(EvaluationMethodConfiguration $configuration): void

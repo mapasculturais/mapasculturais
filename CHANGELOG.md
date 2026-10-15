@@ -11,6 +11,11 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - **Avaliação automática por selos**: o gestor pode indicar, em uma fase de avaliação, quais selos validam o proponente. Se a pessoa já tiver esses selos válidos no perfil, a inscrição é **dispensada automaticamente** daquela fase (marcada como “Dispensada por selos”) e segue para a próxima etapa, sem precisar de avaliador
 - **Novos anexos no cadastro do agente** (também usáveis como campos `@` no formulário de inscrição): CPF, CNPJ, CNH, RG, passaporte, comprovante de residência, vínculo territorial, currículo, portfólio, certidões fiscal, trabalhista e de prestação de contas, além de comprovantes de raça/cor, pessoa com deficiência e comunidades tradicionais. Os arquivos ficam no perfil e acompanham a inscrição automaticamente
 
+## [7.8.19] - 2026-10-15
+### Correções
+- Corrige a oportunidade criada a partir de modelo, que herdava o subsite do modelo: a oportunidade e todas as suas fases passam a ser criadas no subsite atual, onde o usuário está criando
+- Corrige a oportunidade criada a partir de modelo com resultado publicado, que já nascia com o resultado publicado: a oportunidade e suas fases passam a ser criadas com a publicação do resultado desmarcada
+
 ## [7.8.18] - 2026-10-15
 ### Correções
 - Corrige a configuração de status da fase, que não era respeitada no formulário do avaliador: status desabilitados (como "Negado" na fase de recurso) continuavam sendo oferecidos e nomes renomeados não apareciam. Os formulários das avaliações simplificada e contínua e o chat da fase de recurso passam a listar apenas os status habilitados na fase, com o nome configurado, e o envio da avaliação com status desabilitado, Rascunho ou Pendente passa a ser recusado
