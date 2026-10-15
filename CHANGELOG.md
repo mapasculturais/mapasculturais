@@ -5,6 +5,11 @@ Todas as mudanças notáveis no projeto serão documentadas neste arquivo.
 O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/)
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+### Correções
+- Corrige a oportunidade criada a partir de modelo, que herdava o subsite do modelo: a oportunidade e todas as suas fases passam a ser criadas no subsite atual, onde o usuário está criando
+- Corrige a oportunidade criada a partir de modelo com resultado publicado, que já nascia com o resultado publicado: a oportunidade e suas fases passam a ser criadas com a publicação do resultado desmarcada
+
 ## [7.8.18] - 2026-10-15
 ### Correções
 - Corrige a configuração de status da fase, que não era respeitada no formulário do avaliador: status desabilitados (como "Negado" na fase de recurso) continuavam sendo oferecidos e nomes renomeados não apareciam. Os formulários das avaliações simplificada e contínua e o chat da fase de recurso passam a listar apenas os status habilitados na fase, com o nome configurado, e o envio da avaliação com status desabilitado, Rascunho ou Pendente passa a ser recusado
