@@ -37,8 +37,8 @@ $this->import('
                 @change="address()"></entity-field>
         </template>
     
-        <entity-field :classes="'col-12'" :entity="entity" prop="address_line1"></entity-field>
-        <entity-field :classes="'col-12'" :entity="entity" prop="address_line2"></entity-field>
+        <entity-field :classes="'col-12'" :entity="entity" prop="address_line1" @change="addressDebounced()"></entity-field>
+        <entity-field :classes="'col-12'" :entity="entity" prop="address_line2" @change="addressDebounced()"></entity-field>
 
         <div class="col-12" v-if="hasPublicLocation">
             <div class="col-6 sm:col-12 field public-location">

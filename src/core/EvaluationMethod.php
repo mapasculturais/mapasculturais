@@ -156,6 +156,25 @@ abstract class EvaluationMethod extends Module implements \JsonSerializable{
         return "opportunityPhase.defaultStatuses.{$evaluation_method_configuration->slug}";
     }
 
+    /**
+     * Retorna os status que o avaliador pode atribuir, conforme a configuração de status da fase
+     * 
+     * @param EvaluationMethodConfiguration $evaluation_method_configuration
+     * @return array [status => label]
+     */
+    public function getEvaluatorStatuses(EvaluationMethodConfiguration $evaluation_method_configuration): array {
+        $status_labels = $evaluation_method_configuration->opportunity->statusLabels ?: $evaluation_method_configuration->defaultStatuses;
+
+        $statuses = [];
+        foreach ($status_labels as $status => $label) {
+            if (!in_array((int) $status, [Registration::STATUS_DRAFT, Registration::STATUS_SENT], true)) {
+                $statuses[$status] = $label;
+            }
+        }
+
+        return $statuses;
+    }
+
 
     /**
      * Retorna a próxima data e hora para redistribuição de inscrições

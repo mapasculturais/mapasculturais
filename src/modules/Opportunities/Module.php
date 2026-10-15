@@ -252,6 +252,12 @@ class Module extends \MapasCulturais\Module{
         // ajusta validação da área de interesse
         $app->hook('entity(Opportunity).validationErrors', function(&$errors) use ($app){
             /** @var Opportunity $this */
+            // Entity::getValidationErrors exige type em toda entidade que usa tipos.
+            // A fase de recurso é criada sem type e o formulário não oferece esse campo.
+            if ($this->isAppealPhase || $this->status === Opportunity::STATUS_APPEAL_PHASE) {
+                unset($errors['type'], $errors['shortDescription']);
+            }
+
             if(isset($errors['term-area'])) {
                 if($this->parent){
                     unset($errors['term-area']);
@@ -450,10 +456,19 @@ class Module extends \MapasCulturais\Module{
 
         $app->hook('entity(Opportunity).validations', function(&$validations) {
             /** @var Opportunity $this */
+            // Fases (coleta, avaliação, recurso) não têm os campos da oportunidade raiz.
+            $is_appeal_phase = $this->isAppealPhase || $this->status === Opportunity::STATUS_APPEAL_PHASE;
+            if ($this->parent || $is_appeal_phase) {
+                unset($validations['shortDescription']['required'], $validations['type']['required']);
+            }
+
             if (!$this->isNew() && !$this->isLastPhase) {
                 $validations['registrationFrom']['required'] = i::__('A data inicial das inscrições é obrigatória');
                 $validations['registrationTo']['required'] = i::__('A data final das inscrições é obrigatória');
-                $validations['shortDescription']['required'] = i::__('A descrição curtá é obrigatória');
+            }
+
+            if (!$this->isNew() && $this->isFirstPhase) {
+                $validations['shortDescription']['required'] = i::__('A descrição curta é obrigatória');
             }
 
             if (empty($this->controller->data['registrationTo'])) {
