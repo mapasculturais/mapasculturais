@@ -15,6 +15,15 @@ $this->import('
 ?>
 
 <div class="technical-assessment-section">
+    <label class="field technical-assessment-section__score-mode">
+        <span class="field__title"><?= i::__('Modo de atribuição de notas') ?></span>
+        <select class="field__input" :value="scoreMode" @change="changeScoreMode($event.target.value)" :disabled="hasEvaluationsStarted">
+            <option value="typed"><?= i::__('Nota digitada') ?></option>
+            <option value="fixed"><?= i::__('Notas fixas') ?></option>
+        </select>
+        <small v-if="scoreMode === 'fixed'"><?= i::__('Configure as notas permitidas de cada critério. O avaliador escolherá uma delas na lista.') ?></small>
+        <small v-if="hasEvaluationsStarted"><?= i::__('O modo e as notas permitidas não podem ser alterados após o início das avaliações.') ?></small>
+    </label>
     <mc-alert v-if="hasEvaluationsStarted && isAdmin" type="warning">
         <?= i::__('Já existem avaliações iniciadas, concluídas ou enviadas. Ao excluir critérios ou seções, as notas correspondentes serão removidas das avaliações existentes.') ?>
     </mc-alert>
@@ -54,14 +63,20 @@ $this->import('
             <div class="technical-assessment-section__criterions" v-if="entity.criteria && entity.criteria.length > 0">
                 <div class="criterion__fields criterion__title field">
                     <label><?php i::_e("Nome do critério") ?></label>
-                    <label><?php i::_e("Nota máxima") ?></label>
+                    <label v-if="scoreMode === 'fixed'"><?= i::__('Notas permitidas') ?></label>
+                    <label v-else><?= i::__('Nota máxima') ?></label>
                     <label><?php i::_e("Peso") ?></label>
                 </div>
                 <div v-for="(criteria, index) in entity.criteria" :key="index">
                     <div class="criterion" v-if="criteria.sid == section.id">
                         <div class="criterion__fields">
                             <input type="text" v-model="criteria.title" @keyup="save(1500)" placeholder="<?= i::esc_attr__('Nome do critério') ?>" ref="criteriaTitleInput" >
-                            <input type="number" v-model="criteria.max" @keyup="save(1500)" placeholder="<?= i::esc_attr__('Pontuação máxima') ?>" step="0.25">
+                            <input v-if="scoreMode === 'typed'" type="number" v-model="criteria.max" @keyup="save(1500)" placeholder="<?= i::esc_attr__('Pontuação máxima') ?>" step="0.25">
+                            <div v-else class="field criterion__score-options">
+                                <input type="text" :value="scoreOptionsText(criteria)" @input="updateScoreOptions(criteria, $event.target.value)" @blur="checkScoreOptions(criteria)" :disabled="hasEvaluationsStarted" :aria-label="text('scoreOptions') + ': ' + criteria.title" placeholder="0,5,10">
+                                <small><?= i::__('Separe por vírgula. Para decimais, use ponto: 0,2.5,5.') ?></small>
+                                <small><?= i::__('Nota máxima') ?>: {{ criteria.max ?? '—' }}</small>
+                            </div>
                             <input type="number" v-model="criteria.weight" @keyup="save(1500)" placeholder="<?= i::esc_attr__('Peso') ?>" step="0.25">
                         </div>
                         <div class="field__trash">

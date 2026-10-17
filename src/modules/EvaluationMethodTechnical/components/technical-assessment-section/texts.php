@@ -2,6 +2,8 @@
 use MapasCulturais\i;
 
 return [
+    'scoreOptions' => i::__('Notas permitidas'),
+    'invalidScoreOptions' => i::__('Informe notas permitidas válidas, sem repetições, separadas por vírgula. Use ponto para decimais.'),
     'fieldSectionName' => i::__('Nome seção'),
     'fieldCriterionTitle' => i::__('Nome do critério'),
     'fieldCriterionMax' => i::__('Pontuação máxima'),

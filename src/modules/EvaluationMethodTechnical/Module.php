@@ -23,6 +23,7 @@ class Module extends \MapasCulturais\EvaluationMethod
         $result = [
             'sections' => $evaluation_method_configuration->sections,
             'criteria' => $evaluation_method_configuration->criteria,
+            'scoreMode' => $evaluation_method_configuration->scoreMode ?: 'typed',
             'pointReward' => $evaluation_method_configuration->pointReward,
             'isActivePointReward' => $evaluation_method_configuration->isActivePointReward,
             'pointRewardRoof' => $evaluation_method_configuration->pointRewardRoof,
@@ -44,6 +45,7 @@ class Module extends \MapasCulturais\EvaluationMethod
     { 
         $evaluation_method_configuration->sections = $data['sections'];
         $evaluation_method_configuration->criteria = $data['criteria'];
+        $evaluation_method_configuration->scoreMode = $data['scoreMode'] ?? 'typed';
         $evaluation_method_configuration->pointReward = $data['pointReward'];
         $evaluation_method_configuration->isActivePointReward = $data['isActivePointReward'];
         $evaluation_method_configuration->pointRewardRoof = $data['pointRewardRoof'];
@@ -151,6 +153,12 @@ class Module extends \MapasCulturais\EvaluationMethod
     
     protected function _register() {
         $app = App::i();
+
+        $this->registerEvaluationMethodConfigurationMetadata('scoreMode', [
+            'label' => i::__('Modo de atribuição de notas'),
+            'type' => 'string',
+            'default_value' => 'typed',
+        ]);
         
         $this->registerEvaluationMethodConfigurationMetadata('sections', [
             'label' => i::__('Seções'),
@@ -301,6 +309,7 @@ class Module extends \MapasCulturais\EvaluationMethod
         $app->view->localizeScript('technicalEvaluationMethod', [
             'sectionNameAlreadyExists' => i::__('Já existe uma seção com o mesmo nome'),
             'changesSaved' => i::__('Alteraçṍes salvas'),
+            'invalidScoreOptions' => i::__('Informe notas permitidas válidas, sem repetições, separadas por vírgula. Use ponto para decimais.'),
             'deleteSectionConfirmation' => i::__('Deseja remover a seção? Esta ação não poderá ser desfeita e também removerá todas os critérios desta seção.'),
             'deleteCriterionConfirmation' => i::__('Deseja remover este critério de avaliação? Esta ação não poderá ser desfeita.'),
             'deleteAffirmativePolicy' => i::__('Deseja remover esta política afirmativa? Esta ação não poderá ser desfeita.')
@@ -312,6 +321,31 @@ class Module extends \MapasCulturais\EvaluationMethod
         $app = App::i();
 
         $self = $this;
+
+        $app->hook('entity(RegistrationEvaluation).save:before', function() use($self) {
+            $self->assertFixedScoreEvaluation($this);
+        });
+
+        $app->hook('entity(EvaluationMethodConfiguration).jsonSerialize', function(&$result) {
+            if ($this->definition?->slug === 'technical') {
+                $result['hasStartedEvaluations'] = $this->hasStartedEvaluations();
+            }
+        });
+
+        $app->hook('entity(EvaluationMethodConfiguration).get(hasStartedEvaluations)', function(&$value) {
+            $value = $this->definition?->slug === 'technical' && $this->hasStartedEvaluations();
+        });
+
+        $app->hook('module(OpportunityPhases).evaluationPhaseData', function(&$properties) {
+            $properties .= ',scoreMode,criteria,sections,hasStartedEvaluations';
+        });
+
+        $app->hook('entity(EvaluationMethodConfiguration).validations', function(&$validations) use($self) {
+            if ($this->definition?->slug === 'technical') {
+                $validations['name']['$this->evaluationMethod->validateScoreConfiguration($this)'] =
+                    i::__('Informe notas permitidas válidas, sem repetições, separadas por vírgula. Use ponto para decimais.');
+            }
+        });
 
         $app->hook('entity(EvaluationMethodConfiguration).set(<<pointReward|pointRewardRoof|isActivePointReward>>)', function(&$value, string $metadata) use($app, $self) {
             /** @var EvaluationMethodConfiguration $this */
@@ -1058,8 +1092,101 @@ class Module extends \MapasCulturais\EvaluationMethod
         });
     }
 
-    function getValidationErrors(Entities\EvaluationMethodConfiguration $evaluation_method_configuration, array $data){
+    public function normalizeScoreCriteria(EvaluationMethodConfiguration $configuration): void
+    {
+        if (ScoreOptions::mode($configuration->scoreMode) === 'typed') {
+            return;
+        }
+        $criteria = $configuration->criteria ?: [];
+        if (is_string($criteria)) {
+            $criteria = json_decode($criteria);
+            if (!is_array($criteria)) {
+                throw new \InvalidArgumentException('A configuração dos critérios é inválida.');
+            }
+        }
+        $configuration->criteria = ScoreOptions::normalizeCriteria(
+            $configuration->scoreMode,
+            (array) $criteria
+        );
+    }
+
+    public function validateScoreConfiguration(EvaluationMethodConfiguration $configuration): bool
+    {
+        try {
+            $this->normalizeScoreCriteria($configuration);
+            return true;
+        } catch (\InvalidArgumentException $e) {
+            return false;
+        }
+    }
+
+    /** Verifica a configuração persistida, pois os metadados já podem ter sido alterados na requisição. */
+    protected function persistedScoreConfiguration(EvaluationMethodConfiguration $configuration): array
+    {
+        $values = App::i()->em->getConnection()->fetchAllKeyValue(
+            "SELECT key, value FROM evaluationmethodconfiguration_meta WHERE object_id = :id AND key IN ('scoreMode', 'criteria')",
+            ['id' => $configuration->id]
+        );
+        return [$values['scoreMode'] ?? 'typed', json_decode($values['criteria'] ?? '[]') ?: []];
+    }
+
+    public function prepareScoreConfiguration(EvaluationMethodConfiguration $configuration): void
+    {
+        $this->normalizeScoreCriteria($configuration);
+        if ($configuration->isNew() || !$configuration->hasStartedEvaluations()) {
+            return;
+        }
+        [$old_mode, $old_criteria] = $this->persistedScoreConfiguration($configuration);
+        if (ScoreOptions::hasChanged($old_mode, $old_criteria, $configuration->scoreMode, (array) $configuration->criteria)) {
+            throw new PermissionDenied(message: i::__('Não é possível alterar o modo ou as notas permitidas após o início das avaliações.'));
+        }
+    }
+
+    public function getFixedScoreValidationErrors(EvaluationMethodConfiguration $configuration, array $data, bool $require_all = true): array
+    {
+        if ($configuration->scoreMode !== 'fixed') {
+            return [];
+        }
         $errors = [];
+        try {
+            $criteria = ScoreOptions::normalizeCriteria('fixed', (array) $configuration->criteria);
+            foreach ($criteria as $criterion) {
+                $value = $data[$criterion->id] ?? null;
+                if (!$require_all && ($value === null || $value === '')) {
+                    continue;
+                }
+                if (!ScoreOptions::contains($criterion->scoreOptions, $value)) {
+                    $errors[] = sprintf(i::__('Selecione uma nota permitida para o critério "%s".'), $criterion->title);
+                }
+            }
+        } catch (\InvalidArgumentException $e) {
+            $errors[] = i::__('A configuração das notas permitidas é inválida.');
+        }
+        return $errors;
+    }
+
+    /** Valida também autosaves/rascunhos, sem exigir critérios ainda não respondidos. */
+    public function assertFixedScoreEvaluation(Entities\RegistrationEvaluation $evaluation): void
+    {
+        $configuration = $evaluation->getEvaluationMethodConfiguration();
+        if (!$configuration || $configuration->evaluationMethod?->getSlug() !== 'technical' || $configuration->scoreMode !== 'fixed') {
+            return;
+        }
+        $data = (array) $evaluation->evaluationData;
+        $errors = $this->getFixedScoreValidationErrors($configuration, $data, $evaluation->status > 0);
+        if ($errors) {
+            throw new \MapasCulturais\Exceptions\BadRequest(implode("\n", $errors));
+        }
+        foreach ($configuration->criteria as $criterion) {
+            if (isset($data[$criterion->id]) && $data[$criterion->id] !== '') {
+                $data[$criterion->id] = (float) $data[$criterion->id];
+            }
+        }
+        $evaluation->setEvaluationData($data);
+    }
+
+    function getValidationErrors(Entities\EvaluationMethodConfiguration $evaluation_method_configuration, array $data){
+        $errors = $this->getFixedScoreValidationErrors($evaluation_method_configuration, $data);
         $empty = false;
 
         if ($evaluation_method_configuration->enableViability === "true" && !array_key_exists('viability',$data)) {

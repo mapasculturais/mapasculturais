@@ -68,6 +68,9 @@
             }
             
             $scope.data = {
+                scoreMode: MapasCulturais.evaluationConfiguration.scoreMode || 'typed',
+                hasStartedEvaluations: !!MapasCulturais.evaluationConfiguration.hasStartedEvaluations,
+                scoreOptionInputs: {},
                 sections: MapasCulturais.evaluationConfiguration.sections || [],
                 criteria: MapasCulturais.evaluationConfiguration.criteria || [],
                 quotas: MapasCulturais.evaluationConfiguration.quotas || [],
@@ -82,6 +85,42 @@
                 debounce: 2000
             };
 
+            $scope.data.criteria.forEach(function(criterion) {
+                $scope.data.scoreOptionInputs[criterion.id] = (criterion.scoreOptions || []).join(',');
+            });
+
+            $scope.parseScoreOptions = function(value) {
+                var parts = String(value == null ? '' : value).split(',').map(function(part) { return part.trim(); });
+                if (parts.some(function(part) { return !/^\d+(?:\.\d+)?$/.test(part); })) {
+                    return null;
+                }
+                var options = parts.map(Number);
+                if (options.some(function(value) { return !Number.isFinite(value); }) || new Set(options).size !== options.length) {
+                    return null;
+                }
+                return options.sort(function(a, b) { return a - b; });
+            };
+
+            $scope.updateScoreOptions = function(criterion) {
+                if ($scope.data.hasStartedEvaluations) {
+                    return;
+                }
+                var options = $scope.parseScoreOptions($scope.data.scoreOptionInputs[criterion.id]);
+                if (!options) {
+                    return;
+                }
+                criterion.scoreOptions = options;
+                criterion.min = options[0];
+                criterion.max = options[options.length - 1];
+                $scope.save();
+            };
+
+            $scope.checkScoreOptions = function(criterion) {
+                if (!$scope.parseScoreOptions($scope.data.scoreOptionInputs[criterion.id])) {
+                    MapasCulturais.Messages.error(labels.invalidScoreOptions);
+                }
+            };
+
             function sectionExists(name) {
                 var exists = false;
                 $scope.data.sections.forEach(function (s) {
@@ -94,7 +133,13 @@
             }
 
             $scope.save = function(){
+                if ($scope.data.scoreMode === 'fixed' && $scope.data.criteria.some(function(criterion) {
+                    return !$scope.parseScoreOptions($scope.data.scoreOptionInputs[criterion.id]);
+                })) {
+                    return;
+                }
                 var data = {
+                    scoreMode: $scope.data.scoreMode,
                     sections: $scope.data.sections,
                     criteria: [],
                     quotas: $scope.data.quotas,
@@ -289,10 +334,12 @@
 
     module.controller('TechnicalEvaluationMethodFormController', ['$scope', '$rootScope', '$timeout', 'TechnicalEvaluationMethodService', function ($scope, $rootScope, $timeout, TechnicalEvaluationMethodService) {
             var labels = MapasCulturais.gettext.technicalEvaluationMethod;
+            var fixedScores = MapasCulturais.evaluationConfiguration.scoreMode === 'fixed';
             MapasCulturais.evaluationConfiguration.criteria = MapasCulturais.evaluationConfiguration.criteria.map(function(e){
-                e.min = parseInt(e.min);
-                e.max = parseInt(e.max);
-                e.weight = parseInt(e.weight);
+                var parse = fixedScores ? parseFloat : parseInt;
+                e.min = parse(e.min);
+                e.max = parse(e.max);
+                e.weight = parse(e.weight);
                 return e;
             });
             
@@ -305,6 +352,8 @@
             }
             
             $scope.data = {
+                scoreMode: MapasCulturais.evaluationConfiguration.scoreMode || 'typed',
+                isEditable: !(MapasCulturais.evaluation && MapasCulturais.evaluation.status > 0),
                 sections: MapasCulturais.evaluationConfiguration.sections || [],
                 criteria: MapasCulturais.evaluationConfiguration.criteria || [],
                 enableViability: MapasCulturais.evaluationConfiguration.enableViability || false,
@@ -318,6 +367,14 @@
                 $scope.evaluation =  {};
             }
 
+            if (fixedScores) {
+                $scope.data.criteria.forEach(function(criterion) {
+                    if ($scope.evaluation[criterion.id] == null) {
+                        $scope.evaluation[criterion.id] = '';
+                    }
+                });
+            }
+
             $scope.subtotalSection = function(section){
                 var total = 0;
 
@@ -328,7 +385,7 @@
                     }
                 }
 
-                return total.toFixed(1);
+                return total.toFixed(fixedScores ? 2 : 1);
             };
 
             $scope.total = function(){
@@ -339,7 +396,7 @@
                     total += $scope.evaluation[cri.id] * cri.weight;
                 }
 
-                return total.toFixed(1);
+                return total.toFixed(fixedScores ? 2 : 1);
             };
 
             $scope.max = function(){
