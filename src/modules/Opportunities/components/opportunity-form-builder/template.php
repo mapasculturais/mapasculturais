@@ -11,6 +11,7 @@ $this->addOpportunityPhasesToJs($entity);
 
 $this->import('
     entity-field
+    mc-alert
     mc-confirm-button
     mc-modal
     mc-tab
@@ -86,6 +87,9 @@ $this->import('
                         <div class="input-group__inputs">
                             <entity-field :classes="'input-box'" :entity="entity" hide-required :editable="true" prop="enableQuotasQuestion" :autosave="3000"></entity-field>
                         </div>
+                        <mc-alert v-if="entity.enableQuotasQuestion && entity.enableQuotasQuestion !== '0' && entity.enableQuotasQuestion !== 'false'" type="warning">
+                            <?= i::__("O sistema já inclui automaticamente a pergunta \"Vai concorrer às cotas?\" no formulário de inscrição. Não crie outro campo com essa pergunta: só a resposta da pergunta do sistema é considerada na apuração das cotas. Para campos que dependem dessa resposta (ex.: \"Qual cota?\"), use a pergunta do sistema como condição.") ?>
+                        </mc-alert>
                     </div>
                 </template>
             </mc-card>
