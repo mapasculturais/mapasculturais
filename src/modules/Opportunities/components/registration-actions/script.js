@@ -101,6 +101,9 @@ app.component('registration-actions', {
                     const stepErrors = this.validationErrors[step._id];
                     const fieldEntries = Object.entries(stepErrors);
                     fieldEntries.sort(([a], [b]) => {
+                        // A pergunta de cotas fica acima do formulário, então vem primeiro
+                        if (a === 'appliedForQuota') return -1;
+                        if (b === 'appliedForQuota') return 1;
                         return Math.sign(this.fieldsMap[a]?.displayOrder - this.fieldsMap[b]?.displayOrder);
                     });
                     errors[stepIndex] = Object.fromEntries(fieldEntries);
@@ -158,6 +161,10 @@ app.component('registration-actions', {
 
             if (field == 'space') {
                 return this.text('Espaço');
+            }
+
+            if (field == 'appliedForQuota') {
+                return this.text('Vai concorrer às cotas?');
             }
 
             if (field == 'workplan') {
@@ -342,6 +349,11 @@ app.component('registration-actions', {
                             validationErrors[field.step.id][fieldName] = fieldError;
                         }
                     }
+                }
+
+                // A pergunta de cotas aparece no topo de todas as etapas; o erro vai para a primeira
+                if (fieldName === 'appliedForQuota') {
+                    validationErrors[Object.keys(validationErrors)[0]][fieldName] = fieldError;
                 }
 
                 if (this.additionalValidateFields.includes(fieldName)) {
