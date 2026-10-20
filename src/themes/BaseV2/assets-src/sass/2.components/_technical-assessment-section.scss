@@ -106,6 +106,7 @@
 
             &__fields {
                 display: grid;
+                align-items: start;
                 gap: size(20) size(30);
                 grid-template-columns: 
                 calc(60% - size(20)) 
