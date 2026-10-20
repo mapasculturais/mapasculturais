@@ -78,7 +78,6 @@ $this->import('
                             <div v-else class="field criterion__score-options">
                                 <input type="text" :value="scoreOptionsText(criteria)" @input="updateScoreOptions(criteria, $event.target.value)" @blur="checkScoreOptions(criteria)" :disabled="hasEvaluationsStarted" :aria-label="text('scoreOptions') + ': ' + criteria.title" placeholder="0,5,10">
                                 <small><?= i::__('Separe por vírgula. Para decimais, use ponto: 0,2.5,5.') ?></small>
-                                <small><?= i::__('Nota máxima') ?>: {{ criteria.max ?? '—' }}</small>
                             </div>
                             <input type="number" v-model="criteria.weight" @keyup="save(1500)" placeholder="<?= i::esc_attr__('Peso') ?>" step="0.25">
                         </div>
