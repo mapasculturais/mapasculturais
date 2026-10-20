@@ -71,7 +71,10 @@ $this->import('
                     <div class="criterion" v-if="criteria.sid == section.id">
                         <div class="criterion__fields">
                             <input type="text" v-model="criteria.title" @keyup="save(1500)" placeholder="<?= i::esc_attr__('Nome do critério') ?>" ref="criteriaTitleInput" >
-                            <input v-if="scoreMode === 'typed'" type="number" v-model="criteria.max" @keyup="save(1500)" placeholder="<?= i::esc_attr__('Pontuação máxima') ?>" step="0.25">
+                            <div v-if="scoreMode === 'typed'" class="field">
+                                <label class="sr-only" :for="'technical-max-score-' + entity.id + '-' + criteria.id"><?= i::__('Pontuação máxima') ?></label>
+                                <input :id="'technical-max-score-' + entity.id + '-' + criteria.id" type="number" v-model="criteria.max" @keyup="save(1500)" placeholder="<?= i::esc_attr__('Pontuação máxima') ?>" step="0.25">
+                            </div>
                             <div v-else class="field criterion__score-options">
                                 <input type="text" :value="scoreOptionsText(criteria)" @input="updateScoreOptions(criteria, $event.target.value)" @blur="checkScoreOptions(criteria)" :disabled="hasEvaluationsStarted" :aria-label="text('scoreOptions') + ': ' + criteria.title" placeholder="0,5,10">
                                 <small><?= i::__('Separe por vírgula. Para decimais, use ponto: 0,2.5,5.') ?></small>
