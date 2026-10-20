@@ -340,7 +340,7 @@ class Module extends \MapasCulturais\EvaluationMethod
             $properties .= ',scoreMode,criteria,sections,hasStartedEvaluations';
         });
 
-        $app->hook('entity(EvaluationMethodConfiguration).validations', function(&$validations) use($self) {
+        $app->hook('entity(EvaluationMethodConfiguration).validations', function(&$validations) {
             if ($this->definition?->slug === 'technical') {
                 $validations['name']['$this->evaluationMethod->validateScoreConfiguration($this)'] =
                     i::__('Informe notas permitidas válidas, sem repetições, separadas por vírgula. Use ponto para decimais.');
