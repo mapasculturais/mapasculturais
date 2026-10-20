@@ -62,10 +62,10 @@ $this->import('
 
             <div class="technical-assessment-section__criterions" v-if="entity.criteria && entity.criteria.length > 0">
                 <div class="criterion__fields criterion__title field">
-                    <label><?php i::_e("Nome do critério") ?></label>
-                    <label v-if="scoreMode === 'fixed'"><?= i::__('Notas permitidas') ?></label>
-                    <label v-else><?= i::__('Nota máxima') ?></label>
-                    <label><?php i::_e("Peso") ?></label>
+                    <span><?php i::_e("Nome do critério") ?></span>
+                    <span v-if="scoreMode === 'fixed'"><?= i::__('Notas permitidas') ?></span>
+                    <span v-else><?= i::__('Nota máxima') ?></span>
+                    <span><?php i::_e("Peso") ?></span>
                 </div>
                 <div v-for="(criteria, index) in entity.criteria" :key="index">
                     <div class="criterion" v-if="criteria.sid == section.id">
