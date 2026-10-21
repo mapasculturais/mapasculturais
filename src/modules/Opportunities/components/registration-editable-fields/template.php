@@ -46,7 +46,7 @@ $this->import('
                     <div class="registration-editable-fields__fields">
                         <label v-for="field in fields" :for="field.id" class="registration-editable-fields__field">  
                             <input type="checkbox" v-model="selectedFields" :id="field.id" :value="field.ref" /> 
-                            <p class="semibold">#{{field.id}} - {{field.title}}</p>
+                            <p class="semibold">{{field.ref === 'appliedForQuota' ? '' : '#' + field.id + ' - '}}{{field.title}}</p>
                         </label>
                     </div>
                 </div>
