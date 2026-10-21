@@ -7,10 +7,14 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ## [Unreleased]
 ### Correções
+- Corrige a exportação da planilha de inscritos para campos do tipo `addresses` (ex.: "Endereço do espaço"), que gerava a coluna vazia mesmo com dados salvos na inscrição
 - Corrige a pergunta "Vai concorrer às cotas?", que já vinha marcada como "Não" e deixava a pessoa enviar a inscrição sem perceber que precisava responder. Agora a pergunta começa sem resposta e, quando habilitada na oportunidade, é obrigatória para enviar a inscrição
 - Corrige a lista de erros ao lado da inscrição, que não mostrava a pergunta "Vai concorrer às cotas?" quando ela estava sem resposta
+- Corrige a edição da inscrição pelo suporte: quem tinha só permissão de visualizar conseguia alterar campos. Agora a alteração é recusada com um aviso claro
 
 ### Melhorias
+- Permite liberar a pergunta "Vai concorrer às cotas?" para o suporte e para a edição de campos pelo proponente
+- Deixa a suíte de testes mais rápida e evita que um teste interfira no seguinte
 - Mostra a resposta da pergunta "Vai concorrer às cotas?" na ficha da inscrição
 - Mostra um aviso na configuração do formulário, ao habilitar a pergunta "Vai concorrer às cotas?", explicando que o sistema já inclui essa pergunta e que não é preciso criar outro campo igual
 
