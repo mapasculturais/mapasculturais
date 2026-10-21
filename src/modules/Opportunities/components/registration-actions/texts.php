@@ -7,6 +7,7 @@ return [
     'Campo não identificado' => i::__('Campo não identificado'),
     'Nome do projeto' => i::__('Nome do projeto'),
     'Espaço' => i::__('Espaço'),
+    'Vai concorrer às cotas?' => i::__('Vai concorrer às cotas?'),
     'Validado' => i::__('Campos validados com sucesso!'),
     'Corrija os erros indicados' => i::__('Corrija os erros indicados'),
     'Enviando' => i::__('Enviando'),

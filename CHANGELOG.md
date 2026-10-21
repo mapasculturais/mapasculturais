@@ -11,6 +11,20 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - **Avaliação automática por selos**: o gestor pode indicar, em uma fase de avaliação, quais selos validam o proponente. Se a pessoa já tiver esses selos válidos no perfil, a inscrição é **dispensada automaticamente** daquela fase (marcada como “Dispensada por selos”) e segue para a próxima etapa, sem precisar de avaliador
 - **Novos anexos no cadastro do agente** (também usáveis como campos `@` no formulário de inscrição): CPF, CNPJ, CNH, RG, passaporte, comprovante de residência, vínculo territorial, currículo, portfólio, certidões fiscal, trabalhista e de prestação de contas, além de comprovantes de raça/cor, pessoa com deficiência e comunidades tradicionais. Os arquivos ficam no perfil e acompanham a inscrição automaticamente
 
+## [7.8.20] - 2026-10-20
+### Correções
+- Corrige a exportação da planilha de inscritos para campos do tipo `addresses` (ex.: "Endereço do espaço"), que gerava a coluna vazia mesmo com dados salvos na inscrição
+- Corrige a pergunta "Vai concorrer às cotas?", que já vinha marcada como "Não" e deixava a pessoa enviar a inscrição sem perceber que precisava responder. Agora a pergunta começa sem resposta e, quando habilitada na oportunidade, é obrigatória para enviar a inscrição
+- Corrige a lista de erros ao lado da inscrição, que não mostrava a pergunta "Vai concorrer às cotas?" quando ela estava sem resposta
+- Corrige a edição da inscrição pelo suporte: quem tinha só permissão de visualizar conseguia alterar campos. Agora a alteração é recusada com um aviso claro
+
+### Melhorias
+- Atualiza o PHP para a versão 8.3.36, com as correções de segurança recomendadas pelo próprio PHP
+- Permite liberar a pergunta "Vai concorrer às cotas?" para o suporte e para a edição de campos pelo proponente
+- Deixa a suíte de testes mais rápida e evita que um teste interfira no seguinte
+- Mostra a resposta da pergunta "Vai concorrer às cotas?" na ficha da inscrição
+- Mostra um aviso na configuração do formulário, ao habilitar a pergunta "Vai concorrer às cotas?", explicando que o sistema já inclui essa pergunta e que não é preciso criar outro campo igual
+
 ## [7.8.19] - 2026-10-15
 ### Correções
 - Corrige a oportunidade criada a partir de modelo, que herdava o subsite do modelo: a oportunidade e todas as suas fases passam a ser criadas no subsite atual, onde o usuário está criando

@@ -7,10 +7,12 @@ use MapasCulturais\Entities\Opportunity;
 use Tests\Abstract\Director;
 use Tests\Builders\OpportunityBuilder;
 use Tests\Traits\RegistrationBuilder;
+use Tests\Traits\RevisionCleanup;
 
 class QuotaRegistrationDirector extends Director
 {
-    use RegistrationBuilder;
+    use RegistrationBuilder,
+        RevisionCleanup;
 
     // Constantes do Domínio
     const RANGE_1 = 'Curta Metragem';
@@ -122,6 +124,8 @@ class QuotaRegistrationDirector extends Director
             $registration = $this->registrationDirector->createSentRegistration($opportunity, $registration_data);
             
             $registrations[] = $registration;
+
+            $this->detachFlushedRevisions();
         }
 
         return $registrations;

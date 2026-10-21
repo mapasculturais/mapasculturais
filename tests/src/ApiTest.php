@@ -207,6 +207,8 @@ class ApiTest extends TestCase
         $this->assertEquals(1, count($result), 'Certificando que a busca por cnpj na api de agente por palavra-chave retorna o número correto de resultados.');
 
         $this->assertEquals($result[0]['cnpj'], '55.804.960/0001-04', 'Certificando que a busca por cnpj na api de agente por palavra-chave retorn o resultado correto.');
+
+        $this->app->enableAccessControl();
     }
 
     function testAgentApiKeywordTAG()
@@ -277,6 +279,7 @@ class ApiTest extends TestCase
         $result = $query->find();
         $this->assertEquals(2, count($result), 'Certificando que a busca por tag na api de agente por palavra-chave retorna o número correto de resultados.');
 
+        $this->app->enableAccessControl();
     }
     
     function testAgentApiReturnsUserMetadata()
