@@ -6,6 +6,7 @@
 use MapasCulturais\i;
 
 $this->import('
+    entity-field
     mc-avatar
     mc-alert
     mc-container
@@ -43,6 +44,18 @@ $this->import('
             </div>
 
             <registration-info :registration="registration" classes="col-12"></registration-info>
+
+            <div v-if="showQuotaQuestion" class="col-12">
+                <div class="card owner">
+                    <h3 class="card__title">
+                        <?= i::__('Vai concorrer às cotas?') ?>
+                    </h3>
+
+                    <div class="card__content">
+                        <entity-field :entity="registration" prop="appliedForQuota" :hide-label="true"></entity-field>
+                    </div>
+                </div>
+            </div>
 
             <div class="col-12">
                 <registration-form :registration="registration" :step="step" :is-last-step="stepIndex === steps.length - 1"></registration-form>
