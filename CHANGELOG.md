@@ -13,6 +13,7 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Corrige a edição da inscrição pelo suporte: quem tinha só permissão de visualizar conseguia alterar campos. Agora a alteração é recusada com um aviso claro
 
 ### Melhorias
+- Atualiza o PHP para a versão 8.3.36, com as correções de segurança recomendadas pelo próprio PHP
 - Permite liberar a pergunta "Vai concorrer às cotas?" para o suporte e para a edição de campos pelo proponente
 - Deixa a suíte de testes mais rápida e evita que um teste interfira no seguinte
 - Mostra a resposta da pergunta "Vai concorrer às cotas?" na ficha da inscrição
