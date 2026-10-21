@@ -197,7 +197,26 @@ $today = new DateTime();
                     </template>
                 </mc-card>
 
-                <mc-card v-if="entity.opportunity.useAgentRelationColetivo && entity.opportunity.useAgentRelationColetivo !== 'dontUse'"> 
+                <mc-card v-if="entity.opportunity.enableQuotasQuestion">
+                    <template #content>
+                        <div class="registered-info">
+                            <span class="info">
+                                <strong> <?= i::__('Vai concorrer às cotas?') ?> </strong>
+                            </span>
+                            <span class="info" v-if="entity.appliedForQuota === true || entity.appliedForQuota === 'true' || entity.appliedForQuota === 1 || entity.appliedForQuota === '1'">
+                                <?= i::__('Sim') ?>
+                            </span>
+                            <span class="info" v-else-if="entity.appliedForQuota === false || entity.appliedForQuota === 'false' || entity.appliedForQuota === 0 || entity.appliedForQuota === '0'">
+                                <?= i::__('Não') ?>
+                            </span>
+                            <span class="info" v-else>
+                                <?= i::__('Não informado') ?>
+                            </span>
+                        </div>
+                    </template>
+                </mc-card>
+
+                <mc-card v-if="entity.opportunity.useAgentRelationColetivo && entity.opportunity.useAgentRelationColetivo !== 'dontUse'">
                     <template #title>
                         <label> <?= i::__('Coletivo') ?> </label>
                     </template>

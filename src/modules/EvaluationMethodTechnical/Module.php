@@ -262,7 +262,6 @@ class Module extends \MapasCulturais\EvaluationMethod
             'label' => i::__('A inscrição está concorrendo por cotas?'),
             'type' => 'boolean',
             'private' => false,
-            'default' => false
         ]);
 
         $this->registerEvaluationMethodConfigurationMetadata('cutoffScore', [
@@ -378,6 +377,14 @@ class Module extends \MapasCulturais\EvaluationMethod
             /** @var Registration $this */
             if($this->evaluationMethod && $this->evaluationMethod->slug == 'technical') {
                 $this->eligible = $this->isEligibleForAffirmativePolicies();
+            }
+        });
+
+        // Torna obrigatória a pergunta "Vai concorrer às cotas?" quando habilitada na oportunidade
+        $app->hook('entity(Registration).sendValidationErrors', function(&$errorsResult) {
+            /** @var Registration $this */
+            if($this->opportunity->enableQuotasQuestion && is_null($this->appliedForQuota)) {
+                $errorsResult['appliedForQuota'] = [i::__('Informe se vai concorrer às cotas.')];
             }
         });
 

@@ -635,6 +635,7 @@ class Module extends \MapasCulturais\Module
         $app->hook("slim.after", function () use ($app, $module) {
             if ($module->inEditableTransaction) {
                 $app->em->commit();
+                $module->inEditableTransaction = false;
             }
             return;
         });
