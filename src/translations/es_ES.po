@@ -699,7 +699,7 @@ msgstr "verificaciones"
 #: mapa/mapasculturais/src/modules/Opportunities/components/panel--registration-tabs/template.php:31
 #: mapa/mapasculturais/src/modules/Opportunities/components/panel--registration-tabs/template.php:57
 msgid "mais recentes primeiro"
-msgstr "más reciente primero"
+msgstr "más recientes primero"
 
 #: base-project/mapasculturais-base-project/dev/docker-data/assets/js/script.entity-table.12tv1lr.js:56
 #: base-project/mapasculturais-base-project/dev/docker-data/assets/js/script.entity-table.1l46cs3.js:56
@@ -729,7 +729,7 @@ msgstr "modificadas recientemente"
 #: mapa/mapasculturais/src/modules/Entities/components/entity-table/texts.php:13
 #: mapa/mapasculturais/src/modules/Opportunities/Module.php:1028
 msgid "modificadas há mais tempo"
-msgstr "modificado hace más tiempo"
+msgstr "modificadas hace más tiempo"
 
 #: base-project/mapasculturais-base-project/dev/docker-data/assets/js/script.entity-table.12tv1lr.js:264
 #: base-project/mapasculturais-base-project/dev/docker-data/assets/js/script.entity-table.1l46cs3.js:264
@@ -1574,7 +1574,7 @@ msgstr "Email no encontrado"
 #: base-project/mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/MultipleLocalAuth/Provider.php:740
 #, php-format
 msgid "Pedido de recuperação de senha para %s"
-msgstr "Pedio de recuperación de contraseña para %s"
+msgstr "Pedido de recuperación de contraseña para %s"
 
 #: base-project/mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/MultipleLocalAuth/Provider.php:775
 msgid ""
@@ -1756,7 +1756,7 @@ msgstr "Regresar y borrar mi información"
 #: base-project/mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/MultipleLocalAuth/components/create-account/template.php:102
 #: base-project/mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/template_create-account.php:114
 msgid "Falta pouco para finalizar o seu cadastro!"
-msgstr "Queda poco para que finalice su registro!"
+msgstr "¡Queda poco para que finalice su registro!"
 
 #: base-project/mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/MultipleLocalAuth/components/create-account/template.php:103
 #: base-project/mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/template_create-account.php:115
@@ -1849,7 +1849,7 @@ msgstr "¡Correo electrónico de confirmación enviado!"
 #: base-project/mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/MultipleLocalAuth/components/create-account/template.php:125
 #: base-project/mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/template_create-account.php:143
 msgid "Seu cadastro foi criado com sucesso!"
-msgstr "Su registro fue creado con éxito!"
+msgstr "¡Su registro fue creado con éxito!"
 
 #: base-project/mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/MultipleLocalAuth/components/create-account/template.php:128
 #: base-project/mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/template_create-account.php:146
@@ -1867,7 +1867,7 @@ msgstr "Acceder a mi registro"
 #: base-project/mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/MultipleLocalAuth/components/login/template.php:23
 #: base-project/mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/template_login.php:23
 msgid "Boas vindas!"
-msgstr "Bienvenid@!"
+msgstr "¡Bienvenid@!"
 
 #: base-project/mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/MultipleLocalAuth/components/login/template.php:24
 #: base-project/mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/template_login.php:24
@@ -1889,7 +1889,7 @@ msgstr "O entre con"
 #: base-project/mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/template_login.php:70
 #, php-format
 msgid "Ainda não tem cadastro no %s? Realize seu cadastro agora!"
-msgstr "Todavía no está registrado en %s? Realice su registro ahora!"
+msgstr "¿Todavía no está registrado en %s? ¡Realice su registro ahora!"
 
 #: base-project/mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/MultipleLocalAuth/components/login/template.php:70
 #: base-project/mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/template_login.php:74
@@ -2372,7 +2372,7 @@ msgstr "Veredictos"
 #: base-project/mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/agent-types.php:126
 #: mapa/mapasculturais/src/conf/agent-types.php:126
 msgid "Digite sua comunidade tradicional"
-msgstr "Digite su comunidad tradicional"
+msgstr "Escriba su comunidad tradicional"
 
 #: base-project/mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/agent-types.php:132
 #: mapa/mapasculturais/src/conf/agent-types.php:132
@@ -2393,7 +2393,7 @@ msgstr "RUT"
 #: base-project/mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/agent-types.php:181
 #: mapa/mapasculturais/src/conf/agent-types.php:179
 msgid "CNPJ - anexo"
-msgstr "adjunto"
+msgstr "RUT - adjunto"
 
 #: base-project/mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/agent-types.php:217
 #: mapa/mapasculturais/src/conf/agent-types.php:213
@@ -2738,7 +2738,7 @@ msgstr "E-mail Privado"
 #: mapa/mapasculturais/src/conf/agent-types.php:445
 #: mapa/mapasculturais/src/conf/project-types.php:198
 msgid "O endereço informado não é um email válido."
-msgstr "El email proporcionado ne es un email válido."
+msgstr "El email proporcionado no es un email válido."
 
 #: base-project/mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/agent-types.php:490
 #: base-project/mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/project-types.php:210
@@ -3487,7 +3487,7 @@ msgstr "Audio descripción"
 #: mapa/mapasculturais/src/conf/event-types.php:196
 #: mapa/mapasculturais/src/themes/BaseV1/layouts/parts/event-attendance.php:4
 msgid "Público presente"
-msgstr "Publico presente"
+msgstr "Público presente"
 
 #: base-project/mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/event-types.php:188
 #: mapa/mapasculturais/src/conf/event-types.php:199
@@ -3585,7 +3585,7 @@ msgstr "Campo de moneda"
 #: base-project/mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/modules/RegistrationFieldTypes/Module.php:354
 #: mapa/mapasculturais/src/modules/RegistrationFieldTypes/Module.php:359
 msgid "O valor não está no formato de moeda real (R$)"
-msgstr "El valor no está en el formato de moneda real (R$)"
+msgstr "El valor no tiene un formato de moneda válido"
 
 #: base-project/mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/modules/RegistrationFieldTypes/Module.php:366
 #: mapa/mapasculturais/src/modules/RegistrationFieldTypes/Module.php:371
@@ -3903,7 +3903,7 @@ msgstr "Modo de visualización"
 #: mapa/mapasculturais/src/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/agent-owner-field-config.php:116
 #: mapa/mapasculturais/src/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/select-config.php:12
 msgid "Caixa de seleção"
-msgstr "Opciones de selección"
+msgstr "Lista desplegable"
 
 #: base-project/mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/agent-collective-field-config.php:120
 #: base-project/mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/agent-owner-field-config.php:117
@@ -4203,7 +4203,7 @@ msgstr "nombre completo"
 #: mapa/mapasculturais/src/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/persons-config.php:14
 #: mapa/mapasculturais/src/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/persons-config.php:34
 msgid "nome social"
-msgstr "razón social"
+msgstr "nombre social"
 
 #: base-project/mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/persons-config.php:18
 #: base-project/mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/persons-config.php:38
@@ -4289,7 +4289,7 @@ msgstr "Seleccione los campos son obligatorios"
 #: base-project/mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/persons.php:30
 #: mapa/mapasculturais/src/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/persons.php:27
 msgid "Parentesco"
-msgstr "Parentezco"
+msgstr "Parentesco"
 
 #: base-project/mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/persons.php:32
 #: mapa/mapasculturais/src/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/persons.php:29
@@ -4314,7 +4314,7 @@ msgstr "Nieto(a) o Bisnieto(a)"
 #: base-project/mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/persons.php:36
 #: mapa/mapasculturais/src/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/persons.php:33
 msgid "Pai ou Mãe"
-msgstr "Padra o Madre"
+msgstr "Padre o Madre"
 
 #: base-project/mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/persons.php:37
 #: mapa/mapasculturais/src/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/persons.php:34
@@ -4334,7 +4334,7 @@ msgstr "Yerno o nuera"
 #: base-project/mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/persons.php:40
 #: mapa/mapasculturais/src/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/persons.php:37
 msgid "Outro Parente"
-msgstr "Otros pariente"
+msgstr "Otro pariente"
 
 #: base-project/mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/persons.php:41
 #: mapa/mapasculturais/src/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/persons.php:38
@@ -4374,10 +4374,7 @@ msgid ""
 "Informe os termos que estarão disponíveis para seleção. <br>Para fazer um "
 "mapeamento de valores utilize <strong>valor salvo:valor exibido</strong>. "
 "Exemplo: <strong>Dança:Artes da Dança</strong>"
-msgstr ""
-"Ingrese los términos que estarán disponibles para su selección. <br> Para "
-"hacer un mapeo de valores, use <strong> valor guardado: valor mostrado </"
-"strong>. Ejemplo: <strong> Danza: artes de la danza </strong>"
+msgstr "Ingrese los términos que estarán disponibles para su selección. <br> Para hacer un mapeo de valores, use <strong>valor guardado: valor mostrado</strong>. Ejemplo: <strong>Danza: artes de la danza</strong>"
 
 #: base-project/mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/space-field-config.php:46
 #: mapa/mapasculturais/src/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/space-field-config.php:46
@@ -4386,12 +4383,7 @@ msgid ""
 "mapeamento de valores utilize <strong>valor salvo:valor exibido</strong>. "
 "Exemplo: <strong>Biblioteca Privada:Biblioteca</strong> vai exibir somente "
 "<em>Biblioteca</em> mas salvará o tipo <em>Biblioteca Privada</em>"
-msgstr ""
-"Introduzca los tipos que estarán disponibles para su selección. <br> Para "
-"hacer un mapeo de valores, use <strong> valor guardado: valor mostrado </"
-"strong>. Ejemplo: <strong> Biblioteca privada: Biblioteca </strong> solo "
-"mostrará <em> Biblioteca </em> pero guardará el tipo <em> Biblioteca privada "
-"</em>"
+msgstr "Introduzca los tipos que estarán disponibles para su selección. <br> Para hacer un mapeo de valores, use <strong>valor guardado: valor mostrado</strong>. Ejemplo: <strong>Biblioteca privada: Biblioteca</strong> solo mostrará <em> Biblioteca </em> pero guardará el tipo <em> Biblioteca privada </em>"
 
 #: base-project/mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/space-field.php:36
 #: mapa/mapasculturais/src/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/space-field.php:36
@@ -4612,7 +4604,7 @@ msgstr "Título de las opciones (ejem: Categorías)"
 #: base-project/mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/opportunity-types.php:67
 #: mapa/mapasculturais/src/conf/opportunity-types.php:67
 msgid "Descrição das opções (ex: Selecione uma categoria)"
-msgstr "Descripción de las opciones (ejem.: Selección una categoría)"
+msgstr "Descripción de las opciones (ej.: Seleccione una categoría)"
 
 #: base-project/mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/opportunity-types.php:72
 #: mapa/mapasculturais/src/conf/opportunity-types.php:72
@@ -4640,7 +4632,7 @@ msgstr "Defina si habrá una cantidad máxima de inscriptos (0 = sin límite)."
 #: base-project/mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/opportunity-types.php:85
 #: mapa/mapasculturais/src/conf/opportunity-types.php:84
 msgid "O número máximo de inscrições na oportunidade deve ser um número inteiro"
-msgstr "El número máximo de inscripciones al proyecto debe ser un número entero"
+msgstr "El número máximo de inscripciones a la oportunidad debe ser un número entero"
 
 #: base-project/mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/opportunity-types.php:89
 #: mapa/mapasculturais/src/conf/opportunity-types.php:88
@@ -4870,7 +4862,7 @@ msgstr "Biblioteca Privada"
 #: base-project/mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/space-types.php:26
 #: mapa/mapasculturais/src/conf/space-types.php:26
 msgid "Biblioteca Comunitária (incluí­dos os pontos de leitura)"
-msgstr "Biblioteca Comunitaria (inclui­dos los puntos de lectura)"
+msgstr "Biblioteca Comunitaria (incluidos los puntos de lectura)"
 
 #: base-project/mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/space-types.php:27
 #: mapa/mapasculturais/src/conf/space-types.php:27
@@ -5000,7 +4992,7 @@ msgstr "Anticuario"
 #: base-project/mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/space-types.php:81
 #: mapa/mapasculturais/src/conf/space-types.php:81
 msgid "Ateliê"
-msgstr "Atelié"
+msgstr "Atelier"
 
 #: base-project/mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/space-types.php:82
 #: mapa/mapasculturais/src/conf/space-types.php:82
@@ -5015,7 +5007,7 @@ msgstr "Puesto de periódicos"
 #: base-project/mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/space-types.php:84
 #: mapa/mapasculturais/src/conf/space-types.php:84
 msgid "Casa de espetáculo"
-msgstr "Casa de espetáculo"
+msgstr "Sala de espectáculos"
 
 #: base-project/mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/space-types.php:85
 #: mapa/mapasculturais/src/conf/space-types.php:85
@@ -5211,7 +5203,7 @@ msgstr "Espacios Religiosos"
 #: base-project/mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/space-types.php:134
 #: mapa/mapasculturais/src/conf/space-types.php:134
 msgid "Centro Espírita"
-msgstr "Centro Espiritual"
+msgstr "Centro espírita"
 
 #: base-project/mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/space-types.php:135
 #: mapa/mapasculturais/src/conf/space-types.php:135
@@ -5246,7 +5238,7 @@ msgstr "Instituciones Públicas de Enseñanza Regular"
 #: base-project/mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/space-types.php:150
 #: mapa/mapasculturais/src/conf/space-types.php:150
 msgid "Instituição Pública de Ensino Regular Federal"
-msgstr "Instituciones Públicas de Enseñanza Regular Federal"
+msgstr "Institución Pública de Enseñanza Regular Federal"
 
 #: base-project/mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/space-types.php:151
 #: mapa/mapasculturais/src/conf/space-types.php:151
@@ -5311,9 +5303,7 @@ msgstr ""
 msgid ""
 "Instituição Pública Estadual exclusivamente voltada para formação artistica e "
 "cultural"
-msgstr ""
-"Institución Pública Estadual exclusivamente orientada a la formación "
-"artística y cultural"
+msgstr "Institución Pública Departamental exclusivamente orientada a la formación artística y cultural"
 
 #: base-project/mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/space-types.php:172
 #: mapa/mapasculturais/src/conf/space-types.php:172
@@ -5329,9 +5319,7 @@ msgstr ""
 msgid ""
 "Instituição Pública Distrital exclusivamente voltada para formação artistica "
 "e cultural"
-msgstr ""
-"Institución Pública Distrital exclusivamente orientada a la formación "
-"artística y cultural"
+msgstr "Institución Pública Regional exclusivamente orientada a la formación artística y cultural"
 
 #: base-project/mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/space-types.php:177
 #: mapa/mapasculturais/src/conf/space-types.php:177
@@ -5347,18 +5335,14 @@ msgstr ""
 msgid ""
 "Instituição Privada Particular exclusivamente voltada para formação artistica "
 "e cultural"
-msgstr ""
-"Institución Pública Particular exclusivamente orientada a la formación "
-"artística y cultural"
+msgstr "Institución Privada Particular exclusivamente orientada a la formación artística y cultural"
 
 #: base-project/mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/space-types.php:181
 #: mapa/mapasculturais/src/conf/space-types.php:181
 msgid ""
 "Instituição Privada Comunitária exclusivamente voltada para formação "
 "artistica e cultural"
-msgstr ""
-"Institución Pública Comunitaria exclusivamente orientada a la formación "
-"artística y cultural"
+msgstr "Institución Privada Comunitaria exclusivamente orientada a la formación artística y cultural"
 
 #: base-project/mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/space-types.php:182
 #: mapa/mapasculturais/src/conf/space-types.php:182
@@ -5505,7 +5489,7 @@ msgstr "Temporal"
 #: base-project/mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/space-types.php:228
 #: mapa/mapasculturais/src/conf/space-types.php:228
 msgid "Palco de Rua"
-msgstr "Palco de calle"
+msgstr "Escenario de calle"
 
 #: base-project/mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/space-types.php:252
 #: mapa/mapasculturais/src/conf/space-types.php:252
@@ -5515,7 +5499,7 @@ msgstr "El email público no es un email válido."
 #: base-project/mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/space-types.php:260
 #: mapa/mapasculturais/src/conf/space-types.php:260
 msgid "O email privado não é um email válido."
-msgstr "El email privado ne es un email válido."
+msgstr "El email privado no es un email válido."
 
 #: base-project/mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/space-types.php:269
 #: mapa/mapasculturais/src/conf/space-types.php:269
@@ -5648,7 +5632,7 @@ msgstr "La capacidad debe ser un número positivo."
 #: mapa/mapasculturais/src/themes/BaseV1/layouts/parts/singles/history_space.php:130
 #: mapa/mapasculturais/src/themes/BaseV1/layouts/parts/singles/space-servico.php:25
 msgid "Horário de funcionamento"
-msgstr "Horario de funcionamento"
+msgstr "Horario de funcionamiento"
 
 #: base-project/mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/space-types.php:448
 #: mapa/mapasculturais/src/conf/space-types.php:429
@@ -5670,7 +5654,7 @@ msgstr "Filtrar proyectos del Subsitio"
 #: base-project/mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/subsite-types.php:185
 #: mapa/mapasculturais/src/conf/subsite-types.php:165
 msgid "Filtrar agentes do subsite"
-msgstr "Filtar agentes del Subsitio"
+msgstr "Filtrar agentes del subsitio"
 
 #: base-project/mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/subsite-types.php:189
 #: mapa/mapasculturais/src/conf/subsite-types.php:169
@@ -6935,7 +6919,7 @@ msgstr "Marcador(a) de Escena"
 #: base-project/mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/taxonomies.php:784
 #: mapa/mapasculturais/src/conf/taxonomies.php:689
 msgid "Marceneiro"
-msgstr "Carpintero"
+msgstr "Ebanista"
 
 #: base-project/mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/taxonomies.php:785
 #: mapa/mapasculturais/src/conf/taxonomies.php:690
@@ -8803,7 +8787,7 @@ msgstr "Confirmar contraseña"
 
 #: base-project/mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/template_create-account.php:118
 msgid "Falta poco para finalizar su registro!"
-msgstr "Falta poco para finalizar su registro!"
+msgstr "¡Falta poco para finalizar su registro!"
 
 #: base-project/mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/template_create-account.php:119
 msgid "Ponga su nombre y un abreve descripción."
@@ -8829,7 +8813,7 @@ msgstr "E-mail o CI"
 #: base-project/mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/template_login.php:71
 #, php-format
 msgid "No tiene cuenta en %s? Registrese ahora!"
-msgstr "No tiene cuenta en %s? Registrese ahora!"
+msgstr "¿No tiene cuenta en %s? ¡Regístrese ahora!"
 
 #: base-project/mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/template_login.php:75
 msgid "Crer cuenta"
@@ -8845,7 +8829,7 @@ msgstr "¿Olvidó la contraseña? ¡A todos nos pasa!"
 
 #: base-project/mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/template_login.php:91
 msgid "Digite su email para recuperarla."
-msgstr "Digite su email para recuperarla."
+msgstr "Escriba su correo electrónico para recuperarla."
 
 #: base-project/mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/template_login.php:97
 #: mapa/mapasculturais/src/modules/Opportunities/views/registration/single.php:162
@@ -8861,7 +8845,7 @@ msgstr "Modificar contraseña"
 
 #: base-project/mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/template_login.php:116
 msgid "Enviamos las instruciones de modificación a su email."
-msgstr "Enviamos las instruciones de modificación a su email."
+msgstr "Enviamos las instrucciones de modificación a su email."
 
 #: base-project/mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/template_login.php:117
 msgid "Enviamos as instruções de alteração de senha para seu e-mail."
@@ -10865,7 +10849,7 @@ msgstr "RUT"
 #: mapa/mapasculturais/config/registrations.php:10
 #: mapa/mapasculturais/src/modules/Opportunities/components/opportunity-proponent-types/template.php:37
 msgid "Pessoa Jurídica"
-msgstr "Personas Jurídica"
+msgstr "Persona jurídica"
 
 #: mapa/mapasculturais/config/registrations.php:69
 #: mapa/mapasculturais/src/themes/BaseV1/Theme.php:2068
@@ -11137,7 +11121,7 @@ msgstr "Reclamos"
 
 #: mapa/mapasculturais/src/conf/opportunity-types.php:49
 msgid "Abaixo-assinado"
-msgstr "Abajofirmante"
+msgstr "Recolección de firmas"
 
 #: mapa/mapasculturais/src/conf/project-types.php:21
 msgid "Consulta"
@@ -11345,11 +11329,11 @@ msgstr "Artesanato"
 
 #: mapa/mapasculturais/src/conf/taxonomies.php:44
 msgid "Artesanato com Reciclados"
-msgstr "Artesanato con Reciclados"
+msgstr "Artesanía con reciclados"
 
 #: mapa/mapasculturais/src/conf/taxonomies.php:45
 msgid "Artesanato em Cerâmica"
-msgstr "Artesanato en Cerámica"
+msgstr "Artesanía en cerámica"
 
 #: mapa/mapasculturais/src/conf/taxonomies.php:46
 msgid "Artesanato em Fibra Vegetal"
@@ -11653,7 +11637,7 @@ msgstr "Cultura del Pueblo Enawenê-Nawê"
 
 #: mapa/mapasculturais/src/conf/taxonomies.php:121
 msgid "Cultura do Povo Gavião"
-msgstr "Cultura del Pueblo Gavilán"
+msgstr "Cultura del Pueblo Gavião"
 
 #: mapa/mapasculturais/src/conf/taxonomies.php:122
 msgid "Cultura do Povo Guarani"
@@ -13121,7 +13105,7 @@ msgstr "El enlace del video es obligatorio"
 #: mapa/mapasculturais/src/core/AssetManager.php:47
 #, php-format
 msgid "Dependência de scripts faltando: %s depende de %s"
-msgstr "Dependencia de scripts faltando: %s depende de %s"
+msgstr "Falta una dependencia de scripts: %s depende de %s"
 
 #: mapa/mapasculturais/src/core/AuthProvider.php:93
 msgid "Esta ação requer autenticação"
@@ -13153,7 +13137,7 @@ msgstr "Usuario procurador no encontrado"
 
 #: mapa/mapasculturais/src/core/Controllers/Auth.php:74
 msgid "Formato do parâmetro until inválido"
-msgstr "Formato de parámetro no valido"
+msgstr "Formato del parámetro until no válido"
 
 #: mapa/mapasculturais/src/core/Controllers/Opportunity.php:93
 #: mapa/mapasculturais/src/core/Entities/Opportunity.php:522
@@ -13177,7 +13161,7 @@ msgstr "No evaluado"
 
 #: mapa/mapasculturais/src/core/Controllers/Registration.php:357
 msgid "Este formulário é um pré-visualização da da ficha de inscrição."
-msgstr "Este formulario es una pre visualización de la ficha de inscripción."
+msgstr "Este formulario es una previsualización de la ficha de inscripción."
 
 #: mapa/mapasculturais/src/core/Controllers/Site.php:48
 msgid "Deletando cache do site... "
@@ -13190,7 +13174,7 @@ msgstr "ok\n"
 
 #: mapa/mapasculturais/src/core/Controllers/Site.php:54
 msgid "Deletado cache do multisite..."
-msgstr "Borrando el cache del multisio..."
+msgstr "Borrando el caché del multisitio..."
 
 #: mapa/mapasculturais/src/core/Controllers/Subsite.php:85
 msgid "Tema Personalizável"
@@ -13301,8 +13285,7 @@ msgstr "La fecha de finalización de las evaluaciones es obligatoria"
 
 #: mapa/mapasculturais/src/core/Entities/EvaluationMethodConfiguration.php:131
 msgid "A data final das avaliações deve ser maior ou igual a data inicial"
-msgstr ""
-"La fecha final de las evaluacines debe ser mayor o igual que la fecha inicial"
+msgstr "La fecha final de las evaluaciones debe ser mayor o igual que la fecha inicial"
 
 #: mapa/mapasculturais/src/core/Entities/EvaluationMethodConfiguration.php:390
 #: mapa/mapasculturais/src/themes/BaseV1/Theme.php:2136
@@ -13384,7 +13367,7 @@ msgstr "Error interno"
 
 #: mapa/mapasculturais/src/core/Entities/EventOccurrence.php:196
 msgid "Data final antes da inicial"
-msgstr "Fecha inicial antes de la inicial"
+msgstr "Fecha final anterior a la inicial"
 
 #: mapa/mapasculturais/src/core/Entities/EventOccurrence.php:199
 msgid "Evento é obrigatório"
@@ -13392,11 +13375,11 @@ msgstr "El Evento es obligatorio"
 
 #: mapa/mapasculturais/src/core/Entities/EventOccurrence.php:202
 msgid "Espaço é obrigatório"
-msgstr "Espacio es obligatorio"
+msgstr "El espacio es obligatorio"
 
 #: mapa/mapasculturais/src/core/Entities/EventOccurrence.php:205
 msgid "A descrição legível do horário é obrigatória"
-msgstr "Descripción legible del horario es obligatoria"
+msgstr "La descripción legible del horario es obligatoria"
 
 #: mapa/mapasculturais/src/core/Entities/EventOccurrence.php:208
 msgid "O valor da entrada é obrigatório"
@@ -13404,7 +13387,7 @@ msgstr "El valor de la entrada es obligatorio"
 
 #: mapa/mapasculturais/src/core/Entities/File.php:173
 msgid "Tipo de arquivo não permitido"
-msgstr "Tipos de archivo no permitido"
+msgstr "Tipo de archivo no permitido"
 
 #: mapa/mapasculturais/src/core/Entities/MetaList.php:99
 msgid "O título é obrigatório"
@@ -13616,17 +13599,17 @@ msgstr "La categoría %s se está utilizando en los campos."
 #: mapa/mapasculturais/src/core/Entities/Opportunity.php:868
 #, php-format
 msgid "O tipo de proponente %s está sendo utilizado em campos e em inscrições."
-msgstr "El tipo de postor %s se está utilizando en campos e inscripciones."
+msgstr "El tipo de postulante %s se está utilizando en campos e inscripciones."
 
 #: mapa/mapasculturais/src/core/Entities/Opportunity.php:870
 #, php-format
 msgid "O tipo de proponente %s está sendo utilizado em inscrições."
-msgstr "El tipo de ofertante %s se está utilizando en inscripciones."
+msgstr "El tipo de postulante %s se está utilizando en inscripciones."
 
 #: mapa/mapasculturais/src/core/Entities/Opportunity.php:872
 #, php-format
 msgid "O tipo de proponente %s está sendo utilizado em campos."
-msgstr "El tipo de ofertante %s se está utilizando en los campos."
+msgstr "El tipo de postulante %s se está utilizando en los campos."
 
 #: mapa/mapasculturais/src/core/Entities/Opportunity.php:915
 #, php-format
@@ -13636,7 +13619,7 @@ msgstr "El rango/línea %s se está utilizando en campos e inscripciones."
 #: mapa/mapasculturais/src/core/Entities/Opportunity.php:917
 #, php-format
 msgid "A faixa/linha %s está sendo utilizada em inscrições."
-msgstr "El rango/línea %s se está utilizando en los registros."
+msgstr "El rango/línea %s se está utilizando en las inscripciones."
 
 #: mapa/mapasculturais/src/core/Entities/Opportunity.php:919
 #, php-format
@@ -13666,8 +13649,7 @@ msgstr "El tipo de proyecto es obligatorio"
 
 #: mapa/mapasculturais/src/core/Entities/Project.php:238
 msgid "Data final obrigatória caso data inicial preenchida"
-msgstr ""
-"Fecha final obligatoria, en el caso de que la fecha final fuera completada"
+msgstr "Fecha final obligatoria si se completó la fecha inicial"
 
 #: mapa/mapasculturais/src/core/Entities/Registration.php:368
 #: mapa/mapasculturais/src/core/Entities/Registration.php:1427
@@ -13681,7 +13663,7 @@ msgstr ""
 
 #: mapa/mapasculturais/src/core/Entities/Registration.php:390
 msgid "Lista de de inclusão avaliadores"
-msgstr "Lista inclusión de evaluaciones"
+msgstr "Lista de inclusión de evaluadores"
 
 #: mapa/mapasculturais/src/core/Entities/Registration.php:398
 msgid "Lista de exclusão de avaliadores"
@@ -13697,7 +13679,7 @@ msgstr "Estado no válido de la inscripción"
 
 #: mapa/mapasculturais/src/core/Entities/Registration.php:1393
 msgid "Faixa é um campo obrigatório."
-msgstr "Franja es campo es obligatorio."
+msgstr "Franja es un campo obligatorio."
 
 #: mapa/mapasculturais/src/core/Entities/Registration.php:1397
 msgid "Tipo de proponente é um campo obrigatório."
@@ -13762,7 +13744,7 @@ msgstr "Evaluaciones de inscripciones"
 
 #: mapa/mapasculturais/src/core/Entities/RegistrationEvaluation.php:318
 msgid "Avaliação de Inscrição"
-msgstr "Evaluador de inscripción"
+msgstr "Evaluación de inscripción"
 
 #: mapa/mapasculturais/src/core/Entities/RegistrationFieldConfiguration.php:176
 msgid "O projeto é obrigatório."
@@ -13792,11 +13774,11 @@ msgstr "El nombre del sello es obligatorio"
 
 #: mapa/mapasculturais/src/core/Entities/Seal.php:181
 msgid "Validade do selo é obrigatória."
-msgstr "El validado del sello es obligatorio."
+msgstr "La validez del sello es obligatoria."
 
 #: mapa/mapasculturais/src/core/Entities/Seal.php:182
 msgid "Validade do selo deve ser um número inteiro."
-msgstr "Validado del sello debe ser un número entero."
+msgstr "La validez del sello debe ser un número entero."
 
 #: mapa/mapasculturais/src/core/Entities/SealRelation.php:310
 msgid "<b>Nome do Selo</b>"
@@ -13909,10 +13891,7 @@ msgid ""
 "O Agente <b>%s</b> está com o seu selo <b>%s</b> para expirar em %s dia(s)."
 "<br>Acesse a entidade e solicite a renovação da validade. <a class='btn btn-"
 "small btn-primary' href='' rel='noopener noreferrer'>editar</a>"
-msgstr ""
-"El Agente <b>%s</b> está con su sello <b>%s</b> pronto a vencerse en %s "
-"dia(s).<br>Acceda a la entidad y solicite la renovación de la validez. <a "
-"class='btn btn-small btn-primary' href=''>editar</a>"
+msgstr "El Agente <b>%s</b> está con su sello <b>%s</b> próximo a vencer en %s día(s).<br>Acceda a la entidad y solicite la renovación de la validez. <a class='btn btn-small btn-primary' href=''>editar</a>"
 
 #: mapa/mapasculturais/src/core/Entities/User.php:908
 #, php-format
@@ -13931,10 +13910,7 @@ msgid ""
 "O Agente <b>%s</b> está com o seu selo <b>%s</b> para expirar em %s dia(s)."
 "<br>Acesse a entidade e solicite a renovação da validade. <a class='btn btn-"
 "small btn-primary' href='%s' rel='noopener noreferrer'>editar</a>"
-msgstr ""
-"El Agente <b>%s</b> está con su sello <b>%s</b> pronto a vencerse en %s "
-"dia(s).<br>Acceda a la entidad y solicite la renovación de la validez. <a "
-"class='btn btn-small btn-primary' href='%s'>editar</a>"
+msgstr "El Agente <b>%s</b> está con su sello <b>%s</b> próximo a vencer en %s día(s).<br>Acceda a la entidad y solicite la renovación de la validez. <a class='btn btn-small btn-primary' href='%s'>editar</a>"
 
 #: mapa/mapasculturais/src/core/Entity.php:275
 msgid "Arquivado"
@@ -14219,7 +14195,7 @@ msgstr "La latitud debe ser un float entre 90 y -90"
 
 #: mapa/mapasculturais/src/core/Types/GeoPoint.php:94
 msgid "Longitude precisa ser um float entre 180 em -180"
-msgstr "La latitud debe ser un flotador entre 180 y -180"
+msgstr "La longitud debe ser un float entre 180 y -180"
 
 #: mapa/mapasculturais/src/db-updates.php:2683
 #: mapa/mapasculturais/src/db-updates.php:2694
@@ -14399,11 +14375,11 @@ msgstr "ok"
 
 #: mapa/mapasculturais/src/modules/Apps/components/create-app/texts.php:5
 msgid "Aplicativo Criado!"
-msgstr "Aplicación creada!"
+msgstr "¡Aplicación creada!"
 
 #: mapa/mapasculturais/src/modules/Apps/components/create-app/texts.php:7
 msgid "Aplicativo criado em rascunho"
-msgstr "Solicitud creada en borrador"
+msgstr "Aplicación creada en borrador"
 
 #: mapa/mapasculturais/src/modules/Apps/views/panel/apps.php:25
 msgid "Nesta seção você pode adicionar e gerenciar seus aplicativos"
@@ -14435,7 +14411,7 @@ msgstr "El período de evaluación finalizó el "
 #: mapa/mapasculturais/src/themes/BaseV1/layouts/parts/user-management/info-user.php:53
 #: mapa/mapasculturais/src/themes/BaseV1/layouts/parts/user-management/info-user.php:57
 msgid "d/m/Y à\\s H:i"
-msgstr "d/m/Y a H:i"
+msgstr "d/m/Y \\a \\l\\a\\s H:i"
 
 #: mapa/mapasculturais/src/modules/BaseV1EmbedTools/layouts/parts/evaluations-admin-table.php:8
 #: mapa/mapasculturais/src/modules/BaseV1EmbedTools/layouts/parts/evaluations-admin-table.php:10
@@ -14541,13 +14517,11 @@ msgstr "Filtrar inscripciones:"
 msgid ""
 "Busque pelo número de inscrição, status da avaliação, nome ou cpf do "
 "responsável"
-msgstr ""
-"Búsqueda por número de registro, estado de evaluación, nombre o CI del "
-"responsable"
+msgstr "Búsqueda por número de inscripción, estado de evaluación, nombre o CI del responsable"
 
 #: mapa/mapasculturais/src/modules/BaseV1EmbedTools/layouts/parts/registration--manager.php:11
 msgid "Remover rascunhos"
-msgstr "Eliminar borrador"
+msgstr "Eliminar borradores"
 
 #: mapa/mapasculturais/src/modules/BaseV1EmbedTools/layouts/parts/registration--manager.php:16
 #: mapa/mapasculturais/src/themes/BaseV1/layouts/parts/singles/opportunity-registrations--tables--manager.php:34
@@ -14675,7 +14649,7 @@ msgstr "Descargar en CSV"
 #: mapa/mapasculturais/src/modules/CompliantSuggestion/Module.php:121
 #: mapa/mapasculturais/src/modules/CompliantSuggestion/Module.php:126
 msgid "O preenchimento do e-mail é obrigatório."
-msgstr "Es obligatorio competar el correo electrónico."
+msgstr "Es obligatorio completar el correo electrónico."
 
 #: mapa/mapasculturais/src/modules/CompliantSuggestion/Module.php:122
 msgid "O preenchimento do tipo de denúncia é obrigatório."
@@ -14737,7 +14711,7 @@ msgstr "Denuncia anónima"
 
 #: mapa/mapasculturais/src/modules/CompliantSuggestion/layouts/parts/compliant_suggestion.php:53
 msgid "Receber cópia da denúncia"
-msgstr "Recibir copia de la renuncia"
+msgstr "Recibir copia de la denuncia"
 
 #: mapa/mapasculturais/src/modules/CompliantSuggestion/layouts/parts/compliant_suggestion.php:64
 #: mapa/mapasculturais/src/modules/Components/components/complaint-suggestion/template.php:69
@@ -14855,7 +14829,7 @@ msgstr "Enviar solamente al responsable"
 #: mapa/mapasculturais/src/modules/Components/components/complaint-suggestion/template.php:135
 #: mapa/mapasculturais/src/modules/Components/components/mc-chat/texts.php:5
 msgid "Mensagem enviada com sucesso"
-msgstr "Mensaje enviada con éxito"
+msgstr "Mensaje enviado con éxito"
 
 #: mapa/mapasculturais/src/modules/Components/components/complaint-suggestion/template.php:136
 msgid "Sua mensagem foi enviada."
@@ -14939,7 +14913,7 @@ msgstr "ACCESIBILIDAD:"
 #: mapa/mapasculturais/src/modules/Components/components/entity-card/template.php:81
 #: mapa/mapasculturais/src/modules/Components/components/mc-map-card/template.php:41
 msgid "Oferece"
-msgstr "Ofertas"
+msgstr "Ofrece"
 
 #: mapa/mapasculturais/src/modules/Components/components/entity-card/template.php:92
 #: mapa/mapasculturais/src/modules/Components/components/occurrence-card/template.php:65
@@ -14950,7 +14924,7 @@ msgstr "Etiquetas:"
 #: mapa/mapasculturais/src/modules/Components/components/entity-card/template.php:99
 #: mapa/mapasculturais/src/modules/Components/components/occurrence-card/template.php:71
 msgid "linguagens:"
-msgstr "idiomas:"
+msgstr "tipos de evento:"
 
 #: mapa/mapasculturais/src/modules/Components/components/entity-card/template.php:118
 #: mapa/mapasculturais/src/modules/Components/components/mc-map-card/template.php:61
@@ -15268,7 +15242,7 @@ msgstr "Entidad eliminada definitivamente"
 
 #: mapa/mapasculturais/src/modules/Components/components/mc-entity/texts.php:28
 msgid "Entidade publicada"
-msgstr "Entidades publicada"
+msgstr "Entidad publicada"
 
 #: mapa/mapasculturais/src/modules/Components/components/mc-entity/texts.php:29
 msgid "Entidade arquivada"
@@ -15304,11 +15278,11 @@ msgstr "Removiendo agente relacionado"
 
 #: mapa/mapasculturais/src/modules/Components/components/mc-entity/texts.php:39
 msgid "Removendo grupo de agentes relacionados"
-msgstr "Eliminación de grupos de agentes relacionados"
+msgstr "Eliminando grupo de agentes relacionados"
 
 #: mapa/mapasculturais/src/modules/Components/components/mc-entity/texts.php:40
 msgid "Renomeando grupo de agentes relacionados"
-msgstr "Renombrar grupo de agentes relacionados"
+msgstr "Renombrando grupo de agentes relacionados"
 
 #: mapa/mapasculturais/src/modules/Components/components/mc-entity/texts.php:41
 msgid "Adicionando administrador"
@@ -15316,11 +15290,11 @@ msgstr "Agregando Administrador"
 
 #: mapa/mapasculturais/src/modules/Components/components/mc-entity/texts.php:43
 msgid "Removendo selo da entidade"
-msgstr "Quitar el sello de la entidad"
+msgstr "Quitando el sello de la entidad"
 
 #: mapa/mapasculturais/src/modules/Components/components/mc-entity/texts.php:44
 msgid "Relacionando selo à entidade"
-msgstr "Relacionar el sello con la entidad"
+msgstr "Relacionando el sello con la entidad"
 
 #: mapa/mapasculturais/src/modules/Components/components/mc-file/script.js:32
 msgid "sem arquivo"
@@ -15628,7 +15602,7 @@ msgstr "Nombre del proyecto no informado"
 #: mapa/mapasculturais/src/themes/BaseV1/layouts/parts/singles/registration-edit--spaces.php:8
 #: mapa/mapasculturais/src/themes/BaseV1/layouts/parts/singles/registration-single--spaces.php:9
 msgid "Espaço Vinculado"
-msgstr "Espacios vinculado"
+msgstr "Espacio vinculado"
 
 #: mapa/mapasculturais/src/modules/Components/components/mc-summary-spaces/template.php:22
 msgid "Espaço não informado"
@@ -16975,7 +16949,7 @@ msgstr "Nombre completo"
 
 #: mapa/mapasculturais/src/modules/Entities/components/agent-data-1/template.php:25
 msgid "Nome social"
-msgstr "Razón social"
+msgstr "Nombre social"
 
 #: mapa/mapasculturais/src/modules/Entities/components/agent-data-1/template.php:27
 #: mapa/mapasculturais/src/modules/Entities/views/agent/edit-1.php:113
@@ -17217,11 +17191,11 @@ msgstr "Completar después"
 #: mapa/mapasculturais/src/modules/Seals/components/create-seal/template.php:48
 #: mapa/mapasculturais/src/modules/Seals/components/create-seal/template.php:53
 msgid "Completar Informações"
-msgstr "Información a completar"
+msgstr "Completar información"
 
 #: mapa/mapasculturais/src/modules/Entities/components/create-agent/texts.php:5
 msgid "Agente Criado!"
-msgstr "Agentes creado!"
+msgstr "¡Agente creado!"
 
 #: mapa/mapasculturais/src/modules/Entities/components/create-agent/texts.php:7
 msgid "Agente criado em rascunho!"
@@ -17260,7 +17234,7 @@ msgstr "Ver Evento"
 
 #: mapa/mapasculturais/src/modules/Entities/components/create-event/texts.php:5
 msgid "Evento Criado!"
-msgstr "Eventos Creado!"
+msgstr "¡Evento creado!"
 
 #: mapa/mapasculturais/src/modules/Entities/components/create-event/texts.php:7
 msgid "Evento criado em rascunho!"
@@ -17365,7 +17339,7 @@ msgstr "Sábado"
 
 #: mapa/mapasculturais/src/modules/Entities/components/create-occurrence/template.php:96
 msgid "Quando o evento ocorrerá?"
-msgstr "¿Qué día de la semana se realiza el evento?"
+msgstr "¿Cuándo se realizará el evento?"
 
 #: mapa/mapasculturais/src/modules/Entities/components/create-occurrence/template.php:101
 #: mapa/mapasculturais/src/modules/Entities/components/create-occurrence/template.php:118
@@ -17584,7 +17558,7 @@ msgstr "Ver Oportunidad"
 
 #: mapa/mapasculturais/src/modules/Entities/components/create-opportunity/texts.php:5
 msgid "Oportunidade Criada!"
-msgstr "Oportunidad Creada!"
+msgstr "¡Oportunidad creada!"
 
 #: mapa/mapasculturais/src/modules/Entities/components/create-opportunity/texts.php:7
 msgid "Oportunidade criada em rascunho!"
@@ -17624,7 +17598,7 @@ msgstr "Ver Proyecto"
 
 #: mapa/mapasculturais/src/modules/Entities/components/create-project/texts.php:5
 msgid "Projeto Criado!"
-msgstr "Proyectos Creado!"
+msgstr "¡Proyecto creado!"
 
 #: mapa/mapasculturais/src/modules/Entities/components/create-project/texts.php:7
 msgid "Projeto criado em rascunho!"
@@ -17664,7 +17638,7 @@ msgstr "Ver Espacio"
 
 #: mapa/mapasculturais/src/modules/Entities/components/create-space/texts.php:5
 msgid "Espaço Criado!"
-msgstr "Espacios creado!"
+msgstr "¡Espacio creado!"
 
 #: mapa/mapasculturais/src/modules/Entities/components/create-space/texts.php:7
 msgid "Espaço criado em Rascunho"
@@ -17861,7 +17835,7 @@ msgstr "Agregar imagen de la portada"
 #: mapa/mapasculturais/src/modules/Entities/components/entity-field-links/template.php:36
 #: mapa/mapasculturais/src/modules/Entities/components/mc-links-field/template.php:34
 msgid "Remover link"
-msgstr "Remover link"
+msgstr "Eliminar enlace"
 
 #: mapa/mapasculturais/src/modules/Entities/components/entity-field-links/template.php:41
 #: mapa/mapasculturais/src/modules/Entities/components/entity-files-list/template.php:53
@@ -17870,7 +17844,7 @@ msgstr "Remover link"
 #: mapa/mapasculturais/src/modules/Entities/components/mc-links-field/template.php:39
 #: mapa/mapasculturais/src/modules/Opportunities/components/opportunity-rules/template.php:31
 msgid "Deseja remover o link?"
-msgstr "¿Desea eliminar este link?"
+msgstr "¿Desea eliminar este enlace?"
 
 #: mapa/mapasculturais/src/modules/Entities/components/entity-field-links/template.php:48
 msgid "Adicionar link"
@@ -17879,7 +17853,7 @@ msgstr "Agregar enlace"
 #: mapa/mapasculturais/src/modules/Entities/components/entity-field-links/template.php:49
 #: mapa/mapasculturais/src/modules/Entities/components/mc-links-field/template.php:46
 msgid "Adicionar novo link"
-msgstr "Agregar nuevo link"
+msgstr "Agregar nuevo enlace"
 
 #: mapa/mapasculturais/src/modules/Entities/components/entity-field-location/template.php:32
 #: mapa/mapasculturais/src/modules/Opportunities/components/registration-field-address/template.php:42
@@ -17931,7 +17905,7 @@ msgstr "Título del archivo"
 
 #: mapa/mapasculturais/src/modules/Entities/components/entity-file/template.php:82
 msgid "Descreva abaixo os motivos do recurso"
-msgstr "Describa los motivos de la apelación a continuación"
+msgstr "Describa los motivos del reclamo a continuación"
 
 #: mapa/mapasculturais/src/modules/Entities/components/entity-file/template.php:93
 msgid "Baixar modelo"
@@ -18050,7 +18024,7 @@ msgstr "Edición del espacio"
 
 #: mapa/mapasculturais/src/modules/Entities/components/entity-header/texts.php:9
 msgid "Edição da oportunidade"
-msgstr "Oportunidad Editar"
+msgstr "Edición de la oportunidad"
 
 #: mapa/mapasculturais/src/modules/Entities/components/entity-header/texts.php:10
 msgid "Edição do evento"
@@ -18090,7 +18064,7 @@ msgstr "vinculado a"
 #: mapa/mapasculturais/src/modules/Entities/components/entity-links/template.php:43
 #: mapa/mapasculturais/src/modules/Entities/components/entity-links/template.php:67
 msgid "remover link"
-msgstr "remover link"
+msgstr "eliminar enlace"
 
 #: mapa/mapasculturais/src/modules/Entities/components/entity-links/template.php:74
 msgid "salvar"
@@ -18105,7 +18079,7 @@ msgstr "Agregar enlace"
 
 #: mapa/mapasculturais/src/modules/Entities/components/entity-links/template.php:102
 msgid "Título do link"
-msgstr "Título del link"
+msgstr "Título del enlace"
 
 #: mapa/mapasculturais/src/modules/Entities/components/entity-list/texts.php:5
 msgid "Mensagem de Sucesso"
@@ -18150,7 +18124,7 @@ msgstr "Esta inscripción"
 
 #: mapa/mapasculturais/src/modules/Entities/components/entity-log/template.php:9
 msgid "Histórico de alterações"
-msgstr "Histórico de cambios"
+msgstr "Historial de cambios"
 
 #: mapa/mapasculturais/src/modules/Entities/components/entity-log/template.php:12
 #: mapa/mapasculturais/src/modules/Entities/components/entity-log/template.php:13
@@ -18198,7 +18172,7 @@ msgstr "Esperando confirmación"
 
 #: mapa/mapasculturais/src/modules/Entities/components/entity-owner/template.php:38
 msgid "Alterar Propriedade"
-msgstr "Cambiar propiedadad"
+msgstr "Cambiar propiedad"
 
 #: mapa/mapasculturais/src/modules/Entities/components/entity-parent-edit/template.php:22
 msgid "{{entity.parent.name}}"
@@ -18361,7 +18335,7 @@ msgstr "Este evento está archivado."
 
 #: mapa/mapasculturais/src/modules/Entities/components/entity-status/template.php:63
 msgid "Este projeto está em rascunho."
-msgstr "Esta proyecto es borrador."
+msgstr "Este proyecto es un borrador."
 
 #: mapa/mapasculturais/src/modules/Entities/components/entity-status/template.php:64
 #: mapa/mapasculturais/src/modules/Entities/components/entity-status/template.php:79
@@ -18371,7 +18345,7 @@ msgstr "Debes <strong>publicar</strong> para mostrárselo a todo el mundo."
 
 #: mapa/mapasculturais/src/modules/Entities/components/entity-status/template.php:67
 msgid "Este projeto está na lixeira."
-msgstr "Esta proyecto está en la papelera."
+msgstr "Este proyecto está en la papelera."
 
 #: mapa/mapasculturais/src/modules/Entities/components/entity-status/template.php:71
 msgid "Este projeto está arquivado."
@@ -18391,7 +18365,7 @@ msgstr "Esta oportunidad está archivada."
 
 #: mapa/mapasculturais/src/modules/Entities/components/entity-status/template.php:87
 msgid "Você pode <strong>publicar</strong> novamente para desarquivá-la."
-msgstr "Puedes <strong>publicar</strong> nuevamente para desarchivarlo."
+msgstr "Puedes <strong>publicar</strong> nuevamente para desarchivarla."
 
 #: mapa/mapasculturais/src/modules/Entities/components/entity-table/init.php:24
 #: mapa/mapasculturais/src/modules/Entities/components/entity-table/texts.php:11
@@ -18401,7 +18375,7 @@ msgstr "Puedes <strong>publicar</strong> nuevamente para desarchivarlo."
 #: mapa/mapasculturais/src/modules/Opportunities/components/panel--registration-tabs/template.php:32
 #: mapa/mapasculturais/src/modules/Opportunities/components/panel--registration-tabs/template.php:58
 msgid "mais antigas primeiro"
-msgstr "el mayor primero"
+msgstr "más antiguas primero"
 
 #: mapa/mapasculturais/src/modules/Entities/components/entity-table/template.php:51
 #: mapa/mapasculturais/src/modules/Opportunities/components/opportunity-evaluations-table/template.php:30
@@ -18411,7 +18385,7 @@ msgstr "Buscar por palabra clave separado por ;"
 #: mapa/mapasculturais/src/modules/Entities/components/entity-table/template.php:100
 #: mapa/mapasculturais/src/modules/Support/components/opportunity-support-config/template.php:95
 msgid "Limpar filtros"
-msgstr "Remover filtros"
+msgstr "Limpiar filtros"
 
 #: mapa/mapasculturais/src/modules/Entities/components/entity-table/template.php:109
 msgid ""
@@ -18561,7 +18535,7 @@ msgstr "Agregar nueva etiqueta"
 
 #: mapa/mapasculturais/src/modules/Entities/components/link-opportunity/template.php:22
 msgid "Entidade Vinculada"
-msgstr "Entidades Vinculada"
+msgstr "Entidad vinculada"
 
 #: mapa/mapasculturais/src/modules/Entities/components/link-opportunity/template.php:32
 msgid "Selecione um dos "
@@ -18759,7 +18733,7 @@ msgstr "Información de presentación"
 #: mapa/mapasculturais/src/modules/Entities/views/project/edit.php:56
 #: mapa/mapasculturais/src/modules/Entities/views/space/edit.php:55
 msgid "Os dados inseridos abaixo serão exibidos para todos os usuários"
-msgstr "Los datos ingresados ​​a continuación se mostrarán a todos los usuarios"
+msgstr "Los datos ingresados a continuación se mostrarán a todos los usuarios"
 
 #: mapa/mapasculturais/src/modules/Entities/views/agent/edit-1.php:69
 #: mapa/mapasculturais/src/modules/Entities/views/agent/edit-2.php:68
@@ -18788,7 +18762,7 @@ msgstr "No te preocupes, estos datos no se mostrarán públicamente."
 #: mapa/mapasculturais/src/themes/BaseV1/layouts/parts/singles/agent-form-1.php:67
 #: mapa/mapasculturais/src/themes/BaseV1/layouts/parts/singles/agent-form-1.php:68
 msgid "Nome Social"
-msgstr "Razón Social"
+msgstr "Nombre social"
 
 #: mapa/mapasculturais/src/modules/Entities/views/agent/edit-1.php:109
 #: mapa/mapasculturais/src/themes/BaseV1/layouts/parts/singles/agent-form-1.php:75
@@ -18842,7 +18816,7 @@ msgstr "Validez"
 
 #: mapa/mapasculturais/src/modules/Entities/views/agent/edit-1.php:136
 msgid "Anexar CNH - Formatos: (png, jpeg, pdf)"
-msgstr "Anexar Licencia de conducir - Formatos: (png, jpeg, pdf)"
+msgstr "Adjuntar Licencia de conducir - Formatos: (png, jpeg, pdf)"
 
 #: mapa/mapasculturais/src/modules/Entities/views/agent/edit-1.php:138
 msgid "RG"
@@ -18870,9 +18844,7 @@ msgstr "Adjuntar CI- Formatos: (png, jpeg, pdf)"
 msgid ""
 "Os dados inseridos abaixo serão registrados apenas no sistemas e não serão "
 "exibidos publicamente"
-msgstr ""
-"Los datos ingresados ​​a continuación solo quedarán registrados en el sistema y "
-"no serán mostrados públicamente"
+msgstr "Los datos ingresados a continuación solo quedarán registrados en el sistema y no serán mostrados públicamente"
 
 #: mapa/mapasculturais/src/modules/Entities/views/agent/edit-1.php:154
 #: mapa/mapasculturais/src/themes/BaseV1/layouts/parts/singles/agent-form-1.php:190
@@ -18919,9 +18891,7 @@ msgstr "Información pública"
 msgid ""
 "Os dados inseridos abaixo assim como as informações de apresentação também "
 "são exibidos publicamente"
-msgstr ""
-"Los datos ingresados ​​a continuación, así como la información de la "
-"presentación, también se muestran públicamente"
+msgstr "Los datos ingresados a continuación, así como la información de la presentación, también se muestran públicamente"
 
 #: mapa/mapasculturais/src/modules/Entities/views/agent/edit-1.php:175
 #: mapa/mapasculturais/src/modules/Entities/views/event/edit.php:130
@@ -18939,7 +18909,7 @@ msgstr "Haga clic para agregar archivos para descarga"
 #: mapa/mapasculturais/src/modules/Opportunities/components/opportunity-basic-info/template.php:51
 #: mapa/mapasculturais/src/modules/Seals/components/seal-form-information-seal/template.php:107
 msgid "Adicionar links"
-msgstr "Agregar enlace"
+msgstr "Agregar enlaces"
 
 #: mapa/mapasculturais/src/modules/Entities/views/agent/edit-1.php:177
 #: mapa/mapasculturais/src/modules/Entities/views/agent/edit-2.php:123
@@ -19029,7 +18999,7 @@ msgstr "Enlaces"
 #: mapa/mapasculturais/src/modules/Entities/views/agent/single-1.php:60
 #: mapa/mapasculturais/src/modules/Entities/views/agent/single-2.php:62
 msgid "Propriedades do Agente:"
-msgstr "Propriedades del Agente:"
+msgstr "Propiedades del Agente:"
 
 #: mapa/mapasculturais/src/modules/Entities/views/agent/single-1.php:76
 #: mapa/mapasculturais/src/themes/BaseV1/layouts/parts/widget-functions.php:19
@@ -19275,7 +19245,7 @@ msgstr "Nombre del espacio"
 
 #: mapa/mapasculturais/src/modules/Entities/views/space/edit.php:69
 msgid "Tipo do espaço"
-msgstr "Tipos de espacio"
+msgstr "Tipo de espacio"
 
 #: mapa/mapasculturais/src/modules/Entities/views/space/edit.php:75
 msgid "Link para página ou site do espaço"
@@ -19307,7 +19277,7 @@ msgstr "Agregar Supra Espacio"
 
 #: mapa/mapasculturais/src/modules/Entities/views/space/single.php:51
 msgid "Espaço integrante de"
-msgstr "Espacios integrante de"
+msgstr "Espacio integrante de"
 
 #: mapa/mapasculturais/src/modules/Entities/views/space/single.php:76
 msgid "Propriedades do Espaço"
@@ -19453,12 +19423,12 @@ msgstr "No se aplicaron evaluaciones."
 #: mapa/mapasculturais/src/modules/EvaluationMethodContinuous/Module.php:190
 #: mapa/mapasculturais/src/modules/EvaluationMethodSimple/Module.php:117
 msgid "inválida,invalida,inválido,invalido"
-msgstr "invalida,invalida,inválido,invalido"
+msgstr "inválida,invalida,inválido,invalido"
 
 #: mapa/mapasculturais/src/modules/EvaluationMethodContinuous/Module.php:192
 #: mapa/mapasculturais/src/modules/EvaluationMethodSimple/Module.php:119
 msgid "não selecionado,nao selecionado,não selecionada,nao selecionada"
-msgstr "no seleccionado, no seleccionado, no seleccionado, no seleccionado"
+msgstr "no seleccionado,no seleccionada"
 
 #: mapa/mapasculturais/src/modules/EvaluationMethodContinuous/Module.php:194
 #: mapa/mapasculturais/src/modules/EvaluationMethodQualification/components/qualification-evaluation-form/init.php:77
@@ -19470,7 +19440,7 @@ msgstr "suplente"
 #: mapa/mapasculturais/src/modules/EvaluationMethodContinuous/Module.php:196
 #: mapa/mapasculturais/src/modules/EvaluationMethodSimple/Module.php:123
 msgid "selecionado,selecionada"
-msgstr "seleccionado,selecdionada"
+msgstr "seleccionado,seleccionada"
 
 #: mapa/mapasculturais/src/modules/EvaluationMethodContinuous/Module.php:255
 msgid "Somente para avaliações contínuas"
@@ -19517,7 +19487,7 @@ msgstr "Ver revisiones de otros evaluadores"
 #: mapa/mapasculturais/src/modules/EvaluationMethodContinuous/components/continuous-evaluation-form/template.php:35
 #: mapa/mapasculturais/src/modules/EvaluationMethodSimple/components/simple-evaluation-form/template.php:32
 msgid "Selecione o status dessa inscrição"
-msgstr "Selecciones el status de esta inscripción"
+msgstr "Seleccione el estado de esta inscripción"
 
 #: mapa/mapasculturais/src/modules/EvaluationMethodContinuous/components/continuous-evaluation-form/template.php:42
 #: mapa/mapasculturais/src/modules/EvaluationMethodSimple/components/simple-evaluation-form/template.php:39
@@ -19642,7 +19612,7 @@ msgstr ""
 #: mapa/mapasculturais/src/modules/EvaluationMethodDocumentary/components/evaluation-method-documentary--apply/template.php:42
 #: mapa/mapasculturais/src/modules/EvaluationMethodSimple/components/evaluation-method-simple--apply/template.php:43
 msgid "nas inscrições que com o status 'Pendente'."
-msgstr "en registros con el estado 'Pendiente'."
+msgstr "en inscripciones con el estado 'Pendiente'."
 
 #: mapa/mapasculturais/src/modules/EvaluationMethodContinuous/components/evaluation-method-continuous--apply/template.php:49
 #: mapa/mapasculturais/src/modules/EvaluationMethodDocumentary/components/evaluation-method-documentary--apply/template.php:48
@@ -19690,14 +19660,12 @@ msgstr "Aplicar a todas las inscripciones enviadas"
 msgid ""
 "Deixando desmarcado, o status será aplicado somente às inscrições com status "
 "pendente"
-msgstr ""
-"Si lo deja sin marcar, el estado solo se aplicará a las suscripciones con un "
-"estado pendiente"
+msgstr "Si lo deja sin marcar, el estado solo se aplicará a las inscripciones con un estado pendiente"
 
 #: mapa/mapasculturais/src/modules/EvaluationMethodContinuous/layouts/parts/continuous--evaluation-form.php:11
 #: mapa/mapasculturais/src/modules/EvaluationMethodSimple/layouts/parts/simple--evaluation-form.php:11
 msgid "Selecione o status"
-msgstr "Selecciones el status"
+msgstr "Seleccione el estado"
 
 #: mapa/mapasculturais/src/modules/EvaluationMethodContinuous/layouts/parts/continuous--evaluation-form.php:14
 #: mapa/mapasculturais/src/modules/EvaluationMethodDocumentary/components/documentary-evaluation-form/template.php:74
@@ -19709,7 +19677,7 @@ msgstr "Justificación / Observaciones"
 #: mapa/mapasculturais/src/modules/EvaluationMethodContinuous/layouts/parts/continuous--evaluation-info.php:1
 #: mapa/mapasculturais/src/modules/EvaluationMethodSimple/layouts/parts/simple--evaluation-info.php:1
 msgid "Selecione o status desta inscrição."
-msgstr "Selecciones el status de esta inscripción."
+msgstr "Seleccione el estado de esta inscripción."
 
 #: mapa/mapasculturais/src/modules/EvaluationMethodDocumentary/JobTypes/Spreadsheet.php:42
 #: mapa/mapasculturais/src/modules/EvaluationMethodDocumentary/Module.php:173
@@ -19806,9 +19774,7 @@ msgstr "Aplicar resultado de las evaluaciones documentales"
 msgid ""
 "Para <strong>validar</strong> a inscrição salve a avaliação sem invalidar "
 "nenhum campo."
-msgstr ""
-"Para <strong>validar</strong> la inscripción guarde la evaluación sin "
-"invalidad ningún campo."
+msgstr "Para <strong>validar</strong> la inscripción guarde la evaluación sin invalidar ningún campo."
 
 #: mapa/mapasculturais/src/modules/EvaluationMethodDocumentary/layouts/parts/documentary--evaluation-info.php:2
 msgid ""
@@ -19919,7 +19885,7 @@ msgstr "¿Habilitar la opción No aplica?"
 
 #: mapa/mapasculturais/src/modules/EvaluationMethodQualification/components/qualification-evaluation-config/template.php:153
 msgid "Habilitar a opção Outros motivos para não atendimento?"
-msgstr "¿Habilitar la opción Otros motivos de inasistencia?"
+msgstr "¿Habilitar la opción Otros motivos de incumplimiento?"
 
 #: mapa/mapasculturais/src/modules/EvaluationMethodQualification/components/qualification-evaluation-config/template.php:158
 msgid "Não eliminatório"
@@ -19977,7 +19943,7 @@ msgstr "Corrija los campos:"
 
 #: mapa/mapasculturais/src/modules/EvaluationMethodQualification/components/qualification-evaluation-form/template.php:41
 msgid "ATENÇÃO: Para ser habilitado, o proponente pode não atender até "
-msgstr "ATENCIÓN: Para ser habilitado, el postulante no puede atender hasta "
+msgstr "ATENCIÓN: Para ser habilitado, el postulante puede no cumplir hasta "
 
 #: mapa/mapasculturais/src/modules/EvaluationMethodQualification/components/qualification-evaluation-form/template.php:41
 msgid " critérios"
@@ -19999,7 +19965,7 @@ msgstr "Cumple"
 #: mapa/mapasculturais/src/modules/EvaluationMethodQualification/components/qualification-evaluation-form/template.php:86
 #: mapa/mapasculturais/src/modules/EvaluationMethodQualification/components/qualification-evaluation-form/texts.php:10
 msgid "Não atende"
-msgstr "No responde"
+msgstr "No cumple"
 
 #: mapa/mapasculturais/src/modules/EvaluationMethodQualification/components/qualification-evaluation-form/template.php:95
 msgid "Recomendação para atender ao critério"
@@ -20094,9 +20060,7 @@ msgstr "inhabilitación"
 msgid ""
 "As opções Habilitado e inabilitado já são definidas automaticamente pelo "
 "sistema"
-msgstr ""
-"Las opciones Activado y Desactivado ya están definidas automáticamente por el "
-"sistema"
+msgstr "Las opciones Habilitado e Inhabilitado ya están definidas automáticamente por el sistema"
 
 #: mapa/mapasculturais/src/modules/EvaluationMethodQualification/layouts/parts/qualification--configuration-form.php:45
 msgid "Habilitar a opção Não se aplica"
@@ -20252,15 +20216,13 @@ msgstr "Nota de corte"
 
 #: mapa/mapasculturais/src/modules/EvaluationMethodTechnical/Module.php:276
 msgid "Considerar os cotistas dentro da listagem da ampla concorrência"
-msgstr "Considerar a los accionistas dentro de la amplia lista de competencia"
+msgstr "Considerar a los titulares de cuotas dentro de la amplia lista de competencia"
 
 #: mapa/mapasculturais/src/modules/EvaluationMethodTechnical/Module.php:277
 msgid ""
 "Ao habilitar esta configuração, os cotistas seráo considerados na listagem da "
 "ampla concorrência."
-msgstr ""
-"Al habilitar esta configuración, los accionistas serán considerados en la "
-"lista amplia de competencia."
+msgstr "Al habilitar esta configuración, los titulares de cuotas serán considerados en la lista amplia de competencia."
 
 #: mapa/mapasculturais/src/modules/EvaluationMethodTechnical/Module.php:591
 msgid "Somente para avaliações técnicas"
@@ -20427,7 +20389,7 @@ msgstr "Configuración de cuotas"
 
 #: mapa/mapasculturais/src/modules/EvaluationMethodTechnical/components/affirmative-policies--quota-configuration/template.php:37
 msgid "Percentual total para cotistas:"
-msgstr "Porcentaje total para accionistas:"
+msgstr "Porcentaje total para titulares de cuotas:"
 
 #: mapa/mapasculturais/src/modules/EvaluationMethodTechnical/components/affirmative-policies--quota-configuration/template.php:42
 msgid "Vagas para cotistas:"
@@ -20465,7 +20427,7 @@ msgstr "Dar preferencia a"
 #: mapa/mapasculturais/src/modules/EvaluationMethodTechnical/components/affirmative-policies--quota-configuration/template.php:121
 #: mapa/mapasculturais/src/modules/EvaluationMethodTechnical/components/affirmative-policy--bonus-config/template.php:68
 msgid "Sim / Marcado"
-msgstr "Sí / Comprobado"
+msgstr "Sí / Marcado"
 
 #: mapa/mapasculturais/src/modules/EvaluationMethodTechnical/components/affirmative-policies--quota-configuration/template.php:126
 #: mapa/mapasculturais/src/modules/EvaluationMethodTechnical/components/affirmative-policy--bonus-config/template.php:72
@@ -20547,7 +20509,7 @@ msgstr "Considerar cuotas"
 
 #: mapa/mapasculturais/src/modules/EvaluationMethodTechnical/components/evaluation-method-technical--apply/template.php:78
 msgid "Selecionar as inscrições posicionadas na faixa de classificação"
-msgstr "Seleccionar entradas ubicadas en el rango de clasificación"
+msgstr "Seleccionar inscripciones ubicadas en el rango de clasificación"
 
 #: mapa/mapasculturais/src/modules/EvaluationMethodTechnical/components/evaluation-method-technical--apply/template.php:84
 msgid ""
@@ -20559,8 +20521,7 @@ msgstr ""
 
 #: mapa/mapasculturais/src/modules/EvaluationMethodTechnical/components/evaluation-method-technical--apply/template.php:91
 msgid "Eliminar as inscrições com notas inferiores à nota de corte"
-msgstr ""
-"Eliminar solicitudes con calificaciones inferiores a la puntuación de corte"
+msgstr "Eliminar inscripciones con calificaciones inferiores a la puntuación de corte"
 
 #: mapa/mapasculturais/src/modules/EvaluationMethodTechnical/components/evaluation-method-technical--apply/template.php:104
 msgid "aplicando avaliações"
@@ -20886,8 +20847,7 @@ msgstr "La columna propietario espera el número de identificación del agente. 
 
 #: mapa/mapasculturais/src/modules/EventImporter/Controller.php:439
 msgid "A coluna agente é obrigatória. Informo o ID do agente responsável"
-msgstr ""
-"La columna del agente es obligatoria. Informo el ID del agente responsable"
+msgstr "La columna del agente es obligatoria. Informe el ID del agente responsable"
 
 #: mapa/mapasculturais/src/modules/EventImporter/Controller.php:441
 msgid "O a gente não esta cadastrado"
@@ -20969,7 +20929,7 @@ msgstr "Edición"
 
 #: mapa/mapasculturais/src/modules/EventImporter/Controller.php:611
 msgid "Deleção"
-msgstr "Supresión"
+msgstr "Eliminación"
 
 #: mapa/mapasculturais/src/modules/EventImporter/Controller.php:611
 #: mapa/mapasculturais/src/modules/EventImporter/layouts/parts/upload-csv-event.php:50
@@ -21015,7 +20975,7 @@ msgstr "lunes"
 #: mapa/mapasculturais/src/modules/EventImporter/Module.php:45
 #: mapa/mapasculturais/src/modules/EventImporter/Module.php:111
 msgid "ter"
-msgstr "tener"
+msgstr "martes"
 
 #: mapa/mapasculturais/src/modules/EventImporter/Module.php:46
 #: mapa/mapasculturais/src/modules/EventImporter/Module.php:112
@@ -21052,7 +21012,7 @@ msgstr "borrar ocurrencias"
 
 #: mapa/mapasculturais/src/modules/EventImporter/Module.php:53
 msgid "zerar ocorrencias"
-msgstr "cerar ocurrencias"
+msgstr "vaciar ocurrencias"
 
 #: mapa/mapasculturais/src/modules/EventImporter/Module.php:53
 msgid "apagar"
@@ -21064,7 +21024,7 @@ msgstr "limpiar"
 
 #: mapa/mapasculturais/src/modules/EventImporter/Module.php:80
 msgid "id_selo"
-msgstr "sid_ello"
+msgstr "id_sello"
 
 #: mapa/mapasculturais/src/modules/EventImporter/Module.php:80
 msgid "id_selos"
@@ -21576,7 +21536,7 @@ msgstr "12:00"
 
 #: mapa/mapasculturais/src/modules/EventImporter/Module.php:259
 msgid "HORA_FINAL"
-msgstr "HORA_INICIAL"
+msgstr "HORA_FINAL"
 
 #: mapa/mapasculturais/src/modules/EventImporter/Module.php:260
 msgid ""
@@ -22165,9 +22125,7 @@ msgstr "Oportunidades actuales"
 msgid ""
 "Cadastre-se, participe de editais e oportunidade e concorra aos benefícios "
 "sem sair de casa"
-msgstr ""
-"Regístrate, participa en avisos y oportunidades y compite por beneficios sin "
-"salir de casa"
+msgstr "Regístrate, participa en llamados y oportunidades y compite por beneficios sin salir de casa"
 
 #: mapa/mapasculturais/src/modules/Home/components/home-opportunities/template.php:41
 msgid "Nenhuma oportunidade do momento foi encontrada."
@@ -22347,7 +22305,7 @@ msgstr "Su solicitud para que %s administre a %s %s fue enviada."
 #: mapa/mapasculturais/src/modules/Notifications/Module.php:198
 #, php-format
 msgid "%s quer relacionar o agente %s ao %s %s. %s"
-msgstr "%s quieres relacionar el agente %s al %s %s. %s"
+msgstr "%s quiere relacionar el agente %s al %s %s. %s"
 
 #: mapa/mapasculturais/src/modules/Notifications/Module.php:206
 msgid "Requisição de transferência de entidades"
@@ -22361,14 +22319,13 @@ msgstr "%s eliminó su cuenta y transfirió todas sus entidades a su agente %s"
 
 #: mapa/mapasculturais/src/modules/Notifications/Module.php:210
 msgid "Requisição de mudança de propriedade"
-msgstr "Solicitud de cambio de propriedad"
+msgstr "Solicitud de cambio de propiedad"
 
 #: mapa/mapasculturais/src/modules/Notifications/Module.php:211
 #, php-format
 msgid ""
 "%s está requisitando a mudança de propriedade do %s %s para o agente %s. %s"
-msgstr ""
-"%s está solicitando el cambio de propriedad del %s %s para el agente %s. %s"
+msgstr "%s está solicitando el cambio de propiedad del %s %s para el agente %s. %s"
 
 #: mapa/mapasculturais/src/modules/Notifications/Module.php:212
 #, php-format
@@ -22387,7 +22344,7 @@ msgstr "Solicitud para crear un %s hijo"
 #: mapa/mapasculturais/src/modules/Notifications/Module.php:216
 #, php-format
 msgid "%s quer que o %s %s seja um %s filho de %s. %s"
-msgstr "%s quieres que %s %s sea un %s hijo de %s. %s"
+msgstr "%s quiere que %s %s sea un %s hijo de %s. %s"
 
 #: mapa/mapasculturais/src/modules/Notifications/Module.php:217
 #, php-format
@@ -22401,15 +22358,13 @@ msgstr "Solicitud para añadir evento"
 #: mapa/mapasculturais/src/modules/Notifications/Module.php:221
 #, php-format
 msgid "%s quer adicionar o evento %s que ocorre %s no espaço %s. %s"
-msgstr "%s quieres agregar el evento %s que se produce %s en el espacio %s. %s"
+msgstr "%s quiere agregar el evento %s que se produce %s en el espacio %s. %s"
 
 #: mapa/mapasculturais/src/modules/Notifications/Module.php:222
 #, php-format
 msgid ""
 "Sua requisição para criar a ocorrência do evento %s no espaço %s foi enviada."
-msgstr ""
-"Su solicitud para crear \"cuándo y dónde\" es el evento %s en el espacio %s "
-"fue enviada."
+msgstr "Su solicitud para crear la ocurrencia del evento %s en el espacio %s fue enviada."
 
 #: mapa/mapasculturais/src/modules/Notifications/Module.php:225
 msgid "Requisição para relacionar o evento ao projeto"
@@ -22418,7 +22373,7 @@ msgstr "Solicitud para relacionar el evento al proyecto"
 #: mapa/mapasculturais/src/modules/Notifications/Module.php:226
 #, php-format
 msgid "%s quer relacionar o evento %s ao projeto %s. %s"
-msgstr "%s quieres relacionar el evento %s al proyecto %s. %s"
+msgstr "%s quiere relacionar el evento %s al proyecto %s. %s"
 
 #: mapa/mapasculturais/src/modules/Notifications/Module.php:227
 #, php-format
@@ -22432,7 +22387,7 @@ msgstr "Solicitud para relacionar sello"
 #: mapa/mapasculturais/src/modules/Notifications/Module.php:231
 #, php-format
 msgid "%s quer relacionar o selo %s ao %s %s. %s"
-msgstr "%s quieres relacionar el sello %s al %s %s. %s"
+msgstr "%s quiere relacionar el sello %s al %s %s. %s"
 
 #: mapa/mapasculturais/src/modules/Notifications/Module.php:232
 #, php-format
@@ -22467,7 +22422,7 @@ msgstr ""
 #: mapa/mapasculturais/src/modules/Notifications/Module.php:322
 #, php-format
 msgid "%s aceitou o relacionamento do agente %s com o %s %s."
-msgstr "%s aceptó la relacionar el agente %s con el %s %s."
+msgstr "%s aceptó relacionar el agente %s con el %s %s."
 
 #: mapa/mapasculturais/src/modules/Notifications/Module.php:326
 #, php-format
@@ -22541,14 +22496,12 @@ msgstr "%s rechazó que el %s %s sea un %s hijo de %s."
 #, php-format
 msgid ""
 "%s cancelou o pedido de autorização do evento %s que ocorre %s no espaço %s."
-msgstr ""
-"%s canceló el pedido de autorización del evento %s que ocorre %s en el "
-"espacio %s."
+msgstr "%s canceló el pedido de autorización del evento %s que ocurre %s en el espacio %s."
 
 #: mapa/mapasculturais/src/modules/Notifications/Module.php:439
 #, php-format
 msgid "%s rejeitou o evento %s que ocorre %s no espaço %s."
-msgstr "%s rechazó el evento %s que ocorre %s en el espacio %s."
+msgstr "%s rechazó el evento %s que ocurre %s en el espacio %s."
 
 #: mapa/mapasculturais/src/modules/Notifications/Module.php:443
 #, php-format
@@ -22628,7 +22581,7 @@ msgstr "La fecha de inicio de inscripción es obligatoria"
 
 #: mapa/mapasculturais/src/modules/Opportunities/Module.php:231
 msgid "A data final das inscrições é obrigatória"
-msgstr "Fecha final de las inscripciones es obligatoria"
+msgstr "La fecha final de las inscripciones es obligatoria"
 
 #: mapa/mapasculturais/src/modules/Opportunities/Module.php:232
 msgid "A descrição curtá é obrigatória"
@@ -22809,7 +22762,7 @@ msgstr ""
 
 #: mapa/mapasculturais/src/modules/Opportunities/Module.php:1135
 msgid "Permite visualização de pareceres externos"
-msgstr "Permite la visualización de revisores externos"
+msgstr "Permite la visualización de dictámenes externos"
 
 #: mapa/mapasculturais/src/modules/Opportunities/components/evaluation-actions/template.php:21
 #: mapa/mapasculturais/src/modules/Opportunities/components/registration-evaluation-actions/template.php:21
@@ -23020,7 +22973,7 @@ msgstr "Ignorar valoraciones ya realizadas en la distribución"
 
 #: mapa/mapasculturais/src/modules/Opportunities/components/opportunity-committee-groups/template.php:129
 msgid "Permitir visualização de pareceres externos"
-msgstr "Permitir la visualización de revisores externos"
+msgstr "Permitir la visualización de dictámenes externos"
 
 #: mapa/mapasculturais/src/modules/Opportunities/components/opportunity-committee-groups/template.php:136
 msgid "Habilitados"
@@ -23045,7 +22998,7 @@ msgstr "Distribuir evaluaciones ahora"
 
 #: mapa/mapasculturais/src/modules/Opportunities/components/opportunity-committee-groups/template.php:173
 msgid "Agendando distribuição de avaliações."
-msgstr "Agendando distribución de evaluaciones."
+msgstr "Programando distribución de evaluaciones."
 
 #: mapa/mapasculturais/src/modules/Opportunities/components/opportunity-create-data-collect-phase/template.php:11
 #: mapa/mapasculturais/src/modules/Opportunities/components/opportunity-create-data-collect-phase/template.php:32
@@ -23176,7 +23129,7 @@ msgstr "aún no hay evaluaciones disponibles"
 
 #: mapa/mapasculturais/src/modules/Opportunities/components/opportunity-evaluation-committee/template.php:100
 msgid "ainda não aceitou o convite para avaliar esta oportunidade"
-msgstr "aún no has aceptado la invitación para evaluar esta oportunidad"
+msgstr "aún no ha aceptado la invitación para evaluar esta oportunidad"
 
 #: mapa/mapasculturais/src/modules/Opportunities/components/opportunity-evaluation-committee/template.php:106
 msgid "Cancelar convite"
@@ -23199,9 +23152,7 @@ msgstr "Reabrir evaluaciones"
 #: mapa/mapasculturais/src/modules/Opportunities/components/opportunity-evaluation-committee/template.php:137
 #: mapa/mapasculturais/src/themes/BaseV1/Theme.php:2133
 msgid "Você tem certeza que deseja reabrir as avaliações para este avaliador?"
-msgstr ""
-"¿Está seguro (a) que desea reabrir las evaluaciones para este/a el evaluador/"
-"ar?"
+msgstr "¿Está seguro (a) que desea reabrir las evaluaciones de este evaluador/a?"
 
 #: mapa/mapasculturais/src/modules/Opportunities/components/opportunity-evaluation-committee/template.php:154
 msgid ""
@@ -23739,12 +23690,12 @@ msgstr "Número de inscripciones <strong>seleccionadas</strong>:"
 #: mapa/mapasculturais/src/modules/Opportunities/components/opportunity-phase-list-registrations/template.php:26
 #: mapa/mapasculturais/src/modules/Opportunities/components/opportunity-phase-publish-config-registration/template.php:62
 msgid "Quantidade de inscrições <strong>suplentes</strong>:"
-msgstr "Número de altas de <strong>suplentes</strong>:"
+msgstr "Número de inscripciones <strong>suplentes</strong>:"
 
 #: mapa/mapasculturais/src/modules/Opportunities/components/opportunity-phase-list-registrations/template.php:27
 #: mapa/mapasculturais/src/modules/Opportunities/components/opportunity-phase-publish-config-registration/template.php:61
 msgid "Quantidade de inscrições <strong>não selecionadas</strong>:"
-msgstr "Número de solicitudes <strong>no seleccionadas</strong>:"
+msgstr "Número de inscripciones <strong>no seleccionadas</strong>:"
 
 #: mapa/mapasculturais/src/modules/Opportunities/components/opportunity-phase-list-registrations/template.php:28
 #: mapa/mapasculturais/src/modules/Opportunities/components/opportunity-phase-publish-config-registration/template.php:63
@@ -23760,10 +23711,7 @@ msgid ""
 "Fique atento! A publicação do resultado é opcional e só pode ser feita após o "
 "término da fase. <strong>Esta ação deixará público o nome e o número de "
 "inscrição das pessoas inscritas.</strong>"
-msgstr ""
-"¡Manténganse al tanto! La publicación del resultado es opcional y sólo podrá "
-"realizarse una vez finalizada la fase. <strong>Esta acción hará públicos el "
-"nombre y número de registro de las personas registradas.</strong>"
+msgstr "¡Atención! La publicación del resultado es opcional y sólo podrá realizarse una vez finalizada la fase. <strong>Esta acción hará públicos el nombre y número de registro de las personas registradas.</strong>"
 
 #: mapa/mapasculturais/src/modules/Opportunities/components/opportunity-phase-publish-config-registration/template.php:26
 #: mapa/mapasculturais/src/modules/Opportunities/components/opportunity-phase-publish-config-registration/template.php:75
@@ -23915,9 +23863,7 @@ msgstr "Fecha de publicación"
 msgid ""
 "A data e hora da 'Coleta de dados' precisa estar preenchida para adicionar "
 "novas fases."
-msgstr ""
-"Se debe completar la fecha y hora de 'Recogida de Datos' para agregar nuevas "
-"fases."
+msgstr "Se debe completar la fecha y hora de 'Recolección de datos' para agregar nuevas fases."
 
 #: mapa/mapasculturais/src/modules/Opportunities/components/opportunity-phases-config/template.php:90
 msgid ""
@@ -24135,7 +24081,7 @@ msgstr "enviadas más antiguas primero"
 
 #: mapa/mapasculturais/src/modules/Opportunities/components/opportunity-registrations-table/texts.php:20
 msgid "enviadas há menos tempo primeiro"
-msgstr "enviadas antes primero"
+msgstr "enviadas más recientes primero"
 
 #: mapa/mapasculturais/src/modules/Opportunities/components/opportunity-registrations-table/texts.php:21
 #: mapa/mapasculturais/src/modules/Spreadsheets/JobTypes/Registrations.php:102
@@ -24305,7 +24251,7 @@ msgstr "Acceder o crear cuenta"
 
 #: mapa/mapasculturais/src/modules/Opportunities/components/opportunity-subscription/texts.php:5
 msgid "Por favor, selecione a categoria da inscrição"
-msgstr "Por favor, seleccione el categoría de la inscripción"
+msgstr "Por favor, seleccione la categoría de la inscripción"
 
 #: mapa/mapasculturais/src/modules/Opportunities/components/opportunity-subscription/texts.php:6
 msgid "Por favor, selecione o tipo de proponente da inscrição"
@@ -24321,8 +24267,7 @@ msgstr "Por favor, seleccione el agente responsable por la inscripción"
 
 #: mapa/mapasculturais/src/modules/Opportunities/components/opportunity-subscription/texts.php:9
 msgid "Por favor, selecione o agente coletivo vinculado a inscrição"
-msgstr ""
-"Por favor, seleccione el agente colectivo responsable por la inscripción"
+msgstr "Por favor, seleccione el agente colectivo vinculado a la inscripción"
 
 #: mapa/mapasculturais/src/modules/Opportunities/components/opportunity-subscription/texts.php:10
 msgid ""
@@ -24783,7 +24728,7 @@ msgstr "Orientación sexual"
 
 #: mapa/mapasculturais/src/modules/Opportunities/components/registration-field-persons/template.php:113
 msgid "Pessoa com deficiência - PDC?"
-msgstr "Persona con discapacidad?"
+msgstr "¿Persona con discapacidad?"
 
 #: mapa/mapasculturais/src/modules/Opportunities/components/registration-field-persons/template.php:126
 msgid "Considera-se pertencente a algum outro povo ou comunidade tradicional?"
@@ -24850,7 +24795,7 @@ msgstr "La solicitud está pendiente"
 #: mapa/mapasculturais/src/modules/Opportunities/components/registration-related-project/texts.php:5
 #: mapa/mapasculturais/src/modules/Opportunities/components/registration-related-space/texts.php:5
 msgid "Espaço vinculado."
-msgstr "Espacios vinculado."
+msgstr "Espacio vinculado."
 
 #: mapa/mapasculturais/src/modules/Opportunities/components/registration-related-project/texts.php:6
 #: mapa/mapasculturais/src/modules/Opportunities/components/registration-related-space/texts.php:6
@@ -25058,7 +25003,7 @@ msgstr "En esta sección podrás agregar y gestionar tus oportunidades"
 
 #: mapa/mapasculturais/src/modules/Opportunities/views/panel/registrations.php:21
 msgid "Nesta seção você pode adicionar e gerenciar suas inscrições"
-msgstr "En esta sección puedes agregar y administrar tus suscripciones"
+msgstr "En esta sección puedes agregar y administrar tus inscripciones"
 
 #: mapa/mapasculturais/src/modules/Opportunities/views/panel/validations.php:19
 #: mapa/mapasculturais/src/modules/ProjectMonitoring/Module.php:66
@@ -25121,7 +25066,7 @@ msgstr "Recurso"
 #: mapa/mapasculturais/src/modules/Opportunities/views/registration/evaluation.php:110
 #: mapa/mapasculturais/src/modules/Opportunities/views/registration/registration-print.php:33
 msgid "Dados informados no formulário"
-msgstr "Datos ingresados ​​en el formulario"
+msgstr "Datos ingresados en el formulario"
 
 #: mapa/mapasculturais/src/modules/Opportunities/views/registration/registration-print.php:29
 #: mapa/mapasculturais/src/modules/Opportunities/views/registration/single.php:113
@@ -25142,7 +25087,7 @@ msgstr "Sin categoría"
 
 #: mapa/mapasculturais/src/modules/Opportunities/views/registration/single.php:84
 msgid "Faixa não informada"
-msgstr "Dato no informado"
+msgstr "Franja no informada"
 
 #: mapa/mapasculturais/src/modules/Opportunities/views/registration/single.php:89
 msgid "Tipo de proponente não informado"
@@ -25374,7 +25319,7 @@ msgstr "evaluadores"
 
 #: mapa/mapasculturais/src/modules/OpportunityAccountability/Module.php:656
 msgid "Aprovada com resalvas"
-msgstr "Aprobado con advertencias"
+msgstr "Aprobada con reservas"
 
 #: mapa/mapasculturais/src/modules/OpportunityAccountability/Module.php:657
 #: mapa/mapasculturais/src/modules/OpportunityAccountability/layouts/parts/accountability/apply-results.php:38
@@ -25411,24 +25356,20 @@ msgstr "Oportunidad de rendición de cuentas vinculada a este proyecto"
 msgid ""
 "Inscrição da oportunidade da prestação de contas vinculada a este projeto "
 "(primeira fase)"
-msgstr ""
-"Registro de oportunidades de rendición de cuentas vinculado a este proyecto "
-"(primera fase)"
+msgstr "Inscripción de la oportunidad de rendición de cuentas vinculada a este proyecto (primera fase)"
 
 #: mapa/mapasculturais/src/modules/OpportunityAccountability/Module.php:841
 msgid ""
 "Projeto da prestação de contas vinculada a esta inscrição (primeira fase)"
-msgstr ""
-"Proyecto de rendición de cuentas vinculado a este registro (primera fase)"
+msgstr "Proyecto de rendición de cuentas vinculado a esta inscripción (primera fase)"
 
 #: mapa/mapasculturais/src/modules/OpportunityAccountability/Module.php:856
 msgid "Indica se o resultado foi publicado a e uma determinada inscrição"
-msgstr "Indica si el resultado se ha publicado en y una determinada inscripción"
+msgstr "Indica si el resultado fue publicado para una determinada inscripción"
 
 #: mapa/mapasculturais/src/modules/OpportunityAccountability/Module.php:862
 msgid "Campos abertos para o proponente preencher após o envio da inscrição"
-msgstr ""
-"Abrir campos para que el proponente los rellene después de enviar la solicitud"
+msgstr "Campos abiertos para que el postulante los complete después de enviar la inscripción"
 
 #: mapa/mapasculturais/src/modules/OpportunityAccountability/Module.php:874
 #: mapa/mapasculturais/src/modules/OpportunityAccountability/Module.php:880
@@ -25560,23 +25501,21 @@ msgstr "Estado de la rendición de cuentas"
 
 #: mapa/mapasculturais/src/modules/OpportunityAccountability/layouts/parts/accountability/apply-results.php:39
 msgid "Aprovada com ressalvas"
-msgstr "Aprobado con reservas"
+msgstr "Aprobada con reservas"
 
 #: mapa/mapasculturais/src/modules/OpportunityAccountability/layouts/parts/accountability/apply-results.php:43
 msgid "Aplicar a todas as prestações de contas enviadas"
-msgstr "Aplicar a todos los envíos de rendición de cuentas enviados"
+msgstr "Aplicar a todas las rendiciones de cuentas enviadas"
 
 #: mapa/mapasculturais/src/modules/OpportunityAccountability/layouts/parts/accountability/apply-results.php:44
 msgid ""
 "Deixando desmarcado, o status será aplicado somente às prestações de contas "
 "com status pendente"
-msgstr ""
-"Si se deja sin marcar, el estado solo se aplicará a la rendición de cuenta "
-"con estado pendiente"
+msgstr "Si se deja sin marcar, el estado solo se aplicará a la rendiciones de cuentas con estado pendiente"
 
 #: mapa/mapasculturais/src/modules/OpportunityAccountability/layouts/parts/accountability/import-last-phase-button.php:4
 msgid "Importar as novas inscrições selecionadas da última fase."
-msgstr "Importe las nuevas suscripciones seleccionadas de la última fase."
+msgstr "Importe las nuevas inscripciones seleccionadas de la última fase."
 
 #: mapa/mapasculturais/src/modules/OpportunityAccountability/layouts/parts/accountability/import-last-phase-button.php:4
 msgid "Importar novas inscrições"
@@ -25662,12 +25601,12 @@ msgstr "Enviar rendición de cuentas"
 #: mapa/mapasculturais/src/modules/OpportunityAccountability/layouts/parts/accountability/send-button.php:15
 #, php-format
 msgid "As prestações de contas encerraram-se em %s."
-msgstr "La rendiciones de cuentas finalizaron el %s."
+msgstr "Las rendiciones de cuentas finalizaron el %s."
 
 #: mapa/mapasculturais/src/modules/OpportunityAccountability/layouts/parts/accountability/send-button.php:18
 #, php-format
 msgid "As prestações de contas terão início em %s."
-msgstr "La rendiciones de cuentas comenzarán el %s."
+msgstr "Las rendiciones de cuentas comenzarán el %s."
 
 #: mapa/mapasculturais/src/modules/OpportunityAccountability/layouts/parts/accountability/send-button.php:26
 #: mapa/mapasculturais/src/themes/BaseV1/layouts/parts/singles/registration-edit--send-button.php:39
@@ -25731,7 +25670,7 @@ msgstr "No hay fase de reclamo para el %s"
 
 #: mapa/mapasculturais/src/modules/OpportunityAppealPhase/Module.php:202
 msgid "Fase de recurso"
-msgstr "Formulario de reclamo"
+msgstr "Fase de reclamo"
 
 #: mapa/mapasculturais/src/modules/OpportunityAppealPhase/Module.php:207
 #: mapa/mapasculturais/src/modules/OpportunityAppealPhase/Module.php:212
@@ -25814,7 +25753,7 @@ msgstr "Agregar reclamo"
 
 #: mapa/mapasculturais/src/modules/OpportunityAppealPhase/components/opportunity-appeal-phase-config/template.php:41
 msgid "Você tem certeza que deseja excluir essa fase de recurso?"
-msgstr "¿Está seguro de que quiere excluir esta fase de reclamo?"
+msgstr "¿Está seguro de que quiere eliminar esta fase de reclamo?"
 
 #: mapa/mapasculturais/src/modules/OpportunityAppealPhase/components/opportunity-appeal-phase-config/template.php:46
 msgid ""
@@ -25852,11 +25791,11 @@ msgstr ""
 
 #: mapa/mapasculturais/src/modules/OpportunityAppealPhase/components/opportunity-appeal-phase-config/texts.php:5
 msgid "Fase de recurso criada com sucesso"
-msgstr "Fase de reclamo creado con éxito"
+msgstr "Fase de reclamo creada con éxito"
 
 #: mapa/mapasculturais/src/modules/OpportunityAppealPhase/components/opportunity-appeal-phase-config/texts.php:6
 msgid "Fase de recurso excluída com sucesso"
-msgstr "Fase de reclamo excluido con éxito"
+msgstr "Fase de reclamo eliminada con éxito"
 
 #: mapa/mapasculturais/src/modules/OpportunityExporter/Module.php:54
 msgid "oportunidade-exportada-{id}.export"
@@ -26073,9 +26012,7 @@ msgstr ""
 
 #: mapa/mapasculturais/src/modules/OpportunityPhases/Module.php:1682
 msgid "Resumo dos status da fase"
-msgstr ""
-"Nombre de la fase de visualización del usuario, considerando la fase de "
-"evaluación conjunta"
+msgstr "Resumen de los estados de la fase"
 
 #: mapa/mapasculturais/src/modules/OpportunityPhases/Module.php:1811
 msgid "Is a opportunity phase?"
@@ -26162,7 +26099,7 @@ msgstr "Finalizada"
 
 #: mapa/mapasculturais/src/modules/OpportunityWorkplan/Module.php:47
 msgid "Plano de metas obrigatório."
-msgstr "Plano de metas obligatorio."
+msgstr "Plan de metas obligatorio."
 
 #: mapa/mapasculturais/src/modules/OpportunityWorkplan/Module.php:51
 msgid "Plano de metas - Duração do projeto (meses) obrigatório."
@@ -26170,7 +26107,7 @@ msgstr "Plan de metas - Duración del proyecto (meses) obligatorio."
 
 #: mapa/mapasculturais/src/modules/OpportunityWorkplan/Module.php:55
 msgid "Plano de metas - Segmento artistico-cultural obrigatório."
-msgstr "Plano de metas - Segmento artístico-cultural obligatorio."
+msgstr "Plan de metas - Segmento artístico-cultural obligatorio."
 
 #: mapa/mapasculturais/src/modules/OpportunityWorkplan/Module.php:59
 msgid "Meta do plano de metas obrigatório."
@@ -26182,11 +26119,11 @@ msgstr "Entrega de la meta del plan de metas obligatorio."
 
 #: mapa/mapasculturais/src/modules/OpportunityWorkplan/Module.php:96
 msgid "Plano de metas label"
-msgstr "Plano de metas etiqueta"
+msgstr "Etiqueta del plan de metas"
 
 #: mapa/mapasculturais/src/modules/OpportunityWorkplan/Module.php:101
 msgid "Meta label"
-msgstr "Meta etiqueta"
+msgstr "Etiqueta de la meta"
 
 #: mapa/mapasculturais/src/modules/OpportunityWorkplan/Module.php:106
 msgid "Entrega label"
@@ -26312,7 +26249,7 @@ msgstr "Intercambios, trueques y cooperación"
 
 #: mapa/mapasculturais/src/modules/OpportunityWorkplan/Module.php:274
 msgid "Análise, crítica, estudo, investigação, pesquisa e reflexão"
-msgstr "Análisis, crítica, estudio, investigación, pesquisa y reflexión"
+msgstr "Análisis, crítica, estudio, investigación, indagación y reflexión"
 
 #: mapa/mapasculturais/src/modules/OpportunityWorkplan/Module.php:275
 msgid "Fruição, consumo e circulação"
@@ -26400,7 +26337,7 @@ msgstr "Assemblage creada"
 
 #: mapa/mapasculturais/src/modules/OpportunityWorkplan/Module.php:312
 msgid "Aula realizada"
-msgstr "Evaluación realizada"
+msgstr "Clase realizada"
 
 #: mapa/mapasculturais/src/modules/OpportunityWorkplan/Module.php:313
 msgid "Áudio gravado"
@@ -26476,7 +26413,7 @@ msgstr "Catálogo distribuido"
 
 #: mapa/mapasculturais/src/modules/OpportunityWorkplan/Module.php:331
 msgid "Cerâmica criada"
-msgstr "Cerámica criada"
+msgstr "Cerámica creada"
 
 #: mapa/mapasculturais/src/modules/OpportunityWorkplan/Module.php:332
 msgid "Circulação realizada"
@@ -26568,11 +26505,11 @@ msgstr "Ensayo abierto realizado"
 
 #: mapa/mapasculturais/src/modules/OpportunityWorkplan/Module.php:354
 msgid "Equipamento cultural construído"
-msgstr "Equipamientos cultural construido"
+msgstr "Equipamiento cultural construido"
 
 #: mapa/mapasculturais/src/modules/OpportunityWorkplan/Module.php:355
 msgid "Equipamento cultural mantido"
-msgstr "Equipamientos cultural mantenido"
+msgstr "Equipamiento cultural mantenido"
 
 #: mapa/mapasculturais/src/modules/OpportunityWorkplan/Module.php:356
 msgid "Equipamento cultural modernizado"
@@ -26792,7 +26729,7 @@ msgstr "Obra y/o contenido cultural reproducido"
 
 #: mapa/mapasculturais/src/modules/OpportunityWorkplan/Module.php:410
 msgid "Obra e/ou produto cultural comercializado"
-msgstr "Obra y/o contenido cultural comercializado"
+msgstr "Obra y/o producto cultural comercializado"
 
 #: mapa/mapasculturais/src/modules/OpportunityWorkplan/Module.php:411
 msgid "Obra literária criada"
@@ -26824,7 +26761,7 @@ msgstr "Otra performance y/o presentación realizada"
 
 #: mapa/mapasculturais/src/modules/OpportunityWorkplan/Module.php:418
 msgid "Outra ação de investigação e/ou pesquisa realizada"
-msgstr "Otra acción de investigación y/o pesquisa realizada"
+msgstr "Otra acción de investigación y/o indagación realizada"
 
 #: mapa/mapasculturais/src/modules/OpportunityWorkplan/Module.php:419
 msgid "Outra ação de salvaguarda do patrimônio cultural realizada"
@@ -26852,7 +26789,7 @@ msgstr "Otro fomento y/o incentivo cultural concedido"
 
 #: mapa/mapasculturais/src/modules/OpportunityWorkplan/Module.php:425
 msgid "Parada realizada"
-msgstr "Evento realizado"
+msgstr "Desfile realizado"
 
 #: mapa/mapasculturais/src/modules/OpportunityWorkplan/Module.php:426
 msgid "Patrimônio cultural conservado"
@@ -26872,7 +26809,7 @@ msgstr "Patrimonio Cultural protegido"
 
 #: mapa/mapasculturais/src/modules/OpportunityWorkplan/Module.php:430
 msgid "Performance realizada"
-msgstr "Performance realizado"
+msgstr "Performance realizada"
 
 #: mapa/mapasculturais/src/modules/OpportunityWorkplan/Module.php:431
 msgid "Periódico criado"
@@ -26916,7 +26853,7 @@ msgstr "Proyecto de salvaguarda del patrimonio cultural creado"
 
 #: mapa/mapasculturais/src/modules/OpportunityWorkplan/Module.php:441
 msgid "Projeto elaborado"
-msgstr "Proyectos elaborado"
+msgstr "Proyecto elaborado"
 
 #: mapa/mapasculturais/src/modules/OpportunityWorkplan/Module.php:442
 msgid "Programa de Rádio criado"
@@ -26952,7 +26889,7 @@ msgstr "Revista creada"
 
 #: mapa/mapasculturais/src/modules/OpportunityWorkplan/Module.php:450
 msgid "Roda de Leitura realizados"
-msgstr "Rueda de Lectura realizados"
+msgstr "Rueda de lectura realizada"
 
 #: mapa/mapasculturais/src/modules/OpportunityWorkplan/Module.php:451
 msgid "Romance criado"
@@ -26964,7 +26901,7 @@ msgstr "Guión creado"
 
 #: mapa/mapasculturais/src/modules/OpportunityWorkplan/Module.php:453
 msgid "Sarau realizado"
-msgstr "Sarau realizado"
+msgstr "Velada cultural realizada"
 
 #: mapa/mapasculturais/src/modules/OpportunityWorkplan/Module.php:454
 msgid "Seminário realizado"
@@ -26976,7 +26913,7 @@ msgstr "Serie creada"
 
 #: mapa/mapasculturais/src/modules/OpportunityWorkplan/Module.php:456
 msgid "Show realizado"
-msgstr "Show localizado"
+msgstr "Show realizado"
 
 #: mapa/mapasculturais/src/modules/OpportunityWorkplan/Module.php:457
 msgid "Simpósio realizado"
@@ -26992,7 +26929,7 @@ msgstr "Lugar Histórico preservado"
 
 #: mapa/mapasculturais/src/modules/OpportunityWorkplan/Module.php:460
 msgid "Site criado"
-msgstr "Sitio Creado"
+msgstr "Sitio web creado"
 
 #: mapa/mapasculturais/src/modules/OpportunityWorkplan/Module.php:461
 msgid "Slam realizado"
@@ -27020,7 +26957,7 @@ msgstr "Banda sonora creada"
 
 #: mapa/mapasculturais/src/modules/OpportunityWorkplan/Module.php:467
 msgid "Vestuário criado"
-msgstr "Vestuario criado"
+msgstr "Vestuario creado"
 
 #: mapa/mapasculturais/src/modules/OpportunityWorkplan/Module.php:468
 msgid "Vídeo criado"
@@ -27028,7 +26965,7 @@ msgstr "Video creado"
 
 #: mapa/mapasculturais/src/modules/OpportunityWorkplan/Module.php:469
 msgid "Videoarte criada"
-msgstr "Videoarte generada"
+msgstr "Videoarte creada"
 
 #: mapa/mapasculturais/src/modules/OpportunityWorkplan/Module.php:470
 msgid "Visita Guiada realizada"
@@ -27265,7 +27202,7 @@ msgstr "Tiempo estimado: "
 
 #: mapa/mapasculturais/src/modules/Panel/components/panel--entity-models-card/template.php:70
 msgid "Tipo de agente: "
-msgstr "Tipos de agente: "
+msgstr "Tipo de agente: "
 
 #: mapa/mapasculturais/src/modules/Panel/components/panel--entity-models-card/template.php:78
 msgid "Modelo público"
@@ -27307,13 +27244,13 @@ msgstr "Orden alfabético"
 #: mapa/mapasculturais/src/modules/Search/components/search-list/template.php:38
 #: mapa/mapasculturais/src/modules/Search/components/search-list/template.php:62
 msgid "Mais recentes primeiro"
-msgstr "Lo más nuevo primero"
+msgstr "Más recientes primero"
 
 #: mapa/mapasculturais/src/modules/Panel/components/panel--entity-tabs/template.php:32
 #: mapa/mapasculturais/src/modules/Search/components/search-list/template.php:37
 #: mapa/mapasculturais/src/modules/Search/components/search-list/template.php:61
 msgid "Mais antigas primeiro"
-msgstr "El más antiguo primero"
+msgstr "Más antiguas primero"
 
 #: mapa/mapasculturais/src/modules/Panel/components/panel--entity-tabs/template.php:33
 #: mapa/mapasculturais/src/modules/Search/components/search-list/template.php:39
@@ -27325,7 +27262,7 @@ msgstr "Modificadas recientemente"
 #: mapa/mapasculturais/src/modules/Search/components/search-list/template.php:40
 #: mapa/mapasculturais/src/modules/Search/components/search-list/template.php:64
 msgid "Modificadas há mais tempo"
-msgstr "Modificado hace mucho tiempo"
+msgstr "Modificadas hace más tiempo"
 
 #: mapa/mapasculturais/src/modules/Panel/components/panel--entity-tabs/template.php:64
 msgid "Buscar por palavras-chave"
@@ -27511,7 +27448,7 @@ msgstr "Rutas accesibles, con espacio de maniobra para silla de ruedas"
 
 #: mapa/mapasculturais/src/modules/ProjectMonitoring/Module.php:249
 msgid "Palco acessível"
-msgstr "Palco accesible"
+msgstr "Escenario accesible"
 
 #: mapa/mapasculturais/src/modules/ProjectMonitoring/Module.php:250
 msgid "Camarim acessível"
@@ -27795,7 +27732,7 @@ msgstr "Gráfico de columnas"
 
 #: mapa/mapasculturais/src/modules/Reports/layouts/parts/create-reports-modal.php:31
 msgid "Gráfico de barra"
-msgstr "Gráfico de barraS"
+msgstr "Gráfico de barras"
 
 #: mapa/mapasculturais/src/modules/Reports/layouts/parts/create-reports-modal.php:35
 msgid "Gráfico de tabela"
@@ -27961,7 +27898,7 @@ msgstr "Ver Sello"
 
 #: mapa/mapasculturais/src/modules/Seals/components/create-seal/texts.php:5
 msgid "Selo Criado!"
-msgstr "Sello Creado!"
+msgstr "¡Sello creado!"
 
 #: mapa/mapasculturais/src/modules/Seals/components/create-seal/texts.php:7
 msgid "Selo criado em rascunho!"
@@ -27989,7 +27926,7 @@ msgstr "Información de sellos"
 
 #: mapa/mapasculturais/src/modules/Seals/components/seal-form-information-seal/template.php:23
 msgid "Os dados inseridos abaixo serão exibidos na página do selo"
-msgstr "Los datos ingresados ​​a continuación se mostrarán en la página del sello"
+msgstr "Los datos ingresados a continuación se mostrarán en la página del sello"
 
 #: mapa/mapasculturais/src/modules/Seals/components/seal-form-information-seal/template.php:56
 msgid "Palavras-chaves disponíveis:"
@@ -28085,7 +28022,7 @@ msgstr "Taxonomías de los agentes"
 
 #: mapa/mapasculturais/src/modules/Seals/components/seal-locked-field/template.php:60
 msgid "Campos dos espaços"
-msgstr "Campo de los espacios"
+msgstr "Campos de los espacios"
 
 #: mapa/mapasculturais/src/modules/Seals/components/seal-locked-field/template.php:71
 msgid "Taxonomia dos espaços"
@@ -28244,7 +28181,7 @@ msgstr "últimos 30 días"
 
 #: mapa/mapasculturais/src/modules/Search/components/search-filter-event/script.js:83
 msgid "próximos 30 dias"
-msgstr "próximos 7 días"
+msgstr "próximos 30 días"
 
 #: mapa/mapasculturais/src/modules/Search/components/search-filter-event/script.js:87
 msgid "este mês"
@@ -28256,11 +28193,11 @@ msgstr "Filtros de eventos"
 
 #: mapa/mapasculturais/src/modules/Search/components/search-filter-event/template.php:23
 msgid "Eventos acontecendo"
-msgstr "Eventos sucediendo"
+msgstr "Eventos en curso"
 
 #: mapa/mapasculturais/src/modules/Search/components/search-filter-event/template.php:42
 msgid "Status do evento"
-msgstr "Estatus del evento"
+msgstr "Estado del evento"
 
 #: mapa/mapasculturais/src/modules/Search/components/search-filter-event/template.php:43
 msgid "Eventos oficiais"
@@ -28271,7 +28208,7 @@ msgstr "Eventos oficiales"
 #: mapa/mapasculturais/src/themes/BaseV1/Theme.php:734
 #: mapa/mapasculturais/src/themes/BaseV1/Theme.php:2437
 msgid "Selecione as linguagens"
-msgstr "Selecciones los tipos de eventos"
+msgstr "Seleccione los tipos de evento"
 
 #: mapa/mapasculturais/src/modules/Search/components/search-filter-event/texts.php:5
 #: mapa/mapasculturais/src/modules/Search/components/search-list-event/template.php:28
@@ -28357,7 +28294,7 @@ msgstr "Filtros de proyecto"
 
 #: mapa/mapasculturais/src/modules/Search/components/search-filter-project/template.php:20
 msgid "Status do projeto"
-msgstr "Estatus del proyecto"
+msgstr "Estado del proyecto"
 
 #: mapa/mapasculturais/src/modules/Search/components/search-filter-project/template.php:24
 msgid "Tipos de projetos"
@@ -28390,17 +28327,17 @@ msgstr "Orden alfabético (A - Z)"
 #: mapa/mapasculturais/src/modules/Search/components/search-list/template.php:36
 #: mapa/mapasculturais/src/modules/Search/components/search-list/template.php:60
 msgid "Ordem alfabética (Z - A)"
-msgstr "Ordem alfabética (Z - A)"
+msgstr "Orden alfabético (Z - A)"
 
 #: mapa/mapasculturais/src/modules/Search/components/search-list/template.php:41
 #: mapa/mapasculturais/src/modules/Search/components/search-list/template.php:65
 msgid "Início das inscrições (recentes-antigas)"
-msgstr "Inicio de las inscripciones  (recientes-antiguas)"
+msgstr "Inicio de las inscripciones (recientes-antiguas)"
 
 #: mapa/mapasculturais/src/modules/Search/components/search-list/template.php:42
 #: mapa/mapasculturais/src/modules/Search/components/search-list/template.php:66
 msgid "Início das inscrições (antigas-recentes)"
-msgstr "Inicio de las inscripciones (recientes-antiguas)"
+msgstr "Inicio de las inscripciones (antiguas-recientes)"
 
 #: mapa/mapasculturais/src/modules/Search/components/search-list/template.php:46
 #: mapa/mapasculturais/src/modules/Search/components/search-list/template.php:73
@@ -28929,7 +28866,7 @@ msgstr "Personalización del logo"
 
 #: mapa/mapasculturais/src/modules/ThemeCustomizer/components/subsite-config-map/template.php:18
 msgid "Configurações do mapa"
-msgstr "Configuraciones"
+msgstr "Configuración del mapa"
 
 #: mapa/mapasculturais/src/modules/ThemeCustomizer/components/subsite-config-map/template.php:22
 msgid ""
@@ -28995,7 +28932,7 @@ msgstr "Colores y estilos"
 
 #: mapa/mapasculturais/src/modules/ThemeCustomizer/layouts/parts/style.php:19
 msgid "Atenção!"
-msgstr "Atención!"
+msgstr "¡Atención!"
 
 #: mapa/mapasculturais/src/modules/ThemeCustomizer/layouts/parts/style.php:19
 msgid "As modificações só serão aplicadas no sistema após atualizar a página."
@@ -29398,7 +29335,7 @@ msgstr "Textos utilizados exclusivamente en la página de búsqueda del sitio"
 
 #: mapa/mapasculturais/src/themes/BaseV1/Theme.php:83
 msgid "Nomes das entidades"
-msgstr "Nombres de las actividades"
+msgstr "Nombres de las entidades"
 
 #: mapa/mapasculturais/src/themes/BaseV1/Theme.php:84
 msgid ""
@@ -29769,7 +29706,7 @@ msgstr ""
 
 #: mapa/mapasculturais/src/themes/BaseV1/Theme.php:226
 msgid "resultados verifiados"
-msgstr "rResultados verificados"
+msgstr "Resultados verificados"
 
 #: mapa/mapasculturais/src/themes/BaseV1/Theme.php:227
 msgid "texto do botão que aplica/remove o filtro por resultados verificados"
@@ -29782,11 +29719,11 @@ msgstr "resultados verificados"
 
 #: mapa/mapasculturais/src/themes/BaseV1/Theme.php:228
 msgid "resultados certificados"
-msgstr "resultados cerificados"
+msgstr "resultados certificados"
 
 #: mapa/mapasculturais/src/themes/BaseV1/Theme.php:228
 msgid "entidades certificadas"
-msgstr "entidades cerificadas"
+msgstr "entidades certificadas"
 
 #: mapa/mapasculturais/src/themes/BaseV1/Theme.php:228
 msgid "entidades validadas"
@@ -30051,12 +29988,12 @@ msgstr "En esta biblioteca"
 
 #: mapa/mapasculturais/src/themes/BaseV1/Theme.php:333
 msgid "texto \"neste espaço\""
-msgstr "texto \"en este espaio\""
+msgstr "texto \"en este espacio\""
 
 #: mapa/mapasculturais/src/themes/BaseV1/Theme.php:335
 #: mapa/mapasculturais/src/themes/BaseV1/Theme.php:336
 msgid "neste espaço"
-msgstr "en este espaio"
+msgstr "en este espacio"
 
 #: mapa/mapasculturais/src/themes/BaseV1/Theme.php:335
 msgid "neste museu"
@@ -30354,7 +30291,7 @@ msgstr "Proyectos del agente"
 #: mapa/mapasculturais/src/themes/BaseV1/Theme.php:483
 #: mapa/mapasculturais/src/themes/BaseV1/Theme.php:533
 msgid "Editais do agente"
-msgstr "Ediciones del agente"
+msgstr "Llamados del agente"
 
 #: mapa/mapasculturais/src/themes/BaseV1/Theme.php:483
 #: mapa/mapasculturais/src/themes/BaseV1/Theme.php:533
@@ -30537,7 +30474,7 @@ msgstr "texto \"eventos encontrados\""
 #: mapa/mapasculturais/src/themes/BaseV1/Theme.php:589
 #: mapa/mapasculturais/src/themes/BaseV1/Theme.php:590
 msgid "eventos encontrados"
-msgstr "evento encontrados"
+msgstr "eventos encontrados"
 
 #: mapa/mapasculturais/src/themes/BaseV1/Theme.php:589
 msgid "ações encontradas"
@@ -30656,7 +30593,7 @@ msgstr "agregar nuevo subsitio"
 
 #: mapa/mapasculturais/src/themes/BaseV1/Theme.php:658
 msgid "adcionar nova instalação"
-msgstr "agregar nuevao instalación"
+msgstr "agregar nueva instalación"
 
 #: mapa/mapasculturais/src/themes/BaseV1/Theme.php:665
 msgid "texto \"Selos\""
@@ -30952,7 +30889,7 @@ msgstr "este espacio"
 
 #: mapa/mapasculturais/src/themes/BaseV1/Theme.php:1882
 msgid "este evento"
-msgstr "este eventos"
+msgstr "este evento"
 
 #: mapa/mapasculturais/src/themes/BaseV1/Theme.php:1883
 msgid "este projeto"
@@ -31170,9 +31107,7 @@ msgstr "Eventos transformados en borradores."
 msgid ""
 "Você tem certeza que deseja reabrir este formulário para edição? Ao fazer "
 "isso, ele sairá dessa lista."
-msgstr ""
-"Usted está seguro que desea reabrir este formulario para edición? Al hacer "
-"esto, él saldrá de esta lista."
+msgstr "¿Está seguro que desea reabrir este formulario para edición? Al hacerlo, saldrá de esta lista."
 
 #: mapa/mapasculturais/src/themes/BaseV1/Theme.php:2079
 #: mapa/mapasculturais/src/themes/BaseV1/Theme.php:2124
@@ -31300,9 +31235,7 @@ msgstr ""
 msgid ""
 "Ao enviar a prestação de contas, não será mais permitido editar os campos. "
 "tem certeza que deseja continuar?"
-msgstr ""
-"Al enviar el estado financiero ya no será posible editar los campos. ¿Estás "
-"seguro de que quieres continuar?"
+msgstr "Al enviar la rendición de cuentas ya no será posible editar los campos. ¿Está seguro de que desea continuar?"
 
 #: mapa/mapasculturais/src/themes/BaseV1/Theme.php:2162
 msgid "Não é permitido desabilitar todas as colunas da tabela"
@@ -31356,7 +31289,7 @@ msgstr "Introduzca el %s de su nuevo %s"
 
 #: mapa/mapasculturais/src/themes/BaseV1/layouts/parts/ajax-uploader.php:2
 msgid "Para subir arquivos você primeiro deve salvar."
-msgstr "Para subir archivos, primero debe salvar."
+msgstr "Para subir archivos, primero debe guardar."
 
 #: mapa/mapasculturais/src/themes/BaseV1/layouts/parts/ajax-uploader.php:21
 msgid "Tipos de arquivos suportados: "
@@ -31417,7 +31350,7 @@ msgstr "Área Delimitada"
 
 #: mapa/mapasculturais/src/themes/BaseV1/layouts/parts/busca-avancada.php:146
 msgid "Próximo a mim"
-msgstr "Próximo a mi"
+msgstr "Próximo a mí"
 
 #: mapa/mapasculturais/src/themes/BaseV1/layouts/parts/busca-avancada.php:149
 msgid "Remover todos filtros"
@@ -31572,7 +31505,7 @@ msgstr "Ver todo"
 
 #: mapa/mapasculturais/src/themes/BaseV1/layouts/parts/home-events.php:31
 msgid "eventos agendados"
-msgstr "evento agendados"
+msgstr "eventos agendados"
 
 #: mapa/mapasculturais/src/themes/BaseV1/layouts/parts/home-events.php:35
 msgid "eventos da "
@@ -31690,11 +31623,11 @@ msgstr "borrar"
 
 #: mapa/mapasculturais/src/themes/BaseV1/layouts/parts/link-list.php:24
 msgid "Nenhum link disponível"
-msgstr "Nigún link desponible"
+msgstr "Ningún enlace disponible"
 
 #: mapa/mapasculturais/src/themes/BaseV1/layouts/parts/link-list.php:37
 msgid "Clique para adicionar links"
-msgstr "Haga clic para agregar archivo enlaces"
+msgstr "Haga clic para agregar enlaces"
 
 #: mapa/mapasculturais/src/themes/BaseV1/layouts/parts/link-list.php:52
 #: mapa/mapasculturais/src/themes/BaseV1/layouts/parts/panel-agent.php:40
@@ -31927,9 +31860,7 @@ msgstr "como borrador"
 msgid ""
 "importar como enviada: Utilize esta opção se NÃO for necessária interação com "
 "os agentes inscritos."
-msgstr ""
-"importar como enviada: Utilice esta opción si NO fuera necesaria interección "
-"con los agentes inscriptos."
+msgstr "importar como enviada: Utilice esta opción si NO fuera necesaria interacción con los agentes inscriptos."
 
 #: mapa/mapasculturais/src/themes/BaseV1/layouts/parts/opportunity-phases/import-last-phase-button.php:5
 msgid "importar inscrições"
@@ -32095,7 +32026,7 @@ msgstr "de la Reunión"
 
 #: mapa/mapasculturais/src/themes/BaseV1/layouts/parts/opportunity-phases/widget-opportunity-phases.php:37
 msgid "do Sarau"
-msgstr "del salón"
+msgstr "de la velada cultural"
 
 #: mapa/mapasculturais/src/themes/BaseV1/layouts/parts/opportunity-phases/widget-opportunity-phases.php:38
 msgid "do Seminário"
@@ -32115,7 +32046,7 @@ msgstr "Crear nueva fase"
 
 #: mapa/mapasculturais/src/themes/BaseV1/layouts/parts/opportunity-phases/widget-opportunity-phases.php:53
 msgid "Avançar"
-msgstr "Avance"
+msgstr "Avanzar"
 
 #: mapa/mapasculturais/src/themes/BaseV1/layouts/parts/opportunity-phases/widget-opportunity-phases.php:60
 msgid "Fase de coleta de dados"
@@ -32303,7 +32234,7 @@ msgstr "Fecha más reciente"
 
 #: mapa/mapasculturais/src/themes/BaseV1/layouts/parts/panel-search.php:17
 msgid "Data mais antiga"
-msgstr "Fecha más antígua"
+msgstr "Fecha más antigua"
 
 #: mapa/mapasculturais/src/themes/BaseV1/layouts/parts/panel-space.php:22
 msgid "Acessibilidade:"
@@ -32375,7 +32306,7 @@ msgstr "Nombre del grupo de agentes"
 
 #: mapa/mapasculturais/src/themes/BaseV1/layouts/parts/related-agents.php:12
 msgid "Renomear grupo de agentes"
-msgstr "Renombrar gurpo de agentes"
+msgstr "Renombrar grupo de agentes"
 
 #: mapa/mapasculturais/src/themes/BaseV1/layouts/parts/related-agents.php:12
 msgid "Renomear"
@@ -32475,7 +32406,7 @@ msgstr "Agregar evento"
 
 #: mapa/mapasculturais/src/themes/BaseV1/layouts/parts/search/list-project-item.php:15
 msgid "Período de execução"
-msgstr "Plazo de Validez"
+msgstr "Período de ejecución"
 
 #: mapa/mapasculturais/src/themes/BaseV1/layouts/parts/search/list-project.php:4
 msgid "Adicionar projeto"
@@ -32487,7 +32418,7 @@ msgstr "Agregar espacio"
 
 #: mapa/mapasculturais/src/themes/BaseV1/layouts/parts/singles/agent-form-1.php:68
 msgid "Informe seu nome social"
-msgstr "Introduzca su razón social"
+msgstr "Introduzca su nombre social"
 
 #: mapa/mapasculturais/src/themes/BaseV1/layouts/parts/singles/agent-form-1.php:76
 msgid "Preencha o nome de registro"
@@ -32512,7 +32443,7 @@ msgstr "Si eres Micro Emprendedor Individual, informa a tu RUT"
 #: mapa/mapasculturais/src/themes/BaseV1/layouts/parts/singles/history_space.php:140
 #: mapa/mapasculturais/src/themes/BaseV1/layouts/parts/singles/space-servico.php:33
 msgid "Insira um email que não será exibido publicamente"
-msgstr "Ingrese un e-mail no que será exhibido públicamente"
+msgstr "Ingrese un e-mail que no será exhibido públicamente"
 
 #: mapa/mapasculturais/src/themes/BaseV1/layouts/parts/singles/agent-form-1.php:108
 #: mapa/mapasculturais/src/themes/BaseV1/layouts/parts/singles/agent-form-2.php:89
@@ -32786,7 +32717,7 @@ msgstr "Excluir portada"
 #: mapa/mapasculturais/src/themes/BaseV1/layouts/parts/singles/history_space.php:38
 #, php-format
 msgid "As informações deste registro é histórico gerado em %s."
-msgstr "La información de este registro y el histórico generado en %s."
+msgstr "La información de este registro es un histórico generado el %s."
 
 #: mapa/mapasculturais/src/themes/BaseV1/layouts/parts/singles/history_agent.php:41
 #: mapa/mapasculturais/src/themes/BaseV1/layouts/parts/singles/history_event.php:37
@@ -33031,7 +32962,7 @@ msgstr "Horario"
 #: mapa/mapasculturais/src/themes/BaseV1/layouts/parts/singles/opportunity-evaluations--committee--table.php:9
 #: mapa/mapasculturais/src/themes/BaseV1/layouts/parts/singles/opportunity-evaluations--config.php:17
 msgid "Avaliações abertas de"
-msgstr "Inscripciones abiertas desde el"
+msgstr "Evaluaciones abiertas desde el"
 
 #: mapa/mapasculturais/src/themes/BaseV1/layouts/parts/singles/opportunity-evaluations--committee--buttons.php:7
 msgid ""
@@ -33056,9 +32987,7 @@ msgstr "Enviar evaluaciones"
 msgid ""
 "Após avaliar todas as inscrições clique no botão <strong>Enviar Avaliações</"
 "strong>:"
-msgstr ""
-"Después de evaluar todas las inscripciones haga clic en el botón <strong> "
-"Enviar Evaluaciones </strong>:"
+msgstr "Después de evaluar todas las inscripciones haga clic en el botón <strong>Enviar Evaluaciones</strong>:"
 
 #: mapa/mapasculturais/src/themes/BaseV1/layouts/parts/singles/opportunity-evaluations--committee.php:54
 msgid ""
@@ -33066,29 +32995,21 @@ msgid ""
 "você pode utilizar os <strong>campos de distribuição</strong> para cada "
 "avaliador. Você pode dividir as inscrições pelo final dos números das "
 "inscrições e/ou pela categoria definida nas inscrições."
-msgstr ""
-"Si desea <strong>dividir las inscripciones</strong> entre los evaluadores, "
-"puede utilizar los <strong> campos de distribución </ strong> para cada "
-"evaluador. Usted puede dividir las inscripciones por el final de los números "
-"de las inscripciones y / o por la categoría definida en las inscripciones."
+msgstr "Si desea <strong>dividir las inscripciones</strong> entre los evaluadores, puede utilizar los <strong>campos de distribución</strong> para cada evaluador. Usted puede dividir las inscripciones por el final de los números de las inscripciones y / o por la categoría definida en las inscripciones."
 
 #: mapa/mapasculturais/src/themes/BaseV1/layouts/parts/singles/opportunity-evaluations--committee.php:57
 msgid ""
 "No <strong>primeiro</strong> campo da distribuição informe o <strong>final do "
 "número de inscrição</strong>, de acordo com os exemplos abaixo."
-msgstr ""
-"En el <strong> primer </ strong> campo de la distribución informe el <strong> "
-"final del número de inscripción </ strong>, de acuerdo con los ejemplos abajo."
+msgstr "En el <strong>primer</strong> campo de la distribución informe el <strong>final del número de inscripción</strong>, de acuerdo con los ejemplos abajo."
 
 #: mapa/mapasculturais/src/themes/BaseV1/layouts/parts/singles/opportunity-evaluations--committee.php:59
 msgid "<strong>00-09</strong> - para as inscrições com final entre 0 e 9</li>"
-msgstr ""
-"<strong>00-09</ strong> - para las inscripciones con final entre 0 y 9 </ li>"
+msgstr "<strong>00-09</strong> - para las inscripciones con final entre 0 y 9</li>"
 
 #: mapa/mapasculturais/src/themes/BaseV1/layouts/parts/singles/opportunity-evaluations--committee.php:60
 msgid "<strong>10-60</strong> - para as inscrições com final entre 10 e 60</li>"
-msgstr ""
-"<strong> 10-60 </strong> - para las inscripciones con final entre 10 y 60</li>"
+msgstr "<strong>10-60</strong> - para las inscripciones con final entre 10 y 60</li>"
 
 #: mapa/mapasculturais/src/themes/BaseV1/layouts/parts/singles/opportunity-evaluations--committee.php:61
 msgid "<strong>61-99</strong> - para as inscrições com final entre 61 e 99</li>"
@@ -33099,9 +33020,7 @@ msgstr ""
 msgid ""
 "No <strong>segundo</strong> campo da distribuição informe a(s) "
 "<strong>categoria(s) de inscrição</strong>."
-msgstr ""
-"En el <strong> segundo </strong> campo de la distribución informe la (s) "
-"<strong> categoría (s) de inscripción </strong>."
+msgstr "En el <strong>segundo</strong> campo de la distribución informe la (s) <strong>categoría (s) de inscripción</strong>."
 
 #: mapa/mapasculturais/src/themes/BaseV1/layouts/parts/singles/opportunity-evaluations--committee.php:70
 msgid "Aguardando confirmação do avaliador"
@@ -33247,7 +33166,7 @@ msgstr "Ingrese una descripción para el campo de opciones"
 
 #: mapa/mapasculturais/src/themes/BaseV1/layouts/parts/singles/opportunity-registrations--categories.php:27
 msgid "Selecione uma categoria"
-msgstr "Seleccione un categoría"
+msgstr "Seleccione una categoría"
 
 #: mapa/mapasculturais/src/themes/BaseV1/layouts/parts/singles/opportunity-registrations--categories.php:32
 msgid "Opções de inscrição (coloque uma opção por linha)"
@@ -33412,7 +33331,7 @@ msgstr "Etapa"
 
 #: mapa/mapasculturais/src/themes/BaseV1/layouts/parts/singles/opportunity-registrations--fields.php:162
 msgid "Selecione em quais faixas/linhas este campo é utilizado"
-msgstr "Seleccione en cuáles franjas/líneas de este campo son utilizados"
+msgstr "Seleccione en cuáles franjas/líneas se utiliza este campo"
 
 #: mapa/mapasculturais/src/themes/BaseV1/layouts/parts/singles/opportunity-registrations--fields.php:172
 msgid "Selecione em quais tipos de proponente este campo é utilizado"
@@ -33566,7 +33485,7 @@ msgstr "Descargar las bases"
 
 #: mapa/mapasculturais/src/themes/BaseV1/layouts/parts/singles/opportunity-registrations--rules.php:6
 msgid "Antes de subir o regulamento é preciso salvar o projeto."
-msgstr "Antes de cargar las bases es preciso salvar el proyecto."
+msgstr "Antes de cargar las bases es preciso guardar el proyecto."
 
 #: mapa/mapasculturais/src/themes/BaseV1/layouts/parts/singles/opportunity-registrations--rules.php:9
 msgid "Envie um arquivo com o regulamento. Formatos aceitos .doc, .odt e .pdf."
@@ -33642,7 +33561,7 @@ msgstr "No válida - no cumple con las bases (ejem. documentación incorrecta)."
 
 #: mapa/mapasculturais/src/themes/BaseV1/layouts/parts/singles/opportunity-registrations--tables--manager.php:19
 msgid "Pendente - ainda não avaliada."
-msgstr "Pendiente - aún no validada."
+msgstr "Pendiente - aún no evaluada."
 
 #: mapa/mapasculturais/src/themes/BaseV1/layouts/parts/singles/opportunity-registrations--tables--manager.php:20
 msgid "Não selecionada - avaliada, mas não selecionada."
@@ -33650,7 +33569,7 @@ msgstr "No seleccionada - evaluada, pero no seleccionada."
 
 #: mapa/mapasculturais/src/themes/BaseV1/layouts/parts/singles/opportunity-registrations--tables--manager.php:21
 msgid "Suplente - avaliada, mas aguardando vaga."
-msgstr "Suplente - evaluada, pero aguardando vacante."
+msgstr "Suplente - evaluada, pero a la espera de vacante."
 
 #: mapa/mapasculturais/src/themes/BaseV1/layouts/parts/singles/opportunity-registrations--tables--manager.php:22
 msgid "Selecionada - avaliada e selecionada."
@@ -33795,7 +33714,7 @@ msgstr "Agentes (postulantes)"
 
 #: mapa/mapasculturais/src/themes/BaseV1/layouts/parts/singles/registration-edit--agents.php:4
 msgid "Relacione os agentes responsáveis pela inscrição."
-msgstr "Relaciones los agentes responsables por la inscripción."
+msgstr "Relacione los agentes responsables por la inscripción."
 
 #: mapa/mapasculturais/src/themes/BaseV1/layouts/parts/singles/registration-edit--agents.php:25
 msgid "Trocar agente"
@@ -33817,7 +33736,7 @@ msgstr "Campos adicionales"
 
 #: mapa/mapasculturais/src/themes/BaseV1/layouts/parts/singles/registration-edit--fields.php:4
 msgid "Para efetuar sua inscrição, informe os campos abaixo."
-msgstr "Para afectuar su inscripción, complete los campos abajo."
+msgstr "Para efectuar su inscripción, complete los campos abajo."
 
 #: mapa/mapasculturais/src/themes/BaseV1/layouts/parts/singles/registration-edit--header.php:20
 msgid "Informe o nome do projeto"
@@ -33853,7 +33772,7 @@ msgstr "Sellos atribuidos a agentes colectivos"
 
 #: mapa/mapasculturais/src/themes/BaseV1/layouts/parts/singles/registration-edit--send-button.php:8
 msgid "O cadastro não foi enviado!"
-msgstr "La inscripción no fue enviada!"
+msgstr "¡La inscripción no fue enviada!"
 
 #: mapa/mapasculturais/src/themes/BaseV1/layouts/parts/singles/registration-edit--send-button.php:9
 msgid ""
@@ -33877,7 +33796,7 @@ msgstr "Enviar inscripción"
 
 #: mapa/mapasculturais/src/themes/BaseV1/layouts/parts/singles/registration-edit--send-button.php:32
 msgid "As inscrições encerraram-se em"
-msgstr "Las inscripciones se cerrarán en"
+msgstr "Las inscripciones se cerraron el"
 
 #: mapa/mapasculturais/src/themes/BaseV1/layouts/parts/singles/registration-edit--send-button.php:41
 msgid ""
@@ -33954,7 +33873,7 @@ msgstr "Gracias por usar %s. Su información fue enviada con éxito el día"
 
 #: mapa/mapasculturais/src/themes/BaseV1/layouts/parts/singles/registration-single--header.php:12
 msgid "d/m/Y à\\s H:i:s"
-msgstr "d/m/Y a H:i:s"
+msgstr "d/m/Y \\a \\l\\a\\s H:i:s"
 
 #: mapa/mapasculturais/src/themes/BaseV1/layouts/parts/singles/seal-locked-fields.php:28
 #: mapa/mapasculturais/src/themes/BaseV1/layouts/parts/singles/seal-locked-fields.php:48
@@ -33971,7 +33890,7 @@ msgstr "Publicación libre - cualquier persona puede crear eventos"
 
 #: mapa/mapasculturais/src/themes/BaseV1/layouts/parts/singles/space-servico.php:5
 msgid "Virtual ou Físico? (se for virtual a localização não é obrigatória)"
-msgstr "Virtual o Físico? (si fuera virtual la localización no es obligatoria)"
+msgstr "¿Virtual o físico? (si fuera virtual la localización no es obligatoria)"
 
 #: mapa/mapasculturais/src/themes/BaseV1/layouts/parts/singles/space-servico.php:15
 msgid "Acessibilidade física:"
@@ -34362,7 +34281,7 @@ msgstr "id autenticación"
 
 #: mapa/mapasculturais/src/themes/BaseV1/layouts/parts/user-management/info-user.php:42
 msgid "status:"
-msgstr "estatus:"
+msgstr "estado:"
 
 #: mapa/mapasculturais/src/themes/BaseV1/layouts/parts/user-management/info-user.php:52
 msgid "último login"
@@ -34467,7 +34386,7 @@ msgstr "obteniendo eventos..."
 
 #: mapa/mapasculturais/src/themes/BaseV1/layouts/parts/user-management/search-list/list-opportunity.php:9
 msgid "obtendo oportunidades..."
-msgstr "obteniedo oportunidades..."
+msgstr "obteniendo oportunidades..."
 
 #: mapa/mapasculturais/src/themes/BaseV1/layouts/parts/user-management/search-list/list-project.php:9
 msgid "obtendo projetos..."
@@ -34521,7 +34440,7 @@ msgstr "Dirección del video (Youtube o Vimeo)"
 
 #: mapa/mapasculturais/src/themes/BaseV1/layouts/parts/video-gallery.php:71
 msgid "Para adicionar vídeos você primeiro deve salvar."
-msgstr "Para agregar videos, primero debe salvar."
+msgstr "Para agregar videos, primero debe guardar."
 
 #: mapa/mapasculturais/src/themes/BaseV1/layouts/parts/widget-functions.php:21
 msgid "Selecione suas funções"
@@ -34703,9 +34622,7 @@ msgstr "Seleccione un proyecto"
 msgid ""
 "Para adicionar arquivos para download ou links, primeiro é preciso salvar o "
 "evento"
-msgstr ""
-"Para agregar archivos para descarga o enlaces, primero es precioso guardar el "
-"evento"
+msgstr "Para agregar archivos para descarga o enlaces, primero es preciso guardar el evento"
 
 #: mapa/mapasculturais/src/themes/BaseV1/views/generic/edit.php:1
 msgid "list"
@@ -34717,7 +34634,7 @@ msgstr "editar"
 
 #: mapa/mapasculturais/src/themes/BaseV1/views/generic/list.php:39
 msgid "Your comments here..."
-msgstr "Sus comentario aquí..."
+msgstr "Sus comentarios aquí..."
 
 #: mapa/mapasculturais/src/themes/BaseV1/views/generic/list.php:40
 msgid "Enter comments"
@@ -34744,7 +34661,7 @@ msgstr "Usted no posee ningún agente registrado."
 
 #: mapa/mapasculturais/src/themes/BaseV1/views/panel/agents.php:47
 msgid "Você não possui nenhum rascunho agente."
-msgstr "Usted no posee ningún borrador agente."
+msgstr "Usted no posee ningún borrador de agente."
 
 #: mapa/mapasculturais/src/themes/BaseV1/views/panel/agents.php:56
 msgid "Você não possui nenhum agente na lixeira."
@@ -34866,7 +34783,7 @@ msgstr "Agregar sellos"
 
 #: mapa/mapasculturais/src/themes/BaseV1/views/panel/index.php:171
 msgid "Inscrições ainda não enviadas"
-msgstr "Inscripciones aún no enviados"
+msgstr "Inscripciones aún no enviadas"
 
 #: mapa/mapasculturais/src/themes/BaseV1/views/panel/index.php:189
 msgid "Inscrições enviadas"
@@ -34939,7 +34856,7 @@ msgstr "Mis"
 
 #: mapa/mapasculturais/src/themes/BaseV1/views/panel/seals.php:54
 msgid "Você não possui nenhum rascunho selo."
-msgstr "Usted no posee ningún borrador sello."
+msgstr "Usted no posee ningún borrador de sello."
 
 #: mapa/mapasculturais/src/themes/BaseV1/views/panel/seals.php:63
 msgid "Você não possui nenhum selo na lixeira."
@@ -35151,11 +35068,11 @@ msgstr "Local"
 
 #: mapa/mapasculturais/src/themes/BaseV1/views/site/search.php:28
 msgid "Digite um endereço"
-msgstr "Digite una dirección"
+msgstr "Escriba una dirección"
 
 #: mapa/mapasculturais/src/themes/BaseV1/views/site/search.php:32
 msgid "Buscar somente resultados próximos a mim."
-msgstr "Buscar solamente resultados próximos a mi."
+msgstr "Buscar solamente resultados próximos a mí."
 
 #: mapa/mapasculturais/src/themes/BaseV1/views/site/search.php:37
 msgid "Mostrar"
@@ -35202,7 +35119,7 @@ msgstr "Panel de Control"
 
 #: mapa/mapasculturais/src/themes/BaseV2/views/site/error-403.php:15
 msgid "Acesso Privado"
-msgstr "Acesso Privado"
+msgstr "Acceso privado"
 
 #: mapa/mapasculturais/src/themes/BaseV2/views/site/error-403.php:17
 msgid " A página que você está tentando acessar é particular."
