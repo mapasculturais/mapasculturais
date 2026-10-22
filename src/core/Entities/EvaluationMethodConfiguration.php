@@ -160,6 +160,10 @@ class EvaluationMethodConfiguration extends \MapasCulturais\Entity {
             return true;
         }
 
+        if ($this->_type === 'technical' && !$this->evaluationMethod->validateScoreConfiguration($this)) {
+            return false;
+        }
+
         $sections = $this->sections ?? [];
         $criteria = $this->criteria ?? [];
 
@@ -268,6 +272,10 @@ class EvaluationMethodConfiguration extends \MapasCulturais\Entity {
         $types_with_sections = ['technical', 'qualification'];
         if (!in_array($this->_type, $types_with_sections)) {
             return;
+        }
+
+        if ($this->_type === 'technical') {
+            $this->evaluationMethod->normalizeScoreCriteria($this);
         }
 
         $sections = $this->normalizeCriteriaSectionsValue($this->sections ?? []);
@@ -1103,6 +1111,9 @@ class EvaluationMethodConfiguration extends \MapasCulturais\Entity {
     }
 
     function save($flush = false){
+        if ($this->_type === 'technical') {
+            $this->evaluationMethod->prepareScoreConfiguration($this);
+        }
         $removed_criterion_ids = $this->validateCriteriaDeletion();
 
         $this->sanitizeCriteriaSectionsDraft();

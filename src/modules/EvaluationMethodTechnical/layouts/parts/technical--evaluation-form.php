@@ -16,7 +16,12 @@ $params = ['registration' => $entity, 'opportunity' => $opportunity];
             </tr>
             <tr class="criteria" ng-repeat="cri in ::data.criteria" ng-if="cri.sid == section.id">
                 <td><?php echo $plugin->step ?><label for="{{cri.id}}">{{cri.title}}:</label></td>
-                <td><input id="{{cri.id}}" name="data[{{cri.id}}]" type="number" step="<?php echo $plugin->step ?>" min="{{cri.min}}" max="{{cri.max}}" ng-model="evaluation[cri.id]" class="hltip autosave" title="Configurações: min: {{cri.min}}<br>max: {{cri.max}}<br>peso: {{cri.weight}}"></td>
+                <td>
+                    <select ng-if="data.scoreMode == 'fixed'" id="{{cri.id}}" name="data[{{cri.id}}]" ng-model="evaluation[cri.id]" ng-options="score as score for score in cri.scoreOptions track by score" ng-disabled="!data.isEditable" class="autosave">
+                        <option value="" disabled><?php i::_e('Selecione uma nota') ?></option>
+                    </select>
+                    <input ng-if="data.scoreMode != 'fixed'" id="{{cri.id}}" name="data[{{cri.id}}]" type="number" step="<?php echo $plugin->step ?>" min="{{cri.min}}" max="{{cri.max}}" ng-model="evaluation[cri.id]" class="hltip autosave" title="Configurações: min: {{cri.min}}<br>max: {{cri.max}}<br>peso: {{cri.weight}}">
+                </td>
             </tr>
             <tr class="subtotal">
                 <td><?php i::_e('Subtotal')?></td>

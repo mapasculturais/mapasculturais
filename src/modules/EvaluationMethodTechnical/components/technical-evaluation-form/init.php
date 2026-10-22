@@ -34,6 +34,7 @@ foreach ($sections as $section) {
 }
 
 $this->jsObject['config']['technicalEvaluationForm'] = [
+    'scoreMode' => $entity->opportunity->evaluationMethodConfiguration->scoreMode ?: 'typed',
     'currentEvaluation' => $entity->getUserEvaluation($user),
     "sections" => $data,
     "enableViability" => $enabledViability === "true" ? true : false ,

@@ -2,7 +2,7 @@
  * Campos computados no simplify/jsonSerialize do EMC que não estão em $PROPERTIES
  * e por isso são ignorados por Entity.populate().
  */
-const EVALUATION_METHOD_CONFIGURATION_VIRTUAL_FIELDS = ['canEditSealConfig'];
+const EVALUATION_METHOD_CONFIGURATION_VIRTUAL_FIELDS = ['canEditSealConfig', 'hasStartedEvaluations'];
 
 function applyEvaluationMethodConfigurationVirtualFields(instance, item) {
     if (item['@entityType'] !== 'evaluationmethodconfiguration') {

@@ -2,6 +2,23 @@
 use MapasCulturais\i;
 ?>
 <div ng-controller="TechnicalEvaluationMethodConfigurationController" class="technical-evaluation-configuration registration-fieldset">
+    <div class="technical-evaluation-configuration--score-mode">
+        <label>
+            <?php i::_e('Modo de atribuição de notas') ?>
+            <select ng-model="data.scoreMode" ng-change="save()" ng-disabled="data.hasStartedEvaluations">
+                <option value="typed"><?php i::_e('Nota digitada') ?></option>
+                <option value="fixed"><?php i::_e('Notas fixas') ?></option>
+            </select>
+        </label>
+        <p ng-if="data.hasStartedEvaluations"><?php i::_e('O modo e as notas permitidas não podem ser alterados após o início das avaliações.') ?></p>
+        <div ng-if="data.scoreMode == 'fixed'" ng-repeat="cri in data.criteria">
+            <label>
+                {{cri.title}} — <?php i::_e('Notas permitidas') ?>
+                <input type="text" ng-model="data.scoreOptionInputs[cri.id]" ng-change="updateScoreOptions(cri)" ng-blur="checkScoreOptions(cri)" ng-model-options='{ debounce: data.debounce }' ng-disabled="data.hasStartedEvaluations" placeholder="0,5,10">
+            </label>
+            <small><?php i::_e('Separe por vírgula. Para decimais, use ponto: 0,2.5,5.') ?></small>
+        </div>
+    </div>
     <!-- <div class="technical-evaluation-configuration--criteria">
         <h4><?php i::_e('Critérios') ?></h4>
         <p><?php i::_e('Configure abaixo os critérios de avaliação técnica') ?>
