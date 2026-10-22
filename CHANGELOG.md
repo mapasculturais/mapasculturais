@@ -11,6 +11,7 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Corrige a pergunta "Vai concorrer às cotas?", que já vinha marcada como "Não" e deixava a pessoa enviar a inscrição sem perceber que precisava responder. Agora a pergunta começa sem resposta e, quando habilitada na oportunidade, é obrigatória para enviar a inscrição
 - Corrige a lista de erros ao lado da inscrição, que não mostrava a pergunta "Vai concorrer às cotas?" quando ela estava sem resposta
 - Corrige a edição da inscrição pelo suporte: quem tinha só permissão de visualizar conseguia alterar campos. Agora a alteração é recusada com um aviso claro
+- Corrige a lista de inscrições e a exportação da planilha ordenadas por classificação final em fases com avaliação técnica, que não concluíam em editais com grande volume de inscrições, passando a reaproveitar o cálculo da classificação e a calculá-lo uma única vez na exportação, sem alterar a ordem, as cotas, a região e os desempates
 
 ### Melhorias
 - Atualiza o PHP para a versão 8.3.36, com as correções de segurança recomendadas pelo próprio PHP
