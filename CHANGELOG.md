@@ -4,6 +4,10 @@ Todas as mudanças notáveis no projeto serão documentadas neste arquivo.
 O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/)
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [7.1.5] - 2026-10-22
+### Melhorias
+- Atualiza o PHP para a versão 8.2.35, com as correções de segurança recomendadas pelo próprio PHP
+
 ## [7.1.4] = 2023-11-23
 ## Correções
 - Corrige rota de acessos as avaliações no componente evaluation-card
