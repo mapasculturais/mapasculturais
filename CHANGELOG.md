@@ -5,6 +5,10 @@ Todas as mudanças notáveis no projeto serão documentadas neste arquivo.
 O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/)
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [7.7.65] - 2026-10-22
+### Melhorias
+- Atualiza o PHP para a versão 8.3.36, com as correções de segurança recomendadas pelo próprio PHP
+
 ## [7.7.64] - 2026-07-02
 ### Melhorias
 - Restringe a exclusão de critérios e seções de avaliação técnica e de qualificação documental: somente administradores podem excluir quando já existem avaliações iniciadas, concluídas ou enviadas
