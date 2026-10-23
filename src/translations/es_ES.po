@@ -40546,3 +40546,15 @@ msgstr "No vence"
 #: src/themes/BaseV1/layouts/parts/singles/registration-edit--spaces.php:10
 msgid "Selecione um espaço a ser vinculado à inscrição"
 msgstr "Seleccione un espacio para vincular a la inscripción"
+
+#: src/modules/Opportunities/views/registration/pdf.php:99
+msgid "Informações Básicas"
+msgstr "Información básica"
+
+#: src/modules/Opportunities/views/registration/pdf.php:121
+msgid "Dados do Formulário"
+msgstr "Datos del formulario"
+
+#: src/modules/Entities/components/opportunity-create-model/template.php:15
+msgid "Para salvar um modelo, preencha os campos abaixo."
+msgstr "Para guardar un modelo, complete los campos a continuación."
