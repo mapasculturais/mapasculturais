@@ -1,4 +1,5 @@
 <?php
+use MapasCulturais\i;
 use MapasCulturais\Modules\Opportunities\RegistrationPdfFormatter;
 
 /**
@@ -81,11 +82,11 @@ $siteName = $app->config['logo.title'] . ' ' . $app->config['logo.subtitle'];
 <!-- Cabeçalho -->
 <?php $this->applyTemplateHook('registration-pdf-header', 'before'); ?>
 <div class="header">
-    <h1>Ficha de Inscrição #<?= htmlspecialchars($registration->number) ?></h1>
-    <p><strong>Oportunidade:</strong> <?= htmlspecialchars($registration->opportunity->name) ?></p>
-    <p><strong>Responsável:</strong> <?= htmlspecialchars($registration->owner->name) ?></p>
+    <h1><?= i::__('Ficha de Inscrição') ?> #<?= htmlspecialchars($registration->number) ?></h1>
+    <p><strong><?= i::__('Oportunidade:') ?></strong> <?= htmlspecialchars($registration->opportunity->name) ?></p>
+    <p><strong><?= i::__('Responsável:') ?></strong> <?= htmlspecialchars($registration->owner->name) ?></p>
     <?php if ($registration->sentTimestamp): ?>
-        <p><strong>Data de envio:</strong> <?= $registration->sentTimestamp->format('d/m/Y H:i') ?></p>
+        <p><strong><?= i::__('Data de envio:') ?></strong> <?= $registration->sentTimestamp->format('d/m/Y H:i') ?></p>
     <?php endif; ?>
 </div>
 <?php $this->applyTemplateHook('registration-pdf-header', 'after'); ?>
@@ -93,18 +94,18 @@ $siteName = $app->config['logo.title'] . ' ' . $app->config['logo.subtitle'];
 <!-- Informações básicas -->
 <?php $this->applyTemplateHook('registration-pdf-basic-info', 'before'); ?>
 <div class="info-block">
-    <h2>Informações Básicas</h2>
+    <h2><?= i::__('Informações Básicas') ?></h2>
     
     <?php if ($registration->category): ?>
         <div class="field">
-            <span class="field-label">Categoria:</span>
+            <span class="field-label"><?= i::__('Categoria') ?>:</span>
             <span class="field-value"><?= htmlspecialchars($registration->category) ?></span>
         </div>
     <?php endif; ?>
     
     <?php if ($registration->range): ?>
         <div class="field">
-            <span class="field-label">Faixa/Linha:</span>
+            <span class="field-label"><?= i::__('Faixa/Linha') ?>:</span>
             <span class="field-value"><?= htmlspecialchars($registration->range) ?></span>
         </div>
     <?php endif; ?>
@@ -119,7 +120,7 @@ $opportunity->registerRegistrationMetadata();
 
 <?php $this->applyTemplateHook('registration-pdf-fields', 'before'); ?>
 <div class="info-block">
-    <h2>Dados do Formulário</h2>
+    <h2><?= i::__('Dados do Formulário') ?></h2>
     
     <?php 
     // Combinar campos e arquivos na ordem correta
@@ -185,7 +186,7 @@ $opportunity->registerRegistrationMetadata();
 <?php if (count($registration->relatedAgents) > 0): ?>
     <?php $this->applyTemplateHook('registration-pdf-agents', 'before'); ?>
     <div class="info-block">
-        <h2>Agentes Relacionados</h2>
+        <h2><?= i::__('Agentes Relacionados') ?></h2>
         
         <?php foreach ($registration->relatedAgents as $group => $agents): ?>
             <?php foreach ($agents as $agent): ?>
