@@ -607,6 +607,27 @@ class OpportunityModelCopyTest extends TestCase
         );
     }
 
+    function testEvaluationFieldsConfigurationDoesNotLeakBetweenGenerations(): void
+    {
+        $admin = $this->userDirector->createUser('admin');
+        $this->login($admin);
+
+        $first = $this->createSourceOpportunityWithVisibleEvaluationFields($admin);
+        $firstField = $this->fieldTitled($first, 'Campo visível');
+
+        $firstModel = $this->generateModelFrom($first, 'Modelo anterior ' . uniqid('', true));
+        $this->generateOpportunityFrom($firstModel, $admin->profile->id);
+
+        $second = $this->createSourceOpportunityWithVisibleEvaluationFields($admin);
+        $second->avaliableEvaluationFields = [$firstField->fieldName => 'true'];
+        $second->save(true);
+
+        $secondModel = $this->generateModelFrom($second, 'Modelo seguinte ' . uniqid('', true));
+        $generated = $this->generateOpportunityFrom($secondModel, $admin->profile->id);
+
+        $this->assertSame([], $generated->getStoredAvaliableEvaluationFields());
+    }
+
     private function lastPhaseOf(Opportunity $opportunity): Opportunity
     {
         return $this->allLastPhasesOf($opportunity)[0];
