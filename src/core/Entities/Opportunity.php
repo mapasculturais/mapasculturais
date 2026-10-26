@@ -432,7 +432,7 @@ abstract class Opportunity extends \MapasCulturais\Entity
      *
      * @return array
      */
-    function getStoredAvaliableEvaluationFields(): array {
+    public function getStoredAvaliableEvaluationFields(): array {
         return (array) $this->avaliableEvaluationFields;
     }
 
