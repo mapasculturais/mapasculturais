@@ -427,6 +427,25 @@ class OpportunityModelCopyTest extends TestCase
         $this->assertCount(4, $generated->getStoredAvaliableEvaluationFields());
     }
 
+    function testEvaluationFieldsConfigurationPreservesHiddenFieldsAndNonFieldKeys(): void
+    {
+        $admin = $this->userDirector->createUser('admin');
+        $this->login($admin);
+
+        $source = $this->createSourceOpportunityWithVisibleEvaluationFields($admin);
+
+        $model = $this->generateModelFrom($source, 'Modelo com campo oculto ' . uniqid('', true));
+        $generated = $this->generateOpportunityFrom($model, $admin->profile->id);
+
+        $configuration = $generated->getStoredAvaliableEvaluationFields();
+        $hidden = $this->fieldTitled($generated, 'Campo oculto');
+        $visible = $this->fieldTitled($generated, 'Campo visível');
+
+        $this->assertSame('true', $configuration['agentsSummary'] ?? null);
+        $this->assertSame('true', $configuration[$visible->fieldName] ?? null);
+        $this->assertSame('false', $configuration[$hidden->fieldName] ?? null);
+    }
+
     private function lastPhaseOf(Opportunity $opportunity): Opportunity
     {
         return $this->allLastPhasesOf($opportunity)[0];
