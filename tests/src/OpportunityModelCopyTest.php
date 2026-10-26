@@ -350,6 +350,83 @@ class OpportunityModelCopyTest extends TestCase
         );
     }
 
+    private function createSourceOpportunityWithVisibleEvaluationFields($owner): Opportunity
+    {
+        $source = $this->opportunityBuilder
+            ->reset(owner: $owner->profile, owner_entity: $owner->profile)
+            ->fillRequiredProperties()
+            ->save()
+            ->firstPhase()
+                ->setRegistrationPeriod(new Open)
+                ->createStep('Etapa única')
+                ->createField('campo-visivel', 'text', title: 'Campo visível')
+                ->createField('campo-oculto', 'text', title: 'Campo oculto')
+                ->done()
+            ->save()
+            ->refresh()
+            ->getInstance();
+
+        $attachment = new RegistrationFileConfiguration();
+        $attachment->owner = $source;
+        $attachment->step = $this->fieldTitled($source, 'Campo visível')->step;
+        $attachment->title = 'Anexo visível';
+        $attachment->save(true);
+
+        $source = $source->refreshed();
+
+        $configuration = ['agentsSummary' => 'true'];
+        foreach ($source->getRegistrationFieldConfigurations() as $field) {
+            $configuration[$field->fieldName] = $field->title === 'Campo oculto' ? 'false' : 'true';
+        }
+        foreach ($source->getRegistrationFileConfigurations() as $file) {
+            $configuration[$file->fileGroupName] = 'true';
+        }
+
+        $source->avaliableEvaluationFields = $configuration;
+        $source->save(true);
+
+        return $source->refreshed();
+    }
+
+    private function fieldTitled(Opportunity $opportunity, string $title)
+    {
+        return array_values(array_filter(
+            $opportunity->getRegistrationFieldConfigurations(),
+            fn($field) => $field->title === $title
+        ))[0];
+    }
+
+    private function foreignEvaluationFieldKeys(Opportunity $opportunity): array
+    {
+        $own = array_map(
+            fn($field) => $field->fieldName,
+            $opportunity->getRegistrationFieldConfigurations()
+        );
+        foreach ($opportunity->getRegistrationFileConfigurations() as $file) {
+            $own[] = $file->fileGroupName;
+        }
+
+        return array_values(array_filter(
+            array_keys($opportunity->getStoredAvaliableEvaluationFields()),
+            fn($key) => preg_match('#^(field|rfc)_\d+$#', (string) $key) && !in_array($key, $own, true)
+        ));
+    }
+
+    function testEvaluationFieldsConfigurationIsRemappedOnGeneratedOpportunity(): void
+    {
+        $admin = $this->userDirector->createUser('admin');
+        $this->login($admin);
+
+        $source = $this->createSourceOpportunityWithVisibleEvaluationFields($admin);
+
+        $model = $this->generateModelFrom($source, 'Modelo com campos visíveis ' . uniqid('', true));
+        $generated = $this->generateOpportunityFrom($model, $admin->profile->id);
+
+        $this->assertSame([], $this->foreignEvaluationFieldKeys($model));
+        $this->assertSame([], $this->foreignEvaluationFieldKeys($generated));
+        $this->assertCount(4, $generated->getStoredAvaliableEvaluationFields());
+    }
+
     private function lastPhaseOf(Opportunity $opportunity): Opportunity
     {
         return $this->allLastPhasesOf($opportunity)[0];
