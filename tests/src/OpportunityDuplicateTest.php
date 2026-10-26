@@ -168,6 +168,21 @@ class OpportunityDuplicateTest extends TestCase
         $this->assertCount(4, $duplicated->getStoredAvaliableEvaluationFields());
     }
 
+    function testEvaluationFieldsConfigurationPreservesHiddenFieldsAndNonFieldKeysOnDuplication(): void
+    {
+        $admin = $this->userDirector->createUser('admin');
+        $this->login($admin);
+
+        $source = $this->createSourceWithVisibleEvaluationFields($admin);
+        $duplicated = $this->duplicate($source);
+
+        $configuration = $duplicated->getStoredAvaliableEvaluationFields();
+
+        $this->assertSame('true', $configuration['agentsSummary'] ?? null);
+        $this->assertSame('true', $configuration[$this->fieldTitled($duplicated, 'Campo visível')->fieldName] ?? null);
+        $this->assertSame('false', $configuration[$this->fieldTitled($duplicated, 'Campo oculto')->fieldName] ?? null);
+    }
+
     private function duplicate(Opportunity $source): Opportunity
     {
         $source->name = 'Edital duplicado ' . uniqid('', true);
