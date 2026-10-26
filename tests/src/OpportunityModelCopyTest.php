@@ -506,6 +506,48 @@ class OpportunityModelCopyTest extends TestCase
         );
     }
 
+    function testEvaluationFieldsConfigurationIsRemappedWhenOpportunityHasAppealPhase(): void
+    {
+        $app = $this->app;
+        $admin = $this->userDirector->createUser('admin');
+        $this->login($admin);
+
+        $source = $this->createSourceOpportunityWithEvaluationPhaseAndFields($admin);
+        $sourceField = $this->fieldTitled($source, 'Campo avaliado');
+        $sourcePhase = $this->configurationOfSomePhase($source)->opportunity;
+        $evaluationPhaseName = $sourcePhase->name;
+        $sourcePhase->avaliableEvaluationFields = [$sourceField->fieldName => 'true'];
+        $sourcePhase->save(true);
+
+        $sourceId = $source->id;
+        $app->request = $this->requestFactory->mapasPOST('opportunity', 'createAppealPhase', [$sourceId], ['id' => $sourceId]);
+        $app->response = new Response();
+
+        /** @var OpportunityController $controller */
+        $controller = $app->controller('opportunity');
+        $controller->setRequestData(['id' => $sourceId]);
+
+        try {
+            $controller->callAction('POST', 'createAppealPhase', []);
+        } catch (Halt) {
+        }
+
+        $app->em->clear();
+        $source = $app->repo('Opportunity')->find($sourceId);
+        $this->login($app->repo('User')->find($admin->id));
+
+        $model = $this->generateModelFrom($source, 'Modelo com recurso e campos ' . uniqid('', true));
+        $generated = $this->generateOpportunityFrom($model, $admin->profile->id);
+
+        $generatedField = $this->fieldTitled($generated, 'Campo avaliado');
+        $generatedPhase = $this->phaseNamed($generated, $evaluationPhaseName);
+
+        $this->assertSame(
+            [$generatedField->fieldName => 'true'],
+            $generatedPhase->getStoredAvaliableEvaluationFields()
+        );
+    }
+
     private function lastPhaseOf(Opportunity $opportunity): Opportunity
     {
         return $this->allLastPhasesOf($opportunity)[0];
