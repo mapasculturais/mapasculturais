@@ -37,6 +37,12 @@ trait EntityManagerModel {
     private $cachedOwnerEntity = null;
 
     /**
+     * @var array<string,string> Nome de campo e de anexo da origem para o nome correspondente na cópia
+     * @access private
+     */
+    private $registrationFieldNameMap = [];
+
+    /**
      * Gera um modelo a partir de uma oportunidade existente
      * 
      * Este método cria uma cópia da oportunidade como modelo, incluindo
@@ -53,6 +59,7 @@ trait EntityManagerModel {
         $app = App::i();
 
         $this->requireAuthentication();
+        $this->registrationFieldNameMap = [];
         $this->entityOpportunity = $this->requestedEntity;
         $this->entityOpportunityModel = $this->generateModel();
 
@@ -92,6 +99,7 @@ trait EntityManagerModel {
         $app = App::i();
 
         $this->requireAuthentication();
+        $this->registrationFieldNameMap = [];
         $this->entityOpportunity = $this->requestedEntity;
 
         if (!$this->entityOpportunity->getMetadata('isModelPublic')) {
@@ -573,7 +581,6 @@ trait EntityManagerModel {
     private function generateRegistrationFieldsAndFiles($opportunityCurrent, $opportunityNew) : void
     {
         $stepMap = [];
-        $fieldNameMap = [];
         $conditionalFields = [];
         $conditionalFiles = [];
 
@@ -624,7 +631,7 @@ trait EntityManagerModel {
             }
 
             $fieldConfiguration->save(false);
-            $fieldNameMap[$originalFieldName] = $fieldConfiguration->fieldName;
+            $this->registrationFieldNameMap[$originalFieldName] = $fieldConfiguration->fieldName;
 
             if ($fieldConfiguration->conditionalField) {
                 $conditionalFields[] = $fieldConfiguration;
@@ -632,6 +639,7 @@ trait EntityManagerModel {
         }
 
         foreach ($opportunityCurrent->getRegistrationFileConfigurations() as $registrationFileConfiguration) {
+            $originalGroupName = $registrationFileConfiguration->fileGroupName;
             $fileConfiguration = clone $registrationFileConfiguration;
             $fileConfiguration->setOwnerId($opportunityNew->id);
 
@@ -640,6 +648,7 @@ trait EntityManagerModel {
             }
 
             $fileConfiguration->save(false);
+            $this->registrationFieldNameMap[$originalGroupName] = $fileConfiguration->fileGroupName;
 
             if ($fileConfiguration->conditionalField) {
                 $conditionalFiles[] = $fileConfiguration;
@@ -649,8 +658,8 @@ trait EntityManagerModel {
         $app->em->flush();
 
         foreach (array_merge($conditionalFields, $conditionalFiles) as $configuration) {
-            if (isset($fieldNameMap[$configuration->conditionalField])) {
-                $configuration->conditionalField = $fieldNameMap[$configuration->conditionalField];
+            if (isset($this->registrationFieldNameMap[$configuration->conditionalField])) {
+                $configuration->conditionalField = $this->registrationFieldNameMap[$configuration->conditionalField];
                 $configuration->save(false);
             }
         }
