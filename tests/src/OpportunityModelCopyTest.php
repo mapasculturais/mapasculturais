@@ -446,6 +446,66 @@ class OpportunityModelCopyTest extends TestCase
         $this->assertSame('false', $configuration[$hidden->fieldName] ?? null);
     }
 
+    private function createSourceOpportunityWithEvaluationPhaseAndFields($owner): Opportunity
+    {
+        $builder = $this->opportunityBuilder
+            ->reset(owner: $owner->profile, owner_entity: $owner->profile)
+            ->fillRequiredProperties()
+            ->save()
+            ->firstPhase()
+                ->setRegistrationPeriod(new Open)
+                ->createStep('Etapa única')
+                ->createField('campo-avaliado', 'text', title: 'Campo avaliado')
+                ->done()
+            ->save();
+
+        $builder->addDataCollectionPhase()
+            ->setRegistrationPeriod(new Open)
+            ->save()
+            ->done();
+
+        $builder->addEvaluationPhase(EvaluationMethods::simple)
+            ->fillRequiredProperties()
+            ->setEvaluationPeriod(new ConcurrentEndingAfter)
+            ->save()
+            ->done();
+
+        return $builder->refresh()->getInstance();
+    }
+
+    private function phaseNamed(Opportunity $opportunity, string $name): Opportunity
+    {
+        return array_values(array_filter(
+            $this->app->repo('Opportunity')->findBy(['parent' => $opportunity], ['id' => 'ASC']),
+            fn(Opportunity $phase) => $phase->name === $name
+        ))[0];
+    }
+
+    function testEvaluationFieldsConfigurationOfEvaluationPhaseIsRemapped(): void
+    {
+        $admin = $this->userDirector->createUser('admin');
+        $this->login($admin);
+
+        $source = $this->createSourceOpportunityWithEvaluationPhaseAndFields($admin);
+        $sourceField = $this->fieldTitled($source, 'Campo avaliado');
+        $sourcePhase = $this->configurationOfSomePhase($source)->opportunity;
+        $evaluationPhaseName = $sourcePhase->name;
+        $sourcePhase->avaliableEvaluationFields = [$sourceField->fieldName => 'true'];
+        $sourcePhase->save(true);
+
+        $model = $this->generateModelFrom($source, 'Modelo com fase avaliadora ' . uniqid('', true));
+        $generated = $this->generateOpportunityFrom($model, $admin->profile->id);
+
+        $generatedField = $this->fieldTitled($generated, 'Campo avaliado');
+        $generatedPhase = $this->phaseNamed($generated, $evaluationPhaseName);
+
+        $this->assertNotSame($sourceField->fieldName, $generatedField->fieldName);
+        $this->assertSame(
+            [$generatedField->fieldName => 'true'],
+            $generatedPhase->getStoredAvaliableEvaluationFields()
+        );
+    }
+
     private function lastPhaseOf(Opportunity $opportunity): Opportunity
     {
         return $this->allLastPhasesOf($opportunity)[0];
