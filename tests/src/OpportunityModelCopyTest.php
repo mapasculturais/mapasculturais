@@ -6,6 +6,7 @@ use Doctrine\ORM\EntityNotFoundException;
 use Laminas\Diactoros\Response;
 use MapasCulturais\Controllers\Opportunity as OpportunityController;
 use MapasCulturais\Entities\Opportunity;
+use MapasCulturais\Entities\RegistrationFieldConfiguration;
 use MapasCulturais\Entities\RegistrationFileConfiguration;
 use MapasCulturais\Exceptions\Halt;
 use Tests\Abstract\TestCase;
@@ -545,6 +546,64 @@ class OpportunityModelCopyTest extends TestCase
         $this->assertSame(
             [$generatedField->fieldName => 'true'],
             $generatedPhase->getStoredAvaliableEvaluationFields()
+        );
+    }
+
+    private function appealPhaseOf(Opportunity $opportunity): Opportunity
+    {
+        return array_values(array_filter(
+            $this->app->repo('Opportunity')->findBy(['parent' => $opportunity], ['id' => 'ASC']),
+            fn(Opportunity $phase) => (bool) $phase->isAppealPhase
+        ))[0];
+    }
+
+    function testEvaluationFieldsConfigurationOfAppealPhaseIsRemapped(): void
+    {
+        $app = $this->app;
+        $admin = $this->userDirector->createUser('admin');
+        $this->login($admin);
+
+        $source = $this->createSourceOpportunityWithEvaluationPhaseAndFields($admin);
+        $sourceField = $this->fieldTitled($source, 'Campo avaliado');
+
+        $sourceId = $source->id;
+        $app->request = $this->requestFactory->mapasPOST('opportunity', 'createAppealPhase', [$sourceId], ['id' => $sourceId]);
+        $app->response = new Response();
+
+        /** @var OpportunityController $controller */
+        $controller = $app->controller('opportunity');
+        $controller->setRequestData(['id' => $sourceId]);
+
+        try {
+            $controller->callAction('POST', 'createAppealPhase', []);
+        } catch (Halt) {
+        }
+
+        $app->em->clear();
+        $source = $app->repo('Opportunity')->find($sourceId);
+        $this->login($app->repo('User')->find($admin->id));
+
+        $appealPhase = $this->appealPhaseOf($source);
+        $appealPhaseName = $appealPhase->name;
+
+        $ownField = new RegistrationFieldConfiguration();
+        $ownField->owner = $appealPhase;
+        $ownField->title = 'Campo da fase de recurso';
+        $ownField->fieldType = 'text';
+        $ownField->save(true);
+
+        $appealPhase->avaliableEvaluationFields = [$sourceField->fieldName => 'true'];
+        $appealPhase->save(true);
+
+        $model = $this->generateModelFrom($source, 'Modelo com recurso ' . uniqid('', true));
+        $generated = $this->generateOpportunityFrom($model, $admin->profile->id);
+
+        $generatedField = $this->fieldTitled($generated, 'Campo avaliado');
+        $generatedAppealPhase = $this->phaseNamed($generated, $appealPhaseName);
+
+        $this->assertSame(
+            [$generatedField->fieldName => 'true'],
+            $generatedAppealPhase->getStoredAvaliableEvaluationFields()
         );
     }
 
