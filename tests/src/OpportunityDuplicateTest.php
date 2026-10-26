@@ -183,6 +183,69 @@ class OpportunityDuplicateTest extends TestCase
         $this->assertSame('false', $configuration[$this->fieldTitled($duplicated, 'Campo oculto')->fieldName] ?? null);
     }
 
+    private function evaluationPhaseOf(Opportunity $opportunity): Opportunity
+    {
+        foreach ($this->app->repo('Opportunity')->findBy(['parent' => $opportunity], ['id' => 'ASC']) as $phase) {
+            if ($this->app->repo('EvaluationMethodConfiguration')->findOneBy(['opportunity' => $phase])) {
+                return $phase;
+            }
+        }
+
+        throw new \RuntimeException('A origem não tem fase de avaliação');
+    }
+
+    private function phaseNamed(Opportunity $opportunity, string $name): Opportunity
+    {
+        return array_values(array_filter(
+            $this->app->repo('Opportunity')->findBy(['parent' => $opportunity], ['id' => 'ASC']),
+            fn(Opportunity $phase) => $phase->name === $name
+        ))[0];
+    }
+
+    function testEvaluationFieldsConfigurationOfPhaseIsRemappedOnDuplication(): void
+    {
+        $admin = $this->userDirector->createUser('admin');
+        $this->login($admin);
+
+        $builder = $this->opportunityBuilder
+            ->reset(owner: $admin->profile, owner_entity: $admin->profile)
+            ->fillRequiredProperties()
+            ->save()
+            ->firstPhase()
+                ->setRegistrationPeriod(new Open)
+                ->createStep('Etapa única')
+                ->createField('campo-avaliado', 'text', title: 'Campo avaliado')
+                ->done()
+            ->save();
+
+        $builder->addDataCollectionPhase()
+            ->setRegistrationPeriod(new Open)
+            ->save()
+            ->done();
+
+        $builder->addEvaluationPhase(EvaluationMethods::simple)
+            ->setEvaluationPeriod(new ConcurrentEndingAfter)
+            ->save()
+            ->done();
+
+        $source = $builder->refresh()->getInstance();
+        $sourceField = $this->fieldTitled($source, 'Campo avaliado');
+        $sourcePhase = $this->evaluationPhaseOf($source);
+        $phaseName = $sourcePhase->name;
+        $sourcePhase->avaliableEvaluationFields = [$sourceField->fieldName => 'true'];
+        $sourcePhase->save(true);
+
+        $duplicated = $this->duplicate($source);
+        $duplicatedField = $this->fieldTitled($duplicated, 'Campo avaliado');
+        $duplicatedPhase = $this->phaseNamed($duplicated, $phaseName);
+
+        $this->assertNotSame($sourceField->fieldName, $duplicatedField->fieldName);
+        $this->assertSame(
+            [$duplicatedField->fieldName => 'true'],
+            $duplicatedPhase->getStoredAvaliableEvaluationFields()
+        );
+    }
+
     private function duplicate(Opportunity $source): Opportunity
     {
         $source->name = 'Edital duplicado ' . uniqid('', true);
