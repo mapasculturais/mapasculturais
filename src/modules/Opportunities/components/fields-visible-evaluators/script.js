@@ -139,8 +139,12 @@ app.component("fields-visible-evaluators", {
         toggleSelectAll() {
             this.fields.forEach((field) => {
                 let conditionalField = this.avaliableEvaluationFields[field.conditionalField] || this.fields.filter((conditionalField) => conditionalField.fieldName == field.conditionalField);
-                let fieldName = field.fieldName || field.groupName; 
-                
+                let fieldName = field.fieldName || field.groupName;
+
+                if (!fieldName) {
+                    return;
+                }
+
                 if (this.selectAll) {
                     if (!field.checked) {
                         field.checked = true;
@@ -182,6 +186,10 @@ app.component("fields-visible-evaluators", {
         },
 
         toggleSelect(fieldName) {
+            if (!fieldName) {
+                return;
+            }
+
             if(Array.isArray(this.entity.opportunity.avaliableEvaluationFields) && this.entity.opportunity.avaliableEvaluationFields.length == 0) {
                 this.entity.opportunity.avaliableEvaluationFields = {};
             }
