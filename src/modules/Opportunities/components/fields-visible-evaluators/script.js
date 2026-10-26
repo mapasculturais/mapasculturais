@@ -161,8 +161,24 @@ app.component("fields-visible-evaluators", {
                     }
                 }
             });
-            this.entity.opportunity.avaliableEvaluationFields = this.avaliableEvaluationFields;
+            this.entity.opportunity.avaliableEvaluationFields = this.normalizedFields();
             this.save();
+        },
+
+        isEnabled(value) {
+            return value === true || value === "true";
+        },
+
+        normalizedFields() {
+            let normalized = {};
+
+            for (const [name, value] of Object.entries(this.avaliableEvaluationFields)) {
+                if (name && name !== "undefined") {
+                    normalized[name] = this.isEnabled(value) ? "true" : "false";
+                }
+            }
+
+            return normalized;
         },
 
         toggleSelect(fieldName) {
@@ -170,7 +186,7 @@ app.component("fields-visible-evaluators", {
                 this.entity.opportunity.avaliableEvaluationFields = {};
             }
 
-            this.entity.opportunity.avaliableEvaluationFields[fieldName] = this.avaliableEvaluationFields[fieldName] ? "true" : "false";
+            this.entity.opportunity.avaliableEvaluationFields[fieldName] = this.isEnabled(this.avaliableEvaluationFields[fieldName]) ? "true" : "false";
             this.save();
             this.getFields();
         },
