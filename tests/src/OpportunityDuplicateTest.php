@@ -3,6 +3,7 @@
 namespace Test;
 
 use MapasCulturais\Entities\Opportunity;
+use MapasCulturais\Entities\RegistrationFileConfiguration;
 use Tests\Abstract\TestCase;
 use Tests\Builders\PhasePeriods\ConcurrentEndingAfter;
 use Tests\Builders\PhasePeriods\Open;
@@ -91,6 +92,80 @@ class OpportunityDuplicateTest extends TestCase
             $this->describePhases($duplicated),
             'Certificando que a cópia mantém a mesma estrutura de fases da origem'
         );
+    }
+
+    private function createSourceWithVisibleEvaluationFields($owner): Opportunity
+    {
+        $source = $this->opportunityBuilder
+            ->reset(owner: $owner->profile, owner_entity: $owner->profile)
+            ->fillRequiredProperties()
+            ->save()
+            ->firstPhase()
+                ->setRegistrationPeriod(new Open)
+                ->createStep('Etapa única')
+                ->createField('campo-visivel', 'text', title: 'Campo visível')
+                ->createField('campo-oculto', 'text', title: 'Campo oculto')
+                ->done()
+            ->save()
+            ->refresh()
+            ->getInstance();
+
+        $attachment = new RegistrationFileConfiguration();
+        $attachment->owner = $source;
+        $attachment->step = $this->fieldTitled($source, 'Campo visível')->step;
+        $attachment->title = 'Anexo visível';
+        $attachment->save(true);
+
+        $source = $source->refreshed();
+
+        $configuration = ['agentsSummary' => 'true'];
+        foreach ($source->getRegistrationFieldConfigurations() as $field) {
+            $configuration[$field->fieldName] = $field->title === 'Campo oculto' ? 'false' : 'true';
+        }
+        foreach ($source->getRegistrationFileConfigurations() as $file) {
+            $configuration[$file->fileGroupName] = 'true';
+        }
+
+        $source->avaliableEvaluationFields = $configuration;
+        $source->save(true);
+
+        return $source->refreshed();
+    }
+
+    private function fieldTitled(Opportunity $opportunity, string $title)
+    {
+        return array_values(array_filter(
+            $opportunity->getRegistrationFieldConfigurations(),
+            fn($field) => $field->title === $title
+        ))[0];
+    }
+
+    private function foreignEvaluationFieldKeys(Opportunity $opportunity): array
+    {
+        $own = array_map(
+            fn($field) => $field->fieldName,
+            $opportunity->getRegistrationFieldConfigurations()
+        );
+        foreach ($opportunity->getRegistrationFileConfigurations() as $file) {
+            $own[] = $file->fileGroupName;
+        }
+
+        return array_values(array_filter(
+            array_keys($opportunity->getStoredAvaliableEvaluationFields()),
+            fn($key) => preg_match('#^(field|rfc)_\d+$#', (string) $key) && !in_array($key, $own, true)
+        ));
+    }
+
+    function testEvaluationFieldsConfigurationIsRemappedOnDuplicatedOpportunity(): void
+    {
+        $admin = $this->userDirector->createUser('admin');
+        $this->login($admin);
+
+        $source = $this->createSourceWithVisibleEvaluationFields($admin);
+        $duplicated = $this->duplicate($source);
+
+        $this->assertSame([], $this->foreignEvaluationFieldKeys($duplicated));
+        $this->assertCount(4, $duplicated->getStoredAvaliableEvaluationFields());
     }
 
     private function duplicate(Opportunity $source): Opportunity
