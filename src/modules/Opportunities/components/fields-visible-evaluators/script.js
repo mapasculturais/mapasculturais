@@ -103,7 +103,7 @@ app.component("fields-visible-evaluators", {
 
             _fields = Object.values(this.fields).map((item, index) => {
                 let field = { ...this.fields[index] }
-                field.checked = avaliableFields[item.fieldName || item.groupName] == "true" ? true : false;
+                field.checked = this.isEnabled(avaliableFields[item.fieldName || item.groupName]);
 
                 if (avaliableFields["category"] && item.categories?.length > 0) {
                     field.disabled = (avaliableFields["category"] == "true" ? false : true);
