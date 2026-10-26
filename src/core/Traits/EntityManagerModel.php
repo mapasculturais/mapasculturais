@@ -68,6 +68,7 @@ trait EntityManagerModel {
         $this->generateTerms();
         $this->generateMetadata();
         $this->generateRegistrationFieldsAndFiles($this->entityOpportunity, $this->entityOpportunityModel);
+        $this->remapGeneratedEvaluationFields();
         $this->generateSealsRelations();
 
         $this->entityOpportunity = $this->entityOpportunity->refreshed();
@@ -120,6 +121,7 @@ trait EntityManagerModel {
             $this->generateTerms();
             $this->generateMetadata(0, 0);
             $this->generateRegistrationFieldsAndFiles($this->entityOpportunity, $this->entityOpportunityModel);
+            $this->remapGeneratedEvaluationFields();
 
             $this->entityOpportunity = $this->entityOpportunity->refreshed();
             $this->entityOpportunityModel = $this->entityOpportunityModel->refreshed();
@@ -669,6 +671,50 @@ trait EntityManagerModel {
         }
 
         $this->deleteOrphanEmptyRegistrationSteps($opportunityNew, $stepMap);
+    }
+
+    /**
+     * Reescreve a configuração de campos visíveis da cópia e de suas fases
+     *
+     * @return void
+     * @access private
+     */
+    private function remapGeneratedEvaluationFields(): void
+    {
+        $app = App::i();
+
+        $this->remapAvaliableEvaluationFields($this->entityOpportunityModel);
+
+        foreach ($app->repo('Opportunity')->findBy(['parent' => $this->entityOpportunityModel]) as $phase) {
+            $this->remapAvaliableEvaluationFields($phase);
+        }
+    }
+
+    private function remapAvaliableEvaluationFields(Opportunity $opportunity): void
+    {
+        // pelo getter mágico o valor passa pelo hook da fase de recurso e pelo cache herdado do clone
+        $stored = $opportunity->getStoredAvaliableEvaluationFields();
+
+        if (!$stored) {
+            return;
+        }
+
+        $remapped = [];
+        foreach ($stored as $name => $value) {
+            if (isset($this->registrationFieldNameMap[$name])) {
+                $remapped[$this->registrationFieldNameMap[$name]] = $value;
+            } elseif (!preg_match('#^(field|rfc)_\d+$#', (string) $name)) {
+                $remapped[$name] = $value;
+            }
+        }
+
+        $opportunity->avaliableEvaluationFields = $remapped;
+
+        if (is_object($opportunity->__magicGetterCache ?? null)) {
+            unset($opportunity->__magicGetterCache->avaliableEvaluationFields);
+        }
+
+        $opportunity->save(true);
     }
 
     /**
