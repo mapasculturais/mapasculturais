@@ -427,6 +427,15 @@ abstract class Opportunity extends \MapasCulturais\Entity
         }
     }
 
+    /**
+     * Valor gravado na coluna, sem o hook de leitura nem o cache do getter mágico.
+     *
+     * @return array
+     */
+    public function getStoredAvaliableEvaluationFields(): array {
+        return (array) $this->avaliableEvaluationFields;
+    }
+
     function setContinuousFlow($value) {
         if ($value !== null) {
             try {
