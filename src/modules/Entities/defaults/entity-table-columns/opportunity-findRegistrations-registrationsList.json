@@ -27,9 +27,6 @@
         "workplanProxy",
         "consolidatedDetails",
         "evaluationsDetails",
-        "valuersIncludeList",
-        "valuersExcludeList",
-        "valuers",
         "singleUrl"
     ],
     "visible": [

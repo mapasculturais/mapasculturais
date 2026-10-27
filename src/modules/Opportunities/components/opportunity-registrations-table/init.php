@@ -40,7 +40,15 @@ $data['evaluationStatusDict'] = [
 
 $phase = $this->controller->requestedEntity;
 
-$skipFields = ["previousPhaseRegistrationId", "nextPhaseRegistrationId", "id"];
+$skipFields = [
+    "previousPhaseRegistrationId",
+    "nextPhaseRegistrationId",
+    "id",
+    // Dados internos de distribuição; não exibir na tabela nem na planilha
+    "valuersIncludeList",
+    "valuersExcludeList",
+    "valuers",
+];
 $default_select = "agentsData,number,singleUrl,consolidatedResult,appliedPointReward,score,status,sentTimestamp,createTimestamp,files,owner.{name,geoMesorregiao,geoEstado,geoMicrorregiao,geoMunicipio,geoPais},editSentTimestamp,editableUntil,editableFields";
 $default_headers = [
     [
