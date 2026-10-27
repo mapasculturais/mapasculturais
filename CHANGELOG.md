@@ -7,6 +7,7 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ## [Unreleased]
 ### Correções
+- Corrige o alinhamento do menu principal no cabeçalho, que havia sido deslocado para a esquerda na versão 7.8.17, restaurando sua distribuição central entre o logo e os botões de acesso
 - Corrige a exportação da planilha de inscritos para campos do tipo `addresses` (ex.: "Endereço do espaço"), que gerava a coluna vazia mesmo com dados salvos na inscrição
 - Corrige a pergunta "Vai concorrer às cotas?", que já vinha marcada como "Não" e deixava a pessoa enviar a inscrição sem perceber que precisava responder. Agora a pergunta começa sem resposta e, quando habilitada na oportunidade, é obrigatória para enviar a inscrição
 - Corrige a lista de erros ao lado da inscrição, que não mostrava a pergunta "Vai concorrer às cotas?" quando ela estava sem resposta
