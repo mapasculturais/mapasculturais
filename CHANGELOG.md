@@ -5,6 +5,10 @@ Todas as mudanças notáveis no projeto serão documentadas neste arquivo.
 O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/)
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+### Correções
+- Corrige o botão "Baixar Anexos (ZIP)" para incluir todos os anexos das fases de coleta de dados da inscrição, organizados por fase e respeitando as permissões de acesso
+
 ## [7.8.20] - 2026-10-20
 ### Correções
 - Corrige o alinhamento do menu principal no cabeçalho, que havia sido deslocado para a esquerda na versão 7.8.17, restaurando sua distribuição central entre o logo e os botões de acesso
