@@ -14,7 +14,7 @@ $this->import('
     opportunity-reports-chart-builder
 ');
 ?>
-<div class="opportunity-reports">
+<div ref="reportContent" class="opportunity-reports">
     <header class="opportunity-reports__print-header">
         <h1>{{ entity.name }}</h1>
         <p v-if="phaseLabel">{{ phaseLabel }}</p>

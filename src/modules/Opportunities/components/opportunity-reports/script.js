@@ -33,7 +33,9 @@ app.component('opportunity-reports', {
             }
 
             this.printing = true;
-            const report = this.$el.cloneNode(true);
+            // Os comentários do template em desenvolvimento podem tornar $el um nó de texto.
+            const source = this.$refs.reportContent;
+            const report = source.cloneNode(true);
             const cleanup = () => {
                 report.remove();
                 document.body.classList.remove('opportunity-reports-printing');
@@ -46,7 +48,7 @@ app.component('opportunity-reports', {
             try {
                 // cloneNode não copia o conteúdo dos canvas. Preserva os gráficos
                 // exibidos antes que o layout de impressão redimensione a página.
-                const canvases = this.$el.querySelectorAll('canvas');
+                const canvases = source.querySelectorAll('canvas');
                 const images = Array.from(report.querySelectorAll('canvas'), (canvas, index) => {
                     const image = document.createElement('img');
                     image.src = canvases[index].toDataURL('image/png');
