@@ -19,6 +19,7 @@ O componente `<entity-card>` exibe informações detalhadas sobre uma entidade (
 - **title** - Customiza o título da entidade
 - **type** - Customiza o tipo da entidade
 - **labels** - Customiza os rótulos adicionais no cabeçalho
+- **actions-before** - Adiciona ações antes do botão Acessar; recebe a propriedade `entity`
 
 ### Importando componente
 ```PHP

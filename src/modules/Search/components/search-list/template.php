@@ -10,6 +10,7 @@ $this->import('
     entity-card
     mc-avatar
     mc-entities
+    mc-icon
 ');
 ?>
 <div class="grid-12 search-list">
@@ -79,6 +80,12 @@ $this->import('
                             <mc-avatar :entity="entity" size="medium"></mc-avatar>
                         </template>
                         <template #type> <span>{{typeText}} <span :class="['upper', entity.__objectType+'__color']">{{entity.type?.name}}</span></span></template>
+                        <template #actions-before>
+                            <a v-if="type === 'opportunity' && global.auth.isLoggedIn && entity.currentUserPermissions?.modify" :href="entity.editUrl" class="button button--primary button--icon entity-card__edit">
+                                <mc-icon name="edit"></mc-icon>
+                                <?php i::_e('Editar') ?>
+                            </a>
+                        </template>
                     </entity-card>
                 </div>
             </div>

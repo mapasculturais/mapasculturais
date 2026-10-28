@@ -29,29 +29,8 @@ if (isset($this->controller->data['user']) && $entity->opportunity->canUser("@co
     $user = $app->user;
 }
 
-if(!$evaluation_configuration->statusLabels) {
-    $status_label = [];
-
-    if($opportunity->isReportingPhase) {
-        $status_label['3'] = i::__('Reprovado');
-        $status_label['8'] = i::__('Aprovado com ressalvas');
-        $status_label['10'] = i::__('Aprovado');
-    } else {
-        $status_label['2'] = i::__('Negado');
-        $status_label['3'] = i::__('Indeferido');
-        $status_label['10'] = i::__('Deferido');
-    }
-
-    $evaluation_configuration->statusLabels = $status_label;
-
-    $app->disableAccessControl();
-    $evaluation_configuration->__skipQueuingPCacheRecreation = true;
-    $evaluation_configuration->save();
-    $app->enableAccessControl();
-}
-
 $statusList = [];
-foreach($evaluation_configuration->statusLabels as $status => $label) {
+foreach($opportunity->evaluationMethod->getEvaluatorStatuses($evaluation_configuration) as $status => $label) {
     $statusList[] = ['value' => $status, 'label' => $label];
 }
 

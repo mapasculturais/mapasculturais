@@ -90,6 +90,9 @@ $this->import('
                         <h3 class="card__title">
                             <?= i::__('Vai concorrer às cotas?') ?>
                         </h3>
+                        <div class="card__mandatory">
+                            <div class="obrigatory"> <?= i::__('*obrigatório') ?> </div>
+                        </div>
 
                         <div class="card__content">
                             <entity-field :entity="entity" prop="appliedForQuota" :hide-label="true"></entity-field>
@@ -103,7 +106,7 @@ $this->import('
             </section>
 
             <section class="section" v-if="preview || !entity.opportunity.proponentAgentRelation?.[entity.proponentType] || (entity.agentRelations.coletivo && entity.opportunity.proponentAgentRelation?.[entity.proponentType])">
-                <registration-form :registration="entity" :step="step"></registration-form>
+                <registration-form :registration="entity" :step="step" :is-last-step="isLastStep"></registration-form>
             </section>
 
             <section class="section" v-if="hasWorkplan && isLastStep && entity.opportunity.isReportingPhase">

@@ -77,9 +77,6 @@ $app->applyHookBoundTo($this, 'opportunity.blockedFields', [$entity]);
         <edit-box ng-if="data.entity.canUserModifyRegistrationFields" id="editbox-registration-files" position="right" title="<?php i::esc_attr_e("Adicionar anexo"); ?>" cancel-label="<?php i::esc_attr_e("Cancelar"); ?>" submit-label="<?php i::esc_attr_e("Criar"); ?>" close-on-cancel='true' on-cancel="closeNewFileConfigurationEditBox" on-submit="createFileConfiguration" spinner-condition="data.uploadSpinner">
             <input type="text" ng-model="data.newFileConfiguration.title" placeholder="<?php i::esc_attr_e("Nome do anexo"); ?>" />
             <textarea ng-model="data.newFileConfiguration.description" placeholder="<?php i::esc_attr_e("Descrição do anexo"); ?>" /></textarea>
-            <div ng-init="field = data.newFileConfiguration">
-                <?php $this->part('singles/opportunity-registrations--fields--field-require'); ?>
-            </div>
             <p>
                 <small><?php i::_e("Tipos de arquivo permitidos (deixe em branco para permitir todos)"); ?>:</small><br>
                 
@@ -125,6 +122,9 @@ $app->applyHookBoundTo($this, 'opportunity.blockedFields', [$entity]);
                 <label class="checkbox-label"><input type="checkbox" checklist-model="data.newFileConfiguration.allowedFileTypes" checklist-value="'audio/mpeg'"> <?php i::_e(".mp3"); ?> </label>
                 <label class="checkbox-label"><input type="checkbox" checklist-model="data.newFileConfiguration.allowedFileTypes" checklist-value="'audio/wav'"> <?php i::_e(".wav"); ?> </label>
             </p>
+            <div ng-init="field = data.newFileConfiguration">
+                <?php $this->part('singles/opportunity-registrations--fields--field-require'); ?>
+            </div>
             <p ng-if="data.categories.length > 1">
                 <small><?php i::_e("Selecione em quais categorias este anexo é utilizado"); ?>:</small><br>
                 <label class="checkbox-label"><input type="checkbox" onclick="if (!this.checked) return false" ng-click="data.newFileConfiguration.categories = []" ng-checked="allCategories(data.newFileConfiguration)"> <?php i::_e("Todas"); ?> </label>
@@ -333,13 +333,13 @@ $app->applyHookBoundTo($this, 'opportunity.blockedFields', [$entity]);
                             <label class="checkbox-label"><input type="checkbox" checklist-model="field.allowedFileTypes" checklist-value="'audio/mpeg'"> <?php i::_e(".mp3"); ?> </label>
                             <label class="checkbox-label"><input type="checkbox" checklist-model="field.allowedFileTypes" checklist-value="'audio/wav'"> <?php i::_e(".wav"); ?> </label>
                         </p>
+                        <?php $this->part('singles/opportunity-registrations--fields--field-require'); ?>
+
                         <p ng-if="data.categories.length > 1">
                             <small><?php i::_e("Selecione em quais categorias este anexo é utilizado"); ?>:</small><br>
                             <label class="checkbox-label"><input type="checkbox" onclick="if (!this.checked) return false" ng-click="field.categories = []" ng-checked="allCategories(field)"> <?php i::_e("Todas"); ?> </label>
                             <label class="checkbox-label" ng-repeat="category in data.categories"><input type="checkbox" checklist-model="field.categories" checklist-value="category"> {{category}} </label>
                         </p>
-                        <?php $this->part('singles/opportunity-registrations--fields--field-require'); ?>
-
                         <p ng-if="data.entity.object.registrationRanges.length > 0">
                             <small><?php i::_e("Selecione em quais Faixas este campo é utilizado"); ?>:</small><br>
                             <label class="checkbox-label">

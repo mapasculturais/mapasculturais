@@ -18,12 +18,14 @@ use MapasCulturais\API;
 use MapasCulturais\ApiQuery;
 use Tests\Traits\OpportunityBuilder;
 use Tests\Traits\RegistrationDirector;
+use Tests\Traits\RevisionCleanup;
 use Tests\Traits\UserDirector;
 
 class EvaluationMethodTechnicalTest extends TestCase
 {
     use OpportunityBuilder,
         RegistrationDirector,
+        RevisionCleanup,
         UserDirector;
     protected QuotaRegistrationDirector $quotaRegistrationDirector;
 
@@ -309,6 +311,7 @@ class EvaluationMethodTechnicalTest extends TestCase
     {
         foreach ($registrations as $registration) {
             $registration->setStatusToApproved(true);
+            $this->detachFlushedRevisions();
         }
 
         $technical_phase->syncRegistrations($registrations);
@@ -355,6 +358,8 @@ class EvaluationMethodTechnicalTest extends TestCase
                     'score' => $registration->score,
                 ]
             );
+
+            $this->detachFlushedRevisions();
         }
     }
 

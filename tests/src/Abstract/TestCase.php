@@ -40,6 +40,11 @@ class TestCase extends PHPUnitTestCase
         $this->app = $app;
         $app->reset();
 
+        // Um teste que desliga o controle de acesso e não religa contaminaria os seguintes
+        while (!$app->isAccessControlEnabled()) {
+            $app->enableAccessControl();
+        }
+
         $app->em->clear();
         $app->em->beginTransaction();
 

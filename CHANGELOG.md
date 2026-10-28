@@ -25,6 +25,70 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 ### Melhorias não funcionais
 - Adiciona testes automatizados para os filtros de tipo de proponente e faixa/linha e para a correção de duplicação de gráficos personalizados nos relatórios
 
+## [7.8.20] - 2026-10-20
+### Correções
+- Corrige a exportação da planilha de inscritos para campos do tipo `addresses` (ex.: "Endereço do espaço"), que gerava a coluna vazia mesmo com dados salvos na inscrição
+- Corrige a pergunta "Vai concorrer às cotas?", que já vinha marcada como "Não" e deixava a pessoa enviar a inscrição sem perceber que precisava responder. Agora a pergunta começa sem resposta e, quando habilitada na oportunidade, é obrigatória para enviar a inscrição
+- Corrige a lista de erros ao lado da inscrição, que não mostrava a pergunta "Vai concorrer às cotas?" quando ela estava sem resposta
+- Corrige a edição da inscrição pelo suporte: quem tinha só permissão de visualizar conseguia alterar campos. Agora a alteração é recusada com um aviso claro
+
+### Melhorias
+- Atualiza o PHP para a versão 8.3.36, com as correções de segurança recomendadas pelo próprio PHP
+- Permite liberar a pergunta "Vai concorrer às cotas?" para o suporte e para a edição de campos pelo proponente
+- Deixa a suíte de testes mais rápida e evita que um teste interfira no seguinte
+- Mostra a resposta da pergunta "Vai concorrer às cotas?" na ficha da inscrição
+- Mostra um aviso na configuração do formulário, ao habilitar a pergunta "Vai concorrer às cotas?", explicando que o sistema já inclui essa pergunta e que não é preciso criar outro campo igual
+
+## [7.8.19] - 2026-10-15
+### Correções
+- Corrige a oportunidade criada a partir de modelo, que herdava o subsite do modelo: a oportunidade e todas as suas fases passam a ser criadas no subsite atual, onde o usuário está criando
+- Corrige a oportunidade criada a partir de modelo com resultado publicado, que já nascia com o resultado publicado: a oportunidade e suas fases passam a ser criadas com a publicação do resultado desmarcada
+
+## [7.8.18] - 2026-10-15
+### Correções
+- Corrige a configuração de status da fase, que não era respeitada no formulário do avaliador: status desabilitados (como "Negado" na fase de recurso) continuavam sendo oferecidos e nomes renomeados não apareciam. Os formulários das avaliações simplificada e contínua e o chat da fase de recurso passam a listar apenas os status habilitados na fase, com o nome configurado, e o envio da avaliação com status desabilitado, Rascunho ou Pendente passa a ser recusado
+
+## [7.8.17] - 2026-10-09
+### Correções
+- Corrige o aviso "Não foi possível salvar", que ficava na tela até o clique em fechar, passando a sumir sozinho depois de alguns segundos, como as demais mensagens
+- Corrige erro 500 no relatório de oportunidades com avaliação técnica quando havia inscrições sem nota concluída, passando a considerar apenas notas concluídas no gráfico de faixas de nota e na exportação em CSV
+- Corrige o login de usuários donos de muitos agentes e espaços, que demorava mais de 30 segundos e terminava em erro 500: os avisos de agentes e espaços sem atualização há muito tempo passam a ser gerados em segundo plano, por um job, em vez de durante o login
+- Corrige a geocodificação do endereço internacional (`international-address-form`): as linhas de endereço não disparavam a busca no Nominatim, que só rodava ao trocar estado ou cidade, normalmente antes de digitar a rua; o pin ficava no centro da cidade ou em (0,0). Agora a busca também roda ao digitar o endereço, 1,5 s depois da última tecla
+- Corrige o salvamento da configuração do formulário de fases que não são a oportunidade principal, em especial a fase de recurso: o sistema exigia descrição curta e tipo, campos que só existem no edital, e o salvamento falhava com "A descrição curta é obrigatória" e "O Tipo é obrigatório"; a descrição curta continua obrigatória só na oportunidade principal, e a fase de recurso deixa de exigir tipo
+
+### Melhorias
+- Ajustar o espaçamento dos elementos do header para melhorar a exibição e a organização das informações apresentadas
+
+## [7.8.16] - 2026-10-06
+### Correções
+- Corrige a exibição do plano de metas para aparecer somente quando habilitado e na última etapa visível da inscrição, inclusive com etapas condicionais por categoria, tipo de proponente ou faixa e na tela de suporte
+- Padroniza a ordem das opções ao adicionar e editar campos e anexos do formulário de inscrição: obrigatoriedade e condicionamento passam a aparecer depois das configurações de tipo e antes das categorias, faixas e tipos de proponente
+- Corrige a publicação automática do resultado agendada para o minuto atual: como o campo de horário não tem segundos, o horário já tinha passado no momento do salvamento e a publicação não era agendada; agora, quando a data ou a publicação automática é alterada e o horário passou há até 10 minutos, o resultado é publicado imediatamente
+- Corrige a listagem de oportunidades em que o botão "Editar" não aparecia em alguns editais, mesmo para quem pode editá-los
+- Corrige a ficha de inscrição em que textos longos sem espaço, como links, ultrapassavam a largura da página e cortavam os campos
+
+### Melhorias
+- Na configuração de publicação de resultados, impede salvar data e horário no passado, exibindo um aviso com botão para usar um horário sugerido, e mostra uma orientação com a data e o horário atuais como exemplo para agendar a publicação automática
+- Faz ajustes de visibilidade de metadados de projetos e agentes
+
+## [7.8.15] - 2026-10-02
+### Correções
+- Corrige a edição aberta de campos da inscrição quando o edital tem avaliação técnica com bônus de pontuação: ao salvar um campo do formulário, o sistema recalcula e grava o bônus na mesma operação, a trava tratava esse metadado como alteração do proponente e desfazia o salvamento; a trava passa a valer só para campos do formulário (`field_*`)
+- Corrige o agendamento da publicação automática do resultado na fase de recurso: quando a fase de recurso é criada diretamente no edital publicado, o job de publicação do resultado deixava de ser agendado e o resultado nunca era divulgado automaticamente; o gate de agendamento passa a considerar o status da oportunidade raiz (edital publicado) em vez do pai imediato
+- Corrige a exportação da planilha de inscrições: a coluna "Critérios de desempate" saía com cabeçalho mas vazia em todas as linhas; passa a trazer o mesmo texto da tabela de inscrições ("critério: valor"), um critério por linha, com o valor do critério de data de envio formatado como data legível
+- Corrige o layout das opções do campo "Tipo" na configuração de bônus de pontuação (avaliação técnica), que ficavam em linha única e estouravam a borda do card; as opções passam a quebrar linha dentro do card
+- Mantém o nome automático da fase de recurso sincronizado com a fase de avaliação ou coleta de origem e corrige nomes antigos nas listas de inscrições, preservando nomes personalizados
+- Ao enviar um arquivo maior que o tamanho permitido, o campo de anexo passa a exibir o motivo da recusa, em vez de uma mensagem de erro vermelha e sem texto, e informa que o arquivo excede o limite em vez de dizer que nenhum arquivo foi enviado
+- Corrige erro de chave duplicada que interrompia a criação de oportunidade a partir de modelo: a configuração de avaliação vinculada a uma fase deixava de ficar na fase e era desviada para a oportunidade principal
+- Corrige as cópias geradas a partir de modelo que saíam com fases sem tipo e sem exibir os campos: os metadados de cada fase passam a ser copiados fielmente do modelo, sem perdas e sem valores padrão gravados como dado
+- Corrige a duplicação de oportunidades, que gerava uma fase de avaliação a mais na cópia: a fase clonada herdava a configuração de avaliação da origem; a cópia passa a manter a mesma estrutura de fases da origem, com configurações de avaliação próprias
+- Ajusta o controle de acesso da API na consulta de entidades, alinhando filtros e ordenação às permissões de visualização de dados do usuário
+
+### Melhorias
+- Renomeia a seção "Etapa suplementar" para "Etapa de recurso" e padroniza o tamanho do título com as demais seções da configuração de fase de avaliação
+- As seções "Selos certificadores" e "Adicionar textos explicativos das avaliações" passam a carregar recolhidas por padrão na configuração de fases
+- Adiciona o botão "Editar" à esquerda de "Acessar" na listagem de oportunidades para usuários autenticados com permissão de edição, com disposição responsiva dos botões
+
 ## [7.8.14] - 2026-09-25
 ### Correções
 - Implementa db-update que corrige dados legados das etapas de inscrição dos editais: campos e anexos sem etapa são associados a uma etapa existente (ou a uma nova, quando não houver) e etapas vazias duplicadas são removidas

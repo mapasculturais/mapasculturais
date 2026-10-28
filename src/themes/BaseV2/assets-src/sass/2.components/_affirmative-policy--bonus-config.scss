@@ -13,6 +13,21 @@
     flex-wrap: wrap;
     gap: 0.5rem;
     margin-top: 0.5rem;
+    min-width: 0;
+  }
+
+  // Garante que as opções do campo "Tipo" quebrem linha dentro do card
+  // quando não couberem na largura disponível
+  &__fields {
+    min-width: 0;
+
+    .field--horizontal {
+      flex-wrap: wrap;
+
+      & > label {
+        white-space: normal;
+      }
+    }
   }
 
   &__card {
@@ -98,6 +113,7 @@
     display: flex;
     flex-direction: column;
     gap: size(15);
+    min-width: 0;
 
     &--center {
       height: 100%;

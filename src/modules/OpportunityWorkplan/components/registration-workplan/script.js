@@ -9,6 +9,10 @@ app.component('registration-workplan', {
             type: Entity,
             required: true
         },
+        isLastStep: {
+            type: Boolean,
+            required: true
+        },
     },
     data() {
         this.getWorkplan();
@@ -21,11 +25,7 @@ app.component('registration-workplan', {
         entityWorkplan.culturalArtisticSegment = null;
         entityWorkplan.goals = [];
 
-        const enableWorkplanInStep = this.registration.opportunity.registrationSteps.length > 1 ? false : true;
-
-
         return {
-            enableWorkplanInStep: enableWorkplanInStep,
             opportunity: workplanOpportunity,
             workplan: entityWorkplan,
             workplanFields: $MAPAS.EntitiesDescription.workplan,
@@ -35,7 +35,6 @@ app.component('registration-workplan', {
         };
     },
     mounted() {
-        this.handleHashChange();
         this.beforeSaveHandler = (event) => {
             if (event.detail?.registrationId !== this.registration.id) {
                 return;
@@ -43,11 +42,9 @@ app.component('registration-workplan', {
 
             event.detail.promises.push(this.save_(false, false));
         };
-        window.addEventListener('hashchange', this.handleHashChange);
         globalThis.addEventListener('registration.beforeSave', this.beforeSaveHandler);
     },
     beforeUnmount() {
-        window.removeEventListener('hashchange', this.handleHashChange);
         globalThis.removeEventListener('registration.beforeSave', this.beforeSaveHandler);
     },
     computed: {
@@ -65,26 +62,6 @@ app.component('registration-workplan', {
 
     },
     methods: {
-        handleHashChange() {
-            const hash = window.location.hash;
-            const stepMatch = hash.match(/#etapa_(\d+)/);
-
-            if (this.registration.opportunity.registrationSteps.length > 1) {
-                if (stepMatch && stepMatch[1]) {
-                    const stepNumber = parseInt(stepMatch[1], 10);
-                    this.enableWorkplanInStep = stepNumber === this.registration.opportunity.registrationSteps.length;
-
-                } else {
-                    this.enableWorkplanInStep = false;
-                }
-            } else {
-                this.enableWorkplanInStep = true;
-            }
-
-            // if (this.enableWorkplanInStep) {
-            //     this.startTutorialWorkplan();
-            // }
-        },
         getWorkplan() {
             const api = new API('workplan');
 

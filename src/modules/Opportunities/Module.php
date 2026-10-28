@@ -254,6 +254,12 @@ class Module extends \MapasCulturais\Module{
         // ajusta validação da área de interesse
         $app->hook('entity(Opportunity).validationErrors', function(&$errors) use ($app){
             /** @var Opportunity $this */
+            // Entity::getValidationErrors exige type em toda entidade que usa tipos.
+            // A fase de recurso é criada sem type e o formulário não oferece esse campo.
+            if ($this->isAppealPhase || $this->status === Opportunity::STATUS_APPEAL_PHASE) {
+                unset($errors['type'], $errors['shortDescription']);
+            }
+
             if(isset($errors['term-area'])) {
                 if($this->parent){
                     unset($errors['term-area']);
@@ -501,10 +507,19 @@ class Module extends \MapasCulturais\Module{
 
         $app->hook('entity(Opportunity).validations', function(&$validations) {
             /** @var Opportunity $this */
+            // Fases (coleta, avaliação, recurso) não têm os campos da oportunidade raiz.
+            $is_appeal_phase = $this->isAppealPhase || $this->status === Opportunity::STATUS_APPEAL_PHASE;
+            if ($this->parent || $is_appeal_phase) {
+                unset($validations['shortDescription']['required'], $validations['type']['required']);
+            }
+
             if (!$this->isNew() && !$this->isLastPhase) {
                 $validations['registrationFrom']['required'] = i::__('A data inicial das inscrições é obrigatória');
                 $validations['registrationTo']['required'] = i::__('A data final das inscrições é obrigatória');
-                $validations['shortDescription']['required'] = i::__('A descrição curtá é obrigatória');
+            }
+
+            if (!$this->isNew() && $this->isFirstPhase) {
+                $validations['shortDescription']['required'] = i::__('A descrição curta é obrigatória');
             }
 
             if (empty($this->controller->data['registrationTo'])) {
@@ -539,9 +554,16 @@ class Module extends \MapasCulturais\Module{
             /** @var Opportunity $this */
             $data = ['opportunity' => $this];
 
-            // verifica se a oportunidade e a fase estão públicas
-            $enabled_status = $this->isAppealPhase ? -1 : Opportunity::STATUS_ENABLED;
-            $active = in_array($this->status, [-1,-20, Opportunity::STATUS_ENABLED]) && $this->firstPhase->status === $enabled_status;
+            // verifica se a oportunidade e a fase estão públicas.
+            // Na fase de recurso, o que importa é o status da oportunidade raiz (edital publicado):
+            // o pai imediato pode ser o próprio edital (STATUS_ENABLED) ou uma fase intermediária (STATUS_PHASE).
+            $root = $this;
+            while ($root->parent) {
+                $root = $root->parent;
+            }
+
+            $active = in_array($this->status, [Opportunity::STATUS_PHASE, Opportunity::STATUS_APPEAL_PHASE, Opportunity::STATUS_ENABLED], true)
+                && $root->status === Opportunity::STATUS_ENABLED;
 
             $now = new \DateTime;
 
@@ -549,7 +571,13 @@ class Module extends \MapasCulturais\Module{
             $registration_from_changed = $this->_changes['registrationFrom'] ?? false;
             $registration_to_changed = $this->_changes['registrationTo'] ?? false;
 
-            if($active && $this->publishTimestamp && !$this->publishedRegistrations && (($this->autoPublish && $this->publishTimestamp >= $now) || $registration_from_changed)){
+            // O campo de horário não tem segundos: quem escolhe o minuto atual salva com o horário já passado.
+            // Se a configuração de publicação mudou neste salvamento e o horário passou há até 10 minutos, publica imediatamente.
+            $publish_config_changed = ($this->_changes['publishTimestamp'] ?? false) || ($this->_changes['autoPublish'] ?? false);
+            $publish_recently_passed = $this->publishTimestamp && $this->publishTimestamp >= (clone $now)->modify('-10 minutes');
+            $publish_on_time = $this->publishTimestamp && ($this->publishTimestamp >= $now || ($publish_config_changed && $publish_recently_passed));
+
+            if($active && $this->publishTimestamp && !$this->publishedRegistrations && (($this->autoPublish && $publish_on_time) || $registration_from_changed)){
                 $app->enqueueOrReplaceJob(Jobs\PublishResult::SLUG, $data, $this->publishTimestamp->format("Y-m-d H:i:s"));
             } else {
                 $app->unqueueJob(Jobs\PublishResult::SLUG, $data);
