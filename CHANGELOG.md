@@ -7,6 +7,7 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ## [Unreleased]
 ### Correções
+- Corrige a exportação da lista de inscrições para incluir o conteúdo dos campos de tabela/planilha (`custom-table`), com os nomes das colunas e os valores de cada linha, incluindo valores zero
 - Corrige o botão "Baixar Anexos (ZIP)" para incluir todos os anexos das fases de coleta de dados da inscrição, organizados por fase e respeitando as permissões de acesso
 - Corrige os campos visíveis para o avaliador, que deixavam o parecerista sem ver a ficha da inscrição inteira enquanto gestores e administradores viam tudo: em editais criados a partir de modelo ou por duplicação, a configuração era copiada com as referências aos campos do edital de origem, que não existem no edital novo, e a tela gravava a marcação como valor booleano, forma que o PHP aceitava e o JavaScript da ficha recusava; as referências passam a ser reescritas para os campos da cópia, em todas as fases, preservando o que estava marcado e o que estava desmarcado, e a marcação passa a ser gravada e lida de forma consistente
 
