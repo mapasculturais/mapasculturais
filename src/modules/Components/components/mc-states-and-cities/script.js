@@ -111,9 +111,16 @@ app.component('mc-states-and-cities', {
 
     computed: {
         states() {
-            const estados = Object.fromEntries(
+            let estados = Object.fromEntries(
                 Object.entries($MAPAS.config.statesAndCities).map(([UF, estado]) => [UF, estado.label])
             );
+
+            // recorte da instalação: com locked-states, o seletor lista apenas as UFs travadas
+            // (defesa contra o dataset completo publicado por outros componentes, ex.: agent-table)
+            if (this.lockedStates.length) {
+                const locked = new Set(this.lockedStates);
+                estados = Object.fromEntries(Object.entries(estados).filter(([UF]) => locked.has(UF)));
+            }
 
             return estados;
         },

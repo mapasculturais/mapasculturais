@@ -10,7 +10,7 @@ full
 
 ## Requirements changed
 
-(nenhum)
+- RF-B7 — before: com `SEARCH_FILTER_STATES` preenchida, o filtro de Estado ficava oculto | now: o filtro de Estado aparece, listando apenas os estados configurados (travados) — decisão do Product em 2026-10-28, durante a execução (adendo no briefing).
 
 ## Requirements discontinued
 

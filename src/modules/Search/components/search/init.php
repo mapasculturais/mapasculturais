@@ -48,7 +48,8 @@ if ($states_and_cities_enabled) {
 $app->view->jsObject['config']['searchTerritorialFilters'] = $states_and_cities_enabled ? [
     'statesForced'    => $territorial['states'],
     'citiesForced'    => $territorial['cities'],
-    'showStateFilter' => !$territorial['states'],
+    // Seletor de estado visível travado via locked-states — decisão do Product 2026-10-28
+    'showStateFilter' => true,
     'showCityFilter'  => !($territorial['states'] && $territorial['cities']),
 ] : [
     'statesForced'    => [],

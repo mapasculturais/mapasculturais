@@ -34,6 +34,10 @@ O visitante do catálogo passa a filtrar por estado e município em qualquer uma
 - Qualquer mudança no cadastro/edição de endereço (entregue na R04).
 - Filtro da aba Tabelas de agentes (admin).
 
+## Adendo 2026-10-28 (ajuste de escopo durante a execução)
+
+- **Linha 2 da matriz alterada por decisão do Product:** com `SEARCH_FILTER_STATES` preenchida, o campo de seleção de estados **aparece** listando apenas os estados da variável (travados) — antes ficaria oculto. O campo de Município segue como previsto (visível com cidades dos estados configurados; oculto quando `SEARCH_FILTER_CITIES` também estiver preenchida). O texto original da matriz acima permanece como registro do que foi aprovado em 2026-10-09.
+
 ## Âncora no estado atual (verificado)
 
 - Filtro de eventos: `config/events-filters.php` + componente `mc-states-and-cities` (usa `space:En_Estado`/`space:En_Municipio`).
