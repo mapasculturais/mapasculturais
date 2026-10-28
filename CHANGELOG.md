@@ -8,6 +8,7 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 ## [Unreleased]
 ### Correções
 - Corrige o botão "Baixar Anexos (ZIP)" para incluir todos os anexos das fases de coleta de dados da inscrição, organizados por fase e respeitando as permissões de acesso
+- Corrige o alinhamento do menu principal no cabeçalho, que havia sido deslocado para a esquerda na versão 7.8.17, restaurando sua distribuição central entre o logo e os botões de acesso
 - Corrige os campos visíveis para o avaliador, que deixavam o parecerista sem ver a ficha da inscrição inteira enquanto gestores e administradores viam tudo: em editais criados a partir de modelo ou por duplicação, a configuração era copiada com as referências aos campos do edital de origem, que não existem no edital novo, e a tela gravava a marcação como valor booleano, forma que o PHP aceitava e o JavaScript da ficha recusava; as referências passam a ser reescritas para os campos da cópia, em todas as fases, preservando o que estava marcado e o que estava desmarcado, e a marcação passa a ser gravada e lida de forma consistente
 
 ### Melhorias
@@ -15,7 +16,6 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ## [7.8.20] - 2026-10-20
 ### Correções
-- Corrige o alinhamento do menu principal no cabeçalho, que havia sido deslocado para a esquerda na versão 7.8.17, restaurando sua distribuição central entre o logo e os botões de acesso
 - Corrige a exportação da planilha de inscritos para campos do tipo `addresses` (ex.: "Endereço do espaço"), que gerava a coluna vazia mesmo com dados salvos na inscrição
 - Corrige a pergunta "Vai concorrer às cotas?", que já vinha marcada como "Não" e deixava a pessoa enviar a inscrição sem perceber que precisava responder. Agora a pergunta começa sem resposta e, quando habilitada na oportunidade, é obrigatória para enviar a inscrição
 - Corrige a lista de erros ao lado da inscrição, que não mostrava a pergunta "Vai concorrer às cotas?" quando ela estava sem resposta
