@@ -124,8 +124,10 @@ app.component('opportunity-appeal-phase-config' , {
 
                 for (const field of metadataFields) {
                     if (Object.prototype.hasOwnProperty.call(data, field)) {
-                        this.entity[field] = data[field];
-                        this.entity.__originalValues[field] = data[field];
+                        // sem linha no banco a API devolve null; usa o default do metadado, como o backend
+                        const value = data[field] ?? this.entity.$PROPERTIES[field]?.default ?? null;
+                        this.entity[field] = value;
+                        this.entity.__originalValues[field] = value;
                     }
                 }
             } catch (error) {

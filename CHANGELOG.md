@@ -20,6 +20,7 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Corrige a pergunta "Vai concorrer às cotas?", que já vinha marcada como "Não" e deixava a pessoa enviar a inscrição sem perceber que precisava responder. Agora a pergunta começa sem resposta e, quando habilitada na oportunidade, é obrigatória para enviar a inscrição
 - Corrige a lista de erros ao lado da inscrição, que não mostrava a pergunta "Vai concorrer às cotas?" quando ela estava sem resposta
 - Corrige a edição da inscrição pelo suporte: quem tinha só permissão de visualizar conseguia alterar campos. Agora a alteração é recusada com um aviso claro
+- Corrige a opção "Exibir detalhamento da avaliação anterior para avaliadores do recurso" na configuração da fase de recurso, que não era salva em fases sem a configuração gravada, passando a exibir o valor padrão já utilizado pelo sistema
 
 ### Melhorias
 - Atualiza o PHP para a versão 8.3.36, com as correções de segurança recomendadas pelo próprio PHP
