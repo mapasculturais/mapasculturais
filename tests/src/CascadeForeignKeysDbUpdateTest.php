@@ -3,6 +3,7 @@
 namespace Tests;
 
 use MapasCulturais\Connection;
+use MapasCulturais\Entities\Agent;
 use MapasCulturais\JobTypes\EntitiesUpdateNotifications;
 use Tests\Abstract\TestCase;
 use Tests\Traits\UserDirector;
@@ -28,6 +29,28 @@ class CascadeForeignKeysDbUpdateTest extends TestCase
         $this->assertSame(0, $this->countJobs($job_id), 'destruir o usuário tem que levar o job dele junto');
     }
 
+    public function testDestroyingUserRemovesItsPendingPermissionCache(): void
+    {
+        $user = $this->userDirector->createUser();
+        $user_id = $user->id;
+
+        $this->connection()->executeStatement(
+            "INSERT INTO permission_cache_pending (id, object_type, object_id, usr_id)
+             VALUES (nextval('agent_id_seq'::regclass), :object_type, :object_id, :usr_id)",
+            [
+                'object_type' => Agent::class,
+                'object_id' => $user->profile->id,
+                'usr_id' => $user_id,
+            ],
+        );
+
+        $this->assertSame(1, $this->countPendingPermissionCache($user_id), 'a pendência precisa existir antes da exclusão');
+
+        $this->destroyUser($user_id);
+
+        $this->assertSame(0, $this->countPendingPermissionCache($user_id), 'destruir o usuário tem que levar a pendência de pcache junto');
+    }
+
     private function destroyUser(int $user_id): void
     {
         $this->app->disableAccessControl();
@@ -39,6 +62,14 @@ class CascadeForeignKeysDbUpdateTest extends TestCase
     private function countJobs(string $job_id): int
     {
         return (int) $this->connection()->fetchOne('SELECT count(*) FROM job WHERE id = :id', ['id' => $job_id]);
+    }
+
+    private function countPendingPermissionCache(int $user_id): int
+    {
+        return (int) $this->connection()->fetchOne(
+            'SELECT count(*) FROM permission_cache_pending WHERE usr_id = :id',
+            ['id' => $user_id],
+        );
     }
 
     private function connection(): Connection
