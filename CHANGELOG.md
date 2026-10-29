@@ -8,6 +8,7 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 ## [UNRELEASED]
 ### Correções
 - Corrige o modal "Configurar campos editáveis", que travava a data limite assim que havia campos selecionados: o gestor volta a conseguir estender/reabrir o prazo perdido do proponente
+- Corrige as tarefas em segundo plano que ficavam presas na fila após a exclusão da conta que as criou: agora são removidas junto com a conta, e o acúmulo existente é limpo
 
 ## [7.8.21] - 2026-10-28
 ### Correções
