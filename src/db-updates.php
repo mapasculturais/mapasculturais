@@ -3437,4 +3437,11 @@ $$
         __exec("DELETE FROM permission_cache_pending WHERE usr_id IS NOT NULL AND NOT EXISTS (SELECT 1 FROM usr WHERE usr.id = permission_cache_pending.usr_id)");
     },
 
+    'cria as chaves estrangeiras de cascata de job e permission_cache_pending' => function () {
+        // Depende da limpeza do passo anterior: a constraint é recusada se restar linha órfã.
+        __try("ALTER TABLE job ADD CONSTRAINT fk_job_usr FOREIGN KEY (user_id) REFERENCES usr (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE;");
+        __try("ALTER TABLE job ADD CONSTRAINT fk_job_subsite FOREIGN KEY (subsite_id) REFERENCES subsite (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE;");
+        __try("ALTER TABLE permission_cache_pending ADD CONSTRAINT fk_permission_cache_pending_usr FOREIGN KEY (usr_id) REFERENCES usr (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE;");
+    },
+
 ] + $updates ;
