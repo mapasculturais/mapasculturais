@@ -3431,4 +3431,10 @@ $$
         return true;
     },
 
+    'remove os jobs e as pendências de pcache de usuário ou subsite inexistente' => function () {
+        __exec("DELETE FROM job WHERE user_id IS NOT NULL AND NOT EXISTS (SELECT 1 FROM usr WHERE usr.id = job.user_id)");
+        __exec("DELETE FROM job WHERE subsite_id IS NOT NULL AND NOT EXISTS (SELECT 1 FROM subsite WHERE subsite.id = job.subsite_id)");
+        __exec("DELETE FROM permission_cache_pending WHERE usr_id IS NOT NULL AND NOT EXISTS (SELECT 1 FROM usr WHERE usr.id = permission_cache_pending.usr_id)");
+    },
+
 ] + $updates ;
