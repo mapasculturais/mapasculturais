@@ -2,6 +2,7 @@
 
 namespace Tests;
 
+use Doctrine\DBAL\ArrayParameterType;
 use MapasCulturais\Connection;
 use MapasCulturais\Entities\Agent;
 use MapasCulturais\JobTypes\EntitiesUpdateNotifications;
@@ -49,6 +50,19 @@ class CascadeForeignKeysDbUpdateTest extends TestCase
         $this->destroyUser($user_id);
 
         $this->assertSame(0, $this->countPendingPermissionCache($user_id), 'destruir o usuário tem que levar a pendência de pcache junto');
+    }
+
+    public function testTheThreeForeignKeysCascadeOnDelete(): void
+    {
+        $expected = ['fk_job_usr', 'fk_job_subsite', 'fk_permission_cache_pending_usr'];
+
+        $found = $this->connection()->fetchFirstColumn(
+            "SELECT conname FROM pg_constraint WHERE contype = 'f' AND confdeltype = 'c' AND conname IN (:names)",
+            ['names' => $expected],
+            ['names' => ArrayParameterType::STRING],
+        );
+
+        $this->assertEqualsCanonicalizing($expected, $found, 'as três chaves estrangeiras têm que existir com ON DELETE CASCADE');
     }
 
     private function destroyUser(int $user_id): void
