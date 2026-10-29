@@ -247,4 +247,47 @@ abstract class AuthProvider {
             setcookie('mapasculturais.adm', $user_is_adm, 0, '/');
         }
     }
+
+    /**
+     * Indica se o provedor de autenticação valida a conta do usuário por e-mail
+     *
+     * Provedores que enviam ao usuário um link para validar a conta devem
+     * sobrescrever este método retornando true. O padrão é false para que a
+     * funcionalidade seja opcional: instalações que usam outros provedores não
+     * exibem nem executam nada relacionado a ela.
+     *
+     * Por ser um método declarado, sobrescrever é a única forma de implementá-lo:
+     * hooks `AuthProvider::supportsAccountValidation` não são aplicados, porque
+     * métodos declarados têm precedência sobre o Traits\MagicCallers.
+     *
+     * @return bool
+     */
+    function supportsAccountValidation(){
+        return false;
+    }
+
+    /**
+     * Indica se a conta do usuário já está validada
+     *
+     * O padrão é true porque provedores que não validam a conta por e-mail não
+     * têm contas pendentes de validação.
+     *
+     * @param Entities\User $user
+     * @return bool
+     */
+    function isAccountValidated(Entities\User $user){
+        return true;
+    }
+
+    /**
+     * Reenvia ao usuário o e-mail com o link de validação de conta
+     *
+     * O padrão é false, indicando que nenhum e-mail foi enviado.
+     *
+     * @param Entities\User $user
+     * @return bool true se o e-mail foi enviado
+     */
+    function resendAccountValidationEmail(Entities\User $user){
+        return false;
+    }
 }
