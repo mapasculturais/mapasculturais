@@ -2,8 +2,10 @@
 
 namespace Test;
 
+use Laminas\Diactoros\Response;
 use MapasCulturais\Entities\Opportunity;
 use MapasCulturais\Entities\RegistrationFileConfiguration;
+use MapasCulturais\Exceptions\Halt;
 use Tests\Abstract\TestCase;
 use Tests\Builders\PhasePeriods\ConcurrentEndingAfter;
 use Tests\Builders\PhasePeriods\Open;
@@ -92,6 +94,84 @@ class OpportunityDuplicateTest extends TestCase
             $this->describePhases($duplicated),
             'Certificando que a cópia mantém a mesma estrutura de fases da origem'
         );
+    }
+
+    function testDuplicatingOpportunityWithAppealPhaseKeepsAppealParentOnCopiedMeritPhase(): void
+    {
+        $admin = $this->userDirector->createUser('admin');
+        $this->login($admin);
+
+        $builder = $this->opportunityBuilder
+            ->reset(owner: $admin->profile, owner_entity: $admin->profile)
+            ->fillRequiredProperties()
+            ->firstPhase()
+                ->setRegistrationPeriod(new Open)
+                ->done()
+            ->save();
+
+        $builder->addEvaluationPhase(EvaluationMethods::technical)
+            ->setEvaluationPeriod(new ConcurrentEndingAfter)
+            ->save()
+            ->done();
+
+        $source = $builder->refresh()->getInstance();
+        $meritPhase = $source->evaluationMethodConfiguration
+            ? $source
+            : $this->evaluationPhaseOf($source);
+
+        $sourceAppeal = $this->createAppealPhase($meritPhase);
+        $this->assertSame(
+            (int) $meritPhase->id,
+            (int) $sourceAppeal->parent->id,
+            'Garantindo que o recurso da origem tem parent na fase de mérito'
+        );
+
+        $duplicated = $this->duplicate($source);
+        $duplicatedMerit = $duplicated->evaluationMethodConfiguration
+            ? $duplicated
+            : $this->evaluationPhaseOf($duplicated);
+
+        $duplicatedAppeal = $duplicatedMerit->appealPhase;
+        $this->assertInstanceOf(Opportunity::class, $duplicatedAppeal, 'Certificando que a cópia tem fase de recurso');
+        $this->assertNotSame(
+            (int) $sourceAppeal->id,
+            (int) $duplicatedAppeal->id,
+            'Certificando que o recurso da cópia é uma entity nova'
+        );
+        $this->assertSame(
+            (int) $duplicatedMerit->id,
+            (int) $duplicatedAppeal->parent->id,
+            'Certificando que o parent do recurso duplicado é a fase de mérito da cópia, não a do edital de origem'
+        );
+        $this->assertTrue(
+            (bool) $duplicatedAppeal->isAppealPhase
+                || (int) $duplicatedAppeal->status === Opportunity::STATUS_APPEAL_PHASE,
+            'Certificando que a fase clonada permanece marcada como recurso'
+        );
+    }
+
+    private function createAppealPhase(Opportunity $parent): Opportunity
+    {
+        $request = $this->requestFactory->mapasPOST(
+            'opportunity',
+            'createAppealPhase',
+            [$parent->id],
+            ['id' => $parent->id]
+        );
+        $this->app->request = $request;
+        $this->app->response = new Response();
+        $controller = $this->app->controller('opportunity');
+        $controller->setRequestData(['id' => $parent->id]);
+
+        try {
+            $controller->callAction('POST', 'createAppealPhase', []);
+        } catch (Halt) {
+        }
+
+        $parent = $parent->refreshed();
+        $this->assertInstanceOf(Opportunity::class, $parent->appealPhase);
+
+        return $parent->appealPhase;
     }
 
     private function createSourceWithVisibleEvaluationFields($owner): Opportunity
