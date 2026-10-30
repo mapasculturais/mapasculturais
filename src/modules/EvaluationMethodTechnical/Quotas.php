@@ -98,6 +98,27 @@ class Quotas {
      */
     protected array $registrationFields = [];
 
+    /**
+     * Configurações de campo da primeira fase, carregadas uma única vez por cálculo
+     *
+     * @var array|null
+     */
+    protected ?array $firstPhaseFieldConfigurations = null;
+
+    /**
+     * Campos utilizados nas cotas, distribuição geográfica e critérios de desempate (ver getFields)
+     *
+     * @var array|null
+     */
+    protected ?array $fieldsCache = null;
+
+    /**
+     * Definição (título e tipo) do campo de cada critério de desempate, por criterionType
+     *
+     * @var array
+     */
+    protected array $tiebreakerSelectedByCriterionType = [];
+
     protected static array $instances = [];
         
     function __construct(int $phase_id) {
@@ -252,12 +273,18 @@ class Quotas {
 
     /**
      * Retorna os campos utilizados
+     *
+     * Calculados uma vez só: dependem apenas da configuração, e $this->fields é
+     * lido para cada campo do formulário de cada inscrição.
+     *
      * @return array 
      */
     protected function getFields(): array {
-        $fields = array_unique([...$this->quotaFields, ...$this->tiebreakerFields, ...$this->geoQuotaFields]);
+        if (is_null($this->fieldsCache)) {
+            $this->fieldsCache = array_unique([...$this->quotaFields, ...$this->tiebreakerFields, ...$this->geoQuotaFields]);
+        }
 
-        return $fields;
+        return $this->fieldsCache;
     }
 
     protected function enrichRegistrationFromFirstPhase(object $registration): object {
@@ -512,9 +539,17 @@ class Quotas {
                     $geo_vacancies[$region] = ceil($range_vacancies * $this->geoQuotaConfig[$region]->percent);
                 }
 
+                // a região de cada inscrição não muda durante o cálculo: é obtida uma vez só
+                $registrations_regions = [];
+                foreach($range_registrations[$range] as $registration) {
+                    $registrations_regions[$registration->number] = $this->getRegistrationRegion($registration);
+                }
+
+                $numbers_in_result = $this->getRegistrationNumbersIndex($range_result[$range]);
+
                 foreach($this->geoLocations as $region) {
                     foreach($range_registrations[$range] as $registration){
-                        $registration_region = $this->getRegistrationRegion($registration);
+                        $registration_region = $registrations_regions[$registration->number];
 
                         $_count_result = $geo_count_results[$region] ?? 0;
                         $_vacancies = $geo_vacancies[$region] ?? 0;
@@ -533,20 +568,24 @@ class Quotas {
                                 }
                             }
 
-                            // obtém a posição da última inscrição da região atual ($region)
-                            $key_of_registration_to_exclude = null;
-                            foreach($range_result[$range] as $key => $_registration) {
-                                $_registration_region = $this->getRegistrationRegion($_registration);
-                                if($_registration_region == $region) {
-                                    $key_of_registration_to_exclude = $key;
+                            if(empty($numbers_in_result[$registration->number]) && in_array($registration_region, $regions_with_vacancies)) {
+                                // obtém a posição da última inscrição da região atual ($region)
+                                $key_of_registration_to_exclude = null;
+                                foreach($range_result[$range] as $key => $_registration) {
+                                    $_registration_region = $registrations_regions[$_registration->number];
+                                    if($_registration_region == $region) {
+                                        $key_of_registration_to_exclude = $key;
+                                    }
                                 }
-                            }
 
-
-                            if(!$this->isRegistrationInArray($registration, $range_result[$range]) && in_array($registration_region, $regions_with_vacancies)) {
                                 $geo_count_results[$registration_region] = ($geo_count_results[$registration_region] ?? 0) + 1;
                                 $geo_count_results[$region] = ($geo_count_results[$region] ?? 0) - 1;
+
+                                if(isset($range_result[$range][$key_of_registration_to_exclude])) {
+                                    $numbers_in_result[$range_result[$range][$key_of_registration_to_exclude]->number]--;
+                                }
                                 $range_result[$range][$key_of_registration_to_exclude] = $registration;
+                                $numbers_in_result[$registration->number] = ($numbers_in_result[$registration->number] ?? 0) + 1;
                             }
                         }
                     }
@@ -583,6 +622,8 @@ class Quotas {
                     $range_quota_vacancies[$quota_slug] = $quota_vacancies;
                     $range_total_quota_vacancies += $quota_vacancies;
                 }
+
+                $numbers_in_result = $this->getRegistrationNumbersIndex($_result);
 
                 /*
                     Caso a oportunidade esteja configurada para considerar os cotistas dentro da 
@@ -625,7 +666,7 @@ class Quotas {
                         } 
 
                         // encontra o primeiro cotista
-                        if(!$this->isRegistrationInArray($registration, $_result) && $this->isRegistrationEligibleForQuota($registration, $quota_slug)) {
+                        if(empty($numbers_in_result[$registration->number]) && $this->isRegistrationEligibleForQuota($registration, $quota_slug)) {
                             // substitui o não cotista com nota mais baixa pelo cotista encontrado
                             $region = $this->getRegistrationRegion($registration);
                             $replaced = false;
@@ -636,7 +677,9 @@ class Quotas {
                                     $_region = $this->getRegistrationRegion($_result[$i]);
                                     if($_region == $region) {
                                         $this->setRegistrationAsQuota($registration, $quota_slug, $_result[$i]);
+                                        $numbers_in_result[$_result[$i]->number]--;
                                         $_result[$i] = $registration;
+                                        $numbers_in_result[$registration->number] = ($numbers_in_result[$registration->number] ?? 0) + 1;
                                         $replaced = true;
                                         break;
                                     }
@@ -648,7 +691,9 @@ class Quotas {
                                 for($i = count($_result) -1; $i >= 0; $i--) {
                                     if(!$this->getRegistrationQuotas($_result[$i])) {
                                         $this->setRegistrationAsQuota($registration, $quota_slug, $_result[$i]);
+                                        $numbers_in_result[$_result[$i]->number]--;
                                         $_result[$i] = $registration;
+                                        $numbers_in_result[$registration->number] = ($numbers_in_result[$registration->number] ?? 0) + 1;
                                         $replaced = true;
                                         break;
                                     }
@@ -673,13 +718,31 @@ class Quotas {
         
         $result = $this->tiebreaker($result);
 
+        $numbers_in_result = $this->getRegistrationNumbersIndex($result);
         foreach($registrations as $registration) {            
-            if(!$this->isRegistrationInArray($registration, $result)) {
+            if(empty($numbers_in_result[$registration->number])) {
                 $result[] = $registration;
+                $numbers_in_result[$registration->number] = 1;
             }
         }
         
         return $result;
+    }
+
+    /**
+     * Retorna quantas vezes cada número de inscrição aparece na lista, para consulta
+     * em tempo constante no lugar de isRegistrationInArray dentro dos laços
+     *
+     * @param array $list_of_registrations
+     * @return array
+     */
+    protected function getRegistrationNumbersIndex(array $list_of_registrations): array {
+        $index = [];
+        foreach($list_of_registrations as $reg) {
+            $index[$reg->number] = ($index[$reg->number] ?? 0) + 1;
+        }
+
+        return $index;
     }
 
     public function isRegistrationInArray($registration, array $list_of_registrations): bool {
@@ -787,6 +850,22 @@ class Quotas {
         return '';
     }
 
+    /**
+     * Retorna as configurações de campo da primeira fase.
+     *
+     * Cada leitura de Opportunity::registrationFieldConfigurations consulta o banco,
+     * e este método é chamado por inscrição e por comparação do desempate.
+     *
+     * @return array
+     */
+    protected function getFirstPhaseFieldConfigurations(): array {
+        if (is_null($this->firstPhaseFieldConfigurations)) {
+            $this->firstPhaseFieldConfigurations = $this->firstPhase->registrationFieldConfigurations;
+        }
+
+        return $this->firstPhaseFieldConfigurations;
+    }
+
     protected function getTiebreakerSelected(object $tiebreaker): ?object {
         if (isset($tiebreaker->selected)) {
             return $tiebreaker->selected;
@@ -797,7 +876,16 @@ class Quotas {
             return null;
         }
 
-        foreach ($this->firstPhase->registrationFieldConfigurations as $field) {
+        // chamado a cada comparação do desempate; a definição do campo não muda durante o cálculo
+        if (array_key_exists($criterion_type, $this->tiebreakerSelectedByCriterionType)) {
+            return $this->tiebreakerSelectedByCriterionType[$criterion_type];
+        }
+
+        return $this->tiebreakerSelectedByCriterionType[$criterion_type] = $this->resolveTiebreakerSelected($criterion_type);
+    }
+
+    protected function resolveTiebreakerSelected(string $criterion_type): ?object {
+        foreach ($this->getFirstPhaseFieldConfigurations() as $field) {
             if ($field->fieldName === $criterion_type) {
                 $field_type = $field->fieldType;
 
@@ -1239,7 +1327,7 @@ class Quotas {
             return;
         }
 
-        foreach ($this->firstPhase->registrationFieldConfigurations as $field) {
+        foreach ($this->getFirstPhaseFieldConfigurations() as $field) {
             $field_name = $field->fieldName;
             if (!in_array($field_name, $this->fields, true)) {
                 continue;
