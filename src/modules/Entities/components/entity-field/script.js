@@ -503,16 +503,25 @@ app.component('entity-field', {
                 const editableFields = this.entity.editableFields || [];
                 const allowedFields = this.entity.allowedFields;
 
+                // Metadados da abertura de edição pelo gestor — nunca entram em
+                // editableFields (só field_*/rfc_*/etc.). Sem esta exceção, o modal
+                // "Configurar campos editáveis" trava a data limite assim que há
+                // campos selecionados e impede reabrir prazo perdido.
+                const fieldEditConfigProps = ['editableUntil', 'editableFields', 'editSentTimestamp'];
+                const isFieldEditConfigProp = fieldEditConfigProps.includes(this.prop);
+
                 // Se estamos no modo suporte (allowedFields definido), marca como readonly
                 // campos que estão em allowedFields mas não em editableFields
-                if (Array.isArray(allowedFields) && allowedFields.length > 0) {
-                    if (allowedFields.includes(this.prop) && !editableFields.includes(this.prop) && !userPermission) {
+                if (!isFieldEditConfigProp) {
+                    if (Array.isArray(allowedFields) && allowedFields.length > 0) {
+                        if (allowedFields.includes(this.prop) && !editableFields.includes(this.prop) && !userPermission) {
+                            this.readonly = true;
+                            return this.readonly;
+                        }
+                    } else if(editableFields.length > 0 && !editableFields.includes(this.prop) && !userPermission) {
                         this.readonly = true;
                         return this.readonly;
                     }
-                } else if(editableFields.length > 0 && !editableFields.includes(this.prop) && !userPermission) {
-                    this.readonly = true;
-                    return this.readonly;
                 }
             }
 
