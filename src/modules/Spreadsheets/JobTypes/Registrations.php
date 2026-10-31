@@ -52,6 +52,30 @@ class Registrations extends SpreadsheetJob
         return implode(' || ', $lines);
     }
 
+    private static function _formatCustomTableForSpreadsheet(array $columns, array $rows): string {
+        $lines = [];
+
+        foreach ($rows as $row) {
+            $row = (array) $row;
+            $cells = [];
+            $has_values = false;
+
+            foreach ($columns as $index => $column) {
+                $column = (array) $column;
+                $value = $row["col{$index}"] ?? '';
+                $value = is_scalar($value) ? (string) $value : '';
+                $has_values = $has_values || $value !== '';
+                $cells[] = ($column['name'] ?? '') . ': ' . $value;
+            }
+
+            if ($has_values) {
+                $lines[] = implode(' | ', $cells);
+            }
+        }
+
+        return implode(' || ', $lines);
+    }
+
     private static function _formatAddressListItem(mixed $address): string {
         if (!is_array($address) && !is_object($address)) {
             return is_scalar($address) && $address !== '' ? (string) $address : '';
@@ -546,6 +570,13 @@ class Registrations extends SpreadsheetJob
                         $addresses = json_decode(json_encode($entity[$field->fieldName]), true);
                         $entity[$field->fieldName] = self::_formatAddressesForSpreadsheet(
                             is_array($addresses) ? $addresses : []
+                        );
+                    }
+
+                    if ($field->fieldType === 'custom-table') {
+                        $entity[$field->fieldName] = self::_formatCustomTableForSpreadsheet(
+                            (array) ($field->config['columns'] ?? []),
+                            (array) ($entity[$field->fieldName] ?? [])
                         );
                     }
 
