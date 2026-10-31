@@ -920,6 +920,28 @@ app.component('entity-table', {
                         }
                     }
                     switch (description.type) {
+                        case 'custom-table': {
+                            if (typeof val === 'string') {
+                                try { val = JSON.parse(val); } catch { val = []; }
+                            }
+
+                            const columns = description.registrationFieldConfiguration?.config?.columns ?? [];
+                            val = Array.isArray(val) && Array.isArray(columns) ? val.map(row => {
+                                const values = columns.map((column, index) => {
+                                    const value = row?.[`col${index}`];
+                                    return ['string', 'number', 'boolean'].includes(typeof value) ? String(value) : '';
+                                });
+
+                                return values.some(value => value !== '')
+                                    ? columns.map((column, index) => `${column.name ?? ''}: ${values[index]}`).join(' | ')
+                                    : '';
+                            }).filter(Boolean).join(' || ') : '';
+
+                            // A célula usa v-html; nomes e valores da tabela devem aparecer como texto.
+                            const escapes = { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' };
+                            val = val.replace(/[&<>"']/g, character => escapes[character]);
+                            break;
+                        }
                         case 'multiselect':
                         case 'array':
                             if (Array.isArray(val)) {
