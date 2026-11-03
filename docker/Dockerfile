@@ -13,8 +13,9 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 
 RUN mkdir -p /etc/apt/keyrings
 RUN curl -fsSL https://deb.nodesource.com/gpgkey/nodesource-repo.gpg.key | gpg --dearmor -o /etc/apt/keyrings/nodesource.gpg
-RUN echo "deb [signed-by=/etc/apt/keyrings/nodesource.gpg] https://deb.nodesource.com/node_20.x nodistro main" | sudo tee /etc/apt/sources.list.d/nodesource.list
+RUN echo "deb [signed-by=/etc/apt/keyrings/nodesource.gpg] https://deb.nodesource.com/node_22.x nodistro main" | sudo tee /etc/apt/sources.list.d/nodesource.list
 RUN apt-get update && apt-get install -y nodejs
+RUN node --version && node -e "const [major, minor, patch] = process.versions.node.split('.').map(Number); if (major !== 22 || minor < 23 || (minor === 23 && patch < 4)) throw new Error('Node.js 22.23.4 or newer in the 22.x release line is required')"
 
 RUN npm install -g pnpm@10
 RUN rm -rf /var/lib/apt/lists
