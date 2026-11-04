@@ -146,6 +146,27 @@ class RegistrationPhasePropagationTest extends TestCase
         );
     }
 
+    function testLastPhaseUsesNearestResultWhenDeepestLinkHasResult()
+    {
+        [$evaluated_phase, $pass_through_phase] = $this->buildPhasesWithPassThrough();
+
+        $registration = $this->propagate($evaluated_phase, Registration::STATUS_APPROVED);
+
+        $pass_through_registration = $this->findInPhase($registration->number, $pass_through_phase);
+        $pass_through_registration->send(false);
+        $pass_through_registration->refreshed()->setStatusToNotApproved(true);
+
+        $last_phase = $evaluated_phase->lastPhase;
+        $last_phase->syncRegistrations([$this->findInPhase($registration->number, $pass_through_phase)]);
+        $this->processJobs();
+
+        $this->assertSame(
+            Registration::STATUS_NOTAPPROVED,
+            $this->findInPhase($registration->number, $last_phase)->status,
+            'Havendo resultado no elo mais profundo, é ele que vale, e não o da fase anterior'
+        );
+    }
+
     /**
      * @return array{0: Opportunity, 1: Opportunity} fase avaliada e fase de passagem
      */
