@@ -57,6 +57,13 @@ class Registration extends \MapasCulturais\Entity
     const STATUS_NOTAPPROVED = 3;
     const STATUS_INVALID = 2;
 
+    const RESULT_STATUSES = [
+        self::STATUS_INVALID,
+        self::STATUS_NOTAPPROVED,
+        self::STATUS_WAITLIST,
+        self::STATUS_APPROVED,
+    ];
+
 
     protected $__enableMagicGetterHook = true;
     protected $__enableMagicSetterHook = true;
@@ -1181,6 +1188,13 @@ class Registration extends \MapasCulturais\Entity
     function setStatusToSent($flush = true){
         $this->_setStatusTo(self::STATUS_SENT, $flush);
         App::i()->applyHookBoundTo($this, 'entity(Registration).status(sent)');
+    }
+
+    /**
+     * Informa se o status da inscrição é o resultado de uma avaliação, e não um estado de trâmite.
+     */
+    function hasResultStatus(): bool {
+        return in_array($this->status, self::RESULT_STATUSES, true);
     }
 
     function send($update_sent_timestamp = true, $flush = true){
