@@ -2077,6 +2077,145 @@ class Opportunity extends EntityController {
     }
 
     /**
+     * Lista avaliações enviadas que o gestor pode reabrir para um avaliador.
+     */
+    public function GET_reopenableEvaluations() {
+        $this->requireAuthentication();
+
+        $opportunity_id = $this->data['opportunityId'] ?? null;
+        $user_id = $this->data['uid'] ?? null;
+        $after_id = $this->data['afterId'] ?? null;
+        $requested_limit = $this->data['limit'] ?? 25;
+
+        if (!filter_var($opportunity_id, FILTER_VALIDATE_INT) ||
+            !filter_var($user_id, FILTER_VALIDATE_INT) ||
+            ($after_id !== null && (!filter_var($after_id, FILTER_VALIDATE_INT) || (int) $after_id < 1)) ||
+            !filter_var($requested_limit, FILTER_VALIDATE_INT) ||
+            (int) $requested_limit < 1) {
+            $this->errorJson(i::__('Parâmetros inválidos para listar as avaliações enviadas.'), 400);
+        }
+
+        $app = App::i();
+        $opportunity = $this->repository->find((int) $opportunity_id);
+        if (!$opportunity || !$opportunity->evaluationMethodConfiguration) {
+            $this->errorJson(i::__('Oportunidade não encontrada.'), 404);
+        }
+
+        $opportunity->evaluationMethodConfiguration->checkPermission('manageEvaluationCommittee');
+
+        $user = $app->repo('User')->find((int) $user_id);
+        if (!$user) {
+            $this->errorJson(i::__('Avaliador não encontrado.'), 404);
+        }
+
+        $limit = min((int) $requested_limit, 50);
+        $parameters = ['user' => $user, 'opportunity' => $opportunity];
+        $where = 'e.user = :user AND r.opportunity = :opportunity AND e.status = :status';
+        $parameters['status'] = RegistrationEvaluation::STATUS_SENT;
+
+        $count_query = $app->em->createQuery(
+            'SELECT COUNT(e.id) FROM MapasCulturais\\Entities\\RegistrationEvaluation e JOIN e.registration r WHERE ' . $where
+        );
+        $count_query->setParameters($parameters);
+        $total = (int) $count_query->getSingleScalarResult();
+
+        if ($after_id !== null) {
+            $where .= ' AND e.id > :afterId';
+            $parameters['afterId'] = (int) $after_id;
+        }
+
+        $query = $app->em->createQuery(
+            'SELECT e.id AS id, r.number AS registrationNumber ' .
+            'FROM MapasCulturais\\Entities\\RegistrationEvaluation e JOIN e.registration r ' .
+            'WHERE ' . $where . ' ORDER BY e.id ASC'
+        );
+        $query->setParameters($parameters);
+        $query->setMaxResults($limit + 1);
+        $rows = $query->getScalarResult();
+        $has_more = count($rows) > $limit;
+        $rows = array_slice($rows, 0, $limit);
+        $evaluations = array_map(static function (array $row): array {
+            return [
+                'id' => (int) $row['id'],
+                'registrationNumber' => $row['registrationNumber'],
+            ];
+        }, $rows);
+
+        $this->json([
+            'evaluations' => $evaluations,
+            'total' => $total,
+            'nextCursor' => $has_more ? end($evaluations)['id'] : null,
+        ]);
+    }
+
+    /**
+     * Reabre somente as avaliações enviadas selecionadas pelo gestor.
+     */
+    public function POST_reopenSelectedEvaluations() {
+        $this->requireAuthentication();
+
+        $opportunity_id = $this->data['opportunityId'] ?? null;
+        $user_id = $this->data['uid'] ?? null;
+        $evaluation_ids = $this->data['evaluationIds'] ?? null;
+
+        if (!filter_var($opportunity_id, FILTER_VALIDATE_INT) ||
+            !filter_var($user_id, FILTER_VALIDATE_INT) ||
+            !is_array($evaluation_ids) || !$evaluation_ids) {
+            $this->errorJson(i::__('Informe a oportunidade, o avaliador e as avaliações enviadas.'), 400);
+        }
+
+        $ids = [];
+        foreach ($evaluation_ids as $id) {
+            if ((!is_int($id) && !is_string($id)) || !filter_var($id, FILTER_VALIDATE_INT)) {
+                $this->errorJson(i::__('A seleção de avaliações é inválida.'), 400);
+            }
+            $ids[] = (int) $id;
+        }
+        $ids = array_values(array_unique($ids));
+
+        $app = App::i();
+        $opportunity = $this->repository->find((int) $opportunity_id);
+        if (!$opportunity || !$opportunity->evaluationMethodConfiguration) {
+            $this->errorJson(i::__('Oportunidade não encontrada.'), 404);
+        }
+
+        $opportunity->evaluationMethodConfiguration->checkPermission('manageEvaluationCommittee');
+
+        $user = $app->repo('User')->find((int) $user_id);
+        if (!$user) {
+            $this->errorJson(i::__('Avaliador não encontrado.'), 404);
+        }
+
+        $evaluations = [];
+        foreach ($ids as $id) {
+            $evaluation = $app->repo('RegistrationEvaluation')->find($id);
+            if (!$evaluation ||
+                $evaluation->user->id !== $user->id ||
+                $evaluation->registration->opportunity->id !== $opportunity->id) {
+                $this->errorJson(i::__('A seleção contém avaliação fora desta oportunidade ou deste avaliador.'), 400);
+            }
+            if ($evaluation->status !== RegistrationEvaluation::STATUS_SENT) {
+                $this->errorJson(i::__('A seleção contém avaliação que não está enviada. Atualize a lista e tente novamente.'), 409);
+            }
+            $evaluations[] = $evaluation;
+        }
+
+        $app->em->beginTransaction();
+        try {
+            foreach ($evaluations as $evaluation) {
+                $evaluation->status = RegistrationEvaluation::STATUS_EVALUATED;
+                $evaluation->save(true);
+            }
+            $app->em->commit();
+        } catch (\Throwable $error) {
+            $app->em->rollback();
+            throw $error;
+        }
+
+        $this->json(['reopened' => count($evaluations)]);
+    }
+
+    /**
      * Corrige ponteiros entre fases de inscrições
      * 
      * Esta ação requer autenticação.
