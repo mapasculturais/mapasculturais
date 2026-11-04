@@ -121,5 +121,76 @@ class RegistrationPhasePropagationTest extends TestCase
         $current_registration = $repo->findOneBy(['number' => $number, 'opportunity' => $phase6]);
         $this->assertNotNull($current_registration, 'Inscrição deve ter sido propagada para a fase 6');
     }
+
+    function testLastPhaseUsesEvaluationResultWhenDeepestLinkHasNoResult()
+    {
+        [$evaluated_phase, $pass_through_phase] = $this->buildPhasesWithPassThrough();
+
+        $registration = $this->propagate($evaluated_phase, Registration::STATUS_APPROVED);
+        $last_phase_registration = $this->findInPhase($registration->number, $evaluated_phase->lastPhase);
+
+        $this->assertSame(
+            Registration::STATUS_DRAFT,
+            $this->findInPhase($registration->number, $pass_through_phase)->status,
+            'A fase de passagem precisa existir na cadeia sem registrar resultado'
+        );
+        $this->assertSame(
+            Registration::STATUS_APPROVED,
+            $last_phase_registration->status,
+            'A publicação final deve manter o resultado da avaliação, e não o status do elo de passagem'
+        );
+        $this->assertStringContainsString(
+            'Selecionada em',
+            $last_phase_registration->consolidatedResult,
+            'O texto gravado deve citar o resultado da avaliação'
+        );
+    }
+
+    /**
+     * @return array{0: Opportunity, 1: Opportunity} fase avaliada e fase de passagem
+     */
+    private function buildPhasesWithPassThrough(): array
+    {
+        $admin = $this->userDirector->createUser('admin');
+        $this->login($admin);
+
+        /** @var Opportunity $evaluated_phase */
+        $evaluated_phase = $this->opportunityBuilder
+            ->reset(owner: $admin->profile, owner_entity: $admin->profile)
+            ->fillRequiredProperties()
+            ->firstPhase()
+                ->setRegistrationPeriod(new Open)
+                ->done()
+            ->save()
+            ->getInstance();
+
+        $this->opportunityBuilder
+            ->addEvaluationPhase(EvaluationMethods::simple)
+                ->setEvaluationPeriod(new ConcurrentEndingAfter)
+                ->save();
+
+        $pass_through_phase = $this->opportunityBuilder
+            ->addDataCollectionPhase()
+                ->getInstance();
+
+        return [$evaluated_phase->refreshed(), $pass_through_phase];
+    }
+
+    private function propagate(Opportunity $evaluated_phase, int $status): Registration
+    {
+        $registration = $this->registrationDirector->createSentRegistration($evaluated_phase, []);
+        $registration->setStatus($status);
+        $this->processJobs();
+
+        $evaluated_phase->lastPhase->syncRegistrations([$registration->refreshed()]);
+        $this->processJobs();
+
+        return $registration->refreshed();
+    }
+
+    private function findInPhase(string $number, Opportunity $phase): ?Registration
+    {
+        return $this->app->repo('Registration')->findOneBy(['number' => $number, 'opportunity' => $phase]);
+    }
 }
 
