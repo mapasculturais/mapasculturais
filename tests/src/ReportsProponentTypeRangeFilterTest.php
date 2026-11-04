@@ -386,6 +386,8 @@ class ReportsProponentTypeRangeFilterTest extends TestCase
         $this->assertNotEmpty($chart['labels']);
         if ($type === 'pie') {
             $this->assertEquals(3, array_sum($chart['data']));
+            $this->assertCount(count($chart['labels']), $chart['backgroundColor']);
+            $this->assertCount(2, array_unique($chart['backgroundColor']), 'cada tipo de proponente deve ter uma cor diferente na pizza');
             return;
         }
 

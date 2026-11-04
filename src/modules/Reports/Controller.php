@@ -904,7 +904,6 @@ class Controller extends \MapasCulturais\Controller
 
         $return = [];
         $labels = [];
-        $color = [];
         $data = [];
         $generate_colors = [];
         // post-processing may be necessary depending on type, so obtain it
@@ -918,16 +917,12 @@ class Controller extends \MapasCulturais\Controller
                                                   $opp, $em);
         } else {
             foreach ($result as $item) {
-                
-                $color = $module->getChartColors();
-
-                $color[] = $color[0];
                 $labels[] = $this->generateLabel($item["value0"], $typeA, $em);
                 $data[] = $item["quantity"];
             }
             $return = [
                 "labels" => $labels,
-                "backgroundColor" => $color,
+                "backgroundColor" => $module->getChartColors(count($data)),
                 "borderWidth" => 0,
                 "data" => $data,
                 "typeGraphic" => $reportData["typeGraphic"],
