@@ -167,6 +167,25 @@ class RegistrationPhasePropagationTest extends TestCase
         );
     }
 
+    function testLastPhaseReturnsToPendingWhenResultIsUnpublished()
+    {
+        [$evaluated_phase, $pass_through_phase] = $this->buildPhasesWithPassThrough();
+
+        $registration = $this->propagate($evaluated_phase, Registration::STATUS_APPROVED);
+        $this->findInPhase($registration->number, $evaluated_phase)->setStatusToSent(true);
+        $this->processJobs();
+
+        $this->assertNull(
+            $this->findInPhase($registration->number, $pass_through_phase),
+            'Despublicado o resultado, a inscrição deixa de qualificar e o elo de passagem é removido'
+        );
+        $this->assertSame(
+            Registration::STATUS_SENT,
+            $this->findInPhase($registration->number, $evaluated_phase->lastPhase)->status,
+            'A publicação final acompanha a despublicação do resultado'
+        );
+    }
+
     /**
      * @return array{0: Opportunity, 1: Opportunity} fase avaliada e fase de passagem
      */
