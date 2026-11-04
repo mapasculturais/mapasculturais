@@ -186,6 +186,23 @@ class RegistrationPhasePropagationTest extends TestCase
         );
     }
 
+    function testLastPhaseKeepsWaitlistResultWithoutPassThroughLink()
+    {
+        [$evaluated_phase, $pass_through_phase] = $this->buildPhasesWithPassThrough();
+
+        $registration = $this->propagate($evaluated_phase, Registration::STATUS_WAITLIST);
+
+        $this->assertNull(
+            $this->findInPhase($registration->number, $pass_through_phase),
+            'Suplente não qualifica para avançar de fase, então a cadeia não ganha elo intermediário'
+        );
+        $this->assertSame(
+            Registration::STATUS_WAITLIST,
+            $this->findInPhase($registration->number, $evaluated_phase->lastPhase)->status,
+            'Suplente continua chegando correta à publicação final'
+        );
+    }
+
     /**
      * @return array{0: Opportunity, 1: Opportunity} fase avaliada e fase de passagem
      */
