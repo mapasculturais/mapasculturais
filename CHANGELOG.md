@@ -8,6 +8,7 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 ## [UNRELEASED]
 ### Correções
 - Corrige o modal "Configurar campos editáveis", que travava a data limite assim que havia campos selecionados: o gestor volta a conseguir estender/reabrir o prazo perdido do proponente
+- Corrige a publicação final do resultado, que mostrava como "Pendente" quem já estava selecionado quando o edital tinha uma etapa intermediária sem avaliação: a publicação final passa a exibir o último resultado decidido
 
 ## [7.8.21] - 2026-10-28
 ### Correções
