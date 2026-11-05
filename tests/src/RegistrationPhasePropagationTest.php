@@ -122,7 +122,7 @@ class RegistrationPhasePropagationTest extends TestCase
         $this->assertNotNull($current_registration, 'Inscrição deve ter sido propagada para a fase 6');
     }
 
-    function testLastPhaseUsesEvaluationResultWhenDeepestLinkHasNoResult()
+    public function testLastPhaseUsesEvaluationResultWhenDeepestLinkHasNoResult()
     {
         [$evaluated_phase, $pass_through_phase] = $this->buildPhasesWithPassThrough();
 
@@ -146,7 +146,7 @@ class RegistrationPhasePropagationTest extends TestCase
         );
     }
 
-    function testLastPhaseUsesNearestResultWhenDeepestLinkHasResult()
+    public function testLastPhaseUsesNearestResultWhenDeepestLinkHasResult()
     {
         [$evaluated_phase, $pass_through_phase] = $this->buildPhasesWithPassThrough();
 
@@ -167,7 +167,7 @@ class RegistrationPhasePropagationTest extends TestCase
         );
     }
 
-    function testLastPhaseReturnsToPendingWhenResultIsUnpublished()
+    public function testLastPhaseReturnsToPendingWhenResultIsUnpublished()
     {
         [$evaluated_phase, $pass_through_phase] = $this->buildPhasesWithPassThrough();
 
@@ -186,7 +186,7 @@ class RegistrationPhasePropagationTest extends TestCase
         );
     }
 
-    function testLastPhaseKeepsWaitlistResultWithoutPassThroughLink()
+    public function testLastPhaseKeepsWaitlistResultWithoutPassThroughLink()
     {
         [$evaluated_phase, $pass_through_phase] = $this->buildPhasesWithPassThrough();
 
