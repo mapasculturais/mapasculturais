@@ -1193,7 +1193,7 @@ class Registration extends \MapasCulturais\Entity
     /**
      * Informa se o status da inscrição é o resultado de uma avaliação, e não um estado de trâmite.
      */
-    function hasResultStatus(): bool {
+    public function hasResultStatus(): bool {
         return in_array($this->status, self::RESULT_STATUSES, true);
     }
 

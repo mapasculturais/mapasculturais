@@ -2398,7 +2398,7 @@ class Module extends \MapasCulturais\Module{
      * Devolve, na cadeia de fases, a última inscrição cujo status é resultado de avaliação.
      * Sem nenhum resultado na cadeia, devolve a própria inscrição informada.
      */
-    function findLastRegistrationWithResult(Registration $registration): Registration {
+    public function findLastRegistrationWithResult(Registration $registration): Registration {
         $walker = $registration;
 
         while (!$walker->hasResultStatus() && $previous_phase_registration = $walker->previousPhase) {
