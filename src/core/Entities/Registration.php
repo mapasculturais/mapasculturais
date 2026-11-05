@@ -57,7 +57,7 @@ class Registration extends \MapasCulturais\Entity
     const STATUS_NOTAPPROVED = 3;
     const STATUS_INVALID = 2;
 
-    const RESULT_STATUSES = [
+    public const RESULT_STATUSES = [
         self::STATUS_INVALID,
         self::STATUS_NOTAPPROVED,
         self::STATUS_WAITLIST,
