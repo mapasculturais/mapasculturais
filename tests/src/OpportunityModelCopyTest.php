@@ -307,7 +307,7 @@ class OpportunityModelCopyTest extends TestCase
         }
     }
 
-    function testAppealPhaseReferenceOnModelPointsToSourcePhase(): void
+    function testAppealPhaseIsRemappedOnModelAndGeneratedOpportunity(): void
     {
         $app = $this->app;
         $admin = $this->userDirector->createUser('admin');
@@ -332,22 +332,74 @@ class OpportunityModelCopyTest extends TestCase
         $source = $app->repo('Opportunity')->find($sourceId);
         $sourceAppealPhase = $source->appealPhase;
         $this->assertNotNull($sourceAppealPhase);
+        $this->assertSame(
+            (int) $source->id,
+            (int) $sourceAppealPhase->parent->id,
+            'Garantindo que o recurso da origem tem parent na fase de mérito'
+        );
 
         $this->login($app->repo('User')->find($admin->id));
         $model = $this->generateModelFrom($source, 'Modelo com recurso ' . uniqid('', true));
 
-        $copiedAppealPhases = array_values(array_filter(
-            $this->app->repo('Opportunity')->findBy(['parent' => $model]),
-            fn(Opportunity $phase) => (bool) $phase->isAppealPhase
-        ));
-
-        $this->assertCount(1, $copiedAppealPhases);
+        $modelAppeal = $model->appealPhase;
+        $this->assertInstanceOf(Opportunity::class, $modelAppeal, 'Certificando que o modelo tem fase de recurso');
+        $this->assertNotSame(
+            (int) $sourceAppealPhase->id,
+            (int) $modelAppeal->id,
+            'Certificando que o recurso do modelo é uma entity nova'
+        );
         $this->assertSame(
-            'MapasCulturais\\Entities\\Opportunity:' . $sourceAppealPhase->id,
+            (int) $model->id,
+            (int) $modelAppeal->parent->id,
+            'Certificando que o parent do recurso do modelo é a fase de mérito do modelo'
+        );
+        $this->assertSame(
+            'MapasCulturais\\Entities\\Opportunity:' . $modelAppeal->id,
             (string) $this->app->em->getConnection()->fetchOne(
                 "SELECT value FROM opportunity_meta WHERE object_id = :id AND key = 'appealPhase'",
                 ['id' => $model->id]
-            )
+            ),
+            'Certificando que o metadado appealPhase do modelo aponta para o recurso clonado'
+        );
+
+        $generated = $this->generateOpportunityFrom($model, $admin->profile->id);
+        $generatedAppeal = $generated->appealPhase;
+
+        $this->assertInstanceOf(Opportunity::class, $generatedAppeal, 'Certificando que o edital gerado tem fase de recurso');
+        $this->assertNotSame(
+            (int) $sourceAppealPhase->id,
+            (int) $generatedAppeal->id,
+            'Certificando que o recurso gerado não aponta para o edital de origem'
+        );
+        $this->assertNotSame(
+            (int) $modelAppeal->id,
+            (int) $generatedAppeal->id,
+            'Certificando que o recurso gerado é distinto do recurso do modelo'
+        );
+        $this->assertSame(
+            (int) $generated->id,
+            (int) $generatedAppeal->parent->id,
+            'Certificando que o parent do recurso gerado é a fase de mérito do edital gerado'
+        );
+        $this->assertSame(
+            'MapasCulturais\\Entities\\Opportunity:' . $generatedAppeal->id,
+            (string) $this->app->em->getConnection()->fetchOne(
+                "SELECT value FROM opportunity_meta WHERE object_id = :id AND key = 'appealPhase'",
+                ['id' => $generated->id]
+            ),
+            'Certificando que o metadado appealPhase do edital gerado aponta para o recurso clonado'
+        );
+
+        // origem intacta após gerar modelo e edital
+        $source = $app->repo('Opportunity')->find($sourceId)->refreshed();
+        $this->assertSame(
+            (int) $sourceAppealPhase->id,
+            (int) $source->appealPhase->id
+        );
+        $this->assertSame(
+            (int) $source->id,
+            (int) $source->appealPhase->parent->id,
+            'Certificando que o parent do recurso de origem não foi alterado'
         );
     }
 
@@ -599,7 +651,10 @@ class OpportunityModelCopyTest extends TestCase
         $generated = $this->generateOpportunityFrom($model, $admin->profile->id);
 
         $generatedField = $this->fieldTitled($generated, 'Campo avaliado');
-        $generatedAppealPhase = $this->phaseNamed($generated, $appealPhaseName);
+        $generatedAppealPhase = $generated->appealPhase;
+        $this->assertInstanceOf(Opportunity::class, $generatedAppealPhase);
+        // o nome pode ser sincronizado com o do edital gerado ("Recurso para …"); o vínculo importa mais
+        $this->assertNotSame((int) $appealPhase->id, (int) $generatedAppealPhase->id);
 
         $this->assertSame(
             [$generatedField->fieldName => 'true'],

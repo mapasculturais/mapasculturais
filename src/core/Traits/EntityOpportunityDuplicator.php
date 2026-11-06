@@ -5,6 +5,7 @@ use DateTime;
 use MapasCulturais\App;
 use MapasCulturais\Entity;
 use MapasCulturais\Entities\Opportunity;
+use MapasCulturais\Entities\OpportunityMeta;
 use MapasCulturais\Entities\RegistrationStep;
 
 trait EntityOpportunityDuplicator {
@@ -64,6 +65,7 @@ trait EntityOpportunityDuplicator {
         $this->entityNewOpportunity->status = Entity::STATUS_DRAFT;
         $app->em->persist($this->entityNewOpportunity);
         $app->em->flush();
+        $this->entityNewOpportunity = $this->reloadDuplicatedOpportunityWithoutSharedMetadata($this->entityNewOpportunity);
 
         $this->entityNewOpportunity->registrationCategories = $this->entityOpportunity->registrationCategories;
         $this->entityNewOpportunity->registrationProponentTypes = $this->entityOpportunity->registrationProponentTypes;
@@ -73,6 +75,24 @@ trait EntityOpportunityDuplicator {
         $this->entityNewOpportunity->save(true);
 
         return $this->entityNewOpportunity;
+    }
+
+    /**
+     * O clone de Opportunity é shallow: `__metadata` EAGER permanece compartilhado com a origem.
+     * O refresh recarrega só as metas da cópia, sem detach (que quebraria filhos do insert:after).
+     */
+    private function reloadDuplicatedOpportunityWithoutSharedMetadata(Opportunity $cloned): Opportunity
+    {
+        $app = App::i();
+        if ($app->em->contains($cloned)) {
+            $app->em->refresh($cloned);
+        }
+
+        if (is_object($cloned->__magicGetterCache ?? null)) {
+            $cloned->__magicGetterCache = new \stdClass();
+        }
+
+        return $cloned;
     }
 
     /**
@@ -123,6 +143,7 @@ trait EntityOpportunityDuplicator {
         $phases = $app->repo('Opportunity')->findBy([
             'parent' => $this->entityOpportunity
         ]);
+        $sourceLastPhase = null;
         foreach ($phases as $phase) {
             // Fases de recurso são clonadas em relinkDuplicatedAppealPhases / duplicateAppealPhaseChild,
             // com parent apontando para a fase de mérito correspondente na cópia — não para a 1ª fase.
@@ -139,24 +160,35 @@ trait EntityOpportunityDuplicator {
 
             if ($phase->getMetadata('isLastPhase')) {
                 $publishDate = $phase->publishTimestamp;
+                $sourceLastPhase = $phase;
             }
         }
 
         // Recurso cujo parent é a própria oportunidade principal (avaliação na 1ª fase)
         $this->duplicateAppealPhaseChild($this->entityOpportunity, $this->entityNewOpportunity);
 
-        if (isset($publishDate)) {
+        $newLastPhase = null;
+        if (isset($publishDate) || $sourceLastPhase) {
             $phases = $app->repo('Opportunity')->findBy([
                 'parent' => $this->entityNewOpportunity
             ]);
     
             foreach ($phases as $phase) {
                 if ($phase->getMetadata('isLastPhase')) {
-                    $phase->setPublishTimestamp($publishDate);
-                    $phase->save(true);
+                    $newLastPhase = $phase;
+                    if (isset($publishDate)) {
+                        $phase->setPublishTimestamp($publishDate);
+                        $phase->save(true);
+                    }
                 }
             }
-        }       
+        }
+
+        // A last phase não é clonada (já nasce no insert:after); ainda assim pode ter recurso.
+        if ($sourceLastPhase && $newLastPhase) {
+            $this->opportunityPhaseMap[(int) $sourceLastPhase->id] = $newLastPhase;
+            $this->duplicateAppealPhaseChild($sourceLastPhase, $newLastPhase);
+        }
     }
 
     /**
@@ -176,6 +208,8 @@ trait EntityOpportunityDuplicator {
         $newPhase = clone $phase;
         $this->resetDuplicatedEvaluationMethodConfiguration($newPhase);
         $newPhase->setParent($newParent);
+        $newPhase->save(true);
+        $newPhase = $this->reloadDuplicatedOpportunityWithoutSharedMetadata($newPhase);
 
         foreach ($phase->getMetadata() as $metadataKey => $metadataValue) {
             if ($metadataKey === 'appealPhase') {
@@ -256,8 +290,7 @@ trait EntityOpportunityDuplicator {
             $this->opportunityPhaseMap[(int) $appeal->id] = $newAppeal;
             $this->duplicatePhaseEvaluationMethods($appeal, $newAppeal);
 
-            $newPhase->appealPhase = $newAppeal;
-            $newPhase->save(true);
+            $this->persistDuplicatedAppealPhaseMetadata($newPhase, $newAppeal);
         }
     }
 
@@ -291,8 +324,33 @@ trait EntityOpportunityDuplicator {
                 $newAppeal->save(true);
             }
 
-            $newPhase->appealPhase = $newAppeal;
-            $newPhase->save(true);
+            $this->persistDuplicatedAppealPhaseMetadata($newPhase, $newAppeal);
+        }
+    }
+
+    /**
+     * Grava appealPhase como linha própria em opportunity_meta.
+     * Evita o setter mágico no clone, que pode reutilizar a coleção/cache de metadados da origem.
+     * O nome difere de EntityManagerModel::persistAppealPhaseMetadata (mesmo controller).
+     */
+    private function persistDuplicatedAppealPhaseMetadata(Opportunity $phase, Opportunity $appeal): void
+    {
+        $app = App::i();
+        $conn = $app->em->getConnection();
+
+        $conn->delete('opportunity_meta', [
+            'object_id' => $phase->id,
+            'key' => 'appealPhase',
+        ]);
+
+        $meta = new OpportunityMeta;
+        $meta->owner = $phase;
+        $meta->key = 'appealPhase';
+        $meta->value = (string) $appeal;
+        $meta->save(true);
+
+        if (is_object($phase->__magicGetterCache ?? null)) {
+            unset($phase->__magicGetterCache->appealPhase);
         }
     }
 
