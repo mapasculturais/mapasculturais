@@ -943,6 +943,46 @@ class Registration extends EntityController {
         $this->json(true);
     }
 
+    /**
+     * Troca o agente vinculado à inscrição (e à família de fases com o mesmo number).
+     * Visível/acionável apenas por saasSuperAdmin (issue #126).
+     *
+     * @api POST changeLinkedAgent
+     */
+    function POST_changeLinkedAgent() {
+        $this->requireAuthentication();
+
+        $app = App::i();
+        $entity = $this->requestedEntity;
+
+        if (!$entity) {
+            $app->pass();
+        }
+
+        $owner_id = abs((int) ($this->data['ownerId'] ?? $this->postData['ownerId'] ?? 0));
+
+        if (!$owner_id) {
+            $this->errorJson(i::__('O id do agente destino é obrigatório.'));
+        }
+
+        $new_owner = $app->repo('Agent')->find($owner_id);
+
+        if (!$new_owner) {
+            $this->errorJson(sprintf(i::__('O agente com id %s não foi encontrado.'), $owner_id));
+        }
+
+        try {
+            $updated = $entity->changeLinkedAgent($new_owner);
+        } catch (\InvalidArgumentException $e) {
+            $this->errorJson($e->getMessage());
+        }
+
+        $this->json([
+            'registration' => $entity->refreshed()->jsonSerialize(),
+            'updatedIds' => array_map(fn($reg) => $reg->id, $updated),
+        ]);
+    }
+
     function GET_createZipFiles() {
         $app = App::i();
         $this->requireAuthentication();

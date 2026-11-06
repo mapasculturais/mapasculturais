@@ -27,6 +27,11 @@ $this->import('
     registration-evaluation-tab
 ');
 
+$owner_in_trash = $entity->isOwnerInTrash();
+$owner_label = $entity->owner
+    ? sprintf('%s (#%s)', $entity->owner->name, $entity->owner->id)
+    : i::__('(agente indisponível)');
+
 $this->breadcrumb = [
     ['label' => i::__('Inicio'), 'url' => $app->createUrl('panel', 'index')],
     ['label' => i::__('Oportunidades'), 'url' => $app->createUrl('panel', 'opportunities')],
@@ -54,6 +59,14 @@ $hide_phase_dates = $entity->opportunity->firstPhase->hidePhaseDates;
 <div class="main-app registration single">
     <mc-breadcrumb></mc-breadcrumb>
     <opportunity-header :opportunity="entity.opportunity"></opportunity-header>
+
+    <?php if ($owner_in_trash): ?>
+        <mc-alert type="warning" class="registration__owner-trash-alert">
+            <?= i::__('Agente principal vinculado à lixeira') ?>:
+            <strong><?= htmlspecialchars($owner_label) ?></strong>
+        </mc-alert>
+    <?php endif; ?>
+
     <registration-print :registration="entity"></registration-print>
     <mc-tabs sync-hash>
         <?php $this->applyTemplateHook('single-tab', 'begin') ?>

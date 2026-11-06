@@ -6,6 +6,9 @@ O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+### Correções
+- Exibe aviso quando o agente principal da inscrição está na lixeira para quem acessa a ficha, e permite ao Super Administrador da Rede (`saasSuperAdmin`) trocar o agente vinculado (incluindo todas as fases com o mesmo número e regeneração do snapshot `agents_data` nas enviadas)
+
 ### Melhorias
 - Na correção de notas após recurso deferido, o gestor escolhe quais campos do formulário o corretor pode ver (seletor no padrão “Abrir lista de campos”); o corretor vê os valores liberados com links de anexo, registra parecer da correção no método técnico, e a lista de inscritos deixa de mostrar a coluna interna de snapshot preliminar (que duplicava a média original)
 
