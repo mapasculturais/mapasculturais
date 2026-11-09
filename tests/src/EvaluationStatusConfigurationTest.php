@@ -272,6 +272,31 @@ class EvaluationStatusConfigurationTest extends Abstract\TestCase
         }
     }
 
+    public function testReportingPhaseKeepsTheMethodVocabulary(): void
+    {
+        [$opportunity] = $this->createEvaluationPhase('continuous', self::RENAMED_STATUS_LABELS);
+
+        $this->app->disableAccessControl();
+        $opportunity->isReportingPhase = true;
+        $opportunity->save(true);
+        $this->app->enableAccessControl();
+
+        $opportunity = $opportunity->refreshed();
+        $evaluation_method = $opportunity->getEvaluationMethod();
+
+        $this->assertSame(
+            [],
+            $evaluation_method->getResultStatuses($opportunity->evaluationMethodConfiguration),
+            'Garantindo que a fase de prestação de informações não declara seu resultado como status de inscrição'
+        );
+
+        $this->assertSame(
+            'Deferido',
+            $evaluation_method->resultToString($opportunity, Registration::STATUS_APPROVED),
+            'Garantindo que a fase de prestação de informações mantém o vocabulário do método, sem resolver pelo configurado'
+        );
+    }
+
     /**
      * Cria uma fase de avaliação com uma inscrição enviada e distribuída a um avaliador
      *
