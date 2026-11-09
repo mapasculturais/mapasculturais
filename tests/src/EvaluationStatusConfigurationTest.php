@@ -2,10 +2,12 @@
 
 namespace Tests;
 
+use Laminas\Diactoros\ServerRequest;
 use MapasCulturais\Entities\Opportunity;
 use MapasCulturais\Entities\Registration;
 use MapasCulturais\Entities\RegistrationEvaluation;
 use MapasCulturais\Entities\User;
+use MapasCulturais\Request as MapasRequest;
 use Tests\Builders\PhasePeriods\ConcurrentEndingAfter;
 use Tests\Builders\PhasePeriods\Open;
 use Tests\Enums\EvaluationMethods;
@@ -327,10 +329,36 @@ class EvaluationStatusConfigurationTest extends Abstract\TestCase
         );
     }
 
+    public function testFindEvaluationsPayloadUsesConfiguredStatusLabel(): void
+    {
+        foreach (['simple', 'continuous'] as $type) {
+            [$opportunity, $registration, $valuer, $admin] = $this->createEvaluationPhase($type, self::RENAMED_STATUS_LABELS);
+
+            $this->login($valuer);
+            $this->assertStatus200(
+                $this->sendEvaluation($registration, Registration::STATUS_INVALID),
+                "Garantindo que a avaliação {$type} com o status renomeado pode ser enviada"
+            );
+
+            $this->login($admin);
+            $result_strings = $this->resultStringsOf($this->findEvaluationsPayload($opportunity));
+
+            $this->assertNotEmpty($result_strings, "Garantindo que o payload da avaliação {$type} traz ao menos uma avaliação");
+
+            foreach ($result_strings as $result_string) {
+                $this->assertSame(
+                    'Deferido Parcialmente',
+                    $result_string,
+                    "Garantindo que toda linha do payload da avaliação {$type} traz o rótulo configurado na fase"
+                );
+            }
+        }
+    }
+
     /**
      * Cria uma fase de avaliação com uma inscrição enviada e distribuída a um avaliador
      *
-     * @return array{Opportunity, Registration, User}
+     * @return array{Opportunity, Registration, User, User}
      */
     private function createEvaluationPhase(string $type, ?array $status_labels = null): array
     {
@@ -370,7 +398,7 @@ class EvaluationStatusConfigurationTest extends Abstract\TestCase
         $valuer_user_id = array_keys($registration->valuers)[0];
         $valuer = $this->app->repo('User')->find($valuer_user_id);
 
-        return [$opportunity->refreshed(), $registration, $valuer];
+        return [$opportunity->refreshed(), $registration, $valuer, $admin];
     }
 
     private function sendEvaluation(Registration $registration, int $status)
@@ -399,4 +427,28 @@ class EvaluationStatusConfigurationTest extends Abstract\TestCase
         ]);
     }
 
+    private function resultStringsOf(object $payload): array
+    {
+        return array_values(array_filter(array_map(
+            fn($row) => $row['evaluation']['resultString'] ?? null,
+            $payload->evaluations
+        )));
+    }
+
+    private function findEvaluationsPayload(Opportunity $opportunity): object
+    {
+        $query = ['@opportunity' => $opportunity->id];
+
+        $this->app->request = new MapasRequest(
+            new ServerRequest(method: 'GET', uri: '/api/opportunity/findEvaluations', queryParams: $query),
+            'opportunity',
+            'findEvaluations',
+            $query
+        );
+
+        $controller = $this->app->controller('opportunity');
+        $controller->setRequestData($query + ['id' => $opportunity->id]);
+
+        return $controller->apiFindEvaluations($opportunity->id, $query);
+    }
 }
