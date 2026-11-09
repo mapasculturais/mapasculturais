@@ -59,6 +59,10 @@ app.component('user-management--ownership-tabs', {
             }
         },
 
+        defaultOrder() {
+            return this.type === 'agent' ? 'createTimestamp ASC' : 'updateTimestamp DESC';
+        },
+
     },
 
     methods: {

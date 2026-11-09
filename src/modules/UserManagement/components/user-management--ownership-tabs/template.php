@@ -15,7 +15,16 @@ $this->import('
     mc-icon
 ');
 ?>
-<panel--entity-tabs tabs="publish,draft,granted,trash,archived" :type='type' :user="user.id" :select="newSelect" :limit="20">
+<panel--entity-tabs tabs="publish,draft,granted,trash,archived" :type='type' :user="user.id" :select="newSelect" :limit="20" :order="defaultOrder">
+    <template #card-content="{entity}">
+        <span v-if="type == 'agent' && global.showIds.agent" class="uppercase semibold entity-card__id">
+            Id: <span class="bold">{{entity.id}}</span>
+        </span>
+        <span v-if="entity.type">
+            <?= i::__('Tipo: ') ?> <strong>{{ entity.type.name }}</strong>
+        </span>
+    </template>
+
     <template  #entity-actions-left="{entity}">
         <div v-if="type == 'agent' && !entity.parent">
             <mc-icon name="agent-default-account-user"></mc-icon>
