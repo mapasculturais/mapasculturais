@@ -6,6 +6,9 @@ O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [UNRELEASED]
+### Melhorias
+- Na gestão de usuários, a ficha do usuário passa a ter a aba Avaliações: mostra as fases em que a pessoa avalia (como em Minhas avaliações) e lista as avaliações iniciadas, concluídas e enviadas
+
 ### Correções
 - Atualiza o Node.js da imagem Docker para a linha 22 e exige a versão 22.23.4 ou superior nessa linha, incorporando a correção da vulnerabilidade CVE-2026-111497 no decodificador Brotli
 - Preserva as versões das dependências no build Docker com instalação pelo pnpm usando o lockfile congelado
