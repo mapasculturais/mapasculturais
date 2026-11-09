@@ -15,6 +15,7 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Corrige a duplicação de oportunidades com fase de recurso: a cópia mantinha o metadado `appealPhase` e o `parent` do recurso apontando para o edital de origem, o que fazia a validação de datas do recurso usar a árvore errada; o recurso passa a ser clonado com `parent` na fase de mérito correspondente da cópia e o vínculo `appealPhase` é religado para essa nova fase
 - Corrige a duplicação de oportunidades que terminava em erro 500 ao reescrever os campos visíveis para o avaliador: o remapeamento usava um método `private` de outro trait e não enxergava o mapa de campos da cópia; o remapeamento passa a rodar no próprio duplicador
 - Corrige o modal "Configurar campos editáveis", que travava a data limite assim que havia campos selecionados: o gestor volta a conseguir estender/reabrir o prazo perdido do proponente
+- Corrige a lista de inscrições e a planilha exportada para quem gerencia o edital, que deixavam de fora inscrições ainda sem a permissão de leitura registrada pelo processamento em segundo plano; ao abrir a lista ou gerar a planilha, a permissão de leitura de quem controla a fase passa a ser registrada na hora nas inscrições que ainda não a têm, sem alterar o que proponentes, avaliadores e demais usuários veem
 
 ### Melhorias
 - Na gestão de usuários, a ficha do usuário passa a ter a aba Avaliações: mostra as fases em que a pessoa avalia (como em Minhas avaliações) e lista as avaliações iniciadas, concluídas e enviadas
