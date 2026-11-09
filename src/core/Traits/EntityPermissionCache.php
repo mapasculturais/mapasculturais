@@ -36,6 +36,48 @@ trait EntityPermissionCache {
         return false;
     }
     
+    /**
+     * Grava em um único comando a permissão do usuário nas entidades desta classe que atendem ao filtro e ainda não a têm.
+     * O filtro é SQL sobre a tabela da entidade, com o alias "e".
+     *
+     * @param \MapasCulturais\Entities\User $user
+     * @param string $permission
+     * @param string $where
+     * @param array $params
+     * @return void
+     */
+    static function createPermissionCacheForUserWhere($user, string $permission, string $where, array $params = []) {
+        $app = App::i();
+
+        if (!$user || $user->is('guest')) {
+            return;
+        }
+
+        $metadata = $app->em->getClassMetadata(static::getClassName());
+        $object_type = $metadata->rootEntityName ?: $metadata->name;
+        $table = $metadata->getTableName();
+
+        $app->em->getConnection()->executeQuery("
+            INSERT INTO pcache (user_id, action, object_type, object_id, create_timestamp)
+            SELECT :user_id, :action, :object_type, e.id, now()
+            FROM {$table} e
+            WHERE
+                ({$where}) AND
+                NOT EXISTS (
+                    SELECT 1 FROM pcache pc
+                    WHERE
+                        pc.object_type = :object_type AND
+                        pc.object_id = e.id AND
+                        pc.action = :action AND
+                        pc.user_id = :user_id
+                )
+            ON CONFLICT DO NOTHING", $params + [
+            'user_id' => $user->id,
+            'action' => $permission,
+            'object_type' => $object_type,
+        ]);
+    }
+
     function getCurrentUserPermissions() {
         $permissions_list = $this->getPermissionsList();
         $permissions = [];
