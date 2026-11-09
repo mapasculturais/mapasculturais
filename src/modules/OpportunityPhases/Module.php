@@ -1463,13 +1463,15 @@ class Module extends \MapasCulturais\Module{
                         $current_phase_registration = $current_phase_registration = $self->createPhaseRegistration($this, $registration);
                     }
 
-                    $opp_phase = $registration->opportunity;
+                    $result_registration = $self->findLastRegistrationWithResult($registration);
+
+                    $opp_phase = $result_registration->opportunity;
                     $phase = $opp_phase->evaluationMethodConfiguration ?: $opp_phase;
-                    $label = $self->getRegistrationStatusLabels($registration->status)[1];
+                    $label = $self->getRegistrationStatusLabels($result_registration->status)[1];
                     $label = str_replace('{PHASE_NAME}', $phase->name, $label);
 
                     $current_phase_registration->consolidatedResult = $label;
-                    $current_phase_registration->score = $registration->score;
+                    $current_phase_registration->score = $result_registration->score;
 
                     $methods = [
                         Registration::STATUS_DRAFT => 'setStatusToInvalid',
@@ -1480,7 +1482,7 @@ class Module extends \MapasCulturais\Module{
                         Registration::STATUS_INVALID => 'setStatusToInvalid',
                     ];
 
-                    $method = $methods[$registration->status];
+                    $method = $methods[$result_registration->status];
 
                     $current_phase_registration->$method();
 
@@ -2390,6 +2392,20 @@ class Module extends \MapasCulturais\Module{
         $registration->save(true);
     
         return $current_phase_registration;
+    }
+
+    /**
+     * Devolve, na cadeia de fases, a última inscrição cujo status é resultado de avaliação.
+     * Sem nenhum resultado na cadeia, devolve a própria inscrição informada.
+     */
+    public function findLastRegistrationWithResult(Registration $registration): Registration {
+        $walker = $registration;
+
+        while (!$walker->hasResultStatus() && $previous_phase_registration = $walker->previousPhase) {
+            $walker = $previous_phase_registration;
+        }
+
+        return $walker->hasResultStatus() ? $walker : $registration;
     }
 
     function getRegistrationStatusLabels($status) {

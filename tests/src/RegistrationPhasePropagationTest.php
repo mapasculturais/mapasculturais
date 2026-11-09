@@ -121,5 +121,133 @@ class RegistrationPhasePropagationTest extends TestCase
         $current_registration = $repo->findOneBy(['number' => $number, 'opportunity' => $phase6]);
         $this->assertNotNull($current_registration, 'Inscrição deve ter sido propagada para a fase 6');
     }
+
+    public function testLastPhaseUsesEvaluationResultWhenDeepestLinkHasNoResult()
+    {
+        [$evaluated_phase, $pass_through_phase] = $this->buildPhasesWithPassThrough();
+
+        $registration = $this->propagate($evaluated_phase, Registration::STATUS_APPROVED);
+        $last_phase_registration = $this->findInPhase($registration->number, $evaluated_phase->lastPhase);
+
+        $this->assertSame(
+            Registration::STATUS_DRAFT,
+            $this->findInPhase($registration->number, $pass_through_phase)->status,
+            'A fase de passagem precisa existir na cadeia sem registrar resultado'
+        );
+        $this->assertSame(
+            Registration::STATUS_APPROVED,
+            $last_phase_registration->status,
+            'A publicação final deve manter o resultado da avaliação, e não o status do elo de passagem'
+        );
+        $this->assertStringContainsString(
+            'Selecionada em',
+            $last_phase_registration->consolidatedResult,
+            'O texto gravado deve citar o resultado da avaliação'
+        );
+    }
+
+    public function testLastPhaseUsesNearestResultWhenDeepestLinkHasResult()
+    {
+        [$evaluated_phase, $pass_through_phase] = $this->buildPhasesWithPassThrough();
+
+        $registration = $this->propagate($evaluated_phase, Registration::STATUS_APPROVED);
+
+        $pass_through_registration = $this->findInPhase($registration->number, $pass_through_phase);
+        $pass_through_registration->send(false);
+        $pass_through_registration->refreshed()->setStatusToNotApproved(true);
+
+        $last_phase = $evaluated_phase->lastPhase;
+        $last_phase->syncRegistrations([$this->findInPhase($registration->number, $pass_through_phase)]);
+        $this->processJobs();
+
+        $this->assertSame(
+            Registration::STATUS_NOTAPPROVED,
+            $this->findInPhase($registration->number, $last_phase)->status,
+            'Havendo resultado no elo mais profundo, é ele que vale, e não o da fase anterior'
+        );
+    }
+
+    public function testLastPhaseReturnsToPendingWhenResultIsUnpublished()
+    {
+        [$evaluated_phase, $pass_through_phase] = $this->buildPhasesWithPassThrough();
+
+        $registration = $this->propagate($evaluated_phase, Registration::STATUS_APPROVED);
+        $this->findInPhase($registration->number, $evaluated_phase)->setStatusToSent(true);
+        $this->processJobs();
+
+        $this->assertNull(
+            $this->findInPhase($registration->number, $pass_through_phase),
+            'Despublicado o resultado, a inscrição deixa de qualificar e o elo de passagem é removido'
+        );
+        $this->assertSame(
+            Registration::STATUS_SENT,
+            $this->findInPhase($registration->number, $evaluated_phase->lastPhase)->status,
+            'A publicação final acompanha a despublicação do resultado'
+        );
+    }
+
+    public function testLastPhaseKeepsWaitlistResultWithoutPassThroughLink()
+    {
+        [$evaluated_phase, $pass_through_phase] = $this->buildPhasesWithPassThrough();
+
+        $registration = $this->propagate($evaluated_phase, Registration::STATUS_WAITLIST);
+
+        $this->assertNull(
+            $this->findInPhase($registration->number, $pass_through_phase),
+            'Suplente não qualifica para avançar de fase, então a cadeia não ganha elo intermediário'
+        );
+        $this->assertSame(
+            Registration::STATUS_WAITLIST,
+            $this->findInPhase($registration->number, $evaluated_phase->lastPhase)->status,
+            'Suplente continua chegando correta à publicação final'
+        );
+    }
+
+    /**
+     * @return array{0: Opportunity, 1: Opportunity} fase avaliada e fase de passagem
+     */
+    private function buildPhasesWithPassThrough(): array
+    {
+        $admin = $this->userDirector->createUser('admin');
+        $this->login($admin);
+
+        /** @var Opportunity $evaluated_phase */
+        $evaluated_phase = $this->opportunityBuilder
+            ->reset(owner: $admin->profile, owner_entity: $admin->profile)
+            ->fillRequiredProperties()
+            ->firstPhase()
+                ->setRegistrationPeriod(new Open)
+                ->done()
+            ->save()
+            ->getInstance();
+
+        $this->opportunityBuilder
+            ->addEvaluationPhase(EvaluationMethods::simple)
+                ->setEvaluationPeriod(new ConcurrentEndingAfter)
+                ->save();
+
+        $pass_through_phase = $this->opportunityBuilder
+            ->addDataCollectionPhase()
+                ->getInstance();
+
+        return [$evaluated_phase->refreshed(), $pass_through_phase];
+    }
+
+    private function propagate(Opportunity $evaluated_phase, int $status): Registration
+    {
+        $registration = $this->registrationDirector->createSentRegistration($evaluated_phase, []);
+        $registration->setStatus($status);
+        $this->processJobs();
+
+        $evaluated_phase->lastPhase->syncRegistrations([$registration->refreshed()]);
+        $this->processJobs();
+
+        return $registration->refreshed();
+    }
+
+    private function findInPhase(string $number, Opportunity $phase): ?Registration
+    {
+        return $this->app->repo('Registration')->findOneBy(['number' => $number, 'opportunity' => $phase]);
+    }
 }
 

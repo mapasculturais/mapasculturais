@@ -167,7 +167,7 @@ abstract class EvaluationMethod extends Module implements \JsonSerializable{
 
         $statuses = [];
         foreach ($status_labels as $status => $label) {
-            if (!in_array((int) $status, [Registration::STATUS_DRAFT, Registration::STATUS_SENT], true)) {
+            if (in_array((int) $status, Registration::RESULT_STATUSES, true)) {
                 $statuses[$status] = $label;
             }
         }
