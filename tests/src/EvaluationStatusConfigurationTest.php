@@ -241,6 +241,37 @@ class EvaluationStatusConfigurationTest extends Abstract\TestCase
         }
     }
 
+    public function testEvaluationMethodsWithOwnVocabularyAreNotTranslatedToStatusLabel(): void
+    {
+        [$opportunity] = $this->createEvaluationPhase('continuous', self::RENAMED_STATUS_LABELS);
+
+        $evaluation_method_configuration = $opportunity->evaluationMethodConfiguration;
+
+        $expected_by_method = [
+            'technical' => [10 => 10],
+            'documentary' => [1 => 'Válida', -1 => 'Inválida'],
+            'qualification' => ['valid' => 'Habilitado', 'invalid' => 'Inabilitado'],
+        ];
+
+        foreach ($expected_by_method as $slug => $expected_labels) {
+            $evaluation_method = $this->app->getRegisteredEvaluationMethodBySlug($slug)->evaluationMethod;
+
+            $this->assertSame(
+                [],
+                $evaluation_method->getResultStatuses($evaluation_method_configuration),
+                "Garantindo que a avaliação {$slug} não declara seu resultado como status de inscrição"
+            );
+
+            foreach ($expected_labels as $result => $expected_label) {
+                $this->assertSame(
+                    $expected_label,
+                    $evaluation_method->resultToString($opportunity, $result),
+                    "Garantindo que o resultado {$result} da avaliação {$slug} mantém o vocabulário próprio do método, com o tipo preservado"
+                );
+            }
+        }
+    }
+
     /**
      * Cria uma fase de avaliação com uma inscrição enviada e distribuída a um avaliador
      *
