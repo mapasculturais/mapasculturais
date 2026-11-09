@@ -581,6 +581,16 @@ abstract class Opportunity extends \MapasCulturais\Entity
         return $users;
     }
 
+    /**
+     * Grava a permissão de leitura do usuário nas inscrições desta oportunidade que ainda não a têm.
+     *
+     * @param User $user
+     * @return void
+     */
+    public function createRegistrationsViewPermissionCacheForUser(User $user) {
+        Registration::createPermissionCacheForUserWhere($user, 'view', 'e.opportunity_id = :opportunity_id', ['opportunity_id' => $this->id]);
+    }
+
     function getExtraEntitiesToRecreatePermissionCache(){
         $entities = $this->getAllRegistrations();
         
