@@ -20,6 +20,7 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Corrige a lista e a planilha de inscritos para o campo "Dados bancários", que saía confuso ou como um bloco único: passa a mostrar colunas separadas com nomes legíveis (tipo de conta, banco, agência e conta)
 - Quem já tinha colunas salvas do formato antigo de "Dados bancários" passa a ver as novas colunas sem precisar reconfigurar a tabela
 - Corrige o campo de tabela do formulário de inscrição que não cabia na coluna do formulário: a tabela transbordava para baixo da coluna lateral, que capturava o clique e impedia o preenchimento das últimas colunas; a tabela passa a rolar horizontalmente dentro do campo
+- Corrige a lista de inscrições e a planilha exportada para quem gerencia o edital, que deixavam de fora inscrições ainda sem a permissão de leitura registrada pelo processamento em segundo plano; ao abrir a lista ou gerar a planilha, a permissão de leitura de quem controla a fase passa a ser registrada na hora nas inscrições que ainda não a têm, sem alterar o que proponentes, avaliadores e demais usuários veem
 
 ## [7.8.24] - 2026-11-19
 ### Melhorias
