@@ -1,12 +1,6 @@
 app.component('evaluation-method-continuous--apply', {
     template: $TEMPLATES['evaluation-method-continuous--apply'],
 
-    setup() {
-        // os textos estão localizados no arquivo texts.php deste componente
-        const text = Utils.getTexts('evaluation-method-continuous--apply')
-        return { text }
-    },
-
     props: {
         entity: {
             type: Entity,
