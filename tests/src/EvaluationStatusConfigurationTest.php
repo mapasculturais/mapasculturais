@@ -316,6 +316,17 @@ class EvaluationStatusConfigurationTest extends Abstract\TestCase
         );
     }
 
+    public function testTiebreakerResultIsNotTranslatedToStatusLabel(): void
+    {
+        [$opportunity] = $this->createEvaluationPhase('continuous', self::RENAMED_STATUS_LABELS);
+
+        $this->assertSame(
+            'Aguardando desempate',
+            $opportunity->getEvaluationMethod()->resultToString($opportunity, '@tiebreaker'),
+            'Garantindo que a inscrição aguardando desempate mantém o aviso, sem casar com rótulo de status'
+        );
+    }
+
     /**
      * Cria uma fase de avaliação com uma inscrição enviada e distribuída a um avaliador
      *
