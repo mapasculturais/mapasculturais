@@ -4,6 +4,7 @@ namespace Tests;
 
 use MapasCulturais\Entities\Opportunity;
 use MapasCulturais\Entities\Registration;
+use MapasCulturais\Entities\RegistrationEvaluation;
 use MapasCulturais\Entities\User;
 use Tests\Builders\PhasePeriods\ConcurrentEndingAfter;
 use Tests\Builders\PhasePeriods\Open;
@@ -16,7 +17,8 @@ use Tests\Traits\UserDirector;
 
 /**
  * Garante que os status oferecidos ao avaliador (e aceitos no envio da avaliação)
- * seguem a configuração de status da fase (statusLabels da oportunidade).
+ * seguem a configuração de status da fase (statusLabels da oportunidade), e que o
+ * texto do resultado exibido também segue essa configuração.
  */
 class EvaluationStatusConfigurationTest extends Abstract\TestCase
 {
@@ -25,6 +27,14 @@ class EvaluationStatusConfigurationTest extends Abstract\TestCase
         Faker,
         OpportunityBuilder,
         RegistrationDirector;
+
+    private const RENAMED_STATUS_LABELS = [
+        '0' => 'Rascunho',
+        '1' => 'Aguardando resposta',
+        '2' => 'Deferido Parcialmente',
+        '3' => 'Indeferido',
+        '10' => 'Deferido',
+    ];
 
     function testEvaluatorStatusesFollowMethodDefaultsWhenPhaseIsNotConfigured()
     {
@@ -193,6 +203,44 @@ class EvaluationStatusConfigurationTest extends Abstract\TestCase
         }
     }
 
+    public function testEvaluationResultStringUsesConfiguredStatusLabel(): void
+    {
+        foreach (['simple', 'continuous'] as $type) {
+            [, $registration, $valuer] = $this->createEvaluationPhase($type, self::RENAMED_STATUS_LABELS);
+
+            $this->login($valuer);
+            $this->assertStatus200(
+                $this->sendEvaluation($registration, Registration::STATUS_INVALID),
+                "Garantindo que a avaliação {$type} com o status renomeado pode ser enviada"
+            );
+
+            $this->assertSame(
+                'Deferido Parcialmente',
+                $this->findEvaluation($registration, $valuer)->resultString,
+                "Garantindo que o resultado da avaliação {$type} exibe o rótulo configurado na fase, não o padrão do método"
+            );
+        }
+    }
+
+    public function testEvaluationResultStringFallsBackToMethodLabelWhenPhaseIsNotConfigured(): void
+    {
+        foreach (['simple' => 'Inválida', 'continuous' => 'Negado'] as $type => $expected_label) {
+            [, $registration, $valuer] = $this->createEvaluationPhase($type);
+
+            $this->login($valuer);
+            $this->assertStatus200(
+                $this->sendEvaluation($registration, Registration::STATUS_INVALID),
+                "Garantindo que a avaliação {$type} pode ser enviada numa fase sem configuração de status"
+            );
+
+            $this->assertSame(
+                $expected_label,
+                $this->findEvaluation($registration, $valuer)->resultString,
+                "Garantindo que, sem configuração na fase, o resultado da avaliação {$type} mantém o rótulo padrão do método"
+            );
+        }
+    }
+
     /**
      * Cria uma fase de avaliação com uma inscrição enviada e distribuída a um avaliador
      *
@@ -256,4 +304,13 @@ class EvaluationStatusConfigurationTest extends Abstract\TestCase
             ]
         );
     }
+
+    private function findEvaluation(Registration $registration, User $valuer): ?RegistrationEvaluation
+    {
+        return $this->app->repo('RegistrationEvaluation')->findOneBy([
+            'registration' => $registration,
+            'user' => $valuer,
+        ]);
+    }
+
 }
