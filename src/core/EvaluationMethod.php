@@ -350,7 +350,28 @@ abstract class EvaluationMethod extends Module implements \JsonSerializable{
      * @return string
      */
     function evaluationToString(Entities\RegistrationEvaluation $evaluation){
-        return $this->valueToString($evaluation->result);
+        return $this->resultToString($evaluation->registration->opportunity, $evaluation->result);
+    }
+
+    /**
+     * Converte o resultado de uma avaliação para string, usando o rótulo configurado na fase
+     *
+     * @param Entities\Opportunity $opportunity
+     * @param mixed $value
+     * @return mixed o rótulo configurado para o status, ou o que valueToString devolver
+     */
+    public function resultToString(Entities\Opportunity $opportunity, $value) {
+        $evaluation_method_configuration = $opportunity->evaluationMethodConfiguration;
+
+        if ($evaluation_method_configuration && is_scalar($value)) {
+            foreach ($this->getResultStatuses($evaluation_method_configuration) as $status => $label) {
+                if ((string) $status === (string) $value) {
+                    return $label;
+                }
+            }
+        }
+
+        return $this->valueToString($value);
     }
 
     /**
