@@ -355,6 +355,25 @@ class EvaluationStatusConfigurationTest extends Abstract\TestCase
         }
     }
 
+    public function testFindEvaluationsPayloadKeepsTheNotEvaluatedLiteral(): void
+    {
+        [$opportunity, $registration, $valuer, $admin] = $this->createEvaluationPhase('continuous', self::RENAMED_STATUS_LABELS);
+
+        $this->login($valuer);
+        $this->assertStatus200(
+            $this->sendEvaluation($registration, Registration::STATUS_INVALID, 'draft'),
+            'Garantindo que a avaliação pode ser salva como rascunho'
+        );
+
+        $this->login($admin);
+
+        $this->assertSame(
+            ['Não avaliado'],
+            $this->resultStringsOf($this->findEvaluationsPayload($opportunity)),
+            'Garantindo que a avaliação ainda não enviada continua exibida como "Não avaliado", sem virar rótulo de status'
+        );
+    }
+
     /**
      * Cria uma fase de avaliação com uma inscrição enviada e distribuída a um avaliador
      *
@@ -401,14 +420,14 @@ class EvaluationStatusConfigurationTest extends Abstract\TestCase
         return [$opportunity->refreshed(), $registration, $valuer, $admin];
     }
 
-    private function sendEvaluation(Registration $registration, int $status)
+    private function sendEvaluation(Registration $registration, int $status, string $evaluation_state = 'evaluated')
     {
         return $this->requestFactory->POST(
             controller_id: 'registration',
             action: 'saveEvaluation',
             url_params: [
                 'id' => $registration->id,
-                'status' => 'evaluated'
+                'status' => $evaluation_state
             ],
             payload: [
                 'data' => [
