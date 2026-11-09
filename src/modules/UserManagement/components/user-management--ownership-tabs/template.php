@@ -50,5 +50,7 @@ $this->import('
                 <?= i::__('recriar pcache') ?>
             </button>
         </div>
+
+        <?php $this->applyComponentHook('entity-actions-left', 'end') ?>
     </template>
 </panel--entity-tabs>
