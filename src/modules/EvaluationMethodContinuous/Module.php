@@ -555,6 +555,15 @@ class Module extends \MapasCulturais\EvaluationMethod
         return $statuses;
     }
 
+    public function getResultStatuses(EvaluationMethodConfiguration $evaluation_method_configuration): array {
+        // a fase de prestação de informações tem vocabulário próprio e segue pelo mapa do método
+        if ($evaluation_method_configuration->opportunity->isReportingPhase) {
+            return [];
+        }
+
+        return $this->getEvaluatorStatuses($evaluation_method_configuration);
+    }
+
     protected function _valueToString($value) {
         $statuses = self::getStatuses();
         return $statuses[$value] ?? $value;
