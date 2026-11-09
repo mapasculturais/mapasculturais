@@ -46,7 +46,7 @@ trait EntityPermissionCache {
      * @param array $params
      * @return void
      */
-    static function createPermissionCacheForUserWhere($user, string $permission, string $where, array $params = []) {
+    public static function createPermissionCacheForUserWhere($user, string $permission, string $where, array $params = []) {
         $app = App::i();
 
         if (!$user || $user->is('guest')) {

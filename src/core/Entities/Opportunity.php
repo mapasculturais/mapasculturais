@@ -587,7 +587,7 @@ abstract class Opportunity extends \MapasCulturais\Entity
      * @param User $user
      * @return void
      */
-    function createRegistrationsViewPermissionCacheForUser(User $user) {
+    public function createRegistrationsViewPermissionCacheForUser(User $user) {
         Registration::createPermissionCacheForUserWhere($user, 'view', 'e.opportunity_id = :opportunity_id', ['opportunity_id' => $this->id]);
     }
 
