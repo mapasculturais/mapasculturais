@@ -18,6 +18,7 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ### Melhorias
 - Na gestão de usuários, a ficha do usuário passa a ter a aba Avaliações: mostra as fases em que a pessoa avalia (como em Minhas avaliações) e lista as avaliações iniciadas, concluídas e enviadas
+- Na gestão de usuários, os cards da aba Agentes passam a exibir o ID do agente, como na listagem pública
 
 ## [7.8.21] - 2026-10-28
 ### Correções
