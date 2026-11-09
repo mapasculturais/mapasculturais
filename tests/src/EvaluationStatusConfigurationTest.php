@@ -297,6 +297,25 @@ class EvaluationStatusConfigurationTest extends Abstract\TestCase
         );
     }
 
+    public function testResultToStringNormalizesTheValueType(): void
+    {
+        [$opportunity] = $this->createEvaluationPhase('continuous', self::RENAMED_STATUS_LABELS);
+
+        $evaluation_method = $opportunity->getEvaluationMethod();
+
+        $this->assertSame(
+            'Deferido Parcialmente',
+            $evaluation_method->resultToString($opportunity, Registration::STATUS_INVALID),
+            'Garantindo que o resultado em inteiro encontra o rótulo configurado, cuja chave é string'
+        );
+
+        $this->assertSame(
+            'Deferido Parcialmente',
+            $evaluation_method->resultToString($opportunity, (string) Registration::STATUS_INVALID),
+            'Garantindo que o resultado em string encontra o mesmo rótulo configurado'
+        );
+    }
+
     /**
      * Cria uma fase de avaliação com uma inscrição enviada e distribuída a um avaliador
      *
