@@ -175,6 +175,18 @@ abstract class EvaluationMethod extends Module implements \JsonSerializable{
         return $statuses;
     }
 
+    /**
+     * Retorna os status de inscrição que o resultado de uma avaliação pode assumir
+     *
+     * Array vazio significa que o resultado deste método não é um status de inscrição.
+     *
+     * @param EvaluationMethodConfiguration $evaluation_method_configuration
+     * @return array [status => label]
+     */
+    public function getResultStatuses(EvaluationMethodConfiguration $evaluation_method_configuration): array {
+        return [];
+    }
+
 
     /**
      * Retorna a próxima data e hora para redistribuição de inscrições
