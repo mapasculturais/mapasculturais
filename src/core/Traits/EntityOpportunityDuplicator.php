@@ -16,6 +16,7 @@ trait EntityOpportunityDuplicator {
         $app = App::i();
 
         $this->requireAuthentication();
+        $this->registrationFieldNameMap = [];
         $this->entityOpportunity = $this->requestedEntity;
         $this->entityNewOpportunity = $this->cloneOpportunity();
 
@@ -24,6 +25,7 @@ trait EntityOpportunityDuplicator {
         $this->duplicatePhases();
         $this->duplicateMetadata();
         $this->duplicateRegistrationFieldsAndFiles();
+        $this->remapDuplicatedEvaluationFields();
         $this->duplicateMetalist();
         $this->duplicateFiles();
         /** @todo Verificar a possibilidade de perguntar no momento da duplicação se deve ou não duplicar selos e agentes relacionados ao edital */
@@ -224,6 +226,7 @@ trait EntityOpportunityDuplicator {
 
         // Clonando os RegistrationFieldConfigurations e associar aos novos steps
         foreach ($this->entityOpportunity->getRegistrationFieldConfigurations() as $registrationFieldConfiguration) {
+            $originalFieldName = $registrationFieldConfiguration->fieldName;
             $fieldConfiguration = clone $registrationFieldConfiguration;
             $fieldConfiguration->setOwnerId($this->entityNewOpportunity->id);
 
@@ -233,10 +236,12 @@ trait EntityOpportunityDuplicator {
             }
 
             $fieldConfiguration->save(true);
+            $this->registrationFieldNameMap[$originalFieldName] = $fieldConfiguration->fieldName;
         }
 
         // Clonando os RegistrationFileConfigurations e associar aos novos steps
         foreach ($this->entityOpportunity->getRegistrationFileConfigurations() as $registrationFileConfiguration) {
+            $originalGroupName = $registrationFileConfiguration->fileGroupName;
             $fileConfiguration = clone $registrationFileConfiguration;
             $fileConfiguration->setOwnerId($this->entityNewOpportunity->id);
 
@@ -246,9 +251,27 @@ trait EntityOpportunityDuplicator {
             }
 
             $fileConfiguration->save(true);
+            $this->registrationFieldNameMap[$originalGroupName] = $fileConfiguration->fileGroupName;
         }
 
         $this->deleteOrphanEmptyRegistrationStepsForDuplicator($this->entityNewOpportunity, $stepMap);
+    }
+
+    /**
+     * Reescreve a configuração de campos visíveis da cópia e de suas fases
+     *
+     * @return void
+     * @access private
+     */
+    private function remapDuplicatedEvaluationFields(): void
+    {
+        $app = App::i();
+
+        $this->remapAvaliableEvaluationFields($this->entityNewOpportunity);
+
+        foreach ($app->repo('Opportunity')->findBy(['parent' => $this->entityNewOpportunity]) as $phase) {
+            $this->remapAvaliableEvaluationFields($phase);
+        }
     }
 
     /**

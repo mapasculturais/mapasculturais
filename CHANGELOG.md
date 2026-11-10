@@ -13,6 +13,16 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - **Novos anexos no cadastro do agente** (também usáveis como campos `@` no formulário de inscrição): CPF, CNPJ, CNH, RG, passaporte, comprovante de residência, vínculo territorial, currículo, portfólio, certidões fiscal, trabalhista e de prestação de contas, além de comprovantes de raça/cor, pessoa com deficiência e comunidades tradicionais. Os arquivos ficam no perfil e acompanham a inscrição automaticamente
 - **Documentação navegável da API pública** em `/api/documentation`: página com os endpoints de leitura das entidades (Agentes, Eventos, Espaços, Projetos, Oportunidades), filtros, formatos e schemas de resposta, com opção de testar cada consulta no próprio navegador
 
+## [7.8.21] - 2026-10-28
+### Correções
+- Corrige o botão "Baixar Anexos (ZIP)" para incluir todos os anexos das fases de coleta de dados da inscrição, organizados por fase e respeitando as permissões de acesso
+- Corrige o alinhamento do menu principal no cabeçalho, que havia sido deslocado para a esquerda na versão 7.8.17, restaurando sua distribuição central entre o logo e os botões de acesso
+- Corrige os campos visíveis para o avaliador, que deixavam o parecerista sem ver a ficha da inscrição inteira enquanto gestores e administradores viam tudo: em editais criados a partir de modelo ou por duplicação, a configuração era copiada com as referências aos campos do edital de origem, que não existem no edital novo, e a tela gravava a marcação como valor booleano, forma que o PHP aceitava e o JavaScript da ficha recusava; as referências passam a ser reescritas para os campos da cópia, em todas as fases, preservando o que estava marcado e o que estava desmarcado, e a marcação passa a ser gravada e lida de forma consistente
+- Corrige a opção "Exibir detalhamento da avaliação anterior para avaliadores do recurso" na configuração da fase de recurso, que não era salva em fases sem a configuração gravada, passando a exibir o valor padrão já utilizado pelo sistema
+
+### Melhorias
+- Ajusta colunas da tabela e planilha de inscritos
+
 ## [7.8.20] - 2026-10-20
 ### Correções
 - Corrige a exportação da planilha de inscritos para campos do tipo `addresses` (ex.: "Endereço do espaço"), que gerava a coluna vazia mesmo com dados salvos na inscrição
