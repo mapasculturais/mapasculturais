@@ -168,6 +168,17 @@ class Space extends EntityController {
             $query_data['@to']
         );
 
+        // separa os filtros space:* (ex.: space:En_Estado) para o ApiQuery de Space,
+        // espelhando o split de API_findOccurrences (Event.php); sem isso as chaves
+        // space:* caem no ApiQuery de Event e lançam PropertyDoesNotExists
+        $space_filters = [];
+        foreach($query_data as $key => $val){
+            if(strtolower(substr($key, 0, 6)) === 'space:'){
+                $space_filters[substr($key, 6)] = $val;
+                unset($query_data[$key]);
+            }
+        }
+
         $event_data = ['@select' => 'id'] + $query_data;
         unset($event_data['location']);
         unset($event_data['_geoLocation']);
@@ -189,6 +200,13 @@ class Space extends EntityController {
                 foreach($query_data as $key => $val)
                     if($key[0] === '@' || $key == '_geoLocation' || $key == 'location')
                         $space_data[$key] = $val;
+
+                // id do filtro space: intersecta com os ids derivados das ocorrências
+                if(key_exists('id', $space_filters)){
+                    $space_data['id'] = "AND({$space_data['id']},{$space_filters['id']})";
+                    unset($space_filters['id']);
+                }
+                $space_data += $space_filters;
 
                 unset($space_data['@keyword']);
                 $response = $this->apiQuery($space_data);

@@ -7,7 +7,7 @@ usort($relatedOpportunities, fn($a, $b) => $a->registrationTo <=> $b->registrati
 $opportunities = [];
 
 foreach($relatedOpportunities as $opportunity) {
-    $opportunities[] = $opportunity->simplify("id,name,avatar,registrationFrom,registrationTo");
+    $opportunities[] = $opportunity->simplify("id,name,avatar,registrationFrom,registrationTo,shortDescription,type,terms,owner");
 }
 
 $this->jsObject['opportunityList']['opportunity'] = $opportunities;

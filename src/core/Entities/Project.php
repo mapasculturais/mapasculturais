@@ -20,6 +20,7 @@ class Project extends \MapasCulturais\Entity
         Traits\EntityFiles,
         Traits\EntityAvatar,
         Traits\EntityMetaLists,
+        Traits\EntityGeoLocation,
         Traits\EntityTaxonomies,
         Traits\EntityAgentRelation,
         Traits\EntitySealRelation,
@@ -47,6 +48,9 @@ class Project extends \MapasCulturais\Entity
 
     #[ORM\Column(name: "name", type: "string", length: 255, nullable: false)]
     protected $name;
+
+    #[ORM\Column(name: "public_location", type: "boolean", nullable: true)]
+    public $publicLocation = false;
 
     #[ORM\Column(name: "short_description", type: "text", nullable: true)]
     protected $shortDescription;
@@ -117,6 +121,14 @@ class Project extends \MapasCulturais\Entity
 
     function getEvents(){
         return $this->fetchByStatus($this->_events, self::STATUS_ENABLED);
+    }
+
+    function getLocation(){
+        if($this->publicLocation || $this->canUser('viewPrivateData')){
+            return $this->location;
+        }else{
+            return new \MapasCulturais\Types\GeoPoint(0,0);
+        }
     }
 
     function setStartsOn($date){

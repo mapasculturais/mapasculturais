@@ -403,13 +403,20 @@
 		&--action {
 			align-items: flex-end;
 			display: flex;
+			flex-wrap: wrap;
+			gap: size(8);
 			justify-content: flex-end;
 			width: 100%;
 
 			.button {
 				display: block;
+				flex: 1;
 				max-width: size(500);
 				text-align: center;
+
+				&.entity-card__edit {
+					display: flex;
+				}
 
 				.iconify {
 					float: right;

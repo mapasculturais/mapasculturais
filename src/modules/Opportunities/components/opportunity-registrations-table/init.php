@@ -40,7 +40,10 @@ $data['evaluationStatusDict'] = [
 
 $phase = $this->controller->requestedEntity;
 
-$skipFields = ["previousPhaseRegistrationId", "nextPhaseRegistrationId", "id"];
+// preliminaryResultSnapshot: metadado interno da publicação em dois estágios
+// (exibido no acompanhamento do proponente). Não entra como coluna da lista —
+// o valor costuma coincidir com "Média original" e confunde o gestor.
+$skipFields = ["previousPhaseRegistrationId", "nextPhaseRegistrationId", "id", "preliminaryResultSnapshot"];
 $default_select = "agentsData,number,singleUrl,consolidatedResult,appliedPointReward,score,status,sentTimestamp,createTimestamp,files,owner.{name,geoMesorregiao,geoEstado,geoMicrorregiao,geoMunicipio,geoPais},editSentTimestamp,editableUntil,editableFields";
 $default_headers = [
     [
@@ -91,6 +94,24 @@ $default_headers = [
     [
         'text' => i::__('Divisão geográfica do responsável – País'),
         'value' => 'owner?.geoPais',
+    ],
+    // F4 (#20) — CA-11: médias por inscrição (computadas pelo módulo
+    // OpportunityAppealPhase no findResult da ApiQuery; o slug entra no
+    // default_select pelo merge de headers abaixo).
+    [
+        'text' => i::__('Média original'),
+        'value' => 'averageOriginalScore',
+        'slug' => 'averageOriginalScore',
+    ],
+    [
+        'text' => i::__('Média corrigida'),
+        'value' => 'averageCorrectedScore',
+        'slug' => 'averageCorrectedScore',
+    ],
+    [
+        'text' => i::__('Diferença'),
+        'value' => 'scoreDifference',
+        'slug' => 'scoreDifference',
     ],
 ];
 

@@ -68,7 +68,7 @@ $this->import('
             </div>
         </div>
         <div class="opportunity-phase-list-evaluation__line col-12"></div>
-        <opportunity-phase-publish-config-registration :phase="entity.opportunity" :phases="phases" hide-datepicker></opportunity-phase-publish-config-registration>
+        <opportunity-phase-publish-config-registration :phase="entity.opportunity" :phases="phases" :main-phase-only="mainPhaseOnly" hide-datepicker></opportunity-phase-publish-config-registration>
         <opportunity-appeal-phase-config :phase="entity" :phases="phases" :tab="tab"></opportunity-appeal-phase-config>
     </div>
 </mc-card>

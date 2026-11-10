@@ -140,6 +140,8 @@ class Module extends \MapasCulturais\EvaluationMethod
 
         if (!array_key_exists('status', $data) || trim((string) $data['status']) === '') {
             $errors[] = i::__('O campo Status é obrigatório');
+        } else if (!is_scalar($data['status']) || !array_key_exists($data['status'], $this->getEvaluatorStatuses($evaluation_method_configuration))) {
+            $errors[] = i::__('O status selecionado não está habilitado para esta fase');
         }
 
         if (!array_key_exists('obs', $data) || trim((string) $data['obs']) === '') {
@@ -573,12 +575,19 @@ class Module extends \MapasCulturais\EvaluationMethod
     /**
      * Retorna se os detalhes de uma avaliação pode ou não serem exibidos
      *
+     * R03 (#77): usa o gate canônico areRegistrationResultsPublished
+     * (Opportunity.php — cobre final E preliminar com two-stage), mantendo
+     * allow_proponent_response como disjunção (backward compat). Antes só
+     * publicação FINAL abria a exibição — com recurso deferido e apenas o
+     * preliminar publicado, o acompanhamento mascarava o status real.
+     *
      * @param Registration $registration
      * @return boolean
      */
     function shouldDisplayEvaluationResults(Registration $registration): bool
     {
-        return $registration->opportunity->publishedRegistrations || $registration->opportunity->allow_proponent_response;
+        return $registration->opportunity->areRegistrationResultsPublished()
+            || $registration->opportunity->allow_proponent_response;
     }
 
 }

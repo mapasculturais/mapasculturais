@@ -2,10 +2,7 @@
 
 .opportunity-committee-groups {
     display: grid;
-
-    &__description {
-        margin-bottom: size(15);
-    }
+    gap: size(32);
 
     &__actions {
         display: flex;
@@ -16,7 +13,7 @@
         border-radius: var(--mc-border-radius-xs);
         border: size(1) solid;
         display: grid;
-        margin-top: size(16);
+        margin-top: size(24);
     }
 
     &__edit-group {
@@ -50,10 +47,15 @@
 
     &__evaluators {
         border-bottom: none;
+        padding-top: size(32);
 
         & .tabs-component {
             display: grid;
-            gap: size(15);
+            gap: size(24);
+
+            &__header {
+                padding-bottom: size(8);
+            }
 
             &__header,
             &__panels {
@@ -65,12 +67,19 @@
     &__multiple-evaluators {
         gap: size(15);
         justify-content: space-between;
+        padding-bottom: size(24);
 
         input {
             max-width: 100%;
             width: size(96);
             height: size(40);
         }
+    }
+
+    // Respiro da aba da comissão: acima (descrição) e abaixo (card do grupo)
+    > .tabs-component > .tabs-component__header {
+        padding-top: size(16);
+        padding-bottom: size(8);
     }
 
     &__distribution {

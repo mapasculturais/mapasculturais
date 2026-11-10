@@ -11,6 +11,11 @@ app.component('registration-form', {
             type: Entity,
             default: null
         },
+
+        isLastStep: {
+            type: Boolean,
+            required: true
+        },
     },
     
     setup (props, { slots }) {

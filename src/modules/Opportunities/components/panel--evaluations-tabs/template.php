@@ -14,7 +14,7 @@ $this->import('
 ');
 ?>
 
-<mc-tabs>
+<mc-tabs sync-hash>
     <?php $this->applyComponentHook('tabs', 'begin'); ?>
     <mc-tab label="<?= i::_e('Avaliações abertas e disponíveis') ?>" slug="openEvaluations" class="panel-evaluations">
         <?php $this->applyComponentHook('tabs-openEvaluations', 'begin'); ?>

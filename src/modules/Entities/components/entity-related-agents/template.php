@@ -54,7 +54,28 @@ $this->import('
             </div>
         </div>
         <!-- lista de agentes -->
-        <div class="entity-related-agents__group--agents">
+        <div v-if="!editable" class="entity-related-agents__group--card">
+            <ul v-if="relations.length" class="entity-related-agents__list">
+                <li v-for="relation in relations" :key="relation.agent?.id || relation.id" class="entity-related-agents__list-item">
+                    <a
+                        class="entity-related-agents__list-link"
+                        :href="relation.agent?.singleUrl"
+                        :title="relation.agent?.name">
+                        <div class="entity-related-agents__list-avatar">
+                            <mc-avatar :entity="relation.agent" size="medium"></mc-avatar>
+                        </div>
+                        <div class="entity-related-agents__list-content">
+                            <span class="entity-related-agents__list-name">{{ relation.agent?.name }}</span>
+                            <span v-if="relation.agent?.type?.name" class="entity-related-agents__list-meta">
+                                <span class="entity-related-agents__list-meta-label"><?php i::_e('Tipo de agente') ?></span>
+                                {{ relation.agent.type.name }}
+                            </span>
+                        </div>
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <div v-else class="entity-related-agents__group--agents">
             <div v-for="relation in relations" class="agent">
                 <mc-relation-card :relation="relation">
                     <template #default="{open, close, toggle}">
@@ -64,7 +85,7 @@ $this->import('
                     </template>
                 </mc-relation-card>
                 <!-- remover agente -->
-                <div v-if="editable" class="agent__delete">
+                <div class="agent__delete">
                     <mc-confirm-button @confirm="removeAgent(groupName, relation.agent)">
                         <template #button="modal">
                             <mc-icon @click="modal.open()" name="delete"></mc-icon>

@@ -164,7 +164,23 @@ app.component('opportunity-phases-timeline', {
 
 			const allowProponentResponse = phaseOpportunity.allow_proponent_response;
 
-			return phaseOpportunity.publishedRegistrations && (isRegistrationOnly || isEvaluation) || allowProponentResponse;
+			/*
+				R02 (#66): publicado no sentido canônico de Opportunity::
+				areRegistrationResultsPublished (final OU preliminar). As flags
+				vêm no payload do item (diretas em items opportunity; aninhadas
+				em item.opportunity no item EMC) — parse truthy explícito,
+				imune a 'false'/'0' serializados. O cálculo server-side
+				existente (shouldDisplayEvaluationResults) permanece válido via
+				allowProponentResponse; aqui só o gate de renderização da seção.
+			*/
+			const isTruthyFlag = (value) => value === true || value === 1 || value === '1' || value === 'true';
+
+			const isPublished = [item, phaseOpportunity]
+				.filter(Boolean)
+				.some((source) => isTruthyFlag(source.publishedRegistrations)
+					|| isTruthyFlag(source.publishedPreliminaryRegistrations));
+
+			return (isPublished && (isRegistrationOnly || isEvaluation)) || allowProponentResponse;
 		},
 
 		getRegistration(item) {

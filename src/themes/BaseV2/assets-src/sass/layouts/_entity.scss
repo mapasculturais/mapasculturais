@@ -39,20 +39,114 @@
             gap: size(40);
         }
 
-        & > .tabs-component {
-            position: relative;
-            margin-top: size(-43);
+        .edit-1 .container > main {
+            gap: size(8);
+        }
+
+        .tabs-component__header {
+            margin-top: size(-34);
+        }
+
+        .edit-1 .tabs-component__buttons {
+            gap: size(49);
+
+            @media (max-width: size(600)) {
+                gap: size(40);
+            }
         }
     }
 
     &.action-single {
+        background-color: var(--mc-gray-100);
+
+        .single-1 {
+            .tabs-component {
+                &__header {
+                    display: block;
+                    margin-left: 0;
+                    margin-right: 0;
+                    max-width: none;
+                    width: 100%;
+                    box-sizing: border-box;
+                    padding-left: max(#{size(48)}, calc((100% - #{size(1360)}) / 2 + #{size(48)}));
+                    padding-right: max(#{size(48)}, calc((100% - #{size(1360)}) / 2 + #{size(48)}));
+                    padding-top: 0;
+                    padding-bottom: 0;
+
+                    @media (max-width: size(800)) {
+                        padding-left: size(16);
+                        padding-right: size(16);
+                    }
+                }
+
+                &__buttons {
+                    max-width: 100%;
+                    width: auto;
+                    margin-left: 0;
+                    margin-right: 0;
+                    padding-left: 0;
+                    padding-right: 0;
+                    box-sizing: border-box;
+                    overflow-x: auto;
+                    overflow-y: hidden;
+                    gap: size(49);
+
+                    @media (max-width: size(600)) {
+                        gap: size(40);
+                    }
+                }
+
+                &__panels {
+                    max-width: none;
+                    width: 100%;
+                    margin-bottom: size(16);
+                    padding-top: size(16);
+                }
+            }
+
+            // tabs internas: alinhadas à esquerda com as tabs de topo
+            .single-1__inner-tabs .tabs-component__header {
+                padding-left: 0;
+                padding-right: 0;
+                max-width: 100%;
+                margin-left: 0;
+                margin-right: 0;
+                box-sizing: border-box;
+                overflow-x: auto;
+                overflow-y: hidden;
+            }
+
+            .single-1__inner-tabs .tabs-component__buttons {
+                max-width: 100%;
+                width: auto;
+                overflow-x: auto;
+                overflow-y: hidden;
+                padding-left: 0;
+                padding-right: 0;
+            }
+
+            .container {
+                max-width: size(1360);
+                margin-left: auto;
+                margin-right: auto;
+                padding-left: size(48);
+                padding-right: size(48);
+                box-sizing: border-box;
+
+                @media (max-width: size(800)) {
+                    padding-left: size(16);
+                    padding-right: size(16);
+                }
+            }
+        }
+
         .tabs-component {
             &__header {
                 border-bottom: 1px solid;
                 padding: 0;
 
                 @media (max-width: size(1200)) {
-                    margin: 0 size(16);
+                    margin: 0;
                 }
             }
 
@@ -64,11 +158,17 @@
                 }
             }
 
-            &__panels {
-                .property-list {
-                    padding-bottom: size(16);
-                }
+            &__panels .property-list {
+                padding-bottom: size(16);
             }
+        }
+
+        // single-1: sobrescreve o margin das tabs depois da regra geral
+        .single-1 .tabs-component__buttons {
+            margin-top: size(8);
+            margin-left: 0;
+            margin-right: 0;
+            margin-bottom: 0;
         }
     }
 

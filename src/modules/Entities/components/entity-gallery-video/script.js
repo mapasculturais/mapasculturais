@@ -47,6 +47,22 @@ app.component('entity-gallery-video', {
             type: [String, Array, Object],
             required: false
         },
+        hideTitle: {
+            type: Boolean,
+            default: false 
+        },
+        labeledActions: {
+            type: Boolean,
+            default: false
+        },
+        buttonLabel: {
+            type: String,
+            default: ''
+        },
+        buttonPrimary: {
+            type: Boolean,
+            default: false
+        },
 
     },
 
@@ -77,12 +93,14 @@ app.component('entity-gallery-video', {
 
                 if (host.indexOf('youtube') != -1 || host.indexOf('youtu.be') != -1) {
                     provider = 'youtube';
-                    videoID = parsedURL.href.match(ytRegex)[3];
-                    videoThumbnail = 'https://img.youtube.com/vi/'+videoID+'/0.jpg';
+                    const ytMatch = parsedURL.href.match(ytRegex);
+                    videoID = ytMatch?.[3] || '';
+                    videoThumbnail = videoID ? 'https://img.youtube.com/vi/'+videoID+'/0.jpg' : '';
                 } else if (host.indexOf('vimeo') != -1) {
                     provider = 'vimeo';
-                    videoID = parsedURL.href.match(vmRegex)[1];
-                    videoThumbnail = 'https://vumbnail.com/'+videoID+'.jpg';
+                    const vmMatch = parsedURL.href.match(vmRegex);
+                    videoID = vmMatch?.[1] || '';
+                    videoThumbnail = videoID ? 'https://vumbnail.com/'+videoID+'.jpg' : '';
                 }
 
                 return {
@@ -138,13 +156,13 @@ app.component('entity-gallery-video', {
         },
         // Salva modificações nos vídeos adicionados
         async save(metalist, popover) {
-            if(!metalist.newData.title) {
+            if(!metalist.newData.title || !metalist.newData.value) {
                 const messages = useMessages();
                 messages.error(this.text('preencha todos os campos'));
                 return;
             }
             metalist.title = metalist.newData.title;
-            // Mantém o value original, não permite editar
+            metalist.value = metalist.newData.value;
             
             await metalist.save();
             popover.close();

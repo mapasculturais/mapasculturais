@@ -1,0 +1,384 @@
+/*
+ * opportunity-appeal-correction-assignment (F2 / issue #18)
+ *
+ * Estilo local no padrão do mc-modal (style.css do componente é enfileirado
+ * automaticamente pelo AssetManager — sem passo de build). Estrutura visual:
+ * estrutura do diálogo vem do mc-modal (.modal-content/.modal__*); aqui só o
+ * conteúdo interno — linhas de slot, badges e estados — usando tokens e
+ * classes utilitárias do tema BaseV2 (--mc-*, .semibold, .warning__background,
+ * .primary__color, .success__color, .warning__color, .danger__color).
+ */
+
+.opportunity-appeal-correction-assignment .modal-content {
+    min-width: 0;
+}
+
+@media (min-width: 801px) {
+    .opportunity-appeal-correction-assignment .modal-content {
+        /* Modal largo: Acompanhamento precisa de espaço para prazo,
+           escopo, lista de campos, visibilidade e ações. */
+        min-width: min(80rem, 96vw);
+        max-width: min(80rem, 96vw);
+        width: min(80rem, 96vw);
+    }
+}
+
+.opportunity-appeal-correction-assignment__content {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    padding-bottom: .75rem;
+}
+
+.opportunity-appeal-correction-assignment__empty,
+.opportunity-appeal-correction-assignment__progress {
+    align-items: center;
+    display: flex;
+    gap: .5rem;
+}
+
+.opportunity-appeal-correction-assignment__empty {
+    opacity: .7;
+}
+
+.opportunity-appeal-correction-assignment__header {
+    display: grid;
+    gap: 1.5rem;
+    /* Slot | Corretor | Acompanhamento (prioridade de largura) */
+    grid-template-columns: minmax(10rem, .7fr) minmax(13rem, .9fr) minmax(26rem, 1.7fr);
+    font-size: .75rem;
+    font-weight: 600;
+    letter-spacing: .02em;
+    opacity: .7;
+    padding: 0 .75rem;
+    text-transform: uppercase;
+}
+
+.opportunity-appeal-correction-assignment__slot {
+    align-items: start;
+    background-color: var(--mc-gray-100);
+    border: 1px solid var(--mc-gray-300);
+    border-radius: var(--mc-border-radius-sm);
+    display: grid;
+    gap: 1.5rem;
+    grid-template-columns: minmax(10rem, .7fr) minmax(13rem, .9fr) minmax(26rem, 1.7fr);
+    padding: 1rem 1.25rem;
+}
+
+.opportunity-appeal-correction-assignment__slot-status {
+    display: flex;
+    flex-direction: column;
+    gap: .4rem;
+    min-width: 0;
+}
+
+.opportunity-appeal-correction-assignment__slot--disabled {
+    opacity: .5;
+}
+
+.opportunity-appeal-correction-assignment__slot-check {
+    align-items: flex-start;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    gap: .25rem;
+}
+
+/* F5: slot designado — dono como leitura estática viva (não controle desabilitado).
+   Sem checkbox na linha, os recuos pensados para o layout com checkbox zeram. */
+.opportunity-appeal-correction-assignment__slot-owner {
+    align-items: center;
+    display: flex;
+    gap: .5rem;
+}
+
+.opportunity-appeal-correction-assignment__slot-owner .iconify {
+    font-size: .75rem;
+    min-width: .75rem;
+}
+
+.opportunity-appeal-correction-assignment__slot--assigned .opportunity-appeal-correction-assignment__slot-result,
+.opportunity-appeal-correction-assignment__slot--assigned .opportunity-appeal-correction-assignment__tag {
+    margin-left: 0;
+}
+
+/* F5: corretor designado como leitura estática com tag de papel */
+.opportunity-appeal-correction-assignment__assigned {
+    align-items: center;
+    display: flex;
+    flex-wrap: wrap;
+    gap: .25rem;
+}
+
+.opportunity-appeal-correction-assignment__assigned .iconify {
+    font-size: 1rem;
+    min-width: 1rem;
+}
+
+.opportunity-appeal-correction-assignment__tag--role {
+    background-color: #fff;
+    border: 1px solid var(--mc-primary-500);
+    color: var(--mc-primary-500);
+    margin: 0;
+}
+
+.opportunity-appeal-correction-assignment__slot-check input {
+    margin-right: .25rem;
+}
+
+.opportunity-appeal-correction-assignment__slot-valuer {
+    display: block;
+    margin-left: 1.5rem;
+}
+
+.opportunity-appeal-correction-assignment__slot-result {
+    font-size: .875rem;
+    margin: .25rem 0 0 1.5rem;
+    opacity: .7;
+}
+
+.opportunity-appeal-correction-assignment__tag {
+    border-radius: var(--mc-border-radius-pill);
+    display: inline-block;
+    font-size: .75rem;
+    font-weight: 600;
+    line-height: 1;
+    margin: .5rem 0 0 1.5rem;
+    padding: .4rem .75rem;
+}
+
+.opportunity-appeal-correction-assignment__select {
+    background-color: #fff;
+    border: 1px solid var(--mc-low-500);
+    border-radius: var(--mc-border-radius-xs);
+    cursor: pointer;
+    font-family: inherit;
+    font-size: .875rem;
+    min-height: 2.75rem;
+    padding: .5rem .75rem;
+    width: 100%;
+}
+
+.opportunity-appeal-correction-assignment__select:disabled {
+    cursor: default;
+    opacity: .5;
+}
+
+.opportunity-appeal-correction-assignment__slot-hint {
+    font-size: .75rem;
+    margin-top: .25rem;
+}
+
+.opportunity-appeal-correction-assignment__status {
+    align-items: center;
+    display: flex;
+    gap: .5rem;
+}
+
+.opportunity-appeal-correction-assignment__status .iconify,
+.opportunity-appeal-correction-assignment__status-detail .iconify {
+    font-size: .75rem;
+    min-width: .75rem;
+}
+
+.opportunity-appeal-correction-assignment__status-detail {
+    align-items: flex-start;
+    display: flex;
+    font-size: .8125rem;
+    gap: .45rem;
+    line-height: 1.4;
+    opacity: .8;
+}
+
+.opportunity-appeal-correction-assignment__status-detail > span {
+    min-width: 0;
+    overflow-wrap: anywhere;
+}
+
+.opportunity-appeal-correction-assignment__status-detail--empty {
+    font-size: .75rem;
+    opacity: .5;
+}
+
+/* F5 (#45): ações de gestão (substituir/cancelar) e substituição inline */
+.opportunity-appeal-correction-assignment__actions {
+    align-items: center;
+    display: flex;
+    flex-wrap: wrap;
+    gap: .25rem;
+    margin-top: .5rem;
+}
+
+.opportunity-appeal-correction-assignment__actions .button {
+    padding-block: .25rem;
+}
+
+.opportunity-appeal-correction-assignment__substitution {
+    background-color: #fff;
+    border: 1px dashed var(--mc-gray-300);
+    border-radius: var(--mc-border-radius-xs);
+    display: flex;
+    flex-direction: column;
+    gap: .5rem;
+    margin-top: .5rem;
+    padding: .5rem;
+}
+
+.opportunity-appeal-correction-assignment__substitution-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: .5rem;
+}
+
+/* F6 (#49): seletor de escopo de critérios */
+.opportunity-appeal-correction-assignment__scope {
+    display: flex;
+    flex-direction: column;
+    gap: .25rem;
+    margin-top: .25rem;
+}
+
+.opportunity-appeal-correction-assignment__deadline {
+    display: flex;
+    flex-direction: column;
+    gap: .25rem;
+    margin-top: .5rem;
+}
+
+.opportunity-appeal-correction-assignment__deadline label {
+    font-size: .75rem;
+}
+
+.opportunity-appeal-correction-assignment__deadline .mc-datepicker {
+    flex-direction: column;
+    gap: .5rem;
+    min-width: 0;
+}
+
+.opportunity-appeal-correction-assignment__deadline .mc-datepicker__date,
+.opportunity-appeal-correction-assignment__deadline .mc-datepicker__time {
+    width: 100%;
+}
+
+.opportunity-appeal-correction-assignment__deadline .mc-datepicker input {
+    box-sizing: border-box;
+    min-width: 0;
+    width: 100%;
+}
+
+.opportunity-appeal-correction-assignment__deadline .opportunity-appeal-correction-assignment__slot-hint {
+    align-items: center;
+    display: flex;
+    flex-wrap: wrap;
+    gap: .25rem;
+}
+
+.opportunity-appeal-correction-assignment__scope-list {
+    background-color: var(--mc-gray-100);
+    border: 1px solid var(--mc-gray-300);
+    border-radius: var(--mc-border-radius-xs);
+    display: flex;
+    flex-direction: column;
+    gap: .5rem;
+    margin-top: .25rem;
+    max-height: 16rem;
+    overflow-y: auto;
+    padding: .5rem;
+}
+
+/*
+ * Nested modal de campos: espelha fields-visible-evaluators + modalEmbedTools
+ * (largura generosa para dezenas de campos com títulos longos).
+ */
+.opportunity-appeal-correction-assignment__fields-modal .modal-content {
+    max-width: min(73rem, 80vw);
+    min-width: min(36rem, 94vw);
+    width: min(73rem, 80vw);
+}
+
+.opportunity-appeal-correction-assignment__fields-picker {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    width: 100%;
+}
+
+.opportunity-appeal-correction-assignment__fields-picker .fields-visible-evaluators__fields {
+    max-height: min(28rem, 55vh);
+    overflow: auto;
+}
+
+.opportunity-appeal-correction-assignment__fields-picker .fields-visible-evaluators__field label {
+    align-items: flex-start;
+    display: flex;
+    flex-wrap: nowrap;
+    gap: .75rem;
+    max-width: 100%;
+    width: 100%;
+}
+
+.opportunity-appeal-correction-assignment__fields-picker .fields-visible-evaluators__field__title {
+    flex: 1 1 auto;
+    min-width: 0;
+}
+
+.opportunity-appeal-correction-assignment__fields-picker .fields-visible-evaluators__field__title span {
+    display: block;
+    overflow-wrap: anywhere;
+    word-break: break-word;
+}
+
+.opportunity-appeal-correction-assignment__fields-picker .fields-visible-evaluators__field__title small {
+    color: var(--mc-low-500);
+    display: block;
+}
+
+.opportunity-appeal-correction-assignment__scope-section {
+    display: flex;
+    flex-direction: column;
+    gap: .25rem;
+    font-size: .875rem;
+}
+
+.opportunity-appeal-correction-assignment__scope-item {
+    align-items: center;
+    cursor: pointer;
+    display: flex;
+    gap: .5rem;
+    padding-left: .25rem;
+}
+
+.opportunity-appeal-correction-assignment__scope-item input {
+    margin: 0;
+}
+
+.opportunity-appeal-correction-assignment__visibility {
+    display: flex;
+    flex-direction: column;
+    gap: .35rem;
+    margin-top: .25rem;
+}
+
+.opportunity-appeal-correction-assignment__visibility-item {
+    align-items: flex-start;
+    cursor: pointer;
+    display: flex;
+    font-size: .875rem;
+    gap: .5rem;
+    line-height: 1.3;
+}
+
+.opportunity-appeal-correction-assignment__visibility-item input {
+    margin: .15rem 0 0;
+}
+
+/* Mesmo breakpoint do mc-modal/.grid-12 (800px): linhas empilham. */
+@media (max-width: 800px) {
+    .opportunity-appeal-correction-assignment__header {
+        display: none;
+    }
+
+    .opportunity-appeal-correction-assignment__slot {
+        grid-template-columns: minmax(0, 1fr);
+    }
+}

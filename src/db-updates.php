@@ -3680,6 +3680,55 @@ $$
             WHERE seal_exemption_status IS NOT NULL");
     },
 
+    'create registration_appeal_review table' => function () {
+        if (__table_exists('registration_appeal_review')) {
+            echo "ALREADY APPLIED";
+            return true;
+        }
+
+        if (!__sequence_exists('registration_appeal_review_id_seq')) {
+            __exec("CREATE SEQUENCE registration_appeal_review_id_seq INCREMENT BY 1 MINVALUE 1 START 1;");
+        }
+
+        __exec("CREATE TABLE registration_appeal_review (
+            id INT NOT NULL,
+            original_evaluation_id INT NOT NULL,
+            registration_id INT NOT NULL,
+            appeal_phase_id INT NOT NULL,
+            slot_owner_user_id INT NOT NULL,
+            corrector_user_id INT NOT NULL,
+            status SMALLINT NOT NULL DEFAULT 0,
+            correction_type VARCHAR(20) NOT NULL,
+            released_scope JSONB DEFAULT NULL,
+            starts_at TIMESTAMP(0) WITHOUT TIME ZONE DEFAULT NULL,
+            ends_at TIMESTAMP(0) WITHOUT TIME ZONE DEFAULT NULL,
+            original_value JSONB DEFAULT NULL,
+            corrected_value JSONB DEFAULT NULL,
+            original_score DOUBLE PRECISION DEFAULT NULL,
+            corrected_score DOUBLE PRECISION DEFAULT NULL,
+            create_timestamp TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL,
+            sent_timestamp TIMESTAMP(0) WITHOUT TIME ZONE DEFAULT NULL,
+            update_timestamp TIMESTAMP(0) WITHOUT TIME ZONE DEFAULT NULL,
+            PRIMARY KEY(id));");
+
+        __exec("ALTER TABLE ONLY registration_appeal_review ALTER COLUMN id SET DEFAULT nextval('registration_appeal_review_id_seq'::regclass);");
+
+        __exec("CREATE INDEX idx_registration_appeal_review_original_evaluation_id ON registration_appeal_review (original_evaluation_id);");
+        __exec("CREATE INDEX idx_registration_appeal_review_registration_id ON registration_appeal_review (registration_id);");
+        __exec("CREATE INDEX idx_registration_appeal_review_appeal_phase_id ON registration_appeal_review (appeal_phase_id);");
+        __exec("CREATE INDEX idx_registration_appeal_review_slot_owner_user_id ON registration_appeal_review (slot_owner_user_id);");
+        __exec("CREATE INDEX idx_registration_appeal_review_corrector_user_id ON registration_appeal_review (corrector_user_id);");
+
+        __exec("ALTER TABLE registration_appeal_review ADD CONSTRAINT fk_registration_appeal_review_original_evaluation_id FOREIGN KEY (original_evaluation_id) REFERENCES registration_evaluation (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE;");
+        __exec("ALTER TABLE registration_appeal_review ADD CONSTRAINT fk_registration_appeal_review_registration_id FOREIGN KEY (registration_id) REFERENCES registration (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE;");
+        __exec("ALTER TABLE registration_appeal_review ADD CONSTRAINT fk_registration_appeal_review_appeal_phase_id FOREIGN KEY (appeal_phase_id) REFERENCES opportunity (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE;");
+        __exec("ALTER TABLE registration_appeal_review ADD CONSTRAINT fk_registration_appeal_review_slot_owner_user_id FOREIGN KEY (slot_owner_user_id) REFERENCES usr (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE;");
+        __exec("ALTER TABLE registration_appeal_review ADD CONSTRAINT fk_registration_appeal_review_corrector_user_id FOREIGN KEY (corrector_user_id) REFERENCES usr (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE;");
+
+        // Índice único parcial: impede duas designações ativas (designado/rascunho/reaberto) para o mesmo slot.
+        __exec("CREATE UNIQUE INDEX idx_registration_appeal_review_active_slot ON registration_appeal_review (original_evaluation_id) WHERE status IN (0, 1, 3);");
+    },
+
     'Corrige dados legados das etapas de inscrição das oportunidades (campos e anexos sem etapa e etapas vazias duplicadas)' => function () {
         // Legacy data fix for registration steps (RegistrationStep entity).
         //
@@ -3775,6 +3824,64 @@ $$
                    AND NOT EXISTS (SELECT 1 FROM registration_file_configuration fl
                                     WHERE fl.opportunity_id = rs_empty.opportunity_id
                                       AND (fl.step_id IS NULL OR fl.step_id <> rs_full.id))");
+    },
+
+    'atualiza nomes automáticos das fases de recurso' => function() use ($app, $conn) {
+        $phases = $conn->iterateAssociative('
+            SELECT appeal.id, appeal.parent_id, appeal.name, COALESCE(evaluation.name, parent.name) AS phase_name
+            FROM opportunity appeal
+            JOIN opportunity parent ON parent.id = appeal.parent_id
+            LEFT JOIN evaluation_method_configuration evaluation ON evaluation.opportunity_id = parent.id
+            WHERE appeal.status = :status AND parent.status <> :status
+        ', ['status' => Entities\Opportunity::STATUS_APPEAL_PHASE]);
+
+        $updated = 0;
+        foreach ($phases as $phase) {
+            $name = \OpportunityAppealPhase\Module::buildAppealPhaseName($phase['phase_name'], $phase['name']);
+            if ($name === null || $name === $phase['name']) {
+                continue;
+            }
+
+            // Altera somente o título, sem disparar hooks, revisões ou reagendamento de jobs.
+            // A comparação com o nome lido também preserva alterações concorrentes.
+            $updated += $conn->executeStatement('
+                UPDATE opportunity SET name = :name
+                WHERE id = :id AND name = :previous_name AND status = :status AND parent_id = :parent_id
+            ', [
+                'name' => $name,
+                'id' => $phase['id'],
+                'previous_name' => $phase['name'],
+                'status' => Entities\Opportunity::STATUS_APPEAL_PHASE,
+                'parent_id' => $phase['parent_id'],
+            ]);
+        }
+
+        $app->log->debug("Nomes automáticos das fases de recurso: {$updated} atualizados");
+        return true;
+
+    },
+
+    // RF-B6 / ADR 0018 (épica #99, issue #104): endereço em Projeto e Oportunidade.
+    // Colunas geo espelham agent/space: DDL nullable (como no dump de agent/space),
+    // anotação Doctrine nullable=false, backfill (0,0)/false nas linhas existentes.
+    // Um único ALTER TABLE opportunity cobre todas as fases (single-table inheritance).
+    'add address location columns to project and opportunity' => function () use ($conn) {
+        foreach (['project', 'opportunity'] as $table) {
+            if (!__column_exists($table, 'location')) {
+                __exec("ALTER TABLE $table ADD COLUMN location point");
+                __exec("COMMENT ON COLUMN $table.location IS 'type=POINT'");
+            }
+            if (!__column_exists($table, '_geo_location')) {
+                __exec("ALTER TABLE $table ADD COLUMN _geo_location geography");
+            }
+            if (!__column_exists($table, 'public_location')) {
+                __exec("ALTER TABLE $table ADD COLUMN public_location boolean");
+            }
+
+            __exec("UPDATE $table SET location = '(0,0)'::point WHERE location IS NULL");
+            __exec("UPDATE $table SET _geo_location = ST_GeogFromText('SRID=4326;POINT(0 0)') WHERE _geo_location IS NULL");
+            __exec("UPDATE $table SET public_location = false WHERE public_location IS NULL");
+        }
     },
 
 ] + $updates ;

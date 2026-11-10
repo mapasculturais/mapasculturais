@@ -67,6 +67,12 @@
                 margin-top: size(-40);
             }
 
+            // A barra de ações (Imprimir / PDF / ZIP / Trocar agente) fica entre o
+            // header e as abas — o margin negativo das tabs não pode cobrir os botões.
+            .registration-print ~ .tabs-component {
+                margin-top: size(8);
+            }
+
             .registration {
                 &__content {
                     display: flex;

@@ -14,6 +14,7 @@ $this->import('
     entity-actions
     mc-breadcrumb
     mc-link
+    opportunity-appeal-correction-assignment
     opportunity-form-builder
     opportunity-header
     opportunity-registrations-table
@@ -33,4 +34,7 @@ $this->import('
 
         <opportunity-registrations-table identifier="registrationsList" :phase="entity"></opportunity-registrations-table>
     </div>
+
+    <?php /* F1 (#17): modal de designação de correção (F2), aberto por evento global pela tabela acima; renderizado uma única vez na view (o init.php dele também injeta o contexto de @control/fase de recurso consumido pela coluna) */ ?>
+    <opportunity-appeal-correction-assignment></opportunity-appeal-correction-assignment>
 </div>

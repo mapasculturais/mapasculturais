@@ -54,6 +54,9 @@ app.component('search-list-event', {
         // http://localhost/api/event/findOccurrences?@from=2022-08-19&@to=2022-09-19&space:@select=id,name,shortDescription,endereco&@select=
         async fetchOccurrences() {
             const query = Utils.parsePseudoQuery(this.pseudoQuery);
+            // ADR 0019: recorte territorial no merge pós-parse — evento filtra pelo
+            // endereço do espaço da ocorrência (chaves space:En_*)
+            Utils.applyTerritorialRestrictions(query, 'event');
 
             this.loading = true;
             // clearTimeout(this.timeout);

@@ -7,10 +7,13 @@
 
     &__actions {
         display: flex;
+        flex-wrap: wrap;
         gap: size(12);
         justify-content: flex-end;
-        margin-bottom: size(24);
+        margin-bottom: size(16);
         margin-top: size(16);
+        position: relative;
+        z-index: 2;
         
         @include mobile {
             flex-direction: column;

@@ -1,8 +1,12 @@
 <?php
 
+use MapasCulturais\Entities\Opportunity;
+use OpportunityAppealPhase\Entities\RegistrationAppealReview;
+
 $entity = $this->controller->requestedEntity;
 
 $isEvaluator = false;
+$hasAppealCorrections = false;
 
 // Verifica se é avaliador na oportunidade principal
 if ($comm = $entity->getEvaluationCommittee()) {
@@ -46,4 +50,44 @@ if (!$isEvaluator && $entity->appealPhase) {
     }
 }
 
+// Corretor designado nesta oportunidade (correção de notas do recurso).
+// Não usar `??` em associações Doctrine: isset() em proxy lazy devolve false
+// e a oportunidade seria tratada como nula sem carregar a relação.
+$appeal_module = $app->modules['OpportunityAppealPhase'] ?? null;
+if (
+    $appeal_module
+    && method_exists($appeal_module, 'isAppealScoreCorrectionEnabled')
+    && $appeal_module->isAppealScoreCorrectionEnabled()
+    && !$app->user->is('guest')
+    && $entity instanceof Opportunity
+) {
+    $first_phase_id = (int) ($entity->firstPhase->id ?? $entity->id);
+    $reviews = $app->repo(RegistrationAppealReview::class)->findBy([
+        'correctorUser' => $app->user->id,
+    ]);
+
+    foreach ($reviews as $review) {
+        $registration = $review->registration;
+        if (!$registration) {
+            continue;
+        }
+
+        $opportunity = $registration->opportunity;
+        if (!$opportunity) {
+            continue;
+        }
+
+        $review_first = (int) ($opportunity->firstPhase->id ?? $opportunity->id);
+        if (
+            (int) $opportunity->id === (int) $entity->id
+            || $review_first === $first_phase_id
+            || $review_first === (int) $entity->id
+        ) {
+            $hasAppealCorrections = true;
+            break;
+        }
+    }
+}
+
 $this->jsObject['config']['opportunityEvaluationsTab']['isEvaluator'] = $isEvaluator;
+$this->jsObject['config']['opportunityEvaluationsTab']['hasAppealCorrections'] = $hasAppealCorrections;

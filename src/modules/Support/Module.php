@@ -4,12 +4,15 @@ namespace Support;
 
 use MapasCulturais\App;
 use MapasCulturais\Entities\Registration;
+use MapasCulturais\Exceptions\PermissionDenied;
+use MapasCulturais\i;
 use MapasCulturais\Themes\BaseV2\Theme;
 
 class Module extends \MapasCulturais\Module
 {
     public const SUPPORT_GROUP = "@support";
     protected $inTransaction = false;
+    protected $supportHasControl = false;
     protected $grantedCoarse = false;
 
     public function __construct(array $config = [])
@@ -56,6 +59,9 @@ class Module extends \MapasCulturais\Module
         // permissões granulares com uso de transactions
         $app->hook("PATCH(registration.single):before", function () use ($app, $self) {
             if ($self->isSupportUser($this->requestedEntity->opportunity, $app->user) ){
+                // Calculado antes da transação: dentro dela o hook abaixo libera @control
+                // de qualquer agente, o que daria controle da inscrição a todo suporte
+                $self->supportHasControl = $this->requestedEntity->canUser("@control");
                 $self->inTransaction = true;
                 $app->em->beginTransaction();
             }
@@ -68,8 +74,14 @@ class Module extends \MapasCulturais\Module
             }
         });
 
-        $app->hook("entity(RegistrationMeta).update:before", function () use ($app, $self) {
-            if ($this->owner->canUser("@control")) {
+        // save:before (antes do flush), no mesmo padrão do RegistrationFieldTypes:
+        // PermissionDenied vira 403 limpo. Exception genérica no update:before o Slim
+        // logava como Application Error e quebrava o PHPUnit com process-isolation.
+        $app->hook("entity(RegistrationMeta).save:before", function () use ($app, $self) {
+            if (!$self->inTransaction) {
+                return;
+            }
+            if ($self->supportHasControl) {
                 return;
             }
             foreach ($this->owner->opportunity->agentRelations as $relation) {
@@ -81,15 +93,16 @@ class Module extends \MapasCulturais\Module
                     return;
                 }
             }
-            if ($self->inTransaction) {
-                $app->em->rollback();
-                throw new \Exception("Permission denied.");
-            }
-            return;
+            $app->em->rollback();
+            $self->inTransaction = false;
+            $self->supportHasControl = false;
+            throw new PermissionDenied(message: i::__('Você está tentando modificar um campo que você não tem permissão'));
         });
         $app->hook("slim.after", function () use ($app, $self) {
             if ($self->inTransaction) {
                 $app->em->commit();
+                $self->inTransaction = false;
+                $self->supportHasControl = false;
             }
             return;
         });
@@ -169,8 +182,8 @@ class Module extends \MapasCulturais\Module
         });
 
         $app->hook("can(Registration<<File|Meta>>.<<create|remove>>)", function ($user, &$result) use ($self) {
-            
-            if (!$this->owner->canUser("@control")) {
+            $has_control = $self->inTransaction ? $self->supportHasControl : $this->owner->canUser("@control");
+            if (!$has_control) {
                 if ($self->grantedCoarse) {
                     $result = false;
                 }

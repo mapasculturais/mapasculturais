@@ -2,41 +2,67 @@
 
 .controller-project {
     &.action-single {
-        .single-project {
-            &__subproject {
-                .entity-card {
-                    background-color: var(--mc-gray-100);
-                }
+        .single-1 {
+            .tabs-component__button--active {
+                color: var(--mc-projects-500);
+                border-bottom-color: var(--mc-projects-500);
             }
 
-            &__not-found {
-                display: flex;
-                justify-content: center;
+            .single-1__main-tabs > .tabs-component > .tabs-component__header {
+                margin-top: 0;
+            }
+
+            .single-1__main-tabs > .tabs-component > .tabs-component__panels {
+                padding-top: size(24);
+            }
+
+            .single-1__inner-tabs {
+                padding-top: size(24);
+
+                > .tabs-component > .tabs-component__header {
+                    margin-top: 0;
+                }
+            }
+        }
+    }
+
+    &.action-edit {
+        .edit-1 {
+            .edit-1__section-title,
+            .edit-1__section--social .mc-title {
+                color: var(--mc-projects-500);
+            }
+
+            .tabs-component__button--active {
+                color: var(--mc-projects-500);
+                border-bottom-color: var(--mc-projects-500);
             }
         }
 
-        .additional-info {
-            display: flex;
-            flex-direction: column;
-            gap: size(5);
-            padding-bottom: size(32);
-
-            &__title {
-                font-weight: 700;
+        // Espaçamento entre abas principais e conteúdo / sub-abas
+        .edit-1.single-1,
+        .edit-1 {
+            .single-1__main-tabs > .tabs-component > .tabs-component__header {
+                margin-top: 0;
             }
 
-            &__item {
-                align-items: center;
-                display: flex;
-                color: var(--mc-low-700);
-                gap: size(8);
+            .single-1__main-tabs > .tabs-component > .tabs-component__panels {
+                padding-top: size(24);
+            }
 
-                &__title {
-                    font-weight: var(--mc-font-semibold);
+            .edit-1__inner-tabs {
+                padding-top: size(24);
+
+                > .tabs-component > .tabs-component__header {
+                    margin-top: 0;
                 }
+            }
 
-                &__content {
-                    text-transform: uppercase;
+            .single-1__people.single-1__inner-tabs {
+                padding-top: size(24);
+
+                > .tabs-component > .tabs-component__header {
+                    margin-top: 0;
                 }
             }
         }

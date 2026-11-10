@@ -1,10 +1,13 @@
 app.component('entity-social-media', {
     template: $TEMPLATES['entity-social-media'],
 
-    data() {
-        return {
-            show: !!(this.entity.instagram || this.entity.twitter || this.entity.vimeo || this.entity.linkedin || this.entity.facebook || this.entity.youtube || this.entity.spotify || this.entity.pinterest || this.entity.tiktok || this.entity.fediverso),
-        }
+    computed: {
+        hasSocialMedia() {
+            return !!(this.entity.instagram || this.entity.twitter || this.entity.vimeo || this.entity.linkedin || this.entity.facebook || this.entity.youtube || this.entity.spotify || this.entity.pinterest || this.entity.tiktok || this.entity.fediverso);
+        },
+        show() {
+            return this.editable || this.hasSocialMedia;
+        },
     },
 
     props: {

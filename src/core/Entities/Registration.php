@@ -304,7 +304,7 @@ class Registration extends \MapasCulturais\Entity
             'category' => $this->category,
             'range' => $this->range,
             'proponentType' => $this->proponentType,
-            'owner' => $this->owner->simplify('id,name,lockedFields,singleUrl'),
+            'owner' => $this->serializeOwnerForJson(),
             'agentRelations' => [],
             'files' => [],
             'singleUrl' => $this->singleUrl,
@@ -333,7 +333,7 @@ class Registration extends \MapasCulturais\Entity
             }
         }
 
-        if($this->opportunity->publishedRegistrations || $this->opportunity->canUser('@control') || $this->status == self::STATUS_DRAFT) {
+        if($this->opportunity->areRegistrationResultsPublished() || $this->opportunity->canUser('@control') || $this->status == self::STATUS_DRAFT) {
             $json['status'] = $this->status;
         }
 
@@ -390,6 +390,98 @@ class Registration extends \MapasCulturais\Entity
         $app->applyHookBoundTo($this, "{$this->hookPrefix}.jsonSerialize", [&$result]);
 
         return $result;
+    }
+
+    /**
+     * Serializa o owner para o payload da inscrição.
+     *
+     * Inclui `status` para a UI detectar agente na lixeira. Para saasSuperAdmin,
+     * evita 500 quando o owner não puder ser carregado (RF-01); demais perfis
+     * mantêm o comportamento atual (RF-02).
+     */
+    protected function serializeOwnerForJson(): ?\stdClass
+    {
+        $owner = $this->owner;
+
+        if ($owner) {
+            return $owner->simplify('id,name,lockedFields,singleUrl,status');
+        }
+
+        if (App::i()->user->is('saasSuperAdmin')) {
+            $fallback = new \stdClass;
+            $fallback->{'@entityType'} = 'agent';
+            $fallback->id = null;
+            $fallback->name = i::__('(agente indisponível)');
+            $fallback->lockedFields = [];
+            $fallback->singleUrl = '';
+            $fallback->status = self::STATUS_TRASH;
+            return $fallback;
+        }
+
+        // Comportamento atual para demais perfis: deixa estourar ao acessar owner nulo
+        return $owner->simplify('id,name,lockedFields,singleUrl,status');
+    }
+
+    /**
+     * Indica se o agente principal da inscrição está na lixeira.
+     */
+    function isOwnerInTrash(): bool
+    {
+        $owner = $this->owner;
+        return !$owner || (int) $owner->status === self::STATUS_TRASH;
+    }
+
+    /**
+     * Regenera o snapshot agents_data a partir dos agentes atuais.
+     */
+    function refreshAgentsData(): void
+    {
+        $this->agentsData = $this->_getAgentsData();
+    }
+
+    /**
+     * Troca o agente vinculado desta inscrição e de toda a família com o mesmo number.
+     * Destinado a saasSuperAdmin (RF-03..RF-07).
+     *
+     * @throws \MapasCulturais\Exceptions\PermissionDenied
+     * @throws \InvalidArgumentException
+     */
+    function changeLinkedAgent(Agent $new_owner): array
+    {
+        $this->checkPermission('changeLinkedAgent');
+
+        if ((int) $new_owner->status !== Agent::STATUS_ENABLED) {
+            throw new \InvalidArgumentException(
+                i::__('O agente destino precisa existir e estar ativo (não pode estar na lixeira, arquivado ou desabilitado).')
+            );
+        }
+
+        $app = App::i();
+        $registrations = $app->repo('Registration')->findBy(['number' => $this->number]);
+        $updated = [];
+
+        foreach ($registrations as $registration) {
+            /** @var Registration $registration */
+            $registration->setOwner($new_owner);
+
+            if ($registration->status >= self::STATUS_SENT) {
+                $registration->refreshAgentsData();
+            }
+
+            $registration->save(true);
+            $updated[] = $registration;
+        }
+
+        return $updated;
+    }
+
+    protected function canUserChangeLinkedAgent($user): bool
+    {
+        if ($user->is('guest')) {
+            return false;
+        }
+
+        return $user->is('saasSuperAdmin');
     }
 
     public function canSee($key)

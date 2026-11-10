@@ -245,6 +245,125 @@ globalThis.Utils = {
         return newQuery;
     },
 
+    /**
+     * Recorte territorial da instalação (ADR 0019): merge forçado das chaves
+     * `En_Estado`/`En_Municipio` na query JÁ PARSEADA por parsePseudoQuery —
+     * nunca como valor default da pseudoQuery, para que o "Limpar todos os
+     * filtros" (que zera as chaves) não destrua a restrição: ela é reaplicada
+     * a cada fetch, aqui.
+     *
+     * Lê `$MAPAS.config.searchTerritorialFilters` (publicado em
+     * search/init.php): ausente ou sem valores forçados → query intacta
+     * (retrocompatível com instalações sem as variáveis).
+     *
+     * `entityType`: 'agent'|'space'|'project'|'opportunity' filtram a própria
+     * entidade (chaves `En_*`); 'event' filtra pelo endereço do espaço da
+     * ocorrência (chaves `space:En_*`, resolvidas pela correlação manual dos
+     * controllers de evento/espaço).
+     *
+     * Se o usuário já escolheu valores para a chave, aplica a INTERSEÇÃO com o
+     * recorte (a UI já pré-filtra o dataset; a interseção é defesa contra
+     * manipulação). Interseção vazia → resultado vazio garantido (`id=IN(-1)`).
+     * Os valores são (re)escritos na forma parseada `IIN(...)` porque o ponto
+     * de aplicação é pós-parsePseudoQuery (ADR 0019, decisão 1 e 3).
+     */
+    applyTerritorialRestrictions(query, entityType) {
+        const filters = $MAPAS.config?.searchTerritorialFilters;
+        const statesForced = filters?.statesForced || [];
+        const citiesForced = filters?.citiesForced || [];
+
+        if (!statesForced.length && !citiesForced.length) {
+            return query;
+        }
+
+        const prefix = entityType === 'event' ? 'space:' : '';
+        const stateKey = `${prefix}En_Estado`;
+        const cityKey = `${prefix}En_Municipio`;
+
+        let emptyResult = false;
+
+        if (statesForced.length) {
+            const states = this.intersectTerritorialValues(query[stateKey], statesForced);
+            if (states.length) {
+                query[stateKey] = `IIN(${states.join(',')})`;
+            } else {
+                emptyResult = true;
+            }
+        }
+
+        if (!emptyResult && citiesForced.length) {
+            const cities = this.intersectTerritorialValues(query[cityKey], citiesForced);
+            if (cities.length) {
+                query[cityKey] = `IIN(${cities.join(',')})`;
+            } else {
+                emptyResult = true;
+            }
+        }
+
+        if (emptyResult) {
+            // escolha inteiramente fora do recorte: nenhum resultado pode abrir
+            delete query[stateKey];
+            delete query[cityKey];
+            query['id'] = 'IN(-1)';
+        }
+
+        return query;
+    },
+
+    /**
+     * Interseção entre a escolha do usuário e os valores forçados da instalação.
+     * `parsedValue` vem na forma produzida por parsePseudoQuery (`IIN(a,b)`,
+     * `IN(a,b)`, `EQ(a)`, com prefixo `!` para negação); sem escolha do usuário
+     * retorna o recorte completo. Comparação case/accent-insensitive espelhando
+     * o operador IIN da DSL ApiQuery (ADR 0004); o retorno usa a forma canônica
+     * dos valores do recorte. Limitação herdada do parsePseudoQuery: vírgula é
+     * o separador de itens (nomes de UF/município do dataset BR não contêm vírgula).
+     */
+    intersectTerritorialValues(parsedValue, forcedValues) {
+        const normalize = (value) => String(value).trim().toLowerCase()
+            .normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+
+        const canonical = new Map();
+        forcedValues.forEach((forced) => canonical.set(normalize(forced), String(forced).trim()));
+
+        if (parsedValue === undefined || parsedValue === null || parsedValue === '') {
+            return [...canonical.values()];
+        }
+
+        let raw = String(parsedValue).trim();
+        let negated = false;
+        if (raw[0] === '!') {
+            negated = true;
+            raw = raw.slice(1);
+        }
+
+        // extrai os itens do operador que o parsePseudoQuery emitiu para a chave
+        const matched = raw.match(/^(?:IIN|IN|EQ)\((.*)\)$/);
+        const values = (matched ? matched[1] : raw)
+            .split(',')
+            .map((value) => value.trim())
+            .filter((value) => value !== '');
+
+        if (!values.length) {
+            return [...canonical.values()];
+        }
+
+        if (negated) {
+            // escolha negada: interseção = recorte MENOS os valores negados
+            values.forEach((value) => canonical.delete(normalize(value)));
+            return [...canonical.values()];
+        }
+
+        const intersection = [];
+        values.forEach((value) => {
+            const canonicalValue = canonical.get(normalize(value));
+            if (canonicalValue !== undefined && !intersection.includes(canonicalValue)) {
+                intersection.push(canonicalValue);
+            }
+        });
+        return intersection;
+    },
+
     // string functions 
     ucfirst(string) {
         return string.charAt(0).toUpperCase() + string.slice(1);

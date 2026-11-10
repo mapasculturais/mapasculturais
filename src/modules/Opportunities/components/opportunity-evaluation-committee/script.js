@@ -199,7 +199,18 @@ app.component('opportunity-evaluation-committee', {
             showRegistrationListFlag: {},
             evaluatorDistributionRules: {},
             lastParentFilters: null,
-            allCommitteeRelations: []
+            allCommitteeRelations: [],
+            activeReopenReviewer: null,
+            sentEvaluations: [],
+            selectedEvaluationIds: [],
+            sentPage: 0,
+            sentCursor: null,
+            sentTotal: 0,
+            sentHasMore: false,
+            loadingSentEvaluations: false,
+            reopenListError: false,
+            reopening: false,
+            reopenRequestId: 0,
         }
     },
     
@@ -481,18 +492,123 @@ app.component('opportunity-evaluation-committee', {
             });
         },
 
-        reopenEvaluations(user) {
-            const api = new API();
-            let url = Utils.createUrl('opportunity', 'reopenEvaluations');
-            let data = {
-                uid: user,
-                opportunityId: this.entity.opportunity.id
-            };
+        resetReopenModal() {
+            this.reopenRequestId++;
+            this.activeReopenReviewer = null;
+            this.sentEvaluations = [];
+            this.selectedEvaluationIds = [];
+            this.sentPage = 0;
+            this.sentCursor = null;
+            this.sentTotal = 0;
+            this.sentHasMore = false;
+            this.loadingSentEvaluations = false;
+            this.reopenListError = false;
+        },
 
-            api.POST(url, data).then(res => res.json()).then(data => {
+        openReopenModal(reviewer) {
+            this.resetReopenModal();
+            this.activeReopenReviewer = reviewer;
+            this.sentHasMore = true;
+            return this.loadMoreSentEvaluations();
+        },
+
+        async loadMoreSentEvaluations() {
+            if (!this.activeReopenReviewer || this.loadingSentEvaluations || !this.sentHasMore) {
+                return;
+            }
+
+            const reviewerId = this.activeReopenReviewer.agentUserId;
+            const requestId = this.reopenRequestId;
+            const api = new API('opportunity');
+            const url = api.createUrl('reopenableEvaluations');
+            url.searchParams.set('opportunityId', this.entity.opportunity.id);
+            url.searchParams.set('uid', reviewerId);
+            url.searchParams.set('limit', 25);
+            if (this.sentCursor !== null) {
+                url.searchParams.set('afterId', this.sentCursor);
+            }
+
+            this.loadingSentEvaluations = true;
+            this.reopenListError = false;
+            try {
+                const response = await api.GET(url);
+                if (!response.ok) {
+                    throw new Error(this.text('reopenListError'));
+                }
+
+                const { evaluations, total, nextCursor } = await response.json();
+                if (requestId !== this.reopenRequestId || this.activeReopenReviewer?.agentUserId !== reviewerId) {
+                    return;
+                }
+
+                this.sentEvaluations.push(...evaluations);
+                this.sentPage++;
+                this.sentTotal = total;
+                this.sentCursor = nextCursor;
+                this.sentHasMore = nextCursor !== null;
+            } catch (error) {
+                if (requestId === this.reopenRequestId) {
+                    this.reopenListError = true;
+                    this.messages.error(error.message || this.text('reopenListError'));
+                }
+            } finally {
+                if (requestId === this.reopenRequestId) {
+                    this.loadingSentEvaluations = false;
+                }
+            }
+        },
+
+        async reopenSelectedEvaluations(modal) {
+            if (!this.activeReopenReviewer || !this.selectedEvaluationIds.length) {
+                return;
+            }
+
+            return this.submitReopenEvaluations('reopenSelectedEvaluations', {
+                uid: this.activeReopenReviewer.agentUserId,
+                opportunityId: this.entity.opportunity.id,
+                evaluationIds: this.selectedEvaluationIds,
+            }, modal);
+        },
+
+        async reopenAllEvaluations(modal) {
+            if (!this.activeReopenReviewer) {
+                return;
+            }
+
+            return this.submitReopenEvaluations('reopenEvaluations', {
+                uid: this.activeReopenReviewer.agentUserId,
+                opportunityId: this.entity.opportunity.id,
+            }, modal);
+        },
+
+        async submitReopenEvaluations(action, data, modal) {
+            if (this.reopening) {
+                return;
+            }
+
+            this.reopening = true;
+            modal.loading?.(true);
+            try {
+                const api = new API('opportunity');
+                const response = await api.POST(Utils.createUrl('opportunity', action), data);
+                const result = await response.json();
+                if (!response.ok) {
+                    throw new Error(result?.data || this.text('reopenEvaluationsError'));
+                }
+
                 this.messages.success(this.text('reopenEvaluationsSuccess'));
-                this.loadReviewers();
-            });
+                modal.close();
+                try {
+                    await this.loadReviewers();
+                } catch (error) {
+                    this.messages.warning(this.text('reopenRefreshError'));
+                }
+            } catch (error) {
+                this.messages.error(error.message || this.text('reopenEvaluationsError'));
+            } finally {
+                this.reopening = false;
+                modal.loading?.(false);
+            }
         },
 
         buttonText(status) {

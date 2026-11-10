@@ -26,7 +26,15 @@ app.component('opportunity-evaluations-tab', {
             };
 
             return result;
-        }
+        },
+
+        hasAppealCorrections() {
+            return !!$MAPAS.config.opportunityEvaluationsTab?.hasAppealCorrections;
+        },
+
+        showEvaluationsTab() {
+            return this.isEvaluator || this.hasAppealCorrections;
+        },
     },
     
     methods: { },

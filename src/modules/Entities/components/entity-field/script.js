@@ -226,6 +226,10 @@ app.component('entity-field', {
         groupName: {
             type: String,
             required: false,
+        },
+        icon: {
+            type: String,
+            default: '',
         }
     },
 

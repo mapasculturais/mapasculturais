@@ -65,42 +65,70 @@ app.component('opportunity-subscription' , {
                 this.registrationProponentTypes.length
             ].filter(i => i).length;
         },
-        infoRegistration() {
-            let description = ''
 
-            let registrationStatus = this.registrationStatus(this.dateStart, this.dateEnd);
+        rulesFile() {
+            const rules = this.entity.files?.rules || this.entity.files?.['rules'];
+            if (!rules) {
+                return null;
+            }
+            return Array.isArray(rules) ? (rules[0] || null) : rules;
+        },
+
+        infoRegistrationTitle() {
+            return this.infoRegistrationParts.title;
+        },
+
+        infoRegistrationPeriod() {
+            return this.infoRegistrationParts.period;
+        },
+
+        infoRegistration() {
+            const { title, period } = this.infoRegistrationParts;
+            if (!period) {
+                return title;
+            }
+            return `${title} ${period.charAt(0).toLowerCase()}${period.slice(1)}`;
+        },
+
+        infoRegistrationParts() {
+            let title = '';
+            let period = '';
+            const registrationStatus = this.registrationStatus(this.dateStart, this.dateEnd);
 
             if (this.isPublished) {
-                description = this.text('resultado publicado');
+                title = this.text('resultado publicado');
             } else if (!this.dateStart) {
-                description = this.text('inscrições indefinidas');
+                title = this.text('inscrições indefinidas');
             } else if (this.registrationLimit) {
-                description = this.text('limite de inscrições');
+                title = this.text('limite de inscrições');
             } else if (this.registrationLimitPerOwner) {
-                description = this.text('limite de inscrições por usuário');
+                title = this.text('limite de inscrições por usuário');
             } else {
                 switch (registrationStatus) {
                     case 'open':
-                        description = this.text('inscrições abertas');
+                        title = this.text('inscrições abertas');
+                        period = this.text('inscrições abertas período');
                         break;
                     case 'closed':
-                        description = this.text('inscrições fechadas');
+                        title = this.text('inscrições fechadas');
                         break;
                     case 'will open':
-                        description = this.text('inscrições irão abrir');
+                        title = this.text('inscrições irão abrir');
+                        period = this.text('inscrições irão abrir período');
                         break;
                     case 'continuousFlow':
-                        description = this.text('fluxo contínuo');
+                        title = this.text('fluxo contínuo');
                         break;
                 }
             }
 
-            description = description.replace("{startAt}", this.startAt);
-            description = description.replace("{startHour}", this.startHour);
-            description = description.replace("{endAt}", this.endAt);
-            description = description.replace("{endHour}", this.endHour);
+            period = period
+                .replace('{startAt}', this.startAt)
+                .replace('{startHour}', this.startHour)
+                .replace('{endAt}', this.endAt)
+                .replace('{endHour}', this.endHour);
 
-            return description;
+            return { title, period };
         },
 
         isOpen() {

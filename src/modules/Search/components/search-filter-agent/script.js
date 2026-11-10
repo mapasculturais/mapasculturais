@@ -18,9 +18,16 @@ app.component('search-filter-agent', {
         }
     },
 
+    beforeCreate() {
+        this.pseudoQuery['En_Estado'] = this.pseudoQuery['En_Estado'] || [];
+        this.pseudoQuery['En_Municipio'] = this.pseudoQuery['En_Municipio'] || [];
+    },
+
     data() {
         return {
             terms: $TAXONOMIES.area.terms,
+            statesAndCitiesEnable: !!$MAPAS.config.statesAndCitiesEnable,
+            searchTerritorialFilters: $MAPAS.config.searchTerritorialFilters || { statesForced: [], citiesForced: [], showStateFilter: true, showCityFilter: true },
         }
     },
 

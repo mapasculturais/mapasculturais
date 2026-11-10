@@ -98,7 +98,7 @@ $this->import('
             </template>
 
             <template #content v-if="tab === 'registrations'">
-                <opportunity-phase-status :entity="phase.appealPhase" :phases="phases" :tab="tab"></opportunity-phase-status>
+                <opportunity-phase-status :entity="phase.appealPhase" :phases="phases" :tab="tab" :main-phase-only="false" hide-publish></opportunity-phase-status>
             </template>
         </mc-accordion>
 
@@ -167,7 +167,7 @@ $this->import('
             </template>
 
             <template #content v-if="tab === 'registrations'">
-                <opportunity-phase-list-evaluation :entity="phase.appealPhase.evaluationMethodConfiguration" :phases="phases" :tab="tab"></opportunity-phase-list-evaluation>
+                <opportunity-phase-list-evaluation :entity="phase.appealPhase.evaluationMethodConfiguration" :phases="phases" :tab="tab" :main-phase-only="false"></opportunity-phase-list-evaluation>
             </template>
         </mc-accordion>
     </div>

@@ -17,8 +17,8 @@ class Module extends \MapasCulturais\Module {
         $app = App::i();
         $module = $this;
 
-        $app->hook('entity(<<Agent|Space>>).save:before', function() use($app) {
-            /** @var \MapasCulturais\Entities\Agent|\MapasCulturais\Entities\Space $this */
+        $app->hook('entity(<<Agent|Space|Project|Opportunity>>).save:before', function() use($app) {
+            /** @var \MapasCulturais\Entities\Agent|\MapasCulturais\Entities\Space|\MapasCulturais\Entities\Project|\MapasCulturais\Entities\Opportunity $this */
             $country = $this->address_level0;
 
             if($country && ($country_localization = $app->getRegisteredCountryLocalizationByCountryCode($country))) {
@@ -117,7 +117,7 @@ class Module extends \MapasCulturais\Module {
             }
     
             foreach ($address_metadata as $slug => $label) {
-                $this->registerAgentMetadata($slug, [
+                $def = [
                     'label' => $label,
                     'private' => function(){
                         return !$this->publicLocation;
@@ -127,16 +127,20 @@ class Module extends \MapasCulturais\Module {
                         if($slug == 'address') {
                             $slug = 'address_fullAddress';
                         }
-    
+
                         if($country && $country_localization = $app->getRegisteredCountryLocalizationByCountryCode($country)) {
                             $setter = 'set'.substr($slug, 8);
-    
+
                             $country_localization->$setter($entity, $value);
                         }
-    
+
                         return $value;
                     },
-                ]);
+                ];
+
+                $this->registerAgentMetadata($slug, $def);
+                $this->registerProjectMetadata($slug, $def);
+                $this->registerOpportunityMetadata($slug, $def);
                 $this->registerSpaceMetadata($slug, ['label' => $label]);
             }
         }

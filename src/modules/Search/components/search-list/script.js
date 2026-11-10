@@ -25,12 +25,13 @@ app.component('search-list', {
     },
 
     mounted() {
-        this.query = Utils.parsePseudoQuery(this.pseudoQuery);
+        // ADR 0019: recorte territorial aplicado no merge pós-parse, nunca na pseudoQuery
+        this.query = Utils.applyTerritorialRestrictions(Utils.parsePseudoQuery(this.pseudoQuery), this.type);
     },
     watch: {
         pseudoQuery: {
             handler(pseudoQuery) {
-                this.query = Utils.parsePseudoQuery(pseudoQuery);
+                this.query = Utils.applyTerritorialRestrictions(Utils.parsePseudoQuery(pseudoQuery), this.type);
             },
             deep: true,
         }

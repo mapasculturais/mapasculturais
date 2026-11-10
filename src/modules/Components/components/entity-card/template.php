@@ -117,6 +117,7 @@ $this->import('
 		</div>
 
 		<div class="entity-card__footer--action">
+			<slot name="actions-before" :entity="entity"></slot>
 			<a :href="entity.singleUrl" class="button button--primary button--large button--icon">
 				<?php i::_e('Acessar') ?>
 				<mc-icon name="access"></mc-icon>

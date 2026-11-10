@@ -10,6 +10,7 @@ $this->import('
     entity-terms
     mc-icon 
     mc-multiselect 
+    mc-states-and-cities
     mc-tag-list
     search-filter 
 ');
@@ -37,6 +38,16 @@ $this->import('
             <label> <?php i::_e('Área de interesse') ?></label>
             <mc-multiselect :model="pseudoQuery['term:area']" placeholder="<?php i::_e('Selecione as áreas de interesse') ?>" :items="terms" hide-filter hide-button></mc-multiselect>
             <mc-tag-list editable :tags="pseudoQuery['term:area']" classes="agent__background agent__color"></mc-tag-list>
+        </div>
+        <div v-if="statesAndCitiesEnable && (searchTerritorialFilters.showStateFilter || searchTerritorialFilters.showCityFilter)" class="field">
+            <label><?php i::_e('Estado e Cidade') ?></label>
+            <mc-states-and-cities
+                v-model:model-states="pseudoQuery['En_Estado']"
+                v-model:model-cities="pseudoQuery['En_Municipio']"
+                :hide-states="!searchTerritorialFilters.showStateFilter"
+                :hide-cities="!searchTerritorialFilters.showCityFilter"
+                :locked-states="searchTerritorialFilters.statesForced">
+            </mc-states-and-cities>
         </div>
         <?php $this->applyTemplateHook('search-filter-opportunity', 'end') ?>
     </form>

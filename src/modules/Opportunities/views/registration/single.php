@@ -28,6 +28,11 @@ $this->import('
     registration-field-view
 ');
 
+$owner_in_trash = $entity->isOwnerInTrash();
+$owner_label = $entity->owner
+    ? sprintf('%s (#%s)', $entity->owner->name, $entity->owner->id)
+    : i::__('(agente indisponível)');
+
 $this->breadcrumb = [
     ['label' => i::__('Inicio'), 'url' => $app->createUrl('panel', 'index')],
     ['label' => i::__('Oportunidades'), 'url' => $app->createUrl('panel', 'opportunities')],
@@ -104,6 +109,14 @@ $hide_phase_dates = $entity->opportunity->firstPhase->hidePhaseDates;
 <div class="main-app registration single">
     <mc-breadcrumb></mc-breadcrumb>
     <opportunity-header :opportunity="entity.opportunity"></opportunity-header>
+
+    <?php if ($owner_in_trash): ?>
+        <mc-alert type="warning" class="registration__owner-trash-alert">
+            <?= i::__('Agente principal vinculado à lixeira') ?>:
+            <strong><?= htmlspecialchars($owner_label) ?></strong>
+        </mc-alert>
+    <?php endif; ?>
+
     <registration-print :registration="entity"></registration-print>
     <mc-tabs sync-hash>
         <?php $this->applyTemplateHook('single-tab', 'begin') ?>
@@ -248,7 +261,26 @@ $hide_phase_dates = $entity->opportunity->firstPhase->hidePhaseDates;
                     </template>
                 </mc-card>
 
-                <mc-card v-if="entity.opportunity.useAgentRelationColetivo && entity.opportunity.useAgentRelationColetivo !== 'dontUse'"> 
+                <mc-card v-if="entity.opportunity.enableQuotasQuestion">
+                    <template #content>
+                        <div class="registered-info">
+                            <span class="info">
+                                <strong> <?= i::__('Vai concorrer às cotas?') ?> </strong>
+                            </span>
+                            <span class="info" v-if="entity.appliedForQuota === true || entity.appliedForQuota === 'true' || entity.appliedForQuota === 1 || entity.appliedForQuota === '1'">
+                                <?= i::__('Sim') ?>
+                            </span>
+                            <span class="info" v-else-if="entity.appliedForQuota === false || entity.appliedForQuota === 'false' || entity.appliedForQuota === 0 || entity.appliedForQuota === '0'">
+                                <?= i::__('Não') ?>
+                            </span>
+                            <span class="info" v-else>
+                                <?= i::__('Não informado') ?>
+                            </span>
+                        </div>
+                    </template>
+                </mc-card>
+
+                <mc-card v-if="entity.opportunity.useAgentRelationColetivo && entity.opportunity.useAgentRelationColetivo !== 'dontUse'">
                     <template #title>
                         <label> <?= i::__('Coletivo') ?> </label>
                     </template>

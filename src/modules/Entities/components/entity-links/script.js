@@ -2,7 +2,7 @@ app.component('entity-links', {
     template: $TEMPLATES['entity-links'],
     emits: [],
 
-    setup() {
+    setup() { 
         // os textos estão localizados no arquivo texts.php deste componente 
         const text = Utils.getTexts('entity-links')
         return { text }
@@ -25,50 +25,53 @@ app.component('entity-links', {
             type: String,
             default: '',
         },
+        hideTitle: {
+            type: Boolean,
+            default: false
+        },
+        labeledActions: {
+            type: Boolean,
+            default: false
+        },
+        buttonLabel: {
+            type: String,
+            default: ''
+        },
+        buttonPrimary: {
+            type: Boolean,
+            default: false
+        },
     },
 
     data() {
         return {
-            metalist: {},
-            newLinks: [],
+            metalist: {}
         }
     },
 
     methods: {
-        async save(link, index) {
-            console.log(link);
-            if (!link.value || !link.title) {
+        async create(popover) {
+            if(!this.metalist.value || !this.metalist.title){
                 const messages = useMessages();
                 messages.error(this.text('preencha todos os campos'));
                 return;
             }
-            await this.entity.createMetalist('links', link);
-            this.remove(index);
+            await this.entity.createMetalist('links', this.metalist);      
+            popover.close();
         },
 
-        async update(metalist) {
-            if (!metalist.newData.title || !metalist.newData.value) {
+        async save(metalist, popover) {
+            if(!metalist.newData.title || !metalist.newData.value) {
                 const messages = useMessages();
                 messages.error(this.text('preencha todos os campos'));
                 return;
             }
             metalist.title = metalist.newData.title;
             metalist.value = metalist.newData.value;
-
+            
             await metalist.save();
-        },
-
-        remove (index){
-            this.newLinks.splice(index, 1);
-        },
-
-        addLink() {
-            this.newLinks.push({
-                title: '',
-                value: ''
-            });
-            console.log(this.newLinks);
+            popover.close();
         }
     }
-
+    
 });

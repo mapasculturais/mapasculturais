@@ -6,6 +6,7 @@ app.component('opportunity-registrations-table', {
             required: true
         },
         visibleColumns: {
+            // F4 (#20): médias de nota visíveis por padrão (CA-11)
             type: Array,
             default: [
                 "number",
@@ -13,6 +14,9 @@ app.component('opportunity-registrations-table', {
                 "consolidatedResult",
                 "appliedPointReward",
                 "score",
+                "averageOriginalScore",
+                "averageCorrectedScore",
+                "scoreDifference",
                 "status",
             ],
         },
@@ -100,6 +104,20 @@ app.component('opportunity-registrations-table', {
         let visible = this.visibleColumns.join(',');
         let order = 'status DESC,consolidatedResult DESC';
         let consolidatedResultOrder = 'consolidatedResult';
+
+        /*
+            F1 (#17) — override 2026-09-08 (épica #7): a coluna vive na lista
+            de inscritos da FASE DE RECURSO. O contexto (appealContexts) é
+            injetado pelo init.php do componente
+            opportunity-appeal-correction-assignment SOMENTE quando a fase em
+            contexto é a própria fase de recurso ativa, com fase pai técnica,
+            e o usuário tem @control na fase pai (gates espelhados de
+            RegistrationAppealReview::eligibleCorrectors()) — a presença da
+            chave já carrega a checagem de permissão.
+        */
+        const appeal_correction_config = $MAPAS.config.appealCorrectionAssignment || {};
+        const appeal_context = appeal_correction_config.appealContexts?.[this.phase.id] ?? null;
+        const appeal_correction_enabled = appeal_context != null;
 
         const fieldTypes = ['select', 'boolean', 'checkbox', 'multiselect', 'checkboxes', 'agent-owner-field', 'agent-collective-field'];
 
@@ -191,7 +209,12 @@ app.component('opportunity-registrations-table', {
                 visible += ',range';
             }
         }
-        
+
+        // F1 (#17): coluna de designação de correção visível apenas no contexto elegível
+        if(appeal_correction_enabled) {
+            visible += ',appealCorrection';
+        }
+
         return {
             sortOptions,
             filters: {},
@@ -209,6 +232,9 @@ app.component('opportunity-registrations-table', {
             order,
             avaliableFields,
             visible,
+            appealCorrectionEnabled: appeal_correction_enabled,
+            appealMainPhaseId: appeal_context?.mainPhaseId ?? null,
+            appealMainRegistrations: {},
             isAffirmativePoliciesActive,
             hadTechnicalEvaluationPhase,
             isTechnicalEvaluationPhase,
@@ -347,6 +373,17 @@ app.component('opportunity-registrations-table', {
                 itens.push({ text: __('status', 'opportunity-registrations-table'), value: "status", width: '250px', stickyRight: true})
             }
 
+            // F1 (#17): coluna de designação de correção (recurso deferido),
+            // imediatamente antes da coluna de status (sticky right). A coluna
+            // também pode ser exposta no contexto de resultados pelo hook
+            // component(opportunity-results-table).visibleColumns.
+            if(this.appealCorrectionEnabled && !itens.some(item => item.value === 'appealCorrection')) {
+                itens.splice(itens.length - 1, 0, {
+                    text: __('Designar correção', 'opportunity-registrations-table'),
+                    value: 'appealCorrection',
+                });
+            }
+
             // Pontuação final (score = avaliação + bônus). Exibir na fase técnica,
             // em fases posteriores a uma técnica, na publicação do resultado, ou
             // quando o edital tem (ou terá) fase técnica — senão o default de
@@ -440,6 +477,31 @@ app.component('opportunity-registrations-table', {
 
     methods: {
         /**
+         * Pipeline das linhas da lista de inscritos.
+         *
+         * F4 (#20): as colunas computadas de nota (averageOriginalScore,
+         * averageCorrectedScore, scoreDifference) vêm da API (hook
+         * ApiQuery(registration).findResult do OpportunityAppealPhase), mas o
+         * Entity.populate() do SDK DESCARTA propriedades fora de
+         * $PROPERTIES/$RELATIONS — com o pipeline padrão do mc-entities as
+         * chaves morriam entre a resposta HTTP e o render (célula "-").
+         * Com rawProcessor o fetch vira raw (mc-entities/script.js:137-140)
+         * e este método povoa a entidade e copia as chaves computadas da
+         * resposta bruta.
+         */
+        rawProcessor(rawData) {
+            const registrationApi = new API('registration');
+            const registration = registrationApi.getEntityInstance(rawData.id);
+            registration.populate(rawData, true);
+
+            registration.averageOriginalScore = rawData.averageOriginalScore ?? null;
+            registration.averageCorrectedScore = rawData.averageCorrectedScore ?? null;
+            registration.scoreDifference = rawData.scoreDifference ?? null;
+
+            return registration;
+        },
+
+        /**
          * Agrupa Avaliação → Bônus por pontuação → Pontuação (nota final).
          */
         groupScoreRelatedColumns(itens) {
@@ -491,6 +553,17 @@ app.component('opportunity-registrations-table', {
 
         getStatus(actualStatus) {
             return this.statusDict.find(status => status.value === actualStatus);
+        },
+
+        // F4 (#20): colunas de média/nota — null vira "-", números sem zeros à direita.
+        formatScoreColumn(value) {
+            if (value === null || value === undefined) {
+                return '-';
+            }
+
+            const number = Number(value);
+
+            return Number.isFinite(number) ? String(parseFloat(number.toFixed(2))) : '-';
         },
 
         setStatus(selected, entity) {
@@ -671,6 +744,77 @@ app.component('opportunity-registrations-table', {
         generateOrDownloadZip(entity) {
             const apiUrl = Utils.createUrl('registration', 'createZipFiles', { id: entity.id });
             window.open(apiUrl, '_blank');
+        },
+
+        /**
+         * F1 (#17) — override 2026-09-08: o botão vive na linha do recurso
+         * com status Deferido (10) da lista da fase de recurso. Abre o modal
+         * de designação (F2) pela interface pública documentada no init.php
+         * do componente opportunity-appeal-correction-assignment, com
+         * {opportunity: fase PRINCIPAL, registration: inscrição da fase
+         * PRINCIPAL} — ambos derivados da linha da fase de recurso. O modal
+         * decide o que exibir (designação ou acompanhamento).
+         */
+        async openAppealCorrectionAssignment(entity) {
+            const main_registration = await this.findMainPhaseRegistration(entity);
+
+            if (!main_registration) {
+                return;
+            }
+
+            window.dispatchEvent(new CustomEvent('opportunity-appeal-correction-assignment:open', {
+                detail: {
+                    opportunity: { id: this.appealMainPhaseId },
+                    registration: { id: main_registration.id, number: main_registration.number },
+                },
+            }));
+        },
+
+        /**
+         * F1 (#17): deriva a inscrição da fase principal a partir da
+         * inscrição da fase de recurso. A inscrição de recurso herda o
+         * `number` da inscrição principal (createAppealPhaseRegistration,
+         * OpportunityAppealPhase/Module.php:201) e não existe meta/relation
+         * armazenada ligando as duas — o casamento por `number` na fase pai
+         * é o mecanismo canônico do backend (Module.php:240-243). Uma
+         * chamada por inscrição, cacheada para cliques repetidos.
+         */
+        async findMainPhaseRegistration(appealRegistration) {
+            const appeal_registration_id = appealRegistration?.id;
+
+            if (!appeal_registration_id || !this.appealMainPhaseId) {
+                return null;
+            }
+
+            if (this.appealMainRegistrations[appeal_registration_id]) {
+                return this.appealMainRegistrations[appeal_registration_id];
+            }
+
+            const api = new API('registration');
+
+            try {
+                const found = await api.find({
+                    'opportunity': `EQ(${this.appealMainPhaseId})`,
+                    'number': `EQ(${appealRegistration.number})`,
+                    '@select': 'id,number',
+                    '@permissions': 'view',
+                });
+
+                const main_registration = (found || [])[0] || null;
+
+                if (!main_registration) {
+                    throw new Error(`inscrição da fase principal não encontrada (number=${appealRegistration.number})`);
+                }
+
+                this.appealMainRegistrations[appeal_registration_id] = main_registration;
+
+                return main_registration;
+            } catch (error) {
+                console.error('opportunity-registrations-table:findMainPhaseRegistration', error);
+                this.messages.error(this.text('inscrição da fase principal não encontrada'));
+
+                return null;
+            }
         }
     }
 });
