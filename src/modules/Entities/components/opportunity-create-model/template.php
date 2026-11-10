@@ -11,7 +11,7 @@ $this->import("
 ");
 ?>
 <div class="col-12">
-    <mc-modal title="<?= i::__('Salvar modelo') ?>">
+    <mc-modal title="<?= i::__('Salvar modelo') ?>" teleport="body">
         <template #default>
             <p>Para salvar um modelo, preencha os campos abaixo.</p><br>
             <div>
@@ -33,7 +33,10 @@ $this->import("
         </template>
 
         <template #button="modal">
-            <button type="button" @click="modal.open();" class="button button--icon button--sm"><?= i::__('Salvar modelo') ?></button>
+            <button type="button" @click="modal.open();" class="button button--text button--icon button--sm">
+                <mc-icon name="bookmark"></mc-icon>
+                <?= i::__('Salvar modelo') ?>
+            </button>
         </template>
     </mc-modal>
 </div>

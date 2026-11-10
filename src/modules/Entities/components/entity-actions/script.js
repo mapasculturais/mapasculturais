@@ -7,20 +7,11 @@ app.component('entity-actions', {
         return { text }
     },
 
-    created() {},
-
-    mounted() {
-        const buttons1 = this.$refs.buttons1?.childElementCount;
-        const buttons2 = this.$refs.buttons2?.childElementCount;
-        this.empty = !(buttons1 || buttons2);
-    },
-
-    data() {
-        const empty = false;
-        return {empty}
-    },
-
     computed: {
+        empty() {
+            return !(this.hasMoreActions || this.hasPrimaryActions);
+        },
+
         entityType() {
             switch (this.entity['__objectType']) {
                 case 'agent':
@@ -43,7 +34,42 @@ app.component('entity-actions', {
         usePrivate() {
             const description = $DESCRIPTIONS[this.entity.__objectType];
             return !!description.status.options.private;
-        }
+        },
+
+        permissions() {
+            return this.entity.currentUserPermissions || {};
+        },
+
+        hasExtraActions() {
+            const isOpportunity = this.entity.__objectType === 'opportunity';
+            const notArchived = this.entity.status != -2;
+            const canModify = !!this.permissions.modify;
+
+            // Exportar vale para qualquer oportunidade; duplicar/modelo também entram nesse bloco
+            return !!(isOpportunity && canModify && notArchived);
+        },
+
+        hasAdminActions() {
+            const canPrivate = this.usePrivate
+                && this.entity.status == 1
+                && !!this.permissions.makePrivate;
+            const canArchive = !!this.permissions.archive && this.entity.status != -2;
+            const canDelete = !!this.permissions.remove && this.canDelete;
+
+            return !!(canPrivate || canArchive || canDelete);
+        },
+
+        hasMoreActions() {
+            return this.hasExtraActions || this.hasAdminActions;
+        },
+
+        hasPrimaryActions() {
+            if (this.editable) {
+                return !!(this.permissions.modify || this.permissions.publish);
+            }
+
+            return !!this.permissions.modify;
+        },
     },
 
     props: {
@@ -62,6 +88,12 @@ app.component('entity-actions', {
     },
     
     methods: {
+        onMoreActionsClick(event, close) {
+            if (event.target.closest('button, a')) {
+                close?.();
+            }
+        },
+
         async makePrivate(modal) {
             const updateMethod = $MAPAS.config['entity-actions']['updateMethod'];
 

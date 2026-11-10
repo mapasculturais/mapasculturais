@@ -10,7 +10,7 @@ $this->import('
     mc-modal
 ');
 ?>
-<mc-modal title="<?= i::__('Exportar oportunidade') ?>">
+<mc-modal title="<?= i::__('Exportar oportunidade') ?>" teleport="body">
     <template #default="modal">
         <div class="opportunity-exporter">
             <p>
@@ -64,6 +64,9 @@ $this->import('
     </template>
 
     <template #button="modal">
-        <button type="button" class="button button--icon button--sm" @click="modal.open()"><?= i::__('Exportar') ?></button>
+        <button type="button" class="button button--text button--icon button--sm" @click="modal.open()">
+            <mc-icon name="download"></mc-icon>
+            <?= i::__('Exportar') ?>
+        </button>
     </template>
 </mc-modal>

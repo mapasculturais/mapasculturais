@@ -12,58 +12,151 @@
 
     &__content {
         display: flex;
-        justify-content: space-between;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
         max-width: size(1170);
         margin: 0 auto;
+        gap: size(16);
 
         &--groupBtn {
             align-items: center;
             display: flex;
-            gap: size(25);
-            
-            &.rowBtn {
-                flex-direction: row;
-                flex-wrap: wrap;
-                justify-content: center;
-            }
+            flex-wrap: wrap;
+            gap: size(16);
+            justify-content: center;
+            margin: 0 auto;
+            width: auto;
 
+            .mc-popover {
+                display: inline-flex;
+                flex: 0 0 auto;
+                width: auto;
+            }
+            
             .button {
                 cursor: pointer;
                 
                 &.publish {
                     background: var(--mc-high-500);
                     color: var(--mc-primary-500);
-                    padding-left: size(100);
-                    padding-right: size(100);
+                    padding-left: size(24);
+                    padding-right: size(24);
                     
                     &-exit {
-                        padding-left: size(40);
-                        padding-right: size(40);
+                        padding-left: size(24);
+                        padding-right: size(24);
                     }
-                }
-            }
-            .arquivar {
-                .iconify {
-                    color:#FF7A00;
-                    font-size: size(16);
-                }
-            }
-            .excluir {
-                .iconify {
-                    color: #ED0000;
-                    font-size: size(16);
+
+                    .iconify {
+                        color: var(--mc-primary-500);
+                    }
                 }
             }
         }
     }
+
+    &__more {
+        gap: size(8);
+    }
+}
+
+// Menu styles are unscoped from .entity-actions because floating-vue
+// may render the popper outside the component root.
+.entity-actions__dropdown {
+    .popover__content {
+        padding: size(8) size(12);
+    }
+}
+
+.entity-actions__menu {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: stretch;
+    gap: size(4);
+    min-width: size(240);
+    padding: size(4) 0;
+
+    > * {
+        display: block;
+        width: 100%;
+        flex: 0 0 auto;
+    }
+
+    .col-12 {
+        display: block;
+        width: 100% !important;
+        max-width: 100% !important;
+        flex: none !important;
+        padding: 0 !important;
+        margin: 0 !important;
+    }
+
+    .button,
+    .entity-actions__menu-item,
+    .mc-confirm-button,
+    .opportunity-exporter,
+    .mc-modal,
+    .mc-popover {
+        display: block;
+        width: 100%;
+    }
+
+    .button {
+        display: inline-flex;
+        justify-content: flex-start;
+        align-items: center;
+        text-align: left;
+        white-space: nowrap;
+        color: var(--mc-low-500);
+        background: transparent !important;
+        border-color: transparent !important;
+        border-radius: var(--mc-border-radius-xs);
+        padding: size(8) size(12);
+        width: 100%;
+        box-shadow: none;
+
+        .iconify {
+            color: inherit;
+        }
+
+        &:hover {
+            background: var(--mc-gray-100) !important;
+        }
+    }
+
+    .arquivar {
+        .iconify {
+            color: #FF7A00;
+        }
+    }
+
+    .entity-actions__danger,
+    .excluir {
+        color: #ED0000 !important;
+
+        .iconify {
+            color: #ED0000 !important;
+        }
+    }
+}
+
+.entity-actions__menu-divider {
+    border: 0;
+    border-top: 1px solid var(--mc-gray-300);
+    margin: size(8) 0;
+    width: 100%;
+    display: block;
 }
 
 @media(max-width: 950px){
     .entity-actions {
         position: relative;
+
         &__content {
-            flex-direction: column-reverse;
-            align-items: center;    
+            align-items: center;
+            flex-direction: column;
+            justify-content: center;
         }
     }
 }
@@ -72,11 +165,13 @@
     .entity-actions {
         &__content {
             display: flex;
-            gap: size(24);
+            justify-content: center;
+            gap: size(16);
 
             &--groupBtn {
-                display: inline-flex;
-                gap: size(24);
+                display: flex;
+                justify-content: center;
+                gap: size(16);
 
                 .btn {
                     justify-content: center;
@@ -87,22 +182,29 @@
 }
 
 @media (max-width: 870px) {
-
     .entity-actions {
         padding: size(24) size(10);    
             
         &__content {
-            gap: size(48);
+            gap: size(16);
+            justify-content: center;
+
             &--groupBtn {
-                flex-direction: column-reverse;
+                flex-direction: column;
                 gap: size(15);
-            }   
+                width: 100%;
+                justify-content: center;
+
+                .button.publish {
+                    width: 100%;
+                    justify-content: center;
+                }
+            }
         }
     }
 }
 
 @media (max-width: size(600)) {
-
     .entity-actions {
         padding: size(24) size(10);
         position: relative;

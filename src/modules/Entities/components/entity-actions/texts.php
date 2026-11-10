@@ -7,4 +7,5 @@ return [
     'Espaço' => i::__('espaço'),
     'Projeto' => i::__('projeto'),
     'Oportunidade' => i::__('oportunidade'),
+    'Mais ações' => i::__('Mais ações'),
 ];
