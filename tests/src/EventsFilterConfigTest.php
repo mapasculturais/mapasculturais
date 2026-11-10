@@ -10,6 +10,7 @@ use Tests\Traits\UserDirector;
 /**
  * Testa as flags de configuração dos filtros de eventos:
  * - valores padrão corretos (false)
+ * - variável legada events.filter.statesAndCities aposentada (#121)
  * - rota de busca de eventos retorna HTTP 200
  */
 class EventsFilterConfigTest extends TestCase
@@ -19,14 +20,10 @@ class EventsFilterConfigTest extends TestCase
 
     // ─── flags de config ─────────────────────────────────────────────────────
 
-    function testStatesAndCitiesFilterDefaultIsFalse()
+    function testStatesAndCitiesFilterKeyIsRetired()
     {
-        $value = $this->app->config['events.filter.statesAndCities'] ?? 'AUSENTE';
-
-        $this->assertNotSame('AUSENTE', $value,
-            'A chave events.filter.statesAndCities deve existir no config.');
-        $this->assertFalse($value,
-            'A flag events.filter.statesAndCities deve ter o valor padrão false.');
+        $this->assertArrayNotHasKey('events.filter.statesAndCities', $this->app->config,
+            'A chave events.filter.statesAndCities foi aposentada (#121) e não deve mais existir no config.');
     }
 
     function testSealsFilterDefaultIsFalse()
@@ -44,38 +41,33 @@ class EventsFilterConfigTest extends TestCase
     function testJsObjectStructure()
     {
         $config = [
-            'statesAndCitiesFilterEnabled' => $this->app->config['events.filter.statesAndCities'] ?? false,
-            'sealsFilterEnabled'           => $this->app->config['events.filter.seals'] ?? false,
+            'sealsFilterEnabled' => $this->app->config['events.filter.seals'] ?? false,
+            'seals'              => [],
         ];
 
-        $this->assertArrayHasKey('statesAndCitiesFilterEnabled', $config,
-            'O objeto JS deve conter statesAndCitiesFilterEnabled.');
         $this->assertArrayHasKey('sealsFilterEnabled', $config,
             'O objeto JS deve conter sealsFilterEnabled.');
-        $this->assertIsBool($config['statesAndCitiesFilterEnabled'],
-            'statesAndCitiesFilterEnabled deve ser boolean.');
+        $this->assertArrayHasKey('seals', $config,
+            'O objeto JS deve conter seals.');
         $this->assertIsBool($config['sealsFilterEnabled'],
             'sealsFilterEnabled deve ser boolean.');
+        $this->assertIsArray($config['seals'],
+            'seals deve ser array.');
     }
 
     function testJsObjectReflectsEnabledFlags()
     {
-        $this->app->config['events.filter.statesAndCities'] = true;
-        $this->app->config['events.filter.seals']           = true;
+        $this->app->config['events.filter.seals'] = true;
 
         $config = [
-            'statesAndCitiesFilterEnabled' => $this->app->config['events.filter.statesAndCities'] ?? false,
-            'sealsFilterEnabled'           => $this->app->config['events.filter.seals'] ?? false,
+            'sealsFilterEnabled' => $this->app->config['events.filter.seals'] ?? false,
         ];
 
-        $this->assertTrue($config['statesAndCitiesFilterEnabled'],
-            'Com events.filter.statesAndCities=true, o JS deve receber true.');
         $this->assertTrue($config['sealsFilterEnabled'],
             'Com events.filter.seals=true, o JS deve receber true.');
 
         // restaura defaults
-        $this->app->config['events.filter.statesAndCities'] = false;
-        $this->app->config['events.filter.seals']           = false;
+        $this->app->config['events.filter.seals'] = false;
     }
 
     // ─── rota HTTP da busca de eventos ───────────────────────────────────────

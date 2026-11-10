@@ -53,11 +53,45 @@ app.component('entity-files-list', {
             type: [String, Array, Object],
             required: false
         },
+        hideTitle: {
+            type: Boolean,
+            default: false
+        },
+
+        /** Exibe ação de visualização (layout público). */
+        viewAction: {
+            type: Boolean,
+            default: false
+        },
+
+        /** Texto da ação de visualização (ex.: "ver arquivo", "ver documento"). */
+        viewActionLabel: {
+            type: String,
+            default: __('ver arquivo', 'entity-files-list')
+        },
 
         /** Metadado do agente associado ao FileGroup (ex.: cpfAnexo para docs-cpf). */
         sealProp: {
             type: String,
             required: false,
+        },
+
+        /** Exibe rótulos "Editar título" / "Excluir arquivo" nas ações. */
+        labeledActions: {
+            type: Boolean,
+            default: false
+        },
+
+        /** Texto do botão de adicionar. */
+        buttonLabel: {
+            type: String,
+            default: ''
+        },
+
+        /** Usa botão sólido primary (CTA do Figma). */
+        buttonPrimary: {
+            type: Boolean,
+            default: false
         },
 
     },

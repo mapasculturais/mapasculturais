@@ -67,5 +67,11 @@ app.component('support-edition', {
         step () {
             return this.steps[this.stepIndex];
         },
+
+        // Pergunta de cotas do sistema: aparece se o gestor liberou para o suporte
+        showQuotaQuestion () {
+            const allowedFields = this.registration.allowedFields ?? [];
+            return Boolean(this.registration.opportunity.enableQuotasQuestion) && allowedFields.includes('appliedForQuota');
+        },
     },
 });

@@ -65,6 +65,7 @@ $this->import('
                 <panel--entities-summary></panel--entities-summary>
 
                 <panel--pending-evaluations></panel--pending-evaluations>
+                <?php $this->applyTemplateHook('panel-home-evaluations', 'after') ?>
 
                 <panel--open-opportunities></panel--open-opportunities>
 

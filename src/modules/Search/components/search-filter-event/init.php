@@ -4,20 +4,12 @@
  * @var MapasCulturais\Themes\BaseV2\Theme $this
  */
 
-$states_cities_filter_enabled = $app->config['events.filter.statesAndCities'] ?? false;
 $seals_filter_enabled = $app->config['events.filter.seals'] ?? false;
 
-// Carrega os dados de estado/cidade quando o filtro está habilitado e estamos numa instalação BR
-if ($states_cities_filter_enabled && ($app->config['statesAndCities.enable'] ?? false)) {
-    if (empty($app->view->jsObject['config']['statesAndCities'])) {
-        $file_name = $app->config['statesAndCities.file'];
-        $content = $this->resolveFilename('states-and-cities', $file_name);
-        include $content;
-        $app->view->jsObject['config']['statesAndCities'] = $data;
-        $app->view->jsObject['config']['statesAndCitiesEnable'] = true;
-        $app->view->jsObject['config']['statesAndCitiesCountryCode'] = $app->config['statesAndCities.countryCode'];
-    }
-}
+// O recorte territorial das buscas é controlado pelo componente <search>
+// (ADR 0019): flags unificadas $MAPAS.config.statesAndCitiesEnable e
+// $MAPAS.config.searchTerritorialFilters, publicadas em search/init.php.
+// A variável antiga events.filter.statesAndCities não tem mais efeito (#118).
 
 $seals = [];
 if ($seals_filter_enabled) {
@@ -29,7 +21,6 @@ if ($seals_filter_enabled) {
 }
 
 $this->jsObject['config']['searchFilterEvent'] = [
-    'statesAndCitiesFilterEnabled' => $states_cities_filter_enabled,
-    'sealsFilterEnabled'           => $seals_filter_enabled,
-    'seals'                        => $seals,
+    'sealsFilterEnabled' => $seals_filter_enabled,
+    'seals'              => $seals,
 ];

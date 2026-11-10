@@ -35,6 +35,71 @@ class Registrations extends SpreadsheetJob
         return $v !== '' && $v !== null ? (string) $v : null;
     }
 
+    /**
+     * Formata campos do tipo addresses para célula de planilha (texto legível).
+     * Espelha a linha usada no PDF da inscrição.
+     */
+    private static function _formatAddressesForSpreadsheet(array $addresses): string {
+        $lines = [];
+
+        foreach ($addresses as $address) {
+            $line = self::_formatAddressListItem($address);
+            if ($line !== '') {
+                $lines[] = $line;
+            }
+        }
+
+        return implode(' || ', $lines);
+    }
+
+    private static function _formatAddressListItem(mixed $address): string {
+        if (!is_array($address) && !is_object($address)) {
+            return is_scalar($address) && $address !== '' ? (string) $address : '';
+        }
+
+        $get = static function (mixed $source, string $key): string {
+            if (is_array($source)) {
+                $v = $source[$key] ?? '';
+            } else {
+                $v = $source->$key ?? '';
+            }
+            return is_scalar($v) ? trim((string) $v) : '';
+        };
+
+        $nome = $get($address, 'nome');
+        $logradouro = $get($address, 'logradouro');
+        $numero = $get($address, 'numero');
+        $bairro = $get($address, 'bairro');
+        $cidade = $get($address, 'cidade');
+        $estado = $get($address, 'estado');
+        $cep = $get($address, 'cep');
+        $complemento = $get($address, 'complemento');
+
+        if (!$nome && !$logradouro && !$numero && !$bairro && !$cidade && !$estado && !$cep && !$complemento) {
+            return '';
+        }
+
+        $line = trim(sprintf(
+            '%s, nº %s - %s, %s/%s, %s',
+            $logradouro,
+            $numero,
+            $bairro,
+            $cidade,
+            $estado,
+            $cep
+        ), " \t\n\r\0\x0B,-/");
+
+        if ($complemento !== '') {
+            $line .= sprintf(' (%s)', $complemento);
+        }
+
+        if ($nome !== '') {
+            return $line !== '' ? $nome . ': ' . $line : $nome;
+        }
+
+        return $line;
+    }
+
     protected function _getHeader(Job $job) : array {
         $header = [];
 
@@ -178,6 +243,23 @@ class Registrations extends SpreadsheetJob
 
              if($property == 'editableFields') {
                 unset($header[$property]);
+                continue;
+            }
+
+            // F4 (#20) — CA-11: colunas computadas de nota por inscrição
+            // (módulo OpportunityAppealPhase); rótulo amigável na planilha.
+            if($property == 'averageOriginalScore') {
+                $header[$property] = i::__('Média original (antes das correções de recurso)');
+                continue;
+            }
+
+            if($property == 'averageCorrectedScore') {
+                $header[$property] = i::__('Média corrigida (vigente)');
+                continue;
+            }
+
+            if($property == 'scoreDifference') {
+                $header[$property] = i::__('Diferença (média corrigida - média original)');
                 continue;
             }
 
@@ -480,6 +562,13 @@ class Registrations extends SpreadsheetJob
                     if ($file_url = $this->extractAgentFileUrl($entity[$field->fieldName] ?? null)) {
                         $entity[$field->fieldName] = $file_url;
                         continue;
+                    }
+
+                    if ($field->fieldType === 'addresses' && !empty($entity[$field->fieldName])) {
+                        $addresses = json_decode(json_encode($entity[$field->fieldName]), true);
+                        $entity[$field->fieldName] = self::_formatAddressesForSpreadsheet(
+                            is_array($addresses) ? $addresses : []
+                        );
                     }
 
                     if (isset($entity[$field->fieldName]) && $entity[$field->fieldName] instanceof \stdClass) {

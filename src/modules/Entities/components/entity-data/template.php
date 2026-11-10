@@ -12,7 +12,7 @@ $this->import('
     mc-tag-list
 ');
 ?>
-<div class="entity-data">
+<div :class="['entity-data', classes]">
     <div class="entity-data__label">
         <span v-if="showRequiredMark && fieldRequired" class="entity-data__required" aria-hidden="true">*</span> {{ propertyLabel }}
     </div>
@@ -37,6 +37,10 @@ $this->import('
 
         <div v-else-if="propertyType == 'location' || propertyType == 'addresses'" class="entity-data__data">
             {{getAddress(propertyData)}}
+        </div>
+        
+        <div v-else-if="isUrlProperty()" class="entity-data__value">
+            <a :href="formatUrl(propertyData)" target="_blank" rel="noopener noreferrer">{{removeProtocol(propertyData)}}</a>
         </div>
 
         <div v-else-if="propertyType == 'checkbox' || propertyType == 'boolean'" class="entity-data__value">

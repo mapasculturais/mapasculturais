@@ -14,11 +14,12 @@ $opportunity = $this->getOpportunityFromEntity($entity);
 $has_seal_exemption_config = SealExemptionService::hasActiveConfig(
     $opportunity->evaluationMethodConfiguration?->sealExemptionConfig
 );
+// F4 (#20): colunas de nota por slot visíveis por padrão (CA-11)
 $required_fields = 'number,committeeSequentialNumber,valuerUserId,valuerAgentId,evaluator,result,status,delete';
-$visible_fields = "['agent', 'number', 'committeeSequentialNumber', 'valuerUserId', 'valuerAgentId', 'evaluator', 'result', 'status', 'coletivo', 'goalStatuses']";
+$visible_fields = "['agent', 'number', 'committeeSequentialNumber', 'valuerUserId', 'valuerAgentId', 'evaluator', 'result', 'originalScore', 'correctedScore', 'scoreDifference', 'status', 'coletivo', 'goalStatuses']";
 if ($has_seal_exemption_config) {
     $required_fields = 'number,committeeSequentialNumber,valuerUserId,valuerAgentId,evaluator,result,status,sealExemptionStatus,sealExemptionTimestamp,delete';
-    $visible_fields = "['agent', 'number', 'committeeSequentialNumber', 'valuerUserId', 'valuerAgentId', 'evaluator', 'result', 'status', 'sealExemption', 'coletivo', 'goalStatuses']";
+    $visible_fields = "['agent', 'number', 'committeeSequentialNumber', 'valuerUserId', 'valuerAgentId', 'evaluator', 'result', 'originalScore', 'correctedScore', 'scoreDifference', 'status', 'sealExemption', 'coletivo', 'goalStatuses']";
 }
 
 $this->import('
@@ -137,6 +138,27 @@ $this->import('
 
                 <template #result="{entity}">
                     {{getResultString(entity)}}
+                </template>
+
+                <!-- F4 (#20) — CA-11: nota original/corrigida/diferença por slot -->
+                <template #originalScore="{entity}">
+                    {{ formatScoreColumn(entity.evaluation?.originalScore) }}
+                </template>
+
+                <template #correctedScore="{entity}">
+                    {{ formatScoreColumn(entity.evaluation?.correctedScore) }}
+                </template>
+
+                <template #scoreDifference="{entity}">
+                    <span
+                        v-if="entity.evaluation?.scoreDifference !== null && entity.evaluation?.scoreDifference !== undefined"
+                        class="semibold"
+                        :class="entity.evaluation.scoreDifference > 0
+                            ? 'success__color'
+                            : (entity.evaluation.scoreDifference < 0 ? 'danger__color' : '')">
+                        {{ formatScoreColumn(entity.evaluation.scoreDifference) }}
+                    </span>
+                    <span v-else>-</span>
                 </template>
 
                 <template #coletivo="{entity}">

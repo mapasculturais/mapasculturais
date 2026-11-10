@@ -50,10 +50,14 @@ class File extends EntityController {
         $file_path = $this->requestedEntity->getPath();
         
         if (file_exists($file_path)) {
+            $mime = mime_content_type($file_path) ?: ($file->mimeType ?: 'application/octet-stream');
+            $force_download = !empty($app->request->get('download'));
+            $disposition = $force_download ? 'attachment' : 'inline';
+
             $headers = [
                 'Content-Description' => 'File Transfer',
-                'Content-Type' => mime_content_type($file_path),
-                'Content-Disposition' => 'attachment; filename="' . $file->name . '"',
+                'Content-Type' => $mime,
+                'Content-Disposition' => $disposition . '; filename="' . $file->name . '"',
                 'Content-Transfer-Encoding' => 'binary',
                 'Expires' => '0',
                 'Cache-Control' => 'must-revalidate, post-check=0, pre-check=0',

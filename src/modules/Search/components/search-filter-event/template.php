@@ -59,11 +59,14 @@ $this->import('
                 classes="event__background event__color">
             </mc-tag-list>
         </div>
-        <div v-if="statesAndCitiesFilterEnabled && hasStatesAndCities" class="field">
+        <div v-if="statesAndCitiesEnable && (searchTerritorialFilters.showStateFilter || searchTerritorialFilters.showCityFilter)" class="field">
             <label><?php i::_e('Estado e Cidade') ?></label>
             <mc-states-and-cities
                 v-model:model-states="pseudoQuery['space:En_Estado']"
-                v-model:model-cities="pseudoQuery['space:En_Municipio']">
+                v-model:model-cities="pseudoQuery['space:En_Municipio']"
+                :hide-states="!searchTerritorialFilters.showStateFilter"
+                :hide-cities="!searchTerritorialFilters.showCityFilter"
+                :locked-states="searchTerritorialFilters.statesForced">
             </mc-states-and-cities>
         </div>
         <div class="field">

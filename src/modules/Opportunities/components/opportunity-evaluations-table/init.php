@@ -180,6 +180,11 @@ $headers = [
     [ 'text' => i::__('ID agente avaliador', 'opportunity-evaluations-table'), 'value' => 'valuer?.id', 'slug' => 'valuerAgentId', 'exportField' => 'valuerAgentId', 'visible' => true, 'width' => '120px' ],
     [ 'text' => i::__('avaliador', 'opportunity-evaluations-table'), 'value' =>  'valuer?.name', 'slug' => 'evaluator', 'exportField' => 'user', 'visible' => true],
     [ 'text' => i::__('Resultado do avaliador', 'opportunity-evaluations-table'), 'value' => 'evaluation?.resultString', 'slug' => 'result', 'exportField' => 'result'],
+    // F4 (#20) — CA-11: nota original/corrigida/diferença por slot, computadas
+    // pelo módulo OpportunityAppealPhase no findEvaluations (via hook ApiQuery).
+    [ 'text' => i::__('Nota original', 'opportunity-evaluations-table'), 'value' => 'evaluation?.originalScore', 'slug' => 'originalScore'],
+    [ 'text' => i::__('Nota corrigida', 'opportunity-evaluations-table'), 'value' => 'evaluation?.correctedScore', 'slug' => 'correctedScore'],
+    [ 'text' => i::__('Diferença', 'opportunity-evaluations-table'), 'value' => 'evaluation?.scoreDifference', 'slug' => 'scoreDifference'],
     [ 'text' => i::__('Tipo de proponente', 'opportunity-evaluations-table'), 'value' => 'proponentType', 'slug' => 'proponentType'],
     [ 'text' => i::__('Categoria', 'opportunity-evaluations-table'), 'value' => 'category', 'slug' => 'category'],
     [ 'text' => i::__('Faixa', 'opportunity-evaluations-table'), 'value' => 'range', 'slug' => 'range'],

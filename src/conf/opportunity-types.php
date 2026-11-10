@@ -100,6 +100,121 @@ return array(
             )
         ),
 
+        'endereco' => array(
+            'private' => function(){
+                return !$this->publicLocation;
+            },
+            'label' => \MapasCulturais\i::__('Endereço'),
+            'type' => 'text'
+        ),
+
+        'En_CEP' => [
+            'label' => \MapasCulturais\i::__('CEP'),
+            'type' => 'cep',
+            'private' => function(){
+                return !$this->publicLocation;
+            },
+        ],
+        'En_Nome_Logradouro' => [
+            'label' => \MapasCulturais\i::__('Logradouro'),
+            'private' => function(){
+                return !$this->publicLocation;
+            },
+        ],
+        'En_Num' => [
+            'label' => \MapasCulturais\i::__('Número'),
+            'private' => function(){
+                return !$this->publicLocation;
+            },
+        ],
+        'En_Complemento' => [
+            'label' => \MapasCulturais\i::__('Complemento'),
+            'private' => function(){
+                return !$this->publicLocation;
+            },
+        ],
+        'En_Bairro' => [
+            'label' => \MapasCulturais\i::__('Bairro'),
+            'private' => function(){
+                return !$this->publicLocation;
+            },
+        ],
+        'En_Municipio' => [
+            'label' => \MapasCulturais\i::__('Município'),
+            'private' => function(){
+                return !$this->publicLocation;
+            },
+        ],
+        'En_Estado' => [
+            'label' => \MapasCulturais\i::__('Estado'),
+            'private' => function(){
+                return !$this->publicLocation;
+            },
+            'type' => 'select',
+
+            'options' => array(
+                'AC'=>'Acre',
+                'AL'=>'Alagoas',
+                'AP'=>'Amapá',
+                'AM'=>'Amazonas',
+                'BA'=>'Bahia',
+                'CE'=>'Ceará',
+                'DF'=>'Distrito Federal',
+                'ES'=>'Espírito Santo',
+                'GO'=>'Goiás',
+                'MA'=>'Maranhão',
+                'MT'=>'Mato Grosso',
+                'MS'=>'Mato Grosso do Sul',
+                'MG'=>'Minas Gerais',
+                'PA'=>'Pará',
+                'PB'=>'Paraíba',
+                'PR'=>'Paraná',
+                'PE'=>'Pernambuco',
+                'PI'=>'Piauí',
+                'RJ'=>'Rio de Janeiro',
+                'RN'=>'Rio Grande do Norte',
+                'RS'=>'Rio Grande do Sul',
+                'RO'=>'Rondônia',
+                'RR'=>'Roraima',
+                'SC'=>'Santa Catarina',
+                'SP'=>'São Paulo',
+                'SE'=>'Sergipe',
+                'TO'=>'Tocantins',
+            )
+        ],
+        'En_Pais' => [
+            'label' => \MapasCulturais\i::__('País'),
+            'type' => 'select',
+            'default' => function(){
+                $app = MapasCulturais\App::i();
+                return $app->config['app.defaultCountry'];
+            },
+            'options' => [
+                'AD' => 'Andorra',
+                'AR' => 'Argentina',
+                'BO' => 'Bolivia',
+                'BR' => 'Brasil',
+                'CL' => 'Chile',
+                'CO' => 'Colombia',
+                'CR' => 'Costa Rica',
+                'CU' => 'Cuba',
+                'EC' => 'Ecuador',
+                'SV' => 'El Salvador',
+                'ES' => 'España',
+                'GT' => 'Guatemala',
+                'HN' => 'Honduras',
+                'MX' => 'México',
+                'NI' => 'Nicarágua',
+                'PA' => 'Panamá',
+                'PY' => 'Paraguay',
+                'PE' => 'Perú',
+                'PT' => 'Portugal',
+                'DO' => 'República Dominicana',
+                'UY' => 'Uruguay',
+                'VE' => 'Venezuela',
+            ]
+        ],
+
         'facebook' => array(
             'type' => "socialMedia",
             'label' => \MapasCulturais\i::__('Facebook'),

@@ -19,7 +19,22 @@ app.component('complaint-suggestion', {
             type: [String, Array, Object],
             required: false
         },
-
+        showComplaint: {
+            type: Boolean,
+            default: true,
+        },
+        showContact: {
+            type: Boolean,
+            default: true,
+        },
+        contactButtonLabel: {
+            type: String,
+            default: '',
+        },
+        contactButtonClasses: {
+            type: [String, Array, Object],
+            default: 'button button--primary',
+        },
     },
 
     data() {

@@ -44,6 +44,7 @@ trait EntityOpportunityDuplicator {
         $app = App::i();
 
         $this->entityNewOpportunity = clone $this->entityOpportunity;
+        $this->resetDuplicatedEvaluationMethodConfiguration($this->entityNewOpportunity);
 
         $dateTime = new \DateTime();
         $now = $dateTime->format('d-m-Y H:i:s');
@@ -61,6 +62,19 @@ trait EntityOpportunityDuplicator {
         $this->entityNewOpportunity->save(true);
 
         return $this->entityNewOpportunity;
+    }
+
+    /**
+     * O nome difere de EntityManagerModel::resetClonedEvaluationMethodConfiguration
+     * porque ambos os traits são usados no mesmo controller.
+     */
+    private function resetDuplicatedEvaluationMethodConfiguration(Opportunity $opportunity): void
+    {
+        $opportunity->evaluationMethodConfiguration = null;
+
+        if (is_object($opportunity->__magicGetterCache ?? null)) {
+            unset($opportunity->__magicGetterCache->evaluationMethodConfiguration);
+        }
     }
 
     private function duplicateEvaluationMethods() : void
@@ -101,6 +115,7 @@ trait EntityOpportunityDuplicator {
         foreach ($phases as $phase) {
             if (!$phase->getMetadata('isLastPhase')) {
                 $newPhase = clone $phase;
+                $this->resetDuplicatedEvaluationMethodConfiguration($newPhase);
                 $newPhase->setParent($this->entityNewOpportunity);
 
                 // duplica os metadados das fases

@@ -53,6 +53,10 @@ app.component('search-map', {
     methods: {
         async fetchEntities() {
             const query = Utils.parsePseudoQuery(this.pseudoQuery);
+            // ADR 0019: recorte territorial no merge pós-parse. findByEvents é o mapa de
+            // eventos: filtra pelo espaço da ocorrência (chaves space:En_*), os demais
+            // pela própria entidade consultada
+            Utils.applyTerritorialRestrictions(query, this.endpoint === 'findByEvents' ? 'event' : this.type);
             query['@select'] = 'id,type,name,location,singleUrl';
             query['location'] = query['location'] || '!EQ([0,0])';
             

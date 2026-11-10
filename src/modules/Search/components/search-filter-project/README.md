@@ -16,3 +16,5 @@ $this->import('search-filter-project');
 <!-- utilizaçao básica -->
 <search-filter-project></search-filter-project>
 ```
+## Filtro territorial (estado/cidade)
+Quando `$MAPAS.config.statesAndCitiesEnable` é `true` (dataset de estados/cidades publicado pelo componente `search` — ADR 0019), exibe `<mc-states-and-cities>` ligado a `pseudoQuery['En_Estado']`/`pseudoQuery['En_Municipio']`. As props `hide-states`/`hide-cities`/`locked-states` derivam de `$MAPAS.config.searchTerritorialFilters` (`search.filters.states`/`search.filters.cities` da instalação).

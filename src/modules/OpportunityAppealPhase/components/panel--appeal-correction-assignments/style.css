@@ -1,0 +1,96 @@
+/*
+ * panel--appeal-correction-assignments — aba "Correções designadas" de
+ * Minhas avaliações, bloco do painel e #evaluations da oportunidade.
+ * Card no mesmo padrão visual do evaluation-card.
+ */
+
+/* Carrossel do painel: reaproveita .panel--pending-evaluations; ajuste do footer */
+.panel--appeal-correction-assignments--carousel .panel-entity-card__footer {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.panel--appeal-correction-assignments__title {
+    align-items: baseline;
+    display: flex;
+    flex-wrap: wrap;
+    gap: .5rem 1.5rem;
+    justify-content: space-between;
+    margin-bottom: 1rem;
+}
+
+.panel--appeal-correction-assignments__title label {
+    font-size: 1.25rem;
+    font-weight: 700;
+}
+
+.panel--appeal-correction-assignments__see-all {
+    font-size: .875rem;
+    font-weight: 600;
+    text-decoration: underline;
+}
+
+.panel--appeal-correction-assignments__empty {
+    margin: 0;
+    opacity: .7;
+}
+
+.panel--appeal-correction-assignments__card {
+    align-items: flex-end;
+    background-color: var(--mc-white);
+    border-radius: var(--mc-border-radius-xs);
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    padding: 1rem 1.5rem 1.5rem;
+}
+
+.panel--appeal-correction-assignments__content {
+    align-items: flex-start;
+    display: flex;
+    flex-direction: column;
+    gap: .5rem;
+    width: 100%;
+}
+
+.panel--appeal-correction-assignments__content h3 {
+    margin: 0;
+}
+
+.panel--appeal-correction-assignments__infos {
+    display: flex;
+    flex-wrap: wrap;
+    font-size: .875rem;
+    gap: .25rem 1.5rem;
+}
+
+.panel--appeal-correction-assignments__badge {
+    border: 1px solid var(--mc-gray-300);
+    border-radius: var(--mc-border-radius-pill);
+    font-size: .75rem;
+    font-weight: 600;
+    line-height: 1;
+    padding: .4rem .75rem;
+}
+
+.panel--appeal-correction-assignments__badge--designated,
+.panel--appeal-correction-assignments__badge--reopened {
+    border-color: var(--mc-primary-500);
+    color: var(--mc-primary-500);
+}
+
+.panel--appeal-correction-assignments__badge--draft {
+    border-color: var(--mc-warning-500);
+    color: var(--mc-warning-700);
+}
+
+.panel--appeal-correction-assignments__badge--sent {
+    border-color: var(--mc-success-500);
+    color: var(--mc-success-700);
+}
+
+.panel--appeal-correction-assignments__unavailable {
+    font-size: .875rem;
+    font-weight: 600;
+    opacity: .7;
+}

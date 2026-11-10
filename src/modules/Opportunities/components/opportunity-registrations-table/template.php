@@ -41,7 +41,7 @@ $entity = $this->controller->requestedEntity;
             <?php $this->applyTemplateHook('registration-list-actions', 'after', ['entity' => $entity]); ?>
         </template>
         <div class="col-12"> 
-            <entity-table controller="opportunity" endpoint="findRegistrations" :identifier="identifier" type="registration" :query="query" :limit="100" :sort-options="sortOptions" :order="order" :select="select" :headers="headers" phase:="phase" :columns-config-entity="phase" required="number,options" :visible="visible" @clear-filters="clearFilters" @remove-filter="removeFilter($event)" show-index :hide-filters="hideFilters" :hide-sort="hideSort" :hide-actions='hideActions' :hide-header="hideHeader">
+            <entity-table controller="opportunity" endpoint="findRegistrations" :identifier="identifier" type="registration" :query="query" :limit="100" :sort-options="sortOptions" :order="order" :select="select" :headers="headers" phase:="phase" :columns-config-entity="phase" required="number,options" :visible="visible" :raw-processor="rawProcessor" @clear-filters="clearFilters" @remove-filter="removeFilter($event)" show-index :hide-filters="hideFilters" :hide-sort="hideSort" :hide-actions='hideActions' :hide-header="hideHeader">
                 <template #title>
                     <slot name="title"></slot>
                 </template>
@@ -128,8 +128,29 @@ $entity = $this->controller->requestedEntity;
                     <span v-else>&nbsp;</span>
                 </template>
 
-                <template #consolidatedResult="{entity}"> 
+                <template #consolidatedResult="{entity}">
                     {{consolidatedResultToString(entity)}}
+                </template>
+
+                <!-- F4 (#20) — CA-11: médias por inscrição -->
+                <template #averageOriginalScore="{entity}">
+                    {{ formatScoreColumn(entity.averageOriginalScore) }}
+                </template>
+
+                <template #averageCorrectedScore="{entity}">
+                    {{ formatScoreColumn(entity.averageCorrectedScore) }}
+                </template>
+
+                <template #scoreDifference="{entity}">
+                    <span
+                        v-if="entity.scoreDifference !== null && entity.scoreDifference !== undefined"
+                        class="semibold"
+                        :class="entity.scoreDifference > 0
+                            ? 'success__color'
+                            : (entity.scoreDifference < 0 ? 'danger__color' : '')">
+                        {{ formatScoreColumn(entity.scoreDifference) }}
+                    </span>
+                    <span v-else>-</span>
                 </template>
 
                 <template #agent="{entity}">
@@ -187,6 +208,14 @@ $entity = $this->controller->requestedEntity;
 
                 <template #goalStatuses="{entity}">
                     <a v-if="entity.goalStatuses" :href="entity.singleUrl + '#ficha'" class="entity-table__goals">{{entity.goalStatuses['10']}}/{{entity.goalStatuses.numGoals}} <?= i::__('concluídas') ?></a>
+                </template>
+
+                <?php /* F1 (#17) — override 2026-09-08: ação de designação de correção na lista da FASE DE RECURSO — botão apenas nas linhas com status Deferido (10), valor nativo da lista (a coluna em si só existe em contexto elegível: fase de recurso ativa, pai técnico, gestor com @control na fase pai, via config do opportunity-appeal-correction-assignment). O clique deriva a inscrição da fase principal e abre o modal de designação (F2), que exibe acompanhamento quando já existem designações. */ ?>
+                <template #appealCorrection="{entity}">
+                    <button v-if="entity.status == 10" class="button button--icon button--sm button--text opportunity-registration-table__appeal-correction" @click="openAppealCorrectionAssignment(entity)">
+                        <mc-icon name="edit"></mc-icon> <?= i::__('Designar correção') ?>
+                    </button>
+                    <span v-else>&nbsp;</span>
                 </template>
 
             </entity-table>

@@ -9,8 +9,10 @@
     &__profile {
         align-items: center;
         display: flex;
-        flex-direction: column;
-        gap: size(7);
+        gap: 0.4375rem;
+        flex-wrap: wrap;
+        margin-top: -71px;
+        position: relative;
 
         &:hover {
             img {
@@ -30,6 +32,7 @@
             justify-content: center;
             overflow: hidden;
             width: size(96);
+            left: -27px; 
         }
     
         &--label {

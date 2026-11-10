@@ -284,7 +284,16 @@ app.component('international-address-form', {
             }            
         },
 
+        // As linhas de endereço emitem change a cada tecla: espera a pessoa parar de digitar
+        // antes de geocodificar, para não fazer uma requisição ao Nominatim por tecla (limite
+        // de 1/s) nem ficar com o resultado de um endereço pela metade.
+        addressDebounced() {
+            clearTimeout(this.__addressTimeout);
+            this.__addressTimeout = setTimeout(() => this.address(), 1500);
+        },
+
         address() {
+            clearTimeout(this.__addressTimeout);
             this.entity.address_level0 = this.country;
 
             const line1         = this.entity.address_line1 ?? '';

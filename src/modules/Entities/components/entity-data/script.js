@@ -25,6 +25,11 @@ app.component('entity-data', {
             type: Boolean,
             default: false,
         },
+
+        classes: {
+            type: [String, Array, Object],
+            default: '',
+        }
     },
 
     setup(props, { slots }) {
@@ -128,6 +133,23 @@ app.component('entity-data', {
             const opts = this.description?.options || {};
             const val = this.propertyData;
             return opts[val] ?? opts[String(val)] ?? val;
+        },
+
+        formatUrl(url) {
+            if (!url) return '';
+            if (url.startsWith('http://') || url.startsWith('https://')) {
+                return url;
+            }
+            return 'https://' + url;
+        },
+
+        removeProtocol(url) {
+            if (!url) return '';
+            return url.replace(/^https?:\/\//, '');
+        },
+
+        isUrlProperty() {
+            return this.propertyType === 'url' || this.prop === 'site';
         },
 
         getAddress(address) {

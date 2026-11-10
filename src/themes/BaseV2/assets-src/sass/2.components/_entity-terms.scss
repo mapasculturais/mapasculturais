@@ -12,6 +12,35 @@
         gap: size(8);
     }
 
+    &__content {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: size(16);
+        margin-top: size(10);
+
+        .mc-tag-list {
+            margin: 0;
+            flex: 0 1 auto;
+            flex-direction: row;
+            align-items: center;
+            gap: 0;
+            
+            &__tagList {
+                margin: 0;
+                display: flex;
+                gap: size(10);
+                flex-wrap: wrap;
+            }
+        }
+
+        mc-popover,
+        mc-multiselect {
+            flex-shrink: 0;
+        }
+    }
+
     &__required {
         font-size: var(--mc-font-size-xxxs);
         font-weight: 700;

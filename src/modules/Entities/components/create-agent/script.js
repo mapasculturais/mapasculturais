@@ -43,6 +43,14 @@ app.component('create-agent', {
             type: null,
             default: false
         },
+        parent: {
+            type: [Entity, Object, Number],
+            default: null
+        },
+        buttonLabel: {
+            type: String,
+            default: null
+        },
     },
 
     computed: {
@@ -51,6 +59,9 @@ app.component('create-agent', {
         },
         areaClasses() {
             return this.areaErrors ? 'field error' : 'field';
+        },
+        resolvedButtonLabel() {
+            return this.buttonLabel || __('criarAgente', 'create-agent');
         },
         /**
          * Issue #32: metadado de documento (cpf/cnpj) exigido conforme o tipo,
@@ -142,6 +153,9 @@ app.component('create-agent', {
                 this.entity.type = 2;
             }
             this.entity.terms = { area: [] }
+            if (this.parent) {
+                this.entity.parent = this.parent;
+            }
             this.syncAgentTypeIdForDocument();
         },
         createDraft(modal) {

@@ -468,7 +468,8 @@ class Module extends \MapasCulturais\Module
             FROM registration r
             WHERE opportunity_id = :opportunity_id
             AND consolidated_result <> '0' AND
-            cast(consolidated_result as DECIMAL) BETWEEN {$i} AND {$b}";
+            cast(CASE WHEN consolidated_result ~ '^-?[0-9]+(\\.[0-9]+)?\$'
+                      THEN consolidated_result ELSE NULL END as DECIMAL) BETWEEN {$i} AND {$b}";
 
             $label = "de " . $a . " a " . $b;
 

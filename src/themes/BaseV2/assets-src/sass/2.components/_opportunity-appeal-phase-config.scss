@@ -16,7 +16,10 @@
             padding: size(16) size(20) size(30);
 
             &__header {
-                padding: 0;
+                // #56 — shell cinza com respiro: título não cola nas bordas
+                // (era padding 0); padding-bottom do estado ativo coincide
+                // com o padding base (mesmo valor, sem duplicação).
+                padding: size(16);
                 background-color: var(--mc-gray-100);
                 max-width: size(1047);
                 grid-template-columns: 1fr size(124);
@@ -34,7 +37,10 @@
                 display: flex;
                 flex-direction: column;
                 gap: size(32);
-                padding: size(16) 0;
+                // #56 — padding em todos os lados (era size(16) 0): conteúdo
+                // não fica colado nas bordas; fundo cinza mantido (shell
+                // contínuo header+content).
+                padding: size(16);
                 background-color: var(--mc-gray-100);
                 max-width: 100%;
                 border-top: var(--mc-border-hairline) var(--mc-gray-300);
@@ -172,6 +178,8 @@
     &__add-evaluation-committee {
         border-bottom: var(--mc-border-hairline) var(--mc-gray-300);
         padding-bottom: size(42);
+        // #56 — o respiro lateral vem do padding do __content (size(16) em
+        // todos os lados); padding lateral aqui duplicaria (16+16).
     }
 
     &__delete {

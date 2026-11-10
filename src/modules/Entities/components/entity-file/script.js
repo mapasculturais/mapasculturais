@@ -176,13 +176,10 @@ app.component('entity-file', {
                 });
             }
 
-            this.entity.disableMessages();
             try{
                 const response = await this.entity.upload(this.newFile, data);
                 this.file = response;
                 this.$emit('uploaded', this);
-                this.loading = false;
-                this.entity.enableMessages();
 
                 this.file = null;
                 this.newFile = {};
@@ -192,13 +189,11 @@ app.component('entity-file', {
                 }
 
             } catch(e) {
-                this.loading = false;
-                if(e.error) {
-                    const messages = useMessages();
-                    messages.error(e.data[this.groupName]);
-                } else {
+                if(!e.error) {
                     console.error(e);
                 }
+            } finally {
+                this.loading = false;
             }
 
             return true;

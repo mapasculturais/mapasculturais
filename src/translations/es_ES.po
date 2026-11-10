@@ -40450,3 +40450,99 @@ msgstr ""
 "criterios o secciones, las respuestas correspondientes serán eliminadas de "
 "las evaluaciones existentes."
 
+#: src/modules/OpportunityAccountability/EvaluationMethod.php:64
+msgid ""
+"Você tem certeza que deseja finalizer o parecer técnico?\n"
+"\n"
+"Após a finalização não será mais possível modificar o parecer."
+msgstr ""
+"¿Está seguro de que desea finalizar la evaluación técnica?\n"
+"\n"
+"Una vez finalizada, ya no será posible modificar la evaluación."
+
+#: src/modules/OpportunityAccountability/EvaluationMethod.php:65
+msgid ""
+"Você tem certeza que deseja reabrir a prestação de contas?\n"
+"\n"
+"A abertura dos campos para edição deverá ser feita manualmente."
+msgstr ""
+"¿Está seguro de que desea reabrir la rendición de cuentas?\n"
+"\n"
+"La apertura de los campos para edición deberá hacerse manualmente."
+
+#: src/modules/OpportunityAccountability/EvaluationMethod.php:66
+msgid "ATENÇÃO, essa ação é irreversível! Você tem certeza que deseja publicar o resultado dessa inscrição?"
+msgstr "ATENCIÓN: ¡esta acción es irreversible! ¿Está seguro de que desea publicar el resultado de esta inscripción?"
+
+#: src/modules/AgentDocuments/Module.php:39
+msgid "O CPF é obrigatório para este tipo de agente."
+msgstr "La CI es obligatoria para este tipo de agente."
+
+#: src/modules/AgentDocuments/Module.php:40
+msgid "O CNPJ é obrigatório para este tipo de agente."
+msgstr "El RUT es obligatorio para este tipo de agente."
+
+#: src/modules/Entities/Module.php:146 src/modules/Entities/Module.php:149
+msgid "Gerenciar configuração padrão das colunas"
+msgstr "Administrar la configuración predeterminada de las columnas"
+
+#: src/modules/Support/Module.php:287
+msgid "Voce realmente deseja remover a relação deste agente?"
+msgstr "¿Realmente desea eliminar la relación con este agente?"
+
+#: src/modules/Reports/Module.php:163
+msgid "Você tem certeza que deseja deletar esse gráfico?"
+msgstr "¿Está seguro de que desea eliminar este gráfico?"
+
+#: src/modules/OpportunityAppealPhase/Module.php:352
+#, php-format
+msgid "Fase de recurso para %s"
+msgstr "Fase de reclamo para %s"
+
+#: src/themes/BaseV1/Theme.php:1812
+msgid "ATENÇÃO, Essa ação é uma ação irreversível. Caso a próxima fase seja uma prestação de contas, primeiro crie a fase de prestação de contas para só depois fazer a publicação."
+msgstr "ATENCIÓN: esta acción es irreversible. Si la próxima fase es una rendición de cuentas, primero cree la fase de rendición de cuentas y recién después haga la publicación."
+
+#: src/themes/BaseV1/Theme.php:1813
+msgid "Deseja remover este item?"
+msgstr "¿Desea eliminar este elemento?"
+
+#: src/themes/BaseV1/Theme.php:1874
+msgid "Tem Certeza de que deseja excluir este item?"
+msgstr "¿Está seguro de que desea eliminar este elemento?"
+
+#: src/modules/Components/components/mc-messages/template.php:22
+msgid "Fechar mensagem"
+msgstr "Cerrar mensaje"
+
+#: src/modules/Components/components/mc-entity/texts.php:11
+msgid "Não foi possível salvar:"
+msgstr "No se pudo guardar:"
+
+#: src/modules/LGPD/components/accept-terms/template.php:44
+msgid "Aceito os termos acima"
+msgstr "Acepto los términos anteriores"
+
+#: src/themes/BaseV1/views/panel/seals.php:37
+msgid "Aqui estão listados todos os selos que você tem permissão de editar"
+msgstr "Aquí se listan todos los sellos que tiene permiso para editar"
+
+#: src/themes/BaseV1/views/auth/fake-authentication.php:143
+msgid "Filtrando usuários"
+msgstr "Filtrando usuarios"
+
+#: src/themes/BaseV1/views/auth/fake-authentication.php:169
+msgid "Nenhum registro encontrado"
+msgstr "No se encontraron registros"
+
+#: src/themes/BaseV1/layouts/parts/panel-agent.php:36
+msgid "Usuário criado na rede cultura viva"
+msgstr "Usuario creado en la red Cultura Viva"
+
+#: src/themes/BaseV1/layouts/parts/related-seals.php:40
+msgid "Não expira"
+msgstr "No vence"
+
+#: src/themes/BaseV1/layouts/parts/singles/registration-edit--spaces.php:10
+msgid "Selecione um espaço a ser vinculado à inscrição"
+msgstr "Seleccione un espacio para vincular a la inscripción"

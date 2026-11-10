@@ -21,6 +21,14 @@
         }
     }
 
+    .mc-card.feature {
+        .mc-card__title {
+            label {
+                color: #117C83;
+            }
+        }
+    }
+
     .content {
         display: grid;
         grid-template-columns: 1fr 1fr;

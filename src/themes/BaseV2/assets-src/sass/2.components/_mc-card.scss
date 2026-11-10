@@ -44,7 +44,6 @@
         }
         
         .mc-card__content {
-            display: grid;
             grid-template-columns: 66% 7% 27%;
             flex-wrap: wrap;
 
@@ -84,4 +83,15 @@
             }
         }  
     }
+}
+
+.section-divider {
+    width: 100%;
+    margin: size(24) 0;
+    border-bottom: size(1) solid var(--mc-gray-300);
+}
+
+mc-card.section-divider {
+    border-bottom: none;
+    margin-top: size(24);
 }
