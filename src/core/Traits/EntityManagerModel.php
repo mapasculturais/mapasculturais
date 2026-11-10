@@ -37,6 +37,12 @@ trait EntityManagerModel {
     private $cachedOwnerEntity = null;
 
     /**
+     * @var array<string,string> Nome de campo e de anexo da origem para o nome correspondente na cópia
+     * @access private
+     */
+    private $registrationFieldNameMap = [];
+
+    /**
      * Gera um modelo a partir de uma oportunidade existente
      * 
      * Este método cria uma cópia da oportunidade como modelo, incluindo
@@ -53,6 +59,7 @@ trait EntityManagerModel {
         $app = App::i();
 
         $this->requireAuthentication();
+        $this->registrationFieldNameMap = [];
         $this->entityOpportunity = $this->requestedEntity;
         $this->entityOpportunityModel = $this->generateModel();
 
@@ -61,6 +68,7 @@ trait EntityManagerModel {
         $this->generateTerms();
         $this->generateMetadata();
         $this->generateRegistrationFieldsAndFiles($this->entityOpportunity, $this->entityOpportunityModel);
+        $this->remapGeneratedEvaluationFields();
         $this->generateSealsRelations();
 
         $this->entityOpportunity = $this->entityOpportunity->refreshed();
@@ -96,6 +104,7 @@ trait EntityManagerModel {
         $app = App::i();
 
         $this->requireAuthentication();
+        $this->registrationFieldNameMap = [];
         $this->entityOpportunity = $this->requestedEntity;
 
         if (!$this->entityOpportunity->getMetadata('isModelPublic')) {
@@ -112,10 +121,11 @@ trait EntityManagerModel {
             $this->entityOpportunityModel = $this->generateOpportunity();
 
             $this->generateEvaluationMethods(false);
-            $this->generatePhases(false);
+            $this->generatePhases(copyDates: false, useCurrentSubsite: true);
             $this->generateTerms();
             $this->generateMetadata(0, 0);
             $this->generateRegistrationFieldsAndFiles($this->entityOpportunity, $this->entityOpportunityModel);
+            $this->remapGeneratedEvaluationFields();
 
             $this->entityOpportunity = $this->entityOpportunity->refreshed();
             $this->entityOpportunityModel = $this->entityOpportunityModel->refreshed();
@@ -314,9 +324,12 @@ trait EntityManagerModel {
         $this->entityOpportunityModel = clone $this->entityOpportunity;
         $this->resetClonedEvaluationMethodConfiguration($this->entityOpportunityModel);
         $this->clearOpportunityPhaseDates($this->entityOpportunityModel);
+        $this->clearOpportunityPublication($this->entityOpportunityModel);
         $this->entityOpportunityModel->name = $name;
         $this->entityOpportunityModel->status = Entity::STATUS_DRAFT;
         $this->entityOpportunityModel->owner = $app->user->profile;
+        // o clone mantém o id da origem, então o save() não aplica o subsite atual como faz em entidades novas
+        $this->entityOpportunityModel->subsite = $app->getCurrentSubsite();
 
         $now = new \DateTime('now');
         $this->entityOpportunityModel->createTimestamp = $now;
@@ -408,7 +421,7 @@ trait EntityManagerModel {
      * @return void
      * @access private
      */
-    private function generatePhases(bool $copyDates = true) : void
+    private function generatePhases(bool $copyDates = true, bool $useCurrentSubsite = false) : void
     {
         $app = App::i();
         $conn = $app->em->getConnection();
@@ -419,13 +432,15 @@ trait EntityManagerModel {
         ]);
 
         $publishDate = null;
-        $publishSubsite = null;
+        $publishSubsite = $useCurrentSubsite ? $app->getCurrentSubsite() : null;
         $newLastPhase = null;
 
         foreach ($phases as $phase) {
             if ($phase->getMetadata('isLastPhase')) {
                 $publishDate = $phase->publishTimestamp;
-                $publishSubsite = $phase->subsite;
+                if (!$useCurrentSubsite) {
+                    $publishSubsite = $phase->subsite;
+                }
                 continue;
             }
 
@@ -433,13 +448,14 @@ trait EntityManagerModel {
             $this->resetClonedEvaluationMethodConfiguration($newPhase);
             if (!$copyDates) {
                 $this->clearOpportunityPhaseDates($newPhase);
+                $this->clearOpportunityPublication($newPhase);
             }
             $newPhase->setParent($this->entityOpportunityModel);
             $newPhase->owner = $app->user->profile;
 
             $now = new \DateTime('now');
             $newPhase->createTimestamp = $now;
-            $newPhase->subsite = $phase->subsite;
+            $newPhase->subsite = $useCurrentSubsite ? $app->getCurrentSubsite() : $phase->subsite;
 
             $this->saveWithSingleFlush($newPhase);
 
@@ -496,6 +512,7 @@ trait EntityManagerModel {
                         $newPhase->setPublishTimestamp($publishDate);
                     } else {
                         $this->clearOpportunityPhaseDates($newPhase);
+                        $this->clearOpportunityPublication($newPhase);
                     }
                     $newPhase->save(true);
                     $this->changeObjectType($newPhase->id);
@@ -526,6 +543,11 @@ trait EntityManagerModel {
         $opportunity->registrationTo = null;
         $opportunity->publishTimestamp = null;
         $opportunity->autoPublish = false;
+    }
+
+    private function clearOpportunityPublication(Opportunity $opportunity): void
+    {
+        $opportunity->publishedRegistrations = false;
     }
 
     private function clearEvaluationDates(EvaluationMethodConfiguration $configuration): void
@@ -579,7 +601,6 @@ trait EntityManagerModel {
     private function generateRegistrationFieldsAndFiles($opportunityCurrent, $opportunityNew) : void
     {
         $stepMap = [];
-        $fieldNameMap = [];
         $conditionalFields = [];
         $conditionalFiles = [];
 
@@ -630,7 +651,7 @@ trait EntityManagerModel {
             }
 
             $fieldConfiguration->save(false);
-            $fieldNameMap[$originalFieldName] = $fieldConfiguration->fieldName;
+            $this->registrationFieldNameMap[$originalFieldName] = $fieldConfiguration->fieldName;
 
             if ($fieldConfiguration->conditionalField) {
                 $conditionalFields[] = $fieldConfiguration;
@@ -638,6 +659,7 @@ trait EntityManagerModel {
         }
 
         foreach ($opportunityCurrent->getRegistrationFileConfigurations() as $registrationFileConfiguration) {
+            $originalGroupName = $registrationFileConfiguration->fileGroupName;
             $fileConfiguration = clone $registrationFileConfiguration;
             $fileConfiguration->setOwnerId($opportunityNew->id);
 
@@ -646,6 +668,7 @@ trait EntityManagerModel {
             }
 
             $fileConfiguration->save(false);
+            $this->registrationFieldNameMap[$originalGroupName] = $fileConfiguration->fileGroupName;
 
             if ($fileConfiguration->conditionalField) {
                 $conditionalFiles[] = $fileConfiguration;
@@ -655,8 +678,8 @@ trait EntityManagerModel {
         $app->em->flush();
 
         foreach (array_merge($conditionalFields, $conditionalFiles) as $configuration) {
-            if (isset($fieldNameMap[$configuration->conditionalField])) {
-                $configuration->conditionalField = $fieldNameMap[$configuration->conditionalField];
+            if (isset($this->registrationFieldNameMap[$configuration->conditionalField])) {
+                $configuration->conditionalField = $this->registrationFieldNameMap[$configuration->conditionalField];
                 $configuration->save(false);
             }
         }
@@ -666,6 +689,50 @@ trait EntityManagerModel {
         }
 
         $this->deleteOrphanEmptyRegistrationSteps($opportunityNew, $stepMap);
+    }
+
+    /**
+     * Reescreve a configuração de campos visíveis da cópia e de suas fases
+     *
+     * @return void
+     * @access private
+     */
+    private function remapGeneratedEvaluationFields(): void
+    {
+        $app = App::i();
+
+        $this->remapAvaliableEvaluationFields($this->entityOpportunityModel);
+
+        foreach ($app->repo('Opportunity')->findBy(['parent' => $this->entityOpportunityModel]) as $phase) {
+            $this->remapAvaliableEvaluationFields($phase);
+        }
+    }
+
+    private function remapAvaliableEvaluationFields(Opportunity $opportunity): void
+    {
+        // pelo getter mágico o valor passa pelo hook da fase de recurso e pelo cache herdado do clone
+        $stored = $opportunity->getStoredAvaliableEvaluationFields();
+
+        if (!$stored) {
+            return;
+        }
+
+        $remapped = [];
+        foreach ($stored as $name => $value) {
+            if (isset($this->registrationFieldNameMap[$name])) {
+                $remapped[$this->registrationFieldNameMap[$name]] = $value;
+            } elseif (!preg_match('#^(field|rfc)_\d+$#', (string) $name)) {
+                $remapped[$name] = $value;
+            }
+        }
+
+        $opportunity->avaliableEvaluationFields = $remapped;
+
+        if (is_object($opportunity->__magicGetterCache ?? null)) {
+            unset($opportunity->__magicGetterCache->avaliableEvaluationFields);
+        }
+
+        $opportunity->save(true);
     }
 
     /**

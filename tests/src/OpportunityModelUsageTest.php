@@ -355,6 +355,77 @@ class OpportunityModelUsageTest extends TestCase
         ));
     }
 
+    function testOpportunityGeneratedFromModelUsesCurrentSubsite(): void
+    {
+        $owner = $this->userDirector->createUser();
+        $modelSubsiteId = $this->createSubsite($owner);
+        $currentSubsiteId = $this->createSubsite($owner);
+
+        try {
+            $this->app->setCurrentSubsiteId($modelSubsiteId);
+            $model = $this->markAsModel($this->createOpportunityWithEvaluationPhase($owner));
+
+            $this->app->setCurrentSubsiteId($currentSubsiteId);
+            $generated = $this->generateOpportunity($model, $owner->profile->id);
+        } finally {
+            $this->app->setCurrentSubsiteId(null);
+        }
+
+        $this->app->em->flush();
+        $subsiteIds = $this->app->em->getConnection()->fetchAllKeyValue(
+            'SELECT id, subsite_id FROM opportunity WHERE id = :id OR parent_id = :id',
+            ['id' => $generated->id]
+        );
+
+        $this->assertGreaterThan(2, count($subsiteIds));
+        foreach ($subsiteIds as $subsiteId) {
+            $this->assertSame($currentSubsiteId, (int) $subsiteId);
+        }
+    }
+
+    function testOpportunityGeneratedFromPublishedModelIsNotPublished(): void
+    {
+        $owner = $this->userDirector->createUser();
+        $model = $this->markAsModel($this->createOpportunityWithEvaluationPhase($owner));
+
+        $modelPhases = $this->app->repo('Opportunity')->findBy(['parent' => $model]);
+        foreach ([$model, ...$modelPhases] as $opportunity) {
+            $opportunity->publishedRegistrations = true;
+            $opportunity->save(true);
+        }
+
+        $generated = $this->generateOpportunity($model, $owner->profile->id);
+
+        $conn = $this->app->em->getConnection();
+        $this->app->em->flush();
+        $publishedFlags = $conn->fetchAllKeyValue(
+            'SELECT id, published_registrations FROM opportunity WHERE id = :id OR parent_id = :id',
+            ['id' => $generated->id]
+        );
+
+        $this->assertGreaterThan(2, count($publishedFlags));
+        foreach ($publishedFlags as $published) {
+            $this->assertFalse((bool) $published);
+        }
+    }
+
+    private function createSubsite($owner): int
+    {
+        $conn = $this->app->em->getConnection();
+        $id = (int) $conn->fetchOne("SELECT nextval('subsite_id_seq')");
+        $conn->insert('subsite', [
+            'id' => $id,
+            'name' => "Subsite {$id}",
+            'create_timestamp' => date('Y-m-d H:i:s'),
+            'status' => 1,
+            'agent_id' => $owner->profile->id,
+            'url' => "subsite{$id}.localhost",
+            'namespace' => 'Subsite',
+        ]);
+
+        return $id;
+    }
+
     private function createModel($owner, bool $isPublic): Opportunity
     {
         $this->login($owner);

@@ -28,7 +28,7 @@ return array(
         ),
 
         'escolaridade' => array(
-            'private' => false,
+            'private' => true,
             'label' => \MapasCulturais\i::__('Escolaridade'),
             'type' => 'select',
             'options' => array(
@@ -52,7 +52,7 @@ return array(
         ),
 
         'renda' => array(
-            'private' => false,
+            'private' => true,
             'label' => \MapasCulturais\i::__('Renda'),
             'type' => 'select',
             'options' => array(
@@ -71,6 +71,7 @@ return array(
         ),
 
         'pessoaDeficiente' => array(
+            'private' => true,
             'label' => \MapasCulturais\i::__('Pessoa com deficiência'),
             'type' => 'multiselect',
             'options' => [

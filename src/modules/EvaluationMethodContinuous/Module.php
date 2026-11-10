@@ -140,6 +140,8 @@ class Module extends \MapasCulturais\EvaluationMethod
 
         if (!array_key_exists('status', $data) || trim((string) $data['status']) === '') {
             $errors[] = i::__('O campo Status é obrigatório');
+        } else if (!is_scalar($data['status']) || !array_key_exists($data['status'], $this->getEvaluatorStatuses($evaluation_method_configuration))) {
+            $errors[] = i::__('O status selecionado não está habilitado para esta fase');
         }
 
         if (!array_key_exists('obs', $data) || trim((string) $data['obs']) === '') {

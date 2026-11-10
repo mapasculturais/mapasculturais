@@ -35,7 +35,7 @@ A plataforma já está em uso em diversos municipios, estados, no governo federa
 - Anápolis/GO - https://culturaemrede.anapolis.go.gov.br/
 - Aparecida de Goiânia/GO - https://portaldacultura.aparecida.go.gov.br/
 - Apucarana/PR - https://cultura.apucarana.pr.gov.br/
-- Aracaju/SE - http://mapa.cultura.aracaju.se.gov.br/
+- Aracaju/SE - https://mapacultural.aracaju.se.gov.br/
 - Belo Horizonte/MG - https://mapaculturalbh.pbh.gov.br/
 - Bento Gonçalvez/RS - http://mapacultural.bentogoncalves.rs.gov.br/
 - Campo Mourão/PR - https://mapas.campomourao.pr.gov.br/

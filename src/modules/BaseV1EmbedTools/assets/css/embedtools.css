@@ -781,6 +781,7 @@ textarea {
 
 .action-registrationview .registration .registration-fieldset .registration-step {
     display: grid;
+    grid-template-columns: minmax(0, 1fr);
     margin-top: 1rem;
     border: 1px solid #BBB;
     border-radius: .5rem;
@@ -828,6 +829,7 @@ textarea {
 
 .action-registrationview .registration .registration-fieldset ul.attachment-list li > div {
     background-color: #E8E8E8;
+    overflow-wrap: anywhere;
     display: flex;
     flex-direction: column;
     gap: 4px;

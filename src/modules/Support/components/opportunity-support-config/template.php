@@ -110,7 +110,7 @@ $this->import('
                                         <mc-icon :name="getFieldType(field)"></mc-icon>
                                     </span>
                                     <div>
-                                        <h4 class="bold"> #{{field.id}} - {{ field.title }} <small v-if="field.required" class="required bold"><i>* <?= i::__("Obrigatório")?></i></small></h4> 
+                                        <h4 class="bold"> {{field.ref === 'appliedForQuota' ? '' : '#' + field.id + ' - '}}{{ field.title }} <small v-if="field.required" class="required bold"><i>* <?= i::__("Obrigatório")?></i></small></h4> 
                                         <div class="fields-info">
                                             <div class="conditional">
                                                 <small v-if="getConditionalField(field)">

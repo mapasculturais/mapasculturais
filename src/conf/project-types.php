@@ -214,6 +214,7 @@ return array(
         'telefone1' => array(
             'label' => \MapasCulturais\i::__('Telefone 1'),
             'type' => 'string',
+            'private' => true,
             'validations' => array(
                 'v::brPhone()' => \MapasCulturais\i::__('O número de telefone informado é inválido.')
             ),
@@ -225,6 +226,7 @@ return array(
         'telefone2' => array(
             'label' => \MapasCulturais\i::__('Telefone 2'),
             'type' => 'string',
+            'private' => true,
             'validations' => array(
                 'v::brPhone()' => \MapasCulturais\i::__('O número de telefone informado é inválido.')
             ),

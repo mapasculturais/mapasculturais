@@ -6,6 +6,7 @@ use Doctrine\ORM\EntityNotFoundException;
 use Laminas\Diactoros\Response;
 use MapasCulturais\Controllers\Opportunity as OpportunityController;
 use MapasCulturais\Entities\Opportunity;
+use MapasCulturais\Entities\RegistrationFieldConfiguration;
 use MapasCulturais\Entities\RegistrationFileConfiguration;
 use MapasCulturais\Exceptions\Halt;
 use Tests\Abstract\TestCase;
@@ -348,6 +349,283 @@ class OpportunityModelCopyTest extends TestCase
                 ['id' => $model->id]
             )
         );
+    }
+
+    private function createSourceOpportunityWithVisibleEvaluationFields($owner): Opportunity
+    {
+        $source = $this->opportunityBuilder
+            ->reset(owner: $owner->profile, owner_entity: $owner->profile)
+            ->fillRequiredProperties()
+            ->save()
+            ->firstPhase()
+                ->setRegistrationPeriod(new Open)
+                ->createStep('Etapa única')
+                ->createField('campo-visivel', 'text', title: 'Campo visível')
+                ->createField('campo-oculto', 'text', title: 'Campo oculto')
+                ->done()
+            ->save()
+            ->refresh()
+            ->getInstance();
+
+        $attachment = new RegistrationFileConfiguration();
+        $attachment->owner = $source;
+        $attachment->step = $this->fieldTitled($source, 'Campo visível')->step;
+        $attachment->title = 'Anexo visível';
+        $attachment->save(true);
+
+        $source = $source->refreshed();
+
+        $configuration = ['agentsSummary' => 'true'];
+        foreach ($source->getRegistrationFieldConfigurations() as $field) {
+            $configuration[$field->fieldName] = $field->title === 'Campo oculto' ? 'false' : 'true';
+        }
+        foreach ($source->getRegistrationFileConfigurations() as $file) {
+            $configuration[$file->fileGroupName] = 'true';
+        }
+
+        $source->avaliableEvaluationFields = $configuration;
+        $source->save(true);
+
+        return $source->refreshed();
+    }
+
+    private function fieldTitled(Opportunity $opportunity, string $title)
+    {
+        return array_values(array_filter(
+            $opportunity->getRegistrationFieldConfigurations(),
+            fn($field) => $field->title === $title
+        ))[0];
+    }
+
+    private function foreignEvaluationFieldKeys(Opportunity $opportunity): array
+    {
+        $own = array_map(
+            fn($field) => $field->fieldName,
+            $opportunity->getRegistrationFieldConfigurations()
+        );
+        foreach ($opportunity->getRegistrationFileConfigurations() as $file) {
+            $own[] = $file->fileGroupName;
+        }
+
+        return array_values(array_filter(
+            array_keys($opportunity->getStoredAvaliableEvaluationFields()),
+            fn($key) => preg_match('#^(field|rfc)_\d+$#', (string) $key) && !in_array($key, $own, true)
+        ));
+    }
+
+    function testEvaluationFieldsConfigurationIsRemappedOnGeneratedOpportunity(): void
+    {
+        $admin = $this->userDirector->createUser('admin');
+        $this->login($admin);
+
+        $source = $this->createSourceOpportunityWithVisibleEvaluationFields($admin);
+
+        $model = $this->generateModelFrom($source, 'Modelo com campos visíveis ' . uniqid('', true));
+        $generated = $this->generateOpportunityFrom($model, $admin->profile->id);
+
+        $this->assertSame([], $this->foreignEvaluationFieldKeys($model));
+        $this->assertSame([], $this->foreignEvaluationFieldKeys($generated));
+        $this->assertCount(4, $generated->getStoredAvaliableEvaluationFields());
+    }
+
+    function testEvaluationFieldsConfigurationPreservesHiddenFieldsAndNonFieldKeys(): void
+    {
+        $admin = $this->userDirector->createUser('admin');
+        $this->login($admin);
+
+        $source = $this->createSourceOpportunityWithVisibleEvaluationFields($admin);
+
+        $model = $this->generateModelFrom($source, 'Modelo com campo oculto ' . uniqid('', true));
+        $generated = $this->generateOpportunityFrom($model, $admin->profile->id);
+
+        $configuration = $generated->getStoredAvaliableEvaluationFields();
+        $hidden = $this->fieldTitled($generated, 'Campo oculto');
+        $visible = $this->fieldTitled($generated, 'Campo visível');
+
+        $this->assertSame('true', $configuration['agentsSummary'] ?? null);
+        $this->assertSame('true', $configuration[$visible->fieldName] ?? null);
+        $this->assertSame('false', $configuration[$hidden->fieldName] ?? null);
+    }
+
+    private function createSourceOpportunityWithEvaluationPhaseAndFields($owner): Opportunity
+    {
+        $builder = $this->opportunityBuilder
+            ->reset(owner: $owner->profile, owner_entity: $owner->profile)
+            ->fillRequiredProperties()
+            ->save()
+            ->firstPhase()
+                ->setRegistrationPeriod(new Open)
+                ->createStep('Etapa única')
+                ->createField('campo-avaliado', 'text', title: 'Campo avaliado')
+                ->done()
+            ->save();
+
+        $builder->addDataCollectionPhase()
+            ->setRegistrationPeriod(new Open)
+            ->save()
+            ->done();
+
+        $builder->addEvaluationPhase(EvaluationMethods::simple)
+            ->fillRequiredProperties()
+            ->setEvaluationPeriod(new ConcurrentEndingAfter)
+            ->save()
+            ->done();
+
+        return $builder->refresh()->getInstance();
+    }
+
+    private function phaseNamed(Opportunity $opportunity, string $name): Opportunity
+    {
+        return array_values(array_filter(
+            $this->app->repo('Opportunity')->findBy(['parent' => $opportunity], ['id' => 'ASC']),
+            fn(Opportunity $phase) => $phase->name === $name
+        ))[0];
+    }
+
+    function testEvaluationFieldsConfigurationOfEvaluationPhaseIsRemapped(): void
+    {
+        $admin = $this->userDirector->createUser('admin');
+        $this->login($admin);
+
+        $source = $this->createSourceOpportunityWithEvaluationPhaseAndFields($admin);
+        $sourceField = $this->fieldTitled($source, 'Campo avaliado');
+        $sourcePhase = $this->configurationOfSomePhase($source)->opportunity;
+        $evaluationPhaseName = $sourcePhase->name;
+        $sourcePhase->avaliableEvaluationFields = [$sourceField->fieldName => 'true'];
+        $sourcePhase->save(true);
+
+        $model = $this->generateModelFrom($source, 'Modelo com fase avaliadora ' . uniqid('', true));
+        $generated = $this->generateOpportunityFrom($model, $admin->profile->id);
+
+        $generatedField = $this->fieldTitled($generated, 'Campo avaliado');
+        $generatedPhase = $this->phaseNamed($generated, $evaluationPhaseName);
+
+        $this->assertNotSame($sourceField->fieldName, $generatedField->fieldName);
+        $this->assertSame(
+            [$generatedField->fieldName => 'true'],
+            $generatedPhase->getStoredAvaliableEvaluationFields()
+        );
+    }
+
+    function testEvaluationFieldsConfigurationIsRemappedWhenOpportunityHasAppealPhase(): void
+    {
+        $app = $this->app;
+        $admin = $this->userDirector->createUser('admin');
+        $this->login($admin);
+
+        $source = $this->createSourceOpportunityWithEvaluationPhaseAndFields($admin);
+        $sourceField = $this->fieldTitled($source, 'Campo avaliado');
+        $sourcePhase = $this->configurationOfSomePhase($source)->opportunity;
+        $evaluationPhaseName = $sourcePhase->name;
+        $sourcePhase->avaliableEvaluationFields = [$sourceField->fieldName => 'true'];
+        $sourcePhase->save(true);
+
+        $sourceId = $source->id;
+        $app->request = $this->requestFactory->mapasPOST('opportunity', 'createAppealPhase', [$sourceId], ['id' => $sourceId]);
+        $app->response = new Response();
+
+        /** @var OpportunityController $controller */
+        $controller = $app->controller('opportunity');
+        $controller->setRequestData(['id' => $sourceId]);
+
+        try {
+            $controller->callAction('POST', 'createAppealPhase', []);
+        } catch (Halt) {
+        }
+
+        $app->em->clear();
+        $source = $app->repo('Opportunity')->find($sourceId);
+        $this->login($app->repo('User')->find($admin->id));
+
+        $model = $this->generateModelFrom($source, 'Modelo com recurso e campos ' . uniqid('', true));
+        $generated = $this->generateOpportunityFrom($model, $admin->profile->id);
+
+        $generatedField = $this->fieldTitled($generated, 'Campo avaliado');
+        $generatedPhase = $this->phaseNamed($generated, $evaluationPhaseName);
+
+        $this->assertSame(
+            [$generatedField->fieldName => 'true'],
+            $generatedPhase->getStoredAvaliableEvaluationFields()
+        );
+    }
+
+    private function appealPhaseOf(Opportunity $opportunity): Opportunity
+    {
+        return array_values(array_filter(
+            $this->app->repo('Opportunity')->findBy(['parent' => $opportunity], ['id' => 'ASC']),
+            fn(Opportunity $phase) => (bool) $phase->isAppealPhase
+        ))[0];
+    }
+
+    function testEvaluationFieldsConfigurationOfAppealPhaseIsRemapped(): void
+    {
+        $app = $this->app;
+        $admin = $this->userDirector->createUser('admin');
+        $this->login($admin);
+
+        $source = $this->createSourceOpportunityWithEvaluationPhaseAndFields($admin);
+        $sourceField = $this->fieldTitled($source, 'Campo avaliado');
+
+        $sourceId = $source->id;
+        $app->request = $this->requestFactory->mapasPOST('opportunity', 'createAppealPhase', [$sourceId], ['id' => $sourceId]);
+        $app->response = new Response();
+
+        /** @var OpportunityController $controller */
+        $controller = $app->controller('opportunity');
+        $controller->setRequestData(['id' => $sourceId]);
+
+        try {
+            $controller->callAction('POST', 'createAppealPhase', []);
+        } catch (Halt) {
+        }
+
+        $app->em->clear();
+        $source = $app->repo('Opportunity')->find($sourceId);
+        $this->login($app->repo('User')->find($admin->id));
+
+        $appealPhase = $this->appealPhaseOf($source);
+        $appealPhaseName = $appealPhase->name;
+
+        $ownField = new RegistrationFieldConfiguration();
+        $ownField->owner = $appealPhase;
+        $ownField->title = 'Campo da fase de recurso';
+        $ownField->fieldType = 'text';
+        $ownField->save(true);
+
+        $appealPhase->avaliableEvaluationFields = [$sourceField->fieldName => 'true'];
+        $appealPhase->save(true);
+
+        $model = $this->generateModelFrom($source, 'Modelo com recurso ' . uniqid('', true));
+        $generated = $this->generateOpportunityFrom($model, $admin->profile->id);
+
+        $generatedField = $this->fieldTitled($generated, 'Campo avaliado');
+        $generatedAppealPhase = $this->phaseNamed($generated, $appealPhaseName);
+
+        $this->assertSame(
+            [$generatedField->fieldName => 'true'],
+            $generatedAppealPhase->getStoredAvaliableEvaluationFields()
+        );
+    }
+
+    function testEvaluationFieldsConfigurationDoesNotLeakBetweenGenerations(): void
+    {
+        $admin = $this->userDirector->createUser('admin');
+        $this->login($admin);
+
+        $first = $this->createSourceOpportunityWithVisibleEvaluationFields($admin);
+        $firstField = $this->fieldTitled($first, 'Campo visível');
+
+        $firstModel = $this->generateModelFrom($first, 'Modelo anterior ' . uniqid('', true));
+        $this->generateOpportunityFrom($firstModel, $admin->profile->id);
+
+        $second = $this->createSourceOpportunityWithVisibleEvaluationFields($admin);
+        $second->avaliableEvaluationFields = [$firstField->fieldName => 'true'];
+        $second->save(true);
+
+        $secondModel = $this->generateModelFrom($second, 'Modelo seguinte ' . uniqid('', true));
+        $generated = $this->generateOpportunityFrom($secondModel, $admin->profile->id);
+
+        $this->assertSame([], $generated->getStoredAvaliableEvaluationFields());
     }
 
     private function lastPhaseOf(Opportunity $opportunity): Opportunity

@@ -26,12 +26,10 @@ if (isset($this->controller->data['user']) && $entity->opportunity->canUser("@co
     $user = $app->user;
 }
 
-$statusList = [
-    ['value' => '2', 'label' =>   i::__('Inválida')],
-    ['value' => '3', 'label' =>   i::__('Não selecionada')],
-    ['value' => '8', 'label' =>   i::__('Suplente')],
-    ['value' => '10', 'label' =>   i::__('Selecionada')],
-];
+$statusList = [];
+foreach($opportunity->evaluationMethod->getEvaluatorStatuses($evaluation_configuration) as $status => $label) {
+    $statusList[] = ['value' => (string) $status, 'label' => $label];
+}
 
 $needs_tiebreaker = $entity->needsTiebreaker();
 

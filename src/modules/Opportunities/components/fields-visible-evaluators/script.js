@@ -103,7 +103,7 @@ app.component("fields-visible-evaluators", {
 
             _fields = Object.values(this.fields).map((item, index) => {
                 let field = { ...this.fields[index] }
-                field.checked = avaliableFields[item.fieldName || item.groupName] == "true" ? true : false;
+                field.checked = this.isEnabled(avaliableFields[item.fieldName || item.groupName]);
 
                 if (avaliableFields["category"] && item.categories?.length > 0) {
                     field.disabled = (avaliableFields["category"] == "true" ? false : true);
@@ -139,8 +139,12 @@ app.component("fields-visible-evaluators", {
         toggleSelectAll() {
             this.fields.forEach((field) => {
                 let conditionalField = this.avaliableEvaluationFields[field.conditionalField] || this.fields.filter((conditionalField) => conditionalField.fieldName == field.conditionalField);
-                let fieldName = field.fieldName || field.groupName; 
-                
+                let fieldName = field.fieldName || field.groupName;
+
+                if (!fieldName) {
+                    return;
+                }
+
                 if (this.selectAll) {
                     if (!field.checked) {
                         field.checked = true;
@@ -161,16 +165,36 @@ app.component("fields-visible-evaluators", {
                     }
                 }
             });
-            this.entity.opportunity.avaliableEvaluationFields = this.avaliableEvaluationFields;
+            this.entity.opportunity.avaliableEvaluationFields = this.normalizedFields();
             this.save();
         },
 
+        isEnabled(value) {
+            return value === true || value === "true";
+        },
+
+        normalizedFields() {
+            let normalized = {};
+
+            for (const [name, value] of Object.entries(this.avaliableEvaluationFields)) {
+                if (name && name !== "undefined") {
+                    normalized[name] = this.isEnabled(value) ? "true" : "false";
+                }
+            }
+
+            return normalized;
+        },
+
         toggleSelect(fieldName) {
+            if (!fieldName) {
+                return;
+            }
+
             if(Array.isArray(this.entity.opportunity.avaliableEvaluationFields) && this.entity.opportunity.avaliableEvaluationFields.length == 0) {
                 this.entity.opportunity.avaliableEvaluationFields = {};
             }
 
-            this.entity.opportunity.avaliableEvaluationFields[fieldName] = this.avaliableEvaluationFields[fieldName] ? "true" : "false";
+            this.entity.opportunity.avaliableEvaluationFields[fieldName] = this.isEnabled(this.avaliableEvaluationFields[fieldName]) ? "true" : "false";
             this.save();
             this.getFields();
         },

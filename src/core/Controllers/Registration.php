@@ -955,11 +955,40 @@ class Registration extends EntityController {
         
         $entity->checkPermission('view');
 
-        if(!$entity->files) {
-          $this->json([
+        $firstPhase = $entity->opportunity->firstPhase ?: $entity->opportunity;
+        $phases = array_filter($firstPhase->allPhases ?: [$firstPhase], fn($phase) => $phase->isDataCollection);
+        $registrations = [$entity->id => $entity];
+
+        if ($phases) {
+            foreach ($this->repository->findBy(['number' => $entity->number, 'opportunity' => $phases]) as $registration) {
+                $registrations[$registration->id] = $registration;
+            }
+        }
+
+        $files = [];
+        foreach ($registrations as $registration) {
+            if (!$registration->canUser('view')) {
+                continue;
+            }
+
+            $phase = $registration->opportunity;
+            $directory = $phase->id . '-' . $this->sanitizeFilename($phase->name);
+            foreach ($registration->files as $group) {
+                foreach (is_array($group) ? $group : [$group] as $file) {
+                    $path = $file->path;
+                    if (is_file($path)) {
+                        $files[$directory . '/' . basename($path)] = $path;
+                    }
+                }
+            }
+        }
+
+        if (!$files) {
+            $this->json([
                 'success' => false,
                 'message' => \MapasCulturais\i::__('Não existem arquivos a serem baixados.')
-            ], 400);  
+            ], 400);
+            return;
         }
 
         $fileName = preg_replace('/[^a-zA-Z0-9_\-.]/', '_', $entity->number . '-' . uniqid()) . '.zip';
@@ -975,14 +1004,8 @@ class Registration extends EntityController {
             return;
         }
 
-        foreach ($entity->files as $file) {
-            if (is_array($file)) {
-                $file = $file[0];
-            }
-
-            if (file_exists($file->path)) {
-                $zip->addFile($file->path, basename($file->path));
-            }
+        foreach ($files as $name => $path) {
+            $zip->addFile($path, $name);
         }
 
         $zip->close();

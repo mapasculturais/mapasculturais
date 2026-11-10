@@ -59,3 +59,7 @@ foreach( $chat_threads as $chat_thread ) {
 }
 
 $this->jsObject['config']['appealPhaseChat'] = $result;
+
+if ($evaluation_method_configuration = $opportunity->evaluationMethodConfiguration) {
+    $this->jsObject['config']['appealPhaseChatStatuses'] = $opportunity->evaluationMethod->getEvaluatorStatuses($evaluation_method_configuration);
+}
