@@ -108,23 +108,6 @@ $this->import('
 
             <template v-if="editable">
                 <?php $this->applyTemplateHook('entity-actions--secondary', 'begin') ?>
-                <mc-confirm-button v-if="entity.status == 0" @confirm="exit()">
-                    <template #button="modal">
-                        <button type="button" @click="modal.open()" class="button button--icon button--md publish publish-exit">
-                            <mc-icon name="logout"></mc-icon>
-                            <?php i::_e("Sair") ?>
-                        </button>
-                    </template>
-                    <template #message="message">
-                        <?php i::_e('Deseja sair?') ?>
-                    </template>
-                </mc-confirm-button>
-
-                <button v-if="entity.status == 1 && entity.currentUserPermissions?.modify" type="button" @click="exit()" class="button button--icon button--md publish publish-exit">
-                    <mc-icon name="logout"></mc-icon>
-                    <?php i::_e("Sair") ?>
-                </button>
-
                 <button v-if="entity.currentUserPermissions?.modify" type="button" @click="save()" class="button button--icon button--md publish publish-exit">
                     <mc-icon name="save"></mc-icon>
                     <?php i::_e("Salvar") ?>
@@ -166,6 +149,23 @@ $this->import('
                         <?php i::_e('Você está certo que deseja publicar esta entidade?') ?>
                     </template>
                 </mc-confirm-button>
+
+                <mc-confirm-button v-if="entity.status == 0" @confirm="exit()">
+                    <template #button="modal">
+                        <button type="button" @click="modal.open()" class="button button--icon button--md publish publish-exit">
+                            <mc-icon name="logout"></mc-icon>
+                            <?php i::_e("Sair") ?>
+                        </button>
+                    </template>
+                    <template #message="message">
+                        <?php i::_e('Deseja sair?') ?>
+                    </template>
+                </mc-confirm-button>
+
+                <button v-if="entity.status == 1 && entity.currentUserPermissions?.modify" type="button" @click="exit()" class="button button--icon button--md publish publish-exit">
+                    <mc-icon name="logout"></mc-icon>
+                    <?php i::_e("Sair") ?>
+                </button>
 
                 <?php $this->applyTemplateHook('entity-actions--secondary', 'end') ?>
             </template>
