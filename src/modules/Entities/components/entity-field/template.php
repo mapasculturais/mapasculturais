@@ -183,7 +183,7 @@ $this->import('
 
             <template v-else-if="is('custom-table')">
                 <div class="custom-table-field">
-                    <div style="overflow-x: auto; margin-top: 15px;">
+                    <div class="custom-table-field__scroll">
                         <table class="custom-table" style="width: 100%; border-collapse: collapse; border: 1px solid #ddd;">
                             <thead>
                                 <tr style="background-color: #f2f2f2;">
