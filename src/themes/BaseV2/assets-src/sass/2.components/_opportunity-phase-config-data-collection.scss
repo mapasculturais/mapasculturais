@@ -147,16 +147,19 @@
         flex-direction: column;
         align-items: center;
         position: relative;
-        padding-top: size(32);
-        gap: size(16);
+        padding-top: size(8);
+        gap: size(12);
 
-        &::before {
+        // Linha decorativa alinhada ao botão "Configurar formulário"
+        // (antes usava top fixo e ficava entre os checkboxes).
+        &:has(.config-phase__info-button)::before {
             background: var(--mc-gray-100);
             content: "";
             position: absolute;
             width: 100%;
             height: size(10);
-            top: size(52);
+            top: auto;
+            bottom: size(26);
         }
 
         .field {
@@ -194,6 +197,8 @@
             width: 35%;
             height: size(52);
             margin-top: size(8);
+            position: relative;
+            z-index: 1;
 
             @media (max-width: 680px) {
                 width: 60%;
