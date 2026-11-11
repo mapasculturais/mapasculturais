@@ -17,6 +17,7 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Corrige o modal "Configurar campos editáveis", que travava a data limite assim que havia campos selecionados: o gestor volta a conseguir estender/reabrir o prazo perdido do proponente
 
 ### Melhorias
+- Na busca de eventos, administradores passam a ter a aba Tabela, com listagem em colunas e exportação de planilha, no mesmo padrão de agentes, espaços, projetos e oportunidades
 - Na gestão de usuários, a ficha do usuário passa a ter a aba Avaliações: mostra as fases em que a pessoa avalia (como em Minhas avaliações) e lista as avaliações iniciadas, concluídas e enviadas
 - Na gestão de usuários, os cards da aba Agentes passam a exibir o ID do agente, como na listagem pública
 
