@@ -1,0 +1,14 @@
+@use '../0.settings/mixins' as *;
+
+.event-table {
+    &__multiselects {
+        display: flex;
+        gap: size(24);
+        flex-wrap: wrap;
+    }
+
+    &__actions {
+        display: grid;
+        gap: size(12);
+    }
+}

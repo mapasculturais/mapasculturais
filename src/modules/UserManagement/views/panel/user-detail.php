@@ -12,6 +12,7 @@ $this->import('
     panel--entity-actions
     panel--entity-tabs
     user-mail
+    user-management--evaluations-tabs
     user-management--ownership-tabs
 ');
 ?>
@@ -102,6 +103,10 @@ $this->import('
         
                     <mc-tab label="<?= i::esc_attr__('Inscrições') ?>" slug="registrations" icon='opportunity' classes="tabs-component-button--active-registration">
                         <user-management--ownership-tabs :user="entity" type="registration"></user-management--ownership-tabs>
+                    </mc-tab>
+
+                    <mc-tab label="<?= i::esc_attr__('Avaliações') ?>" slug="evaluations" icon='opportunity' classes="tabs-component-button--active-opportunity">
+                        <user-management--evaluations-tabs :user="entity"></user-management--evaluations-tabs>
                     </mc-tab>
                     <?php $this->applyTemplateHook('user-detail--tabs', 'end') ?>
                 </mc-tabs>
