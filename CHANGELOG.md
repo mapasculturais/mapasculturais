@@ -13,6 +13,23 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - **Novos anexos no cadastro do agente** (também usáveis como campos `@` no formulário de inscrição): CPF, CNPJ, CNH, RG, passaporte, comprovante de residência, vínculo territorial, currículo, portfólio, certidões fiscal, trabalhista e de prestação de contas, além de comprovantes de raça/cor, pessoa com deficiência e comunidades tradicionais. Os arquivos ficam no perfil e acompanham a inscrição automaticamente
 - **Documentação navegável da API pública** em `/api/documentation`: página com os endpoints de leitura das entidades (Agentes, Eventos, Espaços, Projetos, Oportunidades), filtros, formatos e schemas de resposta, com opção de testar cada consulta no próprio navegador
 
+## [7.8.22] - 2026-11-11
+### Correções
+- Corrige os campos de tabela/planilha (`custom-table`) na exportação e na tabela da lista de inscrições, que apareciam vazios, como `Array` ou `[object Object]`: os dados passam a mostrar os nomes das colunas e os valores de cada linha, preservando a ordem configurada e valores zero
+- Atualiza o Node.js da imagem Docker para a linha 22 e exige a versão 22.23.4 ou superior nessa linha, incorporando a correção da vulnerabilidade CVE-2026-111497 no decodificador Brotli
+- Preserva as versões das dependências no build Docker com instalação pelo pnpm usando o lockfile congelado
+- Corrige a geração de modelo e de edital a partir de modelo com fase de recurso: o metadado `appealPhase` era copiado com o ID do edital de origem (e o recurso podia ficar com `parent` na 1ª fase em vez da fase de mérito), o que fazia a configuração do formulário e a árvore de fases apontarem para outro edital — inclusive entre subsites no SaaS; o recurso passa a ser clonado com `parent` na fase de mérito correspondente e o vínculo `appealPhase` é religado para essa nova fase, inclusive quando o recurso está na fase de publicação (`isLastPhase`)
+- Corrige a importação de oportunidades para respeitar o filtro `appealPhases`: com a opção desmarcada, fases de recurso presentes no JSON deixam de ser criadas
+- Corrige a duplicação de oportunidades com fase de recurso: além do remap de `parent`/`appealPhase`, o `clone` shallow compartilhava a coleção EAGER `__metadata` com a origem, então o vínculo da cópia não era gravado em `opportunity_meta`; a cópia recarrega as metas após o insert e grava `appealPhase` como linha própria
+- Corrige a duplicação de oportunidades com fase de recurso: a cópia mantinha o metadado `appealPhase` e o `parent` do recurso apontando para o edital de origem, o que fazia a validação de datas do recurso usar a árvore errada; o recurso passa a ser clonado com `parent` na fase de mérito correspondente da cópia e o vínculo `appealPhase` é religado para essa nova fase
+- Corrige a duplicação de oportunidades que terminava em erro 500 ao reescrever os campos visíveis para o avaliador: o remapeamento usava um método `private` de outro trait e não enxergava o mapa de campos da cópia; o remapeamento passa a rodar no próprio duplicador
+- Corrige o modal "Configurar campos editáveis", que travava a data limite assim que havia campos selecionados: o gestor volta a conseguir estender/reabrir o prazo perdido do proponente
+
+### Melhorias
+- Na busca de eventos, administradores passam a ter a aba Tabela, com listagem em colunas e exportação de planilha, no mesmo padrão de agentes, espaços, projetos e oportunidades
+- Na gestão de usuários, a ficha do usuário passa a ter a aba Avaliações: mostra as fases em que a pessoa avalia (como em Minhas avaliações) e lista as avaliações iniciadas, concluídas e enviadas
+- Na gestão de usuários, os cards da aba Agentes passam a exibir o ID do agente, como na listagem pública
+
 ## [7.8.21] - 2026-10-28
 ### Correções
 - Corrige o botão "Baixar Anexos (ZIP)" para incluir todos os anexos das fases de coleta de dados da inscrição, organizados por fase e respeitando as permissões de acesso
