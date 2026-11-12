@@ -23,6 +23,7 @@ $this->import('
         <h4 class="bold"><?php i::_e("Status das inscrições enviadas ") ?></h4>
         <div v-if="entity.summary.registrations">
             <p v-if="entity.summary?.Approved"><?= i::__("Quantidade de inscrições <strong>selecionadas</strong>:") ?> <strong>{{entity.summary.Approved}} <?= i::__('inscrições') ?></strong></p>
+            <p v-if="entity.summary?.PartiallyApproved"><?= i::__("Quantidade de inscrições <strong>deferidas parcialmente</strong>:") ?> <strong>{{entity.summary.PartiallyApproved}} <?= i::__('inscrições') ?></strong></p>
             <p v-if="entity.summary?.Waitlist"><?= i::__("Quantidade de inscrições <strong>suplentes</strong>:") ?> <strong>{{entity.summary.Waitlist}} <?= i::__('inscrições') ?></strong></p>
             <p v-if="entity.summary?.Notapproved"><?= i::__("Quantidade de inscrições <strong>não selecionadas</strong>:") ?> <strong>{{entity.summary.Notapproved}} <?= i::__('inscrições') ?></strong></p>
             <p v-if="entity.summary?.Invalid"><?= i::__("Quantidade de inscrições <strong>inválida</strong>:") ?> <strong>{{entity.summary.Invalid}} <?= i::__('inscrições') ?></strong></p>

@@ -68,6 +68,7 @@ $this->import('
                     <div class="mc-chat__evaluation-status-content">
                         <mc-icon name="circle" :class="verifyState(message.payload.status)"></mc-icon>
                         <p v-if="message.payload.status == 10"><?= i::__('Deferido') ?></p>
+                        <p v-else-if="message.payload.status == 9"><?= i::__('Deferido parcialmente') ?></p>
                         <p v-else-if="message.payload.status == 3"><?= i::__('Indeferido') ?></p>
                         <p v-else-if="message.payload.status == 2"><?= i::__('Negado') ?></p>
                         <p v-else-if="message.payload.status == 8"><?= i::__('Suplente') ?></p>

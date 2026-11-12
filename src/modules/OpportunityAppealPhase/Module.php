@@ -268,8 +268,8 @@ class Module extends \MapasCulturais\Module {
             }
         });
 
-        // Envio de e-mail e notificação do sistema após status for alterado para deferido
-        $app->hook('entity(Registration).status(approved)', function() use ($app, $self) {
+        // Envio de e-mail e notificação do sistema após status for alterado para deferido ou deferido parcialmente
+        $app->hook('entity(Registration).status(<<approved|partiallyapproved>>)', function() use ($app, $self) {
             /** @var \MapasCulturais\Entities\Registration $this */
             $opportunity = $this->opportunity;
 
