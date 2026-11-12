@@ -66,6 +66,9 @@ app.component('evaluation-method-continuous--apply', {
                 case '3':
                     return this.text('Não selecionada');
                     break;
+                case '9':
+                    return this.text('Deferido parcialmente');
+                    break;
                 case '10':
                     return this.text('Selecionada');
                     break;

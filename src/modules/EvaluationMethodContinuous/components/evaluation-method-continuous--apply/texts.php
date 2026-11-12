@@ -7,5 +7,6 @@ return [
     'Inválida' => i::__('Negado'),
     'Não selecionada' => i::__('Indeferido'),
     'Suplente' => i::__('Suplente'),
+    'Deferido parcialmente' => i::__('Deferido parcialmente'),
     'Selecionada' => i::__('Deferido'),
 ];

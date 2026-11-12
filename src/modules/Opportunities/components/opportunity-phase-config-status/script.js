@@ -81,6 +81,7 @@ app.component('opportunity-phase-config-status', {
                     1: this.text('Aguardando resposta'),
                     2: this.text('Negado'),
                     3: this.text('Indeferido'),
+                    9: this.text('Deferido parcialmente'),
                     10: this.text('Deferido')
                 },
                 reporting: {

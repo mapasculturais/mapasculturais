@@ -34,6 +34,7 @@ $data['evaluationStatusDict'] = [
         '2'  => i::__('Inválida'),
         '3'  => i::__('Não selecionada'),
         '8'  => i::__('Suplente'),
+        '9'  => i::__('Deferido parcialmente'),
         '10' => i::__('Selecionada')
     ]
 ];
@@ -270,7 +271,7 @@ $data['defaultHeaders'] = $default_headers;
 $data['defaultAvailable'] = $available_fields;
 
 foreach ($statuses_names as $status => $status_name) {
-    if (in_array($status, [0, 1, 2, 3, 8, 10])) {
+    if (in_array($status, [0, 1, 2, 3, 8, 9, 10])) {
         $data["registrationStatusDict"][] = ["label" => $status_name, "value" => $status];
     }
 }
