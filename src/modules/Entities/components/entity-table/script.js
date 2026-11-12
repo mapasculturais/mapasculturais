@@ -808,6 +808,7 @@ app.component('entity-table', {
                             '2': __('invalidas', 'entity-table'),
                             '3': __('nao selecionadas', 'entity-table'),
                             '8': __('suplentes', 'entity-table'),
+                            '9': __('deferidas parcialmente', 'entity-table'),
                             '10': __('selecionadas', 'entity-table'),
                         }
                     }

@@ -316,6 +316,7 @@ class Module extends \MapasCulturais\Module
             '2' => i::__('Inválida'),
             '3' => i::__('Não Selecionada'),
             '8' => i::__('Suplente'),
+            '9' => i::__('Deferido parcialmente'),
             '10' => i::__('Selecionada')
         ];
 

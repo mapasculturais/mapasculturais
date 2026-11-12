@@ -307,6 +307,8 @@ abstract class EvaluationsSpreadsheetJob extends SpreadsheetJob
     function statusName($status) {
         if($status === 10) {
             return i::__('Selecionada');
+        } elseif($status === 9) {
+            return i::__('Deferido parcialmente');
         } elseif($status === 8) {
             return i::__('Suplente');
         } elseif($status === 3) {
