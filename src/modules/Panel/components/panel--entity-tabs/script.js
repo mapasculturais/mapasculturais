@@ -15,12 +15,12 @@ app.component('panel--entity-tabs', {
 
         query = {
             ...query,
-            '@order': 'updateTimestamp DESC',
+            '@order': this.order,
             '@permissions': 'view'
         };
 
         let queryGetModel = {
-            '@order': 'updateTimestamp DESC',
+            '@order': this.order,
             '@permissions': 'view'
         };
 
@@ -82,6 +82,10 @@ app.component('panel--entity-tabs', {
         limit: {
             type: Number,
             default: 50,
+        },
+        order: {
+            type: String,
+            default: 'updateTimestamp DESC',
         },
 
     },

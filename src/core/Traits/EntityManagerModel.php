@@ -43,6 +43,14 @@ trait EntityManagerModel {
     private $registrationFieldNameMap = [];
 
     /**
+     * @var array<int, Opportunity> mapa id da fase original => fase gerada (modelo ou edital)
+     * O nome difere de EntityOpportunityDuplicator::$opportunityPhaseMap porque ambos os traits
+     * são usados no mesmo controller (propriedades private compatíveis seriam mescladas).
+     * @access private
+     */
+    private $generatedOpportunityPhaseMap = [];
+
+    /**
      * Gera um modelo a partir de uma oportunidade existente
      * 
      * Este método cria uma cópia da oportunidade como modelo, incluindo
@@ -60,13 +68,16 @@ trait EntityManagerModel {
 
         $this->requireAuthentication();
         $this->registrationFieldNameMap = [];
+        $this->generatedOpportunityPhaseMap = [];
         $this->entityOpportunity = $this->requestedEntity;
         $this->entityOpportunityModel = $this->generateModel();
+        $this->generatedOpportunityPhaseMap[(int) $this->entityOpportunity->id] = $this->entityOpportunityModel;
 
         $this->generateEvaluationMethods();
         $this->generatePhases();
         $this->generateTerms();
         $this->generateMetadata();
+        $this->relinkGeneratedAppealPhases();
         $this->generateRegistrationFieldsAndFiles($this->entityOpportunity, $this->entityOpportunityModel);
         $this->remapGeneratedEvaluationFields();
         $this->generateSealsRelations();
@@ -105,6 +116,7 @@ trait EntityManagerModel {
 
         $this->requireAuthentication();
         $this->registrationFieldNameMap = [];
+        $this->generatedOpportunityPhaseMap = [];
         $this->entityOpportunity = $this->requestedEntity;
 
         if (!$this->entityOpportunity->getMetadata('isModelPublic')) {
@@ -119,11 +131,13 @@ trait EntityManagerModel {
         $app->disableAccessControl();
         try {
             $this->entityOpportunityModel = $this->generateOpportunity();
+            $this->generatedOpportunityPhaseMap[(int) $this->entityOpportunity->id] = $this->entityOpportunityModel;
 
             $this->generateEvaluationMethods(false);
             $this->generatePhases(copyDates: false, useCurrentSubsite: true);
             $this->generateTerms();
             $this->generateMetadata(0, 0);
+            $this->relinkGeneratedAppealPhases();
             $this->generateRegistrationFieldsAndFiles($this->entityOpportunity, $this->entityOpportunityModel);
             $this->remapGeneratedEvaluationFields();
 
@@ -296,6 +310,7 @@ trait EntityManagerModel {
 
         $app->em->persist($this->entityOpportunityModel);
         $app->em->flush();
+        $this->entityOpportunityModel = $this->reloadClonedOpportunityWithoutSharedMetadata($this->entityOpportunityModel);
 
         // necessário adicionar as categorias, proponentes e ranges após salvar devido a trigger public.fn_propagate_opportunity_insert
         $this->entityOpportunityModel->registrationCategories = $this->entityOpportunity->registrationCategories;
@@ -304,8 +319,6 @@ trait EntityManagerModel {
         $this->entityOpportunityModel->save(true);
 
         return $this->entityOpportunityModel;
-
-        
     }
 
     /**
@@ -336,6 +349,7 @@ trait EntityManagerModel {
 
         $app->em->persist($this->entityOpportunityModel);
         $app->em->flush();
+        $this->entityOpportunityModel = $this->reloadClonedOpportunityWithoutSharedMetadata($this->entityOpportunityModel);
 
         // necessário adicionar as categorias, proponetes e ranges após salvar devido a trigger public.fn_propagate_opportunity_insert
         $this->entityOpportunityModel->registrationCategories = $this->entityOpportunity->registrationCategories;
@@ -347,6 +361,25 @@ trait EntityManagerModel {
         $this->entityOpportunityModel->save(true);
 
         return $this->entityOpportunityModel;
+    }
+
+    /**
+     * O clone de Opportunity é shallow: a coleção EAGER `__metadata` permanece compartilhada
+     * com a origem. O refresh recarrega só as metas da cópia (ainda vazias após o insert),
+     * sem detach — que quebraria o parent das fases criadas no insert:after.
+     */
+    private function reloadClonedOpportunityWithoutSharedMetadata(Opportunity $cloned): Opportunity
+    {
+        $app = App::i();
+        if ($app->em->contains($cloned)) {
+            $app->em->refresh($cloned);
+        }
+
+        if (is_object($cloned->__magicGetterCache ?? null)) {
+            $cloned->__magicGetterCache = new \stdClass();
+        }
+
+        return $cloned;
     }
 
     /**
@@ -409,6 +442,10 @@ trait EntityManagerModel {
 
             // duplica os metadados das configurações do modelo de avaliação
             foreach ($evaluationMethodConfiguration->getMetadata() as $metadataKey => $metadataValue) {
+                // appealPhase no EMC é espelho do da opportunity; relinkGeneratedAppealPhases cuida disso
+                if ($metadataKey === 'appealPhase') {
+                    continue;
+                }
                 $newMethodConfiguration->setMetadata($metadataKey, $metadataValue);
             }
             $this->saveWithSingleFlush($newMethodConfiguration);
@@ -424,8 +461,6 @@ trait EntityManagerModel {
     private function generatePhases(bool $copyDates = true, bool $useCurrentSubsite = false) : void
     {
         $app = App::i();
-        $conn = $app->em->getConnection();
-        $postData = $this->postData;
 
         $phases = $app->repo('Opportunity')->findBy([
             'parent' => $this->entityOpportunity
@@ -433,84 +468,46 @@ trait EntityManagerModel {
 
         $publishDate = null;
         $publishSubsite = $useCurrentSubsite ? $app->getCurrentSubsite() : null;
-        $newLastPhase = null;
+        $sourceLastPhase = null;
 
         foreach ($phases as $phase) {
+            // Fases de recurso são clonadas em generateAppealPhaseChild / relinkGeneratedAppealPhases,
+            // com parent apontando para a fase de mérito correspondente — não para a 1ª fase.
+            if ($this->isGeneratedAppealPhaseOpportunity($phase)) {
+                continue;
+            }
+
             if ($phase->getMetadata('isLastPhase')) {
                 $publishDate = $phase->publishTimestamp;
                 if (!$useCurrentSubsite) {
                     $publishSubsite = $phase->subsite;
                 }
+                $sourceLastPhase = $phase;
                 continue;
             }
 
-            $newPhase = clone $phase;
-            $this->resetClonedEvaluationMethodConfiguration($newPhase);
-            if (!$copyDates) {
-                $this->clearOpportunityPhaseDates($newPhase);
-                $this->clearOpportunityPublication($newPhase);
-            }
-            $newPhase->setParent($this->entityOpportunityModel);
-            $newPhase->owner = $app->user->profile;
-
-            $now = new \DateTime('now');
-            $newPhase->createTimestamp = $now;
-            $newPhase->subsite = $useCurrentSubsite ? $app->getCurrentSubsite() : $phase->subsite;
-
-            $this->saveWithSingleFlush($newPhase);
-
-            $stmt = $conn->executeQuery(
-                'SELECT om.key, om.value FROM opportunity_meta om WHERE om.object_id = :id',
-                ['id' => $phase->id]
-            );
-            // linhas criadas direto no lado dono: setMetadata no clone resolve caches herdados da origem
-            while (($row = $stmt->fetchAssociative()) !== false) {
-                if ($row['value'] === null) {
-                    continue;
-                }
-                $newPhaseMeta = new OpportunityMeta;
-                $newPhaseMeta->owner = $newPhase;
-                $newPhaseMeta->key = $row['key'];
-                // '' legado é falsy; como valor de metadado vira null e cairia no default true
-                $newPhaseMeta->value = $row['value'] === '' ? '0' : $row['value'];
-                $newPhaseMeta->save(false);
-            }
-            $app->em->flush();
-
-            $this->generateRegistrationFieldsAndFiles($phase, $newPhase);
-
-            $this->changeObjectType($newPhase->id);
-
-            $evaluationMethodConfigurations = $app->repo('EvaluationMethodConfiguration')->findBy([
-                'opportunity' => $phase
-            ]);
-
-            foreach ($evaluationMethodConfigurations as $evaluationMethodConfiguration) {
-                $newMethodConfiguration = clone $evaluationMethodConfiguration;
-                $newMethodConfiguration->setOpportunity($newPhase);
-                if (!$copyDates) {
-                    $this->clearEvaluationDates($newMethodConfiguration);
-                }
-                $newMethodConfiguration->save(true);
-
-                foreach ($evaluationMethodConfiguration->getMetadata() as $metadataKey => $metadataValue) {
-                    $newMethodConfiguration->setMetadata($metadataKey, $metadataValue);
-                }
-                $this->saveWithSingleFlush($newMethodConfiguration);
-            }
+            $newPhase = $this->cloneOpportunityPhaseForModel($phase, $this->entityOpportunityModel, $copyDates, $useCurrentSubsite);
+            $this->generatedOpportunityPhaseMap[(int) $phase->id] = $newPhase;
+            $this->generatePhaseEvaluationMethods($phase, $newPhase, $copyDates);
+            $this->generateAppealPhaseChild($phase, $newPhase, $copyDates, $useCurrentSubsite);
         }
 
-        if ($publishDate !== null || !$copyDates) {
+        // Recurso cujo parent é a própria oportunidade principal (avaliação na 1ª fase)
+        $this->generateAppealPhaseChild($this->entityOpportunity, $this->entityOpportunityModel, $copyDates, $useCurrentSubsite);
+
+        $newLastPhase = null;
+        if ($publishDate !== null || !$copyDates || $sourceLastPhase) {
             $newPhases = $app->repo('Opportunity')->findBy([
                 'parent' => $this->entityOpportunityModel
             ]);
 
             foreach ($newPhases as $newPhase) {
                 if ($newPhase->getMetadata('isLastPhase')) {
+                    $newLastPhase = $newPhase;
                     $newPhase->subsite = $publishSubsite;
-                    if ($copyDates) {
+                    if ($copyDates && $publishDate !== null) {
                         $newPhase->setPublishTimestamp($publishDate);
-                    } else {
+                    } elseif (!$copyDates) {
                         $this->clearOpportunityPhaseDates($newPhase);
                         $this->clearOpportunityPublication($newPhase);
                     }
@@ -519,6 +516,202 @@ trait EntityManagerModel {
                     break;
                 }
             }
+        }
+
+        // A last phase não é clonada (já nasce no insert:after); ainda assim pode ter recurso.
+        if ($sourceLastPhase && $newLastPhase) {
+            $this->generatedOpportunityPhaseMap[(int) $sourceLastPhase->id] = $newLastPhase;
+            $this->generateAppealPhaseChild($sourceLastPhase, $newLastPhase, $copyDates, $useCurrentSubsite);
+        }
+    }
+
+    /**
+     * Indica se a opportunity é (ou deveria ser tratada como) fase de recurso.
+     * O nome difere de EntityOpportunityDuplicator::isAppealPhaseOpportunity
+     * porque ambos os traits são usados no mesmo controller.
+     */
+    private function isGeneratedAppealPhaseOpportunity(Opportunity $phase): bool
+    {
+        return (bool) $phase->isAppealPhase
+            || (int) $phase->status === Opportunity::STATUS_APPEAL_PHASE;
+    }
+
+    /**
+     * Clona uma fase (exceto vínculo appealPhase, remapeado depois) sob o parent informado.
+     */
+    private function cloneOpportunityPhaseForModel(
+        Opportunity $phase,
+        Opportunity $newParent,
+        bool $copyDates,
+        bool $useCurrentSubsite
+    ): Opportunity {
+        $app = App::i();
+        $conn = $app->em->getConnection();
+
+        $newPhase = clone $phase;
+        $this->resetClonedEvaluationMethodConfiguration($newPhase);
+        if (!$copyDates) {
+            $this->clearOpportunityPhaseDates($newPhase);
+            $this->clearOpportunityPublication($newPhase);
+        }
+        $newPhase->setParent($newParent);
+        $newPhase->owner = $app->user->profile;
+
+        $now = new \DateTime('now');
+        $newPhase->createTimestamp = $now;
+        $newPhase->subsite = $useCurrentSubsite ? $app->getCurrentSubsite() : $phase->subsite;
+
+        $this->saveWithSingleFlush($newPhase);
+        $newPhase = $this->reloadClonedOpportunityWithoutSharedMetadata($newPhase);
+
+        $stmt = $conn->executeQuery(
+            'SELECT om.key, om.value FROM opportunity_meta om WHERE om.object_id = :id',
+            ['id' => $phase->id]
+        );
+        // linhas criadas direto no lado dono: setMetadata no clone resolve caches herdados da origem
+        while (($row = $stmt->fetchAssociative()) !== false) {
+            if ($row['value'] === null || $row['key'] === 'appealPhase') {
+                continue;
+            }
+            $newPhaseMeta = new OpportunityMeta;
+            $newPhaseMeta->owner = $newPhase;
+            $newPhaseMeta->key = $row['key'];
+            // '' legado é falsy; como valor de metadado vira null e cairia no default true
+            $newPhaseMeta->value = $row['value'] === '' ? '0' : $row['value'];
+            $newPhaseMeta->save(false);
+        }
+        $app->em->flush();
+        $newPhase = $newPhase->refreshed();
+
+        $this->generateRegistrationFieldsAndFiles($phase, $newPhase);
+        $this->changeObjectType($newPhase->id);
+
+        return $newPhase;
+    }
+
+    private function generatePhaseEvaluationMethods(Opportunity $phase, Opportunity $newPhase, bool $copyDates): void
+    {
+        $app = App::i();
+
+        $evaluationMethodConfigurations = $app->repo('EvaluationMethodConfiguration')->findBy([
+            'opportunity' => $phase
+        ]);
+
+        foreach ($evaluationMethodConfigurations as $evaluationMethodConfiguration) {
+            $newMethodConfiguration = clone $evaluationMethodConfiguration;
+            $newMethodConfiguration->setOpportunity($newPhase);
+            if (!$copyDates) {
+                $this->clearEvaluationDates($newMethodConfiguration);
+            }
+            $newMethodConfiguration->save(true);
+
+            foreach ($evaluationMethodConfiguration->getMetadata() as $metadataKey => $metadataValue) {
+                if ($metadataKey === 'appealPhase') {
+                    continue;
+                }
+                $newMethodConfiguration->setMetadata($metadataKey, $metadataValue);
+            }
+            $this->saveWithSingleFlush($newMethodConfiguration);
+        }
+    }
+
+    /**
+     * Duplica a fase de recurso filha de $phase (se existir) com parent = $newPhase.
+     */
+    private function generateAppealPhaseChild(
+        Opportunity $phase,
+        Opportunity $newPhase,
+        bool $copyDates,
+        bool $useCurrentSubsite
+    ): void {
+        $app = App::i();
+
+        $appeals = $app->repo('Opportunity')->findBy([
+            'parent' => $phase,
+            'status' => Opportunity::STATUS_APPEAL_PHASE,
+        ]);
+
+        if (!$appeals) {
+            foreach ($app->repo('Opportunity')->findBy(['parent' => $phase]) as $child) {
+                if ($this->isGeneratedAppealPhaseOpportunity($child) && !isset($this->generatedOpportunityPhaseMap[(int) $child->id])) {
+                    $appeals[] = $child;
+                }
+            }
+        }
+
+        foreach ($appeals as $appeal) {
+            if (isset($this->generatedOpportunityPhaseMap[(int) $appeal->id])) {
+                continue;
+            }
+
+            $newAppeal = $this->cloneOpportunityPhaseForModel($appeal, $newPhase, $copyDates, $useCurrentSubsite);
+            $newAppeal->status = Opportunity::STATUS_APPEAL_PHASE;
+            $newAppeal->isAppealPhase = true;
+            $newAppeal->save(true);
+
+            $this->generatedOpportunityPhaseMap[(int) $appeal->id] = $newAppeal;
+            $this->generatePhaseEvaluationMethods($appeal, $newAppeal, $copyDates);
+
+            $this->persistAppealPhaseMetadata($newPhase, $newAppeal);
+        }
+    }
+
+    /**
+     * Garante que metadados appealPhase da cópia apontem para as fases de recurso clonadas
+     * (e que o parent de cada recurso seja a fase de mérito correspondente na cópia).
+     */
+    private function relinkGeneratedAppealPhases(): void
+    {
+        foreach ($this->generatedOpportunityPhaseMap as $oldPhaseId => $newPhase) {
+            $oldPhase = $oldPhaseId == $this->entityOpportunity->id
+                ? $this->entityOpportunity
+                : App::i()->repo('Opportunity')->find($oldPhaseId);
+
+            if (!$oldPhase) {
+                continue;
+            }
+
+            $oldAppeal = $oldPhase->appealPhase;
+            if (!$oldAppeal) {
+                continue;
+            }
+
+            $newAppeal = $this->generatedOpportunityPhaseMap[(int) $oldAppeal->id] ?? null;
+            if (!$newAppeal) {
+                continue;
+            }
+
+            if (!$newAppeal->parent || (int) $newAppeal->parent->id !== (int) $newPhase->id) {
+                $newAppeal->setParent($newPhase);
+                $newAppeal->save(true);
+            }
+
+            $this->persistAppealPhaseMetadata($newPhase, $newAppeal);
+        }
+    }
+
+    /**
+     * Grava appealPhase como linha própria em opportunity_meta.
+     * Evita o setter mágico no clone, que pode reutilizar a coleção/cache de metadados da origem.
+     */
+    private function persistAppealPhaseMetadata(Opportunity $phase, Opportunity $appeal): void
+    {
+        $app = App::i();
+        $conn = $app->em->getConnection();
+
+        $conn->delete('opportunity_meta', [
+            'object_id' => $phase->id,
+            'key' => 'appealPhase',
+        ]);
+
+        $meta = new OpportunityMeta;
+        $meta->owner = $phase;
+        $meta->key = 'appealPhase';
+        $meta->value = (string) $appeal;
+        $meta->save(true);
+
+        if (is_object($phase->__magicGetterCache ?? null)) {
+            unset($phase->__magicGetterCache->appealPhase);
         }
     }
 
@@ -581,6 +774,10 @@ trait EntityManagerModel {
         $stmt = $conn->query($sql);
 
         while (($row = $stmt->fetchAssociative()) !== false) {
+            // appealPhase é religado em relinkGeneratedAppealPhases para a cópia do recurso
+            if ($row['key'] === 'appealPhase') {
+                continue;
+            }
             $this->entityOpportunityModel->setMetadata($row['key'], $row['value']);
         }
 
@@ -702,9 +899,16 @@ trait EntityManagerModel {
         $app = App::i();
 
         $this->remapAvaliableEvaluationFields($this->entityOpportunityModel);
+        if ($appeal = $this->entityOpportunityModel->appealPhase) {
+            $this->remapAvaliableEvaluationFields($appeal);
+        }
 
         foreach ($app->repo('Opportunity')->findBy(['parent' => $this->entityOpportunityModel]) as $phase) {
             $this->remapAvaliableEvaluationFields($phase);
+            // recurso filho de fase de mérito intermediária não aparece no findBy do root
+            if ($appeal = $phase->appealPhase) {
+                $this->remapAvaliableEvaluationFields($appeal);
+            }
         }
     }
 
