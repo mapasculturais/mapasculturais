@@ -4,8 +4,11 @@ namespace Test;
 
 use Laminas\Diactoros\Response;
 use MapasCulturais\Controllers\Opportunity as OpportunityController;
+use MapasCulturais\Entities\ChatMessage;
+use MapasCulturais\Entities\ChatThread;
 use MapasCulturais\Entities\Opportunity;
 use MapasCulturais\Entities\Registration;
+use MapasCulturais\Entities\RegistrationEvaluation;
 use MapasCulturais\Exceptions\Halt;
 use OpportunityPhases\Module as OpportunityPhasesModule;
 use Tests\Abstract\TestCase;
@@ -266,6 +269,227 @@ class PhaseRegistrationSyncTest extends TestCase
         $this->assertNull(
             $this->findRegistration($context->anexos, '444'),
             'Garantindo que inscrição não selecionada com recurso indeferido não entre em Anexos'
+        );
+    }
+
+    /**
+     * Garante que inscrição não selecionada com recurso deferido parcialmente entre em Anexos, como no deferido.
+     *
+     * Modo appealPhaseAffectsSync = true: o recurso afeta ativamente a sincronização.
+     */
+    function testNotSelectedAppealPartiallyDeferredSyncsToAnexos(): void
+    {
+        $context = $this->buildPnabLikeOpportunity();
+        $this->setAppealPhaseAffectsSync($context->coletaMerito, true);
+        $this->createRegistrationsByStatus($context->coletaMerito);
+        $context = $this->refreshContext($context);
+
+        $appeal = $this->createAppealRegistration(
+            $this->findRegistration($context->coletaMerito, '444')
+        );
+        $this->setAppealStatus($appeal, fn ($r) => $r->setStatusToPartiallyApproved(true));
+
+        $context->anexos->syncRegistrations([]);
+        $this->processJobs();
+
+        $this->assertNotNull(
+            $this->findRegistration($context->anexos, '444'),
+            'Garantindo que inscrição não selecionada entre em Anexos após recurso deferido parcialmente'
+        );
+    }
+
+    /**
+     * Garante que selecionada com recurso deferido parcialmente volte a Anexos após sair dela ao abrir o recurso.
+     *
+     * Modo appealPhaseAffectsSync = true: o recurso afeta ativamente a sincronização.
+     */
+    function testSelectedRegistrationAppealPartiallyDeferredReturnsToAnexos(): void
+    {
+        $context = $this->buildPnabLikeOpportunity();
+        $this->setAppealPhaseAffectsSync($context->coletaMerito, true);
+        $this->createRegistrationsByStatus($context->coletaMerito);
+        $context = $this->refreshContext($context);
+
+        $context->anexos->syncRegistrations([]);
+        $this->processJobs();
+
+        $appeal = $this->createAppealRegistration(
+            $this->findRegistration($context->coletaMerito, '333')
+        );
+        $appeal = $this->sendAppealRegistration($appeal);
+        $this->assertNull(
+            $this->findRegistration($context->anexos, '333'),
+            'Garantindo que a inscrição selecionada seja removida de Anexos ao abrir recurso'
+        );
+
+        $this->setAppealStatus($appeal, fn ($r) => $r->setStatusToPartiallyApproved(true));
+
+        $context->anexos->syncRegistrations([]);
+        $this->processJobs();
+
+        $this->assertNotNull(
+            $this->findRegistration($context->anexos, '333'),
+            'Garantindo que inscrição selecionada com recurso deferido parcialmente volte a Anexos'
+        );
+    }
+
+    /**
+     * Garante que não selecionada com recurso deferido parcialmente fique fora de Anexos com o sync desligado.
+     */
+    function testNotSelectedAppealPartiallyDeferredStaysOutOfAnexosWhenSyncIsDisabled(): void
+    {
+        $context = $this->buildPnabLikeOpportunity();
+        $this->createRegistrationsByStatus($context->coletaMerito);
+        $context = $this->refreshContext($context);
+
+        $appeal = $this->createAppealRegistration(
+            $this->findRegistration($context->coletaMerito, '444')
+        );
+        $this->setAppealStatus($appeal, fn ($r) => $r->setStatusToPartiallyApproved(true));
+
+        $context->anexos->syncRegistrations([]);
+        $this->processJobs();
+
+        $this->assertNull(
+            $this->findRegistration($context->anexos, '444'),
+            'Garantindo que o deferido parcialmente não leve a Anexos quando o recurso não afeta o sync'
+        );
+    }
+
+    /**
+     * Garante que o recurso deferido parcialmente enfileire a sincronização da fase seguinte e notifique o proponente.
+     *
+     * Modo appealPhaseAffectsSync = true: o recurso afeta ativamente a sincronização.
+     */
+    function testAppealPartiallyDeferredEnqueuesSyncAndNotifiesProponent(): void
+    {
+        $context = $this->buildPnabLikeOpportunity();
+        $this->setAppealPhaseAffectsSync($context->coletaMerito, true);
+        $this->createRegistrationsByStatus($context->coletaMerito);
+        $context = $this->refreshContext($context);
+
+        $appeal = $this->createAppealRegistration(
+            $this->findRegistration($context->coletaMerito, '444')
+        );
+
+        $appealPhaseName = $appeal->opportunity->name;
+        $countStatusNotifications = fn () => count(array_filter(
+            $this->app->repo('Notification')->findBy(['user' => $appeal->ownerUser]),
+            fn ($notification) => str_contains($notification->message, "fase de recurso {$appealPhaseName} foi alterado")
+        ));
+        $notificationsBefore = $countStatusNotifications();
+
+        $syncJobId = md5('SyncPhaseRegistrations:SyncPhaseRegistrations:' . $context->anexos->id);
+        $this->app->conn->executeStatement('DELETE FROM job WHERE id = :id', ['id' => $syncJobId]);
+        $this->app->em->clear();
+        $appeal = $appeal->refreshed();
+
+        $this->setAppealStatus($appeal, fn ($r) => $r->setStatusToPartiallyApproved(true));
+
+        $this->assertNotNull(
+            $this->app->repo('Job')->findOneBy(['id' => $syncJobId]),
+            'Garantindo que o recurso deferido parcialmente enfileire a sincronização de Anexos'
+        );
+
+        $this->assertSame(
+            $notificationsBefore + 1,
+            $countStatusNotifications(),
+            'Garantindo que o proponente seja notificado da mudança de status do recurso para deferido parcialmente'
+        );
+    }
+
+    /**
+     * Garante que a publicação final que lê o recurso deferido parcialmente publique a inscrição selecionada.
+     */
+    function testPublicationFinalShowsAppealPartialApprovalAsSelected(): void
+    {
+        $context = $this->buildPnabLikeOpportunity(withAnexos: false);
+        $this->setAppealPhaseAffectsSync($context->coletaMerito, true);
+        $this->createRegistrationsByStatus($context->coletaMerito);
+        $context = $this->refreshContext($context);
+
+        $context->publicacao->syncRegistrations([]);
+        $this->processJobs();
+
+        $appeal = $this->createAppealRegistration(
+            $this->findRegistration($context->coletaMerito, '444')
+        );
+        $appeal = $this->sendAppealRegistration($appeal);
+        $this->setAppealStatus($appeal, fn ($r) => $r->setStatusToPartiallyApproved(true));
+
+        $this->app->em->clear();
+        $context = $this->refreshContext($context);
+        $context->publicacao->syncRegistrations([]);
+
+        $appealPhase = $context->coletaMerito->appealPhase;
+        $appealPhaseName = ($appealPhase->evaluationMethodConfiguration ?: $appealPhase)->name;
+        $publication = $this->findRegistration($context->publicacao, '444');
+
+        $this->assertEquals(
+            Registration::STATUS_APPROVED,
+            $publication->status,
+            'Garantindo que o deferido parcialmente saia selecionado na publicação final'
+        );
+
+        $this->assertEquals(
+            "Deferido parcialmente em \"{$appealPhaseName}\"",
+            $publication->consolidatedResult,
+            'Garantindo que a publicação final mostre o nome do status deferido parcialmente e o recurso'
+        );
+    }
+
+    /**
+     * Garante que o recurso sem configuração de status não ofereça o deferido parcialmente ao avaliador.
+     */
+    function testAppealPhaseDoesNotOfferPartialApprovalByDefault(): void
+    {
+        $context = $this->buildPnabLikeOpportunity(withAnexos: false);
+        $emc = $context->coletaMerito->appealPhase->evaluationMethodConfiguration;
+
+        $this->assertArrayNotHasKey(
+            Registration::STATUS_PARTIALLY_APPROVED,
+            $emc->evaluationMethod->getEvaluatorStatuses($emc),
+            'Garantindo que o deferido parcialmente nasça desabilitado na fase de recurso'
+        );
+    }
+
+    /**
+     * Garante que o chat do recurso só aplique o deferido parcialmente quando a fase o habilita.
+     */
+    function testAppealChatAppliesPartialApprovalOnlyWhenEnabled(): void
+    {
+        $context = $this->buildPnabLikeOpportunity(withAnexos: false);
+        $this->createRegistrationsByStatus($context->coletaMerito);
+        $context = $this->refreshContext($context);
+
+        $appeal = $this->sendAppealRegistration($this->createAppealRegistration(
+            $this->findRegistration($context->coletaMerito, '444')
+        ));
+
+        $evaluation = $this->sendAppealChatStatus($appeal, Registration::STATUS_PARTIALLY_APPROVED);
+
+        $this->assertNotEquals(
+            Registration::STATUS_PARTIALLY_APPROVED,
+            $evaluation->result,
+            'Garantindo que o chat não grave o deferido parcialmente quando a fase não o habilita'
+        );
+
+        $this->app->disableAccessControl();
+        try {
+            $appealPhase = $appeal->opportunity;
+            $appealPhase->statusLabels = $appealPhase->statusLabels
+                + [Registration::STATUS_PARTIALLY_APPROVED => 'Deferido parcialmente'];
+            $appealPhase->save(true);
+        } finally {
+            $this->app->enableAccessControl();
+        }
+
+        $evaluation = $this->sendAppealChatStatus($appeal->refreshed(), Registration::STATUS_PARTIALLY_APPROVED);
+
+        $this->assertEquals(
+            Registration::STATUS_PARTIALLY_APPROVED,
+            $evaluation->result,
+            'Garantindo que o chat grave o deferido parcialmente quando a fase o habilita'
         );
     }
 
@@ -687,7 +911,7 @@ class PhaseRegistrationSyncTest extends TestCase
         );
     }
 
-    private function buildPnabLikeOpportunity(): object
+    private function buildPnabLikeOpportunity(bool $withAnexos = true): object
     {
         $admin = $this->userDirector->createUser('admin');
         $this->login($admin);
@@ -711,16 +935,20 @@ class PhaseRegistrationSyncTest extends TestCase
 
         $this->createAppealPhaseForOpportunity($coletaMerito);
 
-        $edital = $this->opportunityBuilder
-            ->addDataCollectionPhase()
-                ->setRegistrationPeriod(new Open)
-                ->done()
-            ->save()
-            ->addEvaluationPhase(EvaluationMethods::simple)
-                ->fillRequiredProperties()
-                ->setEvaluationPeriod(new Open)
+        if ($withAnexos) {
+            $this->opportunityBuilder
+                ->addDataCollectionPhase()
+                    ->setRegistrationPeriod(new Open)
+                    ->done()
                 ->save()
-                ->done()
+                ->addEvaluationPhase(EvaluationMethods::simple)
+                    ->fillRequiredProperties()
+                    ->setEvaluationPeriod(new Open)
+                    ->save()
+                    ->done();
+        }
+
+        $edital = $this->opportunityBuilder
             ->refresh()
             ->getInstance();
 
@@ -882,6 +1110,37 @@ class PhaseRegistrationSyncTest extends TestCase
         } finally {
             $this->app->enableAccessControl();
         }
+    }
+
+    /**
+     * Envia pelo chat do recurso uma mensagem com status e devolve a avaliação da inscrição
+     */
+    private function sendAppealChatStatus(Registration $appeal, int $status): RegistrationEvaluation
+    {
+        $app = $this->app;
+        $app->disableAccessControl();
+        try {
+            $evaluation = $app->repo('RegistrationEvaluation')->findOneBy(['registration' => $appeal]);
+            if (!$evaluation) {
+                $evaluation = new RegistrationEvaluation();
+                $evaluation->registration = $appeal;
+                $evaluation->user = $app->user;
+                $evaluation->save(true);
+            }
+
+            $thread = $app->repo('ChatThread')->findOneBy(['objectId' => $appeal->id, 'type' => 'EvaluationMethodContinuous'])
+                ?: new ChatThread($appeal, $appeal, 'EvaluationMethodContinuous');
+            $thread->save(true);
+        } finally {
+            $app->enableAccessControl();
+        }
+
+        $message = new ChatMessage();
+        $message->thread = $thread->id;
+        $message->payload = ['message' => 'Resposta', 'status' => $status];
+        $message->save(true);
+
+        return $app->repo('RegistrationEvaluation')->find($evaluation->id)->refreshed();
     }
 
     private function setAppealStatus(Registration $appeal, callable $setter): Registration
