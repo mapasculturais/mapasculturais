@@ -186,17 +186,21 @@ class Module extends \MapasCulturais\EvaluationMethod
         $app->hook('repo(Registration).getIdsByKeywordDQL.where', function(&$where, $keyword, $alias) {
             $key = trim(strtolower(str_replace('%','',$keyword)));
             
+            // Palavras-chave aceitas no filtro para cada status de resultado.
+            $keywords_by_status = [
+                Registration::STATUS_INVALID => i::__('inválida,invalida,inválido,invalido'),
+                Registration::STATUS_NOTAPPROVED => i::__('não selecionado,nao selecionado,não selecionada,nao selecionada'),
+                Registration::STATUS_WAITLIST => i::__('suplente'),
+                Registration::STATUS_PARTIALLY_APPROVED => i::__('deferido parcialmente,deferida parcialmente'),
+                Registration::STATUS_APPROVED => i::__('selecionado,selecionada'),
+            ];
+
             $value = null;
-            if (in_array($key, explode(',', i::__('inválida,invalida,inválido,invalido')))) {
-                $value = '2';
-            } else if (in_array($key, explode(',', i::__('não selecionado,nao selecionado,não selecionada,nao selecionada')))) {
-                $value = '3';
-            } else if ($key == i::__('suplente')) {
-                $value = '8';
-            } elseif (in_array($key, explode(',', i::__('deferido parcialmente,deferida parcialmente')))) {
-                $value = '9';
-            } else if (in_array($key, explode(',', i::__('selecionado,selecionada')))) {
-                $value = '10';
+            foreach ($keywords_by_status as $status => $keywords) {
+                if (in_array($key, explode(',', $keywords))) {
+                    $value = (string) $status;
+                    break;
+                }
             }
 
             if ($value) {
