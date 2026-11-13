@@ -4,8 +4,11 @@ namespace Test;
 
 use Laminas\Diactoros\Response;
 use MapasCulturais\Controllers\Opportunity as OpportunityController;
+use MapasCulturais\Entities\ChatMessage;
+use MapasCulturais\Entities\ChatThread;
 use MapasCulturais\Entities\Opportunity;
 use MapasCulturais\Entities\Registration;
+use MapasCulturais\Entities\RegistrationEvaluation;
 use MapasCulturais\Exceptions\Halt;
 use OpportunityPhases\Module as OpportunityPhasesModule;
 use Tests\Abstract\TestCase;
@@ -266,6 +269,80 @@ class PhaseRegistrationSyncTest extends TestCase
         $this->assertNull(
             $this->findRegistration($context->anexos, '444'),
             'Garantindo que inscrição não selecionada com recurso indeferido não entre em Anexos'
+        );
+    }
+
+    /**
+     * Garante que o recurso só deixe de oferecer o Negado quando a configuração manda ocultá-lo.
+     */
+    function testAppealPhaseHidesInvalidStatusOnlyWhenConfigured(): void
+    {
+        $context = $this->buildPnabLikeOpportunity();
+        $appealPhase = $context->coletaMerito->appealPhase;
+        $appealEmc = $appealPhase->evaluationMethodConfiguration;
+        $mainEmc = $context->coletaMerito->evaluationMethodConfiguration;
+
+        $this->assertSame([], $appealPhase->hiddenStatuses, 'Garantindo que, sem configuração, o recurso não oculta status');
+        $this->assertArrayHasKey(
+            Registration::STATUS_INVALID,
+            $appealEmc->evaluationMethod->getEvaluatorStatuses($appealEmc),
+            'Garantindo que, sem configuração, o avaliador do recurso continua vendo o Negado'
+        );
+
+        $this->app->config['opportunityPhase.appeal.hideInvalidStatus'] = true;
+
+        $this->assertSame(
+            [Registration::STATUS_INVALID],
+            $appealPhase->hiddenStatuses,
+            'Garantindo que, com a configuração ligada, o recurso oculta o Negado'
+        );
+        $this->assertSame(
+            [Registration::STATUS_NOTAPPROVED, Registration::STATUS_APPROVED],
+            array_keys($appealEmc->evaluationMethod->getEvaluatorStatuses($appealEmc)),
+            'Garantindo que, com a configuração ligada, o avaliador do recurso vê só Indeferido e Deferido'
+        );
+        $this->assertArrayHasKey(
+            Registration::STATUS_INVALID,
+            $appealPhase->statusLabels ?: $appealEmc->defaultStatuses,
+            'Garantindo que a configuração de status salva no recurso continua com o Negado'
+        );
+        $this->assertSame([], $context->coletaMerito->hiddenStatuses, 'Garantindo que a fase principal não oculta status');
+        $this->assertArrayHasKey(
+            Registration::STATUS_INVALID,
+            $mainEmc->evaluationMethod->getEvaluatorStatuses($mainEmc),
+            'Garantindo que a avaliação da fase principal continua oferecendo a Inválida'
+        );
+    }
+
+    /**
+     * Garante que o chat do recurso recuse o Negado quando a configuração manda ocultá-lo.
+     */
+    function testAppealChatRejectsInvalidStatusWhenHidden(): void
+    {
+        $context = $this->buildPnabLikeOpportunity();
+        $this->createRegistrationsByStatus($context->coletaMerito);
+        $context = $this->refreshContext($context);
+
+        $appeal = $this->sendAppealRegistration($this->createAppealRegistration(
+            $this->findRegistration($context->coletaMerito, '444')
+        ));
+
+        $this->app->config['opportunityPhase.appeal.hideInvalidStatus'] = true;
+
+        $evaluation = $this->sendAppealChatStatus($appeal, Registration::STATUS_INVALID);
+
+        $this->assertNotEquals(
+            Registration::STATUS_INVALID,
+            $evaluation->result,
+            'Garantindo que o chat não grave o Negado quando ele está oculto'
+        );
+
+        $evaluation = $this->sendAppealChatStatus($appeal->refreshed(), Registration::STATUS_NOTAPPROVED);
+
+        $this->assertEquals(
+            Registration::STATUS_NOTAPPROVED,
+            $evaluation->result,
+            'Garantindo que o chat continue gravando o Indeferido quando o Negado está oculto'
         );
     }
 
@@ -882,6 +959,37 @@ class PhaseRegistrationSyncTest extends TestCase
         } finally {
             $this->app->enableAccessControl();
         }
+    }
+
+    /**
+     * Envia pelo chat do recurso uma mensagem com status e devolve a avaliação da inscrição
+     */
+    private function sendAppealChatStatus(Registration $appeal, int $status): RegistrationEvaluation
+    {
+        $app = $this->app;
+        $app->disableAccessControl();
+        try {
+            $evaluation = $app->repo('RegistrationEvaluation')->findOneBy(['registration' => $appeal]);
+            if (!$evaluation) {
+                $evaluation = new RegistrationEvaluation();
+                $evaluation->registration = $appeal;
+                $evaluation->user = $app->user;
+                $evaluation->save(true);
+            }
+
+            $thread = $app->repo('ChatThread')->findOneBy(['objectId' => $appeal->id, 'type' => 'EvaluationMethodContinuous'])
+                ?: new ChatThread($appeal, $appeal, 'EvaluationMethodContinuous');
+            $thread->save(true);
+        } finally {
+            $app->enableAccessControl();
+        }
+
+        $message = new ChatMessage();
+        $message->thread = $thread->id;
+        $message->payload = ['message' => 'Resposta', 'status' => $status];
+        $message->save(true);
+
+        return $app->repo('RegistrationEvaluation')->find($evaluation->id)->refreshed();
     }
 
     private function setAppealStatus(Registration $appeal, callable $setter): Registration
