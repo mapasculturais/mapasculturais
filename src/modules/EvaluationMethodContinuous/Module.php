@@ -193,7 +193,7 @@ class Module extends \MapasCulturais\EvaluationMethod
                 $value = '3';
             } else if ($key == i::__('suplente')) {
                 $value = '8';
-            } else if (in_array($key, explode(',', i::__('deferido parcialmente,deferida parcialmente')))) {
+            } elseif (in_array($key, explode(',', i::__('deferido parcialmente,deferida parcialmente')))) {
                 $value = '9';
             } else if (in_array($key, explode(',', i::__('selecionado,selecionada')))) {
                 $value = '10';
