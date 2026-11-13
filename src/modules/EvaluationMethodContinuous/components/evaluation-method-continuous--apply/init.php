@@ -10,7 +10,7 @@ $status_list = [];
 $statuses_names = $opportunity->statusLabels ?: $opportunity->defaultStatuses;
 
 foreach ($statuses_names as $status => $status_name) {
-    if (in_array($status, [0, 1, 2, 3, 8, 10])) {
+    if (in_array($status, [0, 1, 2, 3, 8, 10]) && !in_array($status, $opportunity->hiddenStatuses)) {
         $status_list[] = ["status" => $status, "label" => $status_name];
     }
 }

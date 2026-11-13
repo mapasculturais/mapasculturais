@@ -229,10 +229,15 @@ app.component('opportunity-registrations-table', {
             let evaluationType = this.phase.evaluationMethodConfiguration ? this.phase.evaluationMethodConfiguration.type?.id : null;
             return evaluationType ? this.statusEvaluation[evaluationType] : null;
         },
+        hiddenStatuses() {
+            return $MAPAS.config.opportunityRegistrationTable.hiddenStatuses || [];
+        },
         status () {
             const result = {};
             for (let status of this.statusDict) {
-                result[status.value] = status.label;
+                if (!this.hiddenStatuses.includes(status.value)) {
+                    result[status.value] = status.label;
+                }
             }
             return result;
         },
@@ -491,6 +496,11 @@ app.component('opportunity-registrations-table', {
 
         getStatus(actualStatus) {
             return this.statusDict.find(status => status.value === actualStatus);
+        },
+
+        // Status oferecidos no seletor, mantendo o atual da inscrição
+        statusOptions(entity) {
+            return this.statusDict.filter(status => status.value === entity.status || !this.hiddenStatuses.includes(status.value));
         },
 
         setStatus(selected, entity) {

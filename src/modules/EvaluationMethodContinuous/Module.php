@@ -365,7 +365,10 @@ class Module extends \MapasCulturais\EvaluationMethod
 
                     // altera o status de uma avaliação de acordo com o status da mensagem do chat
                     $evaluation = $app->repo('RegistrationEvaluation')->findOneBy(['registration' => $this->thread->ownerEntity]);
-                    if ($evaluation && isset($payload->status)) {
+                    $status_allowed = !isset($payload->status)
+                        || !in_array((int) $payload->status, $this->thread->ownerEntity->opportunity->hiddenStatuses, true);
+
+                    if ($evaluation && isset($payload->status) && $status_allowed) {
 
                         $evaluation->result = $payload->status;
                         $app->disableAccessControl();

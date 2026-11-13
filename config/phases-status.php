@@ -13,4 +13,7 @@ return [
     'opportunityPhase.defaultStatuses.appeal'  => [], // Fase de recurso
     'opportunityPhase.defaultStatuses.lastPhase'  => [],
     'opportunityPhase.defaultStatuses.reporting'  => [], // Fase de prestação de informações
+
+    // Oculta o status Negado nas fases de recurso
+    'opportunityPhase.appeal.hideInvalidStatus' => env('APPEAL_PHASE_HIDE_INVALID_STATUS', false),
 ];

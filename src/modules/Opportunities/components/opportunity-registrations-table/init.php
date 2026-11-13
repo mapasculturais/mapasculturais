@@ -275,6 +275,8 @@ foreach ($statuses_names as $status => $status_name) {
     }
 }
 
+$data['hiddenStatuses'] = $opportunity->hiddenStatuses;
+
 $data['isAffirmativePoliciesActive'] = $phase->isAffirmativePoliciesActive();
 $data['hadTechnicalEvaluationPhase'] = $phase->hadTechnicalEvaluationPhase();
 $data['isTechnicalEvaluationPhase'] = ($phase->evaluationMethodConfiguration && $phase->evaluationMethodConfiguration->type->id == 'technical');
