@@ -105,8 +105,9 @@ app.component('opportunity-phase-config-status', {
 
             const selected = defaultMap[type] || {};
             const labels = this.phase.statusLabels || {};
+            const hidden = type === 'appeal' ? ($MAPAS.config.opportunityPhaseConfigStatus?.appealHiddenStatuses || []) : [];
 
-            return Object.entries(selected).map(([key, defaultLabel]) => {
+            return Object.entries(selected).filter(([key]) => !hidden.includes(Number(key))).map(([key, defaultLabel]) => {
                 const statusKey = String(key);
                 const isEnabled = Object.prototype.hasOwnProperty.call(labels, statusKey);
 

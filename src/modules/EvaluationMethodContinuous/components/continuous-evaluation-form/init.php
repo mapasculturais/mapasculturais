@@ -38,6 +38,7 @@ $needs_tiebreaker = $entity->needsTiebreaker();
 
 $this->jsObject['config']['continuousEvaluationForm'] = [
     'statusList' => $statusList,
+    'statusLabels' => $opportunity->statusLabels ?: $evaluation_configuration->defaultStatuses,
     'userId' => $user->id,
     'currentEvaluation' => $entity->getUserEvaluation($user),
     'needsTieBreaker' => $needs_tiebreaker,

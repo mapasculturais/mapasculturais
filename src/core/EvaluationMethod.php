@@ -165,9 +165,15 @@ abstract class EvaluationMethod extends Module implements \JsonSerializable{
     public function getEvaluatorStatuses(EvaluationMethodConfiguration $evaluation_method_configuration): array {
         $status_labels = $evaluation_method_configuration->opportunity->statusLabels ?: $evaluation_method_configuration->defaultStatuses;
 
+        $hidden_statuses = [
+            Registration::STATUS_DRAFT,
+            Registration::STATUS_SENT,
+            ...$evaluation_method_configuration->opportunity->hiddenStatuses,
+        ];
+
         $statuses = [];
         foreach ($status_labels as $status => $label) {
-            if (!in_array((int) $status, [Registration::STATUS_DRAFT, Registration::STATUS_SENT], true)) {
+            if (!in_array((int) $status, $hidden_statuses, true)) {
                 $statuses[$status] = $label;
             }
         }

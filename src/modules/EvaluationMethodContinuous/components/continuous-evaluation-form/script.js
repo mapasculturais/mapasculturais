@@ -147,7 +147,7 @@ app.component('continuous-evaluation-form', {
                 }
             });
 
-            return result;
+            return result || $MAPAS.config.continuousEvaluationForm.statusLabels?.[status] || '';
         },
 
         validateErrors() {

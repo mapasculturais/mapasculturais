@@ -694,6 +694,22 @@ abstract class Opportunity extends \MapasCulturais\Entity
         return "opportunityPhase.defaultStatuses.dataCollection";
     }
 
+    /**
+     * Status que as fases de recurso não oferecem na interface
+     */
+    public static function getAppealPhaseHiddenStatuses(): array {
+        $app = App::i();
+
+        return ($app->config['opportunityPhase.appeal.hideInvalidStatus'] ?? false) ? [Registration::STATUS_INVALID] : [];
+    }
+
+    /**
+     * Status que a fase não oferece na interface
+     */
+    public function getHiddenStatuses(): array {
+        return $this->isAppealPhase ? self::getAppealPhaseHiddenStatuses() : [];
+    }
+
     function setRegistrationFrom($date){
         if($date instanceof \DateTime){
             $this->registrationFrom = $date;
