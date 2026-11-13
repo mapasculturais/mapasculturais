@@ -50,6 +50,9 @@ importers:
       '@vuepic/vue-datepicker':
         specifier: ^4.5.1
         version: 4.5.1(vue@3.5.30)
+      chart.js:
+        specifier: ^4.4.4
+        version: 4.5.1
       date-fns:
         specifier: ^2.30.0
         version: 2.30.0
@@ -77,6 +80,9 @@ importers:
       vue-advanced-cropper:
         specifier: ^2.8.9
         version: 2.8.9(vue@3.5.30)
+      vue-chartjs:
+        specifier: ^5.3.1
+        version: 5.3.4(chart.js@4.5.1)(vue@3.5.30)
       vue-currency-input:
         specifier: ^3.2.1
         version: 3.2.1(vue@3.5.30)
@@ -103,6 +109,18 @@ importers:
   node_scripts: {}
 
   themes/BaseV2:
+    devDependencies:
+      '@mapas/scripts':
+        specifier: workspace:*
+        version: link:../../node_scripts
+
+  themes/Museus:
+    devDependencies:
+      '@mapas/scripts':
+        specifier: workspace:*
+        version: link:../../node_scripts
+
+  themes/Turismo:
     devDependencies:
       '@mapas/scripts':
         specifier: workspace:*
@@ -679,6 +697,9 @@ packages:
 
   '@jridgewell/trace-mapping@0.3.31':
     resolution: {integrity: sha512-zzNR+SdQSDJzc8joaeP8QQoCQr8NuYx2dIIytl1QeBEZHJ9uW6hebsrYgbz8hJwUQao3TWCMtmfV8Nu1twOLAw==}
+
+  '@kurkle/color@0.3.4':
+    resolution: {integrity: sha512-M5UknZPHRu3DEDWoipU6sE8PdkZ6Z/S+v4dD+Ke8IaNlpdSQah50lz1KtcFBa2vsdOnwbbnxJwVM4wty6udA5w==}
 
   '@leichtgewicht/ip-codec@2.0.5':
     resolution: {integrity: sha512-Vo+PSpZG2/fmgmiNzYK9qWRh8h/CHrwD0mo1h1DzL4yzHNSfWYujGTYsWGreD000gcgmZ7K4Ys6Tx9TxtsKdDw==}
@@ -1269,6 +1290,10 @@ packages:
 
   charenc@0.0.2:
     resolution: {integrity: sha512-yrLQ/yVUFXkzg7EDQsPieE/53+0RlaWTs+wBrvW36cyilJ2SaDWfl4Yj7MtLTXleV9uEKefbAGUPv2/iWSooRA==}
+
+  chart.js@4.5.1:
+    resolution: {integrity: sha512-GIjfiT9dbmHRiYi6Nl2yFCq7kkwdkp1W/lp2J99rX0yo9tgJGn3lKQATztIjb5tVtevcBtIdICNWqlq5+E8/Pw==}
+    engines: {pnpm: '>=8'}
 
   chokidar@3.6.0:
     resolution: {integrity: sha512-7VT13fmjotKpGipCW9JEQAusEPE+Ei8nl6/g4FBAmIm0GOOLMua9NDDo/DWp0ZAxCr3cPq5ZpBqmPAQgDda2Pw==}
@@ -3244,6 +3269,12 @@ packages:
     peerDependencies:
       vue: ^3.0.0
 
+  vue-chartjs@5.3.4:
+    resolution: {integrity: sha512-x3Fqob8RQvrTdssfi9ecsCzEkFOd8JPmNwSkSQzdfKj/uBsRJs/Y88cZcZIEcPsTVfMGwMo4MOoihoDG2DoE/g==}
+    peerDependencies:
+      chart.js: ^4.1.1
+      vue: ^3.0.0-0 || ^2.7.0
+
   vue-currency-input@3.2.1:
     resolution: {integrity: sha512-Osfxzdu5cdZSCS4Cm0vuk7LwNeSdHWGIWK8gtDBC1kU0UtAKz7iU/8dyJ0KDJKxbAYiKeovoQTRfYxCH82I0EA==}
     peerDependencies:
@@ -4212,6 +4243,8 @@ snapshots:
       '@jridgewell/resolve-uri': 3.1.2
       '@jridgewell/sourcemap-codec': 1.5.5
 
+  '@kurkle/color@0.3.4': {}
+
   '@leichtgewicht/ip-codec@2.0.5': {}
 
   '@nodelib/fs.scandir@2.1.5':
@@ -4904,6 +4937,10 @@ snapshots:
       supports-color: 7.2.0
 
   charenc@0.0.2: {}
+
+  chart.js@4.5.1:
+    dependencies:
+      '@kurkle/color': 0.3.4
 
   chokidar@3.6.0:
     dependencies:
@@ -6978,6 +7015,11 @@ snapshots:
       classnames: 2.5.1
       debounce: 1.2.1
       easy-bem: 1.1.1
+      vue: 3.5.30
+
+  vue-chartjs@5.3.4(chart.js@4.5.1)(vue@3.5.30):
+    dependencies:
+      chart.js: 4.5.1
       vue: 3.5.30
 
   vue-currency-input@3.2.1(vue@3.5.30):
