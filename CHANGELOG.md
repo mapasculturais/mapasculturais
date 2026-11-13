@@ -5,6 +5,10 @@ Todas as mudanças notáveis no projeto serão documentadas neste arquivo.
 O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/)
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [UNRELEASED]
+### Melhorias
+- Adiciona a configuração `opportunityPhase.appeal.hideInvalidStatus`, ativada pela variável de ambiente `APPEAL_PHASE_HIDE_INVALID_STATUS`, que oculta o status Negado nas fases de recurso: ele deixa de ser oferecido na configuração de status, no formulário e no chat do avaliador, no seletor e no filtro da lista de inscrições e na aplicação de resultados em lote. Vem desligada; inscrições já negadas mantêm o status e as demais fases não mudam
+
 ## [7.8.22] - 2026-11-11
 ### Correções
 - Corrige os campos de tabela/planilha (`custom-table`) na exportação e na tabela da lista de inscrições, que apareciam vazios, como `Array` ou `[object Object]`: os dados passam a mostrar os nomes das colunas e os valores de cada linha, preservando a ordem configurada e valores zero
