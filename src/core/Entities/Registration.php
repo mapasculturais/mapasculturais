@@ -1162,7 +1162,7 @@ class Registration extends \MapasCulturais\Entity
         App::i()->applyHookBoundTo($this, 'entity(Registration).status(waitlist)');
     }
 
-    function setStatusToPartiallyApproved($flush = true){
+    public function setStatusToPartiallyApproved($flush = true){
         $this->_setStatusTo(self::STATUS_PARTIALLY_APPROVED, $flush);
         App::i()->applyHookBoundTo($this, 'entity(Registration).status(partiallyapproved)');
     }
