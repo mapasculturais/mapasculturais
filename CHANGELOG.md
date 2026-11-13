@@ -5,6 +5,10 @@ Todas as mudanças notáveis no projeto serão documentadas neste arquivo.
 O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/)
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [UNRELEASED]
+### Melhorias
+- A fase de recurso passa a ter o status "Deferido parcialmente", com o mesmo comportamento do Deferido: a inscrição avança para a fase seguinte e aparece como selecionada na publicação final. O status vem desabilitado e é ativado pelo gestor na configuração de status do recurso; aparece no filtro, na aplicação de resultados em lote, nas planilhas e nas notificações ao proponente
+
 ## [7.8.24] - 2026-11-19
 ### Melhorias
 - Atualiza o PHP para a versão 8.3.37, com as correções de segurança recomendadas pelo próprio PHP
