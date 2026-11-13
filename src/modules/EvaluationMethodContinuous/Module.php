@@ -258,8 +258,10 @@ class Module extends \MapasCulturais\EvaluationMethod
                 die;
             }
 
-            if (!is_numeric($this->data['to']) || !in_array($this->data['to'], [0,1,2,3,8,9,10])) {
-                $this->errorJson(i::__('os status válidos são 0, 1, 2, 3, 8, 9 e 10'), 400);
+            // Aceita apenas os status previstos para a inscrição.
+            $valid_statuses = array_keys(Registration::getStatuses());
+            if (!is_numeric($this->data['to']) || !in_array((int) $this->data['to'], $valid_statuses, true)) {
+                $this->errorJson(sprintf(i::__('os status válidos são %s'), implode(', ', $valid_statuses)), 400);
                 die;
             }
 
