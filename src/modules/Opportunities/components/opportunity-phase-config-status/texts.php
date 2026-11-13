@@ -15,5 +15,6 @@ return [
     'Suplente' => i::__('Suplente'),
     'Aprovado' => i::__('Aprovado'),
     'Deferido' => i::__('Deferido'),
+    'Deferido parcialmente' => i::__('Deferido parcialmente'),
     'Selecionada' => i::__('Selecionada'),
 ];

@@ -117,6 +117,9 @@ app.component('registration-results', {
             switch (registration.status) {
                 case 10:
                     return 'success__color';
+
+                case 9:
+                    return 'partial__color';
                     
                 case 2 : 
                 case 0 : 

@@ -106,6 +106,37 @@ class EvaluationStatusConfigurationTest extends Abstract\TestCase
         );
     }
 
+    function testContinuousEvaluationOffersAndAcceptsPartialApprovalWhenEnabled()
+    {
+        [, $registration, $valuer] = $this->createEvaluationPhase('continuous', [
+            '0' => 'Rascunho',
+            '1' => 'Aguardando resposta',
+            '3' => 'Indeferido',
+            '9' => 'Deferido parcialmente',
+            '10' => 'Deferido',
+        ]);
+
+        $this->login($valuer);
+
+        $request = $this->requestFactory->GET('registration', 'evaluation', [$registration->id]);
+        $this->assertStatus200($request, 'Garantindo que o avaliador acessa a tela de avaliação contínua');
+
+        $this->assertEquals(
+            [
+                ['value' => 3, 'label' => 'Indeferido'],
+                ['value' => 9, 'label' => 'Deferido parcialmente'],
+                ['value' => 10, 'label' => 'Deferido'],
+            ],
+            $this->app->view->jsObject['config']['continuousEvaluationForm']['statusList'],
+            'Garantindo que o formulário da avaliação contínua oferece o deferido parcialmente habilitado na fase'
+        );
+
+        $this->assertStatus200(
+            $this->sendEvaluation($registration, Registration::STATUS_PARTIALLY_APPROVED),
+            'Garantindo que a avaliação contínua aceita o deferido parcialmente habilitado na fase'
+        );
+    }
+
     function testSimpleEvaluationFormOnlyListsEnabledStatuses()
     {
         [, $registration, $valuer] = $this->createEvaluationPhase('simple', [

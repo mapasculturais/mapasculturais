@@ -1122,7 +1122,7 @@ abstract class Opportunity extends \MapasCulturais\Entity
 
         $query = new ApiQuery(Registration::class, [
             'opportunity' => "EQ({$this->id})",
-            'status'=>'EQ(10)'
+            'status' => 'IN(' . Registration::STATUS_APPROVED . ',' . Registration::STATUS_PARTIALLY_APPROVED . ')'
         ]);
 
         $registration_ids = $query->findIds();
@@ -1158,7 +1158,7 @@ abstract class Opportunity extends \MapasCulturais\Entity
 
         $query = new ApiQuery(Registration::class, [
             'opportunity' => "EQ({$this->id})",
-            'status'=>'EQ(10)'
+            'status' => 'IN(' . Registration::STATUS_APPROVED . ',' . Registration::STATUS_PARTIALLY_APPROVED . ')'
         ]);
 
         $registration_ids = $query->findIds();

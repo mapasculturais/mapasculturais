@@ -254,36 +254,8 @@ class Module extends \MapasCulturais\Module {
             }
         });
 
-        // Envio de e-mail e notificação do sistema após status for alterado para indeferido
-        $app->hook('entity(Registration).status(notapproved)', function() use ($app, $self) {
-            /** @var \MapasCulturais\Entities\Registration $this */
-            $opportunity = $this->opportunity;
-
-            if($opportunity->status == Opportunity::STATUS_APPEAL_PHASE) {
-                $self->sendMailNewStatus($opportunity, $this);
-                $self->sendNotificationNewStatus($opportunity, $this);
-                if (\OpportunityPhases\Module::appealPhaseAffectsSync($opportunity->parent)) {
-                    $self->enqueueNextMainPhaseSync($app, $this, $opportunity);
-                }
-            }
-        });
-
-        // Envio de e-mail e notificação do sistema após status for alterado para deferido
-        $app->hook('entity(Registration).status(approved)', function() use ($app, $self) {
-            /** @var \MapasCulturais\Entities\Registration $this */
-            $opportunity = $this->opportunity;
-
-            if($opportunity->status == Opportunity::STATUS_APPEAL_PHASE) {
-                $self->sendMailNewStatus($opportunity, $this);
-                $self->sendNotificationNewStatus($opportunity, $this);
-                if (\OpportunityPhases\Module::appealPhaseAffectsSync($opportunity->parent)) {
-                    $self->enqueueNextMainPhaseSync($app, $this, $opportunity);
-                }
-            }
-        });
-
-        // Envio de e-mail e notificação do sistema após status for alterado para negado
-        $app->hook('entity(Registration).status(invalid)', function() use ($app, $self) {
+        // Envia e-mail e notificação ao proponente quando o recurso recebe resultado: deferido, deferido parcialmente, indeferido ou negado.
+        $app->hook('entity(Registration).status(<<approved|partiallyapproved|notapproved|invalid>>)', function() use ($app, $self) {
             /** @var \MapasCulturais\Entities\Registration $this */
             $opportunity = $this->opportunity;
 

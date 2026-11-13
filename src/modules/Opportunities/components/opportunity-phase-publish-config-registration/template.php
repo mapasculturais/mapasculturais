@@ -59,6 +59,7 @@ $this->import('
                         <p v-if="phase.summary?.Draft"><?= i::__("Quantidade de inscrições <strong>rascunho</strong>:") ?> <strong>{{phase.summary.Draft}}</strong> <strong><?= i::__('inscrições') ?></strong></p>
                         <p v-if="phase.summary?.Approved"><?= i::__("Quantidade de inscrições <strong>selecionadas</strong>:") ?> <strong>{{phase.summary.Approved}}</strong> <strong><?= i::__('inscrições') ?></strong></p>
                         <p v-if="phase.summary?.Notapproved"><?= i::__("Quantidade de inscrições <strong>não selecionadas</strong>:") ?> <strong>{{phase.summary.Notapproved}}</strong> <strong><?= i::__('inscrições') ?></strong></p>
+                        <p v-if="phase.summary?.PartiallyApproved"><?= i::__("Quantidade de inscrições <strong>deferidas parcialmente</strong>:") ?> <strong>{{phase.summary.PartiallyApproved}}</strong> <strong><?= i::__('inscrições') ?></strong></p>
                         <p v-if="phase.summary?.Waitlist"><?= i::__("Quantidade de inscrições <strong>suplentes</strong>:") ?> <strong>{{phase.summary.Waitlist}}</strong> <strong><?= i::__('inscrições') ?></strong></p>
                         <p v-if="phase.summary?.Invalid"><?= i::__("Quantidade de inscrições <strong>inválida</strong>:") ?> <strong>{{phase.summary.Invalid}}</strong> <strong><?= i::__('inscrições') ?></strong></p>
     

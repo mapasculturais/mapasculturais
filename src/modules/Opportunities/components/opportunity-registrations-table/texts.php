@@ -8,6 +8,7 @@ return [
     Registration::STATUS_INVALID => i::__('Inválida'),
     Registration::STATUS_NOTAPPROVED => i::__('Não selecionada'),
     Registration::STATUS_WAITLIST => i::__('Suplente'),
+    Registration::STATUS_PARTIALLY_APPROVED => i::__('Deferido parcialmente'),
     Registration::STATUS_APPROVED => i::__('Selecionada'),
 
     'classificação final' => i::__('classificação final'),

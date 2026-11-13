@@ -299,7 +299,7 @@ class Module extends \MapasCulturais\Module{
      * Fase avaliativa com recurso:
      * - bloqueia enquanto existir recurso enviado aguardando resultado (status 1);
      * - rascunho de recurso (status 0) não bloqueia;
-     * - deferido no recurso (status 10) qualifica independentemente do status na fase de origem;
+     * - deferido (10) ou deferido parcialmente (9) no recurso qualifica independentemente do status na fase de origem;
      * - indeferido/inválido no recurso qualifica apenas se a fase de origem tiver status 10;
      * - sem recurso, qualifica com status 10 na fase de origem.
      *
@@ -326,14 +326,14 @@ class Module extends \MapasCulturais\Module{
             SELECT ap_pending.id FROM MapasCulturais\Entities\Registration ap_pending
             WHERE ap_pending.opportunity = :appeal_phase
             AND ap_pending.number = {$alias}.number
-            AND ap_pending.status NOT IN (0, 2, 3, 10)
+            AND ap_pending.status NOT IN (0, 2, 3, 9, 10)
         )";
 
         $deferred = "EXISTS (
             SELECT ap_def.id FROM MapasCulturais\Entities\Registration ap_def
             WHERE ap_def.opportunity = :appeal_phase
             AND ap_def.number = {$alias}.number
-            AND ap_def.status = 10
+            AND ap_def.status IN (9, 10)
         )";
 
         $condition = "NOT {$pending} AND ({$deferred} OR {$alias}.status = 10)";
@@ -1477,6 +1477,7 @@ class Module extends \MapasCulturais\Module{
                         Registration::STATUS_APPROVED => 'setStatusToApproved',
                         Registration::STATUS_NOTAPPROVED => 'setStatusToNotApproved',
                         Registration::STATUS_WAITLIST => 'setStatusToWaitlist',
+                        Registration::STATUS_PARTIALLY_APPROVED => 'setStatusToApproved',
                         Registration::STATUS_INVALID => 'setStatusToInvalid',
                     ];
 
@@ -2399,6 +2400,7 @@ class Module extends \MapasCulturais\Module{
             Registration::STATUS_APPROVED => [i::__('Selecionada'), i::__('Selecionada em "{PHASE_NAME}"')],
             Registration::STATUS_NOTAPPROVED => [i::__('Não selecionada'), i::__('Não selecionada em "{PHASE_NAME}"')],
             Registration::STATUS_WAITLIST => [i::__('Suplente'), i::__('Suplente em "{PHASE_NAME}"')],
+            Registration::STATUS_PARTIALLY_APPROVED => [i::__('Deferido parcialmente'), i::__('Deferido parcialmente em "{PHASE_NAME}"')],
             Registration::STATUS_INVALID => [i::__('Inválida'), i::__('Inválida em "{PHASE_NAME}"')],
         ];
 

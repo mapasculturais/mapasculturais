@@ -25,6 +25,7 @@ return [
     'publicadas' => i::__('Publicadas'),
     'rascunhos' => i::__('Rascunhos'),
     'selecionadas' => i::__('Selecionadas'),
+    'deferidas parcialmente' => i::__('Deferidas parcialmente'),
     'suplentes' => i::__('Suplentes'),
     'Todas' => i::__('Todas'),
     'invalida' => i::__('Inválida'),

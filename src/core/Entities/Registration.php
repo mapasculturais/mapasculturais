@@ -53,6 +53,7 @@ class Registration extends \MapasCulturais\Entity
 
     const STATUS_SENT = self::STATUS_ENABLED;
     const STATUS_APPROVED = 10;
+    const STATUS_PARTIALLY_APPROVED = 9;
     const STATUS_WAITLIST = 8;
     const STATUS_NOTAPPROVED = 3;
     const STATUS_INVALID = 2;
@@ -460,7 +461,8 @@ class Registration extends \MapasCulturais\Entity
             $json['status'] = $this->status;
         }
 
-        if($this->canUser('view') || $this->status === self::STATUS_APPROVED || $this->status === self::STATUS_WAITLIST){
+        $public_statuses = [self::STATUS_APPROVED, self::STATUS_PARTIALLY_APPROVED, self::STATUS_WAITLIST];
+        if($this->canUser('view') || in_array($this->status, $public_statuses, true)){
             $related_agents = $this->getRelatedAgents(return_relations: true);
 
             $json['agentRelations'] = $related_agents;
@@ -1099,6 +1101,7 @@ class Registration extends \MapasCulturais\Entity
         $statuses[self::STATUS_INVALID] = i::__('Inválida');
         $statuses[self::STATUS_NOTAPPROVED] = i::__('Não selecionada');
         $statuses[self::STATUS_WAITLIST] = i::__('Suplente');
+        $statuses[self::STATUS_PARTIALLY_APPROVED] = i::__('Deferido parcialmente');
         $statuses[self::STATUS_APPROVED] = i::__('Selecionada');
 
         return $statuses;
@@ -1115,6 +1118,7 @@ class Registration extends \MapasCulturais\Entity
         $statuses[self::STATUS_INVALID] = 'Invalid';
         $statuses[self::STATUS_NOTAPPROVED] = 'Notapproved';
         $statuses[self::STATUS_WAITLIST] = 'Waitlist';
+        $statuses[self::STATUS_PARTIALLY_APPROVED] = 'PartiallyApproved';
         $statuses[self::STATUS_APPROVED] = 'Approved';
 
         return $statuses;
@@ -1127,6 +1131,7 @@ class Registration extends \MapasCulturais\Entity
             self::STATUS_INVALID => 'setStatusToInvalid',
             self::STATUS_NOTAPPROVED => 'setStatusToNotApproved',
             self::STATUS_WAITLIST => 'setStatusToWaitlist',
+            self::STATUS_PARTIALLY_APPROVED => 'setStatusToPartiallyApproved',
             self::STATUS_APPROVED => 'setStatusToApproved',
         ];
 
@@ -1155,6 +1160,11 @@ class Registration extends \MapasCulturais\Entity
     function setStatusToWaitlist($flush = true){
         $this->_setStatusTo(self::STATUS_WAITLIST, $flush);
         App::i()->applyHookBoundTo($this, 'entity(Registration).status(waitlist)');
+    }
+
+    public function setStatusToPartiallyApproved($flush = true){
+        $this->_setStatusTo(self::STATUS_PARTIALLY_APPROVED, $flush);
+        App::i()->applyHookBoundTo($this, 'entity(Registration).status(partiallyapproved)');
     }
 
     function setStatusToInvalid($flush = true){
