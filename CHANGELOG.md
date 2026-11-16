@@ -8,12 +8,12 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 ## [UNRELEASED]
 ### Correções
 - Corrige a avaliação de recurso em que o avaliador via todos os campos de "Dados informados no formulário" da fase pai, mesmo com a lista de campos visíveis liberando só alguns: o filtro só era aplicado quando a pessoa já tinha `viewUserEvaluation` na inscrição da fase pai, o que não vale para quem avalia apenas o recurso; a ficha da avaliação passa a respeitar essa lista também nesse caso, e os valores não liberados deixam de ser injetados no formulário (gestores com `@control` continuam vendo tudo)
+- Corrige a exibição do aviso "*obrigatório" nos campos do tipo caixa de verificação, tanto na prévia quanto no preenchimento do formulário de inscrição
 
 ## [7.8.22] - 2026-11-11
 ### Correções
 - Corrige os campos de tabela/planilha (`custom-table`) na exportação e na tabela da lista de inscrições, que apareciam vazios, como `Array` ou `[object Object]`: os dados passam a mostrar os nomes das colunas e os valores de cada linha, preservando a ordem configurada e valores zero
 - Atualiza o Node.js da imagem Docker para a linha 22 e exige a versão 22.23.4 ou superior nessa linha, incorporando a correção da vulnerabilidade CVE-2026-111497 no decodificador Brotli
-- Corrige a exibição do aviso "*obrigatório" nos campos do tipo caixa de verificação, tanto na prévia quanto no preenchimento do formulário de inscrição
 - Preserva as versões das dependências no build Docker com instalação pelo pnpm usando o lockfile congelado
 - Corrige a geração de modelo e de edital a partir de modelo com fase de recurso: o metadado `appealPhase` era copiado com o ID do edital de origem (e o recurso podia ficar com `parent` na 1ª fase em vez da fase de mérito), o que fazia a configuração do formulário e a árvore de fases apontarem para outro edital — inclusive entre subsites no SaaS; o recurso passa a ser clonado com `parent` na fase de mérito correspondente e o vínculo `appealPhase` é religado para essa nova fase, inclusive quando o recurso está na fase de publicação (`isLastPhase`)
 - Corrige a importação de oportunidades para respeitar o filtro `appealPhases`: com a opção desmarcada, fases de recurso presentes no JSON deixam de ser criadas
