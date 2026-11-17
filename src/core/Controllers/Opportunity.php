@@ -1042,7 +1042,7 @@ class Opportunity extends EntityController {
 
                 $e['agent'] = $valuer_by_user[$e['user']];
                 $e['singleUrl'] = $app->createUrl('registration', 'view', [$e['registration'], 'uid' => $e['user']]);
-                $e['resultString'] = $opportunity->getEvaluationMethod()->valueToString($evaluation_result);
+                $e['resultString'] = $opportunity->getEvaluationMethod()->resultToString($opportunity, $evaluation_result);
                 $evaluations[$e['id']] = $e;
             }
         }

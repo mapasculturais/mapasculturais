@@ -16,7 +16,10 @@ foreach ($statuses_names as $status => $status_name) {
 }
 
 
+$result_labels = array_replace($opportunity->evaluationMethodConfiguration->defaultStatuses, $opportunity->statusLabels ?: []);
+
 $this->jsObject['config']['evaluation-method-continuous--apply'] = [
     'statusList' => $status_list,
+    'resultLabels' => $result_labels,
     'consolidated_results' => $em->findConsolidatedResult($opportunity)
 ];
