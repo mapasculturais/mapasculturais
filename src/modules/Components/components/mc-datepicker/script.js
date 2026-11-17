@@ -17,7 +17,8 @@ app.component('mc-datepicker', {
 
         locale: {
             type: String,
-            default: 'pt-BR'
+            // usa o idioma da instalação; 'pt-BR' só se não estiver configurado
+            default: () => $MAPAS.config.locale || 'pt-BR'
         },
     },
 
@@ -45,7 +46,7 @@ app.component('mc-datepicker', {
         return {
             dateInput: '',
             timeInput: '',
-            dayNames: ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab'],
+            dayNames: this.getDayNames(this.locale),
             isDateInputFocused: false,
             isTimeInputFocused: false,
             dateFormat: 'dd/MM/yyyy',
@@ -70,6 +71,20 @@ app.component('mc-datepicker', {
     },
 
     methods: {
+        // Abreviações dos dias da semana (começando no domingo, weekStart = 0) no idioma do componente
+        getDayNames(locale) {
+            try {
+                const formatter = new Intl.DateTimeFormat(locale, { weekday: 'short' });
+                // 07/01/2024 foi um domingo
+                return [0, 1, 2, 3, 4, 5, 6].map((i) => {
+                    const name = formatter.format(new Date(2024, 0, 7 + i)).replace('.', '');
+                    return name.charAt(0).toUpperCase() + name.slice(1);
+                });
+            } catch (e) {
+                return ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab'];
+            }
+        },
+
         handleBlur(type) {
             if (type === 'date' && this.dateInput?.length === 10) {
                 this.inputValue('date');

@@ -9,6 +9,7 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 ### Correções
 - Corrige a avaliação de recurso em que o avaliador via todos os campos de "Dados informados no formulário" da fase pai, mesmo com a lista de campos visíveis liberando só alguns: o filtro só era aplicado quando a pessoa já tinha `viewUserEvaluation` na inscrição da fase pai, o que não vale para quem avalia apenas o recurso; a ficha da avaliação passa a respeitar essa lista também nesse caso, e os valores não liberados deixam de ser injetados no formulário (gestores com `@control` continuam vendo tudo)
 - Corrige a exibição do aviso "*obrigatório" nos campos do tipo caixa de verificação, tanto na prévia quanto no preenchimento do formulário de inscrição
+- O seletor de datas (`mc-datepicker`) passa a usar o idioma da instalação (`$MAPAS.config.locale`) em vez de ficar sempre em pt-BR, e os nomes dos dias da semana deixam de ser fixos em português
 
 ## [7.8.22] - 2026-11-11
 ### Correções
