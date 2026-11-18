@@ -7,6 +7,10 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ## [UNRELEASED]
 ### Correções
+- Endurece a decodificação de metadados usados em cotas e desempates
+- Passa a serializar jobs de e-mail em formato JSON
+- Força transporte de callback Opauth via sessão
+- Torna estável o desempate na redistribuição de comissões de avaliação
 - Corrige a abertura de pedido na fase de execução, que recusava proponentes cuja inscrição foi feita com outro agente da conta: o pedido passa a poder ser aberto por quem controla o agente responsável pela inscrição, a mesma regra do acompanhamento, e quem não tem vínculo com a inscrição continua sem acesso
 - Corrige a avaliação de recurso em que o avaliador via todos os campos de "Dados informados no formulário" da fase pai, mesmo com a lista de campos visíveis liberando só alguns: o filtro só era aplicado quando a pessoa já tinha `viewUserEvaluation` na inscrição da fase pai, o que não vale para quem avalia apenas o recurso; a ficha da avaliação passa a respeitar essa lista também nesse caso, e os valores não liberados deixam de ser injetados no formulário (gestores com `@control` continuam vendo tudo)
 - Corrige a exibição do aviso "*obrigatório" nos campos do tipo caixa de verificação, tanto na prévia quanto no preenchimento do formulário de inscrição
