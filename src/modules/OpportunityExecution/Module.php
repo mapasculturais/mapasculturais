@@ -589,11 +589,14 @@ class Module extends \MapasCulturais\Module
 
     private function canCreateExecutionRequest(Registration $approved_registration)
     {
-        $profile = App::i()->user->profile;
+        $user = App::i()->user;
 
-        if ($approved_registration->owner->id === $profile->id) {
+        // Quem controla o agente responsável pela inscrição pode abrir pedidos.
+        if ($approved_registration->owner->canUser('@control', $user)) {
             return true;
         }
+
+        $profile = $user->profile;
 
         foreach ($approved_registration->agentRelations as $ar) {
             if ($ar->agent->id === $profile->id) {

@@ -9,6 +9,12 @@ $avaliable_evaluationFields['category'] = true;
 $app->view->jsObject['avaliableEvaluationFields'] = $avaliable_evaluationFields;
 $app->view->jsObject['viewUserEvaluation'] = $entity->canUser('viewUserEvaluation');
 
+// Em avaliação (merge de fases), sempre aplicar a lista de campos visíveis —
+// inclusive para avaliadores de recurso sem viewUserEvaluation na fase pai.
+if (!empty($merge_phases)) {
+    $app->view->jsObject['applyEvaluationFieldsFilter'] = true;
+}
+
 $app->view->jsObject['bank_data_dict'] = [
     'account_types' => $app->config['module.registrationFieldTypes']['account_types'],
     'bank_types' => $app->config['module.registrationFieldTypes']['bank_types']

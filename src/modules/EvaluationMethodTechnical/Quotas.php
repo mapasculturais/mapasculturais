@@ -1282,7 +1282,8 @@ class Quotas {
                 return $decoded;
             }
 
-            $unserialized = @unserialize($value);
+            // Legacy PHP-serialized arrays only — never instantiate objects (CWE-502).
+            $unserialized = @unserialize($value, ['allowed_classes' => false]);
             if (is_array($unserialized)) {
                 return $unserialized;
             }
@@ -1336,8 +1337,9 @@ class Quotas {
                 return $decoded;
             }
 
-            $unserialized = @unserialize($value);
-            if ($unserialized !== false || $value === 'b:0;') {
+            // Legacy PHP-serialized scalars/arrays only — never instantiate objects (CWE-502).
+            $unserialized = @unserialize($value, ['allowed_classes' => false]);
+            if (($unserialized !== false || $value === 'b:0;') && !is_object($unserialized)) {
                 return $unserialized;
             }
         }

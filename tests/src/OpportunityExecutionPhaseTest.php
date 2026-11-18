@@ -9,14 +9,18 @@ use Tests\Abstract\TestCase;
 use Tests\Builders\PhasePeriods\ConcurrentEndingAfter;
 use Tests\Builders\PhasePeriods\Open;
 use Tests\Enums\EvaluationMethods;
+use Tests\Traits\AgentDirector;
 use Tests\Traits\OpportunityBuilder;
 use Tests\Traits\RegistrationDirector;
+use Tests\Traits\RequestFactory;
 use Tests\Traits\UserDirector;
 
 class OpportunityExecutionPhaseTest extends TestCase
 {
-    use OpportunityBuilder,
+    use AgentDirector,
+        OpportunityBuilder,
         RegistrationDirector,
+        RequestFactory,
         UserDirector;
 
     // ----------------------------------------------------------------
@@ -63,6 +67,44 @@ class OpportunityExecutionPhaseTest extends TestCase
         $app->enableAccessControl();
 
         return [$admin, $first_phase, $approved];
+    }
+
+    /**
+     * Monta a oportunidade com fase de execução e uma inscrição aprovada na
+     * lastPhase cujo responsável é um segundo agente individual do proponente.
+     */
+    private function buildApprovedRegistrationOwnedBySecondAgent(): array
+    {
+        [$admin, $first_phase, $approved] = $this->buildOpportunityWithApprovedRegistration();
+
+        $this->opportunityBuilder
+            ->addExecutionPhase()
+            ->save();
+
+        $proponent = $approved->owner->user;
+        $second_agent = $this->agentDirector->createAgent($proponent, type: 1, disable_access_control: true);
+
+        $app = $this->app;
+        $app->disableAccessControl();
+        $registration = new Registration();
+        $registration->opportunity = $first_phase->lastPhase;
+        $registration->owner       = $second_agent;
+        $registration->save(true);
+        $registration->status = Registration::STATUS_APPROVED;
+        $registration->save(true);
+        $app->enableAccessControl();
+
+        $this->assertNotEquals($proponent->profile->id, $second_agent->id,
+            'O responsável da inscrição não pode ser o agente de perfil do proponente');
+
+        return [$first_phase, $registration, $proponent];
+    }
+
+    private function createExecutionRequestRequest(Opportunity $first_phase, Registration $approved)
+    {
+        return $this->requestFactory->POST('opportunity', 'createExecutionRequest', [$first_phase->id], payload: [
+            'registration_id' => $approved->id,
+        ]);
     }
 
     // ----------------------------------------------------------------
@@ -291,6 +333,37 @@ class OpportunityExecutionPhaseTest extends TestCase
 
         $this->assertNotEquals($approved->number, $pedido->number,
             'O number do pedido deve ser novo, não o da inscrição original');
+    }
+
+    // ----------------------------------------------------------------
+    // Testes de permissão para abrir pedidos
+    // ----------------------------------------------------------------
+
+    /**
+     * O proponente abre pedido na inscrição feita por um agente seu que não é o de perfil.
+     */
+    public function testProponentCanOpenRequestOnRegistrationOwnedBySecondAgent()
+    {
+        [$first_phase, $approved, $proponent] = $this->buildApprovedRegistrationOwnedBySecondAgent();
+
+        $this->login($proponent);
+
+        $this->assertStatus200($this->createExecutionRequestRequest($first_phase, $approved),
+            'O dono do agente responsável pela inscrição deve conseguir abrir o pedido');
+    }
+
+    /**
+     * Usuário sem controle do agente responsável não abre pedido na inscrição.
+     */
+    public function testUserWithoutControlCannotOpenRequest()
+    {
+        [$first_phase, $approved] = $this->buildApprovedRegistrationOwnedBySecondAgent();
+
+        $other_user = $this->userDirector->createUser();
+        $this->login($other_user);
+
+        $this->assertStatus403($this->createExecutionRequestRequest($first_phase, $approved),
+            'Usuário sem controle do agente responsável não pode abrir o pedido');
     }
 
     // ----------------------------------------------------------------

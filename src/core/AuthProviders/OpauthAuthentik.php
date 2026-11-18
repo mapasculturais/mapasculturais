@@ -55,7 +55,9 @@ class OpauthAuthentik extends \MapasCulturais\AuthProvider{
             'security_timeout' => $config['timeout'],
             'host' => preg_replace('#^(https?\:\/\/[^\/]*)/.*#', '$1', $url),
             'path' => $config['path'],
-            'callback_url' => $app->createUrl('auth','response')
+            'callback_url' => $app->createUrl('auth','response'),
+            // Keep auth payload in session — avoid unserialize() of attacker-controlled GET/POST.
+            'callback_transport' => 'session',
         ];
         
         $metadata = [
@@ -137,10 +139,10 @@ class OpauthAuthentik extends \MapasCulturais\AuthProvider{
                 }
                 break;
             case 'post':
-                $response = unserialize(base64_decode( $_POST['opauth'] ));
+                $response = unserialize(base64_decode($_POST['opauth'] ?? ''), ['allowed_classes' => false]);
                 break;
             case 'get':
-                $response = unserialize(base64_decode( $_GET['opauth'] ));
+                $response = unserialize(base64_decode($_GET['opauth'] ?? ''), ['allowed_classes' => false]);
                 break;
             default:
                 $app->log->error('Opauth Error: Unsupported callback_transport.');
