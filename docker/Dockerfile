@@ -1,4 +1,4 @@
-FROM php:8.2.35-fpm-bookworm
+FROM php:8.2.36-fpm-bookworm
 
 RUN apt-get update
 
