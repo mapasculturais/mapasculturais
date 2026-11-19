@@ -27,6 +27,10 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 ### Melhorias não funcionais
 - Adiciona testes automatizados para os filtros de tipo de proponente e faixa/linha e para a correção de duplicação de gráficos personalizados nos relatórios
 
+## [7.8.24] - 2026-11-19
+### Melhorias
+- Atualiza o PHP para a versão 8.3.37, com as correções de segurança recomendadas pelo próprio PHP
+
 ## [7.8.23] - 2026-11-18
 ### Correções
 - Endurece a decodificação de metadados usados em cotas e desempates
