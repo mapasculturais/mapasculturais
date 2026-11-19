@@ -1521,9 +1521,13 @@ class Theme extends MapasCulturais\Theme {
                     $this->jsObject['entity']['registrationFieldConfigurations'][] = $field;
     
                     $field_name = $field->fieldName;
-                    
-                    if($reg->canUser("viewUserEvaluation") && !$reg->canUser("@control")){
-                        if(isset($opportunity->avaliableEvaluationFields[$field_name]) && ($opportunity->avaliableEvaluationFields[$field_name] === true || $opportunity->avaliableEvaluationFields[$field_name] === 'true')){
+
+                    // Usa a lista da fase atual (contexto da avaliação), não a de cada fase anterior.
+                    $evaluation_fields = $current_registration->opportunity->avaliableEvaluationFields ?? [];
+                    $is_controller = $current_registration->opportunity->canUser("@control") || $reg->canUser("@control");
+
+                    if(!$is_controller && !empty($evaluation_fields)){
+                        if(isset($evaluation_fields[$field_name]) && ($evaluation_fields[$field_name] === true || $evaluation_fields[$field_name] === 'true')){
                             $this->jsObject['entity']['object']->$field_name = $reg->$field_name;
                         }
                     }else{

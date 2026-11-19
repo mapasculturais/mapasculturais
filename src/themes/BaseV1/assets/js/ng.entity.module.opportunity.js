@@ -2615,7 +2615,7 @@ module.controller('RegistrationFieldsController', ['$scope', '$rootScope', '$int
             }
         }
 
-        if(MapasCulturais.entity.canUserEvaluate || MapasCulturais?.viewUserEvaluation){
+        if(MapasCulturais.entity.canUserEvaluate || MapasCulturais?.viewUserEvaluation || MapasCulturais?.applyEvaluationFieldsFilter){
             if(MapasCulturais.opportunityControl && result) {
                 result = true;
             } else if(result && !$scope.isAvaliableEvaluationFields(field)){
