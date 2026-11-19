@@ -25,6 +25,10 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 ### Correções
 - Corrige erro no upload de arquivos xlsx no grupo de downloads das entidades
 
+## [7.6.69] - 2026-11-19
+### Melhorias
+- Atualiza o PHP para a versão 8.3.37, com as correções de segurança recomendadas pelo próprio PHP
+
 ## [7.6.63] - 2026-04-20
 ## Melhorias
 - Melhora validação de tipos de arquivo, impedindo que sejam feitos uploads de arquivos potencialmente perigosos
