@@ -5,6 +5,10 @@ Todas as mudanças notáveis no projeto serão documentadas neste arquivo.
 O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/)
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [7.6.69] - 2026-11-19
+### Melhorias
+- Atualiza o PHP para a versão 8.3.37, com as correções de segurança recomendadas pelo próprio PHP
+
 ##[7.6.68] - 2026-10-22
 ### Melhorias
 - Atualiza o PHP para a versão 8.3.36, com as correções de segurança recomendadas pelo próprio PHP
@@ -24,10 +28,6 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 ##[7.6.64] - 2026-04-22
 ### Correções
 - Corrige erro no upload de arquivos xlsx no grupo de downloads das entidades
-
-## [7.6.69] - 2026-11-19
-### Melhorias
-- Atualiza o PHP para a versão 8.3.37, com as correções de segurança recomendadas pelo próprio PHP
 
 ## [7.6.63] - 2026-04-20
 ## Melhorias
