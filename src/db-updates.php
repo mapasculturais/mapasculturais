@@ -3441,9 +3441,22 @@ $$
                 SELECT
                     phase.id AS phase_id,
                     root.id AS root_id,
-                    emc.id AS emc_id
+                    root.subsite_id,
+                    owner_agent.user_id,
+                    emc.id AS emc_id,
+                    (
+                        EXISTS (
+                            SELECT 1 FROM registration r
+                            WHERE r.opportunity_id = root.id AND r.status > :draft)
+                        AND EXISTS (
+                            SELECT 1 FROM evaluationmethodconfiguration_meta m
+                            WHERE m.object_id = emc.id
+                                AND m.key = 'distributionConfiguration'
+                                AND m.value <> 'deactivate')
+                    ) AS must_redistribute
                 FROM opportunity phase
                     JOIN opportunity root ON root.id = phase.parent_id
+                    JOIN agent owner_agent ON owner_agent.id = root.agent_id
                     JOIN evaluation_method_configuration emc ON emc.opportunity_id = phase.id
                 WHERE
                     phase.status > :trash
@@ -3489,6 +3502,7 @@ $$
                 FOR UPDATE OF phase
             ", [
                 'trash' => Entities\Opportunity::STATUS_TRASH,
+                'draft' => Entities\Registration::STATUS_DRAFT,
                 'approved' => Entities\Registration::STATUS_APPROVED,
             ]);
 
@@ -3518,6 +3532,32 @@ $$
             $conn->rollBack();
             throw $e;
         }
+
+        foreach ($phases as $phase) {
+            if ($phase['must_redistribute']) {
+                // sem limpar, o Doctrine pode devolver a ficha ainda ligada à fase excluída
+                $app->em->clear();
+                $emc = $app->repo('EvaluationMethodConfiguration')->find($phase['emc_id']);
+
+                try {
+                    $emc->redistributeCommitteeRegistrations();
+                } catch (\Throwable $e) {
+                    echo "Redistribuição da oportunidade {$phase['root_id']} deixada para o job: {$e->getMessage()}\n";
+
+                    $app->enqueueJob(
+                        \Opportunities\Jobs\RedistributeCommitteeRegistrations::SLUG,
+                        ['evaluationMethodConfiguration' => $emc],
+                        'now',
+                        user: $phase['user_id'],
+                        subsite: $phase['subsite_id'],
+                    );
+                }
+            }
+
+            $app->enqueueEntityToPCacheRecreation($app->repo('Opportunity')->find($phase['root_id']));
+        }
+
+        $app->persistPCachePendingQueue();
 
         echo 'Configurações de avaliação movidas para a coleta: ' . count($phases) . "\n";
     },
