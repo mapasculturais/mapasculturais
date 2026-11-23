@@ -2,10 +2,9 @@
 
 namespace Tests;
 
-use Closure;
-use MapasCulturais\App;
 use MapasCulturais\Entities\EvaluationMethodConfiguration;
 use MapasCulturais\Entities\Opportunity;
+use OpportunityPhases\Module as OpportunityPhasesModule;
 use Tests\Abstract\TestCase;
 use Tests\Builders\PhasePeriods\Open;
 use Tests\Traits\OpportunityBuilder;
@@ -18,17 +17,12 @@ class ShelterPhaseEvaluationDbUpdateTest extends TestCase
         RegistrationDirector,
         UserDirector;
 
-    private const UPDATE_NAME = 'move para a coleta a configuração de avaliação deixada em fase sem formulário e sem inscrições';
-
-    /** @var array<string, Closure>|null */
-    private static ?array $db_updates = null;
-
     function testConfigurationMovesToDataCollectionAndEmptyPhaseIsRemoved(): void
     {
         [$root, $shelter, $configuration] = $this->createShelterStructure();
         $this->registrationDirector->createSentRegistrations($root, 2);
 
-        $this->runDbUpdate();
+        $this->moveConfigurations();
 
         $this->assertSame($root->id, $this->configurationOwnerId($configuration->id));
         $this->assertFalse($this->opportunityExists($shelter->id));
@@ -39,7 +33,7 @@ class ShelterPhaseEvaluationDbUpdateTest extends TestCase
         [, $shelter, $configuration] = $this->createShelterStructure();
         $this->registrationDirector->createDraftRegistrations($shelter, 1);
 
-        $this->runDbUpdate();
+        $this->moveConfigurations();
 
         $this->assertSame($shelter->id, $this->configurationOwnerId($configuration->id));
         $this->assertTrue($this->opportunityExists($shelter->id));
@@ -49,10 +43,10 @@ class ShelterPhaseEvaluationDbUpdateTest extends TestCase
     {
         [$root, $shelter, $configuration] = $this->createShelterStructure();
 
-        $this->runDbUpdate();
+        $this->moveConfigurations();
         $phasesAfterFirstRun = $this->childrenIds($root->id);
 
-        $this->runDbUpdate();
+        $this->moveConfigurations();
 
         $this->assertSame($root->id, $this->configurationOwnerId($configuration->id));
         $this->assertFalse($this->opportunityExists($shelter->id));
@@ -99,31 +93,9 @@ class ShelterPhaseEvaluationDbUpdateTest extends TestCase
         return [$root, $shelter, $configuration];
     }
 
-    private function runDbUpdate(): void
+    private function moveConfigurations(): void
     {
-        if (self::$db_updates === null) {
-            if (!defined('DB_UPDATES_FILE')) {
-                $dir = __DIR__;
-                while ($dir !== '/' && !file_exists($dir . '/src/db-updates.php')) {
-                    $dir = dirname($dir);
-                }
-
-                define('DB_UPDATES_FILE', $dir . '/src/db-updates.php');
-            }
-
-            // o arquivo lê $this->_register: o include precisa do escopo da classe App
-            $loader = Closure::bind(fn() => include DB_UPDATES_FILE, $this->app, App::class);
-            self::$db_updates = $loader();
-        }
-
-        $this->assertArrayHasKey(self::UPDATE_NAME, self::$db_updates);
-
-        ob_start();
-        try {
-            (self::$db_updates[self::UPDATE_NAME])();
-        } finally {
-            ob_end_clean();
-        }
+        OpportunityPhasesModule::moveEvaluationConfigurationsFromEmptyPhasesToDataCollection($this->app);
     }
 
     private function conn(): \Doctrine\DBAL\Connection
