@@ -3432,134 +3432,14 @@ $$
         return true;
     },
 
-    'move para a coleta a configuração de avaliação deixada em fase sem formulário e sem inscrições' => function() use ($app, $conn) {
-        $conn->beginTransaction();
+    'move para a coleta a configuração de avaliação deixada em fase sem formulário e sem inscrições' => function() use ($app) {
+        $result = \OpportunityPhases\Module::moveEvaluationConfigurationsFromEmptyPhasesToDataCollection($app);
 
-        try {
-            // a fase anterior segue o critério do getter previousPhase, em OpportunityPhases\Module
-            $phases = $conn->fetchAllAssociative("
-                SELECT
-                    phase.id AS phase_id,
-                    root.id AS root_id,
-                    root.subsite_id,
-                    owner_agent.user_id,
-                    emc.id AS emc_id,
-                    (
-                        EXISTS (
-                            SELECT 1 FROM registration r
-                            WHERE r.opportunity_id = root.id AND r.status > :draft)
-                        AND EXISTS (
-                            SELECT 1 FROM evaluationmethodconfiguration_meta m
-                            WHERE m.object_id = emc.id
-                                AND m.key = 'distributionConfiguration'
-                                AND m.value <> 'deactivate')
-                    ) AS must_redistribute
-                FROM opportunity phase
-                    JOIN opportunity root ON root.id = phase.parent_id
-                    JOIN agent owner_agent ON owner_agent.id = root.agent_id
-                    JOIN evaluation_method_configuration emc ON emc.opportunity_id = phase.id
-                WHERE
-                    phase.status > :trash
-                    AND EXISTS (
-                        SELECT 1 FROM opportunity_meta m
-                        WHERE m.object_id = phase.id AND m.key = 'isDataCollection' AND m.value = '0')
-                    AND NOT EXISTS (
-                        SELECT 1 FROM opportunity_meta m
-                        WHERE m.object_id = phase.id
-                            AND m.value IS NOT NULL
-                            AND m.key IN ('isLastPhase', 'isAppealPhase', 'isReportingPhase', 'isExecutionPhase'))
-                    AND NOT EXISTS (
-                        SELECT 1 FROM opportunity_meta m
-                        WHERE m.object_id = phase.id AND m.key = 'appealPhase')
-                    AND NOT EXISTS (SELECT 1 FROM registration r WHERE r.opportunity_id = phase.id)
-                    AND NOT EXISTS (SELECT 1 FROM opportunity child WHERE child.parent_id = phase.id)
-                    AND NOT EXISTS (SELECT 1 FROM evaluation_method_configuration e WHERE e.opportunity_id = root.id)
-                    AND NOT EXISTS (
-                        SELECT 1 FROM registration r
-                        WHERE r.opportunity_id = root.id AND r.status = :approved)
-                    AND root.id = (
-                        SELECT previous.id
-                        FROM opportunity previous
-                        WHERE (previous.id = root.id OR previous.parent_id = root.id)
-                            AND previous.id < phase.id
-                            AND previous.id <> (
-                                SELECT final_phase.id
-                                FROM opportunity final_phase
-                                    JOIN opportunity_meta fm ON fm.object_id = final_phase.id
-                                WHERE final_phase.parent_id = root.id
-                                    AND final_phase.status > :trash
-                                    AND fm.key = 'isLastPhase'
-                                    AND fm.value = '1'
-                                LIMIT 1)
-                            AND previous.status > :trash
-                            AND NOT EXISTS (
-                                SELECT 1 FROM opportunity_meta m
-                                WHERE m.object_id = previous.id
-                                    AND m.value IS NOT NULL
-                                    AND m.key IN ('isAppealPhase', 'isReportingPhase', 'isExecutionPhase'))
-                        ORDER BY previous.id DESC
-                        LIMIT 1)
-                FOR UPDATE OF phase
-            ", [
-                'trash' => Entities\Opportunity::STATUS_TRASH,
-                'draft' => Entities\Registration::STATUS_DRAFT,
-                'approved' => Entities\Registration::STATUS_APPROVED,
-            ]);
-
-            foreach ($phases as $phase) {
-                $moved = $conn->executeStatement('
-                    UPDATE evaluation_method_configuration SET opportunity_id = :root WHERE id = :emc
-                ', ['root' => $phase['root_id'], 'emc' => $phase['emc_id']]);
-
-                if ($moved != 1) {
-                    throw new \Exception("Configuração de avaliação {$phase['emc_id']} não foi movida para a oportunidade {$phase['root_id']}");
-                }
-
-                $deleted = $conn->executeStatement('
-                    DELETE FROM opportunity phase
-                    WHERE phase.id = :phase
-                        AND NOT EXISTS (SELECT 1 FROM registration r WHERE r.opportunity_id = phase.id)
-                        AND NOT EXISTS (SELECT 1 FROM opportunity child WHERE child.parent_id = phase.id)
-                ', ['phase' => $phase['phase_id']]);
-
-                if ($deleted != 1) {
-                    throw new \Exception("Fase {$phase['phase_id']} não foi excluída");
-                }
-            }
-
-            $conn->commit();
-        } catch (\Throwable $e) {
-            $conn->rollBack();
-            throw $e;
+        foreach ($result['deferred'] as $opportunity_id => $error) {
+            echo "Redistribuição da oportunidade {$opportunity_id} deixada para o job: {$error}\n";
         }
 
-        foreach ($phases as $phase) {
-            if ($phase['must_redistribute']) {
-                // sem limpar, o Doctrine pode devolver a ficha ainda ligada à fase excluída
-                $app->em->clear();
-                $emc = $app->repo('EvaluationMethodConfiguration')->find($phase['emc_id']);
-
-                try {
-                    $emc->redistributeCommitteeRegistrations();
-                } catch (\Throwable $e) {
-                    echo "Redistribuição da oportunidade {$phase['root_id']} deixada para o job: {$e->getMessage()}\n";
-
-                    $app->enqueueJob(
-                        \Opportunities\Jobs\RedistributeCommitteeRegistrations::SLUG,
-                        ['evaluationMethodConfiguration' => $emc],
-                        'now',
-                        user: $phase['user_id'],
-                        subsite: $phase['subsite_id'],
-                    );
-                }
-            }
-
-            $app->enqueueEntityToPCacheRecreation($app->repo('Opportunity')->find($phase['root_id']));
-        }
-
-        $app->persistPCachePendingQueue();
-
-        echo 'Configurações de avaliação movidas para a coleta: ' . count($phases) . "\n";
+        echo "Configurações de avaliação movidas para a coleta: {$result['moved']}\n";
     },
 
 ] + $updates ;
