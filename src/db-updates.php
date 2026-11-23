@@ -3432,4 +3432,14 @@ $$
         return true;
     },
 
+    'move para a coleta a configuração de avaliação deixada em fase sem formulário e sem inscrições' => function() use ($app) {
+        $result = \OpportunityPhases\Module::moveEvaluationConfigurationsFromEmptyPhasesToDataCollection($app);
+
+        foreach ($result['deferred'] as $opportunity_id => $error) {
+            echo "Redistribuição da oportunidade {$opportunity_id} deixada para o job: {$error}\n";
+        }
+
+        echo "Configurações de avaliação movidas para a coleta: {$result['moved']}\n";
+    },
+
 ] + $updates ;
