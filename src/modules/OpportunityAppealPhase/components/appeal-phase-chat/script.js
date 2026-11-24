@@ -76,7 +76,7 @@ app.component('appeal-phase-chat', {
                 case 10:
                     return 'success__color';
                 case 9:
-                    return 'partial__color';
+                    return 'warning__color--dark';
 				case 3 : 
                     return 'danger__color';
 				case 8 : 

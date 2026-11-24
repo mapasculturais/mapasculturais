@@ -119,7 +119,7 @@ app.component('registration-results', {
                     return 'success__color';
 
                 case 9:
-                    return 'partial__color';
+                    return 'warning__color--dark';
                     
                 case 2 : 
                 case 0 : 
