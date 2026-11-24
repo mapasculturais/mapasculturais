@@ -929,22 +929,22 @@ class Controller extends \MapasCulturais\Controller
                   $yearIn = null;
                   $yearFn = null;
                   if(count($_years) == 1){
-                     $yearFn = i::__(" de ".$this->formatDate($_years[0], "Y"));
+                     $yearFn = sprintf(i::__(" de %s"), $this->formatDate($_years[0], "Y"));
                   }else{
                      if(isset($_years[0]) && isset($_years[0])){
-                        $yearIn = i::__(" de ".$this->formatDate($_years[0], "Y"));
-                        $yearFn = i::__(" de ".$this->formatDate($_years[1], "Y"));
+                        $yearIn = sprintf(i::__(" de %s"), $this->formatDate($_years[0], "Y"));
+                        $yearFn = sprintf(i::__(" de %s"), $this->formatDate($_years[1], "Y"));
                      }else{
-                        $yearFn = i::__(" de ".$this->formatDate($_years[0], "Y"));
+                        $yearFn = sprintf(i::__(" de %s"), $this->formatDate($_years[0], "Y"));
                      }
                   }
                
                   $start = $this->formatDate($value['STARTS_AT'], false);
                   if(count($_months) == 1){
-                     $rule['description'].= i::__("de {$dateIn->format("d")} a {$dateFn->format("d")} de  {$dateIn->format("F")} {$yearFn}  às {$start->format("H:i")}");
+                     $rule['description'].= sprintf(i::__("de %s a %s de %s %s às %s"), $dateIn->format("d"), $dateFn->format("d"), $dateIn->format("F"), $yearFn, $start->format("H:i"));
                   }else{
                      $dateFn = $this->formatDate($_months[1], false);
-                     $rule['description'].= i::__("de {$dateIn->format("d")} de {$dateIn->format("F")} {$yearIn} a {$dateFn->format("d")} de {$dateFn->format("F")} {$yearFn} às {$start->format("H:i")}");
+                     $rule['description'].= sprintf(i::__("de %s de %s %s a %s de %s %s às %s"), $dateIn->format("d"), $dateIn->format("F"), $yearIn, $dateFn->format("d"), $dateFn->format("F"), $yearFn, $start->format("H:i"));
                   }
                   
                };
@@ -956,7 +956,7 @@ class Controller extends \MapasCulturais\Controller
                   $dateIn = $this->formatDate($value['STARTS_ON'], false);
                   $start = $this->formatDate($value['STARTS_AT'], false);
    
-                  $rule['description'].= i::__("Dia {$dateIn->format("d")} de {$dateIn->format("F")} de {$dateIn->format("Y")} às {$start->format("H:i")}");
+                  $rule['description'].= sprintf(i::__("Dia %s de %s de %s às %s"), $dateIn->format("d"), $dateIn->format("F"), $dateIn->format("Y"), $start->format("H:i"));
                };
                break;
          }

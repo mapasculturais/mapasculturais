@@ -775,7 +775,8 @@ class Registrations extends SpreadsheetJob
         $extension = $job->extension;
         $date = date('Y-m-d H:i:s');
         
-        $result = "{$opportunity}-{$opportunity_id}--inscricoes-{$date}.{$extension}";
+        $registrations = i::__('inscricoes');
+        $result = "{$opportunity}-{$opportunity_id}--{$registrations}-{$date}.{$extension}";
 
         return $result;
     }
