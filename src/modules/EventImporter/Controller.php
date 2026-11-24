@@ -344,7 +344,7 @@ class Controller extends \MapasCulturais\Controller
             $coll[] = mb_strtoupper($moduleConfig['header_default'][$collum][0]);
          }
          $_coll = implode(", ", $coll);
-         $errors['errors'][1][] = i::__("As colunas {$_coll} não foram encontradas na planilha");
+         $errors['errors'][1][] = sprintf(i::__("As colunas %s não foram encontradas na planilha"), $_coll);
       }
 
       $clearOcurrenceList = [];
@@ -401,7 +401,7 @@ class Controller extends \MapasCulturais\Controller
 
                if (!in_array($this->lowerStr($value['CLASSIFICATION']),$moduleConfig['rating_list_allowed'])) {
                   $rating_str = implode(', ',$moduleConfig['rating_list_allowed']);
-                  $errors['errors'][$key+1][] = i::__("A coluna classificação etária é inválida. As opções aceitas são {$rating_str}");
+                  $errors['errors'][$key+1][] = sprintf(i::__("A coluna classificação etária é inválida. As opções aceitas são %s"), $rating_str);
                }
 
                //Validação das linguagens
@@ -417,7 +417,7 @@ class Controller extends \MapasCulturais\Controller
                   $_language = $this->lowerStr($language);
 
                   if (!in_array(trim($_language), array_keys($languages_list))) {
-                     $errors['errors'][$key+1][] = i::__("A linguagem {$_language} não existe");
+                     $errors['errors'][$key+1][] = sprintf(i::__("A linguagem %s não existe"), $_language);
                   }
                }
 
@@ -436,7 +436,7 @@ class Controller extends \MapasCulturais\Controller
          
                   if ($collum == 'name') {
                      if (count($projects) > 1){
-                        $errors['errors'][$key+1][] = i::__("Existe mais de um projeto com o nome {$value['PROJECT']}. Para proseguir, informe o ID do projeto que quer associar ao evento");
+                        $errors['errors'][$key+1][] = sprintf(i::__("Existe mais de um projeto com o nome %s. Para proseguir, informe o ID do projeto que quer associar ao evento"), $value['PROJECT']);
                      }
                   }
                }
@@ -466,7 +466,7 @@ class Controller extends \MapasCulturais\Controller
 
                if ($collum_spa == 'name') {
                   if (count($spaces) > 1) {
-                     $errors['errors'][$key+1][] = i::__("Existe mais de um espaço com o nome {$value['SPACE']}. Para proseguir informe o ID do espaço que quer associar ao evento");
+                     $errors['errors'][$key+1][] = sprintf(i::__("Existe mais de um espaço com o nome %s. Para proseguir informe o ID do espaço que quer associar ao evento"), $value['SPACE']);
                   }
                }
 
@@ -477,7 +477,7 @@ class Controller extends \MapasCulturais\Controller
 
                if (!in_array($value['FREQUENCY'], array_keys($moduleConfig['frequence_list_allowed']))) {
                   $frequence_str = implode(', ', array_keys($moduleConfig['frequence_list_allowed']));
-                  $errors['errors'][$key+1][] = i::__("A frequência é inválida. As opções aceitas são {$frequence_str}");
+                  $errors['errors'][$key+1][] = sprintf(i::__("A frequência é inválida. As opções aceitas são %s"), $frequence_str);
                }
 
                if(in_array($value['FREQUENCY'], $moduleConfig['use_week_days'])){
@@ -617,7 +617,7 @@ class Controller extends \MapasCulturais\Controller
                   $app->em->commit();
                } else {
                   $error_process = true;
-                  $errors['errors'][$key + 1][] = i::__("Evento {$event->name} não foi inserido (falha na ocorrência, arquivos ou metalists)");
+                  $errors['errors'][$key + 1][] = sprintf(i::__("Evento %s não foi inserido (falha na ocorrência, arquivos ou metalists)"), $event->name);
                   $app->em->rollback();
                }
             } else if ($type_process_map->delete_event) {
