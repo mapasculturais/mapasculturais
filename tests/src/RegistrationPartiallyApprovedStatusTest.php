@@ -137,33 +137,21 @@ class RegistrationPartiallyApprovedStatusTest extends Abstract\TestCase
 
     function testContinuousBatchApplicationSetsPartiallyApprovedAndFiresHook()
     {
-        [$opportunity, $registration] = $this->createOpportunityWithSentRegistration();
-
-        $this->app->disableAccessControl();
-        try {
-            $opportunity->evaluationMethodConfiguration->type = 'continuous';
-            $opportunity->evaluationMethodConfiguration->save(true);
-        } finally {
-            $this->app->enableAccessControl();
-        }
-
-        $this->app->conn->executeStatement(
-            'UPDATE registration SET consolidated_result = :result WHERE id = :id',
-            ['result' => '9', 'id' => $registration->id]
-        );
-        $this->app->em->clear();
+        [$opportunity, $registration] = $this->createContinuousOpportunityWithResult('9', [
+            Registration::STATUS_DRAFT => 'Rascunho',
+            Registration::STATUS_SENT => 'Aguardando resposta',
+            Registration::STATUS_INVALID => 'Negado',
+            Registration::STATUS_NOTAPPROVED => 'Indeferido',
+            Registration::STATUS_PARTIALLY_APPROVED => 'Deferido parcialmente',
+            Registration::STATUS_APPROVED => 'Deferido',
+        ]);
 
         $hook_calls = 0;
         $this->app->hook('entity(Registration).status(partiallyapproved)', function () use (&$hook_calls) {
             $hook_calls++;
         });
 
-        $request = $this->requestFactory->POST(
-            controller_id: 'opportunity',
-            action: 'applyEvaluationsContinuous',
-            url_params: [$opportunity->id],
-            payload: ['from' => '9', 'to' => Registration::STATUS_PARTIALLY_APPROVED, 'status' => 'all']
-        );
+        $request = $this->createBatchApplicationRequest($opportunity, '9', Registration::STATUS_PARTIALLY_APPROVED);
 
         // Descarta o log do endpoint durante a requisição.
         $this->app->log->pushHandler(new \Monolog\Handler\NullHandler());
@@ -180,6 +168,41 @@ class RegistrationPartiallyApprovedStatusTest extends Abstract\TestCase
         );
 
         $this->assertSame(1, $hook_calls, 'Garantindo que a aplicação em lote dispare o hook do deferido parcialmente');
+    }
+
+    function testContinuousBatchApplicationRejectsPartiallyApprovedWhenPhaseDisablesIt()
+    {
+        [$opportunity, $registration] = $this->createContinuousOpportunityWithResult('9');
+
+        $request = $this->createBatchApplicationRequest($opportunity, '9', Registration::STATUS_PARTIALLY_APPROVED);
+
+        $this->assertStatus400($request, 'Garantindo que a aplicação em lote recuse o deferido parcialmente desabilitado na fase');
+
+        $this->assertSame(
+            Registration::STATUS_SENT,
+            $this->app->repo('Registration')->find($registration->id)->status,
+            'Garantindo que a aplicação em lote recusada não altere o status da inscrição'
+        );
+    }
+
+    function testContinuousBatchApplicationRejectsAnyStatusDisabledInPhase()
+    {
+        [$opportunity, $registration] = $this->createContinuousOpportunityWithResult('3', [
+            Registration::STATUS_DRAFT => 'Rascunho',
+            Registration::STATUS_SENT => 'Aguardando resposta',
+            Registration::STATUS_NOTAPPROVED => 'Indeferido',
+            Registration::STATUS_APPROVED => 'Deferido',
+        ]);
+
+        $request = $this->createBatchApplicationRequest($opportunity, '3', Registration::STATUS_INVALID);
+
+        $this->assertStatus400($request, 'Garantindo que a aplicação em lote recuse o Negado desabilitado na fase');
+
+        $this->assertSame(
+            Registration::STATUS_SENT,
+            $this->app->repo('Registration')->find($registration->id)->status,
+            'Garantindo que a aplicação em lote recusada não altere o status da inscrição'
+        );
     }
 
     function testSpreadsheetsNamePartiallyApprovedStatus()
@@ -230,6 +253,51 @@ class RegistrationPartiallyApprovedStatusTest extends Abstract\TestCase
             "e.consolidatedResult = '9'",
             $where,
             'Garantindo que a busca por "deferido parcialmente" encontre o resultado 9'
+        );
+    }
+
+    /**
+     * Cria uma oportunidade de avaliação contínua com uma inscrição enviada e o resultado consolidado informado
+     *
+     * @return array{Opportunity, Registration}
+     */
+    private function createContinuousOpportunityWithResult(string $consolidated_result, ?array $status_labels = null): array
+    {
+        [$opportunity, $registration] = $this->createOpportunityWithSentRegistration();
+
+        $this->app->disableAccessControl();
+        try {
+            $opportunity->evaluationMethodConfiguration->type = 'continuous';
+            $opportunity->evaluationMethodConfiguration->save(true);
+
+            if ($status_labels !== null) {
+                $opportunity = $opportunity->refreshed();
+                $opportunity->statusLabels = $status_labels;
+                $opportunity->save(true);
+            }
+        } finally {
+            $this->app->enableAccessControl();
+        }
+
+        $this->app->conn->executeStatement(
+            'UPDATE registration SET consolidated_result = :result WHERE id = :id',
+            ['result' => $consolidated_result, 'id' => $registration->id]
+        );
+        $this->app->em->clear();
+
+        return [$opportunity->refreshed(), $registration];
+    }
+
+    /**
+     * Monta a requisição de aplicação em lote do método contínuo
+     */
+    private function createBatchApplicationRequest(Opportunity $opportunity, string $from, int $to)
+    {
+        return $this->requestFactory->POST(
+            controller_id: 'opportunity',
+            action: 'applyEvaluationsContinuous',
+            url_params: [$opportunity->id],
+            payload: ['from' => $from, 'to' => $to, 'status' => 'all']
         );
     }
 

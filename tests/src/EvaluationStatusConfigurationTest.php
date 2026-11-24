@@ -137,6 +137,39 @@ class EvaluationStatusConfigurationTest extends Abstract\TestCase
         );
     }
 
+    function testContinuousBatchApplicationHidesDisabledPartialApproval()
+    {
+        [$opportunity] = $this->createEvaluationPhase('continuous', [
+            '0' => 'Rascunho',
+            '1' => 'Aguardando resposta',
+            '3' => 'Indeferido',
+            '10' => 'Deferido',
+        ]);
+
+        $this->assertNotContains(
+            Registration::STATUS_PARTIALLY_APPROVED,
+            $this->batchApplicationStatuses($opportunity),
+            'Garantindo que a aplicação em lote não ofereça o deferido parcialmente desabilitado na fase'
+        );
+    }
+
+    function testContinuousBatchApplicationListsEnabledPartialApproval()
+    {
+        [$opportunity] = $this->createEvaluationPhase('continuous', [
+            '0' => 'Rascunho',
+            '1' => 'Aguardando resposta',
+            '3' => 'Indeferido',
+            '9' => 'Deferido parcialmente',
+            '10' => 'Deferido',
+        ]);
+
+        $this->assertContains(
+            Registration::STATUS_PARTIALLY_APPROVED,
+            $this->batchApplicationStatuses($opportunity),
+            'Garantindo que a aplicação em lote ofereça o deferido parcialmente habilitado na fase'
+        );
+    }
+
     function testSimpleEvaluationFormOnlyListsEnabledStatuses()
     {
         [, $registration, $valuer] = $this->createEvaluationPhase('simple', [
@@ -268,6 +301,19 @@ class EvaluationStatusConfigurationTest extends Abstract\TestCase
         $valuer = $this->app->repo('User')->find($valuer_user_id);
 
         return [$opportunity->refreshed(), $registration, $valuer];
+    }
+
+    /**
+     * Abre a lista de inscrições da fase como gestor e devolve os status oferecidos na aplicação em lote
+     */
+    private function batchApplicationStatuses(Opportunity $opportunity): array
+    {
+        $request = $this->requestFactory->GET('opportunity', 'registrations', [$opportunity->id]);
+        $this->assertStatus200($request, 'Garantindo que o gestor acessa a lista de inscrições da fase');
+
+        $status_list = $this->app->view->jsObject['config']['evaluation-method-continuous--apply']['statusList'];
+
+        return array_map(fn ($item) => (int) $item['status'], $status_list);
     }
 
     private function sendEvaluation(Registration $registration, int $status)
