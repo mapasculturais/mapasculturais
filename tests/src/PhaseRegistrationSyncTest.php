@@ -494,6 +494,39 @@ class PhaseRegistrationSyncTest extends TestCase
     }
 
     /**
+     * Garante que o chat do recurso não grave nenhum status desabilitado na fase.
+     */
+    function testAppealChatIgnoresAnyStatusDisabledInPhase(): void
+    {
+        $context = $this->buildPnabLikeOpportunity(withAnexos: false);
+        $this->createRegistrationsByStatus($context->coletaMerito);
+        $context = $this->refreshContext($context);
+
+        $appeal = $this->sendAppealRegistration($this->createAppealRegistration(
+            $this->findRegistration($context->coletaMerito, '444')
+        ));
+
+        $this->app->disableAccessControl();
+        try {
+            $appealPhase = $appeal->opportunity;
+            $statusLabels = $appealPhase->statusLabels;
+            unset($statusLabels[Registration::STATUS_INVALID]);
+            $appealPhase->statusLabels = $statusLabels;
+            $appealPhase->save(true);
+        } finally {
+            $this->app->enableAccessControl();
+        }
+
+        $evaluation = $this->sendAppealChatStatus($appeal->refreshed(), Registration::STATUS_INVALID);
+
+        $this->assertNotEquals(
+            Registration::STATUS_INVALID,
+            $evaluation->result,
+            'Garantindo que o chat não grave o Negado quando a fase o desabilita'
+        );
+    }
+
+    /**
      * Garante que inscrições suplente e inválida sigam as mesmas regras de sync de Anexos que a não selecionada.
      *
      * Modo appealPhaseAffectsSync = true: o recurso afeta ativamente a sincronização.
