@@ -31,11 +31,41 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ## [Unreleased]
 ### Novas Funcionalidades
+- Substitui o iframe legado (AngularJS) da aba Relatórios da gestão de oportunidade por componentes Vue nativos, incluindo os gráficos estáticos e o construtor de gráficos personalizados (criar, editar, pré-visualizar e excluir)
+- Adiciona filtro por tipo de proponente e por faixa/linha aos relatórios da oportunidade, disponíveis como campos selecionáveis no construtor de gráficos e na exportação em CSV
 - Na comissão de avaliação, o gestor pode selecionar no modal uma ou mais avaliações enviadas para reabrir, ou reabrir todas as enviadas de uma pessoa avaliadora. Na seleção, apenas as escolhidas passam para concluídas.
 - Adiciona configuração na oportunidade para ocultar todas as datas das fases na página pública, na linha do tempo de acompanhamento da inscrição e nos avisos de prazo da ficha, mantendo as datas operacionais ativas para validações e gestão interna.
 - **Avaliação automática por selos**: o gestor pode indicar, em uma fase de avaliação, quais selos validam o proponente. Se a pessoa já tiver esses selos válidos no perfil, a inscrição é **dispensada automaticamente** daquela fase (marcada como “Dispensada por selos”) e segue para a próxima etapa, sem precisar de avaliador
 - **Novos anexos no cadastro do agente** (também usáveis como campos `@` no formulário de inscrição): CPF, CNPJ, CNH, RG, passaporte, comprovante de residência, vínculo territorial, currículo, portfólio, certidões fiscal, trabalhista e de prestação de contas, além de comprovantes de raça/cor, pessoa com deficiência e comunidades tradicionais. Os arquivos ficam no perfil e acompanham a inscrição automaticamente
 - **Documentação navegável da API pública** em `/api/documentation`: página com os endpoints de leitura das entidades (Agentes, Eventos, Espaços, Projetos, Oportunidades), filtros, formatos e schemas de resposta, com opção de testar cada consulta no próprio navegador
+
+### Correções
+- Corrige "Tipo de proponente" e "Faixa/Linha" que não apareciam como opções de campo no construtor de gráficos de relatórios
+- Corrige gráfico personalizado salvo nos relatórios que podia colidir ou ser sobrescrito por outro com os mesmos campos em uma oportunidade diferente
+- Corrige erro ao carregar os gráficos estáticos de relatórios em oportunidades sem avaliação técnica configurada
+- Corrige loop de redimensionamento nos gráficos dos relatórios que fazia a tela tremer continuamente
+
+### Melhorias
+- Ajusta ícones, botões e campos do construtor de gráficos de relatórios para seguir o padrão visual da plataforma
+
+### Melhorias não funcionais
+- Adiciona testes automatizados para os filtros de tipo de proponente e faixa/linha e para a correção de duplicação de gráficos personalizados nos relatórios
+
+## [7.8.24] - 2026-11-19
+### Melhorias
+- Atualiza o PHP para a versão 8.3.37, com as correções de segurança recomendadas pelo próprio PHP
+
+## [7.8.23] - 2026-11-18
+### Correções
+- Endurece a decodificação de metadados usados em cotas e desempates
+- Passa a serializar jobs de e-mail em formato JSON
+- Força transporte de callback Opauth via sessão
+- Torna estável o desempate na redistribuição de comissões de avaliação
+- Corrige a abertura de pedido na fase de execução, que recusava proponentes cuja inscrição foi feita com outro agente da conta: o pedido passa a poder ser aberto por quem controla o agente responsável pela inscrição, a mesma regra do acompanhamento, e quem não tem vínculo com a inscrição continua sem acesso
+- Corrige a avaliação de recurso em que o avaliador via todos os campos de "Dados informados no formulário" da fase pai, mesmo com a lista de campos visíveis liberando só alguns: o filtro só era aplicado quando a pessoa já tinha `viewUserEvaluation` na inscrição da fase pai, o que não vale para quem avalia apenas o recurso; a ficha da avaliação passa a respeitar essa lista também nesse caso, e os valores não liberados deixam de ser injetados no formulário (gestores com `@control` continuam vendo tudo)
+- Corrige a exibição do aviso "*obrigatório" nos campos do tipo caixa de verificação, tanto na prévia quanto no preenchimento do formulário de inscrição
+- O seletor de datas (`mc-datepicker`) passa a usar o idioma da instalação (`$MAPAS.config.locale`) em vez de ficar sempre em pt-BR, e os nomes dos dias da semana deixam de ser fixos em português
+- Corrige a concessão e a remoção de selos por tipo de proponente e por categoria na publicação/despublicação do resultado e na mudança de status da inscrição: quando a inscrição tinha tipo ou categoria sem chave correspondente em `proponentSeals`/`categorySeals`, o PHP acessava propriedade inexistente e a operação falhava; a aplicação e a remoção dos selos passam a ocorrer só quando a chave existe, e `applySeal`/`removeSeals` ignoram listas nulas ou vazias
 
 ## [7.8.22] - 2026-11-11
 ### Correções
@@ -50,8 +80,8 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Corrige o modal "Configurar campos editáveis", que travava a data limite assim que havia campos selecionados: o gestor volta a conseguir estender/reabrir o prazo perdido do proponente
 
 ### Melhorias
-- Na busca de eventos, administradores passam a ter a aba Tabela, com listagem em colunas e exportação de planilha, no mesmo padrão de agentes, espaços, projetos e oportunidades
-- Na gestão de usuários, a ficha do usuário passa a ter a aba Avaliações: mostra as fases em que a pessoa avalia (como em Minhas avaliações) e lista as avaliações iniciadas, concluídas e enviadas
+- Na busca de eventos, ajusta a visualização dos administradores que passam a ver a aba Tabela, com listagem em colunas e exportação de planilha, no mesmo padrão de agentes, espaços, projetos e oportunidades
+- Na gestão de usuários, ajusta a ficha do usuário que passa a ver a aba Avaliações: mostra as fases em que a pessoa avalia (como em Minhas avaliações) e lista as avaliações iniciadas, concluídas e enviadas
 - Na gestão de usuários, os cards da aba Agentes passam a exibir o ID do agente, como na listagem pública
 
 ## [7.8.21] - 2026-10-28

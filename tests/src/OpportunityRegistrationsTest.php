@@ -84,6 +84,209 @@ class OpportunityRegistrationsTest extends TestCase
         $this->assertTrue(true);
     }
 
+    function testApplySealIgnoresNullSealIds() {
+        /** @var OpportunitiesModule $module */
+        $module = App::i()->modules['Opportunities'];
+
+        $module->applySeal(null, null);
+
+        $this->assertTrue(true);
+    }
+
+    function testRemoveSealsIgnoresNullOrEmptySealIds() {
+        /** @var OpportunitiesModule $module */
+        $module = App::i()->modules['Opportunities'];
+        $app = App::i();
+
+        $module->removeSeals($app, [], null);
+        $module->removeSeals($app, [], []);
+
+        $this->assertTrue(true);
+    }
+
+    /**
+     * Publicar resultado não deve falhar quando a inscrição tem proponentType
+     * ausente em proponentSeals.
+     */
+    function testPublishRegistrationsWithMissingProponentSealKeyDoesNotFail() {
+        $app = App::i();
+        $admin = $this->userDirector->createUser('admin');
+        $this->login($admin);
+
+        /** @var Opportunity */
+        $opportunity = $this->opportunityBuilder
+                            ->reset(owner: $admin->profile, owner_entity: $admin->profile)
+                            ->fillRequiredProperties()
+                            ->setProponentTypes()
+                            ->save()
+                            ->firstPhase()
+                                ->setRegistrationPeriod(new Open)
+                                ->done()
+                            ->save()
+                            ->refresh()
+                            ->getInstance();
+
+        $registration = $this->registrationDirector->createSentRegistrations(
+            $opportunity,
+            number_of_registrations: 1,
+            proponent_type: ProponentTypes::COLETIVO->value
+        )[0];
+
+        $registration->setStatusToApproved(true);
+
+        // Selos só para Pessoa Física — Coletivo não tem chave
+        $opportunity->proponentSeals = (object) [
+            ProponentTypes::PESSOA_FISICA->value => []
+        ];
+        $opportunity->save(true);
+
+        $app->disableAccessControl();
+        $opportunity->publishRegistrations();
+        $app->enableAccessControl();
+
+        $this->assertTrue($opportunity->publishedRegistrations);
+        $this->assertEquals(Registration::STATUS_APPROVED, $registration->refreshed()->status);
+    }
+
+    /**
+     * Despublicar resultado não deve falhar quando a inscrição tem proponentType
+     * ausente em proponentSeals.
+     */
+    function testUnpublishRegistrationsWithMissingProponentSealKeyDoesNotFail() {
+        $app = App::i();
+        $admin = $this->userDirector->createUser('admin');
+        $this->login($admin);
+
+        /** @var Opportunity */
+        $opportunity = $this->opportunityBuilder
+                            ->reset(owner: $admin->profile, owner_entity: $admin->profile)
+                            ->fillRequiredProperties()
+                            ->setProponentTypes()
+                            ->save()
+                            ->firstPhase()
+                                ->setRegistrationPeriod(new Open)
+                                ->done()
+                            ->save()
+                            ->refresh()
+                            ->getInstance();
+
+        $registration = $this->registrationDirector->createSentRegistrations(
+            $opportunity,
+            number_of_registrations: 1,
+            proponent_type: ProponentTypes::COLETIVO->value
+        )[0];
+
+        $registration->setStatusToApproved(true);
+
+        $opportunity->proponentSeals = (object) [
+            ProponentTypes::PESSOA_FISICA->value => []
+        ];
+        $opportunity->save(true);
+
+        $app->disableAccessControl();
+        $opportunity->publishRegistrations();
+        // publishRegistrations faz em->clear(); precisa recarregar antes do unpublish
+        $opportunity = $app->repo('Opportunity')->find($opportunity->id);
+        $opportunity->unPublishRegistrations();
+        $app->enableAccessControl();
+
+        $this->assertFalse($opportunity->publishedRegistrations);
+        $this->assertEquals(Registration::STATUS_APPROVED, $registration->refreshed()->status);
+    }
+
+    /**
+     * Mudança de status após publicação não deve falhar com chave ausente em proponentSeals.
+     */
+    function testStatusChangeWithMissingProponentSealKeyDoesNotFail() {
+        $app = App::i();
+        $admin = $this->userDirector->createUser('admin');
+        $this->login($admin);
+
+        /** @var Opportunity */
+        $opportunity = $this->opportunityBuilder
+                            ->reset(owner: $admin->profile, owner_entity: $admin->profile)
+                            ->fillRequiredProperties()
+                            ->setProponentTypes()
+                            ->save()
+                            ->firstPhase()
+                                ->setRegistrationPeriod(new Open)
+                                ->done()
+                            ->save()
+                            ->refresh()
+                            ->getInstance();
+
+        $app->disableAccessControl();
+        $opportunity->publishRegistrations();
+        $app->enableAccessControl();
+
+        $registration = $this->registrationDirector->createSentRegistrations(
+            $opportunity,
+            number_of_registrations: 1,
+            proponent_type: ProponentTypes::COLETIVO->value
+        )[0];
+
+        $opportunity->proponentSeals = (object) [
+            ProponentTypes::PESSOA_FISICA->value => []
+        ];
+        $opportunity->save(true);
+
+        $registration->setStatusToApproved(true);
+        $registration->setStatusToNotApproved(true);
+
+        $this->assertEquals(Registration::STATUS_NOTAPPROVED, $registration->status);
+    }
+
+    /**
+     * Mudança de status não deve falhar quando a categoria da inscrição
+     * não existe em categorySeals.
+     */
+    function testStatusChangeWithMissingCategorySealKeyDoesNotFail() {
+        $app = App::i();
+        $admin = $this->userDirector->createUser('admin');
+        $this->login($admin);
+
+        /** @var Opportunity */
+        $opportunity = $this->opportunityBuilder
+                            ->reset(owner: $admin->profile, owner_entity: $admin->profile)
+                            ->fillRequiredProperties()
+                            ->addProponentType(ProponentTypes::PESSOA_FISICA)
+                            ->addCategory('Literatura')
+                            ->addCategory('Música')
+                            ->save()
+                            ->firstPhase()
+                                ->setRegistrationPeriod(new Open)
+                                ->done()
+                            ->save()
+                            ->refresh()
+                            ->getInstance();
+
+        $app->disableAccessControl();
+        $opportunity->publishRegistrations();
+        $app->enableAccessControl();
+
+        $registration = $this->registrationDirector->createSentRegistrations(
+            $opportunity,
+            number_of_registrations: 1,
+            category: 'Literatura',
+            proponent_type: ProponentTypes::PESSOA_FISICA->value
+        )[0];
+
+        // proponentSeals presente (senão o hook de status retorna cedo);
+        // categorySeals só tem Música — Literatura está ausente
+        $opportunity->proponentSeals = (object) [
+            ProponentTypes::PESSOA_FISICA->value => []
+        ];
+        $opportunity->categorySeals = (object) [
+            'Música' => []
+        ];
+        $opportunity->save(true);
+
+        $registration->setStatusToApproved(true);
+        $registration->setStatusToNotApproved(true);
+
+        $this->assertEquals(Registration::STATUS_NOTAPPROVED, $registration->status);
+    }
+
 
     function testRequiredOneLevelConditionalField() {
         $admin = $this->userDirector->createUser('admin');

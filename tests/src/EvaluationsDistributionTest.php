@@ -2864,6 +2864,22 @@ class EvaluationsDistributionTest extends TestCase
         );
     }
 
+    /**
+     * @return array{0: int, 1: int} [valuerA_user_id, valuerB_user_id]
+     */
+    private function resolveDistributionComparatorValuerIds(EvaluationMethodConfiguration $emc): array
+    {
+        $by_name = [];
+        foreach ($emc->getAgentRelations() as $relation) {
+            $by_name[$relation->agent->name] = (int) $relation->agent->user->id;
+        }
+
+        $this->assertArrayHasKey('valuerA', $by_name, 'Avaliador valuerA deve existir na comissão');
+        $this->assertArrayHasKey('valuerB', $by_name, 'Avaliador valuerB deve existir na comissão');
+
+        return [$by_name['valuerA'], $by_name['valuerB']];
+    }
+
     private function buildDistributionComparatorContractScenario(): Opportunity
     {
         $admin = $this->userDirector->createUser('admin');
@@ -2891,7 +2907,8 @@ class EvaluationsDistributionTest extends TestCase
         );
 
         $emc = $opportunity->evaluationMethodConfiguration;
-        $valuerA = $emc->agentRelations[0]->agent->user;
+        [$valuerA_id] = $this->resolveDistributionComparatorValuerIds($emc);
+        $valuerA = $this->app->repo('User')->find($valuerA_id);
 
         $registrations = $this->app->repo('Registration')->findBy(
             ['opportunity' => $opportunity],
@@ -2922,6 +2939,9 @@ class EvaluationsDistributionTest extends TestCase
     function testDistributionComparatorNullFallsThroughToQuotaFallback()
     {
         $opportunity = $this->buildDistributionComparatorContractScenario();
+        [$valuerA_id, $valuerB_id] = $this->resolveDistributionComparatorValuerIds(
+            $opportunity->evaluationMethodConfiguration
+        );
 
         $target_opportunity_id = $opportunity->id;
         $this->app->hook('evaluationMethod.distributionComparator', function (&$comparator, Opportunity $hook_opportunity) use ($target_opportunity_id) {
@@ -2935,10 +2955,6 @@ class EvaluationsDistributionTest extends TestCase
 
         $opportunity->evaluationMethodConfiguration->redistributeCommitteeRegistrations();
 
-        $emc = $opportunity->evaluationMethodConfiguration->refreshed();
-        $valuerA_id = $emc->agentRelations[0]->agent->user->id;
-        $valuerB_id = $emc->agentRelations[1]->agent->user->id;
-
         /** @var Connection */
         $conn = $this->app->em->getConnection();
         $count = fn(int $user_id): int => (int) $conn->fetchScalar(
@@ -2946,13 +2962,16 @@ class EvaluationsDistributionTest extends TestCase
             ['opportunity_id' => $opportunity->id, 'user_id' => $user_id]
         );
 
-        $this->assertEquals(3, $count($valuerA_id), 'Retornando null, o core cai no fallback por contagem e o avaliador A (que já tinha 2) termina com 3');
+        $this->assertEquals(3, $count($valuerA_id), 'Retornando null, o core cai no fallback por contagem e o avaliador A (que já tinha 3) termina com 3');
         $this->assertEquals(2, $count($valuerB_id), 'Retornando null, o core cai no fallback por contagem e o avaliador B (que tinha 0) termina com 2');
     }
 
     function testDistributionComparatorZeroShortCircuitsQuotaFallback()
     {
         $opportunity = $this->buildDistributionComparatorContractScenario();
+        [$valuerA_id, $valuerB_id] = $this->resolveDistributionComparatorValuerIds(
+            $opportunity->evaluationMethodConfiguration
+        );
 
         $target_opportunity_id = $opportunity->id;
         $this->app->hook('evaluationMethod.distributionComparator', function (&$comparator, Opportunity $hook_opportunity) use ($target_opportunity_id) {
@@ -2961,14 +2980,11 @@ class EvaluationsDistributionTest extends TestCase
             }
 
             // Declara empate definitivo para todo par: o core não deve cair no fallback por contagem.
+            // Com ordenação estável, a ordem original da comissão (valuerA, valuerB) é preservada.
             $comparator = fn(object $v1, object $v2, string $committee, array $pending): ?int => 0;
         });
 
         $opportunity->evaluationMethodConfiguration->redistributeCommitteeRegistrations();
-
-        $emc = $opportunity->evaluationMethodConfiguration->refreshed();
-        $valuerA_id = $emc->agentRelations[0]->agent->user->id;
-        $valuerB_id = $emc->agentRelations[1]->agent->user->id;
 
         /** @var Connection */
         $conn = $this->app->em->getConnection();

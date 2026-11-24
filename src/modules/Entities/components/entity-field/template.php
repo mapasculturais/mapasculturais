@@ -142,6 +142,7 @@ $this->import('
                         <input :id="propId" type="checkbox" :checked="value" @click="change($event)"  :disabled="readonly || disabled" />
                         <span>
                             <slot>{{label || description.label}}</slot>
+                            <span v-if="(required === true || (required === null && description.required)) && !hideRequired" class="required">*<?php i::_e('obrigatório') ?></span>
                             <slot name="info"></slot>
                         </span>
                     </label>

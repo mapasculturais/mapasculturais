@@ -1265,7 +1265,7 @@ class Module extends \MapasCulturais\Module{
                 $proponent_typesTo_agents_Map = $app->config['registration.proponentTypesToAgentsMap'];
                 $agent_type = $self->getProponentSealAgentType($this, $proponent_typesTo_agents_Map);
 
-                if ($proponent_type  && $proponent_type_seals) {
+                if ($proponent_type && $proponent_type_seals && isset($proponent_type_seals->{$proponent_type})) {
                     $proponent_seals = $proponent_type_seals->{$proponent_type};
 
                     if ($agent_type == "owner") {
@@ -1285,7 +1285,7 @@ class Module extends \MapasCulturais\Module{
                 }
 
                 // Se tiver "categoria" remover selo verificador (caso configurado) do agente individual
-                if($category && $categories_seals && $categories_seals->{$category}) {
+                if($category && $categories_seals && isset($categories_seals->{$category})) {
                     $category_seals = $categories_seals->{$category};
                     if($agent_type == 'owner'){
                         $relations = $owner->getSealRelations();
@@ -1326,16 +1326,19 @@ class Module extends \MapasCulturais\Module{
                         $owner = $registration->owner;
 
                         if($proponent_type){
-                            $proponent_seals = $seals_source->proponentSeals->{$proponent_type};
                             $agent_type = $self->getProponentSealAgentType($registration, $proponent_typesTo_agents_Map);
 
-                            if($agent_type == "owner"){
-                                $self->applySeal($owner,$proponent_seals);
-                            }
+                            if (isset($seals_source->proponentSeals->{$proponent_type})) {
+                                $proponent_seals = $seals_source->proponentSeals->{$proponent_type};
 
-                            if($agent_type == "coletivo"){
-                                if($agents = $registration->getAgentRelations()){
-                                    $self->applySeal($agents[0]->agent, $proponent_seals);
+                                if($agent_type == "owner"){
+                                    $self->applySeal($owner,$proponent_seals);
+                                }
+
+                                if($agent_type == "coletivo"){
+                                    if($agents = $registration->getAgentRelations()){
+                                        $self->applySeal($agents[0]->agent, $proponent_seals);
+                                    }
                                 }
                             }
 
@@ -1373,7 +1376,9 @@ class Module extends \MapasCulturais\Module{
 
         $app->hook("entity(Opportunity).unpublishRegistrations:after", function() use($app, $self) {
             /** @var \MapasCulturais\Entities\Opportunity $this */
-            if ($this->proponentSeals || $this->categorySeals) {
+            $seals_source = $self->getCertifierSealsSource($this);
+
+            if ($seals_source->proponentSeals || $seals_source->categorySeals) {
 
                 $proponent_typesTo_agents_Map = $app->config['registration.proponentTypesToAgentsMap'];
                 $registrations = $app->repo('Registration')->findBy(['opportunity' => $this]);
@@ -1381,26 +1386,29 @@ class Module extends \MapasCulturais\Module{
                 foreach ($registrations as $registration) {
                     if ($registration->status == \MapasCulturais\Entities\Registration::STATUS_APPROVED) {
                         $proponent_type = $registration->proponentType;
-                        $categories_seals = $this->categorySeals;
+                        $categories_seals = $seals_source->categorySeals;
                         $category = $registration->category;
                         $owner = $registration->owner;
 
                         if ($proponent_type) {
-                            $proponent_seals = $this->proponentSeals->{$proponent_type};
                             $agent_type = $self->getProponentSealAgentType($registration, $proponent_typesTo_agents_Map);
 
-                            if ($agent_type == "owner") {
-                                $relations = $owner->getSealRelations();
-                                $self->removeSeals($app, $relations, $proponent_seals);
-                            }
+                            if (isset($seals_source->proponentSeals->{$proponent_type})) {
+                                $proponent_seals = $seals_source->proponentSeals->{$proponent_type};
 
-                            if ($agent_type == "coletivo") {
-                                $agent_relations = $registration->getAgentRelations();
-
-                                foreach ($agent_relations as $agent_relation) {
-                                    $agent = $agent_relation->agent;
-                                    $relations = $agent->getSealRelations();
+                                if ($agent_type == "owner") {
+                                    $relations = $owner->getSealRelations();
                                     $self->removeSeals($app, $relations, $proponent_seals);
+                                }
+
+                                if ($agent_type == "coletivo") {
+                                    $agent_relations = $registration->getAgentRelations();
+
+                                    foreach ($agent_relations as $agent_relation) {
+                                        $agent = $agent_relation->agent;
+                                        $relations = $agent->getSealRelations();
+                                        $self->removeSeals($app, $relations, $proponent_seals);
+                                    }
                                 }
                             }
 
@@ -1645,8 +1653,8 @@ class Module extends \MapasCulturais\Module{
             || ($emc && $emc->autoApplicationAllowed);
     }
 
-    public function applySeal(?Agent $agent, array $sealIds){
-        if (!$agent) {
+    public function applySeal(?Agent $agent, ?array $sealIds){
+        if (!$agent || !$sealIds) {
             return;
         }
 
@@ -1691,6 +1699,10 @@ class Module extends \MapasCulturais\Module{
     }
 
     function removeSeals($app, $relations, $proponent_seals) {
+        if (!$proponent_seals) {
+            return;
+        }
+
         foreach ($proponent_seals as $proponent_seal) {
             $seal = $app->repo('Seal')->find($proponent_seal);
 

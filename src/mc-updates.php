@@ -181,7 +181,7 @@ return [
 
             foreach ($fields as $field) {
                 $field_name = "field_" . $field['id'];
-                $field_categories = unserialize($field['categories']);
+                $field_categories = unserialize($field['categories'], ['allowed_classes' => false]);
 
                 $metadata = $conn->fetchAssoc("SELECT * from registration_meta WHERE object_id = {$reg_id} AND key = '{$field_name}'");
 
@@ -189,7 +189,7 @@ return [
                     $agent = $registration->owner;
                     $agent_revision = $agent->getRevisionsByDate($sent_timestamp);
                     $agent_revision_data = $agent_revision->getRevisionData();
-                    $cfg = unserialize($field['config']);
+                    $cfg = unserialize($field['config'], ['allowed_classes' => false]);
                     $_f = $cfg['entityField'];
 
                     $value = null;

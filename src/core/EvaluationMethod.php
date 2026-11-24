@@ -1183,15 +1183,16 @@ abstract class EvaluationMethod extends Module implements \JsonSerializable{
                     }
                 }
 
-                // Índice original para desempate estável: usort do PHP não é estável, e um
-                // comparador que retorna 0 (empate definitivo) precisa preservar a ordem de entrada.
-                $users = array_values($users);
-                $user_order = [];
+                // usort do PHP é instável: empates (incl. comparator customizado retornando 0)
+                // precisam preservar a ordem original da comissão via índice.
+                $users_with_index = [];
                 foreach ($users as $index => $user) {
-                    $user_order[$user->id] = $index;
+                    $users_with_index[] = (object) ['user' => $user, 'index' => $index];
                 }
 
-                usort($users, function($u1, $u2) use ($registration, $registration_lists_per_valuer, $registration_list_exclusive_per_valuer, $committee_name, $valuers_committee_registrations_count, $committee_quotas, $distribution_comparator, $pending_assignments_count, $user_order) {
+                usort($users_with_index, function($item1, $item2) use ($registration, $registration_lists_per_valuer, $registration_list_exclusive_per_valuer, $committee_name, $valuers_committee_registrations_count, $committee_quotas, $distribution_comparator, $pending_assignments_count) {
+                    $u1 = $item1->user;
+                    $u2 = $item2->user;
                     $registration_number = $registration->number;
 
                     $list1 = $registration_lists_per_valuer[$committee_name][$u1->id] ?? [];
@@ -1220,6 +1221,7 @@ abstract class EvaluationMethod extends Module implements \JsonSerializable{
 
                     // O comparador personalizado atua depois das prioridades de lista. Ao retornar
                     // null, delega a decisão para a ordenação por quotas já existente no core.
+                    // Ao retornar 0 (empate definitivo), preserva a ordem original e NÃO cai no fallback.
                     if(is_callable($distribution_comparator)) {
                         $custom_result = $distribution_comparator(
                             $u1,
@@ -1229,9 +1231,12 @@ abstract class EvaluationMethod extends Module implements \JsonSerializable{
                         );
 
                         if($custom_result !== null) {
-                            $cmp = (int) $custom_result;
-                            // 0 = empate definitivo (não cai no fallback por contagem); preserva ordem original.
-                            return $cmp !== 0 ? $cmp : ($user_order[$u1->id] <=> $user_order[$u2->id]);
+                            $custom_result = (int) $custom_result;
+                            if ($custom_result !== 0) {
+                                return $custom_result;
+                            }
+
+                            return $item1->index <=> $item2->index;
                         }
                     }
 
@@ -1256,8 +1261,14 @@ abstract class EvaluationMethod extends Module implements \JsonSerializable{
                         }
                     }
 
-                    return $result;
+                    if ($result !== 0) {
+                        return $result;
+                    }
+
+                    return $item1->index <=> $item2->index;
                 });
+
+                $users = array_map(fn($item) => $item->user, $users_with_index);
                 
                 // adiciona os avaliadores da comissão na inscrição
                 foreach($users as $user) {

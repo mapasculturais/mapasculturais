@@ -2919,7 +2919,8 @@ class App
     function enqueueMailMessageJob(Email $message): void
     {
         $data = [
-            "message" => serialize($message),
+            // JSON payload — avoids PHP object injection via job.queue unserialize (CWE-502).
+            "message" => MailMessage::encodeMessage($message),
         ];
 
         $this->enqueueJob(MailMessage::SLUG, $data);

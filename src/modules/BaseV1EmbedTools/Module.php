@@ -32,14 +32,6 @@ class Module extends \MapasCulturais\Module
             $app->view->enqueueScript('app', 'embedtools-messages', 'js/embedtools.js', ['mapasculturais']);
             $app->view->enqueueStyle('app', 'embedtools-style', 'css/embedtools.css', ['main']);
 
-            $app->hook(' template(embedtools.reportmanager.reports-footer):before', function () {
-                $this->part('create-reports-modal', []);
-            });
-
-            $app->hook('template(embedtools.reportmanager.reports-footer):before', function () {
-                $this->part('dynamic-reports');
-            });
-
             $app->hook('app.init:after', function () {
                 /** @var \ArrayObject $path */
                 $path = $this->view->path;
