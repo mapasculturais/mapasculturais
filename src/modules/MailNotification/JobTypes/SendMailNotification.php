@@ -21,9 +21,14 @@ class SendMailNotification extends JobType
         $app = App::i();
 
         $registration = $app->repo("Registration")->find($job->registrationId);
+        if (!$registration) {
+            // Job enfileirado antes da inscrição ser removida (ex.: sync/removeOrphan).
+            return true;
+        }
+
         $phase = $registration->opportunity;
-        $first_phase = $registration->opportunity->firstPhase;
-        if (!$registration || !$phase || !$first_phase) {
+        $first_phase = $phase?->firstPhase;
+        if (!$phase || !$first_phase) {
             return true;
         }
 
