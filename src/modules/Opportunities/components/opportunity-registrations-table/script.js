@@ -214,7 +214,9 @@ app.component('opportunity-registrations-table', {
             isTechnicalEvaluationPhase,
             defaultHeaders,
             default_select,
-            downloadZipInLoandingEntity: null
+            downloadZipInLoandingEntity: null,
+            statusConfirm: null,
+            statusSelectKeys: {},
         }
     },
 
@@ -493,16 +495,74 @@ app.component('opportunity-registrations-table', {
             return this.statusDict.find(status => status.value === actualStatus);
         },
 
+        statusSelectKey(entity) {
+            return this.statusSelectKeys[entity.id] || 0;
+        },
+
         setStatus(selected, entity) {
+            const currentStatus = Number(entity.status);
+            const newStatus = Number(selected.value);
+
+            if (currentStatus === 10 && newStatus !== 10) {
+                this.statusConfirm = {
+                    entity,
+                    selected,
+                    previousStatus: currentStatus,
+                };
+                this.$nextTick(() => this.$refs.statusConfirmModal?.open());
+                return;
+            }
+
+            this.applyStatus(selected, entity);
+        },
+
+        applyStatus(selected, entity) {
             const api = new API();
             const url = Utils.createUrl('registration', 'setStatusTo', {id: entity.id});
             api.POST(url, {status: selected.value}).then(res => res.json()).then(response => {
                 if(response.error) {
                     this.messages.error(this.text(response.data))
                 } else {
+                    entity.status = Number(selected.value);
                     this.messages.success(this.text('status alterado com sucesso'))
                 }
             });
+        },
+
+        confirmStatusChange() {
+            if (!this.statusConfirm) {
+                return;
+            }
+
+            const { entity, selected } = this.statusConfirm;
+            this.statusConfirm = null;
+            this.$refs.statusConfirmModal?.close();
+            this.applyStatus(selected, entity);
+        },
+
+        cancelStatusChange() {
+            if (!this.statusConfirm) {
+                this.$refs.statusConfirmModal?.close();
+                return;
+            }
+
+            const { entity, previousStatus } = this.statusConfirm;
+            entity.status = previousStatus;
+            this.statusSelectKeys = {
+                ...this.statusSelectKeys,
+                [entity.id]: (this.statusSelectKeys[entity.id] || 0) + 1,
+            };
+            this.statusConfirm = null;
+            this.$refs.statusConfirmModal?.close();
+        },
+
+        onStatusConfirmClose() {
+            if (!this.statusConfirm) {
+                return;
+            }
+
+            // Fechou pelo X / ESC / click fora → trata como cancelar.
+            this.cancelStatusChange();
         },
 
         clearFilters(entities) {

@@ -192,6 +192,136 @@ class Module extends \MapasCulturais\Module{
     }
 
     /**
+     * Remove ponteiros next/previous que apontam para a inscrição informada.
+     *
+     * Evita deixar elos para IDs deletados (card conta a ficha seguinte; listagem some).
+     */
+    public static function unlinkPhaseRegistrationPointers(Registration $registration): void
+    {
+        $app = App::i();
+        $repo = $app->repo('Registration');
+        $id = (int) $registration->id;
+        $id_str = (string) $id;
+
+        $clear_next = function (Registration $entity) use ($id): void {
+            if ((int) $entity->nextPhaseRegistrationId !== $id) {
+                return;
+            }
+
+            $entity->nextPhaseRegistrationId = null;
+            $entity->__skipQueuingPCacheRecreation = true;
+            $entity->skipSync = true;
+            $entity->save(true);
+        };
+
+        $clear_previous = function (Registration $entity) use ($id): void {
+            if ((int) $entity->previousPhaseRegistrationId !== $id) {
+                return;
+            }
+
+            $entity->previousPhaseRegistrationId = null;
+            $entity->__skipQueuingPCacheRecreation = true;
+            $entity->skipSync = true;
+            $entity->save(true);
+        };
+
+        if ($prev_id = $registration->previousPhaseRegistrationId) {
+            if ($prev = $repo->find($prev_id)) {
+                $clear_next($prev);
+            }
+        }
+
+        if ($next_id = $registration->nextPhaseRegistrationId) {
+            if ($next = $repo->find($next_id)) {
+                $clear_previous($next);
+            }
+        }
+
+        // Cobre elos unilaterais/corrompidos que não estão refletidos nos metadados locais.
+        $conn = $app->em->getConnection();
+        $rows = $conn->fetchAll(
+            "SELECT object_id, key
+             FROM registration_meta
+             WHERE key IN ('nextPhaseRegistrationId', 'previousPhaseRegistrationId')
+               AND value = :id",
+            ['id' => $id_str]
+        );
+
+        foreach ($rows as $row) {
+            $entity = $repo->find((int) $row['object_id']);
+            if (!$entity) {
+                $conn->executeQuery(
+                    'DELETE FROM registration_meta WHERE object_id = :oid AND key = :key',
+                    ['oid' => $row['object_id'], 'key' => $row['key']]
+                );
+                continue;
+            }
+
+            if ($row['key'] === 'nextPhaseRegistrationId') {
+                $clear_next($entity);
+            } else {
+                $clear_previous($entity);
+            }
+        }
+    }
+
+    /**
+     * Apaga inscrição limpando ponteiros de fase.
+     *
+     * Quando a inscrição removida aponta para fases de prestação seguintes, também as remove:
+     * o removeOrphan da fase intermediária não as limpa (prestação final olha a publicação).
+     */
+    public static function deleteRegistrationCleaningPhasePointers(
+        Registration $registration,
+        bool $cascade_reporting_phases = true
+    ): void {
+        $app = App::i();
+        $repo = $app->repo('Registration');
+
+        $reporting_ids = [];
+        if ($cascade_reporting_phases) {
+            $next_id = $registration->nextPhaseRegistrationId;
+            while ($next_id) {
+                $next = $repo->find($next_id);
+                if (!$next) {
+                    break;
+                }
+
+                $opportunity = $next->opportunity;
+                if ($opportunity->isLastPhase) {
+                    break;
+                }
+
+                if ($opportunity->isReportingPhase || $opportunity->isFinalReportingPhase) {
+                    $reporting_ids[] = (int) $next->id;
+                    $next_id = $next->nextPhaseRegistrationId;
+                    continue;
+                }
+
+                break;
+            }
+        }
+
+        self::unlinkPhaseRegistrationPointers($registration);
+        $registration->skipSync = true;
+        $registration->__skipQueuingPCacheRecreation = true;
+        $registration->delete(true);
+
+        foreach ($reporting_ids as $reporting_id) {
+            $app->em->clear();
+            $downstream = $repo->find($reporting_id);
+            if (!$downstream) {
+                continue;
+            }
+
+            self::unlinkPhaseRegistrationPointers($downstream);
+            $downstream->skipSync = true;
+            $downstream->__skipQueuingPCacheRecreation = true;
+            $downstream->delete(true);
+        }
+    }
+
+    /**
      * Repara a cadeia de ponteiros entre fases principais (ignorando recursos) até a fase alvo.
      */
     public static function repairRegistrationChainForNumber(Opportunity $target_opportunity, string $number): void
@@ -1365,7 +1495,9 @@ class Module extends \MapasCulturais\Module{
                 if($app->config['app.log.syncRegistrations']) {
                     $app->log->debug("   >>> [{$count}] Removendo inscrição {$registration->number} da fase {$first_phase->name}/{$this->name} ({$this->id})");
                 }
-                $registration->delete(true);
+                // Limpa next/previous antes do delete e remove prestações encadeadas,
+                // evitando fichas órfãs (card conta, listagem some).
+                self::deleteRegistrationCleaningPhasePointers($registration);
                 $app->em->clear();
             }
             $app->enableAccessControl();
@@ -1445,7 +1577,14 @@ class Module extends \MapasCulturais\Module{
 
                     $registration = $repo->find($registration_id);
                     while($next_registration_phase = $registration->nextPhase) {
-                        if($next_registration_phase->opportunity->isLastPhase) {
+                        $next_opportunity = $next_registration_phase->opportunity;
+                        // Prestação e execução vêm depois da publicação: o resultado publicado é o da
+                        // última fase antes delas (rascunho de prestação virava "inválida").
+                        if($next_opportunity->isLastPhase
+                            || $next_opportunity->isReportingPhase
+                            || $next_opportunity->isFinalReportingPhase
+                            || $next_opportunity->isExecutionPhase
+                        ) {
                             break;
                         } else{
                             $registration = $next_registration_phase;

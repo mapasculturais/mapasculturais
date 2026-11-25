@@ -8,6 +8,9 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 ## [UNRELEASED]
 ### Correções
 - Corrige a listagem de espaços que quebrava quando um campo de seleção múltipla (como acessibilidade física) estava vazio no cadastro: a leitura passa a tratar valor vazio com segurança e mantém o formato antigo separado por `;`
+- Corrige a desqualificação de inscrição (sair de Selecionada) que podia deixar fichas órfãs e ponteiros `next`/`previous` quebrados entre fases: o sync passa a limpar os ponteiros ao remover a inscrição e a cascatear a remoção para prestações encadeadas; a publicação final deixa de usar rascunho de prestação/execução como fonte do resultado publicado
+- Corrige a saída de Selecionada na publicação final, que mantinha pedidos de execução abertos mesmo sem seleção: os pedidos vinculados passam a ser removidos junto com a mudança de status
+- Na lista de inscritos, ao tirar uma inscrição de Selecionada, passa a exibir um modal de confirmação avisando que dados das fases seguintes (inclusive prestação e pedidos de execução) serão removidos
 
 ## [7.8.24] - 2026-11-19
 ### Melhorias

@@ -405,6 +405,65 @@ class OpportunityExecutionPhaseTest extends TestCase
     }
 
     /**
+     * Ao sair de Selecionada na publicação final, pedidos de execução vinculados
+     * devem ser removidos (mesmo comportamento das demais fases seguintes).
+     */
+    public function testDemotingPublicationSelectedDeletesExecutionRequests(): void
+    {
+        [$admin, $first_phase, $approved] = $this->buildOpportunityWithApprovedRegistration();
+
+        $execution_phase = $this->opportunityBuilder
+            ->addExecutionPhase()
+            ->save()
+            ->getInstance();
+
+        $pedido = new Registration();
+        $pedido->opportunity = $execution_phase;
+        $pedido->owner       = $approved->owner;
+        $pedido->number      = $approved->number;
+        $pedido->previousPhaseRegistrationId = $approved->id;
+        $pedido->save(true);
+
+        $pedido_id = $pedido->id;
+        $this->assertNotNull($this->app->repo('Registration')->find($pedido_id));
+
+        $this->app->disableAccessControl();
+        $approved->setStatusToWaitlist(true);
+        $this->app->enableAccessControl();
+
+        $this->assertNull(
+            $this->app->repo('Registration')->find($pedido_id),
+            'Pedido de execução deve ser apagado ao sair de Selecionada na publicação'
+        );
+        $this->assertEquals(
+            Registration::STATUS_WAITLIST,
+            $approved->refreshed()->status,
+            'Publicação deve permanecer como suplente após a limpeza'
+        );
+    }
+
+    /**
+     * Demotar a publicação sem pedidos de execução não deve falhar.
+     */
+    public function testDemotingPublicationSelectedWithoutExecutionRequestsSucceeds(): void
+    {
+        [$admin, $first_phase, $approved] = $this->buildOpportunityWithApprovedRegistration();
+
+        $this->opportunityBuilder
+            ->addExecutionPhase()
+            ->save();
+
+        $this->app->disableAccessControl();
+        $approved->setStatusToWaitlist(true);
+        $this->app->enableAccessControl();
+
+        $this->assertEquals(
+            Registration::STATUS_WAITLIST,
+            $approved->refreshed()->status
+        );
+    }
+
+    /**
      * A fase de execução não deve aparecer como previousPhase de fases sequenciais,
      * para não contaminar a importação de inscrições.
      */

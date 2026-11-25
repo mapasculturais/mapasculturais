@@ -478,6 +478,160 @@ class PhaseRegistrationSyncTest extends TestCase
     }
 
     /**
+     * Garante que removeOrphan limpe ponteiros next/previous ao apagar inscrição da fase seguinte.
+     *
+     * Regressão AMFRI: ao desqualificar (ex.: voltar de selecionada para suplente), o sync
+     * apagava a ficha intermediária e deixava next apontando para id inexistente — card e
+     * listagem ficavam inconsistentes.
+     */
+    function testRemoveOrphanClearsDanglingPhasePointers(): void
+    {
+        $admin = $this->userDirector->createUser('admin');
+        $this->login($admin);
+
+        $edital = $this->opportunityBuilder
+            ->reset(owner: $admin->profile, owner_entity: $admin->profile)
+            ->fillRequiredProperties()
+            ->firstPhase()
+                ->setRegistrationPeriod(new Open)
+                ->done()
+            ->save()
+            ->addDataCollectionPhase()
+                ->setRegistrationPeriod(new Open)
+                ->done()
+            ->save()
+            ->getInstance();
+
+        $fase1 = $edital->firstPhase;
+        $fase2 = OpportunityPhasesModule::getNextMainPhase($fase1);
+
+        $selected = $this->registrationDirector->createSentRegistration($fase1, []);
+        $selected->number = '777';
+        $selected->setStatusToApproved(true);
+
+        $fase2->syncRegistrations([]);
+        $this->processJobs();
+
+        $fase1_reg = $this->findRegistration($fase1, '777');
+        $fase2_reg = $this->findRegistration($fase2, '777');
+        $this->assertNotNull($fase1_reg);
+        $this->assertNotNull($fase2_reg);
+        $deleted_id = $fase2_reg->id;
+
+        $fase1_reg->setStatusToWaitlist(true);
+
+        $fase2->syncRegistrations([]);
+        $this->processJobs();
+
+        $this->assertNull(
+            $this->findRegistration($fase2, '777'),
+            'Após voltar para suplente, inscrição deve sair da fase seguinte'
+        );
+
+        $fase1_reg = $fase1_reg->refreshed();
+        $this->assertNull(
+            $fase1_reg->nextPhaseRegistrationId,
+            'next da fase anterior não deve apontar para inscrição deletada'
+        );
+        $this->assertRegistrationDoesNotPointToMissingId(
+            $fase1_reg,
+            'Após removeOrphan: '
+        );
+        $this->assertNull(
+            $this->app->repo('Registration')->find($deleted_id),
+            'Inscrição removida como órfã deve deixar de existir'
+        );
+    }
+
+    /**
+     * Garante que, ao desqualificar, a prestação final encadeada também saia sem deixar ponteiro morto.
+     *
+     * Regressão AMFRI: o sync religa a corrente seleção → habilitação → prestação (pulando a
+     * publicação). Ao apagar a habilitação, a prestação ficava apontando para id inexistente:
+     * o card da fase contava a ficha e a listagem não mostrava.
+     */
+    function testRemoveOrphanCascadesToFinalReportingPhase(): void
+    {
+        $context = $this->buildEditalWithFinalReportingPhase('778');
+
+        $habilitacao_reg = $this->findRegistration($context->habilitacao, '778');
+        $prestacao_reg = $this->findRegistration($context->prestacao, '778');
+        $this->assertNotNull($prestacao_reg, 'Inscrição selecionada deve entrar na prestação final');
+        $this->assertEquals(
+            $habilitacao_reg->id,
+            (int) $prestacao_reg->previousPhaseRegistrationId,
+            'Cenário AMFRI: prestação encadeada direto na habilitação'
+        );
+        $old_prestacao_id = $prestacao_reg->id;
+
+        $this->findRegistration($context->selecao, '778')->setStatusToWaitlist(true);
+
+        $context->habilitacao->syncRegistrations([]);
+        $this->processJobs();
+
+        $this->assertNull(
+            $this->findRegistration($context->habilitacao, '778'),
+            'Após voltar para suplente, inscrição deve sair da habilitação'
+        );
+        $this->assertNull(
+            $this->app->repo('Registration')->find($old_prestacao_id),
+            'Prestação encadeada na habilitação removida deve ser apagada junto'
+        );
+        foreach ([$context->selecao, $context->publicacao, $context->prestacao] as $phase) {
+            if ($registration = $this->findRegistration($phase, '778')) {
+                $this->assertRegistrationDoesNotPointToMissingId($registration, "Fase {$phase->id}: ");
+            }
+        }
+
+        $context->publicacao->syncRegistrations([]);
+        $context->prestacao->syncRegistrations([]);
+        $this->processJobs();
+
+        $this->assertEquals(
+            Registration::STATUS_WAITLIST,
+            $this->findRegistration($context->publicacao, '778')->status,
+            'Publicação deve refletir a suplência'
+        );
+        $this->assertNull(
+            $this->findRegistration($context->prestacao, '778'),
+            'Quem não está selecionado na publicação não fica na prestação final'
+        );
+    }
+
+    /**
+     * Garante que a publicação final não use o rascunho da prestação como resultado.
+     *
+     * Regressão AMFRI: a corrente seleção → habilitação → prestação pula a publicação. O sync da
+     * publicação seguia a corrente até a prestação em rascunho e marcava a inscrição como
+     * "inválida — Não enviou inscrição em <prestação>", mesmo selecionada na habilitação.
+     */
+    function testPublicationIgnoresReportingPhaseDraftInChain(): void
+    {
+        $context = $this->buildEditalWithFinalReportingPhase('779');
+
+        $prestacao_reg = $this->findRegistration($context->prestacao, '779');
+        $this->assertNotNull($prestacao_reg);
+        $this->assertEquals(Registration::STATUS_DRAFT, $prestacao_reg->status);
+
+        $context->publicacao->syncRegistrations([]);
+        $this->processJobs();
+
+        $publicacao_reg = $this->findRegistration($context->publicacao, '779');
+        $this->assertEquals(
+            Registration::STATUS_APPROVED,
+            $publicacao_reg->status,
+            'Publicação deve manter o resultado da habilitação, não o rascunho da prestação'
+        );
+
+        [, $label_template] = $this->getOpportunityPhasesModule()
+            ->getRegistrationStatusLabels(Registration::STATUS_APPROVED);
+        $this->assertEquals(
+            str_replace('{PHASE_NAME}', $context->habilitacao->name, $label_template),
+            $publicacao_reg->consolidatedResult
+        );
+    }
+
+    /**
      * Garante que recurso pendente bloqueie o sync e remova inscrição órfã de Anexos.
      *
      * Modo appealPhaseAffectsSync = true: o recurso afeta ativamente a sincronização.
@@ -980,6 +1134,75 @@ class PhaseRegistrationSyncTest extends TestCase
         } finally {
             $this->app->enableAccessControl();
         }
+    }
+
+    /**
+     * Monta seleção → habilitação → publicação → prestação final, com a inscrição informada
+     * selecionada na seleção e na habilitação e já importada (rascunho) para a prestação.
+     */
+    private function buildEditalWithFinalReportingPhase(string $number): object
+    {
+        $admin = $this->userDirector->createUser('admin');
+        $this->login($admin);
+
+        $edital = $this->opportunityBuilder
+            ->reset(owner: $admin->profile, owner_entity: $admin->profile)
+            ->fillRequiredProperties()
+            ->firstPhase()
+                ->setRegistrationPeriod(new Open)
+                ->done()
+            ->save()
+            ->addDataCollectionPhase()
+                ->setRegistrationPeriod(new Open)
+                ->done()
+            ->save()
+            ->getInstance();
+
+        $selecao = $edital->firstPhase;
+        $habilitacao = OpportunityPhasesModule::getNextMainPhase($selecao);
+        $publicacao = $edital->lastPhase;
+
+        // Prestação criada depois da habilitação (id maior), como no fluxo real.
+        $class = $selecao->specializedClassName;
+        $prestacao = new $class;
+        $prestacao->owner = $selecao->owner;
+        $prestacao->ownerEntity = $selecao->ownerEntity;
+        $prestacao->parent = $selecao;
+        $prestacao->type = $selecao->type;
+        $prestacao->name = 'Parecer final do relatório';
+        $prestacao->shortDescription = 'Prestação final';
+        $prestacao->isDataCollection = true;
+        $prestacao->isReportingPhase = true;
+        $prestacao->isFinalReportingPhase = true;
+        $prestacao->registrationFrom = new \DateTime('-1 day');
+        $prestacao->registrationTo = new \DateTime('+30 days');
+        $prestacao->setStatus(-1);
+        $prestacao->save(true);
+
+        $selected = $this->registrationDirector->createSentRegistration($selecao, []);
+        $this->setRegistrationNumber($selected, $number);
+        $selected->setStatusToApproved(true);
+
+        $habilitacao->syncRegistrations([]);
+        $this->processJobs();
+        // Habilitação importa como rascunho; simula a aprovação feita pela comissão.
+        $this->app->disableAccessControl();
+        $this->findRegistration($habilitacao, $number)->setStatusToApproved(true);
+        $this->app->enableAccessControl();
+
+        $publicacao->syncRegistrations([]);
+        $this->processJobs();
+        $prestacao->syncRegistrations([]);
+        $this->processJobs();
+
+        $repo = $this->app->repo('Opportunity');
+
+        return (object) [
+            'selecao' => $repo->find($selecao->id),
+            'habilitacao' => $repo->find($habilitacao->id),
+            'publicacao' => $repo->find($publicacao->id),
+            'prestacao' => $repo->find($prestacao->id),
+        ];
     }
 
     private function getOpportunityPhasesModule(): OpportunityPhasesModule
