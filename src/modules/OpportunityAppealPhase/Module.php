@@ -262,7 +262,7 @@ class Module extends \MapasCulturais\Module {
             if($opportunity->status == Opportunity::STATUS_APPEAL_PHASE) {
                 $self->sendMailNewStatus($opportunity, $this);
                 $self->sendNotificationNewStatus($opportunity, $this);
-                if (\OpportunityPhases\Module::appealPhaseAffectsSync($opportunity->parent)) {
+                if ($opportunity->parent && \OpportunityPhases\Module::appealPhaseAffectsSync($opportunity->parent)) {
                     $self->enqueueNextMainPhaseSync($app, $this, $opportunity);
                 }
             }

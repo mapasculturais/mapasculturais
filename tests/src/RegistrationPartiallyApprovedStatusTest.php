@@ -2,8 +2,11 @@
 
 namespace Tests;
 
+use Laminas\Diactoros\Response;
+use MapasCulturais\Controllers\Opportunity as OpportunityController;
 use MapasCulturais\Entities\Opportunity;
 use MapasCulturais\Entities\Registration;
+use MapasCulturais\Exceptions\Halt;
 use Tests\Builders\PhasePeriods\ConcurrentEndingAfter;
 use Tests\Builders\PhasePeriods\Open;
 use Tests\Enums\EvaluationMethods;
@@ -344,15 +347,35 @@ class RegistrationPartiallyApprovedStatusTest extends Abstract\TestCase
     }
 
     /**
-     * Igual a createContinuousOpportunityWithResult, marcada como fase de recurso
+     * Fase de recurso real (com parent) + inscrição enviada + consolidated_result
      *
      * @return array{Opportunity, Registration}
      */
     private function createContinuousAppealOpportunityWithResult(string $consolidated_result, ?array $status_labels = null): array
     {
-        [$opportunity, $registration] = $this->createContinuousOpportunityWithResult($consolidated_result, $status_labels);
+        [$appeal_phase, $registration] = $this->createAppealOpportunityWithSentRegistration();
 
-        return [$this->markAsAppealPhase($opportunity), $this->app->repo('Registration')->find($registration->id)];
+        $this->app->disableAccessControl();
+        try {
+            if ($status_labels !== null) {
+                $appeal_phase = $appeal_phase->refreshed();
+                $appeal_phase->statusLabels = $status_labels;
+                $appeal_phase->save(true);
+            }
+        } finally {
+            $this->app->enableAccessControl();
+        }
+
+        $this->app->conn->executeStatement(
+            'UPDATE registration SET consolidated_result = :result WHERE id = :id',
+            ['result' => $consolidated_result, 'id' => $registration->id]
+        );
+        $this->app->em->clear();
+
+        return [
+            $this->app->repo('Opportunity')->find($appeal_phase->id),
+            $this->app->repo('Registration')->find($registration->id),
+        ];
     }
 
     /**
@@ -397,29 +420,44 @@ class RegistrationPartiallyApprovedStatusTest extends Abstract\TestCase
     }
 
     /**
-     * Cria oportunidade marcada como fase de recurso com inscrição enviada
+     * Cria fase de recurso ligada à fase de mérito, com inscrição enviada no recurso
      *
      * @return array{Opportunity, Registration}
      */
     private function createAppealOpportunityWithSentRegistration(): array
     {
-        [$opportunity, $registration] = $this->createOpportunityWithSentRegistration();
+        [$parent] = $this->createOpportunityWithSentRegistration();
+        $appeal_phase = $this->createAppealPhase($parent);
+        $registration = $this->registrationDirector->createSentRegistration($appeal_phase, data: []);
 
-        return [$this->markAsAppealPhase($opportunity), $this->app->repo('Registration')->find($registration->id)];
+        return [$appeal_phase->refreshed(), $registration->refreshed()];
     }
 
-    private function markAsAppealPhase(Opportunity $opportunity): Opportunity
+    private function createAppealPhase(Opportunity $parent): Opportunity
     {
-        $this->app->disableAccessControl();
+        $parent_id = $parent->id;
+
+        $this->app->request = $this->requestFactory->mapasPOST(
+            'opportunity',
+            'createAppealPhase',
+            [$parent_id],
+            ['id' => $parent_id]
+        );
+        $this->app->response = new Response();
+
+        /** @var OpportunityController $controller */
+        $controller = $this->app->controller('opportunity');
+        $controller->setRequestData(['id' => $parent_id]);
+
         try {
-            $opportunity->isAppealPhase = true;
-            $opportunity->status = Opportunity::STATUS_APPEAL_PHASE;
-            $opportunity->save(true);
-        } finally {
-            $this->app->enableAccessControl();
+            $controller->callAction('POST', 'createAppealPhase', []);
+        } catch (Halt) {
         }
 
-        return $opportunity->refreshed();
+        $appeal_phase = $parent->refreshed()->appealPhase;
+        $this->assertInstanceOf(Opportunity::class, $appeal_phase, 'Garantindo que a fase de recurso foi criada');
+
+        return $appeal_phase;
     }
 
     private function componentScript(string $relative_path): string
