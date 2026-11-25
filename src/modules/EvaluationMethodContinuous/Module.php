@@ -277,6 +277,13 @@ class Module extends \MapasCulturais\EvaluationMethod
                 $this->errorJson(i::__('O status selecionado não está habilitado para esta fase'), 400);
                 die;
             }
+
+            if ($new_status === Registration::STATUS_PARTIALLY_APPROVED
+                && !$opp->isAppealPhase
+                && (int) $opp->status !== Entities\Opportunity::STATUS_APPEAL_PHASE) {
+                $this->errorJson(i::__('O status Deferido parcialmente só pode ser aplicado na fase de recurso'), 400);
+                die;
+            }
             
             $apply_status = $this->data['status'] ?? false;
             if ($apply_status == 'all') {
@@ -374,6 +381,21 @@ class Module extends \MapasCulturais\EvaluationMethod
         });
 
         
+        // Recusa mensagem com status de resultado desabilitado na fase (antes de persistir).
+        $app->hook('entity(ChatMessage).save:before', function() use ($app, $self) {
+            /** @var \MapasCulturais\Entities\ChatMessage $this */
+            if (!($this->thread->ownerEntity instanceof Entities\Registration)
+                || !($this->thread->ownerEntity->evaluationMethod instanceof $self)
+                || !$app->user->canUser('evaluateOnTime')) {
+                return;
+            }
+
+            $payload = (object) ($this->payload ?: []);
+            if (isset($payload->status) && !$self->isStatusEnabled($this->thread->ownerEntity->opportunity, $payload->status)) {
+                throw new \Exception(i::__('O status selecionado não está habilitado para esta fase'));
+            }
+        });
+
         $app->hook('entity(ChatMessage).save:finish', function() use ($app, $self){
             /** @var \MapasCulturais\Entities\ChatMessage $this */
             if ($this->thread->ownerEntity instanceof Entities\Registration && 
@@ -383,10 +405,7 @@ class Module extends \MapasCulturais\EvaluationMethod
 
                     // altera o status de uma avaliação de acordo com o status da mensagem do chat
                     $evaluation = $app->repo('RegistrationEvaluation')->findOneBy(['registration' => $this->thread->ownerEntity]);
-                    $status_allowed = !isset($payload->status)
-                        || $self->isStatusEnabled($this->thread->ownerEntity->opportunity, $payload->status);
-
-                    if ($evaluation && isset($payload->status) && $status_allowed) {
+                    if ($evaluation && isset($payload->status)) {
 
                         $evaluation->result = $payload->status;
                         $app->disableAccessControl();

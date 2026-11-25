@@ -1163,6 +1163,11 @@ class Registration extends \MapasCulturais\Entity
     }
 
     public function setStatusToPartiallyApproved($flush = true){
+        $opportunity = $this->opportunity;
+        if (!$opportunity->isAppealPhase && (int) $opportunity->status !== Opportunity::STATUS_APPEAL_PHASE) {
+            throw new Exception(i::__('O status Deferido parcialmente só pode ser aplicado na fase de recurso'));
+        }
+
         $this->_setStatusTo(self::STATUS_PARTIALLY_APPROVED, $flush);
         App::i()->applyHookBoundTo($this, 'entity(Registration).status(partiallyapproved)');
     }

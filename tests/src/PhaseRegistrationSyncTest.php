@@ -466,13 +466,16 @@ class PhaseRegistrationSyncTest extends TestCase
             $this->findRegistration($context->coletaMerito, '444')
         ));
 
-        $evaluation = $this->sendAppealChatStatus($appeal, Registration::STATUS_PARTIALLY_APPROVED);
-
-        $this->assertNotEquals(
-            Registration::STATUS_PARTIALLY_APPROVED,
-            $evaluation->result,
-            'Garantindo que o chat não grave o deferido parcialmente quando a fase não o habilita'
-        );
+        try {
+            $this->sendAppealChatStatus($appeal, Registration::STATUS_PARTIALLY_APPROVED);
+            $this->fail('Esperava recusa do chat com deferido parcialmente desabilitado na fase');
+        } catch (\Exception $e) {
+            $this->assertStringContainsString(
+                'não está habilitado',
+                $e->getMessage(),
+                'Garantindo que o chat recuse o deferido parcialmente desabilitado na fase'
+            );
+        }
 
         $this->app->disableAccessControl();
         try {
@@ -494,9 +497,9 @@ class PhaseRegistrationSyncTest extends TestCase
     }
 
     /**
-     * Garante que o chat do recurso não grave nenhum status desabilitado na fase.
+     * Garante que o chat do recurso recuse qualquer status desabilitado na fase.
      */
-    function testAppealChatIgnoresAnyStatusDisabledInPhase(): void
+    function testAppealChatRejectsAnyStatusDisabledInPhase(): void
     {
         $context = $this->buildPnabLikeOpportunity(withAnexos: false);
         $this->createRegistrationsByStatus($context->coletaMerito);
@@ -517,13 +520,9 @@ class PhaseRegistrationSyncTest extends TestCase
             $this->app->enableAccessControl();
         }
 
-        $evaluation = $this->sendAppealChatStatus($appeal->refreshed(), Registration::STATUS_INVALID);
-
-        $this->assertNotEquals(
-            Registration::STATUS_INVALID,
-            $evaluation->result,
-            'Garantindo que o chat não grave o Negado quando a fase o desabilita'
-        );
+        $this->expectException(\Exception::class);
+        $this->expectExceptionMessage('não está habilitado');
+        $this->sendAppealChatStatus($appeal->refreshed(), Registration::STATUS_INVALID);
     }
 
     /**

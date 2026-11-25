@@ -41,7 +41,7 @@ class RegistrationPartiallyApprovedStatusTest extends Abstract\TestCase
 
     function testSetStatusStoresPartiallyApprovedAndFiresHook()
     {
-        [, $registration] = $this->createOpportunityWithSentRegistration();
+        [, $registration] = $this->createAppealOpportunityWithSentRegistration();
 
         $hook_calls = 0;
         $this->app->hook('entity(Registration).status(partiallyapproved)', function () use (&$hook_calls) {
@@ -67,7 +67,7 @@ class RegistrationPartiallyApprovedStatusTest extends Abstract\TestCase
 
     function testManagerSetsPartiallyApprovedThroughSetStatusToRoute()
     {
-        [, $registration] = $this->createOpportunityWithSentRegistration();
+        [, $registration] = $this->createAppealOpportunityWithSentRegistration();
 
         $request = $this->requestFactory->POST(
             controller_id: 'registration',
@@ -85,9 +85,24 @@ class RegistrationPartiallyApprovedStatusTest extends Abstract\TestCase
         );
     }
 
-    function testPartiallyApprovedRegistrationHasSameVisibilityAsApproved()
+    function testPartiallyApprovedRejectedOutsideAppealPhase()
     {
         [, $registration] = $this->createOpportunityWithSentRegistration();
+
+        $this->expectException(\Exception::class);
+        $this->expectExceptionMessage('só pode ser aplicado na fase de recurso');
+
+        $this->app->disableAccessControl();
+        try {
+            $registration->setStatusToPartiallyApproved();
+        } finally {
+            $this->app->enableAccessControl();
+        }
+    }
+
+    function testPartiallyApprovedRegistrationHasSameVisibilityAsApproved()
+    {
+        [, $registration] = $this->createAppealOpportunityWithSentRegistration();
 
         $this->app->disableAccessControl();
         try {
@@ -111,7 +126,7 @@ class RegistrationPartiallyApprovedStatusTest extends Abstract\TestCase
 
     function testPublishRegistrationsIncludesPartiallyApproved()
     {
-        [$opportunity, $registration] = $this->createOpportunityWithSentRegistration();
+        [$opportunity, $registration] = $this->createAppealOpportunityWithSentRegistration();
 
         $this->app->disableAccessControl();
         try {
@@ -137,7 +152,7 @@ class RegistrationPartiallyApprovedStatusTest extends Abstract\TestCase
 
     function testContinuousBatchApplicationSetsPartiallyApprovedAndFiresHook()
     {
-        [$opportunity, $registration] = $this->createContinuousOpportunityWithResult('9', [
+        [$opportunity, $registration] = $this->createContinuousAppealOpportunityWithResult('9', [
             Registration::STATUS_DRAFT => 'Rascunho',
             Registration::STATUS_SENT => 'Aguardando resposta',
             Registration::STATUS_INVALID => 'Negado',
@@ -172,11 +187,31 @@ class RegistrationPartiallyApprovedStatusTest extends Abstract\TestCase
 
     function testContinuousBatchApplicationRejectsPartiallyApprovedWhenPhaseDisablesIt()
     {
-        [$opportunity, $registration] = $this->createContinuousOpportunityWithResult('9');
+        [$opportunity, $registration] = $this->createContinuousAppealOpportunityWithResult('9');
 
         $request = $this->createBatchApplicationRequest($opportunity, '9', Registration::STATUS_PARTIALLY_APPROVED);
 
         $this->assertStatus400($request, 'Garantindo que a aplicação em lote recuse o deferido parcialmente desabilitado na fase');
+
+        $this->assertSame(
+            Registration::STATUS_SENT,
+            $this->app->repo('Registration')->find($registration->id)->status,
+            'Garantindo que a aplicação em lote recusada não altere o status da inscrição'
+        );
+    }
+
+    function testContinuousBatchApplicationRejectsPartiallyApprovedOutsideAppealPhase()
+    {
+        [$opportunity, $registration] = $this->createContinuousOpportunityWithResult('9', [
+            Registration::STATUS_DRAFT => 'Rascunho',
+            Registration::STATUS_SENT => 'Aguardando resposta',
+            Registration::STATUS_PARTIALLY_APPROVED => 'Deferido parcialmente',
+            Registration::STATUS_APPROVED => 'Deferido',
+        ]);
+
+        $request = $this->createBatchApplicationRequest($opportunity, '9', Registration::STATUS_PARTIALLY_APPROVED);
+
+        $this->assertStatus400($request, 'Garantindo que a aplicação em lote recuse o deferido parcialmente fora da fase de recurso');
 
         $this->assertSame(
             Registration::STATUS_SENT,
@@ -226,7 +261,7 @@ class RegistrationPartiallyApprovedStatusTest extends Abstract\TestCase
 
     function testReportCountsPartiallyApprovedRegistrations()
     {
-        [$opportunity, $registration] = $this->createOpportunityWithSentRegistration();
+        [$opportunity, $registration] = $this->createAppealOpportunityWithSentRegistration();
 
         $this->app->disableAccessControl();
         try {
@@ -285,7 +320,19 @@ class RegistrationPartiallyApprovedStatusTest extends Abstract\TestCase
         );
         $this->app->em->clear();
 
-        return [$opportunity->refreshed(), $registration];
+        return [$opportunity->refreshed(), $this->app->repo('Registration')->find($registration->id)];
+    }
+
+    /**
+     * Igual a createContinuousOpportunityWithResult, marcada como fase de recurso
+     *
+     * @return array{Opportunity, Registration}
+     */
+    private function createContinuousAppealOpportunityWithResult(string $consolidated_result, ?array $status_labels = null): array
+    {
+        [$opportunity, $registration] = $this->createContinuousOpportunityWithResult($consolidated_result, $status_labels);
+
+        return [$this->markAsAppealPhase($opportunity), $this->app->repo('Registration')->find($registration->id)];
     }
 
     /**
@@ -327,5 +374,31 @@ class RegistrationPartiallyApprovedStatusTest extends Abstract\TestCase
         $registration = $this->registrationDirector->createSentRegistration($opportunity, data: []);
 
         return [$opportunity->refreshed(), $registration->refreshed()];
+    }
+
+    /**
+     * Cria oportunidade marcada como fase de recurso com inscrição enviada
+     *
+     * @return array{Opportunity, Registration}
+     */
+    private function createAppealOpportunityWithSentRegistration(): array
+    {
+        [$opportunity, $registration] = $this->createOpportunityWithSentRegistration();
+
+        return [$this->markAsAppealPhase($opportunity), $this->app->repo('Registration')->find($registration->id)];
+    }
+
+    private function markAsAppealPhase(Opportunity $opportunity): Opportunity
+    {
+        $this->app->disableAccessControl();
+        try {
+            $opportunity->isAppealPhase = true;
+            $opportunity->status = Opportunity::STATUS_APPEAL_PHASE;
+            $opportunity->save(true);
+        } finally {
+            $this->app->enableAccessControl();
+        }
+
+        return $opportunity->refreshed();
     }
 }

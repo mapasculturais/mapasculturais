@@ -48,7 +48,12 @@ app.component('registration-results', {
                 return false;
             }
 
-            return this.registration.status > 1 && this.registration.status < 10 && this.opportunity.isAppealPhase && !this.appealRegistration;
+            // Deferido parcialmente (9) avança como deferido: não abre novo recurso.
+            return this.registration.status > 1
+                && this.registration.status < 10
+                && this.registration.status !== 9
+                && this.opportunity.isAppealPhase
+                && !this.appealRegistration;
         },
 
         currentEvaluation() {
