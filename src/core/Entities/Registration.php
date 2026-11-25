@@ -1984,7 +1984,9 @@ class Registration extends \MapasCulturais\Entity
                 'number' => $this->number,
                 'opportunity' => $this->opportunity->parent
             ]);
-            $result[] = $parent_registration;
+            if ($parent_registration) {
+                $result[] = $parent_registration;
+            }
         }
 
         return $result;

@@ -420,17 +420,50 @@ class RegistrationPartiallyApprovedStatusTest extends Abstract\TestCase
     }
 
     /**
-     * Cria fase de recurso ligada à fase de mérito, com inscrição enviada no recurso
+     * Cria fase de recurso ligada à fase de mérito, com inscrição de recurso
+     * no mesmo number da inscrição pai (como no fluxo real do edital).
      *
      * @return array{Opportunity, Registration}
      */
     private function createAppealOpportunityWithSentRegistration(): array
     {
-        [$parent] = $this->createOpportunityWithSentRegistration();
+        [$parent, $parent_registration] = $this->createOpportunityWithSentRegistration();
         $appeal_phase = $this->createAppealPhase($parent);
-        $registration = $this->registrationDirector->createSentRegistration($appeal_phase, data: []);
+        $appeal_registration = $this->createAppealRegistration($parent_registration, $appeal_phase);
 
-        return [$appeal_phase->refreshed(), $registration->refreshed()];
+        return [$appeal_phase->refreshed(), $appeal_registration->refreshed()];
+    }
+
+    /**
+     * Cria a inscrição na fase de recurso espelhando number/owner da inscrição de mérito
+     */
+    private function createAppealRegistration(Registration $parent_registration, Opportunity $appeal_phase): Registration
+    {
+        $existing = $this->app->repo('Registration')->findOneBy([
+            'opportunity' => $appeal_phase,
+            'number' => $parent_registration->number,
+        ]);
+
+        if ($existing) {
+            return $existing;
+        }
+
+        $this->app->disableAccessControl();
+        try {
+            $appeal = new Registration();
+            $appeal->opportunity = $appeal_phase;
+            $appeal->category = $parent_registration->category;
+            $appeal->proponentType = $parent_registration->proponentType;
+            $appeal->range = $parent_registration->range;
+            $appeal->owner = $parent_registration->owner;
+            $appeal->number = $parent_registration->number;
+            $appeal->save(true);
+            $appeal->send(false);
+
+            return $appeal->refreshed();
+        } finally {
+            $this->app->enableAccessControl();
+        }
     }
 
     private function createAppealPhase(Opportunity $parent): Opportunity
