@@ -8,11 +8,14 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 ## [UNRELEASED]
 ### Melhorias
 - A fase de recurso passa a ter o status "Deferido parcialmente", com o mesmo comportamento do Deferido: a inscrição avança para a fase seguinte e aparece como selecionada na publicação final. O status vem desabilitado e é ativado pelo gestor na configuração de status do recurso; aparece no filtro, na aplicação de resultados em lote, nas planilhas e nas notificações ao proponente
+- Na lista de inscritos, o campo "Dados bancários" passa a aparecer em colunas separadas (tipo de conta, banco, agência e conta) e já vem visível por padrão
 ### Correções
 - Corrige a listagem de espaços que quebrava quando um campo de seleção múltipla (como acessibilidade física) estava vazio no cadastro: a leitura passa a tratar valor vazio com segurança e mantém o formato antigo separado por `;`
 - Corrige a desqualificação de inscrição (sair de Selecionada) que podia deixar fichas órfãs e ponteiros `next`/`previous` quebrados entre fases: o sync passa a limpar os ponteiros ao remover a inscrição e a cascatear a remoção para prestações encadeadas; a publicação final deixa de usar rascunho de prestação/execução como fonte do resultado publicado
 - Corrige a saída de Selecionada na publicação final, que mantinha pedidos de execução abertos mesmo sem seleção: os pedidos vinculados passam a ser removidos junto com a mudança de status
 - Na lista de inscritos, ao tirar uma inscrição de Selecionada, passa a exibir um modal de confirmação avisando que dados das fases seguintes (inclusive prestação e pedidos de execução) serão removidos
+- Corrige a lista e a planilha de inscritos para o campo "Dados bancários", que saía confuso ou como um bloco único: passa a mostrar colunas separadas com nomes legíveis (tipo de conta, banco, agência e conta)
+- Quem já tinha colunas salvas do formato antigo de "Dados bancários" passa a ver as novas colunas sem precisar reconfigurar a tabela
 
 ## [7.8.24] - 2026-11-19
 ### Melhorias
