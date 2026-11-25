@@ -100,6 +100,26 @@ class RegistrationPartiallyApprovedStatusTest extends Abstract\TestCase
         }
     }
 
+    /**
+     * Não há runner de Vue nesta suíte; garante que canShowAppeal exclui o status 9
+     * nos componentes que oferecem o botão de recurso.
+     */
+    function testCanShowAppealExcludesPartiallyApprovedStatusInComponents()
+    {
+        foreach ([
+            'modules/Opportunities/components/registration-results/script.js',
+            'modules/Opportunities/components/registration-status/script.js',
+        ] as $relative) {
+            $script = $this->componentScript($relative);
+
+            $this->assertMatchesRegularExpression(
+                '/canShowAppeal\s*\(\s*\)\s*\{[\s\S]*?status\s*!==\s*9/',
+                $script,
+                "canShowAppeal em {$relative} deve excluir o deferido parcialmente (status 9)"
+            );
+        }
+    }
+
     function testPartiallyApprovedRegistrationHasSameVisibilityAsApproved()
     {
         [, $registration] = $this->createAppealOpportunityWithSentRegistration();
@@ -400,5 +420,14 @@ class RegistrationPartiallyApprovedStatusTest extends Abstract\TestCase
         }
 
         return $opportunity->refreshed();
+    }
+
+    private function componentScript(string $relative_path): string
+    {
+        $sourceRoot = realpath(__DIR__ . '/../../src') ?: realpath(__DIR__ . '/../src');
+        $path = $sourceRoot . '/' . ltrim($relative_path, '/');
+        $this->assertFileExists($path, "Componente não encontrado: {$relative_path}");
+
+        return file_get_contents($path);
     }
 }
