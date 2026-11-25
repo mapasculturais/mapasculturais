@@ -191,6 +191,15 @@ app.component('opportunity-registrations-table', {
                 visible += ',range';
             }
         }
+
+        // bankFields: subcolunas devem aparecer por padrão (antes o campo único
+        // "Dados bancários" ficava oculto até o usuário marcar; com a expansão
+        // em colunas, sem isso a tabela some o campo por completo).
+        for (const header of defaultHeaders) {
+            if (header?.exportField && typeof header.slug === 'string' && header.slug.includes('.')) {
+                visible += ',' + header.slug;
+            }
+        }
         
         return {
             sortOptions,

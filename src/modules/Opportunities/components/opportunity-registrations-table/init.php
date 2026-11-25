@@ -123,17 +123,42 @@ $can_see = function ($def) use ($app, $opportunity) {
     return ($app->user->is('admin') || $opportunity->canUser('@control')) ? true : !(isset($def['private']) && $def['private']);
 };
 
+$bank_fields_sub_columns = [
+    'account_type' => i::__('Tipo de conta'),
+    'number' => i::__('Banco'),
+    'branch' => i::__('Agência'),
+    'dv_branch' => i::__('Dígito verificador da agência'),
+    'account_number' => i::__('Número da conta'),
+    'dv_account_number' => i::__('Dígito verificador da conta'),
+];
+
 foreach ($definitions as $field => $def) {
-    if (!in_array($field, $skipFields) && !str_starts_with($field, "_") && $can_see($def) && $def['label']) {
-        $header = [
-            'text' => str_starts_with($field, 'geo') ? $def['label'] . " - Divisão geográfica" : $def['label'],
-            'value' => $field,
-            'slug' => $field
-        ];
-        $default_headers[] = $header;
+    if (in_array($field, $skipFields) || str_starts_with($field, "_") || !$can_see($def) || !$def['label']) {
+        continue;
     }
 
-    if(isset($def['type']) && $def['type'] == 'location' && $can_see($def)) {
+    // bankFields: uma coluna por subcampo (evita [object Object] na lista)
+    if (($def['type'] ?? null) === 'bankFields') {
+        foreach ($bank_fields_sub_columns as $sub => $label) {
+            $default_headers[] = [
+                'text' => $label,
+                'value' => "{$field}.{$sub}",
+                'slug' => "{$field}.{$sub}",
+                // Export pede o objeto inteiro; o job da planilha expande em colunas.
+                'exportField' => $field,
+            ];
+        }
+        continue;
+    }
+
+    $header = [
+        'text' => str_starts_with($field, 'geo') ? $def['label'] . " - Divisão geográfica" : $def['label'],
+        'value' => $field,
+        'slug' => $field
+    ];
+    $default_headers[] = $header;
+
+    if(isset($def['type']) && $def['type'] == 'location') {
         $field_id = str_replace('field_', '', $field);
 
         $level_labels = $app->config['address.defaultLevelsLabels'];
@@ -213,7 +238,9 @@ foreach ($original_fields as $field) {
 
 // Processa headers para adicionar ao select
 foreach ($default_headers as $header) {
-    $field = $header['slug'] ?? $header['value'];
+    // bankFields (e similares): exportField pede o objeto inteiro; value/slug
+    // com "field_N.sub" não funciona no @select da API de metadados JSON.
+    $field = $header['exportField'] ?? $header['slug'] ?? $header['value'];
     $parsed = parseField($field);
     $parent = $parsed['parent'];
     $children = $parsed['children'];
@@ -269,6 +296,10 @@ $app->applyHook('component(opportunity-registrations-table).additionalHeaders', 
 $data['defaultSelect'] = $default_select;
 $data['defaultHeaders'] = $default_headers;
 $data['defaultAvailable'] = $available_fields;
+$data['bankFieldsDict'] = [
+    'accountTypes' => $app->config['module.registrationFieldTypes']['account_types'] ?? [],
+    'bankTypes' => $app->config['module.registrationFieldTypes']['bank_types'] ?? [],
+];
 
 foreach ($statuses_names as $status => $status_name) {
     if (in_array($status, [0, 1, 2, 3, 8, 9, 10])) {
