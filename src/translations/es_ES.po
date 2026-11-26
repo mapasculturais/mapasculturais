@@ -12949,7 +12949,7 @@ msgstr "Áreas"
 #: mapa/mapasculturais/src/themes/BaseV1/views/event/single.php:141
 #: mapa/mapasculturais/src/themes/BaseV1/views/event/single.php:143
 msgid "Linguagens"
-msgstr "Tipos de eventos"
+msgstr "Tipos de evento"
 
 #: mapa/mapasculturais/src/core/ApiOutputs/Html.php:104
 msgid "Semanal"
@@ -18685,7 +18685,7 @@ msgstr "Agregue una descripción breve para el Agente"
 #: mapa/mapasculturais/src/modules/Entities/layouts/parts/entities/create-event-fields.php:11
 #: mapa/mapasculturais/src/modules/Entities/views/event/single.php:71
 msgid "Linguagem cultural"
-msgstr "Lenguaje cultural"
+msgstr "Tipo de evento"
 
 #: mapa/mapasculturais/src/modules/Entities/layouts/parts/entities/create-event-fields.php:12
 msgid "Adicione uma descrição curta para o evento"
@@ -19066,7 +19066,7 @@ msgstr "Clasificación por edades"
 
 #: mapa/mapasculturais/src/modules/Entities/views/event/edit.php:87
 msgid "Linguagens culturais"
-msgstr "Lenguajes culturales"
+msgstr "Tipos de evento"
 
 #: mapa/mapasculturais/src/modules/Entities/views/event/edit.php:105
 msgid "Informações sobre o evento"
@@ -20835,7 +20835,7 @@ msgstr "La clasificación etaria es obligatoria"
 
 #: mapa/mapasculturais/src/modules/EventImporter/Controller.php:400
 msgid "A coluna linguagem está vazia"
-msgstr "La columna lenguaje está vacía"
+msgstr "La columna tipo de evento está vacía"
 
 #: mapa/mapasculturais/src/modules/EventImporter/Controller.php:424
 msgid "O projeto não está cadastrado"
@@ -21162,7 +21162,7 @@ msgstr "franja_etarea"
 
 #: mapa/mapasculturais/src/modules/EventImporter/Module.php:101
 msgid "línguagem"
-msgstr "lenguaje"
+msgstr "tipo de evento"
 
 #: mapa/mapasculturais/src/modules/EventImporter/Module.php:103
 msgid "proprietário"
@@ -21452,15 +21452,13 @@ msgstr ""
 
 #: mapa/mapasculturais/src/modules/EventImporter/Module.php:235
 msgid "LINGUAGEM"
-msgstr "IDIOMA"
+msgstr "TIPO_DE_EVENTO"
 
 #: mapa/mapasculturais/src/modules/EventImporter/Module.php:236
 msgid ""
 "PREENCHIMENTO OBRIGATÓRIO - Informar as linguagens do evento separando-as com "
 "ponto e virgula, ;"
-msgstr ""
-"LLENADO OBLIGATORIO - Informar los idiomas del evento separándolos con punto "
-"y coma, ;"
+msgstr "LLENADO OBLIGATORIO - Informar los tipos de evento separándolos con punto y coma, ;"
 
 #: mapa/mapasculturais/src/modules/EventImporter/Module.php:237
 msgid "Teatro;Música Popular;Livro e Literatura"
@@ -30692,7 +30690,7 @@ msgstr "Seleccione por lo menos un tipo de evento"
 
 #: mapa/mapasculturais/src/themes/BaseV1/Theme.php:731
 msgid "Selecionar quantas linguagens for preciso"
-msgstr "Seleccionar cuántos tipos de eventos se necesitan"
+msgstr "Seleccionar cuántos tipos de evento se necesitan"
 
 #: mapa/mapasculturais/src/themes/BaseV1/Theme.php:745
 msgid "Você não tem permissão para executar esta ação"
@@ -32196,7 +32194,7 @@ msgstr "Visualizar Inscriptos"
 
 #: mapa/mapasculturais/src/themes/BaseV1/layouts/parts/panel-event.php:13
 msgid "Linguagens: "
-msgstr "Tipos de eventos: "
+msgstr "Tipos de evento: "
 
 #: mapa/mapasculturais/src/themes/BaseV1/layouts/parts/panel-event.php:15
 msgid "Classificação:"
@@ -34034,11 +34032,11 @@ msgstr "Seleccione el(los) estado(s) para el(los) Espacio(s)"
 
 #: mapa/mapasculturais/src/themes/BaseV1/layouts/parts/singles/subsite-filters.php:83
 msgid "Linguagem:"
-msgstr "Tipo de Evento:"
+msgstr "Tipo de evento:"
 
 #: mapa/mapasculturais/src/themes/BaseV1/layouts/parts/singles/subsite-filters.php:84
 msgid "Selecione o(s) tipos(s) de linguagem"
-msgstr "Seleccione el(los) tipo(s) de eventos(s)"
+msgstr "Seleccione el/los tipo(s) de evento"
 
 #: mapa/mapasculturais/src/themes/BaseV1/layouts/parts/singles/subsite-filters.php:93
 msgid "Selos:"
@@ -40586,7 +40584,7 @@ msgstr "La columna de clasificación etaria no es válida. Las opciones aceptada
 
 #: src/modules/EventImporter/Controller.php
 msgid "A linguagem %s não existe"
-msgstr "El lenguaje %s no existe"
+msgstr "El tipo de evento %s no existe"
 
 #: src/modules/EventImporter/Controller.php
 msgid "Existe mais de um projeto com o nome %s. Para proseguir, informe o ID do projeto que quer associar ao evento"
