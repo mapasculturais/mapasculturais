@@ -24,7 +24,7 @@ foreach ($definitions as $field => $def) {
         ];
 
         if ($field == "owner") {
-            $data['text'] = i::__('Responsável', 'event-table');
+            $data['text'] = i::__('Responsável');
             $data['value'] = 'owner?.name';
         }
 

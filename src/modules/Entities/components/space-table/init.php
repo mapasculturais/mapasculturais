@@ -24,16 +24,16 @@ foreach ($definitions as $field => $def) {
         ];
 
         if($field == "owner") {
-            $data['text'] = i::__('Responsável', 'space-table');
+            $data['text'] = i::__('Responsável');
             $data['value'] = 'owner?.name';
         }
 
         if($field == "location") {
-            $data['text'] = i::__('Localização', 'space-table');
+            $data['text'] = i::__('Localização');
         }
 
         if($field == "public") {
-            $data['text'] = i::__('Endereço público', 'space-table');
+            $data['text'] = i::__('Endereço público');
         }
 
         $additionalHeaders[] = $data;

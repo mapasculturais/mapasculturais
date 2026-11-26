@@ -293,7 +293,7 @@ class Module extends \MapasCulturais\EvaluationMethod
                 if(is_array($values)) {
                     foreach($values as $val) {
                         if(!in_array($val, $options)){
-                            $errors[] = i::__("O valor do critério {$c->name} é inválido");
+                            $errors[] = sprintf(i::__("O valor do critério %s é inválido"), $c->name);
                             break;
                         } 
                     }
