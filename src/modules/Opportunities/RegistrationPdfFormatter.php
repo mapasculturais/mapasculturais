@@ -3,6 +3,7 @@
 namespace MapasCulturais\Modules\Opportunities;
 
 use MapasCulturais\App;
+use MapasCulturais\i;
 
 class RegistrationPdfFormatter
 {
@@ -252,7 +253,7 @@ class RegistrationPdfFormatter
         }
 
         if (is_bool($value)) {
-            return $value ? 'Sim' : 'Não';
+            return $value ? i::__('Sim') : i::__('Não');
         }
 
         if (is_array($value) || is_object($value)) {
