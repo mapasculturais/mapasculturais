@@ -213,16 +213,16 @@ class RegistrationPdfFormatter
     private static function addressLabels(): array
     {
         $defaultLabels = [
-            'address_postalCode' => 'Código postal',
-            'address_level0' => 'País',
-            'address_level1' => 'Região',
-            'address_level2' => 'Estado/Província',
-            'address_level3' => 'Mesorregião/Subdivisão',
-            'address_level4' => 'Município/Cidade/Comune',
-            'address_level5' => 'Distrito/Setor',
-            'address_level6' => 'Bairro',
-            'address_line1' => 'Endereço',
-            'address_line2' => 'Complemento',
+            'address_postalCode' => i::__('Código postal'),
+            'address_level0' => i::__('País'),
+            'address_level1' => i::__('Região'),
+            'address_level2' => i::__('Estado/Província'),
+            'address_level3' => i::__('Mesorregião/Subdivisão'),
+            'address_level4' => i::__('Município/Cidade/Comune'),
+            'address_level5' => i::__('Distrito/Setor'),
+            'address_level6' => i::__('Bairro'),
+            'address_line1' => i::__('Endereço'),
+            'address_line2' => i::__('Complemento'),
             'endereco' => 'endereco',
         ];
 

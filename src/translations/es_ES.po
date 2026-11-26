@@ -40475,3 +40475,163 @@ msgstr "Datos del formulario"
 #: src/modules/Entities/components/opportunity-create-model/template.php:15
 msgid "Para salvar um modelo, preencha os campos abaixo."
 msgstr "Para guardar un modelo, complete los campos a continuación."
+
+#: src/modules/Opportunities/components/evaluation-actions/template.php
+msgid "Finalizar e Avançar"
+msgstr "Finalizar y Avanzar"
+
+#: src/modules/EvaluationMethodQualification/Module.php
+msgid "O valor do critério %s é inválido"
+msgstr "El valor del criterio %s es inválido"
+
+#: src/modules/OpportunityAccountability/Controller.php
+msgid "Campo <b>%s</b> aberto para edição"
+msgstr "Campo <b>%s</b> abierto para edición"
+
+#: src/modules/OpportunityAccountability/Controller.php
+msgid "Campo <b>%s</b> fechado para edição"
+msgstr "Campo <b>%s</b> cerrado para edición"
+
+#: src/modules/OpportunityWorkplan/Module.php
+msgid "Campo 'Descrição' obrigatório na entrega '%s'."
+msgstr "Campo 'Descripción' obligatorio en la entrega '%s'."
+
+#: src/modules/OpportunityWorkplan/Module.php
+msgid "Campo 'Tipo de entrega' obrigatório na entrega '%s'."
+msgstr "Campo 'Tipo de entrega' obligatorio en la entrega '%s'."
+
+#: src/modules/OpportunityWorkplan/Module.php
+msgid "Campo 'Mês inicial' obrigatório na entrega '%s'."
+msgstr "Campo 'Mes inicial' obligatorio en la entrega '%s'."
+
+#: src/modules/OpportunityWorkplan/Module.php
+msgid "Campo 'Mês final' obrigatório na entrega '%s'."
+msgstr "Campo 'Mes final' obligatorio en la entrega '%s'."
+
+#: src/modules/OpportunityWorkplan/Module.php
+msgid "Campo 'Previsão Quantidade' obrigatório na entrega '%s'."
+msgstr "Campo 'Previsión Cantidad' obligatorio en la entrega '%s'."
+
+#: src/modules/OpportunityWorkplan/Module.php
+msgid "Campo 'Previsão de valor unitário' obrigatório na entrega '%s'."
+msgstr "Campo 'Previsión de valor unitario' obligatorio en la entrega '%s'."
+
+#: src/modules/OpportunityWorkplan/Module.php
+msgid "Campo 'Detalhamento do envolvimento de comunidades' obrigatório na entrega '%s'"
+msgstr "Campo 'Detallado de la participación de comunidades' obligatorio en la entrega '%s'"
+
+#: src/modules/OpportunityWorkplan/Module.php
+msgid "Campo 'Ações de inclusão Trans e Travestis' obrigatório na entrega '%s'"
+msgstr "Campo 'Acciones de inclusión Trans y Travestis' obligatorio en la entrega '%s'"
+
+#: src/modules/OpportunityWorkplan/Module.php
+msgid "Campo 'Descrição de práticas socioambientais' obrigatório na entrega '%s'"
+msgstr "Campo 'Descripción de prácticas socioambientales' obligatorio en la entrega '%s'"
+
+#: src/modules/OpportunityWorkplan/Module.php
+msgid "Campo 'Medidas de acessibilidade previstas' obrigatório na entrega '%s'"
+msgstr "Campo 'Medidas de accesibilidad previstas' obligatorio en la entrega '%s'"
+
+#: src/modules/OpportunityWorkplan/Module.php
+msgid "Campo 'Tipos de experimentação/inovação' obrigatório na entrega '%s'"
+msgstr "Campo 'Tipos de experimentación/innovación' obligatorio en la entrega '%s'"
+
+#: src/modules/OpportunityWorkplan/Module.php
+msgid "Campo 'Envolvimento de comunidades como coautores' obrigatório na entrega '%s'"
+msgstr "Campo 'Participación de comunidades como coautores' obligatorio en la entrega '%s'"
+
+#: src/modules/OpportunityWorkplan/Module.php
+msgid "Campo 'Estratégia de inclusão Trans/Travestis' obrigatório na entrega '%s'"
+msgstr "Campo 'Estrategia de inclusión Trans/Travestis' obligatorio en la entrega '%s'"
+
+#: src/modules/OpportunityWorkplan/Module.php
+msgid "Campo 'Plano de acessibilidade' obrigatório na entrega '%s'"
+msgstr "Campo 'Plan de accesibilidad' obligatorio en la entrega '%s'"
+
+#: src/modules/OpportunityWorkplan/Module.php
+msgid "Campo 'Práticas socioambientais' obrigatório na entrega '%s'"
+msgstr "Campo 'Prácticas socioambientales' obligatorio en la entrega '%s'"
+
+#: src/modules/OpportunityWorkplan/Module.php
+msgid "Campo 'Estratégias de comunicação' obrigatório na entrega '%s'"
+msgstr "Campo 'Estrategias de comunicación' obligatorio en la entrega '%s'"
+
+#: src/modules/OpportunityWorkplan/Module.php
+msgid "Campo 'Previsão de ação de experimentação/inovação' obrigatório na entrega '%s'"
+msgstr "Campo 'Previsión de acción de experimentación/innovación' obligatorio en la entrega '%s'"
+
+#: src/modules/Spreadsheets/SpreadsheetJob.php
+msgid "Sua planilha de %s foi gerada e está pronta para ser baixada. Acesse o link abaixo para obter o arquivo:"
+msgstr "Su planilla de %s fue generada y está lista para descargar. Acceda al enlace siguiente para obtener el archivo:"
+
+#: src/modules/Opportunities/views/registration/single.php
+msgid "O prazo para envio dessa inscrição foi até %s"
+msgstr "El plazo para el envío de esta inscripción fue hasta %s"
+
+#: src/modules/EventImporter/views/eventimporter/import-erros.php
+msgid "Erros de importação do arquivo %s"
+msgstr "Errores de importación del archivo %s"
+
+#: src/modules/EventImporter/views/eventimporter/import-erros.php
+msgid "Linha %s"
+msgstr "Línea %s"
+
+#: src/modules/EventImporter/Controller.php
+msgid "As colunas %s não foram encontradas na planilha"
+msgstr "Las columnas %s no se encontraron en la planilla"
+
+#: src/modules/EventImporter/Controller.php
+msgid "A coluna classificação etária é inválida. As opções aceitas são %s"
+msgstr "La columna de clasificación etaria es inválida. Las opciones aceptadas son %s"
+
+#: src/modules/EventImporter/Controller.php
+msgid "A linguagem %s não existe"
+msgstr "El lenguaje %s no existe"
+
+#: src/modules/EventImporter/Controller.php
+msgid "Existe mais de um projeto com o nome %s. Para proseguir, informe o ID do projeto que quer associar ao evento"
+msgstr "Existe más de un proyecto con el nombre %s. Para continuar, informe el ID del proyecto que desea asociar al evento"
+
+#: src/modules/EventImporter/Controller.php
+msgid "Existe mais de um espaço com o nome %s. Para proseguir informe o ID do espaço que quer associar ao evento"
+msgstr "Existe más de un espacio con el nombre %s. Para continuar informe el ID del espacio que desea asociar al evento"
+
+#: src/modules/EventImporter/Controller.php
+msgid "A frequência é inválida. As opções aceitas são %s"
+msgstr "La frecuencia es inválida. Las opciones aceptadas son %s"
+
+#: src/modules/EventImporter/Controller.php
+msgid "Evento %s não foi inserido (falha na ocorrência, arquivos ou metalists)"
+msgstr "El evento %s no fue insertado (falla en la ocurrencia, archivos o metalists)"
+
+#: src/modules/EventImporter/Controller.php
+msgid "Dia %s de %s de %s às %s"
+msgstr "Día %s de %s de %s a las %s"
+
+#: src/modules/EventImporter/Controller.php
+msgid "de %s a %s de %s de %s às %s"
+msgstr "del %s al %s de %s de %s a las %s"
+
+#: src/modules/EventImporter/Controller.php
+msgid "de %s de %s de %s a %s de %s de %s às %s"
+msgstr "del %s de %s de %s al %s de %s de %s a las %s"
+
+#: src/modules/EventImporter/Controller.php
+msgid "de %s de %s a %s de %s de %s às %s"
+msgstr "del %s de %s al %s de %s de %s a las %s"
+
+#: src/modules/EventImporter/Controller.php
+msgid "Diariamente de %s a %s de %s de %s às %s"
+msgstr "Diariamente del %s al %s de %s de %s a las %s"
+
+#: src/modules/EventImporter/Controller.php
+msgid "Diariamente de %s de %s de %s a %s de %s de %s às %s"
+msgstr "Diariamente del %s de %s de %s al %s de %s de %s a las %s"
+
+#: src/modules/EventImporter/Controller.php
+msgid "Diariamente de %s de %s a %s de %s de %s às %s"
+msgstr "Diariamente del %s de %s al %s de %s de %s a las %s"
+
+#: src/modules/Opportunities/views/registration/pdf.php
+msgid "Logo"
+msgstr "Logo"

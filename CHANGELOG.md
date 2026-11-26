@@ -11,6 +11,8 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Na lista de inscritos, o campo "Dados bancários" passa a aparecer em colunas separadas (tipo de conta, banco, agência e conta) e já vem visível por padrão
 
 ### Correções
+- Corrige textos fixos em português na ficha de inscrição em PDF (títulos, rótulos, endereço e "Sim"/"Não") e no aviso da janela "Salvar modelo", que agora podem ser traduzidos
+- Corrige cabeçalhos, placeholders e mensagens de avaliação/planilha/importador que não eram traduzidos (domínio incorreto em `i::__`, interpolação dentro da msgid e catálogo `es_ES` desatualizado)
 - Corrige a listagem de espaços que quebrava quando um campo de seleção múltipla (como acessibilidade física) estava vazio no cadastro: a leitura passa a tratar valor vazio com segurança e mantém o formato antigo separado por `;`
 - Corrige a desqualificação de inscrição (sair de Selecionada) que podia deixar fichas órfãs e ponteiros `next`/`previous` quebrados entre fases: o sync passa a limpar os ponteiros ao remover a inscrição e a cascatear a remoção para prestações encadeadas; a publicação final deixa de usar rascunho de prestação/execução como fonte do resultado publicado
 - Corrige a saída de Selecionada na publicação final, que mantinha pedidos de execução abertos mesmo sem seleção: os pedidos vinculados passam a ser removidos junto com a mudança de status

@@ -72,7 +72,7 @@ $siteName = $app->config['logo.title'] . ' ' . $app->config['logo.subtitle'];
         $imageData = base64_encode(file_get_contents($logoUrl));
         $mimeType = mime_content_type($logoUrl);
         ?>
-        <img src="data:<?= $mimeType ?>;base64,<?= $imageData ?>" alt="Logo">
+        <img src="data:<?= $mimeType ?>;base64,<?= $imageData ?>" alt="<?= i::esc_attr__('Logo') ?>">
     <?php else: ?>
         <div class="site-name"><?= htmlspecialchars($siteName) ?></div>
     <?php endif; ?>

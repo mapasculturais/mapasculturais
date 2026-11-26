@@ -833,8 +833,7 @@ class Controller extends \MapasCulturais\Controller
                $exec = function () use (&$ocurrence, $value, $app, &$rule) {
    
                   $ocurrence->endsAt = $this->formatDate($value['ENDS_AT'], false);
-                  $rule['description'].= i::__('Diariamente');
-   
+
                   $months[$value['STARTS_ON']] = $value['STARTS_ON'];
                   $months[$value['ENDS_ON']] = $value['ENDS_ON'];
                   
@@ -847,25 +846,43 @@ class Controller extends \MapasCulturais\Controller
                   $years[$dateFn->format("Y")] = $dateFn->format("Y");
                   $_years = array_keys($years);
    
-                  $yearIn = null;
-                  $yearFn = null;
-                  if(count($_years) == 1){
-                     $yearFn = " de ".$this->formatDate($_years[0], "Y");
-                  }else{
-                     if(isset($_years[0]) && isset($_years[0])){
-                        $yearIn = " de ".$this->formatDate($_years[0], "Y");
-                        $yearFn = " de ".$this->formatDate($_years[1], "Y");
-                     }else{
-                        $yearFn = " de ".$this->formatDate($_years[0], "Y");
-                     }
-                  }
-                 
+                  $yearStart = $this->formatDate($_years[0], "Y");
+                  $yearEnd = isset($_years[1]) ? $this->formatDate($_years[1], "Y") : $yearStart;
+
                   $start = $this->formatDate($value['STARTS_AT'], false);
                   if(count($_months) == 1){
                      $dateFn = $this->formatDate($_months[1], false);
-                     $rule['description'].= " de {$dateIn->format("d")} a {$dateFn->format("d")} de  {$dateIn->format("F")} {$yearIn}  às {$start->format("H:i")}";
+                     $rule['description'].= sprintf(
+                        i::__("Diariamente de %s a %s de %s de %s às %s"),
+                        $dateIn->format("d"),
+                        $dateFn->format("d"),
+                        $dateIn->format("F"),
+                        $yearEnd,
+                        $start->format("H:i")
+                     );
                   }else{
-                     $rule['description'].= " de {$dateIn->format("d")} de {$dateIn->format("F")} {$yearIn} a {$dateFn->format("d")} de {$dateFn->format("F")} {$yearFn} às {$start->format("H:i")}";
+                     if (isset($_years[1])) {
+                        $rule['description'].= sprintf(
+                           i::__("Diariamente de %s de %s de %s a %s de %s de %s às %s"),
+                           $dateIn->format("d"),
+                           $dateIn->format("F"),
+                           $yearStart,
+                           $dateFn->format("d"),
+                           $dateFn->format("F"),
+                           $yearEnd,
+                           $start->format("H:i")
+                        );
+                     } else {
+                        $rule['description'].= sprintf(
+                           i::__("Diariamente de %s de %s a %s de %s de %s às %s"),
+                           $dateIn->format("d"),
+                           $dateIn->format("F"),
+                           $dateFn->format("d"),
+                           $dateFn->format("F"),
+                           $yearStart,
+                           $start->format("H:i")
+                        );
+                     }
                   }
                };
                break;
@@ -926,25 +943,43 @@ class Controller extends \MapasCulturais\Controller
                   $years[$dateFn->format("Y")] = $dateFn->format("Y");
                   $_years = array_keys($years);
                  
-                  $yearIn = null;
-                  $yearFn = null;
-                  if(count($_years) == 1){
-                     $yearFn = sprintf(i::__(" de %s"), $this->formatDate($_years[0], "Y"));
-                  }else{
-                     if(isset($_years[0]) && isset($_years[0])){
-                        $yearIn = sprintf(i::__(" de %s"), $this->formatDate($_years[0], "Y"));
-                        $yearFn = sprintf(i::__(" de %s"), $this->formatDate($_years[1], "Y"));
-                     }else{
-                        $yearFn = sprintf(i::__(" de %s"), $this->formatDate($_years[0], "Y"));
-                     }
-                  }
-               
+                  $yearStart = $this->formatDate($_years[0], "Y");
+                  $yearEnd = isset($_years[1]) ? $this->formatDate($_years[1], "Y") : $yearStart;
+
                   $start = $this->formatDate($value['STARTS_AT'], false);
                   if(count($_months) == 1){
-                     $rule['description'].= sprintf(i::__("de %s a %s de %s %s às %s"), $dateIn->format("d"), $dateFn->format("d"), $dateIn->format("F"), $yearFn, $start->format("H:i"));
+                     $rule['description'].= sprintf(
+                        i::__("de %s a %s de %s de %s às %s"),
+                        $dateIn->format("d"),
+                        $dateFn->format("d"),
+                        $dateIn->format("F"),
+                        $yearEnd,
+                        $start->format("H:i")
+                     );
                   }else{
                      $dateFn = $this->formatDate($_months[1], false);
-                     $rule['description'].= sprintf(i::__("de %s de %s %s a %s de %s %s às %s"), $dateIn->format("d"), $dateIn->format("F"), $yearIn, $dateFn->format("d"), $dateFn->format("F"), $yearFn, $start->format("H:i"));
+                     if (isset($_years[1])) {
+                        $rule['description'].= sprintf(
+                           i::__("de %s de %s de %s a %s de %s de %s às %s"),
+                           $dateIn->format("d"),
+                           $dateIn->format("F"),
+                           $yearStart,
+                           $dateFn->format("d"),
+                           $dateFn->format("F"),
+                           $yearEnd,
+                           $start->format("H:i")
+                        );
+                     } else {
+                        $rule['description'].= sprintf(
+                           i::__("de %s de %s a %s de %s de %s às %s"),
+                           $dateIn->format("d"),
+                           $dateIn->format("F"),
+                           $dateFn->format("d"),
+                           $dateFn->format("F"),
+                           $yearStart,
+                           $start->format("H:i")
+                        );
+                     }
                   }
                   
                };
