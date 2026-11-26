@@ -261,7 +261,7 @@ abstract class SpreadsheetJob extends JobType
         
         $template = 'export_spreadsheet';
         $dict_entity = $this->dictEntity($entity_class);
-        $message_body = i::__("Sua planilha de {$dict_entity} foi gerada e está pronta para ser baixada. Acesse o link abaixo para obter o arquivo:");
+        $message_body = sprintf(i::__("Sua planilha de %s foi gerada e está pronta para ser baixada. Acesse o link abaixo para obter o arquivo:"), $dict_entity);
 
         $data = [
             'userName' => $user->profile->name,

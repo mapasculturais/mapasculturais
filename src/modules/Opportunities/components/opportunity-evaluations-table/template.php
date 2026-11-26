@@ -79,7 +79,7 @@ $this->import('
                                 :enable-time-picker=false
                                 text-input autoApply>
                                 <template #dp-input="{ value, onBlur, onInput, onEnter, onTab, onClear }">
-                                    <input type="text" data-maska="##/##/####" :value="value" maxlength="10" @input="onChange($event, onInput, entities)" @blur="onBlur" @keydown.enter="onEnter" @keydown.tab="onTab" v-maska placeholder="Data inicial">
+                                    <input type="text" data-maska="##/##/####" :value="value" maxlength="10" @input="onChange($event, onInput, entities)" @blur="onBlur" @keydown.enter="onEnter" @keydown.tab="onTab" v-maska placeholder="<?= i::esc_attr__('Data inicial') ?>">
                                 </template>
                             </datepicker>
                         </div>
@@ -95,7 +95,7 @@ $this->import('
                                 :enable-time-picker=false
                                 text-input autoApply>
                                 <template #dp-input="{ value, onBlur, onInput, onEnter, onTab, onClear }">
-                                    <input type="text" data-maska="##/##/####" :value="value" maxlength="10" @input="onChange($event, onInput, entities)" @blur="onBlur" @keydown.enter="onEnter" @keydown.tab="onTab" v-maska placeholder="Data final">
+                                    <input type="text" data-maska="##/##/####" :value="value" maxlength="10" @input="onChange($event, onInput, entities)" @blur="onBlur" @keydown.enter="onEnter" @keydown.tab="onTab" v-maska placeholder="<?= i::esc_attr__('Data final') ?>">
                                 </template>
                             </datepicker>
                         </div>
