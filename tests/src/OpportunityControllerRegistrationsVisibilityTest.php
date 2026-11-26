@@ -120,6 +120,33 @@ class OpportunityControllerRegistrationsVisibilityTest extends TestCase
         $this->assertSame($expected, $this->listedRegistrationIds($opportunity), 'Administrador incluído depois deve listar as inscrições já existentes sem esperar a fila de pcache.');
     }
 
+    function testRepeatedListingKeepsCompleteCacheAndCompletesNewRegistrations()
+    {
+        [$opportunity] = $this->createOpportunity();
+
+        $registration_1 = $this->createDraftRegistrationAsApplicant($opportunity);
+        $registration_2 = $this->createDraftRegistrationAsApplicant($opportunity);
+        $controller = $this->addController($opportunity);
+
+        $first_ids = [$registration_1->id, $registration_2->id];
+        sort($first_ids);
+
+        $this->login($controller);
+        $this->assertSame($first_ids, $this->listedRegistrationIds($opportunity), 'A primeira listagem deve trazer as inscrições existentes.');
+        $this->assertSame($first_ids, $this->listedRegistrationIds($opportunity), 'A listagem com o pcache completo deve trazer as mesmas inscrições.');
+        $this->assertSame($first_ids, $this->viewCacheRegistrationIds($controller, $first_ids), 'A listagem repetida deve manter uma linha "view" por inscrição.');
+
+        $registration_3 = $this->createDraftRegistrationAsApplicant($opportunity);
+        $all_ids = [...$first_ids, $registration_3->id];
+        sort($all_ids);
+
+        $this->assertSame([], $this->viewCacheRegistrationIds($controller, [$registration_3->id]), 'A inscrição nova ainda não deve ter a linha "view" do administrador.');
+
+        $this->login($controller);
+        $this->assertSame($all_ids, $this->listedRegistrationIds($opportunity), 'A listagem deve trazer também a inscrição criada depois da anterior.');
+        $this->assertSame($all_ids, $this->viewCacheRegistrationIds($controller, $all_ids), 'A listagem deve gravar a linha "view" só da inscrição que faltava.');
+    }
+
     /** Ids das inscrições em que o usuário tem a linha "view" no pcache. */
     private function viewCacheRegistrationIds(User $user, array $registration_ids): array
     {
