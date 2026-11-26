@@ -11,3 +11,12 @@
         }
     }
 }
+
+.custom-table-field {
+
+    &__scroll {
+        contain: inline-size;
+        margin-top: size(15);
+        overflow-x: auto;
+    }
+}
