@@ -583,12 +583,44 @@ abstract class Opportunity extends \MapasCulturais\Entity
 
     /**
      * Grava a permissão de leitura do usuário nas inscrições desta oportunidade que ainda não a têm.
+     * Segue Registration::canUserView, que libera a leitura para quem controla a oportunidade.
      *
      * @param User $user
      * @return void
      */
     public function createRegistrationsViewPermissionCacheForUser(User $user) {
-        Registration::createPermissionCacheForUserWhere($user, 'view', 'e.opportunity_id = :opportunity_id', ['opportunity_id' => $this->id]);
+        $conn = App::i()->em->getConnection();
+
+        $params = [
+            'opportunity_id' => $this->id,
+            'user_id' => $user->id,
+            'action' => 'view',
+            'object_type' => Registration::getPCacheObjectType(),
+        ];
+
+        $missing_view = "
+            FROM registration r
+            WHERE
+                r.opportunity_id = :opportunity_id AND
+                NOT EXISTS (
+                    SELECT 1 FROM pcache pc
+                    WHERE
+                        pc.object_type = :object_type AND
+                        pc.object_id = r.id AND
+                        pc.action = :action AND
+                        pc.user_id = :user_id
+                )";
+
+        // Só grava quando há inscrição sem a linha de leitura.
+        if (!$conn->fetchOne("SELECT 1 {$missing_view} LIMIT 1", $params)) {
+            return;
+        }
+
+        $conn->executeQuery("
+            INSERT INTO pcache (user_id, action, object_type, object_id, create_timestamp)
+            SELECT :user_id, :action, :object_type, r.id, now()
+            {$missing_view}
+            ON CONFLICT DO NOTHING", $params);
     }
 
     function getExtraEntitiesToRecreatePermissionCache(){
