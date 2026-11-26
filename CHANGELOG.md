@@ -8,6 +8,7 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 ## [UNRELEASED]
 ### Correções
 - Corrige a listagem de espaços que quebrava quando um campo de seleção múltipla (como acessibilidade física) estava vazio no cadastro: a leitura passa a tratar valor vazio com segurança e mantém o formato antigo separado por `;`
+- Corrige o campo de tabela do formulário de inscrição que não cabia na coluna do formulário: a tabela transbordava para baixo da coluna lateral, que capturava o clique e impedia o preenchimento das últimas colunas; a tabela passa a rolar horizontalmente dentro do campo
 
 ## [7.8.24] - 2026-11-19
 ### Melhorias
@@ -36,7 +37,6 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Corrige a duplicação de oportunidades com fase de recurso: a cópia mantinha o metadado `appealPhase` e o `parent` do recurso apontando para o edital de origem, o que fazia a validação de datas do recurso usar a árvore errada; o recurso passa a ser clonado com `parent` na fase de mérito correspondente da cópia e o vínculo `appealPhase` é religado para essa nova fase
 - Corrige a duplicação de oportunidades que terminava em erro 500 ao reescrever os campos visíveis para o avaliador: o remapeamento usava um método `private` de outro trait e não enxergava o mapa de campos da cópia; o remapeamento passa a rodar no próprio duplicador
 - Corrige o modal "Configurar campos editáveis", que travava a data limite assim que havia campos selecionados: o gestor volta a conseguir estender/reabrir o prazo perdido do proponente
-- Corrige o campo de tabela do formulário de inscrição que não cabia na coluna do formulário: a tabela transbordava para baixo da coluna lateral, que capturava o clique e impedia o preenchimento das últimas colunas; a tabela passa a rolar horizontalmente dentro do campo
 
 ### Melhorias
 - Na busca de eventos, ajusta a visualização dos administradores que passam a ver a aba Tabela, com listagem em colunas e exportação de planilha, no mesmo padrão de agentes, espaços, projetos e oportunidades
