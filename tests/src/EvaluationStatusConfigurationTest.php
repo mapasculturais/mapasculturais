@@ -552,6 +552,19 @@ class EvaluationStatusConfigurationTest extends Abstract\TestCase
         );
     }
 
+    public function testEvaluationSummaryCountsByConfiguredStatusLabel(): void
+    {
+        [$opportunity, $registration] = $this->createEvaluationPhase('continuous', self::RENAMED_STATUS_LABELS);
+
+        $this->setConsolidatedResult($registration, Registration::STATUS_INVALID);
+
+        $this->assertSame(
+            1,
+            $opportunity->evaluationMethodConfiguration->getSummary(true)['evaluations']['Deferido Parcialmente'] ?? null,
+            'Garantindo que o resumo de avaliações da fase conta as inscrições pelo rótulo configurado'
+        );
+    }
+
     /**
      * Cria uma fase de avaliação com uma inscrição enviada e distribuída a um avaliador
      *
