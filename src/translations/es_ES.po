@@ -2337,7 +2337,7 @@ msgstr "Pueblos indígenas/originarios"
 #: base-project/mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/agent-types.php:113
 #: mapa/mapasculturais/src/conf/agent-types.php:113
 msgid "Quebradeiras de coco babaçu"
-msgstr "Rompe cocos de babasú"
+msgstr "Quebradeiras de coco babaçu"
 
 #: base-project/mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/agent-types.php:114
 #: mapa/mapasculturais/src/conf/agent-types.php:114
@@ -20176,10 +20176,11 @@ msgid ""
 "inválida para o dono do edital, que ainda assim poderá mudar seu status para "
 "válida."
 msgstr ""
-"Al habilitar esta configuración, los evaluadores deben considerar la "
-"viabilidad de la aplicación. Si la mayoría de los evaluadores consideran que "
-"la descalificación es ejecutable, ésta será marcada como inválida para el "
-"propietario de la notificación, quien aún podrá cambiar su estado a válido."
+"Al habilitar esta configuración, los evaluadores deberán considerar la "
+"viabilidad de la inscripción. Si la mayoría de los evaluadores considera que "
+"la inscripción debe inhabilitarse por inviabilidad, quedará marcada con el "
+"estado inválida para quien administra la convocatoria, que aun así podrá "
+"cambiar su estado a válida."
 
 #: mapa/mapasculturais/src/modules/EvaluationMethodTechnical/Module.php:224
 #: mapa/mapasculturais/src/modules/EvaluationMethodTechnical/layouts/parts/technical--configuration-form.php:54
@@ -40635,23 +40636,8 @@ msgid "Logo"
 msgstr "Logo"
 
 
-msgid "Ao habilitar esta configuração, os avaliadores deverão considerar a exequibilidade da inscrição."
-msgstr "Al habilitar esta configuración, los evaluadores deberán considerar la viabilidad de la inscripción."
-
-msgid "Aviso sobre a mudança do seu status no(a) "
-msgstr "Aviso sobre el cambio de estado de su inscripción en "
-
-msgid "Aviso sobre a sua inscrição na "
-msgstr "Aviso sobre su inscripción en "
-
-msgid "Campo aberto para edição na prestação de contas "
-msgstr "Campo abierto para edición en la rendición de cuentas "
-
 msgid "Comissão"
 msgstr "Comisión"
-
-msgid "Entre no site com seu usuário para "
-msgstr "Ingrese al sitio con su usuario para "
 
 msgid "Enviadas há mais tempo"
 msgstr "Enviadas hace más tiempo"
@@ -40670,12 +40656,6 @@ msgstr "Ningún resultado"
 
 msgid "O status selecionado não está habilitado para esta fase"
 msgstr "El estado seleccionado no está habilitado para esta fase"
-
-msgid "Se a maioria dos avaliadores considerarem a inabilitação por exequibilidade, a mesma será marcada com o status de inválida para o dono do edital, que ainda assim poderá mudar seu status para válida."
-msgstr "Si la mayoría de los evaluadores considera que la inscripción debe inhabilitarse por inviabilidad, quedará marcada con el estado inválida para quien administra la convocatoria, que aun así podrá cambiar su estado a válida."
-
-msgid " de %s"
-msgstr " de %s"
 
 msgid "Escolha um horário no futuro para agendar a publicação automática. Exemplo: agora são %s de %s, então escolha %s ou mais tarde."
 msgstr "Elija una hora futura para programar la publicación automática. Ejemplo: ahora son las %s del %s, entonces elija las %s o más tarde."
