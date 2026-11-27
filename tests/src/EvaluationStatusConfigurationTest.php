@@ -565,6 +565,29 @@ class EvaluationStatusConfigurationTest extends Abstract\TestCase
         );
     }
 
+    public function testEvaluationSummaryAddsStatusesSharingTheSameLabel(): void
+    {
+        [$opportunity, $registration, , $admin] = $this->createEvaluationPhase('continuous', [
+            '0' => 'Rascunho',
+            '1' => 'Aguardando resposta',
+            '2' => 'Não aprovada',
+            '3' => 'Não aprovada',
+            '10' => 'Aprovada',
+        ]);
+
+        $this->login($admin);
+        $other_registration = $this->registrationDirector->createSentRegistration($opportunity, data: []);
+
+        $this->setConsolidatedResult($registration, Registration::STATUS_INVALID);
+        $this->setConsolidatedResult($other_registration, Registration::STATUS_NOTAPPROVED);
+
+        $this->assertSame(
+            2,
+            $opportunity->evaluationMethodConfiguration->getSummary(true)['evaluations']['Não aprovada'] ?? null,
+            'Garantindo que o resumo soma os status que a fase nomeia com o mesmo rótulo, sem um sobrescrever o outro'
+        );
+    }
+
     /**
      * Cria uma fase de avaliação com uma inscrição enviada e distribuída a um avaliador
      *
