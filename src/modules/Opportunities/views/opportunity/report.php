@@ -14,6 +14,10 @@ function echoStatus($registration) {
             i::_e('não selecionada');
             break;
 
+        case R::STATUS_PARTIALLY_APPROVED:
+            i::_e('deferido parcialmente');
+            break;
+
         case R::STATUS_WAITLIST:
             i::_e('suplente');
             break;

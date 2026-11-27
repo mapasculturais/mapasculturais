@@ -61,7 +61,10 @@ app.component('registration-status', {
             }
 
 
-            return this.registration.status > 1 && this.registration.status <= 10;
+            // Deferido parcialmente (9) avança como deferido: não abre novo recurso.
+            return this.registration.status > 1
+                && this.registration.status <= 10
+                && this.registration.status !== 9;
         },
 
         opportunity () {

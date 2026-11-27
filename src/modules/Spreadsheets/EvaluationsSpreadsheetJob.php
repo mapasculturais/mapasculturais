@@ -304,20 +304,10 @@ abstract class EvaluationsSpreadsheetJob extends SpreadsheetJob
         };
     }
 
+    // Nome do status da inscrição, o mesmo exibido nas telas.
     function statusName($status) {
-        if($status === 10) {
-            return i::__('Selecionada');
-        } elseif($status === 8) {
-            return i::__('Suplente');
-        } elseif($status === 3) {
-            return i::__('Não selecionada');
-        } elseif($status === 2) {
-            return i::__('Inválida');
-        } elseif($status === 1) {
-            return i::__('Pendente');
-        } else {
-            return i::__('Rascunho');
-        }
+        $names = Registration::getStatusesNames();
+        return $names[(int) $status] ?? $names[Registration::STATUS_DRAFT];
     }
 
     function getEvaluationDataHeader(Job $job, int $total_properties)

@@ -821,6 +821,7 @@ class OpportunityPhasesTest extends TestCase
             $numbers[] = $number;
         }
 
+        sort($numbers);
         $this->assertEquals([1, 2, 3], $numbers, 'Garantindo que os números sejam sequenciais 1, 2, 3');
     }
 

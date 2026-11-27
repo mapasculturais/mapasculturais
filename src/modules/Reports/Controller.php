@@ -1135,6 +1135,8 @@ class Controller extends \MapasCulturais\Controller
                 return i::__("Não Selecionada");
             case 8:
                 return i::__("Suplente");
+            case 9:
+                return i::__("Deferido parcialmente");
             case 10:
                 return i::__("Selecionada");
         }

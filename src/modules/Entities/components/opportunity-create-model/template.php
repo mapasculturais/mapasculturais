@@ -13,7 +13,7 @@ $this->import("
 <div class="col-12">
     <mc-modal title="<?= i::__('Salvar modelo') ?>">
         <template #default>
-            <p>Para salvar um modelo, preencha os campos abaixo.</p><br>
+            <p><?= i::__('Para salvar um modelo, preencha os campos abaixo.') ?></p><br>
             <div>
                 <div class="field">
                     <label><?= i::__('Nome do modelo') ?><span class="required">*</span></label>

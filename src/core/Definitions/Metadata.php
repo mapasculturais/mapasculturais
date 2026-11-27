@@ -362,17 +362,25 @@ class Metadata extends \MapasCulturais\Definition{
                 }
             },
             'multiselect' => function($value){
-                $result = is_null($value) ? [] : json_decode($value, true);
-
-                if($value && !is_array($result) && ($temp_result = explode(';', $value))) {
-                    $result = $temp_result;
+                // ''/null não podem chegar ao array_filter — no PHP 8+ isso vira TypeError
+                // e derruba a API (ex.: space/find com acessibilidade_fisica = '').
+                if ($value === null || $value === '') {
+                    return [];
                 }
 
-                $result = array_filter($result, function($v){
-                    return !is_null($v) && $v !== 'null';
-                });
+                $result = is_array($value) ? $value : json_decode($value, true);
 
-                return $result;
+                if (!is_array($result) && is_string($value)) {
+                    $result = explode(';', $value);
+                }
+
+                if (!is_array($result)) {
+                    return [];
+                }
+
+                return array_values(array_filter($result, function($v){
+                    return !is_null($v) && $v !== 'null' && $v !== '';
+                }));
             }
         ];
 

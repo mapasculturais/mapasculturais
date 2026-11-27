@@ -19,6 +19,24 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Adiciona controle para ocultar título e subtítulo do logo no ThemeCustomizer
 - Remove configurações de aparência redundantes da tela de edição de subsites
 
+## [7.8.25] - 2026-11-27
+### Melhorias
+- A fase de recurso passa a ter o status "Deferido parcialmente", com o mesmo comportamento do Deferido: a inscrição avança para a fase seguinte e aparece como selecionada na publicação final. O status vem desabilitado e é ativado pelo gestor na configuração de status do recurso; aparece no filtro, na aplicação de resultados em lote, nas planilhas e nas notificações ao proponente
+- Na lista de inscritos, o campo "Dados bancários" passa a aparecer em colunas separadas (tipo de conta, banco, agência e conta) e já vem visível por padrão; a planilha exportada segue o mesmo formato legível, em vez do bloco único anterior
+- Na lista de inscritos, ao tirar uma inscrição de Selecionada, passa a exibir um modal de confirmação avisando que dados das fases seguintes (inclusive prestação e pedidos de execução) serão removidos
+
+### Correções
+- Corrige textos fixos em português na ficha de inscrição em PDF (títulos, rótulos, endereço e "Sim"/"Não") e no aviso da janela "Salvar modelo", que agora podem ser traduzidos
+- Corrige cabeçalhos, placeholders e mensagens de avaliação/planilha/importador que não eram traduzidos por domínio incorreto em `i::__` ou por interpolação dentro da msgid
+- Corrige o catálogo `es_ES`: completa strings faltantes (incluindo "Deferido parcialmente" e textos de cotas/publicação), corrige traduções erradas (nomes de comunidades tradicionais, "estatus"→"estado", "Hora de atualização") e unifica "linguagem" como "tipo de evento", o que também faz a planilha de exemplo do importador de eventos voltar a ser reconhecida em espanhol
+- Corrige a listagem de espaços que quebrava quando um campo de seleção múltipla (como acessibilidade física) estava vazio no cadastro: a leitura passa a tratar valor vazio com segurança e mantém o formato antigo separado por `;`
+- Corrige a desqualificação de inscrição (sair de Selecionada) que podia deixar fichas órfãs e ponteiros `next`/`previous` quebrados entre fases: o sync passa a limpar os ponteiros ao remover a inscrição e a cascatear a remoção para prestações encadeadas; a publicação final deixa de usar rascunho de prestação/execução como fonte do resultado publicado
+- Corrige a saída de Selecionada na publicação final, que mantinha pedidos de execução abertos mesmo sem seleção: os pedidos vinculados passam a ser removidos junto com a mudança de status
+- Quem já tinha colunas salvas do formato antigo de "Dados bancários" passa a ver as novas colunas sem precisar reconfigurar a tabela
+- Corrige o campo de tabela do formulário de inscrição que não cabia na coluna do formulário: a tabela transbordava para baixo da coluna lateral, que capturava o clique e impedia o preenchimento das últimas colunas; a tabela passa a rolar horizontalmente dentro do campo
+- Corrige telas da gestão que mostravam o vocabulário fixo do método em vez do rótulo de status configurado na fase: a lista de avaliações, a janela "Aplicar resultados das avaliações" dos métodos contínuo e simplificado, o resultado consolidado da inscrição, a lista de inscrições da API e o resumo de avaliações da fase. Um status renomeado na fase de recurso continuava aparecendo como "Negado" para a gestão, enquanto o avaliador e o proponente já viam o nome configurado
+- Corrige a lista de inscrições e a planilha exportada para quem gerencia o edital, que deixavam de fora inscrições ainda sem a permissão de leitura registrada pelo processamento em segundo plano; ao abrir a lista ou gerar a planilha, a permissão de leitura de quem controla a fase passa a ser registrada na hora nas inscrições que ainda não a têm, sem alterar o que proponentes, avaliadores e demais usuários veem
+
 ## [7.8.24] - 2026-11-19
 ### Melhorias
 - Atualiza o PHP para a versão 8.3.37, com as correções de segurança recomendadas pelo próprio PHP
@@ -46,6 +64,7 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Corrige a duplicação de oportunidades com fase de recurso: a cópia mantinha o metadado `appealPhase` e o `parent` do recurso apontando para o edital de origem, o que fazia a validação de datas do recurso usar a árvore errada; o recurso passa a ser clonado com `parent` na fase de mérito correspondente da cópia e o vínculo `appealPhase` é religado para essa nova fase
 - Corrige a duplicação de oportunidades que terminava em erro 500 ao reescrever os campos visíveis para o avaliador: o remapeamento usava um método `private` de outro trait e não enxergava o mapa de campos da cópia; o remapeamento passa a rodar no próprio duplicador
 - Corrige o modal "Configurar campos editáveis", que travava a data limite assim que havia campos selecionados: o gestor volta a conseguir estender/reabrir o prazo perdido do proponente
+- Corrige os campos visíveis para o avaliador em editais com fase de recurso: a configuração passava a depender de quem acessava, e gestores e administradores viam em "Configurar campos visíveis para os avaliadores" todos os campos marcados enquanto o parecerista recebia apenas o que estava gravado; a configuração passa a valer igualmente para todos, o recurso nasce com uma cópia da configuração da etapa avaliada e a gestão pode editar e persistir essa cópia na fase "Resposta do recurso"
 
 ### Melhorias
 - Na busca de eventos, ajusta a visualização dos administradores que passam a ver a aba Tabela, com listagem em colunas e exportação de planilha, no mesmo padrão de agentes, espaços, projetos e oportunidades

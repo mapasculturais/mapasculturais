@@ -308,7 +308,7 @@ $today = new DateTime();
                                     <?php if($today > $opportunity->registrationTo):?>
                                         <mc-alert type="warning">
                                             <?= i::__("Você não enviou o formulário desta fase") ?> <br>
-                                            <small><?= i::__("O prazo para envio dessa inscrição foi até {$opportunity->registrationTo->format('d/m/Y H:i:s')}") ?></small> <br>
+                                            <small><?= sprintf(i::__("O prazo para envio dessa inscrição foi até %s"), $opportunity->registrationTo->format('d/m/Y H:i:s')) ?></small> <br>
                                         </mc-alert>
                                     <?php else: ?>
                                         <mc-alert type="warning">
@@ -341,7 +341,7 @@ $today = new DateTime();
                                     <?php if($today > $appeal_phase->registrationTo):?>
                                         <mc-alert type="warning">
                                             <?= i::__("Você não enviou o formulário desta fase") ?> <br>
-                                            <small><?= i::__("O prazo para envio dessa inscrição foi até {$appeal_phase->registrationTo->format('d/m/Y H:i:s')}") ?></small> <br>
+                                            <small><?= sprintf(i::__("O prazo para envio dessa inscrição foi até %s"), $appeal_phase->registrationTo->format('d/m/Y H:i:s')) ?></small> <br>
                                         </mc-alert>
                                     <?php else: ?>
                                         <mc-alert type="warning">
