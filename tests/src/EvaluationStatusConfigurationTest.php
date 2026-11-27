@@ -182,6 +182,52 @@ class EvaluationStatusConfigurationTest extends Abstract\TestCase
         );
     }
 
+    public function testConsolidatedResultLabelsUseConfiguredStatusLabel(): void
+    {
+        foreach (['simple', 'continuous'] as $type) {
+            [$opportunity] = $this->createEvaluationPhase($type, self::RENAMED_STATUS_LABELS);
+
+            $labels = $opportunity->evaluationMethod->getConsolidatedResultLabels($opportunity, [['evaluation' => '2']]);
+
+            $this->assertSame(
+                ['2' => 'Deferido Parcialmente'],
+                $labels,
+                "Garantindo que o resultado consolidado da avaliação {$type} usa o rótulo configurado na fase"
+            );
+        }
+    }
+
+    public function testConsolidatedResultLabelsFallBackToMethodVocabulary(): void
+    {
+        $expected_by_type = [
+            'simple' => ['10' => 'Selecionada', '8' => 'Suplente'],
+            'continuous' => ['10' => 'Deferido', '9' => 'Deferido parcialmente'],
+        ];
+
+        foreach ($expected_by_type as $type => $expected) {
+            [$opportunity] = $this->createEvaluationPhase($type);
+
+            $consolidated_results = array_map(fn ($value) => ['evaluation' => (string) $value], array_keys($expected));
+
+            $this->assertSame(
+                $expected,
+                $opportunity->evaluationMethod->getConsolidatedResultLabels($opportunity, $consolidated_results),
+                "Garantindo que, sem rótulo na fase, o resultado consolidado da avaliação {$type} usa o vocabulário do método"
+            );
+        }
+    }
+
+    public function testConsolidatedResultLabelsNameTheDraftResult(): void
+    {
+        [$opportunity] = $this->createEvaluationPhase('continuous', self::RENAMED_STATUS_LABELS);
+
+        $this->assertSame(
+            ['0' => 'Rascunho em análise'],
+            $opportunity->evaluationMethod->getConsolidatedResultLabels($opportunity, [['evaluation' => '0']]),
+            'Garantindo que o resultado consolidado de rascunho é nomeado como em análise, não pelo rótulo do status'
+        );
+    }
+
     function testSimpleEvaluationFormOnlyListsEnabledStatuses()
     {
         [, $registration, $valuer] = $this->createEvaluationPhase('simple', [
