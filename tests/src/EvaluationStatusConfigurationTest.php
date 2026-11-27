@@ -243,6 +243,23 @@ class EvaluationStatusConfigurationTest extends Abstract\TestCase
         $this->assertBatchApplicationResultLabel('continuous', null, Registration::STATUS_PARTIALLY_APPROVED, 'Deferido parcialmente');
     }
 
+    public function testContinuousBatchApplicationStatusesFallBackToMethodDefaults(): void
+    {
+        [$opportunity] = $this->createEvaluationPhase('continuous', []);
+
+        $labels = array_column(
+            $this->batchApplicationConfig($opportunity, 'evaluation-method-continuous--apply')['statusList'],
+            'label',
+            'status'
+        );
+
+        $this->assertSame(
+            'Deferido',
+            $labels[Registration::STATUS_APPROVED] ?? null,
+            'Garantindo que, com a configuração de status vazia, a aplicação em lote usa os status padrão do método, como o resultado consolidado'
+        );
+    }
+
     function testSimpleEvaluationFormOnlyListsEnabledStatuses()
     {
         [, $registration, $valuer] = $this->createEvaluationPhase('simple', [
