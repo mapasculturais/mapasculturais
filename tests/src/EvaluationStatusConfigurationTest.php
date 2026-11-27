@@ -228,6 +228,21 @@ class EvaluationStatusConfigurationTest extends Abstract\TestCase
         );
     }
 
+    public function testSimpleBatchApplicationPublishesConsolidatedResultLabels(): void
+    {
+        $this->assertBatchApplicationResultLabel('simple', self::RENAMED_STATUS_LABELS, Registration::STATUS_INVALID, 'Deferido Parcialmente');
+    }
+
+    public function testContinuousBatchApplicationPublishesConsolidatedResultLabels(): void
+    {
+        $this->assertBatchApplicationResultLabel('continuous', self::RENAMED_STATUS_LABELS, Registration::STATUS_INVALID, 'Deferido Parcialmente');
+    }
+
+    public function testContinuousBatchApplicationNamesPartialApprovalWithoutConfiguredLabel(): void
+    {
+        $this->assertBatchApplicationResultLabel('continuous', null, Registration::STATUS_PARTIALLY_APPROVED, 'Deferido parcialmente');
+    }
+
     function testSimpleEvaluationFormOnlyListsEnabledStatuses()
     {
         [, $registration, $valuer] = $this->createEvaluationPhase('simple', [
@@ -535,12 +550,36 @@ class EvaluationStatusConfigurationTest extends Abstract\TestCase
      */
     private function batchApplicationStatuses(Opportunity $opportunity): array
     {
+        $status_list = $this->batchApplicationConfig($opportunity, 'evaluation-method-continuous--apply')['statusList'];
+
+        return array_map(fn ($item) => (int) $item['status'], $status_list);
+    }
+
+    private function assertBatchApplicationResultLabel(string $type, ?array $status_labels, int $consolidated_result, string $expected_label): void
+    {
+        [$opportunity, $registration, , $admin] = $this->createEvaluationPhase($type, $status_labels);
+
+        $this->app->disableAccessControl();
+        $registration->consolidatedResult = (string) $consolidated_result;
+        $registration->save(true);
+        $this->app->enableAccessControl();
+
+        $this->login($admin);
+        $config = $this->batchApplicationConfig($opportunity, "evaluation-method-{$type}--apply");
+
+        $this->assertSame(
+            $expected_label,
+            $config['resultLabels'][$consolidated_result] ?? null,
+            "Garantindo que a aplicação em lote da avaliação {$type} publica o texto do resultado consolidado {$consolidated_result}"
+        );
+    }
+
+    private function batchApplicationConfig(Opportunity $opportunity, string $component): array
+    {
         $request = $this->requestFactory->GET('opportunity', 'registrations', [$opportunity->id]);
         $this->assertStatus200($request, 'Garantindo que o gestor acessa a lista de inscrições da fase');
 
-        $status_list = $this->app->view->jsObject['config']['evaluation-method-continuous--apply']['statusList'];
-
-        return array_map(fn ($item) => (int) $item['status'], $status_list);
+        return $this->app->view->jsObject['config'][$component];
     }
 
     private function sendEvaluation(Registration $registration, int $status, string $evaluation_state = 'evaluated')
