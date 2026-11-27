@@ -534,6 +534,24 @@ class EvaluationStatusConfigurationTest extends Abstract\TestCase
         }
     }
 
+    public function testRegistrationsQueryUsesConfiguredStatusLabelForConsolidatedResult(): void
+    {
+        [$opportunity, $registration, , $admin] = $this->createEvaluationPhase('continuous', self::RENAMED_STATUS_LABELS);
+
+        $this->setConsolidatedResult($registration, Registration::STATUS_INVALID);
+        $this->login($admin);
+
+        $result = $this->app->controller('opportunity')->apiFindRegistrations($opportunity, [
+            '@select' => 'number,consolidatedResult',
+        ]);
+
+        $this->assertSame(
+            ['Deferido Parcialmente'],
+            array_column($result->registrations, 'evaluationResultString'),
+            'Garantindo que a lista de inscrições da fase exibe o resultado consolidado pelo rótulo configurado'
+        );
+    }
+
     /**
      * Cria uma fase de avaliação com uma inscrição enviada e distribuída a um avaliador
      *
@@ -590,6 +608,14 @@ class EvaluationStatusConfigurationTest extends Abstract\TestCase
         return array_map(fn ($item) => (int) $item['status'], $status_list);
     }
 
+    private function setConsolidatedResult(Registration $registration, int $consolidated_result): void
+    {
+        $this->app->disableAccessControl();
+        $registration->consolidatedResult = (string) $consolidated_result;
+        $registration->save(true);
+        $this->app->enableAccessControl();
+    }
+
     private function sendFinishedEvaluation(Registration $registration, User $valuer, int $status): void
     {
         $this->login($valuer);
@@ -606,10 +632,7 @@ class EvaluationStatusConfigurationTest extends Abstract\TestCase
     {
         [$opportunity, $registration, , $admin] = $this->createEvaluationPhase($type, $status_labels);
 
-        $this->app->disableAccessControl();
-        $registration->consolidatedResult = (string) $consolidated_result;
-        $registration->save(true);
-        $this->app->enableAccessControl();
+        $this->setConsolidatedResult($registration, $consolidated_result);
 
         $this->login($admin);
         $config = $this->batchApplicationConfig($opportunity, "evaluation-method-{$type}--apply");
