@@ -14,7 +14,10 @@ foreach ($statuses_names as $status => $status_name) {
     }
 }
 
+$consolidated_results = $em->findConsolidatedResult($opportunity);
+
 $this->jsObject['config']['evaluation-method-simple--apply'] = [
     'statusList' => $status_list,
-    'consolidated_results' => $em->findConsolidatedResult($opportunity)
+    'resultLabels' => $em->getConsolidatedResultLabels($opportunity, $consolidated_results),
+    'consolidated_results' => $consolidated_results
 ];
