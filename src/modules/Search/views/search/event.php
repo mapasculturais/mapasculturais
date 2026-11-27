@@ -8,6 +8,7 @@ use MapasCulturais\i;
 
 $this->import('
     create-event
+    event-table
     mc-breadcrumb
     mc-tab
     mc-tabs 
@@ -47,6 +48,9 @@ $this->breadcrumb = [
                 <div class="search__tabs--map">
                     <search-map-event :pseudo-query="pseudoQuery" position="map"></search-map-event>
                 </div>
+            </mc-tab>
+            <mc-tab v-if="global.auth.is('admin')" icon="table-view" label="<?php i::esc_attr_e('Tabela') ?>" slug="tables">
+                <event-table></event-table>
             </mc-tab>
         </mc-tabs>
     </template>

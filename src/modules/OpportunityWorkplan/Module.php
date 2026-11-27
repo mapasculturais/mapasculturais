@@ -144,27 +144,27 @@ class Module extends \MapasCulturais\Module{
                                         $errors['delivery'][] = i::__("Campo 'Nome' obrigatório em uma das entregas.");
                                     }
                                     if (!$delivery->description) {
-                                        $errors['delivery'][] = i::__("Campo 'Descrição' obrigatório na entrega '{$delivery->name}'.");
+                                        $errors['delivery'][] = sprintf(i::__("Campo 'Descrição' obrigatório na entrega '%s'."), $delivery->name);
                                     }
                                     if (!$delivery->typeDelivery) {
-                                        $errors['delivery'][] = i::__("Campo 'Tipo de entrega' obrigatório na entrega '{$delivery->name}'.");
+                                        $errors['delivery'][] = sprintf(i::__("Campo 'Tipo de entrega' obrigatório na entrega '%s'."), $delivery->name);
                                     }
 
                                     if ($opp->workplan_deliveryInformDeliveryPeriod && $opp->workplan_deliveryRequireDeliveryPeriod) {
                                         if (!$delivery->monthInitial) {
-                                            $errors['delivery'][] = i::__("Campo 'Mês inicial' obrigatório na entrega '{$delivery->name}'.");
+                                            $errors['delivery'][] = sprintf(i::__("Campo 'Mês inicial' obrigatório na entrega '%s'."), $delivery->name);
                                         }
                                         if (!$delivery->monthEnd) {
-                                            $errors['delivery'][] = i::__("Campo 'Mês final' obrigatório na entrega '{$delivery->name}'.");
+                                            $errors['delivery'][] = sprintf(i::__("Campo 'Mês final' obrigatório na entrega '%s'."), $delivery->name);
                                         }
                                     }
 
                                     if ($opp->workplan_registrationReportExpectedRenevue && $delivery->generaterRevenue == 'true') {
                                         if (!$delivery->renevueQtd) {
-                                            $errors['delivery'][] = i::__("Campo 'Previsão Quantidade' obrigatório na entrega '{$delivery->name}'.");
+                                            $errors['delivery'][] = sprintf(i::__("Campo 'Previsão Quantidade' obrigatório na entrega '%s'."), $delivery->name);
                                         }
                                         if (!$delivery->unitValueForecast) {
-                                            $errors['delivery'][] = i::__("Campo 'Previsão de valor unitário' obrigatório na entrega '{$delivery->name}'.");
+                                            $errors['delivery'][] = sprintf(i::__("Campo 'Previsão de valor unitário' obrigatório na entrega '%s'."), $delivery->name);
                                         }
                                     }
 
@@ -175,13 +175,13 @@ class Module extends \MapasCulturais\Module{
                                     }
 
                                     if ($delivery->hasCommunityCoauthors === 'true' && $delivery->isMetadataRequired('communityCoauthorsDetail') && !$delivery->communityCoauthorsDetail) {
-                                        $errors['delivery'][] = i::__("Campo 'Detalhamento do envolvimento de comunidades' obrigatório na entrega '{$delivery->name}'");
+                                        $errors['delivery'][] = sprintf(i::__("Campo 'Detalhamento do envolvimento de comunidades' obrigatório na entrega '%s'"), $delivery->name);
                                     }
                                     if ($delivery->hasTransInclusionStrategy === 'true' && $delivery->isMetadataRequired('transInclusionActions') && !$delivery->transInclusionActions) {
-                                        $errors['delivery'][] = i::__("Campo 'Ações de inclusão Trans e Travestis' obrigatório na entrega '{$delivery->name}'");
+                                        $errors['delivery'][] = sprintf(i::__("Campo 'Ações de inclusão Trans e Travestis' obrigatório na entrega '%s'"), $delivery->name);
                                     }
                                     if ($delivery->hasEnvironmentalPractices === 'true' && $delivery->isMetadataRequired('environmentalPracticesDescription') && !$delivery->environmentalPracticesDescription) {
-                                        $errors['delivery'][] = i::__("Campo 'Descrição de práticas socioambientais' obrigatório na entrega '{$delivery->name}'");
+                                        $errors['delivery'][] = sprintf(i::__("Campo 'Descrição de práticas socioambientais' obrigatório na entrega '%s'"), $delivery->name);
                                     }
 
                                     foreach (['paidStaffByRole'] as $field) {
@@ -203,29 +203,29 @@ class Module extends \MapasCulturais\Module{
                                     }
 
                                     if ($delivery->hasAccessibilityPlan === 'true' && $delivery->isMetadataRequired('expectedAccessibilityMeasures') && !self::validateMultiselectField($delivery, 'expectedAccessibilityMeasures')) {
-                                        $errors['delivery'][] = i::__("Campo 'Medidas de acessibilidade previstas' obrigatório na entrega '{$delivery->name}'");
+                                        $errors['delivery'][] = sprintf(i::__("Campo 'Medidas de acessibilidade previstas' obrigatório na entrega '%s'"), $delivery->name);
                                     }
                                     if ($delivery->hasInnovationAction === 'true' && $delivery->isMetadataRequired('innovationTypes') && !self::validateMultiselectField($delivery, 'innovationTypes')) {
-                                        $errors['delivery'][] = i::__("Campo 'Tipos de experimentação/inovação' obrigatório na entrega '{$delivery->name}'");
+                                        $errors['delivery'][] = sprintf(i::__("Campo 'Tipos de experimentação/inovação' obrigatório na entrega '%s'"), $delivery->name);
                                     }
 
                                     if ($opp->workplan_deliveryInformCommunityCoauthors && !$delivery->hasCommunityCoauthors) {
-                                        $errors['delivery'][] = i::__("Campo 'Envolvimento de comunidades como coautores' obrigatório na entrega '{$delivery->name}'");
+                                        $errors['delivery'][] = sprintf(i::__("Campo 'Envolvimento de comunidades como coautores' obrigatório na entrega '%s'"), $delivery->name);
                                     }
                                     if ($opp->workplan_deliveryInformTransInclusion && !$delivery->hasTransInclusionStrategy) {
-                                        $errors['delivery'][] = i::__("Campo 'Estratégia de inclusão Trans/Travestis' obrigatório na entrega '{$delivery->name}'");
+                                        $errors['delivery'][] = sprintf(i::__("Campo 'Estratégia de inclusão Trans/Travestis' obrigatório na entrega '%s'"), $delivery->name);
                                     }
                                     if ($opp->workplan_deliveryInformAccessibilityPlan && !$delivery->hasAccessibilityPlan) {
-                                        $errors['delivery'][] = i::__("Campo 'Plano de acessibilidade' obrigatório na entrega '{$delivery->name}'");
+                                        $errors['delivery'][] = sprintf(i::__("Campo 'Plano de acessibilidade' obrigatório na entrega '%s'"), $delivery->name);
                                     }
                                     if ($opp->workplan_deliveryInformEnvironmentalPractices && !$delivery->hasEnvironmentalPractices) {
-                                        $errors['delivery'][] = i::__("Campo 'Práticas socioambientais' obrigatório na entrega '{$delivery->name}'");
+                                        $errors['delivery'][] = sprintf(i::__("Campo 'Práticas socioambientais' obrigatório na entrega '%s'"), $delivery->name);
                                     }
                                     if ($opp->workplan_deliveryInformPressStrategy && $opp->workplan_deliveryRequireHasPressStrategy && !$delivery->hasPressStrategy) {
-                                        $errors['delivery'][] = i::__("Campo 'Estratégias de comunicação' obrigatório na entrega '{$delivery->name}'");
+                                        $errors['delivery'][] = sprintf(i::__("Campo 'Estratégias de comunicação' obrigatório na entrega '%s'"), $delivery->name);
                                     }
                                     if ($opp->workplan_deliveryInformInnovation && !$delivery->hasInnovationAction) {
-                                        $errors['delivery'][] = i::__("Campo 'Previsão de ação de experimentação/inovação' obrigatório na entrega '{$delivery->name}'");
+                                        $errors['delivery'][] = sprintf(i::__("Campo 'Previsão de ação de experimentação/inovação' obrigatório na entrega '%s'"), $delivery->name);
                                     }
                                 }
                             }

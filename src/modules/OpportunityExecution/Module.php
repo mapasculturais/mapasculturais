@@ -10,6 +10,9 @@ use MapasCulturais\i;
 
 class Module extends \MapasCulturais\Module
 {
+    /** @var array<int, true> */
+    private array $pendingExecutionCleanup = [];
+
     public function _init()
     {
         $app = App::i();
@@ -22,6 +25,7 @@ class Module extends \MapasCulturais\Module
         $this->registerCreateExecutionPhaseEndpoint($app);
         $this->registerExecutionPhaseRemovalHook($app);
         $this->registerCreateExecutionRequestEndpoint($app);
+        $this->registerDemotionCleanupHooks($app);
     }
 
     private function registerValidationHooks(App $app)
@@ -385,14 +389,15 @@ class Module extends \MapasCulturais\Module
         }
     }
 
-    private function findExecutionRequests($exec_phase, $last_phase_reg)
+    private function findExecutionRequests($exec_phase, $last_phase_reg, bool $include_all_statuses = false)
     {
         $app = App::i();
+        $status_sql = $include_all_statuses ? '' : 'AND r.status > 0';
         $ids = $app->em->getConnection()->fetchFirstColumn(
             "SELECT r.id FROM registration r
              INNER JOIN registration_meta m ON m.object_id = r.id
              WHERE r.opportunity_id = ?
-               AND r.status > 0
+               {$status_sql}
                AND m.key = 'previousPhaseRegistrationId'
                AND m.value = ?",
             [$exec_phase->id, (string) $last_phase_reg->id]
@@ -406,6 +411,92 @@ class Module extends \MapasCulturais\Module
             ['id' => $ids],
             ['createTimestamp' => 'ASC', 'id' => 'ASC']
         );
+    }
+
+    /**
+     * Ao sair de Selecionada (10) na publicação final, remove pedidos de execução
+     * vinculados — alinhado ao orphan sync das demais fases.
+     *
+     * Detecta a demoção em save:before (ainda há originalEntityData) e executa a
+     * limpeza nos hooks status(*) disparados após o save de setStatusTo*, para
+     * não aninhar flush/delete dentro do UnitOfWork da própria demoção.
+     */
+    private function registerDemotionCleanupHooks(App $app)
+    {
+        $self = $this;
+
+        $app->hook('entity(Registration).save:before', function () use ($self) {
+            /** @var Registration $this */
+            if (!$this->id || !$this->opportunity || !$this->opportunity->isLastPhase) {
+                return;
+            }
+
+            $original = App::i()->em->getUnitOfWork()->getOriginalEntityData($this);
+            if (!$original) {
+                return;
+            }
+
+            $old = (int) ($original['status'] ?? -999);
+            $new = (int) $this->status;
+
+            if ($old === Registration::STATUS_APPROVED && $new !== Registration::STATUS_APPROVED) {
+                $self->pendingExecutionCleanup[(int) $this->id] = true;
+            }
+        });
+
+        $app->hook('entity(Registration).status(<<draft|sent|invalid|notapproved|waitlist>>)', function () use ($self) {
+            /** @var Registration $this */
+            $id = (int) $this->id;
+            if (empty($self->pendingExecutionCleanup[$id])) {
+                return;
+            }
+
+            unset($self->pendingExecutionCleanup[$id]);
+            $self->deleteExecutionRequestsLinkedTo($this);
+        });
+    }
+
+    private function deleteExecutionRequestsLinkedTo(Registration $approved_registration): void
+    {
+        $app = App::i();
+        $opportunity = $approved_registration->opportunity;
+        $first_phase = $opportunity->firstPhase ?? $opportunity;
+
+        if (!$first_phase) {
+            return;
+        }
+
+        $phases = $first_phase->allPhases ?? [];
+        $to_delete = [];
+
+        foreach ($phases as $phase) {
+            if (!$phase->isExecutionPhase) {
+                continue;
+            }
+
+            foreach ($this->findExecutionRequests($phase, $approved_registration, true) as $request) {
+                $to_delete[(int) $request->id] = $request;
+            }
+        }
+
+        if (!$to_delete) {
+            return;
+        }
+
+        $app->disableAccessControl();
+        try {
+            foreach ($to_delete as $request) {
+                if (method_exists(\OpportunityPhases\Module::class, 'unlinkPhaseRegistrationPointers')) {
+                    \OpportunityPhases\Module::unlinkPhaseRegistrationPointers($request);
+                }
+
+                $request->skipSync = true;
+                $request->__skipQueuingPCacheRecreation = true;
+                $request->delete(true);
+            }
+        } finally {
+            $app->enableAccessControl();
+        }
     }
 
     private function renderExecutionRequestsGroup($exec_phase, $requests)
@@ -589,11 +680,14 @@ class Module extends \MapasCulturais\Module
 
     private function canCreateExecutionRequest(Registration $approved_registration)
     {
-        $profile = App::i()->user->profile;
+        $user = App::i()->user;
 
-        if ($approved_registration->owner->id === $profile->id) {
+        // Quem controla o agente responsável pela inscrição pode abrir pedidos.
+        if ($approved_registration->owner->canUser('@control', $user)) {
             return true;
         }
+
+        $profile = $user->profile;
 
         foreach ($approved_registration->agentRelations as $ar) {
             if ($ar->agent->id === $profile->id) {

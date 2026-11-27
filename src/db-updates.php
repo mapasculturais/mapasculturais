@@ -2449,7 +2449,8 @@ $$
                 return $value;
             }
 
-            return json_encode(unserialize($value));
+            // Config fields are arrays/scalars — never instantiate objects (CWE-502).
+            return json_encode(unserialize($value, ['allowed_classes' => false]));
         };
 
         foreach($fields as $i => $field) {

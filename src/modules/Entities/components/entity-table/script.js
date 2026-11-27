@@ -581,6 +581,27 @@ app.component('entity-table', {
                 visible = [...defaultVisible];
             }
 
+            // Migração: slug antigo do objeto bankFields (field_N) → subcolunas field_N.*
+            const currentSlugs = new Set(this.columns.map(column => column.slug));
+            const migrated = [];
+            for (const slug of visible) {
+                if (currentSlugs.has(slug)) {
+                    migrated.push(slug);
+                    continue;
+                }
+                if (/^field_\d+$/.test(slug)) {
+                    const children = this.columns
+                        .map(column => column.slug)
+                        .filter(child => child.startsWith(slug + '.'));
+                    for (const child of children) {
+                        if (!migrated.includes(child)) {
+                            migrated.push(child);
+                        }
+                    }
+                }
+            }
+            visible = migrated;
+
             required.forEach(slug => {
                 if (!visible.includes(slug)) {
                     visible.push(slug);
@@ -808,6 +829,7 @@ app.component('entity-table', {
                             '2': __('invalidas', 'entity-table'),
                             '3': __('nao selecionadas', 'entity-table'),
                             '8': __('suplentes', 'entity-table'),
+                            '9': __('deferidas parcialmente', 'entity-table'),
                             '10': __('selecionadas', 'entity-table'),
                         }
                     }
@@ -920,6 +942,28 @@ app.component('entity-table', {
                         }
                     }
                     switch (description.type) {
+                        case 'custom-table': {
+                            if (typeof val === 'string') {
+                                try { val = JSON.parse(val); } catch { val = []; }
+                            }
+
+                            const columns = description.registrationFieldConfiguration?.config?.columns ?? [];
+                            val = Array.isArray(val) && Array.isArray(columns) ? val.map(row => {
+                                const values = columns.map((column, index) => {
+                                    const value = row?.[`col${index}`];
+                                    return ['string', 'number', 'boolean'].includes(typeof value) ? String(value) : '';
+                                });
+
+                                return values.some(value => value !== '')
+                                    ? columns.map((column, index) => `${column.name ?? ''}: ${values[index]}`).join(' | ')
+                                    : '';
+                            }).filter(Boolean).join(' || ') : '';
+
+                            // A célula usa v-html; nomes e valores da tabela devem aparecer como texto.
+                            const escapes = { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' };
+                            val = val.replace(/[&<>"']/g, character => escapes[character]);
+                            break;
+                        }
                         case 'multiselect':
                         case 'array':
                             if (Array.isArray(val)) {
@@ -978,7 +1022,44 @@ app.component('entity-table', {
                                 val = '';
                             }
                             break;
+                        case 'bankFields':
+                            // Coluna legada do objeto inteiro (configs antigas de colunas)
+                            if (val && typeof val === 'object' && !Array.isArray(val)) {
+                                const dict = $MAPAS.config?.entityFieldConfig
+                                    || $MAPAS.config?.opportunityRegistrationTable?.bankFieldsDict
+                                    || {};
+                                const accountTypes = dict.accountTypes || {};
+                                const bankTypes = dict.bankTypes || {};
+                                const accountType = accountTypes[val.account_type] || val.account_type || '';
+                                const bankType = bankTypes[val.number] || val.number || '';
+                                val = [
+                                    accountType,
+                                    bankType,
+                                    [val.branch, val.dv_branch].filter(v => v !== undefined && v !== null && v !== '').join('-'),
+                                    [val.account_number, val.dv_account_number].filter(v => v !== undefined && v !== null && v !== '').join('-'),
+                                ].filter(Boolean).join(' | ');
+                            } else {
+                                val = '';
+                            }
+                            break;
                         
+                    }
+                }
+
+                // Subcampos de bankFields (ex.: field_283.account_type) — mapeia código → rótulo
+                if (typeof prop === 'string' && prop.includes('.')) {
+                    const [parent, sub] = prop.split('.', 2);
+                    const parentDescription = this.$description?.[parent];
+                    if (parentDescription?.type === 'bankFields' && (sub === 'account_type' || sub === 'number')) {
+                        const dict = $MAPAS.config?.entityFieldConfig
+                            || $MAPAS.config?.opportunityRegistrationTable?.bankFieldsDict
+                            || {};
+                        const map = sub === 'account_type'
+                            ? (dict.accountTypes || {})
+                            : (dict.bankTypes || {});
+                        if (val !== null && val !== undefined && map[val]) {
+                            val = map[val];
+                        }
                     }
                 }
 

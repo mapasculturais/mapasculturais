@@ -79,7 +79,7 @@ class Controller extends \MapasCulturais\Controller
         $field_title = $this->getFieldTitle($field_id, $registration);
        
         $app->hook('entity(EntityRevision).insert:before',function () use ($field_title){            
-            $this->message = i::__("Campo <b>{$field_title}</b> aberto para edição");
+            $this->message = sprintf(i::__("Campo <b>%s</b> aberto para edição"), $field_title);
         });
 
         $registration->openFields = $openFields;
@@ -116,7 +116,7 @@ class Controller extends \MapasCulturais\Controller
         $field_title = $this->getFieldTitle($field_id, $registration);
        
         $app->hook('entity(EntityRevision).insert:before',function () use ($field_title){            
-            $this->message = i::__("Campo <b>{$field_title}</b> fechado para edição");
+            $this->message = sprintf(i::__("Campo <b>%s</b> fechado para edição"), $field_title);
         });
 
         $registration->openFields = $openFields;

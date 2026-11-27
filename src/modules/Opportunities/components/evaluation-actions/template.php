@@ -23,7 +23,7 @@ $this->import('
         </div>
 
         <div class="col-12" v-if="showActions('finishEvaluation')">
-            <mc-modal button-label="Finalizar e Avançar" title="<?= i::__('Avaliação feita!') ?>">
+            <mc-modal button-label="<?= i::esc_attr__('Finalizar e Avançar') ?>" title="<?= i::__('Avaliação feita!') ?>">
                 <template #default>
                     <div class="finish-send-evaluation__text">
                         <span class="finish-send-evaluation__span"><?= i::__('Agora é necessário enviar essa avaliação para a pessoa gestora. Você pode enviar uma por uma ou todas de uma só vez.') ?></span>

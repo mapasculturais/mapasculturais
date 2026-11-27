@@ -6,13 +6,54 @@ O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [UNRELEASED]
+### Melhorias
+- A fase de recurso passa a ter o status "Deferido parcialmente", com o mesmo comportamento do Deferido: a inscrição avança para a fase seguinte e aparece como selecionada na publicação final. O status vem desabilitado e é ativado pelo gestor na configuração de status do recurso; aparece no filtro, na aplicação de resultados em lote, nas planilhas e nas notificações ao proponente
+- Na lista de inscritos, o campo "Dados bancários" passa a aparecer em colunas separadas (tipo de conta, banco, agência e conta) e já vem visível por padrão
+
 ### Correções
+- Corrige textos fixos em português na ficha de inscrição em PDF (títulos, rótulos, endereço e "Sim"/"Não") e no aviso da janela "Salvar modelo", que agora podem ser traduzidos
+- Corrige cabeçalhos, placeholders e mensagens de avaliação/planilha/importador que não eram traduzidos (domínio incorreto em `i::__`, interpolação dentro da msgid e catálogo `es_ES` desatualizado)
+- Corrige a listagem de espaços que quebrava quando um campo de seleção múltipla (como acessibilidade física) estava vazio no cadastro: a leitura passa a tratar valor vazio com segurança e mantém o formato antigo separado por `;`
+- Corrige a desqualificação de inscrição (sair de Selecionada) que podia deixar fichas órfãs e ponteiros `next`/`previous` quebrados entre fases: o sync passa a limpar os ponteiros ao remover a inscrição e a cascatear a remoção para prestações encadeadas; a publicação final deixa de usar rascunho de prestação/execução como fonte do resultado publicado
+- Corrige a saída de Selecionada na publicação final, que mantinha pedidos de execução abertos mesmo sem seleção: os pedidos vinculados passam a ser removidos junto com a mudança de status
+- Na lista de inscritos, ao tirar uma inscrição de Selecionada, passa a exibir um modal de confirmação avisando que dados das fases seguintes (inclusive prestação e pedidos de execução) serão removidos
+- Corrige a lista e a planilha de inscritos para o campo "Dados bancários", que saía confuso ou como um bloco único: passa a mostrar colunas separadas com nomes legíveis (tipo de conta, banco, agência e conta)
+- Quem já tinha colunas salvas do formato antigo de "Dados bancários" passa a ver as novas colunas sem precisar reconfigurar a tabela
+- Corrige o campo de tabela do formulário de inscrição que não cabia na coluna do formulário: a tabela transbordava para baixo da coluna lateral, que capturava o clique e impedia o preenchimento das últimas colunas; a tabela passa a rolar horizontalmente dentro do campo
+
+## [7.8.24] - 2026-11-19
+### Melhorias
+- Atualiza o PHP para a versão 8.3.37, com as correções de segurança recomendadas pelo próprio PHP
+
+## [7.8.23] - 2026-11-18
+### Correções
+- Endurece a decodificação de metadados usados em cotas e desempates
+- Passa a serializar jobs de e-mail em formato JSON
+- Força transporte de callback Opauth via sessão
+- Torna estável o desempate na redistribuição de comissões de avaliação
+- Corrige a abertura de pedido na fase de execução, que recusava proponentes cuja inscrição foi feita com outro agente da conta: o pedido passa a poder ser aberto por quem controla o agente responsável pela inscrição, a mesma regra do acompanhamento, e quem não tem vínculo com a inscrição continua sem acesso
+- Corrige a avaliação de recurso em que o avaliador via todos os campos de "Dados informados no formulário" da fase pai, mesmo com a lista de campos visíveis liberando só alguns: o filtro só era aplicado quando a pessoa já tinha `viewUserEvaluation` na inscrição da fase pai, o que não vale para quem avalia apenas o recurso; a ficha da avaliação passa a respeitar essa lista também nesse caso, e os valores não liberados deixam de ser injetados no formulário (gestores com `@control` continuam vendo tudo)
+- Corrige a exibição do aviso "*obrigatório" nos campos do tipo caixa de verificação, tanto na prévia quanto no preenchimento do formulário de inscrição
+- O seletor de datas (`mc-datepicker`) passa a usar o idioma da instalação (`$MAPAS.config.locale`) em vez de ficar sempre em pt-BR, e os nomes dos dias da semana deixam de ser fixos em português
+- Corrige a concessão e a remoção de selos por tipo de proponente e por categoria na publicação/despublicação do resultado e na mudança de status da inscrição: quando a inscrição tinha tipo ou categoria sem chave correspondente em `proponentSeals`/`categorySeals`, o PHP acessava propriedade inexistente e a operação falhava; a aplicação e a remoção dos selos passam a ocorrer só quando a chave existe, e `applySeal`/`removeSeals` ignoram listas nulas ou vazias
+
+## [7.8.22] - 2026-11-11
+### Correções
+- Corrige os campos de tabela/planilha (`custom-table`) na exportação e na tabela da lista de inscrições, que apareciam vazios, como `Array` ou `[object Object]`: os dados passam a mostrar os nomes das colunas e os valores de cada linha, preservando a ordem configurada e valores zero
 - Atualiza o Node.js da imagem Docker para a linha 22 e exige a versão 22.23.4 ou superior nessa linha, incorporando a correção da vulnerabilidade CVE-2026-111497 no decodificador Brotli
 - Preserva as versões das dependências no build Docker com instalação pelo pnpm usando o lockfile congelado
+- Corrige a geração de modelo e de edital a partir de modelo com fase de recurso: o metadado `appealPhase` era copiado com o ID do edital de origem (e o recurso podia ficar com `parent` na 1ª fase em vez da fase de mérito), o que fazia a configuração do formulário e a árvore de fases apontarem para outro edital — inclusive entre subsites no SaaS; o recurso passa a ser clonado com `parent` na fase de mérito correspondente e o vínculo `appealPhase` é religado para essa nova fase, inclusive quando o recurso está na fase de publicação (`isLastPhase`)
+- Corrige a importação de oportunidades para respeitar o filtro `appealPhases`: com a opção desmarcada, fases de recurso presentes no JSON deixam de ser criadas
+- Corrige a duplicação de oportunidades com fase de recurso: além do remap de `parent`/`appealPhase`, o `clone` shallow compartilhava a coleção EAGER `__metadata` com a origem, então o vínculo da cópia não era gravado em `opportunity_meta`; a cópia recarrega as metas após o insert e grava `appealPhase` como linha própria
 - Corrige a duplicação de oportunidades com fase de recurso: a cópia mantinha o metadado `appealPhase` e o `parent` do recurso apontando para o edital de origem, o que fazia a validação de datas do recurso usar a árvore errada; o recurso passa a ser clonado com `parent` na fase de mérito correspondente da cópia e o vínculo `appealPhase` é religado para essa nova fase
 - Corrige a duplicação de oportunidades que terminava em erro 500 ao reescrever os campos visíveis para o avaliador: o remapeamento usava um método `private` de outro trait e não enxergava o mapa de campos da cópia; o remapeamento passa a rodar no próprio duplicador
 - Corrige o modal "Configurar campos editáveis", que travava a data limite assim que havia campos selecionados: o gestor volta a conseguir estender/reabrir o prazo perdido do proponente
 - Corrige a lista de avaliações e a janela "Aplicar resultados das avaliações", que mostravam o vocabulário fixo do método em vez do rótulo de status configurado na fase: um status renomeado na fase de recurso continuava aparecendo como "Negado" para a gestão, enquanto o avaliador e o proponente já viam o nome configurado
+
+### Melhorias
+- Na busca de eventos, ajusta a visualização dos administradores que passam a ver a aba Tabela, com listagem em colunas e exportação de planilha, no mesmo padrão de agentes, espaços, projetos e oportunidades
+- Na gestão de usuários, ajusta a ficha do usuário que passa a ver a aba Avaliações: mostra as fases em que a pessoa avalia (como em Minhas avaliações) e lista as avaliações iniciadas, concluídas e enviadas
+- Na gestão de usuários, os cards da aba Agentes passam a exibir o ID do agente, como na listagem pública
 
 ## [7.8.21] - 2026-10-28
 ### Correções

@@ -90,6 +90,10 @@ app.component('mc-status', {
                     'suplente', 'exportado'
                 ],
 
+                'mc-status--partial': [
+                    'deferido parcialmente'
+                ],
+
                 'mc-status--primary': [
                     'aguardando avaliação', 'concluído',
                     'em análise', 'enviado', 'enviada'
@@ -128,6 +132,9 @@ app.component('mc-status', {
 
                 if(statusKey == 10) {
                     classes.push('mc-status--success');
+                    matched = true;
+                } else if(statusKey == 9) {
+                    classes.push('mc-status--partial');
                     matched = true;
                 } else if(statusKey == 8) {
                     classes.push('mc-status--warning');

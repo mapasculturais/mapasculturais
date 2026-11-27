@@ -266,7 +266,7 @@ class Importer
         }
 
         $phase = $phase->refreshed();
-        if ($appeal_phase = $phase_data['appealPhase'] ?? null) {
+        if ($this->appealPhases && ($appeal_phase = $phase_data['appealPhase'] ?? null)) {
             $this->importAppealPhase($phase, $appeal_phase);
         }
 

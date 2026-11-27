@@ -344,7 +344,7 @@ class Controller extends \MapasCulturais\Controller
             $coll[] = mb_strtoupper($moduleConfig['header_default'][$collum][0]);
          }
          $_coll = implode(", ", $coll);
-         $errors['errors'][1][] = i::__("As colunas {$_coll} não foram encontradas na planilha");
+         $errors['errors'][1][] = sprintf(i::__("As colunas %s não foram encontradas na planilha"), $_coll);
       }
 
       $clearOcurrenceList = [];
@@ -401,7 +401,7 @@ class Controller extends \MapasCulturais\Controller
 
                if (!in_array($this->lowerStr($value['CLASSIFICATION']),$moduleConfig['rating_list_allowed'])) {
                   $rating_str = implode(', ',$moduleConfig['rating_list_allowed']);
-                  $errors['errors'][$key+1][] = i::__("A coluna classificação etária é inválida. As opções aceitas são {$rating_str}");
+                  $errors['errors'][$key+1][] = sprintf(i::__("A coluna classificação etária é inválida. As opções aceitas são %s"), $rating_str);
                }
 
                //Validação das linguagens
@@ -417,7 +417,7 @@ class Controller extends \MapasCulturais\Controller
                   $_language = $this->lowerStr($language);
 
                   if (!in_array(trim($_language), array_keys($languages_list))) {
-                     $errors['errors'][$key+1][] = i::__("A linguagem {$_language} não existe");
+                     $errors['errors'][$key+1][] = sprintf(i::__("A linguagem %s não existe"), $_language);
                   }
                }
 
@@ -436,7 +436,7 @@ class Controller extends \MapasCulturais\Controller
          
                   if ($collum == 'name') {
                      if (count($projects) > 1){
-                        $errors['errors'][$key+1][] = i::__("Existe mais de um projeto com o nome {$value['PROJECT']}. Para proseguir, informe o ID do projeto que quer associar ao evento");
+                        $errors['errors'][$key+1][] = sprintf(i::__("Existe mais de um projeto com o nome %s. Para proseguir, informe o ID do projeto que quer associar ao evento"), $value['PROJECT']);
                      }
                   }
                }
@@ -466,7 +466,7 @@ class Controller extends \MapasCulturais\Controller
 
                if ($collum_spa == 'name') {
                   if (count($spaces) > 1) {
-                     $errors['errors'][$key+1][] = i::__("Existe mais de um espaço com o nome {$value['SPACE']}. Para proseguir informe o ID do espaço que quer associar ao evento");
+                     $errors['errors'][$key+1][] = sprintf(i::__("Existe mais de um espaço com o nome %s. Para proseguir informe o ID do espaço que quer associar ao evento"), $value['SPACE']);
                   }
                }
 
@@ -477,7 +477,7 @@ class Controller extends \MapasCulturais\Controller
 
                if (!in_array($value['FREQUENCY'], array_keys($moduleConfig['frequence_list_allowed']))) {
                   $frequence_str = implode(', ', array_keys($moduleConfig['frequence_list_allowed']));
-                  $errors['errors'][$key+1][] = i::__("A frequência é inválida. As opções aceitas são {$frequence_str}");
+                  $errors['errors'][$key+1][] = sprintf(i::__("A frequência é inválida. As opções aceitas são %s"), $frequence_str);
                }
 
                if(in_array($value['FREQUENCY'], $moduleConfig['use_week_days'])){
@@ -617,7 +617,7 @@ class Controller extends \MapasCulturais\Controller
                   $app->em->commit();
                } else {
                   $error_process = true;
-                  $errors['errors'][$key + 1][] = i::__("Evento {$event->name} não foi inserido (falha na ocorrência, arquivos ou metalists)");
+                  $errors['errors'][$key + 1][] = sprintf(i::__("Evento %s não foi inserido (falha na ocorrência, arquivos ou metalists)"), $event->name);
                   $app->em->rollback();
                }
             } else if ($type_process_map->delete_event) {
@@ -833,8 +833,7 @@ class Controller extends \MapasCulturais\Controller
                $exec = function () use (&$ocurrence, $value, $app, &$rule) {
    
                   $ocurrence->endsAt = $this->formatDate($value['ENDS_AT'], false);
-                  $rule['description'].= i::__('Diariamente');
-   
+
                   $months[$value['STARTS_ON']] = $value['STARTS_ON'];
                   $months[$value['ENDS_ON']] = $value['ENDS_ON'];
                   
@@ -847,25 +846,43 @@ class Controller extends \MapasCulturais\Controller
                   $years[$dateFn->format("Y")] = $dateFn->format("Y");
                   $_years = array_keys($years);
    
-                  $yearIn = null;
-                  $yearFn = null;
-                  if(count($_years) == 1){
-                     $yearFn = " de ".$this->formatDate($_years[0], "Y");
-                  }else{
-                     if(isset($_years[0]) && isset($_years[0])){
-                        $yearIn = " de ".$this->formatDate($_years[0], "Y");
-                        $yearFn = " de ".$this->formatDate($_years[1], "Y");
-                     }else{
-                        $yearFn = " de ".$this->formatDate($_years[0], "Y");
-                     }
-                  }
-                 
+                  $yearStart = $this->formatDate($_years[0], "Y");
+                  $yearEnd = isset($_years[1]) ? $this->formatDate($_years[1], "Y") : $yearStart;
+
                   $start = $this->formatDate($value['STARTS_AT'], false);
                   if(count($_months) == 1){
                      $dateFn = $this->formatDate($_months[1], false);
-                     $rule['description'].= " de {$dateIn->format("d")} a {$dateFn->format("d")} de  {$dateIn->format("F")} {$yearIn}  às {$start->format("H:i")}";
+                     $rule['description'].= sprintf(
+                        i::__("Diariamente de %s a %s de %s de %s às %s"),
+                        $dateIn->format("d"),
+                        $dateFn->format("d"),
+                        $dateIn->format("F"),
+                        $yearEnd,
+                        $start->format("H:i")
+                     );
                   }else{
-                     $rule['description'].= " de {$dateIn->format("d")} de {$dateIn->format("F")} {$yearIn} a {$dateFn->format("d")} de {$dateFn->format("F")} {$yearFn} às {$start->format("H:i")}";
+                     if (isset($_years[1])) {
+                        $rule['description'].= sprintf(
+                           i::__("Diariamente de %s de %s de %s a %s de %s de %s às %s"),
+                           $dateIn->format("d"),
+                           $dateIn->format("F"),
+                           $yearStart,
+                           $dateFn->format("d"),
+                           $dateFn->format("F"),
+                           $yearEnd,
+                           $start->format("H:i")
+                        );
+                     } else {
+                        $rule['description'].= sprintf(
+                           i::__("Diariamente de %s de %s a %s de %s de %s às %s"),
+                           $dateIn->format("d"),
+                           $dateIn->format("F"),
+                           $dateFn->format("d"),
+                           $dateFn->format("F"),
+                           $yearStart,
+                           $start->format("H:i")
+                        );
+                     }
                   }
                };
                break;
@@ -926,25 +943,43 @@ class Controller extends \MapasCulturais\Controller
                   $years[$dateFn->format("Y")] = $dateFn->format("Y");
                   $_years = array_keys($years);
                  
-                  $yearIn = null;
-                  $yearFn = null;
-                  if(count($_years) == 1){
-                     $yearFn = i::__(" de ".$this->formatDate($_years[0], "Y"));
-                  }else{
-                     if(isset($_years[0]) && isset($_years[0])){
-                        $yearIn = i::__(" de ".$this->formatDate($_years[0], "Y"));
-                        $yearFn = i::__(" de ".$this->formatDate($_years[1], "Y"));
-                     }else{
-                        $yearFn = i::__(" de ".$this->formatDate($_years[0], "Y"));
-                     }
-                  }
-               
+                  $yearStart = $this->formatDate($_years[0], "Y");
+                  $yearEnd = isset($_years[1]) ? $this->formatDate($_years[1], "Y") : $yearStart;
+
                   $start = $this->formatDate($value['STARTS_AT'], false);
                   if(count($_months) == 1){
-                     $rule['description'].= i::__("de {$dateIn->format("d")} a {$dateFn->format("d")} de  {$dateIn->format("F")} {$yearFn}  às {$start->format("H:i")}");
+                     $rule['description'].= sprintf(
+                        i::__("de %s a %s de %s de %s às %s"),
+                        $dateIn->format("d"),
+                        $dateFn->format("d"),
+                        $dateIn->format("F"),
+                        $yearEnd,
+                        $start->format("H:i")
+                     );
                   }else{
                      $dateFn = $this->formatDate($_months[1], false);
-                     $rule['description'].= i::__("de {$dateIn->format("d")} de {$dateIn->format("F")} {$yearIn} a {$dateFn->format("d")} de {$dateFn->format("F")} {$yearFn} às {$start->format("H:i")}");
+                     if (isset($_years[1])) {
+                        $rule['description'].= sprintf(
+                           i::__("de %s de %s de %s a %s de %s de %s às %s"),
+                           $dateIn->format("d"),
+                           $dateIn->format("F"),
+                           $yearStart,
+                           $dateFn->format("d"),
+                           $dateFn->format("F"),
+                           $yearEnd,
+                           $start->format("H:i")
+                        );
+                     } else {
+                        $rule['description'].= sprintf(
+                           i::__("de %s de %s a %s de %s de %s às %s"),
+                           $dateIn->format("d"),
+                           $dateIn->format("F"),
+                           $dateFn->format("d"),
+                           $dateFn->format("F"),
+                           $yearStart,
+                           $start->format("H:i")
+                        );
+                     }
                   }
                   
                };
@@ -956,7 +991,7 @@ class Controller extends \MapasCulturais\Controller
                   $dateIn = $this->formatDate($value['STARTS_ON'], false);
                   $start = $this->formatDate($value['STARTS_AT'], false);
    
-                  $rule['description'].= i::__("Dia {$dateIn->format("d")} de {$dateIn->format("F")} de {$dateIn->format("Y")} às {$start->format("H:i")}");
+                  $rule['description'].= sprintf(i::__("Dia %s de %s de %s às %s"), $dateIn->format("d"), $dateIn->format("F"), $dateIn->format("Y"), $start->format("H:i"));
                };
                break;
          }

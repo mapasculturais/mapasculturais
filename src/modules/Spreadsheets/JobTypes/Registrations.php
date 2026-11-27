@@ -35,6 +35,74 @@ class Registrations extends SpreadsheetJob
         return $v !== '' && $v !== null ? (string) $v : null;
     }
 
+    /** @return list<string> */
+    private static function bankFieldsKeys(): array {
+        return [
+            'account_type',
+            'number',
+            'branch',
+            'dv_branch',
+            'account_number',
+            'dv_account_number',
+        ];
+    }
+
+    /**
+     * Subcampos do tipo bankFields e rótulos para colunas da planilha/lista.
+     *
+     * @return array<string, string> chave do JSON => rótulo traduzido
+     */
+    private static function bankFieldsSubColumns(): array {
+        return [
+            'account_type' => i::__('Tipo de conta'),
+            'number' => i::__('Banco'),
+            'branch' => i::__('Agência'),
+            'dv_branch' => i::__('Dígito verificador da agência'),
+            'account_number' => i::__('Número da conta'),
+            'dv_account_number' => i::__('Dígito verificador da conta'),
+        ];
+    }
+
+    private static function isBankFieldsField(object $field): bool {
+        if (($field->fieldType ?? null) === 'bankFields') {
+            return true;
+        }
+
+        return ($field->config['entityField'] ?? null) === '@bankFields';
+    }
+
+    /**
+     * Expande bankFields em colunas planas e remove a chave original (objeto).
+     */
+    private static function expandBankFieldsOnEntity(array &$entity, object $field): void {
+        $app = App::i();
+        $field_name = $field->fieldName;
+        $raw = $entity[$field_name] ?? null;
+
+        if ($raw instanceof \stdClass) {
+            $raw = (array) $raw;
+        }
+        if (!is_array($raw)) {
+            $raw = [];
+        }
+
+        $config = $app->config['module.registrationFieldTypes'] ?? [];
+        $account_types = $config['account_types'] ?? [];
+        $bank_types = $config['bank_types'] ?? [];
+
+        foreach (self::bankFieldsKeys() as $key) {
+            $value = $raw[$key] ?? '';
+            if ($key === 'account_type') {
+                $value = $account_types[$value] ?? $value;
+            } elseif ($key === 'number') {
+                $value = $bank_types[$value] ?? $value;
+            }
+            $entity["{$field_name}_{$key}"] = $value === null ? '' : (string) $value;
+        }
+
+        unset($entity[$field_name]);
+    }
+
     /**
      * Formata campos do tipo addresses para célula de planilha (texto legível).
      * Espelha a linha usada no PDF da inscrição.
@@ -46,6 +114,30 @@ class Registrations extends SpreadsheetJob
             $line = self::_formatAddressListItem($address);
             if ($line !== '') {
                 $lines[] = $line;
+            }
+        }
+
+        return implode(' || ', $lines);
+    }
+
+    private static function _formatCustomTableForSpreadsheet(array $columns, array $rows): string {
+        $lines = [];
+
+        foreach ($rows as $row) {
+            $row = (array) $row;
+            $cells = [];
+            $has_values = false;
+
+            foreach ($columns as $index => $column) {
+                $column = (array) $column;
+                $value = $row["col{$index}"] ?? '';
+                $value = is_scalar($value) ? (string) $value : '';
+                $has_values = $has_values || $value !== '';
+                $cells[] = ($column['name'] ?? '') . ': ' . $value;
+            }
+
+            if ($has_values) {
+                $lines[] = implode(' | ', $cells);
             }
         }
 
@@ -259,6 +351,14 @@ class Registrations extends SpreadsheetJob
             });
             
             foreach($fields as $field) {
+                if (self::isBankFieldsField($field)) {
+                    unset($header[$field->fieldName]);
+                    foreach (self::bankFieldsSubColumns() as $key => $label) {
+                        $header["{$field->fieldName}_{$key}"] = $label;
+                    }
+                    continue;
+                }
+
                 $entity_type_field = $this->is_entity_type_field($field->fieldName);
 
                 if($entity_type_field['status']) {
@@ -338,6 +438,11 @@ class Registrations extends SpreadsheetJob
         if (isset($result->registrations) && is_array($result->registrations)) {
             foreach($result->registrations as &$entity) {                
                 foreach($all_phases_fields as $field) {
+                    if (self::isBankFieldsField($field)) {
+                        self::expandBankFieldsOnEntity($entity, $field);
+                        continue;
+                    }
+
                     $entity_type_field = $this->is_entity_type_field($field->fieldName);
 
                     if($entity_type_field['status']) {
@@ -549,6 +654,13 @@ class Registrations extends SpreadsheetJob
                         );
                     }
 
+                    if ($field->fieldType === 'custom-table') {
+                        $entity[$field->fieldName] = self::_formatCustomTableForSpreadsheet(
+                            (array) ($field->config['columns'] ?? []),
+                            (array) ($entity[$field->fieldName] ?? [])
+                        );
+                    }
+
                     if (isset($entity[$field->fieldName]) && $entity[$field->fieldName] instanceof \stdClass) {
                         $entity[$field->fieldName] = (array) $entity[$field->fieldName];
                     }	
@@ -744,6 +856,7 @@ class Registrations extends SpreadsheetJob
         $extension = $job->extension;
         $date = date('Y-m-d H:i:s');
         
+        // Token técnico do nome do arquivo: manter fixo para não quebrar automações por locale.
         $result = "{$opportunity}-{$opportunity_id}--inscricoes-{$date}.{$extension}";
 
         return $result;
@@ -868,20 +981,10 @@ class Registrations extends SpreadsheetJob
         return $result;
     }
 
+    // Nome do status da inscrição, o mesmo exibido nas telas.
     function getStatusName($status) {
-        if($status === 10) {
-            return i::__('Selecionada');
-        } elseif($status === 8) {
-            return i::__('Suplente');
-        } elseif($status === 3) {
-            return i::__('Não selecionada');
-        } elseif($status === 2) {
-            return i::__('Inválida');
-        } elseif($status === 1) {
-            return i::__('Pendente');
-        } else {
-            return i::__('Rascunho');
-        }
+        $names = Registration::getStatusesNames();
+        return $names[(int) $status] ?? $names[Registration::STATUS_DRAFT];
     }
 
     /**

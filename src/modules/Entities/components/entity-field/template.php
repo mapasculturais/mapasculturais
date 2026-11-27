@@ -142,6 +142,7 @@ $this->import('
                         <input :id="propId" type="checkbox" :checked="value" @click="change($event)"  :disabled="readonly || disabled" />
                         <span>
                             <slot>{{label || description.label}}</slot>
+                            <span v-if="(required === true || (required === null && description.required)) && !hideRequired" class="required">*<?php i::_e('obrigatório') ?></span>
                             <slot name="info"></slot>
                         </span>
                     </label>
@@ -183,7 +184,7 @@ $this->import('
 
             <template v-else-if="is('custom-table')">
                 <div class="custom-table-field">
-                    <div style="overflow-x: auto; margin-top: 15px;">
+                    <div class="custom-table-field__scroll">
                         <table class="custom-table" style="width: 100%; border-collapse: collapse; border: 1px solid #ddd;">
                             <thead>
                                 <tr style="background-color: #f2f2f2;">
