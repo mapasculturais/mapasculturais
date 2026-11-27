@@ -7,7 +7,7 @@ $em = $opportunity->getEvaluationMethod();
 
 
 $status_list = [];
-$statuses_names = $opportunity->statusLabels ?: $opportunity->defaultStatuses;
+$statuses_names = $opportunity->statusLabels ?: $opportunity->evaluationMethodConfiguration->defaultStatuses;
 
 foreach ($statuses_names as $status => $status_name) {
     if (in_array($status, [0, 1, 2, 3, 8, 9, 10])) {
