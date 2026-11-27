@@ -4,22 +4,25 @@ namespace Test;
 
 use Laminas\Diactoros\Response;
 use MapasCulturais\Entities\Opportunity;
+use MapasCulturais\Entities\Registration;
 use MapasCulturais\Entities\RegistrationFieldConfiguration;
 use MapasCulturais\Entities\RegistrationFileConfiguration;
 use MapasCulturais\Entities\RegistrationStep;
 use MapasCulturais\Entities\User;
 use MapasCulturais\Exceptions\Halt;
+use Opportunities\FieldsVisibleEvaluatorsPhases;
 use Tests\Abstract\TestCase;
 use Tests\Builders\PhasePeriods\ConcurrentEndingAfter;
 use Tests\Builders\PhasePeriods\Open;
 use Tests\Enums\EvaluationMethods;
 use Tests\Traits\OpportunityBuilder;
+use Tests\Traits\RegistrationDirector;
 use Tests\Traits\RequestFactory;
 use Tests\Traits\UserDirector;
 
 class OpportunityAppealPhaseEvaluationFieldsTest extends TestCase
 {
-    use OpportunityBuilder, RequestFactory, UserDirector;
+    use OpportunityBuilder, RegistrationDirector, RequestFactory, UserDirector;
 
     private User $owner;
 
@@ -44,18 +47,14 @@ class OpportunityAppealPhaseEvaluationFieldsTest extends TestCase
         }
     }
 
-    public function testAppealPhaseFollowsEvaluatedPhaseAndShowsItsOwnForm(): void
+    public function testAppealPhaseInheritsParentConfigurationOnCreation(): void
     {
         $phase = $this->createEvaluatedPhase();
         $stored = $this->storePartialConfiguration($phase);
         $appeal = $this->createAppealPhase($phase);
-        [$appealField, $appealFile] = $this->addAppealForm($appeal);
 
         $appealValuer = $this->addValuer($appeal, 'Recurso');
         $outsider = $this->userDirector->createUser();
-
-        $expected = $stored + [$appealField => 'true', $appealFile => 'true'];
-        ksort($expected);
 
         $readers = [
             'gestor' => $this->owner,
@@ -64,8 +63,39 @@ class OpportunityAppealPhaseEvaluationFieldsTest extends TestCase
         ];
 
         foreach ($readers as $role => $user) {
-            $this->assertEquals($expected, $this->readAs($user, $appeal), "O recurso entrega ao {$role} a configuração da etapa e o próprio formulário");
+            $this->assertEquals($stored, $this->readAs($user, $appeal), "O recurso nasce com a cópia da etapa para o {$role}");
         }
+    }
+
+    public function testAppealPhasePersistsOwnEditsAndIgnoresLaterParentChanges(): void
+    {
+        $phase = $this->createEvaluatedPhase();
+        $stored = $this->storePartialConfiguration($phase);
+        $appeal = $this->createAppealPhase($phase);
+        [$appealField, $appealFile] = $this->addAppealForm($appeal);
+
+        $this->assertEquals($stored, $this->readAs($this->owner, $appeal), 'Antes da edição o recurso mantém a cópia inicial');
+
+        $edited = $stored;
+        $edited[$appealField] = 'true';
+        $edited[$appealFile] = 'true';
+        $edited['agentsSummary'] = 'false';
+        ksort($edited);
+
+        $this->login($this->owner);
+        $appeal = $appeal->refreshed();
+        $appeal->avaliableEvaluationFields = $edited;
+        $appeal->save(true);
+
+        $parentChanged = $stored;
+        $parentChanged['agentsSummary'] = 'true';
+        $parentChanged['spaceSummary'] = 'true';
+        $phase = $phase->refreshed();
+        $phase->avaliableEvaluationFields = $parentChanged;
+        $phase->save(true);
+
+        $this->assertEquals($edited, $this->readAs($this->owner, $appeal), 'A edição no recurso persiste mesmo se o pai mudar depois');
+        $this->assertEquals($edited, $this->readAs($this->addValuer($appeal, 'Recurso'), $appeal), 'O avaliador do recurso lê a configuração gravada no recurso');
     }
 
     public function testPhaseWithoutAppealKeepsStoredConfiguration(): void
@@ -97,7 +127,7 @@ class OpportunityAppealPhaseEvaluationFieldsTest extends TestCase
         $this->assertEquals($childConfiguration, $this->readAs($this->owner, $child), 'Fase filha que não é recurso não herda a configuração do pai');
     }
 
-    public function testAppealOfLaterPhaseFollowsThatPhaseNotTheFirstOne(): void
+    public function testAppealOfLaterPhaseInheritsThatPhaseNotTheFirstOne(): void
     {
         $this->owner = $this->userDirector->createUser();
         $this->login($this->owner);
@@ -135,7 +165,114 @@ class OpportunityAppealPhaseEvaluationFieldsTest extends TestCase
 
         $appeal = $this->createAppealPhase($laterPhase);
 
-        $this->assertEquals($laterConfiguration, $this->readAs($this->owner, $appeal), 'O recurso segue a etapa que ele reanalisa, não a primeira fase');
+        $this->assertEquals($laterConfiguration, $this->readAs($this->owner, $appeal), 'O recurso copia a etapa que ele reanalisa, não a primeira fase');
+    }
+
+    public function testAppealPhaseStoresCopiedConfigurationOnCreation(): void
+    {
+        $phase = $this->createEvaluatedPhase();
+        $stored = $this->storePartialConfiguration($phase);
+        $appeal = $this->createAppealPhase($phase);
+
+        $copied = $appeal->refreshed()->getStoredAvaliableEvaluationFields();
+        ksort($copied);
+
+        $this->assertEquals($stored, $copied, 'A coluna do recurso recebe a cópia inicial da etapa avaliada');
+    }
+
+    public function testAppealRegistrationCanSeeUsesAppealStoredConfiguration(): void
+    {
+        $phase = $this->createEvaluatedPhase();
+        $stored = $this->storePartialConfiguration($phase);
+        $appeal = $this->createAppealPhase($phase);
+        [$appealField] = $this->addAppealForm($appeal);
+
+        $liberado = null;
+        $oculto = null;
+        foreach ($phase->registrationFieldConfigurations as $field) {
+            if ($field->title === 'Campo liberado') {
+                $liberado = $field->fieldName;
+            }
+            if ($field->title === 'Campo oculto') {
+                $oculto = $field->fieldName;
+            }
+        }
+
+        $edited = $stored;
+        $edited[$liberado] = 'false';
+        $edited[$oculto] = 'true';
+        $edited[$appealField] = 'true';
+        ksort($edited);
+
+        $this->login($this->owner);
+        $appeal = $appeal->refreshed();
+        $appeal->avaliableEvaluationFields = $edited;
+        $appeal->save(true);
+
+        $parentChanged = $stored;
+        $parentChanged[$liberado] = 'true';
+        $parentChanged[$oculto] = 'false';
+        $phase = $phase->refreshed();
+        $phase->avaliableEvaluationFields = $parentChanged;
+        $phase->save(true);
+
+        $appealValuer = $this->addValuer($appeal, 'Recurso');
+
+        $this->login($this->owner);
+        $appeal = $appeal->refreshed();
+        $appeal->registrationFrom = new \DateTime('-1 day');
+        $appeal->registrationTo = new \DateTime('+30 days');
+        $appeal->save(true);
+
+        $this->app->disableAccessControl();
+        try {
+            [$registration] = $this->registrationDirector->createDraftRegistrations($appeal->refreshed(), 1);
+            $registrationId = $registration->id;
+        } finally {
+            $this->app->enableAccessControl();
+        }
+
+        foreach ([$this->owner, $appealValuer] as $reader) {
+            $this->app->em->clear();
+            $this->login($this->app->repo('User')->find($reader->id));
+            $registration = $this->app->repo(Registration::class)->find($registrationId);
+
+            $this->assertFalse($registration->canSee($liberado), 'No recurso o campo liberado segue a config gravada no recurso, não a do pai');
+            $this->assertTrue($registration->canSee($oculto), 'No recurso o campo oculto segue a config gravada no recurso');
+            $this->assertTrue($registration->canSee($appealField), 'O formulário do recurso fica visível quando marcado na config do recurso');
+        }
+    }
+
+    public function testFieldsVisibleEvaluatorsIndexIncludesAppealPhase(): void
+    {
+        $phase = $this->createEvaluatedPhase();
+        $this->storePartialConfiguration($phase);
+        $appeal = $this->createAppealPhase($phase);
+        [$appealField, $appealFile] = $this->addAppealForm($appeal);
+
+        $get_fields = function (Opportunity $opportunity): array {
+            $fields = [];
+            foreach ($opportunity->registrationFieldConfigurations as $field) {
+                $fields[] = $field;
+            }
+            foreach ($opportunity->registrationFileConfigurations as $file) {
+                $fields[] = $file;
+            }
+            return $fields;
+        };
+
+        $index = FieldsVisibleEvaluatorsPhases::buildIndex($phase->firstPhase, $get_fields, fn () => []);
+
+        $this->assertArrayHasKey($phase->id, $index, 'A etapa avaliada entra no índice da tela');
+        $this->assertArrayHasKey($appeal->id, $index, 'A fase de recurso entra no índice mesmo fora do nextPhase');
+
+        $appealFieldNames = [];
+        foreach ($index[$appeal->id] as $item) {
+            $appealFieldNames[] = $item->fieldName ?? $item->fileGroupName ?? null;
+        }
+
+        $this->assertContains($appealField, $appealFieldNames, 'O índice do recurso traz o campo do formulário do recurso');
+        $this->assertContains($appealFile, $appealFieldNames, 'O índice do recurso traz o anexo do formulário do recurso');
     }
 
     private function createEvaluatedPhase(): Opportunity

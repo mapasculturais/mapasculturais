@@ -400,26 +400,6 @@ class Module extends \MapasCulturais\EvaluationMethod
             ];
         });
 
-        $app->hook('entity(Opportunity).get(avaliableEvaluationFields)', function(&$value) {
-            /** @var Entities\Opportunity $this */
-            if (!$this->isAppealPhase || !$this->parent) {
-                return;
-            }
-
-            $this->enableCacheGetterResult('avaliableEvaluationFields');
-
-            // O recurso reanalisa a etapa: segue a configuração dela e mostra o próprio formulário.
-            $value = $this->parent->getStoredAvaliableEvaluationFields();
-
-            foreach ($this->registrationFieldConfigurations as $field) {
-                $value[$field->fieldName] = "true";
-            }
-
-            foreach ($this->registrationFileConfigurations as $file) {
-                $value[$file->fileGroupName] = "true";
-            }
-        });
-
         //Ativação do chat
         $app->hook('entity(Registration).send:after', function() use ($app) {
             /** @var Registration $this */

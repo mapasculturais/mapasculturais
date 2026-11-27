@@ -89,6 +89,8 @@ class Module extends \MapasCulturais\Module {
             $appeal_phase->isDataCollection = true;
             $appeal_phase->isAppealPhase = true;
             $appeal_phase->showPreviousPhaseEvaluationDetails = true;
+            // Cópia inicial da etapa avaliada; depois a gestão edita e persiste no próprio recurso.
+            $appeal_phase->avaliableEvaluationFields = $opportunity->getStoredAvaliableEvaluationFields();
 
             $conn = $app->conn;
             $conn->beginTransaction();
