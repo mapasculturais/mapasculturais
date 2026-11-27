@@ -2262,7 +2262,7 @@ msgstr "Caiçaras"
 #: base-project/mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/agent-types.php:98
 #: mapa/mapasculturais/src/conf/agent-types.php:98
 msgid "Catadores de mangaba"
-msgstr "Catadores de mangaba"
+msgstr "Recolectores de mangaba"
 
 #: base-project/mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/agent-types.php:99
 #: mapa/mapasculturais/src/conf/agent-types.php:99
@@ -2282,7 +2282,7 @@ msgstr "Extractivistas costeros y marinos"
 #: base-project/mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/agent-types.php:102
 #: mapa/mapasculturais/src/conf/agent-types.php:102
 msgid "Extrativistas"
-msgstr "Extrativistas"
+msgstr "Extractivistas"
 
 #: base-project/mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/agent-types.php:103
 #: mapa/mapasculturais/src/conf/agent-types.php:103
@@ -2317,7 +2317,7 @@ msgstr "Pescadores artesanales"
 #: base-project/mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/agent-types.php:109
 #: mapa/mapasculturais/src/conf/agent-types.php:109
 msgid "Povo Pomerano"
-msgstr "Povo Pomerano"
+msgstr "Pueblo pomerano"
 
 #: base-project/mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/agent-types.php:110
 #: mapa/mapasculturais/src/conf/agent-types.php:110
@@ -2327,7 +2327,7 @@ msgstr "Pueblos gitanos"
 #: base-project/mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/agent-types.php:111
 #: mapa/mapasculturais/src/conf/agent-types.php:111
 msgid "Povos e comunidades de terreiro/povos e comunidades de matriz africana"
-msgstr "Pueblos y comunidades terreiro/Pueblos y comunidades de matriz africana"
+msgstr "Pueblos y comunidades de terreiro/pueblos y comunidades de origen africano"
 
 #: base-project/mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/agent-types.php:112
 #: mapa/mapasculturais/src/conf/agent-types.php:112
@@ -2337,7 +2337,7 @@ msgstr "Pueblos indígenas/originarios"
 #: base-project/mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/agent-types.php:113
 #: mapa/mapasculturais/src/conf/agent-types.php:113
 msgid "Quebradeiras de coco babaçu"
-msgstr "Rompe cocos Babassu"
+msgstr "Rompe cocos de babasú"
 
 #: base-project/mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/agent-types.php:114
 #: mapa/mapasculturais/src/conf/agent-types.php:114
@@ -2347,17 +2347,17 @@ msgstr "Quilombolas"
 #: base-project/mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/agent-types.php:115
 #: mapa/mapasculturais/src/conf/agent-types.php:115
 msgid "Raizeiros"
-msgstr "Rooters"
+msgstr "Raizeiros"
 
 #: base-project/mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/agent-types.php:116
 #: mapa/mapasculturais/src/conf/agent-types.php:116
 msgid "Retireiros do Araguaia"
-msgstr "Jubilados de Araguaia"
+msgstr "Retireiros do Araguaia"
 
 #: base-project/mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/agent-types.php:117
 #: mapa/mapasculturais/src/conf/agent-types.php:117
 msgid "Ribeirinhos"
-msgstr "Riverside"
+msgstr "Ribeirinhos"
 
 #: base-project/mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/agent-types.php:118
 #: mapa/mapasculturais/src/conf/agent-types.php:118
@@ -2367,7 +2367,7 @@ msgstr "Vazanteiros"
 #: base-project/mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/agent-types.php:119
 #: mapa/mapasculturais/src/conf/agent-types.php:119
 msgid "Veredeiros"
-msgstr "Veredictos"
+msgstr "Veredeiros"
 
 #: base-project/mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/agent-types.php:126
 #: mapa/mapasculturais/src/conf/agent-types.php:126
@@ -5223,7 +5223,7 @@ msgstr "Sinagoga"
 #: base-project/mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/space-types.php:138
 #: mapa/mapasculturais/src/conf/space-types.php:138
 msgid "Terreiro"
-msgstr "Parque infantil"
+msgstr "Terreiro"
 
 #: base-project/mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/space-types.php:139
 #: mapa/mapasculturais/src/conf/space-types.php:139
@@ -12949,7 +12949,7 @@ msgstr "Áreas"
 #: mapa/mapasculturais/src/themes/BaseV1/views/event/single.php:141
 #: mapa/mapasculturais/src/themes/BaseV1/views/event/single.php:143
 msgid "Linguagens"
-msgstr "Tipos de eventos"
+msgstr "Tipos de evento"
 
 #: mapa/mapasculturais/src/core/ApiOutputs/Html.php:104
 msgid "Semanal"
@@ -18685,7 +18685,7 @@ msgstr "Agregue una descripción breve para el Agente"
 #: mapa/mapasculturais/src/modules/Entities/layouts/parts/entities/create-event-fields.php:11
 #: mapa/mapasculturais/src/modules/Entities/views/event/single.php:71
 msgid "Linguagem cultural"
-msgstr "Lenguaje cultural"
+msgstr "Tipo de evento"
 
 #: mapa/mapasculturais/src/modules/Entities/layouts/parts/entities/create-event-fields.php:12
 msgid "Adicione uma descrição curta para o evento"
@@ -19066,7 +19066,7 @@ msgstr "Clasificación por edades"
 
 #: mapa/mapasculturais/src/modules/Entities/views/event/edit.php:87
 msgid "Linguagens culturais"
-msgstr "Lenguajes culturales"
+msgstr "Tipos de evento"
 
 #: mapa/mapasculturais/src/modules/Entities/views/event/edit.php:105
 msgid "Informações sobre o evento"
@@ -19383,12 +19383,12 @@ msgstr "Nuevo mensaje en la inscripción número %s"
 #: mapa/mapasculturais/src/modules/Opportunities/components/opportunity-registrations-table/script.js:340
 #: mapa/mapasculturais/src/themes/BaseV1/layouts/parts/user-management/info-user.php:43
 msgid "status"
-msgstr "estatus"
+msgstr "estado"
 
 #: mapa/mapasculturais/src/modules/EvaluationMethodContinuous/Module.php:143
 #: mapa/mapasculturais/src/modules/EvaluationMethodSimple/Module.php:70
 msgid "O campo Status é obrigatório"
-msgstr "El campo Estado (Status) es obligatorio"
+msgstr "El campo Estado es obligatorio"
 
 #: mapa/mapasculturais/src/modules/EvaluationMethodContinuous/Module.php:146
 #: mapa/mapasculturais/src/modules/EvaluationMethodSimple/Module.php:73
@@ -19596,7 +19596,7 @@ msgstr "Seleccionar las evaluaciones"
 #: mapa/mapasculturais/src/modules/EvaluationMethodSimple/components/evaluation-method-simple--apply/template.php:35
 #: mapa/mapasculturais/src/modules/EvaluationMethodTechnical/components/evaluation-method-technical--apply/template.php:47
 msgid "Selecione o status que deseja aplicar"
-msgstr "Seleccione el estatus que desea aplicar"
+msgstr "Seleccione el estado que desea aplicar"
 
 #: mapa/mapasculturais/src/modules/EvaluationMethodContinuous/components/evaluation-method-continuous--apply/template.php:43
 #: mapa/mapasculturais/src/modules/EvaluationMethodDocumentary/components/evaluation-method-documentary--apply/template.php:42
@@ -20230,7 +20230,7 @@ msgstr "Sólo para evaluaciones técnicas"
 
 #: mapa/mapasculturais/src/modules/EvaluationMethodTechnical/Module.php:605
 msgid "Por favor selecione um status para ser aplicado."
-msgstr "Por favor seleccione un estatus para ser aplicado."
+msgstr "Por favor seleccione un estado para aplicar."
 
 #: mapa/mapasculturais/src/modules/EvaluationMethodTechnical/Module.php:609
 msgid "Os status válidos são 0, 1, 2, 3, 8 e 10"
@@ -20835,7 +20835,7 @@ msgstr "La clasificación etaria es obligatoria"
 
 #: mapa/mapasculturais/src/modules/EventImporter/Controller.php:400
 msgid "A coluna linguagem está vazia"
-msgstr "La columna lenguaje está vacía"
+msgstr "La columna tipo de evento está vacía"
 
 #: mapa/mapasculturais/src/modules/EventImporter/Controller.php:424
 msgid "O projeto não está cadastrado"
@@ -21162,7 +21162,7 @@ msgstr "franja_etarea"
 
 #: mapa/mapasculturais/src/modules/EventImporter/Module.php:101
 msgid "línguagem"
-msgstr "lenguaje"
+msgstr "tipo de evento"
 
 #: mapa/mapasculturais/src/modules/EventImporter/Module.php:103
 msgid "proprietário"
@@ -21452,15 +21452,13 @@ msgstr ""
 
 #: mapa/mapasculturais/src/modules/EventImporter/Module.php:235
 msgid "LINGUAGEM"
-msgstr "IDIOMA"
+msgstr "TIPO_DE_EVENTO"
 
 #: mapa/mapasculturais/src/modules/EventImporter/Module.php:236
 msgid ""
 "PREENCHIMENTO OBRIGATÓRIO - Informar as linguagens do evento separando-as com "
 "ponto e virgula, ;"
-msgstr ""
-"LLENADO OBLIGATORIO - Informar los idiomas del evento separándolos con punto "
-"y coma, ;"
+msgstr "LLENADO OBLIGATORIO - Informar los tipos de evento separándolos con punto y coma, ;"
 
 #: mapa/mapasculturais/src/modules/EventImporter/Module.php:237
 msgid "Teatro;Música Popular;Livro e Literatura"
@@ -24065,11 +24063,11 @@ msgstr "clasificación final"
 
 #: mapa/mapasculturais/src/modules/Opportunities/components/opportunity-registrations-table/texts.php:14
 msgid "status descendente"
-msgstr "estatus descendente"
+msgstr "estado descendente"
 
 #: mapa/mapasculturais/src/modules/Opportunities/components/opportunity-registrations-table/texts.php:15
 msgid "status ascendente"
-msgstr "estatus ascendente"
+msgstr "estado ascendente"
 
 #: mapa/mapasculturais/src/modules/Opportunities/components/opportunity-registrations-table/texts.php:16
 msgid "resultado das avaliações"
@@ -24123,7 +24121,7 @@ msgstr "Criterios de desempate utilizados"
 
 #: mapa/mapasculturais/src/modules/Opportunities/components/opportunity-registrations-table/texts.php:33
 msgid "Status alterado com sucesso"
-msgstr "Status cambiado con éxito"
+msgstr "Estado cambiado con éxito"
 
 #: mapa/mapasculturais/src/modules/Opportunities/components/opportunity-registrations-table/texts.php:34
 msgid ""
@@ -28440,7 +28438,7 @@ msgstr "Fecha de actualización"
 
 #: mapa/mapasculturais/src/modules/Spreadsheets/JobTypes/Registrations.php:91
 msgid "Hora de atualização"
-msgstr "Fecha de actualización"
+msgstr "Hora de actualización"
 
 #: mapa/mapasculturais/src/modules/Spreadsheets/JobTypes/Registrations.php:107
 msgid "Função editar inscrição: Prazo final para edição"
@@ -29145,7 +29143,7 @@ msgstr "visualizar resultado"
 
 #: mapa/mapasculturais/src/modules/UserManagement/Module.php:74
 msgid "modificar status"
-msgstr "modificar estatus"
+msgstr "modificar estado"
 
 #: mapa/mapasculturais/src/modules/UserManagement/Module.php:75
 msgid "solicitar evento relacionado"
@@ -30692,7 +30690,7 @@ msgstr "Seleccione por lo menos un tipo de evento"
 
 #: mapa/mapasculturais/src/themes/BaseV1/Theme.php:731
 msgid "Selecionar quantas linguagens for preciso"
-msgstr "Seleccionar cuántos tipos de eventos se necesitan"
+msgstr "Seleccionar cuántos tipos de evento se necesitan"
 
 #: mapa/mapasculturais/src/themes/BaseV1/Theme.php:745
 msgid "Você não tem permissão para executar esta ação"
@@ -32196,7 +32194,7 @@ msgstr "Visualizar Inscriptos"
 
 #: mapa/mapasculturais/src/themes/BaseV1/layouts/parts/panel-event.php:13
 msgid "Linguagens: "
-msgstr "Tipos de eventos: "
+msgstr "Tipos de evento: "
 
 #: mapa/mapasculturais/src/themes/BaseV1/layouts/parts/panel-event.php:15
 msgid "Classificação:"
@@ -34034,11 +34032,11 @@ msgstr "Seleccione el(los) estado(s) para el(los) Espacio(s)"
 
 #: mapa/mapasculturais/src/themes/BaseV1/layouts/parts/singles/subsite-filters.php:83
 msgid "Linguagem:"
-msgstr "Tipo de Evento:"
+msgstr "Tipo de evento:"
 
 #: mapa/mapasculturais/src/themes/BaseV1/layouts/parts/singles/subsite-filters.php:84
 msgid "Selecione o(s) tipos(s) de linguagem"
-msgstr "Seleccione el(los) tipo(s) de eventos(s)"
+msgstr "Seleccione el/los tipo(s) de evento"
 
 #: mapa/mapasculturais/src/themes/BaseV1/layouts/parts/singles/subsite-filters.php:93
 msgid "Selos:"
@@ -40478,11 +40476,11 @@ msgstr "Para guardar un modelo, complete los campos a continuación."
 
 #: src/modules/Opportunities/components/evaluation-actions/template.php
 msgid "Finalizar e Avançar"
-msgstr "Finalizar y Avanzar"
+msgstr "Finalizar y avanzar"
 
 #: src/modules/EvaluationMethodQualification/Module.php
 msgid "O valor do critério %s é inválido"
-msgstr "El valor del criterio %s es inválido"
+msgstr "El valor del criterio %s no es válido"
 
 #: src/modules/OpportunityAccountability/Controller.php
 msgid "Campo <b>%s</b> aberto para edição"
@@ -40494,79 +40492,79 @@ msgstr "Campo <b>%s</b> cerrado para edición"
 
 #: src/modules/OpportunityWorkplan/Module.php
 msgid "Campo 'Descrição' obrigatório na entrega '%s'."
-msgstr "Campo 'Descripción' obligatorio en la entrega '%s'."
+msgstr "El campo 'Descripción' es obligatorio en la entrega '%s'."
 
 #: src/modules/OpportunityWorkplan/Module.php
 msgid "Campo 'Tipo de entrega' obrigatório na entrega '%s'."
-msgstr "Campo 'Tipo de entrega' obligatorio en la entrega '%s'."
+msgstr "El campo 'Tipo de entrega' es obligatorio en la entrega '%s'."
 
 #: src/modules/OpportunityWorkplan/Module.php
 msgid "Campo 'Mês inicial' obrigatório na entrega '%s'."
-msgstr "Campo 'Mes inicial' obligatorio en la entrega '%s'."
+msgstr "El campo 'Mes inicial' es obligatorio en la entrega '%s'."
 
 #: src/modules/OpportunityWorkplan/Module.php
 msgid "Campo 'Mês final' obrigatório na entrega '%s'."
-msgstr "Campo 'Mes final' obligatorio en la entrega '%s'."
+msgstr "El campo 'Mes final' es obligatorio en la entrega '%s'."
 
 #: src/modules/OpportunityWorkplan/Module.php
 msgid "Campo 'Previsão Quantidade' obrigatório na entrega '%s'."
-msgstr "Campo 'Previsión Cantidad' obligatorio en la entrega '%s'."
+msgstr "El campo 'Previsión de cantidad' es obligatorio en la entrega '%s'."
 
 #: src/modules/OpportunityWorkplan/Module.php
 msgid "Campo 'Previsão de valor unitário' obrigatório na entrega '%s'."
-msgstr "Campo 'Previsión de valor unitario' obligatorio en la entrega '%s'."
+msgstr "El campo 'Previsión de valor unitario' es obligatorio en la entrega '%s'."
 
 #: src/modules/OpportunityWorkplan/Module.php
 msgid "Campo 'Detalhamento do envolvimento de comunidades' obrigatório na entrega '%s'"
-msgstr "Campo 'Detallado de la participación de comunidades' obligatorio en la entrega '%s'"
+msgstr "El campo 'Detalle de la participación de comunidades' es obligatorio en la entrega '%s'"
 
 #: src/modules/OpportunityWorkplan/Module.php
 msgid "Campo 'Ações de inclusão Trans e Travestis' obrigatório na entrega '%s'"
-msgstr "Campo 'Acciones de inclusión Trans y Travestis' obligatorio en la entrega '%s'"
+msgstr "El campo 'Acciones de inclusión de personas trans y travestis' es obligatorio en la entrega '%s'"
 
 #: src/modules/OpportunityWorkplan/Module.php
 msgid "Campo 'Descrição de práticas socioambientais' obrigatório na entrega '%s'"
-msgstr "Campo 'Descripción de prácticas socioambientales' obligatorio en la entrega '%s'"
+msgstr "El campo 'Descripción de prácticas socioambientales' es obligatorio en la entrega '%s'"
 
 #: src/modules/OpportunityWorkplan/Module.php
 msgid "Campo 'Medidas de acessibilidade previstas' obrigatório na entrega '%s'"
-msgstr "Campo 'Medidas de accesibilidad previstas' obligatorio en la entrega '%s'"
+msgstr "El campo 'Medidas de accesibilidad previstas' es obligatorio en la entrega '%s'"
 
 #: src/modules/OpportunityWorkplan/Module.php
 msgid "Campo 'Tipos de experimentação/inovação' obrigatório na entrega '%s'"
-msgstr "Campo 'Tipos de experimentación/innovación' obligatorio en la entrega '%s'"
+msgstr "El campo 'Tipos de experimentación/innovación' es obligatorio en la entrega '%s'"
 
 #: src/modules/OpportunityWorkplan/Module.php
 msgid "Campo 'Envolvimento de comunidades como coautores' obrigatório na entrega '%s'"
-msgstr "Campo 'Participación de comunidades como coautores' obligatorio en la entrega '%s'"
+msgstr "El campo 'Participación de comunidades como coautores' es obligatorio en la entrega '%s'"
 
 #: src/modules/OpportunityWorkplan/Module.php
 msgid "Campo 'Estratégia de inclusão Trans/Travestis' obrigatório na entrega '%s'"
-msgstr "Campo 'Estrategia de inclusión Trans/Travestis' obligatorio en la entrega '%s'"
+msgstr "El campo 'Estrategia de inclusión de personas trans/travestis' es obligatorio en la entrega '%s'"
 
 #: src/modules/OpportunityWorkplan/Module.php
 msgid "Campo 'Plano de acessibilidade' obrigatório na entrega '%s'"
-msgstr "Campo 'Plan de accesibilidad' obligatorio en la entrega '%s'"
+msgstr "El campo 'Plan de accesibilidad' es obligatorio en la entrega '%s'"
 
 #: src/modules/OpportunityWorkplan/Module.php
 msgid "Campo 'Práticas socioambientais' obrigatório na entrega '%s'"
-msgstr "Campo 'Prácticas socioambientales' obligatorio en la entrega '%s'"
+msgstr "El campo 'Prácticas socioambientales' es obligatorio en la entrega '%s'"
 
 #: src/modules/OpportunityWorkplan/Module.php
 msgid "Campo 'Estratégias de comunicação' obrigatório na entrega '%s'"
-msgstr "Campo 'Estrategias de comunicación' obligatorio en la entrega '%s'"
+msgstr "El campo 'Estrategias de comunicación' es obligatorio en la entrega '%s'"
 
 #: src/modules/OpportunityWorkplan/Module.php
 msgid "Campo 'Previsão de ação de experimentação/inovação' obrigatório na entrega '%s'"
-msgstr "Campo 'Previsión de acción de experimentación/innovación' obligatorio en la entrega '%s'"
+msgstr "El campo 'Previsión de acción de experimentación/innovación' es obligatorio en la entrega '%s'"
 
 #: src/modules/Spreadsheets/SpreadsheetJob.php
 msgid "Sua planilha de %s foi gerada e está pronta para ser baixada. Acesse o link abaixo para obter o arquivo:"
-msgstr "Su planilla de %s fue generada y está lista para descargar. Acceda al enlace siguiente para obtener el archivo:"
+msgstr "Su planilla de %s fue generada y está lista para descargar. Acceda al enlace de abajo para obtener el archivo:"
 
 #: src/modules/Opportunities/views/registration/single.php
 msgid "O prazo para envio dessa inscrição foi até %s"
-msgstr "El plazo para el envío de esta inscripción fue hasta %s"
+msgstr "El plazo para enviar esta inscripción fue hasta el %s"
 
 #: src/modules/EventImporter/views/eventimporter/import-erros.php
 msgid "Erros de importação do arquivo %s"
@@ -40578,15 +40576,15 @@ msgstr "Línea %s"
 
 #: src/modules/EventImporter/Controller.php
 msgid "As colunas %s não foram encontradas na planilha"
-msgstr "Las columnas %s no se encontraron en la planilla"
+msgstr "No se encontraron las columnas %s en la planilla"
 
 #: src/modules/EventImporter/Controller.php
 msgid "A coluna classificação etária é inválida. As opções aceitas são %s"
-msgstr "La columna de clasificación etaria es inválida. Las opciones aceptadas son %s"
+msgstr "La columna de clasificación etaria no es válida. Las opciones aceptadas son %s"
 
 #: src/modules/EventImporter/Controller.php
 msgid "A linguagem %s não existe"
-msgstr "El lenguaje %s no existe"
+msgstr "El tipo de evento %s no existe"
 
 #: src/modules/EventImporter/Controller.php
 msgid "Existe mais de um projeto com o nome %s. Para proseguir, informe o ID do projeto que quer associar ao evento"
@@ -40594,19 +40592,19 @@ msgstr "Existe más de un proyecto con el nombre %s. Para continuar, informe el 
 
 #: src/modules/EventImporter/Controller.php
 msgid "Existe mais de um espaço com o nome %s. Para proseguir informe o ID do espaço que quer associar ao evento"
-msgstr "Existe más de un espacio con el nombre %s. Para continuar informe el ID del espacio que desea asociar al evento"
+msgstr "Existe más de un espacio con el nombre %s. Para continuar, informe el ID del espacio que desea asociar al evento"
 
 #: src/modules/EventImporter/Controller.php
 msgid "A frequência é inválida. As opções aceitas são %s"
-msgstr "La frecuencia es inválida. Las opciones aceptadas son %s"
+msgstr "La frecuencia no es válida. Las opciones aceptadas son %s"
 
 #: src/modules/EventImporter/Controller.php
 msgid "Evento %s não foi inserido (falha na ocorrência, arquivos ou metalists)"
-msgstr "El evento %s no fue insertado (falla en la ocurrencia, archivos o metalists)"
+msgstr "El evento %s no fue insertado (falla en la ocurrencia, archivos o metalistas)"
 
 #: src/modules/EventImporter/Controller.php
 msgid "Dia %s de %s de %s às %s"
-msgstr "Día %s de %s de %s a las %s"
+msgstr "El %s de %s de %s a las %s"
 
 #: src/modules/EventImporter/Controller.php
 msgid "de %s a %s de %s de %s às %s"
@@ -40635,3 +40633,97 @@ msgstr "Diariamente del %s de %s al %s de %s de %s a las %s"
 #: src/modules/Opportunities/views/registration/pdf.php
 msgid "Logo"
 msgstr "Logo"
+
+
+msgid "Ao habilitar esta configuração, os avaliadores deverão considerar a exequibilidade da inscrição."
+msgstr "Al habilitar esta configuración, los evaluadores deberán considerar la viabilidad de la inscripción."
+
+msgid "Aviso sobre a mudança do seu status no(a) "
+msgstr "Aviso sobre el cambio de estado de su inscripción en "
+
+msgid "Aviso sobre a sua inscrição na "
+msgstr "Aviso sobre su inscripción en "
+
+msgid "Campo aberto para edição na prestação de contas "
+msgstr "Campo abierto para edición en la rendición de cuentas "
+
+msgid "Comissão"
+msgstr "Comisión"
+
+msgid "Entre no site com seu usuário para "
+msgstr "Ingrese al sitio con su usuario para "
+
+msgid "Enviadas há mais tempo"
+msgstr "Enviadas hace más tiempo"
+
+msgid "Enviadas recentemente"
+msgstr "Enviadas recientemente"
+
+msgid "Fase de avaliação"
+msgstr "Fase de evaluación"
+
+msgid "Informe se vai concorrer às cotas."
+msgstr "Indique si va a competir por cuotas."
+
+msgid "Nenhum resultado"
+msgstr "Ningún resultado"
+
+msgid "O status selecionado não está habilitado para esta fase"
+msgstr "El estado seleccionado no está habilitado para esta fase"
+
+msgid "Se a maioria dos avaliadores considerarem a inabilitação por exequibilidade, a mesma será marcada com o status de inválida para o dono do edital, que ainda assim poderá mudar seu status para válida."
+msgstr "Si la mayoría de los evaluadores considera que la inscripción debe inhabilitarse por inviabilidad, quedará marcada con el estado inválida para quien administra la convocatoria, que aun así podrá cambiar su estado a válida."
+
+msgid " de %s"
+msgstr " de %s"
+
+msgid "Escolha um horário no futuro para agendar a publicação automática. Exemplo: agora são %s de %s, então escolha %s ou mais tarde."
+msgstr "Elija una hora futura para programar la publicación automática. Ejemplo: ahora son las %s del %s, entonces elija las %s o más tarde."
+
+msgid "Esse horário já passou. Escolha um horário no futuro, por exemplo:"
+msgstr "Esa hora ya pasó. Elija una hora futura, por ejemplo:"
+
+msgid "Usar %s"
+msgstr "Usar %s"
+
+msgid "O sistema já inclui automaticamente a pergunta \"Vai concorrer às cotas?\" no formulário de inscrição. Não crie outro campo com essa pergunta: só a resposta da pergunta do sistema é considerada na apuração das cotas. Para campos que dependem dessa resposta (ex.: \"Qual cota?\"), use a pergunta do sistema como condição."
+msgstr "El sistema ya incluye automáticamente la pregunta \"¿Va a competir por cuotas?\" en el formulario de inscripción. No cree otro campo con esa pregunta: solo la respuesta a la pregunta del sistema se considera en el cómputo de las cuotas. Para los campos que dependen de esa respuesta (ej.: \"¿Qué cuota?\"), utilice la pregunta del sistema como condición."
+
+msgid "Deferido parcialmente"
+msgstr "Aprobado parcialmente"
+
+msgid "Deferido parcialmente em \"{PHASE_NAME}\""
+msgstr "Aprobado parcialmente en \"{PHASE_NAME}\""
+
+msgid "deferido parcialmente,deferida parcialmente"
+msgstr "aprobado parcialmente,aprobada parcialmente"
+
+msgid "deferido parcialmente"
+msgstr "aprobado parcialmente"
+
+msgid "Deferidas parcialmente"
+msgstr "Aprobadas parcialmente"
+
+msgid "deferidas parcialmente"
+msgstr "aprobadas parcialmente"
+
+msgid "os status válidos são %s"
+msgstr "los estados válidos son %s"
+
+msgid "O status Deferido parcialmente só pode ser aplicado na fase de recurso"
+msgstr "El estado Aprobado parcialmente solo puede aplicarse en la fase de recurso"
+
+msgid "Banco"
+msgstr "Banco"
+
+msgid "Alterar status de Selecionada?"
+msgstr "¿Cambiar el estado de Seleccionada?"
+
+msgid "Sim, alterar status"
+msgstr "Sí, cambiar el estado"
+
+msgid "Ao tirar esta inscrição de Selecionada, as inscrições e dados preenchidos nas fases seguintes — inclusive prestação de informações e pedidos de execução — serão removidos. Esta ação não pode ser desfeita."
+msgstr "Al sacar esta inscripción de Seleccionada, se eliminarán las inscripciones y los datos completados en las fases siguientes, incluidas la rendición de información y las solicitudes de ejecución. Esta acción no se puede deshacer."
+
+msgid "Quantidade de inscrições <strong>deferidas parcialmente</strong>:"
+msgstr "Cantidad de inscripciones <strong>aprobadas parcialmente</strong>:"
