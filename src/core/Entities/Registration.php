@@ -737,7 +737,7 @@ class Registration extends \MapasCulturais\Entity
     function getEvaluationResultString(){
         if($method = $this->getEvaluationMethod()) {
             $value = $this->getEvaluationResultValue();
-            return $method->valueToString($value);
+            return $method->resultToString($this->opportunity, $value);
         }
 
         return null;
