@@ -232,13 +232,8 @@ $get_workplan_fields = function ($opportunity) {
     return $fields;
 };
 
-$phases_fields = [];
-
-$current = $phase;
-do {
-    $fields = $get_fields($current);
-    $workplan_fields = $get_workplan_fields($current);
-    $phases_fields[$current->id] = array_merge($fields, $workplan_fields);
-} while ($current = $current->nextPhase);
-
-$this->jsObject['config']['fieldsVisibleEvaluators'] = $phases_fields;
+$this->jsObject['config']['fieldsVisibleEvaluators'] = Opportunities\FieldsVisibleEvaluatorsPhases::buildIndex(
+    $phase,
+    $get_fields,
+    $get_workplan_fields
+);

@@ -12,8 +12,6 @@ use MapasCulturais\Entities\EvaluationMethodConfiguration;
 use MapasCulturais\Entities\Notification;
 use MapasCulturais\Entities\Registration;
 use MapasCulturais\Entities\RegistrationEvaluation;
-use MapasCulturais\Entities\RegistrationFieldConfiguration;
-use MapasCulturais\Entities\RegistrationFileConfiguration;
 use MapasCulturais\i;
 class Module extends \MapasCulturais\EvaluationMethod 
 {
@@ -440,42 +438,6 @@ class Module extends \MapasCulturais\EvaluationMethod
             $this->jsObject['config']['evaluationMethodAppealPhase'] = [
                 'statuses' => $self->getStatuses(),
             ];
-        });
-
-        $app->hook('entity(Opportunity).get(avaliableEvaluationFields)', function(&$value) use ($app) {
-            $this->enableCacheGetterResult('avaliableEvaluationFields');
-            // Verificar se a fase ($this) tem uma fase de recurso ($this->appealPhase);
-            // Se o usuário logado é avaliador do recurso
-            // Caso seja, Adiciona todos os campos dessa fase até a primeira ($this->previousPhase)
-            
-            if ($this->isAppealPhase) {
-                $appeal_phase = $this;
-            } else {
-                $appeal_phase = $this->appealPhase;
-            }
-            
-            if (!$appeal_phase) {
-                return;
-            }
-
-            if ($appeal_phase->canUser('evaluateRegistrations')) {
-                $fields = [];
-                
-                $phase = $this;
-                do {
-                    $fields = array_merge($fields, $this->registrationFieldConfigurations, $this->registrationFileConfigurations);
-                } while ($phase = $phase->previousPhase);
-                
-                foreach ($fields as $field) {
-                    if ($field instanceof RegistrationFieldConfiguration) {
-                        $value[$field->fieldName] = "true";
-                    }
-                    
-                    if ($field instanceof RegistrationFileConfiguration) {
-                        $value[$field->fileGroupName] = "true";
-                    }
-                }
-            }
         });
 
         //Ativação do chat
