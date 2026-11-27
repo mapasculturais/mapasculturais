@@ -1194,7 +1194,7 @@ class Opportunity extends EntityController {
                 "status" => $registration['status'],
                 "agentid" => $registration['agentid'],
                 "agentname" => $registration['agentname'],
-                "resultString" => $opportunity->getEvaluationMethod()->valueToString($registration['result']),
+                "resultString" => $opportunity->getEvaluationMethod()->resultToString($opportunity, $registration['result']),
                 "createTimestamp" => $registration['create_timestamp']
             ];
         },$registrations);
