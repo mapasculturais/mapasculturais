@@ -375,6 +375,27 @@ abstract class EvaluationMethod extends Module implements \JsonSerializable{
     }
 
     /**
+     * Retorna o texto de cada resultado consolidado, indexado pelo valor
+     *
+     * @param Entities\Opportunity $opportunity
+     * @param array $consolidated_results linhas devolvidas por findConsolidatedResult
+     * @return array [valor => texto]
+     */
+    public function getConsolidatedResultLabels(Entities\Opportunity $opportunity, array $consolidated_results): array {
+        $labels = [];
+
+        foreach ($consolidated_results as $consolidated_result) {
+            $value = $consolidated_result['evaluation'];
+
+            $labels[$value] = (string) $value === (string) Registration::STATUS_DRAFT
+                ? i::__('Rascunho em análise')
+                : $this->resultToString($opportunity, $value);
+        }
+
+        return $labels;
+    }
+
+    /**
      * Converte um valor de resultado para string
      * 
      * @param mixed $value
