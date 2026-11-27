@@ -16,7 +16,7 @@
     "devDependencies": {
         "fast-glob": "^3.3.3",
         "laravel-mix": "^6.0.49",
-        "postcss": "^8.5.8",
+        "postcss": "^8.5.23",
         "resolve-url-loader": "^5.0.0",
         "sass": "^1.98.0",
         "sass-loader": "^12.6.0",
