@@ -523,6 +523,12 @@ class Opportunity extends EntityController {
         foreach($opportunity_tree as $phase){
             /** @var EntitiesOpportunity $phase */
             $phase->registerRegistrationMetadata();
+
+            // Completa no pcache a leitura das inscrições da fase para quem a controla.
+            if (!$phase->isUserAdmin($app->user) && $phase->canUser('@control')) {
+                $phase->createRegistrationsViewPermissionCacheForUser($app->user);
+            }
+
             $current_evaluation_method = $phase->evaluationMethod;
 
             if (!$current_evaluation_method && $phase->isLastPhase && $phase->previousPhase && $phase->previousPhase->evaluationMethod){

@@ -21,6 +21,7 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Quem já tinha colunas salvas do formato antigo de "Dados bancários" passa a ver as novas colunas sem precisar reconfigurar a tabela
 - Corrige o campo de tabela do formulário de inscrição que não cabia na coluna do formulário: a tabela transbordava para baixo da coluna lateral, que capturava o clique e impedia o preenchimento das últimas colunas; a tabela passa a rolar horizontalmente dentro do campo
 - Corrige telas da gestão que mostravam o vocabulário fixo do método em vez do rótulo de status configurado na fase: a lista de avaliações, a janela "Aplicar resultados das avaliações" dos métodos contínuo e simplificado, o resultado consolidado da inscrição, a lista de inscrições da API e o resumo de avaliações da fase. Um status renomeado na fase de recurso continuava aparecendo como "Negado" para a gestão, enquanto o avaliador e o proponente já viam o nome configurado
+- Corrige a lista de inscrições e a planilha exportada para quem gerencia o edital, que deixavam de fora inscrições ainda sem a permissão de leitura registrada pelo processamento em segundo plano; ao abrir a lista ou gerar a planilha, a permissão de leitura de quem controla a fase passa a ser registrada na hora nas inscrições que ainda não a têm, sem alterar o que proponentes, avaliadores e demais usuários veem
 
 ## [7.8.24] - 2026-11-19
 ### Melhorias
