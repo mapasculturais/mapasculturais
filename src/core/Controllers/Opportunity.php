@@ -525,6 +525,12 @@ class Opportunity extends EntityController {
         foreach($opportunity_tree as $phase){
             /** @var EntitiesOpportunity $phase */
             $phase->registerRegistrationMetadata();
+
+            // Completa no pcache a leitura das inscrições da fase para quem a controla.
+            if (!$phase->isUserAdmin($app->user) && $phase->canUser('@control')) {
+                $phase->createRegistrationsViewPermissionCacheForUser($app->user);
+            }
+
             $current_evaluation_method = $phase->evaluationMethod;
 
             if (!$current_evaluation_method && $phase->isLastPhase && $phase->previousPhase && $phase->previousPhase->evaluationMethod){
@@ -724,7 +730,7 @@ class Opportunity extends EntityController {
                     if ($evaluation_method) {
                         foreach ($phase_result as &$reg) {
                             if (in_array('consolidatedResult', $phase_query->selecting)) {
-                                $reg['evaluationResultString'] = $evaluation_method->valueToString($reg['consolidatedResult']);
+                                $reg['evaluationResultString'] = $evaluation_method->resultToString($phase, $reg['consolidatedResult']);
                             }
                         }
                         unset($reg);
@@ -752,7 +758,7 @@ class Opportunity extends EntityController {
             if ($target_evaluation_method) {
                 foreach ($ordered_result as &$reg) {
                     if (in_array('consolidatedResult', $current_phase_query->selecting)) {
-                        $reg['evaluationResultString'] = $target_evaluation_method->valueToString($reg['consolidatedResult']);
+                        $reg['evaluationResultString'] = $target_evaluation_method->resultToString($target_build['phase'], $reg['consolidatedResult']);
                     }
                 }
                 unset($reg);
@@ -799,7 +805,7 @@ class Opportunity extends EntityController {
             if ($current_evaluation_method) {
                 foreach ($current_phase_result as &$reg) {
                     if (in_array('consolidatedResult', $current_phase_query->selecting)) {
-                        $reg['evaluationResultString'] = $current_evaluation_method->valueToString($reg['consolidatedResult']);
+                        $reg['evaluationResultString'] = $current_evaluation_method->resultToString($phase, $reg['consolidatedResult']);
                     }
                 }
                 unset($reg);
@@ -1066,7 +1072,7 @@ class Opportunity extends EntityController {
 
                 $e['agent'] = $valuer_by_user[$e['user']];
                 $e['singleUrl'] = $app->createUrl('registration', 'view', [$e['registration'], 'uid' => $e['user']]);
-                $e['resultString'] = $opportunity->getEvaluationMethod()->valueToString($evaluation_result);
+                $e['resultString'] = $opportunity->getEvaluationMethod()->resultToString($opportunity, $evaluation_result);
                 $evaluations[$e['id']] = $e;
             }
         }
@@ -1221,7 +1227,7 @@ class Opportunity extends EntityController {
                 "status" => $registration['status'],
                 "agentid" => $registration['agentid'],
                 "agentname" => $registration['agentname'],
-                "resultString" => $opportunity->getEvaluationMethod()->valueToString($registration['result']),
+                "resultString" => $opportunity->getEvaluationMethod()->resultToString($opportunity, $registration['result']),
                 "createTimestamp" => $registration['create_timestamp']
             ];
         },$registrations);

@@ -10,7 +10,7 @@ return [
     'Nº avaliador' => i::__('Nº sequencial do avaliador'),
     'ID usuário avaliador' => i::__('ID do usuário do avaliador'),
     'ID agente avaliador' => i::__('ID do agente avaliador'),
-    'estado' => i::__('Estado'),
+    'estado' => i::__('Status'),
     'não avaliado' => i::__('Não avaliado'),
     'Avaliação iniciada' => i::__('Avaliação iniciada'),
     'Avaliação concluída' => i::__('Avaliação concluída'),

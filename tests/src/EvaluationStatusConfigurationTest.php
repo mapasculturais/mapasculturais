@@ -2,9 +2,12 @@
 
 namespace Tests;
 
+use Laminas\Diactoros\ServerRequest;
 use MapasCulturais\Entities\Opportunity;
 use MapasCulturais\Entities\Registration;
+use MapasCulturais\Entities\RegistrationEvaluation;
 use MapasCulturais\Entities\User;
+use MapasCulturais\Request as MapasRequest;
 use Tests\Builders\PhasePeriods\ConcurrentEndingAfter;
 use Tests\Builders\PhasePeriods\Open;
 use Tests\Enums\EvaluationMethods;
@@ -16,7 +19,8 @@ use Tests\Traits\UserDirector;
 
 /**
  * Garante que os status oferecidos ao avaliador (e aceitos no envio da avaliação)
- * seguem a configuração de status da fase (statusLabels da oportunidade).
+ * seguem a configuração de status da fase (statusLabels da oportunidade), e que o
+ * texto do resultado exibido também segue essa configuração.
  */
 class EvaluationStatusConfigurationTest extends Abstract\TestCase
 {
@@ -25,6 +29,14 @@ class EvaluationStatusConfigurationTest extends Abstract\TestCase
         Faker,
         OpportunityBuilder,
         RegistrationDirector;
+
+    private const RENAMED_STATUS_LABELS = [
+        '0' => 'Rascunho',
+        '1' => 'Aguardando resposta',
+        '2' => 'Deferido Parcialmente',
+        '3' => 'Indeferido',
+        '10' => 'Deferido',
+    ];
 
     function testEvaluatorStatusesFollowMethodDefaultsWhenPhaseIsNotConfigured()
     {
@@ -103,6 +115,148 @@ class EvaluationStatusConfigurationTest extends Abstract\TestCase
             [3 => 'Indeferido', 10 => 'Deferido pela comissão'],
             $config['appealPhaseChatStatuses'],
             'Garantindo que o chat do recurso oferece apenas os status habilitados na fase'
+        );
+    }
+
+    function testContinuousEvaluationOffersAndAcceptsPartialApprovalWhenEnabled()
+    {
+        [, $registration, $valuer] = $this->createEvaluationPhase('continuous', [
+            '0' => 'Rascunho',
+            '1' => 'Aguardando resposta',
+            '3' => 'Indeferido',
+            '9' => 'Deferido parcialmente',
+            '10' => 'Deferido',
+        ]);
+
+        $this->login($valuer);
+
+        $request = $this->requestFactory->GET('registration', 'evaluation', [$registration->id]);
+        $this->assertStatus200($request, 'Garantindo que o avaliador acessa a tela de avaliação contínua');
+
+        $this->assertEquals(
+            [
+                ['value' => 3, 'label' => 'Indeferido'],
+                ['value' => 9, 'label' => 'Deferido parcialmente'],
+                ['value' => 10, 'label' => 'Deferido'],
+            ],
+            $this->app->view->jsObject['config']['continuousEvaluationForm']['statusList'],
+            'Garantindo que o formulário da avaliação contínua oferece o deferido parcialmente habilitado na fase'
+        );
+
+        $this->assertStatus200(
+            $this->sendEvaluation($registration, Registration::STATUS_PARTIALLY_APPROVED),
+            'Garantindo que a avaliação contínua aceita o deferido parcialmente habilitado na fase'
+        );
+    }
+
+    function testContinuousBatchApplicationHidesDisabledPartialApproval()
+    {
+        [$opportunity] = $this->createEvaluationPhase('continuous', [
+            '0' => 'Rascunho',
+            '1' => 'Aguardando resposta',
+            '3' => 'Indeferido',
+            '10' => 'Deferido',
+        ]);
+
+        $this->assertNotContains(
+            Registration::STATUS_PARTIALLY_APPROVED,
+            $this->batchApplicationStatuses($opportunity),
+            'Garantindo que a aplicação em lote não ofereça o deferido parcialmente desabilitado na fase'
+        );
+    }
+
+    function testContinuousBatchApplicationListsEnabledPartialApproval()
+    {
+        [$opportunity] = $this->createEvaluationPhase('continuous', [
+            '0' => 'Rascunho',
+            '1' => 'Aguardando resposta',
+            '3' => 'Indeferido',
+            '9' => 'Deferido parcialmente',
+            '10' => 'Deferido',
+        ]);
+
+        $this->assertContains(
+            Registration::STATUS_PARTIALLY_APPROVED,
+            $this->batchApplicationStatuses($opportunity),
+            'Garantindo que a aplicação em lote ofereça o deferido parcialmente habilitado na fase'
+        );
+    }
+
+    public function testConsolidatedResultLabelsUseConfiguredStatusLabel(): void
+    {
+        foreach (['simple', 'continuous'] as $type) {
+            [$opportunity] = $this->createEvaluationPhase($type, self::RENAMED_STATUS_LABELS);
+
+            $labels = $opportunity->evaluationMethod->getConsolidatedResultLabels($opportunity, [['evaluation' => '2']]);
+
+            $this->assertSame(
+                ['2' => 'Deferido Parcialmente'],
+                $labels,
+                "Garantindo que o resultado consolidado da avaliação {$type} usa o rótulo configurado na fase"
+            );
+        }
+    }
+
+    public function testConsolidatedResultLabelsFallBackToMethodVocabulary(): void
+    {
+        $expected_by_type = [
+            'simple' => ['10' => 'Selecionada', '8' => 'Suplente'],
+            'continuous' => ['10' => 'Deferido', '9' => 'Deferido parcialmente'],
+        ];
+
+        foreach ($expected_by_type as $type => $expected) {
+            [$opportunity] = $this->createEvaluationPhase($type);
+
+            $consolidated_results = array_map(fn ($value) => ['evaluation' => (string) $value], array_keys($expected));
+
+            $this->assertSame(
+                $expected,
+                $opportunity->evaluationMethod->getConsolidatedResultLabels($opportunity, $consolidated_results),
+                "Garantindo que, sem rótulo na fase, o resultado consolidado da avaliação {$type} usa o vocabulário do método"
+            );
+        }
+    }
+
+    public function testConsolidatedResultLabelsNameTheDraftResult(): void
+    {
+        [$opportunity] = $this->createEvaluationPhase('continuous', self::RENAMED_STATUS_LABELS);
+
+        $this->assertSame(
+            ['0' => 'Rascunho em análise'],
+            $opportunity->evaluationMethod->getConsolidatedResultLabels($opportunity, [['evaluation' => '0']]),
+            'Garantindo que o resultado consolidado de rascunho é nomeado como em análise, não pelo rótulo do status'
+        );
+    }
+
+    public function testSimpleBatchApplicationPublishesConsolidatedResultLabels(): void
+    {
+        $this->assertBatchApplicationResultLabel('simple', self::RENAMED_STATUS_LABELS, Registration::STATUS_INVALID, 'Deferido Parcialmente');
+    }
+
+    public function testContinuousBatchApplicationPublishesConsolidatedResultLabels(): void
+    {
+        $this->assertBatchApplicationResultLabel('continuous', self::RENAMED_STATUS_LABELS, Registration::STATUS_INVALID, 'Deferido Parcialmente');
+    }
+
+    public function testContinuousBatchApplicationNamesPartialApprovalWithoutConfiguredLabel(): void
+    {
+        $this->assertBatchApplicationResultLabel('continuous', null, Registration::STATUS_PARTIALLY_APPROVED, 'Deferido parcialmente');
+    }
+
+    public function testContinuousBatchApplicationStatusesFallBackToMethodDefaults(): void
+    {
+        [$opportunity] = $this->createEvaluationPhase('continuous', []);
+
+        $labels = array_column(
+            $this->batchApplicationConfig($opportunity, 'evaluation-method-continuous--apply')['statusList'],
+            'label',
+            'status'
+        );
+
+        $this->assertSame(
+            'Deferido',
+            $labels[Registration::STATUS_APPROVED] ?? null,
+            'Garantindo que, com a configuração de status vazia, a aplicação em lote usa os status padrão do método, como o resultado consolidado'
         );
     }
 
@@ -193,10 +347,251 @@ class EvaluationStatusConfigurationTest extends Abstract\TestCase
         }
     }
 
+    public function testEvaluationResultStringUsesConfiguredStatusLabel(): void
+    {
+        foreach (['simple', 'continuous'] as $type) {
+            [, $registration, $valuer] = $this->createEvaluationPhase($type, self::RENAMED_STATUS_LABELS);
+
+            $this->login($valuer);
+            $this->assertStatus200(
+                $this->sendEvaluation($registration, Registration::STATUS_INVALID),
+                "Garantindo que a avaliação {$type} com o status renomeado pode ser enviada"
+            );
+
+            $this->assertSame(
+                'Deferido Parcialmente',
+                $this->findEvaluation($registration, $valuer)->resultString,
+                "Garantindo que o resultado da avaliação {$type} exibe o rótulo configurado na fase, não o padrão do método"
+            );
+        }
+    }
+
+    public function testEvaluationResultStringFallsBackToMethodLabelWhenPhaseIsNotConfigured(): void
+    {
+        foreach (['simple' => 'Inválida', 'continuous' => 'Negado'] as $type => $expected_label) {
+            [, $registration, $valuer] = $this->createEvaluationPhase($type);
+
+            $this->login($valuer);
+            $this->assertStatus200(
+                $this->sendEvaluation($registration, Registration::STATUS_INVALID),
+                "Garantindo que a avaliação {$type} pode ser enviada numa fase sem configuração de status"
+            );
+
+            $this->assertSame(
+                $expected_label,
+                $this->findEvaluation($registration, $valuer)->resultString,
+                "Garantindo que, sem configuração na fase, o resultado da avaliação {$type} mantém o rótulo padrão do método"
+            );
+        }
+    }
+
+    public function testEvaluationMethodsWithOwnVocabularyAreNotTranslatedToStatusLabel(): void
+    {
+        [$opportunity] = $this->createEvaluationPhase('continuous', self::RENAMED_STATUS_LABELS);
+
+        $evaluation_method_configuration = $opportunity->evaluationMethodConfiguration;
+
+        $expected_by_method = [
+            'technical' => [10 => 10],
+            'documentary' => [1 => 'Válida', -1 => 'Inválida'],
+            'qualification' => ['valid' => 'Habilitado', 'invalid' => 'Inabilitado'],
+        ];
+
+        foreach ($expected_by_method as $slug => $expected_labels) {
+            $evaluation_method = $this->app->getRegisteredEvaluationMethodBySlug($slug)->evaluationMethod;
+
+            $this->assertSame(
+                [],
+                $evaluation_method->getResultStatuses($evaluation_method_configuration),
+                "Garantindo que a avaliação {$slug} não declara seu resultado como status de inscrição"
+            );
+
+            foreach ($expected_labels as $result => $expected_label) {
+                $this->assertSame(
+                    $expected_label,
+                    $evaluation_method->resultToString($opportunity, $result),
+                    "Garantindo que o resultado {$result} da avaliação {$slug} mantém o vocabulário próprio do método, com o tipo preservado"
+                );
+            }
+        }
+    }
+
+    public function testReportingPhaseKeepsTheMethodVocabulary(): void
+    {
+        [$opportunity] = $this->createEvaluationPhase('continuous', self::RENAMED_STATUS_LABELS);
+
+        $this->app->disableAccessControl();
+        $opportunity->isReportingPhase = true;
+        $opportunity->save(true);
+        $this->app->enableAccessControl();
+
+        $opportunity = $opportunity->refreshed();
+        $evaluation_method = $opportunity->getEvaluationMethod();
+
+        $this->assertSame(
+            [],
+            $evaluation_method->getResultStatuses($opportunity->evaluationMethodConfiguration),
+            'Garantindo que a fase de prestação de informações não declara seu resultado como status de inscrição'
+        );
+
+        $this->assertSame(
+            'Deferido',
+            $evaluation_method->resultToString($opportunity, Registration::STATUS_APPROVED),
+            'Garantindo que a fase de prestação de informações mantém o vocabulário do método, sem resolver pelo configurado'
+        );
+    }
+
+    public function testResultToStringNormalizesTheValueType(): void
+    {
+        [$opportunity] = $this->createEvaluationPhase('continuous', self::RENAMED_STATUS_LABELS);
+
+        $evaluation_method = $opportunity->getEvaluationMethod();
+
+        $this->assertSame(
+            'Deferido Parcialmente',
+            $evaluation_method->resultToString($opportunity, Registration::STATUS_INVALID),
+            'Garantindo que o resultado em inteiro encontra o rótulo configurado, cuja chave é string'
+        );
+
+        $this->assertSame(
+            'Deferido Parcialmente',
+            $evaluation_method->resultToString($opportunity, (string) Registration::STATUS_INVALID),
+            'Garantindo que o resultado em string encontra o mesmo rótulo configurado'
+        );
+    }
+
+    public function testTiebreakerResultIsNotTranslatedToStatusLabel(): void
+    {
+        [$opportunity] = $this->createEvaluationPhase('continuous', self::RENAMED_STATUS_LABELS);
+
+        $this->assertSame(
+            'Aguardando desempate',
+            $opportunity->getEvaluationMethod()->resultToString($opportunity, '@tiebreaker'),
+            'Garantindo que a inscrição aguardando desempate mantém o aviso, sem casar com rótulo de status'
+        );
+    }
+
+    public function testFindEvaluationsPayloadUsesConfiguredStatusLabel(): void
+    {
+        foreach (['simple', 'continuous'] as $type) {
+            [$opportunity, $registration, $valuer, $admin] = $this->createEvaluationPhase($type, self::RENAMED_STATUS_LABELS);
+
+            $this->login($valuer);
+            $this->assertStatus200(
+                $this->sendEvaluation($registration, Registration::STATUS_INVALID),
+                "Garantindo que a avaliação {$type} com o status renomeado pode ser enviada"
+            );
+
+            $this->login($admin);
+            $result_strings = $this->resultStringsOf($this->findEvaluationsPayload($opportunity));
+
+            $this->assertNotEmpty($result_strings, "Garantindo que o payload da avaliação {$type} traz ao menos uma avaliação");
+
+            foreach ($result_strings as $result_string) {
+                $this->assertSame(
+                    'Deferido Parcialmente',
+                    $result_string,
+                    "Garantindo que toda linha do payload da avaliação {$type} traz o rótulo configurado na fase"
+                );
+            }
+        }
+    }
+
+    public function testFindEvaluationsPayloadKeepsTheNotEvaluatedLiteral(): void
+    {
+        [$opportunity, $registration, $valuer, $admin] = $this->createEvaluationPhase('continuous', self::RENAMED_STATUS_LABELS);
+
+        $this->login($valuer);
+        $this->assertStatus200(
+            $this->sendEvaluation($registration, Registration::STATUS_INVALID, 'draft'),
+            'Garantindo que a avaliação pode ser salva como rascunho'
+        );
+
+        $this->login($admin);
+
+        $this->assertSame(
+            ['Não avaliado'],
+            $this->resultStringsOf($this->findEvaluationsPayload($opportunity)),
+            'Garantindo que a avaliação ainda não enviada continua exibida como "Não avaliado", sem virar rótulo de status'
+        );
+    }
+
+    public function testRegistrationEvaluationResultStringUsesConfiguredStatusLabel(): void
+    {
+        foreach ([self::RENAMED_STATUS_LABELS, null] as $status_labels) {
+            [, $registration, $valuer, $admin] = $this->createEvaluationPhase('continuous', $status_labels);
+
+            $this->sendFinishedEvaluation($registration, $valuer, Registration::STATUS_INVALID);
+            $this->login($admin);
+
+            $expected_label = $status_labels ? 'Deferido Parcialmente' : 'Negado';
+
+            $this->assertSame(
+                $expected_label,
+                $registration->refreshed()->evaluationResultString,
+                "Garantindo que o resultado consolidado da inscrição é exibido como \"{$expected_label}\", conforme a configuração da fase"
+            );
+        }
+    }
+
+    public function testRegistrationsQueryUsesConfiguredStatusLabelForConsolidatedResult(): void
+    {
+        [$opportunity, $registration, , $admin] = $this->createEvaluationPhase('continuous', self::RENAMED_STATUS_LABELS);
+
+        $this->setConsolidatedResult($registration, Registration::STATUS_INVALID);
+        $this->login($admin);
+
+        $result = $this->app->controller('opportunity')->apiFindRegistrations($opportunity, [
+            '@select' => 'number,consolidatedResult',
+        ]);
+
+        $this->assertSame(
+            ['Deferido Parcialmente'],
+            array_column($result->registrations, 'evaluationResultString'),
+            'Garantindo que a lista de inscrições da fase exibe o resultado consolidado pelo rótulo configurado'
+        );
+    }
+
+    public function testEvaluationSummaryCountsByConfiguredStatusLabel(): void
+    {
+        [$opportunity, $registration] = $this->createEvaluationPhase('continuous', self::RENAMED_STATUS_LABELS);
+
+        $this->setConsolidatedResult($registration, Registration::STATUS_INVALID);
+
+        $this->assertSame(
+            1,
+            $opportunity->evaluationMethodConfiguration->getSummary(true)['evaluations']['Deferido Parcialmente'] ?? null,
+            'Garantindo que o resumo de avaliações da fase conta as inscrições pelo rótulo configurado'
+        );
+    }
+
+    public function testEvaluationSummaryAddsStatusesSharingTheSameLabel(): void
+    {
+        [$opportunity, $registration, , $admin] = $this->createEvaluationPhase('continuous', [
+            '0' => 'Rascunho',
+            '1' => 'Aguardando resposta',
+            '2' => 'Não aprovada',
+            '3' => 'Não aprovada',
+            '10' => 'Aprovada',
+        ]);
+
+        $this->login($admin);
+        $other_registration = $this->registrationDirector->createSentRegistration($opportunity, data: []);
+
+        $this->setConsolidatedResult($registration, Registration::STATUS_INVALID);
+        $this->setConsolidatedResult($other_registration, Registration::STATUS_NOTAPPROVED);
+
+        $this->assertSame(
+            2,
+            $opportunity->evaluationMethodConfiguration->getSummary(true)['evaluations']['Não aprovada'] ?? null,
+            'Garantindo que o resumo soma os status que a fase nomeia com o mesmo rótulo, sem um sobrescrever o outro'
+        );
+    }
+
     /**
      * Cria uma fase de avaliação com uma inscrição enviada e distribuída a um avaliador
      *
-     * @return array{Opportunity, Registration, User}
+     * @return array{Opportunity, Registration, User, User}
      */
     private function createEvaluationPhase(string $type, ?array $status_labels = null): array
     {
@@ -236,17 +631,71 @@ class EvaluationStatusConfigurationTest extends Abstract\TestCase
         $valuer_user_id = array_keys($registration->valuers)[0];
         $valuer = $this->app->repo('User')->find($valuer_user_id);
 
-        return [$opportunity->refreshed(), $registration, $valuer];
+        return [$opportunity->refreshed(), $registration, $valuer, $admin];
     }
 
-    private function sendEvaluation(Registration $registration, int $status)
+    /**
+     * Abre a lista de inscrições da fase como gestor e devolve os status oferecidos na aplicação em lote
+     */
+    private function batchApplicationStatuses(Opportunity $opportunity): array
+    {
+        $status_list = $this->batchApplicationConfig($opportunity, 'evaluation-method-continuous--apply')['statusList'];
+
+        return array_map(fn ($item) => (int) $item['status'], $status_list);
+    }
+
+    private function setConsolidatedResult(Registration $registration, int $consolidated_result): void
+    {
+        $this->app->disableAccessControl();
+        $registration->consolidatedResult = (string) $consolidated_result;
+        $registration->save(true);
+        $this->app->enableAccessControl();
+    }
+
+    private function sendFinishedEvaluation(Registration $registration, User $valuer, int $status): void
+    {
+        $this->login($valuer);
+        $this->assertStatus200($this->sendEvaluation($registration, $status), 'Garantindo que a avaliação pode ser salva');
+
+        $this->app->disableAccessControl();
+        $evaluation = $this->findEvaluation($registration, $valuer);
+        $evaluation->status = RegistrationEvaluation::STATUS_SENT;
+        $evaluation->save(true);
+        $this->app->enableAccessControl();
+    }
+
+    private function assertBatchApplicationResultLabel(string $type, ?array $status_labels, int $consolidated_result, string $expected_label): void
+    {
+        [$opportunity, $registration, , $admin] = $this->createEvaluationPhase($type, $status_labels);
+
+        $this->setConsolidatedResult($registration, $consolidated_result);
+
+        $this->login($admin);
+        $config = $this->batchApplicationConfig($opportunity, "evaluation-method-{$type}--apply");
+
+        $this->assertSame(
+            $expected_label,
+            $config['resultLabels'][$consolidated_result] ?? null,
+            "Garantindo que a aplicação em lote da avaliação {$type} publica o texto do resultado consolidado {$consolidated_result}"
+        );
+    }
+
+    private function batchApplicationConfig(Opportunity $opportunity, string $component): array
+    {
+        $request = $this->requestFactory->GET('opportunity', 'registrations', [$opportunity->id]);
+        $this->assertStatus200($request, 'Garantindo que o gestor acessa a lista de inscrições da fase');
+
+        return $this->app->view->jsObject['config'][$component];
+    }
+
+    private function sendEvaluation(Registration $registration, int $status, string $evaluation_state = 'evaluated')
     {
         return $this->requestFactory->POST(
             controller_id: 'registration',
             action: 'saveEvaluation',
             url_params: [
                 'id' => $registration->id,
-                'status' => 'evaluated'
+                'status' => $evaluation_state
             ],
             payload: [
                 'data' => [
@@ -255,5 +704,38 @@ class EvaluationStatusConfigurationTest extends Abstract\TestCase
                 ]
             ]
         );
+    }
+
+    private function findEvaluation(Registration $registration, User $valuer): ?RegistrationEvaluation
+    {
+        return $this->app->repo('RegistrationEvaluation')->findOneBy([
+            'registration' => $registration,
+            'user' => $valuer,
+        ]);
+    }
+
+    private function resultStringsOf(object $payload): array
+    {
+        return array_values(array_filter(array_map(
+            fn($row) => $row['evaluation']['resultString'] ?? null,
+            $payload->evaluations
+        )));
+    }
+
+    private function findEvaluationsPayload(Opportunity $opportunity): object
+    {
+        $query = ['@opportunity' => $opportunity->id];
+
+        $this->app->request = new MapasRequest(
+            new ServerRequest(method: 'GET', uri: '/api/opportunity/findEvaluations', queryParams: $query),
+            'opportunity',
+            'findEvaluations',
+            $query
+        );
+
+        $controller = $this->app->controller('opportunity');
+        $controller->setRequestData($query + ['id' => $opportunity->id]);
+
+        return $controller->apiFindEvaluations($opportunity->id, $query);
     }
 }

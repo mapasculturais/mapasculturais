@@ -9,6 +9,7 @@ use MapasCulturais\i;
 
 $this->import('
     entity-field
+    fields-visible-evaluators
     mc-accordion
     mc-confirm-button
     mc-icon
@@ -156,6 +157,10 @@ $this->import('
                 <div class="opportunity-appeal-phase-config__add-evaluation-committee">
                     <opportunity-committee-groups :entity="entity.evaluationMethodConfiguration"></opportunity-committee-groups>
                 </div>
+
+                <section class="evaluation-section col-12">
+                    <fields-visible-evaluators :entity="entity.evaluationMethodConfiguration"></fields-visible-evaluators>
+                </section>
 
                 <opportunity-phase-config-status :phase="entity"></opportunity-phase-config-status>
 

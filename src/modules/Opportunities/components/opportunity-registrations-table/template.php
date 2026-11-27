@@ -13,6 +13,7 @@ $this->import('
     mc-card
     mc-export-spreadsheet
     mc-icon
+    mc-modal
     mc-multiselect
     mc-select
     mc-status
@@ -84,7 +85,12 @@ $entity = $this->controller->requestedEntity;
                 </template>
 
                 <template #status="{entity}">
-                    <mc-select v-if="!statusNotEditable" small :default-value="entity.status" @change-option="setStatus($event, entity)">
+                    <mc-select
+                        v-if="!statusNotEditable"
+                        :key="'status-' + entity.id + '-' + statusSelectKey(entity)"
+                        small
+                        :default-value="entity.status"
+                        @change-option="setStatus($event, entity)">
                         <mc-status v-for="item in statusDict" :value="item.value" :status-name="item"></mc-status>
                     </mc-select>
                     
@@ -192,4 +198,24 @@ $entity = $this->controller->requestedEntity;
             </entity-table>
         </div>
     </template>
+
+    <mc-modal
+        ref="statusConfirmModal"
+        teleport="body"
+        classes="opportunity-registration-table__status-confirm"
+        :title="text('confirmar saída de selecionada título')"
+        @close="onStatusConfirmClose">
+        <template #button><span></span></template>
+
+        <p>{{ text('confirmar saída de selecionada') }}</p>
+
+        <template #actions>
+            <button class="button button--text" @click="cancelStatusChange()">
+                {{ text('confirmar saída de selecionada não') }}
+            </button>
+            <button class="button button--primary" @click="confirmStatusChange()">
+                {{ text('confirmar saída de selecionada sim') }}
+            </button>
+        </template>
+    </mc-modal>
 </div>

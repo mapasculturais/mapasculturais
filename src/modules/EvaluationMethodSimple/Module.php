@@ -349,6 +349,10 @@ class Module extends \MapasCulturais\EvaluationMethod
         }
     }
 
+    public function getResultStatuses(EvaluationMethodConfiguration $evaluation_method_configuration): array {
+        return $this->getEvaluatorStatuses($evaluation_method_configuration);
+    }
+
     protected function _valueToString($value) {
         switch ($value) {
             case '2':

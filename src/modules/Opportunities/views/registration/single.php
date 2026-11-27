@@ -316,7 +316,7 @@ $hide_phase_dates = $entity->opportunity->firstPhase->hidePhaseDates;
                                                 <?php if($hide_phase_dates): ?>
                                                     <?= i::__("O prazo para envio dessa inscrição foi encerrado") ?>
                                                 <?php else: ?>
-                                                    <?= i::__("O prazo para envio dessa inscrição foi até {$opportunity->registrationTo->format('d/m/Y H:i:s')}") ?>
+                                                    <?= sprintf(i::__("O prazo para envio dessa inscrição foi até %s"), $opportunity->registrationTo->format('d/m/Y H:i:s')) ?>
                                                 <?php endif; ?>
                                             </small> <br>
                                         </mc-alert>
@@ -355,7 +355,7 @@ $hide_phase_dates = $entity->opportunity->firstPhase->hidePhaseDates;
                                                 <?php if($hide_phase_dates): ?>
                                                     <?= i::__("O prazo para envio dessa inscrição foi encerrado") ?>
                                                 <?php else: ?>
-                                                    <?= i::__("O prazo para envio dessa inscrição foi até {$appeal_phase->registrationTo->format('d/m/Y H:i:s')}") ?>
+                                                    <?= sprintf(i::__("O prazo para envio dessa inscrição foi até %s"), $appeal_phase->registrationTo->format('d/m/Y H:i:s')) ?>
                                                 <?php endif; ?>
                                             </small> <br>
                                         </mc-alert>

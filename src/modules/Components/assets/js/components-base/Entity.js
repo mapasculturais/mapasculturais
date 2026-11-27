@@ -59,7 +59,8 @@ class Entity {
             'relatedSpaces', 'spaceRelations',
             'editableFields', 'allowedFields',
         ];
-        
+        const relationProperties = ['relatedAgents', 'agentRelations', 'relatedSpaces', 'spaceRelations'];
+
         this.populateId(obj);
 
         if(obj.__lockedFields) {
@@ -79,7 +80,15 @@ class Entity {
                 continue;
             }
             let _default = prop == 'terms' ? [] : {};
-            this[prop] = obj[prop] || _default;
+            let value = obj[prop] || _default;
+
+            // o PHP serializa um mapa vazio como `[]`: nas relações, que são mapas indexados pelo nome do
+            // grupo, um array vazio faz com que adicionar um grupo (`relations[grupo] = []`) não seja reativo
+            if (relationProperties.includes(prop) && Array.isArray(value) && value.length === 0) {
+                value = {};
+            }
+
+            this[prop] = value;
         }
 
         for (let prop in __properties) {

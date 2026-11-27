@@ -666,9 +666,9 @@ class EvaluationMethodConfiguration extends \MapasCulturais\Entity {
         
         if($result = $query->getResult()){
             foreach($result as $values){
-                $status = $em->valueToString($values['consolidatedResult']);
+                $status = $em->resultToString($opportunity, $values['consolidatedResult']);
                 if($status) {
-                    $data['evaluations'][$status] = $values['qtd'];
+                    $data['evaluations'][$status] = ($data['evaluations'][$status] ?? 0) + $values['qtd'];
                 }
             }
         }

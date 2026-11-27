@@ -12,8 +12,6 @@ use MapasCulturais\Entities\EvaluationMethodConfiguration;
 use MapasCulturais\Entities\Notification;
 use MapasCulturais\Entities\Registration;
 use MapasCulturais\Entities\RegistrationEvaluation;
-use MapasCulturais\Entities\RegistrationFieldConfiguration;
-use MapasCulturais\Entities\RegistrationFileConfiguration;
 use MapasCulturais\i;
 class Module extends \MapasCulturais\EvaluationMethod 
 {
@@ -186,15 +184,21 @@ class Module extends \MapasCulturais\EvaluationMethod
         $app->hook('repo(Registration).getIdsByKeywordDQL.where', function(&$where, $keyword, $alias) {
             $key = trim(strtolower(str_replace('%','',$keyword)));
             
+            // Palavras-chave aceitas no filtro para cada status de resultado.
+            $keywords_by_status = [
+                Registration::STATUS_INVALID => i::__('inválida,invalida,inválido,invalido'),
+                Registration::STATUS_NOTAPPROVED => i::__('não selecionado,nao selecionado,não selecionada,nao selecionada'),
+                Registration::STATUS_WAITLIST => i::__('suplente'),
+                Registration::STATUS_PARTIALLY_APPROVED => i::__('deferido parcialmente,deferida parcialmente'),
+                Registration::STATUS_APPROVED => i::__('selecionado,selecionada'),
+            ];
+
             $value = null;
-            if (in_array($key, explode(',', i::__('inválida,invalida,inválido,invalido')))) {
-                $value = '2';
-            } else if (in_array($key, explode(',', i::__('não selecionado,nao selecionado,não selecionada,nao selecionada')))) {
-                $value = '3';
-            } else if ($key == i::__('suplente')) {
-                $value = '8';
-            } else if (in_array($key, explode(',', i::__('selecionado,selecionada')))) {
-                $value = '10';
+            foreach ($keywords_by_status as $status => $keywords) {
+                if (in_array($key, explode(',', $keywords))) {
+                    $value = (string) $status;
+                    break;
+                }
             }
 
             if ($value) {
@@ -256,12 +260,28 @@ class Module extends \MapasCulturais\EvaluationMethod
                 die;
             }
 
-            if (!is_numeric($this->data['to']) || !in_array($this->data['to'], [0,1,2,3,8,10])) {
-                $this->errorJson(i::__('os status válidos são 0,1,2, 3, 8 e 10'), 400);
+            // Aceita apenas os status previstos para a inscrição.
+            $valid_statuses = array_keys(Registration::getStatuses());
+            if (!is_numeric($this->data['to']) || !in_array((int) $this->data['to'], $valid_statuses, true)) {
+                $this->errorJson(sprintf(i::__('os status válidos são %s'), implode(', ', $valid_statuses)), 400);
                 die;
             }
 
             $new_status = intval($this->data['to']);
+
+            // Aceita o retorno a rascunho ou pendente e os status habilitados na fase.
+            $reset_statuses = [Registration::STATUS_DRAFT, Registration::STATUS_SENT];
+            if (!in_array($new_status, $reset_statuses, true) && !$self->isStatusEnabled($opp, $new_status)) {
+                $this->errorJson(i::__('O status selecionado não está habilitado para esta fase'), 400);
+                die;
+            }
+
+            if ($new_status === Registration::STATUS_PARTIALLY_APPROVED
+                && !$opp->isAppealPhase
+                && (int) $opp->status !== Entities\Opportunity::STATUS_APPEAL_PHASE) {
+                $this->errorJson(i::__('O status Deferido parcialmente só pode ser aplicado na fase de recurso'), 400);
+                die;
+            }
             
             $opp->checkPermission('@control');
 
@@ -323,6 +343,9 @@ class Module extends \MapasCulturais\EvaluationMethod
                     case Registration::STATUS_WAITLIST:
                         $registration->setStatusToWaitlist();
                     break;
+                    case Registration::STATUS_PARTIALLY_APPROVED:
+                        $registration->setStatusToPartiallyApproved();
+                    break;
                     case Registration::STATUS_APPROVED:
                         $registration->setStatusToApproved();
                     break;
@@ -356,6 +379,21 @@ class Module extends \MapasCulturais\EvaluationMethod
         });
 
         
+        // Recusa mensagem com status de resultado desabilitado na fase (antes de persistir).
+        $app->hook('entity(ChatMessage).save:before', function() use ($app, $self) {
+            /** @var \MapasCulturais\Entities\ChatMessage $this */
+            if (!($this->thread->ownerEntity instanceof Entities\Registration)
+                || !($this->thread->ownerEntity->evaluationMethod instanceof $self)
+                || !$app->user->canUser('evaluateOnTime')) {
+                return;
+            }
+
+            $payload = (object) ($this->payload ?: []);
+            if (isset($payload->status) && !$self->isStatusEnabled($this->thread->ownerEntity->opportunity, $payload->status)) {
+                throw new \Exception(i::__('O status selecionado não está habilitado para esta fase'));
+            }
+        });
+
         $app->hook('entity(ChatMessage).save:finish', function() use ($app, $self){
             /** @var \MapasCulturais\Entities\ChatMessage $this */
             if ($this->thread->ownerEntity instanceof Entities\Registration && 
@@ -400,42 +438,6 @@ class Module extends \MapasCulturais\EvaluationMethod
             $this->jsObject['config']['evaluationMethodAppealPhase'] = [
                 'statuses' => $self->getStatuses(),
             ];
-        });
-
-        $app->hook('entity(Opportunity).get(avaliableEvaluationFields)', function(&$value) use ($app) {
-            $this->enableCacheGetterResult('avaliableEvaluationFields');
-            // Verificar se a fase ($this) tem uma fase de recurso ($this->appealPhase);
-            // Se o usuário logado é avaliador do recurso
-            // Caso seja, Adiciona todos os campos dessa fase até a primeira ($this->previousPhase)
-            
-            if ($this->isAppealPhase) {
-                $appeal_phase = $this;
-            } else {
-                $appeal_phase = $this->appealPhase;
-            }
-            
-            if (!$appeal_phase) {
-                return;
-            }
-
-            if ($appeal_phase->canUser('evaluateRegistrations')) {
-                $fields = [];
-                
-                $phase = $this;
-                do {
-                    $fields = array_merge($fields, $this->registrationFieldConfigurations, $this->registrationFileConfigurations);
-                } while ($phase = $phase->previousPhase);
-                
-                foreach ($fields as $field) {
-                    if ($field instanceof RegistrationFieldConfiguration) {
-                        $value[$field->fieldName] = "true";
-                    }
-                    
-                    if ($field instanceof RegistrationFileConfiguration) {
-                        $value[$field->fileGroupName] = "true";
-                    }
-                }
-            }
         });
 
         //Ativação do chat
@@ -504,7 +506,7 @@ class Module extends \MapasCulturais\EvaluationMethod
     public function getEvaluationStatues()
     {
         $status = [
-            'valid' => ['10'],
+            'valid' => ['9', '10'],
             'invalid' => ['2','3', '8']
         ];
 
@@ -544,15 +546,36 @@ class Module extends \MapasCulturais\EvaluationMethod
         }
     }
 
+
+    /**
+     * Indica se o status está habilitado para o avaliador na fase
+     */
+    public function isStatusEnabled(Entities\Opportunity $opportunity, $status): bool
+    {
+        $statuses = $this->getEvaluatorStatuses($opportunity->evaluationMethodConfiguration);
+
+        return is_scalar($status) && array_key_exists((int) $status, $statuses);
+    }
+
     function getStatuses() {
         $statuses = [
             '10' => i::__('Deferido'),
+            '9' => i::__('Deferido parcialmente'),
             '3' => i::__('Indeferido'),
             '2' => i::__('Negado'),
             '8' => i::__('Suplente'),
         ];
 
         return $statuses;
+    }
+
+    public function getResultStatuses(EvaluationMethodConfiguration $evaluation_method_configuration): array {
+        // a fase de prestação de informações tem vocabulário próprio e segue pelo mapa do método
+        if ($evaluation_method_configuration->opportunity->isReportingPhase) {
+            return [];
+        }
+
+        return $this->getEvaluatorStatuses($evaluation_method_configuration);
     }
 
     protected function _valueToString($value) {

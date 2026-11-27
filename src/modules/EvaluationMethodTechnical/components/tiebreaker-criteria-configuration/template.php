@@ -34,7 +34,7 @@ $this->import('
                 <div class="tiebreaker-criteria__column">
                     <div class="field tiebreaker-criteria__criterion-field">
                         <label>{{criterion.name}}</label>                    
-                        <mc-select placeholder="Selecione um critério" :default-value="criterion.criterionType" @change-option="setCriterion($event, criterion.id)">
+                        <mc-select placeholder="<?= i::esc_attr__('Selecione um critério') ?>" :default-value="criterion.criterionType" @change-option="setCriterion($event, criterion.id)">
                             <option v-for="field in fields" :key="field.id" :value="field.fieldName">{{field.title}}</option>
                             <option value="submissionDate"><?= i::__("Data de envio da inscrição") ?></option>
                             <option value="criterion"><?= i::__("Nota de um critério de avaliação") ?></option>

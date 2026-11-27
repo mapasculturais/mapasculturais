@@ -45,6 +45,7 @@ app.component('opportunity-phase-list-evaluation' , {
         statusKey(code) {
             const dict = {
                 10: 'Approved',
+                9: 'PartiallyApproved',
                 8: 'Waitlist',
                 3: 'Notapproved',
                 2: 'Invalid',

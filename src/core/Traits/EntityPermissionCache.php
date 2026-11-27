@@ -46,8 +46,8 @@ trait EntityPermissionCache {
         return $permissions;
     }
 
-    function getPCacheObjectType(){
-        $class_name = $this->getClassName();
+    public static function getPCacheObjectType(){
+        $class_name = static::getClassName();
         $metadata = App::i()->em->getClassMetadata($class_name);
         if($root_class = $metadata->rootEntityName){
             $class_name = $root_class;
