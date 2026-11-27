@@ -516,6 +516,24 @@ class EvaluationStatusConfigurationTest extends Abstract\TestCase
         );
     }
 
+    public function testRegistrationEvaluationResultStringUsesConfiguredStatusLabel(): void
+    {
+        foreach ([self::RENAMED_STATUS_LABELS, null] as $status_labels) {
+            [, $registration, $valuer, $admin] = $this->createEvaluationPhase('continuous', $status_labels);
+
+            $this->sendFinishedEvaluation($registration, $valuer, Registration::STATUS_INVALID);
+            $this->login($admin);
+
+            $expected_label = $status_labels ? 'Deferido Parcialmente' : 'Negado';
+
+            $this->assertSame(
+                $expected_label,
+                $registration->refreshed()->evaluationResultString,
+                "Garantindo que o resultado consolidado da inscrição é exibido como \"{$expected_label}\", conforme a configuração da fase"
+            );
+        }
+    }
+
     /**
      * Cria uma fase de avaliação com uma inscrição enviada e distribuída a um avaliador
      *
@@ -570,6 +588,18 @@ class EvaluationStatusConfigurationTest extends Abstract\TestCase
         $status_list = $this->batchApplicationConfig($opportunity, 'evaluation-method-continuous--apply')['statusList'];
 
         return array_map(fn ($item) => (int) $item['status'], $status_list);
+    }
+
+    private function sendFinishedEvaluation(Registration $registration, User $valuer, int $status): void
+    {
+        $this->login($valuer);
+        $this->assertStatus200($this->sendEvaluation($registration, $status), 'Garantindo que a avaliação pode ser salva');
+
+        $this->app->disableAccessControl();
+        $evaluation = $this->findEvaluation($registration, $valuer);
+        $evaluation->status = RegistrationEvaluation::STATUS_SENT;
+        $evaluation->save(true);
+        $this->app->enableAccessControl();
     }
 
     private function assertBatchApplicationResultLabel(string $type, ?array $status_labels, int $consolidated_result, string $expected_label): void
