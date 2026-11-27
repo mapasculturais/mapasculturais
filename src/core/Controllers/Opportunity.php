@@ -703,7 +703,7 @@ class Opportunity extends EntityController {
                     if ($evaluation_method) {
                         foreach ($phase_result as &$reg) {
                             if (in_array('consolidatedResult', $phase_query->selecting)) {
-                                $reg['evaluationResultString'] = $evaluation_method->valueToString($reg['consolidatedResult']);
+                                $reg['evaluationResultString'] = $evaluation_method->resultToString($phase, $reg['consolidatedResult']);
                             }
                         }
                         unset($reg);
@@ -731,7 +731,7 @@ class Opportunity extends EntityController {
             if ($target_evaluation_method) {
                 foreach ($ordered_result as &$reg) {
                     if (in_array('consolidatedResult', $current_phase_query->selecting)) {
-                        $reg['evaluationResultString'] = $target_evaluation_method->valueToString($reg['consolidatedResult']);
+                        $reg['evaluationResultString'] = $target_evaluation_method->resultToString($target_build['phase'], $reg['consolidatedResult']);
                     }
                 }
                 unset($reg);
@@ -775,7 +775,7 @@ class Opportunity extends EntityController {
             if ($current_evaluation_method) {
                 foreach ($current_phase_result as &$reg) {
                     if (in_array('consolidatedResult', $current_phase_query->selecting)) {
-                        $reg['evaluationResultString'] = $current_evaluation_method->valueToString($reg['consolidatedResult']);
+                        $reg['evaluationResultString'] = $current_evaluation_method->resultToString($phase, $reg['consolidatedResult']);
                     }
                 }
                 unset($reg);
