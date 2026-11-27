@@ -7,7 +7,7 @@ $em = $opportunity->getEvaluationMethod();
 
 
 $status_list = [];
-$statuses_names = $opportunity->statusLabels ?: $opportunity->defaultStatuses;
+$statuses_names = $opportunity->statusLabels ?: $opportunity->evaluationMethodConfiguration->defaultStatuses;
 
 foreach ($statuses_names as $status => $status_name) {
     if (in_array($status, [0, 1, 2, 3, 8, 9, 10])) {
@@ -15,8 +15,10 @@ foreach ($statuses_names as $status => $status_name) {
     }
 }
 
+$consolidated_results = $em->findConsolidatedResult($opportunity);
 
 $this->jsObject['config']['evaluation-method-continuous--apply'] = [
     'statusList' => $status_list,
-    'consolidated_results' => $em->findConsolidatedResult($opportunity)
+    'resultLabels' => $em->getConsolidatedResultLabels($opportunity, $consolidated_results),
+    'consolidated_results' => $consolidated_results
 ];

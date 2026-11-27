@@ -20,6 +20,7 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Corrige a lista e a planilha de inscritos para o campo "Dados bancários", que saía confuso ou como um bloco único: passa a mostrar colunas separadas com nomes legíveis (tipo de conta, banco, agência e conta)
 - Quem já tinha colunas salvas do formato antigo de "Dados bancários" passa a ver as novas colunas sem precisar reconfigurar a tabela
 - Corrige o campo de tabela do formulário de inscrição que não cabia na coluna do formulário: a tabela transbordava para baixo da coluna lateral, que capturava o clique e impedia o preenchimento das últimas colunas; a tabela passa a rolar horizontalmente dentro do campo
+- Corrige telas da gestão que mostravam o vocabulário fixo do método em vez do rótulo de status configurado na fase: a lista de avaliações, a janela "Aplicar resultados das avaliações" dos métodos contínuo e simplificado, o resultado consolidado da inscrição, a lista de inscrições da API e o resumo de avaliações da fase. Um status renomeado na fase de recurso continuava aparecendo como "Negado" para a gestão, enquanto o avaliador e o proponente já viam o nome configurado
 
 ## [7.8.24] - 2026-11-19
 ### Melhorias
